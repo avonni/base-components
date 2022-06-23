@@ -40,49 +40,45 @@
             outline={outline}
             data-element-id="chip"
         >
-            <template if:true={showMediaLeft}>
-                <template if:true={avatar}>
-                    <c-primitive-avatar
-                        slot="left"
-                        size="x-small"
-                        src={avatar.src}
-                        fallback-icon-name={avatar.fallbackIconName}
-                        initials={avatar.initials}
-                        variant={avatar.variant}
-                        data-element-id="avatar-left"
-                    ></c-primitive-avatar>
-                </template>
-                <template if:true={showIconLeft}>
-                    <c-primitive-icon
-                        slot="left"
-                        icon-name={prefixIconName}
-                        size="x-small"
-                        data-element-id="icon-left"
-                    >
-                    </c-primitive-icon>
-                </template>
+            <template if:true={showIconLeft}>
+                <c-primitive-icon
+                    slot="left"
+                    icon-name={prefixIconName}
+                    size="x-small"
+                    data-element-id="icon-left"
+                >
+                </c-primitive-icon>
             </template>
-            <template if:true={showMediaRight}>
-                <template if:true={avatar}>
-                    <c-primitive-avatar
-                        slot="right"
-                        size="x-small"
-                        src={avatar.src}
-                        fallback-icon-name={avatar.fallbackIconName}
-                        initials={avatar.initials}
-                        variant={avatar.variant}
-                        data-element-id="avatar-right"
-                    ></c-primitive-avatar>
-                </template>
-                <template if:true={showIconRight}>
-                    <c-primitive-icon
-                        slot="right"
-                        icon-name={suffixIconName}
-                        size="x-small"
-                        data-element-id="icon-right"
-                    >
-                    </c-primitive-icon>
-                </template>
+            <template if:true={showAvatarLeft}>
+                <c-primitive-avatar
+                    slot="left"
+                    size="x-small"
+                    src={avatar.src}
+                    fallback-icon-name={avatar.fallbackIconName}
+                    initials={avatar.initials}
+                    variant={avatar.variant}
+                    data-element-id="avatar-left"
+                ></c-primitive-avatar>
+            </template>
+            <template if:true={showAvatarRight}>
+                <c-primitive-avatar
+                    slot="right"
+                    size="x-small"
+                    src={avatar.src}
+                    fallback-icon-name={avatar.fallbackIconName}
+                    initials={avatar.initials}
+                    variant={avatar.variant}
+                    data-element-id="avatar-right"
+                ></c-primitive-avatar>
+            </template>
+            <template if:true={showIconRight}>
+                <c-primitive-icon
+                    slot="right"
+                    icon-name={suffixIconName}
+                    size="x-small"
+                    data-element-id="icon-right"
+                >
+                </c-primitive-icon>
             </template>
         </c-chip>
     </div>

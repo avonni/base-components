@@ -60,8 +60,6 @@ const MEDIA_POSITION = {
     default: 'left'
 };
 
-const DEFAULT_AVATAR_SIZE = 'x-small';
-
 export default class PrimitiveChip extends LightningElement {
     _label = '';
     _outline = false;
@@ -134,8 +132,8 @@ export default class PrimitiveChip extends LightningElement {
     set avatar(value) {
         if (value) {
             const tempAvatar = deepCopy(normalizeObject(value));
-            if (!tempAvatar.size) {
-                tempAvatar.size = DEFAULT_AVATAR_SIZE;
+            if (!tempAvatar.position) {
+                tempAvatar.position = 'left';
             }
             this._avatar = tempAvatar;
         }
@@ -193,43 +191,30 @@ export default class PrimitiveChip extends LightningElement {
     }
 
     /**
-     *  If icon media is to be shown.
-     */
-    get showIcon() {
-        return this._showIcon && this._avatar == null;
-    }
-
-    /**
      *  If left icon media is to be shown.
      */
     get showIconLeft() {
-        return this.showIcon && this.prefixIconName;
+        return this._showIcon && this.prefixIconName;
     }
 
     /**
      *  If right icon media is to be shown.
      */
     get showIconRight() {
-        return this.showIcon && this.suffixIconName;
+        return this._showIcon && this.suffixIconName;
     }
 
     /**
-     *  Returns true if media is left, if not, returns false.
+     *  If left icon media is to be shown.
      */
-    get showMediaLeft() {
-        return (
-            (this.avatar && this.avatar.position !== 'right') ||
-            this.showIconLeft
-        );
+    get showAvatarLeft() {
+        return this._avatar && this._avatar.position === 'left';
     }
 
     /**
-     *  Returns true if media is left, if not, returns false.
+     *  If right icon media is to be shown.
      */
-    get showMediaRight() {
-        return (
-            (this.avatar && this.avatar.position === 'right') ||
-            this.showIconRight
-        );
+    get showAvatarRight() {
+        return this._avatar && this._avatar.position === 'right';
     }
 }

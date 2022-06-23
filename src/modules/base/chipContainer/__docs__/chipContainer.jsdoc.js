@@ -4,9 +4,9 @@
  * @property {string} label Label display in the chip.
  * @property {string} variant The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  * @property {boolean} outline If true, display an outline style button.
- * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label. Overwrites icon if both medias are present.
- * @property {string} prefixIconName Icon name. If present, the icon is displayed to the left of the label.
- * @property {string} mediaPosition Position of the media element. Valid values include left (default) and right.
+ * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
+ * @property {string} prefixIconName Prefix Icon name. If present, the icon is displayed to the left of the label.
+ * @property {string} suffixIconName Suffix Icon name. If present, the icon is displayed to the right of the label.
  *
  */
 
@@ -17,4 +17,5 @@
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} src Image URL.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are circle and square. Defaults to square.
+ * @property {string} position Position of the avatar. Valid values include left (default) and right.
  */

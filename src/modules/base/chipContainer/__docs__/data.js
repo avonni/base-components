@@ -2,7 +2,7 @@ const ITEMS = [
     {
         label: 'First chip',
         variant: 'base',
-        prefixIconName: 'utility:table'
+        prefixIconName: 'utility:check'
     },
     {
         label: 'Second chip',
@@ -36,8 +36,8 @@ const ITEMS = [
     {
         label: 'Sixth chip',
         outline: true,
-        prefixIconName: 'utility',
-        suffixIconName: 'down', // not shown since there is an avatar
+        prefixIconName: 'utility:check',
+        suffixIconName: 'utility:table',
         avatar: {
             variant: 'circle',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
