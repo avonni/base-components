@@ -862,7 +862,7 @@ export default class Slider extends LightningElement {
             getComputedStyle(
                 this.template.querySelector('.avonni-slider__slider')
             )
-                .getPropertyValue('--avonni-slider-thumb-width')
+                .getPropertyValue('--avonni-slider-thumb-sizing-width')
                 .split('px')[0],
             10
         );

@@ -71,13 +71,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-color-shadow-focus
- * @default '0 0 3px 1px #99d3ff'
+ * @name --avonni-slider-thumb-shadow-focus
+ * @default 0 0 3px 1px #99d3ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-width
+ * @name --avonni-slider-thumb-sizing-width
  * @default 8px
  * @type radius
  */
@@ -95,7 +95,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-track-height
+ * @name --avonni-slider-track-sizing-height
  * @default 4px
  * @type size
  */
