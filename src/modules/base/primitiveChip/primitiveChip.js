@@ -183,7 +183,7 @@ export default class PrimitiveChip extends LightningElement {
      */
     get computedChipClass() {
         return classSet('').add({
-            'slds-hide': this._hidden
+            'slds-is-collapsed': this._hidden
         });
     }
 

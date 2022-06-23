@@ -34,6 +34,12 @@
     height: fit-content;
 }
 
+.avonni-chip-container__wrapper_is-collapsed {
+    height: 35px;
+    overflow-y: hidden;
+}
+
 .avonni-chip-container__show-more_centered {
-    padding-bottom: 4px;
+    position: absolute;
+    top: 1rem;
 }

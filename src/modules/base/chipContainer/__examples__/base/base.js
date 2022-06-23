@@ -44,7 +44,7 @@ export default class ChipContainerBase extends LightningElement {
         {
             label: 'Sixth chip',
             outline: true,
-            prefixIconName: 'utility:down', // not shown since there is an avatar
+            prefixIconName: 'utility:down',
             avatar: {
                 variant: 'circle',
                 src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'

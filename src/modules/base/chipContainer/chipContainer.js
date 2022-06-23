@@ -156,9 +156,7 @@ export default class ChipContainer extends LightningElement {
      * @type {boolean}
      */
     get showMore() {
-        let isCollapsible =
-            (!this.isCollapsible && !this.isExpanded) || this.isCollapsible;
-        return isCollapsible && !this.computedIsExpanded;
+        return this.isCollapsible && !this.isExpanded;
     }
 
     /**
@@ -177,8 +175,9 @@ export default class ChipContainer extends LightningElement {
      * Computes the wrapper class. Adds a class if showMore button is visible.
      */
     get computedWrapperClass() {
-        return classSet('slds-listbox_selection-group').add({
-            'avonni-chip-container__list-box_height': true,
+        return classSet(
+            'slds-listbox_selection-group avonni-chip-container__list-box_height'
+        ).add({
             'avonni-chip-container__wrapper_is-collapsed': this.showMore
         });
     }

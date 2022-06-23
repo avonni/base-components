@@ -85,6 +85,4 @@ const ITEMS_NO_MEDIA = [
     }
 ];
 
-const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
-
-export { ITEMS, ITEMS_NO_MEDIA, DEFAULT_ALTERNATIVE_TEXT };
+export { ITEMS, ITEMS_NO_MEDIA };
