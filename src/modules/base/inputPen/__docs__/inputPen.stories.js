@@ -184,25 +184,12 @@ export default {
                 type: { summary: 'string[]' },
                 category: 'Toolbar'
             }
-        },
-        invalid: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Validation'
-            }
         }
     },
     args: {
         color: '#000',
         disabled: false,
         hideControls: false,
-        invalid: false,
         mode: 'draw',
         readOnly: false,
         required: false,

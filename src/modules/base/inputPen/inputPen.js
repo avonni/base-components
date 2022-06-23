@@ -607,8 +607,8 @@ export default class InputPen extends LightningElement {
         mergedCanvas.width = this.canvasElement.width;
         mergedCanvas.height = this.canvasElement.height;
         const mergedCtx = mergedCanvas.getContext('2d');
-        mergedCtx.drawImage(this.canvasElement, 0, 0);
         mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
+        mergedCtx.drawImage(this.canvasElement, 0, 0);
         return mergedCanvas.toDataURL();
     }
 
@@ -1527,7 +1527,7 @@ export default class InputPen extends LightningElement {
     initResizeObserver() {
         if (!this.canvasElement) return null;
         const resizeObserver = new AvonniResizeObserver(() => {
-            const savedValue = this.value;
+            const savedValue = this._foregroundValue;
             clearTimeout(this._resizeTimeout);
             this._resizeTimeout = setTimeout(() => {
                 this.canvasElement.width =
@@ -1536,6 +1536,7 @@ export default class InputPen extends LightningElement {
                     this.canvasElement.parentElement.offsetHeight;
                 this._value = savedValue;
                 this.initSrc();
+                this.fillBackground();
             }, 100);
         });
         resizeObserver.observe(this.canvasElement);

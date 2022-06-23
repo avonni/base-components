@@ -61,6 +61,7 @@
 }
 
 .avonni-input-pen__cursor {
+    overflow: auto;
     height: calc(var(--size) * 1px);
     width: calc(var(--size) * 1px);
     border-radius: calc(var(--size) * 1px);
