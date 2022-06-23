@@ -340,6 +340,18 @@ export default class Calendar extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Check if all values are outside the min-max interval.
+     *
+     * @return {boolean}
+     */
+    get allValuesOutsideMinAndMax() {
+        return this._value.every(
+            (value) => this.isBeforeMin(value) || this.isAfterMax(value)
+        );
+    }
+
     /**
      * Compute days from week.
      */
@@ -869,6 +881,36 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Remove all values outside of min-max interval. If the array of values is empty, set the display date to current day or min.
+     */
+    removeValuesOutsideRange() {
+        // Remove all out of range values
+        this._value = this._value.filter((date) => {
+            return (
+                !this.isInvalidDate(date) &&
+                !this.isAfterMax(date) &&
+                !this.isBeforeMin(date)
+            );
+        });
+
+        if (!this._value) {
+            this.displayDate = this.setValueToCurrentDayOrMin();
+            this.updateDateParameters();
+        }
+    }
+
+    /**
+     * Returns current date if it is between the min-max interval. If not, returns the min.
+     * @return {Date}
+     */
+    setValueToCurrentDayOrMin() {
+        if (this.isCurrentDateBetweenMinAndMax) {
+            return new Date();
+        }
+        return this.min;
+    }
+
+    /**
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
@@ -876,21 +918,94 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        for (let i = 0; i < this._value.length; ++i) {
-            if (this.isInvalidDate(this._value[i])) {
-                if (this.isCurrentDateBetweenMinAndMax) {
-                    this._value[i] = new Date();
-                } else {
-                    this._value[i] = this.min;
+        switch (this._selectionMode) {
+            case 'interval':
+                this.validateValueIntervalMode();
+                break;
+            case 'single':
+                this.validateValueSingleMode();
+                break;
+            case 'multiple':
+                this.validateValueMultipleMode();
+                break;
+            default:
+        }
+    }
+
+    /**
+     * Validate values for interval selection mode.
+     */
+    validateValueIntervalMode() {
+        if (this.allValuesOutsideMinAndMax) {
+            this._value = [];
+            this.displayDate = this.setValueToCurrentDayOrMin();
+            this.updateDateParameters();
+        } else {
+            this._value = this._value.sort((dateA, dateB) => {
+                return dateA - dateB;
+            });
+            const minValue = this._value[0];
+            const maxValue = this._value[this._value.length - 1];
+            this.removeValuesOutsideRange();
+
+            if (this._value) {
+                // Check if previous min-max values saved were outside of range to create interval
+                if (this._value.length === 1) {
+                    if (
+                        this.isBeforeMin(minValue) &&
+                        minValue.getTime() < this._value[0].getTime()
+                    ) {
+                        this._value[1] = this._value[0];
+                        this._value[0] = this.min;
+                    } else if (
+                        this.isAfterMax(maxValue) &&
+                        maxValue.getTime() > this._value[0].getTime()
+                    ) {
+                        this._value[1] = this.max;
+                    }
                 }
-            } else if (this.isAfterMax(this._value[i])) {
-                this._value[i] = this.max;
-            } else if (this.isBeforeMin(this._value[i])) {
-                this._value[i] = this.min;
+                this.updateDate();
             }
         }
+    }
 
-        this.updateDate();
+    /**
+     * Validate value for multiple selection mode.
+     */
+    validateValueMultipleMode() {
+        this.removeValuesOutsideRange();
+        // Find valid date to re-center calendar
+        if (this.value && !this.allValuesOutsideMinAndMax) {
+            this.displayDate = this.value.find((date) => {
+                return (
+                    !this.isInvalidDate(date) &&
+                    !this.isAfterMax(date) &&
+                    !this.isBeforeMin(date)
+                );
+            });
+            this.updateDateParameters();
+        }
+    }
+
+    /**
+     * Validate value for single selection mode.
+     */
+    validateValueSingleMode() {
+        // If multiple values are selected, we remove those outside range
+        if (this._value && this._value.length > 1) {
+            this.removeValuesOutsideRange();
+        }
+        // If one single value, we check if it's in interval and set to closest value if not
+        else {
+            if (this.isInvalidDate(this._value[0])) {
+                this.displayDate = this.setValueToCurrentDayOrMin();
+            } else if (this.isAfterMax(this._value[0])) {
+                this.displayDate = this.max;
+            } else if (this.isBeforeMin(this._value[0])) {
+                this.displayDate = this.min;
+            }
+            this.updateDateParameters();
+        }
     }
 
     /**
