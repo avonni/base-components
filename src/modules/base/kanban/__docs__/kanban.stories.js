@@ -178,48 +178,19 @@ export default {
         disableColumnDragAndDrop: false,
         coverImageFieldName: 'coverImage',
         isLoading: false,
-        groupFieldName: 'status'
+        hideHeader: false,
+        summarizeFieldName: 'Amount',
+        groupFieldName: 'status',
+        variant: 'base'
     }
 };
 
 const Template = (args) => Kanban(args);
 
 export const Base = Template.bind({});
-Base.args = {
-    variant: 'base',
-    summarizeFieldName: 'Amount'
-};
-
-export const hideHeader = Template.bind({});
-hideHeader.args = {
-    variant: 'base',
-    summarizeFieldName: 'Amount',
-    hideHeader: true
-};
-
-export const path = Template.bind({});
-path.args = {
-    variant: 'path',
-    summarizeFieldName: 'Percent'
-};
-
-export const disabledItemDrag = Template.bind({});
-disabledItemDrag.args = {
-    variant: 'base',
-    disableItemDragAndDrop: true,
-    summarizeFieldName: 'Percent'
-};
-
-export const disabledColumnDrag = Template.bind({});
-disabledColumnDrag.args = {
-    variant: 'base',
-    disableColumnDragAndDrop: true,
-    summarizeFieldName: 'Amount'
-};
 
 export const avatar = Template.bind({});
 avatar.args = {
-    summarizeFieldName: 'Amount',
     groupValues: [
         {
             label: 'John Doe',
@@ -344,4 +315,26 @@ avatar.args = {
         }
     ],
     groupFieldName: 'responsible'
+};
+
+export const hideHeader = Template.bind({});
+hideHeader.args = {
+    hideHeader: true
+};
+
+export const path = Template.bind({});
+path.args = {
+    variant: 'path',
+    summarizeFieldName: 'Percent'
+};
+
+export const disabledItemDrag = Template.bind({});
+disabledItemDrag.args = {
+    disableItemDragAndDrop: true,
+    summarizeFieldName: 'Percent'
+};
+
+export const disabledColumnDrag = Template.bind({});
+disabledColumnDrag.args = {
+    disableColumnDragAndDrop: true
 };

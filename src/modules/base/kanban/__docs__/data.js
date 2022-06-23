@@ -34,7 +34,6 @@ const GROUP_VALUES = [
     {
         label: 'Open',
         value: 'open',
-        backgroundColor: '#fffff',
         headerActions: [
             { disabled: false, label: 'Action 1', name: 'Action 1' }
         ]
@@ -42,7 +41,6 @@ const GROUP_VALUES = [
     {
         label: 'In Progress',
         value: 'inProgress',
-        backgroundColor: '#fffff',
         footerActions: [
             {
                 disabled: false,
@@ -60,7 +58,8 @@ const GROUP_VALUES = [
     {
         label: 'Closed',
         value: 'closed',
-        backgroundColor: '#fffff',
+        backgroundColor: '#fff6f6',
+        pathColor: '#aa3f3f',
         footerActions: [
             {
                 disabled: false,

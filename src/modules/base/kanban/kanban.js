@@ -309,6 +309,19 @@ export default class Kanban extends LightningElement {
 
             // Set the right background color on each group
             requestAnimationFrame(() => {
+                if (this.variant === 'path') {
+                    this.template
+                        .querySelectorAll(
+                            '[data-element-id="avonni-kanban__path_item"]'
+                        )
+                        [
+                            // eslint-disable-next-line no-unexpected-multiline
+                            group.index
+                        ].setAttribute(
+                            'style',
+                            `background:${group.pathColor} !important`
+                        );
+                }
                 this.template.querySelectorAll(
                     '[data-element-id="avonni-kanban__field"]'
                 )[group.index].style.background = group.backgroundColor;

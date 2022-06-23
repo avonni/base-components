@@ -316,3 +316,11 @@
 .avonni-kanban__tile_fields {
     padding: 0.75rem;
 }
+
+.avonni-kanban__path_item::after {
+    background-color: inherit !important;
+}
+
+.avonni-kanban__path_item::before {
+    background-color: inherit !important;
+}
