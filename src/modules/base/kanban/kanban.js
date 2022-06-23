@@ -259,6 +259,15 @@ export default class Kanban extends LightningElement {
     @api summarizeFieldName;
 
     /**
+     *
+     * Name of the data field containing the sub-group label the data belongs to.
+     *
+     * @type {string}
+     * @public
+     */
+    @api subGroupFieldName;
+
+    /**
      * The variant changes the apparence of the kanban. Valid values include base and path. Default to base.
      * @type {string}
      * @default base
@@ -297,7 +306,8 @@ export default class Kanban extends LightningElement {
             fields: this._fields,
             groupFieldName: this.groupFieldName,
             summarizeFieldName: this.summarizeFieldName,
-            coverImageFieldName: this.coverImageFieldName
+            coverImageFieldName: this.coverImageFieldName,
+            subGroupFieldName: this.subGroupFieldName
         });
         const computedGroups = kanbanGroup.computeGroups();
 

@@ -117,6 +117,7 @@ const RECORDS = [
         date: '1547250828000',
         percent: 0.28,
         available: true,
+        assignee: 'John Doe',
         coverImage:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
@@ -128,6 +129,7 @@ const RECORDS = [
         phone: '+375292567896',
         date: '1347250828000',
         percent: 0.77,
+        assignee: 'John Doe',
         available: true
     },
     {
@@ -138,6 +140,7 @@ const RECORDS = [
         phone: '+37529888888',
         date: '1547250828000',
         percent: 0.83,
+        assignee: 'Jane Doe',
         available: false
     },
     {
@@ -148,6 +151,7 @@ const RECORDS = [
         phone: '+375292567896',
         date: '1647250828000',
         percent: 0.2,
+        assignee: 'John Smith',
         available: false
     },
     {
@@ -158,6 +162,7 @@ const RECORDS = [
         phone: '+375299999999',
         date: '1347250828000',
         percent: 0.18,
+        assignee: 'Jane Doe',
         available: true
     },
     {
@@ -165,6 +170,7 @@ const RECORDS = [
         status: 'Closed',
         opportunityName: 'Opportunity 6',
         amount: 17500,
+        assignee: 'John Doe',
         coverImage:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg'
     },
@@ -176,6 +182,7 @@ const RECORDS = [
         phone: '+37529888888',
         date: '1547250828000',
         percent: 0.83,
+        assignee: 'John Smith',
         available: false
     },
     {
@@ -185,6 +192,7 @@ const RECORDS = [
         amount: 5100,
         phone: '+37529888888',
         date: '1547250828000',
+        assignee: 'Jane Doe',
         available: false
     },
     {
@@ -193,6 +201,7 @@ const RECORDS = [
         opportunityName: 'Opportunity 9',
         amount: 5100,
         phone: '+37529888888',
+        assignee: 'John Doe',
         available: false
     },
     {
@@ -202,6 +211,7 @@ const RECORDS = [
         amount: 5100,
         phone: '+37529888888',
         date: '1547250828000',
+        assignee: 'John Smith',
         percent: 0.83,
         available: false
     }

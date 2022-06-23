@@ -8,6 +8,7 @@ export default class KanbanGroups {
         this.groupFieldName = props.groupFieldName;
         this.summarizeFieldName = props.summarizeFieldName;
         this.coverImageFieldName = props.coverImageFieldName;
+        this.subGroupFieldName = props.subGroupFieldName;
     }
 
     /**
@@ -43,7 +44,10 @@ export default class KanbanGroups {
                 index: record.id,
                 group: record[this.groupFieldName],
                 warningIcon: record.warningIcon,
-                field: []
+                field: [],
+                subGroup: this.subGroupFieldName
+                    ? record[this.subGroupFieldName]
+                    : null
             });
             this._fields.forEach((field) => {
                 if (JSON.stringify(record[field.fieldName])) {
@@ -83,6 +87,47 @@ export default class KanbanGroups {
                 }
             }
         });
+
+        // Finding all possible subgroups
+        const subGroups = [];
+        computedFields.forEach((tile) => {
+            if (tile.subGroup) {
+                if (
+                    !subGroups.find(
+                        (subGroup) => subGroup.label === tile.subGroup
+                    )
+                ) {
+                    subGroups.push({
+                        label: tile.subGroup,
+                        tiles: []
+                    });
+                }
+            }
+        });
+
+        // Splits the tiles in diffenrent subgroups if needed
+        if (this.subGroupFieldName) {
+            computedGroups.forEach((group) => {
+                group.subGroups = JSON.parse(JSON.stringify(subGroups));
+                group.tiles.forEach((tile) => {
+                    const subGroup = tile.subGroup;
+                    if (subGroup) {
+                        const subGroupIndex = group.subGroups.findIndex(
+                            (subTile) => subTile.label === subGroup
+                        );
+                        if (subGroupIndex === -1) {
+                            group.subGroups.push({
+                                label: subGroup,
+                                tiles: [tile]
+                            });
+                        } else {
+                            group.subGroups[subGroupIndex].tiles.push(tile);
+                        }
+                    }
+                });
+            });
+        }
+
         return computedGroups;
     }
 }

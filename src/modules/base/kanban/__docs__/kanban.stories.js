@@ -155,6 +155,17 @@ export default {
                 type: { summary: 'String' }
             }
         },
+        subGroupFieldName: {
+            name: 'sub-group-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the data field containing the sub-group label the data belongs to. ',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
         variant: {
             name: 'variant',
             control: {
@@ -181,7 +192,8 @@ export default {
         hideHeader: false,
         summarizeFieldName: 'Amount',
         groupFieldName: 'status',
-        variant: 'base'
+        variant: 'base',
+        subGroupFieldName: 'assignee'
     }
 };
 
