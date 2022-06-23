@@ -65,7 +65,7 @@ const INITIAL_VELOCITY = 10;
  */
 export default class InputPen extends LightningElement {
     /**
-     * Array of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color
+     * Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, clear, size, color, background, download, undo, redo.
      *
      * @type {string[]}
      * @public
@@ -222,7 +222,7 @@ export default class InputPen extends LightningElement {
      */
 
     /**
-     * Color of the pen.
+     * Color of the pen and the paintbrush
      *
      * @type {string}
      * @public
@@ -259,7 +259,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * If present, hide the control bar.
+     * If present, hide the tool bar.
      *
      * @type {boolean}
      * @public
@@ -292,7 +292,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Valid modes include draw and erase.
+     * Current mode of input. Valid modes include draw, paint, ink and erase.
      *
      * @type {string}
      * @public
@@ -350,7 +350,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Size of the pen.
+     * If present, adds signature pad at the bottom of input. Also sets default drawing mode to ink.
      *
      * @type {string}
      * @public
@@ -391,7 +391,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
+     * Represents the validity state of the input field, with respect to constraint validation.
      *
      * @type {string}
      * @public
@@ -402,7 +402,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * dataUrl like 'data:image/png;base64, …'
+     * Input value encoded as Base64. Ex: 'data:image/png;base64, …'
      *
      * @type {string}
      * @public
@@ -453,6 +453,43 @@ export default class InputPen extends LightningElement {
      */
 
     /**
+     * Computed class of the text area.
+     */
+    get computedTextAreaClasses() {
+        return classSet(
+            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
+        ).add({
+            'avonni-input-pen__rich-text_border-radius-top':
+                this.variant === 'bottom-toolbar',
+            'avonni-input-pen__rich-text_border-radius-bottom':
+                this.variant === 'top-toolbar',
+            'avonni-input-pen__text-area_cursor': this._mode === 'ink'
+        });
+    }
+
+    /**
+     * Base64 value of the background and foreground.
+     */
+    get dataURL() {
+        let mergedCanvas = document.createElement('canvas');
+        mergedCanvas.width = this.canvasElement.width;
+        mergedCanvas.height = this.canvasElement.height;
+        const mergedCtx = mergedCanvas.getContext('2d');
+        mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
+        mergedCtx.drawImage(this.canvasElement, 0, 0);
+        return mergedCanvas.toDataURL();
+    }
+
+    /**
+     * Computed class of the canvas.
+     */
+    get computedCanvasClass() {
+        return classSet('avonni-input-pen__canvas').add({
+            'avonni-input-pen__canvas_disabled': this._disabled
+        });
+    }
+
+    /**
      * The default tab color shown in background fill tool.
      */
     get defaultBackgroundColors() {
@@ -469,59 +506,6 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if pen tool is shown.
-     * @type {boolean}
-     */
-    get showPen() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('pen') === -1
-        );
-    }
-
-    /**
-     * Check if undo button is shown.
-     *
-     * @type {boolean}
-     */
-    get showUndo() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('undo') === -1
-        );
-    }
-
-    /**
-     * Check if undo and redo buttons are shown.
-     * @type {boolean}
-     *
-     */
-    get showUndoRedo() {
-        return this.showUndo || this.showRedo;
-    }
-
-    /**
-     * Check if redo button is shown.
-     * @type {boolean}
-     *
-     */
-    get showRedo() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('redo') === -1
-        );
-    }
-
-    /**
-     * Check if eraser tool is shown.
-     * @type {boolean}
-     *
-     */
-    get showErase() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('eraser') === -1
-        );
-    }
-
-    /**
      * Check if background fill tool is shown.
      * @type {boolean}
      *
@@ -530,64 +514,6 @@ export default class InputPen extends LightningElement {
         return (
             !this.disabledButtons ||
             this.disabledButtons.indexOf('background') === -1
-        );
-    }
-
-    /**
-     * Check if download button is shown.
-     * @type {boolean}
-     *
-     */
-    get showDownload() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('download') === -1
-        );
-    }
-
-    /**
-     * Check if Clear is shown.
-     *
-     * @type {boolean}
-     */
-    get showClear() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('clear') === -1
-        );
-    }
-
-    /**
-     * Check if showPaint is shown.
-     *
-     * @type {boolean}
-     */
-    get showPaint() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('paint') === -1
-        );
-    }
-
-    /**
-     * Check if showInk is shown.
-     *
-     * @type {boolean}
-     */
-    get showInk() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('ink') === -1
-        );
-    }
-
-    /**
-     * Check if Size is shown.
-     *
-     * @type {boolean}
-     */
-    get showSize() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('size') === -1
         );
     }
 
@@ -613,40 +539,113 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * DataURL value of the background and foreground.
+     * Check if eraser tool is shown.
+     * @type {boolean}
+     *
      */
-    get dataURL() {
-        let mergedCanvas = document.createElement('canvas');
-        mergedCanvas.width = this.canvasElement.width;
-        mergedCanvas.height = this.canvasElement.height;
-        const mergedCtx = mergedCanvas.getContext('2d');
-        mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
-        mergedCtx.drawImage(this.canvasElement, 0, 0);
-        return mergedCanvas.toDataURL();
+    get showErase() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('eraser') === -1
+        );
     }
 
     /**
-     * Computed class of the text area.
+     * Check if Clear is shown.
+     *
+     * @type {boolean}
      */
-    get computedTextAreaClasses() {
-        return classSet(
-            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
-        ).add({
-            'avonni-input-pen__rich-text_border-radius-top':
-                this.variant === 'bottom-toolbar',
-            'avonni-input-pen__rich-text_border-radius-bottom':
-                this.variant === 'top-toolbar',
-            'avonni-input-pen__text-area_cursor': this._mode === 'ink'
-        });
+    get showClear() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('clear') === -1
+        );
+    }
+    /**
+     * Check if download button is shown.
+     * @type {boolean}
+     *
+     */
+    get showDownload() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('download') === -1
+        );
     }
 
     /**
-     * Computed class of the canvas.
+     * Check if showInk is shown.
+     *
+     * @type {boolean}
      */
-    get computedCanvasClass() {
-        return classSet('avonni-input-pen__canvas').add({
-            'avonni-input-pen__canvas_disabled': this._disabled
-        });
+    get showInk() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('ink') === -1
+        );
+    }
+
+    /**
+     * Check if showPaint is shown.
+     *
+     * @type {boolean}
+     */
+    get showPaint() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('paintbrush') === -1
+        );
+    }
+
+    /**
+     * Check if pen tool is shown.
+     * @type {boolean}
+     */
+    get showPen() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('pen') === -1
+        );
+    }
+
+    /**
+     * Check if redo button is shown.
+     * @type {boolean}
+     *
+     */
+    get showRedo() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('redo') === -1
+        );
+    }
+
+    /**
+     * Check if Size is shown.
+     *
+     * @type {boolean}
+     */
+    get showSize() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('size') === -1
+        );
+    }
+
+    /**
+     * Check if undo button is shown.
+     *
+     * @type {boolean}
+     */
+    get showUndo() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('undo') === -1
+        );
+    }
+
+    /**
+     * Check if undo and redo buttons are shown.
+     * @type {boolean}
+     *
+     */
+    get showUndoRedo() {
+        return this.showUndo || this.showRedo;
     }
 
     /**
@@ -691,7 +690,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Clear the canvas.
+     * Clears the canvas. If clear is considered automated, it will not be saved as an undo-able action.
      *
      * @public
      */
@@ -717,26 +716,18 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Undo the last stroke.
+     * Downloads the input field content as PNG.
      *
      * @public
      */
     @api
-    undo() {
-        if (this.undoStack.length === 0) {
-            return;
-        }
-        while (
-            this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
-        ) {
-            this.redoStack.unshift(deepCopy(this.undoStack.pop()));
-        }
-        this.clear(true);
-        for (const action of deepCopy(this.undoStack)) {
-            this.executeAction(action);
-        }
-        this.redoStack.unshift(deepCopy(this.undoStack.pop()));
-        this.handleChangeEvent();
+    download() {
+        const a = document.createElement('a');
+        a.download = 'Signature.png';
+        a.href = this.value
+            ? this.value
+            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty image
+        a.click();
     }
 
     /**
@@ -764,21 +755,6 @@ export default class InputPen extends LightningElement {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
         this.handleChangeEvent();
-    }
-
-    /**
-     * Downloads the currently displayed content.
-     *
-     * @public
-     */
-    @api
-    download() {
-        const a = document.createElement('a');
-        a.download = 'Signature.png';
-        a.href = this.value
-            ? this.value
-            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty image
-        a.click();
     }
 
     /**
@@ -835,6 +811,29 @@ export default class InputPen extends LightningElement {
         this.reportValidity();
     }
 
+    /**
+     * Undo the last stroke.
+     *
+     * @public
+     */
+    @api
+    undo() {
+        if (this.undoStack.length === 0) {
+            return;
+        }
+        while (
+            this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
+        ) {
+            this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        }
+        this.clear(true);
+        for (const action of deepCopy(this.undoStack)) {
+            this.executeAction(action);
+        }
+        this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        this.handleChangeEvent();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -889,14 +888,13 @@ export default class InputPen extends LightningElement {
      * Initialize Cursor styling.
      */
     initCursorStyles() {
-        if (!this.showCursor) {
-            this.cursor = { style: { setProperty: () => {} } }; // mock cursor to not throw errors
-        } else {
+        if (this.showCursor) {
             this.cursor = this.template.querySelector(
                 '[data-element-id="input-pen-cursor"]'
             );
+        } else {
+            this.cursor = undefined;
         }
-
         if (this.cursor) {
             this.cursor.style.setProperty('--size', this._size);
             this.cursor.style.setProperty(
@@ -1019,6 +1017,14 @@ export default class InputPen extends LightningElement {
             this.showDrawCursor();
             this.manageMouseEvent('enter', event);
         }
+    }
+
+    /**
+     * Mouse leave handler. Set opacity to 0.
+     */
+    handleMouseLeave() {
+        this.hideDrawCursor();
+        this.handleChangeEvent();
     }
 
     /**
@@ -1151,24 +1157,18 @@ export default class InputPen extends LightningElement {
      * Hides draw cursor
      */
     hideDrawCursor() {
-        this.cursor.style.opacity = 0;
+        if (this.cursor) {
+            this.cursor.style.opacity = 0;
+        }
     }
 
     /**
      * shows draw cursor
      */
     showDrawCursor() {
-        if (!this._disabled && this._mode !== 'ink') {
+        if (!this._disabled && this.cursor) {
             this.cursor.style.opacity = 1;
         }
-    }
-
-    /**
-     * Mouse leave handler. Set opacity to 0.
-     */
-    handleMouseLeave() {
-        this.hideDrawCursor();
-        this.handleChangeEvent();
     }
 
     /**
@@ -1215,6 +1215,9 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     moveCursor(event) {
+        if (!this.cursor) {
+            return;
+        }
         const clientRect = this.canvasElement.getBoundingClientRect();
         let left = event.clientX - clientRect.left - this._size / 2;
         let top = event.clientY - clientRect.top - this._size / 2;
@@ -1505,7 +1508,6 @@ export default class InputPen extends LightningElement {
      */
     drawBasicSpline(pts, penSize = this._size) {
         this.setupStroke(penSize);
-        this.ctx.globalCompositeOperation = 'destination-over';
         if (this._mode === 'paint') {
             this.ctx.lineWidth = this._size;
             this.ctx.shadowColor = this.color;
@@ -1623,7 +1625,7 @@ export default class InputPen extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string} dataURL Base64 of the drawing.
+         * @param {string} dataURL Base64 value of the input.
          * @public
          */
         this.dispatchEvent(
