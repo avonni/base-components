@@ -82,8 +82,8 @@ export default {
         }
     },
     args: {
-        isCollapsible: false,
         alternativeText: 'Selected Options:',
+        isCollapsible: false,
         isExpanded: false
     }
 };
@@ -94,23 +94,18 @@ const TemplateWithMaxWidth = (args) => MaxWidthChipContainer(args);
 export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
-    alternativeText: DEFAULT_ALTERNATIVE_TEXT,
-    isCollapsible: false,
-    isExpanded: false
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT
 };
 
 export const NoMedia = Template.bind({});
 NoMedia.args = {
     items: ITEMS_NO_MEDIA,
-    alternativeText: DEFAULT_ALTERNATIVE_TEXT,
-    isCollapsible: false,
-    isExpanded: false
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT
 };
 
 export const Collapsed = TemplateWithMaxWidth.bind({});
 Collapsed.args = {
     items: ITEMS,
     alternativeText: DEFAULT_ALTERNATIVE_TEXT,
-    isCollapsible: true,
-    isExpanded: false
+    isCollapsible: true
 };
