@@ -91,6 +91,9 @@ export default class Kanban extends LightningElement {
     _scrollWidth = 0;
     _summaryTimeoutsId = [];
     _summarizeValues = [];
+    _hasSubGroups = false;
+    kanbanGroup;
+    _computedGroups = [];
 
     SUMMARY_UPDATE_SPEED = 300;
 
@@ -298,7 +301,7 @@ export default class Kanban extends LightningElement {
      */
     get initGroups() {
         if (!this.hideHeader) this.clearSummarizeTimeouts();
-        const kanbanGroup = new KanbanGroups({
+        this.kanbanGroup = new KanbanGroups({
             groupValues: this._groupValues,
             summarizeValues: this._summarizeValues,
             oldSummarizeValues: this._oldSummarizeValues,
@@ -309,10 +312,11 @@ export default class Kanban extends LightningElement {
             coverImageFieldName: this.coverImageFieldName,
             subGroupFieldName: this.subGroupFieldName
         });
-        const computedGroups = kanbanGroup.computeGroups();
+        const computedGroups = this.kanbanGroup.computeGroups();
 
-        this._summarizeValues = kanbanGroup._summarizeValues;
-        this._oldSummarizeValues = kanbanGroup._oldSummarizeValues;
+        this._summarizeValues = this.kanbanGroup._summarizeValues;
+        this._oldSummarizeValues = this.kanbanGroup._oldSummarizeValues;
+        this._hasSubGroups = this.kanbanGroup.hasSubGroups;
 
         computedGroups.forEach((group) => {
             if (!this.hideHeader) this.animateSummary(group);
@@ -352,7 +356,17 @@ export default class Kanban extends LightningElement {
             ).scrollWidth;
         });
 
+        this._computedGroups = computedGroups;
+
         return computedGroups;
+    }
+
+    get computedGroups() {
+        return this._computedGroups;
+    }
+
+    get subGroups() {
+        return this._computedGroups[0].subGroups;
     }
 
     /**
@@ -368,6 +382,15 @@ export default class Kanban extends LightningElement {
                 this.disableColumnDragAndDrop,
             'slds-m-around_xx-small': this.variant === 'base'
         });
+    }
+
+    get hasSubGroups() {
+        this._records.forEach((record) => {
+            if (record[this.subGroupFieldName]) {
+                this._hasSubGroups = true;
+            }
+        });
+        return this._hasSubGroups;
     }
 
     /**

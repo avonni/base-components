@@ -329,3 +329,8 @@
     height: 0.5rem;
     width: 100%;
 }
+
+.avonni-kanban_subgroup_header_base {
+    display: flex;
+    align-items: center;
+}

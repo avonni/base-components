@@ -9,6 +9,7 @@ export default class KanbanGroups {
         this.summarizeFieldName = props.summarizeFieldName;
         this.coverImageFieldName = props.coverImageFieldName;
         this.subGroupFieldName = props.subGroupFieldName;
+        this.hasSubGroups = false;
     }
 
     /**
@@ -88,6 +89,10 @@ export default class KanbanGroups {
             }
         });
 
+        return this.computeSubGroups(computedFields, computedGroups);
+    }
+
+    computeSubGroups(computedFields, computedGroups) {
         // Finding all possible subgroups
         const subGroups = [];
         computedFields.forEach((tile) => {
@@ -112,6 +117,7 @@ export default class KanbanGroups {
                 group.tiles.forEach((tile) => {
                     const subGroup = tile.subGroup;
                     if (subGroup) {
+                        this.hasSubGroups = true;
                         const subGroupIndex = group.subGroups.findIndex(
                             (subTile) => subTile.label === subGroup
                         );
