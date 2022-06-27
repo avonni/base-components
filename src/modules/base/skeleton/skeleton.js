@@ -34,7 +34,8 @@ import { classSet } from 'c/utils';
 import {
     normalizeString,
     CHIP_VARIANT_VALUES,
-    BADGE_VARIANT_VALUES
+    BADGE_VARIANT_VALUES,
+    BUTTON_VARIANT_VALUES
 } from 'c/utilsPrivate';
 import { api, LightningElement } from 'lwc';
 import avatar from './avatar.html';
@@ -1110,96 +1111,24 @@ export default class Skeleton extends LightningElement {
         const buttonElement = this.template.querySelector(
             '[data-element-id="avonni-skeleton-button-element"]'
         );
-
         const buttonLabel = this.template.querySelector(
             '[data-element-id="avonni-skeleton__button-label"]'
         );
-
-        if (this.variantAttributes.variant === 'brand') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#0176d3'
-            );
-
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#2fa0fa'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'outline-brand') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ffffff'
-            );
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#e1e1e1'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#0176d3'
-            );
-        } else if (this.variantAttributes.variant === 'inverse') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#16325c'
-            );
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#5271a1'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#f3f3f3'
-            );
-        } else if (this.variantAttributes.variant === 'destructive') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ba0517'
-            );
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#e34050'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'text-destructive') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ffffff'
-            );
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#e1e1e1'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ea001e'
-            );
-        } else if (this.variantAttributes.variant === 'success') {
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#45c65a'
-            );
-            buttonElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#73e686'
-            );
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#181818'
-            );
-        } else {
-            buttonLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#c4c4c4'
-            );
-        }
+        const buttonVariantAttributes = BUTTON_VARIANT_VALUES.get(
+            this.variantAttributes.variant
+        );
+        buttonElement.style.setProperty(
+            '--avonni-skeleton-color-background',
+            buttonVariantAttributes.background
+        );
+        buttonElement.style.setProperty(
+            '--avonni-skeleton-color-background-animation',
+            buttonVariantAttributes.backgroundAnimation
+        );
+        buttonLabel.style.setProperty(
+            '--avonni-skeleton-chip-label-background',
+            buttonVariantAttributes.labelColor
+        );
     }
 
     updateVariantButtonIcon() {

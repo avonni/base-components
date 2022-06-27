@@ -44,7 +44,11 @@ export {
     normalizeAriaAttribute,
     normalizeObject
 } from './normalize';
-export { CHIP_VARIANT_VALUES, BADGE_VARIANT_VALUES } from './skeletonUtils';
+export {
+    CHIP_VARIANT_VALUES,
+    BADGE_VARIANT_VALUES,
+    BUTTON_VARIANT_VALUES
+} from './skeletonUtils';
 export {
     generateColors,
     colorType,

@@ -155,3 +155,62 @@ export const BADGE_VARIANT_VALUES = new Map([
         }
     ]
 ]);
+
+export const BUTTON_VARIANT_VALUES = new Map([
+    [
+        'brand',
+        {
+            background: '#0176d3',
+            backgroundAnimation: '#2fa0fa',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'outline-brand',
+        {
+            background: '#ffffff',
+            backgroundAnimation: '#e1e1e1',
+            labelColor: '#0176d3'
+        }
+    ],
+    [
+        'inverse',
+        {
+            background: '#16325c',
+            backgroundAnimation: '#5271a1',
+            labelColor: '#f3f3f3'
+        }
+    ],
+    [
+        'destructive',
+        {
+            background: '#ba0517',
+            backgroundAnimation: '#e34050',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'text-destructive',
+        {
+            background: '#ffffff',
+            backgroundAnimation: '#e1e1e1',
+            labelColor: '#ea001e'
+        }
+    ],
+    [
+        'success',
+        {
+            background: '#45c65a',
+            backgroundAnimation: '#73e686',
+            labelColor: '#181818'
+        }
+    ],
+    [
+        'base',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede',
+            labelColor: '#c4c4c4'
+        }
+    ]
+]);
