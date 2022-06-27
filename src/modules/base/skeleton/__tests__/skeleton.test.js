@@ -339,14 +339,14 @@ describe('Skeleton', () => {
         });
     });
 
-    // badge variant
-    it('Skeleton Button: size medium', () => {
+    // Button variant
+    it('Skeleton Button: left position icon', () => {
         element.variant = 'button';
         element.animation = 'pulse';
         element.variantAttributes = {
             variant: 'base',
             hasIcon: true,
-            outline: false
+            iconPosition: 'left'
         };
 
         return Promise.resolve().then(() => {
@@ -356,7 +356,11 @@ describe('Skeleton', () => {
             const skeletonButtonLabel = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__button-label"]'
             );
+            const skeletonButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-left-icon"]'
+            );
 
+            expect(skeletonButtonIcon).toBeTruthy();
             expect(skeletonButton.className).toContain('slds-button');
             expect(skeletonButton.className).toContain(
                 'slds-p-vertical_xx-small'
@@ -376,6 +380,25 @@ describe('Skeleton', () => {
             expect(skeletonButtonLabel.className).toContain(
                 'slds-m-horizontal_x-small'
             );
+        });
+    });
+
+    // Button variant
+    it('Skeleton Button: right position icon', () => {
+        element.variant = 'button';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base',
+            hasIcon: true,
+            iconPosition: 'right'
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-right-icon"]'
+            );
+
+            expect(skeletonButtonIcon).toBeTruthy();
         });
     });
 

@@ -38,14 +38,20 @@
         data-element-id="avonni-skeleton-button-element"
     >
         <template if:true={buttonHasLeftIcon}>
-            <svg class="slds-button__icon slds-button__icon_left"></svg>
+            <svg
+                class="slds-button__icon slds-button__icon_left"
+                data-element-id="avonni-skeleton-button-left-icon"
+            ></svg>
         </template>
         <div
             class={buttonLabelClass}
             data-element-id="avonni-skeleton__button-label"
         ></div>
         <template if:true={buttonHasRightIcon}>
-            <svg class="slds-button__icon slds-button__icon_right"></svg>
+            <svg
+                class="slds-button__icon slds-button__icon_right"
+                data-element-id="avonni-skeleton-button-right-icon"
+            ></svg>
         </template>
     </span>
 </template>
