@@ -479,6 +479,7 @@ describe('Calendar', () => {
 
     // values
     it('Calendar: values selection-mode: single', () => {
+        element.selectionMode = 'single';
         element.value = '04/15/2021';
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
@@ -495,13 +496,14 @@ describe('Calendar', () => {
     });
 
     // value is bigger than max
-    it('Calendar current day bigger than upper bound should change to max value', () => {
+    it('Calendar current day bigger than upper bound should re-center calendar to max value', () => {
+        element.selectionMode = 'single';
         element.min = new Date('01/01/2020');
         element.max = new Date('12/31/2030');
         element.value = '11/11/2040';
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe('31');
+            expect(day).toBeNull();
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -515,12 +517,13 @@ describe('Calendar', () => {
 
     // value is smaller than min
     it('Calendar current day smaller than lower bound should change to min value', () => {
+        element.selectionMode = 'single';
         element.min = new Date('01/01/2020');
         element.max = new Date('12/31/2030');
         element.value = '04/04/100';
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe('1');
+            expect(day).toBeNull();
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -534,6 +537,7 @@ describe('Calendar', () => {
 
     // value is invalid and current date is in min-max interval
     it('Invalid calendar current day should change to current date if it is in min-max interval', () => {
+        element.selectionMode = 'single';
         const currentDate = new Date();
         const currentMonthName = currentDate.toLocaleString('default', {
             month: 'long'
@@ -544,7 +548,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe(currentDate.getDate().toString());
+            expect(day).toBeNull();
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -558,13 +562,14 @@ describe('Calendar', () => {
 
     // value is invalid and current date is not in interval
     it('Invalid calendar current day should change to min value if current date is not in min-max interval', () => {
+        element.selectionMode = 'single';
         element.min = new Date('01/01/1840');
         element.max = new Date('12/31/1890');
         element.value = '00/00/2000';
 
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day.textContent).toBe('1');
+            expect(day).toBeNull();
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
@@ -573,6 +578,127 @@ describe('Calendar', () => {
                 '[data-element-id="lightning-combobox"]'
             );
             expect(year.value).toBe(1840);
+        });
+    });
+
+    // Multiple selection mode : only one valid date
+    it('Calendar multiple selection mode : only dates in range should be selected', () => {
+        element.selectionMode = 'multiple';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2030');
+        element.value = [
+            '01/02/1000',
+            '03/04/1032',
+            '05/06/2022',
+            '07/08/2300',
+            '09/10/2444'
+        ];
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe('6');
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('May');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2022);
+        });
+    });
+
+    // Interval selection mode : only one valid date
+    it('Calendar interval selection mode : value validation with value below min', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2021');
+        element.value = ['02/11/1000', '01/10/2020'];
+
+        return Promise.resolve().then(() => {
+            const days =
+                element.shadowRoot.querySelectorAll('.slds-is-selected');
+            expect(days.length).toBe(10);
+            for (let i = 0; i < days.length; ++i) {
+                expect(days[i].textContent).toBe((i + 1).toString());
+            }
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2020);
+        });
+    });
+
+    // Interval selection mode : only one valid date
+    it('Calendar interval selection mode : value validation with value higher than max', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2021');
+        element.value = ['12/29/2021', '01/10/2025'];
+
+        return Promise.resolve().then(() => {
+            const days =
+                element.shadowRoot.querySelectorAll('.slds-is-selected');
+            expect(days.length).toBe(3);
+            for (let i = 0; i < days.length; ++i) {
+                expect(days[i].textContent).toBe((i + 29).toString());
+            }
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('December');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2021);
+        });
+    });
+
+    // Interval selection mode :invalid value
+    it('Calendar interval selection mode : invalid value', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2021');
+        element.value = ['12/29/1000', '01/10/2025'];
+
+        return Promise.resolve().then(() => {
+            const days = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(days).toBeNull();
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2020);
+        });
+    });
+
+    it('Calendar interval selection mode : two valid values selected', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2025');
+        element.value = ['04/22/2022', '04/02/2022'];
+
+        return Promise.resolve().then(() => {
+            const days =
+                element.shadowRoot.querySelectorAll('.slds-is-selected');
+            expect(days.length).toBe(21);
+            for (let i = 0; i < days.length; ++i) {
+                expect(days[i].textContent).toBe((i + 2).toString());
+            }
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('April');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2022);
         });
     });
 
