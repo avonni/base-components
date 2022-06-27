@@ -31,7 +31,11 @@
  */
 
 import { classSet } from 'c/utils';
-import { normalizeString, CHIP_VARIANT_VALUES } from 'c/utilsPrivate';
+import {
+    normalizeString,
+    CHIP_VARIANT_VALUES,
+    BADGE_VARIANT_VALUES
+} from 'c/utilsPrivate';
 import { api, LightningElement } from 'lwc';
 import avatar from './avatar.html';
 import badge from './badge.html';
@@ -1070,77 +1074,21 @@ export default class Skeleton extends LightningElement {
         const badgeLabel = this.template.querySelector(
             '[data-element-id="avonni-skeleton__badge-label"]'
         );
-        if (this.variantAttributes.variant === 'inverse') {
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#747474'
-            );
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#8c8c8c'
-            );
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'lightest') {
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ffffff'
-            );
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#e3e3e3'
-            );
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'success') {
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#2e844a'
-            );
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#55a16e'
-            );
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'warning') {
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#fe9339'
-            );
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#ffab63'
-            );
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#000000'
-            );
-        } else if (this.variantAttributes.variant === 'error') {
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ea001e'
-            );
-            badgeElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#f75c6f'
-            );
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else {
-            badgeLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#c4c4c4'
-            );
-        }
+        const badgeVariantAttributes = BADGE_VARIANT_VALUES.get(
+            this.variantAttributes.variant
+        );
+        badgeElement.style.setProperty(
+            '--avonni-skeleton-color-background',
+            badgeVariantAttributes.background
+        );
+        badgeElement.style.setProperty(
+            '--avonni-skeleton-color-background-animation',
+            badgeVariantAttributes.backgroundAnimation
+        );
+        badgeLabel.style.setProperty(
+            '--avonni-skeleton-chip-label-background',
+            badgeVariantAttributes.labelColor
+        );
     }
 
     updateBreadcrumbsClassList() {}

@@ -104,3 +104,54 @@ export const CHIP_VARIANT_VALUES = new Map([
         }
     ]
 ]);
+
+export const BADGE_VARIANT_VALUES = new Map([
+    [
+        'inverse',
+        {
+            background: '#747474',
+            backgroundAnimation: '#8c8c8c',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'lightest',
+        {
+            background: '#ffffff',
+            backgroundAnimation: '#e3e3e3',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'success',
+        {
+            background: '#2e844a',
+            backgroundAnimation: '#55a16e',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'warning',
+        {
+            background: '#fe9339',
+            backgroundAnimation: '#ffab63',
+            labelColor: '#000000'
+        }
+    ],
+    [
+        'error',
+        {
+            background: '#ea001e',
+            backgroundAnimation: '#f75c6f',
+            labelColor: '#ffffff'
+        }
+    ],
+    [
+        'base',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede',
+            labelColor: '#c4c4c4'
+        }
+    ]
+]);
