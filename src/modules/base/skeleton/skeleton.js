@@ -772,12 +772,6 @@ export default class Skeleton extends LightningElement {
             case 'circular':
                 this.setRectangularCircularSize();
                 break;
-            // case 'tabset':
-            //     this.handleTabset();
-            //     break;
-            case 'tree':
-                this.handleTree();
-                break;
             default:
                 break;
         }
@@ -814,12 +808,6 @@ export default class Skeleton extends LightningElement {
     handleTabset() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateTabsetClassList();
-        }
-    }
-
-    handleTree() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateTreeClassList();
         }
     }
 
