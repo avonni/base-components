@@ -47,28 +47,68 @@
         ></c-avatar>
 
         <div class="slds-col">
+            <!-- Label -->
             <div if:true={label} class="avonni-metrics__label">{label}</div>
             <div class="slds-grid slds-grid_vertical-align-end">
-                <span if:true={prefix} class="avonni-metrics__prefix"
-                    >{prefix}</span
-                >
-                &nbsp;
-                <lightning-formatted-number
-                    class="avonni-metrics__value"
-                    currency-code={currencyCode}
-                    currency-display-as={currencyDisplayAs}
-                    format-style={formatStyle}
-                    maximum-fraction-digits={maximumFractionDigits}
-                    maximum-significant-digits={maximumSignificantDigits}
-                    minimum-fraction-digits={minimumFractionDigits}
-                    minimum-integer-digits={minimumIntegerDigits}
-                    minimum-significant-digits={minimumSignificantDigits}
-                    value={positiveValue}
-                ></lightning-formatted-number>
-                &nbsp;
-                <span if:true={suffix} class="avonni-metrics__suffix"
-                    >{suffix}</span
-                >
+                <!-- Primary -->
+                <div class={primaryWrapperClass}>
+                    <!-- Sign -->
+                    <lightning-dynamic-icon
+                        if:true={showDynamicIcon}
+                        class={dynamicIconClass}
+                        alternative-text={dynamicIconOption}
+                        option={dynamicIconOption}
+                        type="trend"
+                    ></lightning-dynamic-icon>
+                    <span
+                        if:true={mathSign}
+                        class="
+                            slds-align-middle
+                            avonni-metrics__value avonni-metrics__primary-text
+                        "
+                        >{mathSign}&nbsp;</span
+                    >
+                    <c-primitive-icon
+                        if:true={showIcon}
+                        class="
+                            avonni-metrics__icon
+                            slds-current-color slds-align-middle
+                            slds-m-right_xx-small
+                        "
+                        icon-name={iconName}
+                    ></c-primitive-icon>
+                    <!-- Prefix -->
+                    <span
+                        if:true={prefix}
+                        class="
+                            avonni-metrics__prefix avonni-metrics__primary-text
+                        "
+                        >{prefix}&nbsp;</span
+                    >
+                    <!-- Value -->
+                    <lightning-formatted-number
+                        class="
+                            avonni-metrics__value avonni-metrics__primary-text
+                        "
+                        currency-code={currencyCode}
+                        currency-display-as={currencyDisplayAs}
+                        format-style={formatStyle}
+                        maximum-fraction-digits={maximumFractionDigits}
+                        maximum-significant-digits={maximumSignificantDigits}
+                        minimum-fraction-digits={minimumFractionDigits}
+                        minimum-integer-digits={minimumIntegerDigits}
+                        minimum-significant-digits={minimumSignificantDigits}
+                        value={positiveValue}
+                    ></lightning-formatted-number>
+                    <!-- Suffix -->
+                    <span
+                        if:true={suffix}
+                        class="
+                            avonni-metrics__suffix avonni-metrics__primary-text
+                        "
+                        >&nbsp;{suffix}</span
+                    >
+                </div>
 
                 <!-- Secondary -->
                 <div if:true={showSecondaryValue} class={secondaryWrapperClass}>
@@ -76,29 +116,45 @@
                     <lightning-dynamic-icon
                         if:true={showSecondaryDynamicIcon}
                         class={secondaryDynamicIconClass}
-                        alternative-text={secondaryValueSignAlternativeText}
+                        alternative-text={secondaryDynamicIconOption}
                         option={secondaryDynamicIconOption}
                         type="trend"
                     ></lightning-dynamic-icon>
-                    <span if:true={secondaryMathSign}>{secondaryMathSign}</span>
+                    <span
+                        if:true={secondaryMathSign}
+                        class="
+                            avonni-metrics__secondary-value
+                            avonni-metrics__secondary-text
+                        "
+                        >{secondaryMathSign}&nbsp;</span
+                    >
                     <c-primitive-icon
                         if:true={showSecondaryIcon}
                         class="
                             avonni-metrics__secondary-icon
+                            avonni-metrics__secondary-value
+                            avonni-metrics__secondary-text
                             slds-current-color
+                            slds-m-right_xx-small
                         "
                         icon-name={secondaryIconName}
                     ></c-primitive-icon>
-                    &nbsp;
 
                     <!-- Prefix -->
                     <span
                         if:true={secondaryPrefix}
-                        class="avonni-metrics__secondary-prefix"
+                        class="
+                            avonni-metrics__secondary-prefix
+                            avonni-metrics__secondary-text
+                        "
                         >{secondaryPrefix}&nbsp;</span
                     >
                     <!-- Value -->
                     <lightning-formatted-number
+                        class="
+                            avonni-metrics__secondary-value
+                            avonni-metrics__secondary-text
+                        "
                         currency-code={secondaryCurrencyCode}
                         currency-display-as={secondaryCurrencyDisplayAs}
                         format-style={secondaryFormatStyle}
@@ -112,7 +168,10 @@
                     <!-- Suffix -->
                     <span
                         if:true={secondarySuffix}
-                        class="avonni-metrics__secondary-suffix"
+                        class="
+                            avonni-metrics__secondary-suffix
+                            avonni-metrics__secondary-text
+                        "
                         >&nbsp;{secondarySuffix}</span
                     >
                 </div>

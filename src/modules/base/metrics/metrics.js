@@ -366,12 +366,67 @@ export default class Metrics extends LightningElement {
         }).toString();
     }
 
+    get dynamicIconClass() {
+        return classSet('slds-align-middle')
+            .add({
+                'slds-m-right_x-small': this.value > 0,
+                'slds-m-left_xx-small': this.value < 0,
+                'slds-m-right_xx-small': this.value <= 0
+            })
+            .toString();
+    }
+
+    get dynamicIconOption() {
+        if (this.value === 0) {
+            return 'neutral';
+        }
+        return this.value > 0 ? 'up' : 'down';
+    }
+
+    get iconName() {
+        const arrowIcon = this.valueSign === 'arrow';
+        const up = arrowIcon ? 'utility:arrowup' : 'utility:up';
+        const down = arrowIcon ? 'utility:arrowdown' : 'utility:down';
+        return this.value > 0 ? up : down;
+    }
+
+    get mathSign() {
+        const displayMinusAndPlus = this.valueSign === 'minus-and-plus';
+        const displayMinus = this.valueSign === 'auto';
+        const displayIcon = !displayMinusAndPlus && !displayMinus;
+        const neutralValue = this.value === 0;
+
+        if (displayIcon || neutralValue || (displayMinus && this.value > 0)) {
+            return null;
+        }
+        return this.value > 0 ? '+' : '-';
+    }
+
     get positiveSecondaryValue() {
         return Math.abs(this.secondaryValue);
     }
 
     get positiveValue() {
         return Math.abs(this.value);
+    }
+
+    get primaryWrapperClass() {
+        const showTrendColor = !isNaN(this.trendColorBreakpointValue);
+        const isPositive = this.value > this.trendColorBreakpointValue;
+        const isNegative = this.value < this.trendColorBreakpointValue;
+
+        return classSet(
+            'slds-grid slds-grid_vertical-align-end avonni-metrics__primary-wrapper'
+        )
+            .add({
+                'avonni-metrics__primary_neutral-trend':
+                    showTrendColor && !isPositive && !isNegative,
+                'avonni-metrics__primary_positive-trend':
+                    showTrendColor && isPositive,
+                'avonni-metrics__primary_negative-trend':
+                    showTrendColor && isNegative
+            })
+            .toString();
     }
 
     get secondaryDynamicIconOption() {
@@ -384,19 +439,18 @@ export default class Metrics extends LightningElement {
     get secondaryDynamicIconClass() {
         return classSet('slds-align-middle')
             .add({
-                'slds-m-right_xx-small': this.secondaryValue > 0,
-                'slds-m-left_xx-small': this.secondaryValue < 0
+                'slds-m-right_x-small': this.secondaryValue > 0,
+                'slds-m-left_xx-small': this.secondaryValue < 0,
+                'slds-m-right_xx-small': this.secondaryValue <= 0
             })
             .toString();
     }
 
     get secondaryIconName() {
-        if (this.secondaryValueSign === 'arrow') {
-            return this.secondaryValue > 0
-                ? 'utility:arrowup'
-                : 'utility:arrowdown';
-        }
-        return this.secondaryValue > 0 ? 'utility:up' : 'utility:down';
+        const arrowIcon = this.secondaryValueSign === 'arrow';
+        const up = arrowIcon ? 'utility:arrowup' : 'utility:up';
+        const down = arrowIcon ? 'utility:arrowdown' : 'utility:down';
+        return this.secondaryValue > 0 ? up : down;
     }
 
     get secondaryMathSign() {
@@ -416,13 +470,6 @@ export default class Metrics extends LightningElement {
         return this.secondaryValue > 0 ? '+' : '-';
     }
 
-    get secondaryValueSignAlternativeText() {
-        if (this.secondaryValue === 0) {
-            return null;
-        }
-        return this.secondaryValue > 0 ? 'up' : 'down';
-    }
-
     get secondaryWrapperClass() {
         const showTrendColor = !isNaN(this.secondaryTrendColorBreakpointValue);
         const isPositive =
@@ -431,7 +478,7 @@ export default class Metrics extends LightningElement {
             this.secondaryValue < this.secondaryTrendColorBreakpointValue;
 
         return classSet(
-            'slds-grid slds-grid_vertical-align-center slds-m-left_xx-small avonni-metrics__secondary-value'
+            'slds-grid slds-grid_vertical-align-center slds-m-left_x-small'
         )
             .add({
                 'slds-p-around_xx-small': showTrendColor,
@@ -443,6 +490,17 @@ export default class Metrics extends LightningElement {
                     showTrendColor && isNegative
             })
             .toString();
+    }
+
+    get showDynamicIcon() {
+        return this.valueSign === 'dynamic-icon';
+    }
+
+    get showIcon() {
+        return (
+            this.value !== 0 &&
+            (this.valueSign === 'arrow' || this.valueSign === 'caret')
+        );
     }
 
     get showSecondaryDynamicIcon() {

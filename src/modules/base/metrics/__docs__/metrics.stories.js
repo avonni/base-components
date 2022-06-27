@@ -396,24 +396,51 @@ Base.args = {
     value: 7552.8
 };
 
-export const SupportingTexts = Template.bind({});
-SupportingTexts.args = {
+export const LabelAndDescription = Template.bind({});
+LabelAndDescription.args = {
     description: 'Since last month',
     label: 'Gross volume',
     minimumFractionDigits: 2,
-    prefix: 'Prefix',
-    suffix: 'Suffix',
-    value: 7552.8
+    value: 7552.8,
+    currencyCode: 'CAD',
+    formatStyle: 'currency',
+    avatar: {
+        fallbackIconName: 'standard:lightning_usage',
+        position: 'top'
+    }
 };
 
-export const AvatarAndSecondaryTrendUp = Template.bind({});
-AvatarAndSecondaryTrendUp.args = {
+export const PrefixAndSuffix = Template.bind({});
+PrefixAndSuffix.args = {
+    suffix: 'incl. taxes',
+    prefix: 'Total of',
+    minimumFractionDigits: 2,
+    value: 8.6,
+    formatStyle: 'currency'
+};
+
+export const TrendDown = Template.bind({});
+TrendDown.args = {
+    value: -14,
+    trendColorBreakpointValue: 0,
+    formatStyle: 'percent-fixed',
+    valueSign: 'caret',
+    suffix: 'overall',
+    secondarySuffix: 'this month',
+    secondaryMinimumFractionDigits: 1,
+    secondaryValue: 8.6,
+    secondaryValueSign: 'minus-and-plus',
+    secondaryFormatStyle: 'percent-fixed'
+};
+
+export const SecondaryTrendUp = Template.bind({});
+SecondaryTrendUp.args = {
     avatar: {
         fallbackIconName: 'standard:customers',
         size: 'large'
     },
     label: 'Total Subscribers',
-    secondaryValueSign: 'arrow',
+    secondaryValueSign: 'dynamic-icon',
     secondaryTrendColorBreakpointValue: 10,
     secondaryValue: 122,
     value: 71897
