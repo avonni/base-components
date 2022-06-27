@@ -110,6 +110,16 @@ export default class KanbanGroups {
             }
         });
 
+        subGroups.sort((a, b) => {
+            if (a.label < b.label) {
+                return -1;
+            }
+            if (a.label > b.label) {
+                return 1;
+            }
+            return 0;
+        });
+
         // Splits the tiles in diffenrent subgroups if needed
         if (this.subGroupFieldName) {
             computedGroups.forEach((group) => {
