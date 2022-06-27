@@ -357,4 +357,6 @@
 .avonni-kanban__expandable_section {
     z-index: 99;
     height: 100%;
+    /* position: sticky;
+    top: 10px; */
 }

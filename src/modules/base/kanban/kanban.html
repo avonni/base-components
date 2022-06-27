@@ -559,6 +559,7 @@
                                 ></div>
                                 <div
                                     data-element-id="avonni-kanban__group"
+                                    data-subgroup-name={section.label}
                                     class="
                                         avonni-kanban__tiles_container
                                         slds-has-dividers_around-space
@@ -570,6 +571,7 @@
                                         key={record.index}
                                         data-element-id="avonni-kanban__tile"
                                         data-record-index={record.index}
+                                        data-subgroup={section.label}
                                         class={computedTileClass}
                                         onmousedown={handleTileMouseDown}
                                         onmouseup={handleTileMouseUp}

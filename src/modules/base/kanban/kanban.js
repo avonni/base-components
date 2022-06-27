@@ -87,6 +87,7 @@ export default class Kanban extends LightningElement {
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
     _resizeObserver;
+    _currentSubGroup = '';
     _scrollingInterval;
     _scrollWidth = 0;
     _summaryTimeoutsId = [];
@@ -372,9 +373,11 @@ export default class Kanban extends LightningElement {
     }
 
     get computedSubGroups() {
+        // TODO: MAYBE probleme de copy
         const computedGroups = JSON.parse(JSON.stringify(this._computedGroups));
-        computedGroups.forEach((group) => {
-            group.subGroups = group.subGroups[this._currentSubGroupIndex];
+        this._computedGroups.forEach((group, i) => {
+            computedGroups[i].subGroups =
+                group.subGroups[this._currentSubGroupIndex];
         });
         this._currentSubGroupIndex++;
         return computedGroups;
@@ -823,6 +826,7 @@ export default class Kanban extends LightningElement {
         this._draggedTile.style.width = 'calc(100% - 1rem)';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
+        this._currentSubGroup = '';
 
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
@@ -933,12 +937,13 @@ export default class Kanban extends LightningElement {
             this.groupValues.length - 1
         );
 
-        const groupElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
+        const groupSelector = this._hasSubGroups
+            ? `[data-subgroup-name="${this._currentSubGroup}"]`
+            : '[data-element-id="avonni-kanban__group"]';
+        const groupElements = this.template.querySelectorAll(groupSelector);
 
         this.updateReleasedTileIndex(groupElements);
-
+        console.log(this._releasedTileIndex);
         this.animateTiles(groupElements);
     }
 
@@ -1176,6 +1181,7 @@ export default class Kanban extends LightningElement {
             event.currentTarget.getBoundingClientRect().x +
             fieldContainer.scrollLeft;
         this._initialPos.y = event.currentTarget.getBoundingClientRect().y;
+
         this._clickedGroupIndex = Math.min(
             Math.floor(event.clientX / this._groupWidth),
             this.groupValues.length - 1
@@ -1187,13 +1193,21 @@ export default class Kanban extends LightningElement {
             ).scrollLeft / this._groupWidth
         );
 
-        const parentGroup = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        )[this._clickedGroupIndex];
+        this._currentSubGroup = this._draggedTile.dataset.subgroup;
+
+        const groupSelector = this._hasSubGroups
+            ? `[data-subgroup-name="${this._currentSubGroup}"]`
+            : '[data-element-id="avonni-kanban__group"]';
+
+        const parentGroup =
+            this.template.querySelectorAll(groupSelector)[
+                this._clickedGroupIndex
+            ];
 
         this._initialTileIndex = Array.from(parentGroup.children).indexOf(
             this._draggedTile
         );
+
         this._releasedGroupIndex = this._clickedGroupIndex;
 
         // Calculates the height of each group
@@ -1435,6 +1449,7 @@ export default class Kanban extends LightningElement {
      * @param {HTMLElement[]} groupElements Groups containing the tiles
      */
     updateReleasedTileIndex(groupElements) {
+        // TODO: marche pas quand pas de tiles dans le group
         let offsetHeight = 0;
         this._releasedGroupIndex = this._releasedGroupIndex
             ? this._releasedGroupIndex
