@@ -83,6 +83,7 @@ export class HorizontalActivityTimeline {
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _intervalMinDate;
     _intervalMaxDate;
+    _isMouseOverOnPopover = false;
     _isResizingInterval = false;
     _maxYPositionOfItem = 0;
     _numberOfScrollAxisTicks = DEFAULT_SCROLL_AXIS_TICKS_NUMBER;
@@ -106,10 +107,6 @@ export class HorizontalActivityTimeline {
     _timelineSVG;
     _scrollAxisDiv;
     _scrollAxisSVG;
-
-    // Popover's state
-    _isMouseOverOnPopover = false;
-    _isMouseOverOnItem = true;
 
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
@@ -1310,19 +1307,11 @@ export class HorizontalActivityTimeline {
      * Handle mouse out of item to hide popover
      */
     handleMouseOutOnItem() {
-        this._isMouseOverOnItem = false;
-        let opacity = 1;
-        const fadingPopoverAnimation = d3.interval(() => {
-            d3.select(this.itemPopoverSelector).style('opacity', opacity);
-            opacity -= 0.05;
-            if (this._isMouseOverOnPopover || this._isMouseOverOnItem) {
-                d3.select(this.itemPopoverSelector).style('opacity', 1);
-                fadingPopoverAnimation.stop();
-            } else if (opacity <= 0) {
+        setTimeout(() => {
+            if (!this._isMouseOverOnPopover) {
                 this._activityTimeline.handleItemMouseLeave();
-                fadingPopoverAnimation.stop();
             }
-        }, 80);
+        }, 1500);
     }
 
     /**
@@ -1352,7 +1341,6 @@ export class HorizontalActivityTimeline {
      * Handle mouse over on item to display a popover
      */
     handleMouseOverOnItem(element) {
-        this._isMouseOverOnItem = true;
         this._isMouseOverOnPopover = false;
         this._activityTimeline.handleItemMouseOver(element);
     }
