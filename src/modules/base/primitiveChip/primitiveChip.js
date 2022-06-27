@@ -186,20 +186,6 @@ export default class PrimitiveChip extends LightningElement {
         });
     }
 
-    /**
-     *  If left icon media is to be shown.
-     */
-    get showIconLeft() {
-        return this.prefixIconName;
-    }
-
-    /**
-     *  If right icon media is to be shown.
-     */
-    get showIconRight() {
-        return this.suffixIconName;
-    }
-
     get showAvatar() {
         return this._avatar;
     }

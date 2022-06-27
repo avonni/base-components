@@ -40,7 +40,7 @@
             outline={outline}
             data-element-id="chip"
         >
-            <template if:true={showIconLeft}>
+            <template if:true={prefixIconName}>
                 <c-primitive-icon
                     slot="left"
                     icon-name={prefixIconName}
@@ -73,7 +73,7 @@
                     ></c-primitive-avatar>
                 </template>
             </template>
-            <template if:true={showIconRight}>
+            <template if:true={suffixIconName}>
                 <c-primitive-icon
                     slot="right"
                     icon-name={suffixIconName}
