@@ -1,4 +1,10 @@
-/* Avatar */
+.avonni-metrics__wrapper {
+    text-align: var(--avonni-metrics-alignment, left);
+}
+.avonni-metrics__primary-and-secondary-wrapper {
+    justify-content: var(--avonni-metrics-alignment);
+}
+
 .avonni-metrics__avatar_after-text {
     order: 1;
 }

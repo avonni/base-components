@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-grid slds-wrap">
+    <div class="slds-grid slds-wrap avonni-metrics__wrapper">
         <c-avatar
             if:true={avatar}
             class={avatarClass}
@@ -49,7 +49,12 @@
         <div class="slds-col">
             <!-- Label -->
             <div if:true={label} class="avonni-metrics__label">{label}</div>
-            <div class="slds-grid slds-grid_vertical-align-end">
+            <div
+                class="
+                    slds-grid slds-grid_vertical-align-end
+                    avonni-metrics__primary-and-secondary-wrapper
+                "
+            >
                 <!-- Primary -->
                 <div class={primaryWrapperClass}>
                     <!-- Sign -->
