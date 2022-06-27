@@ -26,6 +26,12 @@
  * @type font
  */
 /**
+ * @memberof stylingHooks
+ * @name --avonni-input-pen-body-sizing-height
+ * @default 350px
+ * @type size
+ */
+/**
  * @namespace examples
  */
 /**

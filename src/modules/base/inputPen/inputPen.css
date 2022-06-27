@@ -146,7 +146,7 @@
 }
 
 .avonni-input-pen__text-area {
-    height: 350px;
+    min-height: var(--avonni-input-pen-body-sizing-height, 350px);
 }
 
 .avonni-input-pen__avonni-input-pen__combobox:hover svg path {
