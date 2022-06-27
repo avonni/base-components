@@ -1026,13 +1026,9 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for text variant
      */
     setTextSize() {
-        // console.log(`variant: ${this.variant === 'combobox'}`);
-        // console.log('inside setTextSize');
         let element = this.skeleton;
-        // console.log(`element: ${element}`);
         element.style.height =
             this.height === undefined ? '0.7em' : `${this.height}`;
-        // console.log('end setTextSize');
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
     }
@@ -1098,19 +1094,6 @@ export default class Skeleton extends LightningElement {
 
     updateBreadcrumbsClassList() {}
 
-    // updateButtonIconClassList() {
-    //     const buttonIconWrapper = classSet('slds-button')
-    //         .add('slds-button_icon')
-    //         .add('slds-button__icon_large')
-    //         .add({
-    //             'slds-button_icon-brand':
-    //                 this.variantAttributes.variant === 'brand',
-    //             'slds-button_icon-inverse':
-    //                 this.variantAttributes.variant === 'inverse'
-    //         })
-    //         .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
-    // }
-
     updateVariantButton() {
         const buttonElement = this.template.querySelector(
             '[data-element-id="avonni-skeleton-button-element"]'
@@ -1153,7 +1136,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateComboboxClassList() {
-        // console.log('inside updateClassList');
         this.setTextSize();
     }
 
@@ -1221,10 +1203,4 @@ export default class Skeleton extends LightningElement {
     //     //     );
     //     // }
     // }
-
-    updateProgressIndicatorClassList() {}
-
-    updateTabsetClassList() {}
-
-    updateTreeClassList() {}
 }
