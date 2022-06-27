@@ -289,38 +289,8 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get isBadgeVariant() {
-        return this.variant === 'badge';
-    }
-
-    @api
-    get isButtonVariant() {
-        return this.variant === 'button';
-    }
-
-    @api
-    get isButtonIconVariant() {
-        return this.variant === 'button-icon';
-    }
-
-    @api
-    get isChipVariant() {
-        return this.variant === 'chip';
-    }
-
-    @api
-    get isComboboxVariant() {
-        return this.variant === 'combobox';
-    }
-
-    @api
     get isDatatableVariant() {
         return this.variant === 'datatable';
-    }
-
-    @api
-    get isInputVariant() {
-        return this.variant === 'input';
     }
 
     @api
@@ -336,15 +306,6 @@ export default class Skeleton extends LightningElement {
     @api
     get isProgressIndicatorVariant() {
         return this.variant === 'progress-indicator';
-    }
-
-    @api
-    get isRegularVariant() {
-        return (
-            this.variant === 'text' ||
-            this.variant === 'circular' ||
-            this.variant === 'rectangular'
-        );
     }
 
     @api
