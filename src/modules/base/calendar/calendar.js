@@ -316,7 +316,7 @@ export default class Calendar extends LightningElement {
                 this.validateCurrentDayValue();
             }
         }
-        this.updateDateParameters();
+        this.updateDate();
     }
 
     /**
@@ -598,7 +598,9 @@ export default class Calendar extends LightningElement {
         this._value = this._value.filter(
             (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
         );
-        this.displayDate = new Date(this._value[0]);
+        if (this._value[0]) {
+            this.displayDate = new Date(this._value[0]);
+        }
         this.updateDateParameters();
     }
 
@@ -895,7 +897,7 @@ export default class Calendar extends LightningElement {
 
         if (!this._value) {
             this.displayDate = this.setValueToCurrentDayOrMin();
-            this.updateDateParameters();
+            this.updateDate();
         }
     }
 
@@ -907,7 +909,7 @@ export default class Calendar extends LightningElement {
         if (this.isCurrentDateBetweenMinAndMax) {
             return new Date();
         }
-        return this.min;
+        return new Date(this.min);
     }
 
     /**
@@ -939,7 +941,7 @@ export default class Calendar extends LightningElement {
         if (this.allValuesOutsideMinAndMax) {
             this._value = [];
             this.displayDate = this.setValueToCurrentDayOrMin();
-            this.updateDateParameters();
+            this.updateDate();
         } else {
             this._value = this._value.sort((dateA, dateB) => {
                 return dateA - dateB;
@@ -983,7 +985,7 @@ export default class Calendar extends LightningElement {
                     !this.isBeforeMin(date)
                 );
             });
-            this.updateDateParameters();
+            this.updateDate();
         }
     }
 
@@ -998,11 +1000,14 @@ export default class Calendar extends LightningElement {
         // If one single value, we check if it's in interval and set to closest value if not
         else {
             if (this.isInvalidDate(this._value[0])) {
+                this._value = [];
                 this.displayDate = this.setValueToCurrentDayOrMin();
             } else if (this.isAfterMax(this._value[0])) {
-                this.displayDate = this.max;
+                this._value = [];
+                this.displayDate = new Date(this.max);
             } else if (this.isBeforeMin(this._value[0])) {
-                this.displayDate = this.min;
+                this._value = [];
+                this.displayDate = new Date(this.min);
             }
             this.updateDateParameters();
         }
