@@ -1236,6 +1236,9 @@ describe('Activity Timeline', () => {
             HorizontalActivityTimeline.prototype,
             'handleMouseOutOnItem'
         );
+        SVGElement.prototype.getComputedTextLength = () => {
+            return 100;
+        };
 
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
@@ -1250,25 +1253,23 @@ describe('Activity Timeline', () => {
                         '.avonni-horizontal-activity-timeline__timeline-items-svg'
                     );
                     item = timelineSVG.querySelector('#timeline-item-item8');
-                    item.dispatchEvent(new CustomEvent('mouseover'));
+                    item.dispatchEvent(new CustomEvent('mouseenter'));
                 })
                 // Check if popover is present
                 .then(() => {
                     popoverItem = element.shadowRoot.querySelector(
                         '.avonni-activity-timeline__item-popover'
                     );
-                    const primitiveActivityTimelineItem =
-                        popoverItem.querySelector(
-                            'c-primitive-activity-timeline-item'
-                        );
 
-                    expect(primitiveActivityTimelineItem.name).toBe('item8');
+                    expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'avonni-activity-timeline__item-popover slds-is-absolute'
+                        'slds-nubbin_left slds-p-left_medium slds-p-right_x-small avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
-                    item.dispatchEvent(new CustomEvent('mouseout'));
+                    item.dispatchEvent(new CustomEvent('mouseleave'));
+                    popoverItem.dispatchEvent(new CustomEvent('mouseenter'));
+                    popoverItem.dispatchEvent(new CustomEvent('mouseleave'));
                 })
                 // Check if popover is absent
                 .then(() => {
@@ -1295,25 +1296,17 @@ describe('Activity Timeline', () => {
                     const timelineSVG = element.shadowRoot.querySelector(
                         '.avonni-horizontal-activity-timeline__timeline-items-svg'
                     );
-                    item = timelineSVG.querySelector('#timeline-item-item12');
-                    item.dispatchEvent(new CustomEvent('mouseover'));
+                    item = timelineSVG.querySelector('#timeline-item-item13');
+                    item.dispatchEvent(new CustomEvent('mouseenter'));
                 })
                 // Check if popover is present
                 .then(() => {
-                    item.dispatchEvent(new CustomEvent('mouseover'));
+                    item.dispatchEvent(new CustomEvent('mouseenter'));
                     popoverItem = element.shadowRoot.querySelector(
                         '.avonni-activity-timeline__item-popover'
                     );
-                    const primitiveActivityTimelineItem =
-                        popoverItem.querySelector(
-                            'c-primitive-activity-timeline-item'
-                        );
 
-                    expect(primitiveActivityTimelineItem.name).toBe('item12');
-                    expect(popoverItem.className).toBe(
-                        'slds-is-absolute avonni-activity-timeline__item-popover slds-popover'
-                    );
-                    expect(popoverItem.style.visibility).toBe('visible');
+                    expect(popoverItem.getAttribute('name')).toBe('item13');
                 })
         );
     });

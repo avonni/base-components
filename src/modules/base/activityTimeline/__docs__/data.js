@@ -1215,7 +1215,30 @@ export const horizontalItemsTest = [
         href: '#',
         iconName: 'action:map',
         hasCheckbox: true,
-        hasError: false
+        hasError: false,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item14',
@@ -1317,6 +1340,29 @@ export const displayedItemsHorizontalTest = [
         href: '#',
         iconName: 'action:map',
         hasCheckbox: true,
-        hasError: false
+        hasError: false,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     }
 ];
