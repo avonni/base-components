@@ -943,7 +943,6 @@ export default class Kanban extends LightningElement {
         const groupElements = this.template.querySelectorAll(groupSelector);
 
         this.updateReleasedTileIndex(groupElements);
-        console.log(this._releasedTileIndex);
         this.animateTiles(groupElements);
     }
 
@@ -1449,7 +1448,6 @@ export default class Kanban extends LightningElement {
      * @param {HTMLElement[]} groupElements Groups containing the tiles
      */
     updateReleasedTileIndex(groupElements) {
-        // TODO: marche pas quand pas de tiles dans le group
         let offsetHeight = 0;
         this._releasedGroupIndex = this._releasedGroupIndex
             ? this._releasedGroupIndex
@@ -1489,6 +1487,8 @@ export default class Kanban extends LightningElement {
                 this._releasedTileIndex++;
             }
         }
-        if (this._releasedTileIndex < 0) this._releasedTileIndex = 0;
+        if (this._releasedTileIndex < 0 || currentGroupTiles.length === 0) {
+            this._releasedTileIndex = 0;
+        }
     }
 }
