@@ -34,8 +34,14 @@
 
 <template>
     <template if:true={isTabsetBaseVariant}>
-        <div class="slds-tabs_default">
-            <ul class="slds-tabs_default__nav avonni-skeleton__tabset-base">
+        <div
+            class="slds-tabs_default"
+            data-element-id="avonni-skeleton-tabset-container"
+        >
+            <ul
+                class="slds-tabs_default__nav avonni-skeleton__tabset-base"
+                data-element-id="avonni-skeleton-tabset-list"
+            >
                 <template for:each={tabset} for:item="tab">
                     <li key={tab.key} class={tabClass}>
                         <div class={tabItemClass}></div>
@@ -45,8 +51,14 @@
         </div>
     </template>
     <template if:true={isTabsetScopedVariant}>
-        <div class="slds-tabs_scoped">
-            <ul class="slds-tabs_scoped__nav slds-truncate">
+        <div
+            class="slds-tabs_scoped"
+            data-element-id="avonni-skeleton-tabset-container"
+        >
+            <ul
+                class="slds-tabs_scoped__nav slds-truncate"
+                data-element-id="avonni-skeleton-tabset-list"
+            >
                 <template for:each={tabset} for:item="tab">
                     <li key={tab.key} class="slds-is-active">
                         <div class={tabScopedItemClass}></div>
@@ -59,8 +71,14 @@
         </div>
     </template>
     <template if:true={isTabsetVerticalVariant}>
-        <div class="slds-vertical-tabs">
-            <ul class="slds-vertical-tabs__nav">
+        <div
+            class="slds-vertical-tabs"
+            data-element-id="avonni-skeleton-tabset-container"
+        >
+            <ul
+                class="slds-vertical-tabs__nav"
+                data-element-id="avonni-skeleton-tabset-list"
+            >
                 <template for:each={tabset} for:item="tab">
                     <li key={tab.key} class="slds-vertical-tabs__nav-item">
                         <div class={tabVerticalItemContainerClass}>

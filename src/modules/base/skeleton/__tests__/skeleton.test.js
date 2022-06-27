@@ -564,7 +564,7 @@ describe('Skeleton', () => {
     });
 
     // Tabset variant
-    it('Skeleton Tabset: size medium', () => {
+    it('Skeleton Tabset: base variant', () => {
         element.variant = 'tabset';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -572,7 +572,67 @@ describe('Skeleton', () => {
             tabs: 3
         };
 
-        return Promise.resolve().then(() => {});
+        return Promise.resolve().then(() => {
+            const skeletonTabset = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-container"]'
+            );
+            const skeletonTabsetList = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-list"]'
+            );
+            expect(skeletonTabset.className).toContain('slds-tabs_default');
+            expect(skeletonTabsetList.className).toContain(
+                'slds-tabs_default__nav'
+            );
+            expect(skeletonTabsetList.className).toContain(
+                'avonni-skeleton__tabset-base'
+            );
+        });
+    });
+
+    it('Skeleton Tabset: scoped variant', () => {
+        element.variant = 'tabset';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'scoped',
+            tabs: 3
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonTabset = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-container"]'
+            );
+            const skeletonTabsetList = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-list"]'
+            );
+            expect(skeletonTabsetList.className).toContain(
+                'slds-tabs_scoped__nav'
+            );
+            expect(skeletonTabsetList.className).toContain('slds-truncate');
+            expect(skeletonTabset.className).toContain('slds-tabs_scoped');
+        });
+    });
+
+    it('Skeleton Tabset: vertical variant', () => {
+        element.variant = 'tabset';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'vertical',
+            tabs: 3
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonTabset = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-container"]'
+            );
+            const skeletonTabsetList = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tabset-list"]'
+            );
+            console.log(`num of levels ${skeletonTabsetList.children.length}`);
+            expect(skeletonTabset.className).toContain('slds-vertical-tabs');
+            expect(skeletonTabsetList.className).toContain(
+                'slds-vertical-tabs__nav'
+            );
+        });
     });
 
     // Tree variant
