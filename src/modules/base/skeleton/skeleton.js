@@ -105,14 +105,12 @@ export default class Skeleton extends LightningElement {
     paragraphItemsInitialized = false;
     tabset = [];
     treeItems = [];
-    initialDatatableRender = false;
 
     connectedCallback() {
         console.log(`connected callback variant: ${this.variant}`);
         if (this.isDatatableVariant) {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
-            this.initialDatatableRender = true;
         }
         if (this.isParagraphVariant) {
             this.initializeParagraphItems();
@@ -135,6 +133,12 @@ export default class Skeleton extends LightningElement {
         console.log(`rendered callback variant: ${this.variant}`);
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (!this.isAvatarVariant) this.handleVariant();
+        // if (this.isDatatableVariant) {
+        //     const header = this.template.querySelector(
+        //         '[data-element-id="avonni-skeleton-datatable-header"]'
+        //     );
+        //     console.log(`datatable header ${header.children.length}`);
+        // }
         if (this.isParagraphVariant && !this.paragraphItemsInitialized) {
             this.initializeParagraphItems();
             this.paragraphItemsInitialized = true;
@@ -438,10 +442,6 @@ export default class Skeleton extends LightningElement {
     }
     set variantAttributes(value) {
         this._variantAttributes = value;
-        // if (this.isDatatableVariant && this.initialDatatableRender) {
-        //     this.initializeDatatableRows();
-        //     this.initializeDatatableColumns();
-        // }
     }
 
     /**

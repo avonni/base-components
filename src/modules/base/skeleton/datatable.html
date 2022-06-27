@@ -44,7 +44,7 @@
         data-element-id="avonni-skeleton-datatable-table"
     >
         <template if:false={hideTableHeader}>
-            <thead>
+            <thead data-element-id="avonni-skeleton-datatable-header">
                 <template if:false={hideCheckboxColumn}>
                     <th
                         class="
@@ -78,7 +78,7 @@
         </template>
         <tbody>
             <template for:each={datatableRows} for:item="row">
-                <tr key={row.keyTr} class={datatableBodyClass}>
+                <tr key={row.keyTr} class="slds-border_right slds-border_left">
                     <template if:false={hideCheckboxColumn}>
                         <td
                             key={row.keyTd}

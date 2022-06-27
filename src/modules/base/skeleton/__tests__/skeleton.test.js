@@ -602,4 +602,28 @@ describe('Skeleton', () => {
             );
         });
     });
+
+    it('Skeleton Datatable: initialize rows', () => {
+        element.variant = 'datatable';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            columns: 3,
+            rows: 7,
+            hideCheckboxColumn: false,
+            hideTableHeader: false
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonDatatableHeader = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-datatable-header"]'
+            );
+            console.log(
+                `header children length: ${skeletonDatatableHeader.children.length}`
+            );
+            console.log(
+                `header childnodes length: ${skeletonDatatableHeader.childNodes.length}`
+            );
+            expect(true).toBeTruthy();
+        });
+    });
 });
