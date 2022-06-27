@@ -523,6 +523,8 @@ Vertical.args = {
     size: 'x-small',
     variant: 'label-hidden',
     type: 'vertical',
+    hideMinMaxValues: true,
+    showPin: true,
     unitAttributes: {
         customLabels: [
             {

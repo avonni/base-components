@@ -69,6 +69,10 @@
 .avonni-slider__container-vertical-size_large {
     height: var(--lwc-sizeLarge, 25rem);
 }
+.avonni-slider__spacer-height_responsive {
+    height: 100%;
+}
+
 .avonni-slider__unit-container {
     color: var(--avonni-slider-unit-text-color, #3e3e3c);
     font-size: var(--avonni-slider-unit-font-size, 0.75rem);
@@ -208,21 +212,22 @@
 }
 
 .avonni-slider__track {
-    height: calc(var(--avonni-slider-track-sizing-height, 4px) + 2px);
     position: absolute;
+    height: calc(var(--avonni-slider-track-sizing-height, 4px) + 2px);
+    border-radius: var(--avonni-slider-track-radius, 0.5rem) 0 0
+        var(--avonni-slider-track-radius, 0.5rem);
     background: var(--avonni-slider-track-color, #0176d3);
     top: 50%;
     z-index: 2;
     transform: translate(0, -50%);
 }
 
-.avonni-slider__track-container-border_square {
+.avonni-slider__track-border_square {
     border-radius: 0;
 }
 
-.avonni-slider__track-left-border_round {
-    border-radius: var(--avonni-slider-track-radius, 0.5rem) 0 0
-        var(--avonni-slider-track-radius, 0.5rem);
+.avonni-slider__track-container-border_square {
+    border-radius: 0;
 }
 
 .avonni-slider__pin_visible {

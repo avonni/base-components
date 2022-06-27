@@ -637,9 +637,8 @@ export default class Slider extends LightningElement {
     get computedTrackClass() {
         return classSet('avonni-slider__track').add({
             'avonni-slider__track_disabled': this.disabled,
-            'avonni-slider__track-left-border_round':
-                this._computedValues >= 2 &&
-                !(this.tickMarkStyle === 'inner-tick' && this.showTickMarks)
+            'avonni-slider__track-border_square':
+                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
         });
     }
 
@@ -651,7 +650,7 @@ export default class Slider extends LightningElement {
     get computedTrackContainerClass() {
         return classSet('avonni-slider__track-container').add({
             'avonni-slider__track-container-border_square':
-                this.tickMarkStyle === 'inner-tick' && this.showTickMarks
+                this.showAnyTickMarks && this.tickMarkStyle === 'inner-tick'
         });
     }
 
@@ -691,7 +690,8 @@ export default class Slider extends LightningElement {
     get computedSpacerClass() {
         return classSet('').add({
             [`avonni-slider__container-vertical-size_${this._size}`]:
-                this.size !== 'responsive' || !this.isVertical
+                !this.isVerticalResponsive,
+            'avonni-slider__spacer-height_responsive': this.isVerticalResponsive
         });
     }
 
@@ -1471,35 +1471,27 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Sets the vertical wrapper and spacer to dimensions of parent max-height if responsive.
+     * Sets the vertical wrapper and spacer to dimensions of parent height if responsive and vertical.
      *
      * @param {Event} event
      */
     setVerticalResponsiveHeight() {
-        let parentHeight = parseInt(
-            getComputedStyle(this.template.host.parentElement)
-                .getPropertyValue('max-height')
-                .split('px')[0],
-            10
-        );
-        if (isNaN(parentHeight)) {
-            parentHeight = this.template.host.parentElement.clientHeight;
-            if (parentHeight > 1350) {
-                return;
-            }
-        }
-        console.log(parentHeight);
+        this.template.host.style.height = '100%';
+        this.template.host.style.display = 'block';
         const spacer = this.template.querySelector(
             '[data-element-id="spacer"]'
+        );
+        const parentHeight = Math.max(
+            -this._thumbRadius,
+            spacer.offsetHeight - 10
         );
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        wrapper.style.transformOrigin = `${(parentHeight - 50) / 2}px ${
-            (parentHeight - 50) / 2
-        }px`;
-        wrapper.style.width = `${parentHeight - 50}px`;
-        spacer.style.height = `${parentHeight - 50}px`;
+        wrapper.style.transformOrigin = `${
+            (parentHeight + this._thumbRadius) / 2
+        }px ${(parentHeight + this._thumbRadius) / 2}px`;
+        wrapper.style.width = `${parentHeight + this._thumbRadius}px`;
     }
 
     /**
