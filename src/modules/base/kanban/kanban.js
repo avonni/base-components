@@ -1120,11 +1120,13 @@ export default class Kanban extends LightningElement {
             this._releasedTileIndex,
             this._releasedGroupIndex
         );
+
         const currentTile = this.tileRecordFinder(
             this._initialTileIndex,
             this._clickedGroupIndex,
             true
         );
+
         const currentIndex = this._records.indexOf(currentTile);
         const beforeIndex = this._records.indexOf(beforeTile) + 1;
         this._records = this.swapRecords(currentIndex, beforeIndex);
@@ -1421,14 +1423,16 @@ export default class Kanban extends LightningElement {
         return this._records.find((record) => {
             if (
                 record[this.groupFieldName] ===
-                this._groupValues[groupIndex].label
+                    this._groupValues[groupIndex].label &&
+                record[this.subGroupFieldName] === this._currentSubGroup
             ) {
                 tileCount++;
             }
             return (
                 tileCount === tileIndex &&
                 record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].label
+                    this._groupValues[groupIndex].label &&
+                record[this.subGroupFieldName] === this._currentSubGroup
             );
         });
     }
