@@ -118,6 +118,10 @@ export default {
 const Template = (args) => Skeleton(args);
 
 export const Base = Template.bind({});
+Base.args = {
+    variant: 'text',
+    animation: 'pulse'
+};
 
 export const Avatar = Template.bind({});
 Avatar.args = {

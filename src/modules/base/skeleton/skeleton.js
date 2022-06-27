@@ -338,14 +338,14 @@ export default class Skeleton extends LightningElement {
         return this.variant === 'progress-indicator';
     }
 
-    // @api
-    // get isRegularVariant() {
-    //     return (
-    //         this.variant === 'text' ||
-    //         this.variant === 'circular' ||
-    //         this.variant === 'rectangular'
-    //     );
-    // }
+    @api
+    get isRegularVariant() {
+        return (
+            this.variant === 'text' ||
+            this.variant === 'circular' ||
+            this.variant === 'rectangular'
+        );
+    }
 
     @api
     get isTabsetBaseVariant() {
@@ -711,6 +711,12 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
+    get regularVariantsClass() {
+        return classSet(`avonni-skeleton__variant-${this.variant}`).add(
+            `avonni-skeleton__animation-${this.animation}`
+        );
+    }
+
     get tabClass() {
         return classSet(`avonni-skeleton_tabset-${this.animation}`);
     }
@@ -814,9 +820,9 @@ export default class Skeleton extends LightningElement {
             case 'circular':
                 this.setRectangularCircularSize();
                 break;
-            case 'tabset':
-                this.handleTabset();
-                break;
+            // case 'tabset':
+            //     this.handleTabset();
+            //     break;
             case 'tree':
                 this.handleTree();
                 break;
