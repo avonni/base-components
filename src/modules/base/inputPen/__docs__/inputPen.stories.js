@@ -237,8 +237,8 @@ Disabled.args = {
     fieldLevelHelp: 'A default value has been set'
 };
 
-export const Signature = Template.bind({});
-Signature.args = {
+export const SignaturePad = Template.bind({});
+SignaturePad.args = {
     label: 'Signature Field',
     showSignaturePad: true,
     required: true,
