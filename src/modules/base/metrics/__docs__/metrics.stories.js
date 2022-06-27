@@ -35,18 +35,6 @@ import { Metrics } from '../__examples__/metrics';
 export default {
     title: 'Example/Metrics',
     argTypes: {
-        align: {
-            control: {
-                type: 'select'
-            },
-            options: ['left', 'center', 'right'],
-            description:
-                'The horizontal alignment of the statistic. Valid values include center, left or right.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
-            }
-        },
         avatar: {
             control: {
                 type: 'object'
@@ -88,18 +76,6 @@ export default {
             description: 'Additional text to display below the label.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        enableTrend: {
-            name: 'enable-trend',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'Whether to display the primary value with a positive or negative trend color.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
             }
         },
         formatStyle: {
@@ -180,18 +156,6 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        positiveTrend: {
-            name: 'positive-trend',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the primary value will be considered a positive trend.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         prefix: {
             control: {
                 type: 'text'
@@ -223,18 +187,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'symbol' }
-            }
-        },
-        secondaryEnableTrend: {
-            name: 'seconday-enable-trend',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the secondary value will be displayed with a positive or negative trend color.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
             }
         },
         secondaryFormatStyle: {
@@ -305,36 +257,12 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        secondaryPositiveTrend: {
-            name: 'secondary-positive-trend',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the secondary value will be considered a positive trend.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         secondaryPrefix: {
             name: 'secondary-prefix',
             control: {
                 type: 'text'
             },
             description: 'Text to display before the secondary value.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        secondarySignDisplay: {
-            name: 'secondary-sign-display',
-            control: {
-                type: 'select'
-            },
-            options: ['auto', 'exceptZero', 'trendArrows'],
-            description:
-                'Valid values include auto, exceptZero and trendArrows.',
             table: {
                 type: { summary: 'string' }
             }
@@ -349,6 +277,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        secondaryTrendColorBreakpointValue: {
+            name: 'seconday-trend-color-breakpoint-value',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number at which the secondary value will be considered neutral. \nIf the secondary value is equal to, or greater than the breakpoint, it will be displayed with a positive color. If the secondary value is lesser than the breakpoint, it will be displayed with a negative color.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         secondaryValue: {
             name: 'secondary-value',
             control: {
@@ -360,16 +299,23 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        signDisplay: {
-            name: 'sign-display',
+        secondaryValueSign: {
+            name: 'secondary-value-sign',
             control: {
                 type: 'select'
             },
-            options: ['auto', 'exceptZero', 'trendArrows'],
+            options: [
+                'arrow',
+                'auto',
+                'caret',
+                'dynamic-icon',
+                'minus-and-plus'
+            ],
             description:
-                'Valid values include auto, exceptZero and trendArrows.',
+                'Determine which sign to display before the secondary value, to indicate if it is positive or negative. \nValid values include arrow, auto, caret, dynamic-icon and minus-and-plus.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'auto' }
             }
         },
         suffix: {
@@ -390,6 +336,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        trendColorBreakpointValue: {
+            name: 'trend-color-breakpoint-value',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number at which the value will be considered neutral. \nIf the value is equal to, or greater than the breakpoint, it will be displayed with a positive color. If the value is lesser than the breakpoint, it will be displayed with a negative color.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         value: {
             control: {
                 type: 'number'
@@ -400,21 +357,35 @@ export default {
                 type: { summary: 'number' },
                 defaultValue: { summary: '0' }
             }
+        },
+        valueSign: {
+            name: 'value-sign',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'arrow',
+                'auto',
+                'caret',
+                'dynamic-icon',
+                'minus-and-plus'
+            ],
+            description:
+                'Determine which sign to display before the value, to indicate if it is positive or negative. \nValid values include arrow, auto, caret, dynamic-icon and minus-and-plus.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'auto' }
+            }
         }
     },
     args: {
-        align: 'left',
         currencyDisplayAs: 'symbol',
-        enableTrend: false,
         formatStyle: 'decimal',
-        positiveTrend: false,
         secondaryCurrencyDisplayAs: 'symbol',
-        secondaryEnableTrend: false,
         secondaryFormatStyle: 'decimal',
-        secondaryPositiveTrend: false,
-        secondarySignDisplay: 'auto',
-        signDisplay: 'auto',
-        value: 0
+        secondaryValueSign: 'auto',
+        value: 0,
+        valueSign: 'auto'
     }
 };
 
@@ -442,9 +413,8 @@ AvatarAndSecondaryTrendUp.args = {
         size: 'large'
     },
     label: 'Total Subscribers',
-    secondaryFormatStyle: 'percent',
-    secondaryEnableTrend: true,
-    secondaryPositiveTrend: true,
+    secondaryValueSign: 'arrow',
+    secondaryTrendColorBreakpointValue: 10,
     secondaryValue: 122,
     value: 71897
 };

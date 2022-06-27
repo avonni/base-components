@@ -31,16 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString
-} from 'c/utilsPrivate';
+import { normalizeObject, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const ALIGNMENTS = {
+const AVATAR_POSITIONS = {
     default: 'left',
-    valid: ['center', 'left', 'right']
+    valid: ['top', 'bottom', 'left', 'right']
 };
 
 const CURRENCY_DISPLAYS = {
@@ -55,8 +51,8 @@ const FORMAT_STYLES = {
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
 
-const SIGN_DISPLAYS = {
-    valid: ['auto', 'exceptZero', 'trendArrows'],
+const VALUE_SIGNS = {
+    valid: ['auto', 'minus-and-plus', 'dynamic-icon', 'arrow', 'caret'],
     default: 'auto'
 };
 
@@ -71,47 +67,33 @@ export default class Metrics extends LightningElement {
     @api suffix;
     @api tooltip;
 
-    _align = ALIGNMENTS.default;
     _avatar;
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _enableTrend = false;
     _formatStyle = FORMAT_STYLES.default;
     _maximumFractionDigits;
     _maximumSignificantDigits;
     _minimumFractionDigits;
     _minimumIntegerDigits;
     _minimumSignificantDigits;
-    _positiveTrend = false;
     _secondaryCurrencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _secondaryEnableTrend;
-    _secondaryFormatStyles;
+    _secondaryFormatStyle;
     _secondaryMaximumFractionDigits;
     _secondaryMaximumSignificantDigits;
     _secondaryMinimumFractionDigits;
     _secondaryMinimumIntegerDigits;
     _secondaryMinimumSignificantDigits;
-    _secondaryPositiveTrend = false;
-    _secondarySignDisplay = SIGN_DISPLAYS.default;
+    _secondaryTrendColorBreakpointValue;
     _secondaryValue;
-    _signDisplay = SIGN_DISPLAYS.default;
+    _secondaryValueSign = VALUE_SIGNS.default;
+    _trendColorBreakpointValue;
     _value = DEFAULT_VALUE;
+    _valueSign = VALUE_SIGNS.default;
 
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    @api
-    get align() {
-        return this._align;
-    }
-    set align(value) {
-        this._align = normalizeString(value, {
-            fallbackValue: ALIGNMENTS.default,
-            validValues: ALIGNMENTS.valid
-        });
-    }
 
     @api
     get avatar() {
@@ -136,19 +118,22 @@ export default class Metrics extends LightningElement {
     }
 
     @api
-    get enableTrend() {
-        return this._enableTrend;
+    get trendColorBreakpointValue() {
+        return this._trendColorBreakpointValue;
     }
-    set enableTrend(value) {
-        this._enableTrend = normalizeBoolean(value);
+    set trendColorBreakpointValue(value) {
+        const normalizedNumber = Number(value);
+        this._trendColorBreakpointValue = isNaN(normalizedNumber)
+            ? undefined
+            : normalizedNumber;
     }
 
     @api
-    get formatStyles() {
-        return this._formatStyles;
+    get formatStyle() {
+        return this._formatStyle;
     }
-    set formatStyles(value) {
-        this._formatStyles = normalizeString(value, {
+    set formatStyle(value) {
+        this._formatStyle = normalizeString(value, {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
         });
@@ -216,14 +201,6 @@ export default class Metrics extends LightningElement {
     }
 
     @api
-    get positiveTrend() {
-        return this._positiveTrend;
-    }
-    set positiveTrend(value) {
-        this._positiveTrend = normalizeBoolean(value);
-    }
-
-    @api
     get secondaryCurrencyDisplayAs() {
         return this._secondaryCurrencyDisplayAs;
     }
@@ -235,19 +212,11 @@ export default class Metrics extends LightningElement {
     }
 
     @api
-    get secondaryEnableTrend() {
-        return this._secondaryEnableTrend;
+    get secondaryFormatStyle() {
+        return this._secondaryFormatStyle;
     }
-    set secondaryEnableTrend(value) {
-        this._secondaryEnableTrend = normalizeBoolean(value);
-    }
-
-    @api
-    get secondaryFormatStyles() {
-        return this._secondaryFormatStyles;
-    }
-    set secondaryFormatStyles(value) {
-        this._secondaryFormatStyles = normalizeString(value, {
+    set secondaryFormatStyle(value) {
+        this._secondaryFormatStyle = normalizeString(value, {
             fallbackValue: FORMAT_STYLES.default,
             validValues: FORMAT_STYLES.valid
         });
@@ -321,22 +290,14 @@ export default class Metrics extends LightningElement {
     }
 
     @api
-    get secondaryPositiveTrend() {
-        return this._secondaryPositiveTrend;
+    get secondaryTrendColorBreakpointValue() {
+        return this._secondaryTrendColorBreakpointValue;
     }
-    set secondaryPositiveTrend(value) {
-        this._secondaryPositiveTrend = normalizeBoolean(value);
-    }
-
-    @api
-    get secondarySignDisplay() {
-        return this._secondarySignDisplay;
-    }
-    set secondarySignDisplay(value) {
-        this._secondarySignDisplay = normalizeString(value, {
-            fallbackValue: SIGN_DISPLAYS.default,
-            validValues: SIGN_DISPLAYS.valid
-        });
+    set secondaryTrendColorBreakpointValue(value) {
+        const normalizedNumber = Number(value);
+        this._secondaryTrendColorBreakpointValue = isNaN(normalizedNumber)
+            ? undefined
+            : normalizedNumber;
     }
 
     @api
@@ -351,13 +312,13 @@ export default class Metrics extends LightningElement {
     }
 
     @api
-    get signDisplay() {
-        return this._signDisplay;
+    get secondaryValueSign() {
+        return this._secondaryValueSign;
     }
-    set signDisplay(value) {
-        this._signDisplay = normalizeString(value, {
-            fallbackValue: SIGN_DISPLAYS.default,
-            validValues: SIGN_DISPLAYS.valid
+    set secondaryValueSign(value) {
+        this._secondaryValueSign = normalizeString(value, {
+            fallbackValue: VALUE_SIGNS.default,
+            validValues: VALUE_SIGNS.valid
         });
     }
 
@@ -372,35 +333,128 @@ export default class Metrics extends LightningElement {
             : DEFAULT_VALUE;
     }
 
+    @api
+    get valueSign() {
+        return this._valueSign;
+    }
+    set valueSign(value) {
+        this._valueSign = normalizeString(value, {
+            fallbackValue: VALUE_SIGNS.default,
+            validValues: VALUE_SIGNS.valid
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
 
-    get secondaryTrendOption() {
-        return this.secondaryPositiveTrend ? 'up' : 'down';
+    get avatarClass() {
+        const position = normalizeString(this.avatar.position, {
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
+        });
+
+        return classSet({
+            'slds-m-right_x-small': position === 'left',
+            'avonni-metrics__avatar_after-text slds-m-left_x-small':
+                position === 'right',
+            'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
+            'slds-m-top_x-small avonni-metrics__avatar_after-text slds-size_1-of-1':
+                position === 'bottom'
+        }).toString();
     }
 
-    get secondaryTrendClass() {
+    get positiveSecondaryValue() {
+        return Math.abs(this.secondaryValue);
+    }
+
+    get positiveValue() {
+        return Math.abs(this.value);
+    }
+
+    get secondaryDynamicIconOption() {
+        if (this.secondaryValue === 0) {
+            return 'neutral';
+        }
+        return this.secondaryValue > 0 ? 'up' : 'down';
+    }
+
+    get secondaryDynamicIconClass() {
         return classSet('slds-align-middle')
             .add({
-                'slds-m-right_xx-small': this.secondaryPositiveTrend,
-                'slds-m-left_xx-small': !this.secondaryPositiveTrend
+                'slds-m-right_xx-small': this.secondaryValue > 0,
+                'slds-m-left_xx-small': this.secondaryValue < 0
             })
             .toString();
+    }
+
+    get secondaryIconName() {
+        if (this.secondaryValueSign === 'arrow') {
+            return this.secondaryValue > 0
+                ? 'utility:arrowup'
+                : 'utility:arrowdown';
+        }
+        return this.secondaryValue > 0 ? 'utility:up' : 'utility:down';
+    }
+
+    get secondaryMathSign() {
+        const displayMinusAndPlus =
+            this.secondaryValueSign === 'minus-and-plus';
+        const displayMinus = this.secondaryValueSign === 'auto';
+        const displayIcon = !displayMinusAndPlus && !displayMinus;
+        const neutralValue = this.secondaryValue === 0;
+
+        if (
+            displayIcon ||
+            neutralValue ||
+            (displayMinus && this.secondaryValue > 0)
+        ) {
+            return null;
+        }
+        return this.secondaryValue > 0 ? '+' : '-';
+    }
+
+    get secondaryValueSignAlternativeText() {
+        if (this.secondaryValue === 0) {
+            return null;
+        }
+        return this.secondaryValue > 0 ? 'up' : 'down';
     }
 
     get secondaryWrapperClass() {
-        return classSet('slds-grid slds-m-left_xx-small')
+        const showTrendColor = !isNaN(this.secondaryTrendColorBreakpointValue);
+        const isPositive =
+            this.secondaryValue > this.secondaryTrendColorBreakpointValue;
+        const isNegative =
+            this.secondaryValue < this.secondaryTrendColorBreakpointValue;
+
+        return classSet(
+            'slds-grid slds-grid_vertical-align-center slds-m-left_xx-small avonni-metrics__secondary-value'
+        )
             .add({
-                'slds-p-around_xx-small': this.secondaryEnableTrend,
+                'slds-p-around_xx-small': showTrendColor,
+                'avonni-metrics__secondary_neutral-trend':
+                    showTrendColor && !isPositive && !isNegative,
                 'avonni-metrics__secondary_positive-trend':
-                    this.secondaryEnableTrend && this.secondaryPositiveTrend,
+                    showTrendColor && isPositive,
                 'avonni-metrics__secondary_negative-trend':
-                    this.secondaryEnableTrend && !this.secondaryPositiveTrend
+                    showTrendColor && isNegative
             })
             .toString();
+    }
+
+    get showSecondaryDynamicIcon() {
+        return this.secondaryValueSign === 'dynamic-icon';
+    }
+
+    get showSecondaryIcon() {
+        return (
+            this.secondaryValue !== 0 &&
+            (this.secondaryValueSign === 'arrow' ||
+                this.secondaryValueSign === 'caret')
+        );
     }
 
     get showSecondaryValue() {

@@ -1,3 +1,9 @@
+/* Avatar */
+.avonni-metrics__avatar_after-text {
+    order: 1;
+}
+
+/* Texts and value */
 .avonni-metrics__description {
     font-size: var(--avonni-metrics-description-font-size, 0.75rem);
     font-weight: var(--avonni-metrics-description-font-weight, normal);
@@ -29,10 +35,23 @@
     color: var(--avonni-metrics-value-text-color, #181818);
 }
 
-/* Secondary */
+/* Secondary texts and value */
 .avonni-metrics__secondary-value {
     font-size: var(--avonni-metrics-secondary-value-font-size, 0.8125rem);
     font-weight: var(--avonni-metrics-secondary-value-font-weight, bold);
+    color: var(--avonni-metrics-secondary-value-text-color, #444444);
+}
+
+.avonni-metrics__secondary_neutral-trend {
+    color: var(--avonni-metrics-secondary-neutral-trend-text-color, #181818);
+    background-color: var(
+        --avonni-metrics-secondary-neutral-trend-color-background,
+        #f3f3f3
+    );
+    border-radius: var(
+        --avonni-metrics-secondary-neutral-trend-radius,
+        0.25rem
+    );
 }
 
 .avonni-metrics__secondary_positive-trend {
@@ -57,4 +76,12 @@
         --avonni-metrics-secondary-positive-trend-radius,
         0.25rem
     );
+}
+
+.avonni-metrics__secondary-icon {
+    /* Adapt the trend icon to the height of the text */
+    display: flex;
+    width: var(--avonni-metrics-secondary-value-font-size, 0.8125rem);
+    height: var(--avonni-metrics-secondary-value-font-size, 0.8125rem);
+    align-items: center;
 }

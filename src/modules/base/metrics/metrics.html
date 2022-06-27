@@ -33,10 +33,10 @@
 -->
 
 <template>
-    <div class="slds-grid">
+    <div class="slds-grid slds-wrap">
         <c-avatar
             if:true={avatar}
-            class="slds-m-right_x-small"
+            class={avatarClass}
             alternative-text={avatar.alternativeText}
             fallback-icon-name={avatar.fallbackIconName}
             hide-avatar-details
@@ -63,7 +63,7 @@
                     minimum-fraction-digits={minimumFractionDigits}
                     minimum-integer-digits={minimumIntegerDigits}
                     minimum-significant-digits={minimumSignificantDigits}
-                    value={value}
+                    value={positiveValue}
                 ></lightning-formatted-number>
                 &nbsp;
                 <span if:true={suffix} class="avonni-metrics__suffix"
@@ -72,21 +72,33 @@
 
                 <!-- Secondary -->
                 <div if:true={showSecondaryValue} class={secondaryWrapperClass}>
+                    <!-- Sign -->
                     <lightning-dynamic-icon
-                        if:true={secondaryEnableTrend}
-                        class={secondaryTrendClass}
-                        alternative-text={secondaryTrendAlternativeText}
-                        option={secondaryTrendOption}
+                        if:true={showSecondaryDynamicIcon}
+                        class={secondaryDynamicIconClass}
+                        alternative-text={secondaryValueSignAlternativeText}
+                        option={secondaryDynamicIconOption}
                         type="trend"
                     ></lightning-dynamic-icon>
+                    <span if:true={secondaryMathSign}>{secondaryMathSign}</span>
+                    <c-primitive-icon
+                        if:true={showSecondaryIcon}
+                        class="
+                            avonni-metrics__secondary-icon
+                            slds-current-color
+                        "
+                        icon-name={secondaryIconName}
+                    ></c-primitive-icon>
+                    &nbsp;
+
+                    <!-- Prefix -->
                     <span
                         if:true={secondaryPrefix}
                         class="avonni-metrics__secondary-prefix"
-                        >{secondaryPrefix}</span
+                        >{secondaryPrefix}&nbsp;</span
                     >
-                    &nbsp;
+                    <!-- Value -->
                     <lightning-formatted-number
-                        class="avonni-metrics__secondary-value"
                         currency-code={secondaryCurrencyCode}
                         currency-display-as={secondaryCurrencyDisplayAs}
                         format-style={secondaryFormatStyle}
@@ -95,16 +107,17 @@
                         minimum-fraction-digits={secondaryMinimumFractionDigits}
                         minimum-integer-digits={secondaryMinimumIntegerDigits}
                         minimum-significant-digits={secondaryMinimumSignificantDigits}
-                        value={secondaryValue}
+                        value={positiveSecondaryValue}
                     ></lightning-formatted-number>
-                    &nbsp;
+                    <!-- Suffix -->
                     <span
                         if:true={secondarySuffix}
                         class="avonni-metrics__secondary-suffix"
-                        >{secondarySuffix}</span
+                        >&nbsp;{secondarySuffix}</span
                     >
                 </div>
             </div>
+            <!-- Description -->
             <div if:true={description} class="avonni-metrics__description">
                 {description}
             </div>

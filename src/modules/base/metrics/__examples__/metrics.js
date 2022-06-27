@@ -40,7 +40,6 @@ export const Metrics = ({
     currencyCode,
     currencyDisplayAs,
     description,
-    enableTrend,
     formatStyle,
     label,
     maximumFractionDigits,
@@ -48,25 +47,24 @@ export const Metrics = ({
     minimumFractionDigits,
     minimumIntegerDigits,
     minimumSignificantDigits,
-    positiveTrend,
     prefix,
     secondaryCurrencyCode,
     secondaryCurrencyDisplayAs,
-    secondaryEnableTrend,
-    secondaryFormatStyles,
+    secondaryFormatStyle,
     secondaryMaximumFractionDigits,
     secondaryMaximumSignificantDigits,
     secondaryMinimumFractionDigits,
     secondaryMinimumIntegerDigits,
     secondaryMinimumSignificantDigits,
-    secondaryPositiveTrend,
     secondaryPrefix,
-    secondarySignDisplay,
     secondarySuffix,
+    secondaryValueSign,
+    secondaryTrendColorBreakpointValue,
     secondaryValue,
-    signDisplay,
     suffix,
     tooltip,
+    trendColorBreakpointValue,
+    valueSign,
     value
 }) => {
     const element = document.createElement('ac-metrics');
@@ -75,7 +73,6 @@ export const Metrics = ({
     element.currencyCode = currencyCode;
     element.currencyDisplayAs = currencyDisplayAs;
     element.description = description;
-    element.enableTrend = enableTrend;
     element.formatStyle = formatStyle;
     element.label = label;
     element.maximumFractionDigits = maximumFractionDigits;
@@ -83,12 +80,10 @@ export const Metrics = ({
     element.minimumFractionDigits = minimumFractionDigits;
     element.minimumIntegerDigits = minimumIntegerDigits;
     element.minimumSignificantDigits = minimumSignificantDigits;
-    element.positiveTrend = positiveTrend;
     element.prefix = prefix;
     element.secondaryCurrencyCode = secondaryCurrencyCode;
     element.secondaryCurrencyDisplayAs = secondaryCurrencyDisplayAs;
-    element.secondaryEnableTrend = secondaryEnableTrend;
-    element.secondaryFormatStyles = secondaryFormatStyles;
+    element.secondaryFormatStyle = secondaryFormatStyle;
     element.secondaryMaximumFractionDigits = secondaryMaximumFractionDigits;
     element.secondaryMaximumSignificantDigits =
         secondaryMaximumSignificantDigits;
@@ -96,14 +91,16 @@ export const Metrics = ({
     element.secondaryMinimumIntegerDigits = secondaryMinimumIntegerDigits;
     element.secondaryMinimumSignificantDigits =
         secondaryMinimumSignificantDigits;
-    element.secondaryPositiveTrend = secondaryPositiveTrend;
+    element.secondaryTrendColorBreakpointValue =
+        secondaryTrendColorBreakpointValue;
     element.secondaryPrefix = secondaryPrefix;
-    element.secondarySignDisplay = secondarySignDisplay;
     element.secondarySuffix = secondarySuffix;
+    element.secondaryValueSign = secondaryValueSign;
+    element.trendColorBreakpointValue = trendColorBreakpointValue;
     element.secondaryValue = secondaryValue;
-    element.signDisplay = signDisplay;
     element.suffix = suffix;
     element.tooltip = tooltip;
     element.value = value;
+    element.valueSign = valueSign;
     return element;
 };
