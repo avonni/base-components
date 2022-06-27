@@ -35,7 +35,10 @@
 <template>
     <span class={badgeClass} data-element-id="avonni-skeleton__badge-wrapper">
         <template if:true={badgeHasLeftIcon}>
-            <span class="slds-badge__icon slds-badge__icon_left">
+            <span
+                class="slds-badge__icon slds-badge__icon_left"
+                data-element-id="avonni-skeleton__badge-left-icon"
+            >
                 <div class="slds-avatar_x-small"></div>
             </span>
         </template>
@@ -44,7 +47,10 @@
             data-element-id="avonni-skeleton__badge-label"
         ></div>
         <template if:true={badgeHasRightIcon}>
-            <span class="slds-badge__icon slds-badge__icon_right">
+            <span
+                class="slds-badge__icon slds-badge__icon_right"
+                data-element-id="avonni-skeleton__badge-right-icon"
+            >
                 <div class="slds-avatar_x-small"></div>
             </span>
         </template>
