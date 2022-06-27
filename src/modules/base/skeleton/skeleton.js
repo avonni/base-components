@@ -35,7 +35,8 @@ import {
     normalizeString,
     CHIP_VARIANT_VALUES,
     BADGE_VARIANT_VALUES,
-    BUTTON_VARIANT_VALUES
+    BUTTON_VARIANT_VALUES,
+    BUTTON_ICON_VARIANT_VALUES
 } from 'c/utilsPrivate';
 import { api, LightningElement } from 'lwc';
 import avatar from './avatar.html';
@@ -573,7 +574,10 @@ export default class Skeleton extends LightningElement {
                 'slds-button_icon-brand':
                     this.variantAttributes.variant === 'brand',
                 'slds-button_icon-inverse':
-                    this.variantAttributes.variant === 'inverse'
+                    this.variantAttributes.variant === 'inverse',
+                'slds-button_icon-border':
+                    this.variantAttributes.variant === 'container' ||
+                    this.variantAttributes.variant === 'border'
             })
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
     }
@@ -1135,27 +1139,17 @@ export default class Skeleton extends LightningElement {
         const buttonIconElement = this.template.querySelector(
             '[data-element-id="avonni-skeleton-button-icon"]'
         );
-
-        if (this.variantAttributes.variant === 'brand') {
-            buttonIconElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#0176d3'
-            );
-            buttonIconElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#2791e8'
-            );
-        }
-        if (this.variantAttributes.variant === 'inverse') {
-            buttonIconElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#16325c'
-            );
-            buttonIconElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#365380'
-            );
-        }
+        const buttonIconVariantAttributes = BUTTON_ICON_VARIANT_VALUES.get(
+            this.variantAttributes.variant
+        );
+        buttonIconElement.style.setProperty(
+            '--avonni-skeleton-color-background',
+            buttonIconVariantAttributes.background
+        );
+        buttonIconElement.style.setProperty(
+            '--avonni-skeleton-color-background-animation',
+            buttonIconVariantAttributes.backgroundAnimation
+        );
     }
 
     updateComboboxClassList() {

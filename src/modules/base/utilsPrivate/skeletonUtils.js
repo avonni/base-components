@@ -214,3 +214,48 @@ export const BUTTON_VARIANT_VALUES = new Map([
         }
     ]
 ]);
+
+export const BUTTON_ICON_VARIANT_VALUES = new Map([
+    [
+        'bare',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede'
+        }
+    ],
+    [
+        'container',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede'
+        }
+    ],
+    [
+        'border',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede'
+        }
+    ],
+    [
+        'brand',
+        {
+            background: '#0176d3',
+            backgroundAnimation: '#2791e8'
+        }
+    ],
+    [
+        'border-inverse',
+        {
+            background: '#16325c',
+            backgroundAnimation: '#365380'
+        }
+    ],
+    [
+        'base',
+        {
+            background: '#ecebea',
+            backgroundAnimation: '#dedede'
+        }
+    ]
+]);

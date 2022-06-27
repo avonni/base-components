@@ -47,7 +47,8 @@ export {
 export {
     CHIP_VARIANT_VALUES,
     BADGE_VARIANT_VALUES,
-    BUTTON_VARIANT_VALUES
+    BUTTON_VARIANT_VALUES,
+    BUTTON_ICON_VARIANT_VALUES
 } from './skeletonUtils';
 export {
     generateColors,
