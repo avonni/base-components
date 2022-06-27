@@ -108,7 +108,9 @@
                         class="slds-popover__close slds-p-top_xxx-small"
                     ></lightning-button-icon>
 
-                    <header class="slds-media slds-p-top_x-small">
+                    <header
+                        class="slds-media slds-media_center slds-p-top_x-small"
+                    >
                         <!-- item's icon -->
                         <lightning-icon
                             if:true={selectedItem.iconName}
@@ -117,7 +119,7 @@
                             class="slds-media__figure"
                         ></lightning-icon>
                         <!-- item's title -->
-                        <div class="slds-text-heading_x-small">
+                        <div class="slds-text-heading_medium">
                             <a
                                 if:true={selectedItem.href}
                                 href={selectedItem.href}
@@ -131,7 +133,7 @@
                     </header>
                     <!-- Table (2 columns) for fields -->
                     <footer
-                        class="slds-grid slds-wrap"
+                        class="slds-grid slds-wrap slds-media__body"
                         if:true={selectedItem.fields}
                     >
                         <template
