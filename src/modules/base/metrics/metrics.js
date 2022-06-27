@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeObject, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { Tooltip } from 'c/tooltipLibrary';
 
 const AVATAR_POSITIONS = {
     default: 'left',
@@ -65,7 +66,6 @@ export default class Metrics extends LightningElement {
     @api secondaryPrefix;
     @api secondarySuffix;
     @api suffix;
-    @api tooltip;
 
     _avatar;
     _currencyDisplayAs = CURRENCY_DISPLAYS.default;
@@ -85,9 +85,14 @@ export default class Metrics extends LightningElement {
     _secondaryTrendColorBreakpointValue;
     _secondaryValue;
     _secondaryValueSign = VALUE_SIGNS.default;
+    _tooltip;
     _trendColorBreakpointValue;
     _value = DEFAULT_VALUE;
     _valueSign = VALUE_SIGNS.default;
+
+    renderedCallback() {
+        this.initTooltip();
+    }
 
     /*
      * ------------------------------------------------------------
@@ -323,6 +328,26 @@ export default class Metrics extends LightningElement {
     }
 
     @api
+    get tooltip() {
+        return this._tooltip ? this._tooltip.value : undefined;
+    }
+    // remove-next-line-for-c-namespace
+    set tooltip(value) {
+        if (this._tooltip) {
+            this._tooltip.value = value;
+        } else if (value) {
+            this._tooltip = new Tooltip(value, {
+                root: this,
+                target: () =>
+                    this.template.querySelector(
+                        '[data-element-id="lightning-formatted-number-value"]'
+                    )
+            });
+            this._tooltip.initialize();
+        }
+    }
+
+    @api
     get value() {
         return this._value;
     }
@@ -517,5 +542,17 @@ export default class Metrics extends LightningElement {
 
     get showSecondaryValue() {
         return isFinite(this.secondaryValue);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
+        }
     }
 }

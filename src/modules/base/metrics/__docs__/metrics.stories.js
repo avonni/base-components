@@ -402,7 +402,6 @@ LabelAndDescription.args = {
     label: 'Gross volume',
     minimumFractionDigits: 2,
     value: 7552.8,
-    currencyCode: 'CAD',
     formatStyle: 'currency',
     avatar: {
         fallbackIconName: 'standard:lightning_usage',
@@ -416,7 +415,9 @@ PrefixAndSuffix.args = {
     prefix: 'Total of',
     minimumFractionDigits: 2,
     value: 8.6,
-    formatStyle: 'currency'
+    currencyCode: 'CAD',
+    formatStyle: 'currency',
+    tooltip: 'Canadian dollars'
 };
 
 export const TrendDown = Template.bind({});
