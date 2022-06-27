@@ -49,6 +49,7 @@ const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
 const MIN_INTERVAL_WIDTH = 2;
+const NUBBIN_TOP_POSITION_PX = 36;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
@@ -1099,9 +1100,9 @@ export class HorizontalActivityTimeline {
             tooltipElement.style('height')
         );
         if (element.fields) {
-            popoverPosition.y -= popoverHeight / 4 - SVG_ICON_SIZE / 2;
+            popoverPosition.y += SVG_ICON_SIZE / 2 - NUBBIN_TOP_POSITION_PX;
         } else {
-            popoverPosition.y -= SVG_ICON_SIZE / 2;
+            popoverPosition.y += SVG_ICON_SIZE / 2 - popoverHeight / 2;
         }
 
         return popoverPosition;
