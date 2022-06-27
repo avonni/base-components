@@ -57,14 +57,75 @@ const VALUE_SIGNS = {
     default: 'auto'
 };
 
+/**
+ * @class
+ * @descriptor avonni-metrics
+ * @storyId example-metrics--secondary-trend-up
+ * @public
+ */
 export default class Metrics extends LightningElement {
+    /**
+     * Only used if `format-style="currency"`, this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as `USD` for the US dollar.
+     *
+     * @type {string}
+     * @public
+     */
     @api currencyCode;
+
+    /**
+     * Additional text to display below the label.
+     *
+     * @type {string}
+     * @public
+     */
     @api description;
+
+    /**
+     * Label of the metrics. If present, it will be displayed on top of the data.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
+
+    /**
+     * Text to display before the primary value
+     *
+     * @type {string}
+     * @public
+     */
     @api prefix;
+
+    /**
+     * Only used if `secondary-format-style="currency"`, this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as `USD` for the US dollar.
+     *
+     * @type {string}
+     * @public
+     */
     @api secondaryCurrencyCode;
+
+    /**
+     * Text to display before the secondary value.
+     *
+     * @type {string}
+     * @public
+     */
     @api secondaryPrefix;
+
+    /**
+     * Text to display after the secondary value.
+     *
+     * @type {string}
+     * @public
+     */
     @api secondarySuffix;
+
+    /**
+     * Text to display after the primary value.
+     *
+     * @type {string}
+     * @public
+     */
     @api suffix;
 
     _avatar;
@@ -100,6 +161,12 @@ export default class Metrics extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Avatar object.
+     *
+     * @type {object}
+     * @public
+     */
     @api
     get avatar() {
         return this._avatar;
@@ -111,6 +178,13 @@ export default class Metrics extends LightningElement {
             : undefined;
     }
 
+    /**
+     * Determines how currency is displayed. Possible values are symbol, code, and name.
+     *
+     * @type {string}
+     * @default symbol
+     * @public
+     */
     @api
     get currencyDisplayAs() {
         return this._currencyDisplayAs;
@@ -122,17 +196,13 @@ export default class Metrics extends LightningElement {
         });
     }
 
-    @api
-    get trendColorBreakpointValue() {
-        return this._trendColorBreakpointValue;
-    }
-    set trendColorBreakpointValue(value) {
-        const normalizedNumber = Number(value);
-        this._trendColorBreakpointValue = isNaN(normalizedNumber)
-            ? undefined
-            : normalizedNumber;
-    }
-
+    /**
+     * The number formatting style to use. Possible values are decimal, currency, percent, and percent-fixed. This value defaults to decimal.
+     *
+     * @type {string}
+     * @default decimal
+     * @public
+     */
     @api
     get formatStyle() {
         return this._formatStyle;
@@ -144,6 +214,12 @@ export default class Metrics extends LightningElement {
         });
     }
 
+    /**
+     * The maximum number of fraction digits that are allowed.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get maximumFractionDigits() {
         return this._maximumFractionDigits;
@@ -155,6 +231,12 @@ export default class Metrics extends LightningElement {
             : normalizedNumber;
     }
 
+    /**
+     * The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get maximumSignificantDigits() {
         return this._maximumSignificantDigits;
@@ -168,6 +250,12 @@ export default class Metrics extends LightningElement {
         this._maximumSignificantDigits = isValid ? normalizedNumber : undefined;
     }
 
+    /**
+     * The minimum number of fraction digits that are required.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get minimumFractionDigits() {
         return this._minimumFractionDigits;
@@ -179,6 +267,12 @@ export default class Metrics extends LightningElement {
             : normalizedNumber;
     }
 
+    /**
+     * The minimum number of integer digits that are required. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get minimumIntegerDigits() {
         return this._minimumIntegerDigits;
@@ -192,6 +286,12 @@ export default class Metrics extends LightningElement {
         this._minimumIntegerDigits = isValid ? normalizedNumber : undefined;
     }
 
+    /**
+     * The minimum number of significant digits that are required. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get minimumSignificantDigits() {
         return this._minimumSignificantDigits;
@@ -205,6 +305,13 @@ export default class Metrics extends LightningElement {
         this._minimumSignificantDigits = isValid ? normalizedNumber : undefined;
     }
 
+    /**
+     * Determines how currency is displayed. Possible values are symbol, code, and name. This value defaults to symbol.
+     *
+     * @type {string}
+     * @default symbol
+     * @public
+     */
     @api
     get secondaryCurrencyDisplayAs() {
         return this._secondaryCurrencyDisplayAs;
@@ -216,6 +323,13 @@ export default class Metrics extends LightningElement {
         });
     }
 
+    /**
+     * The formatting style to use for the secondary value. Possible values are decimal, currency, percent, and percent-fixed.
+     *
+     * @type {string}
+     * @default decimal
+     * @public
+     */
     @api
     get secondaryFormatStyle() {
         return this._secondaryFormatStyle;
@@ -227,6 +341,12 @@ export default class Metrics extends LightningElement {
         });
     }
 
+    /**
+     * The maximum number of fraction digits that are allowed.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryMaximumFractionDigits() {
         return this._secondaryMaximumFractionDigits;
@@ -238,6 +358,12 @@ export default class Metrics extends LightningElement {
             : normalizedNumber;
     }
 
+    /**
+     * The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryMaximumSignificantDigits() {
         return this._secondaryMaximumSignificantDigits;
@@ -253,6 +379,12 @@ export default class Metrics extends LightningElement {
             : undefined;
     }
 
+    /**
+     * The minimum number of fraction digits that are required.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryMinimumFractionDigits() {
         return this._secondaryMinimumFractionDigits;
@@ -264,6 +396,12 @@ export default class Metrics extends LightningElement {
             : normalizedNumber;
     }
 
+    /**
+     * The minimum number of integer digits that are required. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryMinimumIntegerDigits() {
         return this._secondaryMinimumIntegerDigits;
@@ -279,6 +417,12 @@ export default class Metrics extends LightningElement {
             : undefined;
     }
 
+    /**
+     * The minimum number of significant digits that are required. Possible values are from 1 to 21.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryMinimumSignificantDigits() {
         return this._secondaryMinimumSignificantDigits;
@@ -294,6 +438,15 @@ export default class Metrics extends LightningElement {
             : undefined;
     }
 
+    /**
+     * Number at which the secondary value will be considered neutral.
+     * * If the value is equal to the breakpoint, it will be displayed with a neutral color.
+     * * If the value is greater than the breakpoint, it will be displayed with a positive color.
+     * * If the value is lesser than the breakpoint, it will be displayed with a negative color.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryTrendColorBreakpointValue() {
         return this._secondaryTrendColorBreakpointValue;
@@ -305,6 +458,12 @@ export default class Metrics extends LightningElement {
             : normalizedNumber;
     }
 
+    /**
+     * If present, a secondary number will be displayed to the right of the primary one.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get secondaryValue() {
         return this._secondaryValue;
@@ -316,6 +475,14 @@ export default class Metrics extends LightningElement {
             : undefined;
     }
 
+    /**
+     * Determine which sign to display before the secondary value, to indicate if it is positive or negative.
+     * Valid values include arrow, auto, caret, dynamic-icon and minus-and-plus.
+     *
+     * @type {string}
+     * @default auto
+     * @public
+     */
     @api
     get secondaryValueSign() {
         return this._secondaryValueSign;
@@ -327,6 +494,12 @@ export default class Metrics extends LightningElement {
         });
     }
 
+    /**
+     * Text to display when the user mouses over the value.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get tooltip() {
         return this._tooltip ? this._tooltip.value : undefined;
@@ -340,13 +513,41 @@ export default class Metrics extends LightningElement {
                 root: this,
                 target: () =>
                     this.template.querySelector(
-                        '[data-element-id="lightning-formatted-number-value"]'
+                        '[data-element-id="avonni-primitive-metric-primary"]'
                     )
             });
             this._tooltip.initialize();
         }
     }
 
+    /**
+     * Number at which the value will be considered neutral.
+     * * If the value is equal to the breakpoint, it will be displayed with a neutral color.
+     * * If the value is greater than the breakpoint, it will be displayed with a positive color.
+     * * If the value is lesser than the breakpoint, it will be displayed with a negative color.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get trendColorBreakpointValue() {
+        return this._trendColorBreakpointValue;
+    }
+    set trendColorBreakpointValue(value) {
+        const normalizedNumber = Number(value);
+        this._trendColorBreakpointValue = isNaN(normalizedNumber)
+            ? undefined
+            : normalizedNumber;
+    }
+
+    /**
+     * Value of the metric.
+     *
+     * @type {number}
+     * @required
+     * @default 0
+     * @public
+     */
     @api
     get value() {
         return this._value;
@@ -358,6 +559,14 @@ export default class Metrics extends LightningElement {
             : DEFAULT_VALUE;
     }
 
+    /**
+     * Determine which sign to display before the value, to indicate if it is positive or negative.
+     * Valid values include arrow, auto, caret, dynamic-icon and minus-and-plus.
+     *
+     * @type {string}
+     * @default auto
+     * @public
+     */
     @api
     get valueSign() {
         return this._valueSign;
@@ -375,6 +584,11 @@ export default class Metrics extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Computed CSS classes for the avatar.
+     *
+     * @type {string}
+     */
     get avatarClass() {
         const position = normalizeString(this.avatar.position, {
             fallbackValue: AVATAR_POSITIONS.default,
@@ -391,58 +605,26 @@ export default class Metrics extends LightningElement {
         }).toString();
     }
 
-    get dynamicIconClass() {
-        return classSet('slds-align-middle')
-            .add({
-                'slds-m-right_x-small': this.value > 0,
-                'slds-m-left_xx-small': this.value < 0,
-                'slds-m-right_xx-small': this.value <= 0
-            })
-            .toString();
-    }
-
-    get dynamicIconOption() {
-        if (this.value === 0) {
-            return 'neutral';
-        }
-        return this.value > 0 ? 'up' : 'down';
-    }
-
-    get iconName() {
-        const arrowIcon = this.valueSign === 'arrow';
-        const up = arrowIcon ? 'utility:arrowup' : 'utility:up';
-        const down = arrowIcon ? 'utility:arrowdown' : 'utility:down';
-        return this.value > 0 ? up : down;
-    }
-
-    get mathSign() {
-        const displayMinusAndPlus = this.valueSign === 'minus-and-plus';
-        const displayMinus = this.valueSign === 'auto';
-        const displayIcon = !displayMinusAndPlus && !displayMinus;
-        const neutralValue = this.value === 0;
-
-        if (displayIcon || neutralValue || (displayMinus && this.value > 0)) {
-            return null;
-        }
-        return this.value > 0 ? '+' : '-';
-    }
-
+    /**
+     * Absolute secondary value.
+     *
+     * @type {number}
+     */
     get positiveSecondaryValue() {
         return Math.abs(this.secondaryValue);
     }
 
-    get positiveValue() {
-        return Math.abs(this.value);
-    }
-
-    get primaryWrapperClass() {
+    /**
+     * Computed CSS classes for the primary metric.
+     *
+     * @type {string}
+     */
+    get primaryClass() {
         const showTrendColor = !isNaN(this.trendColorBreakpointValue);
         const isPositive = this.value > this.trendColorBreakpointValue;
         const isNegative = this.value < this.trendColorBreakpointValue;
 
-        return classSet(
-            'slds-grid slds-grid_vertical-align-end avonni-metrics__primary-wrapper'
-        )
+        return classSet('avonni-metrics__primary')
             .add({
                 'avonni-metrics__primary_neutral-trend':
                     showTrendColor && !isPositive && !isNegative,
@@ -454,59 +636,20 @@ export default class Metrics extends LightningElement {
             .toString();
     }
 
-    get secondaryDynamicIconOption() {
-        if (this.secondaryValue === 0) {
-            return 'neutral';
-        }
-        return this.secondaryValue > 0 ? 'up' : 'down';
-    }
-
-    get secondaryDynamicIconClass() {
-        return classSet('slds-align-middle')
-            .add({
-                'slds-m-right_x-small': this.secondaryValue > 0,
-                'slds-m-left_xx-small': this.secondaryValue < 0,
-                'slds-m-right_xx-small': this.secondaryValue <= 0
-            })
-            .toString();
-    }
-
-    get secondaryIconName() {
-        const arrowIcon = this.secondaryValueSign === 'arrow';
-        const up = arrowIcon ? 'utility:arrowup' : 'utility:up';
-        const down = arrowIcon ? 'utility:arrowdown' : 'utility:down';
-        return this.secondaryValue > 0 ? up : down;
-    }
-
-    get secondaryMathSign() {
-        const displayMinusAndPlus =
-            this.secondaryValueSign === 'minus-and-plus';
-        const displayMinus = this.secondaryValueSign === 'auto';
-        const displayIcon = !displayMinusAndPlus && !displayMinus;
-        const neutralValue = this.secondaryValue === 0;
-
-        if (
-            displayIcon ||
-            neutralValue ||
-            (displayMinus && this.secondaryValue > 0)
-        ) {
-            return null;
-        }
-        return this.secondaryValue > 0 ? '+' : '-';
-    }
-
-    get secondaryWrapperClass() {
+    /**
+     * Computed CSS classes for the secondary metric.
+     *
+     * @type {string}
+     */
+    get secondaryClass() {
         const showTrendColor = !isNaN(this.secondaryTrendColorBreakpointValue);
         const isPositive =
             this.secondaryValue > this.secondaryTrendColorBreakpointValue;
         const isNegative =
             this.secondaryValue < this.secondaryTrendColorBreakpointValue;
 
-        return classSet(
-            'slds-grid slds-grid_vertical-align-center slds-m-left_x-small'
-        )
+        return classSet('slds-m-left_x-small avonni-metrics__secondary')
             .add({
-                'slds-p-around_xx-small': showTrendColor,
                 'avonni-metrics__secondary_neutral-trend':
                     showTrendColor && !isPositive && !isNegative,
                 'avonni-metrics__secondary_positive-trend':
@@ -517,30 +660,12 @@ export default class Metrics extends LightningElement {
             .toString();
     }
 
-    get showDynamicIcon() {
-        return this.valueSign === 'dynamic-icon';
-    }
-
-    get showIcon() {
-        return (
-            this.value !== 0 &&
-            (this.valueSign === 'arrow' || this.valueSign === 'caret')
-        );
-    }
-
-    get showSecondaryDynamicIcon() {
-        return this.secondaryValueSign === 'dynamic-icon';
-    }
-
-    get showSecondaryIcon() {
-        return (
-            this.secondaryValue !== 0 &&
-            (this.secondaryValueSign === 'arrow' ||
-                this.secondaryValueSign === 'caret')
-        );
-    }
-
-    get showSecondaryValue() {
+    /**
+     * True if the secondary metric should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSecondaryMetric() {
         return isFinite(this.secondaryValue);
     }
 
@@ -550,6 +675,9 @@ export default class Metrics extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the tooltip.
+     */
     initTooltip() {
         if (this._tooltip && !this._tooltip.initialized) {
             this._tooltip.initialize();

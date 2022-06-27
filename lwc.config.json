@@ -379,6 +379,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveMetric",
+            "path": "src/modules/base/primitiveMetric/primitiveMetric.js"
+        },
+        {
             "name": "c/primitivePill",
             "path": "src/modules/base/primitivePill/primitivePill.js"
         },
