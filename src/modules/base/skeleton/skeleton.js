@@ -748,9 +748,6 @@ export default class Skeleton extends LightningElement {
 
     handleVariant() {
         switch (this.variant) {
-            case 'avatar':
-                this.handleAvatarVariant();
-                break;
             case 'badge':
                 this.handleBadgeVariant();
                 break;
@@ -765,12 +762,6 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'combobox':
                 this.handleComboboxVariant();
-                break;
-            case 'datatable':
-                this.handleDatableVariant();
-                break;
-            case 'progress-indicator':
-                this.handleProgressIndicator();
                 break;
             case 'text':
                 this.setTextSize();
@@ -790,11 +781,6 @@ export default class Skeleton extends LightningElement {
             default:
                 break;
         }
-    }
-
-    handleAvatarVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0)
-            this.updateAvatarClassList();
     }
 
     handleChipVariant() {
@@ -822,18 +808,6 @@ export default class Skeleton extends LightningElement {
     handleComboboxVariant() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateComboboxClassList();
-        }
-    }
-
-    handleDatableVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateDatatableClassList();
-        }
-    }
-
-    handleProgressIndicator() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateProgressIndicatorClassList();
         }
     }
 
@@ -1105,8 +1079,6 @@ export default class Skeleton extends LightningElement {
     updateComboboxClassList() {
         this.setTextSize();
     }
-
-    updateDatatableClassList() {}
 
     updateParagraphClassList() {
         const paragraphLines = this.template.querySelector(
