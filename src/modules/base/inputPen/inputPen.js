@@ -136,7 +136,6 @@ export default class InputPen extends LightningElement {
     cursor;
 
     showExtraButtons = false;
-    showExtraTools = false;
 
     constructor() {
         super();
@@ -161,9 +160,6 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.toolSlot) {
-            this.showExtraTool = this.toolSlot.assignedElements().length !== 0;
-        }
         if (this.buttonSlot) {
             this.showExtraButton =
                 this.buttonSlot.assignedElements().length !== 0;
@@ -497,6 +493,20 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * If the redo button should be disabled.
+     */
+    get disabledRedoButton() {
+        return this.disabled || this.redoStack.length === 0;
+    }
+
+    /**
+     * If the undo button should be disabled.
+     */
+    get disabledUndoButton() {
+        return this.disabled || this.undoStack.length === 0;
+    }
+
+    /**
      * Check if the canvas has value.
      *
      * @type {boolean}
@@ -726,7 +736,7 @@ export default class InputPen extends LightningElement {
         a.download = 'Signature.png';
         a.href = this.value
             ? this.value
-            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty image
+            : 'data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty image
         a.click();
     }
 
@@ -863,18 +873,15 @@ export default class InputPen extends LightningElement {
      * Fill background color to backgroundColor value.
      */
     fillBackground() {
-        const colorInfo = [
-            this._backgroundColor.slice(0, 7),
-            this._backgroundColor.slice(7)
-        ];
         this.backgroundCtx.clearRect(
             0,
             0,
             this.canvasElement.width,
             this.canvasElement.height
         );
-        this.backgroundCtx.globalAlpha = parseInt(colorInfo[1], 16) / 255;
-        this.backgroundCtx.fillStyle = colorInfo[0];
+        this.backgroundCtx.globalAlpha =
+            parseInt(this._backgroundColor.slice(7), 16) / 255;
+        this.backgroundCtx.fillStyle = this._backgroundColor;
         this.backgroundCtx.rect(
             0,
             0,

@@ -35,15 +35,24 @@ import InputPen from 'c/inputPen';
 
 let element;
 
+let mockedContext = {
+    clearRect: () => {},
+    rect: () => {},
+    fill: () => {},
+    stroke: () => {},
+    moveTo: () => {},
+    arc: () => {},
+    beginPath: () => {},
+    drawImage: () => {}
+};
+
 // Mock for HTMLCanvasElement in tests.
 HTMLCanvasElement.prototype.getContext = () => {
-    return {
-        clearRect: () => {},
-        rect: () => {},
-        fill: () => {},
-        stroke: () => {},
-        moveTo: () => {}
-    };
+    return mockedContext;
+};
+
+HTMLCanvasElement.prototype.toDataURL = () => {
+    return 'data:image/png;base64,dummyimage';
 };
 
 describe('Input pen', () => {
@@ -51,6 +60,7 @@ describe('Input pen', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
@@ -182,7 +192,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const draw = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='Draw']"
+                '[data-element-id="pen-tool"]'
             );
             expect(draw).toBeFalsy();
         });
@@ -193,7 +203,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const erase = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='Erase']"
+                '[data-element-id="eraser-tool"]'
             );
             expect(erase).toBeFalsy();
         });
@@ -204,18 +214,18 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const ink = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='ink']"
+                '[data-element-id="ink-tool"]'
             );
             expect(ink).toBeFalsy();
         });
     });
 
     it('Input pen disabled buttons paint', () => {
-        element.disabledButtons = 'paint';
+        element.disabledButtons = 'paintbrush';
 
         return Promise.resolve().then(() => {
             const paint = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='paint']"
+                '[data-element-id="paintbrush-tool"]'
             );
             expect(paint).toBeFalsy();
         });
@@ -226,7 +236,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const erase = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='Clear']"
+                '[data-element-id="clear-button"]'
             );
             expect(erase).toBeFalsy();
         });
@@ -351,6 +361,148 @@ describe('Input pen', () => {
                     '[data-element-id="signature-underline"]'
                 )
             ).toBeTruthy();
+        });
+    });
+
+    /* ----- TOOLS & BUTTONS ----- */
+
+    it('pen tool', () => {
+        element.mode = 'erase';
+        return Promise.resolve().then(() => {
+            const penButton = element.shadowRoot.querySelector(
+                '[data-element-id="pen-tool"]'
+            );
+            penButton.click();
+            expect(penButton).toBeTruthy();
+            expect(element.mode).toEqual('draw');
+        });
+    });
+
+    it('paintbrush tool', () => {
+        return Promise.resolve().then(() => {
+            const brushButton = element.shadowRoot.querySelector(
+                '[data-element-id="paintbrush-tool"]'
+            );
+            brushButton.click();
+            expect(brushButton).toBeTruthy();
+            expect(element.mode).toEqual('paint');
+        });
+    });
+
+    it('ink tool', () => {
+        return Promise.resolve().then(() => {
+            const inkButton = element.shadowRoot.querySelector(
+                '[data-element-id="ink-tool"]'
+            );
+            inkButton.click();
+            expect(inkButton).toBeTruthy();
+            expect(element.mode).toEqual('ink');
+        });
+    });
+
+    it('eraser tool', () => {
+        return Promise.resolve().then(() => {
+            const eraseButton = element.shadowRoot.querySelector(
+                '[data-element-id="eraser-tool"]'
+            );
+            eraseButton.click();
+            expect(eraseButton).toBeTruthy();
+            expect(element.mode).toEqual('erase');
+        });
+    });
+
+    it('size picker', () => {
+        return Promise.resolve().then(() => {
+            const sizePicker = element.shadowRoot.querySelector(
+                '[data-element-id="size-picker"]'
+            );
+            sizePicker.dispatchEvent(
+                CustomEvent('change', { detail: { value: 20 } })
+            );
+            expect(element.size).toEqual(20);
+        });
+    });
+
+    it('color picker', () => {
+        return Promise.resolve().then(() => {
+            const colorPicker = element.shadowRoot.querySelector(
+                '[data-element-id="color-picker"]'
+            );
+            colorPicker.dispatchEvent(
+                CustomEvent('change', { detail: { hex: '#cc1913' } })
+            );
+            expect(element.color).toEqual('#cc1913');
+        });
+    });
+
+    it('background color picker', () => {
+        let ctxBackgroundColor;
+
+        Object.defineProperty(mockedContext, 'fillStyle', {
+            set: jest.fn((value) => {
+                ctxBackgroundColor = value;
+            })
+        });
+        return Promise.resolve().then(() => {
+            const backgroundColorPicker = element.shadowRoot.querySelector(
+                '[data-element-id="background-color-picker"]'
+            );
+            backgroundColorPicker.dispatchEvent(
+                CustomEvent('change', { detail: { hexa: '#cc1913ff' } })
+            );
+            expect(ctxBackgroundColor).toEqual('#cc1913ff');
+        });
+    });
+
+    it('download button (with no content)', () => {
+        let downloaded = false;
+        let linkValue;
+        const link = {
+            click: () => {
+                downloaded = true;
+            }
+        };
+        Object.defineProperty(link, 'href', {
+            set: jest.fn((value) => {
+                linkValue = value;
+            })
+        });
+
+        jest.spyOn(document, 'createElement').mockReturnValue(link);
+
+        return Promise.resolve().then(() => {
+            const downloadButton = element.shadowRoot.querySelector(
+                '[data-element-id="download"]'
+            );
+            downloadButton.click();
+            expect(downloaded).toBeTruthy();
+            expect(linkValue).toEqual(
+                'data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+            );
+        });
+    });
+
+    it('undo (nothing to undo)', () => {
+        const undoSpy = jest.spyOn(element, 'undo');
+
+        return Promise.resolve().then(() => {
+            const undoButton = element.shadowRoot.querySelector(
+                '[data-element-id="undo"]'
+            );
+            undoButton.click();
+            expect(undoSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    it('redo (nothing to redo)', () => {
+        const redoSpy = jest.spyOn(element, 'redo');
+
+        return Promise.resolve().then(() => {
+            const redoButton = element.shadowRoot.querySelector(
+                '[data-element-id="undo"]'
+            );
+            redoButton.click();
+            expect(redoSpy).not.toHaveBeenCalled();
         });
     });
 });

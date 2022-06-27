@@ -71,6 +71,7 @@
                                 title="Draw"
                                 onclick={setDraw}
                                 disabled={disabled}
+                                data-element-id="pen-tool"
                             >
                             </lightning-button-icon>
                         </li>
@@ -82,6 +83,7 @@
                                 title="Paint"
                                 onclick={setPaint}
                                 disabled={disabled}
+                                data-element-id="paintbrush-tool"
                             >
                             </lightning-button-icon>
                         </li>
@@ -96,6 +98,7 @@
                                 title="Ink"
                                 onclick={setInk}
                                 disabled={disabled}
+                                data-element-id="ink-tool"
                             >
                                 <svg
                                     class="slds-button__icon"
@@ -121,6 +124,7 @@
                                 title="Erase"
                                 onclick={setErase}
                                 disabled={disabled}
+                                data-element-id="eraser-tool"
                             >
                                 <svg
                                     class="slds-button__icon"
@@ -221,7 +225,7 @@
                                 alternative-text="Undo"
                                 title="Undo"
                                 onclick={handleUndo}
-                                disabled={disabled}
+                                disabled={disabledUndoButton}
                                 data-element-id="undo"
                             >
                             </lightning-button-icon>
@@ -233,7 +237,7 @@
                                 alternative-text="Redo"
                                 title="Redo"
                                 onclick={handleRedo}
-                                disabled={disabled}
+                                disabled={disabledRedoButton}
                                 data-element-id="redo"
                             >
                             </lightning-button-icon>
@@ -258,6 +262,7 @@
                             disabled={disabled}
                             onmouseenter={hideDrawCursor}
                             onmouseleave={showDrawCursor}
+                            data-element-id="clear-button"
                         >
                         </lightning-button-icon>
                     </template>
