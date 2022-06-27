@@ -44,6 +44,7 @@ const DEFAULT_TIMELINE_WIDTH = 1300;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
+const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
@@ -58,6 +59,7 @@ const TIMELINE_COLORS = {
     scrollAxisItemRect: '#b0adab', // $color-gray-7
     intervalBackground: '#1b96ff', // $color-brand
     intervalBorder: '#0176d3', // $palette-blue-50
+    popoverBackground: '#f3f3f3', //$palette-neutral-95
     timelineBorder: '#c9c9c9', // $card-color-border
     axisLabel: '#181818' // $color-text-action-label-active
 };
@@ -104,6 +106,10 @@ export class HorizontalActivityTimeline {
     _timelineSVG;
     _scrollAxisDiv;
     _scrollAxisSVG;
+
+    // Popover's state
+    _isMouseOverOnPopover = false;
+    _isMouseOverOnItem = true;
 
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
@@ -268,6 +274,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Get the common classes of popover.
+     *
+     * @type {string}
+     */
+    get popoverDefaultClasses() {
+        return 'avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
+    }
+
+    /**
      * Find the max date displayed in the scroll axis
      */
     get scrollAxisMaxDate() {
@@ -351,13 +366,16 @@ export class HorizontalActivityTimeline {
         dataToDisplay.forEach((item) => {
             const itemGroup = this._timelineSVG
                 .append('g')
-                .attr('id', 'timeline-item-' + item.name);
+                .attr('id', 'timeline-item-' + item.name)
+                .attr('data-name', item.name);
 
             this.createItem(itemGroup, item);
 
             itemGroup
-                .on('mouseover', this.handleMouseOverOnItem.bind(this, item))
-                .on('mouseout', this.handleMouseOutOnItem.bind(this));
+                .style('cursor', 'default')
+                .on('mouseenter', this.handleMouseOverOnItem.bind(this, item))
+                .on('mouseleave', this.handleMouseOutOnItem.bind(this))
+                .on('click', this._activityTimeline.handleItemClick);
         });
     }
 
@@ -481,6 +499,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Remove 'px' from a size attribute (width, height) and convert to number
+     *
+     * @return {number}
+     */
+    convertPxSizeToNumber(stringSize) {
+        return Number(stringSize.slice(0, stringSize.length - 2));
+    }
+
+    /**
      * Convert a value from px to em (16 px = 1.00 em).
      *
      * @return {number}
@@ -503,6 +530,7 @@ export class HorizontalActivityTimeline {
 
         itemGroup
             .append('text')
+            .attr('class', 'avonni-horizontal-activity-timeline__item-text')
             .attr(
                 'x',
                 this.viewTimeScale(new Date(item.datetimeValue)) +
@@ -811,6 +839,25 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Find the x end position of an item. This position is used to display popover (left).
+     *
+     * @return {number}
+     */
+    findEndPositionOfItem(item) {
+        const itemGroup = this._timelineSVG.select(
+            '#timeline-item-' + item.name
+        );
+        const textLength = itemGroup
+            .select('text')
+            .node()
+            .getComputedTextLength();
+        const xTextStartPosition = Number(itemGroup.select('text').attr('x'));
+        return (
+            xTextStartPosition + textLength + DISTANCE_BETWEEN_POPOVER_AND_ITEM
+        );
+    }
+
+    /**
      *  Calculate the date after x days of specific date
      *
      * @return {Date}
@@ -819,6 +866,36 @@ export class HorizontalActivityTimeline {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + dayIncrement);
         return nextDate;
+    }
+
+    /**
+     * Find the x start position of an item. This position is used to display popover (right).
+     *
+     * @return {number}
+     */
+    findStartPositionOfItem(item) {
+        const itemGroup = this._timelineSVG.select(
+            '#timeline-item-' + item.name
+        );
+        const xTextStartPosition = Number(itemGroup.select('text').attr('x'));
+        return (
+            xTextStartPosition -
+            SVG_ICON_SIZE -
+            SPACE_BETWEEN_ICON_AND_TEXT -
+            DISTANCE_BETWEEN_POPOVER_AND_ITEM
+        );
+    }
+
+    /**
+     * Find the right popover nubbin class depending on direction and if fields are displayed.
+     *
+     * @return {string}
+     */
+    getPopoverNubbinClass(item, direction) {
+        if (item.fields) {
+            return 'slds-nubbin_' + direction + '-top';
+        }
+        return 'slds-nubbin_' + direction;
     }
 
     /**
@@ -993,23 +1070,26 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Set the position (x, y) of item's popover.
+     * Set the position (x, y, direction) of item's popover.
      *
      * @return {object}
      */
-    setPopoverPosition(tooltipElement, event, element) {
-        const popoverPosition = { x: event.pageX - 20, y: element.yPosition };
-
-        const popoverWidth = Number(
-            tooltipElement
-                .style('width')
-                .slice(0, tooltipElement.style('width').length - 2)
+    setPopoverPosition(tooltipElement, element) {
+        const popoverPosition = {
+            x: this.findEndPositionOfItem(element),
+            y: element.yPosition,
+            direction: 'left'
+        };
+        const popoverWidth = this.convertPxSizeToNumber(
+            tooltipElement.style('width')
         );
         const maxVisiblePositionOfPopover = this._timelineWidth - popoverWidth;
 
         // Check if popover should be right or left
         if (popoverPosition.x > maxVisiblePositionOfPopover) {
-            popoverPosition.x = event.pageX - popoverWidth + 20;
+            popoverPosition.direction = 'right';
+            popoverPosition.x =
+                this.findStartPositionOfItem(element) - popoverWidth;
             if (popoverPosition.x < 0) {
                 popoverPosition.x =
                     this._offsetAxis +
@@ -1017,21 +1097,14 @@ export class HorizontalActivityTimeline {
             }
         }
 
-        // Check if popover is hidden by timeline displayed height
-        const popoverHeight = Number(
-            tooltipElement
-                .style('height')
-                .slice(0, tooltipElement.style('height').length - 2)
+        // if element has field, adjust position (nubbin top)
+        const popoverHeight = this.convertPxSizeToNumber(
+            tooltipElement.style('height')
         );
-        if (
-            popoverPosition.y + popoverHeight >
-            this._timelineHeightDisplayed + this.divTimelineScroll.scrollTop
-        ) {
-            const distanceToAdjust =
-                this._timelineHeightDisplayed +
-                this.divTimelineScroll.scrollTop -
-                (popoverPosition.y + popoverHeight);
-            popoverPosition.y += distanceToAdjust;
+        if (element.fields) {
+            popoverPosition.y -= popoverHeight / 4 - SVG_ICON_SIZE / 2;
+        } else {
+            popoverPosition.y -= SVG_ICON_SIZE / 2;
         }
 
         return popoverPosition;
@@ -1237,7 +1310,33 @@ export class HorizontalActivityTimeline {
      * Handle mouse out of item to hide popover
      */
     handleMouseOutOnItem() {
-        d3.select(this.itemPopoverSelector).style('visibility', 'hidden');
+        this._isMouseOverOnItem = false;
+        let opacity = 1;
+        const fadingPopoverAnimation = d3.interval(() => {
+            d3.select(this.itemPopoverSelector).style('opacity', opacity);
+            opacity -= 0.05;
+            if (this._isMouseOverOnPopover || this._isMouseOverOnItem) {
+                d3.select(this.itemPopoverSelector).style('opacity', 1);
+                fadingPopoverAnimation.stop();
+            } else if (opacity <= 0) {
+                this._activityTimeline.handleItemMouseLeave();
+                fadingPopoverAnimation.stop();
+            }
+        }, 80);
+    }
+
+    /**
+     * Handle mouse over on popover.
+     */
+    handleMouseOverOnPopover() {
+        this._isMouseOverOnPopover = true;
+    }
+
+    /**
+     * Handle mouse out of popover.
+     */
+    handleMouseOutOfPopover() {
+        this._isMouseOverOnPopover = false;
         this._activityTimeline.handleItemMouseLeave();
     }
 
@@ -1252,9 +1351,17 @@ export class HorizontalActivityTimeline {
     /**
      * Handle mouse over on item to display a popover
      */
-    handleMouseOverOnItem(element, event) {
+    handleMouseOverOnItem(element) {
+        this._isMouseOverOnItem = true;
+        this._isMouseOverOnPopover = false;
         this._activityTimeline.handleItemMouseOver(element);
-        const tooltipElement = d3.select(this.itemPopoverSelector);
+    }
+
+    /**
+     * Initialize item's popover with correct position and classes.
+     */
+    initializeItemPopover(element) {
+        let tooltipElement = d3.select(this.itemPopoverSelector);
 
         if (
             !tooltipElement._groups[0][0] ||
@@ -1263,21 +1370,45 @@ export class HorizontalActivityTimeline {
             return;
         }
 
-        // Set popover position and classes
+        // Set popover position
         const popoverPosition = this.setPopoverPosition(
             tooltipElement,
-            event,
             element
         );
+
+        // Set position of close (X) button depending of popover's direction
         tooltipElement
-            .attr(
-                'class',
-                'slds-is-absolute avonni-activity-timeline__item-popover slds-popover'
-            )
+            .select('.slds-popover__close')
+            .classed('slds-float_right', popoverPosition.direction === 'left')
+            .classed('slds-float_left', popoverPosition.direction === 'right');
+
+        tooltipElement
+            .style('opacity', 1)
             .style('top', popoverPosition.y + 'px')
             .style('left', popoverPosition.x + 'px')
-            .style('visibility', 'visible')
-            .on('mouseleave', this.handleMouseOutOnItem.bind(this));
+            .style('background', TIMELINE_COLORS.popoverBackground)
+            .attr(
+                'class',
+                this.computedPopoverClasses(element, popoverPosition.direction)
+            )
+            .on('mouseenter', this.handleMouseOverOnPopover.bind(this))
+            .on('mouseleave', this.handleMouseOutOfPopover.bind(this));
+    }
+
+    /**
+     * Get all specific and common classes of popover.
+     *
+     * @return {string}
+     */
+    computedPopoverClasses(element, direction) {
+        let popoverClasses = this.getPopoverNubbinClass(element, direction);
+        if (direction === 'left') {
+            popoverClasses += ' slds-p-left_medium slds-p-right_x-small ';
+        } else {
+            popoverClasses += ' slds-p-right_medium slds-p-left_x-small ';
+        }
+
+        return popoverClasses + this.popoverDefaultClasses;
     }
 
     /**

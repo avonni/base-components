@@ -178,7 +178,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.isTimelineHorizontal) {
+        if (this.isTimelineHorizontal && !this.showItemPopOver) {
             if (!this._resizeObserver) {
                 this._resizeObserver = this.initResizeObserver();
             }
@@ -193,6 +193,10 @@ export default class ActivityTimeline extends LightningElement {
                 this.divHorizontalTimeline.clientWidth
             );
             this.updateHorizontalTimelineHeader();
+        }
+
+        if (this.showItemPopOver) {
+            this.horizontalTimeline.initializeItemPopover(this.selectedItem);
         }
     }
 
@@ -564,6 +568,18 @@ export default class ActivityTimeline extends LightningElement {
             !this.isTimelineHorizontal
             ? items.splice(0, this.maxVisibleItems)
             : items;
+    }
+
+    /**
+     * Get the size of the popover's icon.
+     *
+     * @return {string}
+     */
+    get popoverIconSize() {
+        if (this.selectedItem.iconName.includes('action:')) {
+            return 'x-small';
+        }
+        return 'small';
     }
 
     /*

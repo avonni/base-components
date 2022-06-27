@@ -92,33 +92,70 @@
                     if:true={showItemPopOver}
                     class="
                         avonni-activity-timeline__item-popover
+                        slds-popover slds-popover_panel
                         slds-is-absolute
                     "
+                    name={selectedItem.name}
+                    data-name={selectedItem.name}
+                    onclick={handleItemClick}
                 >
-                    <c-primitive-activity-timeline-item
-                        title={selectedItem.title}
-                        description={selectedItem.description}
-                        datetime-value={selectedItem.datetimeValue}
-                        href={selectedItem.href}
-                        icon-name={selectedItem.iconName}
-                        icon-size={itemIconSize}
-                        fields={selectedItem.fields}
-                        has-error={selectedItem.hasError}
-                        closed={selectedItem.closed}
-                        hide-border="true"
-                        button-label={selectedItem.buttonLabel}
-                        button-icon-name={selectedItem.buttonIconName}
-                        button-variant={selectedItem.buttonVariant}
-                        button-icon-position={selectedItem.buttonIconPosition}
-                        button-disabled={selectedItem.buttonDisabled}
-                        is-loading={selectedItem.isLoading}
-                        is-active={selectedItem.isActive}
-                        loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
-                        name={selectedItem.name}
-                        data-element-id="avonni-primitive-activity-timeline-item"
-                        data-name={selectedItem.name}
+                    <!-- Close button -->
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        size="small"
+                        variant="bare"
+                        onclick={handleItemMouseLeave}
+                        class="slds-popover__close slds-p-top_xxx-small"
+                    ></lightning-button-icon>
+
+                    <header class="slds-media slds-p-top_x-small">
+                        <!-- item's icon -->
+                        <lightning-icon
+                            if:true={selectedItem.iconName}
+                            icon-name={selectedItem.iconName}
+                            size={popoverIconSize}
+                            class="slds-media__figure"
+                        ></lightning-icon>
+                        <!-- item's title -->
+                        <div class="slds-text-heading_x-small">
+                            <a
+                                if:true={selectedItem.href}
+                                href={selectedItem.href}
+                            >
+                                <h3>{selectedItem.title}</h3>
+                            </a>
+                            <h3 if:false={selectedItem.href}>
+                                {selectedItem.title}
+                            </h3>
+                        </div>
+                    </header>
+                    <!-- Table (2 columns) for fields -->
+                    <footer
+                        class="slds-grid slds-wrap"
+                        if:true={selectedItem.fields}
                     >
-                    </c-primitive-activity-timeline-item>
+                        <template
+                            for:each={selectedItem.fields}
+                            for:item="field"
+                            for:index="index"
+                        >
+                            <div
+                                class="slds-size_1-of-2 slds-p-top_x-small"
+                                key={field.value}
+                            >
+                                <dl>
+                                    <dt>
+                                        <p class="">{field.label}</p>
+                                    </dt>
+                                    <dd>
+                                        <p class="slds-text-body_regular">
+                                            {field.value}
+                                        </p>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </template>
+                    </footer>
                 </div>
             </div>
             <div

@@ -611,6 +611,11 @@ export const horizontalItems = [
                 }
             },
             {
+                label: 'Due Date',
+                value: 'Before Friday, May 13, 2022',
+                type: 'text'
+            },
+            {
                 label: 'Related To',
                 value: 'Tesla Cloudhub + Anypoint Connectors',
                 type: 'url',
@@ -629,7 +634,6 @@ export const horizontalItems = [
         name: 'item2',
         title: 'Mobile conversation on Monday',
         description: 'You logged a call with Adam Chan',
-        href: '#',
         datetimeValue: new Date(),
         iconName: 'standard:log_a_call',
         fields: [
@@ -661,7 +665,6 @@ export const horizontalItems = [
         title: 'Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2023 08:00',
-        href: '#',
         iconName: 'standard:email',
         icons: ['utility:groups', 'utility:attach'],
         buttonLabel: 'Public Sharing',
@@ -696,7 +699,6 @@ export const horizontalItems = [
         description: 'You created an event with Aida Lee and 5 others',
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
-        href: '#',
         iconName: 'standard:event',
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:activity',
@@ -730,7 +732,6 @@ export const horizontalItems = [
         title: 'Create one task',
         description: 'Fields are loading',
         datetimeValue: '02/14/2022 10:00',
-        href: '#',
         iconName: 'standard:dashboard',
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
@@ -742,7 +743,6 @@ export const horizontalItems = [
         name: 'item6',
         title: 'Create another task',
         datetimeValue: '01/21/2022 11:30',
-        href: '#',
         iconName: 'standard:skill',
         hasCheckbox: true,
         hasError: true
@@ -751,7 +751,6 @@ export const horizontalItems = [
         name: 'item7',
         title: 'Another item',
         datetimeValue: '03/14/2022 8:30',
-        href: '#',
         iconName: 'custom:custom47',
         hasCheckbox: true,
         closed: true,
@@ -770,7 +769,6 @@ export const horizontalItems = [
         name: 'item88',
         title: 'Another item with same date',
         datetimeValue: '02/02/2022 5:30',
-        href: '#',
         iconName: 'standard:procedure_detail',
         hasCheckbox: false,
         hasError: true
