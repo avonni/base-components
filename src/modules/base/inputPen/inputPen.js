@@ -35,6 +35,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString, deepCopy } from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from '../utils/classSet';
+import { StraightToolManager, SmoothToolManager } from './toolManager';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
@@ -109,6 +110,7 @@ export default class InputPen extends LightningElement {
     _rendered = false;
     _updatedDOM = false;
 
+    toolManager;
     isDownFlag;
     xPositions = [];
     yPositions = [];
@@ -186,6 +188,7 @@ export default class InputPen extends LightningElement {
             this.backgroundCanvasElement.height =
                 this.canvasElement.parentElement.clientHeight;
 
+            this.setToolManager();
             this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
@@ -808,6 +811,7 @@ export default class InputPen extends LightningElement {
             fallbackValue: this._mode,
             validValues: PEN_MODES.valid
         });
+        this.setToolManager();
     }
 
     /**
@@ -1106,8 +1110,12 @@ export default class InputPen extends LightningElement {
         if (!action.requestedEvent) {
             action.requestedEvent = event.type;
         }
-        if (event.clientX) action.clientX = event.clientX;
-        if (event.clientY) action.clientY = event.clientY;
+        if (event.clientX) {
+            action.clientX = event.clientX;
+        }
+        if (event.clientY) {
+            action.clientY = event.clientY;
+        }
         if (action.requestedEvent === 'down') {
             this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
         }
@@ -1191,7 +1199,7 @@ export default class InputPen extends LightningElement {
         switch (requestedEvent) {
             case 'down':
                 this.saveAction(event, true);
-                this.setupCoordinate(event);
+                this.setupTool(event);
                 this.isDownFlag = true;
                 this.drawDot();
                 break;
@@ -1204,10 +1212,9 @@ export default class InputPen extends LightningElement {
                 this.isDownFlag = false;
                 break;
             case 'move':
-                // default aka 'move'
                 if (this.isDownFlag) {
                     this.saveAction(event, true);
-                    this.useTool(event);
+                    this.toolManager.draw(event);
                 }
                 this.moveCursor(event);
                 break;
@@ -1249,24 +1256,30 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Calculate coordinates for previous X, Y and current X, Y of cursor.
+     * Setup the initial buffer for chain style coordinate actions.
      *
-     * @param {Event} eventParam
+     * @param {Event} event
      */
-    setupCoordinate(event) {
-        let nbPoints = 1;
-        this.moveCoordinatesAdded = 0;
-        if (this._mode === 'ink' || this._mode === 'paint') {
-            this.xPositions = [];
-            this.yPositions = [];
-            nbPoints = 4;
-            this.velocities = Array(4).fill(INITIAL_VELOCITY);
-        }
+    setupChainCoordinates(event) {
         const clientRect = this.canvasElement.getBoundingClientRect();
-        for (let i = 0; i < nbPoints; i++) {
+        this.xPositions = [];
+        this.yPositions = [];
+        this.velocities = Array(4).fill(INITIAL_VELOCITY);
+        for (let i = 0; i < 4; i++) {
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
         }
+    }
+
+    /**
+     * Setup the initial buffer for normal coordinate action.
+     *
+     * @param {Event} event
+     */
+    setupCoordinates(event) {
+        const clientRect = this.canvasElement.getBoundingClientRect();
+        this.xPositions.unshift(event.clientX - clientRect.left);
+        this.yPositions.unshift(event.clientY - clientRect.top);
     }
 
     /**
@@ -1298,12 +1311,23 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Setup depending on tool
+     */
+    setupTool(event) {
+        if (this.mode === 'ink' || this.mode === 'paint') {
+            this.setupChainCoordinates(event);
+        } else {
+            this.setupCoordinates(event);
+        }
+    }
+
+    /**
      * Choses the method to call depending on the current usedTool for move action.
      */
     useTool(event, isDot = false) {
         if (!isDot) {
             if (this._mode === 'draw' || this._mode === 'erase') {
-                this.setupCoordinate(event);
+                this.setupCoordinates(event);
                 this.hardEdgeDraw(event);
             } else {
                 this.smoothDraw(event);
@@ -1658,6 +1682,38 @@ export default class InputPen extends LightningElement {
      */
     get buttonSlot() {
         return this.template.querySelector('slot[name=button]');
+    }
+
+    setToolManager() {
+        if (!this.smoothToolManager) {
+            this.smoothToolManager = new SmoothToolManager(
+                this.xPositions,
+                this.yPositions,
+                this.velocities,
+                this._color,
+                this._mode,
+                this._size,
+                this.ctx,
+                this.canvasElement
+            );
+        }
+        if (!this.straightToolManager) {
+            this.straightToolManager = new StraightToolManager(
+                this.xPositions,
+                this.yPositions,
+                this.velocities,
+                this._color,
+                this._mode,
+                this._size,
+                this.ctx,
+                this.canvasElement
+            );
+        }
+        if (this._mode === 'ink' || this._mode === 'paint') {
+            this.toolManager = this.smoothToolManager;
+        } else {
+            this.toolManager = this.straightToolManager;
+        }
     }
 
     /**
