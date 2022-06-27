@@ -228,23 +228,27 @@
 }
 
 .avonni-kanban__container::-webkit-scrollbar,
-.avonni-kanban__tiles_container::-webkit-scrollbar {
+.avonni-kanban__tiles_container::-webkit-scrollbar,
+.avonni-kanban_expandable_container::-webkit-scrollbar {
     width: 7px;
     height: 7px;
 }
 
 .avonni-kanban__container::-webkit-scrollbar-track,
-.avonni-kanban__tiles_container::-webkit-scrollbar-track {
+.avonni-kanban__tiles_container::-webkit-scrollbar-track,
+.avonni-kanban_expandable_container::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .avonni-kanban__container::-webkit-scrollbar-thumb,
-.avonni-kanban__tiles_container::-webkit-scrollbar-thumb {
+.avonni-kanban__tiles_container::-webkit-scrollbar-thumb,
+.avonni-kanban_expandable_container::-webkit-scrollbar-thumb {
     background: #dbdbdb;
     border-radius: 5px;
 }
 
 .avonni-kanban__container::-webkit-scrollbar-thumb:hover,
+.avonni-kanban_expandable_container::-webkit-scrollbar-thumb:hover,
 .avonni-kanban__tiles_container::-webkit-scrollbar-thumb:hover {
     background: #c0c0c0;
 }
@@ -256,12 +260,11 @@
     z-index: 99;
 }
 
-.avonni-kanban__field.avonni-kanban__translate_left {
+.avonni-kanban__translate_left {
     transform: translateX(calc(-100% - 10px));
 }
 
-.avonni-kanban__variant_base
-    .avonni-kanban__field.avonni-kanban__translate_right {
+.avonni-kanban__translate_right {
     transform: translateX(calc(100% + 10px));
 }
 
@@ -333,4 +336,25 @@
 .avonni-kanban_subgroup_header_base {
     display: flex;
     align-items: center;
+}
+
+.avonni-kanban_expandable_container .avonni-kanban__field,
+.avonni-kanban_expandable_container
+    .avonni-kanban__field_container
+    .avonni-kanban_expandable_container
+    .avonni-kanban__tiles_container,
+.avonni-kanban_expandable_container,
+.avonni-kanban__container_subgroups {
+    min-height: 100%;
+    height: 100%;
+}
+
+.avonni-kanban_expandable_container {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.avonni-kanban__expandable_section {
+    z-index: 99;
+    height: 100%;
 }

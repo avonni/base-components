@@ -116,6 +116,13 @@
                     onmousemove={handleTileMouseMove}
                 >
                     <div
+                        class="
+                            avonni-kanban__tile_dropzone
+                            slds-m-around_x-small
+                        "
+                        data-element-id="avonni-kanban__tile_dropzone"
+                    ></div>
+                    <div
                         data-element-id="avonni-kanban__group_dropzone"
                         class="
                             avonni-kanban__group_dropzone
@@ -353,8 +360,13 @@
 
         <template if:true={hasSubGroups}>
             <div
-                class="slds-path avonni-kanban__container slds-is-relative"
+                class="
+                    slds-path
+                    avonni-kanban__container_subgroups
+                    slds-is-relative
+                "
                 data-element-id="avonni-kanban__container"
+                onmousemove={handleTileMouseMove}
             >
                 <div if:true={isPath} class="slds-grid slds-path__track">
                     <div
@@ -422,6 +434,13 @@
                     </div>
                 </div>
                 <div class="avonni-kanban_subgroup_header_base">
+                    <div
+                        data-element-id="avonni-kanban__group_dropzone"
+                        class="
+                            avonni-kanban__group_dropzone
+                            slds-m-around_x-small
+                        "
+                    ></div>
                     <div
                         if:false={isPath}
                         class={computedFieldClass}
@@ -507,15 +526,136 @@
                         </div>
                     </div>
                 </div>
-                <div class="avonni-kanban_expandable_container">
+                <div
+                    class="avonni-kanban_expandable_container"
+                    data-element-id="avonni-kanban_expandable_container"
+                >
                     <c-expandable-section
-                        for:each={subGroups}
+                        for:each={subGroupsLabels}
                         for:item="section"
                         key={section.label}
                         title={section.label}
                         collapsible="true"
                         data-element-id="avonni-kanban_expandable_section"
+                        class="avonni-kanban__expandable_section"
                     >
+                        <div
+                            class="avonni-kanban__field_container"
+                            data-element-id="avonni-kanban__field_container"
+                        >
+                            <div
+                                class={computedFieldClass}
+                                for:each={computedSubGroups}
+                                for:item="group"
+                                data-element-id="avonni-kanban__field"
+                                key={group.label}
+                            >
+                                <div
+                                    class="
+                                        avonni-kanban__tile_dropzone
+                                        slds-m-around_x-small
+                                    "
+                                    data-element-id="avonni-kanban__tile_dropzone"
+                                ></div>
+                                <div
+                                    data-element-id="avonni-kanban__group"
+                                    class="
+                                        avonni-kanban__tiles_container
+                                        slds-has-dividers_around-space
+                                    "
+                                >
+                                    <lightning-tile
+                                        for:each={group.subGroups.tiles}
+                                        for:item="record"
+                                        key={record.index}
+                                        data-element-id="avonni-kanban__tile"
+                                        data-record-index={record.index}
+                                        class={computedTileClass}
+                                        onmousedown={handleTileMouseDown}
+                                        onmouseup={handleTileMouseUp}
+                                        onmousemove={handleDropZone}
+                                    >
+                                        <div
+                                            if:true={record.field.coverImage}
+                                            class="
+                                                avonni-kanban__tile_image
+                                                slds-m-bottom_small
+                                            "
+                                            data-element-id="avonni-kanban__tile_image"
+                                        ></div>
+                                        <ul
+                                            data-element-id="fields"
+                                            class="avonni-kanban__tile_fields"
+                                        >
+                                            <li
+                                                for:each={record.field}
+                                                for:item="field"
+                                                key={field.label}
+                                            >
+                                                <p
+                                                    class="
+                                                        avonni-kanban__fields
+                                                    "
+                                                >
+                                                    <c-output-data
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        type={field.type}
+                                                        type-attributes={field.typeAttributes}
+                                                        variant="label-inline"
+                                                    ></c-output-data>
+                                                </p>
+                                            </li>
+                                            <li>
+                                                <lightning-icon
+                                                    if:true={record.warningIcon}
+                                                    class="
+                                                        avonni-kanban__tile_icon
+                                                    "
+                                                    size="x-small"
+                                                    variant="warning"
+                                                    icon-name={record.warningIcon}
+                                                ></lightning-icon>
+                                            </li>
+                                        </ul>
+                                        <div
+                                            class="avonni-kanban__tile_actions"
+                                            if:true={hasActions}
+                                        >
+                                            <c-button-menu
+                                                alternative-text="Show menu"
+                                                icon-size="x-small"
+                                                menu-alignment="right"
+                                                class="
+                                                    avonni-kanban__actions_menu
+                                                    slds-is-relative
+                                                "
+                                                onselect={handleActionClick}
+                                                variant="border-filled"
+                                            >
+                                                <template
+                                                    for:each={actions}
+                                                    for:item="action"
+                                                >
+                                                    <lightning-menu-item
+                                                        key={action.name}
+                                                        value={action.name}
+                                                        label={action.label}
+                                                        disabled={action.disabled}
+                                                        prefix-icon-name={action.iconName}
+                                                        class="
+                                                            slds-text-color_default
+                                                            avonni-kanban__actions_item
+                                                        "
+                                                        data-element-id="avonni-kanban__action"
+                                                    ></lightning-menu-item>
+                                                </template>
+                                            </c-button-menu>
+                                        </div>
+                                    </lightning-tile>
+                                </div>
+                            </div>
+                        </div>
                     </c-expandable-section>
                 </div>
             </div>

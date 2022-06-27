@@ -93,6 +93,7 @@ export default class Kanban extends LightningElement {
     _summarizeValues = [];
     _hasSubGroups = false;
     kanbanGroup;
+    _currentSubGroupIndex = 0;
     _computedGroups = [];
 
     SUMMARY_UPDATE_SPEED = 300;
@@ -317,6 +318,7 @@ export default class Kanban extends LightningElement {
         this._summarizeValues = this.kanbanGroup._summarizeValues;
         this._oldSummarizeValues = this.kanbanGroup._oldSummarizeValues;
         this._hasSubGroups = this.kanbanGroup.hasSubGroups;
+        this._currentSubGroupIndex = 0;
 
         computedGroups.forEach((group) => {
             if (!this.hideHeader) this.animateSummary(group);
@@ -365,8 +367,17 @@ export default class Kanban extends LightningElement {
         return this._computedGroups;
     }
 
-    get subGroups() {
+    get subGroupsLabels() {
         return this._computedGroups[0].subGroups;
+    }
+
+    get computedSubGroups() {
+        const computedGroups = JSON.parse(JSON.stringify(this._computedGroups));
+        computedGroups.forEach((group) => {
+            group.subGroups = group.subGroups[this._currentSubGroupIndex];
+        });
+        this._currentSubGroupIndex++;
+        return computedGroups;
     }
 
     /**
@@ -638,21 +649,43 @@ export default class Kanban extends LightningElement {
         this._scrollWidth = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         ).scrollWidth;
-
         const fields = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
+
         const container = this.template.querySelector(
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        fields.forEach((field) => {
-            if (field.offsetHeight >= container.offsetHeight) {
-                field.classList.add('avonni-kanban__field_capped');
-            } else {
-                field.classList.remove('avonni-kanban__field_capped');
-            }
-        });
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        const expandable = this.template.querySelector(
+            '[data-element-id="avonni-kanban_expandable_container"]'
+        );
+        if (this._hasSubGroups) {
+            const groupHeights = [];
+            groups.forEach((group) => {
+                groupHeights.push(group.offsetHeight);
+            });
+            const maxGroupHeight = Math.max(...groupHeights);
+            groups.forEach((group) => {
+                group.style.height = `${maxGroupHeight}px`;
+            });
+
+            expandable.style.width = `calc(${
+                fields[0].offsetWidth * this._groupValues.length
+            }px + ${this._groupValues.length - 1}rem)`;
+        } else {
+            fields.forEach((field) => {
+                if (field.offsetHeight >= container.offsetHeight) {
+                    field.classList.add('avonni-kanban__field_capped');
+                } else {
+                    field.classList.remove('avonni-kanban__field_capped');
+                }
+            });
+        }
 
         this._droppedTileHeight = 0;
     }
@@ -924,6 +957,10 @@ export default class Kanban extends LightningElement {
             return;
         }
 
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header'
+            : 'avonni-kanban__field';
+
         // this handles when the user dragged a group out of the kanban, and released his click.
         // a second click on the dragged group (impossible otherwise) behaves has a click release
         if (event.currentTarget.parentElement === this._draggedGroup) {
@@ -950,9 +987,14 @@ export default class Kanban extends LightningElement {
 
         this._clickedGroupIndex = Array.from(
             this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__field"]'
+                `[data-element-id="${groupSelector}"]`
             )
-        ).indexOf(event.currentTarget.parentElement);
+        ).indexOf(
+            this._hasSubGroups
+                ? event.currentTarget
+                : event.currentTarget.parentElement
+        );
+
         this._releasedGroupIndex = this._clickedGroupIndex;
         this._draggedGroup = event.currentTarget.parentElement;
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
@@ -968,6 +1010,11 @@ export default class Kanban extends LightningElement {
         if (!this._draggedGroup) {
             return;
         }
+
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header'
+            : 'avonni-kanban__field';
+
         this._releasedGroupIndex = Math.min(
             Math.floor(
                 (event.clientX +
@@ -983,9 +1030,11 @@ export default class Kanban extends LightningElement {
         );
 
         const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
+            `[data-element-id="${groupSelector}"]`
         );
+
         groups.forEach((group, i) => {
+            group = this._hasSubGroups ? group.parentElement : group;
             if (group !== this._draggedGroup) {
                 group.classList.add('avonni-kanban__field_moved');
             }
@@ -1010,14 +1059,13 @@ export default class Kanban extends LightningElement {
         const dropZone = this.template.querySelector(
             '[data-element-id="avonni-kanban__group_dropzone"]'
         );
-        dropZone.style.height = `${
-            groups[this._clickedGroupIndex].offsetHeight
-        }px`;
-        dropZone.style.width = `${
-            groups[this._clickedGroupIndex].offsetWidth
-        }px`;
+        const groupDropZone = this._hasSubGroups
+            ? groups[this._clickedGroupIndex].parentElement
+            : groups[this._clickedGroupIndex];
+        dropZone.style.height = `${groupDropZone.offsetHeight}px`;
+        dropZone.style.width = `${groupDropZone.offsetWidth}px`;
         dropZone.style.transform = `translateX(calc(${
-            (groups[this._clickedGroupIndex].offsetWidth +
+            (groupDropZone.offsetWidth +
                 0.625 *
                     parseFloat(getComputedStyle(this.template.host).fontSize)) *
             this._releasedGroupIndex
@@ -1033,15 +1081,19 @@ export default class Kanban extends LightningElement {
         if (!this._draggedGroup) {
             return;
         }
-
         this.swapGroups();
+
+        const groupSelector = this._hasSubGroups
+            ? 'avonni-kanban__group_header'
+            : 'avonni-kanban__field';
 
         this._draggedGroup.style.transform = '';
         this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
         this._draggedGroup = null;
         this.template
-            .querySelectorAll('[data-element-id="avonni-kanban__field"]')
+            .querySelectorAll(`[data-element-id="${groupSelector}"]`)
             .forEach((group) => {
+                group = this._hasSubGroups ? group.parentElement : group;
                 group.classList.remove('avonni-kanban__translate_left');
                 group.classList.remove('avonni-kanban__translate_right');
                 group.classList.remove('avonni-kanban__field_moved');
@@ -1174,13 +1226,13 @@ export default class Kanban extends LightningElement {
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
-
         // Prevents from dragging outside of the kanban
-        if (this._initialScrollWidth === fieldContainer.offsetWidth) {
-            fieldContainer.style.overflowX = 'hidden';
-        } else {
-            fieldContainer.style.overflowX = 'scroll';
-        }
+        // TODO: Fix this
+        // if (this._initialScrollWidth === fieldContainer.offsetWidth) {
+        //     fieldContainer.style.overflowX = 'hidden';
+        // } else {
+        //     fieldContainer.style.overflowX = 'scroll';
+        // }
 
         // Calculates the position of the mouse depending on the kanban boundaries
         let currentY = event.clientY;
