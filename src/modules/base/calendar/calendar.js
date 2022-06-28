@@ -896,6 +896,24 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Set interval when only one value is valid (in min-max range) and the other one is outside range.
+     */
+    setIntervalWithOneValidValue(minValue, maxValue) {
+        if (
+            this.isBeforeMin(minValue) &&
+            minValue.getTime() < this._value[0].getTime()
+        ) {
+            this._value[1] = this._value[0];
+            this._value[0] = this.min;
+        } else if (
+            this.isAfterMax(maxValue) &&
+            maxValue.getTime() > this._value[0].getTime()
+        ) {
+            this._value[1] = this.max;
+        }
+    }
+
+    /**
      * Returns current date if it is between the min-max interval. If not, returns the min.
      * @return {Date}
      */
@@ -904,6 +922,15 @@ export default class Calendar extends LightningElement {
             return new Date();
         }
         return new Date(this.min);
+    }
+
+    /**
+     * Sort all values from min to max
+     */
+    sortValuesFromMinToMax() {
+        this._value = this._value.sort((dateA, dateB) => {
+            return dateA - dateB;
+        });
     }
 
     /**
@@ -932,33 +959,25 @@ export default class Calendar extends LightningElement {
      * Validate values for interval selection mode.
      */
     validateValueIntervalMode() {
+        this.sortValuesFromMinToMax();
+        const minValue = this._value[0];
+        const maxValue = this._value[this._value.length - 1];
+
         if (this.allValuesOutsideMinAndMax) {
-            this._value = [];
-            this.displayDate = this.setValueToCurrentDayOrMin();
+            if (this.isBeforeMin(minValue) && this.isAfterMax(maxValue)) {
+                this._value[0] = this.min;
+                this._value[1] = this.max;
+            } else {
+                this._value = [];
+                this.displayDate = this.setValueToCurrentDayOrMin();
+            }
             this.updateDate();
         } else {
-            this._value = this._value.sort((dateA, dateB) => {
-                return dateA - dateB;
-            });
-            const minValue = this._value[0];
-            const maxValue = this._value[this._value.length - 1];
             this.removeValuesOutsideRange();
-
-            if (this._value) {
+            if (this._value.length) {
                 // Check if previous min-max values saved were outside of range to create interval
                 if (this._value.length === 1) {
-                    if (
-                        this.isBeforeMin(minValue) &&
-                        minValue.getTime() < this._value[0].getTime()
-                    ) {
-                        this._value[1] = this._value[0];
-                        this._value[0] = this.min;
-                    } else if (
-                        this.isAfterMax(maxValue) &&
-                        maxValue.getTime() > this._value[0].getTime()
-                    ) {
-                        this._value[1] = this.max;
-                    }
+                    this.setIntervalWithOneValidValue(minValue, maxValue);
                 }
                 this.updateDate();
             }
