@@ -35,7 +35,7 @@ import InputPen from 'c/inputPen';
 
 let element;
 const DATA_URL = 'data:image/png;base64,validValue';
-let position = 10;
+let position = 0;
 
 const MOUSEDOWN_EVENT = new CustomEvent('mousedown', {
     clientX: position,
@@ -99,6 +99,7 @@ describe('Input pen', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        position = 0;
         jest.restoreAllMocks();
         jest.clearAllTimers();
     });
@@ -838,4 +839,154 @@ describe('Input pen', () => {
                 expect(element.value).toEqual(undefined);
             });
     });
+
+    /* ------ UNDO / REDO  ------ */
+
+    it('undo on 3 actions should redraw those 2 previous actions (strokes)', () => {
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(1);
+            })
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(2);
+            })
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(3);
+                // 3 actions drawn
+            })
+            .then(() => {
+                const undoButton = element.shadowRoot.querySelector(
+                    '[data-element-id="undo"]'
+                );
+                undoButton.click();
+                expect(strokeSpy).toHaveBeenCalledTimes(5); // 2 more since last time
+            });
+    });
+
+    it('redo after an undo should redraw the missing action (strokes)', () => {
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(1);
+            })
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(2);
+                // 2 actions drawn
+            })
+            .then(() => {
+                const undoButton = element.shadowRoot.querySelector(
+                    '[data-element-id="undo"]'
+                );
+                undoButton.click();
+                expect(strokeSpy).toHaveBeenCalledTimes(3); // 1 more since last time
+            })
+            .then(() => {
+                const redoButton = element.shadowRoot.querySelector(
+                    '[data-element-id="redo"]'
+                );
+                redoButton.click();
+                expect(strokeSpy).toHaveBeenCalledTimes(4); // 1 more since last time
+            })
+            .then(() => {
+                const redoButton = element.shadowRoot.querySelector(
+                    '[data-element-id="redo"]'
+                );
+                redoButton.click();
+                expect(strokeSpy).toHaveBeenCalledTimes(4); // nothing more to redo
+            });
+    });
+
+    it('redo and undo keyboard shortcuts', () => {
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(1);
+            })
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                expect(strokeSpy).toHaveBeenCalledTimes(2);
+            })
+            .then(() => {
+                window.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 90 }) // ctrl-z
+                );
+                expect(strokeSpy).toHaveBeenCalledTimes(3);
+            })
+            .then(() => {
+                window.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 89 }) // ctrl-y
+                );
+                expect(strokeSpy).toHaveBeenCalledTimes(4);
+            });
+    });
+
+    it('redo and undo on background fill', () => {
+        let ctxBackgroundColor;
+        const fillRectSpy = jest.spyOn(MOCKED_CONTEXT, 'rect');
+        Object.defineProperty(MOCKED_CONTEXT, 'fillStyle', {
+            set: jest.fn((value) => {
+                ctxBackgroundColor = value;
+            })
+        });
+        return Promise.resolve()
+            .then(() => {
+                const backgroundColorPicker = element.shadowRoot.querySelector(
+                    '[data-element-id="background-color-picker"]'
+                );
+                backgroundColorPicker.dispatchEvent(
+                    CustomEvent('change', { detail: { hexa: '#cc1913ff' } })
+                );
+                expect(fillRectSpy).toHaveBeenCalledTimes(1);
+                expect(ctxBackgroundColor).toEqual('#cc1913ff');
+            })
+            .then(() => {
+                element.undo();
+                expect(fillRectSpy).toHaveBeenCalledTimes(3);
+                expect(ctxBackgroundColor).toEqual('#ffffff00');
+            })
+            .then(() => {
+                element.redo();
+                expect(fillRectSpy).toHaveBeenCalledTimes(5);
+                expect(ctxBackgroundColor).toEqual('#cc1913ff');
+            });
+    });
+
+    //TODO: redo and undo on clear and find out why ^ is in steps of 2 ... ?
 });
