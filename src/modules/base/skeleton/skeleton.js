@@ -521,13 +521,6 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
-    get buttonLabelClass() {
-        return classSet('avonni-skeleton__button-label')
-            .add('slds-m-vertical_xx-small')
-            .add('slds-m-horizontal_x-small')
-            .toString();
-    }
-
     get buttonIconWrapper() {
         return classSet('slds-button')
             .add('slds-button_icon')
@@ -744,16 +737,19 @@ export default class Skeleton extends LightningElement {
         ) {
             switch (this.variant) {
                 case 'badge':
-                    this.updateBadgeClassList();
+                    // this.updateBadgeClassList();
+                    this.updateVariantClassList('badge');
                     break;
                 case 'button':
-                    this.updateVariantButton();
+                    // this.updateVariantButton();
+                    this.updateVariantClassList('button');
                     break;
                 case 'button-icon':
                     this.updateVariantButtonIcon();
                     break;
                 case 'chip':
-                    this.updateChipClassList();
+                    // this.updateChipClassList();
+                    this.updateVariantClassList('chip');
                     break;
                 case 'combobox':
                     this.updateComboboxClassList();
@@ -800,7 +796,6 @@ export default class Skeleton extends LightningElement {
     }
 
     initializeParagraphItems() {
-        console.log('beginning initialize paragraph items');
         const paragraphItems = [];
         let id = 0;
         let temp;
@@ -809,7 +804,6 @@ export default class Skeleton extends LightningElement {
             for (let j = 100; j > 13; ) {
                 id++;
                 const width = Math.floor(Math.random() * (13 - 5)) + 5;
-                console.log(`width: ${width}`);
                 paragraphItems.push({
                     key: `paragraph-${id}`,
                     width: `${width}%`
@@ -878,77 +872,103 @@ export default class Skeleton extends LightningElement {
             this.width === undefined ? '100%' : `${this.width}`;
     }
 
-    updateChipClassList() {
-        const chipElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-chip-wrapper"]'
+    updateVariantClassList(variant) {
+        console.log(`[data-element-id="avonni-skeleton-${variant}-wrapper]`);
+        const variantElement = this.template.querySelector(
+            `[data-element-id="avonni-skeleton-${variant}-wrapper"]`
         );
-        const chipLabel = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-chip-label"]'
+        const variantLabel = this.template.querySelector(
+            `[data-element-id="avonni-skeleton-${variant}-label"]`
         );
-        const chipVariantAttributes = CHIP_VARIANT_VALUES.get(
+        const variantAttributes = this.variantValues(variant).get(
             this.variantAttributes.variant
         );
-        chipElement.style.setProperty(
+
+        variantElement.style.setProperty(
             '--avonni-skeleton-color-background',
-            chipVariantAttributes.background
+            variantAttributes.background
         );
-        chipElement.style.setProperty(
+        variantElement.style.setProperty(
             '--avonni-skeleton-color-background-animation',
-            chipVariantAttributes.backgroundAnimation
+            variantAttributes.backgroundAnimation
         );
-        chipLabel.style.setProperty(
+        variantLabel.style.setProperty(
             '--avonni-skeleton-chip-label-background',
-            chipVariantAttributes.labelColor
+            variantAttributes.labelColor
         );
     }
 
-    updateBadgeClassList() {
-        const badgeElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton__badge-wrapper"]'
-        );
-        const badgeLabel = this.template.querySelector(
-            '[data-element-id="avonni-skeleton__badge-label"]'
-        );
-        const badgeVariantAttributes = BADGE_VARIANT_VALUES.get(
-            this.variantAttributes.variant
-        );
-        badgeElement.style.setProperty(
-            '--avonni-skeleton-color-background',
-            badgeVariantAttributes.background
-        );
-        badgeElement.style.setProperty(
-            '--avonni-skeleton-color-background-animation',
-            badgeVariantAttributes.backgroundAnimation
-        );
-        badgeLabel.style.setProperty(
-            '--avonni-skeleton-chip-label-background',
-            badgeVariantAttributes.labelColor
-        );
-    }
+    // updateChipClassList() {
+    //     const chipElement = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton-chip-wrapper"]'
+    //     );
+    //     const chipLabel = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton-chip-label"]'
+    //     );
+    //     const chipVariantAttributes = CHIP_VARIANT_VALUES.get(
+    //         this.variantAttributes.variant
+    //     );
+    //     chipElement.style.setProperty(
+    //         '--avonni-skeleton-color-background',
+    //         chipVariantAttributes.background
+    //     );
+    //     chipElement.style.setProperty(
+    //         '--avonni-skeleton-color-background-animation',
+    //         chipVariantAttributes.backgroundAnimation
+    //     );
+    //     chipLabel.style.setProperty(
+    //         '--avonni-skeleton-chip-label-background',
+    //         chipVariantAttributes.labelColor
+    //     );
+    // }
 
-    updateVariantButton() {
-        const buttonElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-button-element"]'
-        );
-        const buttonLabel = this.template.querySelector(
-            '[data-element-id="avonni-skeleton__button-label"]'
-        );
-        const buttonVariantAttributes = BUTTON_VARIANT_VALUES.get(
-            this.variantAttributes.variant
-        );
-        buttonElement.style.setProperty(
-            '--avonni-skeleton-color-background',
-            buttonVariantAttributes.background
-        );
-        buttonElement.style.setProperty(
-            '--avonni-skeleton-color-background-animation',
-            buttonVariantAttributes.backgroundAnimation
-        );
-        buttonLabel.style.setProperty(
-            '--avonni-skeleton-chip-label-background',
-            buttonVariantAttributes.labelColor
-        );
-    }
+    // updateBadgeClassList() {
+    //     const badgeElement = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton__badge-wrapper"]'
+    //     );
+    //     const badgeLabel = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton__badge-label"]'
+    //     );
+    //     const badgeVariantAttributes = BADGE_VARIANT_VALUES.get(
+    //         this.variantAttributes.variant
+    //     );
+    //     badgeElement.style.setProperty(
+    //         '--avonni-skeleton-color-background',
+    //         badgeVariantAttributes.background
+    //     );
+    //     badgeElement.style.setProperty(
+    //         '--avonni-skeleton-color-background-animation',
+    //         badgeVariantAttributes.backgroundAnimation
+    //     );
+    //     badgeLabel.style.setProperty(
+    //         '--avonni-skeleton-chip-label-background',
+    //         badgeVariantAttributes.labelColor
+    //     );
+    // }
+
+    // updateVariantButton() {
+    //     const buttonElement = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton-button-wrapper"]'
+    //     );
+    //     const buttonLabel = this.template.querySelector(
+    //         '[data-element-id="avonni-skeleton__button-label"]'
+    //     );
+    //     const buttonVariantAttributes = BUTTON_VARIANT_VALUES.get(
+    //         this.variantAttributes.variant
+    //     );
+    //     buttonElement.style.setProperty(
+    //         '--avonni-skeleton-color-background',
+    //         buttonVariantAttributes.background
+    //     );
+    //     buttonElement.style.setProperty(
+    //         '--avonni-skeleton-color-background-animation',
+    //         buttonVariantAttributes.backgroundAnimation
+    //     );
+    //     buttonLabel.style.setProperty(
+    //         '--avonni-skeleton-chip-label-background',
+    //         buttonVariantAttributes.labelColor
+    //     );
+    // }
 
     updateVariantButtonIcon() {
         const buttonIconElement = this.template.querySelector(
@@ -972,11 +992,29 @@ export default class Skeleton extends LightningElement {
     }
 
     updateParagraphClassList() {
-        const paragraphLines = this.template.querySelector(
+        const paragraphElementItems = this.template.querySelector(
             '[data-element-id="avonni-skeleton-paragraph-list"]'
         ).children;
-        for (let i = 0; i < paragraphLines.length; i++) {
-            paragraphLines[i].style.width = this.paragraphItems[i].width;
+        for (let i = 0; i < paragraphElementItems.length; i++) {
+            paragraphElementItems[i].style.width = this.paragraphItems[i].width;
         }
+    }
+
+    variantValues(variant) {
+        let variantValues;
+        switch (variant) {
+            case 'badge':
+                variantValues = BADGE_VARIANT_VALUES;
+                break;
+            case 'button':
+                variantValues = BUTTON_VARIANT_VALUES;
+                break;
+            case 'chip':
+                variantValues = CHIP_VARIANT_VALUES;
+                break;
+            default:
+                break;
+        }
+        return variantValues;
     }
 }
