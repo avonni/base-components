@@ -433,7 +433,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="avonni-kanban_subgroup_header_base">
+                <div
+                    class="avonni-kanban_subgroup_header_base"
+                    data-element-id="avonni-kanban__header"
+                >
                     <div
                         data-element-id="avonni-kanban__group_dropzone"
                         class="
@@ -536,19 +539,24 @@
                         data-element-id="avonni-kanban_expandable_section"
                         class="avonni-kanban__expandable_section"
                     >
-                        <button 
-                            class="avonni-kanban__expandable_section_header slds-p-around_x-small slds-m-around_xx-small"
+                        <button
+                            class="
+                                avonni-kanban__expandable_section_header
+                                slds-p-around_x-small
+                                slds-m-vertical_xx-small
+                            "
                             data-element-id="avonni-kanban__expandable_section_header"
                             onclick={handleExpandableSectionClick}
                         >
                             <lightning-icon
-                            icon-name="utility:chevrondown"
-                            size="x-small"
-                            class="
-                                slds-button__icon slds-button__icon_left avonni-kanban__chevron
-                            "
-                            data-element-id="lightning-icon-opened"
-                        ></lightning-icon>
+                                icon-name="utility:chevrondown"
+                                size="x-small"
+                                class="
+                                    slds-button__icon slds-button__icon_left
+                                    avonni-kanban__chevron
+                                "
+                                data-element-id="lightning-icon-opened"
+                            ></lightning-icon>
                             {section.label}
                         </button>
                         <div
