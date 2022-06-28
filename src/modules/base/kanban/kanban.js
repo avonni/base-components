@@ -515,7 +515,9 @@ export default class Kanban extends LightningElement {
      * @param {HTMLElement[]} groups Groups containing the tiles to translate
      */
     animateTiles(groups) {
-        this.capFieldHeight();
+        if (!this._hasSubGroups) {
+            this.capFieldHeight();
+        }
 
         // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
@@ -645,22 +647,23 @@ export default class Kanban extends LightningElement {
 
         const toScroll = scrollXStep ? fieldContainer : group;
         scrollYStep = this._draggedGroup ? 0 : scrollYStep;
-        if (
-            !this._scrollingInterval &&
-            (this._draggedGroup || this._draggedTile)
-        ) {
-            this._scrollingInterval = window.setInterval(() => {
-                // Prevents from scrolling outside of the kanban
-                if (
-                    fieldContainer.scrollLeft + fieldContainer.offsetWidth <
-                        this._initialScrollWidth ||
-                    scrollYStep !== 0
-                ) {
-                    toScroll.scrollBy(scrollXStep, scrollYStep);
-                }
-                if (this._draggedTile) this.animateTiles(groups);
-            }, 20);
-        }
+        //TODO: add autoscroll back
+        // if (
+        //     !this._scrollingInterval &&
+        //     (this._draggedGroup || this._draggedTile)
+        // ) {
+        //     this._scrollingInterval = window.setInterval(() => {
+        //         // Prevents from scrolling outside of the kanban
+        //         if (
+        //             fieldContainer.scrollLeft + fieldContainer.offsetWidth <
+        //                 this._initialScrollWidth ||
+        //             scrollYStep !== 0
+        //         ) {
+        //             toScroll.scrollBy(scrollXStep, scrollYStep);
+        //         }
+        //         if (this._draggedTile) this.animateTiles(groups);
+        //     }, 20);
+        // }
 
         // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
         if (!scrollXStep && !scrollYStep) {
@@ -710,9 +713,12 @@ export default class Kanban extends LightningElement {
                     ...subGroupsHeight[Math.floor(i / this.groupValues.length)]
                 )}px)`;
             });
-            // expandable.style.width = `calc(${
-            //     this._groupWidth[0] * this._groupValues.length
-            // }px + ${this._groupValues.length - 1}rem - 0.5rem)`;
+
+            expandable.style.width = `calc(${
+                this.template.querySelector(
+                    '[data-element-id="avonni-kanban__group_header"]'
+                ).offsetWidth * this._groupValues.length
+            }px + ${this._groupValues.length - 1}rem - 0.5rem)`;
         } else {
             fields.forEach((field) => {
                 if (field.offsetHeight >= container.offsetHeight) {
@@ -793,15 +799,10 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
-        const currentField = this.template.querySelectorAll(
+        const currentField = this.template.querySelector(
             `[data-subgroup-field="${this._currentSubGroup}"]`
         );
 
-        const currentSubGroupIndex = this.computedGroups[0].subGroups.indexOf(
-            this.computedGroups[0].subGroups.find(
-                (subGroup) => subGroup.label === this._currentSubGroup
-            )
-        );
         // Sets the right paddingBottom on the group to create space for the dragged tile
         currentGroupTiles.forEach((group, i) => {
             if (this._draggedTile && !this._hasSubGroups) {
@@ -811,15 +812,11 @@ export default class Kanban extends LightningElement {
                         : 0;
                 group.style.paddingBottom = `${paddingBottom}px`;
             }
-            // else if (this._draggedTile) {
-            //     currentField.forEach((field) => {
-            //         field.style.height = `${
-            //             this._subGroupsHeight[currentSubGroupIndex] +
-            //             this._draggedTile.offsetHeight
-            //         }px`;
-            //     });
-            // }
         });
+
+        if (this._hasSubGroups) {
+            // currentField.style.height = `calc(${}px + ${this._draggedTile.offsetHeight}px)`;
+        }
     }
 
     /**
