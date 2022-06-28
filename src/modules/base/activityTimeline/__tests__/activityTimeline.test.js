@@ -1284,31 +1284,52 @@ describe('Activity Timeline', () => {
 
     // mouseover on item - right position
     it('Activity Timeline: horizontal - Mouseover on item (right position)', () => {
+        const convertPxSizeToNumberSpy = jest
+            .spyOn(
+                HorizontalActivityTimeline.prototype,
+                'convertPxSizeToNumber'
+            )
+            .mockReturnValue(400);
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
         let item;
-        let popoverItem;
 
-        return (
-            Promise.resolve()
+        return Promise.resolve()
+            .then(() => {
+                // Set width
+                element.position = 'vertical';
+                const timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+                jest.spyOn(
+                    timelineContainer,
+                    'clientWidth',
+                    'get'
+                ).mockImplementation(() => 1600);
+                element.position = 'horizontal';
+            })
+            .then(() => {
                 // Get specific item to activate mouse over
-                .then(() => {
-                    const timelineSVG = element.shadowRoot.querySelector(
-                        '.avonni-horizontal-activity-timeline__timeline-items-svg'
-                    );
-                    item = timelineSVG.querySelector('#timeline-item-item13');
-                    item.dispatchEvent(new CustomEvent('mouseenter'));
-                })
-                // Check if popover is present
-                .then(() => {
-                    item.dispatchEvent(new CustomEvent('mouseenter'));
-                    popoverItem = element.shadowRoot.querySelector(
-                        '.avonni-activity-timeline__item-popover'
-                    );
+                const timelineSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                );
 
-                    expect(popoverItem.getAttribute('name')).toBe('item13');
-                })
-        );
+                item = timelineSVG.querySelector('#timeline-item-item13');
+                item.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                // Check if popover is present and has right position
+                item.dispatchEvent(new CustomEvent('mouseenter'));
+                const popoverItem = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__item-popover'
+                );
+
+                expect(popoverItem.getAttribute('name')).toBe('item13');
+                expect(popoverItem.className).toBe(
+                    'slds-nubbin_right-top slds-p-right_medium slds-p-left_x-small avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
+                );
+                expect(convertPxSizeToNumberSpy).toBeCalled();
+            });
     });
 
     // maxVisibleItems and height's change
