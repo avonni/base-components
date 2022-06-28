@@ -43,6 +43,8 @@ class ToolManager {
         this.canvas.xPositions = [];
         this.canvas.yPositions = [];
         this.canvas.velocities = [];
+        this.moveCoordinatesAdded = 0;
+        this.prevDist = 0;
     }
 
     /*
@@ -86,6 +88,11 @@ export class StraightToolManager extends ToolManager {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Sets up coordinates for beginning of a line
+     *
+     * @param {Event} event
+     */
     setupLine(event) {
         super.setupLine();
         const clientRect = this.canvas.canvasElement.getBoundingClientRect();
