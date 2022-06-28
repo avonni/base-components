@@ -113,10 +113,9 @@ export default class Calendar extends LightningElement {
         }
 
         this.displayDate = new Date(setDate);
-
-        this.updateDateParameters();
         this._isConnected = true;
         this.validateCurrentDayValue();
+        this.updateDateParameters();
         this.computeFocus(false);
     }
 
@@ -972,7 +971,7 @@ export default class Calendar extends LightningElement {
     validateValueMultipleMode() {
         this.removeValuesOutsideRange();
         // Find valid date to re-center calendar
-        if (this.value && !this.allValuesOutsideMinAndMax) {
+        if (this.value.length && !this.allValuesOutsideMinAndMax) {
             this.displayDate = this.value.find((date) => {
                 return (
                     !this.isInvalidDate(date) &&
