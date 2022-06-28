@@ -99,6 +99,7 @@ export default class List extends LightningElement {
 
     _draggedIndex;
     _draggedElement;
+    _initialX;
     _initialY;
     _menuTop;
     _menuBottom;
@@ -467,6 +468,8 @@ export default class List extends LightningElement {
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
+                // this looks at if the item crosses the center of the hovered item.
+                // we should see if the mouse is over the item.
                 const itemCenter =
                     itemPosition.bottom - itemPosition.height / 2;
 
@@ -548,6 +551,7 @@ export default class List extends LightningElement {
         // Clean the tracked variables
         this._draggedElement =
             this._draggedIndex =
+            this._initialX =
             this._initialY =
             this._savedComputedItems =
                 undefined;
@@ -571,6 +575,10 @@ export default class List extends LightningElement {
             event.type === 'touchstart'
                 ? event.touches[0].clientY
                 : event.clientY;
+        this._initialX =
+            event.type === 'touchstart'
+                ? event.touches[0].clientX
+                : event.clientX;
     }
 
     /**
@@ -666,6 +674,7 @@ export default class List extends LightningElement {
                 ? event.touches[0].clientX
                 : event.clientX;
 
+        console.log('drag', mouseX, mouseY);
         // Make sure it is not possible to drag the item out of the menu
         let currentY;
         if (mouseY < this._menuTop) {
@@ -684,6 +693,14 @@ export default class List extends LightningElement {
             currentX = mouseX;
         }
 
+        console.log(
+            'darg1',
+            currentX,
+            this._initialX,
+            currentY,
+            this._initialY
+        );
+
         // Stick the dragged item to the mouse position
         this._draggedElement.style.transform = `translate(
             ${currentX - this._initialX + 'px'},
@@ -694,7 +711,9 @@ export default class List extends LightningElement {
         const position = this._draggedElement.getBoundingClientRect();
         const center = position.bottom - position.height / 2;
 
+        console.log('drag2', event.pageY, center);
         const hoveredItem = this.getHoveredItem(center);
+
         if (hoveredItem) {
             this.switchWithItem(hoveredItem);
         }
