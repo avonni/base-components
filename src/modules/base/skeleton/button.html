@@ -35,7 +35,7 @@
 <template>
     <span
         class={buttonWrapperClass}
-        data-element-id="avonni-skeleton-button-element"
+        data-element-id="avonni-skeleton-button-wrapper"
     >
         <template if:true={buttonHasLeftIcon}>
             <svg
@@ -44,8 +44,12 @@
             ></svg>
         </template>
         <div
-            class={buttonLabelClass}
-            data-element-id="avonni-skeleton__button-label"
+            class="
+                avonni-skeleton__button-label
+                slds-m-vertical_xx-small
+                slds-m-horizontal_x-small
+            "
+            data-element-id="avonni-skeleton-button-label"
         ></div>
         <template if:true={buttonHasRightIcon}>
             <svg
