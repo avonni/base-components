@@ -460,24 +460,88 @@ export default class List extends LightningElement {
     /**
      * Compute hovered items center coordinates for ordering.
      *
-     * @param {number} center
+     * @param {DOMElement} center
      * @returns {object} item
      */
-    getHoveredItem(center) {
+    getHoveredItem(draggedItem) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
+                const draggedPosition = draggedItem.getBoundingClientRect();
                 // this looks at if the item crosses the center of the hovered item.
                 // we should see if the mouse is over the item.
-                const itemCenter =
-                    itemPosition.bottom - itemPosition.height / 2;
+                // const itemCenter =
+                //     itemPosition.bottom - itemPosition.height / 2;
 
-                if (
-                    (this._draggedIndex > itemIndex && center < itemCenter) ||
-                    (this._draggedIndex < itemIndex && center > itemCenter)
-                ) {
-                    return item;
+                // if (
+                //     (this._draggedIndex > itemIndex && center < itemCenter) ||
+                //     (this._draggedIndex < itemIndex && center > itemCenter)
+                // ) {
+                //     return item;
+                // }
+                const draggedTopLeft = {
+                    x: draggedPosition.top,
+                    y: draggedPosition.left
+                };
+                const draggedBottomRight = {
+                    x: draggedPosition.bottom,
+                    y: draggedPosition.right
+                };
+                const itemTopLeft = {
+                    x: itemPosition.top,
+                    y: itemPosition.left
+                };
+                const itemBottomRight = {
+                    x: itemPosition.bottom,
+                    y: itemPosition.right
+                };
+
+                let overlap = true;
+                // check if rectangles overlap
+
+                if (itemIndex === 0) {
+                    // check if they have area 0
+                    if (
+                        draggedTopLeft.x === draggedBottomRight.x ||
+                        draggedTopLeft.y === draggedBottomRight.y ||
+                        itemTopLeft.x === itemBottomRight.x ||
+                        itemTopLeft.y === itemBottomRight.y
+                    ) {
+                        overlap = false;
+                    }
+
+                    // check if one is left of the other
+                    if (
+                        draggedTopLeft.x > itemBottomRight.x ||
+                        draggedBottomRight.x < itemTopLeft.x
+                    ) {
+                        overlap = false;
+                    }
+
+                    // check if one is above the other
+                    if (
+                        draggedTopLeft.y > itemBottomRight.y ||
+                        draggedBottomRight.y < itemTopLeft.y
+                    ) {
+                        overlap = false;
+                    }
+
+                    if (overlap) {
+                        // get overlap area
+                        const draggedArea = draggedPosition.width * draggedPosition.height;
+
+                        // determin position relative ot item
+                        let topLeft = false;
+                        let topRight = false;
+                        let bottomLeft = false;
+                        let bottomRight = false;
+
+                        topLeft = itemBottomRight.x > draggedBottomRight.x && itemBottomRight.y > draggedBottomRight.y;
+                        
+                        
+                        console.log('overlap', draggedArea);
+                    }
                 }
             }
             return undefined;
@@ -499,6 +563,7 @@ export default class List extends LightningElement {
         if (target.style.transform !== '') {
             target.style.transform = '';
         } else {
+            // this works for virtical lists,
             const translationXValue =
                 targetIndex > index
                     ? -this._currentItemDraggedWidth
@@ -507,7 +572,7 @@ export default class List extends LightningElement {
                 targetIndex > index
                     ? -this._currentItemDraggedHeight
                     : this._currentItemDraggedHeight;
-            target.style.transform = `translate(${translationXValue + 'px'}, ${
+            target.style.transform = `translate(0px, ${
                 translationYValue + 'px'
             })`;
         }
@@ -674,7 +739,7 @@ export default class List extends LightningElement {
                 ? event.touches[0].clientX
                 : event.clientX;
 
-        console.log('drag', mouseX, mouseY);
+        // console.log('drag', mouseX, mouseY);
         // Make sure it is not possible to drag the item out of the menu
         let currentY;
         if (mouseY < this._menuTop) {
@@ -693,13 +758,13 @@ export default class List extends LightningElement {
             currentX = mouseX;
         }
 
-        console.log(
-            'darg1',
-            currentX,
-            this._initialX,
-            currentY,
-            this._initialY
-        );
+        // console.log(
+        //     'darg1',
+        //     currentX,
+        //     this._initialX,
+        //     currentY,
+        //     this._initialY
+        // );
 
         // Stick the dragged item to the mouse position
         this._draggedElement.style.transform = `translate(
@@ -711,8 +776,8 @@ export default class List extends LightningElement {
         const position = this._draggedElement.getBoundingClientRect();
         const center = position.bottom - position.height / 2;
 
-        console.log('drag2', event.pageY, center);
-        const hoveredItem = this.getHoveredItem(center);
+        // console.log('drag2', event.pageY, center);
+        const hoveredItem = this.getHoveredItem(this._draggedElement);
 
         if (hoveredItem) {
             this.switchWithItem(hoveredItem);
