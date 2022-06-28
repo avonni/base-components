@@ -33,14 +33,13 @@
 -->
 
 <template>
-    <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
+    <div data-element-id="avonni-skeleton-paragraph-list">
         <template for:each={paragraphItems} for:item="paragraphLine">
             <div
                 key={paragraphLine.key}
-                class="slds-col avonni-skeleton__paragraph-grid"
-            >
-                <span></span>
-            </div>
+                class="avonni-skeleton__paragraph-grid"
+                data-element-id="paragraph-item"
+            ></div>
         </template>
     </div>
 </template>

@@ -145,8 +145,8 @@ export default class Skeleton extends LightningElement {
         //     );
         //     console.log(`datatable header ${header.children.length}`);
         // }
-        if (this.isParagraphVariant && !this.paragraphItemsInitialized) {
-            this.initializeParagraphItems();
+        if (this.isParagraphVariant) {
+            // this.initializeParagraphItems();
             this.paragraphItemsInitialized = true;
             this.updateParagraphClassList();
         }
@@ -847,10 +847,10 @@ export default class Skeleton extends LightningElement {
         let temp;
         for (let i = 0; i < this.variantAttributes.rows; i++) {
             id++;
-            for (let j = 100; j > 30; ) {
+            for (let j = 100; j > 13; ) {
                 id++;
                 // const width = Math.floor(Math.random() * (5 - 1)) + 1;
-                const width = Math.floor(Math.random() * (30 - 20)) + 10; // min: 10 % max 20 %
+                const width = Math.floor(Math.random() * (13 - 5)) + 5; // min: 5 % max 10 %
                 console.log(`width: ${width}`);
                 paragraphItems.push({
                     key: `paragraph-${id}`,
@@ -861,6 +861,7 @@ export default class Skeleton extends LightningElement {
                 temp = j;
             }
             id++;
+            // temp -= 5;
             paragraphItems.push({
                 key: `paragraph-last-item-of-line-${id}`,
                 width: `${temp}%`
@@ -1032,9 +1033,9 @@ export default class Skeleton extends LightningElement {
 
     updateParagraphClassList() {
         const paragraphLines = this.template.querySelector(
-            '[data-element-id="paragraph-list"]'
+            '[data-element-id="avonni-skeleton-paragraph-list"]'
         ).children;
-        console.log(`html element: ${paragraphLines}`);
+        console.log(`html element: ${paragraphLines.length}`);
         console.log(`js pararaph: ${this.paragraphItems}`);
         // console.log(this.paragraphItems);
         // console.log(paragraphLines);

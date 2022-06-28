@@ -282,17 +282,14 @@
 }
 
 .avonni-skeleton__paragraph-grid {
-    height: 0.7em;
-    margin: 0.1em;
+    height: 1.2em;
+    /* margin: 0.1em; */
     display: inline-flex;
-    color: rgb(255, 255, 255);
-    text-align: center;
-    background: content-box rgb(84, 105, 141);
-    border-width: 1px;
+    color: transparent;
+    border-width: 0.3em;
     border-style: solid;
     border-color: #ffffff;
-    border-image: initial;
-    border-radius: var(--avonni-skeleton-radius-border);
+    border-radius: 10px;
     animation: pulse-animation 1s infinite;
 }
 
