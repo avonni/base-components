@@ -81,7 +81,12 @@
             >
                 <template for:each={tabset} for:item="tab">
                     <li key={tab.key} class="slds-vertical-tabs__nav-item">
-                        <div class={tabVerticalItemContainerClass}>
+                        <div
+                            class="
+                                slds-vertical-tabs__link
+                                avonni-skeleton__tabset-vertical-container
+                            "
+                        >
                             <div class={tabVerticalItemClass}></div>
                         </div>
                     </li>
