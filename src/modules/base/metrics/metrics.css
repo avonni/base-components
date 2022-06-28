@@ -167,11 +167,11 @@
         --avonni-metrics-secondary-neutral-trend-text-color,
         #181818
     );
-    --avonni-primitive-metric-positive-trend-color-background: var(
+    --avonni-primitive-metric-color-background: var(
         --avonni-metrics-secondary-neutral-trend-color-background,
         #f3f3f3
     );
-    --avonni-primitive-metric-positive-trend-radius: var(
+    --avonni-primitive-metric-radius: var(
         --avonni-metrics-secondary-neutral-trend-radius,
         0.25rem
     );
@@ -192,11 +192,11 @@
         --avonni-metrics-secondary-positive-trend-text-color,
         #2e844a
     );
-    --avonni-primitive-metric-positive-trend-color-background: var(
+    --avonni-primitive-metric-color-background: var(
         --avonni-metrics-secondary-positive-trend-color-background,
         #cdefc4
     );
-    --avonni-primitive-metric-positive-trend-radius: var(
+    --avonni-primitive-metric-radius: var(
         --avonni-metrics-secondary-positive-trend-radius,
         0.25rem
     );
@@ -217,11 +217,11 @@
         --avonni-metrics-secondary-negative-trend-text-color,
         #ba0517
     );
-    --avonni-primitive-metric-negative-trend-color-background: var(
+    --avonni-primitive-metric-color-background: var(
         --avonni-metrics-secondary-negative-trend-color-background,
         #feded8
     );
-    --avonni-primitive-metric-negative-trend-radius: var(
+    --avonni-primitive-metric-radius: var(
         --avonni-metrics-secondary-negative-trend-radius,
         0.25rem
     );

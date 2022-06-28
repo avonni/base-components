@@ -57,13 +57,17 @@ export const Metrics = ({
     secondaryMinimumIntegerDigits,
     secondaryMinimumSignificantDigits,
     secondaryPrefix,
+    secondaryShowTrendColor,
     secondarySuffix,
     secondaryValueSign,
-    secondaryTrendColorBreakpointValue,
+    secondaryTrendBreakpointValue,
+    secondaryTrendIcon,
     secondaryValue,
+    showTrendColor,
     suffix,
     tooltip,
-    trendColorBreakpointValue,
+    trendBreakpointValue,
+    trendIcon,
     valueSign,
     value
 }) => {
@@ -91,12 +95,15 @@ export const Metrics = ({
     element.secondaryMinimumIntegerDigits = secondaryMinimumIntegerDigits;
     element.secondaryMinimumSignificantDigits =
         secondaryMinimumSignificantDigits;
-    element.secondaryTrendColorBreakpointValue =
-        secondaryTrendColorBreakpointValue;
     element.secondaryPrefix = secondaryPrefix;
+    element.secondaryShowTrendColor = secondaryShowTrendColor;
     element.secondarySuffix = secondarySuffix;
+    element.secondaryTrendBreakpointValue = secondaryTrendBreakpointValue;
+    element.secondaryTrendIcon = secondaryTrendIcon;
     element.secondaryValueSign = secondaryValueSign;
-    element.trendColorBreakpointValue = trendColorBreakpointValue;
+    element.showTrendColor = showTrendColor;
+    element.trendBreakpointValue = trendBreakpointValue;
+    element.trendIcon = trendIcon;
     element.secondaryValue = secondaryValue;
     element.suffix = suffix;
     element.tooltip = tooltip;

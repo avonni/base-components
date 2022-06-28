@@ -34,41 +34,49 @@
 
 <template>
     <div class="slds-grid slds-grid_vertical-align-end avonni-metrics__wrapper">
-        <span class="slds-assistive-text">{valueSignAlternativeText}</span>
-        <!-- Sign -->
+        <!-- Trend icon -->
         <lightning-dynamic-icon
             if:true={showDynamicIcon}
-            aria-hidden="true"
             class={dynamicIconClass}
-            option={dynamicIconOption}
+            alternative-text={trendDirection}
+            option={trendDirection}
             type="trend"
+            data-element-id="lightning-dynamic-icon-sign"
         ></lightning-dynamic-icon>
-        <span
-            if:true={mathSign}
-            aria-hidden="true"
-            class="
-                slds-align-middle
-                avonni-metrics__value avonni-metrics__primary-text
-            "
-            >{mathSign}&nbsp;</span
-        >
-        <c-primitive-icon
-            if:true={showIcon}
-            aria-hidden="true"
-            class="
-                avonni-metrics__icon
-                slds-current-color slds-align-middle
-                slds-m-right_xx-small
-            "
-            icon-name={iconName}
-        ></c-primitive-icon>
+
+        <template if:true={showIcon}>
+            <c-primitive-icon
+                class="
+                    avonni-metrics__icon
+                    slds-current-color slds-align-middle
+                    slds-m-right_xx-small
+                "
+                icon-name={iconName}
+                data-element-id="avonni-primitive-icon-sign"
+            ></c-primitive-icon>
+            <span class="slds-assistive-text"
+                >Trend direction: {trendDirection}</span
+            >
+        </template>
+
         <!-- Prefix -->
         <span
             if:true={prefix}
             class="avonni-metrics__prefix avonni-metrics__primary-text"
+            data-element-id="span-prefix"
             >{prefix}&nbsp;</span
         >
+
         <!-- Value -->
+        <span
+            if:true={mathSign}
+            class="
+                slds-align-middle
+                avonni-metrics__value avonni-metrics__primary-text
+            "
+            data-element-id="span-math-sign"
+            >{mathSign}&nbsp;</span
+        >
         <lightning-formatted-number
             class="avonni-metrics__value avonni-metrics__primary-text"
             currency-code={currencyCode}
@@ -80,11 +88,14 @@
             minimum-integer-digits={minimumIntegerDigits}
             minimum-significant-digits={minimumSignificantDigits}
             value={positiveValue}
+            data-element-id="lightning-formatted-number"
         ></lightning-formatted-number>
+
         <!-- Suffix -->
         <span
             if:true={suffix}
             class="avonni-metrics__suffix avonni-metrics__primary-text"
+            data-element-id="span-suffix"
             >&nbsp;{suffix}</span
         >
     </div>

@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeObject, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeObject,
+    normalizeString
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 
@@ -45,6 +49,7 @@ const CURRENCY_DISPLAYS = {
     valid: ['symbol', 'code', 'name']
 };
 
+const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
 const DEFAULT_VALUE = 0;
 
 const FORMAT_STYLES = {
@@ -52,9 +57,14 @@ const FORMAT_STYLES = {
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
 
+const TREND_ICONS = {
+    valid: ['dynamic', 'arrow', 'caret'],
+    default: undefined
+};
+
 const VALUE_SIGNS = {
-    valid: ['auto', 'minus-and-plus', 'dynamic-icon', 'arrow', 'caret'],
-    default: 'auto'
+    valid: ['negative', 'positive-and-negative', 'none'],
+    default: 'negative'
 };
 
 /**
@@ -143,11 +153,15 @@ export default class Metrics extends LightningElement {
     _secondaryMinimumFractionDigits;
     _secondaryMinimumIntegerDigits;
     _secondaryMinimumSignificantDigits;
-    _secondaryTrendColorBreakpointValue;
+    _secondaryShowTrendColor = false;
+    _secondaryTrendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
+    _secondaryTrendIcon;
     _secondaryValue;
     _secondaryValueSign = VALUE_SIGNS.default;
+    _showTrendColor = false;
     _tooltip;
-    _trendColorBreakpointValue;
+    _trendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
+    _trendIcon;
     _value = DEFAULT_VALUE;
     _valueSign = VALUE_SIGNS.default;
 
@@ -439,23 +453,53 @@ export default class Metrics extends LightningElement {
     }
 
     /**
-     * Number at which the secondary value will be considered neutral.
-     * * If the value is equal to the breakpoint, it will be displayed with a neutral color.
-     * * If the value is greater than the breakpoint, it will be displayed with a positive color.
-     * * If the value is lesser than the breakpoint, it will be displayed with a negative color.
+     * If present, the secondary value will change color and background depending on the trend direction.
      *
-     * @type {number}
+     * @type {boolean}
+     * @default false
      * @public
      */
     @api
-    get secondaryTrendColorBreakpointValue() {
-        return this._secondaryTrendColorBreakpointValue;
+    get secondaryShowTrendColor() {
+        return this._secondaryShowTrendColor;
     }
-    set secondaryTrendColorBreakpointValue(value) {
+    set secondaryShowTrendColor(value) {
+        this._secondaryShowTrendColor = normalizeBoolean(value);
+    }
+
+    /**
+     * Number at which the secondary value will be considered neutral. Works in association with `secondary-trend-icon` and `secondary-show-trend-color`.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get secondaryTrendBreakpointValue() {
+        return this._secondaryTrendBreakpointValue;
+    }
+    set secondaryTrendBreakpointValue(value) {
         const normalizedNumber = Number(value);
-        this._secondaryTrendColorBreakpointValue = isNaN(normalizedNumber)
-            ? undefined
+        this._secondaryTrendBreakpointValue = isNaN(normalizedNumber)
+            ? DEFAULT_TREND_BREAKPOINT_VALUE
             : normalizedNumber;
+    }
+
+    /**
+     * Type of icon indicating the trend direction of the secondary value. Valid values include dynamic, arrow and caret.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get secondaryTrendIcon() {
+        return this._secondaryTrendIcon;
+    }
+    set secondaryTrendIcon(value) {
+        this._secondaryTrendIcon = normalizeString(value, {
+            fallbackValue: TREND_ICONS.default,
+            validValues: TREND_ICONS.valid
+        });
     }
 
     /**
@@ -476,11 +520,11 @@ export default class Metrics extends LightningElement {
     }
 
     /**
-     * Determine which sign to display before the secondary value, to indicate if it is positive or negative.
-     * Valid values include arrow, auto, caret, dynamic-icon and minus-and-plus.
+     * Determine what signs are allowed to be displayed in front of the secondary value, to indicate that it is positive or negative.
+     * Valid values include negative, positive-and-negative or none.
      *
      * @type {string}
-     * @default auto
+     * @default negative
      * @public
      */
     @api
@@ -495,6 +539,21 @@ export default class Metrics extends LightningElement {
     }
 
     /**
+     * If present, the value will change color depending on the trend direction.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showTrendColor() {
+        return this._showTrendColor;
+    }
+    set showTrendColor(value) {
+        this._showTrendColor = normalizeBoolean(value);
+    }
+
+    /**
      * Text to display when the user mouses over the value.
      *
      * @type {string}
@@ -504,7 +563,6 @@ export default class Metrics extends LightningElement {
     get tooltip() {
         return this._tooltip ? this._tooltip.value : undefined;
     }
-    // remove-next-line-for-c-namespace
     set tooltip(value) {
         if (this._tooltip) {
             this._tooltip.value = value;
@@ -521,27 +579,42 @@ export default class Metrics extends LightningElement {
     }
 
     /**
-     * Number at which the value will be considered neutral.
-     * * If the value is equal to the breakpoint, it will be displayed with a neutral color.
-     * * If the value is greater than the breakpoint, it will be displayed with a positive color.
-     * * If the value is lesser than the breakpoint, it will be displayed with a negative color.
+     * Number at which the value will be considered neutral. Works in association with `trend-icon` and `show-trend-color`.
      *
      * @type {number}
+     * @default 0
      * @public
      */
     @api
-    get trendColorBreakpointValue() {
-        return this._trendColorBreakpointValue;
+    get trendBreakpointValue() {
+        return this._trendBreakpointValue;
     }
-    set trendColorBreakpointValue(value) {
+    set trendBreakpointValue(value) {
         const normalizedNumber = Number(value);
-        this._trendColorBreakpointValue = isNaN(normalizedNumber)
-            ? undefined
+        this._trendBreakpointValue = isNaN(normalizedNumber)
+            ? DEFAULT_TREND_BREAKPOINT_VALUE
             : normalizedNumber;
     }
 
     /**
-     * Value of the metric.
+     * Type of icon indicating the trend direction of the value. Valid values include dynamic, arrow and caret.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get trendIcon() {
+        return this._trendIcon;
+    }
+    set trendIcon(value) {
+        this._trendIcon = normalizeString(value, {
+            fallbackValue: TREND_ICONS.default,
+            validValues: TREND_ICONS.valid
+        });
+    }
+
+    /**
+     * Value of the primary metric.
      *
      * @type {number}
      * @required
@@ -560,11 +633,11 @@ export default class Metrics extends LightningElement {
     }
 
     /**
-     * Determine which sign to display before the value, to indicate if it is positive or negative.
-     * Valid values include arrow, auto, caret, dynamic-icon and minus-and-plus.
+     * Determine what signs are allowed to be displayed in front of the value, to indicate that it is positive or negative.
+     * Valid values include negative, positive-and-negative or none.
      *
      * @type {string}
-     * @default auto
+     * @default negative
      * @public
      */
     @api
@@ -606,34 +679,24 @@ export default class Metrics extends LightningElement {
     }
 
     /**
-     * Absolute secondary value.
-     *
-     * @type {number}
-     */
-    get positiveSecondaryValue() {
-        return Math.abs(this.secondaryValue);
-    }
-
-    /**
      * Computed CSS classes for the primary metric.
      *
      * @type {string}
      */
     get primaryClass() {
-        const showTrendColor = !isNaN(this.trendColorBreakpointValue);
-        const isPositive = this.value > this.trendColorBreakpointValue;
-        const isNegative = this.value < this.trendColorBreakpointValue;
+        const classes = classSet('avonni-metrics__primary');
 
-        return classSet('avonni-metrics__primary')
-            .add({
+        if (this.showTrendColor) {
+            const isPositive = this.value > this.trendBreakpointValue;
+            const isNegative = this.value < this.trendBreakpointValue;
+            classes.add({
                 'avonni-metrics__primary_neutral-trend':
-                    showTrendColor && !isPositive && !isNegative,
-                'avonni-metrics__primary_positive-trend':
-                    showTrendColor && isPositive,
-                'avonni-metrics__primary_negative-trend':
-                    showTrendColor && isNegative
-            })
-            .toString();
+                    !isPositive && !isNegative,
+                'avonni-metrics__primary_positive-trend': isPositive,
+                'avonni-metrics__primary_negative-trend': isNegative
+            });
+        }
+        return classes.toString();
     }
 
     /**
@@ -642,22 +705,25 @@ export default class Metrics extends LightningElement {
      * @type {string}
      */
     get secondaryClass() {
-        const showTrendColor = !isNaN(this.secondaryTrendColorBreakpointValue);
-        const isPositive =
-            this.secondaryValue > this.secondaryTrendColorBreakpointValue;
-        const isNegative =
-            this.secondaryValue < this.secondaryTrendColorBreakpointValue;
+        const classes = classSet(
+            'slds-m-left_x-small avonni-metrics__secondary'
+        );
 
-        return classSet('slds-m-left_x-small avonni-metrics__secondary')
-            .add({
-                'avonni-metrics__secondary_neutral-trend':
-                    showTrendColor && !isPositive && !isNegative,
-                'avonni-metrics__secondary_positive-trend':
-                    showTrendColor && isPositive,
-                'avonni-metrics__secondary_negative-trend':
-                    showTrendColor && isNegative
-            })
-            .toString();
+        if (this.secondaryShowTrendColor) {
+            const isPositive =
+                this.secondaryValue > this.secondaryTrendBreakpointValue;
+            const isNegative =
+                this.secondaryValue < this.secondaryTrendBreakpointValue;
+            classes
+                .add({
+                    'avonni-metrics__secondary_neutral-trend':
+                        !isPositive && !isNegative,
+                    'avonni-metrics__secondary_positive-trend': isPositive,
+                    'avonni-metrics__secondary_negative-trend': isNegative
+                })
+                .toString();
+        }
+        return classes.toString();
     }
 
     /**

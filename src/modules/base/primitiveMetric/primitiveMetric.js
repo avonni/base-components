@@ -39,6 +39,7 @@ const CURRENCY_DISPLAYS = {
     valid: ['symbol', 'code', 'name']
 };
 
+const DEFAULT_TREND_BREAKPOINT_VALUE = 0;
 const DEFAULT_VALUE = 0;
 
 const FORMAT_STYLES = {
@@ -46,9 +47,14 @@ const FORMAT_STYLES = {
     valid: ['currency', 'decimal', 'percent', 'percent-fixed']
 };
 
+const TREND_ICONS = {
+    valid: ['dynamic', 'arrow', 'caret'],
+    default: undefined
+};
+
 const VALUE_SIGNS = {
-    valid: ['auto', 'minus-and-plus', 'dynamic-icon', 'arrow', 'caret'],
-    default: 'auto'
+    valid: ['negative', 'positive-and-negative', 'none'],
+    default: 'negative'
 };
 
 /**
@@ -87,6 +93,8 @@ export default class PrimitiveMetric extends LightningElement {
     _minimumFractionDigits;
     _minimumIntegerDigits;
     _minimumSignificantDigits;
+    _trendBreakpointValue = DEFAULT_TREND_BREAKPOINT_VALUE;
+    _trendIcon = TREND_ICONS.default;
     _value = DEFAULT_VALUE;
     _valueSign = VALUE_SIGNS.default;
 
@@ -224,6 +232,41 @@ export default class PrimitiveMetric extends LightningElement {
     }
 
     /**
+     * Number at which the value will be considered neutral. Works in association with `trend-icon` and `show-trend-color`.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get trendBreakpointValue() {
+        return this._trendBreakpointValue;
+    }
+    set trendBreakpointValue(value) {
+        const normalizedNumber = Number(value);
+        this._trendBreakpointValue = isNaN(normalizedNumber)
+            ? DEFAULT_TREND_BREAKPOINT_VALUE
+            : normalizedNumber;
+    }
+
+    /**
+     * Type of icon indicating the trend direction of the value. Valid values include dynamic, arrow and caret.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get trendIcon() {
+        return this._trendIcon;
+    }
+    set trendIcon(value) {
+        this._trendIcon = normalizeString(value, {
+            fallbackValue: TREND_ICONS.default,
+            validValues: TREND_ICONS.valid
+        });
+    }
+
+    /**
      * Value of the metric.
      *
      * @type {number}
@@ -243,11 +286,11 @@ export default class PrimitiveMetric extends LightningElement {
     }
 
     /**
-     * Determine which sign to display before the value, to indicate if it is positive or negative.
-     * Valid values include arrow, auto, caret, dynamic-icon and minus-and-plus.
+     * Determine what signs are allowed to be displayed in front of the value, to indicate that it is positive or negative.
+     * Valid values include negative, positive-and-negative or none.
      *
      * @type {string}
-     * @default auto
+     * @default negative
      * @public
      */
     @api
@@ -275,23 +318,11 @@ export default class PrimitiveMetric extends LightningElement {
     get dynamicIconClass() {
         return classSet('slds-align-middle')
             .add({
-                'slds-m-right_x-small': this.value > 0,
-                'slds-m-left_xx-small': this.value < 0,
-                'slds-m-right_xx-small': this.value <= 0
+                'slds-m-right_x-small': this.value > this.trendBreakpointValue,
+                'slds-m-left_xx-small': this.value < this.trendBreakpointValue,
+                'slds-m-right_xx-small': this.value <= this.trendBreakpointValue
             })
             .toString();
-    }
-
-    /**
-     * Option indicating the direction of the dynamic icon.
-     *
-     * @type {string}
-     */
-    get dynamicIconOption() {
-        if (this.value === 0) {
-            return 'neutral';
-        }
-        return this.value > 0 ? 'up' : 'down';
     }
 
     /**
@@ -300,10 +331,14 @@ export default class PrimitiveMetric extends LightningElement {
      * @type {string}
      */
     get iconName() {
-        const arrowIcon = this.valueSign === 'arrow';
+        const arrowIcon = this.trendIcon === 'arrow';
         const up = arrowIcon ? 'utility:arrowup' : 'utility:up';
         const down = arrowIcon ? 'utility:arrowdown' : 'utility:down';
-        return this.value > 0 ? up : down;
+        const neutral = arrowIcon ? 'utility:forward' : 'utility:right';
+        if (this.value === this.trendBreakpointValue) {
+            return neutral;
+        }
+        return this.value > this.trendBreakpointValue ? up : down;
     }
 
     /**
@@ -312,12 +347,11 @@ export default class PrimitiveMetric extends LightningElement {
      * @type {string}
      */
     get mathSign() {
-        const displayMinusAndPlus = this.valueSign === 'minus-and-plus';
-        const displayMinus = this.valueSign === 'auto';
-        const displayIcon = !displayMinusAndPlus && !displayMinus;
+        const displayMinus = this.valueSign === 'negative';
+        const displayNoSign = this.valueSign === 'none';
         const neutralValue = this.value === 0;
 
-        if (displayIcon || neutralValue || (displayMinus && this.value > 0)) {
+        if (neutralValue || displayNoSign || (displayMinus && this.value > 0)) {
             return null;
         }
         return this.value > 0 ? '+' : '-';
@@ -338,7 +372,7 @@ export default class PrimitiveMetric extends LightningElement {
      * @type {boolean}
      */
     get showDynamicIcon() {
-        return this.valueSign === 'dynamic-icon';
+        return this.trendIcon === 'dynamic';
     }
 
     /**
@@ -347,9 +381,18 @@ export default class PrimitiveMetric extends LightningElement {
      * @type {boolean}
      */
     get showIcon() {
-        return (
-            this.value !== 0 &&
-            (this.valueSign === 'arrow' || this.valueSign === 'caret')
-        );
+        return this.trendIcon === 'arrow' || this.trendIcon === 'caret';
+    }
+
+    /**
+     * Direction of the value trend.
+     *
+     * @type {string}
+     */
+    get trendDirection() {
+        if (this.value === this.trendBreakpointValue) {
+            return 'neutral';
+        }
+        return this.value > this.trendBreakpointValue ? 'up' : 'down';
     }
 }

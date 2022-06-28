@@ -1,8 +1,6 @@
 .avonni-metrics__wrapper {
-    background-color: var(
-        --avonni-primitive-metric-positive-trend-color-background
-    );
-    border-radius: var(--avonni-primitive-metric-positive-trend-radius);
+    background-color: var(--avonni-primitive-metric-color-background);
+    border-radius: var(--avonni-primitive-metric-radius);
     padding: var(--avonni-primitive-metric-spacing-block)
         var(--avonni-primitive-metric-spacing-inline);
 }
@@ -33,11 +31,4 @@
     font-weight: var(--avonni-primitive-metric-value-font-weight);
     line-height: var(--avonni-primitive-metric-value-line-height);
     color: var(--avonni-primitive-metric-value-text-color);
-}
-
-.avonni-metrics__neutral-trend {
-    background-color: var(
-        --avonni-primitive-metric-neutral-trend-color-background
-    );
-    border-radius: var(--avonni-primitive-metric-neutral-trend-radius);
 }
