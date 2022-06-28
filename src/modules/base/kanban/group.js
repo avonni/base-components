@@ -104,7 +104,8 @@ export default class KanbanGroups {
                 ) {
                     subGroups.push({
                         label: tile.subGroup,
-                        tiles: []
+                        tiles: [],
+                        isCollapsed: false
                     });
                 }
             }

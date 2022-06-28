@@ -529,25 +529,39 @@
                     class="avonni-kanban_expandable_container"
                     data-element-id="avonni-kanban_expandable_container"
                 >
-                    <c-expandable-section
+                    <div
                         for:each={subGroupsLabels}
                         for:item="section"
                         key={section.label}
-                        title={section.label}
-                        collapsible="true"
                         data-element-id="avonni-kanban_expandable_section"
                         class="avonni-kanban__expandable_section"
                     >
+                        <button 
+                            class="avonni-kanban__expandable_section_header slds-p-around_x-small slds-m-around_xx-small"
+                            data-element-id="avonni-kanban__expandable_section_header"
+                            onclick={handleExpandableSectionClick}
+                        >
+                            <lightning-icon
+                            icon-name="utility:chevrondown"
+                            size="x-small"
+                            class="
+                                slds-button__icon slds-button__icon_left avonni-kanban__chevron
+                            "
+                            data-element-id="lightning-icon-opened"
+                        ></lightning-icon>
+                            {section.label}
+                        </button>
                         <div
                             class="avonni-kanban__field_container"
                             data-element-id="avonni-kanban__field_container"
+                            data-subgroup-container={section.label}
                         >
                             <div
                                 class={computedFieldClass}
                                 for:each={computedSubGroups}
                                 for:item="group"
                                 data-element-id="avonni-kanban__field"
-                                data-subgroup={section.label}
+                                data-subgroup-field={section.label}
                                 key={group.label}
                             >
                                 <div
@@ -659,7 +673,7 @@
                                 </div>
                             </div>
                         </div>
-                    </c-expandable-section>
+                    </div>
                 </div>
             </div>
         </template>

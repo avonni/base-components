@@ -71,6 +71,7 @@ export default class Kanban extends LightningElement {
     _droppedTileHeight = 0;
     _fieldsDistance = [];
     _groupsHeight = [];
+    _subGroupsHeight = [];
     _groupsLength = [];
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
@@ -361,6 +362,14 @@ export default class Kanban extends LightningElement {
 
         this.displayCoverImage(computedGroups);
         requestAnimationFrame(() => {
+            this.template
+                .querySelectorAll(
+                    '[data-element-id="avonni-kanban__field_container"]'
+                )
+                .forEach((fieldContainer, i) => {
+                    this._subGroupsHeight[i] = fieldContainer.offsetHeight;
+                });
+
             this.capFieldHeight();
             this._initialScrollWidth = this.template.querySelector(
                 '[data-element-id="avonni-kanban__field_container"]'
@@ -676,18 +685,18 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban_expandable_container"]'
         );
         if (this._hasSubGroups) {
-            const groupHeights = [];
-            groups.forEach((group) => {
-                groupHeights.push(group.offsetHeight);
-            });
-            const maxGroupHeight = Math.max(...groupHeights);
-            groups.forEach((group) => {
-                group.style.height = `${maxGroupHeight}px`;
-            });
-
-            expandable.style.width = `calc(${
-                fields[0].offsetWidth * this._groupValues.length
-            }px + ${this._groupValues.length - 1}rem)`;
+            // console.log(this._subGroupsHeight);
+            // groups.forEach((group, i) => {
+            //     // group.style.height = `calc(${
+            //     //     this._subGroupsHeight[
+            //     //         Math.floor(i / this.groupValues.length)
+            //     //     ]
+            //     // }px - 0.5rem)`;
+            //     group.style.height = `100px`;
+            // });
+            // expandable.style.width = `calc(${
+            //     this._groupWidth[0] * this._groupValues.length
+            // }px + ${this._groupValues.length - 1}rem - 0.5rem)`;
         } else {
             fields.forEach((field) => {
                 if (field.offsetHeight >= container.offsetHeight) {
@@ -697,6 +706,26 @@ export default class Kanban extends LightningElement {
                 }
             });
         }
+
+        // if (this._hasSubGroups) {
+        //     const groupHeights = [];
+        //     this.computedGroups[0].subGroups.forEach((subGroup) => {
+        //         groupHeights.push(
+        //             this.template.querySelector(
+        //                 `[data-subgroup-container="${subGroup.label}"]`
+        //             ).offsetHeight
+        //         );
+        //     });
+
+        //     this.template
+        //         .querySelectorAll(
+        //             '[data-element-id="avonni-kanban__field_container"]'
+        //         )
+        //         .forEach((field, i) => {
+        //             field.style.height = `${groupHeights[i]}px`;
+        //         });
+
+        // }
 
         this._droppedTileHeight = 0;
     }
@@ -748,15 +777,32 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
+        const currentField = this.template.querySelectorAll(
+            `[data-subgroup-field="${this._currentSubGroup}"]`
+        );
+
+        const currentSubGroupIndex = this.computedGroups[0].subGroups.indexOf(
+            this.computedGroups[0].subGroups.find(
+                (subGroup) => subGroup.label === this._currentSubGroup
+            )
+        );
         // Sets the right paddingBottom on the group to create space for the dragged tile
         currentGroupTiles.forEach((group, i) => {
-            if (this._draggedTile) {
+            if (this._draggedTile && !this._hasSubGroups) {
                 const paddingBottom =
                     this._releasedGroupIndex === i
                         ? this._draggedTile.offsetHeight
                         : 0;
                 group.style.paddingBottom = `${paddingBottom}px`;
             }
+            // else if (this._draggedTile) {
+            //     currentField.forEach((field) => {
+            //         field.style.height = `${
+            //             this._subGroupsHeight[currentSubGroupIndex] +
+            //             this._draggedTile.offsetHeight
+            //         }px`;
+            //     });
+            // }
         });
     }
 
@@ -892,6 +938,20 @@ export default class Kanban extends LightningElement {
         });
         resizeObserver.observe(container);
         return resizeObserver;
+    }
+
+    handleExpandableSectionClick(event) {
+        const expandableSection = event.target.closest(
+            '[data-element-id="avonni-kanban_expandable_section"]'
+        );
+
+        if (!expandableSection) {
+            return;
+        }
+
+        expandableSection.classList.toggle(
+            'avonni-kanban__expandable_section_collapsed'
+        );
     }
 
     /**
