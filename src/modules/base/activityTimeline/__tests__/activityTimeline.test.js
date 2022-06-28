@@ -733,6 +733,30 @@ describe('Activity Timeline', () => {
         });
     });
 
+    it('Activity Timeline: horizontal - itemclick', () => {
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            const timelineItemsSVG = element.shadowRoot.querySelector(
+                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+            );
+            const itemSVGGroup = timelineItemsSVG.querySelector(
+                '#timeline-item-item4'
+            );
+
+            const handler = jest.fn();
+            itemSVGGroup.addEventListener('itemclick', handler);
+            itemSVGGroup.dispatchEvent(new MouseEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('item4');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
     // displayedItems
     it('Activity Timeline: horizontal - displayedItems', () => {
         element.items = horizontalItemsTest;
