@@ -106,12 +106,10 @@ export default class Skeleton extends LightningElement {
     paragraphItems = [];
     currentParagraphItem = 0;
     progressItems = [];
-    paragraphItemsInitialized = false;
     tabset = [];
     treeItems = [];
 
     connectedCallback() {
-        console.log(`connected callback variant: ${this.variant}`);
         if (this.isDatatableVariant) {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
@@ -135,17 +133,8 @@ export default class Skeleton extends LightningElement {
 
     renderedCallback() {
         console.log(`rendered callback variant: ${this.variant}`);
-        // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (!this.isAvatarVariant) this.handleVariant();
-        // if (this.isDatatableVariant) {
-        //     const header = this.template.querySelector(
-        //         '[data-element-id="avonni-skeleton-datatable-header"]'
-        //     );
-        //     console.log(`datatable header ${header.children.length}`);
-        // }
         if (this.isParagraphVariant) {
-            // this.initializeParagraphItems();
-            this.paragraphItemsInitialized = true;
             this.updateParagraphClassList();
         }
     }
@@ -737,18 +726,15 @@ export default class Skeleton extends LightningElement {
         ) {
             switch (this.variant) {
                 case 'badge':
-                    // this.updateBadgeClassList();
                     this.updateVariantClassList('badge');
                     break;
                 case 'button':
-                    // this.updateVariantButton();
                     this.updateVariantClassList('button');
                     break;
                 case 'button-icon':
                     this.updateVariantButtonIcon();
                     break;
                 case 'chip':
-                    // this.updateChipClassList();
                     this.updateVariantClassList('chip');
                     break;
                 case 'combobox':
@@ -771,7 +757,6 @@ export default class Skeleton extends LightningElement {
 
     initializeDatatableRows() {
         const datatableRows = [];
-        console.log(`num of rows is: ${this.variantAttributes.rows}`);
         for (let i = 0; i < this.variantAttributes.rows; i++) {
             datatableRows.push({
                 keyTr: `rowsTr-${i}`,
@@ -779,7 +764,6 @@ export default class Skeleton extends LightningElement {
                 keyTh: `rowsTh-${i}`
             });
         }
-        console.log('end');
         this.datatableRows = datatableRows;
     }
 
@@ -873,7 +857,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateVariantClassList(variant) {
-        console.log(`[data-element-id="avonni-skeleton-${variant}-wrapper]`);
         const variantElement = this.template.querySelector(
             `[data-element-id="avonni-skeleton-${variant}-wrapper"]`
         );
@@ -897,78 +880,6 @@ export default class Skeleton extends LightningElement {
             variantAttributes.labelColor
         );
     }
-
-    // updateChipClassList() {
-    //     const chipElement = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton-chip-wrapper"]'
-    //     );
-    //     const chipLabel = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton-chip-label"]'
-    //     );
-    //     const chipVariantAttributes = CHIP_VARIANT_VALUES.get(
-    //         this.variantAttributes.variant
-    //     );
-    //     chipElement.style.setProperty(
-    //         '--avonni-skeleton-color-background',
-    //         chipVariantAttributes.background
-    //     );
-    //     chipElement.style.setProperty(
-    //         '--avonni-skeleton-color-background-animation',
-    //         chipVariantAttributes.backgroundAnimation
-    //     );
-    //     chipLabel.style.setProperty(
-    //         '--avonni-skeleton-chip-label-background',
-    //         chipVariantAttributes.labelColor
-    //     );
-    // }
-
-    // updateBadgeClassList() {
-    //     const badgeElement = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton__badge-wrapper"]'
-    //     );
-    //     const badgeLabel = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton__badge-label"]'
-    //     );
-    //     const badgeVariantAttributes = BADGE_VARIANT_VALUES.get(
-    //         this.variantAttributes.variant
-    //     );
-    //     badgeElement.style.setProperty(
-    //         '--avonni-skeleton-color-background',
-    //         badgeVariantAttributes.background
-    //     );
-    //     badgeElement.style.setProperty(
-    //         '--avonni-skeleton-color-background-animation',
-    //         badgeVariantAttributes.backgroundAnimation
-    //     );
-    //     badgeLabel.style.setProperty(
-    //         '--avonni-skeleton-chip-label-background',
-    //         badgeVariantAttributes.labelColor
-    //     );
-    // }
-
-    // updateVariantButton() {
-    //     const buttonElement = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton-button-wrapper"]'
-    //     );
-    //     const buttonLabel = this.template.querySelector(
-    //         '[data-element-id="avonni-skeleton__button-label"]'
-    //     );
-    //     const buttonVariantAttributes = BUTTON_VARIANT_VALUES.get(
-    //         this.variantAttributes.variant
-    //     );
-    //     buttonElement.style.setProperty(
-    //         '--avonni-skeleton-color-background',
-    //         buttonVariantAttributes.background
-    //     );
-    //     buttonElement.style.setProperty(
-    //         '--avonni-skeleton-color-background-animation',
-    //         buttonVariantAttributes.backgroundAnimation
-    //     );
-    //     buttonLabel.style.setProperty(
-    //         '--avonni-skeleton-chip-label-background',
-    //         buttonVariantAttributes.labelColor
-    //     );
-    // }
 
     updateVariantButtonIcon() {
         const buttonIconElement = this.template.querySelector(

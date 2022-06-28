@@ -664,7 +664,6 @@ describe('Skeleton', () => {
             const skeletonTabsetList = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-tabset-list"]'
             );
-            console.log(`num of levels ${skeletonTabsetList.children.length}`);
             expect(skeletonTabset.className).toContain('slds-vertical-tabs');
             expect(skeletonTabsetList.className).toContain(
                 'slds-vertical-tabs__nav'
@@ -759,9 +758,6 @@ describe('Skeleton', () => {
         };
 
         return Promise.resolve().then(() => {
-            // const paragraphElement = element.shadowRoot.querySelectorAll(
-            //     '[data-element-id="paragraph-item"]'
-            // );
             console.log(
                 element.shadowRoot.querySelector(
                     '[data-element-id="avonni-skeleton-paragraph-list"]'
