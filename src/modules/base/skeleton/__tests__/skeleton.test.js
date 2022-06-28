@@ -270,10 +270,10 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-wrapper"]'
             );
             const skeletonBadgeLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-label"]'
+                '[data-element-id="avonni-skeleton-badge-label"]'
             );
             const skeletonBadgeLeftIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__badge-left-icon"]'
@@ -310,10 +310,10 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-wrapper"]'
             );
             const skeletonBadgeLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-label"]'
+                '[data-element-id="avonni-skeleton-badge-label"]'
             );
             const skeletonBadgeRightIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__badge-right-icon"]'
@@ -351,10 +351,10 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonButton = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-element"]'
+                '[data-element-id="avonni-skeleton-button-wrapper"]'
             );
             const skeletonButtonLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__button-label"]'
+                '[data-element-id="avonni-skeleton-button-label"]'
             );
             const skeletonButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-button-left-icon"]'
@@ -731,10 +731,10 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const badgeElement = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-wrapper"]'
             );
             const badgeLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-label"]'
+                '[data-element-id="avonni-skeleton-badge-label"]'
             );
 
             expect(badgeElement.className).toContain('avonni-badge');
