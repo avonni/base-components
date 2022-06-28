@@ -1260,7 +1260,7 @@ export default class InputPen extends LightningElement {
         let transparentCanvas = document.createElement('canvas');
         transparentCanvas.width = this.canvasInfo.canvasElement.width;
         transparentCanvas.height = this.canvasInfo.canvasElement.height;
-        if (this.dataURL === transparentCanvas.toDataURL()) {
+        if (this._value === transparentCanvas.toDataURL()) {
             this._value = undefined;
             this.foregroundValue = undefined;
         }
@@ -1291,15 +1291,6 @@ export default class InputPen extends LightningElement {
                 detail: this.value
             })
         );
-    }
-
-    /**
-     * Get the tool slot DOM element.
-     *
-     * @type {Element}
-     */
-    get toolSlot() {
-        return this.template.querySelector('slot[name=tool]');
     }
 
     /**

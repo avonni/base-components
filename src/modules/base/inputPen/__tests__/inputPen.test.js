@@ -34,6 +34,7 @@ import { createElement } from 'lwc';
 import InputPen from 'c/inputPen';
 
 let element;
+const DATA_URL = 'data:image/png;base64,validValue';
 
 let mockedContext = {
     clearRect: () => {},
@@ -55,12 +56,29 @@ HTMLCanvasElement.prototype.toDataURL = () => {
     return 'data:image/png;base64,dummyimage';
 };
 
+global.Image = class {
+    constructor() {
+        setTimeout(() => {
+            this.onload();
+        }, 100);
+    }
+};
+
+function mockValueAssessment() {
+    const spy = jest.spyOn(HTMLCanvasElement.prototype, 'toDataURL');
+    spy.mockReturnValue(DATA_URL)
+        .mockReturnValueOnce(DATA_URL)
+        .mockReturnValueOnce(DATA_URL)
+        .mockReturnValueOnce('');
+}
+
 describe('Input pen', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
         jest.restoreAllMocks();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
@@ -71,6 +89,7 @@ describe('Input pen', () => {
         const canvas = document.createElement('canvas');
         canvas.width = 100;
         canvas.height = 100;
+        jest.useFakeTimers();
     });
 
     it('Input pen Default attributes', () => {
@@ -364,7 +383,7 @@ describe('Input pen', () => {
         });
     });
 
-    /* ----- TOOLS & BUTTONS ----- */
+    /* ------ TOOLS & BUTTONS ------ */
 
     it('pen tool', () => {
         element.mode = 'erase';
@@ -504,5 +523,110 @@ describe('Input pen', () => {
             redoButton.click();
             expect(redoSpy).not.toHaveBeenCalled();
         });
+    });
+
+    /* ------ VALIDITY ------ */
+
+    //reportValidity
+    it('reportValidity() should return true', () => {
+        element.required = true;
+        mockValueAssessment();
+        element.value = DATA_URL;
+        return Promise.resolve()
+            .then(() => {
+                jest.advanceTimersToNextTimer();
+                expect(element.reportValidity()).toEqual(true);
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeFalsy();
+            });
+    });
+
+    it('reportValidity() should return false', () => {
+        element.required = true;
+        return Promise.resolve()
+            .then(() => {
+                expect(element.reportValidity()).toEqual(false);
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeTruthy();
+            });
+    });
+
+    //checkValidity
+    it('checkValidity() should return true', () => {
+        element.required = true;
+        mockValueAssessment();
+        element.value = DATA_URL;
+        return Promise.resolve().then(() => {
+            jest.advanceTimersToNextTimer();
+            expect(element.checkValidity()).toEqual(true);
+        });
+    });
+
+    it('checkValidity() should return false', () => {
+        element.required = true;
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toEqual(false);
+        });
+    });
+
+    //showHelpMessageIfInvalid
+    it('showHelpMessageIfInvalid() should not show message', () => {
+        element.required = true;
+        mockValueAssessment();
+        element.value = DATA_URL;
+        return Promise.resolve()
+            .then(() => {
+                jest.advanceTimersToNextTimer();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeFalsy();
+            });
+    });
+
+    it('showHelpMessageIfInvalid() should show message', () => {
+        element.required = true;
+        return Promise.resolve()
+            .then(() => {
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const helpMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="help-message"]'
+                );
+                expect(helpMessage).toBeTruthy();
+                expect(helpMessage.textContent).toEqual('Complete this field.');
+            });
+    });
+
+    //setCustomValidity
+    it('setCustomValidity() should set the display for custom message when invalid', () => {
+        element.required = true;
+        return Promise.resolve()
+            .then(() => {
+                element.setCustomValidity('custom help message');
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const helpMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="help-message"]'
+                );
+                expect(helpMessage).toBeTruthy();
+                expect(helpMessage.textContent).toEqual('custom help message');
+            });
     });
 });
