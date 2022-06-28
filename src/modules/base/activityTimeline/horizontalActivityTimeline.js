@@ -81,6 +81,7 @@ export class HorizontalActivityTimeline {
     _changeIntervalSizeMode = false;
     _dateFormat = DEFAULT_DATE_FORMAT;
     _displayedItems = [];
+    _distanceBetweenDragAndMin;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _intervalMinDate;
     _intervalMaxDate;
@@ -404,7 +405,12 @@ export class HorizontalActivityTimeline {
             .attr('height', this._timelineAxisHeight - 2 * BORDER_OFFSET)
             .attr('opacity', 0.15)
             .attr('fill', TIMELINE_COLORS.intervalBackground)
-            .call(d3.drag().on('drag', this.handleTimeIntervalDrag.bind(this)));
+            .call(
+                d3
+                    .drag()
+                    .on('start', this.handleTimeIntervalDragStart.bind(this))
+                    .on('drag', this.handleTimeIntervalDrag.bind(this))
+            );
 
         // Create left and right lines to change width of interval
         this.createIntervalBounds(intervalGroup);
@@ -1406,8 +1412,9 @@ export class HorizontalActivityTimeline {
     handleTimeIntervalDrag(event) {
         // To allow only horizontal drag
         const xPosition = this.validateXMousePosition(
-            event.sourceEvent.offsetX
+            event.sourceEvent.offsetX - this._distanceBetweenDragAndMin
         );
+
         this._timeIntervalSelector
             .attr('x', xPosition)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
@@ -1418,6 +1425,15 @@ export class HorizontalActivityTimeline {
 
         this.setIntervalMaxDate();
         this._activityTimeline.renderedCallback();
+    }
+
+    /**
+     * Handle the drag start of time interval to set the distance between drag position and min value.
+     */
+    handleTimeIntervalDragStart(event) {
+        this._distanceBetweenDragAndMin =
+            event.sourceEvent.clientX -
+            this.scrollTimeScale(this._intervalMinDate);
     }
 
     /**
