@@ -1074,21 +1074,27 @@ describe('Activity Timeline', () => {
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
         const dragPosition = '1000';
+        const initialXMinPosition = '602.8452332242226';
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '602.8452332242226'
+                initialXMinPosition
             );
 
             // To simulate drag --> mouse down, mouse move, mouse up events
             const sourceEvent = new MouseEvent('mousemove');
             sourceEvent.offsetX = dragPosition;
-            intervalRectangle.dispatchEvent(
-                new MouseEvent('mousedown', { view: window })
+            const mouseDownEvent = new MouseEvent('mousedown', {
+                view: window
+            });
+            jest.spyOn(mouseDownEvent, 'clientX', 'get').mockImplementation(
+                () => initialXMinPosition
             );
+
+            intervalRectangle.dispatchEvent(mouseDownEvent);
             intervalRectangle.dispatchEvent(sourceEvent);
             intervalRectangle.dispatchEvent(new MouseEvent('mouseup'));
 
@@ -1130,21 +1136,27 @@ describe('Activity Timeline', () => {
         );
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
+        const initialXMinPosition = '602.8452332242226';
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '602.8452332242226'
+                initialXMinPosition
             );
 
             // To simulate drag --> mouse down, mouse move, mouse up events
             const sourceEvent = new MouseEvent('mousemove');
             sourceEvent.offsetX = 0;
-            intervalRectangle.dispatchEvent(
-                new MouseEvent('mousedown', { view: window })
+            const mouseDownEvent = new MouseEvent('mousedown', {
+                view: window
+            });
+            jest.spyOn(mouseDownEvent, 'clientX', 'get').mockImplementation(
+                () => initialXMinPosition
             );
+
+            intervalRectangle.dispatchEvent(mouseDownEvent);
             intervalRectangle.dispatchEvent(sourceEvent);
             intervalRectangle.dispatchEvent(new MouseEvent('mouseup'));
 
