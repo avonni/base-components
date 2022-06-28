@@ -1489,7 +1489,7 @@ describe('Activity Timeline', () => {
 
     // ticks : Reduce timeline's width to check if ticks do not overlap
     it('Activity Timeline: horizontal - Number of ticks', () => {
-        const timelineWidth = 240;
+        const timelineWidth = 880;
         const createTimeAxisSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'createTimeAxis'
@@ -1537,8 +1537,12 @@ describe('Activity Timeline', () => {
                         )
                     );
                 }
-                expect(tickPositions.length).toBe(2);
-                expect(tickPositions[1] - tickPositions[0]).toBeGreaterThan(50);
+                expect(tickPositions.length).toBe(9);
+                for (let i = tickPositions.length - 1; i > 0; --i) {
+                    expect(
+                        tickPositions[i] - tickPositions[i - 1]
+                    ).toBeGreaterThan(50);
+                }
             });
     });
 });
