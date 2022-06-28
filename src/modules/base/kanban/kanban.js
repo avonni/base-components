@@ -767,14 +767,21 @@ export default class Kanban extends LightningElement {
                 zone.style.height = `0px`;
                 zone.style.width = `0px`;
             });
-        const summarizeHeight = this.hideHeader
-            ? 0
-            : this.template.querySelectorAll(
-                  '[data-element-id="avonni-kanban__summarize_wrapper"]'
-              )[this._releasedGroupIndex].offsetHeight;
-        const dropZone = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__tile_dropzone"]'
-        )[this._releasedGroupIndex];
+        const summarizeHeight =
+            this.hideHeader || this._hasSubGroups
+                ? 0
+                : this.template.querySelectorAll(
+                      '[data-element-id="avonni-kanban__summarize_wrapper"]'
+                  )[this._releasedGroupIndex].offsetHeight;
+
+        const groupSelector = this._hasSubGroups
+            ? `[data-dropzone-subgroup="${this._currentSubGroup}"]`
+            : '[data-element-id="avonni-kanban__tile_dropzone"]';
+
+        const dropZone =
+            this.template.querySelectorAll(groupSelector)[
+                this._releasedGroupIndex
+            ];
         const tilesContainer = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         )[this._releasedGroupIndex];
