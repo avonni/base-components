@@ -246,9 +246,12 @@
                 </div>
                 <div
                     class={computedTextAreaClasses}
+                    onmouseup={handleMouseUp}
                     onmousedown={handleMouseDown}
+                    onmousemove={handleMouseMove}
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
+                    data-element-id="draw-area"
                 >
                     <template if:true={showClear}>
                         <lightning-button-icon
@@ -291,7 +294,7 @@
                     ></canvas>
                     <div
                         class="avonni-input-pen__cursor"
-                        data-element-id="input-pen-cursor"
+                        data-element-id="cursor"
                     ></div>
                 </div>
             </div>

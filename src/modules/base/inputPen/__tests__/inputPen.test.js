@@ -35,11 +35,29 @@ import InputPen from 'c/inputPen';
 
 let element;
 const DATA_URL = 'data:image/png;base64,validValue';
+let position = 10;
 
-let mockedContext = {
+const MOUSEDOWN_EVENT = new CustomEvent('mousedown', {
+    clientX: position,
+    clientY: position
+});
+
+const MOUSEUP_EVENT = new CustomEvent('mouseup', {
+    clientX: position + 5,
+    clientY: position + 5
+});
+
+const MOUSEMOVE_EVENT = new CustomEvent('mousemove', {
+    clientX: position,
+    clientY: position
+});
+
+const MOCKED_CONTEXT = {
     clearRect: () => {},
     rect: () => {},
     fill: () => {},
+    lineTo: () => {},
+    bezierCurveTo: () => {},
     stroke: () => {},
     moveTo: () => {},
     arc: () => {},
@@ -49,11 +67,15 @@ let mockedContext = {
 
 // Mock for HTMLCanvasElement in tests.
 HTMLCanvasElement.prototype.getContext = () => {
-    return mockedContext;
+    return MOCKED_CONTEXT;
 };
 
 HTMLCanvasElement.prototype.toDataURL = () => {
-    return 'data:image/png;base64,dummyimage';
+    return undefined;
+};
+
+HTMLCanvasElement.prototype.getBoundingClientRect = () => {
+    return { left: 0, top: 0 };
 };
 
 global.Image = class {
@@ -457,7 +479,7 @@ describe('Input pen', () => {
     it('background color picker', () => {
         let ctxBackgroundColor;
 
-        Object.defineProperty(mockedContext, 'fillStyle', {
+        Object.defineProperty(MOCKED_CONTEXT, 'fillStyle', {
             set: jest.fn((value) => {
                 ctxBackgroundColor = value;
             })
@@ -627,6 +649,193 @@ describe('Input pen', () => {
                 );
                 expect(helpMessage).toBeTruthy();
                 expect(helpMessage.textContent).toEqual('custom help message');
+            });
+    });
+
+    /* ------ SCENARIOS & EVENTS  ------ */
+
+    it('drawing on canvas should clear message if invalid', () => {
+        element.required = true;
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+
+        return Promise.resolve()
+            .then(() => {
+                element.reportValidity();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeTruthy();
+            })
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeFalsy();
+            });
+    });
+
+    it('drawing on canvas should add stroke (draw)', () => {
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(strokeSpy).toHaveBeenCalled();
+            });
+    });
+
+    it('drawing on canvas should add a stroke (paint)', () => {
+        element.mode = 'paint';
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(strokeSpy).toHaveBeenCalled();
+            });
+    });
+
+    it('drawing on canvas should add stroke (ink)', () => {
+        element.mode = 'ink';
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(strokeSpy).toHaveBeenCalled();
+            });
+    });
+
+    it('drawing on canvas should add stroke (erase)', () => {
+        element.mode = 'erase';
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(strokeSpy).toHaveBeenCalled();
+            });
+    });
+
+    it('drawing on disabled canvas should not add stroke', () => {
+        element.disabled = true;
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
+        return Promise.resolve()
+            .then(() => {
+                mockValueAssessment();
+                drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
+                drawArea.dispatchEvent(MOUSEUP_EVENT);
+            })
+            .then(() => {
+                expect(strokeSpy).not.toHaveBeenCalled();
+            });
+    });
+
+    it('when mouse leaves or enters, its visibility is adjusted', () => {
+        const drawArea = element.shadowRoot.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        const cursor = element.shadowRoot.querySelector(
+            '[data-element-id="cursor"]'
+        );
+        return Promise.resolve()
+            .then(() => {
+                drawArea.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                expect(cursor.style.opacity).toEqual('1');
+            })
+            .then(() => {
+                drawArea.dispatchEvent(new CustomEvent('mouseleave'));
+            })
+            .then(() => {
+                expect(cursor.style.opacity).toEqual('0');
+            });
+    });
+
+    it('picking a color when tool is erase, makes it draw', () => {
+        element.mode = 'erase';
+        return Promise.resolve().then(() => {
+            const colorPicker = element.shadowRoot.querySelector(
+                '[data-element-id="color-picker"]'
+            );
+            colorPicker.dispatchEvent(
+                CustomEvent('change', { detail: { hex: '#cc1913' } })
+            );
+            expect(element.color).toEqual('#cc1913');
+            expect(element.mode).toEqual('draw');
+        });
+    });
+
+    it('setting an invalid value clears the canvas', () => {
+        const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+        element.value = 'invalidValue';
+        return Promise.resolve().then(() => {
+            expect(clearSpy).toHaveBeenCalled();
+        });
+    });
+
+    /* ------ OTHER PUBLIC METHODS  ------ */
+
+    it('clear calls clearRect on canvas and resets value', () => {
+        const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+        return Promise.resolve()
+            .then(() => {
+                element.clear(true);
+            })
+            .then(() => {
+                expect(clearSpy).toHaveBeenCalledTimes(2); //one for the background, the other for the foreground
+                expect(element.value).toEqual(undefined);
+            })
+            .then(() => {
+                element.clear();
+            })
+            .then(() => {
+                expect(clearSpy).toHaveBeenCalledTimes(4);
+                expect(element.value).toEqual(undefined);
             });
     });
 });

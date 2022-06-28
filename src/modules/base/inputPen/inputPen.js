@@ -138,9 +138,11 @@ export default class InputPen extends LightningElement {
     constructor() {
         super();
         this.onMouseUp = this.handleMouseUp.bind(this);
+        this.onMouseDown = this.handleMouseMove.bind(this);
         this.onMouseMove = this.handleMouseMove.bind(this);
         this.onKeyDown = this.handleKeyDown.bind(this);
         window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('mousedown', this.onMouseDown);
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('keydown', this.onKeyDown);
     }
@@ -153,7 +155,8 @@ export default class InputPen extends LightningElement {
 
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.onMouseUp);
-        window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('mousedown', this.onMouseDown);
+        window.addEventListener('mousemove', this.onMouseMove);
         window.removeEventListener('keydown', this.onKeyDown);
     }
 
@@ -898,7 +901,7 @@ export default class InputPen extends LightningElement {
     initCursorStyles() {
         if (this.showCursor) {
             this.cursor = this.template.querySelector(
-                '[data-element-id="input-pen-cursor"]'
+                '[data-element-id="cursor"]'
             );
         } else {
             this.cursor = undefined;
@@ -1022,10 +1025,9 @@ export default class InputPen extends LightningElement {
      *
      * @param {Event} event
      */
-    handleMouseEnter(event) {
+    handleMouseEnter() {
         if (!this.disabled && !this.readOnly) {
             this.showDrawCursor();
-            this.manageMouseEvent('enter', event);
         }
     }
 
@@ -1033,8 +1035,10 @@ export default class InputPen extends LightningElement {
      * Mouse leave handler. Set opacity to 0.
      */
     handleMouseLeave() {
-        this.hideDrawCursor();
-        this.handleChangeEvent();
+        if (!this.disabled && !this.readOnly) {
+            this.hideDrawCursor();
+            this.handleChangeEvent();
+        }
     }
 
     /**
@@ -1107,10 +1111,10 @@ export default class InputPen extends LightningElement {
         if (!action.requestedEvent) {
             action.requestedEvent = event.type;
         }
-        if (event.clientX) {
+        if (!isNaN(event.clientX)) {
             action.clientX = event.clientX;
         }
-        if (event.clientY) {
+        if (!isNaN(event.clientY)) {
             action.clientY = event.clientY;
         }
         if (action.requestedEvent === 'down') {
@@ -1168,7 +1172,7 @@ export default class InputPen extends LightningElement {
      * Hides draw cursor
      */
     hideDrawCursor() {
-        if (this.cursor) {
+        if (this.cursor && this.cursor) {
             this.cursor.style.opacity = 0;
         }
     }
