@@ -104,18 +104,18 @@ describe('Skeleton', () => {
         });
     });
 
-    // // skeleton-height undefined
-    // it('Skeleton: undefined height should set component height to undefined and DOM avonni-skeleton height to default height for text variant (0.7em)', () => {
-    //     element.variant = 'text';
-    //     element.height = undefined;
-    //     const skeleton = element.shadowRoot.querySelector(
-    //         '[data-element-id="avonni-skeleton"]'
-    //     );
-    //     return Promise.resolve().then(() => {
-    //         expect(skeleton.style.height).toBe('0.7em');
-    //         expect(element.height).toBe(undefined);
-    //     });
-    // });
+    // skeleton-height undefined
+    it('Skeleton: undefined height should set component height to undefined and DOM avonni-skeleton height to default height for text variant (0.7em)', () => {
+        element.variant = 'text';
+        element.height = undefined;
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(skeleton.style.height).toBe('0.7em');
+            expect(element.height).toBe(undefined);
+        });
+    });
 
     // // skeleton-height defined
     // it('Skeleton: 100px height should set component and DOM avonni-skeleton height to 100px', () => {
@@ -130,18 +130,18 @@ describe('Skeleton', () => {
     //     });
     // });
 
-    // // skeleton-width undefined
-    // it('Skeleton: undefined width should set component height to undefined and DOM avonni-skeleton height to default width for text variant (0.7em)', () => {
-    //     element.variant = 'text';
-    //     element.width = undefined;
-    //     const skeleton = element.shadowRoot.querySelector(
-    //         '[data-element-id="avonni-skeleton"]'
-    //     );
-    //     return Promise.resolve().then(() => {
-    //         expect(skeleton.style.width).toBe('100%');
-    //         expect(element.width).toBe(undefined);
-    //     });
-    // });
+    // skeleton-width undefined
+    it('Skeleton: undefined width should set component height to undefined and DOM avonni-skeleton height to default width for text variant (0.7em)', () => {
+        element.variant = 'text';
+        element.width = undefined;
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(skeleton.style.width).toBe('100%');
+            expect(element.width).toBe(undefined);
+        });
+    });
 
     // // skeleton-width defined
     // it('Skeleton: 100px width should set component and DOM avonni-skeleton width to 100px', () => {
@@ -721,6 +721,32 @@ describe('Skeleton', () => {
                 `header childnodes length: ${skeletonDatatableHeader.childNodes.length}`
             );
             expect(true).toBeTruthy();
+        });
+    });
+
+    it('Skeleton: handle variant not regular and with empty variant attributes', () => {
+        element.variant = 'badge';
+        element.animation = 'pulse';
+        element.variantAttributes = {};
+
+        return Promise.resolve().then(() => {
+            const badgeElement = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__badge-wrapper"]'
+            );
+            const badgeLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__badge-label"]'
+            );
+
+            expect(badgeElement.className).toContain('avonni-badge');
+            expect(badgeElement.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(badgeLabel.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(badgeLabel.className).toContain(
+                'avonni-skeleton__badge-label'
+            );
         });
     });
 });
