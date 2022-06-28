@@ -117,18 +117,18 @@ describe('Skeleton', () => {
         });
     });
 
-    // // skeleton-height defined
-    // it('Skeleton: 100px height should set component and DOM avonni-skeleton height to 100px', () => {
-    //     element.variant = 'rectangular';
-    //     element.height = '100px';
-    //     const skeleton = element.shadowRoot.querySelector(
-    //         '[data-element-id="avonni-skeleton"]'
-    //     );
-    //     return Promise.resolve().then(() => {
-    //         expect(element.height).toBe('100px');
-    //         expect(skeleton.style.height).toBe('100px');
-    //     });
-    // });
+    // skeleton-height defined
+    it('Skeleton: 100px height should set component and DOM avonni-skeleton height to 100px', () => {
+        element.variant = 'rectangular';
+        element.height = '100px';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('100px');
+            expect(skeleton.style.height).toBe('100px');
+        });
+    });
 
     // skeleton-width undefined
     it('Skeleton: undefined width should set component height to undefined and DOM avonni-skeleton height to default width for text variant (0.7em)', () => {
@@ -143,18 +143,18 @@ describe('Skeleton', () => {
         });
     });
 
-    // // skeleton-width defined
-    // it('Skeleton: 100px width should set component and DOM avonni-skeleton width to 100px', () => {
-    //     element.variant = 'rectangular';
-    //     element.width = '100px';
-    //     const skeleton = element.shadowRoot.querySelector(
-    //         '[data-element-id="avonni-skeleton"]'
-    //     );
-    //     return Promise.resolve().then(() => {
-    //         expect(element.width).toBe('100px');
-    //         expect(skeleton.style.width).toBe('100px');
-    //     });
-    // });
+    // skeleton-width defined
+    it('Skeleton: 100px width should set component and DOM avonni-skeleton width to 100px', () => {
+        element.variant = 'rectangular';
+        element.width = '100px';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(element.width).toBe('100px');
+            expect(skeleton.style.width).toBe('100px');
+        });
+    });
 
     // avatar variant
     it('Skeleton Avatar: pulse animation', () => {
@@ -747,6 +747,27 @@ describe('Skeleton', () => {
             expect(badgeLabel.className).toContain(
                 'avonni-skeleton__badge-label'
             );
+        });
+    });
+
+    // Paragraph variant
+    it('Skeleton: paragraph variant', () => {
+        element.variant = 'paragraph';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            rows: 3
+        };
+
+        return Promise.resolve().then(() => {
+            // const paragraphElement = element.shadowRoot.querySelectorAll(
+            //     '[data-element-id="paragraph-item"]'
+            // );
+            console.log(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-skeleton-paragraph-list"]'
+                ).children
+            );
+            expect(true).toBe(true);
         });
     });
 });
