@@ -131,6 +131,17 @@ export default class InputPen extends LightningElement {
     _resizeObserver;
     _resizeTimeout;
 
+    canvasInfo = {
+        xPositions: [],
+        yPositions: [],
+        velocities: [],
+        color: DEFAULT_COLOR,
+        mode: PEN_MODES.default,
+        size: DEFAULT_SIZE,
+        ctx: undefined,
+        canvasElement: undefined
+    };
+
     canvasElement;
     ctx;
     backgroundCanvasElement;
@@ -1199,14 +1210,13 @@ export default class InputPen extends LightningElement {
         switch (requestedEvent) {
             case 'down':
                 this.saveAction(event, true);
-                this.setupTool(event);
+                this.toolManager.setupLine(event);
                 this.isDownFlag = true;
-                this.drawDot();
                 break;
             case 'up':
                 if (this.isDownFlag) {
                     this.saveAction(event, true);
-                    this.clearPositionBuffer(event);
+                    this.toolManager.closeLine(event);
                     this.handleChangeEvent();
                 }
                 this.isDownFlag = false;
@@ -1686,33 +1696,36 @@ export default class InputPen extends LightningElement {
 
     setToolManager() {
         if (!this.smoothToolManager) {
-            this.smoothToolManager = new SmoothToolManager(
-                this.xPositions,
-                this.yPositions,
-                this.velocities,
-                this._color,
-                this._mode,
-                this._size,
-                this.ctx,
-                this.canvasElement
-            );
+            this.smoothToolManager = new SmoothToolManager({
+                xPositions: this.xPositions,
+                yPositions: this.yPositions,
+                velocities: this.velocities,
+                color: this._color,
+                mode: this._mode,
+                size: this._size,
+                ctx: this.ctx,
+                canvasElement: this.canvasElement
+            });
         }
         if (!this.straightToolManager) {
-            this.straightToolManager = new StraightToolManager(
-                this.xPositions,
-                this.yPositions,
-                this.velocities,
-                this._color,
-                this._mode,
-                this._size,
-                this.ctx,
-                this.canvasElement
-            );
+            this.straightToolManager = new StraightToolManager({
+                xPositions: this.xPositions,
+                yPositions: this.yPositions,
+                velocities: this.velocities,
+                color: this._color,
+                mode: this._mode,
+                size: this._size,
+                ctx: this.ctx,
+                canvasElement: this.canvasElement
+            });
         }
+        console.log(this.mode);
         if (this._mode === 'ink' || this._mode === 'paint') {
             this.toolManager = this.smoothToolManager;
+            this.toolManager.mode = this._mode;
         } else {
             this.toolManager = this.straightToolManager;
+            this.toolManager.mode = this._mode;
         }
     }
 
