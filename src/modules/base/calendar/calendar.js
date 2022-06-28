@@ -894,11 +894,6 @@ export default class Calendar extends LightningElement {
                 !this.isBeforeMin(date)
             );
         });
-
-        if (!this._value) {
-            this.displayDate = this.setValueToCurrentDayOrMin();
-            this.updateDate();
-        }
     }
 
     /**
