@@ -309,6 +309,15 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isRegularVariant() {
+        return (
+            this.variant === 'text' ||
+            this.variant === 'rectangular' ||
+            this.variant === 'circular'
+        );
+    }
+
+    @api
     get isTabsetBaseVariant() {
         return this.variantAttributes.variant === 'base';
     }
@@ -492,12 +501,6 @@ export default class Skeleton extends LightningElement {
         );
     }
 
-    get badgeLabelClass() {
-        return classSet('avonni-skeleton__variant-text')
-            .add('avonni-skeleton__badge-label')
-            .toString();
-    }
-
     get buttonWrapperClass() {
         return classSet('slds-button')
             .add({
@@ -582,10 +585,6 @@ export default class Skeleton extends LightningElement {
                 'avonni-skeleton__datatable-animation-wave':
                     this.animation === 'wave'
             });
-    }
-
-    get datatableTDClass() {
-        return classSet('slds-text-align_right').add('');
     }
 
     get datatableTHClass() {
@@ -709,12 +708,6 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
-    get tabVerticalItemContainerClass() {
-        return classSet('slds-vertical-tabs__link').add(
-            'avonni-skeleton__tabset-vertical-container'
-        );
-    }
-
     get treeHeaderClass() {
         return classSet('slds-tree__group-header')
             .add('avonni-skeleton__tree-header')
@@ -747,67 +740,38 @@ export default class Skeleton extends LightningElement {
     }
 
     handleVariant() {
-        switch (this.variant) {
-            case 'badge':
-                this.handleBadgeVariant();
-                break;
-            case 'button':
-                this.updateVariantButton();
-                break;
-            case 'button-icon':
-                this.updateVariantButtonIcon();
-                break;
-            case 'chip':
-                this.handleChipVariant();
-                break;
-            case 'combobox':
-                this.handleComboboxVariant();
-                break;
-            case 'text':
-                this.setTextSize();
-                break;
-            case 'rectangular':
-                this.setRectangularCircularSize();
-                break;
-            case 'circular':
-                this.setRectangularCircularSize();
-                break;
-            default:
-                break;
-        }
-    }
-
-    handleChipVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0)
-            this.updateChipClassList();
-    }
-
-    handleBadgeVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0)
-            this.updateBadgeClassList();
-    }
-
-    handleButtonVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateButtonClassList();
-        }
-    }
-
-    handleButtonIconVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateButtonIconClassList();
-        }
-    }
-
-    handleComboboxVariant() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateComboboxClassList();
-        }
-    }
-
-    handleTabset() {
-        if (Object.keys(this.variantAttributes).length !== 0) {
-            this.updateTabsetClassList();
+        if (
+            this.isRegularVariant ||
+            Object.keys(this.variantAttributes).length !== 0
+        ) {
+            switch (this.variant) {
+                case 'badge':
+                    this.updateBadgeClassList();
+                    break;
+                case 'button':
+                    this.updateVariantButton();
+                    break;
+                case 'button-icon':
+                    this.updateVariantButtonIcon();
+                    break;
+                case 'chip':
+                    this.updateChipClassList();
+                    break;
+                case 'combobox':
+                    this.updateComboboxClassList();
+                    break;
+                case 'text':
+                    this.setTextSize();
+                    break;
+                case 'rectangular':
+                    this.setRectangularCircularSize();
+                    break;
+                case 'circular':
+                    this.setRectangularCircularSize();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -1020,8 +984,6 @@ export default class Skeleton extends LightningElement {
             badgeVariantAttributes.labelColor
         );
     }
-
-    updateBreadcrumbsClassList() {}
 
     updateVariantButton() {
         const buttonElement = this.template.querySelector(
