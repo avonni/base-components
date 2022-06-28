@@ -94,14 +94,11 @@ export default class InputPen extends LightningElement {
      */
     @api messageWhenValueMissing;
 
-    _color = DEFAULT_COLOR;
     _disabled = false;
     _hideControls = false;
-    _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
     _showSignaturePad = false;
-    _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
     _backgroundColor = DEFAULT_BACKGROUND_COLOR;
@@ -115,7 +112,6 @@ export default class InputPen extends LightningElement {
     xPositions = [];
     yPositions = [];
     velocities = [];
-    activeVelocity = 8;
     prevDist = 0;
     moveCoordinatesAdded = 0;
     _foregroundValue = undefined;
@@ -131,7 +127,7 @@ export default class InputPen extends LightningElement {
     _resizeObserver;
     _resizeTimeout;
 
-    canvasInfo = {
+    canvas = {
         xPositions: [],
         yPositions: [],
         velocities: [],
@@ -178,26 +174,26 @@ export default class InputPen extends LightningElement {
                 this.buttonSlot.assignedElements().length !== 0;
         }
         if (!this._rendered || this._updatedDOM) {
-            this.canvasElement = this.template.querySelector(
+            this.canvas.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
             );
             this.backgroundCanvasElement = this.template.querySelector(
                 '[data-element-id="background-canvas"]'
             );
-            this.ctx = this.canvasElement.getContext('2d');
+            this.canvas.ctx = this.canvas.canvasElement.getContext('2d');
             this.backgroundCtx = this.backgroundCanvasElement.getContext('2d');
             if (this._foregroundValue) {
                 this.initSrc();
             }
 
-            this.canvasElement.width =
-                this.canvasElement.parentElement.clientWidth;
-            this.canvasElement.height =
-                this.canvasElement.parentElement.clientHeight;
+            this.canvas.canvasElement.width =
+                this.canvas.canvasElement.parentElement.clientWidth;
+            this.canvas.canvasElement.height =
+                this.canvas.canvasElement.parentElement.clientHeight;
             this.backgroundCanvasElement.width =
-                this.canvasElement.parentElement.clientWidth;
+                this.canvas.canvasElement.parentElement.clientWidth;
             this.backgroundCanvasElement.height =
-                this.canvasElement.parentElement.clientHeight;
+                this.canvas.canvasElement.parentElement.clientHeight;
 
             this.setToolManager();
             this.initResizeObserver();
@@ -240,11 +236,11 @@ export default class InputPen extends LightningElement {
      */
     @api
     get color() {
-        return this._color;
+        return this.canvas.color;
     }
 
     set color(value) {
-        this._color = value;
+        this.canvas.color = value;
         this.initCursorStyles();
     }
 
@@ -310,11 +306,11 @@ export default class InputPen extends LightningElement {
      */
     @api
     get mode() {
-        return this._mode;
+        return this.canvas.mode;
     }
 
     set mode(value) {
-        this._mode = normalizeString(value, {
+        this.canvas.mode = normalizeString(value, {
             fallbackValue: PEN_MODES.default,
             validValues: PEN_MODES.valid
         });
@@ -373,7 +369,7 @@ export default class InputPen extends LightningElement {
     set showSignaturePad(value) {
         this._showSignaturePad = normalizeBoolean(value);
         if (this._showSignaturePad) {
-            this._mode = 'ink';
+            this.canvas.mode = 'ink';
         }
         this._updatedDOM = true;
     }
@@ -387,16 +383,16 @@ export default class InputPen extends LightningElement {
      */
     @api
     get size() {
-        return this._size;
+        return this.canvas.size;
     }
 
     set size(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
-            this._size = intValue;
+            this.canvas.size = intValue;
             this.initCursorStyles();
         } else {
-            this._size = DEFAULT_SIZE;
+            this.canvas.size = DEFAULT_SIZE;
         }
     }
 
@@ -425,7 +421,7 @@ export default class InputPen extends LightningElement {
     set value(value) {
         this._foregroundValue = value;
 
-        if (this.ctx) {
+        if (this.canvas.ctx) {
             this.initSrc();
         }
         this._updatedDOM = true;
@@ -473,7 +469,7 @@ export default class InputPen extends LightningElement {
                 this.variant === 'bottom-toolbar',
             'avonni-input-pen__rich-text_border-radius-bottom':
                 this.variant === 'top-toolbar',
-            'avonni-input-pen__text-area_cursor': this._mode === 'ink'
+            'avonni-input-pen__text-area_cursor': this.canvas.mode === 'ink'
         });
     }
 
@@ -482,11 +478,11 @@ export default class InputPen extends LightningElement {
      */
     get dataURL() {
         let mergedCanvas = document.createElement('canvas');
-        mergedCanvas.width = this.canvasElement.width;
-        mergedCanvas.height = this.canvasElement.height;
+        mergedCanvas.width = this.canvas.canvasElement.width;
+        mergedCanvas.height = this.canvas.canvasElement.height;
         const mergedCtx = mergedCanvas.getContext('2d');
         mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
-        mergedCtx.drawImage(this.canvasElement, 0, 0);
+        mergedCtx.drawImage(this.canvas.canvasElement, 0, 0);
         return mergedCanvas.toDataURL();
     }
 
@@ -559,7 +555,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showCursor() {
-        return this._mode !== 'ink';
+        return this.canvas.mode !== 'ink';
     }
 
     /**
@@ -721,13 +717,13 @@ export default class InputPen extends LightningElement {
     @api
     clear(automatedClear = false) {
         if (!this.readOnly) {
-            this.ctx.clearRect(
+            this.canvas.ctx.clearRect(
                 0,
                 0,
-                this.canvasElement.width,
-                this.canvasElement.height
+                this.canvas.canvasElement.width,
+                this.canvas.canvasElement.height
             );
-            if (this._mode === 'erase') {
+            if (this.canvas.mode === 'erase') {
                 this.setDraw();
             }
             this.fillBackground();
@@ -818,8 +814,8 @@ export default class InputPen extends LightningElement {
      */
     @api
     setMode(modeName) {
-        this._mode = normalizeString(modeName, {
-            fallbackValue: this._mode,
+        this.canvas.mode = normalizeString(modeName, {
+            fallbackValue: this.canvas.mode,
             validValues: PEN_MODES.valid
         });
         this.setToolManager();
@@ -875,7 +871,7 @@ export default class InputPen extends LightningElement {
         ) {
             let img = new Image();
             img.onload = () => {
-                this.ctx.drawImage(img, 0, 0);
+                this.canvas.ctx.drawImage(img, 0, 0);
                 this.handleChangeEvent();
             };
             img.src = this._foregroundValue;
@@ -891,8 +887,8 @@ export default class InputPen extends LightningElement {
         this.backgroundCtx.clearRect(
             0,
             0,
-            this.canvasElement.width,
-            this.canvasElement.height
+            this.canvas.canvasElement.width,
+            this.canvas.canvasElement.height
         );
         this.backgroundCtx.globalAlpha =
             parseInt(this._backgroundColor.slice(7), 16) / 255;
@@ -900,8 +896,8 @@ export default class InputPen extends LightningElement {
         this.backgroundCtx.rect(
             0,
             0,
-            this.canvasElement.width,
-            this.canvasElement.height
+            this.canvas.canvasElement.width,
+            this.canvas.canvasElement.height
         );
         this.backgroundCtx.fill();
     }
@@ -918,10 +914,10 @@ export default class InputPen extends LightningElement {
             this.cursor = undefined;
         }
         if (this.cursor) {
-            this.cursor.style.setProperty('--size', this._size);
+            this.cursor.style.setProperty('--size', this.canvas.size);
             this.cursor.style.setProperty(
                 '--color',
-                this._mode === 'erase' ? '#ffffff' : this.color
+                this.canvas.mode === 'erase' ? '#ffffff' : this.canvas.color
             );
         }
     }
@@ -964,11 +960,11 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleColorChange(event) {
-        this._color = event.detail.hex;
+        this.canvas.color = event.detail.hex;
         if (this.cursor) {
-            this.cursor.style.setProperty('--color', this.color);
+            this.cursor.style.setProperty('--color', this.canvas.color);
         }
-        if (this._mode === 'erase') {
+        if (this.canvas.mode === 'erase') {
             this.setDraw();
         }
     }
@@ -996,9 +992,9 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleSizeChange(event) {
-        this._size = Number(event.detail.value);
+        this.canvas.size = Number(event.detail.value);
         if (this.cursor) {
-            this.cursor.style.setProperty('--size', this._size);
+            this.cursor.style.setProperty('--size', this.canvas.size);
         }
     }
 
@@ -1106,16 +1102,14 @@ export default class InputPen extends LightningElement {
 
         let action = {};
         action.isAction = true;
-        action.moveCoordinatesAdded = this.moveCoordinatesAdded;
         action.isDownFlag = this.isDownFlag;
+        action.xPositions = deepCopy(this.canvas.xPositions);
+        action.yPositions = deepCopy(this.canvas.yPositions);
+        action.velocities = deepCopy(this.canvas.velocities);
+        action.mode = this.canvas.mode;
+        action.color = this.canvas.color;
+        action.size = this.canvas.size;
         action.backgroundColor = this._backgroundColor;
-        action.mode = this._mode;
-        action.color = this._color;
-        action.size = this._size;
-        action.xPositions = deepCopy(this.xPositions);
-        action.yPositions = deepCopy(this.yPositions);
-        action.velocities = deepCopy(this.velocities);
-        action.prevDist = this.prevDist;
 
         action.requestedEvent = event.type.split('mouse')[1];
         if (!action.requestedEvent) {
@@ -1138,16 +1132,16 @@ export default class InputPen extends LightningElement {
      * @param {object} action action to load
      */
     loadAction(action) {
-        this._mode = action.mode;
-        this.moveCoordinatesAdded = action.moveCoordinatesAdded;
         this.isDownFlag = action.isDownFlag;
-        this._color = action.color;
+        this.canvas.mode = action.mode;
+        this.setToolManager();
+        this.toolManager = action.toolManager;
+        this.canvas.xPositions = action.xPositions;
+        this.canvas.yPositions = action.yPositions;
+        this.canvas.velocities = action.velocities;
+        this.canvas.color = action.color;
+        this.canvas.size = action.size;
         this._backgroundColor = action.backgroundColor;
-        this._size = action.size;
-        this.xPositions = action.xPositions;
-        this.yPositions = action.yPositions;
-        this.velocities = action.velocities;
-        this.prevDist = action.prevDist;
     }
 
     /**
@@ -1242,9 +1236,9 @@ export default class InputPen extends LightningElement {
         if (!this.cursor) {
             return;
         }
-        const clientRect = this.canvasElement.getBoundingClientRect();
-        let left = event.clientX - clientRect.left - this._size / 2;
-        let top = event.clientY - clientRect.top - this._size / 2;
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        let left = event.clientX - clientRect.left - this.canvas.size / 2;
+        let top = event.clientY - clientRect.top - this.canvas.size / 2;
 
         this.cursor.style.left = `${left}px`;
         this.cursor.style.top = `${top}px`;
@@ -1271,13 +1265,13 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     setupChainCoordinates(event) {
-        const clientRect = this.canvasElement.getBoundingClientRect();
-        this.xPositions = [];
-        this.yPositions = [];
-        this.velocities = Array(4).fill(INITIAL_VELOCITY);
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        this.canvas.xPositions = [];
+        this.canvas.yPositions = [];
+        this.canvas.velocities = Array(4).fill(INITIAL_VELOCITY);
         for (let i = 0; i < 4; i++) {
-            this.xPositions.unshift(event.clientX - clientRect.left);
-            this.yPositions.unshift(event.clientY - clientRect.top);
+            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
         }
     }
 
@@ -1287,21 +1281,27 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     setupCoordinates(event) {
-        const clientRect = this.canvasElement.getBoundingClientRect();
-        this.xPositions.unshift(event.clientX - clientRect.left);
-        this.yPositions.unshift(event.clientY - clientRect.top);
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+        this.canvas.yPositions.unshift(event.clientY - clientRect.top);
     }
 
     /**
      * Draw on canvas as hard edge linear stroke.
      */
     hardEdgeDraw() {
-        this.setupStroke(this._size);
-        this.ctx.moveTo(this.xPositions[1], this.yPositions[1]);
-        this.ctx.lineTo(this.xPositions[0], this.yPositions[0]);
-        this.ctx.stroke();
-        this.xPositions.pop();
-        this.yPositions.pop();
+        this.setupStroke(this.canvas.size);
+        this.canvas.ctx.moveTo(
+            this.canvas.xPositions[1],
+            this.canvas.yPositions[1]
+        );
+        this.canvas.ctx.lineTo(
+            this.canvas.xPositions[0],
+            this.canvas.yPositions[0]
+        );
+        this.canvas.ctx.stroke();
+        this.canvas.xPositions.pop();
+        this.canvas.yPositions.pop();
     }
 
     /**
@@ -1309,22 +1309,22 @@ export default class InputPen extends LightningElement {
      */
     setupStroke(strokeSize) {
         const colored = false;
-        this.ctx.beginPath();
-        this.ctx.globalCompositeOperation =
-            this._mode === 'erase' ? 'destination-out' : 'source-over';
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        this.ctx.strokeStyle = colored
+        this.canvas.ctx.beginPath();
+        this.canvas.ctx.globalCompositeOperation =
+            this.canvas.mode === 'erase' ? 'destination-out' : 'source-over';
+        this.canvas.ctx.lineCap = 'round';
+        this.canvas.ctx.lineJoin = 'round';
+        this.canvas.ctx.strokeStyle = colored
             ? `hsl(${Math.random() * 355},75%,50%)`
-            : this.color;
-        this.ctx.lineWidth = strokeSize;
+            : this.canvas.color;
+        this.canvas.ctx.lineWidth = strokeSize;
     }
 
     /**
      * Setup depending on tool
      */
     setupTool(event) {
-        if (this.mode === 'ink' || this.mode === 'paint') {
+        if (this.canvas.mode === 'ink' || this.canvas.mode === 'paint') {
             this.setupChainCoordinates(event);
         } else {
             this.setupCoordinates(event);
@@ -1336,7 +1336,7 @@ export default class InputPen extends LightningElement {
      */
     useTool(event, isDot = false) {
         if (!isDot) {
-            if (this._mode === 'draw' || this._mode === 'erase') {
+            if (this.canvas.mode === 'draw' || this.canvas.mode === 'erase') {
                 this.setupCoordinates(event);
                 this.hardEdgeDraw(event);
             } else {
@@ -1353,33 +1353,33 @@ export default class InputPen extends LightningElement {
     clearPositionBuffer() {
         // remove any extra points we saved since last draw
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
-            this.xPositions.shift();
-            this.yPositions.shift();
-            this.velocities.shift();
+            this.canvas.xPositions.shift();
+            this.canvas.yPositions.shift();
+            this.canvas.velocities.shift();
         }
         this.smoothVelocities();
         for (let i = 0; i < 2; i++) {
             // add two "phantom" points for calculations
             for (let j = 0; j < 2; j++) {
-                this.xPositions.unshift(this.xPositions[0]);
-                this.yPositions.unshift(this.yPositions[0]);
-                this.velocities.unshift(this.velocities[0] + 2);
+                this.canvas.xPositions.unshift(this.canvas.xPositions[0]);
+                this.canvas.yPositions.unshift(this.canvas.yPositions[0]);
+                this.canvas.velocities.unshift(this.canvas.velocities[0] + 2);
             }
             this.drawSpline();
         }
         // clear buffer for next action
-        this.xPositions = [];
-        this.yPositions = [];
-        this.velocities = [];
+        this.canvas.xPositions = [];
+        this.canvas.yPositions = [];
+        this.canvas.velocities = [];
     }
 
     /**
      * Smooth the current velocity buffer
      */
     smoothVelocities() {
-        for (let i = this.velocities.length - 1; i >= 2; i = i - 1) {
-            this.velocities[i - 1] =
-                (this.velocities[i] + this.velocities[i - 2]) / 2;
+        for (let i = this.canvas.velocities.length - 1; i >= 2; i = i - 1) {
+            this.canvas.velocities[i - 1] =
+                (this.canvas.velocities[i] + this.canvas.velocities[i - 2]) / 2;
         }
     }
 
@@ -1388,18 +1388,18 @@ export default class InputPen extends LightningElement {
      * @returns {number[]} 8 coords: start coords [0,1] && end coords [6,7] and set of control points [2,3] && [4,5]
      */
     getSplinePoints() {
-        if (this.xPositions.length < 8) {
+        if (this.canvas.xPositions.length < 8) {
             return [];
         }
         let data = [
-            this.xPositions[7],
-            this.yPositions[7],
-            this.xPositions[5],
-            this.yPositions[5],
-            this.xPositions[3],
-            this.yPositions[3],
-            this.xPositions[1],
-            this.yPositions[1]
+            this.canvas.xPositions[7],
+            this.canvas.yPositions[7],
+            this.canvas.xPositions[5],
+            this.canvas.yPositions[5],
+            this.canvas.xPositions[3],
+            this.canvas.yPositions[3],
+            this.canvas.xPositions[1],
+            this.canvas.yPositions[1]
         ];
         const tension = 1;
 
@@ -1502,12 +1502,14 @@ export default class InputPen extends LightningElement {
      * Draws a spline depending on the mode
      */
     drawSpline() {
-        switch (this._mode) {
+        switch (this.canvas.mode) {
             case 'ink':
                 this.drawTaperSpline(
                     this.getSplinePoints(),
-                    (this._size * 2) / Math.sqrt(this.velocities[3]),
-                    (this._size * 2) / Math.sqrt(this.velocities[5])
+                    (this.canvas.size * 2) /
+                        Math.sqrt(this.canvas.velocities[3]),
+                    (this.canvas.size * 2) /
+                        Math.sqrt(this.canvas.velocities[5])
                 );
                 break;
             case 'paint':
@@ -1547,18 +1549,25 @@ export default class InputPen extends LightningElement {
      * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
      * @param {string} penSize Size of the pen to draw the spline. Default to current size.
      */
-    drawBasicSpline(pts, penSize = this._size) {
+    drawBasicSpline(pts, penSize = this.canvas.size) {
         this.setupStroke(penSize);
-        if (this._mode === 'paint') {
-            this.ctx.lineWidth = this._size;
-            this.ctx.shadowColor = this.color;
-            this.ctx.shadowBlur = 2;
+        if (this.canvas.mode === 'paint') {
+            this.canvas.ctx.lineWidth = this.canvas.size;
+            this.canvas.ctx.shadowColor = this.canvas.color;
+            this.canvas.ctx.shadowBlur = 2;
         }
-        this.ctx.moveTo(pts[0], pts[1]);
-        this.ctx.bezierCurveTo(pts[2], pts[3], pts[4], pts[5], pts[6], pts[7]);
-        this.ctx.stroke();
-        this.ctx.shadowColor = 'none';
-        this.ctx.shadowBlur = 0;
+        this.canvas.ctx.moveTo(pts[0], pts[1]);
+        this.canvas.ctx.bezierCurveTo(
+            pts[2],
+            pts[3],
+            pts[4],
+            pts[5],
+            pts[6],
+            pts[7]
+        );
+        this.canvas.ctx.stroke();
+        this.canvas.ctx.shadowColor = 'none';
+        this.canvas.ctx.shadowBlur = 0;
     }
 
     /**
@@ -1568,29 +1577,31 @@ export default class InputPen extends LightningElement {
      */
     getDistanceTraveled(event) {
         // get positions
-        const clientRect = this.canvasElement.getBoundingClientRect();
-        const deltaX = this.xPositions[0] - (event.clientX - clientRect.left);
-        const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
-        this.xPositions[0] = event.clientX - clientRect.left;
-        this.yPositions[0] = event.clientY - clientRect.top;
+        const clientRect = this.canvas.canvasElement.getBoundingClientRect();
+        const deltaX =
+            this.canvas.xPositions[0] - (event.clientX - clientRect.left);
+        const deltaY =
+            this.canvas.yPositions[0] - (event.clientY - clientRect.top);
+        this.canvas.xPositions[0] = event.clientX - clientRect.left;
+        this.canvas.yPositions[0] = event.clientY - clientRect.top;
 
         // get velocity an distance
         let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-        const deltaV = Math.abs(this.velocities[0] - velocity);
+        const deltaV = Math.abs(this.canvas.velocities[0] - velocity);
         const distance = velocity + this.prevDist;
 
         // prevent velocity change from being too drastic
         velocity = Math.min(
-            Math.max(velocity, this.velocities[0] - 0.3 * deltaV),
-            this.velocities[0] + 0.3 * deltaV
+            Math.max(velocity, this.canvas.velocities[0] - 0.3 * deltaV),
+            this.canvas.velocities[0] + 0.3 * deltaV
         );
 
         // adds coordinate to buffer if we have moved 2 pixels at least since last time
         if (distance > 2) {
             this.moveCoordinatesAdded++;
-            this.xPositions.unshift(event.clientX - clientRect.left);
-            this.yPositions.unshift(event.clientY - clientRect.top);
-            this.velocities.unshift(velocity);
+            this.canvas.xPositions.unshift(event.clientX - clientRect.left);
+            this.canvas.yPositions.unshift(event.clientY - clientRect.top);
+            this.canvas.velocities.unshift(velocity);
         }
         return distance;
     }
@@ -1607,10 +1618,10 @@ export default class InputPen extends LightningElement {
                 this.smoothVelocities();
                 this.drawSpline();
             }
-            if (this.xPositions.length > 10) {
-                this.xPositions.pop();
-                this.yPositions.pop();
-                this.velocities.pop();
+            if (this.canvas.xPositions.length > 10) {
+                this.canvas.xPositions.pop();
+                this.canvas.yPositions.pop();
+                this.canvas.velocities.pop();
             }
         } else {
             this.prevDist = distance;
@@ -1621,19 +1632,21 @@ export default class InputPen extends LightningElement {
      * Canvas draw dot method.
      */
     drawDot() {
-        this.ctx.beginPath();
-        this.ctx.globalCompositeOperation =
-            this._mode === 'erase' ? 'destination-out' : 'source-over';
-        this.ctx.arc(
-            this.xPositions[0],
-            this.yPositions[0],
-            (this._mode === 'ink' ? this._size / 1.5 : this._size) / 2,
+        this.canvas.ctx.beginPath();
+        this.canvas.ctx.globalCompositeOperation =
+            this.canvas.mode === 'erase' ? 'destination-out' : 'source-over';
+        this.canvas.ctx.arc(
+            this.canvas.xPositions[0],
+            this.canvas.yPositions[0],
+            (this.canvas.mode === 'ink'
+                ? this.canvas.size / 1.5
+                : this.canvas.size) / 2,
             0,
             2 * Math.PI,
             false
         );
-        this.ctx.fillStyle = this.color;
-        this.ctx.fill();
+        this.canvas.ctx.fillStyle = this.canvas.color;
+        this.canvas.ctx.fill();
     }
 
     /**
@@ -1641,8 +1654,8 @@ export default class InputPen extends LightningElement {
      */
     testEmptyCanvas() {
         let transparentCanvas = document.createElement('canvas');
-        transparentCanvas.width = this.canvasElement.width;
-        transparentCanvas.height = this.canvasElement.height;
+        transparentCanvas.width = this.canvas.canvasElement.width;
+        transparentCanvas.height = this.canvas.canvasElement.height;
         if (this.dataURL === transparentCanvas.toDataURL()) {
             this._value = undefined;
             this._foregroundValue = undefined;
@@ -1654,7 +1667,7 @@ export default class InputPen extends LightningElement {
      */
     handleChangeEvent() {
         this._value = this.dataURL;
-        this._foregroundValue = this.canvasElement.toDataURL();
+        this._foregroundValue = this.canvas.canvasElement.toDataURL();
         this.testEmptyCanvas();
         this._updateProxyInputAttributes('value');
         if (this._invalidField) {
@@ -1696,36 +1709,15 @@ export default class InputPen extends LightningElement {
 
     setToolManager() {
         if (!this.smoothToolManager) {
-            this.smoothToolManager = new SmoothToolManager({
-                xPositions: this.xPositions,
-                yPositions: this.yPositions,
-                velocities: this.velocities,
-                color: this._color,
-                mode: this._mode,
-                size: this._size,
-                ctx: this.ctx,
-                canvasElement: this.canvasElement
-            });
+            this.smoothToolManager = new SmoothToolManager(this.canvas);
         }
         if (!this.straightToolManager) {
-            this.straightToolManager = new StraightToolManager({
-                xPositions: this.xPositions,
-                yPositions: this.yPositions,
-                velocities: this.velocities,
-                color: this._color,
-                mode: this._mode,
-                size: this._size,
-                ctx: this.ctx,
-                canvasElement: this.canvasElement
-            });
+            this.straightToolManager = new StraightToolManager(this.canvas);
         }
-        console.log(this.mode);
-        if (this._mode === 'ink' || this._mode === 'paint') {
+        if (this.canvas.mode === 'ink' || this.canvas.mode === 'paint') {
             this.toolManager = this.smoothToolManager;
-            this.toolManager.mode = this._mode;
         } else {
             this.toolManager = this.straightToolManager;
-            this.toolManager.mode = this._mode;
         }
     }
 
@@ -1734,21 +1726,21 @@ export default class InputPen extends LightningElement {
      *
      */
     initResizeObserver() {
-        if (!this.canvasElement) return;
+        if (!this.canvas.canvasElement) return;
         this._resizeObserver = new AvonniResizeObserver(() => {
             const savedValue = this._foregroundValue;
             clearTimeout(this._resizeTimeout);
             this._resizeTimeout = setTimeout(() => {
-                this.canvasElement.width =
-                    this.canvasElement.parentElement.offsetWidth;
-                this.canvasElement.height =
-                    this.canvasElement.parentElement.offsetHeight;
+                this.canvas.canvasElement.width =
+                    this.canvas.canvasElement.parentElement.offsetWidth;
+                this.canvas.canvasElement.height =
+                    this.canvas.canvasElement.parentElement.offsetHeight;
                 this._value = savedValue;
                 this.initSrc();
                 this.fillBackground();
             }, 100);
         });
-        this._resizeObserver.observe(this.canvasElement);
+        this._resizeObserver.observe(this.canvas.canvasElement);
     }
 
     /**

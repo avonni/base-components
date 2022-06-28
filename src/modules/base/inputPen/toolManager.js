@@ -2,6 +2,8 @@ const INITIAL_VELOCITY = 10;
 
 class ToolManager {
     canvas;
+    prevDist = 0;
+    moveCoordinatesAdded = 0;
 
     constructor(canvasInfo) {
         this.canvas = canvasInfo;
@@ -133,7 +135,6 @@ export class SmoothToolManager extends ToolManager {
             this.canvas.xPositions.unshift(event.clientX - clientRect.left);
             this.canvas.yPositions.unshift(event.clientY - clientRect.top);
         }
-        console.log(this.canvas.mode);
         super.drawDot(
             this.canvas.mode === 'ink'
                 ? this.canvas.size / 3
@@ -143,12 +144,11 @@ export class SmoothToolManager extends ToolManager {
 
     draw(event) {
         super.draw();
-        console.log(this.canvas.mode);
         const distance = this.getDistanceTraveled(event);
         if (distance > 2) {
-            this.canvas.prevDist = 0;
-            if (this.canvas.moveCoordinatesAdded >= 2) {
-                this.canvas.moveCoordinatesAdded = 0;
+            this.prevDist = 0;
+            if (this.moveCoordinatesAdded >= 2) {
+                this.moveCoordinatesAdded = 0;
                 this.smoothVelocities();
                 this.drawSpline();
             }
@@ -158,17 +158,16 @@ export class SmoothToolManager extends ToolManager {
                 this.canvas.velocities.pop();
             }
         } else {
-            this.canvas.prevDist = distance;
+            this.prevDist = distance;
         }
     }
 
     closeLine() {
-        for (let i = 0; i < this.canvas.moveCoordinatesAdded; i++) {
+        for (let i = 0; i < this.moveCoordinatesAdded; i++) {
             this.canvas.xPositions.shift();
             this.canvas.yPositions.shift();
             this.canvas.velocities.shift();
         }
-        this.smoothVelocities();
         for (let i = 0; i < 2; i++) {
             // add two "phantom" points for calculations
             for (let j = 0; j < 2; j++) {
@@ -205,7 +204,7 @@ export class SmoothToolManager extends ToolManager {
         // get velocity an distance
         let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
         const deltaV = Math.abs(this.canvas.velocities[0] - velocity);
-        const distance = velocity + this.canvas.prevDist;
+        const distance = velocity + this.prevDist;
 
         // prevent velocity change from being too drastic
         velocity = Math.min(
@@ -215,7 +214,7 @@ export class SmoothToolManager extends ToolManager {
 
         // adds coordinate to buffer if we have moved 2 pixels at least since last time
         if (distance > 2) {
-            this.canvas.moveCoordinatesAdded++;
+            this.moveCoordinatesAdded++;
             this.canvas.xPositions.unshift(event.clientX - clientRect.left);
             this.canvas.yPositions.unshift(event.clientY - clientRect.top);
             this.canvas.velocities.unshift(velocity);
@@ -268,7 +267,6 @@ export class SmoothToolManager extends ToolManager {
             firstRadius,
             secondRadius
         );
-
         this.drawBasicSpline(
             adjustedPoints[0],
             Math.min(firstRadius, secondRadius)
