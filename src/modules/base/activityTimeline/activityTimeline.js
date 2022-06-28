@@ -55,6 +55,7 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 
 const GROUP_BY_OPTIONS = {
@@ -132,8 +133,10 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
+    _hideItemDate = false;
     _maxVisibleItems;
     _iconSize = ICON_SIZES.default;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
@@ -262,6 +265,42 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * The date format to use for each item. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format.
+     * If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @default 'LLLL dd, yyyy, t'
+     * @public
+     */
+    @api
+    get itemDateFormat() {
+        return this._itemDateFormat;
+    }
+    set itemDateFormat(value) {
+        this._itemDateFormat =
+            value && typeof value === 'string'
+                ? value
+                : DEFAULT_ITEM_DATE_FORMAT;
+    }
+
+    /**
+     * If true, the date of each item is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideItemDate() {
+        return this._hideItemDate;
+    }
+
+    set hideItemDate(value) {
+        this._hideItemDate = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the value will define how the items will be grouped. Valid values include week, month or year.
      *
      * @public
@@ -376,6 +415,17 @@ export default class ActivityTimeline extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed item date format.
+     * @type {string}
+     */
+    get computedItemDateFormat() {
+        if (this._hideItemDate) {
+            return '';
+        }
+        return this._itemDateFormat;
+    }
 
     /**
      * Current label of the show button (show more or show less)

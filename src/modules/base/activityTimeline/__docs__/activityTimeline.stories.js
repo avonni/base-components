@@ -101,6 +101,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        itemDateFormat: {
+            name: 'item-date-format',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The date format to use for each item. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
+            table: {
+                defaultValue: { summary: 'LLLL dd, yyyy, t' },
+                type: { summary: 'string' }
+            }
+        },
         itemIconSize: {
             name: 'item-icon-size',
             control: {
@@ -120,6 +132,17 @@ export default {
             },
             table: {
                 type: { summary: 'object[]' }
+            }
+        },
+        hideItemDate: {
+            name: 'hide-item-date',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, the date of each item is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         maxVisibleItems: {
@@ -270,7 +293,9 @@ export default {
         buttonShowMoreIconName: 'utility:down',
         buttonVariant: 'neutral',
         iconSize: 'medium',
-        itemIconSize: 'small'
+        itemDateFormat: 'LLLL dd, yyyy, t',
+        itemIconSize: 'small',
+        hideItemDate: false
     }
 };
 
@@ -282,6 +307,7 @@ Base.args = {
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,
+    itemDateFormat: 'dd LLL yyyy',
     actions: actions,
     maxVisibleItems: 3
 };
@@ -304,6 +330,7 @@ Weekly.args = {
     items: items,
     collapsible: true,
     actions: actions,
+    itemDateFormat: 'DDDD - t',
     groupBy: 'week',
     maxVisibleItems: 5
 };
@@ -315,6 +342,7 @@ WeeklyNotCollapsible.args = {
     items: items,
     collapsible: false,
     actions: actions,
+    itemDateFormat: 'DDDD - t',
     groupBy: 'week'
 };
 
@@ -325,6 +353,7 @@ Monthly.args = {
     groupBy: 'month',
     items: items,
     collapsible: true,
+    itemDateFormat: 'dd MMM - t',
     actions: actions
 };
 
@@ -335,6 +364,7 @@ Yearly.args = {
     groupBy: 'year',
     items: yearlyItems,
     collapsible: true,
+    dateFormat: 'DDD',
     actions: actions
 };
 
@@ -344,5 +374,6 @@ WithoutIcons.args = {
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
     collapsible: true,
-    actions: actions
+    actions: actions,
+    hideItemDate: true
 };
