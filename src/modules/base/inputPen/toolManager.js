@@ -53,6 +53,11 @@ class ToolManager {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Sets up a stroke for the canvas ctx
+     *
+     * @param {number} strokeSize
+     */
     setupStroke(strokeSize) {
         const colored = false;
         this.canvas.ctx.beginPath();
@@ -64,6 +69,11 @@ class ToolManager {
         this.canvas.ctx.lineWidth = strokeSize;
     }
 
+    /**
+     * Draws a dot at position[0] coordinates
+     *
+     * @param {number} dotSize
+     */
     drawDot(dotSize) {
         this.canvas.ctx.beginPath();
         this.canvas.ctx.globalCompositeOperation =
@@ -101,6 +111,11 @@ export class StraightToolManager extends ToolManager {
         this.drawDot(this.canvas.size / 2);
     }
 
+    /**
+     * Draws a stroke between coordinates
+     *
+     * @param {Event} event
+     */
     draw(event) {
         super.draw();
         this.setupLine(event);
@@ -120,6 +135,11 @@ export class StraightToolManager extends ToolManager {
         this.canvas.yPositions.pop();
     }
 
+    /**
+     * Finishes coordinate management for end of a line
+     *
+     * @param {Event} event
+     */
     closeLine() {
         super.closeLine();
     }
@@ -132,6 +152,11 @@ export class SmoothToolManager extends ToolManager {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Sets up coordinates for beginning of a line
+     *
+     * @param {Event} event
+     */
     setupLine(event) {
         super.setupLine();
         this.canvas.xPositions = [];
@@ -149,6 +174,11 @@ export class SmoothToolManager extends ToolManager {
         );
     }
 
+    /**
+     * Draws a stroke between coordinates
+     *
+     * @param {Event} event
+     */
     draw(event) {
         super.draw();
         const distance = this.getDistanceTraveled(event);
@@ -169,6 +199,11 @@ export class SmoothToolManager extends ToolManager {
         }
     }
 
+    /**
+     * Finishes coordinate management for end of a line
+     *
+     * @param {Event} event
+     */
     closeLine() {
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
             this.canvas.xPositions.shift();
