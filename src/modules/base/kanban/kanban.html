@@ -442,7 +442,6 @@
                         "
                     ></div>
                     <div
-                        if:false={isPath}
                         class={computedFieldClass}
                         for:each={initGroups}
                         for:item="group"
@@ -548,6 +547,7 @@
                                 for:each={computedSubGroups}
                                 for:item="group"
                                 data-element-id="avonni-kanban__field"
+                                data-subgroup={section.label}
                                 key={group.label}
                             >
                                 <div

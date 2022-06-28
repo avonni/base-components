@@ -343,11 +343,19 @@ export default class Kanban extends LightningElement {
                             `background:${group.pathColor} !important`
                         );
                 }
-                this.template.querySelectorAll(
-                    '[data-element-id="avonni-kanban__field"]'
-                )[group.index].style.background = group.backgroundColor
-                    ? group.backgroundColor
-                    : defaultBackgroundColor;
+                for (
+                    let i = 0;
+                    i < (group.subGroups ? group.subGroups.length : 1);
+                    i++
+                ) {
+                    this.template.querySelectorAll(
+                        '[data-element-id="avonni-kanban__field"]'
+                    )[
+                        group.index + i * this._groupValues.length
+                    ].style.background = group.backgroundColor
+                        ? group.backgroundColor
+                        : defaultBackgroundColor;
+                }
             });
         });
 
