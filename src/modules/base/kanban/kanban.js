@@ -357,6 +357,14 @@ export default class Kanban extends LightningElement {
                         ? group.backgroundColor
                         : defaultBackgroundColor;
                 }
+
+                if (this._hasSubGroups) {
+                    this.template.querySelectorAll(
+                        '[data-element-id="avonni-kanban__group_header_wrapper"]'
+                    )[group.index].style.background = group.backgroundColor
+                        ? group.backgroundColor
+                        : defaultBackgroundColor;
+                }
             });
         });
 
@@ -367,7 +375,7 @@ export default class Kanban extends LightningElement {
                     '[data-element-id="avonni-kanban__field_container"]'
                 )
                 .forEach((fieldContainer, i) => {
-                    this._subGroupsHeight[i] = fieldContainer.offsetHeight;
+                    this._subGroupsHeight[i] = fieldContainer.scrollHeight;
                 });
 
             this.capFieldHeight();
@@ -684,16 +692,24 @@ export default class Kanban extends LightningElement {
         const expandable = this.template.querySelector(
             '[data-element-id="avonni-kanban_expandable_container"]'
         );
+
         if (this._hasSubGroups) {
-            // console.log(this._subGroupsHeight);
-            // groups.forEach((group, i) => {
-            //     // group.style.height = `calc(${
-            //     //     this._subGroupsHeight[
-            //     //         Math.floor(i / this.groupValues.length)
-            //     //     ]
-            //     // }px - 0.5rem)`;
-            //     group.style.height = `100px`;
-            // });
+            const subGroupsHeight = [];
+            this._subGroupsHeight.forEach(() => {
+                subGroupsHeight.push([]);
+            });
+
+            groups.forEach((group, i) => {
+                group.style.height = 'auto';
+                subGroupsHeight[Math.floor(i / this.groupValues.length)][
+                    i % this.groupValues.length
+                ] = group.offsetHeight;
+            });
+            groups.forEach((group, i) => {
+                group.style.height = `calc(${Math.max(
+                    ...subGroupsHeight[Math.floor(i / this.groupValues.length)]
+                )}px)`;
+            });
             // expandable.style.width = `calc(${
             //     this._groupWidth[0] * this._groupValues.length
             // }px + ${this._groupValues.length - 1}rem - 0.5rem)`;

@@ -352,7 +352,7 @@
 }
 
 .avonni-kanban_expandable_container .avonni-kanban__field {
-    height: calc(100% - 2.1rem);
+    height: 100%
 }
 
 .avonni-kanban_expandable_container {
@@ -361,7 +361,7 @@
 }
 
 .avonni-kanban__expandable_section {
-    height: 100%;
+    /* height: 100%; */
     /* position: sticky;
     top: 10px; */
 }
@@ -375,7 +375,7 @@
 }
 
 .avonni-kanban__expandable_section_header {
-    background-color: #f1f1f1;
+    background-color: #f4f4f4;
     width: 100%;
     border-radius: 0.25rem;
     border: none;
@@ -384,6 +384,10 @@
     z-index: 999;
     top: 0;
 }
+
+/* .avonni-kanban__variant_path .avonni-kanban__expandable_section_header {
+    background-color: #ffffff;
+} */
 
 .avonni-kanban__expandable_section_collapsed .avonni-kanban__chevron {
     transform: rotate(-90deg);
