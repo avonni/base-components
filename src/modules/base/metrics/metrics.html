@@ -44,11 +44,18 @@
             size={avatar.size}
             src={avatar.src}
             variant={avatar.variant}
+            data-element-id="avonni-avatar"
         ></c-avatar>
 
         <div class="slds-col">
             <!-- Label -->
-            <div if:true={label} class="avonni-metrics__label">{label}</div>
+            <div
+                if:true={label}
+                class="avonni-metrics__label"
+                data-element-id="div-label"
+            >
+                {label}
+            </div>
             <div
                 class="
                     slds-grid slds-grid_vertical-align-end
@@ -93,10 +100,15 @@
                     trend-icon={secondaryTrendIcon}
                     value={secondaryValue}
                     value-sign={secondaryValueSign}
+                    data-element-id="avonni-primitive-metric-secondary"
                 ></c-primitive-metric>
             </div>
             <!-- Description -->
-            <div if:true={description} class="avonni-metrics__description">
+            <div
+                if:true={description}
+                class="avonni-metrics__description"
+                data-element-id="div-description"
+            >
                 {description}
             </div>
         </div>

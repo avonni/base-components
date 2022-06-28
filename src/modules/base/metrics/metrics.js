@@ -147,7 +147,7 @@ export default class Metrics extends LightningElement {
     _minimumIntegerDigits;
     _minimumSignificantDigits;
     _secondaryCurrencyDisplayAs = CURRENCY_DISPLAYS.default;
-    _secondaryFormatStyle;
+    _secondaryFormatStyle = FORMAT_STYLES.default;
     _secondaryMaximumFractionDigits;
     _secondaryMaximumSignificantDigits;
     _secondaryMinimumFractionDigits;
