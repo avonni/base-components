@@ -657,16 +657,60 @@ describe('Calendar', () => {
         });
     });
 
-    // Interval selection mode :invalid value
-    it('Calendar interval selection mode : invalid value', () => {
+    // Interval selection mode : values
+    it('Calendar interval selection mode : invalid values (before min)', () => {
         element.selectionMode = 'interval';
         element.min = new Date('01/01/2020');
         element.max = new Date('12/31/2021');
-        element.value = ['12/29/1000', '01/10/2025'];
+        element.value = ['12/29/1000', '01/10/2000'];
 
         return Promise.resolve().then(() => {
             const days = element.shadowRoot.querySelector('.slds-is-selected');
             expect(days).toBeNull();
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2020);
+        });
+    });
+
+    it('Calendar interval selection mode : invalid values (after max)', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2021');
+        element.value = ['12/29/2022', '01/10/2024'];
+
+        return Promise.resolve().then(() => {
+            const days = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(days).toBeNull();
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2020);
+        });
+    });
+
+    it('Calendar interval selection mode : values before min and after max', () => {
+        element.selectionMode = 'interval';
+        element.min = new Date('01/01/2020');
+        element.max = new Date('01/31/2020');
+        element.value = ['12/29/1000', '01/10/2025'];
+
+        return Promise.resolve().then(() => {
+            const days =
+                element.shadowRoot.querySelectorAll('.slds-is-selected');
+            expect(days.length).toBe(31);
+            for (let i = 0; i < days.length; ++i) {
+                expect(days[i].textContent).toBe((i + 1).toString());
+            }
             const month = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             );
