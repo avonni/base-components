@@ -577,9 +577,9 @@ export default class ActivityTimeline extends LightningElement {
      */
     get popoverIconSize() {
         if (this.selectedItem.iconName.includes('action:')) {
-            return 'small';
+            return 'x-small';
         }
-        return 'medium';
+        return 'small';
     }
 
     /*
