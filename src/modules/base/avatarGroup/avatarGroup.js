@@ -646,7 +646,8 @@ export default class AvatarGroup extends LightningElement {
         }
 
         if (item.showMore) {
-            this.showPopover = !this.showPopover;
+            this.showPopover = true;
+            this.template.querySelector('.slds-dropdown-trigger').focus();
             this.allowBlur();
         } else {
             /**
@@ -669,6 +670,9 @@ export default class AvatarGroup extends LightningElement {
                 })
             );
 
+            if (this.layout !== 'list') {
+                this.showPopover = false;
+            }
             this.cancelBlur();
         }
     }
