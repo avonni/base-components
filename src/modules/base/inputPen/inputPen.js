@@ -66,7 +66,7 @@ const DEFAULT_SIZE = 10;
  */
 export default class InputPen extends LightningElement {
     /**
-     * Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, clear, size, color, background, download, undo, redo.
+     * Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.
      *
      * @type {string[]}
      * @public
@@ -173,9 +173,6 @@ export default class InputPen extends LightningElement {
             this.canvasInfo.ctx =
                 this.canvasInfo.canvasElement.getContext('2d');
             this.backgroundCtx = this.backgroundCanvasElement.getContext('2d');
-            if (this.foregroundValue) {
-                this.initSrc();
-            }
 
             this.canvasInfo.canvasElement.width =
                 this.canvasInfo.canvasElement.parentElement.clientWidth;
@@ -186,26 +183,26 @@ export default class InputPen extends LightningElement {
             this.backgroundCanvasElement.height =
                 this.canvasInfo.canvasElement.parentElement.clientHeight;
 
+            if (this.foregroundValue) {
+                this.initSrc();
+            }
+
             this.setToolManager();
             this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
 
+            // i cant find any other way to affect the combobox width since there are not styling hooks for it.
             if (!this.hideControls && this.showSize) {
-                let srcElement = this.template.querySelector(
-                    '.avonni-input-pen__combobox'
+                let combobox = this.template.querySelector(
+                    '[data-element-id="size-picker"]'
                 );
                 const style = document.createElement('style');
                 style.innerText =
-                    '.avonni-input-pen__combobox .slds-dropdown_fluid {min-width: 100px;}';
-                srcElement.appendChild(style);
+                    '.avonni-input-pen__combobox .slds-dropdown_fluid {min-width: 100px; justify-content: flex-start}';
+                combobox.appendChild(style);
             }
 
-            if (this.variant === 'bottom-toolbar') {
-                this.classList.add('avonni-reverse');
-            } else {
-                this.classList.remove('avonni-reverse');
-            }
             this.checkValidity();
             this._rendered = true;
             this._updatedDOM = false;
@@ -231,7 +228,12 @@ export default class InputPen extends LightningElement {
     }
 
     set color(value) {
-        this.canvasInfo.color = value;
+        const hexColorRegex = /^#([0-9a-f]{3}){1,2}$/i;
+        if (hexColorRegex.test(normalizeString(value))) {
+            this.canvasInfo.color = value;
+        } else {
+            this.canvasInfo.color = DEFAULT_COLOR;
+        }
         this.initCursorStyles();
     }
 
@@ -266,16 +268,16 @@ export default class InputPen extends LightningElement {
     get hideControls() {
         if (
             !this.showPen &&
-            !this.showErase &&
             !this.showPaint &&
             !this.showInk &&
-            !this.showClear &&
+            !this.showErase &&
             !this.showSize &&
             !this.showColor &&
             !this.showBackground &&
             !this.showDownload &&
             !this.showUndo &&
-            !this.showRedo
+            !this.showRedo &&
+            !this.showClear
         ) {
             return true;
         }
@@ -450,6 +452,20 @@ export default class InputPen extends LightningElement {
      */
 
     /**
+     * Computed class of the rich text editor.
+     */
+    get computedRichTextEditorClasses() {
+        return classSet(
+            'slds-rich-text-editor slds-grid slds-grid_vertical slds-nowrap avonni-input-pen__rich-text_border-radius'
+        ).add({
+            'avonni-input-pen__rich-text_flex-direction':
+                this.variant === 'bottom-toolbar',
+            'avonni-input-pen__rich-text_border-bottom':
+                this.variant === 'bottom-toolbar'
+        });
+    }
+
+    /**
      * Computed class of the text area.
      */
     get computedTextAreaClasses() {
@@ -458,7 +474,20 @@ export default class InputPen extends LightningElement {
         ).add({
             'avonni-input-pen__rich-text_border-radius-top':
                 this.variant === 'bottom-toolbar',
+
             'avonni-input-pen__rich-text_border-radius-bottom':
+                this.variant === 'top-toolbar'
+        });
+    }
+
+    /**
+     * Computed class of the toolbar.
+     */
+    get computedToolbarClasses() {
+        return classSet(
+            'slds-rich-text-editor__toolbar slds-shrink-none slds-grid avonni-input-pen__toolbar_border-bottom'
+        ).add({
+            'avonni-input-pen__toolbar_border-top-reverse':
                 this.variant === 'top-toolbar'
         });
     }

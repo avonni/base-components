@@ -37,17 +37,17 @@ let element;
 const DATA_URL = 'data:image/png;base64,validValue';
 let position = 0;
 
-const MOUSEDOWN_EVENT = new CustomEvent('mousedown', {
+const MOUSEDOWN_EVENT = new MouseEvent('mousedown', {
     clientX: position,
     clientY: position
 });
 
-const MOUSEUP_EVENT = new CustomEvent('mouseup', {
+const MOUSEUP_EVENT = new MouseEvent('mouseup', {
     clientX: position + 5,
     clientY: position + 5
 });
 
-const MOUSEMOVE_EVENT = new CustomEvent('mousemove', {
+const MOUSEMOVE_EVENT = new MouseEvent('mousemove', {
     clientX: position,
     clientY: position
 });
@@ -116,6 +116,7 @@ describe('Input pen', () => {
     });
 
     it('Input pen Default attributes', () => {
+        expect(element.color).toBe('#000');
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.fieldLevelHelp).toBeUndefined();
@@ -127,12 +128,34 @@ describe('Input pen', () => {
         expect(element.value).toBeUndefined();
         expect(element.disabledButtons).toMatchObject([]);
         expect(element.invalid).toBeFalsy();
-        expect(element.color).toBe('#000');
         expect(element.size).toBe(10);
         expect(element.mode).toBe('draw');
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // color
+    it('color = valid', () => {
+        element.color = '#ff0000';
+
+        return Promise.resolve().then(() => {
+            const cursor = element.shadowRoot.querySelector(
+                '[data-element-id="cursor"]'
+            );
+            expect(cursor.style.getPropertyValue('--color')).toEqual('#ff0000');
+        });
+    });
+
+    it('color = invalid', () => {
+        element.color = 'invalid';
+
+        return Promise.resolve().then(() => {
+            const cursor = element.shadowRoot.querySelector(
+                '[data-element-id="cursor"]'
+            );
+            expect(cursor.style.getPropertyValue('--color')).toEqual('#000');
+        });
+    });
 
     // disabled
     it('Input pen disabled', () => {
@@ -161,7 +184,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="label"]'
             );
             expect(label.textContent).toBe('This is a label');
         });
@@ -222,7 +245,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const toolbar = element.shadowRoot.querySelector(
-                '.slds-rich-text-editor__toolbar'
+                '[data-element-id="toolbar"]'
             );
             expect(toolbar).toBeFalsy();
         });
@@ -350,30 +373,30 @@ describe('Input pen', () => {
         });
     });
 
-    // invalid
-    it('invalid = false', () => {
-        element.invalid = false;
+    it('All disabled buttons', () => {
+        element.disabledButtons = [
+            'pen',
+            'paintbrush',
+            'ink',
+            'eraser',
+            'size',
+            'color',
+            'background',
+            'download',
+            'undo',
+            'redo',
+            'clear'
+        ];
 
         return Promise.resolve().then(() => {
-            const form = element.shadowRoot.querySelector(
-                '[data-element-id="form-element"]'
+            const toolbar = element.shadowRoot.querySelector(
+                '[data-element-id="toolbar"]'
             );
-            expect(form.classList).not.toContain('slds-has-error');
+            expect(toolbar).toBeFalsy();
         });
     });
 
-    it('invalid = true', () => {
-        element.invalid = true;
-
-        return Promise.resolve().then(() => {
-            const form = element.shadowRoot.querySelector(
-                '[data-element-id="form-element"]'
-            );
-            expect(form.classList).not.toContain('slds-has-error');
-        });
-    });
-
-    // invalid
+    // showSignaturePad
     it('showSignaturePad = false', () => {
         element.invalid = false;
 
@@ -403,6 +426,31 @@ describe('Input pen', () => {
                     '[data-element-id="signature-underline"]'
                 )
             ).toBeTruthy();
+        });
+    });
+
+    // size
+    it('Size = 20', () => {
+        element.size = 20;
+
+        return Promise.resolve().then(() => {
+            const cursor = element.shadowRoot.querySelector(
+                '[data-element-id="cursor"]'
+            );
+            expect(element.size).toEqual(20);
+            expect(cursor.style.getPropertyValue('--size')).toEqual('20');
+        });
+    });
+
+    it('Size = invalid', () => {
+        element.size = 'invalid';
+
+        return Promise.resolve().then(() => {
+            const cursor = element.shadowRoot.querySelector(
+                '[data-element-id="cursor"]'
+            );
+            expect(element.size).toEqual(10);
+            expect(cursor.style.getPropertyValue('--size')).toEqual('10');
         });
     });
 
@@ -560,7 +608,7 @@ describe('Input pen', () => {
         });
     });
 
-    /* ------ VALIDITY ------ */
+    /* ------- VALIDITY ------- */
 
     //reportValidity
     it('reportValidity() should return true', () => {

@@ -30,18 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host(.avonni-reverse) .slds-rich-text-editor {
+.avonni-input-pen__rich-text_flex-direction {
     flex-direction: column-reverse;
-}
-
-:host(.avonni-reverse) .slds-rich-text-editor__toolbar {
-    border-bottom-left-radius: var(--lwc-borderRadiusMedium, 0.25rem);
-    border-bottom-right-radius: var(--lwc-borderRadiusMedium, 0.25rem);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-top: var(--lwc-borderWidthThin, 1px) solid
-        var(--lwc-colorBorder, rgb(221, 219, 218));
-    border-bottom: none;
 }
 
 .slds-rich-text-editor__textarea {
@@ -119,13 +109,29 @@
 }
 
 .avonni-input-pen__rich-text_border-radius-bottom {
-    border-radius: 0px 0px var(--lwc-borderRadiusMedium, 0.25rem)
+    border-radius: 0 0 var(--lwc-borderRadiusMedium, 0.25rem)
         var(--lwc-borderRadiusMedium, 0.25rem);
 }
 
 .avonni-input-pen__rich-text_border-radius-top {
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem)
         var(--lwc-borderRadiusMedium, 0.25rem) 0px 0px;
+}
+
+.avonni-input-pen__toolbar_border-bottom {
+    border-radius: 0 0 var(--lwc-borderRadiusMedium, 0.25rem)
+        var(--lwc-borderRadiusMedium, 0.25rem);
+    border-top: var(--lwc-borderWidthThin, 1px) solid
+        var(--lwc-colorBorder, rgb(221, 219, 218));
+    border-bottom: none;
+}
+
+.avonni-input-pen__toolbar_border-top-reverse {
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem)
+        var(--lwc-borderRadiusMedium, 0.25rem) 0 0;
+    border-top: none;
+    border-bottom: var(--lwc-borderWidthThin, 1px) solid
+        var(--lwc-colorBorder, rgb(221, 219, 218));
 }
 
 .avonni-input-pen__canvas {

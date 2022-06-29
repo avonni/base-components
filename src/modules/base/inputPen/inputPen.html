@@ -34,7 +34,11 @@
 
 <template>
     <div class="avonni-input-pen__label-container">
-        <label if:true={label} class="slds-form-element__label slds-no-flex">
+        <label
+            if:true={label}
+            class="slds-form-element__label slds-no-flex"
+            data-element-id="label"
+        >
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
@@ -47,20 +51,12 @@
     </div>
     <div class="slds-form-element" data-element-id="form-element">
         <div class="slds-form-element__control">
-            <div
-                class="
-                    slds-rich-text-editor slds-grid slds-grid_vertical
-                    slds-nowrap
-                    avonni-input-pen__rich-text_border-radius
-                "
-            >
+            <div class={computedRichTextEditorClasses}>
                 <div
                     if:false={hideControls}
                     role="toolbar"
-                    class="
-                        slds-rich-text-editor__toolbar
-                        slds-shrink-none slds-grid
-                    "
+                    class={computedToolbarClasses}
+                    data-element-id="toolbar"
                 >
                     <ul class="slds-button-group-list">
                         <li if:true={showPen}>
@@ -145,7 +141,6 @@
                                 name="size"
                                 label="Size"
                                 variant="label-hidden"
-                                dropdown-alignment="right"
                                 value={size}
                                 options={sizeList}
                                 onchange={handleSizeChange}
@@ -213,6 +208,7 @@
                         </li>
                     </ul>
                     <ul
+                        if:true={showUndoRedo}
                         class="
                             slds-button-group-list slds-align-bottom
                             slds-col_bump-left
