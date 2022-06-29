@@ -35,7 +35,8 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString, deepCopy } from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from '../utils/classSet';
-import { StraightToolManager, SmoothToolManager } from './toolManager';
+import { StraightToolManager } from './straightToolManager';
+import { SmoothToolManager } from './smoothToolManager';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
@@ -138,11 +139,9 @@ export default class InputPen extends LightningElement {
     constructor() {
         super();
         this.onMouseUp = this.handleMouseUp.bind(this);
-        this.onMouseDown = this.handleMouseMove.bind(this);
         this.onMouseMove = this.handleMouseMove.bind(this);
         this.onKeyDown = this.handleKeyDown.bind(this);
         window.addEventListener('mouseup', this.onMouseUp);
-        window.addEventListener('mousedown', this.onMouseDown);
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('keydown', this.onKeyDown);
     }
@@ -155,7 +154,6 @@ export default class InputPen extends LightningElement {
 
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.onMouseUp);
-        window.removeEventListener('mousedown', this.onMouseDown);
         window.addEventListener('mousemove', this.onMouseMove);
         window.removeEventListener('keydown', this.onKeyDown);
     }
@@ -461,8 +459,7 @@ export default class InputPen extends LightningElement {
             'avonni-input-pen__rich-text_border-radius-top':
                 this.variant === 'bottom-toolbar',
             'avonni-input-pen__rich-text_border-radius-bottom':
-                this.variant === 'top-toolbar',
-            'avonni-input-pen__text-area_cursor': this.canvasInfo.mode === 'ink'
+                this.variant === 'top-toolbar'
         });
     }
 
@@ -800,7 +797,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Set the drawing mode. Valid modes include draw and erase.
+     * Set the drawing mode. Valid modes include draw, paint, ink and erase.
      *
      * @param {string} modeName
      * @public
@@ -811,6 +808,18 @@ export default class InputPen extends LightningElement {
             fallbackValue: this.canvasInfo.mode,
             validValues: PEN_MODES.valid
         });
+        const drawArea = this.template.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        if (this.canvasInfo.mode === 'ink') {
+            drawArea.classList.add(
+                'avonni-input-pen__text-area_visible-cursor'
+            );
+        } else {
+            drawArea.classList.remove(
+                'avonni-input-pen__text-area_visible-cursor'
+            );
+        }
         this.setToolManager();
     }
 
@@ -972,12 +981,12 @@ export default class InputPen extends LightningElement {
     handleBackgroundColorChange(event) {
         this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
         this._backgroundColor = event.detail.hexa;
+        this.fillBackground();
         this.saveAction({
             type: 'fill',
             clientX: 0,
             clientY: 0
         });
-        this.fillBackground();
         this.handleChangeEvent();
     }
 
@@ -1037,7 +1046,6 @@ export default class InputPen extends LightningElement {
     handleMouseLeave() {
         if (!this.disabled && !this.readOnly) {
             this.hideDrawCursor();
-            this.handleChangeEvent();
         }
     }
 
@@ -1172,7 +1180,7 @@ export default class InputPen extends LightningElement {
      * Hides draw cursor
      */
     hideDrawCursor() {
-        if (this.cursor && this.cursor) {
+        if (this.cursor) {
             this.cursor.style.opacity = 0;
         }
     }

@@ -548,6 +548,18 @@ describe('Input pen', () => {
         });
     });
 
+    it('reset button', () => {
+        const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+
+        return Promise.resolve().then(() => {
+            const clearButton = element.shadowRoot.querySelector(
+                '[data-element-id="clear-button"]'
+            );
+            clearButton.dispatchEvent(new CustomEvent('mousedown'));
+            expect(clearSpy).toHaveBeenCalled();
+        });
+    });
+
     /* ------ VALIDITY ------ */
 
     //reportValidity
@@ -675,7 +687,7 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(
@@ -695,8 +707,8 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(strokeSpy).toHaveBeenCalled();
@@ -713,8 +725,8 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(strokeSpy).toHaveBeenCalled();
@@ -731,8 +743,8 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(strokeSpy).toHaveBeenCalled();
@@ -749,8 +761,8 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(strokeSpy).toHaveBeenCalled();
@@ -767,8 +779,8 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
                 expect(strokeSpy).not.toHaveBeenCalled();
@@ -851,22 +863,22 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
             })
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
             })
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(3);
                 // 3 actions drawn
             })
@@ -888,15 +900,15 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
             })
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
                 // 2 actions drawn
             })
@@ -932,15 +944,15 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
             })
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
-                drawArea.dispatchEvent(MOUSEMOVE_EVENT);
-                drawArea.dispatchEvent(MOUSEUP_EVENT);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
             })
             .then(() => {
@@ -977,16 +989,59 @@ describe('Input pen', () => {
                 expect(ctxBackgroundColor).toEqual('#cc1913ff');
             })
             .then(() => {
+                const backgroundColorPicker = element.shadowRoot.querySelector(
+                    '[data-element-id="background-color-picker"]'
+                );
+                backgroundColorPicker.dispatchEvent(
+                    CustomEvent('change', { detail: { hexa: '#1c298bff' } })
+                );
+                expect(fillRectSpy).toHaveBeenCalledTimes(2);
+                expect(ctxBackgroundColor).toEqual('#1c298bff');
+            })
+            .then(() => {
                 element.undo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(3);
+                expect(fillRectSpy).toHaveBeenCalledTimes(6);
+                expect(ctxBackgroundColor).toEqual('#cc1913ff');
+            })
+            .then(() => {
+                element.undo();
+                expect(fillRectSpy).toHaveBeenCalledTimes(8);
                 expect(ctxBackgroundColor).toEqual('#ffffff00');
             })
             .then(() => {
                 element.redo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(5);
+                expect(fillRectSpy).toHaveBeenCalledTimes(10);
                 expect(ctxBackgroundColor).toEqual('#cc1913ff');
+            })
+            .then(() => {
+                element.redo();
+                expect(fillRectSpy).toHaveBeenCalledTimes(12);
+                expect(ctxBackgroundColor).toEqual('#1c298bff');
             });
     });
 
-    //TODO: redo and undo on clear and find out why ^ is in steps of 2 ... ?
+    it('redo and undo on clear', () => {
+        const clearSpy = jest.spyOn(MOCKED_CONTEXT, 'clearRect');
+        return Promise.resolve()
+            .then(() => {
+                element.clear();
+            })
+            .then(() => {
+                expect(clearSpy).toHaveBeenCalledTimes(2);
+            })
+            .then(() => {
+                element.clear();
+            })
+            .then(() => {
+                expect(clearSpy).toHaveBeenCalledTimes(4);
+            })
+            .then(() => {
+                element.undo();
+                expect(clearSpy).toHaveBeenCalledTimes(10);
+            })
+            .then(() => {
+                element.redo();
+                expect(clearSpy).toHaveBeenCalledTimes(13);
+            });
+    });
 });

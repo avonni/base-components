@@ -44,10 +44,6 @@
     border-bottom: none;
 }
 
-:host(.avonni-disabled) .slds-rich-text-editor__textarea {
-    cursor: auto;
-}
-
 .slds-rich-text-editor__textarea {
     position: relative;
     overflow: hidden;
@@ -56,7 +52,7 @@
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
 }
 
-.avonni-input-pen__text-area_cursor.slds-rich-text-editor__textarea {
+.avonni-input-pen__text-area_visible-cursor {
     cursor: pointer;
 }
 
@@ -100,7 +96,7 @@
     z-index: 4;
     right: 1rem;
     top: 1rem;
-    transform: rotate(0deg) scaleX(-1);
+    transform: scaleX(-1);
 }
 
 .avonni-input-pen__x-icon {
