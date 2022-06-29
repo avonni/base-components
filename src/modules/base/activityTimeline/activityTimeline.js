@@ -467,7 +467,7 @@ export default class ActivityTimeline extends LightningElement {
      */
     get divHorizontalTimeline() {
         return this.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
         );
     }
 

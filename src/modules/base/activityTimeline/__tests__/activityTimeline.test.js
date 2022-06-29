@@ -722,7 +722,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const timelineContainer = element.shadowRoot.querySelectorAll(
-                '.avonni-activity-timeline__horizontal-timeline svg'
+                '[data-element-id="avonni-activity-timeline__horizontal-timeline"] svg'
             );
             expect(createHorizontalTimelineSpy).toHaveBeenCalled();
             expect(timelineContainer).toBeDefined();
@@ -1220,7 +1220,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const scrollingContainer = element.shadowRoot.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+                '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
             );
             expect(scrollingContainer.style.overflowY).toBe('hidden');
         });
@@ -1234,7 +1234,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const scrollingContainer = element.shadowRoot.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+                '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
             );
             expect(scrollingContainer.style.overflowY).toBe('scroll');
         });
@@ -1373,7 +1373,7 @@ describe('Activity Timeline', () => {
                 // Set width
                 element.position = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
                 jest.spyOn(
                     timelineContainer,
@@ -1422,7 +1422,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const scrollingContainer = element.shadowRoot.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+                '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
             );
 
             expect(scrollingContainer.style.height).toBe('127px');
@@ -1448,7 +1448,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const scrollingContainer = element.shadowRoot.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+                '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
             );
 
             expect(scrollingContainer.style.height).toBe('239px');
@@ -1544,7 +1544,7 @@ describe('Activity Timeline', () => {
             .then(() => {
                 element.position = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
                 jest.spyOn(
                     timelineContainer,
@@ -1576,7 +1576,7 @@ describe('Activity Timeline', () => {
                 // The width of timeline container is reduced to change ticks
                 element.position = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
                 jest.spyOn(
                     timelineContainer,
@@ -1644,7 +1644,7 @@ describe('Activity Timeline', () => {
                 );
 
                 let timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
 
                 const wheelEvent = new CustomEvent('wheel');
@@ -1686,7 +1686,7 @@ describe('Activity Timeline', () => {
                 );
 
                 let timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
 
                 const wheelEvent = new CustomEvent('wheel');
@@ -1734,7 +1734,7 @@ describe('Activity Timeline', () => {
                 );
 
                 let timelineContainer = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__horizontal-timeline'
+                    '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
                 const wheelEvent = new CustomEvent('wheel');
                 wheelEvent.deltaX = deltaX;

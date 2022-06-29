@@ -167,7 +167,7 @@ export class HorizontalActivityTimeline {
      */
     get divTimelineAxisSelector() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline-axis'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline-axis"]'
         );
     }
 
@@ -176,7 +176,7 @@ export class HorizontalActivityTimeline {
      */
     get divTimelineContainer() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
         );
     }
 
@@ -185,7 +185,7 @@ export class HorizontalActivityTimeline {
      */
     get divTimelineItemsSelector() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline-items'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline-items"]'
         );
     }
 
@@ -194,7 +194,7 @@ export class HorizontalActivityTimeline {
      */
     get divTimelineScroll() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
         );
     }
 
@@ -203,7 +203,7 @@ export class HorizontalActivityTimeline {
      */
     get divTimelineScrollAxisSelector() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline-scroll-axis'
+            '[data-element-id="avonni-activity-timeline__horizontal-timeline-scroll-axis"]'
         );
     }
 
