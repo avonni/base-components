@@ -112,18 +112,22 @@ const TIME_SPANS = {
 };
 
 const DISPLAYS = {
-    default: [
+    default: 'timeline',
+    options: [
         {
-            label: 'Agenda',
-            name: 'agenda'
+            label: 'Agenda ',
+            value: 'agenda',
+            iconName: 'utility:list'
         },
         {
-            label: 'Calendar',
-            name: 'calendar'
+            label: 'Calendar ',
+            value: 'calendar',
+            iconName: 'utility:event'
         },
         {
-            label: 'Timeline',
-            name: 'timeline'
+            label: 'Timeline ',
+            value: 'timeline',
+            iconName: 'utility:breadcrumbs'
         }
     ],
     valid: ['agenda', 'calendar', 'timeline']

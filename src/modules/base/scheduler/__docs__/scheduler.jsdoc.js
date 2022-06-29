@@ -92,8 +92,8 @@
 /**
  * @typedef {object} SchedulerTimeSpan
  * @name timeSpans
- * @property {object[]} customHeaders Array of header objects. If both present, it will overwrite the `headers`.
- * @property {string} headers Name of the header preset, that will determine the precision of the timeline. Valid values include:
+ * @property {object[]} customHeaders Only used by the timeline display. Array of header objects. If both present, it will overwrite the `headers`.
+ * @property {string} headers Only used by the timeline display. Name of the header preset, that will determine the precision of the timeline. Valid values include:
  * * minuteAndHour
  * * minuteHourAndDay
  * * hourAndDay

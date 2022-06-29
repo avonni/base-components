@@ -50,6 +50,7 @@ export const Scheduler = ({
     eventsLabels,
     eventsPalette,
     eventsTheme,
+    hiddenDisplays,
     hideToolbar,
     isLoading,
     readOnly,
@@ -57,6 +58,7 @@ export const Scheduler = ({
     referenceLines,
     resizeColumnDisabled,
     resources,
+    selectedDisplay,
     selectedTimeSpan,
     start,
     timeSpans,
@@ -79,6 +81,7 @@ export const Scheduler = ({
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
+    element.hiddenDisplays = hiddenDisplays;
     element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
@@ -86,6 +89,7 @@ export const Scheduler = ({
     element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
     element.resources = resources;
+    element.selectedDisplay = selectedDisplay;
     element.selectedTimeSpan = selectedTimeSpan;
     element.start = start;
     element.timeSpans = timeSpans;

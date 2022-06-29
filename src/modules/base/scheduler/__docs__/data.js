@@ -65,6 +65,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'NG',
         name: 'Nina',
+        label: 'Nina G.',
         role: 'Lead developer',
         sharedField: `This shouldn't show up`
     },
@@ -74,6 +75,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
         name: 'Dave',
+        label: 'Dave M.',
         role: 'UX Specialist',
         customRowField: 'Label coming from a custom field in the row'
     },
@@ -81,12 +83,14 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'JP',
         name: 'Jung',
+        label: 'Jung P.',
         role: 'Product Owner'
     },
     {
         avatarFallbackIconName: 'standard:article',
         avatarInitials: 'LM',
         name: 'Lily',
+        label: 'Lily M.',
         role: 'Graphic Designer',
         customField: "This comes from the row's custom field"
     },
@@ -96,6 +100,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'RM',
         name: 'Reginald',
+        label: 'Reginald M.',
         role: 'Developer'
     }
 ];

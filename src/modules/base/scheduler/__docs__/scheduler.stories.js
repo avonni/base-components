@@ -276,6 +276,18 @@ export default {
                 category: 'Events'
             }
         },
+        hiddenDisplays: {
+            name: 'hidden-displays',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of display names that should not appear in the toolbar options. Valid values include calendar, agenda and timeline.',
+            table: {
+                type: { summary: 'string[]' },
+                category: 'Panels and Toolbar'
+            }
+        },
         hideToolbar: {
             name: 'hide-toolbar',
             control: {
@@ -365,6 +377,19 @@ export default {
                 'Array of resource objects. The resources can be bound to events.',
             table: {
                 type: { summary: 'object' }
+            }
+        },
+        selectedDisplay: {
+            name: 'selected-display',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Selected display of the scheduler. Valid values include agenda, calendar and timeline.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'timeline' },
+                category: 'Panels and Toolbar'
             }
         },
         selectedTimeSpan: {
@@ -475,6 +500,7 @@ export default {
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
+        selectedDisplay: 'timeline',
         selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
         start: new Date(),
         timeSpans: [
@@ -522,8 +548,18 @@ Base.args = {
     events: basicEvents
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
+export const Calendar = Template.bind({});
+Calendar.args = {
+    resources,
+    start,
+    events: basicEvents,
+    selectedDisplay: 'calendar',
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan'
+    // availableTimeFrames: ['08:00-17:00']
+};
+
+export const VerticalTimeline = Template.bind({});
+VerticalTimeline.args = {
     resources,
     start,
     availableTimeFrames: ['08:00-17:00'],

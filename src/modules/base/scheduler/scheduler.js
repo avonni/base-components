@@ -43,7 +43,7 @@ import {
     previousAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { eventCrudMethods } from './eventCrud';
 import {
     EDIT_MODES,
@@ -70,7 +70,10 @@ import {
 } from './defaults';
 import SchedulerResource from './resource';
 import SchedulerEvent from './event';
+import CalendarData from './calendarData';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import calendarTemplate from './calendar.html';
+import timelineTemplate from './timeline.html';
 
 /**
  * @class
@@ -80,7 +83,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
  */
 export default class Scheduler extends LightningElement {
     _dialogLabels = DEFAULT_DIALOG_LABELS;
-    _displays = DISPLAYS.default;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
@@ -97,6 +99,7 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = HEADERS.default;
+    _hiddenDisplays = [];
     _hideToolbar = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -105,6 +108,7 @@ export default class Scheduler extends LightningElement {
     _referenceLines = [];
     _resizeColumnDisabled = false;
     _resources = [];
+    _selectedDisplay = DISPLAYS.default;
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpans = TIME_SPANS.default;
@@ -124,6 +128,7 @@ export default class Scheduler extends LightningElement {
     _resizeObserver;
     _rowsHeight = [];
     _toolbarCalendarIsFocused = false;
+    calendarData = new CalendarData(this);
     cellHeight = 0;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
@@ -131,11 +136,14 @@ export default class Scheduler extends LightningElement {
     computedReferenceLines = [];
     computedResources = [];
     @track computedEvents = [];
+    computedSelectedDisplay = {};
     contextMenuActions = [];
     currentTimeSpan = {};
+    eventCrud = eventCrudMethods(this);
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
     firstColumnWidth = 0;
+    horizontalHeaders = [];
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
     selectedEvent;
     showContextMenu = false;
@@ -145,10 +153,14 @@ export default class Scheduler extends LightningElement {
     showRecurrenceDialog = false;
     showToolbarCalendar = false;
     smallestHeader;
+    verticalHeaders = [];
 
     connectedCallback() {
         this.initCurrentTimeSpan();
-        this.crud = eventCrudMethods(this);
+        this.updateSelectedDisplay();
+        if (this.isCalendar) {
+            this.setStartToBeginningOfUnit();
+        }
         this.initHeaders();
         this.initEvents();
         this._connected = true;
@@ -211,6 +223,10 @@ export default class Scheduler extends LightningElement {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+    }
+
+    render() {
+        return this.isCalendar ? calendarTemplate : timelineTemplate;
     }
 
     disconnectedCallback() {
@@ -593,6 +609,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of display names that should not appear in the toolbar options. Valid values include agenda, calendar and timeline.
+     *
+     * @type {string}
+     * @default timeline
+     * @public
+     */
+    @api
+    get hiddenDisplays() {
+        return this._hiddenDisplays;
+    }
+    set hiddenDisplays(value) {
+        const displays = normalizeArray(value, 'string');
+        this._hiddenDisplays = displays.filter((display) => {
+            return DISPLAYS.valid.includes(display);
+        });
+    }
+
+    /**
      * If present, the toolbar is hidden.
      *
      * @type {boolean}
@@ -802,6 +836,33 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Selected display of the scheduler. Valid values include agenda, calendar and timeline.
+     *
+     * @type {string}
+     * @default timeline
+     * @public
+     */
+    @api
+    get selectedDisplay() {
+        return this._selectedDisplay;
+    }
+    set selectedDisplay(value) {
+        this._selectedDisplay = normalizeString(value, {
+            fallbackValue: DISPLAYS.default,
+            validValues: DISPLAYS.valid
+        });
+
+        if (this._connected) {
+            this.updateSelectedDisplay();
+
+            if (this.isCalendar) {
+                this.setStartToBeginningOfUnit();
+            }
+            this.initHeaders();
+        }
+    }
+
+    /**
      * Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.
      *
      * @type {string}
@@ -837,6 +898,10 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
         this.selectedDate = dateTimeObjectFrom(this._start);
+
+        if (this._connected && this.isCalendar) {
+            this.setStartToBeginningOfUnit();
+        }
     }
 
     /**
@@ -994,25 +1059,11 @@ export default class Scheduler extends LightningElement {
             'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
         )
             .add({
-                'slds-col': !this.isVertical,
-                'avonni-scheduler__cell_vertical': this.isVertical,
+                'slds-col': !this.isVerticalTimeline,
+                'avonni-scheduler__cell_vertical': this.isVerticalTimeline,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
-    }
-
-    /**
-     * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
-     *
-     * @type {object[]}
-     */
-    get resourcesComboboxOptions() {
-        return this.computedResources.map((resource) => {
-            return {
-                label: resource.label,
-                value: resource.name
-            };
-        });
     }
 
     /**
@@ -1024,6 +1075,19 @@ export default class Scheduler extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="avonni-datatable"]'
         );
+    }
+
+    /**
+     * Display options visible in the toolbar.
+     *
+     * @type {object[]}
+     */
+    get displayOptions() {
+        const allOptions = [...DISPLAYS.options];
+        return allOptions.filter((display) => {
+            display.checked = display.value === this.selectedDisplay;
+            return !this.hiddenDisplays.includes(display.value);
+        });
     }
 
     /**
@@ -1084,7 +1148,7 @@ export default class Scheduler extends LightningElement {
      * @type {number}
      */
     get scrollOffset() {
-        return this.isVertical ? 0 : this.firstColWidth;
+        return this.isVerticalTimeline ? 0 : this.firstColWidth;
     }
 
     /**
@@ -1110,11 +1174,20 @@ export default class Scheduler extends LightningElement {
             .add({
                 'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
                 'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'avonni-scheduler__first-col_horizontal':
+                    !this.isTimeline && this.isVerticalTimeline,
                 'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-                    this.isVertical
+                    this.isVerticalTimeline || !this.isTimeline
             })
             .toString();
+    }
+
+    get isCalendar() {
+        return this.selectedDisplay === 'calendar';
+    }
+
+    get isTimeline() {
+        return this.selectedDisplay === 'timeline';
     }
 
     /**
@@ -1122,8 +1195,17 @@ export default class Scheduler extends LightningElement {
      *
      * @type {boolean}
      */
-    get isVertical() {
+    get isVerticalTimeline() {
         return this.variant === 'vertical';
+    }
+
+    /**
+     * True if more than one display is selectable.
+     *
+     * @type {boolean}
+     */
+    get moreThanOneDisplay() {
+        return this.displayOptions.length > 1;
     }
 
     /**
@@ -1158,9 +1240,23 @@ export default class Scheduler extends LightningElement {
     get resourceClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
-                'slds-grid_vertical slds-col': this.isVertical
+                'slds-grid_vertical slds-col': this.isVerticalTimeline
             })
             .toString();
+    }
+
+    /**
+     * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
+     *
+     * @type {object[]}
+     */
+    get resourcesComboboxOptions() {
+        return this.computedResources.map((resource) => {
+            return {
+                label: resource.label,
+                value: resource.name
+            };
+        });
     }
 
     /**
@@ -1172,7 +1268,7 @@ export default class Scheduler extends LightningElement {
         return classSet('slds-is-relative')
             .add({
                 'slds-grid avonni-scheduler__schedule-body_vertical':
-                    this.isVertical
+                    this.isVerticalTimeline
             })
             .toString();
     }
@@ -1188,7 +1284,8 @@ export default class Scheduler extends LightningElement {
         )
             .add({
                 'slds-hide': this.firstColumnIsOpen,
-                'avonni-scheduler__schedule-col_vertical': this.isVertical,
+                'avonni-scheduler__schedule-col_vertical':
+                    this.isVerticalTimeline,
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();
@@ -1208,6 +1305,15 @@ export default class Scheduler extends LightningElement {
         if (wrapper && firstCol) {
             const wrapperWidth = wrapper.getBoundingClientRect().width;
             const firstColWidth = firstCol.getBoundingClientRect().width;
+            if (this.isCalendar) {
+                const verticalHeaders = this.template.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
+                );
+                const verticalHeadersWidth = verticalHeaders
+                    ? verticalHeaders.getBoundingClientRect().width
+                    : 0;
+                return wrapperWidth - firstColWidth - verticalHeadersWidth;
+            }
             return wrapperWidth - firstColWidth;
         }
         return 0;
@@ -1337,7 +1443,7 @@ export default class Scheduler extends LightningElement {
                 'avonni-scheduler__splitter_disabled':
                     this.resizeColumnDisabled,
                 'slds-grid_align-end': this.firstColumnIsOpen,
-                'avonni-scheduler__splitter_vertical': this.isVertical
+                'avonni-scheduler__splitter_vertical': this.isVerticalTimeline
             })
             .toString();
     }
@@ -1388,6 +1494,10 @@ export default class Scheduler extends LightningElement {
         return items;
     }
 
+    get uniqueKey() {
+        return generateUUID();
+    }
+
     /**
      * Label of the toolbar interval button.
      *
@@ -1431,9 +1541,12 @@ export default class Scheduler extends LightningElement {
      * @type {Interval}
      */
     get visibleInterval() {
-        const header = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"]'
-        );
+        let selector =
+            '[data-element-id="avonni-primitive-scheduler-header-group"]';
+        if (this.isCalendar) {
+            selector += '[data-orientation="horizontal"]';
+        }
+        const header = this.template.querySelector(selector);
         if (header) {
             return header.visibleInterval;
         }
@@ -1470,7 +1583,7 @@ export default class Scheduler extends LightningElement {
      */
     @api
     createEvent(eventObject) {
-        this.crud.createEvent(eventObject);
+        this.eventCrud.createEvent(eventObject);
     }
 
     /**
@@ -1481,7 +1594,7 @@ export default class Scheduler extends LightningElement {
      */
     @api
     deleteEvent(eventName) {
-        this.crud.deleteEvent(eventName);
+        this.eventCrud.deleteEvent(eventName);
     }
 
     /**
@@ -1493,7 +1606,7 @@ export default class Scheduler extends LightningElement {
     @api
     focusEvent(eventName) {
         this._programmaticFocus = true;
-        this.crud.focusEvent(eventName);
+        this.eventCrud.focusEvent(eventName);
     }
 
     /**
@@ -1549,7 +1662,7 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openNewEventDialog() {
-        this.crud.newEvent();
+        this.eventCrud.newEvent();
     }
 
     /*
@@ -1585,6 +1698,11 @@ export default class Scheduler extends LightningElement {
      * Create the computed headers.
      */
     initHeaders() {
+        if (!this.isTimeline) {
+            this.calendarData.initHeaders(this.currentTimeSpan);
+            this._headersAreLoading = false;
+            return;
+        }
         this._headersAreLoading = true;
         const { customHeaders, headers } = this.currentTimeSpan;
 
@@ -1687,7 +1805,11 @@ export default class Scheduler extends LightningElement {
             });
 
             // Set the min-height to the datatable rows height
-            if (this._rowsHeight.length && !this.isVertical) {
+            if (
+                this._rowsHeight.length &&
+                this.isTimeline &&
+                !this.isVerticalTimeline
+            ) {
                 const dataRowHeight = this._rowsHeight.find(
                     (dataRow) => dataRow.resourceName === name
                 ).height;
@@ -1698,7 +1820,7 @@ export default class Scheduler extends LightningElement {
             return computedResource;
         });
 
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             requestAnimationFrame(() => {
                 this.updateCellWidth();
             });
@@ -1720,18 +1842,18 @@ export default class Scheduler extends LightningElement {
             mouseY
         );
 
-        const resourceAxis = this.isVertical ? mouseX : mouseY;
+        const resourceAxis = this.isVerticalTimeline ? mouseX : mouseY;
         const resource = this.getResourceElementFromPosition(resourceAxis);
 
-        const eventStartPosition = this.isVertical
+        const eventStartPosition = this.isVerticalTimeline
             ? eventPosition.top
             : eventPosition.left;
 
-        const eventEndPosition = this.isVertical
+        const eventEndPosition = this.isVerticalTimeline
             ? eventPosition.bottom
             : eventPosition.right;
 
-        const eventSize = this.isVertical
+        const eventSize = this.isVerticalTimeline
             ? eventPosition.height
             : eventPosition.width;
 
@@ -1755,10 +1877,11 @@ export default class Scheduler extends LightningElement {
      * Set the resources height and cell width.
      */
     updateResourcesStyle() {
-        if (this.isVertical) {
-            this.template.host.style = `
-                --avonni-scheduler-cell-height: ${this.cellHeight}px;
-            `;
+        this.template.host.style = `
+            --avonni-scheduler-cell-height: ${this.cellHeight}px;
+        `;
+
+        if (this.isVerticalTimeline) {
             const resourceHeaders = this.template.querySelector(
                 '[data-element-id="div-vertical-resource-headers"]'
             );
@@ -1768,7 +1891,7 @@ export default class Scheduler extends LightningElement {
             const scrollBarWidth =
                 scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
             resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
-        } else {
+        } else if (this.isTimeline) {
             const resourceElements = this.template.querySelectorAll(
                 '[data-element-id="div-resource"]'
             );
@@ -1804,7 +1927,7 @@ export default class Scheduler extends LightningElement {
      * Update the cell width property if the cells grew because the splitter moved.
      */
     updateCellWidth() {
-        if (this.zoomToFit && !this.isVertical) {
+        if (this.zoomToFit && !this.isVerticalTimeline) {
             // The header is computing the cell width
             const headers = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group"]'
@@ -1813,7 +1936,7 @@ export default class Scheduler extends LightningElement {
                 headers.scrollLeftOffset = this.firstColWidth;
             }
             return;
-        } else if (this.isVertical) {
+        } else if (this.isVerticalTimeline) {
             this.setResourceHeaderFirstCellWidth();
         }
 
@@ -1831,15 +1954,23 @@ export default class Scheduler extends LightningElement {
     /**
      * Vertically align the datatable header with the smallest unit schedule header.
      */
-    pushDatatableDown() {
-        if (this.isVertical) {
+    pushLeftColumnDown() {
+        if (this.isVerticalTimeline) {
             return;
         }
 
         const headers = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="horizontal"]'
         );
-        this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
+
+        if (this.isTimeline) {
+            this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
+        } else {
+            const verticalHeaders = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
+            );
+            verticalHeaders.style.marginTop = `${headers.offsetHeight}px`;
+        }
     }
 
     /**
@@ -1852,20 +1983,22 @@ export default class Scheduler extends LightningElement {
         const multiplier = side === 'start' ? -1 : 1;
 
         const size = eventSize + distanceMoved * multiplier;
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             event.style.height = `${size}px`;
         } else {
             event.style.width = `${size}px`;
         }
 
         if (side === 'start') {
-            const initialPosition = this.isVertical ? initialY : initialX;
+            const initialPosition = this.isVerticalTimeline
+                ? initialY
+                : initialX;
             const computedStart =
                 side === 'start'
                     ? distanceMoved + initialPosition
                     : distanceMoved;
 
-            if (this.isVertical) {
+            if (this.isVerticalTimeline) {
                 event.y = computedStart;
             } else {
                 event.x = computedStart;
@@ -1942,7 +2075,7 @@ export default class Scheduler extends LightningElement {
                             (this.selection && this.selection.occurrence)
                     });
 
-                    if (!this.isVertical) {
+                    if (this.isTimeline && !this.isVerticalTimeline) {
                         if (occElement.labels.right) {
                             // Hide the right label if it overflows the schedule
                             const elementRightBorder =
@@ -1971,7 +2104,7 @@ export default class Scheduler extends LightningElement {
                     const { level, occurrence, numberOfOverlap } = position;
                     let offsetSide = 0;
 
-                    if (this.isVertical) {
+                    if (this.isVerticalTimeline) {
                         offsetSide = (level * this.cellWidth) / numberOfOverlap;
                         occurrence.numberOfEventsInThisTimeFrame =
                             numberOfOverlap;
@@ -1991,7 +2124,7 @@ export default class Scheduler extends LightningElement {
                 });
             }
 
-            if (!this.isVertical) {
+            if (!this.isVerticalTimeline) {
                 // Add 10 pixels to the row for padding
                 resource.height = rowHeight + 10;
             }
@@ -2016,7 +2149,7 @@ export default class Scheduler extends LightningElement {
         });
         this._updateOccurrencesLength = false;
 
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             // Set the reference line height to the width of the schedule
             const schedule = this.template.querySelector(
                 '[data-element-id="div-schedule-body"]'
@@ -2032,7 +2165,10 @@ export default class Scheduler extends LightningElement {
      * Save the datatable rows heights and use them as a min-height for the schedule rows.
      */
     updateRowsHeight() {
-        if (this.isVertical || (!this.isVertical && !this.datatable)) {
+        if (
+            this.isVerticalTimeline ||
+            (!this.isVerticalTimeline && !this.datatable)
+        ) {
             return;
         }
 
@@ -2043,6 +2179,16 @@ export default class Scheduler extends LightningElement {
             resource.minHeight = height;
             this._rowsHeight.push({ resourceName, height });
         });
+    }
+
+    /**
+     * Update the computed selected display object.
+     */
+    updateSelectedDisplay() {
+        const selectedDisplay = DISPLAYS.options.find((display) => {
+            return display.value === this.selectedDisplay;
+        });
+        this.computedSelectedDisplay = { ...selectedDisplay };
     }
 
     /**
@@ -2072,10 +2218,10 @@ export default class Scheduler extends LightningElement {
 
         return cellElements.find((cellElement, index) => {
             const cellPosition = cellElement.getBoundingClientRect();
-            const start = this.isVertical
+            const start = this.isVerticalTimeline
                 ? cellPosition.top
                 : cellPosition.left;
-            const end = this.isVertical
+            const end = this.isVerticalTimeline
                 ? cellPosition.bottom
                 : cellPosition.right;
 
@@ -2109,7 +2255,7 @@ export default class Scheduler extends LightningElement {
         const schedulePosition = this.schedulePosition;
 
         let right, left, top, bottom;
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             const topOfEvent = eventPosition.top + 24;
             const topOfSchedule =
                 schedulePosition.top + (mouseY - eventPosition.top);
@@ -2184,8 +2330,10 @@ export default class Scheduler extends LightningElement {
         );
         return resources.find((div) => {
             const divPosition = div.getBoundingClientRect();
-            const start = this.isVertical ? divPosition.left : divPosition.top;
-            const end = this.isVertical
+            const start = this.isVerticalTimeline
+                ? divPosition.left
+                : divPosition.top;
+            const end = this.isVerticalTimeline
                 ? divPosition.right
                 : divPosition.bottom;
 
@@ -2262,7 +2410,7 @@ export default class Scheduler extends LightningElement {
      * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
      */
     clearDatatableColumnWidth() {
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             return;
         }
         const lastColumn = this.columns[this.columns.length - 1];
@@ -2302,7 +2450,7 @@ export default class Scheduler extends LightningElement {
         }
 
         let numberOfOverlap = level + 1;
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
                 previousOccurrences,
                 startPosition,
@@ -2395,6 +2543,17 @@ export default class Scheduler extends LightningElement {
         };
     }
 
+    setStartToBeginningOfUnit() {
+        const unit = this.currentTimeSpan.unit;
+        const selectedDate = this.selectedDate || this.start;
+        this._start = selectedDate.startOf(unit);
+
+        if (unit === 'week') {
+            // Compensate the fact that luxon weeks start on Monday
+            this._start = removeFromDate(this.start, 'day', 1);
+        }
+    }
+
     /**
      * Set the CSS style of the resource header first cell, in vertical variant.
      */
@@ -2413,7 +2572,7 @@ export default class Scheduler extends LightningElement {
         const columnWidth = this.firstCol.getBoundingClientRect().width;
         this._initialFirstColWidth = columnWidth;
         this.firstColWidth = columnWidth;
-        if (this.isVertical) {
+        if (this.isVerticalTimeline) {
             this.setResourceHeaderFirstCellWidth();
         }
     }
@@ -2426,7 +2585,7 @@ export default class Scheduler extends LightningElement {
     resizeEventToPosition(position) {
         const occurrence = this.selection.occurrence;
         const { resource, mouseX, mouseY } = this._initialState;
-        const distanceMoved = this.isVertical
+        const distanceMoved = this.isVerticalTimeline
             ? position - mouseY
             : position - mouseX;
 
@@ -2458,7 +2617,7 @@ export default class Scheduler extends LightningElement {
         // Check if any event in the cell has the same offsetTop
         const eventIsHovered = cellEvents.some((cellEvent) => {
             const isDifferent = cellEvent.key !== occurrence.key;
-            if (this.isVertical) {
+            if (this.isVerticalTimeline) {
                 return (
                     isDifferent &&
                     cellEvent.offsetSide === occurrence.offsetSide
@@ -2621,6 +2780,15 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handle the closing of the delete confirmation dialog.
+     */
     handleCloseDeleteConfirmationDialog() {
         this.cleanDraggedElement();
         this.cleanSelection();
@@ -2628,12 +2796,38 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle the selection of a display.
+     *
+     * @param {Event} event
+     */
+    handleDisplaySelect(event) {
+        this._selectedDisplay = event.detail.value;
+        this.updateSelectedDisplay();
+
+        /**
+         * The event fired when a user selects a display.
+         *
+         * @event
+         * @name displayselect
+         * @param {string} name Name of the selected display.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('displayselect', {
+                detail: {
+                    name: this.selectedDisplay
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
      */
     handleHeaderCellSizeChange(event) {
-        const cellSize = event.detail.cellSize;
+        const { cellSize, orientation } = event.detail;
 
-        if (this.isVertical) {
+        if (orientation === 'vertical') {
             this.cellHeight = cellSize;
         } else {
             this.cellWidth = cellSize;
@@ -2644,7 +2838,13 @@ export default class Scheduler extends LightningElement {
      * Handle the privateheaderchange event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
      */
     handleHeaderChange(event) {
-        this.smallestHeader = event.detail.smallestHeader;
+        const headerOrientation = event.currentTarget.dataset.orientation;
+        const smallestHeader = event.detail.smallestHeader;
+        if (this.isCalendar && headerOrientation === 'vertical') {
+            return;
+        }
+
+        this.smallestHeader = smallestHeader;
 
         // Update the start date in case it was not available
         this._start = this.smallestHeader.start;
@@ -2655,7 +2855,7 @@ export default class Scheduler extends LightningElement {
         // Create the resources or update the existing ones
         if (!this.computedResources.length) {
             this.initResources();
-        } else {
+        } else if (this.isTimeline) {
             this.updateVisibleResources();
         }
 
@@ -2663,7 +2863,7 @@ export default class Scheduler extends LightningElement {
         this._rowsHeight = [];
 
         requestAnimationFrame(() => {
-            this.pushDatatableDown();
+            this.pushLeftColumnDown();
             this._headersAreLoading = false;
         });
     }
@@ -2672,7 +2872,7 @@ export default class Scheduler extends LightningElement {
      * Handle the click event fired by the delete button. Delete the selected event.
      */
     handleEventDelete() {
-        this.crud.deleteEvent();
+        this.eventCrud.deleteEvent();
     }
 
     /**
@@ -2727,7 +2927,7 @@ export default class Scheduler extends LightningElement {
         const x = mouseEvent.clientX || mouseEvent.detail.x;
         const y = mouseEvent.clientY || mouseEvent.detail.y;
         this._initialState = { mouseX: x, mouseY: y };
-        this.crud.newEvent(x, y, false);
+        this.eventCrud.newEvent(x, y, false);
     }
 
     /**
@@ -2774,14 +2974,14 @@ export default class Scheduler extends LightningElement {
             const x = mouseEvent.clientX;
             const width = firstColWidth + (x - mouseX);
 
-            if (!this.isVertical) {
+            if (!this.isVerticalTimeline) {
                 this.datatable.style.width = `${width}px`;
             }
             this.firstCol.style.width = `${width}px`;
             this.firstCol.style.minWidth = `${width}px`;
             this.firstColWidth = width;
 
-            if (this.isVertical && !this.zoomToFit) {
+            if (this.isVerticalTimeline && !this.zoomToFit) {
                 // Update the resource header first cell width
                 // even if the schedule body width has not changed (is scrolling).
                 // The rest of the time, the resize observer will trigger the update.
@@ -2803,7 +3003,7 @@ export default class Scheduler extends LightningElement {
 
             if (this._resizeSide || this.selection.newEvent) {
                 // Resizing
-                const resizePosition = this.isVertical
+                const resizePosition = this.isVerticalTimeline
                     ? position.y
                     : position.x;
                 this.resizeEventToPosition(resizePosition);
@@ -2844,18 +3044,18 @@ export default class Scheduler extends LightningElement {
                 mouseEvent.clientX,
                 mouseEvent.clientY
             );
-            const startPosition = this.isVertical
+            const startPosition = this.isVerticalTimeline
                 ? position.y - (mouseY - eventStartPosition)
                 : position.x - (mouseX - eventStartPosition);
 
-            const endPosition = this.isVertical
+            const endPosition = this.isVerticalTimeline
                 ? position.y + (eventEndPosition - mouseY)
                 : position.x + (eventEndPosition - mouseX);
 
             const valueOnTheResourceAxis =
                 side === 'end' ? endPosition : startPosition;
 
-            const valueOnTheHeadersAxis = this.isVertical
+            const valueOnTheHeadersAxis = this.isVerticalTimeline
                 ? position.x
                 : position.y;
 
@@ -2899,9 +3099,9 @@ export default class Scheduler extends LightningElement {
                     this.showRecurrenceDialog = true;
                     return;
                 } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
-                    this.crud.saveOccurrence();
+                    this.eventCrud.saveOccurrence();
                 } else {
-                    this.crud.saveEvent();
+                    this.eventCrud.saveEvent();
                 }
                 this.updateVisibleResources();
                 this.cleanSelection();
@@ -2960,7 +3160,7 @@ export default class Scheduler extends LightningElement {
             this.showContextMenu = true;
             const x = mouseEvent.clientX || mouseEvent.detail.x;
             const y = mouseEvent.clientY || mouseEvent.detail.y;
-            this.crud.newEvent(x, y, false);
+            this.eventCrud.newEvent(x, y, false);
         }
     }
 
@@ -3020,7 +3220,7 @@ export default class Scheduler extends LightningElement {
         const y = !isNaN(mouseEvent.clientY)
             ? mouseEvent.clientY
             : mouseEvent.detail.y;
-        this.crud.newEvent(x, y, true);
+        this.eventCrud.newEvent(x, y, true);
     }
 
     /**
@@ -3102,7 +3302,7 @@ export default class Scheduler extends LightningElement {
             recurrentChange === 'one' ||
             (event.recurrence && this.onlyOccurrenceEditAllowed)
         ) {
-            this.crud.saveOccurrence();
+            this.eventCrud.saveOccurrence();
         } else {
             // Update the event with the selected occurrence values,
             // in case the selected occurrence had already been edited
@@ -3120,7 +3320,7 @@ export default class Scheduler extends LightningElement {
             }
 
             // Update the event with the draft values from the edit form
-            this.crud.saveEvent();
+            this.eventCrud.saveEvent();
         }
 
         this.updateVisibleResources();
@@ -3163,7 +3363,7 @@ export default class Scheduler extends LightningElement {
             this.hideContextMenu();
         }
 
-        if (this.isVertical && !this.zoomToFit) {
+        if (this.isVerticalTimeline && !this.zoomToFit) {
             // Create an artificial scroll for the resource headers in vertical
             const resourceHeaders = this.template.querySelector(
                 '[data-element-id="div-resource-header-cells"]'
@@ -3186,7 +3386,7 @@ export default class Scheduler extends LightningElement {
         this.clearDatatableColumnWidth();
         this._mouseIsDown = true;
         this._draggedSplitter = true;
-        const firstColWidth = this.isVertical
+        const firstColWidth = this.isVerticalTimeline
             ? this.firstCol.offsetWidth
             : this.datatable.offsetWidth;
         this._initialState = {
@@ -3209,7 +3409,7 @@ export default class Scheduler extends LightningElement {
         if (this.firstColumnIsOpen) {
             this.firstColumnIsOpen = false;
             this.firstColWidth = this._initialFirstColWidth;
-            if (this.isVertical) {
+            if (this.isVerticalTimeline) {
                 this.setResourceHeaderFirstCellWidth();
             } else {
                 this.datatable.style.width = null;
@@ -3217,7 +3417,7 @@ export default class Scheduler extends LightningElement {
         } else {
             this.firstColumnIsHidden = true;
             this.firstColWidth = 0;
-            if (this.isVertical) {
+            if (this.isVerticalTimeline) {
                 this.setResourceHeaderFirstCellWidth();
             } else {
                 this.datatable.style.width = 0;
@@ -3232,21 +3432,21 @@ export default class Scheduler extends LightningElement {
         this.hideAllPopovers();
         this.firstCol.style.width = null;
         this.clearDatatableColumnWidth();
-        if (!this.isVertical) {
+        if (!this.isVerticalTimeline) {
             this.datatable.style.width = null;
         }
 
         if (this.firstColumnIsHidden) {
             this.firstColumnIsHidden = false;
             this.firstColWidth = this._initialFirstColWidth;
-            if (!this.isVertical) {
+            if (!this.isVerticalTimeline) {
                 this.datatable.style.width = `${this._initialFirstColWidth}px`;
             }
         } else {
             this.firstColumnIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
             this.firstColWidth = width;
-            if (!this.isVertical) {
+            if (!this.isVerticalTimeline) {
                 this.datatable.style.width = `${width}px`;
             }
         }
@@ -3337,14 +3537,7 @@ export default class Scheduler extends LightningElement {
         this._selectedTimeSpan = name;
         const timeSpan = this.timeSpans.find((ts) => ts.name === name);
         this.currentTimeSpan = timeSpan;
-        const selectedDate = this.selectedDate || this.start;
-        this._start = selectedDate.startOf(timeSpan.unit);
-
-        if (timeSpan.unit === 'week') {
-            // Compensate the fact that luxon weeks start on Monday
-            this._start = removeFromDate(this.start, 'day', 1);
-        }
-
+        this.setStartToBeginningOfUnit();
         this.initHeaders();
 
         /**

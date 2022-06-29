@@ -438,7 +438,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return classSet('slds-grid slds-is-relative')
             .add({
                 'slds-grid_vertical avonni-scheduler-header-group__header_vertical':
-                    this.isVertical
+                    this.isVertical,
+                'avonni-scheduler-header-group__header_multiple-vertical':
+                    this.isVertical && this.computedHeaders.length > 1
             })
             .toString();
     }
@@ -706,7 +708,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('privatecellsizechange', {
                 detail: {
-                    cellSize: size
+                    cellSize: size,
+                    orientation: this.variant
                 }
             })
         );
