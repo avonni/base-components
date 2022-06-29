@@ -624,11 +624,11 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        const groups = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
+        // const groups = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-kanban__group"]'
+        // );
 
-        const group = groups[this._releasedGroupIndex];
+        // const group = groups[this._releasedGroupIndex];
 
         // auto scroll when the user is dragging the tile out of the list
         let scrollYStep = 0;
@@ -645,7 +645,7 @@ export default class Kanban extends LightningElement {
             scrollXStep = -10;
         }
 
-        const toScroll = scrollXStep ? fieldContainer : group;
+        //  const toScroll = scrollXStep ? fieldContainer : group;
         scrollYStep = this._draggedGroup ? 0 : scrollYStep;
         //TODO: add autoscroll back
         // if (
@@ -797,10 +797,6 @@ export default class Kanban extends LightningElement {
     createTileSpace() {
         const currentGroupTiles = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
-        );
-
-        const currentField = this.template.querySelector(
-            `[data-subgroup-field="${this._currentSubGroup}"]`
         );
 
         // Sets the right paddingBottom on the group to create space for the dragged tile
