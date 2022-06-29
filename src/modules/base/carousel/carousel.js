@@ -161,11 +161,8 @@ export default class Carousel extends LightningElement {
     panelStyle;
     isMobile;
 
-    connectedCallback() {
-        this.detectMobileDevice();
-    }
-
     renderedCallback() {
+        this.detectMobileDevice();
         if (!this._initialRender) {
             this.initCarousel();
             if (!this.disableAutoScroll) {
@@ -751,11 +748,8 @@ export default class Carousel extends LightningElement {
      * Detect if it is a mobile device.
      */
     detectMobileDevice() {
-        // let uaParser = new UAParser();
-        // let results = uaParser.getResult();
-        // this.isMobile = results.device.type === 'mobile' ? true : false;
         this.isMobile = window.matchMedia(
-            'only screen and (max-width: 480px)'
+            'only screen and (max-width: 840px)'
         ).matches;
     }
 
