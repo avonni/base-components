@@ -211,6 +211,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
             .toString();
     }
 
+    get computedLightningButtonMenuActionClass() {
+        return classSet('').add({
+            'slds-hide_small': this.isMenuVariant === false
+        });
+    }
+
     /**
      * Computed carousel content class - set to display content bottom if position is bottom.
      *
@@ -327,6 +333,20 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleActionClick(event) {
         event.preventDefault();
         const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    actionDispatcher(actionName) {
         const {
             title,
             description,
@@ -362,5 +382,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Prevent the default event browser behavior
+     *
+     * @param {Event}
+     */
+    preventDefault(event) {
+        event.preventDefault();
     }
 }

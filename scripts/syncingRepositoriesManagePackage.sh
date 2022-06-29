@@ -139,6 +139,8 @@ do
 
                 find "$(dirname "$folder")/${folderName}" -type f -name 'primitiveCombobox.js' -exec sed -i '' "s/export default class PrimitiveCombobox extends LightningElement {/export default class PrimitiveCombobox extends LightningElement {\n\n\t@api hideSelectedOptions;\n\n\t@api selectedOptionsAriaLabel;\n/g" {} \;
 
+                find "$(dirname "$folder")/${folderName}" -type f -name 'primitiveSchedulerEventOccurrence.js' -exec sed -i '' "s/export default class PrimitiveSchedulerEventOccurrence extends LightningElement {/export default class PrimitiveSchedulerEventOccurrence extends LightningElement {\n\n\t@api columnDuration;\n\n\t@api columns;\n\n\t@api columnWidth;\n/g" {} \;
+
             fi
         fi
     done

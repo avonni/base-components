@@ -38,8 +38,9 @@
             <div class="slds-media slds-media_center">
                 <div class="slds-media__figure" if:true={iconName}>
                     <lightning-icon
+                        data-element-id="avonni-activity-timeline-icon"
                         icon-name={iconName}
-                        size="medium"
+                        size={iconSize}
                     ></lightning-icon>
                 </div>
                 <div class="slds-media__body" if:true={title}>
@@ -58,6 +59,7 @@
                         datetime-value={item.datetimeValue}
                         href={item.href}
                         icon-name={item.iconName}
+                        icon-size={itemIconSize}
                         icons={item.icons}
                         fields={item.fields}
                         has-checkbox={item.hasCheckbox}
@@ -68,6 +70,7 @@
                         button-variant={item.buttonVariant}
                         button-icon-position={item.buttonIconPosition}
                         button-disabled={item.buttonDisabled}
+                        date-format={computedItemDateFormat}
                         is-loading={item.isLoading}
                         is-active={item.isActive}
                         loading-state-alternative-text={item.loadingStateAlternativeText}
@@ -85,10 +88,7 @@
         </ul>
     </template>
     <template if:true={hasDates}>
-        <template
-            for:each={orderedDates}
-            for:item="date"
-        >
+        <template for:each={orderedDates} for:item="date">
             <template if:false={noGroupBy}>
                 <c-expandable-section
                     key={date.label}
@@ -98,10 +98,7 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template
-                            for:each={date.items}
-                            for:item="item"
-                        >
+                        <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
@@ -109,6 +106,7 @@
                                     datetime-value={item.datetimeValue}
                                     href={item.href}
                                     icon-name={item.iconName}
+                                    icon-size={itemIconSize}
                                     icons={item.icons}
                                     fields={item.fields}
                                     has-checkbox={item.hasCheckbox}
@@ -119,6 +117,7 @@
                                     button-variant={item.buttonVariant}
                                     button-icon-position={item.buttonIconPosition}
                                     button-disabled={item.buttonDisabled}
+                                    date-format={computedItemDateFormat}
                                     is-loading={item.isLoading}
                                     is-active={item.isActive}
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
@@ -137,5 +136,21 @@
                 </c-expandable-section>
             </template>
         </template>
+    </template>
+    <template if:false={isShowButtonHidden}>
+        <lightning-button
+            variant={buttonVariant}
+            label={currentShowButtonLabel}
+            icon-name={currentShowButtonIcon}
+            icon-position={currentShowButtonPosition}
+            data-element-id="lightning-button"
+            class="
+                slds-m-top_small
+                slds-m-bottom_small
+                slds-m-left_small
+                slds-show
+            "
+            onclick={handleToggleShowMoreButton}
+        ></lightning-button>
     </template>
 </template>

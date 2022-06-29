@@ -167,47 +167,65 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Primitive Carousel Item: actions variant border with large and small mobile device', () => {
-        element.actions = bareActions;
-        element.actionsVariant = 'border';
-
-        Object.defineProperty(window, 'innerWidth', {
-            writable: true,
-            configurable: true,
-            value: 479
-        });
+    it('Primitive Carousel Item: HTML with tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
+        element.href = 'example.com';
+        element.actions = menuActions;
+        // element.actionsPosition = 'top-center';
+        element.actionsVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-bare-border"]'
             );
-            expect(action.menuAlignment).toBe('auto');
+            const buttonMenu = element.shadowRoot.querySelector(
+                '[data-element-id="button-menu"]'
+            );
+            const lightningButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-actions"'
+            );
+            const lightningButtonMenu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"'
+            );
+            expect(button.className).toBe('slds-show_small');
+            expect(buttonMenu.className).toBe('slds-hide_small');
+            expect(button.contains(lightningButton)).toBeTruthy();
+            expect(buttonMenu.contains(lightningButtonMenu)).toBeTruthy();
         });
     });
 
-    it('Primitive Carousel Item: actions variant bare with large and small mobile device', () => {
-        element.actions = bareActions;
+    it('Primitive Carousel Item: HTML with no tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
+        element.href = null;
+        element.actions = menuActions;
+        // element.actionsPosition = 'top-center';
         element.actionsVariant = 'bare';
 
-        Object.defineProperty(window, 'innerWidth', {
-            writable: true,
-            configurable: true,
-            value: 479
-        });
-
         return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-bare-border"]'
             );
-            expect(action.menuAlignment).toBe('auto');
+            const buttonMenu = element.shadowRoot.querySelector(
+                '[data-element-id="button-menu"]'
+            );
+            const lightningButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-actions"'
+            );
+            const lightningButtonMenu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"'
+            );
+            expect(button.className).toBe('slds-show_small');
+            expect(buttonMenu.className).toBe('slds-hide_small');
+            expect(button.contains(lightningButton)).toBeTruthy();
+            expect(buttonMenu.contains(lightningButtonMenu)).toBeTruthy();
         });
     });
 
     // render html variant
     it('Primitive Carousel Item: tag variant', () => {
+        element.href = 'example.com';
+
         return Promise.resolve().then(() => {
-            const tag = element.shadowRoot.querySelectorAll(
-                '[data-element-id="a-tag"]'
+            const tag = element.shadowRoot.querySelector(
+                '[data-element-id="a-actions-tag"]'
             );
             expect(tag).toBeTruthy();
         });
@@ -217,10 +235,10 @@ describe('Primitive Carousel Item', () => {
         element.href = null;
 
         return Promise.resolve().then(() => {
-            const tag = element.shadowRoot.querySelectorAll(
-                '[data-element-id="a-noTag"]'
+            const noTag = element.shadowRoot.querySelector(
+                '[data-element-id="a-actions-noTag"]'
             );
-            expect(tag).toBeTruthy();
+            expect(noTag).toBeTruthy();
         });
     });
 
@@ -354,7 +372,7 @@ describe('Primitive Carousel Item', () => {
 
         return Promise.resolve().then(() => {
             const item = element.shadowRoot.querySelector(
-                '[data-element-id="a-actions"]'
+                '[data-element-id="a-actions-tag"]'
             );
             item.click();
             expect(handler).toHaveBeenCalled();
@@ -391,6 +409,61 @@ describe('Primitive Carousel Item', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // Actionclick on menu
+    it('Primitive Carousel Item: menu actionclick', () => {
+        element.title = 'Visit App Exchange';
+        element.description =
+            'Extend Salesforce with the #1 business marketplace.';
+        element.imageAssistiveText = 'Appy';
+        element.src =
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
+        element.href = 'https://www.salesforce.com';
+        element.actions = bareActions;
+        element.name = 'someName';
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            action.dispatchEvent(new CustomEvent('select'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe(undefined);
+            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // PreventDefault on menu
+    it('Primitive Carousel Item: menu preventDefault', () => {
+        element.title = 'Visit App Exchange';
+        element.description =
+            'Extend Salesforce with the #1 business marketplace.';
+        element.imageAssistiveText = 'Appy';
+        element.src =
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
+        element.href = 'https://www.salesforce.com';
+        element.actions = bareActions;
+        element.name = 'someName';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            const customEvent = new CustomEvent('click', {
+                bubbles: true,
+                composed: true,
+                cancelable: true
+            });
+            action.dispatchEvent(customEvent);
+            expect(customEvent.defaultPrevented).toBeTruthy();
         });
     });
 });

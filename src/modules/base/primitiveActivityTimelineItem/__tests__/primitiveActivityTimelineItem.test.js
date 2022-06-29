@@ -78,9 +78,11 @@ describe('Primitive Activity Timeline Item', () => {
     it('Activity Timeline Item: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.description).toBeUndefined();
+        expect(element.dateFormat).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
+        expect(element.iconSize).toBe('small');
         expect(element.fields).toMatchObject([]);
         expect(element.hasCheckbox).toBeFalsy();
         expect(element.hasError).toBeFalsy();
@@ -120,12 +122,26 @@ describe('Primitive Activity Timeline Item', () => {
     // datetime value
     it('Activity timeline item: datetimeValue', () => {
         element.datetimeValue = 1621605600000;
+        element.dateFormat = 'x';
 
         return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
             );
-            expect(date.value).toBe(1621605600000);
+            expect(dateTime.textContent).toBe('1621605600000');
+        });
+    });
+
+    // dateFormat
+    it('Activity timeline item: dateFormat', () => {
+        element.dateFormat = 'dd MMM yyyy';
+        element.datetimeValue = 1621605600000;
+
+        return Promise.resolve().then(() => {
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
+            );
+            expect(dateTime.textContent).toBe('21 May 2021');
         });
     });
 
@@ -156,6 +172,67 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
+    // icon size
+    it('Activity Timeline item: icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Activity Timeline item: icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('large');
+        });
+    });
+
     // fields
     it('Activity timeline item: fields', () => {
         element.fields = FIELDS;
@@ -174,6 +251,7 @@ describe('Primitive Activity Timeline Item', () => {
                 expect(field.value).toBe(correspondingField.value);
                 expect(field.type).toBe(correspondingField.type);
                 if (correspondingField.typeAttributes) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(field.typeAttributes).toMatchObject(
                         correspondingField.typeAttributes
                     );

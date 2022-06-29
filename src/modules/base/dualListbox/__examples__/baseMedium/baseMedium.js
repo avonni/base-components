@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DualListboxBaseResponsive extends LightningElement {
+export default class DualListboxBaseMedium extends LightningElement {
     options = [
         {
             value: '1',
