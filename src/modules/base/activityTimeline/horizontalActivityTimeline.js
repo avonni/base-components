@@ -36,14 +36,16 @@ import { dateTimeObjectFrom } from 'c/utilsPrivate';
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const BORDER_OFFSET = 0.5;
-const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
-const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
-const DEFAULT_TIMELINE_WIDTH = 1300;
-const DEFAULT_TIMELINE_HEIGHT = 350;
+const DEFAULT_POPOVER_CLASSES =
+    'avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
+const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
+const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
+const DEFAULT_TIMELINE_HEIGHT = 350;
+const DEFAULT_TIMELINE_WIDTH = 1300;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
@@ -280,15 +282,6 @@ export class HorizontalActivityTimeline {
                 ? this._sortedItems.length - 1
                 : 0;
         return new Date(this._sortedItems[minIndex].datetimeValue);
-    }
-
-    /**
-     * Get the common classes of popover.
-     *
-     * @type {string}
-     */
-    get popoverDefaultClasses() {
-        return 'avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
     }
 
     /**
@@ -1466,7 +1459,7 @@ export class HorizontalActivityTimeline {
             popoverClasses += ' slds-p-right_medium slds-p-left_x-small ';
         }
 
-        return popoverClasses + this.popoverDefaultClasses;
+        return popoverClasses + DEFAULT_POPOVER_CLASSES;
     }
 
     /**
