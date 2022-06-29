@@ -760,7 +760,7 @@ export default class Kanban extends LightningElement {
     computeKanbanBoundaries(currentTarget) {
         this._kanbanPos.top = currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
-            this._kanbanPos.top + currentTarget.offsetHeight;
+            this._kanbanPos.top + currentTarget.scrollHeight;
         this._kanbanPos.left = currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + currentTarget.scrollWidth;

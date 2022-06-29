@@ -285,7 +285,7 @@
 }
 
 .avonni-kanban__dragged {
-    z-index: 99;
+    z-index: 9999;
     position: absolute;
     cursor: grabbing;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
@@ -360,8 +360,8 @@
     height: 100%;
 }
 
-.avonni-kanban__expandable_section {
-    /* height: 100%; */
+.avonni-kanban__expandable_section .avonni-kanban__tiles_container {
+    height: 100%;
     /* position: sticky;
     top: 10px; */
 }
