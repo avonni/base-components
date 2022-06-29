@@ -33,6 +33,13 @@
 :host() {
     /* --avonni-list-item-menu-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1); */
 }
+
+.placeholder-rectangle {
+    /* min-width: 200px;
+    height: 60px; */
+    background: gray;
+}
+
 .avonni-list__item-menu {
     /* display: flex;
     flex-direction: column; */

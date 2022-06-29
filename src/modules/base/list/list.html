@@ -51,6 +51,13 @@
     >
 
     <div class={computedListClass} role={menuRole}>
+        <div
+            if:true={showPlaceholder}
+            class="placeholder-rectangle slds-col slds-size_4-of-12"
+            data-element-id="placeholder-rectangle"
+        >
+            placeholder
+        </div>
         <template for:each={computedItems} for:item="item" for:index="index">
             <c-card
                 role="listitem"

@@ -114,6 +114,7 @@ export default class List extends LightningElement {
     hasImages;
     _variant;
     showMediaDragIcon = true;
+    showPlaceholder = false;
 
     renderedCallback() {}
 
@@ -415,7 +416,7 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-card-style': this._divider === 'around',
-                'slcs-col slds-size_4-of-12': this.variant === 'grid'
+                'slds-col slds-size_4-of-12': this.variant === 'grid'
             })
             .toString();
     }
@@ -616,6 +617,41 @@ export default class List extends LightningElement {
         this.updateAssistiveText();
     }
 
+    reserveSpaceForDraggedItem(draggedItem, hoveredItem) {
+        // if hovered item [before || after] dragged item, reserve sapce [before || after] hovered item.
+        const hoveredItemIndex = Number(hoveredItem.dataset.index);
+        const draggedItemIndex = Number(draggedItem.dataset.index);
+        const parentNode = hoveredItem.parentNode;
+
+        this.showPlaceholder = true;
+        let placeHolder = this.template.querySelector(
+            '[data-element-id="placeholder-rectangle"]'
+        );
+        placeHolder.classList.add('placeholder-rectangle');
+
+        if (hoveredItemIndex > draggedItemIndex) {
+            // reserve space after hovered item
+
+            parentNode.insertBefore(placeHolder, hoveredItem.nextSibling);
+        } else {
+            // reserve space before hovered item
+            console.log('reserve space before hovered item');
+            parentNode.insertBefore(placeHolder, hoveredItem);
+        }
+    }
+
+    insertItem(draggedItem, targetIndex) {
+        console.log('insertItem', draggedItem, targetIndex);
+        const draggedItemIndex = Number(draggedItem.dataset.index);
+
+        // find items between
+        if (draggedItemIndex < targetIndex) {
+            this.computedItems.splice(targetIndex, 0, draggedItem);
+        } else {
+            this.computedItems.splice(targetIndex + 1, 0, draggedItem); // ???
+        }
+    }
+
     /**
      * Erase the list styles and dataset - clear tracked variables.
      */
@@ -807,8 +843,10 @@ export default class List extends LightningElement {
         const hoveredItem = this.getHoveredItem(this._draggedElement);
 
         if (hoveredItem) {
-            this.switchWithItem(hoveredItem);
+            // this.switchWithItem(hoveredItem);
+            this.reserveSpaceForDraggedItem(this._draggedElement, hoveredItem);
         }
+
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
         );
@@ -818,6 +856,7 @@ export default class List extends LightningElement {
     }
 
     dragEnd(event) {
+        this.showPlaceholder = false;
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.items[index];
