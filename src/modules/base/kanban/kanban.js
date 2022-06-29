@@ -364,6 +364,10 @@ export default class Kanban extends LightningElement {
                     )[group.index].style.background = group.backgroundColor
                         ? group.backgroundColor
                         : defaultBackgroundColor;
+
+                    this.template.querySelector(
+                        '[data-element-id="avonni-kanban__container"]'
+                    ).style.overflow = 'hidden';
                 }
             });
         });
@@ -398,7 +402,6 @@ export default class Kanban extends LightningElement {
     }
 
     get computedSubGroups() {
-        // TODO: MAYBE probleme de copy
         const computedGroups = JSON.parse(JSON.stringify(this._computedGroups));
         this._computedGroups.forEach((group, i) => {
             computedGroups[i].subGroups =
@@ -624,11 +627,11 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        // const groups = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-kanban__group"]'
-        // );
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
 
-        // const group = groups[this._releasedGroupIndex];
+        const group = groups[this._releasedGroupIndex];
 
         // auto scroll when the user is dragging the tile out of the list
         let scrollYStep = 0;
@@ -645,25 +648,26 @@ export default class Kanban extends LightningElement {
             scrollXStep = -10;
         }
 
-        //  const toScroll = scrollXStep ? fieldContainer : group;
+        const toScroll = scrollXStep ? fieldContainer : group;
         scrollYStep = this._draggedGroup ? 0 : scrollYStep;
         //TODO: add autoscroll back
-        // if (
-        //     !this._scrollingInterval &&
-        //     (this._draggedGroup || this._draggedTile)
-        // ) {
-        //     this._scrollingInterval = window.setInterval(() => {
-        //         // Prevents from scrolling outside of the kanban
-        //         if (
-        //             fieldContainer.scrollLeft + fieldContainer.offsetWidth <
-        //                 this._initialScrollWidth ||
-        //             scrollYStep !== 0
-        //         ) {
-        //             toScroll.scrollBy(scrollXStep, scrollYStep);
-        //         }
-        //         if (this._draggedTile) this.animateTiles(groups);
-        //     }, 20);
-        // }
+        if (
+            !this._scrollingInterval &&
+            (this._draggedGroup || this._draggedTile)
+        ) {
+            this._scrollingInterval = window.setInterval(() => {
+                // Prevents from scrolling outside of the kanban
+                console.log('YO ?');
+                if (
+                    fieldContainer.scrollLeft + fieldContainer.offsetWidth <
+                        this._initialScrollWidth ||
+                    scrollYStep !== 0
+                ) {
+                    toScroll.scrollBy(scrollXStep, scrollYStep);
+                }
+                if (this._draggedTile) this.animateTiles(groups);
+            }, 20);
+        }
 
         // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
         if (!scrollXStep && !scrollYStep) {
@@ -1332,11 +1336,15 @@ export default class Kanban extends LightningElement {
         );
         // Prevents from dragging outside of the kanban
         // TODO: Fix this
-        // if (this._initialScrollWidth === fieldContainer.offsetWidth) {
-        //     fieldContainer.style.overflowX = 'hidden';
-        // } else {
-        //     fieldContainer.style.overflowX = 'scroll';
-        // }
+        if (this._initialScrollWidth === fieldContainer.offsetWidth) {
+            fieldContainer.style.overflowX = 'hidden';
+        } else {
+            fieldContainer.style.overflowX = 'scroll';
+        }
+
+        if (this._hasSubGroups) {
+            fieldContainer.style.overflow = 'hidden';
+        }
 
         // Calculates the position of the mouse depending on the kanban boundaries
         let currentY = event.clientY;
