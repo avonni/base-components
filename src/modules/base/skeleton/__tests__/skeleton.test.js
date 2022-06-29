@@ -88,7 +88,7 @@ describe('Skeleton', () => {
         });
     });
 
-    // skeleton-variant rectangular
+    // skeleton-variant circular
     it('Skeleton: circular variant', () => {
         element.variant = 'circular';
         const skeleton = element.shadowRoot.querySelector(
@@ -187,13 +187,13 @@ describe('Skeleton', () => {
                 'avonni-skeleton__avatar-animation-pulse'
             );
             expect(skeletonAvatarFigure.className).toContain(
-                'avonni-avatar_x-large'
+                'avonni-skeleton__avatar_x-large'
             );
             expect(skeletonAvatarPrimaryText.className).toContain(
                 'slds-m-bottom_xx-small'
             );
             expect(skeletonAvatarPrimaryText.className).toContain(
-                'avonni-avatar__primary-text'
+                'avonni-skeleton__avatar-primary-text'
             );
             expect(skeletonAvatarPrimaryText.className).toContain(
                 'avonni-skeleton__variant-text'
@@ -205,7 +205,7 @@ describe('Skeleton', () => {
                 'slds-m-bottom_xx-small'
             );
             expect(skeletonAvatarSecondaryText.className).toContain(
-                'avonni-avatar__secondary-text'
+                'avonni-skeleton__avatar-secondary-text'
             );
             expect(skeletonAvatarSecondaryText.className).toContain(
                 'avonni-skeleton__variant-text'
@@ -214,7 +214,7 @@ describe('Skeleton', () => {
                 'avonni-skeleton__animation-pulse'
             );
             expect(skeletonAvatarTertiaryText.className).toContain(
-                'avonni-avatar__tertiary-text'
+                'avonni-skeleton__avatar-tertiary-text'
             );
             expect(skeletonAvatarTertiaryText.className).toContain(
                 'avonni-skeleton__variant-text'
@@ -259,7 +259,7 @@ describe('Skeleton', () => {
     });
 
     // badge variant
-    it('Skeleton Badge: size medium', () => {
+    it('Skeleton Badge: base variant with left icon', () => {
         element.variant = 'badge';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -280,7 +280,7 @@ describe('Skeleton', () => {
             );
 
             expect(skeletonBadgeLeftIcon).toBeTruthy();
-            expect(skeletonBadge.className).toContain('avonni-badge');
+            expect(skeletonBadge.className).toContain('avonni-skeleton__badge');
             expect(skeletonBadge.className).not.toContain(
                 'avonni-chip_outline'
             );
@@ -299,7 +299,7 @@ describe('Skeleton', () => {
         });
     });
 
-    it('Skeleton Badge: iconPosition right', () => {
+    it('Skeleton Badge: base variant with right icon', () => {
         element.variant = 'badge';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -320,7 +320,7 @@ describe('Skeleton', () => {
             );
 
             expect(skeletonBadgeRightIcon).toBeTruthy();
-            expect(skeletonBadge.className).toContain('avonni-badge');
+            expect(skeletonBadge.className).toContain('avonni-skeleton__badge');
             expect(skeletonBadge.className).not.toContain(
                 'avonni-chip_outline'
             );
@@ -340,7 +340,7 @@ describe('Skeleton', () => {
     });
 
     // Button variant
-    it('Skeleton Button: left position icon', () => {
+    it('Skeleton Button: base variant with left icon', () => {
         element.variant = 'button';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -384,7 +384,7 @@ describe('Skeleton', () => {
     });
 
     // Button variant
-    it('Skeleton Button: right position icon', () => {
+    it('Skeleton Button: base variant with right icon', () => {
         element.variant = 'button';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -403,7 +403,7 @@ describe('Skeleton', () => {
     });
 
     // Button Icon variant
-    it('Skeleton Button Icon: size medium', () => {
+    it('Skeleton Button Icon: base variant', () => {
         element.variant = 'button-icon';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -424,7 +424,7 @@ describe('Skeleton', () => {
     });
 
     // Chip variant
-    it('Skeleton Chip: size medium', () => {
+    it('Skeleton Chip: base variant with icon', () => {
         element.variant = 'chip';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -442,7 +442,7 @@ describe('Skeleton', () => {
                 '[data-element-id="avonni-skeleton-chip-label"]'
             );
 
-            expect(skeletonChip.className).toContain('avonni-chip');
+            expect(skeletonChip.className).toContain('avonni-skeleton__chip');
             expect(skeletonChip.className).toContain(
                 'slds-p-vertical_xx-small'
             );
@@ -456,7 +456,7 @@ describe('Skeleton', () => {
     });
 
     // Combobox variant
-    it('Skeleton Combobox: size medium', () => {
+    it('Skeleton Combobox: standard variant with required input', () => {
         element.variant = 'combobox';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -508,7 +508,7 @@ describe('Skeleton', () => {
     });
 
     // Datatable variant
-    it('Skeleton Datatable: size medium', () => {
+    it('Skeleton Datatable: with 3 colummns and 7 rows', () => {
         element.variant = 'datatable';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -536,7 +536,7 @@ describe('Skeleton', () => {
     });
 
     // Input variant
-    it('Skeleton Input: size medium', () => {
+    it('Skeleton Input: standard variant with required input', () => {
         element.variant = 'input';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -575,7 +575,7 @@ describe('Skeleton', () => {
     });
 
     // Progress Indicator variant
-    it('Skeleton Progress Indicator: size medium', () => {
+    it('Skeleton Progress Indicator: base variant with 3 steps', () => {
         element.variant = 'progress-indicator';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -601,7 +601,7 @@ describe('Skeleton', () => {
     });
 
     // Tabset variant
-    it('Skeleton Tabset: base variant', () => {
+    it('Skeleton Tabset: base variant with 3 tabs', () => {
         element.variant = 'tabset';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -626,7 +626,7 @@ describe('Skeleton', () => {
         });
     });
 
-    it('Skeleton Tabset: scoped variant', () => {
+    it('Skeleton Tabset: scoped variant with 3 tabs', () => {
         element.variant = 'tabset';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -649,7 +649,7 @@ describe('Skeleton', () => {
         });
     });
 
-    it('Skeleton Tabset: vertical variant', () => {
+    it('Skeleton Tabset: vertical variant with 3 tabs', () => {
         element.variant = 'tabset';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -672,7 +672,7 @@ describe('Skeleton', () => {
     });
 
     // Tree variant
-    it('Skeleton Tree: size medium', () => {
+    it('Skeleton Tree: path variant with 3 steps', () => {
         element.variant = 'tree';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -699,7 +699,7 @@ describe('Skeleton', () => {
         });
     });
 
-    it('Skeleton Datatable: initialize rows', () => {
+    it('Skeleton Datatable: with 3 columns and 7 rows', () => {
         element.variant = 'datatable';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -719,7 +719,7 @@ describe('Skeleton', () => {
             console.log(
                 `header childnodes length: ${skeletonDatatableHeader.childNodes.length}`
             );
-            expect(true).toBeTruthy();
+            expect(skeletonDatatableHeader.className).toBe('');
         });
     });
 
@@ -736,7 +736,7 @@ describe('Skeleton', () => {
                 '[data-element-id="avonni-skeleton-badge-label"]'
             );
 
-            expect(badgeElement.className).toContain('avonni-badge');
+            expect(badgeElement.className).toContain('avonni-skeleton__badge');
             expect(badgeElement.className).toContain(
                 'avonni-skeleton__animation-pulse'
             );
@@ -750,7 +750,7 @@ describe('Skeleton', () => {
     });
 
     // Paragraph variant
-    it('Skeleton: paragraph variant', () => {
+    it('Skeleton: with 3 rows', () => {
         element.variant = 'paragraph';
         element.animation = 'pulse';
         element.variantAttributes = {
@@ -758,12 +758,15 @@ describe('Skeleton', () => {
         };
 
         return Promise.resolve().then(() => {
+            const paragraphElement = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-paragraph-list"]'
+            );
             console.log(
                 element.shadowRoot.querySelector(
                     '[data-element-id="avonni-skeleton-paragraph-list"]'
                 ).children
             );
-            expect(true).toBe(true);
+            expect(paragraphElement.className).toBe('');
         });
     });
 });
