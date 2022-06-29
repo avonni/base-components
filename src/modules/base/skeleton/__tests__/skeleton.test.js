@@ -339,69 +339,6 @@ describe('Skeleton', () => {
         });
     });
 
-    // Button variant
-    it('Skeleton Button: base variant with left icon', () => {
-        element.variant = 'button';
-        element.animation = 'pulse';
-        element.variantAttributes = {
-            variant: 'base',
-            hasIcon: true,
-            iconPosition: 'left'
-        };
-
-        return Promise.resolve().then(() => {
-            const skeletonButton = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-wrapper"]'
-            );
-            const skeletonButtonLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-label"]'
-            );
-            const skeletonButtonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-left-icon"]'
-            );
-
-            expect(skeletonButtonIcon).toBeTruthy();
-            expect(skeletonButton.className).toContain('slds-button');
-            expect(skeletonButton.className).toContain(
-                'slds-p-vertical_xx-small'
-            );
-            expect(skeletonButton.className).toContain(
-                'slds-p-horizontal_x-small'
-            );
-            expect(skeletonButton.className).toContain(
-                'avonni-skeleton__animation-pulse'
-            );
-            expect(skeletonButtonLabel.className).toContain(
-                'avonni-skeleton__button-label'
-            );
-            expect(skeletonButtonLabel.className).toContain(
-                'slds-m-vertical_xx-small'
-            );
-            expect(skeletonButtonLabel.className).toContain(
-                'slds-m-horizontal_x-small'
-            );
-        });
-    });
-
-    // Button variant
-    it('Skeleton Button: base variant with right icon', () => {
-        element.variant = 'button';
-        element.animation = 'pulse';
-        element.variantAttributes = {
-            variant: 'base',
-            hasIcon: true,
-            iconPosition: 'right'
-        };
-
-        return Promise.resolve().then(() => {
-            const skeletonButtonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-right-icon"]'
-            );
-
-            expect(skeletonButtonIcon).toBeTruthy();
-        });
-    });
-
     // Button Icon variant
     it('Skeleton Button Icon: base variant', () => {
         element.variant = 'button-icon';

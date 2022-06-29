@@ -290,30 +290,6 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Get if button has an icon on its left
-     * @type {boolean}
-     */
-    @api
-    get buttonHasLeftIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'left' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    /**
-     * Get if button has an icon on its right
-     * @type {boolean}
-     */
-    @api
-    get buttonHasRightIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'right' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    /**
      * Get if chip has an icon
      * @type {boolean}
      */
