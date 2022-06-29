@@ -465,8 +465,9 @@ export default class List extends LightningElement {
      */
     getHoveredItem(draggedItem) {
         return this._itemElements.find((item) => {
-            if (item !== this._draggedElement) {
-                const itemIndex = Number(item.dataset.index);
+            if (item !== draggedItem) {
+                // const itemIndex = Number(item.dataset.index);
+                const draggedItemIndex = Number(draggedItem.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
                 const draggedPosition = draggedItem.getBoundingClientRect();
                 // this looks at if the item crosses the center of the hovered item.
@@ -497,50 +498,75 @@ export default class List extends LightningElement {
                     y: itemPosition.right
                 };
 
-                let overlap = true;
-                // check if rectangles overlap
-
-                if (itemIndex === 0) {
-                    // check if they have area 0
-                    if (
+                if (
+                    // check if items have thickness
+                    !(
                         draggedTopLeft.x === draggedBottomRight.x ||
                         draggedTopLeft.y === draggedBottomRight.y ||
                         itemTopLeft.x === itemBottomRight.x ||
                         itemTopLeft.y === itemBottomRight.y
-                    ) {
-                        overlap = false;
-                    }
-
-                    // check if one is left of the other
-                    if (
+                    ) &&
+                    // check if they dont overlap in the x-axis
+                    !(
                         draggedTopLeft.x > itemBottomRight.x ||
                         draggedBottomRight.x < itemTopLeft.x
-                    ) {
-                        overlap = false;
-                    }
-
-                    // check if one is above the other
-                    if (
+                    ) &&
+                    // check if the dont overlap in the y-axis
+                    !(
                         draggedTopLeft.y > itemBottomRight.y ||
                         draggedBottomRight.y < itemTopLeft.y
+                    )
+                ) {
+                    // get overlap area
+                    const draggedArea =
+                        draggedPosition.width * draggedPosition.height;
+
+                    let overlapArea = 0;
+
+                    // overlap top left
+                    if (
+                        draggedTopLeft.x < itemTopLeft.x &&
+                        draggedTopLeft.y < itemTopLeft.y
                     ) {
-                        overlap = false;
+                        overlapArea =
+                            (draggedBottomRight.x - itemTopLeft.x) *
+                            (draggedBottomRight.y - itemTopLeft.y);
                     }
 
-                    if (overlap) {
-                        // get overlap area
-                        const draggedArea = draggedPosition.width * draggedPosition.height;
+                    // overlap top right
+                    if (
+                        draggedTopLeft.y < itemTopLeft.y &&
+                        draggedBottomRight.x > itemBottomRight.x
+                    ) {
+                        overlapArea =
+                            (itemBottomRight.x - draggedTopLeft.x) *
+                            (draggedBottomRight.y - itemTopLeft.y);
+                    }
 
-                        // determin position relative ot item
-                        let topLeft = false;
-                        let topRight = false;
-                        let bottomLeft = false;
-                        let bottomRight = false;
+                    // overlap bottom right
+                    if (
+                        draggedBottomRight.x > itemBottomRight.x &&
+                        draggedBottomRight.y > itemBottomRight.y
+                    ) {
+                        overlapArea =
+                            (itemBottomRight.x - draggedTopLeft.x) *
+                            (itemBottomRight.y - draggedTopLeft.y);
+                    }
 
-                        topLeft = itemBottomRight.x > draggedBottomRight.x && itemBottomRight.y > draggedBottomRight.y;
-                        
-                        
-                        console.log('overlap', draggedArea);
+                    // overlap bottom left
+                    if (
+                        draggedTopLeft.x < itemTopLeft.x &&
+                        draggedBottomRight.y > itemBottomRight.y
+                    ) {
+                        overlapArea =
+                            (draggedBottomRight.x - itemTopLeft.x) *
+                            (itemBottomRight.y - draggedTopLeft.y);
+                    }
+
+                    // detect if overlap reaches 50% of the dragged area
+                    if (overlapArea / draggedArea > 0.5) {
+                        console.log('overlap', draggedItemIndex);
+                        return item;
                     }
                 }
             }
@@ -554,6 +580,7 @@ export default class List extends LightningElement {
      * @param {Element} target
      */
     switchWithItem(target) {
+        console.log('switchWithItem', target);
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
         target.classList.add('avonni-list__item-sortable_moved');
@@ -564,17 +591,17 @@ export default class List extends LightningElement {
             target.style.transform = '';
         } else {
             // this works for virtical lists,
-            const translationXValue =
-                targetIndex > index
-                    ? -this._currentItemDraggedWidth
-                    : this._currentItemDraggedWidth;
-            const translationYValue =
-                targetIndex > index
-                    ? -this._currentItemDraggedHeight
-                    : this._currentItemDraggedHeight;
-            target.style.transform = `translate(0px, ${
-                translationYValue + 'px'
-            })`;
+            // const translationXValue =
+            //     targetIndex > index
+            //         ? -this._currentItemDraggedWidth
+            //         : this._currentItemDraggedWidth;
+            // const translationYValue =
+            //     targetIndex > index
+            //         ? -this._currentItemDraggedHeight
+            //         : this._currentItemDraggedHeight;
+            // target.style.transform = `translate(0px, ${
+            //     translationYValue + 'px'
+            // })`;
         }
 
         // Make the switch in computed items
@@ -773,8 +800,8 @@ export default class List extends LightningElement {
        )`;
 
         // Get the position of the dragged item
-        const position = this._draggedElement.getBoundingClientRect();
-        const center = position.bottom - position.height / 2;
+        // const position = this._draggedElement.getBoundingClientRect();
+        // const center = position.bottom - position.height / 2;
 
         // console.log('drag2', event.pageY, center);
         const hoveredItem = this.getHoveredItem(this._draggedElement);
