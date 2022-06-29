@@ -685,26 +685,6 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Compute input class
-     * @type {string}
-     */
-    get inputClass() {
-        return classSet('slds-input')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .add('avonni-skeleton__input');
-    }
-
-    /**
-     * Compute input label class
-     * @type {string}
-     */
-    get inputLabelClass() {
-        return classSet('slds-list_horizontal').add(
-            'avonni-skeleton__input-label'
-        );
-    }
-
-    /**
      * Compute input label tag class
      * @type {string}
      */

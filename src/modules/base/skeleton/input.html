@@ -51,13 +51,21 @@
             </div>
         </label>
         <div class="slds-form-element__control">
-            <input
-                class={inputClass}
-                disabled=""
-                required
-                type="text"
-                data-element-id="avonni-skeleton-input"
-            />
+            <div class="slds-combobox_container">
+                <div
+                    class="
+                        avonni-skeleton__combobox-search
+                        slds-input_faux
+                        slds-has-focus
+                    "
+                    data-element-id="avonni-skeleton-combobox-search"
+                >
+                    <div
+                        class={comboboxLabelClass}
+                        data-element-id="avonni-skeleton-combobox-label"
+                    ></div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

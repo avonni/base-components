@@ -225,7 +225,7 @@
 
 .avonni-skeleton__combobox-label {
     height: 0.7em;
-    width: 30%;
+    width: 140px;
 }
 
 .avonni-skeleton__combobox-search {
@@ -251,6 +251,8 @@
 
 .avonni-skeleton__input {
     cursor: default;
+    height: 0.7em;
+    width: 140px;
 }
 
 .avonni-skeleton__input-label {
