@@ -127,7 +127,6 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
-        console.log(`rendered callback variant: ${this.variant}`);
         if (!this.isAvatarVariant) this.handleVariant();
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
@@ -135,7 +134,6 @@ export default class Skeleton extends LightningElement {
     }
 
     render() {
-        console.log(`render variant: ${this.variant}`);
         switch (this.variant) {
             case 'avatar':
                 this.htmlVariant = avatar;

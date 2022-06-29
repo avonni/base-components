@@ -713,12 +713,6 @@ describe('Skeleton', () => {
             const skeletonDatatableHeader = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-datatable-header"]'
             );
-            console.log(
-                `header children length: ${skeletonDatatableHeader.children.length}`
-            );
-            console.log(
-                `header childnodes length: ${skeletonDatatableHeader.childNodes.length}`
-            );
             expect(skeletonDatatableHeader.className).toBe('');
         });
     });
@@ -760,11 +754,6 @@ describe('Skeleton', () => {
         return Promise.resolve().then(() => {
             const paragraphElement = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-paragraph-list"]'
-            );
-            console.log(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-skeleton-paragraph-list"]'
-                ).children
             );
             expect(paragraphElement.className).toBe('');
         });
