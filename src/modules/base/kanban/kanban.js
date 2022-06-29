@@ -849,8 +849,11 @@ export default class Kanban extends LightningElement {
             this.template.querySelectorAll(groupSelector)[
                 this._releasedGroupIndex
             ];
+
         const tilesContainer = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
+            this._hasSubGroups
+                ? `[data-subgroup-name="${this._currentSubGroup}"]`
+                : '[data-element-id="avonni-kanban__group"]'
         )[this._releasedGroupIndex];
 
         // Distance from the top of the field
