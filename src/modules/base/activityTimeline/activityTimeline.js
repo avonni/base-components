@@ -843,6 +843,8 @@ export default class ActivityTimeline extends LightningElement {
 
         // Check if click is on close button of popover
         if (
+            event.target !== null &&
+            event.target.getAttribute('class') &&
             event.target.getAttribute('class').includes('slds-popover__close')
         ) {
             return;

@@ -72,9 +72,6 @@ describe('Activity Timeline', () => {
         expect(element.buttonShowMoreLabel).toBe('Show more');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.position).toBe('vertical');
-        expect(element.horizontalTimeline).toBeUndefined();
-        expect(element.showItemPopOver).toBeFalsy();
-        expect(element.selectedItem).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -747,7 +744,11 @@ describe('Activity Timeline', () => {
 
             const handler = jest.fn();
             itemSVGGroup.addEventListener('itemclick', handler);
-            itemSVGGroup.dispatchEvent(new MouseEvent('click'));
+            const clickEvent = new MouseEvent('click');
+            jest.spyOn(clickEvent, 'target', 'get').mockImplementation(
+                () => itemSVGGroup
+            );
+            itemSVGGroup.dispatchEvent(clickEvent);
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.name).toBe('item4');
@@ -755,6 +756,43 @@ describe('Activity Timeline', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('Activity Timeline: horizontal - click on close button of popover should not trigger itemclick', () => {
+        SVGElement.prototype.getComputedTextLength = () => {
+            return 100;
+        };
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+        let timelineItemsSVG;
+        let item;
+
+        return Promise.resolve()
+            .then(() => {
+                timelineItemsSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                );
+                item = timelineItemsSVG.querySelector('#timeline-item-item8');
+                item.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                timelineItemsSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                );
+                item = timelineItemsSVG.querySelector('#timeline-item-item8');
+
+                const closeButton = element.shadowRoot.querySelector(
+                    '.slds-popover__close'
+                );
+                const handler = jest.fn();
+                item.addEventListener('itemclick', handler);
+                const clickEvent = new MouseEvent('click');
+                jest.spyOn(clickEvent, 'target', 'get').mockImplementation(
+                    () => closeButton
+                );
+                closeButton.dispatchEvent(clickEvent);
+                expect(handler).not.toHaveBeenCalled();
+            });
     });
 
     // displayedItems
