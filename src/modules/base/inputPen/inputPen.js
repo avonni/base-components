@@ -134,6 +134,9 @@ export default class InputPen extends LightningElement {
     _resizeObserver;
     _resizeTimeout;
 
+    sizeList;
+    _size = DEFAULT_SIZE;
+
     showExtraButtons = false;
 
     constructor() {
@@ -378,13 +381,14 @@ export default class InputPen extends LightningElement {
      */
     @api
     get size() {
-        return this.canvasInfo.size;
+        return this._size;
     }
 
     set size(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
             this.canvasInfo.size = intValue;
+            this._size = intValue;
             this.initCursorStyles();
         } else {
             this.canvasInfo.size = DEFAULT_SIZE;
@@ -1031,6 +1035,7 @@ export default class InputPen extends LightningElement {
      */
     handleSizeChange(event) {
         this.canvasInfo.size = Number(event.detail.value);
+        this._size = Number(event.detail.value);
         if (this.cursor) {
             this.cursor.style.setProperty('--size', this.canvasInfo.size);
         }
