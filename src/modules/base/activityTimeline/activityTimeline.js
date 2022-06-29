@@ -836,10 +836,18 @@ export default class ActivityTimeline extends LightningElement {
          * The event fired when a user clicks on an item.
          *
          * @event
-         * @name itemClick
+         * @name itemclick
          * @param {string} name Name of the item clicked.
          * @public
          */
+
+        // Check if click is on close button of popover
+        if (
+            event.target.getAttribute('class').includes('slds-popover__close')
+        ) {
+            return;
+        }
+
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
