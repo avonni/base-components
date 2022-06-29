@@ -105,7 +105,7 @@ export class HorizontalActivityTimeline {
     // D3 selector DOM elements
     _timeIntervalSelector;
     _timelineAxisDiv;
-    _timelineDiv;
+    _timelineItemsDiv;
     _timelineSVG;
     _scrollAxisDiv;
     _scrollAxisSVG;
@@ -132,6 +132,7 @@ export class HorizontalActivityTimeline {
         this.createTimelineScrollAxis();
         this.createTimelineAxis();
         this.createTimeline();
+        this.initializeIntervalHorizontalScroll();
     }
 
     /*
@@ -165,6 +166,15 @@ export class HorizontalActivityTimeline {
     get divTimelineAxisSelector() {
         return this._activityTimeline.template.querySelector(
             '.avonni-activity-timeline__horizontal-timeline-axis'
+        );
+    }
+
+    /**
+     * Select div container of timeline
+     */
+    get divTimelineContainer() {
+        return this._activityTimeline.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline'
         );
     }
 
@@ -638,7 +648,7 @@ export class HorizontalActivityTimeline {
         );
 
         // Create SVG for timeline
-        this._timelineSVG = this._timelineDiv
+        this._timelineSVG = this._timelineItemsDiv
             .append('svg')
             .attr(
                 'class',
@@ -917,6 +927,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Initialize horizontal scroll (wheel event) for interval on timeline's scroll axis.
+     *
+     */
+    initializeIntervalHorizontalScroll() {
+        const timelineDivContainer = d3.select(this.divTimelineContainer);
+        timelineDivContainer.on('wheel', this.handleWheelOnInterval.bind(this));
+    }
+
+    /**
      *  Determine if timeline height is different than last render
      *
      * @return {Boolean}
@@ -929,14 +948,58 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Check if event is on timeline and if user is scrolling vertically.
+     *
+     * @return {Boolean}
+     */
+    isScrollingVerticallyOnTimeline(event) {
+        return (
+            Math.abs(event.deltaY) > 0 &&
+            event.toElement.getAttribute('class') ===
+                'avonni-horizontal-activity-timeline__timeline-items-svg' &&
+            d3.select(this.divTimelineScroll).style('overflow-y') === 'scroll'
+        );
+    }
+
+    /**
+     * Move interval on timeline's scroll axis to new valid position.
+     */
+    moveIntervalToPosition(position) {
+        this._intervalMinDate = this.scrollTimeScale
+            .invert(position)
+            .setHours(0, 0, 0, 0);
+
+        this.setIntervalMaxDate();
+        this._activityTimeline.renderedCallback();
+    }
+
+    /**
+     * Normalize deltaX value to reduce speed of horizontal scroll movement.
+     */
+    normalizeHorizontalScrollDeltaX(event) {
+        let factor = event.deltaX;
+        if (Math.abs(event.deltaX) > 1000) {
+            factor *= 0.3;
+        } else if (Math.abs(event.deltaX) > 100) {
+            factor *= 0.5;
+        } else if (Math.abs(event.deltaX) > 50) {
+            factor *= 0.7;
+        } else if (Math.abs(event.deltaX) > 25) {
+            factor *= 0.8;
+        }
+
+        return factor;
+    }
+
+    /**
      * Select and remove all elements inside the horizontal timeline to build a new one
      *
      */
     resetHorizontalTimeline() {
         this._maxYPositionOfItem = 0;
 
-        this._timelineDiv = d3.select(this.divTimelineItemsSelector);
-        this._timelineDiv.selectAll('*').remove();
+        this._timelineItemsDiv = d3.select(this.divTimelineItemsSelector);
+        this._timelineItemsDiv.selectAll('*').remove();
 
         this._timelineAxisDiv = d3.select(this.divTimelineAxisSelector);
         this._timelineAxisDiv.selectAll('*').remove();
@@ -1419,12 +1482,7 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-        this._intervalMinDate = this.scrollTimeScale
-            .invert(xPosition)
-            .setHours(0, 0, 0, 0);
-
-        this.setIntervalMaxDate();
-        this._activityTimeline.renderedCallback();
+        this.moveIntervalToPosition(xPosition);
     }
 
     /**
@@ -1480,5 +1538,25 @@ export class HorizontalActivityTimeline {
             .attr('width', newRectangleWidth);
 
         this.handleUpperBoundIntervalChange(event);
+    }
+
+    /**
+     * Handle horizontal scroll (wheel event) of interval on timeline's scroll axis.
+     */
+    handleWheelOnInterval(event) {
+        if (this.isScrollingVerticallyOnTimeline(event)) {
+            return;
+        }
+
+        this.cancelEditIntervalSizeMode();
+        this.handleMouseOutOfPopover();
+
+        // Horizontal scroll of interval
+        const requestedPosition =
+            Number(this._timeIntervalSelector.attr('x')) +
+            this.normalizeHorizontalScrollDeltaX(event);
+        this.moveIntervalToPosition(
+            this.validateXMousePosition(requestedPosition)
+        );
     }
 }
