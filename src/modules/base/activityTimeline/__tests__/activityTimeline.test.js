@@ -1581,4 +1581,137 @@ describe('Activity Timeline', () => {
                 }
             });
     });
+
+    // wheel event : positive deltaX (interval going right)
+    // Note: intervalMinDate is always set to 0:0:0:0, so there is an offset in x position (initialIntervalPosition - deltaX - offset to set to start of the day)
+    it('Activity Timeline: horizontal - event wheel with positive deltaX', () => {
+        const handleWheelOnIntervalSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleWheelOnInterval'
+        );
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+        const initialIntervalPosition = '602.8452332242226';
+        const expectedPosition = '615.4491612111293';
+        const deltaX = 20;
+        let intervalRectangle;
+
+        return Promise.resolve()
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    initialIntervalPosition
+                );
+
+                let timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+
+                const wheelEvent = new CustomEvent('wheel');
+                wheelEvent.deltaX = deltaX;
+                wheelEvent.deltaY = 0;
+                timelineContainer.dispatchEvent(wheelEvent);
+            })
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    expectedPosition
+                );
+            });
+    });
+
+    // wheel event : negative deltaX (interval going left)
+    it('Activity Timeline: horizontal - event wheel with negative deltaX', () => {
+        const handleWheelOnIntervalSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleWheelOnInterval'
+        );
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+        const initialIntervalPosition = '602.8452332242226';
+        const expectedPosition = '527.2216653027824';
+        const deltaX = -100;
+        let intervalRectangle;
+
+        return Promise.resolve()
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    initialIntervalPosition
+                );
+
+                let timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+
+                const wheelEvent = new CustomEvent('wheel');
+                wheelEvent.deltaX = deltaX;
+                wheelEvent.deltaY = 0;
+                timelineContainer.dispatchEvent(wheelEvent);
+            })
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    expectedPosition
+                );
+            });
+    });
+
+    // wheel event : deltaY value with timeline to scroll
+    it('Activity Timeline: horizontal - event wheel with deltaY value', () => {
+        const handleWheelOnIntervalSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleWheelOnInterval'
+        );
+        const isScrollingVerticallyOnTimelineSpy = jest
+            .spyOn(
+                HorizontalActivityTimeline.prototype,
+                'isScrollingVerticallyOnTimeline'
+            )
+            .mockReturnValue(true);
+
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+        const initialIntervalPosition = '602.8452332242226';
+        const deltaX = -100;
+        let intervalRectangle;
+
+        return Promise.resolve()
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    initialIntervalPosition
+                );
+
+                let timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+                const wheelEvent = new CustomEvent('wheel');
+                wheelEvent.deltaX = deltaX;
+                wheelEvent.deltaY = 10;
+                timelineContainer.dispatchEvent(wheelEvent);
+            })
+            .then(() => {
+                intervalRectangle = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                );
+                expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
+                expect(isScrollingVerticallyOnTimelineSpy).toBeCalled();
+                expect(intervalRectangle.getAttribute('x')).toBe(
+                    initialIntervalPosition
+                );
+            });
+    });
 });
