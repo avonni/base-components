@@ -235,6 +235,7 @@
 
 .avonni-skeleton__badge-label {
     margin: 0.25rem 0.5rem;
+    --avonni-skeleton-radius-border: 00.18rem;
     border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
     height: 0.5rem;

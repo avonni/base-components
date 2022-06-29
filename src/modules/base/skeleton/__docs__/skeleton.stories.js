@@ -141,9 +141,7 @@ Badge.args = {
     variant: 'badge',
     animation: 'pulse',
     variantAttributes: {
-        hasIcon: true,
-        variant: 'base',
-        iconPosition: 'left'
+        variant: 'base'
     }
 };
 
@@ -158,23 +156,12 @@ Chip.args = {
     }
 };
 
-// export const Breadcrumbs = Template.bind({});
-// Breadcrumbs.args = {
-//     variant: 'breadcrumbs',
-//     animation: 'pulse',
-//     variantAttributes: {
-//         numBreadcrumbs: 3
-//     }
-// };
-
 export const Button = Template.bind({});
 Button.args = {
     variant: 'button',
     animation: 'pulse',
     variantAttributes: {
-        variant: 'base',
-        hasIcon: true,
-        iconPosition: 'left'
+        variant: 'base'
     }
 };
 
