@@ -5,17 +5,22 @@
     --avonni-skeleton-styling-border: solid;
     --avonni-skeleton-color-background: #ecebea;
     --avonni-skeleton-color-background-animation: #dedede;
+    --avonni-chip-sizing-border: 1px;
+    --avonni-chip-label-font-size: 0.75rem;
+    --avonni-chip-line-height: normal;
+    --avonni-avatar-primary-text-font-size: 0.875rem;
+    --avonni-avatar-secondary-text-font-size: 0.8125rem;
 }
 
 .avonni-skeleton__badge {
     height: 2rem;
     max-width: 100%;
     padding: 0.25rem;
-    border-width: var(--avonni-chip-sizing-border, 1px);
+    border-width: var(--avonni-chip-sizing-border);
     border-radius: 15rem;
-    font-size: var(--avonni-chip-label-font-size, 0.75rem);
+    font-size: var(--avonni-chip-label-font-size);
     font-weight: 700;
-    line-height: var(--avonni-chip-line-height, normal);
+    line-height: var(--avonni-chip-line-height);
     white-space: nowrap;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
@@ -28,20 +33,20 @@
 
 .avonni-skeleton__chip {
     max-width: 100%;
-    border-width: var(--avonni-chip-sizing-border, 1px);
+    border-width: var(--avonni-chip-sizing-border);
     border-radius: var(--avonni-chip-radius-border, 15rem);
-    font-size: var(--avonni-chip-label-font-size, 0.75rem);
+    font-size: var(--avonni-chip-label-font-size);
     display: inline-flex;
     align-items: center;
 }
 
 .avonni-skeleton__avatar-primary-text {
-    min-height: var(--avonni-avatar-primary-text-font-size, 0.875rem);
+    min-height: var(--avonni-avatar-primary-text-font-size);
 }
 
 .avonni-skeleton__avatar-secondary-text,
 .avonni-skeleton__avatar-tertiary-text {
-    min-height: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
+    min-height: var(--avonni-avatar-secondary-text-font-size);
 }
 
 .avonni-skeleton__animation-pulse {
