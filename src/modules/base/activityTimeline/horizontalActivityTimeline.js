@@ -39,7 +39,7 @@ const BORDER_OFFSET = 0.5;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_POPOVER_CLASSES =
-    'avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
+    'slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
@@ -254,7 +254,7 @@ export class HorizontalActivityTimeline {
      */
     get itemPopoverSelector() {
         return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__item-popover'
+            '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
         );
     }
 
@@ -389,7 +389,7 @@ export class HorizontalActivityTimeline {
         const intervalGroup = this._scrollAxisSVG
             .append('g')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__interval-group'
             )
             .on('mouseover', this.handleMouseOverOnInterval.bind(this))
@@ -399,7 +399,7 @@ export class HorizontalActivityTimeline {
         this._timeIntervalSelector = intervalGroup
             .append('rect')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__time-interval-rectangle'
             )
             .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate)))
@@ -644,7 +644,7 @@ export class HorizontalActivityTimeline {
         this._timelineSVG = this._timelineItemsDiv
             .append('svg')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__timeline-items-svg'
             )
             .attr('width', this._timelineWidth + 2 * BORDER_OFFSET)
@@ -681,7 +681,7 @@ export class HorizontalActivityTimeline {
         const axisSVG = this._timelineAxisDiv
             .append('svg')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
             .attr('width', this._timelineWidth + BORDER_OFFSET)
@@ -798,7 +798,7 @@ export class HorizontalActivityTimeline {
         this._scrollAxisSVG = this._scrollAxisDiv
             .append('svg')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__scroll-axis-svg'
             )
             .attr(
@@ -822,7 +822,7 @@ export class HorizontalActivityTimeline {
         this._scrollAxisSVG
             .append('rect')
             .attr(
-                'class',
+                'data-element-id',
                 'avonni-horizontal-activity-timeline__scroll-axis-rectangle'
             )
             .attr('x', this._offsetAxis)

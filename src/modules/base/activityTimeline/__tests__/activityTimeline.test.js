@@ -736,7 +736,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const timelineItemsSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             const itemSVGGroup = timelineItemsSVG.querySelector(
                 '#timeline-item-item4'
@@ -770,14 +770,14 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 timelineItemsSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                 );
                 item = timelineItemsSVG.querySelector('#timeline-item-item8');
                 item.dispatchEvent(new CustomEvent('mouseenter'));
             })
             .then(() => {
                 timelineItemsSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                 );
                 item = timelineItemsSVG.querySelector('#timeline-item-item8');
 
@@ -802,7 +802,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const timelineItemsSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
 
             for (const item of displayedItemsHorizontalTest) {
@@ -853,7 +853,7 @@ describe('Activity Timeline', () => {
 
             // Mouse over : Activate edit mode
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__interval-group'
+                '[data-element-id="avonni-horizontal-activity-timeline__interval-group"]'
             );
             intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
 
@@ -890,7 +890,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             // Activate edit mode
             intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
@@ -900,7 +900,7 @@ describe('Activity Timeline', () => {
 
             // Drag of left interval line
             const scrollAxisSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
             );
             const rightIntervalLine = scrollAxisSVG.querySelector(
                 '#avonni-horizontal-activity-timeline__right-interval-line'
@@ -981,7 +981,7 @@ describe('Activity Timeline', () => {
             ];
 
             const timelineSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
                 itemsAfterDrag.length
@@ -1015,7 +1015,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             // Activate edit mode
             expect(intervalRectangle.getAttribute('x')).toBe(
@@ -1024,7 +1024,7 @@ describe('Activity Timeline', () => {
 
             // drag of left interval line
             const scrollAxisSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
             );
             const leftIntervalLine = scrollAxisSVG.querySelector(
                 '#avonni-horizontal-activity-timeline__left-interval-line'
@@ -1082,7 +1082,7 @@ describe('Activity Timeline', () => {
             );
 
             const timelineSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
                 itemsAfterDrag.length
@@ -1116,7 +1116,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
                 initialXMinPosition
@@ -1152,7 +1152,7 @@ describe('Activity Timeline', () => {
             };
 
             const timelineSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
                 1
@@ -1178,7 +1178,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
                 initialXMinPosition
@@ -1204,7 +1204,7 @@ describe('Activity Timeline', () => {
             // Check the items displayed, the new interval should be : [27/12/2021, 01/01/2022]
             // No item should be displayed
             const timelineSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
                 0
@@ -1249,14 +1249,14 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
                 '602.8452332242226'
             );
 
             const scrollAxis = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-rectangle"]'
             );
             const clickEvent = new MouseEvent('click');
             clickEvent.offsetX = clickPosition;
@@ -1281,14 +1281,14 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
                 '602.8452332242226'
             );
 
             const scrollAxis = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-rectangle'
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-rectangle"]'
             );
             const clickEvent = new MouseEvent('click');
             clickEvent.offsetX = newIntervalPosition;
@@ -1324,7 +1324,7 @@ describe('Activity Timeline', () => {
                 // Get specific item to activate mouse over
                 .then(() => {
                     const timelineSVG = element.shadowRoot.querySelector(
-                        '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                        '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                     );
                     item = timelineSVG.querySelector('#timeline-item-item8');
                     item.dispatchEvent(new CustomEvent('mouseenter'));
@@ -1332,12 +1332,12 @@ describe('Activity Timeline', () => {
                 // Check if popover is present
                 .then(() => {
                     popoverItem = element.shadowRoot.querySelector(
-                        '.avonni-activity-timeline__item-popover'
+                        '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
                     );
 
                     expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'slds-nubbin_left slds-p-left_medium slds-p-right_x-small avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
+                        'slds-nubbin_left slds-p-left_medium slds-p-right_x-small slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1348,7 +1348,7 @@ describe('Activity Timeline', () => {
                 // Check if popover is absent
                 .then(() => {
                     popoverItem = element.shadowRoot.querySelector(
-                        '.avonni-activity-timeline__item-popover'
+                        '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
                     );
                     expect(handleMouseOutOnItemSpy).toHaveBeenCalled();
                     expect(popoverItem).toBeNull();
@@ -1385,7 +1385,7 @@ describe('Activity Timeline', () => {
             .then(() => {
                 // Get specific item to activate mouse over
                 const timelineSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                 );
 
                 item = timelineSVG.querySelector('#timeline-item-item13');
@@ -1395,12 +1395,12 @@ describe('Activity Timeline', () => {
                 // Check if popover is present and has right position
                 item.dispatchEvent(new CustomEvent('mouseenter'));
                 const popoverItem = element.shadowRoot.querySelector(
-                    '.avonni-activity-timeline__item-popover'
+                    '[data-element-id="avonni-horizontal-activity-timeline__item-popover"]'
                 );
 
                 expect(popoverItem.getAttribute('name')).toBe('item13');
                 expect(popoverItem.className).toBe(
-                    'slds-nubbin_right-top slds-p-right_medium slds-p-left_x-small avonni-activity-timeline__item-popover slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
+                    'slds-nubbin_right-top slds-p-right_medium slds-p-left_x-small slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
                 );
                 expect(convertPxSizeToNumberSpy).toBeCalled();
             });
@@ -1521,7 +1521,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const timelineItemsSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             const itemsDisplayed =
                 timelineItemsSVG.querySelectorAll('foreignObject');
@@ -1555,7 +1555,7 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 const timelineItemsSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                 );
                 expect(timelineItemsSVG.getAttribute('width')).toBe('2001');
             });
@@ -1588,7 +1588,7 @@ describe('Activity Timeline', () => {
             .then(() => {
                 // Check if the width of the timeline was changed
                 const timelineItemsSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
                 );
                 expect(timelineItemsSVG.getAttribute('width')).toBe(
                     (timelineWidth + 1).toString()
@@ -1597,7 +1597,7 @@ describe('Activity Timeline', () => {
 
                 // Check if the number of ticks was change and if they are at least 50 units apart
                 const axisSVG = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__timeline-axis-svg'
+                    '[data-element-id="avonni-horizontal-activity-timeline__timeline-axis-svg"]'
                 );
                 const tickPositions = [];
                 for (const tick of axisSVG.querySelectorAll('.tick')) {
@@ -1637,7 +1637,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(intervalRectangle.getAttribute('x')).toBe(
                     initialIntervalPosition
@@ -1654,7 +1654,7 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
                 expect(intervalRectangle.getAttribute('x')).toBe(
@@ -1679,7 +1679,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(intervalRectangle.getAttribute('x')).toBe(
                     initialIntervalPosition
@@ -1696,7 +1696,7 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
                 expect(intervalRectangle.getAttribute('x')).toBe(
@@ -1727,7 +1727,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(intervalRectangle.getAttribute('x')).toBe(
                     initialIntervalPosition
@@ -1743,7 +1743,7 @@ describe('Activity Timeline', () => {
             })
             .then(() => {
                 intervalRectangle = element.shadowRoot.querySelector(
-                    '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                    '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
                 expect(isScrollingVerticallyOnTimelineSpy).toBeCalled();

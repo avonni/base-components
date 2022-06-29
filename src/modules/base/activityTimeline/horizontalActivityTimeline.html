@@ -75,22 +75,23 @@
             data-element-id="avonni-activity-timeline__horizontal-timeline"
         >
             <div
-                class="slds-is-relative"
+                class="
+                    slds-is-relative
+                    avonni-activity-timeline__horizontal-timeline-scrolling-container
+                "
                 data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"
             >
                 <div
+                    class="avonni-activity-timeline__horizontal-timeline-items"
                     data-element-id="avonni-activity-timeline__horizontal-timeline-items"
                     lwc:dom="manual"
                 ></div>
                 <!-- Popover item -->
                 <div
                     if:true={showItemPopOver}
-                    class="
-                        avonni-activity-timeline__item-popover
-                        slds-popover slds-popover_panel
-                        slds-is-absolute
-                    "
+                    class="slds-popover slds-popover_panel slds-is-absolute"
                     name={selectedItem.name}
+                    data-element-id="avonni-horizontal-activity-timeline__item-popover"
                     data-name={selectedItem.name}
                     onclick={handleItemClick}
                 >
