@@ -968,6 +968,8 @@ export default class Kanban extends LightningElement {
         expandableSection.classList.toggle(
             'avonni-kanban__expandable_section_collapsed'
         );
+
+        this.capFieldHeight();
     }
 
     /**
