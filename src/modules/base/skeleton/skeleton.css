@@ -7,7 +7,7 @@
     --avonni-skeleton-color-background-animation: #dedede;
 }
 
-.avonni-badge {
+.avonni-skeleton__badge {
     height: 2rem;
     max-width: 100%;
     padding: 0.25rem;
@@ -26,7 +26,7 @@
     overflow: hidden;
 }
 
-.avonni-chip {
+.avonni-skeleton__chip {
     max-width: 100%;
     border-width: var(--avonni-chip-sizing-border, 1px);
     border-radius: var(--avonni-chip-radius-border, 15rem);
@@ -35,16 +35,13 @@
     align-items: center;
 }
 
-.avonni-avatar__primary-text {
+.avonni-skeleton__avatar-primary-text {
     min-height: var(--avonni-avatar-primary-text-font-size, 0.875rem);
 }
 
-.avonni-avatar__secondary-text {
+.avonni-skeleton__avatar-secondary-text,
+.avonni-skeleton__avatar-tertiary-text {
     min-height: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
-}
-
-.avonni-avatar__tertiary-text {
-    min-height: var(--avonni-avatar-tertiary-text-font-size, 0.8125rem);
 }
 
 .avonni-skeleton__animation-pulse {
@@ -52,10 +49,7 @@
     animation: pulse-animation 1s infinite;
 }
 
-.avonni-skeleton__avatar-animation-pulse {
-    animation: pulse-animation 1s infinite;
-}
-
+.avonni-skeleton__avatar-animation-pulse,
 .avonni-skeleton__buttonIcon-animation-pulse {
     animation: pulse-animation 1s infinite;
 }
@@ -76,11 +70,7 @@
     border-collapse: collapse;
 }
 
-.avonni-skeleton__datatable-borders::after {
-    color: #ffffff;
-    background-color: #ffffff;
-}
-
+.avonni-skeleton__datatable-borders::after,
 .avonni-skeleton__datatable-borders:hover {
     color: #ffffff;
     background-color: #ffffff;
@@ -220,17 +210,11 @@
     }
 }
 
-.avonni-skeleton__button-label {
-    border-radius: var(--avonni-skeleton-radius-border);
-    background-color: var(--avonni-skeleton-chip-label-background, #00000000);
-    height: 0.5em;
-    min-width: 40px;
-}
-
+.avonni-skeleton__button-label,
 .avonni-skeleton__chip-label {
     border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
-    min-height: 0.5em;
+    height: 0.5em;
     min-width: 40px;
 }
 
@@ -283,7 +267,6 @@
 
 .avonni-skeleton__paragraph-grid {
     height: 1.2em;
-    /* margin: 0.1em; */
     display: inline-flex;
     color: transparent;
     border-width: 0.3em;
@@ -345,20 +328,13 @@
     animation: pulse-animation 1s infinite;
 }
 
-.avonni-skeleton__progress-indicator-path-pulse {
-    height: 2rem;
-    cursor: default !important;
-}
-
+.avonni-skeleton__progress-indicator-path-pulse,
 .avonni-skeleton__progress-indicator-path-wave {
     height: 2rem;
     cursor: default !important;
 }
 
-avonni-skeleton_tabset-pulse:hover::after {
-    background-color: transparent;
-}
-
+avonni-skeleton_tabset-pulse:hover::after,
 avonni-skeleton_tabset-wave:hover::after {
     background-color: transparent;
 }
@@ -378,13 +354,7 @@ avonni-skeleton_tabset-wave:hover::after {
     padding-left: 1em;
 }
 
-.avonni-skeleton__tabset-scoped-item {
-    cursor: default;
-    border-right: 1px solid #e5e5e5;
-    height: 0.7em;
-    min-width: 4em;
-}
-
+.avonni-skeleton__tabset-scoped-item,
 .avonni-skeleton__tabset-vertical-item {
     cursor: default;
     border-right: 1px solid #e5e5e5;
@@ -393,7 +363,7 @@ avonni-skeleton_tabset-wave:hover::after {
 }
 
 .avonni-skeleton__tabset-vertical-container:hover {
-    background: #f3f3f3;
+    background: transparent;
 }
 
 .avonni-skeleton__tabset-content {
@@ -428,28 +398,22 @@ avonni-skeleton_tabset-wave:hover::after {
     background-color: var(--avonni-skeleton-color-background);
 }
 
-.avonni-avatar_xx-small {
+.avonni-skeleton__avatar_xx-small {
     font-size: 0.6rem;
     height: 0.875rem;
     width: 0.875rem;
 }
 
-.avonni-avatar_x-large {
+.avonni-skeleton__avatar_x-large {
     font-size: 1.25rem;
     width: 56px;
     height: 56px;
 }
 
-.avonni-avatar_xx-large {
+.avonni-skeleton__avatar_xx-large {
     font-size: 1.5rem;
     width: 72px;
     height: 72px;
-}
-
-.avonni-combobox__label {
-    color: var(--avonni-combobox-label-text-color, #3e3e3c);
-    font-size: var(--avonni-combobox-label-font-size, 0.75rem);
-    font-weight: var(--avonni-combobox-label-font-weight, 400);
 }
 
 .avonni-skeleton__variant-circular {
@@ -464,17 +428,4 @@ avonni-skeleton_tabset-wave:hover::after {
 
 .avonni-skeleton__variant-text {
     border-radius: var(--avonni-skeleton-radius-border);
-}
-
-.breadcrumbsClass {
-    /* width: 100%;
-    border-radius: var(--avonni-skeleton-radius-border); */
-    display: flex;
-    align-items: center;
-}
-
-.breadcrumbClass {
-    border-radius: var(--avonni-skeleton-radius-border);
-    height: 1.2em;
-    width: 6em;
 }
