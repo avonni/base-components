@@ -76,6 +76,7 @@ export default class Kanban extends LightningElement {
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
     _initialScrollWidth = 0;
+    _initialScrollHeight = 0;
     _initialTileIndex = 0;
     _isDragged = false;
     _kanbanPos = {
@@ -367,7 +368,7 @@ export default class Kanban extends LightningElement {
 
                     this.template.querySelector(
                         '[data-element-id="avonni-kanban__container"]'
-                    ).style.overflow = 'hidden';
+                    ).style.overflowY = 'hidden';
                 }
             });
         });
@@ -386,6 +387,11 @@ export default class Kanban extends LightningElement {
             this._initialScrollWidth = this.template.querySelector(
                 '[data-element-id="avonni-kanban__field_container"]'
             ).scrollWidth;
+            if (this._hasSubGroups) {
+                this._initialScrollHeight = this.template.querySelector(
+                    '[data-element-id="avonni-kanban__expandable_container"]'
+                ).scrollHeight;
+            }
         });
 
         this._computedGroups = computedGroups;
@@ -633,11 +639,24 @@ export default class Kanban extends LightningElement {
 
         const group = groups[this._releasedGroupIndex];
 
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
         // auto scroll when the user is dragging the tile out of the list
         let scrollYStep = 0;
-        if (currentY + 50 > this._kanbanPos.bottom) {
+        if (
+            currentY + 50 >
+            this._kanbanPos.bottom +
+                (expandableContainer ? expandableContainer.scrollTop : 0)
+        ) {
             scrollYStep = 10;
-        } else if (currentY - 50 < this._kanbanPos.top) {
+        } else if (
+            currentY -
+                50 -
+                (expandableContainer ? expandableContainer.scrollTop : 0) <
+            this._kanbanPos.top
+        ) {
             scrollYStep = -10;
         }
 
@@ -647,17 +666,18 @@ export default class Kanban extends LightningElement {
         } else if (currentX - 50 < left) {
             scrollXStep = -10;
         }
-
-        const toScroll = scrollXStep ? fieldContainer : group;
+        let toScroll = scrollXStep ? fieldContainer : group;
+        toScroll =
+            toScroll === group && this._hasSubGroups
+                ? expandableContainer
+                : toScroll;
         scrollYStep = this._draggedGroup ? 0 : scrollYStep;
-        //TODO: add autoscroll back
         if (
             !this._scrollingInterval &&
             (this._draggedGroup || this._draggedTile)
         ) {
             this._scrollingInterval = window.setInterval(() => {
                 // Prevents from scrolling outside of the kanban
-                console.log('YO ?');
                 if (
                     fieldContainer.scrollLeft + fieldContainer.offsetWidth <
                         this._initialScrollWidth ||
@@ -697,7 +717,7 @@ export default class Kanban extends LightningElement {
         );
 
         const expandable = this.template.querySelector(
-            '[data-element-id="avonni-kanban_expandable_container"]'
+            '[data-element-id="avonni-kanban__expandable_container"]'
         );
 
         if (this._hasSubGroups) {
@@ -722,7 +742,9 @@ export default class Kanban extends LightningElement {
                 this.template.querySelector(
                     '[data-element-id="avonni-kanban__group_header"]'
                 ).offsetWidth * this._groupValues.length
-            }px + ${this._groupValues.length - 1}rem - 0.5rem)`;
+            }px + ${this._groupValues.length - 1}rem - ${
+                (this._groupValues.length - 1) / 4
+            }rem)`;
         } else {
             fields.forEach((field) => {
                 if (field.offsetHeight >= container.offsetHeight) {
@@ -732,26 +754,6 @@ export default class Kanban extends LightningElement {
                 }
             });
         }
-
-        // if (this._hasSubGroups) {
-        //     const groupHeights = [];
-        //     this.computedGroups[0].subGroups.forEach((subGroup) => {
-        //         groupHeights.push(
-        //             this.template.querySelector(
-        //                 `[data-subgroup-container="${subGroup.label}"]`
-        //             ).offsetHeight
-        //         );
-        //     });
-
-        //     this.template
-        //         .querySelectorAll(
-        //             '[data-element-id="avonni-kanban__field_container"]'
-        //         )
-        //         .forEach((field, i) => {
-        //             field.style.height = `${groupHeights[i]}px`;
-        //         });
-
-        // }
 
         this._droppedTileHeight = 0;
     }
@@ -764,7 +766,10 @@ export default class Kanban extends LightningElement {
     computeKanbanBoundaries(currentTarget) {
         this._kanbanPos.top = currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
+            this._kanbanPos.top + currentTarget.offsetHeight;
+        this._kanbanPos.scrollBottom =
             this._kanbanPos.top + currentTarget.scrollHeight;
+
         this._kanbanPos.left = currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + currentTarget.scrollWidth;
@@ -958,7 +963,7 @@ export default class Kanban extends LightningElement {
 
     handleExpandableSectionClick(event) {
         const expandableSection = event.target.closest(
-            '[data-element-id="avonni-kanban_expandable_section"]'
+            '[data-element-id="avonni-kanban__expandable_section"]'
         );
 
         if (!expandableSection) {
@@ -1334,8 +1339,16 @@ export default class Kanban extends LightningElement {
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
+
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
+        const bottom = this._hasSubGroups
+            ? this._initialScrollHeight
+            : this._kanbanPos.bottom;
+
         // Prevents from dragging outside of the kanban
-        // TODO: Fix this
         if (this._initialScrollWidth === fieldContainer.offsetWidth) {
             fieldContainer.style.overflowX = 'hidden';
         } else {
@@ -1343,17 +1356,18 @@ export default class Kanban extends LightningElement {
         }
 
         if (this._hasSubGroups) {
-            fieldContainer.style.overflow = 'hidden';
+            fieldContainer.style.overflowX = 'visible';
+            fieldContainer.style.overflowY = 'hidden';
         }
-
         // Calculates the position of the mouse depending on the kanban boundaries
-        let currentY = event.clientY;
+        let currentY =
+            event.clientY +
+            (this._hasSubGroups ? expandableContainer.scrollTop : 0);
         let currentX = event.clientX + fieldContainer.scrollLeft;
-
         if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;
-        } else if (currentY > this._kanbanPos.bottom) {
-            currentY = this._kanbanPos.bottom;
+        } else if (currentY > bottom) {
+            currentY = bottom;
         }
         if (currentX < this._kanbanPos.left) {
             currentX = this._kanbanPos.left;
