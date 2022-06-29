@@ -113,6 +113,15 @@ describe('Input pen', () => {
         canvas.width = 100;
         canvas.height = 100;
         jest.useFakeTimers();
+
+        jest.spyOn(HTMLCanvasElement.prototype, 'width', 'get').mockReturnValue(
+            100
+        );
+        jest.spyOn(
+            HTMLCanvasElement.prototype,
+            'height',
+            'get'
+        ).mockReturnValue(100);
     });
 
     it('Input pen Default attributes', () => {
@@ -615,6 +624,7 @@ describe('Input pen', () => {
         element.required = true;
         mockValueAssessment();
         element.value = DATA_URL;
+
         return Promise.resolve()
             .then(() => {
                 jest.advanceTimersToNextTimer();

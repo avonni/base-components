@@ -42,6 +42,10 @@
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
 }
 
+.avonni-input-pen__text-area_cursor {
+    cursor: auto;
+}
+
 .avonni-input-pen__text-area_visible-cursor {
     cursor: pointer;
 }

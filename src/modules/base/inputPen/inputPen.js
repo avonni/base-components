@@ -154,7 +154,7 @@ export default class InputPen extends LightningElement {
 
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.onMouseUp);
-        window.addEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('mousemove', this.onMouseMove);
         window.removeEventListener('keydown', this.onKeyDown);
     }
 
@@ -183,16 +183,17 @@ export default class InputPen extends LightningElement {
             this.backgroundCanvasElement.height =
                 this.canvasInfo.canvasElement.parentElement.clientHeight;
 
-            if (this.foregroundValue) {
-                this.initSrc();
-            }
-
             this.setToolManager();
             this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
-
-            // i cant find any other way to affect the combobox width since there are not styling hooks for it.
+            if (this.foregroundValue) {
+                this.initSrc();
+            }
+            if (this.showSignaturePad) {
+                this.setInk();
+            }
+            // I cant find any other way to affect the combobox width since there are not styling hooks for it.
             if (!this.hideControls && this.showSize) {
                 let combobox = this.template.querySelector(
                     '[data-element-id="size-picker"]'
@@ -203,7 +204,6 @@ export default class InputPen extends LightningElement {
                 combobox.appendChild(style);
             }
 
-            this.checkValidity();
             this._rendered = true;
             this._updatedDOM = false;
         }
@@ -362,7 +362,9 @@ export default class InputPen extends LightningElement {
     set showSignaturePad(value) {
         this._showSignaturePad = normalizeBoolean(value);
         if (this._showSignaturePad) {
-            this.canvasInfo.mode = 'ink';
+            if (this._rendered) {
+                this.setInk();
+            }
         }
         this._updatedDOM = true;
     }
@@ -459,8 +461,6 @@ export default class InputPen extends LightningElement {
             'slds-rich-text-editor slds-grid slds-grid_vertical slds-nowrap avonni-input-pen__rich-text_border-radius'
         ).add({
             'avonni-input-pen__rich-text_flex-direction':
-                this.variant === 'bottom-toolbar',
-            'avonni-input-pen__rich-text_border-bottom':
                 this.variant === 'bottom-toolbar'
         });
     }
@@ -474,7 +474,8 @@ export default class InputPen extends LightningElement {
         ).add({
             'avonni-input-pen__rich-text_border-radius-top':
                 this.variant === 'bottom-toolbar',
-
+            'avonni-input-pen__text-area_cursor':
+                this.disabled || this.readOnly,
             'avonni-input-pen__rich-text_border-radius-bottom':
                 this.variant === 'top-toolbar'
         });
@@ -499,10 +500,13 @@ export default class InputPen extends LightningElement {
         let mergedCanvas = document.createElement('canvas');
         mergedCanvas.width = this.canvasInfo.canvasElement.width;
         mergedCanvas.height = this.canvasInfo.canvasElement.height;
-        const mergedCtx = mergedCanvas.getContext('2d');
-        mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
-        mergedCtx.drawImage(this.canvasInfo.canvasElement, 0, 0);
-        return mergedCanvas.toDataURL();
+        if (mergedCanvas.width > 0 || mergedCanvas.width > 0) {
+            const mergedCtx = mergedCanvas.getContext('2d');
+            mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
+            mergedCtx.drawImage(this.canvasInfo.canvasElement, 0, 0);
+            return mergedCanvas.toDataURL();
+        }
+        return undefined;
     }
 
     /**
@@ -840,14 +844,16 @@ export default class InputPen extends LightningElement {
         const drawArea = this.template.querySelector(
             '[data-element-id="draw-area"]'
         );
-        if (this.canvasInfo.mode === 'ink') {
-            drawArea.classList.add(
-                'avonni-input-pen__text-area_visible-cursor'
-            );
-        } else {
-            drawArea.classList.remove(
-                'avonni-input-pen__text-area_visible-cursor'
-            );
+        if (drawArea) {
+            if (this.canvasInfo.mode === 'ink') {
+                drawArea.classList.add(
+                    'avonni-input-pen__text-area_visible-cursor'
+                );
+            } else {
+                drawArea.classList.remove(
+                    'avonni-input-pen__text-area_visible-cursor'
+                );
+            }
         }
         this.setToolManager();
     }
