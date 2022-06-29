@@ -119,20 +119,26 @@
             </div>
         </template>
         <p
-            class="slds-text-title_bold avonni-avatar__primary-text"
+            class="
+                slds-text-title_bold
+                avonni-avatar__primary-text avonni-avatar__truncate
+            "
+            title={primaryText}
             data-element-id="avonni-avatar-primary-text"
         >
             {primaryText}
         </p>
         <p
-            class="avonni-avatar__secondary-text"
+            class="avonni-avatar__secondary-text avonni-avatar__truncate"
+            title={secondaryText}
             data-element-id="avonni-avatar-secondary-text"
         >
             {secondaryText}
         </p>
         <p
             if:true={showTertiaryText}
-            class="avonni-avatar__tertiary-text"
+            class="avonni-avatar__tertiary-text avonni-avatar__truncate"
+            title={tertiaryText}
             data-element-id="avonni-avatar-tertiary-text"
         >
             {tertiaryText}

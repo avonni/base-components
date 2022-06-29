@@ -106,7 +106,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api
     get selectedItemComponent() {
         const items = this.template.querySelectorAll(
-            'c-primitive-relationship-graph-item'
+            '[data-element-id="avonni-primitive-relationship-graph-item"]'
         );
 
         let selectedItem;

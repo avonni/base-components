@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api, track } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -32,7 +64,7 @@ const TABS = {
     default: 'Standard'
 };
 
-const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
+const NB_VISIBLE_TABS = 2;
 
 /**
  * @class
@@ -86,7 +118,7 @@ export default class IconPicker extends LightningElement {
     @api placeholder;
 
     _disabled = false;
-    _hiddenCategories = DEFAULT_HIDDEN_CATEGORIES.slice();
+    _hiddenCategories = [];
     _hideFooter = false;
     _hideInputText = false;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -145,7 +177,6 @@ export default class IconPicker extends LightningElement {
      * The icon categories that will be hidden by default.
      *
      * @type {string[]}
-     * @default ['Utility', 'Doctype', 'Action']
      * @public
      */
     @api
@@ -156,29 +187,16 @@ export default class IconPicker extends LightningElement {
     set hiddenCategories(value) {
         this._hiddenCategories = [];
         const categories =
-            value === undefined
-                ? DEFAULT_HIDDEN_CATEGORIES
-                : JSON.parse(JSON.stringify(value));
+            value === undefined ? [] : JSON.parse(JSON.stringify(value));
         for (const category of TABS.valid) {
             if (categories.includes(category)) {
                 this._hiddenCategories.push(category);
             }
         }
-
         if (this._hiddenCategories.length === 5) {
             let index = this._hiddenCategories.indexOf(TABS.default);
             if (index !== -1) {
                 this._hiddenCategories.splice(index, 1);
-            }
-        } else if (this._hiddenCategories.length < 3) {
-            let i;
-            for (i = TABS.valid.length - 1; i >= 0; i--) {
-                if (!this._hiddenCategories.includes(TABS.valid[i])) {
-                    this._hiddenCategories.push(TABS.valid[i]);
-                    if (this._hiddenCategories.length === 3) {
-                        return;
-                    }
-                }
             }
         }
     }
@@ -350,7 +368,7 @@ export default class IconPicker extends LightningElement {
 
     /**
      * The tabs of the icon picker.
-     * The tabs are ordered as they should be displayed: the array starts with the visible tabs, followed by the hidden tabs.
+     * Hidden tabs are not displayed.
      *
      * @type {string[]}
      */
@@ -361,8 +379,7 @@ export default class IconPicker extends LightningElement {
                 orderedTabs.push(tab);
             }
         });
-
-        return [...orderedTabs, ...this.hiddenCategories];
+        return [...orderedTabs];
     }
 
     get computedValue() {
@@ -390,7 +407,10 @@ export default class IconPicker extends LightningElement {
      * @type {number}
      */
     get nHiddenCategories() {
-        return this.hiddenCategories.length;
+        return Math.max(
+            0,
+            TABS.valid.length - NB_VISIBLE_TABS - this.hiddenCategories.length
+        );
     }
 
     /**
@@ -523,7 +543,8 @@ export default class IconPicker extends LightningElement {
             classes.add({
                 'slds-p-horizontal_xx-small': true,
                 'slds-button_neutral': this.menuVariant === 'border',
-                'slds-button_inverse': this.menuVariant === 'border-inverse'
+                'slds-button_inverse': this.menuVariant === 'border-inverse',
+                'avonni-icon-picker__toggle-button_size-limit': true
             });
         } else {
             classes.add({
@@ -561,13 +582,7 @@ export default class IconPicker extends LightningElement {
      */
     get computedIconClass() {
         const classes = classSet();
-
-        if (this.value && this.value.split(':')[0] === 'action') {
-            classes.add({
-                'medium-icon-padding': this.menuIconSize === 'xx-small',
-                'large-icon-padding': this.menuIconSize !== 'xx-small'
-            });
-        } else {
+        if (!this.value.split(':')[0] === 'action') {
             classes.add({
                 'avonni-builder-icon-picker-x-small-icon-padding':
                     this.menuIconSize === 'x-small',
@@ -580,11 +595,45 @@ export default class IconPicker extends LightningElement {
         return classes.toString();
     }
 
+    /**
+     * Computed CSS classes for the button icon container.
+     * Adds a scaling class if icon is of type "action".
+     *
+     * @type {string}
+     */
+    get computedIconContainerClass() {
+        const classes = classSet('slds-icon_container');
+        if (this.value && this.value.split(':')[0] === 'action') {
+            classes.add({
+                'avonni-icon-picker__action-icon_small-scaling':
+                    this.menuIconSize === 'xx-small',
+                'avonni-icon-picker__action-icon_medium-scaling':
+                    this.menuIconSize === 'x-small' ||
+                    this.menuIconSize === 'small' ||
+                    this.menuIconSize === 'medium',
+                'avonni-icon-picker__action-icon_large-scaling':
+                    this.menuIconSize === 'large'
+            });
+        }
+        return classes.toString();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.focus();
+    }
 
     /**
      * Remove focus from the input element.

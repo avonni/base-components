@@ -35,13 +35,13 @@ import {
     normalizeBoolean,
     normalizeArray,
     normalizeString,
-    deepCopy
+    deepCopy,
+    dateTimeObjectFrom
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const BUTTON_VARIANTS = {
     valid: [
         'neutral',
@@ -57,6 +57,11 @@ const BUTTON_VARIANTS = {
 };
 
 const DEFAULT_LOADING_TEXT = 'Loading';
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
 
 /**
  * @class
@@ -154,9 +159,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
+    _dateFormat;
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
 
@@ -241,6 +248,23 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * The date format to use for the item. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format.
+     * If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+
+    set dateFormat(value) {
+        if (value && typeof value === 'string') this._dateFormat = value;
+    }
+
+    /**
      * Array of output data objects (see Output Data for valid keys). It is displayed in the details section.
      *
      * @public
@@ -285,6 +309,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
+    }
+
+    /**
+     * The size of the item's icon. Valid values are x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
     }
 
     /**
@@ -344,7 +387,17 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
-                'slds-is-open': !this.closed
+                'slds-is-open': !this.closed,
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__icon_large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
@@ -358,7 +411,15 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get timelineItemBullet() {
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__active-bullet': this.isActive
+                'avonni-timeline-item__active-bullet': this.isActive,
+                'avonni-primitive-activity-timeline-item__bullet-xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__bullet-x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__bullet-medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__bullet-large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
@@ -379,6 +440,59 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     get computedDatetimeValue() {
         return new Date(this.datetimeValue).getTime();
+    }
+
+    /**
+     * Formatted date to display
+     *
+     * @type {string}
+     */
+    get formattedDate() {
+        return this.computedDatetimeValue && this.dateFormat
+            ? dateTimeObjectFrom(this.computedDatetimeValue).toFormat(
+                  this.dateFormat
+              )
+            : '';
+    }
+  
+    /**
+     * Check if the type of the icon is action
+     */
+    get isActionIcon() {
+        return (
+            typeof this.iconName === 'string' &&
+            this.iconName.split(':')[0] === 'action'
+        );
+    }
+
+    /**
+     * Classes for timeline icons
+     *
+     * @type {string}
+     */
+    get timelineIconClass() {
+        return classSet('slds-timeline__icon')
+            .add({
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    !this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    !this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    !this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    !this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_xx-small':
+                    this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__action-icon_x-small':
+                    this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__action-icon_small':
+                    this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__action-icon_medium':
+                    this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_large':
+                    this.isActionIcon && this.iconSize === 'large'
+            })
+            .toString();
     }
 
     /*

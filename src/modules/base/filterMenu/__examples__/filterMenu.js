@@ -40,55 +40,57 @@ customElements.define(
 export const FilterMenu = ({
     accessKey,
     alternativeText,
+    applyButtonLabel,
+    buttonVariant,
     disabled,
+    dropdownAlignment,
+    dropdownLength,
+    dropdownNubbin,
+    dropdownWidth,
+    hideApplyResetButtons,
+    hideSelectedItems,
     iconName,
     iconSize,
     isLoading,
+    isMultiSelect,
+    items,
     label,
     loadingStateAlternativeText,
-    items,
-    isMultiSelect,
+    name,
+    searchInputPlaceholder,
+    showSearchBox,
+    resetButtonLabel,
     title,
     tooltip,
     value,
-    variant,
-    buttonVariant,
-    searchInputPlaceholder,
-    showSearchBox,
-    applyButtonLabel,
-    resetButtonLabel,
-    hideApplyResetButtons,
-    dropdwonAlignment,
-    dropdownWidth,
-    dropdownLength,
-    dropdownNubbin,
-    hideSelectedItems
+    variant
 }) => {
     const element = document.createElement('ac-base-filter-menu');
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
+    element.applyButtonLabel = applyButtonLabel;
+    element.buttonVariant = buttonVariant;
     element.disabled = disabled;
+    element.dropdownAlignment = dropdownAlignment;
+    element.dropdownLength = dropdownLength;
+    element.dropdownNubbin = dropdownNubbin;
+    element.dropdownWidth = dropdownWidth;
+    element.hideApplyResetButtons = hideApplyResetButtons;
+    element.hideSelectedItems = hideSelectedItems;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isLoading = isLoading;
+    element.isMultiSelect = isMultiSelect;
+    element.items = items;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.items = items;
-    element.isMultiSelect = isMultiSelect;
+    element.name = name;
+    element.searchInputPlaceholder = searchInputPlaceholder;
+    element.showSearchBox = showSearchBox;
+    element.resetButtonLabel = resetButtonLabel;
     element.title = title;
     element.tooltip = tooltip;
     element.value = value;
     element.variant = variant;
-    element.buttonVariant = buttonVariant;
-    element.searchInputPlaceholder = searchInputPlaceholder;
-    element.showSearchBox = showSearchBox;
-    element.applyButtonLabel = applyButtonLabel;
-    element.resetButtonLabel = resetButtonLabel;
-    element.hideApplyResetButtons = hideApplyResetButtons;
-    element.dropdwonAlignment = dropdwonAlignment;
-    element.dropdownWidth = dropdownWidth;
-    element.dropdownLength = dropdownLength;
-    element.dropdownNubbin = dropdownNubbin;
-    element.hideSelectedItems = hideSelectedItems;
     return element;
 };

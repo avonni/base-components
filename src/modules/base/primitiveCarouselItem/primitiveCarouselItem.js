@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import tag from './tag.html';
+import noTag from './noTag.html';
 
 const ACTIONS_POSITIONS = {
     valid: [
@@ -69,6 +71,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+
+    render() {
+        return normalizeBoolean(this.href) ? tag : noTag;
+    }
 
     /*
      * ------------------------------------------------------------
@@ -205,6 +211,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
             .toString();
     }
 
+    get computedLightningButtonMenuActionClass() {
+        return classSet('').add({
+            'slds-hide_small': this.isMenuVariant === false
+        });
+    }
+
     /**
      * Computed carousel content class - set to display content bottom if position is bottom.
      *
@@ -321,6 +333,20 @@ export default class PrimitiveCarouselItem extends LightningElement {
     handleActionClick(event) {
         event.preventDefault();
         const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    actionDispatcher(actionName) {
         const {
             title,
             description,
@@ -356,5 +382,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Prevent the default event browser behavior
+     *
+     * @param {Event}
+     */
+    preventDefault(event) {
+        event.preventDefault();
     }
 }

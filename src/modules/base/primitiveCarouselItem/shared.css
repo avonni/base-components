@@ -12,21 +12,12 @@
 }
 
 .avonni-carousel__image {
-    display: flex;
-}
-
-.avonni-carousel__button-icon-top {
-    padding: 1px;
-    margin: 0px;
-    min-width: 0;
-    min-height: 0;
-}
-
-.avonni-carousel__button-icon-bottom {
-    padding: 1px;
-    margin: 0px;
-    min-width: 0;
-    min-height: 0;
+    height: var(--avonni-carousel-item-image-sizing-height);
+    background: var(--avonni-carousel-item-image-color-background, #ffffff);
+    object-fit: var(--avonni-carousel-item-image-positioning-object-fit, cover);
+    object-position: var(
+        --avonni-carousel-item-image-positioning-object-position
+    );
 }
 
 .avonni-carousel__actions {
