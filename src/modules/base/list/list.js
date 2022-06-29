@@ -105,6 +105,7 @@ export default class List extends LightningElement {
     _menuBottom;
     _itemElements;
     _savedComputedItems;
+    _hoveredItem;
     _currentItemDraggedHeight;
     _currentItemDraggedWidth;
     _hasActions = false;
@@ -115,8 +116,12 @@ export default class List extends LightningElement {
     _variant;
     showMediaDragIcon = true;
     showPlaceholder = false;
+    hoveredPositionTopLeft;
+    draggedItemDimensions;
 
-    renderedCallback() {}
+    renderedCallback() {
+        console.log('renderedCallback', this._draggedElement);
+    }
 
     /*
      * ------------------------------------------------------------
@@ -467,21 +472,11 @@ export default class List extends LightningElement {
     getHoveredItem(draggedItem) {
         return this._itemElements.find((item) => {
             if (item !== draggedItem) {
-                // const itemIndex = Number(item.dataset.index);
+                const itemIndex = Number(item.dataset.index);
                 const draggedItemIndex = Number(draggedItem.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
                 const draggedPosition = draggedItem.getBoundingClientRect();
-                // this looks at if the item crosses the center of the hovered item.
-                // we should see if the mouse is over the item.
-                // const itemCenter =
-                //     itemPosition.bottom - itemPosition.height / 2;
 
-                // if (
-                //     (this._draggedIndex > itemIndex && center < itemCenter) ||
-                //     (this._draggedIndex < itemIndex && center > itemCenter)
-                // ) {
-                //     return item;
-                // }
                 const draggedTopLeft = {
                     x: draggedPosition.top,
                     y: draggedPosition.left
@@ -519,9 +514,10 @@ export default class List extends LightningElement {
                     )
                 ) {
                     // get overlap area
-                    const draggedArea =
+                    const draggedItemArea =
                         draggedPosition.width * draggedPosition.height;
-
+                    const hoveredItemArea =
+                        itemPosition.width * itemPosition.height;
                     let overlapArea = 0;
 
                     // overlap top left
@@ -565,10 +561,29 @@ export default class List extends LightningElement {
                     }
 
                     // detect if overlap reaches 50% of the dragged area
-                    if (overlapArea / draggedArea > 0.5) {
-                        console.log('overlap', draggedItemIndex);
-                        return item;
+                    if (
+                        overlapArea / draggedItemArea > 0.5 ||
+                        overlapArea / hoveredItemArea > 0.5
+                    ) {
+                        this.hoveredPositionTopLeft = itemTopLeft;
+                        this.draggedItemDimensions = {
+                            width: draggedPosition.width,
+                            height: draggedPosition.height
+                        };
+
+                        if (this._hoveredItem !== item) {
+                            console.log(
+                                'move',
+                                draggedItemIndex,
+                                'to',
+                                itemIndex
+                            );
+                            this._hoveredItem = item;
+                            return item;
+                        }
                     }
+
+                    // UN-hover if no overlap...
                 }
             }
             return undefined;
@@ -617,38 +632,105 @@ export default class List extends LightningElement {
         this.updateAssistiveText();
     }
 
+    get computedPlaceholderClass() {
+        return classSet('placeholder-rectangle').toString();
+    }
+
     reserveSpaceForDraggedItem(draggedItem, hoveredItem) {
-        // if hovered item [before || after] dragged item, reserve sapce [before || after] hovered item.
         const hoveredItemIndex = Number(hoveredItem.dataset.index);
         const draggedItemIndex = Number(draggedItem.dataset.index);
-        const parentNode = hoveredItem.parentNode;
 
-        this.showPlaceholder = true;
-        let placeHolder = this.template.querySelector(
-            '[data-element-id="placeholder-rectangle"]'
-        );
-        placeHolder.classList.add('placeholder-rectangle');
+        if (
+            hoveredItemIndex !== undefined &&
+            draggedItemIndex !== undefined &&
+            hoveredItemIndex !== draggedItemIndex
+        ) {
+            // show a gray rectangle as a placeholder to visualize the target location
+            let placeHolder = this.template.querySelector(
+                '[data-element-id="placeholder-rectangle"]'
+            );
 
-        if (hoveredItemIndex > draggedItemIndex) {
-            // reserve space after hovered item
+            if (
+                placeHolder &&
+                this.hoveredPositionTopLeft &&
+                this.draggedItemDimensions
+            ) {
+                placeHolder.style.top = this.hoveredPositionTopLeft.x + 'px';
+                placeHolder.style.left = this.hoveredPositionTopLeft.y + 'px';
+                placeHolder.style.width =
+                    this.draggedItemDimensions.width + 'px';
+                placeHolder.style.height =
+                    this.draggedItemDimensions.height + 'px';
+            }
 
-            parentNode.insertBefore(placeHolder, hoveredItem.nextSibling);
-        } else {
-            // reserve space before hovered item
-            console.log('reserve space before hovered item');
-            parentNode.insertBefore(placeHolder, hoveredItem);
+            // and then displace all items to the position of the next item, or previous item
+
+            this._itemElements.forEach((item, itemIndex) => {
+                // dragging item to lower index
+                if (hoveredItemIndex < draggedItemIndex) {
+                    if (
+                        Number(item.dataset.index) <= draggedItemIndex &&
+                        Number(item.dataset.index) > hoveredItemIndex
+                    ) {
+                        // if the dragged item goes down, items in between will go up. the next position of the displaced item will be the same as index + 1;
+                        const nextPosition =
+                            this._itemElements[
+                                itemIndex + 1
+                            ].getBoundingClientRect();
+                        const currentPosition = item.getBoundingClientRect();
+                        console.log(
+                            'nextPosition',
+                            currentPosition.x,
+                            nextPosition.x,
+                            currentPosition.y,
+                            nextPosition.y
+                        );
+
+                        // 🤦‍♂️
+                        // item.style.transform = `translate(${
+                        //     nextPosition.x - currentPosition.x
+                        // }px, ${nextPosition.y - currentPosition.y}px)`;
+                    }
+                } else {
+                    // dragging item to higher index
+                }
+            });
         }
     }
 
-    insertItem(draggedItem, targetIndex) {
-        console.log('insertItem', draggedItem, targetIndex);
-        const draggedItemIndex = Number(draggedItem.dataset.index);
+    insertDraggedItem(draggedItem) {
+        console.log('insertDraggedItem');
 
-        // find items between
-        if (draggedItemIndex < targetIndex) {
-            this.computedItems.splice(targetIndex, 0, draggedItem);
-        } else {
-            this.computedItems.splice(targetIndex + 1, 0, draggedItem); // ???
+        let placeHolder = this.template.querySelector(
+            '[data-element-id="placeholder-rectangle"]'
+        );
+        if (placeHolder) {
+            placeHolder.style = '';
+        }
+
+        const draggedItemIndex = Number(draggedItem.dataset.index);
+        const hoveredItemIndex = Number(this._hoveredItem.dataset.index);
+
+        // Insert item at position
+        if (draggedItemIndex !== undefined && hoveredItemIndex !== undefined) {
+            console.log(draggedItemIndex, hoveredItemIndex);
+            if (draggedItemIndex > hoveredItemIndex) {
+                this.computedItems.splice(
+                    hoveredItemIndex,
+                    0,
+                    this.computedItems[draggedItemIndex]
+                );
+                this.computedItems.splice(draggedItemIndex + 1, 1);
+            } else {
+                this.computedItems.splice(
+                    hoveredItemIndex + 1,
+                    0,
+                    this.computedItems[draggedItemIndex]
+                );
+                this.computedItems.splice(draggedItemIndex, 1);
+            }
+
+            this.computedItems = [...this.computedItems];
         }
     }
 
@@ -856,6 +938,9 @@ export default class List extends LightningElement {
     }
 
     dragEnd(event) {
+        this.insertDraggedItem(this._draggedElement);
+        this._hoveredItem = undefined;
+
         this.showPlaceholder = false;
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
