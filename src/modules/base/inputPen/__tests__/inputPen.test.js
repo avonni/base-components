@@ -1000,22 +1000,22 @@ describe('Input pen', () => {
             })
             .then(() => {
                 element.undo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(6);
+                expect(fillRectSpy).toHaveBeenCalledTimes(7);
                 expect(ctxBackgroundColor).toEqual('#cc1913ff');
             })
             .then(() => {
                 element.undo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(8);
+                expect(fillRectSpy).toHaveBeenCalledTimes(10);
                 expect(ctxBackgroundColor).toEqual('#ffffff00');
             })
             .then(() => {
                 element.redo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(10);
+                expect(fillRectSpy).toHaveBeenCalledTimes(13);
                 expect(ctxBackgroundColor).toEqual('#cc1913ff');
             })
             .then(() => {
                 element.redo();
-                expect(fillRectSpy).toHaveBeenCalledTimes(12);
+                expect(fillRectSpy).toHaveBeenCalledTimes(16);
                 expect(ctxBackgroundColor).toEqual('#1c298bff');
             });
     });
@@ -1037,11 +1037,11 @@ describe('Input pen', () => {
             })
             .then(() => {
                 element.undo();
-                expect(clearSpy).toHaveBeenCalledTimes(10);
+                expect(clearSpy).toHaveBeenCalledTimes(11);
             })
             .then(() => {
                 element.redo();
-                expect(clearSpy).toHaveBeenCalledTimes(13);
+                expect(clearSpy).toHaveBeenCalledTimes(15);
             });
     });
 });

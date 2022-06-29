@@ -713,15 +713,12 @@ export default class InputPen extends LightningElement {
                 this.canvasInfo.canvasElement.width,
                 this.canvasInfo.canvasElement.height
             );
-            if (this.canvasInfo.mode === 'erase') {
-                this.setDraw();
-            }
             this.fillBackground();
             this.handleChangeEvent();
         }
         if (!automatedClear) {
-            this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
-            this.saveAction({ type: 'clear', clientX: 0, clientY: 0 });
+            this.saveAction({ type: 'state' });
+            this.saveAction({ type: 'clear' });
         }
     }
 
@@ -750,6 +747,8 @@ export default class InputPen extends LightningElement {
         if (this.redoStack.length === 0) {
             return;
         }
+        this.saveAction({ type: 'state', currentState: true });
+        const currentState = deepCopy(this.undoStack.pop());
         let actionsRecreated = -1;
         for (const [index, action] of deepCopy(this.redoStack).entries()) {
             if (action.requestedEvent === 'state' && index !== 0) {
@@ -764,6 +763,7 @@ export default class InputPen extends LightningElement {
         } else {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
+        this.executeAction(currentState);
         this.handleChangeEvent();
     }
 
@@ -844,6 +844,8 @@ export default class InputPen extends LightningElement {
         if (this.undoStack.length === 0) {
             return;
         }
+        this.saveAction({ type: 'state', currentState: true });
+        const currentState = deepCopy(this.undoStack.pop());
         while (
             this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
         ) {
@@ -854,6 +856,7 @@ export default class InputPen extends LightningElement {
             this.executeAction(action);
         }
         this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        this.executeAction(currentState);
         this.handleChangeEvent();
     }
 
@@ -979,14 +982,10 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleBackgroundColorChange(event) {
-        this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
+        this.saveAction({ type: 'state' });
         this._backgroundColor = event.detail.hexa;
         this.fillBackground();
-        this.saveAction({
-            type: 'fill',
-            clientX: 0,
-            clientY: 0
-        });
+        this.saveAction({ type: 'fill' });
         this.handleChangeEvent();
     }
 
@@ -1102,7 +1101,6 @@ export default class InputPen extends LightningElement {
                 return;
             }
         }
-        this.redoStack = [];
 
         let action = {};
         action.isAction = true;
@@ -1113,8 +1111,11 @@ export default class InputPen extends LightningElement {
         action.mode = this.canvasInfo.mode;
         action.color = this.canvasInfo.color;
         action.size = this.canvasInfo.size;
-        action.backgroundColor = this._backgroundColor;
 
+        if (!event.currentState) {
+            this.redoStack = [];
+            action.backgroundColor = this._backgroundColor;
+        }
         action.requestedEvent = event.type.split('mouse')[1];
         if (!action.requestedEvent) {
             action.requestedEvent = event.type;
@@ -1126,7 +1127,7 @@ export default class InputPen extends LightningElement {
             action.clientY = event.clientY;
         }
         if (action.requestedEvent === 'down') {
-            this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
+            this.saveAction({ type: 'state' });
         }
         this.undoStack.push(action);
     }
@@ -1144,7 +1145,9 @@ export default class InputPen extends LightningElement {
         this.canvasInfo.velocities = action.velocities;
         this.canvasInfo.color = action.color;
         this.canvasInfo.size = action.size;
-        this._backgroundColor = action.backgroundColor;
+        if (action.backgroundColor) {
+            this._backgroundColor = action.backgroundColor;
+        }
     }
 
     /**
