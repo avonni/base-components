@@ -617,7 +617,7 @@ describe('Input pen', () => {
         });
     });
 
-    /* ------- VALIDITY ------- */
+    /* -------- VALIDITY -------- */
 
     //reportValidity
     it('reportValidity() should return true', () => {

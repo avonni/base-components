@@ -42,7 +42,7 @@ const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const PEN_MODES = { valid: ['draw', 'paint', 'erase', 'ink'], default: 'draw' };
+const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
 
 const DEFAULT_BACKGROUND_COLORS = [
     '#ffffff00',
@@ -306,10 +306,7 @@ export default class InputPen extends LightningElement {
     }
 
     set mode(value) {
-        this.canvasInfo.mode = normalizeString(value, {
-            fallbackValue: PEN_MODES.default,
-            validValues: PEN_MODES.valid
-        });
+        this.setMode(value);
         this.initCursorStyles();
         this._updatedDOM = true;
     }
