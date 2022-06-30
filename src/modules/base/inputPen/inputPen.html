@@ -197,12 +197,10 @@
                         </li>
                     </ul>
                     <ul
-                        if:true={showExtraButtons}
+                        if:true={showExtraActions}
                         class="slds-button-group-list slds-col"
                     >
-                        <li>
-                            <slot name="button"> </slot>
-                        </li>
+                        <slot name="actions"> </slot>
                     </ul>
                     <ul
                         class="

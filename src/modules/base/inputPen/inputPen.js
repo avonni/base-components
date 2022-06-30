@@ -135,7 +135,7 @@ export default class InputPen extends LightningElement {
 
     sizeList;
 
-    showExtraButtons = false;
+    showExtraActions = false;
     _invalidField = false;
     _rendered = false;
     _updatedDOM = false;
@@ -163,9 +163,9 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.buttonSlot) {
-            this.showExtraButton =
-                this.buttonSlot.assignedElements().length !== 0;
+        if (this.actionsSlot) {
+            this.showExtraActions =
+                this.actionsSlot.assignedElements().length !== 0;
         }
         if (!this._rendered || this._updatedDOM) {
             this.canvasInfo.canvasElement = this.template.querySelector(
@@ -462,8 +462,8 @@ export default class InputPen extends LightningElement {
      *
      * @type {Element}
      */
-    get buttonSlot() {
-        return this.template.querySelector('slot[name=button]');
+    get actionsSlot() {
+        return this.template.querySelector('slot[name=actions]');
     }
 
     /**
