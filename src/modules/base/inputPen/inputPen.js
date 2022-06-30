@@ -222,7 +222,7 @@ export default class InputPen extends LightningElement {
      */
 
     /**
-     * Color of the pen and the paintbrush
+     * Color of the pen.
      *
      * @type {string}
      * @public
@@ -1410,7 +1410,7 @@ export default class InputPen extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('change', {
-                detail: this.value
+                detail: { dataURL: this.value }
             })
         );
     }

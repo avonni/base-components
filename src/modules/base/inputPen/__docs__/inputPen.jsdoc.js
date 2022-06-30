@@ -3,6 +3,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-pen-body-sizing-height
+ * @default 350px
+ * @type size
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-pen-header-text-color
  * @default #3e3e3c
  * @type color
@@ -25,12 +31,7 @@
  * @default 400
  * @type font
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-input-pen-body-sizing-height
- * @default 350px
- * @type size
- */
+
 /**
  * @namespace examples
  */
