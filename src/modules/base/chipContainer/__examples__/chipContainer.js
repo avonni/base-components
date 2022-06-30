@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,29 +29,21 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <span class={chipClass} data-element-id="span-wrapper">
-        <span class="slds-truncate slds-grid">
-            <template if:true={showLeft}>
-                <span class="slds-badge__icon slds-badge__icon_left">
-                    <slot name="left"></slot>
-                </span>
-            </template>
-            <span
-                class="
-                    avonni-chip__chip-label
-                    slds-grid slds-grid_vertical slds-grid_align-center
-                "
-            >
-                {label}
-            </span>
-            <template if:true={showRight}>
-                <span class="slds-badge__icon slds-badge__icon_right">
-                    <slot name="right"></slot>
-                </span>
-            </template>
-        </span>
-    </span>
-</template>
+import Component from '../chipContainer';
+
+customElements.define('ac-chip-container', Component.CustomElementConstructor);
+
+export const ChipContainer = ({
+    items,
+    alternativeText,
+    isCollapsible,
+    isExpanded
+}) => {
+    const element = document.createElement('ac-chip-container');
+    element.items = items;
+    element.alternativeText = alternativeText;
+    element.isCollapsible = isCollapsible;
+    element.isExpanded = isExpanded;
+    return element;
+};

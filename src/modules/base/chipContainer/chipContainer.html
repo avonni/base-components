@@ -33,26 +33,47 @@
 -->
 
 <template>
-    <span class={chipClass} data-element-id="span-wrapper">
-        <span class="slds-truncate slds-grid">
-            <template if:true={showLeft}>
-                <span class="slds-badge__icon slds-badge__icon_left">
-                    <slot name="left"></slot>
-                </span>
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
+        <span
+            if:true={alternativeText}
+            class="slds-assistive-text"
+            data-element-id="span-alternative-text"
+            >{alternativeText}</span
+        >
+        <lightning-button
+            if:true={showMore}
+            aria-hidden="true"
+            class="
+                slds-listbox-toggle
+                avonni-chip-container__show-more_centered
+            "
+            label={computedShowMoreLabel}
+            variant="base"
+            data-element-id="show-more-button"
+            onclick={handleMoreClick}
+        >
+        </lightning-button>
+        <div
+            role="list"
+            data-element-id="chip-container-list"
+            class="slds-listbox slds-listbox_horizontal"
+        >
+            <template for:each={items} for:item="chip" for:index="index">
+                <c-primitive-chip
+                    key={uniqueKey}
+                    class="slds-listbox-item"
+                    label={chip.label}
+                    variant={chip.variant}
+                    outline={chip.outline}
+                    avatar={chip.avatar}
+                    prefix-icon-name={chip.prefixIconName}
+                    suffix-icon-name={chip.suffixIconName}
+                    data-index={index}
+                    role="listitem"
+                    data-element-id="chip"
+                >
+                </c-primitive-chip>
             </template>
-            <span
-                class="
-                    avonni-chip__chip-label
-                    slds-grid slds-grid_vertical slds-grid_align-center
-                "
-            >
-                {label}
-            </span>
-            <template if:true={showRight}>
-                <span class="slds-badge__icon slds-badge__icon_right">
-                    <slot name="right"></slot>
-                </span>
-            </template>
-        </span>
-    </span>
+        </div>
+    </div>
 </template>
