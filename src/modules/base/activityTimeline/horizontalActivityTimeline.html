@@ -101,7 +101,11 @@
                         size="small"
                         variant="bare"
                         onclick={handleItemMouseLeave}
-                        class="slds-popover__close slds-p-top_xxx-small"
+                        class="
+                            slds-popover__close
+                            slds-p-top_xxx-small
+                            slds-float_right
+                        "
                     ></lightning-button-icon>
 
                     <header
@@ -142,38 +146,36 @@
                         class="slds-grid slds-wrap slds-media__body"
                         if:true={selectedItem.fields}
                     >
-                        <template
-                            for:each={selectedItem.fields}
-                            for:item="field"
-                            for:index="index"
-                        >
-                            <div
-                                class="
-                                    slds-size_1-of-2
-                                    slds-p-top_x-small
-                                    slds-has-flexi-truncate
-                                "
-                                key={field.value}
+                        <div class="slds-has-flexi-truncate">
+                            <lightning-layout
+                                horizontal-align="spread"
+                                multiple-rows="true"
                             >
-                                <dl>
-                                    <dt>
-                                        <p class="slds-truncate">
-                                            {field.label}
-                                        </p>
-                                    </dt>
-                                    <dd>
-                                        <p
-                                            class="
-                                                slds-text-body_regular
-                                                slds-line-clamp_x-small
-                                            "
-                                        >
-                                            {field.value}
-                                        </p>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </template>
+                                <template
+                                    for:each={selectedItem.fields}
+                                    for:item="field"
+                                    for:index="index"
+                                >
+                                    <lightning-layout-item
+                                        class="
+                                            slds-size_1-of-2
+                                            slds-p-top_x-small
+                                            slds-p-right_small
+                                            slds-line-clamp_x-small
+                                        "
+                                        key={field.value}
+                                    >
+                                        <c-output-data
+                                            label={field.label}
+                                            value={field.value}
+                                            type={field.type}
+                                            type-attributes={field.typeAttributes}
+                                            data-element-id="avonni-output-data"
+                                        ></c-output-data>
+                                    </lightning-layout-item>
+                                </template>
+                            </lightning-layout>
+                        </div>
                     </footer>
                 </div>
             </div>

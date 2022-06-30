@@ -39,7 +39,7 @@ const BORDER_OFFSET = 0.5;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_POPOVER_CLASSES =
-    'slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium';
+    'slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small';
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
@@ -1427,12 +1427,6 @@ export class HorizontalActivityTimeline {
             element
         );
 
-        // Set position of close (X) button depending of popover's direction
-        tooltipElement
-            .select('.slds-popover__close')
-            .classed('slds-float_right', popoverPosition.direction === 'left')
-            .classed('slds-float_left', popoverPosition.direction === 'right');
-
         tooltipElement
             .style('opacity', 1)
             .style('top', popoverPosition.y + 'px')
@@ -1452,14 +1446,11 @@ export class HorizontalActivityTimeline {
      * @return {string}
      */
     computedPopoverClasses(element, direction) {
-        let popoverClasses = this.getPopoverNubbinClass(element, direction);
-        if (direction === 'left') {
-            popoverClasses += ' slds-p-left_medium slds-p-right_x-small ';
-        } else {
-            popoverClasses += ' slds-p-right_medium slds-p-left_x-small ';
-        }
-
-        return popoverClasses + DEFAULT_POPOVER_CLASSES;
+        return (
+            this.getPopoverNubbinClass(element, direction) +
+            ' ' +
+            DEFAULT_POPOVER_CLASSES
+        );
     }
 
     /**
