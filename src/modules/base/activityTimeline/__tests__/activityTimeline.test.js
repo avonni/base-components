@@ -1337,7 +1337,7 @@ describe('Activity Timeline', () => {
 
                     expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'slds-nubbin_left slds-p-left_medium slds-p-right_x-small slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
+                        'slds-nubbin_left slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1400,7 +1400,7 @@ describe('Activity Timeline', () => {
 
                 expect(popoverItem.getAttribute('name')).toBe('item13');
                 expect(popoverItem.className).toBe(
-                    'slds-nubbin_right-top slds-p-right_medium slds-p-left_x-small slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium'
+                    'slds-nubbin_right-top slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
                 );
                 expect(convertPxSizeToNumberSpy).toBeCalled();
             });
