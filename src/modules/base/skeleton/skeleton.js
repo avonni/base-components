@@ -1033,11 +1033,26 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for text variant
      */
     setTextSize() {
-        let element = this.skeleton;
-        element.style.height =
-            this.height === undefined ? '0.7em' : `${this.height}`;
-        element.style.width =
-            this.width === undefined ? '100%' : `${this.width}`;
+        if (this.htmlVariant === combobox) {
+            const comboboxElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-combobox-form-element"]'
+            );
+            const comboboxWrapper = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-combobox-wrapper"]'
+            );
+
+            comboboxElement.style.width =
+                this.width === undefined ? '100%' : `${this.width}`;
+
+            comboboxWrapper.style.height =
+                this.height === undefined ? '0.7em' : `${this.height}`;
+        } else {
+            let element = this.skeleton;
+            element.style.height =
+                this.height === undefined ? '0.7em' : `${this.height}`;
+            element.style.width =
+                this.width === undefined ? '100%' : `${this.width}`;
+        }
     }
 
     /**
