@@ -325,75 +325,14 @@ export default class Kanban extends LightningElement {
 
         computedGroups.forEach((group) => {
             if (!this.hideHeader) this.animateSummary(group);
-            // Set the right background color on each group
-            const defaultBackgroundColor =
-                this.variant === 'path' ? '#ffffff' : '#fcfcfc';
-            requestAnimationFrame(() => {
-                if (
-                    this.variant === 'path' &&
-                    group.pathColor &&
-                    !this.hideHeader
-                ) {
-                    /* eslint-disable no-unexpected-multiline */
-
-                    this.template
-                        .querySelectorAll(
-                            '[data-element-id="avonni-kanban__path_item"]'
-                        )
-                        [group.index].setAttribute(
-                            'style',
-                            `background:${group.pathColor} !important`
-                        );
-                }
-                for (
-                    let i = 0;
-                    i < (group.subGroups ? group.subGroups.length : 1);
-                    i++
-                ) {
-                    this.template.querySelectorAll(
-                        '[data-element-id="avonni-kanban__field"]'
-                    )[
-                        group.index + i * this._groupValues.length
-                    ].style.background = group.backgroundColor
-                        ? group.backgroundColor
-                        : defaultBackgroundColor;
-                }
-
-                if (this._hasSubGroups) {
-                    this.template.querySelectorAll(
-                        '[data-element-id="avonni-kanban__group_header_wrapper"]'
-                    )[group.index].style.background = group.backgroundColor
-                        ? group.backgroundColor
-                        : defaultBackgroundColor;
-
-                    this.template.querySelector(
-                        '[data-element-id="avonni-kanban__container"]'
-                    ).style.overflowY = 'hidden';
-                }
-            });
+            this.setBackgroundColor(group);
         });
 
         this.displayCoverImage(computedGroups);
         requestAnimationFrame(() => {
             this.capContainerWidth();
-
-            this.template
-                .querySelectorAll(
-                    '[data-element-id="avonni-kanban__field_container"]'
-                )
-                .forEach((fieldContainer, i) => {
-                    this._subGroupsHeight[i] = fieldContainer.scrollHeight;
-                });
-
+            this.setContainerDimensions();
             this.capFieldHeight();
-            this._initialScrollWidth = this.template.querySelector(
-                '[data-element-id="avonni-kanban__field_container"]'
-            ).scrollWidth;
-            if (this._hasSubGroups) {
-                this._initialScrollHeight = this.template.querySelector(
-                    '[data-element-id="avonni-kanban__expandable_container"]'
-                ).scrollHeight;
-            }
         });
 
         this._computedGroups = computedGroups;
@@ -626,7 +565,6 @@ export default class Kanban extends LightningElement {
     }
 
     capContainerWidth() {
-        // TODO: fix when hideHeader is true
         if (this._hasSubGroups) {
             const expandable = this.template.querySelector(
                 '[data-element-id="avonni-kanban__expandable_container"]'
@@ -677,6 +615,25 @@ export default class Kanban extends LightningElement {
         }
     }
 
+    setContainerDimensions() {
+        this.template
+            .querySelectorAll(
+                '[data-element-id="avonni-kanban__field_container"]'
+            )
+            .forEach((fieldContainer, i) => {
+                this._subGroupsHeight[i] = fieldContainer.scrollHeight;
+            });
+
+        this._initialScrollWidth = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        ).scrollWidth;
+        if (this._hasSubGroups) {
+            this._initialScrollHeight = this.template.querySelector(
+                '[data-element-id="avonni-kanban__expandable_container"]'
+            ).scrollHeight;
+        }
+    }
+
     /**
      *
      * Autoscrolls the tiles / groups when the dragged tile is on the edge of the container
@@ -687,12 +644,6 @@ export default class Kanban extends LightningElement {
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
-
-        const right = fieldContainer.offsetWidth + fieldContainer.scrollLeft;
-
-        const left =
-            fieldContainer.getBoundingClientRect().left +
-            fieldContainer.scrollLeft;
 
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
@@ -705,34 +656,14 @@ export default class Kanban extends LightningElement {
         );
 
         // auto scroll when the user is dragging the tile out of the list
-        let scrollYStep = 0;
+        const scrollStep = this.computeScrollStep(currentX, currentY);
 
-        if (
-            currentY + 50 >
-            this._kanbanPos.bottom +
-                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
-        ) {
-            scrollYStep = 10;
-        } else if (
-            currentY - 50 <
-            this._kanbanPos.top +
-                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
-        ) {
-            scrollYStep = -10;
-        }
-
-        let scrollXStep = 0;
-        if (currentX + 50 > right) {
-            scrollXStep = 10;
-        } else if (currentX - 50 < left) {
-            scrollXStep = -10;
-        }
-        let toScroll = scrollXStep ? fieldContainer : group;
+        let toScroll = scrollStep.x ? fieldContainer : group;
         toScroll =
             toScroll === group && this._hasSubGroups
                 ? expandableContainer
                 : toScroll;
-        scrollYStep = this._draggedGroup ? 0 : scrollYStep;
+
         if (
             !this._scrollingInterval &&
             (this._draggedGroup || this._draggedTile)
@@ -744,16 +675,16 @@ export default class Kanban extends LightningElement {
                         fieldContainer.offsetWidth -
                         50 <
                         this._initialScrollWidth ||
-                    scrollYStep !== 0
+                    scrollStep.y !== 0
                 ) {
-                    toScroll.scrollBy(scrollXStep, scrollYStep);
+                    toScroll.scrollBy(scrollStep.x, scrollStep.y);
                 }
                 if (this._draggedTile) this.animateTiles(groups);
             }, 20);
         }
 
         // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
-        if (!scrollXStep && !scrollYStep) {
+        if (!scrollStep.x && !scrollStep.y) {
             window.clearInterval(this._scrollingInterval);
             this._scrollingInterval = null;
         }
@@ -809,6 +740,51 @@ export default class Kanban extends LightningElement {
         this._droppedTileHeight = 0;
     }
 
+    computeScrollStep(currentX, currentY) {
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
+        let scrollStep = {
+            x: 0,
+            y: 0
+        };
+
+        const right = fieldContainer.offsetWidth + fieldContainer.scrollLeft;
+
+        const left =
+            fieldContainer.getBoundingClientRect().left +
+            fieldContainer.scrollLeft;
+
+        if (
+            currentY + 50 >
+            this._kanbanPos.bottom +
+                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
+        ) {
+            scrollStep.y = 10;
+        } else if (
+            currentY - 50 <
+            this._kanbanPos.top +
+                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
+        ) {
+            scrollStep.y = -10;
+        }
+
+        if (currentX + 50 > right) {
+            scrollStep.x = 10;
+        } else if (currentX - 50 < left) {
+            scrollStep.x = -10;
+        }
+
+        scrollStep.y = this._draggedGroup ? 0 : scrollStep.y;
+
+        return scrollStep;
+    }
+
     /**
      * Calculates the boundaries of the kanban to prevent from dragging outside of the container
      * @param {EventTarget} currentTarget
@@ -824,6 +800,53 @@ export default class Kanban extends LightningElement {
         this._kanbanPos.left = currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + currentTarget.scrollWidth;
+    }
+
+    setBackgroundColor(group) {
+        // Set the right background color on each group
+        const defaultBackgroundColor =
+            this.variant === 'path' ? '#ffffff' : '#fcfcfc';
+        if (!group.backgroundColor) {
+            group.backgroundColor = defaultBackgroundColor;
+        }
+        requestAnimationFrame(() => {
+            if (
+                this.variant === 'path' &&
+                group.pathColor &&
+                !this.hideHeader
+            ) {
+                /* eslint-disable no-unexpected-multiline */
+
+                this.template
+                    .querySelectorAll(
+                        '[data-element-id="avonni-kanban__path_item"]'
+                    )
+                    [group.index].setAttribute(
+                        'style',
+                        `background:${group.pathColor} !important`
+                    );
+            }
+            for (
+                let i = 0;
+                i < (group.subGroups ? group.subGroups.length : 1);
+                i++
+            ) {
+                this.template.querySelectorAll(
+                    '[data-element-id="avonni-kanban__field"]'
+                )[group.index + i * this._groupValues.length].style.background =
+                    group.backgroundColor;
+            }
+
+            if (this._hasSubGroups) {
+                this.template.querySelectorAll(
+                    '[data-element-id="avonni-kanban__group_header_wrapper"]'
+                )[group.index].style.background = group.backgroundColor;
+
+                this.template.querySelector(
+                    '[data-element-id="avonni-kanban__container"]'
+                ).style.overflowY = 'hidden';
+            }
+        });
     }
 
     /**
