@@ -375,13 +375,54 @@ export default class Kanban extends LightningElement {
 
         this.displayCoverImage(computedGroups);
         requestAnimationFrame(() => {
-            // TODO: sets the right width but causes bugs
-            // if (this.variant === 'path') {
-            //     this.template.querySelector(
-            //         '[data-element-id="avonni-kanban__header"]'
-            //     ).style.width = `${this.template.querySelector('[data-element-id="path"]').offsetWidth}px`
+            if (this._hasSubGroups) {
+                const expandable = this.template.querySelector(
+                    '[data-element-id="avonni-kanban__expandable_container"]'
+                );
+                const headerWidth =
+                    this.variant === 'path'
+                        ? this.template.querySelector(
+                              '[data-element-id="path"]'
+                          ).offsetWidth
+                        : this.template.querySelector(
+                              '[data-element-id="avonni-kanban__header"]'
+                          ).scrollWidth;
 
-            // }
+                if (this.variant === 'path') {
+                    this.template.querySelector(
+                        '[data-element-id="avonni-kanban__header"]'
+                    ).style.width = `${headerWidth}px`;
+                }
+
+                if (
+                    headerWidth ===
+                    this.template.querySelector(
+                        '[data-element-id="avonni-kanban__container"]'
+                    ).offsetWidth
+                ) {
+                    expandable.style.width = `calc(${
+                        this.template.querySelector(
+                            '[data-element-id="avonni-kanban__group_header"]'
+                        ).offsetWidth * this._groupValues.length
+                    }px + ${this._groupValues.length - 1}rem - ${
+                        (this._groupValues.length - 1) / 4
+                    }rem)`;
+                } else {
+                    expandable.style.width = `calc(${headerWidth}px + ${
+                        this.variant === 'path'
+                            ? 0
+                            : 0.1 * this._groupValues.length
+                    }rem)`;
+                }
+            } else if (this.variant === 'path') {
+                this.template.querySelector(
+                    '[data-element-id="avonni-kanban__container"]'
+                ).style.width = `${
+                    this.template.querySelector('[data-element-id="path"]')
+                        .offsetWidth
+                }px`;
+            }
+
             this.template
                 .querySelectorAll(
                     '[data-element-id="avonni-kanban__field_container"]'
@@ -723,10 +764,6 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
-        const expandable = this.template.querySelector(
-            '[data-element-id="avonni-kanban__expandable_container"]'
-        );
-
         if (this._hasSubGroups) {
             const subGroupsHeight = [];
             this._subGroupsHeight.forEach(() => {
@@ -744,14 +781,6 @@ export default class Kanban extends LightningElement {
                     ...subGroupsHeight[Math.floor(i / this.groupValues.length)]
                 )}px)`;
             });
-
-            expandable.style.width = `calc(${
-                this.template.querySelector(
-                    '[data-element-id="avonni-kanban__group_header"]'
-                ).offsetWidth * this._groupValues.length
-            }px + ${this._groupValues.length - 1}rem - ${
-                (this._groupValues.length - 1) / 4
-            }rem)`;
         } else {
             fields.forEach((field) => {
                 if (field.offsetHeight >= container.offsetHeight) {
