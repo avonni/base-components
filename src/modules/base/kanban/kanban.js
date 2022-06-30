@@ -375,6 +375,13 @@ export default class Kanban extends LightningElement {
 
         this.displayCoverImage(computedGroups);
         requestAnimationFrame(() => {
+            // TODO: sets the right width but causes bugs
+            // if (this.variant === 'path') {
+            //     this.template.querySelector(
+            //         '[data-element-id="avonni-kanban__header"]'
+            //     ).style.width = `${this.template.querySelector('[data-element-id="path"]').offsetWidth}px`
+
+            // }
             this.template
                 .querySelectorAll(
                     '[data-element-id="avonni-kanban__field_container"]'
@@ -645,17 +652,17 @@ export default class Kanban extends LightningElement {
 
         // auto scroll when the user is dragging the tile out of the list
         let scrollYStep = 0;
+
         if (
             currentY + 50 >
             this._kanbanPos.bottom +
-                (expandableContainer ? expandableContainer.scrollTop : 0)
+                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
         ) {
             scrollYStep = 10;
         } else if (
-            currentY -
-                50 -
-                (expandableContainer ? expandableContainer.scrollTop : 0) <
-            this._kanbanPos.top
+            currentY - 50 <
+            this._kanbanPos.top +
+                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
         ) {
             scrollYStep = -10;
         }
@@ -1076,6 +1083,10 @@ export default class Kanban extends LightningElement {
 
         this._groupWidth = event.currentTarget.offsetWidth;
 
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
         // Sets the offset of the mouse click depending of the group
         this._clickOffset.x =
             event.clientX - event.currentTarget.getBoundingClientRect().x;
@@ -1085,7 +1096,9 @@ export default class Kanban extends LightningElement {
         this._initialPos.x =
             event.currentTarget.getBoundingClientRect().x +
             fieldContainer.scrollLeft;
-        this._initialPos.y = event.currentTarget.getBoundingClientRect().y;
+        this._initialPos.y =
+            event.currentTarget.getBoundingClientRect().y +
+            (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
         this._clickedGroupIndex = Array.from(
             this.template.querySelectorAll(
@@ -1275,11 +1288,17 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__container"]'
         );
 
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
         // Sets the initial pos of the tile to be dragged
         this._initialPos.x =
             event.currentTarget.getBoundingClientRect().x +
             fieldContainer.scrollLeft;
-        this._initialPos.y = event.currentTarget.getBoundingClientRect().y;
+        this._initialPos.y =
+            event.currentTarget.getBoundingClientRect().y +
+            (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
         this._clickedGroupIndex = Math.min(
             Math.floor(event.clientX / this._groupWidth),
@@ -1363,6 +1382,8 @@ export default class Kanban extends LightningElement {
         let currentY =
             event.clientY +
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
+        // +
+        // (this._hasSubGroups ? expandableContainer.scrollTop : 0);
         let currentX = event.clientX + fieldContainer.scrollLeft;
         if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;

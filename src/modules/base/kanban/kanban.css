@@ -380,19 +380,19 @@
 }
 
 .avonni-kanban__expandable_section_header {
-    background-color: #f4f4f4;
+    background-color: #ffffff;
     width: 100%;
-    border-radius: 0.25rem;
-    border: none;
     text-align: left;
     position: sticky;
+    border: none;
     z-index: 999;
     top: 0;
+    border-radius: 0.25rem;
 }
 
-/* .avonni-kanban__variant_path .avonni-kanban__expandable_section_header {
-    background-color: #ffffff;
-} */
+.avonni-kanban__expandable_section_header:hover {
+    background-color: #f7f7f7;
+}
 
 .avonni-kanban__expandable_section_collapsed .avonni-kanban__chevron {
     transform: rotate(-90deg);
