@@ -12,6 +12,18 @@
     --avonni-avatar-secondary-text-font-size: 0.75rem;
 }
 
+.avonni-skeleton__avatar-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avonni-skeleton__avatar-details-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .avonni-skeleton__badge {
     height: 2rem;
     max-width: 100%;

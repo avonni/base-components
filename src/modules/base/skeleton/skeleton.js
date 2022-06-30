@@ -293,6 +293,15 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get computed media object inline
+     * @type {boolean}
+     */
+    @api
+    get computedMediaObjectInline() {
+        return this.variantAttributes.textPosition === 'center';
+    }
+
+    /**
      * Get if avatar should hide its details
      * @type {boolean}
      */
@@ -461,11 +470,36 @@ export default class Skeleton extends LightningElement {
         );
     }
 
+    /**
+     * Get if avatar position should be left
+     * @type {boolean}
+     */
+    @api
+    get textPositionLeftCenter() {
+        return (
+            this.variantAttributes.textPosition === 'left' ||
+            this.variantAttributes.textPosition === 'center'
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+    /**
+     * Class of avatar details
+     * @type {string}
+     */
+    get avatarDetailsClass() {
+        return classSet('').add({
+            'avonni-skeleton__avatar-details-right':
+                this.variantAttributes.textPosition === 'right',
+            'avonni-skeleton__avatar-details':
+                this.variantAttributes.textPosition === 'center'
+        });
+    }
+
     /**
      * Class of the avatar wrapper
      * @type {string}
@@ -668,6 +702,19 @@ export default class Skeleton extends LightningElement {
         return classSet('slds-form-element').add({
             'slds-form-element_horizontal':
                 this.variantAttributes.variant === 'label-inline'
+        });
+    }
+
+    /**
+     * Compute avatar media object class
+     * @type {string}
+     */
+    get mediaObjectClass() {
+        return classSet('').add({
+            'slds-text-align_right':
+                this.variantAttributes.textPosition === 'right',
+            'slds-text-align_center':
+                this.variantAttributes.textPosition === 'center'
         });
     }
 

@@ -33,26 +33,39 @@
 -->
 
 <template>
-    <c-media-object data-element-id="avonni-skeleton__avatar-media-object">
+    <c-media-object
+        class={mediaObjectClass}
+        inline={computedMediaObjectInline}
+        data-element-id="avonni-skeleton__avatar-media-object"
+    >
         <div
-            class={avatarWrapperClass}
+            if:true={textPositionLeftCenter}
             slot="figure"
+            class={avatarWrapperClass}
             data-element-id="avonni-skeleton__avatar-figure"
         ></div>
+        <div
+            if:false={textPositionLeftCenter}
+            slot="figure-inverse"
+            class={avatarWrapperClass}
+            data-element-id="avonni-skeleton__avatar-figure-inverse"
+        ></div>
         <template if:false={hideAvatarDetails}>
-            <p
-                class={primaryAvatarTextClass}
-                data-element-id="avonni-skeleton__avatar-primary-text"
-            ></p>
-            <p
-                class={secondaryAvatarTextClass}
-                data-element-id="avonni-skeleton__avatar-secondary-text"
-            ></p>
-            <p
-                if:true={showAvatarTertiaryText}
-                class={tertiaryAvatarTextClass}
-                data-element-id="avonni-skeleton__avatar-tertiary-text"
-            ></p>
+            <div class={avatarDetailsClass}>
+                <p
+                    class={primaryAvatarTextClass}
+                    data-element-id="avonni-skeleton__avatar-primary-text"
+                ></p>
+                <p
+                    class={secondaryAvatarTextClass}
+                    data-element-id="avonni-skeleton__avatar-secondary-text"
+                ></p>
+                <p
+                    if:true={showAvatarTertiaryText}
+                    class={tertiaryAvatarTextClass}
+                    data-element-id="avonni-skeleton__avatar-tertiary-text"
+                ></p>
+            </div>
         </template>
     </c-media-object>
 </template>

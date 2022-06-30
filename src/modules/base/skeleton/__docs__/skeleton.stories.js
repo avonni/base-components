@@ -130,7 +130,8 @@ Avatar.args = {
     variantAttributes: {
         variant: 'circle',
         size: 'x-large',
-        hideAvatarDetails: false
+        hideAvatarDetails: false,
+        textPosition: 'left'
     }
 };
 
