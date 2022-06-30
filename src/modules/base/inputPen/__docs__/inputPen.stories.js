@@ -118,7 +118,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['draw', 'erase', 'sign'],
+            options: ['draw', 'paint', 'ink', 'erase'],
             description: 'Valid modes include draw and erase.',
             table: {
                 type: { summary: 'string' },
