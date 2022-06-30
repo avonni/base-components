@@ -43,3 +43,7 @@
 .avonni-activity-timeline__horizontal-timeline-scrolling-container {
     width: fit-content;
 }
+
+.avonni-activity-timeline__horizontal-timeline {
+    overflow-x: hidden;
+}
