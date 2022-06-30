@@ -405,7 +405,9 @@ export default class Kanban extends LightningElement {
                             '[data-element-id="avonni-kanban__group_header"]'
                         ).offsetWidth * this._groupValues.length
                     }px + ${this._groupValues.length - 1}rem - ${
-                        (this._groupValues.length - 1) / 4
+                        this.variant === 'path'
+                            ? this._groupValues.length / 4
+                            : (this._groupValues.length - 1) / 4
                     }rem)`;
                 } else {
                     expandable.style.width = `calc(${headerWidth}px + ${
@@ -727,7 +729,9 @@ export default class Kanban extends LightningElement {
             this._scrollingInterval = window.setInterval(() => {
                 // Prevents from scrolling outside of the kanban
                 if (
-                    fieldContainer.scrollLeft + fieldContainer.offsetWidth <
+                    fieldContainer.scrollLeft +
+                        fieldContainer.offsetWidth -
+                        50 <
                         this._initialScrollWidth ||
                     scrollYStep !== 0
                 ) {
