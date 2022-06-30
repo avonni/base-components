@@ -948,7 +948,7 @@ export class HorizontalActivityTimeline {
     isScrollingVerticallyOnTimeline(event) {
         return (
             Math.abs(event.deltaY) > 0 &&
-            event.toElement.getAttribute('class') ===
+            event.toElement.getAttribute('data-element-id') ===
                 'avonni-horizontal-activity-timeline__timeline-items-svg' &&
             d3.select(this.divTimelineScroll).style('overflow-y') === 'scroll'
         );
