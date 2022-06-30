@@ -192,6 +192,7 @@ export default class InputPen extends LightningElement {
             this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
+            this.computeSelectedToolClass();
             if (this._foregroundValue) {
                 this.initSrc();
             }
@@ -856,6 +857,7 @@ export default class InputPen extends LightningElement {
         });
         this.canvasInfo.mode = this._mode;
         this.computeCursorClass();
+        this.computeSelectedToolClass();
         this.setToolManager();
     }
 
@@ -907,7 +909,7 @@ export default class InputPen extends LightningElement {
      */
     computeCursorClass() {
         const drawArea = this.template.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         if (drawArea) {
             if (this.canvasInfo.mode === 'ink') {
@@ -936,6 +938,19 @@ export default class InputPen extends LightningElement {
                 richTextEditor.classList.add('slds-has-error');
             }
         }
+    }
+
+    computeSelectedToolClass() {
+        const tools = this.template.querySelectorAll(
+            '[data-element-id$="-tool"]'
+        );
+        tools.forEach((tool) => {
+            if (tool.matches(`[data-element-id^="${this._mode}-"]`)) {
+                tool.classList.add('slds-is-selected');
+            } else {
+                tool.classList.remove('slds-is-selected');
+            }
+        });
     }
 
     /**

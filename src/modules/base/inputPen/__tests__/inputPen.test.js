@@ -286,7 +286,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const draw = element.shadowRoot.querySelector(
-                '[data-element-id="pen-tool"]'
+                '[data-element-id="draw-tool"]'
             );
             expect(draw).toBeFalsy();
         });
@@ -297,7 +297,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const erase = element.shadowRoot.querySelector(
-                '[data-element-id="eraser-tool"]'
+                '[data-element-id="erase-tool"]'
             );
             expect(erase).toBeFalsy();
         });
@@ -319,7 +319,7 @@ describe('Input pen', () => {
 
         return Promise.resolve().then(() => {
             const paint = element.shadowRoot.querySelector(
-                '[data-element-id="paintbrush-tool"]'
+                '[data-element-id="paint-tool"]'
             );
             expect(paint).toBeFalsy();
         });
@@ -489,7 +489,7 @@ describe('Input pen', () => {
         element.mode = 'erase';
         return Promise.resolve().then(() => {
             const penButton = element.shadowRoot.querySelector(
-                '[data-element-id="pen-tool"]'
+                '[data-element-id="draw-tool"]'
             );
             penButton.click();
             expect(penButton).toBeTruthy();
@@ -500,7 +500,7 @@ describe('Input pen', () => {
     it('paintbrush tool', () => {
         return Promise.resolve().then(() => {
             const brushButton = element.shadowRoot.querySelector(
-                '[data-element-id="paintbrush-tool"]'
+                '[data-element-id="paint-tool"]'
             );
             brushButton.click();
             expect(brushButton).toBeTruthy();
@@ -522,7 +522,7 @@ describe('Input pen', () => {
     it('eraser tool', () => {
         return Promise.resolve().then(() => {
             const eraseButton = element.shadowRoot.querySelector(
-                '[data-element-id="eraser-tool"]'
+                '[data-element-id="erase-tool"]'
             );
             eraseButton.click();
             expect(eraseButton).toBeTruthy();
@@ -748,7 +748,7 @@ describe('Input pen', () => {
     it('drawing on canvas should clear message if invalid', () => {
         element.required = true;
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         return Promise.resolve()
@@ -778,7 +778,7 @@ describe('Input pen', () => {
 
     it('drawing on canvas should add stroke (draw)', () => {
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -798,7 +798,7 @@ describe('Input pen', () => {
     it('drawing on canvas should add a stroke (paint)', () => {
         element.mode = 'paint';
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -818,7 +818,7 @@ describe('Input pen', () => {
     it('drawing on canvas should add stroke (ink)', () => {
         element.mode = 'ink';
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -855,7 +855,7 @@ describe('Input pen', () => {
     it('drawing on canvas should add stroke (erase)', () => {
         element.mode = 'erase';
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -892,7 +892,7 @@ describe('Input pen', () => {
     it('drawing on disabled canvas should not add stroke', () => {
         element.disabled = true;
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -911,7 +911,7 @@ describe('Input pen', () => {
 
     it('when mouse leaves or enters, its visibility is adjusted', () => {
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         const cursor = element.shadowRoot.querySelector(
             '[data-element-id="cursor"]'
@@ -978,7 +978,7 @@ describe('Input pen', () => {
 
     it('undo on 3 actions should redraw those 2 previous actions (strokes)', () => {
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -1019,7 +1019,7 @@ describe('Input pen', () => {
 
     it('redo after an undo should redraw the missing action (strokes)', () => {
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
@@ -1066,7 +1066,7 @@ describe('Input pen', () => {
 
     it('redo and undo keyboard shortcuts', () => {
         const drawArea = element.shadowRoot.querySelector(
-            '[data-element-id="draw-area"]'
+            '[data-element-id="drawing-area"]'
         );
         initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');

@@ -69,30 +69,54 @@
                 >
                     <ul class="slds-button-group-list">
                         <li if:true={showPen}>
-                            <lightning-button-icon
-                                icon-name="utility:edit"
-                                variant="border-filled"
-                                alternative-text="Draw"
+                            <button
+                                class="
+                                    slds-button
+                                    slds-button_icon
+                                    slds-button_icon-border-filled
+                                    avonni-input-pen__custom-icon
+                                "
                                 title="Draw"
                                 onclick={setDraw}
                                 disabled={disabled}
                                 data-group-name="button"
-                                data-element-id="pen-tool"
+                                data-element-id="draw-tool"
                             >
-                            </lightning-button-icon>
+                                <svg
+                                    class="slds-button__icon"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <use
+                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"
+                                    ></use>
+                                </svg>
+                            </button>
                         </li>
                         <li if:true={showPaint}>
-                            <lightning-button-icon
-                                icon-name="utility:brush"
-                                variant="border-filled"
-                                alternative-text="Erase"
+                            <button
+                                class="
+                                    slds-button
+                                    slds-button_icon
+                                    slds-button_icon-border-filled
+                                    avonni-input-pen__custom-icon
+                                "
                                 title="Paint"
                                 onclick={setPaint}
                                 disabled={disabled}
                                 data-group-name="button"
-                                data-element-id="paintbrush-tool"
+                                data-element-id="paint-tool"
                             >
-                            </lightning-button-icon>
+                                <svg
+                                    class="slds-button__icon"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <use
+                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#brush"
+                                    ></use>
+                                </svg>
+                            </button>
                         </li>
                         <li if:true={showInk}>
                             <button
@@ -133,7 +157,7 @@
                                 onclick={setErase}
                                 disabled={disabled}
                                 data-group-name="button"
-                                data-element-id="eraser-tool"
+                                data-element-id="erase-tool"
                             >
                                 <svg
                                     class="slds-button__icon"
@@ -261,7 +285,7 @@
                     onmouseenter={handleMouseEnter}
                     onmousedown={handleMouseDown}
                     onmouseleave={handleMouseLeave}
-                    data-element-id="draw-area"
+                    data-element-id="drawing-area"
                 >
                     <template if:true={showClear}>
                         <lightning-button-icon
