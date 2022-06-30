@@ -168,7 +168,7 @@ export default {
                 category: 'Avatar'
             }
         },
-        size: {
+        avatarSize: {
             control: {
                 type: 'select'
             },
@@ -185,7 +185,7 @@ export default {
         avatarPosition: 'top-left',
         avatarMobilePosition: 'top-left',
         avatarVariant: 'circle',
-        size: 'medium'
+        avatarSize: 'medium'
     }
 };
 
@@ -223,7 +223,7 @@ SmallTopRight.args = {
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
     avatarPosition: 'top-right',
-    size: 'small'
+    avatarSize: 'small'
 };
 
 export const ExtraSmallBottomCenter = NoActionsTemplate.bind({});
@@ -232,7 +232,7 @@ ExtraSmallBottomCenter.args = {
     subtitle: 'Manager',
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-    size: 'x-small',
+    avatarSize: 'x-small',
     avatarPosition: 'bottom-center'
 };
 
@@ -245,7 +245,7 @@ LargeBottomLeft.args = {
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
     avatarPosition: 'bottom-left',
-    size: 'large'
+    avatarSize: 'large'
 };
 
 export const ExtraLargeSquare = Template.bind({});
@@ -256,7 +256,7 @@ ExtraLargeSquare.args = {
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-    size: 'x-large',
+    avatarSize: 'x-large',
     avatarVariant: 'square'
 };
 
@@ -309,7 +309,7 @@ SmallBottomCenterMobile.parameters = {
 SmallBottomCenterMobile.args = {
     title: 'Title',
     subtitle: 'Subtitle',
-    size: 'small',
+    avatarSize: 'small',
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
