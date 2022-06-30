@@ -106,7 +106,7 @@ export default class ActivityTimeline extends LightningElement {
     @api title;
 
     /**
-     * Label of the button that appears when the number of item exceeds the max-visible-items number.
+     * Label of the button that appears when the number of item exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @default Show more
      * @public
@@ -114,7 +114,7 @@ export default class ActivityTimeline extends LightningElement {
     @api buttonShowMoreLabel = DEFAULT_BUTTON_SHOW_MORE_LABEL;
 
     /**
-     * Label of the button that appears when all items are displayed and max-visible-items value is set.
+     * Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @default Show less
      * @public
@@ -122,14 +122,14 @@ export default class ActivityTimeline extends LightningElement {
     @api buttonShowLessLabel = DEFAULT_BUTTON_SHOW_LESS_LABEL;
 
     /**
-     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @public
      */
     @api buttonShowMoreIconName;
 
     /**
-     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @public
      */
@@ -214,7 +214,7 @@ export default class ActivityTimeline extends LightningElement {
      */
 
     /**
-     * Array of action objects. The actions are displayed at the top right of each item.
+     * Array of action objects. The actions are displayed at the top right of each item. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {object[]}
@@ -229,7 +229,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show less button’s icon. Valid values include left and right.
+     * Position of the show less button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -247,7 +247,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show more button’s icon. Valid values include left and right.
+     * Position of the show more button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -265,7 +265,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Variant of the button that appears when the number of items exceeds the max-visible-items number.
+     * Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.
      * @type {string}
      * @default neutral
      * @public
@@ -283,7 +283,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the group sections are closed by default.
+     * If present, the group sections are closed by default. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {boolean}
@@ -299,7 +299,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the section is collapsible and the collapse icon is visible.
+     * If present, the section is collapsible and the collapse icon is visible. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {boolean}
@@ -315,7 +315,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the value will define how the items will be grouped. Valid values include week, month or year.
+     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {string}
@@ -388,7 +388,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.
+     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {string}
@@ -426,7 +426,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the value will define how the items will be grouped. Valid values include week, month or year.
+     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {string}
