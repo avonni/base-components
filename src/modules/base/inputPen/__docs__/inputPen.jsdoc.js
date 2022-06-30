@@ -59,3 +59,11 @@
  * @name disabled
  * @storyId example-input-pen--disabled
  */
+/**
+ * @namespace slots
+ */
+/**
+ * Actions slot for adding additional actions.
+ * @memberof slots
+ * @name actions
+ */
