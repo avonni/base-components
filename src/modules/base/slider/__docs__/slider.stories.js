@@ -300,66 +300,6 @@ export default {
                 type: { summary: 'string' },
                 category: 'Error messages'
             }
-        },
-        messageWhenValueMissing: {
-            name: 'message-when-value-missing',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when the value is missing.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Error messages'
-            }
-        },
-        messageWhenTooLong: {
-            name: 'message-when-too-long',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when the value is too long.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Error messages'
-            }
-        },
-        messageWhenBadInput: {
-            name: 'message-when-bad-input',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when a bad input is detected.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Error messages'
-            }
-        },
-        messageWhenPatternMismatch: {
-            name: 'message-when-pattern-mismatch',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when a pattern mismatch is detected.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Error messages'
-            }
-        },
-        messageWhenTypeMismatch: {
-            name: 'message-when-type-mismatch',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when a type mismatch is detected.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Error messages'
-            }
         }
     },
     args: {

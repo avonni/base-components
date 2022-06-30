@@ -55,10 +55,7 @@ export const VerticalSlider = ({
     minimumDistance,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
-    messageWhenStepMismatch,
-    messageWhenValueMissing,
-    messageWhenBadInput,
-    messageWhenTypeMismatch
+    messageWhenStepMismatch
 }) => {
     const element = document.createElement('ac-vertical-slider');
     element.label = label;
@@ -82,8 +79,5 @@ export const VerticalSlider = ({
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
-    element.messageWhenValueMissing = messageWhenValueMissing;
-    element.messageWhenBadInput = messageWhenBadInput;
-    element.messageWhenTypeMismatch = messageWhenTypeMismatch;
     return element;
 };

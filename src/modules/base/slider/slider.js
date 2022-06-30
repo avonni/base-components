@@ -83,13 +83,6 @@ export default class Slider extends LightningElement {
      */
     @api label;
     /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenBadInput;
-    /**
      * Error message to be displayed when a range overflow is detected.
      *
      * @type {string}
@@ -110,20 +103,6 @@ export default class Slider extends LightningElement {
      * @public
      */
     @api messageWhenStepMismatch;
-    /**
-     * Error message to be displayed when a type mismatch is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenTypeMismatch;
-    /**
-     * Error message to be displayed when the value is missing.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenValueMissing;
 
     _disabled = false;
     _disableSwap = false;
