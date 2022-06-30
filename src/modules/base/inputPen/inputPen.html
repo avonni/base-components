@@ -39,7 +39,11 @@
             class="slds-form-element__label slds-no-flex"
             data-element-id="label"
         >
-            <abbr if:true={required} title="required" class="slds-required"
+            <abbr
+                if:true={required}
+                title="required"
+                class="slds-required"
+                data-element-id="required-asterix"
                 >*</abbr
             >
             {label}
@@ -47,11 +51,15 @@
         <lightning-helptext
             if:true={fieldLevelHelp}
             content={fieldLevelHelp}
+            data-element-id="field-level-help"
         ></lightning-helptext>
     </div>
     <div class="slds-form-element" data-element-id="form-element">
         <div class="slds-form-element__control">
-            <div class={computedRichTextEditorClasses}>
+            <div
+                class={computedRichTextEditorClasses}
+                data-element-id="rich-text-editor"
+            >
                 <div
                     if:false={hideControls}
                     role="toolbar"
@@ -67,6 +75,7 @@
                                 title="Draw"
                                 onclick={setDraw}
                                 disabled={disabled}
+                                data-group-name="button"
                                 data-element-id="pen-tool"
                             >
                             </lightning-button-icon>
@@ -79,6 +88,7 @@
                                 title="Paint"
                                 onclick={setPaint}
                                 disabled={disabled}
+                                data-group-name="button"
                                 data-element-id="paintbrush-tool"
                             >
                             </lightning-button-icon>
@@ -94,6 +104,7 @@
                                 title="Ink"
                                 onclick={setInk}
                                 disabled={disabled}
+                                data-group-name="button"
                                 data-element-id="ink-tool"
                             >
                                 <svg
@@ -120,6 +131,7 @@
                                 title="Erase"
                                 onclick={setErase}
                                 disabled={disabled}
+                                data-group-name="button"
                                 data-element-id="eraser-tool"
                             >
                                 <svg
@@ -145,6 +157,7 @@
                                 options={sizeList}
                                 onchange={handleSizeChange}
                                 disabled={disabled}
+                                data-group-name="button"
                                 data-element-id="size-picker"
                             >
                             </lightning-combobox>
@@ -170,6 +183,7 @@
                                 value={backgroundColor}
                                 hide-color-input
                                 disabled={disabled}
+                                data-group-name="button"
                                 menu-icon-name="utility:bucket"
                                 variant="label-hidden"
                                 menu-variant="border-filled"
@@ -202,6 +216,7 @@
                                 alternative-text="download PNG"
                                 onclick={handleDownload}
                                 disabled={hasValue}
+                                data-group-name="button"
                                 data-element-id="download"
                             >
                             </lightning-button-icon>
@@ -222,6 +237,7 @@
                                 title="Undo"
                                 onclick={handleUndo}
                                 disabled={disabledUndoButton}
+                                data-group-name="button"
                                 data-element-id="undo"
                             >
                             </lightning-button-icon>
@@ -234,6 +250,7 @@
                                 title="Redo"
                                 onclick={handleRedo}
                                 disabled={disabledRedoButton}
+                                data-group-name="button"
                                 data-element-id="redo"
                             >
                             </lightning-button-icon>
@@ -257,6 +274,7 @@
                             variant="bare"
                             size="large"
                             disabled={disabled}
+                            data-group-name="button"
                             onmouseenter={hideDrawCursor}
                             onmouseleave={showDrawCursor}
                             data-element-id="clear-button"

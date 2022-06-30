@@ -148,7 +148,7 @@
 }
 
 .avonni-input-pen__canvas_disabled {
-    filter: grayscale(80%) brightness(1.5);
+    filter: saturate(50%);
 }
 
 .avonni-input-pen__text-area {

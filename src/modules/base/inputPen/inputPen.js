@@ -94,19 +94,17 @@ export default class InputPen extends LightningElement {
      */
     @api messageWhenValueMissing;
 
+    _color = DEFAULT_COLOR;
     _disabled = false;
     _hideControls = false;
+    _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
     _showSignaturePad = false;
+    _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
-    _backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
-    _rendered = false;
-    _updatedDOM = false;
-
-    toolManager;
     canvasInfo = {
         xPositions: [],
         yPositions: [],
@@ -117,27 +115,30 @@ export default class InputPen extends LightningElement {
         ctx: undefined,
         canvasElement: undefined
     };
+    _toolManager;
 
-    foregroundValue = undefined;
-    backgroundCanvasElement;
-    backgroundCtx;
-    cursor;
-
-    undoStack = [];
     redoStack = [];
+    undoStack = [];
 
-    helpMessage;
-    _invalidField = false;
-    _constraintApi;
-    _constraintApiProxyInputUpdater;
+    _cursor;
+    _backgroundCanvasElement;
+    _backgroundColor = DEFAULT_BACKGROUND_COLOR;
+    _backgroundCtx;
+    _foregroundValue = undefined;
 
     _resizeObserver;
     _resizeTimeout;
 
+    helpMessage;
+    _constraintApi;
+    _constraintApiProxyInputUpdater;
+
     sizeList;
-    _size = DEFAULT_SIZE;
 
     showExtraButtons = false;
+    _invalidField = false;
+    _rendered = false;
+    _updatedDOM = false;
 
     constructor() {
         super();
@@ -170,33 +171,35 @@ export default class InputPen extends LightningElement {
             this.canvasInfo.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
             );
-            this.backgroundCanvasElement = this.template.querySelector(
+            this._backgroundCanvasElement = this.template.querySelector(
                 '[data-element-id="background-canvas"]'
             );
             this.canvasInfo.ctx =
                 this.canvasInfo.canvasElement.getContext('2d');
-            this.backgroundCtx = this.backgroundCanvasElement.getContext('2d');
+            this._backgroundCtx =
+                this._backgroundCanvasElement.getContext('2d');
 
             this.canvasInfo.canvasElement.width =
                 this.canvasInfo.canvasElement.parentElement.clientWidth;
             this.canvasInfo.canvasElement.height =
                 this.canvasInfo.canvasElement.parentElement.clientHeight;
-            this.backgroundCanvasElement.width =
+            this._backgroundCanvasElement.width =
                 this.canvasInfo.canvasElement.parentElement.clientWidth;
-            this.backgroundCanvasElement.height =
+            this._backgroundCanvasElement.height =
                 this.canvasInfo.canvasElement.parentElement.clientHeight;
 
             this.setToolManager();
             this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
-            if (this.foregroundValue) {
+            if (this._foregroundValue) {
                 this.initSrc();
             }
             if (this.showSignaturePad) {
                 this.setInk();
             }
-            // I cant find any other way to affect the combobox width since there are not styling hooks for it.
+
+            // I cant find any other way to affect the combobox width since there are no styling hooks for it.
             if (!this.hideControls && this.showSize) {
                 let combobox = this.template.querySelector(
                     '[data-element-id="size-picker"]'
@@ -231,13 +234,13 @@ export default class InputPen extends LightningElement {
     }
 
     set color(value) {
+        const normalizedValue = normalizeString(value);
         const hexColorRegex = /^#([0-9a-f]{3}){1,2}$/i;
-        if (hexColorRegex.test(normalizeString(value))) {
-            this.canvasInfo.color = value;
-        } else {
-            this.canvasInfo.color = DEFAULT_COLOR;
+        if (hexColorRegex.test(normalizedValue)) {
+            this._color = normalizedValue;
+            this.canvasInfo.color = this._color;
+            this.initCursorStyles();
         }
-        this.initCursorStyles();
     }
 
     /**
@@ -302,7 +305,7 @@ export default class InputPen extends LightningElement {
      */
     @api
     get mode() {
-        return this.canvasInfo.mode;
+        return this._mode;
     }
 
     set mode(value) {
@@ -415,7 +418,7 @@ export default class InputPen extends LightningElement {
     }
 
     set value(value) {
-        this.foregroundValue = value;
+        this._foregroundValue = value;
 
         if (this.canvasInfo.ctx) {
             this.initSrc();
@@ -453,6 +456,24 @@ export default class InputPen extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Get the button slot DOM element.
+     *
+     * @type {Element}
+     */
+    get buttonSlot() {
+        return this.template.querySelector('slot[name=button]');
+    }
+
+    /**
+     * Computed class of the canvas.
+     */
+    get computedCanvasClass() {
+        return classSet('avonni-input-pen__canvas').add({
+            'avonni-input-pen__canvas_disabled': this._disabled
+        });
+    }
 
     /**
      * Computed class of the rich text editor.
@@ -503,20 +524,11 @@ export default class InputPen extends LightningElement {
         mergedCanvas.height = this.canvasInfo.canvasElement.height;
         if (mergedCanvas.width > 0 || mergedCanvas.width > 0) {
             const mergedCtx = mergedCanvas.getContext('2d');
-            mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
+            mergedCtx.drawImage(this._backgroundCanvasElement, 0, 0);
             mergedCtx.drawImage(this.canvasInfo.canvasElement, 0, 0);
             return mergedCanvas.toDataURL();
         }
         return undefined;
-    }
-
-    /**
-     * Computed class of the canvas.
-     */
-    get computedCanvasClass() {
-        return classSet('avonni-input-pen__canvas').add({
-            'avonni-input-pen__canvas_disabled': this._disabled
-        });
     }
 
     /**
@@ -562,6 +574,18 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Check if Clear is shown.
+     *
+     * @type {boolean}
+     */
+    get showClear() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('clear') === -1
+        );
+    }
+
+    /**
      * Check if Color is shown.
      *
      * @type {boolean}
@@ -583,29 +607,6 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if eraser tool is shown.
-     * @type {boolean}
-     *
-     */
-    get showErase() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('eraser') === -1
-        );
-    }
-
-    /**
-     * Check if Clear is shown.
-     *
-     * @type {boolean}
-     */
-    get showClear() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('clear') === -1
-        );
-    }
-    /**
      * Check if download button is shown.
      * @type {boolean}
      *
@@ -614,6 +615,18 @@ export default class InputPen extends LightningElement {
         return (
             !this.disabledButtons ||
             this.disabledButtons.indexOf('download') === -1
+        );
+    }
+
+    /**
+     * Check if eraser tool is shown.
+     * @type {boolean}
+     *
+     */
+    get showErase() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('eraser') === -1
         );
     }
 
@@ -813,7 +826,7 @@ export default class InputPen extends LightningElement {
             this.helpMessage = message;
         });
         if (this._required) {
-            this.setValidity(isValid);
+            this.computeValidityClass();
             this._invalidField = !isValid;
         }
         return isValid;
@@ -838,24 +851,12 @@ export default class InputPen extends LightningElement {
      */
     @api
     setMode(modeName) {
-        this.canvasInfo.mode = normalizeString(modeName, {
-            fallbackValue: this.canvasInfo.mode,
+        this._mode = normalizeString(modeName, {
+            fallbackValue: this._mode,
             validValues: PEN_MODES.valid
         });
-        const drawArea = this.template.querySelector(
-            '[data-element-id="draw-area"]'
-        );
-        if (drawArea) {
-            if (this.canvasInfo.mode === 'ink') {
-                drawArea.classList.add(
-                    'avonni-input-pen__text-area_visible-cursor'
-                );
-            } else {
-                drawArea.classList.remove(
-                    'avonni-input-pen__text-area_visible-cursor'
-                );
-            }
-        }
+        this.canvasInfo.mode = this._mode;
+        this.computeCursorClass();
         this.setToolManager();
     }
 
@@ -903,21 +904,38 @@ export default class InputPen extends LightningElement {
      */
 
     /**
-     * Initialize the Image canvas and dom elements.
+     * Set the visibility class on cursor depending on mode.
      */
-    initSrc() {
-        if (
-            this.foregroundValue &&
-            this.foregroundValue.indexOf('data:image/') === 0
-        ) {
-            let img = new Image();
-            img.onload = () => {
-                this.canvasInfo.ctx.drawImage(img, 0, 0);
-                this.handleChangeEvent();
-            };
-            img.src = this.foregroundValue;
-        } else {
-            this.clear(true);
+    computeCursorClass() {
+        const drawArea = this.template.querySelector(
+            '[data-element-id="draw-area"]'
+        );
+        if (drawArea) {
+            if (this.canvasInfo.mode === 'ink') {
+                drawArea.classList.add(
+                    'avonni-input-pen__text-area_visible-cursor'
+                );
+            } else {
+                drawArea.classList.remove(
+                    'avonni-input-pen__text-area_visible-cursor'
+                );
+            }
+        }
+    }
+
+    /**
+     * Sets validity classes when invalid and removes them when valid.
+     */
+    computeValidityClass() {
+        const richTextEditor = this.template.querySelector(
+            '[data-element-id="rich-text-editor"]'
+        );
+        if (richTextEditor) {
+            if (this.validity) {
+                richTextEditor.classList.remove('slds-has-error');
+            } else {
+                richTextEditor.classList.add('slds-has-error');
+            }
         }
     }
 
@@ -925,186 +943,56 @@ export default class InputPen extends LightningElement {
      * Fill background color to backgroundColor value.
      */
     fillBackground() {
-        this.backgroundCtx.clearRect(
+        this._backgroundCtx.clearRect(
             0,
             0,
             this.canvasInfo.canvasElement.width,
             this.canvasInfo.canvasElement.height
         );
-        this.backgroundCtx.globalAlpha =
+        this._backgroundCtx.globalAlpha =
             parseInt(this._backgroundColor.slice(7), 16) / 255;
-        this.backgroundCtx.fillStyle = this._backgroundColor;
-        this.backgroundCtx.rect(
+        this._backgroundCtx.fillStyle = this._backgroundColor;
+        this._backgroundCtx.rect(
             0,
             0,
             this.canvasInfo.canvasElement.width,
             this.canvasInfo.canvasElement.height
         );
-        this.backgroundCtx.fill();
+        this._backgroundCtx.fill();
     }
 
     /**
-     * Initialize Cursor styling.
+     * Search the canvas element for coordinates on Event trigger.
+     *
+     * @param {string} requestedEvent
+     * @param {Event} event
      */
-    initCursorStyles() {
-        if (this.showCursor) {
-            this.cursor = this.template.querySelector(
-                '[data-element-id="cursor"]'
-            );
-        } else {
-            this.cursor = undefined;
+    manageMouseEvent(requestedEvent, event) {
+        if (this.disabled || this.readOnly) {
+            return;
         }
-        if (this.cursor) {
-            this.cursor.style.setProperty('--size', this.canvasInfo.size);
-            this.cursor.style.setProperty(
-                '--color',
-                this.canvasInfo.mode === 'erase'
-                    ? '#ffffff'
-                    : this.canvasInfo.color
-            );
-        }
-    }
-
-    /**
-     * Set the Mode to Draw.
-     */
-    setDraw() {
-        this.setMode('draw');
-        this.initCursorStyles();
-    }
-
-    /**
-     * Set the Mode to Erase.
-     */
-    setErase() {
-        this.setMode('erase');
-        this.initCursorStyles();
-    }
-
-    /**
-     * Set the Mode to Draw.
-     */
-    setInk() {
-        this.setMode('ink');
-        this.initCursorStyles();
-    }
-
-    /**
-     * Set the Mode to Draw.
-     */
-    setPaint() {
-        this.setMode('paint');
-        this.initCursorStyles();
-    }
-
-    /**
-     * Color change handler.
-     *
-     * @param {Event} event
-     */
-    handleColorChange(event) {
-        this.canvasInfo.color = event.detail.hex;
-        if (this.cursor) {
-            this.cursor.style.setProperty('--color', this.canvasInfo.color);
-        }
-        if (this.canvasInfo.mode === 'erase') {
-            this.setDraw();
-        }
-    }
-
-    /**
-     * Background color change handler.
-     *
-     * @param {Event} event
-     */
-    handleBackgroundColorChange(event) {
-        this.saveAction({ type: 'state' });
-        this._backgroundColor = event.detail.hexa;
-        this.fillBackground();
-        this.saveAction({ type: 'fill' });
-        this.handleChangeEvent();
-    }
-
-    /**
-     * Size change handler. Change cursor size.
-     *
-     * @param {Event} event
-     */
-    handleSizeChange(event) {
-        this.canvasInfo.size = Number(event.detail.value);
-        this._size = Number(event.detail.value);
-        if (this.cursor) {
-            this.cursor.style.setProperty('--size', this.canvasInfo.size);
-        }
-    }
-
-    /**
-     * Mouse move handler. Search canvas coordinates on event trigger.
-     *
-     * @param {Event} event
-     */
-    handleMouseMove(event) {
-        this.manageMouseEvent('move', event);
-    }
-
-    /**
-     * Mouse down handler. Search canvas coordinates on event trigger.
-     *
-     * @param {Event} event
-     */
-    handleMouseDown(event) {
-        this.manageMouseEvent('down', event);
-    }
-
-    /**
-     * Mouse up handler. Search canvas coordinates on event trigger.
-     *
-     * @param {Event} event
-     */
-    handleMouseUp(event) {
-        this.manageMouseEvent('up', event);
-    }
-
-    /**
-     * Mouse Enter handler. Set opacity to 1. Search canvas coordinates on event trigger.
-     *
-     * @param {Event} event
-     */
-    handleMouseEnter() {
-        if (!this.disabled && !this.readOnly) {
-            this.showDrawCursor();
-        }
-    }
-
-    /**
-     * Mouse leave handler. Set opacity to 0.
-     */
-    handleMouseLeave() {
-        if (!this.disabled && !this.readOnly) {
-            this.hideDrawCursor();
-        }
-    }
-
-    /**
-     * handle download event
-     *
-     */
-    handleDownload() {
-        this.download();
-    }
-
-    /**
-     * handle key down event
-     * @param {Event} event
-     *
-     */
-    handleKeyDown(event) {
-        switch (event.keyCode) {
-            case 89: // ctrl-y
-                this.redo();
+        switch (requestedEvent) {
+            case 'down':
+                this.saveAction(event, true);
+                this._toolManager.setupLine(event);
+                this.isDownFlag = true;
                 break;
-            case 90: // ctrl-z
-                this.undo();
+            case 'up':
+                if (this.isDownFlag) {
+                    this.saveAction(event, true);
+                    this._toolManager.closeLine(event);
+                    this.handleChangeEvent();
+                }
+                this.isDownFlag = false;
+                break;
+            case 'move':
+                if (this.isDownFlag) {
+                    this.saveAction(event, true);
+                    this._toolManager.draw(event);
+                }
+                if (!event.isAction) {
+                    this.moveCursor(event);
+                }
                 break;
             default:
                 break;
@@ -1112,18 +1000,64 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * handle undo event
-     *
+     * Initialize Cursor styling.
      */
-    handleUndo() {
-        this.undo();
+    initCursorStyles() {
+        if (this.showCursor) {
+            this._cursor = this.template.querySelector(
+                '[data-element-id="cursor"]'
+            );
+        } else {
+            this._cursor = undefined;
+        }
+        if (this._cursor) {
+            this._cursor.style.setProperty('--size', this._size);
+            this._cursor.style.setProperty(
+                '--color',
+                this._mode === 'erase' ? '#ffffff' : this._color
+            );
+        }
     }
 
     /**
-     * handle redo event
+     * Initialize the Image canvas and dom elements.
      */
-    handleRedo() {
-        this.redo();
+    initSrc() {
+        if (
+            this._foregroundValue &&
+            this._foregroundValue.indexOf('data:image/') === 0
+        ) {
+            let img = new Image();
+            img.onload = () => {
+                this.canvasInfo.ctx.drawImage(img, 0, 0);
+                this.handleChangeEvent();
+            };
+            img.src = this._foregroundValue;
+        } else {
+            this.clear(true);
+        }
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     */
+    initResizeObserver() {
+        if (!this.canvasInfo.canvasElement) return;
+        this._resizeObserver = new AvonniResizeObserver(() => {
+            const savedValue = this._foregroundValue;
+            clearTimeout(this._resizeTimeout);
+            this._resizeTimeout = setTimeout(() => {
+                this.canvasInfo.canvasElement.width =
+                    this.canvasInfo.canvasElement.parentElement.offsetWidth;
+                this.canvasInfo.canvasElement.height =
+                    this.canvasInfo.canvasElement.parentElement.offsetHeight;
+                this._value = savedValue;
+                this.initSrc();
+                this.fillBackground();
+            }, 100);
+        });
+        this._resizeObserver.observe(this.canvasInfo.canvasElement);
     }
 
     /**
@@ -1176,12 +1110,15 @@ export default class InputPen extends LightningElement {
     loadAction(action) {
         this.isDownFlag = action.isDownFlag;
         this.canvasInfo.mode = action.mode;
+        this._mode = action.mode;
         this.setToolManager();
         this.canvasInfo.xPositions = action.xPositions;
         this.canvasInfo.yPositions = action.yPositions;
         this.canvasInfo.velocities = action.velocities;
         this.canvasInfo.color = action.color;
+        this._color = action.color;
         this.canvasInfo.size = action.size;
+        this._size = action.size;
         if (action.backgroundColor) {
             this._backgroundColor = action.backgroundColor;
         }
@@ -1206,22 +1143,48 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * handle reset event
-     * @param {Event} event
+     * Set the Mode to Draw.
      */
-    handleReset(event) {
-        this.clear();
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        event.stopPropagation();
+    setDraw() {
+        this.setMode('draw');
+        this.initCursorStyles();
     }
 
     /**
-     * Hides draw cursor
+     * Set the Mode to Erase.
      */
-    hideDrawCursor() {
-        if (this.cursor) {
-            this.cursor.style.opacity = 0;
+    setErase() {
+        this.setMode('erase');
+        this.initCursorStyles();
+    }
+
+    /**
+     * Set the Mode to Draw.
+     */
+    setInk() {
+        this.setMode('ink');
+        this.initCursorStyles();
+    }
+
+    /**
+     * Set the Mode to Draw.
+     */
+    setPaint() {
+        this.setMode('paint');
+        this.initCursorStyles();
+    }
+
+    setToolManager() {
+        if (!this.smoothToolManager) {
+            this.smoothToolManager = new SmoothToolManager(this.canvasInfo);
+        }
+        if (!this.straightToolManager) {
+            this.straightToolManager = new StraightToolManager(this.canvasInfo);
+        }
+        if (this._mode === 'ink' || this._mode === 'paint') {
+            this._toolManager = this.smoothToolManager;
+        } else {
+            this._toolManager = this.straightToolManager;
         }
     }
 
@@ -1229,46 +1192,17 @@ export default class InputPen extends LightningElement {
      * shows draw cursor
      */
     showDrawCursor() {
-        if (!this._disabled && this.cursor) {
-            this.cursor.style.opacity = 1;
+        if (!this._disabled && this._cursor) {
+            this._cursor.style.opacity = 1;
         }
     }
 
     /**
-     * Search the canvas element for coordinates on Event trigger.
-     *
-     * @param {string} requestedEvent
-     * @param {Event} event
+     * Hides draw cursor
      */
-    manageMouseEvent(requestedEvent, event) {
-        if (this.disabled || this.readOnly) {
-            return;
-        }
-        switch (requestedEvent) {
-            case 'down':
-                this.saveAction(event, true);
-                this.toolManager.setupLine(event);
-                this.isDownFlag = true;
-                break;
-            case 'up':
-                if (this.isDownFlag) {
-                    this.saveAction(event, true);
-                    this.toolManager.closeLine(event);
-                    this.handleChangeEvent();
-                }
-                this.isDownFlag = false;
-                break;
-            case 'move':
-                if (this.isDownFlag) {
-                    this.saveAction(event, true);
-                    this.toolManager.draw(event);
-                }
-                if (!event.isAction) {
-                    this.moveCursor(event);
-                }
-                break;
-            default:
-                break;
+    hideDrawCursor() {
+        if (this._cursor) {
+            this._cursor.style.opacity = 0;
         }
     }
 
@@ -1278,7 +1212,7 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     moveCursor(event) {
-        if (!this.cursor) {
+        if (!this._cursor) {
             return;
         }
         const clientRect =
@@ -1286,23 +1220,8 @@ export default class InputPen extends LightningElement {
         let left = event.clientX - clientRect.left - this.canvasInfo.size / 2;
         let top = event.clientY - clientRect.top - this.canvasInfo.size / 2;
 
-        this.cursor.style.left = `${left}px`;
-        this.cursor.style.top = `${top}px`;
-    }
-
-    /**
-     * Sets validity classes when invalid and removes them when valid.
-     */
-    setValidity(isValid) {
-        if (isValid) {
-            this.template
-                .querySelector('.slds-rich-text-editor')
-                .classList.remove('slds-has-error');
-        } else {
-            this.template
-                .querySelector('.slds-rich-text-editor')
-                .classList.add('slds-has-error');
-        }
+        this._cursor.style.left = `${left}px`;
+        this._cursor.style.top = `${top}px`;
     }
 
     /**
@@ -1314,7 +1233,159 @@ export default class InputPen extends LightningElement {
         transparentCanvas.height = this.canvasInfo.canvasElement.height;
         if (this._value === transparentCanvas.toDataURL()) {
             this._value = undefined;
-            this.foregroundValue = undefined;
+            this._foregroundValue = undefined;
+        }
+    }
+
+    /**
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
+     */
+    _updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
+        }
+    }
+
+    /**
+     * Color change handler.
+     *
+     * @param {Event} event
+     */
+    handleColorChange(event) {
+        this._color = event.detail.hex;
+        this.canvasInfo.color = this._color;
+        if (this._cursor) {
+            this._cursor.style.setProperty('--color', this._color);
+        }
+        if (this._mode === 'erase') {
+            this.setDraw();
+        }
+    }
+
+    /**
+     * Background color change handler.
+     *
+     * @param {Event} event
+     */
+    handleBackgroundColorChange(event) {
+        this.saveAction({ type: 'state' });
+        this._backgroundColor = event.detail.hexa;
+        this.fillBackground();
+        this.saveAction({ type: 'fill' });
+        this.handleChangeEvent();
+    }
+
+    /**
+     * handle download event
+     *
+     */
+    handleDownload() {
+        this.download();
+    }
+
+    /**
+     * Mouse move handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
+    handleMouseMove(event) {
+        this.manageMouseEvent('move', event);
+    }
+
+    /**
+     * Mouse down handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
+    handleMouseDown(event) {
+        this.manageMouseEvent('down', event);
+    }
+
+    /**
+     * Mouse up handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
+    handleMouseUp(event) {
+        this.manageMouseEvent('up', event);
+    }
+
+    /**
+     * Mouse Enter handler. Set opacity to 1. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
+    handleMouseEnter() {
+        if (!this.disabled && !this.readOnly) {
+            this.showDrawCursor();
+        }
+    }
+
+    /**
+     * Mouse leave handler. Set opacity to 0.
+     */
+    handleMouseLeave() {
+        if (!this.disabled && !this.readOnly) {
+            this.hideDrawCursor();
+        }
+    }
+
+    /**
+     * handle key down event
+     * @param {Event} event
+     *
+     */
+    handleKeyDown(event) {
+        switch (event.keyCode) {
+            case 89: // ctrl-y
+                this.redo();
+                break;
+            case 90: // ctrl-z
+                this.undo();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * handle reset event
+     * @param {Event} event
+     */
+    handleReset(event) {
+        this.clear();
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+    }
+
+    /**
+     * handle redo event
+     */
+    handleRedo() {
+        this.redo();
+    }
+
+    /**
+     * handle undo event
+     *
+     */
+    handleUndo() {
+        this.undo();
+    }
+
+    /**
+     * Size change handler. Change cursor size.
+     *
+     * @param {Event} event
+     */
+    handleSizeChange(event) {
+        this.canvasInfo.size = Number(event.detail.value);
+        this._size = Number(event.detail.value);
+        if (this._cursor) {
+            this._cursor.style.setProperty('--size', this.canvasInfo.size);
         }
     }
 
@@ -1323,7 +1394,7 @@ export default class InputPen extends LightningElement {
      */
     handleChangeEvent() {
         this._value = this.dataURL;
-        this.foregroundValue = this.canvasInfo.canvasElement.toDataURL();
+        this._foregroundValue = this.canvasInfo.canvasElement.toDataURL();
         this.testEmptyCanvas();
         this._updateProxyInputAttributes('value');
         if (this._invalidField) {
@@ -1343,64 +1414,5 @@ export default class InputPen extends LightningElement {
                 detail: this.value
             })
         );
-    }
-
-    /**
-     * Get the button slot DOM element.
-     *
-     * @type {Element}
-     */
-    get buttonSlot() {
-        return this.template.querySelector('slot[name=button]');
-    }
-
-    setToolManager() {
-        if (!this.smoothToolManager) {
-            this.smoothToolManager = new SmoothToolManager(this.canvasInfo);
-        }
-        if (!this.straightToolManager) {
-            this.straightToolManager = new StraightToolManager(this.canvasInfo);
-        }
-        if (
-            this.canvasInfo.mode === 'ink' ||
-            this.canvasInfo.mode === 'paint'
-        ) {
-            this.toolManager = this.smoothToolManager;
-        } else {
-            this.toolManager = this.straightToolManager;
-        }
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     */
-    initResizeObserver() {
-        if (!this.canvasInfo.canvasElement) return;
-        this._resizeObserver = new AvonniResizeObserver(() => {
-            const savedValue = this.foregroundValue;
-            clearTimeout(this._resizeTimeout);
-            this._resizeTimeout = setTimeout(() => {
-                this.canvasInfo.canvasElement.width =
-                    this.canvasInfo.canvasElement.parentElement.offsetWidth;
-                this.canvasInfo.canvasElement.height =
-                    this.canvasInfo.canvasElement.parentElement.offsetHeight;
-                this._value = savedValue;
-                this.initSrc();
-                this.fillBackground();
-            }, 100);
-        });
-        this._resizeObserver.observe(this.canvasInfo.canvasElement);
-    }
-
-    /**
-     * Proxy Input Attributes updater.
-     *
-     * @param {object} attributes
-     */
-    _updateProxyInputAttributes(attributes) {
-        if (this._constraintApiProxyInputUpdater) {
-            this._constraintApiProxyInputUpdater(attributes);
-        }
     }
 }

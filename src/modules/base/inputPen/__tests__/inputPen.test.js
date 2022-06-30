@@ -147,20 +147,21 @@ describe('Input pen', () => {
     });
 
     it('Input pen Default attributes', () => {
+        expect(element.disabledButtons).toMatchObject([]);
+        expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.label).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.color).toBe('#000');
         expect(element.disabled).toBeFalsy();
-        expect(element.label).toBeUndefined();
-        expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.hideControls).toBeFalsy();
+        expect(element.mode).toBe('draw');
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.showSignaturePad).toBeFalsy();
-        expect(element.variant).toBe('bottom-toolbar');
-        expect(element.hideControls).toBeFalsy();
-        expect(element.value).toBeUndefined();
-        expect(element.disabledButtons).toMatchObject([]);
-        expect(element.invalid).toBeFalsy();
         expect(element.size).toBe(10);
-        expect(element.mode).toBe('draw');
+        expect(element.validity).toBe(false);
+        expect(element.value).toBeUndefined();
+        expect(element.variant).toBe('bottom-toolbar');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -193,18 +194,12 @@ describe('Input pen', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-group-name="button"]'
             );
-            buttonIcons.forEach((button) => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
-            const combobox =
-                element.shadowRoot.querySelector('lightning-combobox');
-            expect(combobox.disabled).toBeTruthy();
-            const colorPicker =
-                element.shadowRoot.querySelector('c-color-picker');
-            expect(colorPicker.disabled).toBeTruthy();
             expect(element.classList).toContain('avonni-disabled');
         });
     });
@@ -226,8 +221,9 @@ describe('Input pen', () => {
         element.fieldLevelHelp = 'This is a fieldLevelHelp text';
 
         return Promise.resolve().then(() => {
-            const helpText =
-                element.shadowRoot.querySelector('lightning-helptext');
+            const helpText = element.shadowRoot.querySelector(
+                '[data-element-id="field-level-help"]'
+            );
             expect(helpText.content).toBe('This is a fieldLevelHelp text');
         });
     });
@@ -247,7 +243,9 @@ describe('Input pen', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const required = element.shadowRoot.querySelector('.slds-required');
+            const required = element.shadowRoot.querySelector(
+                '[data-element-id="required-asterix"]'
+            );
             expect(required).toBeTruthy();
             expect(required.textContent).toBe('*');
         });
