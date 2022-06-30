@@ -444,7 +444,7 @@
                         "
                     ></div>
                     <div
-                        class={computedFieldClass}
+                        class={computedFieldClassHeader}
                         for:each={initGroups}
                         for:item="group"
                         key={group.index}
@@ -455,7 +455,6 @@
                             onmousedown={handleGroupMouseDown}
                             onmouseup={handleGroupMouseUp}
                             data-element-id="avonni-kanban__group_header"
-                            if:false={hideHeader}
                         >
                             <div if:true={group.headerActions}>
                                 <c-button-menu
