@@ -30,18 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-input-pen__rich-text_flex-direction {
-    flex-direction: column-reverse;
-}
-
-.slds-rich-text-editor__textarea {
+.avonni-input-pen__text-area {
     position: relative;
     overflow: hidden;
     cursor: none;
     background-color: #ffffff;
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
 }
-
 .avonni-input-pen__text-area_cursor {
     cursor: auto;
 }
@@ -65,17 +60,6 @@
 
 .avonni-input-pen__combobox {
     width: 80px;
-
-    /* does not work on children elements? */
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.avonni-input-pen__label-container {
-    padding: 0 0.25rem 0.25rem 0.25rem;
 }
 
 .avonni-input-pen__label-container label {
@@ -96,7 +80,7 @@
 .avonni-input-pen__x-icon {
     --slds-c-icon-color-foreground-default: #d3d3d3;
     position: absolute;
-    bottom: 3rem;
+    bottom: 2rem;
     left: 0.8rem;
 }
 
@@ -106,7 +90,7 @@
     margin: 0 auto;
     height: 3px;
     border-radius: none;
-    bottom: 3rem;
+    bottom: 2rem;
     right: 2rem;
     left: 3rem;
     background-color: #e1e1e1;
@@ -139,12 +123,8 @@
 }
 
 .avonni-input-pen__canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
     height: 100%;
     width: 100%;
-    background-color: transparent;
 }
 
 .avonni-input-pen__canvas_disabled {
@@ -153,16 +133,4 @@
 
 .avonni-input-pen__text-area {
     min-height: var(--avonni-input-pen-body-sizing-height, 350px);
-}
-
-.avonni-input-pen__avonni-input-pen__combobox:hover svg path {
-    fill: #024486;
-}
-
-.avonni-input-pen__custom-icon:focus svg path {
-    fill: #024486;
-}
-
-.avonni-input-pen__custom-icon[disabled] svg {
-    fill: #c9c9c9;
 }

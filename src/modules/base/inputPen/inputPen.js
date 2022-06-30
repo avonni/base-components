@@ -470,7 +470,7 @@ export default class InputPen extends LightningElement {
      * Computed class of the canvas.
      */
     get computedCanvasClass() {
-        return classSet('avonni-input-pen__canvas').add({
+        return classSet('avonni-input-pen__canvas slds-is-absolute').add({
             'avonni-input-pen__canvas_disabled': this._disabled
         });
     }
@@ -482,8 +482,7 @@ export default class InputPen extends LightningElement {
         return classSet(
             'slds-rich-text-editor slds-grid slds-grid_vertical slds-nowrap avonni-input-pen__rich-text_border-radius'
         ).add({
-            'avonni-input-pen__rich-text_flex-direction':
-                this.variant === 'bottom-toolbar'
+            'slds-grid_vertical-reverse': this.variant === 'bottom-toolbar'
         });
     }
 
