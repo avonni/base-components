@@ -10,6 +10,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api scrollLeftOffset;
     @api timeSpan;
     @api visibleInterval;
+    @api variant;
+    @api visibleWidth;
+    @api zoomToFit;
 
     _start;
 
@@ -19,11 +22,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         }
 
         // Create the smallestHeader
-        const columns = [];
+        const cells = [];
         let start = this.start;
         for (let i = 0; i < 100; i++) {
             const end = start.endOf('day');
-            columns.push({
+            cells.push({
                 start: start.ts,
                 end: end.ts
             });
@@ -34,9 +37,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             new CustomEvent('privateheaderchange', {
                 detail: {
                     smallestHeader: {
-                        columns,
+                        cells,
                         start: this.start,
-                        end: columns[columns.length - 1].end
+                        end: cells[cells.length - 1].end
                     }
                 }
             })

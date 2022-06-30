@@ -48,10 +48,12 @@ export const ActivityTimeline = ({
     buttonShowLessLabel,
     closed,
     collapsible,
+    itemDateFormat,
     iconName,
     iconSize,
     itemIconSize,
     items,
+    hideItemDate,
     groupBy,
     orientation,
     maxVisibleItems,
@@ -69,12 +71,14 @@ export const ActivityTimeline = ({
     element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
+    element.itemDateFormat = itemDateFormat;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.itemIconSize = itemIconSize;
     element.items = items;
     element.orientation = orientation;
+    element.hideItemDate = hideItemDate;
     element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;
     element.title = title;

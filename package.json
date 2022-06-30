@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
@@ -11,13 +11,13 @@
     "dependencies": {
         "d3": "^7.4.4",
         "dompurify": "^2.2.6",
-        "lightning-base-components": "^1.13.6-alpha"
+        "lightning-base-components": "^1.14.7-alpha"
     },
     "devDependencies": {
         "@babel/core": "^7.12.13",
         "@lwc/jest-preset": "^11.2.1",
         "@lwc/synthetic-shadow": "^1.17.9",
-        "@salesforce-ux/design-system": "^2.17.5",
+        "@salesforce-ux/design-system": "^2.18.0",
         "@storybook/addon-actions": "^6.2.8",
         "@storybook/addon-essentials": "^6.2.8",
         "@storybook/addon-links": "^6.2.8",

@@ -91,6 +91,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api fieldLevelHelp;
 
     /**
+     * Deprecated. The selected options are in the combobox component's DOM.
+     *
+     * @type {boolean}
+     * @deprecated
+     */
+    @api hideSelectedOptions;
+
+    /**
      * Text label for the primitive combobox.
      *
      * @type {string}
@@ -121,6 +129,14 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api name;
+
+    /**
+     * Deprecated. The selected options are in the combobox component's DOM.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api selectedOptionsAriaLabel;
 
     _actions = [];
     _allowSearch = false;
@@ -898,11 +914,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.stopDropdownPositioning();
 
             if (this.isMultiSelect) {
-                // Reset options
-                this.visibleOptions = [...this.options];
-                this.parentOptionsValues = [];
-                this.backLink = undefined;
-                this.showLoader = this.isLoading;
+                this.resetLevel();
             } else {
                 // Reset to current visible level and erase the search
                 this.visibleOptions =
@@ -969,6 +981,19 @@ export default class PrimitiveCombobox extends LightningElement {
         return this._constraint.reportValidity((message) => {
             this.helpMessage = this.messageWhenValueMissing || message;
         });
+    }
+
+    /**
+     * Reset the combobox to the first options level.
+     *
+     * @public
+     */
+    @api
+    resetLevel() {
+        this.visibleOptions = [...this.options];
+        this.parentOptionsValues = [];
+        this.backLink = undefined;
+        this.showLoader = this.isLoading;
     }
 
     /**
@@ -1696,11 +1721,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.dispatchChange('unselect', levelPath);
         }
 
-        // Reset the visible options
-        this.visibleOptions = this.options;
-        this.parentOptionsValues = [];
-        this.backLink = undefined;
-
+        this.resetLevel();
         this.focus();
     }
 
