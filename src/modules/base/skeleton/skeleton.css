@@ -9,7 +9,7 @@
     --avonni-chip-label-font-size: 0.75rem;
     --avonni-chip-line-height: normal;
     --avonni-avatar-primary-text-font-size: 0.875rem;
-    --avonni-avatar-secondary-text-font-size: 0.8125rem;
+    --avonni-avatar-secondary-text-font-size: 0.75rem;
 }
 
 .avonni-skeleton__badge {
@@ -42,11 +42,16 @@
 
 .avonni-skeleton__avatar-primary-text {
     min-height: var(--avonni-avatar-primary-text-font-size);
+    width: 140px;
 }
 
-.avonni-skeleton__avatar-secondary-text,
+.avonni-skeleton__avatar-secondary-text {
+    min-height: var(--avonni-avatar-secondary-text-font-size);
+    width: 180px;
+}
 .avonni-skeleton__avatar-tertiary-text {
     min-height: var(--avonni-avatar-secondary-text-font-size);
+    width: 160px;
 }
 
 .avonni-skeleton__animation-pulse {

@@ -293,6 +293,15 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get if avatar should hide its details
+     * @type {boolean}
+     */
+    @api
+    get hideAvatarDetails() {
+        return this.variantAttributes.hideAvatarDetails;
+    }
+
+    /**
      * Get if datatable has to have its checkbox column hidden
      * @type {boolean}
      */
@@ -441,33 +450,14 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Get if avatar should show its primary text
-     * @type {boolean}
-     */
-    @api
-    get showAvatarPrimaryText() {
-        return this.variantAttributes.primaryText;
-    }
-
-    /**
-     * Get if avatar should show its secondary text
-     * @type {boolean}
-     */
-    @api
-    get showAvatarSecondaryText() {
-        return this.variantAttributes.secondaryText;
-    }
-
-    /**
      * Get if avatar should show its tertiary text
      * @type {boolean}
      */
     @api
     get showAvatarTertiaryText() {
         return (
-            (this._variantAttributes.size === 'x-large' ||
-                this._variantAttributes.size === 'xx-large') &&
-            this.variantAttributes.tertiaryText
+            this._variantAttributes.size === 'x-large' ||
+            this._variantAttributes.size === 'xx-large'
         );
     }
 

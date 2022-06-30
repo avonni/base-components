@@ -39,20 +39,20 @@
             slot="figure"
             data-element-id="avonni-skeleton__avatar-figure"
         ></div>
-        <p
-            if:true={showAvatarPrimaryText}
-            class={primaryAvatarTextClass}
-            data-element-id="avonni-skeleton__avatar-primary-text"
-        ></p>
-        <p
-            if:true={showAvatarSecondaryText}
-            class={secondaryAvatarTextClass}
-            data-element-id="avonni-skeleton__avatar-secondary-text"
-        ></p>
-        <p
-            if:true={showAvatarTertiaryText}
-            class={tertiaryAvatarTextClass}
-            data-element-id="avonni-skeleton__avatar-tertiary-text"
-        ></p>
+        <template if:false={hideAvatarDetails}>
+            <p
+                class={primaryAvatarTextClass}
+                data-element-id="avonni-skeleton__avatar-primary-text"
+            ></p>
+            <p
+                class={secondaryAvatarTextClass}
+                data-element-id="avonni-skeleton__avatar-secondary-text"
+            ></p>
+            <p
+                if:true={showAvatarTertiaryText}
+                class={tertiaryAvatarTextClass}
+                data-element-id="avonni-skeleton__avatar-tertiary-text"
+            ></p>
+        </template>
     </c-media-object>
 </template>
