@@ -139,14 +139,14 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        position: {
-            name: 'position',
+        orientation: {
+            name: 'orientation',
             control: {
                 type: 'select'
             },
             options: ['vertical', 'horizontal'],
             description:
-                'Position of the activity timeline. Valid values include vertical and horizontal.',
+                'Orientation of the activity timeline. Valid values include vertical and horizontal.',
             table: {
                 defaultValue: { summary: 'vertical' },
                 type: { summary: 'string' }
@@ -290,7 +290,7 @@ export default {
         buttonVariant: 'neutral',
         iconSize: 'medium',
         itemIconSize: 'small',
-        position: 'vertical'
+        orientation: 'vertical'
     }
 };
 
@@ -321,7 +321,7 @@ export const Horizontal = Template.bind({});
 Horizontal.args = {
     title: 'Activity Timeline - Horizontal view',
     iconName: 'standard:timesheet_entry',
-    position: 'horizontal',
+    orientation: 'horizontal',
     items: horizontalItems,
     collapsible: true,
     actions: actions

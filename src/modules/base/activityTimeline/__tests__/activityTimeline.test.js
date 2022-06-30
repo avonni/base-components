@@ -71,7 +71,7 @@ describe('Activity Timeline', () => {
         expect(element.buttonShowMoreIconPosition).toBe('left');
         expect(element.buttonShowMoreLabel).toBe('Show more');
         expect(element.buttonVariant).toBe('neutral');
-        expect(element.position).toBe('vertical');
+        expect(element.orientation).toBe('vertical');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -718,7 +718,7 @@ describe('Activity Timeline', () => {
         );
         element.title = 'Horizontal Activity Timeline';
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             const timelineContainer = element.shadowRoot.querySelectorAll(
@@ -732,7 +732,7 @@ describe('Activity Timeline', () => {
 
     it('Activity Timeline: horizontal - itemclick', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             const timelineItemsSVG = element.shadowRoot.querySelector(
@@ -763,7 +763,7 @@ describe('Activity Timeline', () => {
             return 100;
         };
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         let timelineItemsSVG;
         let item;
 
@@ -798,7 +798,7 @@ describe('Activity Timeline', () => {
     // displayedItems
     it('Activity Timeline: horizontal - displayedItems', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             const timelineItemsSVG = element.shadowRoot.querySelector(
@@ -842,7 +842,7 @@ describe('Activity Timeline', () => {
             'handleMouseOverOnInterval'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             // By default, edit mode should be disabled
@@ -885,7 +885,7 @@ describe('Activity Timeline', () => {
         );
 
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const initialIntervalPosition = '602.8452332242226';
 
         return Promise.resolve().then(() => {
@@ -1010,7 +1010,7 @@ describe('Activity Timeline', () => {
         );
 
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const dragPosition = '16.5';
 
         return Promise.resolve().then(() => {
@@ -1110,7 +1110,7 @@ describe('Activity Timeline', () => {
             'setIntervalMaxDate'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const dragPosition = '1000';
         const initialXMinPosition = '602.8452332242226';
 
@@ -1173,7 +1173,7 @@ describe('Activity Timeline', () => {
             'handleTimeIntervalDrag'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const initialXMinPosition = '602.8452332242226';
 
         return Promise.resolve().then(() => {
@@ -1215,7 +1215,7 @@ describe('Activity Timeline', () => {
     // Scroll disabled if all items can be displayed with preferred height
     it('Activity Timeline: horizontal - scroll disabled', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         element.maxVisibleItems = 15;
 
         return Promise.resolve().then(() => {
@@ -1229,7 +1229,7 @@ describe('Activity Timeline', () => {
     // Scroll: If the height of the timeline's svg is bigger than the height displayed
     it('Activity Timeline: horizontal - scroll', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         element.maxVisibleItems = 2;
 
         return Promise.resolve().then(() => {
@@ -1243,7 +1243,7 @@ describe('Activity Timeline', () => {
     // Click on scroll axis : click cannot go further than max position - intervalWidth
     it('Activity Timeline: horizontal - click on scroll axis (edit mode disabled, max position)', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const clickPosition = '1150';
         const maxPositionForInterval = '1055.4705400981998';
 
@@ -1275,7 +1275,7 @@ describe('Activity Timeline', () => {
         );
 
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const newIntervalPosition = '810.9410801963995';
         const halfIntervalWidth = 189.0589198036006 / 2;
 
@@ -1315,7 +1315,7 @@ describe('Activity Timeline', () => {
         };
 
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         let item;
         let popoverItem;
 
@@ -1365,13 +1365,13 @@ describe('Activity Timeline', () => {
             )
             .mockReturnValue(400);
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         let item;
 
         return Promise.resolve()
             .then(() => {
                 // Set width
-                element.position = 'vertical';
+                element.orientation = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1380,7 +1380,7 @@ describe('Activity Timeline', () => {
                     'clientWidth',
                     'get'
                 ).mockImplementation(() => 1600);
-                element.position = 'horizontal';
+                element.orientation = 'horizontal';
             })
             .then(() => {
                 // Get specific item to activate mouse over
@@ -1417,7 +1417,7 @@ describe('Activity Timeline', () => {
             'setVisibleTimelineHeight'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         element.maxVisibleItems = 4;
 
         return Promise.resolve().then(() => {
@@ -1443,7 +1443,7 @@ describe('Activity Timeline', () => {
             'setVisibleTimelineHeight'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         element.maxVisibleItems = 30;
 
         return Promise.resolve().then(() => {
@@ -1516,7 +1516,7 @@ describe('Activity Timeline', () => {
 
         horizontalItemsTest.forEach((item) => itemsWithSameDate.push(item));
         element.items = itemsWithSameDate;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         element.maxVisibleItems = 30;
 
         return Promise.resolve().then(() => {
@@ -1538,11 +1538,11 @@ describe('Activity Timeline', () => {
     // Change width of timeline
     it('Activity Timeline: horizontal - set width of timeline', () => {
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve()
             .then(() => {
-                element.position = 'vertical';
+                element.orientation = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1551,7 +1551,7 @@ describe('Activity Timeline', () => {
                     'clientWidth',
                     'get'
                 ).mockImplementation(() => 2000);
-                element.position = 'horizontal';
+                element.orientation = 'horizontal';
             })
             .then(() => {
                 const timelineItemsSVG = element.shadowRoot.querySelector(
@@ -1569,12 +1569,12 @@ describe('Activity Timeline', () => {
             'createTimeAxis'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
 
         return Promise.resolve()
             .then(() => {
                 // The width of timeline container is reduced to change ticks
-                element.position = 'vertical';
+                element.orientation = 'vertical';
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1583,7 +1583,7 @@ describe('Activity Timeline', () => {
                     'clientWidth',
                     'get'
                 ).mockImplementation(() => timelineWidth);
-                element.position = 'horizontal';
+                element.orientation = 'horizontal';
             })
             .then(() => {
                 // Check if the width of the timeline was changed
@@ -1628,7 +1628,7 @@ describe('Activity Timeline', () => {
             'handleWheelOnInterval'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const initialIntervalPosition = '602.8452332242226';
         const expectedPosition = '615.4491612111293';
         const deltaX = 20;
@@ -1670,7 +1670,7 @@ describe('Activity Timeline', () => {
             'handleWheelOnInterval'
         );
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const initialIntervalPosition = '602.8452332242226';
         const expectedPosition = '527.2216653027824';
         const deltaX = -100;
@@ -1719,7 +1719,7 @@ describe('Activity Timeline', () => {
             .mockReturnValue(true);
 
         element.items = horizontalItemsTest;
-        element.position = 'horizontal';
+        element.orientation = 'horizontal';
         const initialIntervalPosition = '602.8452332242226';
         const deltaX = -100;
         let intervalRectangle;

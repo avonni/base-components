@@ -71,7 +71,7 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
-const POSITIONS = {
+const ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
 };
@@ -146,7 +146,7 @@ export default class ActivityTimeline extends LightningElement {
     _maxVisibleItems;
     _iconSize = ICON_SIZES.default;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
-    _position = POSITIONS.default;
+    _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     // Horizontal Activity Timeline
@@ -407,21 +407,21 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the activity timeline. Valid values include vertical and horizontal.
+     * Orientation of the activity timeline. Valid values include vertical and horizontal.
      *
      * @public
      * @type {string}
      * @default vertical
      */
     @api
-    get position() {
-        return this._position;
+    get orientation() {
+        return this._orientation;
     }
 
-    set position(value) {
-        this._position = normalizeString(value, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
+    set orientation(value) {
+        this._orientation = normalizeString(value, {
+            fallbackValue: ORIENTATIONS.default,
+            validValues: ORIENTATIONS.valid
         });
     }
 
@@ -531,12 +531,12 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Check if timeline's position is horizontal
+     * Check if timeline's orientation is horizontal
      *
      * @type {boolean}
      */
     get isTimelineHorizontal() {
-        return this.position === 'horizontal';
+        return this.orientation === 'horizontal';
     }
 
     /**
