@@ -484,6 +484,16 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Cancel swipe left (to go back to previous page) if user is scrolling left on interval.
+     */
+    cancelSwipeLeftIfScrollLeft(event) {
+        if (event.deltaX < 0) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+    }
+
+    /**
      * Formatted item's title to prevent text longer than 30 characters on horizontal timeline
      * @param {Object} item
      * @returns string
@@ -925,7 +935,11 @@ export class HorizontalActivityTimeline {
      */
     initializeIntervalHorizontalScroll() {
         const timelineDivContainer = d3.select(this.divTimelineContainer);
-        timelineDivContainer.on('wheel', this.handleWheelOnInterval.bind(this));
+        timelineDivContainer.on(
+            'wheel',
+            this.handleWheelOnInterval.bind(this),
+            { passive: false }
+        );
     }
 
     /**
@@ -1532,6 +1546,7 @@ export class HorizontalActivityTimeline {
             return;
         }
 
+        this.cancelSwipeLeftIfScrollLeft(event);
         this.cancelEditIntervalSizeMode();
         this.handleMouseOutOfPopover();
 
