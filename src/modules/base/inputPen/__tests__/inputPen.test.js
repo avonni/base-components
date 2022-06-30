@@ -35,22 +35,13 @@ import InputPen from 'c/inputPen';
 
 let element;
 const DATA_URL = 'data:image/png;base64,validValue';
-let position = 0;
-
-const MOUSEDOWN_EVENT = new MouseEvent('mousedown', {
-    clientX: position,
-    clientY: position
-});
-
-const MOUSEUP_EVENT = new MouseEvent('mouseup', {
-    clientX: position + 5,
-    clientY: position + 5
-});
-
-const MOUSEMOVE_EVENT = new MouseEvent('mousemove', {
-    clientX: position,
-    clientY: position
-});
+let position = {
+    x: 1,
+    y: 1
+};
+const MOUSEDOWN_EVENT = new CustomEvent('mousedown');
+const MOUSEUP_EVENT = new CustomEvent('mouseup');
+const MOUSEMOVE_EVENT = new CustomEvent('mousemove');
 
 const MOCKED_CONTEXT = {
     clearRect: () => {},
@@ -94,12 +85,42 @@ function mockValueAssessment() {
         .mockReturnValueOnce('');
 }
 
+function initMouseEvents() {
+    MOUSEDOWN_EVENT.clientX = position.x;
+    MOUSEDOWN_EVENT.clientY = position.y;
+
+    MOUSEUP_EVENT.clientX = position.x;
+    MOUSEUP_EVENT.clientY = position.y;
+
+    MOUSEMOVE_EVENT.clientX = position.x;
+    MOUSEMOVE_EVENT.clientY = position.y;
+}
+
+function nextMoveEvent(increase) {
+    if (increase) {
+        MOUSEMOVE_EVENT.clientX =
+            MOUSEMOVE_EVENT.clientX + MOUSEMOVE_EVENT.clientX;
+        MOUSEMOVE_EVENT.clientY =
+            MOUSEMOVE_EVENT.clientY + MOUSEMOVE_EVENT.clientY;
+    } else {
+        MOUSEMOVE_EVENT.clientX =
+            MOUSEMOVE_EVENT.clientX - MOUSEMOVE_EVENT.clientX / 2;
+        MOUSEMOVE_EVENT.clientY =
+            MOUSEMOVE_EVENT.clientY - MOUSEMOVE_EVENT.clientY / 2;
+    }
+}
+
+// Not tested:
+// Avonni Resize Observer callback
+
+// Not covered:
+// default switch cases that are unreachable
+
 describe('Input pen', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        position = 0;
         jest.restoreAllMocks();
         jest.clearAllTimers();
     });
@@ -112,8 +133,6 @@ describe('Input pen', () => {
         const canvas = document.createElement('canvas');
         canvas.width = 100;
         canvas.height = 100;
-        jest.useFakeTimers();
-
         jest.spyOn(HTMLCanvasElement.prototype, 'width', 'get').mockReturnValue(
             100
         );
@@ -122,6 +141,9 @@ describe('Input pen', () => {
             'height',
             'get'
         ).mockReturnValue(100);
+        position._x = 1;
+        position._y = 1;
+        jest.useFakeTimers();
     });
 
     it('Input pen Default attributes', () => {
@@ -730,7 +752,7 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
-
+        initMouseEvents();
         return Promise.resolve()
             .then(() => {
                 element.reportValidity();
@@ -760,11 +782,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
             })
@@ -778,11 +802,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
             })
@@ -796,12 +822,31 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
@@ -814,12 +859,31 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(false);
+                window.dispatchEvent(MOUSEMOVE_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEUP_EVENT);
             })
             .then(() => {
@@ -832,11 +896,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
             })
@@ -916,11 +982,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
@@ -928,6 +996,7 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
@@ -935,6 +1004,7 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(3);
@@ -953,11 +1023,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
@@ -965,6 +1037,7 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
@@ -997,11 +1070,13 @@ describe('Input pen', () => {
         const drawArea = element.shadowRoot.querySelector(
             '[data-element-id="draw-area"]'
         );
+        initMouseEvents();
         const strokeSpy = jest.spyOn(MOCKED_CONTEXT, 'stroke');
         return Promise.resolve()
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(1);
@@ -1009,6 +1084,7 @@ describe('Input pen', () => {
             .then(() => {
                 mockValueAssessment();
                 drawArea.dispatchEvent(MOUSEDOWN_EVENT);
+                nextMoveEvent(true);
                 window.dispatchEvent(MOUSEMOVE_EVENT);
                 window.dispatchEvent(MOUSEUP_EVENT);
                 expect(strokeSpy).toHaveBeenCalledTimes(2);
