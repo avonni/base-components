@@ -217,7 +217,9 @@ export default class Skeleton extends LightningElement {
         return this._height;
     }
     set height(value) {
-        this._height = value;
+        if (value !== undefined && !isNaN(value) && typeof value === 'string')
+            this._height = `${value}px`;
+        else this._height = value;
     }
 
     /**
@@ -262,7 +264,9 @@ export default class Skeleton extends LightningElement {
         return this._width;
     }
     set width(value) {
-        this._width = value;
+        if (value !== undefined && !isNaN(value) && typeof value === 'string')
+            this._width = `${value}px`;
+        else this._width = value;
     }
 
     /**
