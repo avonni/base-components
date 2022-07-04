@@ -10,6 +10,8 @@
     --avonni-chip-line-height: normal;
     --avonni-avatar-primary-text-font-size: 0.875rem;
     --avonni-avatar-secondary-text-font-size: 0.75rem;
+    --avonni-skeleton-display: initial;
+    display: var(--avonni-skeleton-display);
 }
 
 .avonni-skeleton__display-inline-block {
@@ -63,7 +65,8 @@
 .avonni-skeleton__chip-container,
 .avonni-skeleton__button-container,
 .avonni-skeleton__buttonIcon-container,
-.avonni-skeleton__avatar-container {
+.avonni-skeleton__avatar-container,
+.avonni-skeleton__badge-container {
     display: flex;
     align-items: center;
     justify-content: center;
