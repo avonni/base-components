@@ -60,7 +60,7 @@ describe('Skeleton', () => {
     // skeleton-base
     it('Skeleton: base', () => {
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -76,7 +76,7 @@ describe('Skeleton', () => {
     it('Skeleton: rectangular variant', () => {
         element.variant = 'rectangular';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -92,7 +92,7 @@ describe('Skeleton', () => {
     it('Skeleton: circular variant', () => {
         element.variant = 'circular';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -109,7 +109,7 @@ describe('Skeleton', () => {
         element.variant = 'text';
         element.height = undefined;
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.style.height).toBe('0.7em');
@@ -122,7 +122,7 @@ describe('Skeleton', () => {
         element.variant = 'rectangular';
         element.height = '100px';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(element.height).toBe('100px');
@@ -135,7 +135,7 @@ describe('Skeleton', () => {
         element.variant = 'text';
         element.width = undefined;
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.style.width).toBe('100%');
@@ -148,7 +148,7 @@ describe('Skeleton', () => {
         element.variant = 'rectangular';
         element.width = '100px';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(element.width).toBe('100px');
@@ -270,7 +270,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-span"]'
             );
             const skeletonBadgeLabel = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-badge-label"]'
@@ -310,7 +310,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-span"]'
             );
             const skeletonBadgeLabel = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-badge-label"]'
@@ -349,7 +349,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonButtonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-icon"]'
+                '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
             );
 
             expect(skeletonButtonIcon.className).toContain('slds-button');
@@ -372,7 +372,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonChip = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-chip-wrapper"]'
+                '[data-element-id="avonni-skeleton-chip-span"]'
             );
 
             const skeletonChipLabel = element.shadowRoot.querySelector(
@@ -483,7 +483,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonInputWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-input-wrapper"]'
+                '[data-element-id="avonni-skeleton-input"]'
             );
 
             const skeletonInputLabelTag = element.shadowRoot.querySelector(
@@ -548,7 +548,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonTabset = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-tabset-container"]'
+                '[data-element-id="avonni-skeleton-tabset-wrapper"]'
             );
             const skeletonTabsetList = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-tabset-list"]'
@@ -573,7 +573,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonTabset = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-tabset-container"]'
+                '[data-element-id="avonni-skeleton-tabset-wrapper"]'
             );
             const skeletonTabsetList = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-tabset-list"]'
@@ -596,7 +596,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonTabset = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-tabset-container"]'
+                '[data-element-id="avonni-skeleton-tabset-wrapper"]'
             );
             const skeletonTabsetList = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-tabset-list"]'
@@ -661,7 +661,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const badgeElement = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-wrapper"]'
+                '[data-element-id="avonni-skeleton-badge-span"]'
             );
             const badgeLabel = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-badge-label"]'
@@ -690,7 +690,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const paragraphElement = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-paragraph-list"]'
+                '[data-element-id="avonni-skeleton-paragraph-wrapper"]'
             );
             expect(paragraphElement.className).toBe('');
         });

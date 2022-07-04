@@ -10,6 +10,7 @@
     --avonni-chip-line-height: normal;
     --avonni-avatar-primary-text-font-size: 0.875rem;
     --avonni-avatar-secondary-text-font-size: 0.75rem;
+    display: inline-block;
 }
 
 .avonni-skeleton__avatar-details {
@@ -52,6 +53,16 @@
     align-items: center;
 }
 
+.avonni-skeleton__wrapper {
+    display: inline-block;
+}
+
+.avonni-skeleton__chip-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .avonni-skeleton__avatar-primary-text {
     min-height: var(--avonni-avatar-primary-text-font-size);
     width: 140px;
@@ -67,7 +78,7 @@
 }
 
 .avonni-skeleton__animation-pulse {
-    height: 100%;
+    /* height: 100%; */
     animation: pulse-animation 1s infinite;
 }
 

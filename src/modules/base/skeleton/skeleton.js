@@ -889,7 +889,7 @@ export default class Skeleton extends LightningElement {
      */
     get skeleton() {
         return this.template.querySelector(
-            '[data-element-id="avonni-skeleton"]'
+            '[data-element-id="avonni-skeleton-wrapper"]'
         );
     }
 
@@ -916,6 +916,9 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'combobox':
                     this.updateComboboxClassList();
+                    break;
+                case 'input':
+                    this.setTextSize();
                     break;
                 case 'text':
                     this.setTextSize();
@@ -1030,9 +1033,17 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Sets the width and heigh for text variant
+     * Sets the width and heigh for variant
+     * @param {*} variant
      */
     setTextSize() {
+        const variantElement = this.template.querySelector(
+            `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
+        );
+        variantElement.style.width =
+            this.width === undefined ? '100%' : `${this.width}`;
+        // variantElement.style.height =
+        //     this.height === undefined ? '2em' : `${this.height}`;
         if (this.htmlVariant === combobox) {
             const comboboxElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-combobox-form-element"]'
@@ -1040,11 +1051,31 @@ export default class Skeleton extends LightningElement {
             const comboboxWrapper = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-combobox-wrapper"]'
             );
-
             comboboxElement.style.width =
                 this.width === undefined ? '100%' : `${this.width}`;
-
+            comboboxWrapper.style.width =
+                this.width === undefined ? '100%' : `${this.width}`;
             comboboxWrapper.style.height =
+                this.height === undefined ? '0.7em' : `${this.height}`;
+        } else if (this.htmlVariant === chip) {
+            const chipElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-chip-wrapper"]'
+            );
+            console.log('hello');
+            chipElement.style.height =
+                this.height === undefined ? '2em' : `${this.height}`;
+        } else if (this.htmlVariant === input) {
+            console.log('hello');
+            const inputElement = this.template.querySelector(
+                `[data-element-id="avonni-skeleton-input-wrapper"]`
+            );
+            const inputContainer = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-input-container"]'
+            );
+
+            inputContainer.style.width =
+                this.width === undefined ? '100%' : `${this.width}`;
+            inputElement.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
         } else {
             let element = this.skeleton;
@@ -1093,6 +1124,7 @@ export default class Skeleton extends LightningElement {
             '--avonni-skeleton-chip-label-background',
             variantAttributes.labelColor
         );
+        this.setTextSize();
     }
 
     /**
@@ -1100,7 +1132,7 @@ export default class Skeleton extends LightningElement {
      */
     updateVariantButtonIcon() {
         const buttonIconElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-button-icon"]'
+            '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
         );
         const buttonIconVariantAttributes = BUTTON_ICON_VARIANT_VALUES.get(
             this.variantAttributes.variant
@@ -1127,7 +1159,7 @@ export default class Skeleton extends LightningElement {
      */
     updateParagraphClassList() {
         const paragraphElementItems = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-paragraph-list"]'
+            '[data-element-id="avonni-skeleton-paragraph-wrapper"]'
         ).children;
         for (let i = 0; i < paragraphElementItems.length; i++) {
             paragraphElementItems[i].style.width = this.paragraphItems[i].width;
