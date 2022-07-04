@@ -738,6 +738,35 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
+     *
+     * @type {HTMLElement}
+     */
+    get firstCol() {
+        return this.template.querySelector(
+            '[data-element-id="div-first-column"]'
+        );
+    }
+
+    /**
+     * Computed CSS classes for the first column.
+     *
+     * @type {string}
+     */
+    get firstColClass() {
+        return classSet(
+            'slds-border_right avonni-scheduler__first-col slds-grid'
+        )
+            .add({
+                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
+                'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
+                'avonni-scheduler__first-col_horizontal': this.isVertical,
+                'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * Outermost HTML element of the component.
      *
      * @type {HTMLElement}
@@ -954,8 +983,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const { from, headerCells, cellHeight, cellWidth } = this;
 
         // Find the cell where the event starts
-        let i = headerCells.findIndex((column) => {
-            return column.end > from;
+        let i = headerCells.findIndex((cell) => {
+            return cell.end > from;
         });
 
         if (i < 0) return;

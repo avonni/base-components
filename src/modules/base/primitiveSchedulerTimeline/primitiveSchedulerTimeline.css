@@ -1,42 +1,9 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS∫ AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 .avonni-scheduler__wrapper {
     height: 100%;
     min-height: 5rem;
     max-height: 100vh;
     overflow: auto;
 }
-
 .avonni-scheduler__first-col {
     background-color: #f3f3f3;
     position: sticky;
@@ -47,6 +14,7 @@
 .avonni-scheduler__first-col_horizontal {
     width: var(--avonni-scheduler-datatable-column-width, 300px);
 }
+
 .avonni-scheduler__grid_align-end {
     /* We can't use slds-grid_align-end because it will prevent the smallest header cells from growing */
     justify-content: right;
@@ -64,49 +32,11 @@
     padding-top: 5px;
     width: 100%;
 }
-
 .avonni-scheduler__header {
     position: sticky;
     top: 0;
     z-index: 3;
 }
-
-.avonni-scheduler__event-detail-popover {
-    width: auto;
-}
-
-.avonni-scheduler__schedule-col {
-    height: 100%;
-}
-
-.avonni-scheduler__schedule-col_zoom-to-fit {
-    /* Prevent the flex column from allowing overflow */
-    min-width: 0;
-}
-
-.avonni-scheduler__events {
-    height: 100%;
-    top: 0;
-}
-
-.avonni-scheduler__context-menu {
-    z-index: 1;
-}
-
-.avonni-scheduler__cell {
-    width: var(--avonni-scheduler-cell-width);
-    min-width: var(--avonni-scheduler-cell-width);
-}
-
-.avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {
-    min-width: 75px;
-}
-
-.avonni-scheduler__schedule-body_vertical .avonni-scheduler__cell {
-    height: var(--avonni-scheduler-cell-height);
-    min-height: var(--avonni-scheduler-cell-height);
-}
-
 .avonni-scheduler__vertical-header-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -132,16 +62,32 @@
     z-index: 4;
 }
 
-.avonni-scheduler__infinite-load-spinner_right {
-    right: 0;
-    left: auto;
-}
-.avonni-scheduler__infinite-load-spinner_left {
-    left: 2rem;
+.avonni-scheduler__schedule-col {
+    height: 100%;
 }
 
-.avonni-scheduler__toolbar-date-range {
-    --slds-c-button-text-color: #444444;
+.avonni-scheduler__schedule-col_zoom-to-fit {
+    /* Prevent the flex column from allowing overflow */
+    min-width: 0;
+}
+
+.avonni-scheduler__events {
+    height: 100%;
+    top: 0;
+}
+
+.avonni-scheduler__cell {
+    width: var(--avonni-scheduler-cell-width);
+    min-width: var(--avonni-scheduler-cell-width);
+}
+
+.avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {
+    min-width: 75px;
+}
+
+.avonni-scheduler__schedule-body_vertical .avonni-scheduler__cell {
+    height: var(--avonni-scheduler-cell-height);
+    min-height: var(--avonni-scheduler-cell-height);
 }
 
 /* Splitter bar between the data table and the schedule --------- */

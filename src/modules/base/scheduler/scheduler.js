@@ -63,17 +63,15 @@ import {
     DISPLAYS,
     HEADERS,
     PALETTES,
-    PRESET_HEADERS,
+    // PRESET_HEADERS,
     TIME_SPANS,
-    UNITS,
+    // UNITS,
     VARIANTS
 } from './defaults';
-import SchedulerResource from './resource';
-import SchedulerEvent from './event';
+// import SchedulerResource from './resource';
+// import SchedulerEvent from './event';
 import CalendarData from './calendarData';
-import { AvonniResizeObserver } from 'c/resizeObserver';
-import calendarTemplate from './calendar.html';
-import timelineTemplate from './timeline.html';
+// import { AvonniResizeObserver } from 'c/resizeObserver';
 
 /**
  * @class
@@ -152,7 +150,7 @@ export default class Scheduler extends LightningElement {
     showDetailPopover = false;
     showRecurrenceDialog = false;
     showToolbarCalendar = false;
-    smallestHeader;
+    // smallestHeader;
     verticalHeaders = [];
 
     connectedCallback() {
@@ -163,26 +161,27 @@ export default class Scheduler extends LightningElement {
         }
         this.initHeaders();
         this.initEvents();
+        this.initResources();
         this._connected = true;
     }
 
     renderedCallback() {
-        if (!this.smallestHeader) return;
+        // if (!this.smallestHeader) return;
 
         // Save the default first column width
-        if (!this._initialFirstColWidth) {
-            this.resetFirstColumnWidth();
-        }
+        // if (!this._initialFirstColWidth) {
+        //     this.resetFirstColumnWidth();
+        // }
 
-        // Save the datatable row height and update the body styles
-        if (!this._rowsHeight.length) {
-            this.updateRowsHeight();
-        }
-        this.updateOccurrencesOffset();
+        // // Save the datatable row height and update the body styles
+        // if (!this._rowsHeight.length) {
+        //     this.updateRowsHeight();
+        // }
+        // // this.updateOccurrencesOffset();
         this.updateResourcesStyle();
 
-        // Update the position and height of occurrences
-        this.updateOccurrencesPosition();
+        // // Update the position and height of occurrences
+        // this.updateOccurrencesPosition();
 
         // Position the detail popover
         if (this.showDetailPopover) {
@@ -220,20 +219,16 @@ export default class Scheduler extends LightningElement {
                 .focusOnCloseButton();
         }
 
-        if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
-        }
+        // if (!this._resizeObserver) {
+        //     this._resizeObserver = this.initResizeObserver();
+        // }
     }
 
-    render() {
-        return this.isCalendar ? calendarTemplate : timelineTemplate;
-    }
-
-    disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-        }
-    }
+    // disconnectedCallback() {
+    //     if (this._resizeObserver) {
+    //         this._resizeObserver.disconnect();
+    //     }
+    // }
 
     /*
      * ------------------------------------------------------------
@@ -541,10 +536,10 @@ export default class Scheduler extends LightningElement {
         this._eventsLabels =
             typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
 
-        if (this._connected) {
-            this.initEvents();
-            this.updateVisibleResources();
-        }
+        // if (this._connected) {
+        //     this.initEvents();
+        //     this.updateVisibleResources();
+        // }
     }
 
     /**
@@ -586,10 +581,10 @@ export default class Scheduler extends LightningElement {
             validValues: EVENTS_THEMES.valid
         });
 
-        if (this._connected) {
-            this.initEvents();
-            this.updateVisibleResources();
-        }
+        // if (this._connected) {
+        //     this.initEvents();
+        //     this.updateVisibleResources();
+        // }
     }
 
     /**
@@ -1049,33 +1044,33 @@ export default class Scheduler extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Computed CSS classes of the cells.
-     *
-     * @type {string}
-     */
-    get cellClass() {
-        return classSet(
-            'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
-        )
-            .add({
-                'slds-col': !this.isVerticalTimeline,
-                'avonni-scheduler__cell_vertical': this.isVerticalTimeline,
-                'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS classes of the cells.
+    //  *
+    //  * @type {string}
+    //  */
+    // get cellClass() {
+    //     return classSet(
+    //         'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
+    //     )
+    //         .add({
+    //             'slds-col': !this.isVerticalTimeline,
+    //             'avonni-scheduler__cell_vertical': this.isVerticalTimeline,
+    //             'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
+    //         })
+    //         .toString();
+    // }
 
-    /**
-     * Datatable HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get datatable() {
-        return this.template.querySelector(
-            '[data-element-id="avonni-datatable"]'
-        );
-    }
+    // /**
+    //  * Datatable HTML Element.
+    //  *
+    //  * @type {HTMLElement}
+    //  */
+    // get datatable() {
+        // return this.template.querySelector(
+        //     '[data-element-id="avonni-datatable"]'
+        // );
+    // }
 
     /**
      * Display options visible in the toolbar.
@@ -1142,45 +1137,45 @@ export default class Scheduler extends LightningElement {
         );
     }
 
-    /**
-     * Width of the first column (horizontal variant) or height of the header row (vertical variant). Used by the events to make the labels sticky.
-     *
-     * @type {number}
-     */
-    get scrollOffset() {
-        return this.isVerticalTimeline ? 0 : this.firstColWidth;
-    }
+    // /**
+    //  * Width of the first column (horizontal variant) or height of the header row (vertical variant). Used by the events to make the labels sticky.
+    //  *
+    //  * @type {number}
+    //  */
+    // get scrollOffset() {
+    //     return this.isVerticalTimeline ? 0 : this.firstColWidth;
+    // }
 
-    /**
-     * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-    }
+    // /**
+    //  * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
+    //  *
+    //  * @type {HTMLElement}
+    //  */
+    // get firstCol() {
+    //     return this.template.querySelector(
+    //         '[data-element-id="div-first-column"]'
+    //     );
+    // }
 
-    /**
-     * Computed CSS classes for the first column.
-     *
-     * @type {string}
-     */
-    get firstColClass() {
-        return classSet(
-            'slds-border_right avonni-scheduler__first-col slds-grid'
-        )
-            .add({
-                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-                'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-                'avonni-scheduler__first-col_horizontal':
-                    !this.isTimeline && this.isVerticalTimeline,
-                'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-                    this.isVerticalTimeline || !this.isTimeline
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS classes for the first column.
+    //  *
+    //  * @type {string}
+    //  */
+    // get firstColClass() {
+    //     return classSet(
+    //         'slds-border_right avonni-scheduler__first-col slds-grid'
+    //     )
+    //         .add({
+    //             'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
+    //             'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
+    //             'avonni-scheduler__first-col_horizontal':
+    //                 !this.isTimeline && this.isVerticalTimeline,
+    //             'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
+    //                 this.isVerticalTimeline || !this.isTimeline
+    //         })
+    //         .toString();
+    // }
 
     get isCalendar() {
         return this.selectedDisplay === 'calendar';
@@ -1188,15 +1183,6 @@ export default class Scheduler extends LightningElement {
 
     get isTimeline() {
         return this.selectedDisplay === 'timeline';
-    }
-
-    /**
-     * True if the variant is vertical.
-     *
-     * @type {boolean}
-     */
-    get isVerticalTimeline() {
-        return this.variant === 'vertical';
     }
 
     /**
@@ -1232,18 +1218,18 @@ export default class Scheduler extends LightningElement {
             : PALETTES[this.eventsPalette];
     }
 
-    /**
-     * Computed CSS class for the schedule resources.
-     *
-     * @type {string}
-     */
-    get resourceClass() {
-        return classSet('slds-grid slds-is-relative')
-            .add({
-                'slds-grid_vertical slds-col': this.isVerticalTimeline
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS class for the schedule resources.
+    //  *
+    //  * @type {string}
+    //  */
+    // get resourceClass() {
+    //     return classSet('slds-grid slds-is-relative')
+    //         .add({
+    //             'slds-grid_vertical slds-col': this.isVerticalTimeline
+    //         })
+    //         .toString();
+    // }
 
     /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
@@ -1259,78 +1245,78 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    /**
-     * Computed CSS class for the schedule body.
-     *
-     * @type {string}
-     */
-    get scheduleBodyClass() {
-        return classSet('slds-is-relative')
-            .add({
-                'slds-grid avonni-scheduler__schedule-body_vertical':
-                    this.isVerticalTimeline
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS class for the schedule body.
+    //  *
+    //  * @type {string}
+    //  */
+    // get scheduleBodyClass() {
+    //     return classSet('slds-is-relative')
+    //         .add({
+    //             'slds-grid avonni-scheduler__schedule-body_vertical':
+    //                 this.isVerticalTimeline
+    //         })
+    //         .toString();
+    // }
 
-    /**
-     * Computed CSS class for the schedule column.
-     *
-     * @type {string}
-     */
-    get scheduleColClass() {
-        return classSet(
-            'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
-        )
-            .add({
-                'slds-hide': this.firstColumnIsOpen,
-                'avonni-scheduler__schedule-col_vertical':
-                    this.isVerticalTimeline,
-                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS class for the schedule column.
+    //  *
+    //  * @type {string}
+    //  */
+    // get scheduleColClass() {
+    //     return classSet(
+    //         'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+    //     )
+    //         .add({
+    //             'slds-hide': this.firstColumnIsOpen,
+    //             'avonni-scheduler__schedule-col_vertical':
+    //                 this.isVerticalTimeline,
+    //             'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+    //         })
+    //         .toString();
+    // }
 
-    /**
-     * Width of the schedule column, in pixels.
-     *
-     * @type {number}
-     */
-    get scheduleColWidth() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        const firstCol = this.firstCol;
+    // /**
+    //  * Width of the schedule column, in pixels.
+    //  *
+    //  * @type {number}
+    //  */
+    // get scheduleColWidth() {
+    //     const wrapper = this.template.querySelector(
+    //         '[data-element-id="div-schedule-wrapper"]'
+    //     );
+    //     const firstCol = this.firstCol;
 
-        if (wrapper && firstCol) {
-            const wrapperWidth = wrapper.getBoundingClientRect().width;
-            const firstColWidth = firstCol.getBoundingClientRect().width;
-            if (this.isCalendar) {
-                const verticalHeaders = this.template.querySelector(
-                    '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
-                );
-                const verticalHeadersWidth = verticalHeaders
-                    ? verticalHeaders.getBoundingClientRect().width
-                    : 0;
-                return wrapperWidth - firstColWidth - verticalHeadersWidth;
-            }
-            return wrapperWidth - firstColWidth;
-        }
-        return 0;
-    }
+    //     if (wrapper && firstCol) {
+    //         const wrapperWidth = wrapper.getBoundingClientRect().width;
+    //         const firstColWidth = firstCol.getBoundingClientRect().width;
+    //         if (this.isCalendar) {
+    //             const verticalHeaders = this.template.querySelector(
+    //                 '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
+    //             );
+    //             const verticalHeadersWidth = verticalHeaders
+    //                 ? verticalHeaders.getBoundingClientRect().width
+    //                 : 0;
+    //             return wrapperWidth - firstColWidth - verticalHeadersWidth;
+    //         }
+    //         return wrapperWidth - firstColWidth;
+    //     }
+    //     return 0;
+    // }
 
-    /**
-     * Computed CSS class for the nested schedule column.
-     *
-     * @type {string}
-     */
-    get scheduleNestedCol() {
-        return classSet('slds-col')
-            .add({
-                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS class for the nested schedule column.
+    //  *
+    //  * @type {string}
+    //  */
+    // get scheduleNestedColClass() {
+    //     return classSet('slds-col')
+    //         .add({
+    //             'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+    //         })
+    //         .toString();
+    // }
 
     /**
      * Position and dimensions of the schedule body.
@@ -1338,10 +1324,10 @@ export default class Scheduler extends LightningElement {
      * @type {object}
      */
     get schedulePosition() {
-        const scheduleElement = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        return scheduleElement.getBoundingClientRect();
+        // const scheduleElement = this.template.querySelector(
+        //     '[data-element-id="div-schedule-body"]'
+        // );
+        // return scheduleElement.getBoundingClientRect();
     }
 
     /**
@@ -1395,14 +1381,14 @@ export default class Scheduler extends LightningElement {
         );
     }
 
-    /**
-     * True if the loading spinner should be displayed.
-     *
-     * @type {boolean}
-     */
-    get showSpinner() {
-        return this.isLoading || this._headersAreLoading;
-    }
+    // /**
+    //  * True if the loading spinner should be displayed.
+    //  *
+    //  * @type {boolean}
+    //  */
+    // get showSpinner() {
+    //     return this.isLoading || this._headersAreLoading;
+    // }
 
     /**
      * True if the toolbar time span buttons should be visible.
@@ -1413,40 +1399,40 @@ export default class Scheduler extends LightningElement {
         return this.timeSpans.length > 1;
     }
 
-    /**
-     * Duration of one cell of the smallest unit header, in milliseconds.
-     *
-     * @type {number}
-     * @default 0
-     */
-    get smallestCellDuration() {
-        const header = this.smallestHeader;
-        if (!header) {
-            return 0;
-        }
+    // /**
+    //  * Duration of one cell of the smallest unit header, in milliseconds.
+    //  *
+    //  * @type {number}
+    //  * @default 0
+    //  */
+    // get smallestCellDuration() {
+    //     const header = this.smallestHeader;
+    //     if (!header) {
+    //         return 0;
+    //     }
 
-        const headerCellEnd =
-            addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerCellEnd).diff(header.start)
-            .milliseconds;
-    }
+    //     const headerCellEnd =
+    //         addToDate(header.start, header.unit, header.span) - 1;
+    //     return dateTimeObjectFrom(headerCellEnd).diff(header.start)
+    //         .milliseconds;
+    // }
 
-    /**
-     * Class list of the splitter.
-     *
-     * @type {string}
-     * @default 'avonni-scheduler__splitter slds-is-absolute slds-grid'
-     */
-    get splitterClass() {
-        return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
-            .add({
-                'avonni-scheduler__splitter_disabled':
-                    this.resizeColumnDisabled,
-                'slds-grid_align-end': this.firstColumnIsOpen,
-                'avonni-scheduler__splitter_vertical': this.isVerticalTimeline
-            })
-            .toString();
-    }
+    // /**
+    //  * Class list of the splitter.
+    //  *
+    //  * @type {string}
+    //  * @default 'avonni-scheduler__splitter slds-is-absolute slds-grid'
+    //  */
+    // get splitterClass() {
+    //     return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
+    //         .add({
+    //             'avonni-scheduler__splitter_disabled':
+    //                 this.resizeColumnDisabled,
+    //             'slds-grid_align-end': this.firstColumnIsOpen,
+    //             'avonni-scheduler__splitter_vertical': this.isVerticalTimeline
+    //         })
+    //         .toString();
+    // }
 
     /**
      * Computed CSS classes for the calendar selector of the toolbar.
@@ -1553,21 +1539,21 @@ export default class Scheduler extends LightningElement {
         return null;
     }
 
-    /**
-     * Computed CSS style for the vertical resource header cells.
-     *
-     * @type {string}
-     */
-    get verticalResourceHeaderCellClass() {
-        return classSet(
-            'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
-        )
-            .add({
-                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
-                    this.zoomToFit
-            })
-            .toString();
-    }
+    // /**
+    //  * Computed CSS style for the vertical resource header cells.
+    //  *
+    //  * @type {string}
+    //  */
+    // get verticalResourceHeaderCellClass() {
+    //     return classSet(
+    //         'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
+    //     )
+    //         .add({
+    //             'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
+    //                 this.zoomToFit
+    //         })
+    //         .toString();
+    // }
 
     /*
      * ------------------------------------------------------------
@@ -1700,33 +1686,33 @@ export default class Scheduler extends LightningElement {
     initHeaders() {
         if (!this.isTimeline) {
             this.calendarData.initHeaders(this.currentTimeSpan);
-            this._headersAreLoading = false;
+            // this._headersAreLoading = false;
             return;
         }
-        this._headersAreLoading = true;
-        const { customHeaders, headers } = this.currentTimeSpan;
+        // this._headersAreLoading = true;
+        // const { customHeaders, headers } = this.currentTimeSpan;
 
-        if (customHeaders) {
-            const normalizedHeaders = customHeaders.filter((hd) => {
-                const validUnit = UNITS.includes(hd.unit);
-                const validSpan = hd.span > 0;
-                const validLabel = typeof hd.label === 'string';
-                return validUnit && validSpan && validLabel;
-            });
+        // if (customHeaders) {
+        //     const normalizedHeaders = customHeaders.filter((hd) => {
+        //         const validUnit = UNITS.includes(hd.unit);
+        //         const validSpan = hd.span > 0;
+        //         const validLabel = typeof hd.label === 'string';
+        //         return validUnit && validSpan && validLabel;
+        //     });
 
-            if (normalizedHeaders.length) {
-                this.computedHeaders = deepCopy(normalizedHeaders);
-                return;
-            }
-        }
+        //     if (normalizedHeaders.length) {
+        //         this.computedHeaders = deepCopy(normalizedHeaders);
+        //         return;
+        //     }
+        // }
 
-        const normalizedHeadersName = normalizeString(headers, {
-            validValues: HEADERS.valid,
-            fallbackValue: HEADERS.default,
-            toLowerCase: false
-        });
+        // const normalizedHeadersName = normalizeString(headers, {
+        //     validValues: HEADERS.valid,
+        //     fallbackValue: HEADERS.default,
+        //     toLowerCase: false
+        // });
 
-        this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeadersName]);
+        // this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeadersName]);
     }
 
     /**
@@ -1750,37 +1736,38 @@ export default class Scheduler extends LightningElement {
         });
 
         // Create only the visible events
-        this.computedEvents = this.createVisibleEvents();
+        // this.computedEvents = this.createVisibleEvents();
+        this.computedEvents = this._allEvents;
     }
 
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateCellWidth();
-        });
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        resizeObserver.observe(schedule);
-        return resizeObserver;
-    }
+    // /**
+    //  * Initialize the screen resize observer.
+    //  *
+    //  * @returns {AvonniResizeObserver} Resize observer.
+    //  */
+    // initResizeObserver() {
+    //     const resizeObserver = new AvonniResizeObserver(() => {
+    //         this.updateCellWidth();
+    //     });
+    //     const schedule = this.template.querySelector(
+    //         '[data-element-id="div-schedule-body"]'
+    //     );
+    //     resizeObserver.observe(schedule);
+    //     return resizeObserver;
+    // }
 
     /**
      * Create the computed resources.
      */
     initResources() {
-        if (!this.smallestHeader || !this.resources.length) {
-            this.computedResources = [];
-            return;
-        }
+        // if (!this.smallestHeader || !this.resources.length) {
+        //     this.computedResources = [];
+        //     return;
+        // }
 
         let colorIndex = 0;
         this.computedResources = this.resources.map((resource) => {
-            const name = resource.name;
+            // const name = resource.name;
 
             // If there is no color left in the palette,
             // restart from the beginning
@@ -1788,43 +1775,48 @@ export default class Scheduler extends LightningElement {
                 colorIndex = 0;
             }
 
-            const occurrences = this.getOccurrencesFromResourceName(name);
+            // const occurrences = this.getOccurrencesFromResourceName(name);
 
-            const computedResource = new SchedulerResource({
-                avatarFallbackIconName: resource.avatarFallbackIconName,
-                avatarInitials: resource.avatarInitials,
-                avatarSrc: resource.avatarSrc,
-                color: this.palette[colorIndex],
-                label: resource.label,
-                name,
-                referenceCells: this.smallestHeader.cells,
-                events: occurrences,
-                // We store the initial resource object in a variable,
-                // in case one of its fields is used by an event's label
-                data: { ...resource }
-            });
+            // const computedResource = new SchedulerResource({
+            //     avatarFallbackIconName: resource.avatarFallbackIconName,
+            //     avatarInitials: resource.avatarInitials,
+            //     avatarSrc: resource.avatarSrc,
+            //     color: this.palette[colorIndex],
+            //     label: resource.label,
+            //     name,
+            //     referenceCells: this.smallestHeader.cells,
+            //     events: occurrences,
+            //     // We store the initial resource object in a variable,
+            //     // in case one of its fields is used by an event's label
+            //     data: { ...resource }
+            // });
 
-            // Set the min-height to the datatable rows height
-            if (
-                this._rowsHeight.length &&
-                this.isTimeline &&
-                !this.isVerticalTimeline
-            ) {
-                const dataRowHeight = this._rowsHeight.find(
-                    (dataRow) => dataRow.resourceName === name
-                ).height;
-                computedResource.minHeight = dataRowHeight;
-            }
+            const computedResource = {
+                ...resource,
+                color: this.palette[colorIndex]
+            };
+
+            // // Set the min-height to the datatable rows height
+            // if (
+            //     this._rowsHeight.length &&
+            //     this.isTimeline &&
+            //     !this.isVerticalTimeline
+            // ) {
+            //     const dataRowHeight = this._rowsHeight.find(
+            //         (dataRow) => dataRow.resourceName === name
+            //     ).height;
+            //     computedResource.minHeight = dataRowHeight;
+            // }
 
             colorIndex += 1;
             return computedResource;
         });
 
-        if (this.isVerticalTimeline) {
-            requestAnimationFrame(() => {
-                this.updateCellWidth();
-            });
-        }
+        // if (this.isVerticalTimeline) {
+        //     requestAnimationFrame(() => {
+        //         this.updateCellWidth();
+        //     });
+        // }
     }
 
     /**
@@ -1881,46 +1873,46 @@ export default class Scheduler extends LightningElement {
             --avonni-scheduler-cell-height: ${this.cellHeight}px;
         `;
 
-        if (this.isVerticalTimeline) {
-            const resourceHeaders = this.template.querySelector(
-                '[data-element-id="div-vertical-resource-headers"]'
-            );
-            const scheduleWrapper = this.template.querySelector(
-                '[data-element-id="div-schedule-wrapper"]'
-            );
-            const scrollBarWidth =
-                scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
-            resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
-        } else if (this.isTimeline) {
-            const resourceElements = this.template.querySelectorAll(
-                '[data-element-id="div-resource"]'
-            );
+        // if (this.isVerticalTimeline) {
+        //     const resourceHeaders = this.template.querySelector(
+        //         '[data-element-id="div-vertical-resource-headers"]'
+        //     );
+        //     const scheduleWrapper = this.template.querySelector(
+        //         '[data-element-id="div-schedule-wrapper"]'
+        //     );
+        //     const scrollBarWidth =
+        //         scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
+        //     resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
+        // } else if (this.isTimeline) {
+        //     const resourceElements = this.template.querySelectorAll(
+        //         '[data-element-id="div-resource"]'
+        //     );
 
-            resourceElements.forEach((resourceElement, index) => {
-                const name = resourceElement.dataset.name;
-                const computedResource = this.getResourceFromName(name);
-                const rowHeight = computedResource.height;
+        //     resourceElements.forEach((resourceElement, index) => {
+        //         const name = resourceElement.dataset.name;
+        //         const computedResource = this.getResourceFromName(name);
+        //         const rowHeight = computedResource.height;
 
-                const dataRow = this._rowsHeight.find((row) => {
-                    return row.resourceName === name;
-                });
-                const dataRowHeight = dataRow.height;
+        //         const dataRow = this._rowsHeight.find((row) => {
+        //             return row.resourceName === name;
+        //         });
+        //         const dataRowHeight = dataRow.height;
 
-                const style = `
-                    min-height: ${dataRowHeight}px;
-                    height: ${rowHeight}px;
-                    --avonni-scheduler-cell-width: ${this.cellWidth}px;
-                `;
+        //         const style = `
+        //             min-height: ${dataRowHeight}px;
+        //             height: ${rowHeight}px;
+        //             --avonni-scheduler-cell-width: ${this.cellWidth}px;
+        //         `;
 
-                // Patch inconsistency in the datatable row heights
-                const normalizedHeight =
-                    index === 0 ? rowHeight - 1 : rowHeight;
-                // Reset the datatable row height, in case the height was set by events
-                this.datatable.setRowHeight(name, normalizedHeight);
+        //         // Patch inconsistency in the datatable row heights
+        //         const normalizedHeight =
+        //             index === 0 ? rowHeight - 1 : rowHeight;
+        //         // Reset the datatable row height, in case the height was set by events
+        //         this.datatable.setRowHeight(name, normalizedHeight);
 
-                resourceElement.style = style;
-            });
-        }
+        //         resourceElement.style = style;
+        //     });
+        // }
     }
 
     /**
@@ -1955,16 +1947,16 @@ export default class Scheduler extends LightningElement {
      * Vertically align the datatable header with the smallest unit schedule header.
      */
     pushLeftColumnDown() {
-        if (this.isVerticalTimeline) {
-            return;
-        }
+        // if (this.isVerticalTimeline) {
+        //     return;
+        // }
 
         const headers = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="horizontal"]'
         );
 
         if (this.isTimeline) {
-            this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
+            // this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
         } else {
             const verticalHeaders = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
@@ -2012,173 +2004,173 @@ export default class Scheduler extends LightningElement {
      * @param {object} event The event object.
      */
     updateEventDefaults(event) {
-        // We store the initial event object in a variable,
-        // in case a custom field is used by the labels
-        event.data = { ...event };
-        event.schedulerEnd = this.visibleInterval.e;
-        event.schedulerStart = this.visibleInterval.s;
-        event.availableMonths = this.availableMonths;
-        event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-        event.availableTimeFrames = this.availableTimeFrames;
-        event.smallestHeader = this.smallestHeader;
-        event.theme = event.disabled
-            ? 'disabled'
-            : event.theme || this.eventsTheme;
+        // // We store the initial event object in a variable,
+        // // in case a custom field is used by the labels
+        // event.data = { ...event };
+        // event.schedulerEnd = this.visibleInterval.e;
+        // event.schedulerStart = this.visibleInterval.s;
+        // event.availableMonths = this.availableMonths;
+        // event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
+        // event.availableTimeFrames = this.availableTimeFrames;
+        // event.smallestHeader = this.smallestHeader;
+        // event.theme = event.disabled
+        //     ? 'disabled'
+        //     : event.theme || this.eventsTheme;
 
-        event.labels =
-            typeof event.labels === 'object' ? event.labels : this.eventsLabels;
+        // event.labels =
+        //     typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
     /**
      * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
      */
     updateOccurrencesOffset() {
-        const scheduleRightBorder = this.schedulePosition.right;
+        // const scheduleRightBorder = this.schedulePosition.right;
 
-        // For each resource
-        this.computedResources.forEach((resource) => {
-            let rowHeight = 0;
-            let levelHeight = 0;
+        // // For each resource
+        // this.computedResources.forEach((resource) => {
+        //     let rowHeight = 0;
+        //     let levelHeight = 0;
 
-            // Get all the event occurrences of the resource
-            const occurrenceElements = Array.from(
-                this.template.querySelectorAll(
-                    `.avonni-scheduler__primitive-event[data-resource-name="${resource.name}"]`
-                )
-            );
+        //     // Get all the event occurrences of the resource
+        //     const occurrenceElements = Array.from(
+        //         this.template.querySelectorAll(
+        //             `.avonni-scheduler__primitive-event[data-resource-name="${resource.name}"]`
+        //         )
+        //     );
 
-            if (occurrenceElements.length) {
-                // Sort the occurrences by ascending start date
-                occurrenceElements.sort((a, b) => a.from - b.from);
+        //     if (occurrenceElements.length) {
+        //         // Sort the occurrences by ascending start date
+        //         occurrenceElements.sort((a, b) => a.from - b.from);
 
-                // Compute the level of the occurrences in the resource
-                const previousOccurrences = [];
-                occurrenceElements.forEach((occElement) => {
-                    const start = occElement.startPosition;
-                    const { level, numberOfOverlap } =
-                        this.computeEventLevelInResource(
-                            previousOccurrences,
-                            start
-                        );
+        //         // Compute the level of the occurrences in the resource
+        //         const previousOccurrences = [];
+        //         occurrenceElements.forEach((occElement) => {
+        //             const start = occElement.startPosition;
+        //             const { level, numberOfOverlap } =
+        //                 this.computeEventLevelInResource(
+        //                     previousOccurrences,
+        //                     start
+        //                 );
 
-                    const occurrence = resource.events.find((occ) => {
-                        return occ.key === occElement.occurrenceKey;
-                    });
+        //             const occurrence = resource.events.find((occ) => {
+        //                 return occ.key === occElement.occurrenceKey;
+        //             });
 
-                    previousOccurrences.unshift({
-                        level,
-                        numberOfOverlap,
-                        start,
-                        end: occElement.endPosition,
-                        occurrence:
-                            occurrence ||
-                            (this.selection && this.selection.occurrence)
-                    });
+        //             previousOccurrences.unshift({
+        //                 level,
+        //                 numberOfOverlap,
+        //                 start,
+        //                 end: occElement.endPosition,
+        //                 occurrence:
+        //                     occurrence ||
+        //                     (this.selection && this.selection.occurrence)
+        //             });
 
-                    if (this.isTimeline && !this.isVerticalTimeline) {
-                        if (occElement.labels.right) {
-                            // Hide the right label if it overflows the schedule
-                            const elementRightBorder =
-                                occElement.getBoundingClientRect().right +
-                                occElement.rightLabelWidth;
-                            if (elementRightBorder >= scheduleRightBorder) {
-                                occElement.hideRightLabel();
-                            } else {
-                                occElement.showRightLabel();
-                            }
-                        }
+        //             if (this.isTimeline && !this.isVerticalTimeline) {
+        //                 if (occElement.labels.right) {
+        //                     // Hide the right label if it overflows the schedule
+        //                     const elementRightBorder =
+        //                         occElement.getBoundingClientRect().right +
+        //                         occElement.rightLabelWidth;
+        //                     if (elementRightBorder >= scheduleRightBorder) {
+        //                         occElement.hideRightLabel();
+        //                     } else {
+        //                         occElement.showRightLabel();
+        //                     }
+        //                 }
 
-                        // If the occurrence is taller than the previous ones,
-                        // update the default level height
-                        const height =
-                            occElement.getBoundingClientRect().height;
-                        if (height > levelHeight) {
-                            levelHeight = height;
-                        }
-                    }
-                });
+        //                 // If the occurrence is taller than the previous ones,
+        //                 // update the default level height
+        //                 const height =
+        //                     occElement.getBoundingClientRect().height;
+        //                 if (height > levelHeight) {
+        //                     levelHeight = height;
+        //                 }
+        //             }
+        //         });
 
-                // Add the corresponding offset to the top (horizontal variant)
-                // or left (vertical variant) of the occurrences
-                previousOccurrences.forEach((position) => {
-                    const { level, occurrence, numberOfOverlap } = position;
-                    let offsetSide = 0;
+        //         // Add the corresponding offset to the top (horizontal variant)
+        //         // or left (vertical variant) of the occurrences
+        //         previousOccurrences.forEach((position) => {
+        //             const { level, occurrence, numberOfOverlap } = position;
+        //             let offsetSide = 0;
 
-                    if (this.isVerticalTimeline) {
-                        offsetSide = (level * this.cellWidth) / numberOfOverlap;
-                        occurrence.numberOfEventsInThisTimeFrame =
-                            numberOfOverlap;
-                        this._updateOccurrencesLength = true;
-                    } else {
-                        offsetSide = level * levelHeight;
+        //             if (this.isVerticalTimeline) {
+        //                 offsetSide = (level * this.cellWidth) / numberOfOverlap;
+        //                 occurrence.numberOfEventsInThisTimeFrame =
+        //                     numberOfOverlap;
+        //                 this._updateOccurrencesLength = true;
+        //             } else {
+        //                 offsetSide = level * levelHeight;
 
-                        // If the occurrence offset is bigger than the previous occurrences,
-                        // update the row height
-                        const totalHeight = levelHeight + offsetSide;
-                        if (totalHeight > rowHeight) {
-                            rowHeight = totalHeight;
-                        }
-                    }
+        //                 // If the occurrence offset is bigger than the previous occurrences,
+        //                 // update the row height
+        //                 const totalHeight = levelHeight + offsetSide;
+        //                 if (totalHeight > rowHeight) {
+        //                     rowHeight = totalHeight;
+        //                 }
+        //             }
 
-                    occurrence.offsetSide = offsetSide;
-                });
-            }
+        //             occurrence.offsetSide = offsetSide;
+        //         });
+        //     }
 
-            if (!this.isVerticalTimeline) {
-                // Add 10 pixels to the row for padding
-                resource.height = rowHeight + 10;
-            }
-        });
+        //     if (!this.isVerticalTimeline) {
+        //         // Add 10 pixels to the row for padding
+        //         resource.height = rowHeight + 10;
+        //     }
+        // });
     }
 
     /**
      * Update the primitive occurrences height, width and position.
      */
     updateOccurrencesPosition() {
-        const eventOccurrences = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-        );
-        eventOccurrences.forEach((occurrence) => {
-            if (this._updateOccurrencesLength) {
-                occurrence.updateLength();
-            }
-            if (occurrence.disabled) {
-                occurrence.updateThickness();
-            }
-            occurrence.updatePosition();
-        });
-        this._updateOccurrencesLength = false;
+        // const eventOccurrences = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+        // );
+        // eventOccurrences.forEach((occurrence) => {
+        //     if (this._updateOccurrencesLength) {
+        //         occurrence.updateLength();
+        //     }
+        //     if (occurrence.disabled) {
+        //         occurrence.updateThickness();
+        //     }
+        //     occurrence.updatePosition();
+        // });
+        // this._updateOccurrencesLength = false;
 
-        if (this.isVerticalTimeline) {
-            // Set the reference line height to the width of the schedule
-            const schedule = this.template.querySelector(
-                '[data-element-id="div-schedule-body"]'
-            );
-            const scheduleWidth = this.schedulePosition.width;
-            schedule.style = `
-                 --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
-             `;
-        }
+        // if (this.isVerticalTimeline) {
+        //     // Set the reference line height to the width of the schedule
+        //     const schedule = this.template.querySelector(
+        //         '[data-element-id="div-schedule-body"]'
+        //     );
+        //     const scheduleWidth = this.schedulePosition.width;
+        //     schedule.style = `
+        //          --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
+        //      `;
+        // }
     }
 
     /**
      * Save the datatable rows heights and use them as a min-height for the schedule rows.
      */
     updateRowsHeight() {
-        if (
-            this.isVerticalTimeline ||
-            (!this.isVerticalTimeline && !this.datatable)
-        ) {
-            return;
-        }
+        // if (
+        //     this.isVerticalTimeline ||
+        //     (!this.isVerticalTimeline && !this.datatable)
+        // ) {
+        //     return;
+        // }
 
-        this._rowsHeight = [];
-        this.computedResources.forEach((resource) => {
-            const resourceName = resource.name;
-            const height = this.datatable.getRowHeight(resourceName);
-            resource.minHeight = height;
-            this._rowsHeight.push({ resourceName, height });
-        });
+        // this._rowsHeight = [];
+        // this.computedResources.forEach((resource) => {
+        //     const resourceName = resource.name;
+        //     const height = this.datatable.getRowHeight(resourceName);
+        //     resource.minHeight = height;
+        //     this._rowsHeight.push({ resourceName, height });
+        // });
     }
 
     /**
@@ -2195,13 +2187,13 @@ export default class Scheduler extends LightningElement {
      * Update the cells and events of the currently loaded resources.
      */
     updateVisibleResources() {
-        this.computedResources.forEach((resource) => {
-            resource.events = this.getOccurrencesFromResourceName(
-                resource.name
-            );
-            resource.referenceCells = this.smallestHeader.cells;
-            resource.initCells();
-        });
+        // this.computedResources.forEach((resource) => {
+        //     resource.events = this.getOccurrencesFromResourceName(
+        //         resource.name
+        //     );
+        //     resource.referenceCells = this.smallestHeader.cells;
+        //     resource.initCells();
+        // });
     }
 
     /**
@@ -2341,54 +2333,54 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    /**
-     * Get the total number of event occurrences that overlap one.
-     *
-     * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
-     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
-     * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
-     * @returns {number} The total number of occurrences overlapping, including the one evaluated.
-     */
-    getTotalOfOccurrencesOverlapping(
-        previousOccurrences,
-        startPosition,
-        minOverlap
-    ) {
-        let numberOfOverlap = minOverlap;
+    // /**
+    //  * Get the total number of event occurrences that overlap one.
+    //  *
+    //  * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
+    //  * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
+    //  * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
+    //  * @returns {number} The total number of occurrences overlapping, including the one evaluated.
+    //  */
+    // getTotalOfOccurrencesOverlapping(
+    //     previousOccurrences,
+    //     startPosition,
+    //     minOverlap
+    // ) {
+    //     let numberOfOverlap = minOverlap;
 
-        const overlappingOccurrences = previousOccurrences.filter((occ) => {
-            return startPosition < occ.end;
-        });
+    //     const overlappingOccurrences = previousOccurrences.filter((occ) => {
+    //         return startPosition < occ.end;
+    //     });
 
-        overlappingOccurrences.forEach((occ) => {
-            if (occ.numberOfOverlap >= numberOfOverlap) {
-                numberOfOverlap = occ.numberOfOverlap;
-            } else {
-                // Update the total of levels of the overlapped event occurrence
-                occ.numberOfOverlap = numberOfOverlap;
-                numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-                    previousOccurrences,
-                    occ.start,
-                    numberOfOverlap
-                );
-            }
-        });
+    //     overlappingOccurrences.forEach((occ) => {
+    //         if (occ.numberOfOverlap >= numberOfOverlap) {
+    //             numberOfOverlap = occ.numberOfOverlap;
+    //         } else {
+    //             // Update the total of levels of the overlapped event occurrence
+    //             occ.numberOfOverlap = numberOfOverlap;
+    //             numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+    //                 previousOccurrences,
+    //                 occ.start,
+    //                 numberOfOverlap
+    //             );
+    //         }
+    //     });
 
-        return numberOfOverlap;
-    }
+    //     return numberOfOverlap;
+    // }
 
-    /**
-     * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
-     */
-    cleanDraggedElement() {
-        if (this._draggedEvent) {
-            this._draggedEvent.classList.remove(
-                'avonni-scheduler__event-dragged'
-            );
-            this._draggedEvent = undefined;
-        }
-        this._resizeSide = undefined;
-    }
+    // /**
+    //  * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
+    //  */
+    // cleanDraggedElement() {
+    //     if (this._draggedEvent) {
+    //         this._draggedEvent.classList.remove(
+    //             'avonni-scheduler__event-dragged'
+    //         );
+    //         this._draggedEvent = undefined;
+    //     }
+    //     this._resizeSide = undefined;
+    // }
 
     /**
      * Clear the selected or new event.
@@ -2431,66 +2423,66 @@ export default class Scheduler extends LightningElement {
      * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
      */
     computeEventLevelInResource(previousOccurrences, startPosition, level = 0) {
-        // Find the last event with the same level
-        const sameLevelEvent = previousOccurrences.find((occ) => {
-            return occ.level === level;
-        });
+        // // Find the last event with the same level
+        // const sameLevelEvent = previousOccurrences.find((occ) => {
+        //     return occ.level === level;
+        // });
 
-        const overlapsEvent =
-            sameLevelEvent && startPosition < sameLevelEvent.end;
-        if (overlapsEvent) {
-            level += 1;
+        // const overlapsEvent =
+        //     sameLevelEvent && startPosition < sameLevelEvent.end;
+        // if (overlapsEvent) {
+        //     level += 1;
 
-            // Make sure there isn't another event at the same position
-            level = this.computeEventLevelInResource(
-                previousOccurrences,
-                startPosition,
-                level
-            ).level;
-        }
+        //     // Make sure there isn't another event at the same position
+        //     level = this.computeEventLevelInResource(
+        //         previousOccurrences,
+        //         startPosition,
+        //         level
+        //     ).level;
+        // }
 
-        let numberOfOverlap = level + 1;
-        if (this.isVerticalTimeline) {
-            numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-                previousOccurrences,
-                startPosition,
-                numberOfOverlap
-            );
-        }
+        // let numberOfOverlap = level + 1;
+        // if (this.isVerticalTimeline) {
+        //     numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+        //         previousOccurrences,
+        //         startPosition,
+        //         numberOfOverlap
+        //     );
+        // }
 
-        return { level, numberOfOverlap };
+        // return { level, numberOfOverlap };
     }
 
     /**
      * Create the computed events that are included in the currently visible interval of time.
      */
     createVisibleEvents() {
-        const interval = this.visibleInterval;
-        if (!interval) {
-            return [];
-        }
+        // const interval = this.visibleInterval;
+        // if (!interval) {
+        //     return [];
+        // }
 
-        const events = this._allEvents.filter((event) => {
-            const from = dateTimeObjectFrom(event.from);
-            const to = dateTimeObjectFrom(event.to);
-            return (
-                interval.contains(from) ||
-                interval.contains(to) ||
-                (interval.isAfter(from) && interval.isBefore(to)) ||
-                event.recurrence
-            );
-        });
+        // const events = this._allEvents.filter((event) => {
+        //     const from = dateTimeObjectFrom(event.from);
+        //     const to = dateTimeObjectFrom(event.to);
+        //     return (
+        //         interval.contains(from) ||
+        //         interval.contains(to) ||
+        //         (interval.isAfter(from) && interval.isBefore(to)) ||
+        //         event.recurrence
+        //     );
+        // });
 
-        return events.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            const computedEvent = new SchedulerEvent(event);
+        // return events.reduce((computedEvents, evt) => {
+        //     const event = { ...evt };
+        //     this.updateEventDefaults(event);
+        //     const computedEvent = new SchedulerEvent(event);
 
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
-            }
-            return computedEvents;
-        }, []);
+        //     if (computedEvent.occurrences.length) {
+        //         computedEvents.push(computedEvent);
+        //     }
+        //     return computedEvents;
+        // }, []);
     }
 
     /**
@@ -2558,11 +2550,11 @@ export default class Scheduler extends LightningElement {
      * Set the CSS style of the resource header first cell, in vertical variant.
      */
     setResourceHeaderFirstCellWidth() {
-        const resourceHeaderFirstCell = this.template.querySelector(
-            '[data-element-id="div-vertical-resource-header-first-cell"]'
-        );
-        resourceHeaderFirstCell.style.width = `${this.firstColWidth}px`;
-        resourceHeaderFirstCell.style.minWidth = `${this.firstColWidth}px`;
+        // const resourceHeaderFirstCell = this.template.querySelector(
+        //     '[data-element-id="div-vertical-resource-header-first-cell"]'
+        // );
+        // resourceHeaderFirstCell.style.width = `${this.firstColWidth}px`;
+        // resourceHeaderFirstCell.style.minWidth = `${this.firstColWidth}px`;
     }
 
     /**
@@ -2825,47 +2817,47 @@ export default class Scheduler extends LightningElement {
      * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
      */
     handleHeaderCellSizeChange(event) {
-        const { cellSize, orientation } = event.detail;
+        // const { cellSize, orientation } = event.detail;
 
-        if (orientation === 'vertical') {
-            this.cellHeight = cellSize;
-        } else {
-            this.cellWidth = cellSize;
-        }
+        // if (orientation === 'vertical') {
+        //     this.cellHeight = cellSize;
+        // } else {
+        //     this.cellWidth = cellSize;
+        // }
     }
 
     /**
      * Handle the privateheaderchange event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
      */
     handleHeaderChange(event) {
-        const headerOrientation = event.currentTarget.dataset.orientation;
-        const smallestHeader = event.detail.smallestHeader;
-        if (this.isCalendar && headerOrientation === 'vertical') {
-            return;
-        }
+        // const headerOrientation = event.currentTarget.dataset.orientation;
+        // const smallestHeader = event.detail.smallestHeader;
+        // if (this.isCalendar && headerOrientation === 'vertical') {
+        //     return;
+        // }
 
-        this.smallestHeader = smallestHeader;
+        // this.smallestHeader = smallestHeader;
 
-        // Update the start date in case it was not available
-        this._start = this.smallestHeader.start;
+        // // Update the start date in case it was not available
+        // this._start = this.smallestHeader.start;
 
-        // Create the visible events
-        this.computedEvents = this.createVisibleEvents();
+        // // Create the visible events
+        // this.computedEvents = this.createVisibleEvents();
 
-        // Create the resources or update the existing ones
-        if (!this.computedResources.length) {
-            this.initResources();
-        } else if (this.isTimeline) {
-            this.updateVisibleResources();
-        }
+        // // Create the resources or update the existing ones
+        // if (!this.computedResources.length) {
+        //     this.initResources();
+        // } else if (this.isTimeline) {
+        //     this.updateVisibleResources();
+        // }
 
-        this._initialFirstColWidth = 0;
-        this._rowsHeight = [];
+        // this._initialFirstColWidth = 0;
+        // this._rowsHeight = [];
 
-        requestAnimationFrame(() => {
-            this.pushLeftColumnDown();
-            this._headersAreLoading = false;
-        });
+        // requestAnimationFrame(() => {
+        //     this.pushLeftColumnDown();
+        //     this._headersAreLoading = false;
+        // });
     }
 
     /**
@@ -3116,19 +3108,19 @@ export default class Scheduler extends LightningElement {
      * Handle the resize event fired by the datatable. Update the rows heights.
      */
     handleDatatableResize(event) {
-        if (event.detail.isUserTriggered) {
-            this.datatable.style.width = null;
-            this._rowsHeight = [];
-            this.computedResources.forEach((resource) => {
-                resource.minHeight = undefined;
-            });
-            this.firstCol.style.width = null;
-            this.firstCol.style.minWidth = null;
-            this.computedResources = [...this.computedResources];
-        } else {
-            this.updateRowsHeight();
-            this.updateResourcesStyle();
-        }
+        // if (event.detail.isUserTriggered) {
+        //     this.datatable.style.width = null;
+        //     this._rowsHeight = [];
+        //     this.computedResources.forEach((resource) => {
+        //         resource.minHeight = undefined;
+        //     });
+        //     this.firstCol.style.width = null;
+        //     this.firstCol.style.minWidth = null;
+        //     this.computedResources = [...this.computedResources];
+        // } else {
+        //     this.updateRowsHeight();
+        //     this.updateResourcesStyle();
+        // }
     }
 
     /**
@@ -3423,6 +3415,10 @@ export default class Scheduler extends LightningElement {
                 this.datatable.style.width = 0;
             }
         }
+    }
+
+    handleHidePopovers() {
+        this.hideAllPopovers();
     }
 
     /**

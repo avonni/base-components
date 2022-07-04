@@ -32,7 +32,7 @@
 
 import { normalizeArray } from 'c/utilsPrivate';
 
-export default class SchedulerResource {
+export default class SchedulerTimelineResource {
     constructor(props) {
         this.avatarSrc = props.avatarSrc;
         this.avatarFallbackIconName = props.avatarFallbackIconName;

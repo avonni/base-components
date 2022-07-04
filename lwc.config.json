@@ -399,12 +399,20 @@
             "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
+            "name": "c/primitiveSchedulerCalendar",
+            "path": "src/modules/base/primitiveSchedulerCalendar/primitiveSchedulerCalendar.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
         {
             "name": "c/primitiveSchedulerHeaderGroup",
             "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
+        },
+        {
+            "name": "c/primitiveSchedulerTimeline",
+            "path": "src/modules/base/primitiveSchedulerTimeline/primitiveSchedulerTimeline.js"
         },
         {
             "name": "c/primitiveSelect",
