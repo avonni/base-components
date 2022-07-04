@@ -73,9 +73,15 @@ describe('Kanban', () => {
             const groups = element.shadowRoot.querySelectorAll(
                 '[data-element-id="path-group"]'
             );
-            expect(groups[0].textContent).toBe('Open ');
-            expect(groups[1].textContent).toBe('In Progress ');
-            expect(groups[2].textContent).toBe('Closed ');
+            expect(groups[0].textContent).toEqual(
+                expect.stringContaining('Open')
+            );
+            expect(groups[1].textContent).toEqual(
+                expect.stringContaining('In Progress')
+            );
+            expect(groups[2].textContent).toEqual(
+                expect.stringContaining('Closed')
+            );
         });
     });
 
@@ -92,6 +98,40 @@ describe('Kanban', () => {
                 '[data-element-id="avonni-kanban__group"]'
             );
             expect(records.children.length).toBe(3);
+        });
+    });
+
+    // subgroups
+    it('Kanban : subgroups', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.subGroupFieldName = 'assignee';
+        element.actions = ACTIONS;
+        return Promise.resolve().then(() => {
+            const records = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__group"]'
+            );
+            expect(records.children.length).toBe(1);
+        });
+    });
+
+    // hideHeader
+    it('Kanban : hideHeader', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.hideHeader = true;
+        element.actions = ACTIONS;
+        return Promise.resolve().then(() => {
+            const summarize = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__summarize_wrapper"]'
+            );
+            expect(summarize).toBeNull();
         });
     });
 
@@ -154,6 +194,7 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.subGroupFieldName = 'Available';
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__tile"]'

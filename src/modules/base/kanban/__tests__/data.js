@@ -31,9 +31,52 @@
  */
 
 const GROUP_VALUES = [
-    { label: 'Open', value: 'open' },
-    { label: 'In Progress', value: 'inProgress' },
-    { label: 'Closed', value: 'closed' }
+    {
+        label: 'Open',
+        value: 'open',
+        backgroundColor: '#fffff',
+        headerActions: [
+            { disabled: false, label: 'Action 1', name: 'Action 1' }
+        ],
+        avatar: {
+            fallbackIconName: 'utility:down',
+            initials: 'AS',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            variant: 'circle'
+        }
+    },
+    {
+        label: 'In Progress',
+        value: 'inProgress',
+        backgroundColor: '#fffff',
+        footerActions: [
+            {
+                disabled: false,
+                label: 'Action 1',
+                name: 'Action 1',
+                iconName: 'utility:cart'
+            }
+        ],
+        headerActions: [
+            { disabled: false, label: 'Action 1', name: 'Action 1' },
+            { disabled: false, label: 'Action 2', name: 'Action 2' }
+        ],
+        showItemCount: true
+    },
+    {
+        label: 'Closed',
+        value: 'closed',
+        backgroundColor: '#fffff',
+        footerActions: [
+            {
+                disabled: false,
+                label: 'Action 1',
+                name: 'Action 1',
+                iconName: 'utility:add'
+            },
+            { disabled: true, label: 'Action 2', name: 'Action 2' }
+        ]
+    }
 ];
 
 const FIELDS = [
@@ -97,6 +140,7 @@ const RECORDS = [
         status: 'In Progress',
         opportunityName: 'Opportunity 3',
         amount: 5100,
+        assignee: 'John Doe',
         phone: '+37529888888',
         date: '1547250828000',
         percent: 0.83,
@@ -106,6 +150,7 @@ const RECORDS = [
         id: '004',
         status: 'Open',
         opportunityName: 'Opportunity 4',
+        assignee: 'John Doe',
         amount: 21570,
         phone: '+375292567896',
         date: '1647250828000',
