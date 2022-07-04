@@ -128,6 +128,8 @@ export default class Skeleton extends LightningElement {
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.handleVariant();
+        if (this.width)
+            this.classList.add('avonni-skeleton__display-inline-block');
         this.handleVariant();
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
