@@ -163,7 +163,9 @@
             events={computedEvents}
             events-labels={eventsLabels}
             events-theme={eventsTheme}
+            new-event-title={dialogLabels.newEventTitle}
             read-only={readOnly}
+            recurrent-edit-modes={recurrentEditModes}
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}
             start={start}
@@ -171,6 +173,8 @@
             variant={variant}
             zoom-to-fit={zoomToFit}
             onhidepopovers={handleHidePopovers}
+            onopeneditdialog={handleOpenEditDialog}
+            onopenrecurrencedialog={handleOpenRecurrenceDialog}
         ></c-primitive-scheduler-timeline>
     </template>
 

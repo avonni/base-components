@@ -199,18 +199,18 @@ export default class Scheduler extends LightningElement {
             this.positionPopover(contextMenu);
         }
 
-        // If a new event was just created, set the dragged event
-        if (this.selection && this.selection.newEvent && !this._draggedEvent) {
-            this._draggedEvent = this.template.querySelector(
-                `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${this.selection.occurrence.key}"]`
-            );
-            if (this._draggedEvent) {
-                this.initDraggedEventState(
-                    this._initialState.mouseX,
-                    this._initialState.mouseY
-                );
-            }
-        }
+        // // If a new event was just created, set the dragged event
+        // if (this.selection && this.selection.newEvent && !this._draggedEvent) {
+        //     this._draggedEvent = this.template.querySelector(
+        //         `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${this.selection.occurrence.key}"]`
+        //     );
+        //     if (this._draggedEvent) {
+        //         this.initDraggedEventState(
+        //             this._initialState.mouseX,
+        //             this._initialState.mouseY
+        //         );
+        //     }
+        // }
 
         // If the edit dialog is opened, focus on the first input
         if (this.showEditDialog || this.showRecurrenceDialog) {
@@ -1368,18 +1368,18 @@ export default class Scheduler extends LightningElement {
         return !this.collapseDisabled && !this.firstColumnIsOpen;
     }
 
-    /**
-     * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showRecurrenceSaveOptions() {
-        return (
-            this.recurrentEditModes.length > 1 &&
-            this.selection.event.recurrence
-        );
-    }
+    // /**
+    //  * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
+    //  *
+    //  * @type {boolean}
+    //  * @default true
+    //  */
+    // get showRecurrenceSaveOptions() {
+    //     return (
+    //         this.recurrentEditModes.length > 1 &&
+    //         this.selection.event.recurrence
+    //     );
+    // }
 
     // /**
     //  * True if the loading spinner should be displayed.
@@ -1819,51 +1819,51 @@ export default class Scheduler extends LightningElement {
         // }
     }
 
-    /**
-     * Set the initial state of a dragged or resized event.
-     *
-     * @param {number} mouseX The position of the mouse on the horizontal axis.
-     * @param {number} mouseY The position of the mouse on the vertical axis.
-     */
-    initDraggedEventState(mouseX, mouseY) {
-        // Save the initial position values
-        const eventPosition = this._draggedEvent.getBoundingClientRect();
-        const { right, left, top, bottom } = this.getDraggingBoundaries(
-            eventPosition,
-            mouseX,
-            mouseY
-        );
+    // /**
+    //  * Set the initial state of a dragged or resized event.
+    //  *
+    //  * @param {number} mouseX The position of the mouse on the horizontal axis.
+    //  * @param {number} mouseY The position of the mouse on the vertical axis.
+    //  */
+    // initDraggedEventState(mouseX, mouseY) {
+    //     // Save the initial position values
+    //     const eventPosition = this._draggedEvent.getBoundingClientRect();
+    //     const { right, left, top, bottom } = this.getDraggingBoundaries(
+    //         eventPosition,
+    //         mouseX,
+    //         mouseY
+    //     );
 
-        const resourceAxis = this.isVerticalTimeline ? mouseX : mouseY;
-        const resource = this.getResourceElementFromPosition(resourceAxis);
+    //     const resourceAxis = this.isVerticalTimeline ? mouseX : mouseY;
+    //     const resource = this.getResourceElementFromPosition(resourceAxis);
 
-        const eventStartPosition = this.isVerticalTimeline
-            ? eventPosition.top
-            : eventPosition.left;
+    //     const eventStartPosition = this.isVerticalTimeline
+    //         ? eventPosition.top
+    //         : eventPosition.left;
 
-        const eventEndPosition = this.isVerticalTimeline
-            ? eventPosition.bottom
-            : eventPosition.right;
+    //     const eventEndPosition = this.isVerticalTimeline
+    //         ? eventPosition.bottom
+    //         : eventPosition.right;
 
-        const eventSize = this.isVerticalTimeline
-            ? eventPosition.height
-            : eventPosition.width;
+    //     const eventSize = this.isVerticalTimeline
+    //         ? eventPosition.height
+    //         : eventPosition.width;
 
-        this._initialState = {
-            mouseX,
-            mouseY,
-            initialX: this._draggedEvent.x,
-            initialY: this._draggedEvent.y,
-            eventStartPosition,
-            eventEndPosition,
-            eventSize,
-            left,
-            right,
-            top,
-            bottom,
-            resource
-        };
-    }
+    //     this._initialState = {
+    //         mouseX,
+    //         mouseY,
+    //         initialX: this._draggedEvent.x,
+    //         initialY: this._draggedEvent.y,
+    //         eventStartPosition,
+    //         eventEndPosition,
+    //         eventSize,
+    //         left,
+    //         right,
+    //         top,
+    //         bottom,
+    //         resource
+    //     };
+    // }
 
     /**
      * Set the resources height and cell width.
@@ -1965,38 +1965,38 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    /**
-     * Update the width of the resized event.
-     */
-    updateDraggedEventStyleAfterResize(distanceMoved) {
-        const { eventSize, initialY, initialX } = this._initialState;
-        const side = this._resizeSide;
-        const event = this._draggedEvent;
-        const multiplier = side === 'start' ? -1 : 1;
+    // /**
+    //  * Update the width of the resized event.
+    //  */
+    // updateDraggedEventStyleAfterResize(distanceMoved) {
+    //     const { eventSize, initialY, initialX } = this._initialState;
+    //     const side = this._resizeSide;
+    //     const event = this._draggedEvent;
+    //     const multiplier = side === 'start' ? -1 : 1;
 
-        const size = eventSize + distanceMoved * multiplier;
-        if (this.isVerticalTimeline) {
-            event.style.height = `${size}px`;
-        } else {
-            event.style.width = `${size}px`;
-        }
+    //     const size = eventSize + distanceMoved * multiplier;
+    //     if (this.isVerticalTimeline) {
+    //         event.style.height = `${size}px`;
+    //     } else {
+    //         event.style.width = `${size}px`;
+    //     }
 
-        if (side === 'start') {
-            const initialPosition = this.isVerticalTimeline
-                ? initialY
-                : initialX;
-            const computedStart =
-                side === 'start'
-                    ? distanceMoved + initialPosition
-                    : distanceMoved;
+    //     if (side === 'start') {
+    //         const initialPosition = this.isVerticalTimeline
+    //             ? initialY
+    //             : initialX;
+    //         const computedStart =
+    //             side === 'start'
+    //                 ? distanceMoved + initialPosition
+    //                 : distanceMoved;
 
-            if (this.isVerticalTimeline) {
-                event.y = computedStart;
-            } else {
-                event.x = computedStart;
-            }
-        }
-    }
+    //         if (this.isVerticalTimeline) {
+    //             event.y = computedStart;
+    //         } else {
+    //             event.x = computedStart;
+    //         }
+    //     }
+    // }
 
     /**
      * Set the default properties of the given event.
@@ -2196,87 +2196,87 @@ export default class Scheduler extends LightningElement {
         // });
     }
 
-    /**
-     * Find the cell element at a given schedule position.
-     *
-     * @param {HTMLElement} resource The resource element the cell is in.
-     * @param {number} position The position of the cell.
-     * @returns {(HTMLElement|undefined)} The cell element or undefined.
-     */
-    getCellFromPosition(resource, position) {
-        const cellElements = Array.from(
-            resource.querySelectorAll('[data-element-id="div-cell"]')
-        );
+    // /**
+    //  * Find the cell element at a given schedule position.
+    //  *
+    //  * @param {HTMLElement} resource The resource element the cell is in.
+    //  * @param {number} position The position of the cell.
+    //  * @returns {(HTMLElement|undefined)} The cell element or undefined.
+    //  */
+    // getCellFromPosition(resource, position) {
+    //     const cellElements = Array.from(
+    //         resource.querySelectorAll('[data-element-id="div-cell"]')
+    //     );
 
-        return cellElements.find((cellElement, index) => {
-            const cellPosition = cellElement.getBoundingClientRect();
-            const start = this.isVerticalTimeline
-                ? cellPosition.top
-                : cellPosition.left;
-            const end = this.isVerticalTimeline
-                ? cellPosition.bottom
-                : cellPosition.right;
+    //     return cellElements.find((cellElement, index) => {
+    //         const cellPosition = cellElement.getBoundingClientRect();
+    //         const start = this.isVerticalTimeline
+    //             ? cellPosition.top
+    //             : cellPosition.left;
+    //         const end = this.isVerticalTimeline
+    //             ? cellPosition.bottom
+    //             : cellPosition.right;
 
-            // Handle the cases where the events are on the side
-            // and the mouse moved out of the schedule
-            if (index === 0 && start >= position) {
-                return cellElement;
-            }
-            if (index === cellElements.length - 1 && position > end) {
-                return cellElement;
-            }
+    //         // Handle the cases where the events are on the side
+    //         // and the mouse moved out of the schedule
+    //         if (index === 0 && start >= position) {
+    //             return cellElement;
+    //         }
+    //         if (index === cellElements.length - 1 && position > end) {
+    //             return cellElement;
+    //         }
 
-            if (position >= start && position < end) {
-                return cellElement;
-            }
-            return undefined;
-        });
-    }
+    //         if (position >= start && position < end) {
+    //             return cellElement;
+    //         }
+    //         return undefined;
+    //     });
+    // }
 
-    /**
-     * Get the boundaries of the dragging/resizing zone.
-     *
-     * @param {DOMRect} eventPosition The position and dimensions of the dragged event.
-     * @param {number} mouseX The position of the mouse on the X axis.
-     * @param {number} mouseY The position of the mouse on the Y axis.
-     * @returns {object} The dragging zone coordinates.
-     */
-    getDraggingBoundaries(eventPosition, mouseX, mouseY) {
-        const resizeEnd = this._resizeSide === 'end';
-        const isDragged = !this._resizeSide;
-        const schedulePosition = this.schedulePosition;
+    // /**
+    //  * Get the boundaries of the dragging/resizing zone.
+    //  *
+    //  * @param {DOMRect} eventPosition The position and dimensions of the dragged event.
+    //  * @param {number} mouseX The position of the mouse on the X axis.
+    //  * @param {number} mouseY The position of the mouse on the Y axis.
+    //  * @returns {object} The dragging zone coordinates.
+    //  */
+    // getDraggingBoundaries(eventPosition, mouseX, mouseY) {
+    //     const resizeEnd = this._resizeSide === 'end';
+    //     const isDragged = !this._resizeSide;
+    //     const schedulePosition = this.schedulePosition;
 
-        let right, left, top, bottom;
-        if (this.isVerticalTimeline) {
-            const topOfEvent = eventPosition.top + 24;
-            const topOfSchedule =
-                schedulePosition.top + (mouseY - eventPosition.top);
-            top = resizeEnd ? topOfEvent : topOfSchedule;
+    //     let right, left, top, bottom;
+    //     if (this.isVerticalTimeline) {
+    //         const topOfEvent = eventPosition.top + 24;
+    //         const topOfSchedule =
+    //             schedulePosition.top + (mouseY - eventPosition.top);
+    //         top = resizeEnd ? topOfEvent : topOfSchedule;
 
-            const bottomOfEvent = eventPosition.bottom - 24;
-            const bottomOfSchedule =
-                schedulePosition.bottom + (mouseY - eventPosition.bottom);
-            bottom = resizeEnd || isDragged ? bottomOfSchedule : bottomOfEvent;
+    //         const bottomOfEvent = eventPosition.bottom - 24;
+    //         const bottomOfSchedule =
+    //             schedulePosition.bottom + (mouseY - eventPosition.bottom);
+    //         bottom = resizeEnd || isDragged ? bottomOfSchedule : bottomOfEvent;
 
-            left = schedulePosition.left + (mouseX - eventPosition.left);
-            right = schedulePosition.right + (mouseX - eventPosition.right);
-        } else {
-            const leftOfEvent = eventPosition.left + 24;
-            const leftOfSchedule =
-                schedulePosition.left + (mouseX - eventPosition.left);
-            left = resizeEnd ? leftOfEvent : leftOfSchedule;
+    //         left = schedulePosition.left + (mouseX - eventPosition.left);
+    //         right = schedulePosition.right + (mouseX - eventPosition.right);
+    //     } else {
+    //         const leftOfEvent = eventPosition.left + 24;
+    //         const leftOfSchedule =
+    //             schedulePosition.left + (mouseX - eventPosition.left);
+    //         left = resizeEnd ? leftOfEvent : leftOfSchedule;
 
-            const rightOfEvent = eventPosition.right - 24;
-            const rightOfSchedule =
-                schedulePosition.right + (mouseX - eventPosition.right);
-            right = resizeEnd || isDragged ? rightOfSchedule : rightOfEvent;
+    //         const rightOfEvent = eventPosition.right - 24;
+    //         const rightOfSchedule =
+    //             schedulePosition.right + (mouseX - eventPosition.right);
+    //         right = resizeEnd || isDragged ? rightOfSchedule : rightOfEvent;
 
-            top = schedulePosition.top + (mouseY - eventPosition.top);
-            bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
-        }
+    //         top = schedulePosition.top + (mouseY - eventPosition.top);
+    //         bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
+    //     }
 
-        return { right, left, top, bottom };
-    }
+    //     return { right, left, top, bottom };
+    // }
 
     /**
      * Find the event occurrences for a given resource name.
@@ -2310,28 +2310,28 @@ export default class Scheduler extends LightningElement {
         );
     }
 
-    /**
-     * Find a resource element from its position in the schedule.
-     *
-     * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
-     * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
-     */
-    getResourceElementFromPosition(position) {
-        const resources = Array.from(
-            this.template.querySelectorAll('[data-element-id="div-resource"]')
-        );
-        return resources.find((div) => {
-            const divPosition = div.getBoundingClientRect();
-            const start = this.isVerticalTimeline
-                ? divPosition.left
-                : divPosition.top;
-            const end = this.isVerticalTimeline
-                ? divPosition.right
-                : divPosition.bottom;
+    // /**
+    //  * Find a resource element from its position in the schedule.
+    //  *
+    //  * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
+    //  * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
+    //  */
+    // getResourceElementFromPosition(position) {
+    //     const resources = Array.from(
+    //         this.template.querySelectorAll('[data-element-id="div-resource"]')
+    //     );
+    //     return resources.find((div) => {
+    //         const divPosition = div.getBoundingClientRect();
+    //         const start = this.isVerticalTimeline
+    //             ? divPosition.left
+    //             : divPosition.top;
+    //         const end = this.isVerticalTimeline
+    //             ? divPosition.right
+    //             : divPosition.bottom;
 
-            return position >= start && position <= end;
-        });
-    }
+    //         return position >= start && position <= end;
+    //     });
+    // }
 
     // /**
     //  * Get the total number of event occurrences that overlap one.
@@ -2382,21 +2382,21 @@ export default class Scheduler extends LightningElement {
     //     this._resizeSide = undefined;
     // }
 
-    /**
-     * Clear the selected or new event.
-     */
-    cleanSelection() {
-        // If a new event was being created, remove the unfinished event from the computedEvents
-        const lastEvent = this.computedEvents[this.computedEvents.length - 1];
-        if (
-            this.selection &&
-            this.selection.newEvent &&
-            lastEvent === this.selection.event
-        ) {
-            this.computedEvents.pop();
-        }
-        this.selection = undefined;
-    }
+    // /**
+    //  * Clear the selected or new event.
+    //  */
+    // cleanSelection() {
+    //     // If a new event was being created, remove the unfinished event from the computedEvents
+    //     const lastEvent = this.computedEvents[this.computedEvents.length - 1];
+    //     if (
+    //         this.selection &&
+    //         this.selection.newEvent &&
+    //         lastEvent === this.selection.event
+    //     ) {
+    //         this.computedEvents.pop();
+    //     }
+    //     this.selection = undefined;
+    // }
 
     /**
      * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
@@ -2510,30 +2510,30 @@ export default class Scheduler extends LightningElement {
         popover.style.left = `${x}px`;
     }
 
-    /**
-     * Set the selected event from an Event object.
-     *
-     * @param {Event} mouseEvent Event that triggered the selection.
-     */
-    selectEvent(mouseEvent) {
-        const { eventName, from, x, y, key } = mouseEvent.detail;
-        const computedEvent = this.computedEvents.find((evt) => {
-            return evt.name === eventName;
-        });
-        const occurrences = computedEvent.occurrences.filter((occ) => {
-            return occ.from.ts === from.ts;
-        });
-        const occurrence = occurrences.find((occ) => occ.key === key);
+    // /**
+    //  * Set the selected event from an Event object.
+    //  *
+    //  * @param {Event} mouseEvent Event that triggered the selection.
+    //  */
+    // selectEvent(mouseEvent) {
+    //     const { eventName, from, x, y, key } = mouseEvent.detail;
+    //     const computedEvent = this.computedEvents.find((evt) => {
+    //         return evt.name === eventName;
+    //     });
+    //     const occurrences = computedEvent.occurrences.filter((occ) => {
+    //         return occ.from.ts === from.ts;
+    //     });
+    //     const occurrence = occurrences.find((occ) => occ.key === key);
 
-        this.selection = {
-            event: computedEvent,
-            occurrences,
-            occurrence,
-            x,
-            y,
-            draftValues: {}
-        };
-    }
+    //     this.selection = {
+    //         event: computedEvent,
+    //         occurrences,
+    //         occurrence,
+    //         x,
+    //         y,
+    //         draftValues: {}
+    //     };
+    // }
 
     setStartToBeginningOfUnit() {
         const unit = this.currentTimeSpan.unit;
@@ -2569,162 +2569,162 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    /**
-     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
-     *
-     * @param {number} position New position of the occurrence.
-     */
-    resizeEventToPosition(position) {
-        const occurrence = this.selection.occurrence;
-        const { resource, mouseX, mouseY } = this._initialState;
-        const distanceMoved = this.isVerticalTimeline
-            ? position - mouseY
-            : position - mouseX;
+    // /**
+    //  * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
+    //  *
+    //  * @param {number} position New position of the occurrence.
+    //  */
+    // resizeEventToPosition(position) {
+    //     const occurrence = this.selection.occurrence;
+    //     const { resource, mouseX, mouseY } = this._initialState;
+    //     const distanceMoved = this.isVerticalTimeline
+    //         ? position - mouseY
+    //         : position - mouseX;
 
-        // If a new event is created through click and drag,
-        // Set the direction the user is going to
-        if (this.selection.newEvent) {
-            this._resizeSide = distanceMoved >= 0 ? 'end' : 'start';
-        }
+    //     // If a new event is created through click and drag,
+    //     // Set the direction the user is going to
+    //     if (this.selection.newEvent) {
+    //         this._resizeSide = distanceMoved >= 0 ? 'end' : 'start';
+    //     }
 
-        const labelWidth =
-            this._resizeSide === 'start'
-                ? this._draggedEvent.leftLabelWidth * -1
-                : this._draggedEvent.rightLabelWidth;
-        const computedPosition = position + labelWidth;
+    //     const labelWidth =
+    //         this._resizeSide === 'start'
+    //             ? this._draggedEvent.leftLabelWidth * -1
+    //             : this._draggedEvent.rightLabelWidth;
+    //     const computedPosition = position + labelWidth;
 
-        // Get the events present in the cell crossed
-        const hoveredCell = this.getCellFromPosition(
-            resource,
-            computedPosition
-        );
-        const computedResource = this.getResourceFromName(
-            resource.dataset.name
-        );
-        const computedCell = computedResource.getCellFromStart(
-            Number(hoveredCell.dataset.start)
-        );
-        const cellEvents = computedCell.events;
+    //     // Get the events present in the cell crossed
+    //     const hoveredCell = this.getCellFromPosition(
+    //         resource,
+    //         computedPosition
+    //     );
+    //     const computedResource = this.getResourceFromName(
+    //         resource.dataset.name
+    //     );
+    //     const computedCell = computedResource.getCellFromStart(
+    //         Number(hoveredCell.dataset.start)
+    //     );
+    //     const cellEvents = computedCell.events;
 
-        // Check if any event in the cell has the same offsetTop
-        const eventIsHovered = cellEvents.some((cellEvent) => {
-            const isDifferent = cellEvent.key !== occurrence.key;
-            if (this.isVerticalTimeline) {
-                return (
-                    isDifferent &&
-                    cellEvent.offsetSide === occurrence.offsetSide
-                );
-            }
-            return (
-                cellEvent.offsetSide === occurrence.offsetSide && isDifferent
-            );
-        });
+    //     // Check if any event in the cell has the same offsetTop
+    //     const eventIsHovered = cellEvents.some((cellEvent) => {
+    //         const isDifferent = cellEvent.key !== occurrence.key;
+    //         if (this.isVerticalTimeline) {
+    //             return (
+    //                 isDifferent &&
+    //                 cellEvent.offsetSide === occurrence.offsetSide
+    //             );
+    //         }
+    //         return (
+    //             cellEvent.offsetSide === occurrence.offsetSide && isDifferent
+    //         );
+    //     });
 
-        // If one of them do, the dragged event is overlapping it.
-        // We have to rerender the scheduler so the resource height enlarges.
-        if (eventIsHovered) {
-            const cell = labelWidth
-                ? hoveredCell
-                : this.getCellFromPosition(resource, position);
-            this.resizeEventToCell(cell);
-        } else {
-            // If we are not passing above another event,
-            // change the styling of the dragged event to follow the cursor
-            this.updateDraggedEventStyleAfterResize(distanceMoved);
-        }
-    }
+    //     // If one of them do, the dragged event is overlapping it.
+    //     // We have to rerender the scheduler so the resource height enlarges.
+    //     if (eventIsHovered) {
+    //         const cell = labelWidth
+    //             ? hoveredCell
+    //             : this.getCellFromPosition(resource, position);
+    //         this.resizeEventToCell(cell);
+    //     } else {
+    //         // If we are not passing above another event,
+    //         // change the styling of the dragged event to follow the cursor
+    //         this.updateDraggedEventStyleAfterResize(distanceMoved);
+    //     }
+    // }
 
-    /**
-     * Resize an event to a given cell element and save the change.
-     *
-     * @param {HTMLElement} cell The cell element.
-     */
-    resizeEventToCell(cell) {
-        const side = this._resizeSide;
-        const occurrence = this.selection.occurrence;
+    // /**
+    //  * Resize an event to a given cell element and save the change.
+    //  *
+    //  * @param {HTMLElement} cell The cell element.
+    //  */
+    // resizeEventToCell(cell) {
+    //     const side = this._resizeSide;
+    //     const occurrence = this.selection.occurrence;
 
-        // Remove the occurrence from the resource
-        const resourceName = occurrence.resourceName;
-        const resource = this.getResourceFromName(resourceName);
-        resource.removeEvent(occurrence);
+    //     // Remove the occurrence from the resource
+    //     const resourceName = occurrence.resourceName;
+    //     const resource = this.getResourceFromName(resourceName);
+    //     resource.removeEvent(occurrence);
 
-        if (side === 'end') {
-            // Update the end date if the event was resized from the right
-            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
-        } else if (side === 'start') {
-            // Update the start date if the event was resized from the left
-            occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
-        }
+    //     if (side === 'end') {
+    //         // Update the end date if the event was resized from the right
+    //         occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
+    //     } else if (side === 'start') {
+    //         // Update the start date if the event was resized from the left
+    //         occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
+    //     }
 
-        // Add the occurrence to the resource with the updated start/end date
-        resource.events.push(occurrence);
-        resource.addEventToCells(occurrence);
+    //     // Add the occurrence to the resource with the updated start/end date
+    //     resource.events.push(occurrence);
+    //     resource.addEventToCells(occurrence);
 
-        // Force the rerender
-        this.computedEvents = [...this.computedEvents];
-    }
+    //     // Force the rerender
+    //     this.computedEvents = [...this.computedEvents];
+    // }
 
-    /**
-     * Drag an event to a cell and save the change.
-     *
-     * @param {HTMLElement} resource The resource element the event is being dragged to.
-     * @param {HTMLElement} cell The cell element the event is being dragged to.
-     */
-    dragEventTo(resource, cell) {
-        const { occurrence, draftValues } = this.selection;
+    // /**
+    //  * Drag an event to a cell and save the change.
+    //  *
+    //  * @param {HTMLElement} resource The resource element the event is being dragged to.
+    //  * @param {HTMLElement} cell The cell element the event is being dragged to.
+    //  */
+    // dragEventTo(resource, cell) {
+    //     const { occurrence, draftValues } = this.selection;
 
-        // Update the start and end date
-        const duration = occurrence.to - occurrence.from;
-        const start = dateTimeObjectFrom(Number(cell.dataset.start));
-        draftValues.from = start.toUTC().toISO();
-        draftValues.to = addToDate(start, 'millisecond', duration + 1)
-            .toUTC()
-            .toISO();
+    //     // Update the start and end date
+    //     const duration = occurrence.to - occurrence.from;
+    //     const start = dateTimeObjectFrom(Number(cell.dataset.start));
+    //     draftValues.from = start.toUTC().toISO();
+    //     draftValues.to = addToDate(start, 'millisecond', duration + 1)
+    //         .toUTC()
+    //         .toISO();
 
-        // Update the resources
-        const resourceName = resource.dataset.name;
-        const previousResourceName = occurrence.resourceName;
+    //     // Update the resources
+    //     const resourceName = resource.dataset.name;
+    //     const previousResourceName = occurrence.resourceName;
 
-        if (previousResourceName !== resourceName) {
-            const resourceIndex = occurrence.resourceNames.findIndex(
-                (name) => name === previousResourceName
-            );
-            draftValues.resourceNames = [...occurrence.resourceNames];
-            draftValues.resourceNames.splice(resourceIndex, 1);
+    //     if (previousResourceName !== resourceName) {
+    //         const resourceIndex = occurrence.resourceNames.findIndex(
+    //             (name) => name === previousResourceName
+    //         );
+    //         draftValues.resourceNames = [...occurrence.resourceNames];
+    //         draftValues.resourceNames.splice(resourceIndex, 1);
 
-            if (!draftValues.resourceNames.includes(resourceName)) {
-                draftValues.resourceNames.push(resourceName);
-            }
-        }
-    }
+    //         if (!draftValues.resourceNames.includes(resourceName)) {
+    //             draftValues.resourceNames.push(resourceName);
+    //         }
+    //     }
+    // }
 
-    /**
-     * Normalize the mouse position so it will take the schedule borders as a value if the mouse is outside of the schedule.
-     *
-     * @param {number} mouseX The horizontal position of the mouse.
-     * @param {number} mouseY The vertical position of the mouse.
-     * @returns {object} Object with two keys: x and y
-     */
-    normalizeMousePosition(mouseX, mouseY) {
-        const { top, bottom, left, right } = this._initialState;
+    // /**
+    //  * Normalize the mouse position so it will take the schedule borders as a value if the mouse is outside of the schedule.
+    //  *
+    //  * @param {number} mouseX The horizontal position of the mouse.
+    //  * @param {number} mouseY The vertical position of the mouse.
+    //  * @returns {object} Object with two keys: x and y
+    //  */
+    // normalizeMousePosition(mouseX, mouseY) {
+    //     const { top, bottom, left, right } = this._initialState;
 
-        let x = mouseX;
-        let y = mouseY;
+    //     let x = mouseX;
+    //     let y = mouseY;
 
-        if (y < top) {
-            y = top;
-        } else if (y > bottom) {
-            y = bottom;
-        }
+    //     if (y < top) {
+    //         y = top;
+    //     } else if (y > bottom) {
+    //         y = bottom;
+    //     }
 
-        if (x < left) {
-            x = left;
-        } else if (x > right) {
-            x = right;
-        }
+    //     if (x < left) {
+    //         x = left;
+    //     } else if (x > right) {
+    //         x = right;
+    //     }
 
-        return { x, y };
-    }
+    //     return { x, y };
+    // }
 
     /**
      * Hide the detail popover, the context menu and the edit dialog if any was open.
@@ -2904,23 +2904,23 @@ export default class Scheduler extends LightningElement {
         this.handleEventMouseEnter(event);
     }
 
-    /**
-     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
-     */
-    handleMouseDown(mouseEvent) {
-        if (mouseEvent.button || this.readOnly) {
-            return;
-        }
+    // /**
+    //  * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+    //  */
+    // handleMouseDown(mouseEvent) {
+    //     if (mouseEvent.button || this.readOnly) {
+    //         return;
+    //     }
 
-        this._mouseIsDown = true;
-        this.hideAllPopovers();
-        this.cleanDraggedElement();
+    //     this._mouseIsDown = true;
+    //     this.hideAllPopovers();
+    //     this.cleanDraggedElement();
 
-        const x = mouseEvent.clientX || mouseEvent.detail.x;
-        const y = mouseEvent.clientY || mouseEvent.detail.y;
-        this._initialState = { mouseX: x, mouseY: y };
-        this.eventCrud.newEvent(x, y, false);
-    }
+    //     const x = mouseEvent.clientX || mouseEvent.detail.x;
+    //     const y = mouseEvent.clientY || mouseEvent.detail.y;
+    //     this._initialState = { mouseX: x, mouseY: y };
+    //     this.eventCrud.newEvent(x, y, false);
+    // }
 
     /**
      * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
@@ -2935,174 +2935,174 @@ export default class Scheduler extends LightningElement {
         this._draggedEvent = event.currentTarget;
     }
 
-    /**
-     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
-     */
-    handleEventMouseDown(mouseEvent) {
-        const { side, x, y } = mouseEvent.detail;
-        this._mouseIsDown = true;
-        this._resizeSide = side;
-        this._draggedEvent = mouseEvent.currentTarget;
-        this._draggedEvent.classList.add('avonni-scheduler__event-dragged');
-        this.selectEvent(mouseEvent);
-        this.hideAllPopovers();
-        this.initDraggedEventState(x, y);
-    }
+    // /**
+    //  * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+    //  */
+    // handleEventMouseDown(mouseEvent) {
+    //     const { side, x, y } = mouseEvent.detail;
+    //     this._mouseIsDown = true;
+    //     this._resizeSide = side;
+    //     this._draggedEvent = mouseEvent.currentTarget;
+    //     this._draggedEvent.classList.add('avonni-scheduler__event-dragged');
+    //     this.selectEvent(mouseEvent);
+    //     this.hideAllPopovers();
+    //     this.initDraggedEventState(x, y);
+    // }
 
-    /**
-     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
-     */
-    handleMouseMove(mouseEvent) {
-        if (!this._mouseIsDown) {
-            return;
-        }
+    // /**
+    //  * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
+    //  */
+    // handleMouseMove(mouseEvent) {
+    //     if (!this._mouseIsDown) {
+    //         return;
+    //     }
 
-        // Prevent scrolling
-        mouseEvent.preventDefault();
+    //     // Prevent scrolling
+    //     mouseEvent.preventDefault();
 
-        // The splitter between the left column and the schedule is being dragged
-        if (this._draggedSplitter) {
-            const { mouseX, firstColWidth } = this._initialState;
-            const x = mouseEvent.clientX;
-            const width = firstColWidth + (x - mouseX);
+    //     // The splitter between the left column and the schedule is being dragged
+    //     if (this._draggedSplitter) {
+    //         const { mouseX, firstColWidth } = this._initialState;
+    //         const x = mouseEvent.clientX;
+    //         const width = firstColWidth + (x - mouseX);
 
-            if (!this.isVerticalTimeline) {
-                this.datatable.style.width = `${width}px`;
-            }
-            this.firstCol.style.width = `${width}px`;
-            this.firstCol.style.minWidth = `${width}px`;
-            this.firstColWidth = width;
+    //         if (!this.isVerticalTimeline) {
+    //             this.datatable.style.width = `${width}px`;
+    //         }
+    //         this.firstCol.style.width = `${width}px`;
+    //         this.firstCol.style.minWidth = `${width}px`;
+    //         this.firstColWidth = width;
 
-            if (this.isVerticalTimeline && !this.zoomToFit) {
-                // Update the resource header first cell width
-                // even if the schedule body width has not changed (is scrolling).
-                // The rest of the time, the resize observer will trigger the update.
-                this.setResourceHeaderFirstCellWidth();
-            }
+    //         if (this.isVerticalTimeline && !this.zoomToFit) {
+    //             // Update the resource header first cell width
+    //             // even if the schedule body width has not changed (is scrolling).
+    //             // The rest of the time, the resize observer will trigger the update.
+    //             this.setResourceHeaderFirstCellWidth();
+    //         }
 
-            // An event is being dragged
-        } else if (this._draggedEvent) {
-            const { mouseX, mouseY, initialX, initialY } = this._initialState;
+    //         // An event is being dragged
+    //     } else if (this._draggedEvent) {
+    //         const { mouseX, mouseY, initialX, initialY } = this._initialState;
 
-            this.selection.isMoving = true;
+    //         this.selection.isMoving = true;
 
-            // Prevent the event from being dragged out of the schedule grid,
-            // or from being squished outside of its boundaries when resizing
-            const position = this.normalizeMousePosition(
-                mouseEvent.clientX,
-                mouseEvent.clientY
-            );
+    //         // Prevent the event from being dragged out of the schedule grid,
+    //         // or from being squished outside of its boundaries when resizing
+    //         const position = this.normalizeMousePosition(
+    //             mouseEvent.clientX,
+    //             mouseEvent.clientY
+    //         );
 
-            if (this._resizeSide || this.selection.newEvent) {
-                // Resizing
-                const resizePosition = this.isVerticalTimeline
-                    ? position.y
-                    : position.x;
-                this.resizeEventToPosition(resizePosition);
-            } else {
-                // Drag and drop
-                const x = position.x - mouseX;
-                const y = position.y - mouseY;
-                this._draggedEvent.x = x + initialX;
-                this._draggedEvent.y = y + initialY;
-            }
+    //         if (this._resizeSide || this.selection.newEvent) {
+    //             // Resizing
+    //             const resizePosition = this.isVerticalTimeline
+    //                 ? position.y
+    //                 : position.x;
+    //             this.resizeEventToPosition(resizePosition);
+    //         } else {
+    //             // Drag and drop
+    //             const x = position.x - mouseX;
+    //             const y = position.y - mouseY;
+    //             this._draggedEvent.x = x + initialX;
+    //             this._draggedEvent.y = y + initialY;
+    //         }
 
-            // The user started the creation of a new event, through click and drag.
-            // On the first move, display the new event on the schedule.
-        } else if (this.selection && this.selection.newEvent) {
-            this.computedEvents.push(this.selection.event);
-            this.updateVisibleResources();
-        }
-    }
+    //         // The user started the creation of a new event, through click and drag.
+    //         // On the first move, display the new event on the schedule.
+    //     } else if (this.selection && this.selection.newEvent) {
+    //         this.computedEvents.push(this.selection.event);
+    //         this.updateVisibleResources();
+    //     }
+    // }
 
-    /**
-     * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
-     */
-    handleMouseUp(mouseEvent) {
-        this._mouseIsDown = false;
-        if (mouseEvent.button !== 0) {
-            return;
-        }
+    // /**
+    //  * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
+    //  */
+    // handleMouseUp(mouseEvent) {
+    //     this._mouseIsDown = false;
+    //     if (mouseEvent.button !== 0) {
+    //         return;
+    //     }
 
-        if (this._draggedSplitter) {
-            this._draggedSplitter = false;
-        } else if (this.selection && this.selection.isMoving) {
-            // Get the new position
-            const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
-                this._initialState;
-            const { draftValues, newEvent, event, occurrence } = this.selection;
-            const side = this._resizeSide;
-            const position = this.normalizeMousePosition(
-                mouseEvent.clientX,
-                mouseEvent.clientY
-            );
-            const startPosition = this.isVerticalTimeline
-                ? position.y - (mouseY - eventStartPosition)
-                : position.x - (mouseX - eventStartPosition);
+    //     if (this._draggedSplitter) {
+    //         this._draggedSplitter = false;
+    //     } else if (this.selection && this.selection.isMoving) {
+    //         // Get the new position
+    //         const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
+    //             this._initialState;
+    //         const { draftValues, newEvent, event, occurrence } = this.selection;
+    //         const side = this._resizeSide;
+    //         const position = this.normalizeMousePosition(
+    //             mouseEvent.clientX,
+    //             mouseEvent.clientY
+    //         );
+    //         const startPosition = this.isVerticalTimeline
+    //             ? position.y - (mouseY - eventStartPosition)
+    //             : position.x - (mouseX - eventStartPosition);
 
-            const endPosition = this.isVerticalTimeline
-                ? position.y + (eventEndPosition - mouseY)
-                : position.x + (eventEndPosition - mouseX);
+    //         const endPosition = this.isVerticalTimeline
+    //             ? position.y + (eventEndPosition - mouseY)
+    //             : position.x + (eventEndPosition - mouseX);
 
-            const valueOnTheResourceAxis =
-                side === 'end' ? endPosition : startPosition;
+    //         const valueOnTheResourceAxis =
+    //             side === 'end' ? endPosition : startPosition;
 
-            const valueOnTheHeadersAxis = this.isVerticalTimeline
-                ? position.x
-                : position.y;
+    //         const valueOnTheHeadersAxis = this.isVerticalTimeline
+    //             ? position.x
+    //             : position.y;
 
-            // Find the resource and cell the event was dropped on
-            const resourceElement = this.getResourceElementFromPosition(
-                valueOnTheHeadersAxis
-            );
-            const cellElement = this.getCellFromPosition(
-                resourceElement,
-                valueOnTheResourceAxis
-            );
+    //         // Find the resource and cell the event was dropped on
+    //         const resourceElement = this.getResourceElementFromPosition(
+    //             valueOnTheHeadersAxis
+    //         );
+    //         const cellElement = this.getCellFromPosition(
+    //             resourceElement,
+    //             valueOnTheResourceAxis
+    //         );
 
-            // Update the draft values
-            const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
-            const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
-            switch (side) {
-                case 'end':
-                    draftValues.allDay = false;
-                    draftValues.to = to.toUTC().toISO();
-                    if (newEvent) {
-                        occurrence.to = to;
-                    }
-                    break;
-                case 'start':
-                    draftValues.allDay = false;
-                    draftValues.from = from.toUTC().toISO();
-                    if (newEvent) {
-                        occurrence.from = from;
-                    }
-                    break;
-                default:
-                    this.dragEventTo(resourceElement, cellElement);
-                    break;
-            }
+    //         // Update the draft values
+    //         const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
+    //         const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
+    //         switch (side) {
+    //             case 'end':
+    //                 draftValues.allDay = false;
+    //                 draftValues.to = to.toUTC().toISO();
+    //                 if (newEvent) {
+    //                     occurrence.to = to;
+    //                 }
+    //                 break;
+    //             case 'start':
+    //                 draftValues.allDay = false;
+    //                 draftValues.from = from.toUTC().toISO();
+    //                 if (newEvent) {
+    //                     occurrence.from = from;
+    //                 }
+    //                 break;
+    //             default:
+    //                 this.dragEventTo(resourceElement, cellElement);
+    //                 break;
+    //         }
 
-            if (newEvent) {
-                this.showEditDialog = true;
-                this.selection.isMoving = false;
-            } else {
-                if (this.showRecurrenceSaveOptions) {
-                    this.showRecurrenceDialog = true;
-                    return;
-                } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
-                    this.eventCrud.saveOccurrence();
-                } else {
-                    this.eventCrud.saveEvent();
-                }
-                this.updateVisibleResources();
-                this.cleanSelection();
-            }
-        } else if (this.selection) {
-            this.cleanSelection();
-        }
-        this.cleanDraggedElement();
-    }
+    //         if (newEvent) {
+    //             this.showEditDialog = true;
+    //             this.selection.isMoving = false;
+    //         } else {
+    //             if (this.showRecurrenceSaveOptions) {
+    //                 this.showRecurrenceDialog = true;
+    //                 return;
+    //             } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
+    //                 this.eventCrud.saveOccurrence();
+    //             } else {
+    //                 this.eventCrud.saveEvent();
+    //             }
+    //             this.updateVisibleResources();
+    //             this.cleanSelection();
+    //         }
+    //     } else if (this.selection) {
+    //         this.cleanSelection();
+    //     }
+    //     this.cleanDraggedElement();
+    // }
 
     /**
      * Handle the resize event fired by the datatable. Update the rows heights.
@@ -3417,8 +3417,20 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    handleHidePopovers() {
-        this.hideAllPopovers();
+    handleHidePopovers(event) {
+        const list = event.detail.list;
+        if (!list) {
+            this.hideAllPopovers();
+            return;
+        }
+
+        list.forEach(popover => {
+
+        });
+    }
+
+    handleOpenEditDialog() {
+        this.showEditDialog = true;
     }
 
     /**
@@ -3446,6 +3458,10 @@ export default class Scheduler extends LightningElement {
                 this.datatable.style.width = `${width}px`;
             }
         }
+    }
+
+    handleOpenRecurrenceDialog() {
+        this.showRecurrenceDialog = true;
     }
 
     handleToggleToolbarCalendar() {

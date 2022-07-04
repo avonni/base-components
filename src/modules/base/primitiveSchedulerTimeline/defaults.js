@@ -7,11 +7,13 @@ const DEFAULT_EVENTS_LABELS = {
         fieldName: 'title'
     }
 };
+const DEFAULT_NEW_EVENT_TITLE = 'New event';
 const DEFAULT_START_DATE = new Date();
 const DEFAULT_TIME_SPAN = {
     unit: 'day',
     span: 1
 };
+const EDIT_MODES = ['all', 'one'];
 const EVENTS_THEMES = {
     valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
     default: 'default'
@@ -241,8 +243,10 @@ export {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_DATE_FORMAT,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_NEW_EVENT_TITLE,
     DEFAULT_START_DATE,
     DEFAULT_TIME_SPAN,
+    EDIT_MODES,
     EVENTS_THEMES,
     HEADERS,
     PRESET_HEADERS,

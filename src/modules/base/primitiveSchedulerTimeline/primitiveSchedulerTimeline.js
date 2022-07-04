@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {
     addToDate,
     dateTimeObjectFrom,
@@ -46,8 +46,10 @@ import {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_DATE_FORMAT,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_NEW_EVENT_TITLE,
     DEFAULT_START_DATE,
     DEFAULT_TIME_SPAN,
+    EDIT_MODES,
     EVENTS_THEMES,
     HEADERS,
     PRESET_HEADERS,
@@ -55,8 +57,8 @@ import {
     VARIANTS
 } from './defaults';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import SchedulerTimelineEvent from './event';
 import SchedulerTimelineResource from './resource';
+import SchedulerTimelineEventData from './eventData';
 
 export default class PrimitiveSchedulerTimeline extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -66,7 +68,9 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     _columns = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _events = [];
+    _newEventTitle = DEFAULT_NEW_EVENT_TITLE;
     _readOnly = false;
+    _recurrentEditModes = EDIT_MODES;
     _resizeColumnDisabled = false;
     _resources = [];
     _start = DEFAULT_START_DATE;
@@ -74,14 +78,18 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     _variant = VARIANTS.default;
     _zoomToFit = false;
 
+    _draggedSplitter;
+    _eventData;
     _headersAreLoading = true;
     _initialFirstColWidth;
+    _initialStatep = {};
     _isConnected = false;
+    _mouseIsDown = false;
     _rowsHeight = [];
     _updateOccurrencesLength = false;
     cellWidth = 0;
     computedHeaders = [];
-    computedEvents = [];
+    @track computedEvents = [];
     computedResources = [];
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
@@ -92,6 +100,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     connectedCallback() {
         this.initHeaders();
         this.initResources();
+        this._eventData = new SchedulerTimelineEventData(this);
         this._isConnected = true;
     }
 
@@ -272,10 +281,8 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         this._eventsLabels =
             typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
 
-        if (this._connected) {
-            this.computedEvents.forEach((event) => {
-                this.updateEventDefaults(event);
-            });
+        if (this._isConnected) {
+            this._eventData.updateAllEventsDefaults();
             this.computedEvents = [...this.computedEvents];
         }
     }
@@ -298,11 +305,25 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         });
 
         if (this._isConnected) {
-            this.computedEvents.forEach((event) => {
-                this.updateEventDefaults(event);
-            });
+            this._eventData.updateAllEventsDefaults();
             this.computedEvents = [...this.computedEvents];
         }
+    }
+
+    /**
+     * Default title of the new events.
+     *
+     * @type {string}
+     * @public
+     * @default New event
+     */
+    @api
+    get newEventTitle() {
+        return this._newEventTitle;
+    }
+    set newEventTitle(value) {
+        this._newEventTitle =
+            typeof value === 'string' ? value : DEFAULT_NEW_EVENT_TITLE;
     }
 
     /**
@@ -318,6 +339,30 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * Allowed edition modes for recurring events. Available options are:
+     * * `all`: All recurrent event occurrences will be updated when a change is made to one occurrence.
+     * * `one`: Only the selected occurrence will be updated when a change is made.
+     *
+     * @type {string[]}
+     * @public
+     * @default ['all', 'one']
+     */
+    @api
+    get recurrentEditModes() {
+        return this._recurrentEditModes;
+    }
+    set recurrentEditModes(value) {
+        const modes = normalizeArray(value);
+        this._recurrentEditModes = modes.filter((mode) => {
+            return EDIT_MODES.includes(mode);
+        });
+
+        if (!this._recurrentEditModes.length) {
+            this._recurrentEditModes = EDIT_MODES;
+        }
     }
 
     /**
@@ -442,8 +487,8 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
         )
             .add({
-                'slds-col': !this.isVerticalTimeline,
-                'avonni-scheduler__cell_vertical': this.isVerticalTimeline,
+                'slds-col': !this.isVertical,
+                'avonni-scheduler__cell_vertical': this.isVertical,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
@@ -580,7 +625,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
      *
      * @type {object}
      */
-    get schedulePosition() {
+    get timelinePosition() {
         const scheduleElement = this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
         );
@@ -646,23 +691,16 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             .toString();
     }
 
-    /**
-     * Currently visible date interval, as a Luxon Interval object.
-     *
-     * @type {Interval}
-     */
-    get visibleInterval() {
-        const header = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"]'
-        );
-        return header ? header.visibleInterval : null;
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initEvents() {
+        this._eventData.initEvents();
+        this.computedEvents = this._eventData.events;
+    }
 
     /**
      * Create the computed headers.
@@ -810,6 +848,27 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * Find a resource element from its position in the schedule.
+     *
+     * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
+     * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
+     */
+    getResourceElementFromPosition(position) {
+        const resources = Array.from(
+            this.template.querySelectorAll('[data-element-id="div-resource"]')
+        );
+        return resources.find((div) => {
+            const divPosition = div.getBoundingClientRect();
+            const start = this.isVertical ? divPosition.left : divPosition.top;
+            const end = this.isVertical
+                ? divPosition.right
+                : divPosition.bottom;
+
+            return position >= start && position <= end;
+        });
+    }
+
+    /**
      * Find a computed resource from its name.
      *
      * @param {string} name The unique name of the resource.
@@ -949,7 +1008,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
      * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
      */
     updateOccurrencesOffset() {
-        const scheduleRightBorder = this.schedulePosition.right;
+        const scheduleRightBorder = this.timelinePosition.right;
 
         // For each resource
         this.computedResources.forEach((resource) => {
@@ -1070,7 +1129,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             const schedule = this.template.querySelector(
                 '[data-element-id="div-schedule-body"]'
             );
-            const scheduleWidth = this.schedulePosition.width;
+            const scheduleWidth = this.timelinePosition.width;
             schedule.style = `
                  --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
              `;
@@ -1144,38 +1203,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * Create the computed events that are included in the currently visible interval of time.
-     */
-    updateVisibleEvents() {
-        const interval = this.visibleInterval;
-        if (!interval) {
-            this.computedEvents = [];
-        }
-
-        const events = this.events.filter((event) => {
-            const from = dateTimeObjectFrom(event.from);
-            const to = dateTimeObjectFrom(event.to);
-            return (
-                interval.contains(from) ||
-                interval.contains(to) ||
-                (interval.isAfter(from) && interval.isBefore(to)) ||
-                event.recurrence
-            );
-        });
-
-        this.computedEvents = events.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            const computedEvent = new SchedulerTimelineEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
-            }
-            return computedEvents;
-        }, []);
-    }
-
-    /**
      * Update the cells and events of the currently loaded resources.
      */
     updateVisibleResources() {
@@ -1214,6 +1241,24 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+     */
+    handleEventMouseDown(mouseEvent) {
+        this._mouseIsDown = true;
+        const { mouseX, mouseY } = mouseEvent.detail;
+        const resourceAxis = this.isVertical ? mouseX : mouseY;
+        const resourceElement =
+            this.getResourceElementFromPosition(resourceAxis);
+        const resource = this.getResourceFromName(resourceElement.dataset.name);
+        this._eventData.handleExistingEventMouseDown(
+            mouseEvent,
+            resource,
+            resourceElement
+        );
+        this.dispatchHidePopovers();
+    }
+
+    /**
      * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
      */
     handleHeaderCellSizeChange(event) {
@@ -1235,7 +1280,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         // Update the start date in case it was not available
         this._start = this.smallestHeader.start;
 
-        this.updateVisibleEvents();
+        this.initEvents();
         this.updateVisibleResources();
         this._initialFirstColWidth = 0;
         this._rowsHeight = [];
@@ -1244,5 +1289,112 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             this.pushLeftColumnDown();
             this._headersAreLoading = false;
         });
+    }
+
+    /**
+     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+     */
+    handleMouseDown(event) {
+        if (event.button || this.readOnly) {
+            return;
+        }
+
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
+
+        const x = event.clientX || event.detail.x;
+        const y = event.clientY || event.detail.y;
+        const headersAxisPosition = this.isVertical ? x : y;
+        const resourceElement =
+            this.getResourceElementFromPosition(headersAxisPosition);
+        const resource = this.getResourceFromName(resourceElement.dataset.name);
+
+        this._eventData.handleNewEventMouseDown({
+            event,
+            resource,
+            resourceElement,
+            x,
+            y
+        });
+    }
+
+    /**
+     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
+     */
+    handleMouseMove(mouseEvent) {
+        if (!this._mouseIsDown) {
+            return;
+        }
+
+        // Prevent scrolling
+        mouseEvent.preventDefault();
+
+        if (this._draggedSplitter) {
+            // The splitter between the left column and the schedule is being dragged
+            const { mouseX, firstColWidth } = this._initialState;
+            const x = mouseEvent.clientX;
+            const width = firstColWidth + (x - mouseX);
+
+            if (!this.isVertical) {
+                this.datatable.style.width = `${width}px`;
+            }
+            this.firstCol.style.width = `${width}px`;
+            this.firstCol.style.minWidth = `${width}px`;
+            this.firstColWidth = width;
+
+            if (this.isVertical && !this.zoomToFit) {
+                // Update the resource header first cell width
+                // even if the schedule body width has not changed (is scrolling).
+                // The rest of the time, the resize observer will trigger the update.
+                this.setResourceHeaderFirstCellWidth();
+            }
+        } else {
+            this._eventData.handleMouseMove(mouseEvent);
+
+            if (this._eventData.shouldInitDraggedEvent) {
+                // A new event is being created by dragging.
+                // On the first move, display the event on the timeline.
+                this.computedEvents = [...this._eventData.events];
+                this.updateVisibleResources();
+
+                requestAnimationFrame(() => {
+                    this._eventData.setDraggedEvent();
+                });
+            }
+        }
+    }
+
+    /**
+     * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
+     */
+    handleMouseUp(mouseEvent) {
+        if (!this._mouseIsDown) {
+            return;
+        }
+        this._mouseIsDown = false;
+
+        if (this._draggedSplitter) {
+            this._draggedSplitter = false;
+        } else {
+            const x = mouseEvent.clientX;
+            const y = mouseEvent.clientY;
+            const { eventToDispatch, updateResources } =
+                this._eventData.handleMouseUp(x, y);
+
+            if (eventToDispatch) {
+                this.dispatchEvent(new CustomEvent(eventToDispatch));
+            }
+            if (updateResources) {
+                this.updateVisibleResources();
+            }
+        }
+    }
+
+    dispatchHidePopovers(list) {
+        this.dispatchEvent(
+            new CustomEvent('hidepopovers', {
+                detail: { list }
+            })
+        );
     }
 }
