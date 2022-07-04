@@ -33,37 +33,39 @@
 -->
 
 <template>
-    <div
-        class={inputWrapperClass}
-        data-element-id="avonni-skeleton-input-wrapper"
-    >
-        <label class="slds-form-element__label">
-            <div class="slds-list_horizontal avonni-skeleton__input-label">
-                <template if:false={inputVariantLabelHidden}>
-                    <template if:true={inputRequired}>
-                        <abbr class="slds-required">*</abbr>
+    <div data-element-id="avonni-skeleton-input-wrapper">
+        <div class={inputWrapperClass} data-element-id="avonni-skeleton-input">
+            <label class="slds-form-element__label">
+                <div class="slds-list_horizontal avonni-skeleton__input-label">
+                    <template if:false={inputVariantLabelHidden}>
+                        <template if:true={inputRequired}>
+                            <abbr class="slds-required">*</abbr>
+                        </template>
+                        <div
+                            class={inputLabelTagClass}
+                            data-element-id="avonni-skeleton-input-label-tag"
+                        ></div>
                     </template>
-                    <div
-                        class={inputLabelTagClass}
-                        data-element-id="avonni-skeleton-input-label-tag"
-                    ></div>
-                </template>
-            </div>
-        </label>
-        <div class="slds-form-element__control">
-            <div class="slds-combobox_container">
+                </div>
+            </label>
+            <div class="slds-form-element__control">
                 <div
-                    class="
-                        avonni-skeleton__combobox-search
-                        slds-input_faux
-                        slds-has-focus
-                    "
-                    data-element-id="avonni-skeleton-combobox-search"
+                    class="slds-combobox_container"
+                    data-element-id="avonni-skeleton-input-container"
                 >
                     <div
-                        class={comboboxLabelClass}
-                        data-element-id="avonni-skeleton-combobox-label"
-                    ></div>
+                        class="
+                            avonni-skeleton__combobox-search
+                            slds-input_faux
+                            slds-has-focus
+                        "
+                        data-element-id="avonni-skeleton-combobox-search"
+                    >
+                        <div
+                            class={comboboxLabelClass}
+                            data-element-id="avonni-skeleton-combobox-label"
+                        ></div>
+                    </div>
                 </div>
             </div>
         </div>

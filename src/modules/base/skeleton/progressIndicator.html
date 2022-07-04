@@ -34,7 +34,10 @@
 
 <template>
     <template if:false={isPathVariant}>
-        <div class="slds-progress">
+        <div
+            class="slds-progress"
+            data-element-id="avonni-skeleton-path-wrapper"
+        >
             <ol class="slds-progress__list">
                 <template for:each={progressItems} for:item="progressItem">
                     <li key={progressItem.key} class="slds-progress__item">
@@ -49,7 +52,7 @@
         </div>
     </template>
     <template if:true={isPathVariant}>
-        <div class="slds-path">
+        <div class="slds-path" data-element-id="avonni-skeleton-path-wrapper">
             <div class="slds-grid slds-path__track">
                 <div class="slds-grid slds-path__scroller-container">
                     <div class="slds-path__scroller">
