@@ -127,7 +127,8 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.isAvatarVariant) this.handleVariant();
+        // if (!this.isAvatarVariant) this.handleVariant();
+        this.handleVariant();
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
         }
@@ -902,6 +903,10 @@ export default class Skeleton extends LightningElement {
             Object.keys(this.variantAttributes).length !== 0
         ) {
             switch (this.variant) {
+                case 'avatar':
+                    console.log('inside case avatar handleVariant');
+                    this.setTextSize();
+                    break;
                 case 'badge':
                     this.updateVariantClassList('badge');
                     break;
@@ -930,6 +935,7 @@ export default class Skeleton extends LightningElement {
                     this.setRectangularCircularSize();
                     break;
                 default:
+                    console.log('inside handleVariant switch case');
                     break;
             }
         }
@@ -1044,6 +1050,14 @@ export default class Skeleton extends LightningElement {
             this.width === undefined ? '100%' : `${this.width}`;
         // variantElement.style.height =
         //     this.height === undefined ? '2em' : `${this.height}`;
+        if (this.htmlVariant === avatar) {
+            console.log('hello');
+            const avatarElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-avatar-wrapper"]'
+            );
+            avatarElement.style.height =
+                this.height === undefined ? '2em' : `${this.height}`;
+        }
         if (this.htmlVariant === combobox) {
             const comboboxElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-combobox-form-element"]'
@@ -1077,7 +1091,6 @@ export default class Skeleton extends LightningElement {
             chipElement.style.height =
                 this.height === undefined ? '2em' : `${this.height}`;
         } else if (this.htmlVariant === input) {
-            console.log('hello');
             const inputElement = this.template.querySelector(
                 `[data-element-id="avonni-skeleton-input-wrapper"]`
             );

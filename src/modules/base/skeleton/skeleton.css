@@ -59,7 +59,8 @@
 
 .avonni-skeleton__chip-container,
 .avonni-skeleton__button-container,
-.avonni-skeleton__buttonIcon-container {
+.avonni-skeleton__buttonIcon-container,
+.avonni-skeleton__avatar-container {
     display: flex;
     align-items: center;
     justify-content: center;
