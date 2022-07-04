@@ -86,6 +86,7 @@ export default class Calendar extends LightningElement {
     _disabled = false;
     _disabledDates = [];
     _focusDate;
+    _hideHeader = false;
     _isConnected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
@@ -193,6 +194,20 @@ export default class Calendar extends LightningElement {
         });
 
         this.updateDateParameters();
+    }
+
+    /**
+     * Specifies if the calendar header should be hidden.
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get hideHeader() {
+        return this._hideHeader;
+    }
+    set hideHeader(value) {
+        this._hideHeader = normalizeBoolean(value);
     }
 
     /**
