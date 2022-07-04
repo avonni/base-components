@@ -1057,6 +1057,18 @@ export default class Skeleton extends LightningElement {
                 this.width === undefined ? '100%' : `${this.width}`;
             comboboxWrapper.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
+        } else if (this.htmlVariant === button) {
+            const buttonElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-button-wrapper"]'
+            );
+            buttonElement.style.height =
+                this.height === undefined ? '2em' : `${this.height}`;
+        } else if (this.htmlVariant === buttonIcon) {
+            const buttonIconElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
+            );
+            buttonIconElement.style.height =
+                this.height === undefined ? '2em' : `${this.height}`;
         } else if (this.htmlVariant === chip) {
             const chipElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-chip-wrapper"]'
@@ -1132,7 +1144,7 @@ export default class Skeleton extends LightningElement {
      */
     updateVariantButtonIcon() {
         const buttonIconElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
+            '[data-element-id="avonni-skeleton-button-icon"]'
         );
         const buttonIconVariantAttributes = BUTTON_ICON_VARIANT_VALUES.get(
             this.variantAttributes.variant
@@ -1145,6 +1157,7 @@ export default class Skeleton extends LightningElement {
             '--avonni-skeleton-color-background-animation',
             buttonIconVariantAttributes.backgroundAnimation
         );
+        this.setTextSize();
     }
 
     /**

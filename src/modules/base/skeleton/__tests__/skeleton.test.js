@@ -349,7 +349,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonButtonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
+                '[data-element-id="avonni-skeleton-button-icon"]'
             );
 
             expect(skeletonButtonIcon.className).toContain('slds-button');
