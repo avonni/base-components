@@ -128,8 +128,19 @@ export default class Skeleton extends LightningElement {
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.handleVariant();
-        if (this.width)
-            this.classList.add('avonni-skeleton__display-inline-block');
+        if (this.width) {
+            const rootNode = this.template
+                .querySelector(
+                    '[data-element-id="avonni-skeleton-badge-wrapper"]'
+                )
+                .getRootNode();
+            const skeletonStyle = rootNode.style;
+            skeletonStyle.setProperty(
+                '--avonni-skeleton-display',
+                'inline-block'
+            );
+            // this.classList.add('avonni-skeleton__display-inline-block');
+        }
         this.handleVariant();
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
@@ -1050,6 +1061,7 @@ export default class Skeleton extends LightningElement {
         );
         variantElement.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
+
         // variantElement.style.height =
         //     this.height === undefined ? '2em' : `${this.height}`;
         if (this.htmlVariant === avatar) {
@@ -1059,8 +1071,13 @@ export default class Skeleton extends LightningElement {
             );
             avatarElement.style.height =
                 this.height === undefined ? '2em' : `${this.height}`;
-        }
-        if (this.htmlVariant === combobox) {
+        } else if (this.htmlVariant === badge) {
+            const badgeElement = this.template.querySelector(
+                '[data-element-id="avonni-skeleton-badge-wrapper"]'
+            );
+            badgeElement.style.height =
+                this.height === undefined ? '2em' : `${this.height}`;
+        } else if (this.htmlVariant === combobox) {
             const comboboxElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-combobox-form-element"]'
             );
@@ -1074,11 +1091,13 @@ export default class Skeleton extends LightningElement {
             comboboxWrapper.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
         } else if (this.htmlVariant === button) {
+            console.log('inside case button');
             const buttonElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-button-wrapper"]'
             );
             buttonElement.style.height =
                 this.height === undefined ? '2em' : `${this.height}`;
+            // this.classList.add('avonni-skeleton__display-inline-block');
         } else if (this.htmlVariant === buttonIcon) {
             const buttonIconElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
