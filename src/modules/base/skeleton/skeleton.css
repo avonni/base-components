@@ -10,8 +10,8 @@
     --avonni-chip-line-height: normal;
     --avonni-avatar-primary-text-font-size: 0.875rem;
     --avonni-avatar-secondary-text-font-size: 0.75rem;
-    --avonni-skeleton-display: initial;
-    display: var(--avonni-skeleton-display);
+    /* --avonni-skeleton-display: initial;
+    display: var(--avonni-skeleton-display); */
 }
 
 .avonni-skeleton__display-inline-block {

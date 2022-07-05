@@ -49,7 +49,7 @@ import datatable from './datatable.html';
 import input from './input.html';
 import paragraph from './paragraph.html';
 import progressIndicator from './progressIndicator.html';
-import skeleton from './skeleton.html';
+import regular from './skeleton.html';
 import tabset from './tabset.html';
 import tree from './tree.html';
 
@@ -105,6 +105,8 @@ export default class Skeleton extends LightningElement {
     treeItems = [];
 
     connectedCallback() {
+        if (this.isButtonIcon || this.isAvatarVariant)
+            this.classList.add('slds-show_inline-block');
         if (this.isDatatableVariant) {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
@@ -163,7 +165,7 @@ export default class Skeleton extends LightningElement {
                 this.htmlVariant = chip;
                 break;
             case 'circular':
-                this.htmlVariant = skeleton;
+                this.htmlVariant = regular;
                 break;
             case 'combobox':
                 this.htmlVariant = combobox;
@@ -181,19 +183,19 @@ export default class Skeleton extends LightningElement {
                 this.htmlVariant = progressIndicator;
                 break;
             case 'rectangular':
-                this.htmlVariant = skeleton;
+                this.htmlVariant = regular;
                 break;
             case 'tabset':
                 this.htmlVariant = tabset;
                 break;
             case 'text':
-                this.htmlVariant = skeleton;
+                this.htmlVariant = regular;
                 break;
             case 'tree':
                 this.htmlVariant = tree;
                 break;
             default:
-                this.htmlVariant = skeleton;
+                this.htmlVariant = regular;
         }
         return this.htmlVariant;
     }
@@ -378,6 +380,15 @@ export default class Skeleton extends LightningElement {
     @api
     get isAvatarVariant() {
         return this.variant === 'avatar';
+    }
+
+    /**
+     * Get if variant is button icon
+     * @type {boolean}
+     */
+    @api
+    get isButtonIcon() {
+        return this.variant === 'button-icon';
     }
 
     /**
@@ -801,9 +812,9 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get regularVariantsClass() {
-        return classSet(`avonni-skeleton__variant-${this.variant}`).add(
-            `avonni-skeleton__animation-${this.animation}`
-        );
+        return classSet(`avonni-skeleton__variant-${this.variant}`)
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add('slds-align_absolute-center');
     }
 
     /**
@@ -900,8 +911,12 @@ export default class Skeleton extends LightningElement {
      * @returns {object} avonni-skeleton
      */
     get skeleton() {
+        if (this.htmlVariant === regular)
+            return this.template.querySelector(
+                '[data-element-id="avonni-skeleton-regular-wrapper"]'
+            );
         return this.template.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
         );
     }
 
@@ -1052,36 +1067,26 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for variant
      * @param {*} variant
      */
-    // setTextSize() {
-    //     const variantElement = this.template.querySelector(
-    //         `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
-    //     );
-    //     variantElement.style.width = this.width === undefined ? '100%' :
-    // }
-
     setTextSize() {
-        const variantElement = this.template.querySelector(
-            `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
-        );
+        const variantElement = this.skeleton;
         variantElement.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
-
-        // variantElement.style.height =
-        //     this.height === undefined ? '2em' : `${this.height}`;
-        if (this.htmlVariant === avatar) {
-            console.log('hello');
-            const avatarElement = this.template.querySelector(
-                '[data-element-id="avonni-skeleton-avatar-wrapper"]'
-            );
-            avatarElement.style.height =
-                this.height === undefined ? '100%' : `${this.height}`;
-        } else if (this.htmlVariant === badge) {
-            const badgeElement = this.template.querySelector(
-                '[data-element-id="avonni-skeleton-badge-wrapper"]'
-            );
-            badgeElement.style.height =
-                this.height === undefined ? '2em' : `${this.height}`;
-        } else if (this.htmlVariant === combobox) {
+        variantElement.style.height =
+            this.height === undefined ? '100%' : `${this.height}`;
+        // if (this.htmlVariant === avatar) {
+        //     console.log('hello');
+        //     const avatarElement = this.template.querySelector(
+        //         '[data-element-id="avonni-skeleton-avatar-wrapper"]'
+        //     );
+        //     avatarElement.style.height =
+        //         this.height === undefined ? '100%' : `${this.height}`;
+        // } else if (this.htmlVariant === badge) {
+        //     const badgeElement = this.template.querySelector(
+        //         '[data-element-id="avonni-skeleton-badge-wrapper"]'
+        //     );
+        //     badgeElement.style.height =
+        //         this.height === undefined ? '2em' : `${this.height}`;
+        if (this.htmlVariant === combobox) {
             const comboboxElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-combobox-form-element"]'
             );
@@ -1095,26 +1100,26 @@ export default class Skeleton extends LightningElement {
             comboboxWrapper.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
         } else if (this.htmlVariant === button) {
-            console.log('inside case button');
-            const buttonElement = this.template.querySelector(
-                '[data-element-id="avonni-skeleton-button-wrapper"]'
-            );
-            buttonElement.style.height =
-                this.height === undefined ? '2em' : `${this.height}`;
-            // this.classList.add('avonni-skeleton__display-inline-block');
-        } else if (this.htmlVariant === buttonIcon) {
-            const buttonIconElement = this.template.querySelector(
-                '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
-            );
-            buttonIconElement.style.height =
-                this.height === undefined ? '2em' : `${this.height}`;
-        } else if (this.htmlVariant === chip) {
-            const chipElement = this.template.querySelector(
-                '[data-element-id="avonni-skeleton-chip-wrapper"]'
-            );
-            console.log('hello');
-            chipElement.style.height =
-                this.height === undefined ? '2em' : `${this.height}`;
+            //     console.log('inside case button');
+            //     const buttonElement = this.template.querySelector(
+            //         '[data-element-id="avonni-skeleton-button-wrapper"]'
+            //     );
+            //     buttonElement.style.height =
+            //         this.height === undefined ? '2em' : `${this.height}`;
+            //     // this.classList.add('avonni-skeleton__display-inline-block');
+            // } else if (this.htmlVariant === buttonIcon) {
+            //     const buttonIconElement = this.template.querySelector(
+            //         '[data-element-id="avonni-skeleton-button-icon-wrapper"]'
+            //     );
+            //     buttonIconElement.style.height =
+            //         this.height === undefined ? '2em' : `${this.height}`;
+            // } else if (this.htmlVariant === chip) {
+            //     const chipElement = this.template.querySelector(
+            //         '[data-element-id="avonni-skeleton-chip-wrapper"]'
+            //     );
+            //     console.log('hello');
+            //     chipElement.style.height =
+            //         this.height === undefined ? '2em' : `${this.height}`;
         } else if (this.htmlVariant === input) {
             const inputElement = this.template.querySelector(
                 `[data-element-id="avonni-skeleton-input-wrapper"]`
@@ -1127,7 +1132,7 @@ export default class Skeleton extends LightningElement {
                 this.width === undefined ? '100%' : `${this.width}`;
             inputElement.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
-        } else {
+        } else if (this.htmlVariant === regular) {
             let element = this.skeleton;
             element.style.height =
                 this.height === undefined ? '0.7em' : `${this.height}`;
