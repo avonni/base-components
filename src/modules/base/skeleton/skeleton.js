@@ -147,7 +147,7 @@ export default class Skeleton extends LightningElement {
             this.classList.add('slds-show_inline-block');
         console.log(`width: ${this.width}`);
         if (
-            this.isComboboxVariant &&
+            (this.isInputVariant || this.isComboboxVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
@@ -465,6 +465,15 @@ export default class Skeleton extends LightningElement {
     @api
     get isDatatableVariant() {
         return this.variant === 'datatable';
+    }
+
+    /**
+     * Get if variant is input
+     * @type {boolean}
+     */
+    @api
+    get isInputVariant() {
+        return this.variant === 'input';
     }
 
     /**
@@ -1198,7 +1207,7 @@ export default class Skeleton extends LightningElement {
             inputContainer.style.width =
                 this.width === undefined ? '100%' : `${this.width}`;
             inputElement.style.height =
-                this.height === undefined ? '0.7em' : `${this.height}`;
+                this.height === undefined ? 'auto' : `${this.height}`;
         } else if (this.htmlVariant === regular) {
             let element = this.skeleton;
             element.style.height =
