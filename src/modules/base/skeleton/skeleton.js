@@ -105,8 +105,16 @@ export default class Skeleton extends LightningElement {
     treeItems = [];
 
     connectedCallback() {
-        if (this.isButtonIcon || this.isAvatarVariant)
-            this.classList.add('slds-show_inline-block');
+        // if (
+        //     this.isButtonIcon ||
+        //     this.isAvatarVariant ||
+        //     this.isButtonVariant ||
+        //     this.isChipVariant ||
+        //     this.isBadgeVariant
+        // )
+        //     this.classList.add('slds-show_inline-block');
+        // if (this.isComboboxVariant && this.width !== '100%')
+        //     this.classList.add('slds-show');
         if (this.isDatatableVariant) {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
@@ -129,6 +137,22 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
+        if (
+            this.isButtonIcon ||
+            this.isAvatarVariant ||
+            this.isButtonVariant ||
+            this.isChipVariant ||
+            this.isBadgeVariant
+        )
+            this.classList.add('slds-show_inline-block');
+        console.log(`width: ${this.width}`);
+        if (
+            this.isComboboxVariant &&
+            this.width !== '100%' &&
+            this.width !== undefined &&
+            this.width !== ''
+        )
+            this.classList.add('slds-show_inline-block');
         // if (this.width) {
         //     const element = this.template.querySelector('ac-base-skeleton');
         //     // const host = this.template.querySelector(
@@ -278,7 +302,14 @@ export default class Skeleton extends LightningElement {
         return this._width;
     }
     set width(value) {
-        if (value !== undefined && !isNaN(value) && typeof value === 'string')
+        console.log(value !== '');
+        console.log(`in set width: ${value}`);
+        if (
+            value !== undefined &&
+            value !== '' &&
+            !isNaN(value) &&
+            typeof value === 'string'
+        )
             this._width = `${value}px`;
         else this._width = value;
     }
@@ -383,12 +414,48 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get if variant is badge
+     * @type {boolean}
+     */
+    @api
+    get isBadgeVariant() {
+        return this.variant === 'badge';
+    }
+
+    /**
+     * Get if variant is button
+     * @type {boolean}
+     */
+    @api
+    get isButtonVariant() {
+        return this.variant === 'button';
+    }
+
+    /**
      * Get if variant is button icon
      * @type {boolean}
      */
     @api
     get isButtonIcon() {
         return this.variant === 'button-icon';
+    }
+
+    /**
+     * Get if variant is chip icon
+     * @type {boolean}
+     */
+    @api
+    get isChipVariant() {
+        return this.variant === 'chip';
+    }
+
+    /**
+     * Get if variant is combobox
+     * @type {boolean}
+     */
+    @api
+    get isComboboxVariant() {
+        return this.variant === 'combobox';
     }
 
     /**
@@ -1098,7 +1165,7 @@ export default class Skeleton extends LightningElement {
             comboboxWrapper.style.width =
                 this.width === undefined ? '100%' : `${this.width}`;
             comboboxWrapper.style.height =
-                this.height === undefined ? '0.7em' : `${this.height}`;
+                this.height === undefined ? 'auto' : `${this.height}`;
         } else if (this.htmlVariant === button) {
             //     console.log('inside case button');
             //     const buttonElement = this.template.querySelector(
