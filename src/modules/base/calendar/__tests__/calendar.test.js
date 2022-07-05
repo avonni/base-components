@@ -141,6 +141,17 @@ describe('Calendar', () => {
         });
     });
 
+    it('Calendar: hideHeader', () => {
+        element.hideHeader = true;
+
+        return Promise.resolve().then(() => {
+            const calendarHeader = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar__header"]'
+            );
+            expect(calendarHeader).toBeNull();
+        });
+    });
+
     // Focus Date
     it('Calendar: focusDate', () => {
         element.value = '05/12/2022';
