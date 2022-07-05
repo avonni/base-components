@@ -51,22 +51,10 @@ export default class SchedulerTimelineEventData {
     }
 
     /**
-     * Currently visible date interval, as a Luxon Interval object.
-     *
-     * @type {Interval}
-     */
-    get visibleInterval() {
-        const header = this.timeline.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"]'
-        );
-        return header ? header.visibleInterval : {};
-    }
-
-    /**
      * Create the computed events that are included in the currently visible interval of time.
      */
     initEvents() {
-        const interval = this.visibleInterval;
+        const interval = this.timeline.visibleInterval;
         if (!interval) {
             this.events = [];
         }
@@ -97,17 +85,23 @@ export default class SchedulerTimelineEventData {
     /**
      * Clear the selected or new event.
      */
-    cleanSelection() {
+    cleanSelection(cancelEdition = false) {
         // If a new event was being created, remove the unfinished event from the events
         const lastEvent = this.events[this.events.length - 1];
         if (
+            cancelEdition &&
             this.selection &&
             this.selection.newEvent &&
             lastEvent === this.selection.event
         ) {
             this.events.pop();
+            this.refreshEvents();
         }
         this.selection = undefined;
+        if (this.eventDrag) {
+            this.eventDrag.cleanDraggedElement();
+            this.eventDrag = null;
+        }
     }
 
     /**
@@ -118,8 +112,8 @@ export default class SchedulerTimelineEventData {
     createEvent(event) {
         const computedEvent = { ...event };
         this.updateEventDefaults(computedEvent);
-        this.computedEvents.push(new SchedulerTimelineEvent(computedEvent));
-        this.initResources();
+        this.events.push(new SchedulerTimelineEvent(computedEvent));
+        this.refreshEvents();
     }
 
     /**
@@ -131,33 +125,13 @@ export default class SchedulerTimelineEventData {
         const name = eventName || this.selection.event.name;
 
         // Delete the event
-        const index = this.computedEvents.findIndex((evt) => {
+        const index = this.events.findIndex((evt) => {
             return evt.name === name;
         });
-        this.computedEvents.splice(index, 1);
-        this.initResources();
-
-        /**
-         * The event fired when a user deletes an event.
-         *
-         * @event
-         * @name eventdelete
-         * @param {string} name Unique name of the deleted event.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('eventdelete', {
-                detail: {
-                    name
-                },
-                bubbles: true
-            })
-        );
-
-        this.selection = undefined;
-        this.cleanDraggedElement();
-        this.hideAllPopovers();
+        this.events.splice(index, 1);
+        this.refreshEvents();
+        this.cleanSelection();
+        this.eventDrag = null;
     }
 
     /**
@@ -195,29 +169,19 @@ export default class SchedulerTimelineEventData {
     }
 
     /**
-     * Set the focus on an event.
-     *
-     * @param {string} eventName Unique name of the event to focus.
-     */
-    focusEvent(eventName) {
-        const event = this.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${eventName}"]`
-        );
-        if (event) {
-            event.focus();
-        }
-    }
-
-    /**
      * Display a new event on the schedule grid and open the edition dialog if showDialog is true.
      *
      * @param {number} x Horizontal position of the event in the schedule, in pixels.
      * @param {number} y Vertical position of the event in the schedule, in pixels.
      * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
      */
-    newEvent({ resourceElement, x, y }) {
+    newEvent({ resourceElement, x, y }, saveEvent = true) {
         const resourceAxisPosition = this.timeline.isVertical ? y : x;
-        const cell = getCellFromPosition(resourceElement, resourceAxisPosition, this.timeline.isVertical);
+        const cell = getCellFromPosition(
+            resourceElement,
+            resourceAxisPosition,
+            this.timeline.isVertical
+        );
         const resourceNames = [resourceElement.dataset.name];
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
@@ -240,10 +204,14 @@ export default class SchedulerTimelineEventData {
             newEvent: true
         };
 
-        // if (showDialog) {
-        //     this.computedEvents.push(computedEvent);
-        //     this.showEditDialog = true;
-        // }
+        if (saveEvent) {
+            this.events.push(computedEvent);
+        }
+    }
+
+    refreshEvents() {
+        this.events = [...this.events];
+        this.timeline.computedEvents = this.events;
     }
 
     /**
@@ -252,8 +220,10 @@ export default class SchedulerTimelineEventData {
      * @param {HTMLElement} cell The cell element.
      */
     resizeEventToCell(cell, resource) {
-        const occurrence = this.selection.occurence;
+        const occurrence = this.selection.occurrence;
         const side = this.resizeSide;
+
+        // Remove the occurrence from the resource
         resource.removeEvent(occurrence);
 
         if (side === 'end') {
@@ -267,6 +237,7 @@ export default class SchedulerTimelineEventData {
         // Add the occurrence to the resource with the updated start/end date
         resource.events.push(occurrence);
         resource.addEventToCells(occurrence);
+        this.refreshEvents();
     }
 
     /**
@@ -288,37 +259,17 @@ export default class SchedulerTimelineEventData {
             // Generate a name for the new event, based on its title
             const lowerCaseName = event.title.toLowerCase();
             event.name = lowerCaseName.replace(/\s/g, '-').concat(event.key);
-
-            /**
-             * The event fired when a user creates an event.
-             *
-             * @event
-             * @name eventcreate
-             * @param {object} event The event created.
-             * @public
-             * @bubbles
-             */
-            this.dispatchEvent(
-                new CustomEvent('eventcreate', {
-                    detail: {
-                        event: {
-                            from: event.from.toUTC().toISO(),
-                            resourceNames: event.resourceNames,
-                            name: event.name,
-                            title: event.title,
-                            to: event.to.toUTC().toISO()
-                        }
-                    },
-                    bubbles: true
-                })
-            );
-            this.selection = undefined;
+            this.timeline.dispatchEventCreate(event);
         } else {
-            this.dispatchChangeEvent(event.name);
+            const detail = {
+                name: event.name,
+                draftValues: draftValues
+            };
+            this.timeline.dispatchEventChange(detail);
         }
 
         event.initOccurrences();
-        this.computedEvents = [...this.computedEvents];
+        this.refreshEvents();
     }
 
     /**
@@ -375,17 +326,19 @@ export default class SchedulerTimelineEventData {
             event.occurrences.push(occ);
         });
 
-        this.dispatchChangeEvent(event.name, true);
-        this.computedEvents = [...this.computedEvents];
+        const detail = {
+            name: event.name,
+            draftValues,
+            recurrenceDates: {
+                from: occurrence.from.toUTC().toISO(),
+                to: occurrence.to.toUTC().toISO()
+            }
+        };
+        this.timeline.dispatchEventChange(detail);
+        this.refreshEvents();
     }
 
-    /**
-     * Set the selected event from an Event object.
-     *
-     * @param {Event} mouseEvent Event that triggered the selection.
-     */
-    selectEvent(mouseEvent) {
-        const { eventName, from, x, y, key } = mouseEvent.detail;
+    selectEvent({ eventName, from, x, y, key }) {
         const event = this.events.find((evt) => {
             return evt.name === eventName;
         });
@@ -402,6 +355,7 @@ export default class SchedulerTimelineEventData {
             y,
             draftValues: {}
         };
+        return this.selection;
     }
 
     setDraggedEvent() {
@@ -433,8 +387,8 @@ export default class SchedulerTimelineEventData {
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
         event.data = { ...event };
-        event.schedulerEnd = this.visibleInterval.e;
-        event.schedulerStart = this.visibleInterval.s;
+        event.schedulerEnd = this.timeline.visibleInterval.e;
+        event.schedulerStart = this.timeline.visibleInterval.s;
         event.availableMonths = this.timeline.availableMonths;
         event.availableDaysOfTheWeek = this.timeline.availableDaysOfTheWeek;
         event.availableTimeFrames = this.timeline.availableTimeFrames;
@@ -458,7 +412,7 @@ export default class SchedulerTimelineEventData {
             resourceElement,
             boundaries: this.timeline.timelinePosition
         });
-        this.selectEvent(mouseEvent);
+        this.selectEvent(mouseEvent.detail);
     }
 
     handleMouseMove(event) {
@@ -466,112 +420,116 @@ export default class SchedulerTimelineEventData {
             return;
         }
 
-        if (this.eventDrag.draggedEvent) {
+        if (this.shouldInitDraggedEvent) {
+            this.events.push(this.selection.event);
+            this.refreshEvents();
+        } else {
             this.selection.isMoving = true;
             const x = event.clientX;
             const y = event.clientY;
             const { resourceElement, resizeSide } = this.eventDrag;
             const resourceName = resourceElement.dataset.name;
             const resource = this.timeline.getResourceFromName(resourceName);
-            const { occurrence, newEvent } = this.selection.occurrence;
+            const { occurrence, newEvent } = this.selection;
 
             if (resizeSide || newEvent) {
-                const hoveredEventCell = this.eventDrag.resize(x, y, occurrence, resource);
+                const hoveredEventCell = this.eventDrag.resize(
+                    x,
+                    y,
+                    occurrence,
+                    resource
+                );
                 if (hoveredEventCell) {
                     this.resizeEventToCell(hoveredEventCell, resource);
-                    this.timeline.computedEvents = [...this.events];
                 }
             } else {
                 this.eventDrag.drag(x, y);
             }
-        } else if (this.selection && this.selection.newEvent) {
-            this.events.push(this.selection.event);
         }
     }
 
     handleMouseUp(x, y) {
-        if (this.selection && this.selection.isMoving) {
-            // Get the new position
-            const valueOnTheResourceAxis =
-                this.eventDrag.getValueOnTheResourceAxis(x, y);
-            const valueOnTheHeadersAxis =
-                this.eventDrag.getValueOnTheHeadersAxis(x, y);
-            const { draftValues, newEvent, event, occurrence } = this.selection;
-            const side = this.eventDrag.resizeSide;
-
-            // Find the resource and cell the event was dropped on
-            const resourceElement =
-                this.timeline.getResourceElementFromPosition(
-                    valueOnTheHeadersAxis
-                );
-            const cellElement = getCellFromPosition(
-                resourceElement,
-                valueOnTheResourceAxis,
-                this.timeline.isVertical
-            );
-
-            // Update the draft values
-            const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
-            const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
-            switch (side) {
-                case 'end':
-                    draftValues.allDay = false;
-                    draftValues.to = to.toUTC().toISO();
-                    if (newEvent) {
-                        occurrence.to = to;
-                    }
-                    break;
-                case 'start':
-                    draftValues.allDay = false;
-                    draftValues.from = from.toUTC().toISO();
-                    if (newEvent) {
-                        occurrence.from = from;
-                    }
-                    break;
-                default:
-                    this.dragEventTo(resourceElement, cellElement);
-                    break;
-            }
-            this.eventDrag.cleanDraggedElement();
-
-            if (newEvent) {
-                this.selection.isMoving = false;
-                return { eventToDispatch: 'openeditdialog' };
-            }
-            const recurrentEvent = event.recurrence;
-            const recurrenceModes = this.timeline.recurrentEditModes;
-            const onlyOccurrenceEditAllowed =
-                recurrenceModes.length === 1 && recurrenceModes[0] === 'one';
-
-            if (recurrentEvent && recurrenceModes.length > 1) {
-                return { eventToDispatch: 'openrecurrencedialog' };
-            }
-            if (recurrentEvent && onlyOccurrenceEditAllowed) {
-                this.saveOccurrence();
-            } else {
-                this.saveEvent();
-            }
+        if (!this.selection || !this.selection.isMoving) {
             this.cleanSelection();
-            return { updateResources: true };
-        } else if (this.selection) {
-            this.cleanSelection();
+            return {};
         }
 
-        this.eventDrag.cleanDraggedElement();
-        return {};
+        // Get the new position
+        const valueOnTheResourceAxis = this.eventDrag.getValueOnTheResourceAxis(
+            x,
+            y
+        );
+        const valueOnTheHeadersAxis = this.eventDrag.getValueOnTheHeadersAxis(
+            x,
+            y
+        );
+        const { draftValues, newEvent, event, occurrence } = this.selection;
+        const side = this.eventDrag.resizeSide;
+
+        // Find the resource and cell the event was dropped on
+        const resourceElement = this.timeline.getResourceElementFromPosition(
+            valueOnTheHeadersAxis
+        );
+        const cellElement = getCellFromPosition(
+            resourceElement,
+            valueOnTheResourceAxis,
+            this.timeline.isVertical
+        );
+
+        // Update the draft values
+        const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
+        const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
+        switch (side) {
+            case 'end':
+                draftValues.allDay = false;
+                draftValues.to = to.toUTC().toISO();
+                if (newEvent) {
+                    occurrence.to = to;
+                }
+                break;
+            case 'start':
+                draftValues.allDay = false;
+                draftValues.from = from.toUTC().toISO();
+                if (newEvent) {
+                    occurrence.from = from;
+                }
+                break;
+            default:
+                this.dragEventTo(resourceElement, cellElement);
+                break;
+        }
+
+        if (newEvent) {
+            this.selection.isMoving = false;
+            return { eventToDispatch: 'edit' };
+        }
+        const recurrentEvent = event.recurrence;
+        const recurrenceModes = this.timeline.recurrentEditModes;
+        const onlyOccurrenceEditAllowed =
+            this.timeline.onlyOccurrenceEditAllowed;
+
+        if (recurrentEvent && recurrenceModes.length > 1) {
+            return { eventToDispatch: 'recurrence' };
+        }
+        if (recurrentEvent && onlyOccurrenceEditAllowed) {
+            this.saveOccurrence();
+        } else {
+            this.saveEvent();
+        }
+        this.cleanSelection();
+        return { updateResources: true };
     }
 
-    handleNewEventMouseDown({ event, resource, resourceElement, x, y }) {
+    handleNewEventMouseDown({ event, resourceElement, x, y }) {
         const isVertical = this.timeline.isVertical;
         this.eventDrag = new SchedulerTimelineEventDrag({
             event,
             isVertical,
-            resource,
             resourceElement,
             isNewEvent: true,
             boundaries: this.timeline.timelinePosition
         });
 
-        this.newEvent({ resourceElement, x, y });
+        this.newEvent({ resourceElement, x, y }, false);
     }
 }

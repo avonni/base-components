@@ -158,6 +158,7 @@
             available-months={availableMonths}
             available-time-frames={availableTimeFrames}
             available-time-spans={timeSpans}
+            collapse-disabled={collapseDisabled}
             columns={columns}
             date-format={dateFormat}
             events={computedEvents}
@@ -172,9 +173,15 @@
             time-span={currentTimeSpan}
             variant={variant}
             zoom-to-fit={zoomToFit}
+            data-element-id="avonni-primitive-scheduler-timeline"
+            onemptyspotcontextmenu={handleEmptySpotContextMenu}
+            oneventchange={handleEventChange}
+            oneventcontextmenu={handleEventContextMenu}
+            oneventmouseenter={handleEventMouseEnter}
             onhidepopovers={handleHidePopovers}
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
+            onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-timeline>
     </template>
 
@@ -195,6 +202,7 @@
         "
         role="tooltip"
         aria-live="polite"
+        data-element-id="div-detail-popover"
     >
         <div class="slds-popover__body">
             <div class="slds-m-bottom_x-small">

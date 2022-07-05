@@ -57,7 +57,6 @@ export default class SchedulerTimelineEventDrag {
         const mouseY = event.clientY || event.detail.y;
 
         if (isNewEvent) {
-            this.cleanDraggedElement();
             this._initialState = { mouseX, mouseY };
         } else {
             this.resizeSide = event.detail.side;
@@ -147,11 +146,15 @@ export default class SchedulerTimelineEventDrag {
         if (this._isNewEvent) {
             this.resizeSide = distanceMoved >= 0 ? 'end' : 'start';
         }
-        const hoveredEventCell = this.getHoveredEventCell(position, occurrence, resource);
+        const hoveredEventCell = this.getHoveredEventCell(
+            position,
+            occurrence,
+            resource
+        );
         if (hoveredEventCell) {
             return hoveredEventCell;
         }
-        
+
         // If we are not passing above another event,
         // change the styling of the dragged event to follow the cursor
         this.updateDraggedEventStyleAfterResize(distanceMoved);
@@ -218,7 +221,7 @@ export default class SchedulerTimelineEventDrag {
     }
 
     getValueOnTheHeadersAxis(x, y) {
-        const position = this.eventDrag.normalizeMousePosition(x, y);
+        const position = this.normalizeMousePosition(x, y);
         return this._isVertical ? position.x : position.y;
     }
 
@@ -258,8 +261,8 @@ export default class SchedulerTimelineEventDrag {
     getHoveredEventCell(position, occurrence, resource) {
         const labelWidth =
             this.resizeSide === 'start'
-                ? this._draggedEvent.leftLabelWidth * -1
-                : this._draggedEvent.rightLabelWidth;
+                ? this.draggedEvent.leftLabelWidth * -1
+                : this.draggedEvent.rightLabelWidth;
         const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
@@ -302,7 +305,7 @@ export default class SchedulerTimelineEventDrag {
     updateDraggedEventStyleAfterResize(distanceMoved) {
         const { eventSize, initialY, initialX } = this._initialState;
         const side = this.resizeSide;
-        const event = this._draggedEvent;
+        const event = this.draggedEvent;
         const multiplier = side === 'start' ? -1 : 1;
 
         const size = eventSize + distanceMoved * multiplier;

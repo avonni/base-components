@@ -65,6 +65,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _availableTimeSpans = [];
+    _collapseDisabled = false;
     _columns = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _events = [];
@@ -82,7 +83,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     _eventData;
     _headersAreLoading = true;
     _initialFirstColWidth;
-    _initialStatep = {};
+    _initialState = {};
     _isConnected = false;
     _mouseIsDown = false;
     _rowsHeight = [];
@@ -94,7 +95,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
     firstColWidth = 0;
-    selection;
     smallestHeader;
 
     connectedCallback() {
@@ -122,6 +122,13 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
+        }
+
+        if (this._eventData.shouldInitDraggedEvent) {
+            // A new event is being created by dragging.
+            // On the first move, display the event on the timeline.
+            this.updateVisibleResources();
+            this._eventData.setDraggedEvent();
         }
     }
 
@@ -211,6 +218,21 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * If present, the schedule column is not collapsible or expandable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    /**
      * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the horizontal variant.
      *
      * @type {object[]}
@@ -253,6 +275,10 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
     set events(value) {
         this._events = normalizeArray(value, 'object');
+
+        if (this._isConnected) {
+            this.updateVisibleResources();
+        }
     }
 
     /**
@@ -283,7 +309,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
         if (this._isConnected) {
             this._eventData.updateAllEventsDefaults();
-            this.computedEvents = [...this.computedEvents];
+            this._eventData.refreshEvents();
         }
     }
 
@@ -306,7 +332,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
         if (this._isConnected) {
             this._eventData.updateAllEventsDefaults();
-            this.computedEvents = [...this.computedEvents];
+            this._eventData.refreshEvents();
         }
     }
 
@@ -545,6 +571,19 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * If true, editing a recurring event only updates the occurrence, never the complete event.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get onlyOccurrenceEditAllowed() {
+        return (
+            this.recurrentEditModes.length === 1 &&
+            this.recurrentEditModes[0] === 'one'
+        );
+    }
+
+    /**
      * Computed CSS class for the schedule resources.
      *
      * @type {string}
@@ -621,24 +660,32 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * Position and dimensions of the schedule body.
-     *
-     * @type {object}
-     */
-    get timelinePosition() {
-        const scheduleElement = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        return scheduleElement.getBoundingClientRect();
-    }
-
-    /**
      * Width of the first column (horizontal variant) or height of the header row (vertical variant). Used by the events to make the labels sticky.
      *
      * @type {number}
      */
     get scrollOffset() {
         return this.isVertical ? 0 : this.firstColWidth;
+    }
+
+    /**
+     * If true, the left collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
+    get showCollapseLeft() {
+        return !this.collapseDisabled && !this.firstColumnIsHidden;
+    }
+
+    /**
+     * If true, the right collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
+    get showCollapseRight() {
+        return !this.collapseDisabled && !this.firstColumnIsOpen;
     }
 
     /**
@@ -676,6 +723,18 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * Position and dimensions of the schedule body.
+     *
+     * @type {object}
+     */
+    get timelinePosition() {
+        const scheduleElement = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        return scheduleElement.getBoundingClientRect();
+    }
+
+    /**
      * Computed CSS style for the vertical resource header cells.
      *
      * @type {string}
@@ -689,6 +748,94 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
                     this.zoomToFit
             })
             .toString();
+    }
+
+    get visibleInterval() {
+        const headers = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group"]'
+        );
+        if (headers) {
+            return headers.visibleInterval;
+        }
+        return null;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    cleanSelection(cancelNewEvent) {
+        this._eventData.cleanSelection(cancelNewEvent);
+        this._eventData.refreshEvents();
+        this.updateVisibleResources();
+    }
+
+    @api
+    createEvent(event) {
+        this._eventData.createEvent(event);
+        this.updateVisibleResources();
+    }
+
+    @api
+    deleteEvent(name) {
+        this._eventData.deleteEvent(name);
+        this.updateVisibleResources();
+    }
+
+    @api
+    focusEvent(name) {
+        const event = this.template.querySelector(
+            `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${name}"]`
+        );
+        if (event) {
+            event.focus();
+        }
+    }
+
+    @api
+    newEvent(x, y, saveEvent) {
+        const position = this.isVertical ? x : y;
+        const resourceElement = this.getResourceElementFromPosition(position);
+        this._eventData.newEvent({ resourceElement, x, y }, saveEvent);
+    }
+
+    @api
+    saveSelection(recurrenceMode) {
+        const { event, occurrence } = this._eventData.selection;
+        if (
+            recurrenceMode === 'one' ||
+            (event.recurrence && this.onlyOccurrenceEditAllowed)
+        ) {
+            this._eventData.saveOccurrence();
+        } else {
+            // Update the event with the selected occurrence values,
+            // in case the selected occurrence had already been edited
+            if (occurrence.from !== event.from) {
+                event._from = occurrence.from;
+            }
+            if (occurrence.to !== event.to) {
+                event._to = occurrence.to;
+            }
+            if (occurrence.title !== event.title) {
+                event.title = occurrence.title;
+            }
+            if (occurrence.resourceNames !== event.resourceNames) {
+                event.resourceNames = occurrence.resourceNames;
+            }
+
+            // Update the event with the draft values from the edit form
+            this._eventData.saveEvent();
+        }
+        this._eventData.cleanSelection();
+        this.updateVisibleResources();
+    }
+
+    @api
+    selectEvent(detail) {
+        return this._eventData.selectEvent(detail);
     }
 
     /*
@@ -783,6 +930,20 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             requestAnimationFrame(() => {
                 this.updateCellWidth();
             });
+        }
+    }
+
+    /**
+     * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
+     */
+    clearDatatableColumnWidth() {
+        if (this.isVertical) {
+            return;
+        }
+        const lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn.initialWidth) {
+            lastColumn.initialWidth = undefined;
+            this._columns = [...this.columns];
         }
     }
 
@@ -982,29 +1143,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * Set the default properties of the given event.
-     *
-     * @param {object} event The event object.
-     */
-    updateEventDefaults(event) {
-        // We store the initial event object in a variable,
-        // in case a custom field is used by the labels
-        event.data = { ...event };
-        event.schedulerEnd = this.visibleInterval.e;
-        event.schedulerStart = this.visibleInterval.s;
-        event.availableMonths = this.availableMonths;
-        event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-        event.availableTimeFrames = this.availableTimeFrames;
-        event.smallestHeader = this.smallestHeader;
-        event.theme = event.disabled
-            ? 'disabled'
-            : event.theme || this.eventsTheme;
-
-        event.labels =
-            typeof event.labels === 'object' ? event.labels : this.eventsLabels;
-    }
-
-    /**
      * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
      */
     updateOccurrencesOffset() {
@@ -1018,7 +1156,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             // Get all the event occurrences of the resource
             const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
-                    `.avonni-scheduler__primitive-event[data-resource-name="${resource.name}"]`
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-resource-name="${resource.name}"]:not([data-disabled="true"])`
                 )
             );
 
@@ -1040,14 +1178,14 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
                         return occ.key === occElement.occurrenceKey;
                     });
 
+                    const selection = this._eventData.selection;
                     previousOccurrences.unshift({
                         level,
                         numberOfOverlap,
                         start,
                         end: occElement.endPosition,
                         occurrence:
-                            occurrence ||
-                            (this.selection && this.selection.occurrence)
+                            occurrence || (selection && selection.occurrence)
                     });
 
                     if (!this.isVertical) {
@@ -1241,12 +1379,103 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
+     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
+     */
+    handleDoubleClick(mouseEvent) {
+        const x = !isNaN(mouseEvent.clientX)
+            ? mouseEvent.clientX
+            : mouseEvent.detail.x;
+        const y = !isNaN(mouseEvent.clientY)
+            ? mouseEvent.clientY
+            : mouseEvent.detail.y;
+        this.newEvent(x, y, true);
+        this.dispatchOpenEditDialog();
+    }
+
+    /**
+     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     */
+    handleEmptySpotContextMenu(mouseEvent) {
+        mouseEvent.preventDefault();
+
+        const x = mouseEvent.clientX || mouseEvent.detail.x;
+        const y = mouseEvent.clientY || mouseEvent.detail.y;
+        this.newEvent(x, y);
+
+        this.dispatchEvent(
+            new CustomEvent('emptyspotcontextmenu', {
+                detail: {
+                    selection: this._eventData.selection
+                }
+            })
+        );
+    }
+
+    /**
+     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
+     */
+    handleEventContextMenu(mouseEvent) {
+        const target = mouseEvent.currentTarget;
+        if (target.disabled || target.referenceLine) {
+            return;
+        }
+
+        this.dispatchEvent(
+            new CustomEvent('eventcontextmenu', { detail: mouseEvent.detail })
+        );
+    }
+
+    /**
+     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
+     */
+    handleEventDoubleClick(event) {
+        this._eventData.cleanSelection(true);
+        this.selectEvent(event.detail);
+        this.dispatchHidePopovers();
+        this.dispatchOpenEditDialog();
+    }
+
+    /**
+     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
+     */
+    handleEventFocus(event) {
+        const detail = {
+            name: event.detail.eventName
+        };
+        if (event.currentTarget.recurrence) {
+            detail.recurrenceDates = {
+                from: event.detail.from.toUTC().toISO(),
+                to: event.detail.to.toUTC().toISO()
+            };
+        }
+
+        /**
+         * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
+         *
+         * @event
+         * @name eventselect
+         * @param {string} name Unique name of the event.
+         * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventselect', {
+                detail,
+                bubbles: true
+            })
+        );
+
+        this.handleEventMouseEnter(event);
+    }
+
+    /**
      * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
      */
     handleEventMouseDown(mouseEvent) {
         this._mouseIsDown = true;
-        const { mouseX, mouseY } = mouseEvent.detail;
-        const resourceAxis = this.isVertical ? mouseX : mouseY;
+        const { x, y } = mouseEvent.detail;
+        const resourceAxis = this.isVertical ? x : y;
         const resourceElement =
             this.getResourceElementFromPosition(resourceAxis);
         const resource = this.getResourceFromName(resourceElement.dataset.name);
@@ -1256,6 +1485,20 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             resourceElement
         );
         this.dispatchHidePopovers();
+    }
+
+    /**
+     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     */
+    handleEventMouseEnter(event) {
+        if (this._mouseIsDown) {
+            return;
+        }
+        this.dispatchEvent(
+            new CustomEvent('eventmouseenter', {
+                detail: event.detail
+            })
+        );
     }
 
     /**
@@ -1279,16 +1522,55 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
         // Update the start date in case it was not available
         this._start = this.smallestHeader.start;
+        this.dispatchEvent(
+            new CustomEvent('visibleintervalchange', {
+                detail: {
+                    start: this.start,
+                    visibleInterval: this.visibleInterval
+                }
+            })
+        );
 
         this.initEvents();
         this.updateVisibleResources();
         this._initialFirstColWidth = 0;
         this._rowsHeight = [];
+        this._headersAreLoading = false;
 
         requestAnimationFrame(() => {
             this.pushLeftColumnDown();
-            this._headersAreLoading = false;
         });
+    }
+
+    handleHideDetailPopover() {
+        this.dispatchHidePopovers(['detail']);
+    }
+
+    /**
+     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
+     */
+    handleHideFirstCol() {
+        this.dispatchHidePopovers();
+        this.firstCol.style.width = null;
+        this.firstCol.style.minWidth = null;
+
+        if (this.firstColumnIsOpen) {
+            this.firstColumnIsOpen = false;
+            this.firstColWidth = this._initialFirstColWidth;
+            if (this.isVertical) {
+                this.setResourceHeaderFirstCellWidth();
+            } else {
+                this.datatable.style.width = null;
+            }
+        } else {
+            this.firstColumnIsHidden = true;
+            this.firstColWidth = 0;
+            if (this.isVertical) {
+                this.setResourceHeaderFirstCellWidth();
+            } else {
+                this.datatable.style.width = 0;
+            }
+        }
     }
 
     /**
@@ -1352,14 +1634,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             this._eventData.handleMouseMove(mouseEvent);
 
             if (this._eventData.shouldInitDraggedEvent) {
-                // A new event is being created by dragging.
-                // On the first move, display the event on the timeline.
-                this.computedEvents = [...this._eventData.events];
                 this.updateVisibleResources();
-
-                requestAnimationFrame(() => {
-                    this._eventData.setDraggedEvent();
-                });
             }
         }
     }
@@ -1381,8 +1656,15 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             const { eventToDispatch, updateResources } =
                 this._eventData.handleMouseUp(x, y);
 
-            if (eventToDispatch) {
-                this.dispatchEvent(new CustomEvent(eventToDispatch));
+            switch (eventToDispatch) {
+                case 'edit':
+                    this.dispatchOpenEditDialog();
+                    break;
+                case 'recurrence':
+                    this.dispatchOpenRecurrenceDialog();
+                    break;
+                default:
+                    break;
             }
             if (updateResources) {
                 this.updateVisibleResources();
@@ -1390,10 +1672,161 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         }
     }
 
+    /**
+     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
+     */
+    handleOpenFirstCol() {
+        this.dispatchHidePopovers();
+        this.firstCol.style.width = null;
+        this.clearDatatableColumnWidth();
+        if (!this.isVertical) {
+            this.datatable.style.width = null;
+        }
+
+        if (this.firstColumnIsHidden) {
+            this.firstColumnIsHidden = false;
+            this.firstColWidth = this._initialFirstColWidth;
+            if (!this.isVertical) {
+                this.datatable.style.width = `${this._initialFirstColWidth}px`;
+            }
+        } else {
+            this.firstColumnIsOpen = true;
+            const width = this.template.host.getBoundingClientRect().width;
+            this.firstColWidth = width;
+            if (!this.isVertical) {
+                this.datatable.style.width = `${width}px`;
+            }
+        }
+    }
+
+    /**
+     * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
+     */
+    handleScroll(event) {
+        if (this._eventData.selection) {
+            // Hide the detail popover only if it goes off screen
+            const key = this._eventData.selection.occurrence.key;
+            const occurrence = this.template.querySelector(
+                `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"`
+            );
+            if (occurrence) {
+                const eventPosition = occurrence.getBoundingClientRect();
+                if (eventPosition.right < 0 || eventPosition.bottom < 0) {
+                    this.dispatchHidePopovers(['detail']);
+                }
+            }
+        }
+        this.dispatchHidePopovers(['context']);
+
+        if (this.isVertical && !this.zoomToFit) {
+            // Create an artificial scroll for the resource headers in vertical
+            const resourceHeaders = this.template.querySelector(
+                '[data-element-id="div-resource-header-cells"]'
+            );
+            resourceHeaders.scroll(event.currentTarget.scrollLeft, 0);
+        }
+    }
+
+    /**
+     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
+     */
+    handleSplitterMouseDown(mouseEvent) {
+        if (
+            this.resizeColumnDisabled ||
+            mouseEvent.button !== 0 ||
+            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
+        ) {
+            return;
+        }
+
+        this.clearDatatableColumnWidth();
+        this._mouseIsDown = true;
+        this._draggedSplitter = true;
+        const firstColWidth = this.isVertical
+            ? this.firstCol.offsetWidth
+            : this.datatable.offsetWidth;
+        this._initialState = {
+            mouseX: mouseEvent.clientX,
+            firstColWidth
+        };
+        this.firstColumnIsHidden = false;
+        this.firstColumnIsOpen = false;
+        this.dispatchHidePopovers();
+    }
+
+    /**
+     * Dispatch the eventchange event.
+     */
+    dispatchEventChange(detail) {
+        /**
+         * The event fired when a user edits an event.
+         *
+         * @event
+         * @name eventchange
+         * @param {string} name Unique name of the event.
+         * @param {object} draftValues Object containing one key-value pair per changed attribute.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys: from and to.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventchange', {
+                detail,
+                bubbles: true
+            })
+        );
+    }
+
+    dispatchEventCreate(event) {
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event The event created.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventcreate', {
+                detail: {
+                    event: {
+                        from: event.from.toUTC().toISO(),
+                        resourceNames: event.resourceNames,
+                        name: event.name,
+                        title: event.title,
+                        to: event.to.toUTC().toISO()
+                    }
+                },
+                bubbles: true
+            })
+        );
+    }
+
     dispatchHidePopovers(list) {
         this.dispatchEvent(
             new CustomEvent('hidepopovers', {
                 detail: { list }
+            })
+        );
+    }
+
+    dispatchOpenEditDialog() {
+        this.dispatchEvent(
+            new CustomEvent('openeditdialog', {
+                detail: {
+                    selection: this._eventData.selection
+                }
+            })
+        );
+    }
+
+    dispatchOpenRecurrenceDialog() {
+        this.dispatchEvent(
+            new CustomEvent('openrecurrencedialog', {
+                detail: {
+                    selection: this._eventData.selection
+                }
             })
         );
     }

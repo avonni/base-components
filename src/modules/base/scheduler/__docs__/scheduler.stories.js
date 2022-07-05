@@ -125,7 +125,7 @@ export default {
                 type: { summary: 'object[]' },
                 defaultValue: {
                     summary: 'edit and delete actions',
-                    detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
+                    detail: `[{ name: 'Standard.Scheduler.EditEvent', label: 'Edit', iconName: 'utility:edit' }, { name: 'Standard.Scheduler.DeleteEvent', label: 'Delete', iconName: 'utility:delete' }]`
                 },
                 category: 'Events'
             }
@@ -140,8 +140,8 @@ export default {
             table: {
                 type: { summary: 'object[]' },
                 defaultValue: {
-                    summary: 'add-event actions',
-                    detail: `[{ name: 'add-event', label: 'Add event', iconName: 'utility:add' }]`
+                    summary: 'Standard.Scheduler.AddEvent actions',
+                    detail: `[{ name: 'Standard.Scheduler.AddEvent', label: 'Add event', iconName: 'utility:add' }]`
                 }
             }
         },
@@ -467,11 +467,23 @@ export default {
         availableTimeFrames: ['00:00-23:59'],
         collapseDisabled: false,
         contextMenuEmptySpotActions: [
-            { name: 'add-event', label: 'Add event', iconName: 'utility:add' }
+            {
+                name: 'Standard.Scheduler.AddEvent',
+                label: 'Add event',
+                iconName: 'utility:add'
+            }
         ],
         contextMenuEventActions: [
-            { name: 'edit', label: 'Edit', iconName: 'utility:edit' },
-            { name: 'delete', label: 'Delete', iconName: 'utility:delete' }
+            {
+                name: 'Standard.Scheduler.EditEvent',
+                label: 'Edit',
+                iconName: 'utility:edit'
+            },
+            {
+                name: 'Standard.Scheduler.DeleteEvent',
+                label: 'Delete',
+                iconName: 'utility:delete'
+            }
         ],
         dateFormat: 'ff',
         dialogLabels: {

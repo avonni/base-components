@@ -44,7 +44,6 @@ import {
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
-import { eventCrudMethods } from './eventCrud';
 import {
     EDIT_MODES,
     EVENTS_THEMES,
@@ -63,15 +62,10 @@ import {
     DISPLAYS,
     HEADERS,
     PALETTES,
-    // PRESET_HEADERS,
     TIME_SPANS,
-    // UNITS,
     VARIANTS
 } from './defaults';
-// import SchedulerResource from './resource';
-// import SchedulerEvent from './event';
 import CalendarData from './calendarData';
-// import { AvonniResizeObserver } from 'c/resizeObserver';
 
 /**
  * @class
@@ -113,22 +107,9 @@ export default class Scheduler extends LightningElement {
     _variant = VARIANTS.default;
     _zoomToFit = false;
 
-    _allEvents = [];
     _connected = false;
-    _draggedEvent;
-    _draggedSplitter = false;
-    _headersAreLoading = false;
-    _initialFirstColWidth;
-    _initialState = {};
-    _mouseIsDown = false;
-    _numberOfVisibleCells = 0;
-    _resizedEvent;
-    _resizeObserver;
-    _rowsHeight = [];
     _toolbarCalendarIsFocused = false;
     calendarData = new CalendarData(this);
-    cellHeight = 0;
-    cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
     computedReferenceLines = [];
@@ -137,21 +118,14 @@ export default class Scheduler extends LightningElement {
     computedSelectedDisplay = {};
     contextMenuActions = [];
     currentTimeSpan = {};
-    eventCrud = eventCrudMethods(this);
-    firstColumnIsHidden = false;
-    firstColumnIsOpen = false;
-    firstColumnWidth = 0;
-    horizontalHeaders = [];
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
-    selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
     showToolbarCalendar = false;
-    // smallestHeader;
-    verticalHeaders = [];
+    visibleIntervalLabel;
 
     connectedCallback() {
         this.initCurrentTimeSpan();
@@ -166,27 +140,10 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
-        // if (!this.smallestHeader) return;
-
-        // Save the default first column width
-        // if (!this._initialFirstColWidth) {
-        //     this.resetFirstColumnWidth();
-        // }
-
-        // // Save the datatable row height and update the body styles
-        // if (!this._rowsHeight.length) {
-        //     this.updateRowsHeight();
-        // }
-        // // this.updateOccurrencesOffset();
-        this.updateResourcesStyle();
-
-        // // Update the position and height of occurrences
-        // this.updateOccurrencesPosition();
-
         // Position the detail popover
         if (this.showDetailPopover) {
             const popover = this.template.querySelector(
-                '.avonni-scheduler__event-detail-popover'
+                '[data-element-id="div-detail-popover"]'
             );
             this.positionPopover(popover);
         }
@@ -194,23 +151,10 @@ export default class Scheduler extends LightningElement {
         // Position the context menu
         if (this.showContextMenu && this.contextMenuActions.length) {
             const contextMenu = this.template.querySelector(
-                '.avonni-scheduler__context-menu'
+                '[data-element-id="avonni-primitive-dropdown-menu"]'
             );
             this.positionPopover(contextMenu);
         }
-
-        // // If a new event was just created, set the dragged event
-        // if (this.selection && this.selection.newEvent && !this._draggedEvent) {
-        //     this._draggedEvent = this.template.querySelector(
-        //         `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${this.selection.occurrence.key}"]`
-        //     );
-        //     if (this._draggedEvent) {
-        //         this.initDraggedEventState(
-        //             this._initialState.mouseX,
-        //             this._initialState.mouseY
-        //         );
-        //     }
-        // }
 
         // If the edit dialog is opened, focus on the first input
         if (this.showEditDialog || this.showRecurrenceDialog) {
@@ -218,17 +162,7 @@ export default class Scheduler extends LightningElement {
                 .querySelector('[data-element-id="avonni-dialog"]')
                 .focusOnCloseButton();
         }
-
-        // if (!this._resizeObserver) {
-        //     this._resizeObserver = this.initResizeObserver();
-        // }
     }
-
-    // disconnectedCallback() {
-    //     if (this._resizeObserver) {
-    //         this._resizeObserver.disconnect();
-    //     }
-    // }
 
     /*
      * ------------------------------------------------------------
@@ -427,7 +361,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleResources();
         }
     }
 
@@ -506,7 +439,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleResources();
         }
     }
 
@@ -536,10 +468,9 @@ export default class Scheduler extends LightningElement {
         this._eventsLabels =
             typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
 
-        // if (this._connected) {
-        //     this.initEvents();
-        //     this.updateVisibleResources();
-        // }
+        if (this._connected) {
+            this.initEvents();
+        }
     }
 
     /**
@@ -581,10 +512,9 @@ export default class Scheduler extends LightningElement {
             validValues: EVENTS_THEMES.valid
         });
 
-        // if (this._connected) {
-        //     this.initEvents();
-        //     this.updateVisibleResources();
-        // }
+        if (this._connected) {
+            this.initEvents();
+        }
     }
 
     /**
@@ -742,7 +672,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleResources();
         }
     }
 
@@ -1019,8 +948,6 @@ export default class Scheduler extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
-
-        this._initialFirstColWidth = null;
     }
 
     /**
@@ -1043,34 +970,6 @@ export default class Scheduler extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    // /**
-    //  * Computed CSS classes of the cells.
-    //  *
-    //  * @type {string}
-    //  */
-    // get cellClass() {
-    //     return classSet(
-    //         'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
-    //     )
-    //         .add({
-    //             'slds-col': !this.isVerticalTimeline,
-    //             'avonni-scheduler__cell_vertical': this.isVerticalTimeline,
-    //             'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
-    //         })
-    //         .toString();
-    // }
-
-    // /**
-    //  * Datatable HTML Element.
-    //  *
-    //  * @type {HTMLElement}
-    //  */
-    // get datatable() {
-        // return this.template.querySelector(
-        //     '[data-element-id="avonni-datatable"]'
-        // );
-    // }
 
     /**
      * Display options visible in the toolbar.
@@ -1137,46 +1036,6 @@ export default class Scheduler extends LightningElement {
         );
     }
 
-    // /**
-    //  * Width of the first column (horizontal variant) or height of the header row (vertical variant). Used by the events to make the labels sticky.
-    //  *
-    //  * @type {number}
-    //  */
-    // get scrollOffset() {
-    //     return this.isVerticalTimeline ? 0 : this.firstColWidth;
-    // }
-
-    // /**
-    //  * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
-    //  *
-    //  * @type {HTMLElement}
-    //  */
-    // get firstCol() {
-    //     return this.template.querySelector(
-    //         '[data-element-id="div-first-column"]'
-    //     );
-    // }
-
-    // /**
-    //  * Computed CSS classes for the first column.
-    //  *
-    //  * @type {string}
-    //  */
-    // get firstColClass() {
-    //     return classSet(
-    //         'slds-border_right avonni-scheduler__first-col slds-grid'
-    //     )
-    //         .add({
-    //             'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-    //             'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-    //             'avonni-scheduler__first-col_horizontal':
-    //                 !this.isTimeline && this.isVerticalTimeline,
-    //             'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-    //                 this.isVerticalTimeline || !this.isTimeline
-    //         })
-    //         .toString();
-    // }
-
     get isCalendar() {
         return this.selectedDisplay === 'calendar';
     }
@@ -1218,19 +1077,6 @@ export default class Scheduler extends LightningElement {
             : PALETTES[this.eventsPalette];
     }
 
-    // /**
-    //  * Computed CSS class for the schedule resources.
-    //  *
-    //  * @type {string}
-    //  */
-    // get resourceClass() {
-    //     return classSet('slds-grid slds-is-relative')
-    //         .add({
-    //             'slds-grid_vertical slds-col': this.isVerticalTimeline
-    //         })
-    //         .toString();
-    // }
-
     /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
@@ -1243,91 +1089,6 @@ export default class Scheduler extends LightningElement {
                 value: resource.name
             };
         });
-    }
-
-    // /**
-    //  * Computed CSS class for the schedule body.
-    //  *
-    //  * @type {string}
-    //  */
-    // get scheduleBodyClass() {
-    //     return classSet('slds-is-relative')
-    //         .add({
-    //             'slds-grid avonni-scheduler__schedule-body_vertical':
-    //                 this.isVerticalTimeline
-    //         })
-    //         .toString();
-    // }
-
-    // /**
-    //  * Computed CSS class for the schedule column.
-    //  *
-    //  * @type {string}
-    //  */
-    // get scheduleColClass() {
-    //     return classSet(
-    //         'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
-    //     )
-    //         .add({
-    //             'slds-hide': this.firstColumnIsOpen,
-    //             'avonni-scheduler__schedule-col_vertical':
-    //                 this.isVerticalTimeline,
-    //             'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-    //         })
-    //         .toString();
-    // }
-
-    // /**
-    //  * Width of the schedule column, in pixels.
-    //  *
-    //  * @type {number}
-    //  */
-    // get scheduleColWidth() {
-    //     const wrapper = this.template.querySelector(
-    //         '[data-element-id="div-schedule-wrapper"]'
-    //     );
-    //     const firstCol = this.firstCol;
-
-    //     if (wrapper && firstCol) {
-    //         const wrapperWidth = wrapper.getBoundingClientRect().width;
-    //         const firstColWidth = firstCol.getBoundingClientRect().width;
-    //         if (this.isCalendar) {
-    //             const verticalHeaders = this.template.querySelector(
-    //                 '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
-    //             );
-    //             const verticalHeadersWidth = verticalHeaders
-    //                 ? verticalHeaders.getBoundingClientRect().width
-    //                 : 0;
-    //             return wrapperWidth - firstColWidth - verticalHeadersWidth;
-    //         }
-    //         return wrapperWidth - firstColWidth;
-    //     }
-    //     return 0;
-    // }
-
-    // /**
-    //  * Computed CSS class for the nested schedule column.
-    //  *
-    //  * @type {string}
-    //  */
-    // get scheduleNestedColClass() {
-    //     return classSet('slds-col')
-    //         .add({
-    //             'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
-    //         })
-    //         .toString();
-    // }
-
-    /**
-     * Position and dimensions of the schedule body.
-     *
-     * @type {object}
-     */
-    get schedulePosition() {
-        // const scheduleElement = this.template.querySelector(
-        //     '[data-element-id="div-schedule-body"]'
-        // );
-        // return scheduleElement.getBoundingClientRect();
     }
 
     /**
@@ -1349,47 +1110,17 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If true, the left collapse button is displayed on the splitter bar.
+     * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
      * @type {boolean}
      * @default true
      */
-    get showCollapseLeft() {
-        return !this.collapseDisabled && !this.firstColumnIsHidden;
+    get showRecurrenceSaveOptions() {
+        return (
+            this.recurrentEditModes.length > 1 &&
+            this.selection.event.recurrence
+        );
     }
-
-    /**
-     * If true, the right collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseRight() {
-        return !this.collapseDisabled && !this.firstColumnIsOpen;
-    }
-
-    // /**
-    //  * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
-    //  *
-    //  * @type {boolean}
-    //  * @default true
-    //  */
-    // get showRecurrenceSaveOptions() {
-    //     return (
-    //         this.recurrentEditModes.length > 1 &&
-    //         this.selection.event.recurrence
-    //     );
-    // }
-
-    // /**
-    //  * True if the loading spinner should be displayed.
-    //  *
-    //  * @type {boolean}
-    //  */
-    // get showSpinner() {
-    //     return this.isLoading || this._headersAreLoading;
-    // }
-
     /**
      * True if the toolbar time span buttons should be visible.
      *
@@ -1399,40 +1130,11 @@ export default class Scheduler extends LightningElement {
         return this.timeSpans.length > 1;
     }
 
-    // /**
-    //  * Duration of one cell of the smallest unit header, in milliseconds.
-    //  *
-    //  * @type {number}
-    //  * @default 0
-    //  */
-    // get smallestCellDuration() {
-    //     const header = this.smallestHeader;
-    //     if (!header) {
-    //         return 0;
-    //     }
-
-    //     const headerCellEnd =
-    //         addToDate(header.start, header.unit, header.span) - 1;
-    //     return dateTimeObjectFrom(headerCellEnd).diff(header.start)
-    //         .milliseconds;
-    // }
-
-    // /**
-    //  * Class list of the splitter.
-    //  *
-    //  * @type {string}
-    //  * @default 'avonni-scheduler__splitter slds-is-absolute slds-grid'
-    //  */
-    // get splitterClass() {
-    //     return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
-    //         .add({
-    //             'avonni-scheduler__splitter_disabled':
-    //                 this.resizeColumnDisabled,
-    //             'slds-grid_align-end': this.firstColumnIsOpen,
-    //             'avonni-scheduler__splitter_vertical': this.isVerticalTimeline
-    //         })
-    //         .toString();
-    // }
+    get timeline() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-timeline"]'
+        );
+    }
 
     /**
      * Computed CSS classes for the calendar selector of the toolbar.
@@ -1484,77 +1186,6 @@ export default class Scheduler extends LightningElement {
         return generateUUID();
     }
 
-    /**
-     * Label of the toolbar interval button.
-     *
-     * @type {string}
-     */
-    get visibleIntervalLabel() {
-        if (!this.visibleInterval) {
-            return null;
-        }
-
-        const unit = this.currentTimeSpan.unit;
-        let format;
-        switch (unit) {
-            case 'day':
-            case 'week': {
-                format = 'ccc, LLLL d, kkkk';
-                break;
-            }
-            case 'month':
-            case 'year': {
-                format = 'LLLL yyyy';
-                break;
-            }
-            case 'minute':
-            case 'hour': {
-                format = 't';
-                break;
-            }
-            default:
-                break;
-        }
-
-        const start = this.visibleInterval.s.toFormat(format);
-        const end = this.visibleInterval.e.toFormat(format);
-        return start === end ? start : `${start} - ${end}`;
-    }
-
-    /**
-     * Currently visible date interval, as a Luxon Interval object.
-     *
-     * @type {Interval}
-     */
-    get visibleInterval() {
-        let selector =
-            '[data-element-id="avonni-primitive-scheduler-header-group"]';
-        if (this.isCalendar) {
-            selector += '[data-orientation="horizontal"]';
-        }
-        const header = this.template.querySelector(selector);
-        if (header) {
-            return header.visibleInterval;
-        }
-        return null;
-    }
-
-    // /**
-    //  * Computed CSS style for the vertical resource header cells.
-    //  *
-    //  * @type {string}
-    //  */
-    // get verticalResourceHeaderCellClass() {
-    //     return classSet(
-    //         'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
-    //     )
-    //         .add({
-    //             'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
-    //                 this.zoomToFit
-    //         })
-    //         .toString();
-    // }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1569,7 +1200,9 @@ export default class Scheduler extends LightningElement {
      */
     @api
     createEvent(eventObject) {
-        this.eventCrud.createEvent(eventObject);
+        if (this.timeline) {
+            this.timeline.createEvent(eventObject);
+        }
     }
 
     /**
@@ -1580,7 +1213,9 @@ export default class Scheduler extends LightningElement {
      */
     @api
     deleteEvent(eventName) {
-        this.eventCrud.deleteEvent(eventName);
+        if (this.timeline) {
+            this.timeline.deleteEvent(eventName);
+        }
     }
 
     /**
@@ -1591,8 +1226,10 @@ export default class Scheduler extends LightningElement {
      */
     @api
     focusEvent(eventName) {
-        this._programmaticFocus = true;
-        this.eventCrud.focusEvent(eventName);
+        if (this.timeline) {
+            this._programmaticFocus = true;
+            this.timeline.focusEvent(eventName);
+        }
     }
 
     /**
@@ -1635,7 +1272,6 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openEditEventDialog(eventName) {
-        this._draggedEvent = undefined;
         this.focusEvent(eventName);
         this.hideAllPopovers();
         this.showEditDialog = true;
@@ -1686,33 +1322,7 @@ export default class Scheduler extends LightningElement {
     initHeaders() {
         if (!this.isTimeline) {
             this.calendarData.initHeaders(this.currentTimeSpan);
-            // this._headersAreLoading = false;
-            return;
         }
-        // this._headersAreLoading = true;
-        // const { customHeaders, headers } = this.currentTimeSpan;
-
-        // if (customHeaders) {
-        //     const normalizedHeaders = customHeaders.filter((hd) => {
-        //         const validUnit = UNITS.includes(hd.unit);
-        //         const validSpan = hd.span > 0;
-        //         const validLabel = typeof hd.label === 'string';
-        //         return validUnit && validSpan && validLabel;
-        //     });
-
-        //     if (normalizedHeaders.length) {
-        //         this.computedHeaders = deepCopy(normalizedHeaders);
-        //         return;
-        //     }
-        // }
-
-        // const normalizedHeadersName = normalizeString(headers, {
-        //     validValues: HEADERS.valid,
-        //     fallbackValue: HEADERS.default,
-        //     toLowerCase: false
-        // });
-
-        // this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeadersName]);
     }
 
     /**
@@ -1720,457 +1330,58 @@ export default class Scheduler extends LightningElement {
      */
     initEvents() {
         // The disabled dates/times and reference lines are special events
-        this._allEvents = this.events
+        const events = this.events
             .concat(this.computedDisabledDatesTimes)
             .concat(this.computedReferenceLines);
 
-        if (!this._allEvents.length) {
+        if (!events.length) {
             this.computedEvents = [];
             return;
         }
 
-        this._allEvents.sort((first, second) => {
+        events.sort((first, second) => {
             return (
                 dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from)
             );
         });
-
-        // Create only the visible events
-        // this.computedEvents = this.createVisibleEvents();
-        this.computedEvents = this._allEvents;
+        this.computedEvents = events;
     }
-
-    // /**
-    //  * Initialize the screen resize observer.
-    //  *
-    //  * @returns {AvonniResizeObserver} Resize observer.
-    //  */
-    // initResizeObserver() {
-    //     const resizeObserver = new AvonniResizeObserver(() => {
-    //         this.updateCellWidth();
-    //     });
-    //     const schedule = this.template.querySelector(
-    //         '[data-element-id="div-schedule-body"]'
-    //     );
-    //     resizeObserver.observe(schedule);
-    //     return resizeObserver;
-    // }
 
     /**
      * Create the computed resources.
      */
     initResources() {
-        // if (!this.smallestHeader || !this.resources.length) {
-        //     this.computedResources = [];
-        //     return;
-        // }
-
         let colorIndex = 0;
         this.computedResources = this.resources.map((resource) => {
-            // const name = resource.name;
-
             // If there is no color left in the palette,
             // restart from the beginning
             if (!this.palette[colorIndex]) {
                 colorIndex = 0;
             }
 
-            // const occurrences = this.getOccurrencesFromResourceName(name);
-
-            // const computedResource = new SchedulerResource({
-            //     avatarFallbackIconName: resource.avatarFallbackIconName,
-            //     avatarInitials: resource.avatarInitials,
-            //     avatarSrc: resource.avatarSrc,
-            //     color: this.palette[colorIndex],
-            //     label: resource.label,
-            //     name,
-            //     referenceCells: this.smallestHeader.cells,
-            //     events: occurrences,
-            //     // We store the initial resource object in a variable,
-            //     // in case one of its fields is used by an event's label
-            //     data: { ...resource }
-            // });
-
             const computedResource = {
                 ...resource,
                 color: this.palette[colorIndex]
             };
-
-            // // Set the min-height to the datatable rows height
-            // if (
-            //     this._rowsHeight.length &&
-            //     this.isTimeline &&
-            //     !this.isVerticalTimeline
-            // ) {
-            //     const dataRowHeight = this._rowsHeight.find(
-            //         (dataRow) => dataRow.resourceName === name
-            //     ).height;
-            //     computedResource.minHeight = dataRowHeight;
-            // }
-
             colorIndex += 1;
             return computedResource;
         });
-
-        // if (this.isVerticalTimeline) {
-        //     requestAnimationFrame(() => {
-        //         this.updateCellWidth();
-        //     });
-        // }
-    }
-
-    // /**
-    //  * Set the initial state of a dragged or resized event.
-    //  *
-    //  * @param {number} mouseX The position of the mouse on the horizontal axis.
-    //  * @param {number} mouseY The position of the mouse on the vertical axis.
-    //  */
-    // initDraggedEventState(mouseX, mouseY) {
-    //     // Save the initial position values
-    //     const eventPosition = this._draggedEvent.getBoundingClientRect();
-    //     const { right, left, top, bottom } = this.getDraggingBoundaries(
-    //         eventPosition,
-    //         mouseX,
-    //         mouseY
-    //     );
-
-    //     const resourceAxis = this.isVerticalTimeline ? mouseX : mouseY;
-    //     const resource = this.getResourceElementFromPosition(resourceAxis);
-
-    //     const eventStartPosition = this.isVerticalTimeline
-    //         ? eventPosition.top
-    //         : eventPosition.left;
-
-    //     const eventEndPosition = this.isVerticalTimeline
-    //         ? eventPosition.bottom
-    //         : eventPosition.right;
-
-    //     const eventSize = this.isVerticalTimeline
-    //         ? eventPosition.height
-    //         : eventPosition.width;
-
-    //     this._initialState = {
-    //         mouseX,
-    //         mouseY,
-    //         initialX: this._draggedEvent.x,
-    //         initialY: this._draggedEvent.y,
-    //         eventStartPosition,
-    //         eventEndPosition,
-    //         eventSize,
-    //         left,
-    //         right,
-    //         top,
-    //         bottom,
-    //         resource
-    //     };
-    // }
-
-    /**
-     * Set the resources height and cell width.
-     */
-    updateResourcesStyle() {
-        this.template.host.style = `
-            --avonni-scheduler-cell-height: ${this.cellHeight}px;
-        `;
-
-        // if (this.isVerticalTimeline) {
-        //     const resourceHeaders = this.template.querySelector(
-        //         '[data-element-id="div-vertical-resource-headers"]'
-        //     );
-        //     const scheduleWrapper = this.template.querySelector(
-        //         '[data-element-id="div-schedule-wrapper"]'
-        //     );
-        //     const scrollBarWidth =
-        //         scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
-        //     resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
-        // } else if (this.isTimeline) {
-        //     const resourceElements = this.template.querySelectorAll(
-        //         '[data-element-id="div-resource"]'
-        //     );
-
-        //     resourceElements.forEach((resourceElement, index) => {
-        //         const name = resourceElement.dataset.name;
-        //         const computedResource = this.getResourceFromName(name);
-        //         const rowHeight = computedResource.height;
-
-        //         const dataRow = this._rowsHeight.find((row) => {
-        //             return row.resourceName === name;
-        //         });
-        //         const dataRowHeight = dataRow.height;
-
-        //         const style = `
-        //             min-height: ${dataRowHeight}px;
-        //             height: ${rowHeight}px;
-        //             --avonni-scheduler-cell-width: ${this.cellWidth}px;
-        //         `;
-
-        //         // Patch inconsistency in the datatable row heights
-        //         const normalizedHeight =
-        //             index === 0 ? rowHeight - 1 : rowHeight;
-        //         // Reset the datatable row height, in case the height was set by events
-        //         this.datatable.setRowHeight(name, normalizedHeight);
-
-        //         resourceElement.style = style;
-        //     });
-        // }
-    }
-
-    /**
-     * Update the cell width property if the cells grew because the splitter moved.
-     */
-    updateCellWidth() {
-        if (this.zoomToFit && !this.isVerticalTimeline) {
-            // The header is computing the cell width
-            const headers = this.template.querySelector(
-                '[data-element-id="avonni-primitive-scheduler-header-group"]'
-            );
-            if (headers) {
-                headers.scrollLeftOffset = this.firstColWidth;
-            }
-            return;
-        } else if (this.isVerticalTimeline) {
-            this.setResourceHeaderFirstCellWidth();
-        }
-
-        const cell = this.template.querySelector(
-            '[data-element-id="div-cell"]'
-        );
-        if (!cell) return;
-        const cellWidth = cell.getBoundingClientRect().width;
-        if (cellWidth !== this.cellWidth) {
-            this.cellWidth = cellWidth;
-            this._updateOccurrencesLength = true;
-        }
     }
 
     /**
      * Vertically align the datatable header with the smallest unit schedule header.
      */
     pushLeftColumnDown() {
-        // if (this.isVerticalTimeline) {
-        //     return;
-        // }
-
         const headers = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="horizontal"]'
         );
 
-        if (this.isTimeline) {
-            // this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
-        } else {
+        if (!this.isTimeline) {
             const verticalHeaders = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
             );
             verticalHeaders.style.marginTop = `${headers.offsetHeight}px`;
         }
-    }
-
-    // /**
-    //  * Update the width of the resized event.
-    //  */
-    // updateDraggedEventStyleAfterResize(distanceMoved) {
-    //     const { eventSize, initialY, initialX } = this._initialState;
-    //     const side = this._resizeSide;
-    //     const event = this._draggedEvent;
-    //     const multiplier = side === 'start' ? -1 : 1;
-
-    //     const size = eventSize + distanceMoved * multiplier;
-    //     if (this.isVerticalTimeline) {
-    //         event.style.height = `${size}px`;
-    //     } else {
-    //         event.style.width = `${size}px`;
-    //     }
-
-    //     if (side === 'start') {
-    //         const initialPosition = this.isVerticalTimeline
-    //             ? initialY
-    //             : initialX;
-    //         const computedStart =
-    //             side === 'start'
-    //                 ? distanceMoved + initialPosition
-    //                 : distanceMoved;
-
-    //         if (this.isVerticalTimeline) {
-    //             event.y = computedStart;
-    //         } else {
-    //             event.x = computedStart;
-    //         }
-    //     }
-    // }
-
-    /**
-     * Set the default properties of the given event.
-     *
-     * @param {object} event The event object.
-     */
-    updateEventDefaults(event) {
-        // // We store the initial event object in a variable,
-        // // in case a custom field is used by the labels
-        // event.data = { ...event };
-        // event.schedulerEnd = this.visibleInterval.e;
-        // event.schedulerStart = this.visibleInterval.s;
-        // event.availableMonths = this.availableMonths;
-        // event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-        // event.availableTimeFrames = this.availableTimeFrames;
-        // event.smallestHeader = this.smallestHeader;
-        // event.theme = event.disabled
-        //     ? 'disabled'
-        //     : event.theme || this.eventsTheme;
-
-        // event.labels =
-        //     typeof event.labels === 'object' ? event.labels : this.eventsLabels;
-    }
-
-    /**
-     * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
-     */
-    updateOccurrencesOffset() {
-        // const scheduleRightBorder = this.schedulePosition.right;
-
-        // // For each resource
-        // this.computedResources.forEach((resource) => {
-        //     let rowHeight = 0;
-        //     let levelHeight = 0;
-
-        //     // Get all the event occurrences of the resource
-        //     const occurrenceElements = Array.from(
-        //         this.template.querySelectorAll(
-        //             `.avonni-scheduler__primitive-event[data-resource-name="${resource.name}"]`
-        //         )
-        //     );
-
-        //     if (occurrenceElements.length) {
-        //         // Sort the occurrences by ascending start date
-        //         occurrenceElements.sort((a, b) => a.from - b.from);
-
-        //         // Compute the level of the occurrences in the resource
-        //         const previousOccurrences = [];
-        //         occurrenceElements.forEach((occElement) => {
-        //             const start = occElement.startPosition;
-        //             const { level, numberOfOverlap } =
-        //                 this.computeEventLevelInResource(
-        //                     previousOccurrences,
-        //                     start
-        //                 );
-
-        //             const occurrence = resource.events.find((occ) => {
-        //                 return occ.key === occElement.occurrenceKey;
-        //             });
-
-        //             previousOccurrences.unshift({
-        //                 level,
-        //                 numberOfOverlap,
-        //                 start,
-        //                 end: occElement.endPosition,
-        //                 occurrence:
-        //                     occurrence ||
-        //                     (this.selection && this.selection.occurrence)
-        //             });
-
-        //             if (this.isTimeline && !this.isVerticalTimeline) {
-        //                 if (occElement.labels.right) {
-        //                     // Hide the right label if it overflows the schedule
-        //                     const elementRightBorder =
-        //                         occElement.getBoundingClientRect().right +
-        //                         occElement.rightLabelWidth;
-        //                     if (elementRightBorder >= scheduleRightBorder) {
-        //                         occElement.hideRightLabel();
-        //                     } else {
-        //                         occElement.showRightLabel();
-        //                     }
-        //                 }
-
-        //                 // If the occurrence is taller than the previous ones,
-        //                 // update the default level height
-        //                 const height =
-        //                     occElement.getBoundingClientRect().height;
-        //                 if (height > levelHeight) {
-        //                     levelHeight = height;
-        //                 }
-        //             }
-        //         });
-
-        //         // Add the corresponding offset to the top (horizontal variant)
-        //         // or left (vertical variant) of the occurrences
-        //         previousOccurrences.forEach((position) => {
-        //             const { level, occurrence, numberOfOverlap } = position;
-        //             let offsetSide = 0;
-
-        //             if (this.isVerticalTimeline) {
-        //                 offsetSide = (level * this.cellWidth) / numberOfOverlap;
-        //                 occurrence.numberOfEventsInThisTimeFrame =
-        //                     numberOfOverlap;
-        //                 this._updateOccurrencesLength = true;
-        //             } else {
-        //                 offsetSide = level * levelHeight;
-
-        //                 // If the occurrence offset is bigger than the previous occurrences,
-        //                 // update the row height
-        //                 const totalHeight = levelHeight + offsetSide;
-        //                 if (totalHeight > rowHeight) {
-        //                     rowHeight = totalHeight;
-        //                 }
-        //             }
-
-        //             occurrence.offsetSide = offsetSide;
-        //         });
-        //     }
-
-        //     if (!this.isVerticalTimeline) {
-        //         // Add 10 pixels to the row for padding
-        //         resource.height = rowHeight + 10;
-        //     }
-        // });
-    }
-
-    /**
-     * Update the primitive occurrences height, width and position.
-     */
-    updateOccurrencesPosition() {
-        // const eventOccurrences = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-        // );
-        // eventOccurrences.forEach((occurrence) => {
-        //     if (this._updateOccurrencesLength) {
-        //         occurrence.updateLength();
-        //     }
-        //     if (occurrence.disabled) {
-        //         occurrence.updateThickness();
-        //     }
-        //     occurrence.updatePosition();
-        // });
-        // this._updateOccurrencesLength = false;
-
-        // if (this.isVerticalTimeline) {
-        //     // Set the reference line height to the width of the schedule
-        //     const schedule = this.template.querySelector(
-        //         '[data-element-id="div-schedule-body"]'
-        //     );
-        //     const scheduleWidth = this.schedulePosition.width;
-        //     schedule.style = `
-        //          --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
-        //      `;
-        // }
-    }
-
-    /**
-     * Save the datatable rows heights and use them as a min-height for the schedule rows.
-     */
-    updateRowsHeight() {
-        // if (
-        //     this.isVerticalTimeline ||
-        //     (!this.isVerticalTimeline && !this.datatable)
-        // ) {
-        //     return;
-        // }
-
-        // this._rowsHeight = [];
-        // this.computedResources.forEach((resource) => {
-        //     const resourceName = resource.name;
-        //     const height = this.datatable.getRowHeight(resourceName);
-        //     resource.minHeight = height;
-        //     this._rowsHeight.push({ resourceName, height });
-        // });
     }
 
     /**
@@ -2183,306 +1394,35 @@ export default class Scheduler extends LightningElement {
         this.computedSelectedDisplay = { ...selectedDisplay };
     }
 
-    /**
-     * Update the cells and events of the currently loaded resources.
-     */
-    updateVisibleResources() {
-        // this.computedResources.forEach((resource) => {
-        //     resource.events = this.getOccurrencesFromResourceName(
-        //         resource.name
-        //     );
-        //     resource.referenceCells = this.smallestHeader.cells;
-        //     resource.initCells();
-        // });
-    }
-
-    // /**
-    //  * Find the cell element at a given schedule position.
-    //  *
-    //  * @param {HTMLElement} resource The resource element the cell is in.
-    //  * @param {number} position The position of the cell.
-    //  * @returns {(HTMLElement|undefined)} The cell element or undefined.
-    //  */
-    // getCellFromPosition(resource, position) {
-    //     const cellElements = Array.from(
-    //         resource.querySelectorAll('[data-element-id="div-cell"]')
-    //     );
-
-    //     return cellElements.find((cellElement, index) => {
-    //         const cellPosition = cellElement.getBoundingClientRect();
-    //         const start = this.isVerticalTimeline
-    //             ? cellPosition.top
-    //             : cellPosition.left;
-    //         const end = this.isVerticalTimeline
-    //             ? cellPosition.bottom
-    //             : cellPosition.right;
-
-    //         // Handle the cases where the events are on the side
-    //         // and the mouse moved out of the schedule
-    //         if (index === 0 && start >= position) {
-    //             return cellElement;
-    //         }
-    //         if (index === cellElements.length - 1 && position > end) {
-    //             return cellElement;
-    //         }
-
-    //         if (position >= start && position < end) {
-    //             return cellElement;
-    //         }
-    //         return undefined;
-    //     });
-    // }
-
-    // /**
-    //  * Get the boundaries of the dragging/resizing zone.
-    //  *
-    //  * @param {DOMRect} eventPosition The position and dimensions of the dragged event.
-    //  * @param {number} mouseX The position of the mouse on the X axis.
-    //  * @param {number} mouseY The position of the mouse on the Y axis.
-    //  * @returns {object} The dragging zone coordinates.
-    //  */
-    // getDraggingBoundaries(eventPosition, mouseX, mouseY) {
-    //     const resizeEnd = this._resizeSide === 'end';
-    //     const isDragged = !this._resizeSide;
-    //     const schedulePosition = this.schedulePosition;
-
-    //     let right, left, top, bottom;
-    //     if (this.isVerticalTimeline) {
-    //         const topOfEvent = eventPosition.top + 24;
-    //         const topOfSchedule =
-    //             schedulePosition.top + (mouseY - eventPosition.top);
-    //         top = resizeEnd ? topOfEvent : topOfSchedule;
-
-    //         const bottomOfEvent = eventPosition.bottom - 24;
-    //         const bottomOfSchedule =
-    //             schedulePosition.bottom + (mouseY - eventPosition.bottom);
-    //         bottom = resizeEnd || isDragged ? bottomOfSchedule : bottomOfEvent;
-
-    //         left = schedulePosition.left + (mouseX - eventPosition.left);
-    //         right = schedulePosition.right + (mouseX - eventPosition.right);
-    //     } else {
-    //         const leftOfEvent = eventPosition.left + 24;
-    //         const leftOfSchedule =
-    //             schedulePosition.left + (mouseX - eventPosition.left);
-    //         left = resizeEnd ? leftOfEvent : leftOfSchedule;
-
-    //         const rightOfEvent = eventPosition.right - 24;
-    //         const rightOfSchedule =
-    //             schedulePosition.right + (mouseX - eventPosition.right);
-    //         right = resizeEnd || isDragged ? rightOfSchedule : rightOfEvent;
-
-    //         top = schedulePosition.top + (mouseY - eventPosition.top);
-    //         bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
-    //     }
-
-    //     return { right, left, top, bottom };
-    // }
-
-    /**
-     * Find the event occurrences for a given resource name.
-     *
-     * @param {string} name The unique name of the resource.
-     * @returns {object[]} Array of occurrence objects.
-     */
-    getOccurrencesFromResourceName(name) {
-        const occurrences = [];
-        this.computedEvents.forEach((event) => {
-            if (!event.disabled) {
-                const occ = event.occurrences.filter((occurrence) => {
-                    return occurrence.resourceName === name;
-                });
-                occurrences.push(occ);
+    computeVisibleIntervalLabel(start, end) {
+        const unit = this.currentTimeSpan.unit;
+        let format;
+        switch (unit) {
+            case 'day':
+            case 'week': {
+                format = 'ccc, LLLL d, kkkk';
+                break;
             }
-        });
-
-        return occurrences.flat();
-    }
-
-    /**
-     * Find a computed resource from its name.
-     *
-     * @param {string} name The unique name of the resource.
-     * @returns {SchedulerResource} The computed resource object.
-     */
-    getResourceFromName(name) {
-        return this.computedResources.find(
-            (resource) => resource.name === name
-        );
-    }
-
-    // /**
-    //  * Find a resource element from its position in the schedule.
-    //  *
-    //  * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
-    //  * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
-    //  */
-    // getResourceElementFromPosition(position) {
-    //     const resources = Array.from(
-    //         this.template.querySelectorAll('[data-element-id="div-resource"]')
-    //     );
-    //     return resources.find((div) => {
-    //         const divPosition = div.getBoundingClientRect();
-    //         const start = this.isVerticalTimeline
-    //             ? divPosition.left
-    //             : divPosition.top;
-    //         const end = this.isVerticalTimeline
-    //             ? divPosition.right
-    //             : divPosition.bottom;
-
-    //         return position >= start && position <= end;
-    //     });
-    // }
-
-    // /**
-    //  * Get the total number of event occurrences that overlap one.
-    //  *
-    //  * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
-    //  * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
-    //  * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
-    //  * @returns {number} The total number of occurrences overlapping, including the one evaluated.
-    //  */
-    // getTotalOfOccurrencesOverlapping(
-    //     previousOccurrences,
-    //     startPosition,
-    //     minOverlap
-    // ) {
-    //     let numberOfOverlap = minOverlap;
-
-    //     const overlappingOccurrences = previousOccurrences.filter((occ) => {
-    //         return startPosition < occ.end;
-    //     });
-
-    //     overlappingOccurrences.forEach((occ) => {
-    //         if (occ.numberOfOverlap >= numberOfOverlap) {
-    //             numberOfOverlap = occ.numberOfOverlap;
-    //         } else {
-    //             // Update the total of levels of the overlapped event occurrence
-    //             occ.numberOfOverlap = numberOfOverlap;
-    //             numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-    //                 previousOccurrences,
-    //                 occ.start,
-    //                 numberOfOverlap
-    //             );
-    //         }
-    //     });
-
-    //     return numberOfOverlap;
-    // }
-
-    // /**
-    //  * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
-    //  */
-    // cleanDraggedElement() {
-    //     if (this._draggedEvent) {
-    //         this._draggedEvent.classList.remove(
-    //             'avonni-scheduler__event-dragged'
-    //         );
-    //         this._draggedEvent = undefined;
-    //     }
-    //     this._resizeSide = undefined;
-    // }
-
-    // /**
-    //  * Clear the selected or new event.
-    //  */
-    // cleanSelection() {
-    //     // If a new event was being created, remove the unfinished event from the computedEvents
-    //     const lastEvent = this.computedEvents[this.computedEvents.length - 1];
-    //     if (
-    //         this.selection &&
-    //         this.selection.newEvent &&
-    //         lastEvent === this.selection.event
-    //     ) {
-    //         this.computedEvents.pop();
-    //     }
-    //     this.selection = undefined;
-    // }
-
-    /**
-     * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
-     */
-    clearDatatableColumnWidth() {
-        if (this.isVerticalTimeline) {
-            return;
+            case 'month':
+            case 'year': {
+                format = 'LLLL yyyy';
+                break;
+            }
+            case 'minute':
+            case 'hour': {
+                format = 't';
+                break;
+            }
+            default:
+                break;
         }
-        const lastColumn = this.columns[this.columns.length - 1];
-        if (lastColumn.initialWidth) {
-            lastColumn.initialWidth = undefined;
-            this._columns = [...this.columns];
-        }
-    }
 
-    /**
-     * Push an event occurrence down a level, until it doesn't overlap another occurrence.
-     *
-     * @param {object[]} previousOccurrences Array of previous occurrences for which the level has already been computed.
-     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
-     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top (horizontal variant) or the left (vertical variant) of its resource.
-     * @returns {object} Object with two keys:
-     * * level (number): level of the event occurrence in the resource.
-     * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
-     */
-    computeEventLevelInResource(previousOccurrences, startPosition, level = 0) {
-        // // Find the last event with the same level
-        // const sameLevelEvent = previousOccurrences.find((occ) => {
-        //     return occ.level === level;
-        // });
-
-        // const overlapsEvent =
-        //     sameLevelEvent && startPosition < sameLevelEvent.end;
-        // if (overlapsEvent) {
-        //     level += 1;
-
-        //     // Make sure there isn't another event at the same position
-        //     level = this.computeEventLevelInResource(
-        //         previousOccurrences,
-        //         startPosition,
-        //         level
-        //     ).level;
-        // }
-
-        // let numberOfOverlap = level + 1;
-        // if (this.isVerticalTimeline) {
-        //     numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-        //         previousOccurrences,
-        //         startPosition,
-        //         numberOfOverlap
-        //     );
-        // }
-
-        // return { level, numberOfOverlap };
-    }
-
-    /**
-     * Create the computed events that are included in the currently visible interval of time.
-     */
-    createVisibleEvents() {
-        // const interval = this.visibleInterval;
-        // if (!interval) {
-        //     return [];
-        // }
-
-        // const events = this._allEvents.filter((event) => {
-        //     const from = dateTimeObjectFrom(event.from);
-        //     const to = dateTimeObjectFrom(event.to);
-        //     return (
-        //         interval.contains(from) ||
-        //         interval.contains(to) ||
-        //         (interval.isAfter(from) && interval.isBefore(to)) ||
-        //         event.recurrence
-        //     );
-        // });
-
-        // return events.reduce((computedEvents, evt) => {
-        //     const event = { ...evt };
-        //     this.updateEventDefaults(event);
-        //     const computedEvent = new SchedulerEvent(event);
-
-        //     if (computedEvent.occurrences.length) {
-        //         computedEvents.push(computedEvent);
-        //     }
-        //     return computedEvents;
-        // }, []);
+        const formattedStart = start.toFormat(format);
+        const formattedEnd = end.toFormat(format);
+        this.visibleIntervalLabel =
+            formattedStart === formattedEnd
+                ? formattedStart
+                : `${formattedStart} - ${formattedEnd}`;
     }
 
     /**
@@ -2510,31 +1450,6 @@ export default class Scheduler extends LightningElement {
         popover.style.left = `${x}px`;
     }
 
-    // /**
-    //  * Set the selected event from an Event object.
-    //  *
-    //  * @param {Event} mouseEvent Event that triggered the selection.
-    //  */
-    // selectEvent(mouseEvent) {
-    //     const { eventName, from, x, y, key } = mouseEvent.detail;
-    //     const computedEvent = this.computedEvents.find((evt) => {
-    //         return evt.name === eventName;
-    //     });
-    //     const occurrences = computedEvent.occurrences.filter((occ) => {
-    //         return occ.from.ts === from.ts;
-    //     });
-    //     const occurrence = occurrences.find((occ) => occ.key === key);
-
-    //     this.selection = {
-    //         event: computedEvent,
-    //         occurrences,
-    //         occurrence,
-    //         x,
-    //         y,
-    //         draftValues: {}
-    //     };
-    // }
-
     setStartToBeginningOfUnit() {
         const unit = this.currentTimeSpan.unit;
         const selectedDate = this.selectedDate || this.start;
@@ -2547,186 +1462,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Set the CSS style of the resource header first cell, in vertical variant.
-     */
-    setResourceHeaderFirstCellWidth() {
-        // const resourceHeaderFirstCell = this.template.querySelector(
-        //     '[data-element-id="div-vertical-resource-header-first-cell"]'
-        // );
-        // resourceHeaderFirstCell.style.width = `${this.firstColWidth}px`;
-        // resourceHeaderFirstCell.style.minWidth = `${this.firstColWidth}px`;
-    }
-
-    /**
-     * Reset the width of the first column to the width it had before being collapsed.
-     */
-    resetFirstColumnWidth() {
-        const columnWidth = this.firstCol.getBoundingClientRect().width;
-        this._initialFirstColWidth = columnWidth;
-        this.firstColWidth = columnWidth;
-        if (this.isVerticalTimeline) {
-            this.setResourceHeaderFirstCellWidth();
-        }
-    }
-
-    // /**
-    //  * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
-    //  *
-    //  * @param {number} position New position of the occurrence.
-    //  */
-    // resizeEventToPosition(position) {
-    //     const occurrence = this.selection.occurrence;
-    //     const { resource, mouseX, mouseY } = this._initialState;
-    //     const distanceMoved = this.isVerticalTimeline
-    //         ? position - mouseY
-    //         : position - mouseX;
-
-    //     // If a new event is created through click and drag,
-    //     // Set the direction the user is going to
-    //     if (this.selection.newEvent) {
-    //         this._resizeSide = distanceMoved >= 0 ? 'end' : 'start';
-    //     }
-
-    //     const labelWidth =
-    //         this._resizeSide === 'start'
-    //             ? this._draggedEvent.leftLabelWidth * -1
-    //             : this._draggedEvent.rightLabelWidth;
-    //     const computedPosition = position + labelWidth;
-
-    //     // Get the events present in the cell crossed
-    //     const hoveredCell = this.getCellFromPosition(
-    //         resource,
-    //         computedPosition
-    //     );
-    //     const computedResource = this.getResourceFromName(
-    //         resource.dataset.name
-    //     );
-    //     const computedCell = computedResource.getCellFromStart(
-    //         Number(hoveredCell.dataset.start)
-    //     );
-    //     const cellEvents = computedCell.events;
-
-    //     // Check if any event in the cell has the same offsetTop
-    //     const eventIsHovered = cellEvents.some((cellEvent) => {
-    //         const isDifferent = cellEvent.key !== occurrence.key;
-    //         if (this.isVerticalTimeline) {
-    //             return (
-    //                 isDifferent &&
-    //                 cellEvent.offsetSide === occurrence.offsetSide
-    //             );
-    //         }
-    //         return (
-    //             cellEvent.offsetSide === occurrence.offsetSide && isDifferent
-    //         );
-    //     });
-
-    //     // If one of them do, the dragged event is overlapping it.
-    //     // We have to rerender the scheduler so the resource height enlarges.
-    //     if (eventIsHovered) {
-    //         const cell = labelWidth
-    //             ? hoveredCell
-    //             : this.getCellFromPosition(resource, position);
-    //         this.resizeEventToCell(cell);
-    //     } else {
-    //         // If we are not passing above another event,
-    //         // change the styling of the dragged event to follow the cursor
-    //         this.updateDraggedEventStyleAfterResize(distanceMoved);
-    //     }
-    // }
-
-    // /**
-    //  * Resize an event to a given cell element and save the change.
-    //  *
-    //  * @param {HTMLElement} cell The cell element.
-    //  */
-    // resizeEventToCell(cell) {
-    //     const side = this._resizeSide;
-    //     const occurrence = this.selection.occurrence;
-
-    //     // Remove the occurrence from the resource
-    //     const resourceName = occurrence.resourceName;
-    //     const resource = this.getResourceFromName(resourceName);
-    //     resource.removeEvent(occurrence);
-
-    //     if (side === 'end') {
-    //         // Update the end date if the event was resized from the right
-    //         occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
-    //     } else if (side === 'start') {
-    //         // Update the start date if the event was resized from the left
-    //         occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
-    //     }
-
-    //     // Add the occurrence to the resource with the updated start/end date
-    //     resource.events.push(occurrence);
-    //     resource.addEventToCells(occurrence);
-
-    //     // Force the rerender
-    //     this.computedEvents = [...this.computedEvents];
-    // }
-
-    // /**
-    //  * Drag an event to a cell and save the change.
-    //  *
-    //  * @param {HTMLElement} resource The resource element the event is being dragged to.
-    //  * @param {HTMLElement} cell The cell element the event is being dragged to.
-    //  */
-    // dragEventTo(resource, cell) {
-    //     const { occurrence, draftValues } = this.selection;
-
-    //     // Update the start and end date
-    //     const duration = occurrence.to - occurrence.from;
-    //     const start = dateTimeObjectFrom(Number(cell.dataset.start));
-    //     draftValues.from = start.toUTC().toISO();
-    //     draftValues.to = addToDate(start, 'millisecond', duration + 1)
-    //         .toUTC()
-    //         .toISO();
-
-    //     // Update the resources
-    //     const resourceName = resource.dataset.name;
-    //     const previousResourceName = occurrence.resourceName;
-
-    //     if (previousResourceName !== resourceName) {
-    //         const resourceIndex = occurrence.resourceNames.findIndex(
-    //             (name) => name === previousResourceName
-    //         );
-    //         draftValues.resourceNames = [...occurrence.resourceNames];
-    //         draftValues.resourceNames.splice(resourceIndex, 1);
-
-    //         if (!draftValues.resourceNames.includes(resourceName)) {
-    //             draftValues.resourceNames.push(resourceName);
-    //         }
-    //     }
-    // }
-
-    // /**
-    //  * Normalize the mouse position so it will take the schedule borders as a value if the mouse is outside of the schedule.
-    //  *
-    //  * @param {number} mouseX The horizontal position of the mouse.
-    //  * @param {number} mouseY The vertical position of the mouse.
-    //  * @returns {object} Object with two keys: x and y
-    //  */
-    // normalizeMousePosition(mouseX, mouseY) {
-    //     const { top, bottom, left, right } = this._initialState;
-
-    //     let x = mouseX;
-    //     let y = mouseY;
-
-    //     if (y < top) {
-    //         y = top;
-    //     } else if (y > bottom) {
-    //         y = bottom;
-    //     }
-
-    //     if (x < left) {
-    //         x = left;
-    //     } else if (x > right) {
-    //         x = right;
-    //     }
-
-    //     return { x, y };
-    // }
-
-    /**
      * Hide the detail popover, the context menu and the edit dialog if any was open.
      */
     hideAllPopovers() {
@@ -2734,6 +1469,7 @@ export default class Scheduler extends LightningElement {
         this.hideContextMenu();
         this.hideEditDialog();
         this.hideDeleteConfirmationDialog();
+        this.hideRecurrenceDialog();
     }
 
     /**
@@ -2782,8 +1518,7 @@ export default class Scheduler extends LightningElement {
      * Handle the closing of the delete confirmation dialog.
      */
     handleCloseDeleteConfirmationDialog() {
-        this.cleanDraggedElement();
-        this.cleanSelection();
+        this.timeline.cleanSelection();
         this.hideDeleteConfirmationDialog();
     }
 
@@ -2814,346 +1549,79 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
-     */
-    handleHeaderCellSizeChange(event) {
-        // const { cellSize, orientation } = event.detail;
-
-        // if (orientation === 'vertical') {
-        //     this.cellHeight = cellSize;
-        // } else {
-        //     this.cellWidth = cellSize;
-        // }
-    }
-
-    /**
-     * Handle the privateheaderchange event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
-     */
-    handleHeaderChange(event) {
-        // const headerOrientation = event.currentTarget.dataset.orientation;
-        // const smallestHeader = event.detail.smallestHeader;
-        // if (this.isCalendar && headerOrientation === 'vertical') {
-        //     return;
-        // }
-
-        // this.smallestHeader = smallestHeader;
-
-        // // Update the start date in case it was not available
-        // this._start = this.smallestHeader.start;
-
-        // // Create the visible events
-        // this.computedEvents = this.createVisibleEvents();
-
-        // // Create the resources or update the existing ones
-        // if (!this.computedResources.length) {
-        //     this.initResources();
-        // } else if (this.isTimeline) {
-        //     this.updateVisibleResources();
-        // }
-
-        // this._initialFirstColWidth = 0;
-        // this._rowsHeight = [];
-
-        // requestAnimationFrame(() => {
-        //     this.pushLeftColumnDown();
-        //     this._headersAreLoading = false;
-        // });
-    }
-
-    /**
      * Handle the click event fired by the delete button. Delete the selected event.
      */
     handleEventDelete() {
-        this.eventCrud.deleteEvent();
+        const name = this.selection.event.name;
+        this.deleteEvent(name);
+
+        /**
+         * The event fired when a user deletes an event.
+         *
+         * @event
+         * @name eventdelete
+         * @param {string} name Unique name of the deleted event.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventdelete', {
+                detail: {
+                    name
+                },
+                bubbles: true
+            })
+        );
+        this.hideAllPopovers();
     }
 
-    /**
-     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
-     */
-    handleEventFocus(event) {
-        const detail = {
-            name: event.detail.eventName
-        };
-        if (event.currentTarget.recurrence) {
-            detail.recurrenceDates = {
-                from: event.detail.from.toUTC().toISO(),
-                to: event.detail.to.toUTC().toISO()
-            };
-        }
-
-        if (!this._programmaticFocus) {
-            /**
-             * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
-             *
-             * @event
-             * @name eventselect
-             * @param {string} name Unique name of the event.
-             * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
-             * @public
-             * @bubbles
-             */
-            this.dispatchEvent(
-                new CustomEvent('eventselect', {
-                    detail,
-                    bubbles: true
-                })
-            );
-        }
-        this._programmaticFocus = false;
-
-        this.handleEventMouseEnter(event);
-    }
-
-    // /**
-    //  * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
-    //  */
-    // handleMouseDown(mouseEvent) {
-    //     if (mouseEvent.button || this.readOnly) {
-    //         return;
-    //     }
-
-    //     this._mouseIsDown = true;
-    //     this.hideAllPopovers();
-    //     this.cleanDraggedElement();
-
-    //     const x = mouseEvent.clientX || mouseEvent.detail.x;
-    //     const y = mouseEvent.clientY || mouseEvent.detail.y;
-    //     this._initialState = { mouseX: x, mouseY: y };
-    //     this.eventCrud.newEvent(x, y, false);
-    // }
-
-    /**
-     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
-     */
-    handleEventMouseEnter(event) {
-        if (this._mouseIsDown || this.showContextMenu) {
+    handleEventSelect(event) {
+        event.stopPropagation();
+        if (this._programmaticFocus) {
+            this._programmaticFocus = false;
             return;
         }
 
-        this.selectEvent(event);
-        this.showDetailPopover = true;
-        this._draggedEvent = event.currentTarget;
+        /**
+         * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
+         *
+         * @event
+         * @name eventselect
+         * @param {string} name Unique name of the event.
+         * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventselect', {
+                detail: event.detail,
+                bubbles: true
+            })
+        );
     }
 
-    // /**
-    //  * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
-    //  */
-    // handleEventMouseDown(mouseEvent) {
-    //     const { side, x, y } = mouseEvent.detail;
-    //     this._mouseIsDown = true;
-    //     this._resizeSide = side;
-    //     this._draggedEvent = mouseEvent.currentTarget;
-    //     this._draggedEvent.classList.add('avonni-scheduler__event-dragged');
-    //     this.selectEvent(mouseEvent);
-    //     this.hideAllPopovers();
-    //     this.initDraggedEventState(x, y);
-    // }
-
-    // /**
-    //  * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
-    //  */
-    // handleMouseMove(mouseEvent) {
-    //     if (!this._mouseIsDown) {
-    //         return;
-    //     }
-
-    //     // Prevent scrolling
-    //     mouseEvent.preventDefault();
-
-    //     // The splitter between the left column and the schedule is being dragged
-    //     if (this._draggedSplitter) {
-    //         const { mouseX, firstColWidth } = this._initialState;
-    //         const x = mouseEvent.clientX;
-    //         const width = firstColWidth + (x - mouseX);
-
-    //         if (!this.isVerticalTimeline) {
-    //             this.datatable.style.width = `${width}px`;
-    //         }
-    //         this.firstCol.style.width = `${width}px`;
-    //         this.firstCol.style.minWidth = `${width}px`;
-    //         this.firstColWidth = width;
-
-    //         if (this.isVerticalTimeline && !this.zoomToFit) {
-    //             // Update the resource header first cell width
-    //             // even if the schedule body width has not changed (is scrolling).
-    //             // The rest of the time, the resize observer will trigger the update.
-    //             this.setResourceHeaderFirstCellWidth();
-    //         }
-
-    //         // An event is being dragged
-    //     } else if (this._draggedEvent) {
-    //         const { mouseX, mouseY, initialX, initialY } = this._initialState;
-
-    //         this.selection.isMoving = true;
-
-    //         // Prevent the event from being dragged out of the schedule grid,
-    //         // or from being squished outside of its boundaries when resizing
-    //         const position = this.normalizeMousePosition(
-    //             mouseEvent.clientX,
-    //             mouseEvent.clientY
-    //         );
-
-    //         if (this._resizeSide || this.selection.newEvent) {
-    //             // Resizing
-    //             const resizePosition = this.isVerticalTimeline
-    //                 ? position.y
-    //                 : position.x;
-    //             this.resizeEventToPosition(resizePosition);
-    //         } else {
-    //             // Drag and drop
-    //             const x = position.x - mouseX;
-    //             const y = position.y - mouseY;
-    //             this._draggedEvent.x = x + initialX;
-    //             this._draggedEvent.y = y + initialY;
-    //         }
-
-    //         // The user started the creation of a new event, through click and drag.
-    //         // On the first move, display the new event on the schedule.
-    //     } else if (this.selection && this.selection.newEvent) {
-    //         this.computedEvents.push(this.selection.event);
-    //         this.updateVisibleResources();
-    //     }
-    // }
-
-    // /**
-    //  * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
-    //  */
-    // handleMouseUp(mouseEvent) {
-    //     this._mouseIsDown = false;
-    //     if (mouseEvent.button !== 0) {
-    //         return;
-    //     }
-
-    //     if (this._draggedSplitter) {
-    //         this._draggedSplitter = false;
-    //     } else if (this.selection && this.selection.isMoving) {
-    //         // Get the new position
-    //         const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
-    //             this._initialState;
-    //         const { draftValues, newEvent, event, occurrence } = this.selection;
-    //         const side = this._resizeSide;
-    //         const position = this.normalizeMousePosition(
-    //             mouseEvent.clientX,
-    //             mouseEvent.clientY
-    //         );
-    //         const startPosition = this.isVerticalTimeline
-    //             ? position.y - (mouseY - eventStartPosition)
-    //             : position.x - (mouseX - eventStartPosition);
-
-    //         const endPosition = this.isVerticalTimeline
-    //             ? position.y + (eventEndPosition - mouseY)
-    //             : position.x + (eventEndPosition - mouseX);
-
-    //         const valueOnTheResourceAxis =
-    //             side === 'end' ? endPosition : startPosition;
-
-    //         const valueOnTheHeadersAxis = this.isVerticalTimeline
-    //             ? position.x
-    //             : position.y;
-
-    //         // Find the resource and cell the event was dropped on
-    //         const resourceElement = this.getResourceElementFromPosition(
-    //             valueOnTheHeadersAxis
-    //         );
-    //         const cellElement = this.getCellFromPosition(
-    //             resourceElement,
-    //             valueOnTheResourceAxis
-    //         );
-
-    //         // Update the draft values
-    //         const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
-    //         const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
-    //         switch (side) {
-    //             case 'end':
-    //                 draftValues.allDay = false;
-    //                 draftValues.to = to.toUTC().toISO();
-    //                 if (newEvent) {
-    //                     occurrence.to = to;
-    //                 }
-    //                 break;
-    //             case 'start':
-    //                 draftValues.allDay = false;
-    //                 draftValues.from = from.toUTC().toISO();
-    //                 if (newEvent) {
-    //                     occurrence.from = from;
-    //                 }
-    //                 break;
-    //             default:
-    //                 this.dragEventTo(resourceElement, cellElement);
-    //                 break;
-    //         }
-
-    //         if (newEvent) {
-    //             this.showEditDialog = true;
-    //             this.selection.isMoving = false;
-    //         } else {
-    //             if (this.showRecurrenceSaveOptions) {
-    //                 this.showRecurrenceDialog = true;
-    //                 return;
-    //             } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
-    //                 this.eventCrud.saveOccurrence();
-    //             } else {
-    //                 this.eventCrud.saveEvent();
-    //             }
-    //             this.updateVisibleResources();
-    //             this.cleanSelection();
-    //         }
-    //     } else if (this.selection) {
-    //         this.cleanSelection();
-    //     }
-    //     this.cleanDraggedElement();
-    // }
-
-    /**
-     * Handle the resize event fired by the datatable. Update the rows heights.
-     */
-    handleDatatableResize(event) {
-        // if (event.detail.isUserTriggered) {
-        //     this.datatable.style.width = null;
-        //     this._rowsHeight = [];
-        //     this.computedResources.forEach((resource) => {
-        //         resource.minHeight = undefined;
-        //     });
-        //     this.firstCol.style.width = null;
-        //     this.firstCol.style.minWidth = null;
-        //     this.computedResources = [...this.computedResources];
-        // } else {
-        //     this.updateRowsHeight();
-        //     this.updateResourcesStyle();
-        // }
-    }
-
-    /**
-     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
-     */
-    handleEventContextMenu(mouseEvent) {
-        const target = mouseEvent.currentTarget;
-        if (target.disabled || target.referenceLine) {
+    handleEventContextMenu(event) {
+        if (!this.computedContextMenuEvent.length) {
             return;
         }
-
-        if (this.computedContextMenuEvent.length) {
-            this.hideAllPopovers();
-            this.contextMenuActions = [...this.computedContextMenuEvent];
-            this.selectEvent(mouseEvent);
-            this.showContextMenu = true;
-        }
+        this.hideAllPopovers();
+        this.contextMenuActions = [...this.computedContextMenuEvent];
+        this.selection = event.currentTarget.selectEvent(event.detail);
+        this.showContextMenu = true;
     }
 
     /**
      * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
      */
-    handleEmptySpotContextMenu(mouseEvent) {
-        mouseEvent.preventDefault();
-
-        if (this.computedContextMenuEmptySpot.length) {
-            this.hideAllPopovers();
-            this.contextMenuActions = [...this.computedContextMenuEmptySpot];
-            this.showContextMenu = true;
-            const x = mouseEvent.clientX || mouseEvent.detail.x;
-            const y = mouseEvent.clientY || mouseEvent.detail.y;
-            this.eventCrud.newEvent(x, y, false);
+    handleEmptySpotContextMenu(event) {
+        if (!this.computedContextMenuEmptySpot.length) {
+            this.timeline.cleanSelection(true);
+            return;
         }
+        this.hideAllPopovers();
+        this.contextMenuActions = [...this.computedContextMenuEmptySpot];
+        this.showContextMenu = true;
+        this.selection = event.detail.selection;
     }
 
     /**
@@ -3185,44 +1653,20 @@ export default class Scheduler extends LightningElement {
         );
 
         switch (name) {
-            case 'edit':
+            case 'Standard.Scheduler.EditEvent':
                 this.showEditDialog = true;
                 break;
-            case 'delete':
+            case 'Standard.Scheduler.DeleteEvent':
                 this.showDeleteConfirmationDialog = true;
                 break;
-            case 'add-event':
+            case 'Standard.Scheduler.AddEvent':
                 this.showEditDialog = true;
                 this.computedEvents.push(this.selection.event);
                 break;
             default:
-                this.cleanSelection();
-                this.cleanDraggedElement();
+                this.timeline.cleanSelection();
                 break;
         }
-    }
-
-    /**
-     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
-     */
-    handleDoubleClick(mouseEvent) {
-        const x = !isNaN(mouseEvent.clientX)
-            ? mouseEvent.clientX
-            : mouseEvent.detail.x;
-        const y = !isNaN(mouseEvent.clientY)
-            ? mouseEvent.clientY
-            : mouseEvent.detail.y;
-        this.eventCrud.newEvent(x, y, true);
-    }
-
-    /**
-     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
-     */
-    handleEventDoubleClick(event) {
-        this._draggedEvent = undefined;
-        this.selectEvent(event);
-        this.hideAllPopovers();
-        this.showEditDialog = true;
     }
 
     /**
@@ -3256,8 +1700,8 @@ export default class Scheduler extends LightningElement {
      * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
      */
     handleCloseEditDialog() {
-        this.cleanDraggedElement();
-        this.cleanSelection();
+        this.timeline.cleanSelection(true);
+        this.selection = null;
         this.hideAllPopovers();
     }
 
@@ -3265,67 +1709,21 @@ export default class Scheduler extends LightningElement {
      * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
      */
     handleCloseRecurrenceDialog() {
-        if (this._resizeSide) {
-            const resource = this._initialState.resource;
-            let position;
-            if (this._resizeSide === 'start') {
-                position = this._initialState.eventStartPosition;
-            } else {
-                position = this._initialState.eventEndPosition;
-            }
-            const initialCell = this.getCellFromPosition(resource, position);
-            this.resizeEventToCell(initialCell);
-        }
-        this.cleanDraggedElement();
-        this.cleanSelection();
+        this.timeline.cleanSelection(true);
+        this.selection = null;
         this.hideRecurrenceDialog();
-        this.updateVisibleResources();
     }
 
     /**
      * Handle the click event fired by the save buttons of the edit or recurring event dialogs. Save the changes made to the event and close the dialog.
      */
     handleSaveEvent(mouseEvent) {
-        const { event, occurrence } = this.selection;
-        const recurrentChange =
+        const recurrenceMode =
             mouseEvent.detail.value || mouseEvent.currentTarget.value;
 
-        if (
-            recurrentChange === 'one' ||
-            (event.recurrence && this.onlyOccurrenceEditAllowed)
-        ) {
-            this.eventCrud.saveOccurrence();
-        } else {
-            // Update the event with the selected occurrence values,
-            // in case the selected occurrence had already been edited
-            if (occurrence.from !== event.from) {
-                event._from = occurrence.from;
-            }
-            if (occurrence.to !== event.to) {
-                event._to = occurrence.to;
-            }
-            if (occurrence.title !== event.title) {
-                event.title = occurrence.title;
-            }
-            if (occurrence.resourceNames !== event.resourceNames) {
-                event.resourceNames = occurrence.resourceNames;
-            }
-
-            // Update the event with the draft values from the edit form
-            this.eventCrud.saveEvent();
-        }
-
-        this.updateVisibleResources();
-        this.cleanDraggedElement();
-        this.cleanSelection();
-
-        if (this.showRecurrenceDialog) {
-            this.hideRecurrenceDialog();
-        } else {
-            this.hideEditDialog();
-        }
-        this.hideDetailPopover();
-        this.hideContextMenu();
+        this.timeline.saveSelection(recurrenceMode);
+        this.selection = null;
+        this.hideAllPopovers();
     }
 
     /**
@@ -3340,81 +1738,32 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    /**
-     * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
-     */
-    handleScroll(event) {
-        if (this.showDetailPopover) {
-            // Hide the detail popover only if it goes off screen
-            const eventPosition = this._draggedEvent.getBoundingClientRect();
-            if (eventPosition.right < 0 || eventPosition.bottom < 0) {
-                this.hideDetailPopover();
-            }
-        } else {
-            this.hideDetailPopover();
-            this.hideContextMenu();
-        }
+    handleEventChange(event) {
+        event.stopPropagation();
 
-        if (this.isVerticalTimeline && !this.zoomToFit) {
-            // Create an artificial scroll for the resource headers in vertical
-            const resourceHeaders = this.template.querySelector(
-                '[data-element-id="div-resource-header-cells"]'
-            );
-            resourceHeaders.scroll(event.currentTarget.scrollLeft, 0);
-        }
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event The event changed or created.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventchange', {
+                detail: event.detail,
+                bubbles: true
+            })
+        );
     }
 
-    /**
-     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
-     */
-    handleSplitterMouseDown(mouseEvent) {
-        if (
-            this.resizeColumnDisabled ||
-            mouseEvent.button !== 0 ||
-            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
-        )
+    handleEventMouseEnter(event) {
+        if (this.showContextMenu) {
             return;
-
-        this.clearDatatableColumnWidth();
-        this._mouseIsDown = true;
-        this._draggedSplitter = true;
-        const firstColWidth = this.isVerticalTimeline
-            ? this.firstCol.offsetWidth
-            : this.datatable.offsetWidth;
-        this._initialState = {
-            mouseX: mouseEvent.clientX,
-            firstColWidth
-        };
-        this.firstColumnIsHidden = false;
-        this.firstColumnIsOpen = false;
-        this.hideAllPopovers();
-    }
-
-    /**
-     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
-     */
-    handleHideFirstCol() {
-        this.hideAllPopovers();
-        this.firstCol.style.width = null;
-        this.firstCol.style.minWidth = null;
-
-        if (this.firstColumnIsOpen) {
-            this.firstColumnIsOpen = false;
-            this.firstColWidth = this._initialFirstColWidth;
-            if (this.isVerticalTimeline) {
-                this.setResourceHeaderFirstCellWidth();
-            } else {
-                this.datatable.style.width = null;
-            }
-        } else {
-            this.firstColumnIsHidden = true;
-            this.firstColWidth = 0;
-            if (this.isVerticalTimeline) {
-                this.setResourceHeaderFirstCellWidth();
-            } else {
-                this.datatable.style.width = 0;
-            }
         }
+        this.showDetailPopover = true;
+        this.selection = event.currentTarget.selectEvent(event.detail);
     }
 
     handleHidePopovers(event) {
@@ -3424,44 +1773,34 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        list.forEach(popover => {
-
+        list.forEach((popover) => {
+            switch (popover) {
+                case 'detail':
+                    this.hideDetailPopover();
+                    break;
+                case 'context':
+                    this.hideContextMenu();
+                    break;
+                default:
+                    break;
+            }
         });
     }
 
-    handleOpenEditDialog() {
+    handleOpenEditDialog(event) {
         this.showEditDialog = true;
+        this.selection = event.detail.selection;
     }
 
-    /**
-     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
-     */
-    handleOpenFirstCol() {
-        this.hideAllPopovers();
-        this.firstCol.style.width = null;
-        this.clearDatatableColumnWidth();
-        if (!this.isVerticalTimeline) {
-            this.datatable.style.width = null;
-        }
-
-        if (this.firstColumnIsHidden) {
-            this.firstColumnIsHidden = false;
-            this.firstColWidth = this._initialFirstColWidth;
-            if (!this.isVerticalTimeline) {
-                this.datatable.style.width = `${this._initialFirstColWidth}px`;
-            }
-        } else {
-            this.firstColumnIsOpen = true;
-            const width = this.template.host.getBoundingClientRect().width;
-            this.firstColWidth = width;
-            if (!this.isVerticalTimeline) {
-                this.datatable.style.width = `${width}px`;
-            }
-        }
-    }
-
-    handleOpenRecurrenceDialog() {
+    handleOpenRecurrenceDialog(event) {
         this.showRecurrenceDialog = true;
+        this.selection = event.detail.selection;
+    }
+
+    handleVisibleIntervalChange(event) {
+        this._start = event.detail.start;
+        const { s, e } = event.detail.visibleInterval;
+        this.computeVisibleIntervalLabel(s, e);
     }
 
     handleToggleToolbarCalendar() {
@@ -3572,40 +1911,5 @@ export default class Scheduler extends LightningElement {
      */
     handleToolbarTodayClick() {
         this.goToDate(new Date());
-    }
-
-    /**
-     * Dispatch the eventchange event.
-     */
-    dispatchChangeEvent(name, onlyOneOccurrence = false) {
-        const detail = {
-            name: name,
-            draftValues: this.selection.draftValues
-        };
-
-        if (onlyOneOccurrence) {
-            detail.recurrenceDates = {
-                from: this.selection.occurrence.from.toUTC().toISO(),
-                to: this.selection.occurrence.to.toUTC().toISO()
-            };
-        }
-
-        /**
-         * The event fired when a user edits an event.
-         *
-         * @event
-         * @name eventchange
-         * @param {string} name Unique name of the event.
-         * @param {object} draftValues Object containing one key-value pair per changed attribute.
-         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys: from and to.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('eventchange', {
-                detail,
-                bubbles: true
-            })
-        );
     }
 }

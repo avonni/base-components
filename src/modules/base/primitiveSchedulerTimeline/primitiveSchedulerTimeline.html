@@ -258,21 +258,21 @@
                                         to={occurrence.to}
                                         variant={variant}
                                         zoom-to-fit={zoomToFit}
+                                        data-disabled={event.disabled}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}
                                         data-resource-name={occurrence.resourceName}
                                         onprivatefocus={handleEventFocus}
-                                        onprivateblur={hideDetailPopover}
+                                        onprivateblur={handleHideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}
                                         onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                         onprivatemouseenter={handleEventMouseEnter}
-                                        onprivatemouseleave={hideDetailPopover}
+                                        onprivatemouseleave={handleHideDetailPopover}
                                         onprivatedblclick={handleEventDoubleClick}
                                         onprivatedisableddblclick={handleDoubleClick}
                                         onprivatemousedown={handleEventMouseDown}
                                         onprivatedisabledmousedown={handleMouseDown}
-                                        onprivateresize={handleEventResize}
                                     ></c-primitive-scheduler-event-occurrence>
                                 </template>
                             </div>
