@@ -31,12 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString, deepCopy } from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
-import { classSet } from '../utils/classSet';
+import { classSet } from 'c/utils';
 import { StraightToolManager } from './straightToolManager';
 import { SmoothToolManager } from './smoothToolManager';
+import { AvonniResizeObserver } from '../resizeObserver/resizeObserver';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
@@ -135,19 +135,25 @@ export default class InputPen extends LightningElement {
 
     sizeList;
 
-    showExtraActions = false;
+    showExtraActions = true;
     _invalidField = false;
     _rendered = false;
     _updatedDOM = false;
 
     constructor() {
         super();
-        this.onMouseUp = this.handleMouseUp.bind(this);
-        this.onMouseMove = this.handleMouseMove.bind(this);
-        this.onKeyDown = this.handleKeyDown.bind(this);
-        window.addEventListener('mouseup', this.onMouseUp);
-        window.addEventListener('mousemove', this.onMouseMove);
-        window.addEventListener('keydown', this.onKeyDown);
+        this.mouseUpCallback = (event) => {
+            this.handleMouseUp(event);
+        };
+        this.mouseMoveCallback = (event) => {
+            this.handleMouseMove(event);
+        };
+        this.keyDownCallback = (event) => {
+            this.handleKeyDown(event);
+        };
+        window.addEventListener('mouseup', this.mouseUpCallback);
+        window.addEventListener('mousemove', this.mouseMoveCallback);
+        window.addEventListener('keydown', this.keyDownCallback);
     }
 
     connectedCallback() {
@@ -157,9 +163,9 @@ export default class InputPen extends LightningElement {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('mouseup', this.onMouseUp);
-        window.removeEventListener('mousemove', this.onMouseMove);
-        window.removeEventListener('keydown', this.onKeyDown);
+        window.removeEventListener('mouseup', this.mouseUpCallback);
+        window.removeEventListener('mousemove', this.mouseMoveCallback);
+        window.removeEventListener('keydown', this.keyDownCallback);
     }
 
     renderedCallback() {
@@ -179,17 +185,16 @@ export default class InputPen extends LightningElement {
             this._backgroundCtx =
                 this._backgroundCanvasElement.getContext('2d');
 
-            this.canvasInfo.canvasElement.width =
-                this.canvasInfo.canvasElement.parentElement.clientWidth;
-            this.canvasInfo.canvasElement.height =
-                this.canvasInfo.canvasElement.parentElement.clientHeight;
-            this._backgroundCanvasElement.width =
-                this.canvasInfo.canvasElement.parentElement.clientWidth;
-            this._backgroundCanvasElement.height =
-                this.canvasInfo.canvasElement.parentElement.clientHeight;
+            const parentElement = this.template.querySelector(
+                '[data-element-id="drawing-area"]'
+            );
+            this.canvasInfo.canvasElement.width = parentElement.clientWidth;
+            this.canvasInfo.canvasElement.height = parentElement.clientHeight;
+            this._backgroundCanvasElement.width = parentElement.clientWidth;
+            this._backgroundCanvasElement.height = parentElement.clientHeight;
 
-            this.setToolManager();
             this.initResizeObserver();
+            this.setToolManager();
             this.fillBackground();
             this.initCursorStyles();
             this.computeSelectedToolClass();
@@ -198,17 +203,6 @@ export default class InputPen extends LightningElement {
             }
             if (this.showSignaturePad) {
                 this.setInk();
-            }
-
-            // I cant find any other way to affect the combobox width since there are no styling hooks for it.
-            if (!this.hideControls && this.showSize) {
-                let combobox = this.template.querySelector(
-                    '[data-element-id="size-picker"]'
-                );
-                const style = document.createElement('style');
-                style.innerText =
-                    '.avonni-input-pen__combobox .slds-dropdown_fluid {min-width: 100px; justify-content: flex-start}';
-                combobox.appendChild(style);
             }
 
             this._rendered = true;
@@ -255,13 +249,11 @@ export default class InputPen extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         if (this._disabled) {
             this.classList.add('avonni-disabled');
         }
-        this._updatedDOM = true;
     }
 
     /**
@@ -295,6 +287,23 @@ export default class InputPen extends LightningElement {
     set hideControls(value) {
         this._hideControls = normalizeBoolean(value);
         this._updatedDOM = true;
+    }
+
+    /**
+     * If true, the field is considered invalid (The "invalid" attribute is deprecated. Use "validity" instead).
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get invalid() {
+        return !this.validity;
+    }
+    set invalid(value) {
+        console.warn(
+            'The "invalid" attribute is deprecated. Use "validity" instead.'
+        );
+        this._invalidField = normalizeBoolean(value);
     }
 
     /**
@@ -346,16 +355,14 @@ export default class InputPen extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
-        this._updatedDOM = true;
     }
 
     /**
      * If present, adds signature pad at the bottom of input. Also sets default drawing mode to ink.
      *
-     * @type {string}
+     * @type {boolean}
      * @public
      * @default false
      */
@@ -419,6 +426,7 @@ export default class InputPen extends LightningElement {
     }
 
     set value(value) {
+        this._value = value;
         this._foregroundValue = value;
 
         if (this.canvasInfo.ctx) {
@@ -444,12 +452,6 @@ export default class InputPen extends LightningElement {
             fallbackValue: TOOLBAR_VARIANTS.default,
             validValues: TOOLBAR_VARIANTS.valid
         });
-
-        if (this._variant === 'bottom-toolbar') {
-            this.classList.add('avonni-reverse');
-        } else {
-            this.classList.remove('avonni-reverse');
-        }
     }
 
     /*
@@ -499,7 +501,8 @@ export default class InputPen extends LightningElement {
             'avonni-input-pen__text-area_cursor':
                 this.disabled || this.readOnly,
             'avonni-input-pen__rich-text_border-radius-bottom':
-                this.variant === 'top-toolbar'
+                this.variant === 'top-toolbar',
+            'slds-has-error': !this.validity
         });
     }
 
@@ -508,7 +511,7 @@ export default class InputPen extends LightningElement {
      */
     get computedToolbarClasses() {
         return classSet(
-            'slds-rich-text-editor__toolbar slds-shrink-none slds-grid avonni-input-pen__toolbar_border-bottom'
+            'slds-rich-text-editor__toolbar avonni-input-pen__toolbar_border-bottom'
         ).add({
             'avonni-input-pen__toolbar_border-top-reverse':
                 this.variant === 'top-toolbar'
@@ -826,7 +829,6 @@ export default class InputPen extends LightningElement {
             this.helpMessage = message;
         });
         if (this._required) {
-            this.computeValidityClass();
             this._invalidField = !isValid;
         }
         return isValid;
@@ -920,22 +922,6 @@ export default class InputPen extends LightningElement {
                 drawArea.classList.remove(
                     'avonni-input-pen__text-area_visible-cursor'
                 );
-            }
-        }
-    }
-
-    /**
-     * Sets validity classes when invalid and removes them when valid.
-     */
-    computeValidityClass() {
-        const richTextEditor = this.template.querySelector(
-            '[data-element-id="rich-text-editor"]'
-        );
-        if (richTextEditor) {
-            if (this.validity) {
-                richTextEditor.classList.remove('slds-has-error');
-            } else {
-                richTextEditor.classList.add('slds-has-error');
             }
         }
     }
@@ -1370,8 +1356,6 @@ export default class InputPen extends LightningElement {
      */
     handleReset(event) {
         this.clear();
-        event.preventDefault();
-        event.stopImmediatePropagation();
         event.stopPropagation();
     }
 

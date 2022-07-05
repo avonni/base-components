@@ -67,112 +67,117 @@
                     class={computedToolbarClasses}
                     data-element-id="toolbar"
                 >
-                    <ul class="slds-button-group-list">
-                        <li if:true={showPen}>
-                            <button
-                                class="
-                                    slds-button
-                                    slds-button_icon
-                                    slds-button_icon-border-filled
-                                    avonni-input-pen__custom-icon
-                                "
-                                title="Draw"
-                                onclick={setDraw}
-                                disabled={disabled}
-                                data-group-name="button"
-                                data-element-id="draw-tool"
-                            >
-                                <svg
-                                    class="slds-button__icon"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
+                    <ul class="slds-grid slds-size_2-of-2">
+                        <ul class="slds-button-group-list">
+                            <li if:true={showPen}>
+                                <button
+                                    class="
+                                        slds-button
+                                        slds-button_icon
+                                        slds-button_icon-border-filled
+                                        avonni-input-pen__custom-icon
+                                    "
+                                    title="Draw"
+                                    onclick={setDraw}
+                                    disabled={disabled}
+                                    data-group-name="button"
+                                    data-element-id="draw-tool"
                                 >
-                                    <use
-                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"
-                                    ></use>
-                                </svg>
-                            </button>
-                        </li>
-                        <li if:true={showPaint}>
-                            <button
-                                class="
-                                    slds-button
-                                    slds-button_icon
-                                    slds-button_icon-border-filled
-                                    avonni-input-pen__custom-icon
-                                "
-                                title="Paint"
-                                onclick={setPaint}
-                                disabled={disabled}
-                                data-group-name="button"
-                                data-element-id="paint-tool"
-                            >
-                                <svg
-                                    class="slds-button__icon"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                    <svg
+                                        class="slds-button__icon"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#edit"
+                                        ></use>
+                                    </svg>
+                                </button>
+                            </li>
+                            <li if:true={showPaint}>
+                                <button
+                                    class="
+                                        slds-button
+                                        slds-button_icon
+                                        slds-button_icon-border-filled
+                                        avonni-input-pen__custom-icon
+                                    "
+                                    title="Paint"
+                                    onclick={setPaint}
+                                    disabled={disabled}
+                                    data-group-name="button"
+                                    data-element-id="paint-tool"
                                 >
-                                    <use
-                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#brush"
-                                    ></use>
-                                </svg>
-                            </button>
-                        </li>
-                        <li if:true={showInk}>
-                            <button
-                                class="
-                                    slds-button
-                                    slds-button_icon
-                                    slds-button_icon-border-filled
-                                    avonni-input-pen__custom-icon
-                                "
-                                title="Ink"
-                                onclick={setInk}
-                                disabled={disabled}
-                                data-group-name="button"
-                                data-element-id="ink-tool"
-                            >
-                                <svg
-                                    class="slds-button__icon"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                    <svg
+                                        class="slds-button__icon"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#brush"
+                                        ></use>
+                                    </svg>
+                                </button>
+                            </li>
+                            <li if:true={showInk}>
+                                <button
+                                    class="
+                                        slds-button
+                                        slds-button_icon
+                                        slds-button_icon-border-filled
+                                        avonni-input-pen__custom-icon
+                                    "
+                                    title="Ink"
+                                    onclick={setInk}
+                                    disabled={disabled}
+                                    data-group-name="button"
+                                    data-element-id="ink-tool"
                                 >
-                                    <use
-                                        xlink:href="/assets/icons/icon-custom/ink-pen.svg#ink-pen"
-                                    ></use>
-                                </svg>
-                            </button>
-                        </li>
-                        <li if:true={showErase}>
-                            <button
-                                icon-name="utility:close"
-                                class="
-                                    slds-button
-                                    slds-button_icon
-                                    slds-button_icon-border-filled
-                                    avonni-input-pen__custom-icon
-                                "
-                                alternative-text="Erase"
-                                title="Erase"
-                                onclick={setErase}
-                                disabled={disabled}
-                                data-group-name="button"
-                                data-element-id="erase-tool"
-                            >
-                                <svg
-                                    class="slds-button__icon"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
+                                    <svg
+                                        class="slds-button__icon"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/icon-custom/ink-pen.svg#ink-pen"
+                                        ></use>
+                                    </svg>
+                                </button>
+                            </li>
+                            <li if:true={showErase}>
+                                <button
+                                    icon-name="utility:close"
+                                    class="
+                                        slds-button
+                                        slds-button_icon
+                                        slds-button_icon-border-filled
+                                        avonni-input-pen__custom-icon
+                                    "
+                                    alternative-text="Erase"
+                                    title="Erase"
+                                    onclick={setErase}
+                                    disabled={disabled}
+                                    data-group-name="button"
+                                    data-element-id="erase-tool"
                                 >
-                                    <use
-                                        xlink:href="/assets/icons/icon-custom/eraser.svg#eraser"
-                                    ></use>
-                                </svg>
-                            </button>
-                        </li>
-                    </ul>
-                    <ul class="slds-button-group-list">
-                        <li if:true={showSize} title="Pen size">
+                                    <svg
+                                        class="slds-button__icon"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/icon-custom/eraser.svg#eraser"
+                                        ></use>
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <li
+                            if:true={showSize}
+                            title="Pen size"
+                            class="slds-m-left_xx-small"
+                        >
                             <lightning-combobox
                                 class="avonni-input-pen__combobox"
                                 name="size"
@@ -187,9 +192,12 @@
                             >
                             </lightning-combobox>
                         </li>
-                    </ul>
-                    <ul class="slds-button-group-list">
-                        <li if:true={showColor} title="Pen color">
+
+                        <li
+                            if:true={showColor}
+                            title="Pen color"
+                            class="slds-m-left_xx-small"
+                        >
                             <c-color-picker
                                 value={color}
                                 hide-color-input
@@ -201,9 +209,12 @@
                             >
                             </c-color-picker>
                         </li>
-                    </ul>
-                    <ul class="slds-button-group-list slds-col">
-                        <li if:true={showBackground} title="Background color">
+
+                        <li
+                            if:true={showBackground}
+                            title="Background color"
+                            class="slds-m-left_xx-small"
+                        >
                             <c-color-picker
                                 value={backgroundColor}
                                 hide-color-input
@@ -219,22 +230,21 @@
                             >
                             </c-color-picker>
                         </li>
-                    </ul>
-                    <ul
-                        if:true={showExtraActions}
-                        class="slds-button-group-list slds-col"
-                    >
-                        <slot name="actions"> </slot>
-                    </ul>
-                    <ul
-                        class="
-                            slds-button-group-list slds-align-bottom
-                            slds-col_bump-left
-                        "
-                    >
-                        <li if:true={showDownload} title="Download PNG">
+
+                        <li
+                            if:true={showExtraActions}
+                            class="slds-button-group-list"
+                        >
+                            <slot name="actions"> </slot>
+                        </li>
+
+                        <li
+                            if:true={showDownload}
+                            title="Download PNG"
+                            class="slds-col_bump-left"
+                        >
                             <lightning-button-icon
-                                variant="container"
+                                variant=" container"
                                 icon-name="utility:download"
                                 alternative-text="download PNG"
                                 onclick={handleDownload}
@@ -244,40 +254,38 @@
                             >
                             </lightning-button-icon>
                         </li>
-                    </ul>
-                    <ul
-                        if:true={showUndoRedo}
-                        class="
-                            slds-button-group-list slds-align-bottom
-                            slds-col_bump-left
-                        "
-                    >
-                        <li if:true={showUndo} title="Undo">
-                            <lightning-button-icon
-                                icon-name="utility:undo"
-                                variant="base"
-                                alternative-text="Undo"
-                                title="Undo"
-                                onclick={handleUndo}
-                                disabled={disabledUndoButton}
-                                data-group-name="button"
-                                data-element-id="undo"
-                            >
-                            </lightning-button-icon>
-                        </li>
-                        <li if:true={showRedo} title="Redo">
-                            <lightning-button-icon
-                                icon-name="utility:redo"
-                                variant="base"
-                                alternative-text="Redo"
-                                title="Redo"
-                                onclick={handleRedo}
-                                disabled={disabledRedoButton}
-                                data-group-name="button"
-                                data-element-id="redo"
-                            >
-                            </lightning-button-icon>
-                        </li>
+
+                        <ul
+                            if:true={showUndoRedo}
+                            class="slds-button-group-list slds-m-left_xx-small"
+                        >
+                            <li if:true={showUndo} title="Undo">
+                                <lightning-button-icon
+                                    icon-name="utility:undo"
+                                    variant="base"
+                                    alternative-text="Undo"
+                                    title="Undo"
+                                    onclick={handleUndo}
+                                    disabled={disabledUndoButton}
+                                    data-group-name="button"
+                                    data-element-id="undo"
+                                >
+                                </lightning-button-icon>
+                            </li>
+                            <li if:true={showRedo} title="Redo">
+                                <lightning-button-icon
+                                    icon-name="utility:redo"
+                                    variant="base"
+                                    alternative-text="Redo"
+                                    title="Redo"
+                                    onclick={handleRedo}
+                                    disabled={disabledRedoButton}
+                                    data-group-name="button"
+                                    data-element-id="redo"
+                                >
+                                </lightning-button-icon>
+                            </li>
+                        </ul>
                     </ul>
                 </div>
                 <div

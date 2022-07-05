@@ -110,9 +110,6 @@ function nextMoveEvent(increase) {
     }
 }
 
-// Not tested:
-// Avonni Resize Observer callback
-
 // Not covered:
 // default switch cases that are unreachable
 
@@ -256,7 +253,11 @@ describe('Input pen', () => {
         element.variant = 'bottom-toolbar';
 
         return Promise.resolve().then(() => {
-            expect(element.classList).toContain('avonni-reverse');
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="rich-text-editor"]'
+                ).classList
+            ).toContain('slds-grid_vertical-reverse');
         });
     });
 
@@ -264,7 +265,11 @@ describe('Input pen', () => {
         element.variant = 'top-toolbar';
 
         return Promise.resolve().then(() => {
-            expect(element.classList).not.toContain('avonni-reverse');
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="rich-text-editor"]'
+                ).classList
+            ).not.toContain('slds-grid_vertical-reverse');
         });
     });
 
@@ -1091,13 +1096,13 @@ describe('Input pen', () => {
                 window.dispatchEvent(
                     new KeyboardEvent('keydown', { keyCode: 90 }) // ctrl-z
                 );
-                expect(strokeSpy).toHaveBeenCalledTimes(3);
+                expect(strokeSpy).toHaveBeenCalledTimes(5);
             })
             .then(() => {
                 window.dispatchEvent(
                     new KeyboardEvent('keydown', { keyCode: 89 }) // ctrl-y
                 );
-                expect(strokeSpy).toHaveBeenCalledTimes(4);
+                expect(strokeSpy).toHaveBeenCalledTimes(6);
             });
     });
 
