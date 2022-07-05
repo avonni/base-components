@@ -33,15 +33,20 @@
 -->
 
 <template>
-    <div
-        class="avonni-skeleton__badge-container"
-        data-element-id="avonni-skeleton-badge-wrapper"
-    >
-        <span class={badgeClass} data-element-id="avonni-skeleton-badge-span">
-            <div
-                class="avonni-skeleton__badge-label"
-                data-element-id="avonni-skeleton-badge-label"
-            ></div>
-        </span>
+    <div class="avonni-skeleton__display-inline-block">
+        <div
+            class="slds-align_absolute-center"
+            data-element-id="avonni-skeleton-badge-wrapper"
+        >
+            <span
+                class={badgeClass}
+                data-element-id="avonni-skeleton-badge-span"
+            >
+                <div
+                    class="avonni-skeleton__badge-label"
+                    data-element-id="avonni-skeleton-badge-label"
+                ></div>
+            </span>
+        </div>
     </div>
 </template>
