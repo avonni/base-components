@@ -60,7 +60,7 @@ describe('Skeleton', () => {
     // skeleton-base
     it('Skeleton: base', () => {
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -76,7 +76,7 @@ describe('Skeleton', () => {
     it('Skeleton: rectangular variant', () => {
         element.variant = 'rectangular';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -92,7 +92,7 @@ describe('Skeleton', () => {
     it('Skeleton: circular variant', () => {
         element.variant = 'circular';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.className).toContain(
@@ -109,7 +109,7 @@ describe('Skeleton', () => {
         element.variant = 'text';
         element.height = undefined;
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.style.height).toBe('0.7em');
@@ -122,7 +122,7 @@ describe('Skeleton', () => {
         element.variant = 'rectangular';
         element.height = '100px';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(element.height).toBe('100px');
@@ -135,7 +135,7 @@ describe('Skeleton', () => {
         element.variant = 'text';
         element.width = undefined;
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(skeleton.style.width).toBe('100%');
@@ -148,7 +148,7 @@ describe('Skeleton', () => {
         element.variant = 'rectangular';
         element.width = '100px';
         const skeleton = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-skeleton-wrapper"]'
+            '[data-element-id="avonni-skeleton-regular-wrapper"]'
         );
         return Promise.resolve().then(() => {
             expect(element.width).toBe('100px');
