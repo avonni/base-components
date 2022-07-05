@@ -59,7 +59,7 @@
 }
 
 .avonni-skeleton__wrapper {
-    display: inline-block;
+    display: inline;
 }
 
 .avonni-skeleton__chip-container,
@@ -68,8 +68,9 @@
 .avonni-skeleton__avatar-container,
 .avonni-skeleton__badge-container {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
+    align-items: flex-start;
 }
 
 .avonni-skeleton__avatar-primary-text {

@@ -127,20 +127,18 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
-        // if (!this.isAvatarVariant) this.handleVariant();
-        if (this.width) {
-            const rootNode = this.template
-                .querySelector(
-                    '[data-element-id="avonni-skeleton-badge-wrapper"]'
-                )
-                .getRootNode();
-            const skeletonStyle = rootNode.style;
-            skeletonStyle.setProperty(
-                '--avonni-skeleton-display',
-                'inline-block'
-            );
-            // this.classList.add('avonni-skeleton__display-inline-block');
-        }
+        // if (this.width) {
+        //     const element = this.template.querySelector('ac-base-skeleton');
+        //     // const host = this.template.querySelector(
+        //     //     '[data-element-id="avonni-skeleton-avatar-wrapper"]'
+        //     // );
+        //     console.log(`this is the root: ${element}`);
+        //     // host.shadowRoot.style.setProperty(
+        //     //     '--avonni-skeleton-display',
+        //     //     'inline-block'
+        //     // );
+        //     // console.log(`this is the host: ${host}`);
+        // }
         this.handleVariant();
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
@@ -917,7 +915,6 @@ export default class Skeleton extends LightningElement {
         ) {
             switch (this.variant) {
                 case 'avatar':
-                    console.log('inside case avatar handleVariant');
                     this.setTextSize();
                     break;
                 case 'badge':
@@ -1055,6 +1052,13 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for variant
      * @param {*} variant
      */
+    // setTextSize() {
+    //     const variantElement = this.template.querySelector(
+    //         `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
+    //     );
+    //     variantElement.style.width = this.width === undefined ? '100%' :
+    // }
+
     setTextSize() {
         const variantElement = this.template.querySelector(
             `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
@@ -1070,7 +1074,7 @@ export default class Skeleton extends LightningElement {
                 '[data-element-id="avonni-skeleton-avatar-wrapper"]'
             );
             avatarElement.style.height =
-                this.height === undefined ? '2em' : `${this.height}`;
+                this.height === undefined ? '100%' : `${this.height}`;
         } else if (this.htmlVariant === badge) {
             const badgeElement = this.template.querySelector(
                 '[data-element-id="avonni-skeleton-badge-wrapper"]'
