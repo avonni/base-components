@@ -248,277 +248,6 @@ export default class Skeleton extends LightningElement {
         else this._width = value;
     }
 
-    /**
-     * Get if chip has an icon
-     * @type {boolean}
-     */
-    @api
-    get chipHasIcon() {
-        return this.variantAttributes.hasIcon;
-    }
-
-    /**
-     * Get if combobox has a required input
-     * @type {boolean}
-     */
-    @api
-    get comboboxRequired() {
-        return this.variantAttributes.required;
-    }
-
-    /**
-     * Get if combobox has its label hidden
-     * @type {boolean}
-     */
-    @api
-    get comboboxVariantLabelHidden() {
-        return this.variantAttributes.variant === 'label-hidden';
-    }
-
-    /**
-     * Get computed media object inline
-     * @type {boolean}
-     */
-    @api
-    get computedMediaObjectInline() {
-        return this.variantAttributes.textPosition === 'center';
-    }
-
-    /**
-     * Get if avatar should hide its details
-     * @type {boolean}
-     */
-    @api
-    get hideAvatarDetails() {
-        return this.variantAttributes.hideAvatarDetails;
-    }
-
-    /**
-     * Get if datatable has to have its checkbox column hidden
-     * @type {boolean}
-     */
-    @api
-    get hideCheckboxColumn() {
-        return this.variantAttributes.hideCheckboxColumn;
-    }
-
-    /**
-     * Get if datatable has to have its table header hidden
-     * @type {boolean}
-     */
-    @api
-    get hideTableHeader() {
-        return this.variantAttributes.hideTableHeader;
-    }
-
-    /**
-     * Get if tree has to have its header hidden
-     * @type {boolean}
-     */
-    @api
-    get hideTreeHeader() {
-        return this.variantAttributes.hideHeader;
-    }
-
-    /**
-     * Get if input has a required input field
-     * @type {boolean}
-     */
-    @api
-    get inputRequired() {
-        return this.variantAttributes.required;
-    }
-
-    /**
-     * Get if input has to have its label hidden
-     * @type {boolean}
-     */
-    @api
-    get inputVariantLabelHidden() {
-        return this.variantAttributes.variant === 'label-hidden';
-    }
-
-    /**
-     * Get if variant is avatar
-     * @type {boolean}
-     */
-    @api
-    get isAvatarVariant() {
-        return this.variant === 'avatar';
-    }
-
-    /**
-     * Get if variant is badge
-     * @type {boolean}
-     */
-    @api
-    get isBadgeVariant() {
-        return this.variant === 'badge';
-    }
-
-    /**
-     * Get if variant is button
-     * @type {boolean}
-     */
-    @api
-    get isButtonVariant() {
-        return this.variant === 'button';
-    }
-
-    /**
-     * Get if variant is button icon
-     * @type {boolean}
-     */
-    @api
-    get isButtonIcon() {
-        return this.variant === 'button-icon';
-    }
-
-    /**
-     * Get if variant is chip icon
-     * @type {boolean}
-     */
-    @api
-    get isChipVariant() {
-        return this.variant === 'chip';
-    }
-
-    /**
-     * Get if variant is combobox
-     * @type {boolean}
-     */
-    @api
-    get isComboboxVariant() {
-        return this.variant === 'combobox';
-    }
-
-    /**
-     * Get if variant is datatable
-     * @type {boolean}
-     */
-    @api
-    get isDatatableVariant() {
-        return this.variant === 'datatable';
-    }
-
-    /**
-     * Get if variant is input
-     * @type {boolean}
-     */
-    @api
-    get isInputVariant() {
-        return this.variant === 'input';
-    }
-
-    /**
-     * Get if variant is path
-     * @type {boolean}
-     */
-    @api
-    get isPathVariant() {
-        return this.variantAttributes.variant === 'path';
-    }
-
-    /**
-     * Get if variant is paragraph
-     * @type {boolean}
-     */
-    @api
-    get isParagraphVariant() {
-        return this.variant === 'paragraph';
-    }
-
-    /**
-     * Get if variant is progress-indicator
-     * @type {boolean}
-     */
-    @api
-    get isProgressIndicatorVariant() {
-        return this.variant === 'progress-indicator';
-    }
-
-    /**
-     * Get if variant is text, rectangular or circular
-     * @type {boolean}
-     */
-    @api
-    get isRegularVariant() {
-        return (
-            this.variant === 'text' ||
-            this.variant === 'rectangular' ||
-            this.variant === 'circular'
-        );
-    }
-
-    /**
-     * Get if the tabset variant is base
-     * @type {boolean}
-     */
-    @api
-    get isTabsetBaseVariant() {
-        return this.variantAttributes.variant === 'base';
-    }
-
-    /**
-     * Get if the tabset variant is scoped
-     * @type {boolean}
-     */
-    @api
-    get isTabsetScopedVariant() {
-        return this.variantAttributes.variant === 'scoped';
-    }
-
-    /**
-     * Get if variant is tabset
-     * @type {boolean}
-     */
-    @api
-    get isTabsetVariant() {
-        return this.variant === 'tabset';
-    }
-
-    /**
-     * Get if the tabset variant is vertical
-     * @type {boolean}
-     */
-    @api
-    get isTabsetVerticalVariant() {
-        return this.variantAttributes.variant === 'vertical';
-    }
-
-    /**
-     * Get if the variant is tree
-     * @type {boolean}
-     */
-    @api
-    get isTreeVariant() {
-        return this.variant === 'tree';
-    }
-
-    /**
-     * Get if avatar should show its tertiary text
-     * @type {boolean}
-     */
-    @api
-    get showAvatarTertiaryText() {
-        return (
-            this._variantAttributes.size === 'x-large' ||
-            this._variantAttributes.size === 'xx-large'
-        );
-    }
-
-    /**
-     * Get if avatar position should be left
-     * @type {boolean}
-     */
-    @api
-    get textPositionLeftCenter() {
-        return (
-            this.variantAttributes.textPosition === 'left' ||
-            this.variantAttributes.textPosition === 'center'
-        );
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -642,6 +371,14 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get if chip has an icon
+     * @type {boolean}
+     */
+    get chipHasIcon() {
+        return this.variantAttributes.hasIcon;
+    }
+
+    /**
      * Compute chip label class
      * @type {string}
      */
@@ -658,6 +395,30 @@ export default class Skeleton extends LightningElement {
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
+    }
+
+    /**
+     * Get if combobox has a required input
+     * @type {boolean}
+     */
+    get comboboxRequired() {
+        return this.variantAttributes.required;
+    }
+
+    /**
+     * Get computed media object inline
+     * @type {boolean}
+     */
+    get computedMediaObjectInline() {
+        return this.variantAttributes.textPosition === 'center';
+    }
+
+    /**
+     * Get if combobox has its label hidden
+     * @type {boolean}
+     */
+    get comboboxVariantLabelHidden() {
+        return this.variantAttributes.variant === 'label-hidden';
     }
 
     /**
@@ -722,6 +483,38 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get if avatar should hide its details
+     * @type {boolean}
+     */
+    get hideAvatarDetails() {
+        return this.variantAttributes.hideAvatarDetails;
+    }
+
+    /**
+     * Get if datatable has to have its checkbox column hidden
+     * @type {boolean}
+     */
+    get hideCheckboxColumn() {
+        return this.variantAttributes.hideCheckboxColumn;
+    }
+
+    /**
+     * Get if datatable has to have its table header hidden
+     * @type {boolean}
+     */
+    get hideTableHeader() {
+        return this.variantAttributes.hideTableHeader;
+    }
+
+    /**
+     * Get if tree has to have its header hidden
+     * @type {boolean}
+     */
+    get hideTreeHeader() {
+        return this.variantAttributes.hideHeader;
+    }
+
+    /**
      * Compute input label tag class
      * @type {string}
      */
@@ -729,6 +522,22 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-skeleton__input-label-tag').add(
             `avonni-skeleton__animation-${this.animation}`
         );
+    }
+
+    /**
+     * Get if input has a required input field
+     * @type {boolean}
+     */
+    get inputRequired() {
+        return this.variantAttributes.required;
+    }
+
+    /**
+     * Get if input has to have its label hidden
+     * @type {boolean}
+     */
+    get inputVariantLabelHidden() {
+        return this.variantAttributes.variant === 'label-hidden';
     }
 
     /**
@@ -740,6 +549,146 @@ export default class Skeleton extends LightningElement {
             'slds-form-element_horizontal':
                 this.variantAttributes.variant === 'label-inline'
         });
+    }
+
+    /**
+     * Get if variant is avatar
+     * @type {boolean}
+     */
+    get isAvatarVariant() {
+        return this.variant === 'avatar';
+    }
+
+    /**
+     * Get if variant is badge
+     * @type {boolean}
+     */
+    get isBadgeVariant() {
+        return this.variant === 'badge';
+    }
+
+    /**
+     * Get if variant is button
+     * @type {boolean}
+     */
+    get isButtonVariant() {
+        return this.variant === 'button';
+    }
+
+    /**
+     * Get if variant is button icon
+     * @type {boolean}
+     */
+    get isButtonIcon() {
+        return this.variant === 'button-icon';
+    }
+
+    /**
+     * Get if variant is chip icon
+     * @type {boolean}
+     */
+    get isChipVariant() {
+        return this.variant === 'chip';
+    }
+
+    /**
+     * Get if variant is combobox
+     * @type {boolean}
+     */
+    get isComboboxVariant() {
+        return this.variant === 'combobox';
+    }
+
+    /**
+     * Get if variant is datatable
+     * @type {boolean}
+     */
+    get isDatatableVariant() {
+        return this.variant === 'datatable';
+    }
+
+    /**
+     * Get if variant is input
+     * @type {boolean}
+     */
+    get isInputVariant() {
+        return this.variant === 'input';
+    }
+
+    /**
+     * Get if variant is path
+     * @type {boolean}
+     */
+    get isPathVariant() {
+        return this.variantAttributes.variant === 'path';
+    }
+
+    /**
+     * Get if variant is paragraph
+     * @type {boolean}
+     */
+    get isParagraphVariant() {
+        return this.variant === 'paragraph';
+    }
+
+    /**
+     * Get if variant is progress-indicator
+     * @type {boolean}
+     */
+    get isProgressIndicatorVariant() {
+        return this.variant === 'progress-indicator';
+    }
+
+    /**
+     * Get if variant is text, rectangular or circular
+     * @type {boolean}
+     */
+    get isRegularVariant() {
+        return (
+            this.variant === 'text' ||
+            this.variant === 'rectangular' ||
+            this.variant === 'circular'
+        );
+    }
+
+    /**
+     * Get if the tabset variant is base
+     * @type {boolean}
+     */
+    get isTabsetBaseVariant() {
+        return this.variantAttributes.variant === 'base';
+    }
+
+    /**
+     * Get if the tabset variant is scoped
+     * @type {boolean}
+     */
+    get isTabsetScopedVariant() {
+        return this.variantAttributes.variant === 'scoped';
+    }
+
+    /**
+     * Get if variant is tabset
+     * @type {boolean}
+     */
+    get isTabsetVariant() {
+        return this.variant === 'tabset';
+    }
+
+    /**
+     * Get if the tabset variant is vertical
+     * @type {boolean}
+     */
+    get isTabsetVerticalVariant() {
+        return this.variantAttributes.variant === 'vertical';
+    }
+
+    /**
+     * Get if the variant is tree
+     * @type {boolean}
+     */
+    get isTreeVariant() {
+        return this.variant === 'tree';
     }
 
     /**
@@ -836,6 +785,17 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Get if avatar should show its tertiary text
+     * @type {boolean}
+     */
+    get showAvatarTertiaryText() {
+        return (
+            this._variantAttributes.size === 'x-large' ||
+            this._variantAttributes.size === 'xx-large'
+        );
+    }
+
+    /**
      * Returns the avonni-skeleton DOM element
      * @returns {object} avonni-skeleton
      */
@@ -887,6 +847,17 @@ export default class Skeleton extends LightningElement {
                 'avonni-skeleton__tabset-vertical-item':
                     this.variantAttributes.variant === 'vertical'
             });
+    }
+
+    /**
+     * Get if avatar position should be left
+     * @type {boolean}
+     */
+    get textPositionLeftCenter() {
+        return (
+            this.variantAttributes.textPosition === 'left' ||
+            this.variantAttributes.textPosition === 'center'
+        );
     }
 
     /**
