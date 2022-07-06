@@ -386,6 +386,10 @@ avonni-skeleton_tabset-wave:hover::after {
     background-color: transparent;
 }
 
+.avonni-skeleton__tabset-container {
+    overflow: hidden;
+}
+
 .avonni-skeleton__tabset-item {
     margin-bottom: 5px;
     height: 0.7em;

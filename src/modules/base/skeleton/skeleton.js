@@ -151,7 +151,8 @@ export default class Skeleton extends LightningElement {
             (this.isInputVariant ||
                 this.isComboboxVariant ||
                 this.isParagraphVariant ||
-                this.isProgressIndicatorVariant) &&
+                this.isProgressIndicatorVariant ||
+                this.isTabsetVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
@@ -1038,6 +1039,9 @@ export default class Skeleton extends LightningElement {
                     this.setTextSize();
                     break;
                 case 'progress-indicator':
+                    this.setTextSize();
+                    break;
+                case 'tabset':
                     this.setTextSize();
                     break;
                 case 'text':
