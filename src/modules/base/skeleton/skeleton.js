@@ -95,6 +95,7 @@ export default class Skeleton extends LightningElement {
     _variantAttributes = {};
     _width;
 
+    initialRender = false;
     breadcrumbs = [];
     datatableRows = [];
     datatableColumns = [];
@@ -119,9 +120,9 @@ export default class Skeleton extends LightningElement {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
         }
-        if (this.isParagraphVariant) {
-            this.initializeParagraphItems();
-        }
+        // if (this.isParagraphVariant) {
+        //     this.initializeParagraphItems();
+        // }
 
         if (this.isProgressIndicatorVariant) {
             this.initializeProgressItems();
@@ -166,6 +167,10 @@ export default class Skeleton extends LightningElement {
         //     // console.log(`this is the host: ${host}`);
         // }
         this.handleVariant();
+        if (!this.initialRender && this.isParagraphVariant) {
+            this.initializeParagraphItems();
+            this.initialRender = true;
+        }
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
         }
@@ -1026,6 +1031,9 @@ export default class Skeleton extends LightningElement {
                 case 'input':
                     this.setTextSize();
                     break;
+                case 'paragraph':
+                    this.setTextSize();
+                    break;
                 case 'text':
                     this.setTextSize();
                     break;
@@ -1076,14 +1084,43 @@ export default class Skeleton extends LightningElement {
      * Initializes paragraph items
      */
     initializeParagraphItems() {
+        console.log('inside initialize paragraph items');
+        const paragraphElement = this.template.querySelector(
+            `[data-element-id="avonni-skeleton-paragraph-wrapper"]`
+        );
+        const paragraphStyle = window.getComputedStyle(paragraphElement);
+        console.log(`computed paragraph width: ${paragraphStyle.width}`);
+        console.log(
+            `is under 300px ${parseInt(paragraphStyle.width, 10) < 300}`
+        );
+        let maxWordPercentage = 13;
+        let minWordPercentage = 5;
+        if (parseInt(paragraphStyle.width, 10) < 300) {
+            maxWordPercentage = 30;
+            minWordPercentage = 20;
+        }
+        if (
+            parseInt(paragraphStyle.width, 10) < 400 &&
+            parseInt(paragraphStyle.width, 10) >= 300
+        ) {
+            maxWordPercentage = 25;
+            minWordPercentage = 18;
+        }
+        if (parseInt(paragraphStyle.width, 10) >= 1199) {
+            maxWordPercentage = 8;
+            minWordPercentage = 4;
+        }
         const paragraphItems = [];
         let id = 0;
         let temp;
         for (let i = 0; i < this.variantAttributes.rows; i++) {
             id++;
-            for (let j = 100; j > 13; ) {
+            for (let j = 100; j > maxWordPercentage; ) {
                 id++;
-                const width = Math.floor(Math.random() * (13 - 5)) + 5;
+                const width =
+                    Math.floor(
+                        Math.random() * (maxWordPercentage - minWordPercentage)
+                    ) + minWordPercentage;
                 paragraphItems.push({
                     key: `paragraph-${id}`,
                     width: `${width}%`
@@ -1208,6 +1245,14 @@ export default class Skeleton extends LightningElement {
                 this.width === undefined ? '100%' : `${this.width}`;
             inputElement.style.height =
                 this.height === undefined ? 'auto' : `${this.height}`;
+        } else if (this.htmlVariant === paragraph) {
+            const paragraphElement = this.template.querySelector(
+                `[data-element-id="avonni-skeleton-paragraph-wrapper"]`
+            );
+            const paragraphStyle = window.getComputedStyle(paragraphElement);
+            console.log(`computed paragraph width: ${paragraphStyle.width}`);
+            // if (parseInt(paragraphStyle.width, 10) < 300)
+            //     this.initializeParagraphItems();
         } else if (this.htmlVariant === regular) {
             let element = this.skeleton;
             element.style.height =
