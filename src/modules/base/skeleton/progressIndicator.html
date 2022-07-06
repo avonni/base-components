@@ -39,7 +39,7 @@
             data-element-id="avonni-skeleton-progress-indicator-wrapper"
         >
             <ol class="slds-progress__list">
-                <template for:each={progressItems} for:item="progressItem">
+                <template for:each={items} for:item="progressItem">
                     <li key={progressItem.key} class="slds-progress__item">
                         <div class={progressIndicatorItemClass}></div>
                     </li>
@@ -62,7 +62,7 @@
                         <div class="slds-path__scroller_inner">
                             <ul class="slds-path__nav">
                                 <template
-                                    for:each={progressItems}
+                                    for:each={items}
                                     for:item="progressItem"
                                 >
                                     <li

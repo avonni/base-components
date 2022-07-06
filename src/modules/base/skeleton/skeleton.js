@@ -95,94 +95,16 @@ export default class Skeleton extends LightningElement {
     _variantAttributes = {};
     _width;
 
-    initialParagraphItemsRender = false;
-    initialDatatableRender = false;
-    initialProgressIndicatorRender = false;
-    initialTabsetRender = false;
-    initialTreeRender = false;
     breadcrumbs = [];
     datatableRows = [];
     datatableColumns = [];
     htmlVariant;
+    initialRender = false;
+    items = [];
     paragraphItems = [];
     progressItems = [];
     tabset = [];
     treeItems = [];
-
-    connectedCallback() {
-        // if (this.isDatatableVariant) {
-        //     this.initializeDatatableRows();
-        //     this.initializeDatatableColumns();
-        // }
-        // if (this.isProgressIndicatorVariant) {
-        //     this.initializeProgressItems();
-        // }
-        // if (this.isTabsetVariant) {
-        //     this.initializeTabset();
-        // }
-        // if (this.isTreeVariant) {
-        //     this.initializeTreeItems();
-        // }
-    }
-
-    renderedCallback() {
-        if (
-            this.isButtonIcon ||
-            this.isAvatarVariant ||
-            this.isButtonVariant ||
-            this.isChipVariant ||
-            this.isBadgeVariant
-        )
-            this.classList.add('slds-show_inline-block');
-
-        if (
-            (this.isInputVariant ||
-                this.isComboboxVariant ||
-                this.isParagraphVariant ||
-                this.isProgressIndicatorVariant ||
-                this.isTabsetVariant ||
-                this.isTreeVariant ||
-                this.isDatatableVariant) &&
-            this.width !== '100%' &&
-            this.width !== undefined &&
-            this.width !== ''
-        )
-            this.classList.add('slds-show_inline-block');
-
-        this.handleVariant();
-        if (!this.initialParagraphItemsRender && this.isParagraphVariant) {
-            this.initializeParagraphItems();
-            this.initialParagraphItemsRender = true;
-        }
-
-        if (!this.initialDatatableRender && this.isDatatableVariant) {
-            this.initializeDatatableRows();
-            this.initializeDatatableColumns();
-            this.initialDatatableRender = true;
-        }
-
-        if (
-            !this.initialProgressIndicatorRender &&
-            this.isProgressIndicatorVariant
-        ) {
-            this.initializeProgressItems();
-            this.initialProgressIndicatorRender = true;
-        }
-
-        if (!this.initialTabsetRender && this.isTabsetVariant) {
-            this.initializeTabset();
-            this.initialTabsetRender = true;
-        }
-
-        if (!this.initialTreeRender && this.isTreeVariant) {
-            this.initializeTreeItems();
-            this.initialTreeRender = true;
-        }
-
-        if (this.isParagraphVariant) {
-            this.updateParagraphClassList();
-        }
-    }
 
     render() {
         switch (this.variant) {
@@ -235,6 +157,18 @@ export default class Skeleton extends LightningElement {
                 this.htmlVariant = regular;
         }
         return this.htmlVariant;
+    }
+
+    renderedCallback() {
+        this.addInlineBlockClass();
+
+        this.handleVariant();
+
+        this.initializeVariant();
+
+        if (this.isParagraphVariant) {
+            this.updateParagraphClassList();
+        }
     }
 
     /*
@@ -832,18 +766,15 @@ export default class Skeleton extends LightningElement {
         });
     }
 
-    // /**
-    //  * Compute paragraph line class
-    //  * @type {string}
-    //  */
-    // get paragraphLineClass() {
-    //     return classSet('avonni-skeleton__variant-text')
-    //         .add('slds-item')
-    //         .add('avonni-skeleton__paragraph')
-    //         .add(`avonni-skeleton__animation-${this.animation}`)
-    //         .add()
-    //         .toString();
-    // }
+    /**
+     * Get the paragraph element from the dom
+     * @type {object}
+     */
+    get paragraphElement() {
+        return this.template.querySelector(
+            `[data-element-id="avonni-skeleton-paragraph-wrapper"]`
+        );
+    }
 
     /**
      * Compute avatar primary text class
@@ -913,6 +844,20 @@ export default class Skeleton extends LightningElement {
             .add('avonni-skeleton__avatar-secondary-text')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    /**
+     * Returns the avonni-skeleton DOM element
+     * @returns {object} avonni-skeleton
+     */
+    get skeleton() {
+        if (this.htmlVariant === regular)
+            return this.template.querySelector(
+                '[data-element-id="avonni-skeleton-regular-wrapper"]'
+            );
+        return this.template.querySelector(
+            `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
+        );
     }
 
     /**
@@ -993,18 +938,29 @@ export default class Skeleton extends LightningElement {
      * PRIVATE METHODS
      * ------------------------------------------------------------
      */
-    /**
-     * Returns the avonni-skeleton DOM element
-     * @returns {object} avonni-skeleton
-     */
-    get skeleton() {
-        if (this.htmlVariant === regular)
-            return this.template.querySelector(
-                '[data-element-id="avonni-skeleton-regular-wrapper"]'
-            );
-        return this.template.querySelector(
-            `[data-element-id="avonni-skeleton-${this.variant}-wrapper"]`
-        );
+    addInlineBlockClass() {
+        if (
+            this.isButtonIcon ||
+            this.isAvatarVariant ||
+            this.isButtonVariant ||
+            this.isChipVariant ||
+            this.isBadgeVariant
+        )
+            this.classList.add('slds-show_inline-block');
+
+        if (
+            (this.isInputVariant ||
+                this.isComboboxVariant ||
+                this.isParagraphVariant ||
+                this.isProgressIndicatorVariant ||
+                this.isTabsetVariant ||
+                this.isTreeVariant ||
+                this.isDatatableVariant) &&
+            this.width !== '100%' &&
+            this.width !== undefined &&
+            this.width !== ''
+        )
+            this.classList.add('slds-show_inline-block');
     }
 
     /**
@@ -1069,21 +1025,6 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Initializes datatable rows
-     */
-    initializeDatatableRows() {
-        const datatableRows = [];
-        for (let i = 0; i < this.variantAttributes.rows; i++) {
-            datatableRows.push({
-                keyTr: `rowsTr-${i}`,
-                keyTd: `rowsTd-${i}`,
-                keyTh: `rowsTh-${i}`
-            });
-        }
-        this.datatableRows = datatableRows;
-    }
-
-    /**
      * Initializes datatable columns
      */
     initializeDatatableColumns() {
@@ -1099,46 +1040,66 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Initializes datatable rows
+     */
+    initializeDatatableRows() {
+        const datatableRows = [];
+        for (let i = 0; i < this.variantAttributes.rows; i++) {
+            datatableRows.push({
+                keyTr: `rowsTr-${i}`,
+                keyTd: `rowsTd-${i}`,
+                keyTh: `rowsTh-${i}`
+            });
+        }
+        this.datatableRows = datatableRows;
+    }
+
+    initializeItems(numItems) {
+        const items = [];
+        for (let i = 0; i < numItems; i++) {
+            items.push({
+                key: `item-${i}`
+            });
+        }
+        this.items = items;
+    }
+
+    /**
      * Initializes paragraph items
      */
     initializeParagraphItems() {
-        console.log('inside initialize paragraph items');
-        const paragraphElement = this.template.querySelector(
-            `[data-element-id="avonni-skeleton-paragraph-wrapper"]`
-        );
-        const paragraphStyle = window.getComputedStyle(paragraphElement);
-        console.log(`computed paragraph width: ${paragraphStyle.width}`);
-        console.log(
-            `is under 300px ${parseInt(paragraphStyle.width, 10) < 300}`
-        );
-        let maxWordPercentage = 13;
-        let minWordPercentage = 5;
-        if (parseInt(paragraphStyle.width, 10) < 300) {
-            maxWordPercentage = 30;
-            minWordPercentage = 20;
-        }
-        if (
-            parseInt(paragraphStyle.width, 10) < 400 &&
-            parseInt(paragraphStyle.width, 10) >= 300
-        ) {
-            maxWordPercentage = 25;
-            minWordPercentage = 18;
-        }
-        if (parseInt(paragraphStyle.width, 10) >= 1199) {
-            maxWordPercentage = 8;
-            minWordPercentage = 4;
-        }
+        const paragraphStyleWidth = window.getComputedStyle(
+            this.paragraphElement
+        ).width;
         const paragraphItems = [];
         let id = 0;
         let temp;
+        let maxItemWidthPercentage = 13;
+        let minItemWidthPercentage = 5;
+        if (parseInt(paragraphStyleWidth, 10) < 300) {
+            maxItemWidthPercentage = 30;
+            minItemWidthPercentage = 20;
+        }
+        if (
+            parseInt(paragraphStyleWidth, 10) < 400 &&
+            parseInt(paragraphStyleWidth, 10) >= 300
+        ) {
+            maxItemWidthPercentage = 25;
+            minItemWidthPercentage = 18;
+        }
+        if (parseInt(paragraphStyleWidth, 10) >= 1199) {
+            maxItemWidthPercentage = 8;
+            minItemWidthPercentage = 4;
+        }
         for (let i = 0; i < this.variantAttributes.rows; i++) {
             id++;
-            for (let j = 100; j > maxWordPercentage; ) {
+            for (let j = 100; j > maxItemWidthPercentage; ) {
                 id++;
                 const width =
                     Math.floor(
-                        Math.random() * (maxWordPercentage - minWordPercentage)
-                    ) + minWordPercentage;
+                        Math.random() *
+                            (maxItemWidthPercentage - minItemWidthPercentage)
+                    ) + minItemWidthPercentage;
                 paragraphItems.push({
                     key: `paragraph-${id}`,
                     width: `${width}%`
@@ -1155,43 +1116,30 @@ export default class Skeleton extends LightningElement {
         this.paragraphItems = paragraphItems;
     }
 
-    /**
-     * Initialized progress indicator items
-     */
-    initializeProgressItems() {
-        const progressItems = [];
-        for (let i = 0; i < this.variantAttributes.steps; i++) {
-            progressItems.push({
-                key: `panel-${i}`
-            });
+    initializeVariant() {
+        if (!this.initialRender) {
+            switch (this.variant) {
+                case 'paragraph':
+                    this.initializeParagraphItems();
+                    break;
+                case 'datatable':
+                    this.initializeDatatableRows();
+                    this.initializeDatatableColumns();
+                    break;
+                case 'progress-indicator':
+                    this.initializeItems(this.variantAttributes.steps);
+                    break;
+                case 'tabset':
+                    this.initializeItems(this.variantAttributes.tabs);
+                    break;
+                case 'tree':
+                    this.initializeItems(this.variantAttributes.items);
+                    break;
+                default:
+                    break;
+            }
         }
-        this.progressItems = progressItems;
-    }
-
-    /**
-     * Initializes tabset
-     */
-    initializeTabset() {
-        const tabsetItems = [];
-        for (let i = 0; i < this.variantAttributes.tabs; i++) {
-            tabsetItems.push({
-                key: `tabset-${i}`
-            });
-        }
-        this.tabset = tabsetItems;
-    }
-
-    /**
-     * Initializes tree items
-     */
-    initializeTreeItems() {
-        const treeItems = [];
-        for (let i = 0; i < this.variantAttributes.items; i++) {
-            treeItems.push({
-                key: `treeItem-${i}`
-            });
-        }
-        this.treeItems = treeItems;
+        this.initialRender = true;
     }
 
     /**

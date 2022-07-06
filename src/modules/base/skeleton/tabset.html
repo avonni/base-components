@@ -42,7 +42,7 @@
                 class="slds-tabs_default__nav avonni-skeleton__tabset-base"
                 data-element-id="avonni-skeleton-tabset-list"
             >
-                <template for:each={tabset} for:item="tab">
+                <template for:each={items} for:item="tab">
                     <li key={tab.key} class={tabClass}>
                         <div class={tabItemClass}></div>
                     </li>
@@ -59,7 +59,7 @@
                 class="slds-tabs_scoped__nav slds-truncate"
                 data-element-id="avonni-skeleton-tabset-list"
             >
-                <template for:each={tabset} for:item="tab">
+                <template for:each={items} for:item="tab">
                     <li key={tab.key} class="slds-is-active">
                         <div class={tabItemClass}></div>
                     </li>
@@ -79,7 +79,7 @@
                 class="slds-vertical-tabs__nav"
                 data-element-id="avonni-skeleton-tabset-list"
             >
-                <template for:each={tabset} for:item="tab">
+                <template for:each={items} for:item="tab">
                     <li key={tab.key} class="slds-vertical-tabs__nav-item">
                         <div
                             class="
