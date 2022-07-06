@@ -95,16 +95,12 @@ export default class Skeleton extends LightningElement {
     _variantAttributes = {};
     _width;
 
-    breadcrumbs = [];
-    datatableRows = [];
     datatableColumns = [];
+    datatableRows = [];
     htmlVariant;
     initialRender = false;
     items = [];
     paragraphItems = [];
-    progressItems = [];
-    tabset = [];
-    treeItems = [];
 
     render() {
         switch (this.variant) {
@@ -160,15 +156,8 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
-        this.addInlineBlockClass();
-
         this.handleVariant();
-
         this.initializeVariant();
-
-        if (this.isParagraphVariant) {
-            this.updateParagraphClassList();
-        }
     }
 
     /*
@@ -830,9 +819,9 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get regularVariantsClass() {
-        return classSet(`avonni-skeleton__variant-${this.variant}`)
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .add('slds-align_absolute-center');
+        return classSet(`avonni-skeleton__variant-${this.variant}`).add(
+            `avonni-skeleton__animation-${this.animation}`
+        );
     }
 
     /**
@@ -851,7 +840,7 @@ export default class Skeleton extends LightningElement {
      * @returns {object} avonni-skeleton
      */
     get skeleton() {
-        if (this.htmlVariant === regular)
+        if (this.isRegularVariant)
             return this.template.querySelector(
                 '[data-element-id="avonni-skeleton-regular-wrapper"]'
             );
@@ -938,23 +927,11 @@ export default class Skeleton extends LightningElement {
      * PRIVATE METHODS
      * ------------------------------------------------------------
      */
-    addInlineBlockClass() {
+    /**
+     * Adds display: inline-block only if width isn't 100%, undefined or empty. This is used for variant that has an initial width of 100% (combobox, input, paragraph, datatable, progressIndicator)
+     */
+    addConditionalInlineBlockClass() {
         if (
-            this.isButtonIcon ||
-            this.isAvatarVariant ||
-            this.isButtonVariant ||
-            this.isChipVariant ||
-            this.isBadgeVariant
-        )
-            this.classList.add('slds-show_inline-block');
-        else if (
-            (this.isInputVariant ||
-                this.isComboboxVariant ||
-                this.isParagraphVariant ||
-                this.isProgressIndicatorVariant ||
-                this.isTabsetVariant ||
-                this.isTreeVariant ||
-                this.isDatatableVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
@@ -972,52 +949,67 @@ export default class Skeleton extends LightningElement {
         ) {
             switch (this.variant) {
                 case 'avatar':
+                    this.classList.add('slds-show_inline-block');
                     this.setSize();
                     break;
                 case 'badge':
+                    this.classList.add('slds-show_inline-block');
                     this.updateVariantClassList('badge');
                     break;
                 case 'button':
+                    this.classList.add('slds-show_inline-block');
                     this.updateVariantClassList('button');
                     break;
                 case 'button-icon':
+                    this.classList.add('slds-show_inline-block');
                     this.updateVariantButtonIcon();
                     break;
                 case 'chip':
+                    this.classList.add('slds-show_inline-block');
                     this.updateVariantClassList('chip');
                     break;
+                case 'circular':
+                    this.addConditionalInlineBlockClass();
+                    this.setRectangularCircularSize();
+                    break;
                 case 'combobox':
+                    this.addConditionalInlineBlockClass();
                     this.setSize();
                     break;
                 case 'datatable':
+                    this.addConditionalInlineBlockClass();
                     this.setSize();
                     break;
                 case 'input':
+                    this.addConditionalInlineBlockClass();
                     this.setSize();
                     break;
                 case 'paragraph':
+                    this.addConditionalInlineBlockClass();
                     this.setSize();
+                    this.updateParagraphClassList();
                     break;
                 case 'progress-indicator':
-                    this.setSize();
-                    break;
-                case 'tabset':
-                    this.setSize();
-                    break;
-                case 'text':
-                    this.setSize();
-                    break;
-                case 'tree':
+                    this.addConditionalInlineBlockClass();
                     this.setSize();
                     break;
                 case 'rectangular':
+                    this.addConditionalInlineBlockClass();
                     this.setRectangularCircularSize();
                     break;
-                case 'circular':
+                case 'tabset':
+                    this.addConditionalInlineBlockClass();
+                    this.setSize();
+                    break;
+                case 'text':
+                    this.addConditionalInlineBlockClass();
                     this.setRectangularCircularSize();
+                    break;
+                case 'tree':
+                    this.classList.add('slds-show_inline-block');
+                    this.setSize();
                     break;
                 default:
-                    console.log('inside handleVariant switch case');
                     break;
             }
         }
@@ -1151,13 +1143,13 @@ export default class Skeleton extends LightningElement {
             this.width === undefined ? '100%' : `${this.width}`;
         variantElement.style.height =
             this.height === undefined ? '100%' : `${this.height}`;
-        if (this.htmlVariant === regular) {
-            let element = this.skeleton;
-            element.style.height =
-                this.height === undefined ? '0.7em' : `${this.height}`;
-            element.style.width =
-                this.width === undefined ? '100%' : `${this.width}`;
-        }
+        // if (this.htmlVariant === regular) {
+        //     let element = this.skeleton;
+        //     element.style.height =
+        //         this.height === undefined ? '0.7em' : `${this.height}`;
+        //     element.style.width =
+        //         this.width === undefined ? '100%' : `${this.width}`;
+        // }
     }
 
     /**
@@ -1165,10 +1157,15 @@ export default class Skeleton extends LightningElement {
      */
     setRectangularCircularSize() {
         let element = this.skeleton;
-        element.style.height =
-            this.height === undefined ? '1.2em' : `${this.height}`;
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
+        if (this.variant === 'text') {
+            element.style.height =
+                this.height === undefined ? '0.7em' : `${this.height}`;
+            return;
+        }
+        element.style.height =
+            this.height === undefined ? '1.2em' : `${this.height}`;
     }
 
     /**
