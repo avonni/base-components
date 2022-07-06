@@ -962,7 +962,7 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'button-icon':
                     this.classList.add('slds-show_inline-block');
-                    this.updateVariantButtonIcon();
+                    this.updateVariantClassList('button-icon');
                     break;
                 case 'chip':
                     this.classList.add('slds-show_inline-block');
@@ -970,7 +970,7 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'circular':
                     this.addConditionalInlineBlockClass();
-                    this.setRectangularCircularSize();
+                    this.setRectangularCircularTextSize();
                     break;
                 case 'combobox':
                     this.addConditionalInlineBlockClass();
@@ -987,7 +987,7 @@ export default class Skeleton extends LightningElement {
                 case 'paragraph':
                     this.addConditionalInlineBlockClass();
                     this.setSize();
-                    this.updateParagraphClassList();
+                    this.updateParagraph();
                     break;
                 case 'progress-indicator':
                     this.addConditionalInlineBlockClass();
@@ -995,7 +995,7 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'rectangular':
                     this.addConditionalInlineBlockClass();
-                    this.setRectangularCircularSize();
+                    this.setRectangularCircularTextSize();
                     break;
                 case 'tabset':
                     this.addConditionalInlineBlockClass();
@@ -1003,7 +1003,7 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'text':
                     this.addConditionalInlineBlockClass();
-                    this.setRectangularCircularSize();
+                    this.setRectangularCircularTextSize();
                     break;
                 case 'tree':
                     this.classList.add('slds-show_inline-block');
@@ -1143,19 +1143,12 @@ export default class Skeleton extends LightningElement {
             this.width === undefined ? '100%' : `${this.width}`;
         variantElement.style.height =
             this.height === undefined ? '100%' : `${this.height}`;
-        // if (this.htmlVariant === regular) {
-        //     let element = this.skeleton;
-        //     element.style.height =
-        //         this.height === undefined ? '0.7em' : `${this.height}`;
-        //     element.style.width =
-        //         this.width === undefined ? '100%' : `${this.width}`;
-        // }
     }
 
     /**
-     * Sets the width and heigh for rectangular and circular variants
+     * Sets the width and heigh for the text, rectangular and circular variants
      */
-    setRectangularCircularSize() {
+    setRectangularCircularTextSize() {
         let element = this.skeleton;
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
@@ -1191,38 +1184,18 @@ export default class Skeleton extends LightningElement {
             '--avonni-skeleton-color-background-animation',
             variantAttributes.backgroundAnimation
         );
-        variantLabel.style.setProperty(
-            '--avonni-skeleton-chip-label-background',
-            variantAttributes.labelColor
-        );
-        this.setSize();
-    }
-
-    /**
-     * updates button icon variant
-     */
-    updateVariantButtonIcon() {
-        const buttonIconElement = this.template.querySelector(
-            '[data-element-id="avonni-skeleton-button-icon"]'
-        );
-        const buttonIconVariantAttributes = BUTTON_ICON_VARIANT_VALUES.get(
-            this.variantAttributes.variant
-        );
-        buttonIconElement.style.setProperty(
-            '--avonni-skeleton-color-background',
-            buttonIconVariantAttributes.background
-        );
-        buttonIconElement.style.setProperty(
-            '--avonni-skeleton-color-background-animation',
-            buttonIconVariantAttributes.backgroundAnimation
-        );
+        if (!this.isButtonIcon)
+            variantLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                variantAttributes.labelColor
+            );
         this.setSize();
     }
 
     /**
      * Updates paragraph variant
      */
-    updateParagraphClassList() {
+    updateParagraph() {
         const paragraphElementItems = this.template.querySelector(
             '[data-element-id="avonni-skeleton-paragraph-wrapper"]'
         ).children;
@@ -1244,6 +1217,9 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'button':
                 variantValues = BUTTON_VARIANT_VALUES;
+                break;
+            case 'button-icon':
+                variantValues = BUTTON_ICON_VARIANT_VALUES;
                 break;
             case 'chip':
                 variantValues = CHIP_VARIANT_VALUES;
