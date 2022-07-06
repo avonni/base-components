@@ -471,6 +471,10 @@
             "path": "src/modules/base/range/range.js"
         },
         {
+            "name": "c/slider",
+            "path": "src/modules/base/slider/slider.js"
+        },
+        {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
         },
@@ -823,6 +827,10 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
+            "name": "avonni/slider",
+            "path": "src/modules/base/slider/slider.js"
+        },
+        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -948,6 +956,7 @@
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
+        "avonni/slider",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",
