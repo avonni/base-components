@@ -33,73 +33,83 @@
 -->
 
 <template>
-    <table
-        class="
-            slds-table
-            avonni-skeleton__datatable-borders
-            slds-table_bordered
-            slds-table_fixed-layout
-            slds-table_resizable-cols
-        "
-        data-element-id="avonni-skeleton-datatable-wrapper"
-    >
-        <template if:false={hideTableHeader}>
-            <thead data-element-id="avonni-skeleton-datatable-header">
-                <template if:false={hideCheckboxColumn}>
-                    <th
-                        class="
-                            slds-text-align_right
-                            slds-border_left slds-border_right
-                        "
-                        style="width: 3.25rem"
-                    >
-                        <div
-                            class="
-                                slds-th__action slds-th__action_form
-                                avonni-skeleton__datatable-header-checkbox
-                            "
-                        >
-                            <div class="slds-checkbox">
-                                <input type="checkbox" disabled="" />
-                                <label class="slds-checkbox__label">
-                                    <span
-                                        class={datatableCheckboxClass}
-                                        data-element-id="avonni-skeleton-datatable-checkbox"
-                                    ></span>
-                                </label>
-                            </div>
-                        </div>
-                    </th>
-                </template>
-                <template for:each={datatableColumns} for:item="column">
-                    <th key={column.keyTh} class={datatableTHHeaderClass}></th>
-                </template>
-            </thead>
-        </template>
-        <tbody>
-            <template for:each={datatableRows} for:item="row">
-                <tr key={row.keyTr} class="slds-border_right slds-border_left">
+    <div class="slds-align_absolute-center">
+        <table
+            class="
+                slds-table
+                avonni-skeleton__datatable-borders
+                slds-table_bordered
+                slds-table_fixed-layout
+                slds-table_resizable-cols
+            "
+            data-element-id="avonni-skeleton-datatable-wrapper"
+        >
+            <template if:false={hideTableHeader}>
+                <thead data-element-id="avonni-skeleton-datatable-header">
                     <template if:false={hideCheckboxColumn}>
-                        <td
-                            key={row.keyTd}
-                            class="slds-text-align_right"
+                        <th
+                            class="
+                                slds-text-align_right
+                                slds-border_left slds-border_right
+                            "
                             style="width: 3.25rem"
                         >
-                            <div class="slds-checkbox">
-                                <input type="checkbox" disabled="" />
-                                <label>
-                                    <span class={datatableCheckboxClass}></span>
-                                </label>
+                            <div
+                                class="
+                                    slds-th__action slds-th__action_form
+                                    avonni-skeleton__datatable-header-checkbox
+                                "
+                            >
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" disabled="" />
+                                    <label class="slds-checkbox__label">
+                                        <span
+                                            class={datatableCheckboxClass}
+                                            data-element-id="avonni-skeleton-datatable-checkbox"
+                                        ></span>
+                                    </label>
+                                </div>
                             </div>
-                        </td>
-                    </template>
-                    <template for:each={datatableColumns} for:item="column">
-                        <th key={column.keyTh} class={datatableTHClass}>
-                            <div class={datatableTHContentClass}></div>
                         </th>
                     </template>
-                </tr>
+                    <template for:each={datatableColumns} for:item="column">
+                        <th
+                            key={column.keyTh}
+                            class={datatableTHHeaderClass}
+                        ></th>
+                    </template>
+                </thead>
             </template>
-        </tbody>
-    </table>
+            <tbody>
+                <template for:each={datatableRows} for:item="row">
+                    <tr
+                        key={row.keyTr}
+                        class="slds-border_right slds-border_left"
+                    >
+                        <template if:false={hideCheckboxColumn}>
+                            <td
+                                key={row.keyTd}
+                                class="slds-text-align_right"
+                                style="width: 3.25rem"
+                            >
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" disabled="" />
+                                    <label>
+                                        <span
+                                            class={datatableCheckboxClass}
+                                        ></span>
+                                    </label>
+                                </div>
+                            </td>
+                        </template>
+                        <template for:each={datatableColumns} for:item="column">
+                            <th key={column.keyTh} class={datatableTHClass}>
+                                <div class={datatableTHContentClass}></div>
+                            </th>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
 </template>

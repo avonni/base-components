@@ -95,7 +95,8 @@ export default class Skeleton extends LightningElement {
     _variantAttributes = {};
     _width;
 
-    initialRender = false;
+    initialParagraphItemsRender = false;
+    initialDatatableRender = false;
     breadcrumbs = [];
     datatableRows = [];
     datatableColumns = [];
@@ -106,22 +107,9 @@ export default class Skeleton extends LightningElement {
     treeItems = [];
 
     connectedCallback() {
-        // if (
-        //     this.isButtonIcon ||
-        //     this.isAvatarVariant ||
-        //     this.isButtonVariant ||
-        //     this.isChipVariant ||
-        //     this.isBadgeVariant
-        // )
-        //     this.classList.add('slds-show_inline-block');
-        // if (this.isComboboxVariant && this.width !== '100%')
-        //     this.classList.add('slds-show');
-        if (this.isDatatableVariant) {
-            this.initializeDatatableRows();
-            this.initializeDatatableColumns();
-        }
-        // if (this.isParagraphVariant) {
-        //     this.initializeParagraphItems();
+        // if (this.isDatatableVariant) {
+        //     this.initializeDatatableRows();
+        //     this.initializeDatatableColumns();
         // }
 
         if (this.isProgressIndicatorVariant) {
@@ -146,36 +134,33 @@ export default class Skeleton extends LightningElement {
             this.isBadgeVariant
         )
             this.classList.add('slds-show_inline-block');
-        console.log(`width: ${this.width}`);
+
         if (
             (this.isInputVariant ||
                 this.isComboboxVariant ||
                 this.isParagraphVariant ||
                 this.isProgressIndicatorVariant ||
                 this.isTabsetVariant ||
-                this.isTreeVariant) &&
+                this.isTreeVariant ||
+                this.isDatatableVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
         )
             this.classList.add('slds-show_inline-block');
-        // if (this.width) {
-        //     const element = this.template.querySelector('ac-base-skeleton');
-        //     // const host = this.template.querySelector(
-        //     //     '[data-element-id="avonni-skeleton-avatar-wrapper"]'
-        //     // );
-        //     console.log(`this is the root: ${element}`);
-        //     // host.shadowRoot.style.setProperty(
-        //     //     '--avonni-skeleton-display',
-        //     //     'inline-block'
-        //     // );
-        //     // console.log(`this is the host: ${host}`);
-        // }
+
         this.handleVariant();
-        if (!this.initialRender && this.isParagraphVariant) {
+        if (!this.initialParagraphItemsRender && this.isParagraphVariant) {
             this.initializeParagraphItems();
-            this.initialRender = true;
+            this.initialParagraphItemsRender = true;
         }
+
+        if (!this.initialDatatableRender && this.isDatatableVariant) {
+            this.initializeDatatableRows();
+            this.initializeDatatableColumns();
+            this.initialDatatableRender = true;
+        }
+
         if (this.isParagraphVariant) {
             this.updateParagraphClassList();
         }
@@ -312,8 +297,6 @@ export default class Skeleton extends LightningElement {
         return this._width;
     }
     set width(value) {
-        console.log(value !== '');
-        console.log(`in set width: ${value}`);
         if (
             value !== undefined &&
             value !== '' &&
@@ -1032,6 +1015,9 @@ export default class Skeleton extends LightningElement {
                     break;
                 case 'combobox':
                     this.updateComboboxClassList();
+                    break;
+                case 'datatable':
+                    this.setTextSize();
                     break;
                 case 'input':
                     this.setTextSize();
