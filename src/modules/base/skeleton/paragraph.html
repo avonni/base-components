@@ -33,7 +33,10 @@
 -->
 
 <template>
-    <div data-element-id="avonni-skeleton-paragraph-wrapper">
+    <div
+        class="slds-align_absolute-center slds-wrap"
+        data-element-id="avonni-skeleton-paragraph-wrapper"
+    >
         <template for:each={paragraphItems} for:item="paragraphLine">
             <div
                 key={paragraphLine.key}

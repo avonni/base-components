@@ -304,12 +304,12 @@
     width: 3em;
 }
 
-.avonni-skeleton__paragraph {
+/* .avonni-skeleton__paragraph {
     border-radius: var(--avonni-skeleton-radius-border);
-    /* margin: 0.5em; */
+    margin: 0.5em;
     height: 0.7em;
     width: 100%;
-}
+} */
 
 .avonni-skeleton__paragraph-grid {
     height: 1.2em;

@@ -148,7 +148,9 @@ export default class Skeleton extends LightningElement {
             this.classList.add('slds-show_inline-block');
         console.log(`width: ${this.width}`);
         if (
-            (this.isInputVariant || this.isComboboxVariant) &&
+            (this.isInputVariant ||
+                this.isComboboxVariant ||
+                this.isParagraphVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
@@ -826,18 +828,18 @@ export default class Skeleton extends LightningElement {
         });
     }
 
-    /**
-     * Compute paragraph line class
-     * @type {string}
-     */
-    get paragraphLineClass() {
-        return classSet('avonni-skeleton__variant-text')
-            .add('slds-item')
-            .add('avonni-skeleton__paragraph')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .add()
-            .toString();
-    }
+    // /**
+    //  * Compute paragraph line class
+    //  * @type {string}
+    //  */
+    // get paragraphLineClass() {
+    //     return classSet('avonni-skeleton__variant-text')
+    //         .add('slds-item')
+    //         .add('avonni-skeleton__paragraph')
+    //         .add(`avonni-skeleton__animation-${this.animation}`)
+    //         .add()
+    //         .toString();
+    // }
 
     /**
      * Compute avatar primary text class
