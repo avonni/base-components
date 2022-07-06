@@ -97,6 +97,9 @@ export default class Skeleton extends LightningElement {
 
     initialParagraphItemsRender = false;
     initialDatatableRender = false;
+    initialProgressIndicatorRender = false;
+    initialTabsetRender = false;
+    initialTreeRender = false;
     breadcrumbs = [];
     datatableRows = [];
     datatableColumns = [];
@@ -111,18 +114,15 @@ export default class Skeleton extends LightningElement {
         //     this.initializeDatatableRows();
         //     this.initializeDatatableColumns();
         // }
-
-        if (this.isProgressIndicatorVariant) {
-            this.initializeProgressItems();
-        }
-
-        if (this.isTabsetVariant) {
-            this.initializeTabset();
-        }
-
-        if (this.isTreeVariant) {
-            this.initializeTreeItems();
-        }
+        // if (this.isProgressIndicatorVariant) {
+        //     this.initializeProgressItems();
+        // }
+        // if (this.isTabsetVariant) {
+        //     this.initializeTabset();
+        // }
+        // if (this.isTreeVariant) {
+        //     this.initializeTreeItems();
+        // }
     }
 
     renderedCallback() {
@@ -159,6 +159,24 @@ export default class Skeleton extends LightningElement {
             this.initializeDatatableRows();
             this.initializeDatatableColumns();
             this.initialDatatableRender = true;
+        }
+
+        if (
+            !this.initialProgressIndicatorRender &&
+            this.isProgressIndicatorVariant
+        ) {
+            this.initializeProgressItems();
+            this.initialProgressIndicatorRender = true;
+        }
+
+        if (!this.initialTabsetRender && this.isTabsetVariant) {
+            this.initializeTabset();
+            this.initialTabsetRender = true;
+        }
+
+        if (!this.initialTreeRender && this.isTreeVariant) {
+            this.initializeTreeItems();
+            this.initialTreeRender = true;
         }
 
         if (this.isParagraphVariant) {
