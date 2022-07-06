@@ -152,7 +152,8 @@ export default class Skeleton extends LightningElement {
                 this.isComboboxVariant ||
                 this.isParagraphVariant ||
                 this.isProgressIndicatorVariant ||
-                this.isTabsetVariant) &&
+                this.isTabsetVariant ||
+                this.isTreeVariant) &&
             this.width !== '100%' &&
             this.width !== undefined &&
             this.width !== ''
@@ -1045,6 +1046,9 @@ export default class Skeleton extends LightningElement {
                     this.setTextSize();
                     break;
                 case 'text':
+                    this.setTextSize();
+                    break;
+                case 'tree':
                     this.setTextSize();
                     break;
                 case 'rectangular':
