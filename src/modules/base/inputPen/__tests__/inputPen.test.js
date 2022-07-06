@@ -156,7 +156,7 @@ describe('Input pen', () => {
         expect(element.required).toBeFalsy();
         expect(element.showSignaturePad).toBeFalsy();
         expect(element.size).toBe(10);
-        expect(element.validity).toBe(false);
+        expect(element.validity).toBe(true);
         expect(element.value).toBeUndefined();
         expect(element.variant).toBe('bottom-toolbar');
     });
@@ -432,7 +432,7 @@ describe('Input pen', () => {
 
     // showSignaturePad
     it('showSignaturePad = false', () => {
-        element.invalid = false;
+        element.showSignaturePad = false;
 
         return Promise.resolve().then(() => {
             expect(element.mode).toEqual('draw');
@@ -1096,13 +1096,13 @@ describe('Input pen', () => {
                 window.dispatchEvent(
                     new KeyboardEvent('keydown', { keyCode: 90 }) // ctrl-z
                 );
-                expect(strokeSpy).toHaveBeenCalledTimes(5);
+                expect(strokeSpy).toHaveBeenCalledTimes(3);
             })
             .then(() => {
                 window.dispatchEvent(
                     new KeyboardEvent('keydown', { keyCode: 89 }) // ctrl-y
                 );
-                expect(strokeSpy).toHaveBeenCalledTimes(6);
+                expect(strokeSpy).toHaveBeenCalledTimes(4);
             });
     });
 

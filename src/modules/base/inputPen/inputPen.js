@@ -428,11 +428,9 @@ export default class InputPen extends LightningElement {
     set value(value) {
         this._value = value;
         this._foregroundValue = value;
-
-        if (this.canvasInfo.ctx) {
+        if (this._rendered) {
             this.initSrc();
         }
-        this._updatedDOM = true;
     }
 
     /**
@@ -485,7 +483,8 @@ export default class InputPen extends LightningElement {
         return classSet(
             'slds-rich-text-editor slds-grid slds-grid_vertical slds-nowrap avonni-input-pen__rich-text_border-radius'
         ).add({
-            'slds-grid_vertical-reverse': this.variant === 'bottom-toolbar'
+            'slds-grid_vertical-reverse': this.variant === 'bottom-toolbar',
+            'slds-has-error': this._invalidField
         });
     }
 
@@ -501,8 +500,7 @@ export default class InputPen extends LightningElement {
             'avonni-input-pen__text-area_cursor':
                 this.disabled || this.readOnly,
             'avonni-input-pen__rich-text_border-radius-bottom':
-                this.variant === 'top-toolbar',
-            'slds-has-error': !this.validity
+                this.variant === 'top-toolbar'
         });
     }
 
@@ -717,7 +715,7 @@ export default class InputPen extends LightningElement {
                 () => this,
                 {
                     valueMissing: () => {
-                        return !this.value;
+                        return !this.value && this.required;
                     }
                 }
             );
