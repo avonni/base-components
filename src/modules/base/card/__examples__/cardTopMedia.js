@@ -30,11 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
+import Component from '../../storybookWrappers/card/cardTopMedia';
 
-export default class CardSlots extends LightningElement {
-    @api title;
-    @api mediaSrc;
-    @api mediaPosition;
-    @api avatar;
-}
+customElements.define('ac-card-top-media', Component.CustomElementConstructor);
+
+export const CardTopMedia = ({ iconName, mediaPosition, mediaSrc, title }) => {
+    const element = document.createElement('ac-card-top-media');
+    element.iconName = iconName;
+    element.mediaPosition = mediaPosition;
+    element.mediaSrc = mediaSrc;
+    element.title = title;
+    return element;
+};

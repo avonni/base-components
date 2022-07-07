@@ -34,6 +34,7 @@ export default class PrimitiveCombobox extends LightningElement {
     @api open() {}
     @api removeSelectedOption() {}
     @api reportValidity() {}
+    @api resetLevel() {}
     @api setCustomValidity() {}
     @api showHelpMessageIfInvalid() {}
 }

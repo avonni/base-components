@@ -30,140 +30,186 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host() {
-    --avonni-card-sizing-border: 1px;
-    --avonni-card-border-color: #c9c9c9;
-    --avonni-card-radius-border: 0.5rem;
-    /* --slds-c-card-shadow: 0px; */
-    --avonni-card-media-height: 200px;
-    --avonni-card-media-action-top: 0px;
-    --avonni-card-media-action-bottom: unset;
-    --avonni-card-media-action-left: unset;
-    --avonni-card-media-action-right: 0px;
-
-    --avonni-card-body-padding: 6px;
-    --avonni-card-footer-padding: 6px;
-}
-
-article {
-    overflow: hidden;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-}
+/* outer card */
 
 article.avonni-card {
-    border-width: var(
-        --slds-c-card-sizing-border,
-        var(--sds-c-card-sizing-border, 1px)
-    );
+    background-color: var(--avonni-card-color-background, white);
+    color: var(--avonni-card-text-color);
+
+    padding-top: var(--avonni-card-spacing-block-start, 0px);
+    padding-left: var(--avonni-card-spacing-inline-start, 0px);
+    padding-right: var(--avonni-card-spacing-inline-end, 0px);
+    padding-bottom: var(--avonni-card-spacing-block-end, 0px);
+
+    border-width: var(--avonni-card-sizing-border, 1px);
     border-style: solid;
-    border-color: var(
-        --slds-c-card-color-border,
-        var(--sds-c-card-color-border, #c9c9c9)
-    );
-    border-radius: var(
-        --slds-c-card-radius-border,
-        var(--sds-c-card-radius-border, 0.25rem)
-    );
-    box-shadow: var(
-        --slds-c-card-shadow,
-        var(--sds-c-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1))
-    );
-    overflow: hidden;
+    border-color: var(--avonni-card-color-border, #c9c9c9);
+    border-radius: var(--avonni-card-radius-border, 0.25rem);
+
+    box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
-.avonni-card__image-container {
-    border-top-right-radius: var(
-        --slds-c-card-radius-border,
-        var(--sds-c-card-radius-border, 0.25rem)
-    );
-    border-top-left-radius: var(
-        --slds-c-card-radius-border,
-        var(--sds-c-card-radius-border, 0.25rem)
-    );
-    overflow: hidden;
+.avonni-card__content-container {
+    flex: 1 1 auto;
+}
+.avonni-card__media-container {
+    flex: 0 1 auto;
+}
+.avonni-card__media-center .avonni-card__content-container {
+    order: -1;
 }
 
-.avonni-card__title-row {
-    width: 100%;
-}
-
-.background .avonni-card__image-container {
-    height: 300px;
-    width: 100%;
-}
-
-.background .avonni-card__body-container {
-    width: 100%;
-    position: absolute;
-    padding-top: 20px;
-    bottom: 0;
-    color: white;
-    background-image: linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.5) 0%,
-        rgba(0, 0, 0, 0.23) 75%,
-        rgba(0, 0, 0, 0) 100%
-    );
-}
-.avonni-card__media-action {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    background-color: red;
-}
-
-.avonni-card__body-container {
-    padding: 0.5em;
-}
-
-.overlay-card .card-content {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.overlay-card:hover .card-content {
-    opacity: 1;
-}
-
-.image-left {
-    flex-direction: row;
-}
-
-.image-right {
+.avonni-card__media-right {
     flex-direction: row-reverse;
 }
 
-.image-bottom,
-.image-center {
-    flex-direction: column-reverse;
-}
-
-.image-left .avonni-card__image-container,
-.image-right .avonni-card__image-container {
-    /* border: 2px solid red; */
-    position: relative;
-    height: 150px;
-    width: 100px;
-}
-
-.image-top .avonni-card__image-container,
-.image-center .avonni-card__image-container,
-.image-bottom .avonni-card__image-container {
-    position: relative;
-    width: 100%;
-    height: 200px;
-}
-
-.media-actions {
+/* card media */
+.avonni-card__media-background .avonni-card__content-container {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: var(--avonni-card-background-media-text-color, white);
+    background-image: var(
+        --avonni-card-background-media-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0.25) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
 }
 
-.avonni-card__image {
+.avonni-card__media-overlay .avonni-card__content-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    color: var(--avonni-card-overlay-media-text-color, white);
+    background-image: var(
+        --avonni-card-overlay-media-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0.25) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
+}
+
+.avonni-card__media-overlay:hover .avonni-card__content-container,
+.avonni-card__media-overlay:focus-within .avonni-card__content-container {
+    opacity: 1;
+}
+
+/* In chrome, the image corner radius is not applied to the image properly when there is a border.
+    The overflow: hidden lets the image pass over the border in certain conditions.  */
+.avonni-card__media-top-left-radius {
+    border-top-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
+}
+.avonni-card__media-top-right-radius {
+    border-top-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
+}
+.avonni-card__media-bottom-right-radius {
+    border-bottom-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
+}
+.avonni-card__media-bottom-left-radius {
+    border-bottom-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
+}
+
+.avonni-card__media-border-top {
+    border-top-width: var(--avonni-card-media-sizing-border, 1px);
+    border-top-style: solid;
+    border-top-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-bottom {
+    border-bottom-width: var(--avonni-card-media-sizing-border, 1px);
+    border-bottom-style: solid;
+    border-bottom-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-left {
+    border-left-width: var(--avonni-card-media-sizing-border, 1px);
+    border-left-style: solid;
+    border-left-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-right {
+    border-right-width: var(--avonni-card-media-sizing-border, 1px);
+    border-right-style: solid;
+    border-right-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+
+.avonni-card__media-left .avonni-card__media-container {
+    min-width: var(--avonni-card-left-media-width);
+    max-width: var(--avonni-card-left-media-width);
+}
+
+.avonni-card__media-right .avonni-card__media-container {
+    min-width: var(--avonni-card-right-media-width);
+    max-width: var(--avonni-card-right-media-width);
+}
+
+.avonni-card__body-container:not(.avonni-card__media-left, .avonni-card__media-right)
+    .avonni-card__media-container {
+    width: 100%;
+}
+
+.avonni-card__media {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.avonni-card__media-action {
+    position: absolute;
+    top: var(--lwc-spacingSmall, 0.75rem);
+    right: var(--lwc-spacingMedium, 1rem);
+}
+
+/* card header */
+.avonni-card__header {
+    padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
+    margin-bottom: var(--avonni-card-header-spacing-block-end, 0.75rem);
+    padding-left: var(--avonni-card-header-spacing-inline-start, 1rem);
+    padding-right: var(--avonni-card-header-spacing-inline-end, 1rem);
+}
+
+.avonni-card__title-text {
+    font-weight: var(--avonni-card-header-font-weight, 700);
+    font-size: var(--avonni-card-header-font-size, 1rem);
+    line-height: var(--lwc-lineHeightHeading, 1.25);
+}
+
+/* card body */
+.avonni-card__default-slot {
+    margin-top: var(--avonni-card-body-spacing-block-start, 0.75rem);
+    margin-bottom: var(--avonni-card-body-spacing-block-end, 0.75rem);
+}
+
+/* card footer */
+.avonni-card__footer {
+    padding-top: var(--avonni-card-footer-spacing-block-start, 0.75rem);
+    padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);
+    padding-left: var(--avonni-card-footer-spacing-inline-start, 1rem);
+    padding-right: var(--avonni-card-footer-padding-right, 1rem);
+
+    text-align: var(--avonni-card-footer-text-align, center);
+
+    border-top-width: var(--avonni-card-footer-sizing-border, 1px);
+    border-top-style: solid;
+    border-top-color: var(--avonni-card-footer-color-border, #c9c9c9);
 }

@@ -104,6 +104,7 @@ function graft(parentNode, childNodes, parentLongname) {
                 };
 
                 if (element.storyId) {
+                    console.log(element.storyId);
                     thisMember.storyId = element.storyId.value;
                 }
 
@@ -188,7 +189,7 @@ function graft(parentNode, childNodes, parentLongname) {
                     name: element.name,
                     description: element.description || '',
                     descriptor: element.descriptor || '',
-                    storyId: element.storyId.value || '',
+                    storyId: (element.storyId && element.storyId.value) || '',
                     extends: element.augments || [],
                     access: element.access || '',
                     parameters: []

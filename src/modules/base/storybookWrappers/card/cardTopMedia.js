@@ -30,15 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/card/cardSlots';
+import { LightningElement, api } from 'lwc';
 
-customElements.define('ac-card-slots', Component.CustomElementConstructor);
-
-export const CardSlots = ({ avatar, mediaPosition, mediaSrc, title }) => {
-    const element = document.createElement('ac-card-slots');
-    element.avatar = avatar;
-    element.mediaPosition = mediaPosition;
-    element.mediaSrc = mediaSrc;
-    element.title = title;
-    return element;
-};
+export default class CardTopMedia extends LightningElement {
+    @api title;
+    @api mediaSrc;
+    @api mediaPosition;
+    @api iconName;
+}

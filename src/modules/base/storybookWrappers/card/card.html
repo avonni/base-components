@@ -33,16 +33,21 @@
 -->
 
 <template>
-    <c-card
-        avatar={avatar}
-        media-src={mediaSrc}
-        media-position={mediaPosition}
-        title={title}
-    >
-        <button class="slds-button slds-button_neutral" slot="action">
-            Action slot
-        </button>
-
-        <div slot="default">default slot</div>
-    </c-card>
+    <div style="width: 70%; max-width: 500px; margin: 0 auto">
+        <c-card
+            icon-name={iconName}
+            media-src={mediaSrc}
+            media-position={mediaPosition}
+            title={title}
+        >
+            <lightning-button-icon
+                slot="media-actions"
+                icon-name="utility:bookmark"
+                size="x-small"
+                variant="border-filled"
+                alternative-text="Bookmark"
+                title="Bookmark"
+            ></lightning-button-icon>
+        </c-card>
+    </div>
 </template>

@@ -31,8 +31,8 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { classSet, generateUUID } from 'c/utils';
-import { normalizeObject, normalizeString } from '../utilsPrivate/normalize';
+import { classSet } from 'c/utils';
+import { normalizeString } from 'c/utilsPrivate';
 
 const MEDIA_POSITIONS = {
     valid: [
@@ -47,58 +47,109 @@ const MEDIA_POSITIONS = {
     default: 'top'
 };
 
+/**
+ * @class
+ * @name Card
+ * @descriptor avonni-card
+ * @storyId example-card--base
+ * @public
+ */
 export default class Card extends LightningElement {
-    _avatar;
+    /**
+     * The title in the header of the card, right of the icon. The title attribute supersedes the title slot.
+     *
+     * @type {string}
+     * @public
+     */
+    @api title;
+    /**
+     * The Lightning Design System name displayed left of the title in the header.
+     * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
+    @api iconName;
+    /**
+     * Source for the image or media.
+     *
+     * @type {string}
+     * @public
+     */
+    @api mediaSrc;
+
     _title;
-    _mediaPosition;
+    _iconName;
+    _mediaPosition = MEDIA_POSITIONS.default;
+    _mediaSrc;
 
-    showTitleSlot = false;
-    showMediaSlot = false;
-    showMediaActionSlot = false;
-    showActionSlot = false;
-    showDefaultSlot = false;
-    showFooterSlot = false;
-    _showMedia = false;
-
-    connectedCallback() {}
+    showMedia = true;
+    showMediaSlot = true;
+    showTitleSlot = true;
+    showActionsSlot = true;
+    showDefaultSlot = true;
+    showFooterSlot = true;
+    showCenterMediaContent = true;
 
     renderedCallback() {
-        if (this.titleSlot) {
-            this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
-        }
-        if (this.mediaSlot) {
-            this.showMediaSlot = this.mediaSlot.assignedElements().length !== 0;
-        }
-        if (this.mediaActionSlot) {
-            this.showMediaActionSlot =
-                this.mediaActionSlot.assignedElements().length !== 0;
-        }
-        if (this.actionSlot) {
-            this.showActionSlot =
-                this.actionSlot.assignedElements().length !== 0;
-        }
-        if (this.defaultSlot) {
-            this.showDefaultSlot =
-                this.defaultSlot.assignedElements().length !== 0;
-        }
-        if (this.footerSlot) {
-            this.showFooterSlot =
-                this.footerSlot.assignedElements().length !== 0;
-        }
+        this.showMediaSlot =
+            !this.mediaSrc &&
+            this.mediaSlot &&
+            this.mediaSlot.assignedElements().length !== 0;
+        this.showActionsSlot =
+            this.actionsSlot &&
+            this.actionsSlot.assignedElements().length !== 0;
+        this.showDefaultSlot =
+            (this.defaultSlot &&
+                this.defaultSlot.assignedElements().length !== 0) ||
+            (this.defaultSlot &&
+                this.defaultSlot.innerText &&
+                this.defaultSlot.innerText.trim().length !== 0);
+        this.showTitleSlot =
+            !this.title &&
+            this.titleSlot &&
+            this.titleSlot.assignedElements().length !== 0;
+        this.showFooterSlot =
+            this.footerSlot && this.footerSlot.assignedElements().length !== 0;
 
-        this._showMedia = !!this.mediaSrc || this.showMediaSlot;
+        this.showMedia = this.mediaSrc || this.showMediaSlot;
+        this.showCenterMediaContent =
+            this.showDefaultSlot && this.mediaPosition === 'center';
     }
+
+    /*
+     * -------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
-     * Get the title slot DOM element.
+     * Position of the media relative to the card.
+     * Valid values are "top", "center", "left", "right", "bottom", "background", and "overlay".
      *
-     * @type {Element}
+     * @type {string}
+     * @public
+     * @default top
      */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
+    @api
+    get mediaPosition() {
+        return this._mediaPosition;
     }
 
-    // SLOTS //
+    set mediaPosition(value) {
+        this._mediaPosition = normalizeString(value, {
+            fallbackValue: MEDIA_POSITIONS.default,
+            validValues: MEDIA_POSITIONS.valid
+        });
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /*** Slots ***/
 
     /**
      * Get the media slot DOM element.
@@ -114,8 +165,17 @@ export default class Card extends LightningElement {
      *
      * @type {Element}
      */
-    get mediaActionSlot() {
-        return this.template.querySelector('slot[name=media-action]');
+    get mediaActionsSlot() {
+        return this.template.querySelector('slot[name=media-actions]');
+    }
+
+    /**
+     * Get the title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     /**
@@ -123,10 +183,9 @@ export default class Card extends LightningElement {
      *
      * @type {Element}
      */
-    get actionSlot() {
-        return this.template.querySelector('slot[name=action]');
+    get actionsSlot() {
+        return this.template.querySelector('slot[name=actions]');
     }
-
     /**
      * Get the footer slot DOM element.
      *
@@ -136,116 +195,154 @@ export default class Card extends LightningElement {
         return this.template.querySelector('slot[name=footer]');
     }
 
-    // PROPS //
+    /**
+     * Get the actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get defaultSlot() {
+        return this.template.querySelector(
+            'slot[data-element-id="avonni-card-default-slot"], slot[data-element-id="avonni-card-center-default-slot"]'
+        );
+    }
+
+    /*** Styling Conditions ***/
 
     /**
-     * Title
+     * Apply bottom border
+     *
+     * @type {boolean}
+     */
+    get mediaHasBottomBorder() {
+        return (
+            this.showMedia &&
+            ((this.mediaPosition === 'top' &&
+                (this.showDefaultSlot || this.hasHeader)) ||
+                (this.mediaPosition === 'center' && this.showDefaultSlot))
+        );
+    }
+
+    /**
+     * Apply top border
+     *
+     * @type {boolean}
+     */
+    get mediaHasTopBorder() {
+        return (
+            this.showMedia &&
+            ((this.mediaPosition === 'center' && this.hasHeader) ||
+                (this.mediaPosition === 'bottom' &&
+                    (this.hasHeader || this.showDefaultSlot)))
+        );
+    }
+
+    /**
+     * Is the header present?
+     *
+     * @type {boolean}
+     */
+    get hasHeader() {
+        return (
+            this.showTitleSlot ||
+            this.title ||
+            this.iconName ||
+            this.showActionsSlot
+        );
+    }
+
+    /**
+     * Show default slot for center media.
+     *
+     * @type {boolean}
+     */
+    get cardHasCenterMedia() {
+        return this.mediaPosition === 'center';
+    }
+
+    /*** Computed Classes ***/
+
+    /**
+     * Card body classes
      *
      * @type {string}
-     * @public
      */
-    @api
-    get title() {
-        return this._title;
-    }
-
-    set title(value) {
-        this._title = normalizeString(value);
-    }
-
-    /**
-     * Source for the image or media
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get mediaSrc() {
-        return this._mediaSrc;
-    }
-
-    set mediaSrc(value) {
-        this._mediaSrc = normalizeString(value);
-    }
-
-    /**
-     * Image position in the card. Valid values are
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get mediaPosition() {
-        return this._mediaPosition;
-    }
-
-    set mediaPosition(value) {
-        this._mediaPosition = normalizeString(value, {
-            fallbackValue: MEDIA_POSITIONS.default,
-            validValues: MEDIA_POSITIONS.valid
-        });
-    }
-
-    /**
-     * Avatar object
-     *
-     * @type {object||object[]}
-     * @public
-     */
-    @api
-    get avatar() {
-        return this._avatar;
-    }
-
-    set avatar(value) {
-        if (!value) {
-            this._avatar = null;
-        } else {
-            this._avatar = normalizeObject(value);
-        }
-    }
-
-    // private
-
-    /**
-     * Generate unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
     get computedCardClasses() {
-        return classSet('')
-            .add({ 'image-top': this.mediaPosition === 'top' })
-            .add({ 'image-left': this.mediaPosition === 'left' })
-            .add({ 'image-right': this.mediaPosition === 'right' })
-            .add({ 'image-center': this.mediaPosition === 'center' })
-            .add({ 'image-bottom': this.mediaPosition === 'bottom' })
-            .add({ background: this.mediaPosition === 'background' })
+        return classSet(
+            'avonni-card__body-container slds-grid slds-is-relative slds-scrollable_none slds-scrollable_none slds-col'
+        )
             .add({
-                'background overlay-card': this.mediaPosition === 'overlay'
+                'avonni-card__media-top slds-grid_vertical avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'top'
             })
             .add({
-                'background-centered':
-                    this.mediaPosition === 'background-center'
+                'avonni-card__media-left avonni-card__media-top-left-radius':
+                    this.mediaPosition === 'left'
+            })
+            .add({
+                'avonni-card__media-right avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'right'
+            })
+            .add({
+                'slds-grid_vertical avonni-card__media-center':
+                    this.mediaPosition === 'center'
+            })
+            .add({
+                'slds-grid_vertical-reverse': this.mediaPosition === 'bottom'
+            })
+            .add({
+                'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'center' && !this.hasHeader
+            })
+            .add({
+                'avonni-card__media-background avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'background'
+            })
+            .add({
+                'avonni-card__media-overlay avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'overlay'
+            })
+            .add({
+                'avonni-card__media-bottom-left-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'left' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot))
+            })
+            .add({
+                'avonni-card__media-bottom-right-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'right' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot))
             })
             .toString();
     }
 
     /**
-     * Check if Title text is specified.
+     * Media container classes
      *
      * @type {string}
      */
-    get hasStringTitle() {
-        return !!this.title;
-    }
-
-    get showCenterMedia() {
-        return this.mediaPosition === 'center';
-    }
-
-    get showMedia() {
-        return this._showMedia;
+    get computedMediaClasses() {
+        return classSet(
+            'avonni-card__media-container slds-col slds-is-relative'
+        )
+            .add({
+                'avonni-card__media-border-bottom': this.mediaHasBottomBorder
+            })
+            .add({ 'avonni-card__media-border-top': this.mediaHasTopBorder })
+            .add({
+                'avonni-card__media-border-left': this.mediaPosition === 'right'
+            })
+            .add({
+                'avonni-card__media-border-right': this.mediaPosition === 'left'
+            })
+            .toString();
     }
 }

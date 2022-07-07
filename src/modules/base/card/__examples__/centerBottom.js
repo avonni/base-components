@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,38 +29,24 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <c-card
-        avatar={avatar}
-        media-src={mediaSrc}
-        media-position={mediaPosition}
-        title={title}
-    >
-        <img
-            slot="media"
-            class="avonni-card__image"
-            style="width: 100%; height: 100%; object-fit: cover"
-            src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
-        />
+import Component from '../../storybookWrappers/card/cardCenterBottom';
 
-        <div slot="media-action">
-            <lightning-button-icon
-                variant="bare"
-                size="large"
-                icon-name="custom:custom1"
-            ></lightning-button-icon>
-        </div>
+customElements.define(
+    'ac-card-center-and-bottom',
+    Component.CustomElementConstructor
+);
 
-        <h4 slot="title">title slot</h4>
-
-        <div slot="default">default slot</div>
-
-        <button class="slds-button slds-button_neutral" slot="action">
-            Action slot
-        </button>
-
-        <div slot="footer">footer slot</div>
-    </c-card>
-</template>
+export const CardCenterBottom = ({
+    iconName,
+    mediaPosition,
+    mediaSrc,
+    title
+}) => {
+    const element = document.createElement('ac-card-center-and-bottom');
+    element.iconName = iconName;
+    element.mediaPosition = mediaPosition;
+    element.mediaSrc = mediaSrc;
+    element.title = title;
+    return element;
+};
