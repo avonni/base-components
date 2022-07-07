@@ -509,6 +509,44 @@ export default class Calendar extends LightningElement {
         }
     }
 
+    /**
+     * Simulates a click on the next month button
+     *
+     * @public
+     */
+    @api
+    nextMonth() {
+        this.handlerNextMonth();
+    }
+
+    /**
+     * Simulates a click on the previous month button
+     *
+     * @public
+     */
+    @api
+    previousMonth() {
+        this.handlerPreviousMonth();
+    }
+
+    /**
+     * Move the position of the calendar so the specified date is visible.
+     *
+     * @param {string | number | Date} date Date the calendar should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const selectedDate = this.formattedWithTimezoneOffset(new Date(date));
+        if (!selectedDate) {
+            console.warn(`The date ${date} is not valid.`);
+            return;
+        }
+        this.displayDate = selectedDate;
+        this.focusDate(date);
+        this.updateDateParameters();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
