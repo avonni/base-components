@@ -156,8 +156,8 @@ export default class Skeleton extends LightningElement {
     }
 
     renderedCallback() {
-        this.handleVariant();
         this.initializeVariant();
+        this.handleVariant();
     }
 
     /*
@@ -552,30 +552,6 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Get if variant is avatar
-     * @type {boolean}
-     */
-    get isAvatarVariant() {
-        return this.variant === 'avatar';
-    }
-
-    /**
-     * Get if variant is badge
-     * @type {boolean}
-     */
-    get isBadgeVariant() {
-        return this.variant === 'badge';
-    }
-
-    /**
-     * Get if variant is button
-     * @type {boolean}
-     */
-    get isButtonVariant() {
-        return this.variant === 'button';
-    }
-
-    /**
      * Get if variant is button icon
      * @type {boolean}
      */
@@ -584,59 +560,11 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Get if variant is chip icon
-     * @type {boolean}
-     */
-    get isChipVariant() {
-        return this.variant === 'chip';
-    }
-
-    /**
-     * Get if variant is combobox
-     * @type {boolean}
-     */
-    get isComboboxVariant() {
-        return this.variant === 'combobox';
-    }
-
-    /**
-     * Get if variant is datatable
-     * @type {boolean}
-     */
-    get isDatatableVariant() {
-        return this.variant === 'datatable';
-    }
-
-    /**
-     * Get if variant is input
-     * @type {boolean}
-     */
-    get isInputVariant() {
-        return this.variant === 'input';
-    }
-
-    /**
      * Get if variant is path
      * @type {boolean}
      */
     get isPathVariant() {
         return this.variantAttributes.variant === 'path';
-    }
-
-    /**
-     * Get if variant is paragraph
-     * @type {boolean}
-     */
-    get isParagraphVariant() {
-        return this.variant === 'paragraph';
-    }
-
-    /**
-     * Get if variant is progress-indicator
-     * @type {boolean}
-     */
-    get isProgressIndicatorVariant() {
-        return this.variant === 'progress-indicator';
     }
 
     /**
@@ -668,27 +596,11 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Get if variant is tabset
-     * @type {boolean}
-     */
-    get isTabsetVariant() {
-        return this.variant === 'tabset';
-    }
-
-    /**
      * Get if the tabset variant is vertical
      * @type {boolean}
      */
     get isTabsetVerticalVariant() {
         return this.variantAttributes.variant === 'vertical';
-    }
-
-    /**
-     * Get if the variant is tree
-     * @type {boolean}
-     */
-    get isTreeVariant() {
-        return this.variant === 'tree';
     }
 
     /**
@@ -1016,6 +928,10 @@ export default class Skeleton extends LightningElement {
         this.datatableRows = datatableRows;
     }
 
+    /**
+     * Initializes array of variants only needing one key and no logic (tabset, tree, progress-indicator)
+     * @param {number} numItems
+     */
     initializeItems(numItems) {
         const items = [];
         for (let i = 0; i < numItems; i++) {
@@ -1078,35 +994,41 @@ export default class Skeleton extends LightningElement {
         this.paragraphItems = paragraphItems;
     }
 
+    /**
+     * Call function to initialize current variant
+     */
     initializeVariant() {
         if (!this.initialRender) {
             switch (this.variant) {
                 case 'paragraph':
                     this.initializeParagraphItems();
+                    this.initialRender = true;
                     break;
                 case 'datatable':
                     this.initializeDatatableRows();
                     this.initializeDatatableColumns();
+                    this.initialRender = true;
                     break;
                 case 'progress-indicator':
                     this.initializeItems(this.variantAttributes.steps);
+                    this.initialRender = true;
                     break;
                 case 'tabset':
                     this.initializeItems(this.variantAttributes.tabs);
+                    this.initialRender = true;
                     break;
                 case 'tree':
                     this.initializeItems(this.variantAttributes.items);
+                    this.initialRender = true;
                     break;
                 default:
                     break;
             }
         }
-        this.initialRender = true;
     }
 
     /**
      * Sets the width and heigh for variant
-     * @param {*} variant
      */
     setSize() {
         const variantElement = this.skeleton;
