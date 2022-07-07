@@ -264,19 +264,23 @@ describe('${spacedName}', () => {
         // expect(element.title).toBeUndefined();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+    * ------------------------------------------------------------
+    *  ATTRIBUTES
+    * -------------------------------------------------------------
+    */
 
     // title
-    it('title', () => {
+    it('${spacedName}: title', () => {
         // element.title = 'This is a title text';
 
         // return Promise.resolve().then(() => {
         //     const title = element.shadowRoot.querySelector(
-        //         '.slds-section__title'
+        //         '[data-element-id="div-title"]'
         //     );
         //     expect(title.textContent).toBe('This is a title text');
         // });
-    });
+    });à
 });
 `;
 
