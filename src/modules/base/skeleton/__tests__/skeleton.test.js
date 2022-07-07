@@ -165,10 +165,14 @@ describe('Skeleton', () => {
             size: 'x-large',
             primaryText: 'primary',
             secondaryText: 'secondary',
-            tertiaryText: 'tertiary'
+            tertiaryText: 'tertiary',
+            textPosition: 'left'
         };
 
         return Promise.resolve().then(() => {
+            const skeletonAvatarWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-avatar-wrapper"]'
+            );
             const skeletonAvatarFigure = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__avatar-figure"]'
             );
@@ -181,6 +185,9 @@ describe('Skeleton', () => {
                 );
             const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
+            );
+            expect(skeletonAvatarWrapper.className).toBe(
+                'slds-align_absolute-center'
             );
             expect(skeletonAvatarFigure.className).toContain('slds-avatar');
             expect(skeletonAvatarFigure.className).toContain(
@@ -239,7 +246,7 @@ describe('Skeleton', () => {
 
         return Promise.resolve().then(() => {
             const skeletonAvatar = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__avatar-figure"]'
+                '[data-element-id="avonni-skeleton-avatar-wrapper"]'
             );
             const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__avatar-primary-text"]'
@@ -258,83 +265,34 @@ describe('Skeleton', () => {
         });
     });
 
-    // badge variant
-    it('Skeleton Badge: base variant with left icon', () => {
-        element.variant = 'badge';
+    it('Skeleton Button: base variant', () => {
+        element.variant = 'button';
         element.animation = 'pulse';
         element.variantAttributes = {
-            hasIcon: true,
-            variant: 'base',
-            iconPosition: 'left'
+            variant: 'base'
         };
 
         return Promise.resolve().then(() => {
-            const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-span"]'
-            );
-            const skeletonBadgeLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-label"]'
-            );
-            const skeletonBadgeLeftIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-left-icon"]'
+            const skeletonButtonWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-wrapper"]'
             );
 
-            expect(skeletonBadgeLeftIcon).toBeTruthy();
-            expect(skeletonBadge.className).toContain('avonni-skeleton__badge');
-            expect(skeletonBadge.className).not.toContain(
-                'avonni-chip_outline'
+            const skeletonButton = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-span"]'
             );
-            expect(skeletonBadge.className).toContain(
-                'avonni-badge_theme-base'
+
+            expect(skeletonButtonWrapper.className).toBe(
+                'slds-align_absolute-center'
             );
-            expect(skeletonBadge.className).toContain(
+            expect(skeletonButton.className).toContain('slds-button');
+            expect(skeletonButton.className).toContain(
+                'slds-p-vertical_xx-small'
+            );
+            expect(skeletonButton.className).toContain(
+                'slds-p-horizontal_x-small'
+            );
+            expect(skeletonButton.className).toContain(
                 'avonni-skeleton__animation-pulse'
-            );
-            expect(skeletonBadgeLabel.className).toContain(
-                'avonni-skeleton__variant-text'
-            );
-            expect(skeletonBadgeLabel.className).toContain(
-                'avonni-skeleton__badge-label'
-            );
-        });
-    });
-
-    it('Skeleton Badge: base variant with right icon', () => {
-        element.variant = 'badge';
-        element.animation = 'pulse';
-        element.variantAttributes = {
-            hasIcon: true,
-            variant: 'base',
-            iconPosition: 'right'
-        };
-
-        return Promise.resolve().then(() => {
-            const skeletonBadge = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-span"]'
-            );
-            const skeletonBadgeLabel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton-badge-label"]'
-            );
-            const skeletonBadgeRightIcon = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-skeleton__badge-right-icon"]'
-            );
-
-            expect(skeletonBadgeRightIcon).toBeTruthy();
-            expect(skeletonBadge.className).toContain('avonni-skeleton__badge');
-            expect(skeletonBadge.className).not.toContain(
-                'avonni-chip_outline'
-            );
-            expect(skeletonBadge.className).toContain(
-                'avonni-badge_theme-base'
-            );
-            expect(skeletonBadge.className).toContain(
-                'avonni-skeleton__animation-pulse'
-            );
-            expect(skeletonBadgeLabel.className).toContain(
-                'avonni-skeleton__variant-text'
-            );
-            expect(skeletonBadgeLabel.className).toContain(
-                'avonni-skeleton__badge-label'
             );
         });
     });
@@ -503,11 +461,7 @@ describe('Skeleton', () => {
             expect(skeletonInputLabelTag.className).toContain(
                 'avonni-skeleton__animation-pulse'
             );
-            expect(skeletonInput.className).toContain('slds-input');
-            expect(skeletonInput.className).toContain(
-                'avonni-skeleton__animation-pulse'
-            );
-            expect(skeletonInput.className).toContain('avonni-skeleton__input');
+            expect(skeletonInput.className).toContain('slds-form-element');
         });
     });
 
@@ -672,7 +626,29 @@ describe('Skeleton', () => {
                 'avonni-skeleton__animation-pulse'
             );
             expect(badgeLabel.className).toContain(
-                'avonni-skeleton__variant-text'
+                'avonni-skeleton__badge-label'
+            );
+        });
+    });
+
+    it('Skeleton: handle variant not regular and without empty variant attributes', () => {
+        element.variant = 'badge';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base'
+        };
+
+        return Promise.resolve().then(() => {
+            const badgeElement = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-badge-span"]'
+            );
+            const badgeLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-badge-label"]'
+            );
+
+            expect(badgeElement.className).toContain('avonni-skeleton__badge');
+            expect(badgeElement.className).toContain(
+                'avonni-skeleton__animation-pulse'
             );
             expect(badgeLabel.className).toContain(
                 'avonni-skeleton__badge-label'
@@ -687,12 +663,13 @@ describe('Skeleton', () => {
         element.variantAttributes = {
             rows: 3
         };
-
         return Promise.resolve().then(() => {
             const paragraphElement = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton-paragraph-wrapper"]'
             );
-            expect(paragraphElement.className).toBe('');
+            expect(paragraphElement.className).toBe(
+                'slds-align_absolute-center slds-wrap'
+            );
         });
     });
 });
