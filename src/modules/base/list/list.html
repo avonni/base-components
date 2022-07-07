@@ -59,7 +59,7 @@
             <c-card
                 role="listitem"
                 class={computedItemClass}
-                media-position="left"
+                media-position={mediaPosition}
                 key={generateKey}
                 onmousedown={dragStart}
                 onmousemove={drag}
@@ -74,12 +74,18 @@
                 tabindex="0"
                 aria-label={item.label}
                 aria-describedby="instructions"
-                data-element-id="li-main"
+                data-element-id="li-item"
             >
-                <div slot="media" style="height: 100%" if:true={hasImages}>
+                <div
+                    slot="media"
+                    class="avonni-list__image-slot"
+                    if:true={hasImages}
+                >
                     <div
-                        class="slds-grid slds-grid_vertical-align-center"
-                        style="height: 100%"
+                        class="
+                            slds-grid slds-grid_vertical-align-center
+                            avonni-list__image_container
+                        "
                     >
                         <div>
                             <lightning-icon
@@ -94,14 +100,10 @@
                                 data-element-id="lightning-icon-sort-left"
                             ></lightning-icon>
                         </div>
-                        <div
-                            class="avonni-list__item-image-container"
-                            style="width: 128px"
-                        >
+                        <div class={computedImageClass}>
                             <img
-                                class="avonni-list__item-img"
-                                style="width: 100%; object-fit: cover"
                                 if:true={item.imageSrc}
+                                class="avonni-list__item-img"
                                 key={item.imageSrc}
                                 src={item.imageSrc}
                                 draggable="false"

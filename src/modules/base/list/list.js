@@ -55,9 +55,20 @@ const IMAGE_WIDTH = {
     default: 'large'
 };
 
+const IMAGE_HEIGHT = {
+    valid: ['small', 'medium', 'large'],
+    default: 'large'
+};
+
 const VARIANTS = {
     valid: ['list', 'grid'],
     default: 'list'
+};
+
+const MEDIA_QUERY_BREAKPOINTS = {
+    small: 480,
+    medium: 768,
+    large: 1024
 };
 
 /**
@@ -119,8 +130,18 @@ export default class List extends LightningElement {
     hoveredPositionTopLeft;
     draggedItemDimensions;
 
+    _columns;
+    _smallContainerCols;
+    _mediumContainerCols;
+    _largeContainerCols;
+    _effectiveColumnCount;
+
     renderedCallback() {
-        console.log('renderedCallback', this._draggedElement);
+        console.log('rerendered');
+    }
+
+    connectedCallback() {
+        window.addEventListener('resize', this.listResize.bind(this));
     }
 
     /*
@@ -162,7 +183,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Width of the item images. Valid values include small, medium and large.
+     * Width of the item images. Valid values include small, medium and large. Used only when the variant is list.
      *
      * @type {string}
      * @public
@@ -178,6 +199,83 @@ export default class List extends LightningElement {
             validValues: IMAGE_WIDTH.valid,
             defaultValue: IMAGE_WIDTH.default
         });
+    }
+
+    /**
+     * Height of the item images. Valid values include small, medium and large. Used only when variant is grid.
+     *
+     * @type {string}
+     * @public
+     * @default large
+     */
+    @api
+    get imageHeight() {
+        return this._imageHeight;
+    }
+    set imageHeight(height) {
+        this._imageHeight = normalizeString(height, {
+            validValues: IMAGE_HEIGHT.valid,
+            defaultValue: IMAGE_HEIGHT.default
+        });
+    }
+
+    /**
+     * Number of columns in the grid.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get cols() {
+        return this._columns;
+    }
+    set cols(value) {
+        this._columns = this.normalizeColumns(value);
+        // this.listResize();
+    }
+
+    /**
+     * Number of columns for small grid container.
+     * @type {number}
+     * @public
+     */
+    @api
+    get smallContainerCols() {
+        return this._smallContainerCols;
+    }
+    set smallContainerCols(value) {
+        this._smallContainerCols = this.normalizeColumns(value);
+        // this.listResize();
+    }
+
+    /**
+     * Number of columns for medium grid container.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumContainerCols() {
+        return this._mediumContainerCols;
+    }
+    set mediumContainerCols(value) {
+        this._mediumContainerCols = this.normalizeColumns(value);
+        // this.listResize();
+    }
+
+    /**
+     * Number of columns for large grid container.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get largeContainerCols() {
+        return this._largeContainerCols;
+    }
+    set largeContainerCols(value) {
+        this._largeContainerCols = this.normalizeColumns(value);
+        // this.listResize();
     }
 
     /**
@@ -237,7 +335,7 @@ export default class List extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default 'list'
+     * @default list
      */
     @api
     get variant() {
@@ -257,33 +355,22 @@ export default class List extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Computed Image container style width defined by user selected image width.
-     *
-     * @type {string}
-     */
-    get computedImageContainerStyle() {
-        return `
-            width : ${this.computedImageWidth}px;
-            min-width : ${this.computedImageWidth}px;
-        `;
-    }
-
-    /**
-     * Computed image width in pixels.
-     *
-     * @type {number}
-     * @default 128
-     */
-    get computedImageWidth() {
-        switch (this.imageWidth) {
-            case 'small':
-                return 48;
-            case 'medium':
-                return 72;
-            default:
-                return 128;
-        }
+    // add description
+    get computedImageClass() {
+        return classSet('avonni-list__item-image-container').add({
+            'avonni-list__item-image_small-width':
+                this._imageWidth === 'small' && this._variant === 'list',
+            'avonni-list__item-image_medium-width':
+                this._imageWidth === 'medium' && this._variant === 'list',
+            'avonni-list__item-image_large-width':
+                this._imageWidth === 'large' && this._variant === 'list',
+            'avonni-list__item-image_small-height':
+                this._imageHeight === 'small' && this._variant === 'grid',
+            'avonni-list__item-image_medium-height':
+                this._imageHeight === 'medium' && this._variant === 'grid',
+            'avonni-list__item-image_large-height':
+                this._imageHeight === 'large' && this._variant === 'grid'
+        });
     }
 
     /**
@@ -324,6 +411,10 @@ export default class List extends LightningElement {
      */
     get menuRole() {
         return this.sortable ? 'listbox' : undefined;
+    }
+
+    get mediaPosition() {
+        return this.variant === 'grid' ? 'top' : 'left';
     }
 
     /**
@@ -421,7 +512,18 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-card-style': this._divider === 'around',
-                'slds-col slds-size_4-of-12': this.variant === 'grid'
+                'slds-col slds-size_12-of-12':
+                    this._effectiveColumnCount === 1 && this.variant === 'grid',
+                'slds-col slds-size_6-of-12':
+                    this._effectiveColumnCount === 2 && this.variant === 'grid',
+                'slds-col slds-size_4-of-12':
+                    this._effectiveColumnCount === 3 && this.variant === 'grid',
+                'slds-col slds-size_3-of-12':
+                    this._effectiveColumnCount === 4 && this.variant === 'grid',
+                'slds-col slds-size_2-of-12':
+                    this._effectiveColumnCount === 6 && this.variant === 'grid',
+                'slds-col slds-size_1-of-12':
+                    this._effectiveColumnCount === 12 && this.variant === 'grid'
             })
             .toString();
     }
@@ -450,6 +552,71 @@ export default class List extends LightningElement {
      */
 
     /**
+     * Calculate the number of columns depending on the width of the list.
+     * @private
+     */
+    listResize(list) {
+        const listWidth = list.currentTarget.innerWidth;
+        if (!listWidth) {
+            return;
+        }
+
+        // defaults to cols value
+        let calculatedColumns = this._columns;
+
+        if (
+            listWidth > MEDIA_QUERY_BREAKPOINTS.small &&
+            this._smallContainerCols > 0
+        ) {
+            calculatedColumns = this._smallContainerCols;
+        }
+        if (
+            listWidth > MEDIA_QUERY_BREAKPOINTS.medium &&
+            this._mediumContainerCols > 0
+        ) {
+            calculatedColumns = this._mediumContainerCols;
+        }
+        if (
+            listWidth > MEDIA_QUERY_BREAKPOINTS.large &&
+            this._largeContainerCols > 0
+        ) {
+            calculatedColumns = this._largeContainerCols;
+        }
+
+        if (calculatedColumns !== this._effectiveColumnCount) {
+            this._effectiveColumnCount = calculatedColumns;
+        }
+    }
+
+    /**
+     * Only accept predetermined number of columns.
+     * @private
+     * @param {number} cols
+     * @returns {number}
+     */
+    normalizeColumns(cols) {
+        if (!cols) {
+            return;
+        }
+
+        let _value = cols;
+        if (typeof cols === 'string') {
+            _value = parseInt(cols, 10);
+        }
+        if (
+            _value === 1 ||
+            _value === 2 ||
+            _value === 3 ||
+            _value === 4 ||
+            _value === 6 ||
+            _value === 12
+        ) {
+            // eslint-disable-next-line consistent-return
+            return _value;
+        }
+    }
+
+    /**
      * Update assistive text based on new item ordering.
      */
     updateAssistiveText() {
@@ -469,134 +636,47 @@ export default class List extends LightningElement {
      * @param {DOMElement} center
      * @returns {object} item
      */
-    getHoveredItem(draggedItem) {
+    getHoveredItem(draggedItem, cursorX, cursorY) {
         return this._itemElements.find((item) => {
             if (item !== draggedItem) {
                 const itemIndex = Number(item.dataset.index);
-                const draggedItemIndex = Number(draggedItem.dataset.index);
+                // const draggedItemIndex = Number(draggedItem.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
-                const draggedPosition = draggedItem.getBoundingClientRect();
 
-                const draggedTopLeft = {
-                    x: draggedPosition.top,
-                    y: draggedPosition.left
-                };
-                const draggedBottomRight = {
-                    x: draggedPosition.bottom,
-                    y: draggedPosition.right
-                };
                 const itemTopLeft = {
-                    x: itemPosition.top,
-                    y: itemPosition.left
+                    x: itemPosition.left,
+                    y: itemPosition.top
                 };
                 const itemBottomRight = {
-                    x: itemPosition.bottom,
-                    y: itemPosition.right
+                    x: itemPosition.left + itemPosition.width,
+                    y: itemPosition.top + itemPosition.height
                 };
 
                 if (
-                    // check if items have thickness
-                    !(
-                        draggedTopLeft.x === draggedBottomRight.x ||
-                        draggedTopLeft.y === draggedBottomRight.y ||
-                        itemTopLeft.x === itemBottomRight.x ||
-                        itemTopLeft.y === itemBottomRight.y
-                    ) &&
-                    // check if they dont overlap in the x-axis
-                    !(
-                        draggedTopLeft.x > itemBottomRight.x ||
-                        draggedBottomRight.x < itemTopLeft.x
-                    ) &&
-                    // check if the dont overlap in the y-axis
-                    !(
-                        draggedTopLeft.y > itemBottomRight.y ||
-                        draggedBottomRight.y < itemTopLeft.y
-                    )
+                    cursorX > itemTopLeft.x &&
+                    cursorX < itemBottomRight.x &&
+                    cursorY > itemTopLeft.y &&
+                    cursorY < itemBottomRight.y
                 ) {
-                    // get overlap area
-                    const draggedItemArea =
-                        draggedPosition.width * draggedPosition.height;
-                    const hoveredItemArea =
-                        itemPosition.width * itemPosition.height;
-                    let overlapArea = 0;
+                    this.hoveredPositionTopLeft = itemTopLeft;
+                    this.draggedItemDimensions = {
+                        width: draggedItem.offsetWidth,
+                        height: draggedItem.offsetHeight
+                    };
 
-                    // overlap top left
-                    if (
-                        draggedTopLeft.x < itemTopLeft.x &&
-                        draggedTopLeft.y < itemTopLeft.y
-                    ) {
-                        overlapArea =
-                            (draggedBottomRight.x - itemTopLeft.x) *
-                            (draggedBottomRight.y - itemTopLeft.y);
+                    if (this._draggedElement !== item) {
+                        this._hoveredItem = item;
+                        console.log('dragged item', itemIndex);
+                        return item;
                     }
-
-                    // overlap top right
-                    if (
-                        draggedTopLeft.y < itemTopLeft.y &&
-                        draggedBottomRight.x > itemBottomRight.x
-                    ) {
-                        overlapArea =
-                            (itemBottomRight.x - draggedTopLeft.x) *
-                            (draggedBottomRight.y - itemTopLeft.y);
-                    }
-
-                    // overlap bottom right
-                    if (
-                        draggedBottomRight.x > itemBottomRight.x &&
-                        draggedBottomRight.y > itemBottomRight.y
-                    ) {
-                        overlapArea =
-                            (itemBottomRight.x - draggedTopLeft.x) *
-                            (itemBottomRight.y - draggedTopLeft.y);
-                    }
-
-                    // overlap bottom left
-                    if (
-                        draggedTopLeft.x < itemTopLeft.x &&
-                        draggedBottomRight.y > itemBottomRight.y
-                    ) {
-                        overlapArea =
-                            (draggedBottomRight.x - itemTopLeft.x) *
-                            (itemBottomRight.y - draggedTopLeft.y);
-                    }
-
-                    // detect if overlap reaches 50% of the dragged area
-                    if (
-                        overlapArea / draggedItemArea > 0.5 ||
-                        overlapArea / hoveredItemArea > 0.5
-                    ) {
-                        this.hoveredPositionTopLeft = itemTopLeft;
-                        this.draggedItemDimensions = {
-                            width: draggedPosition.width,
-                            height: draggedPosition.height
-                        };
-
-                        if (this._hoveredItem !== item) {
-                            console.log(
-                                'move',
-                                draggedItemIndex,
-                                'to',
-                                itemIndex
-                            );
-                            this._hoveredItem = item;
-                            return item;
-                        }
-                    }
-
-                    // UN-hover if no overlap...
                 }
             }
             return undefined;
         });
     }
 
-    /**
-     * Compute swap between dragged items.
-     *
-     * @param {Element} target
-     */
+    // old version
     switchWithItem(target) {
-        console.log('switchWithItem', target);
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
         target.classList.add('avonni-list__item-sortable_moved');
@@ -606,18 +686,11 @@ export default class List extends LightningElement {
         if (target.style.transform !== '') {
             target.style.transform = '';
         } else {
-            // this works for virtical lists,
-            // const translationXValue =
-            //     targetIndex > index
-            //         ? -this._currentItemDraggedWidth
-            //         : this._currentItemDraggedWidth;
-            // const translationYValue =
-            //     targetIndex > index
-            //         ? -this._currentItemDraggedHeight
-            //         : this._currentItemDraggedHeight;
-            // target.style.transform = `translate(0px, ${
-            //     translationYValue + 'px'
-            // })`;
+            const translationValue =
+                targetIndex > index
+                    ? -this._currentItemDraggedHeight
+                    : this._currentItemDraggedHeight;
+            target.style.transform = `translateY(${translationValue + 'px'})`;
         }
 
         // Make the switch in computed items
@@ -632,13 +705,55 @@ export default class List extends LightningElement {
         this.updateAssistiveText();
     }
 
+    /**
+     * Compute swap between dragged items.
+     *
+     * @param {Element} target
+     */
+    // switchWithItem(target) {
+    //     console.log('switchWithItem', target);
+    //     const targetIndex = Number(target.dataset.index);
+    //     const index = this._draggedIndex;
+    //     target.classList.add('avonni-list__item-sortable_moved');
+
+    //     // If the target has already been moved, move it back to its original position
+    //     // Else, move it up or down
+    //     if (target.style.transform !== '') {
+    //         target.style.transform = '';
+    //     } else {
+    //         // this works for virtical lists,
+    //         const translationXValue =
+    //             targetIndex > index
+    //                 ? -this._currentItemDraggedWidth
+    //                 : this._currentItemDraggedWidth;
+    //         const translationYValue =
+    //             targetIndex > index
+    //                 ? -this._currentItemDraggedHeight
+    //                 : this._currentItemDraggedHeight;
+    //         target.style.transform = `translate(0px, ${
+    //             translationYValue + 'px'
+    //         })`;
+    //     }
+
+    //     // Make the switch in computed items
+    //     [this.computedItems[targetIndex], this.computedItems[index]] = [
+    //         this.computedItems[index],
+    //         this.computedItems[targetIndex]
+    //     ];
+
+    //     this._draggedIndex = targetIndex;
+    //     this._draggedElement.dataset.index = targetIndex;
+    //     target.dataset.index = index;
+    //     this.updateAssistiveText();
+    // }
+
     get computedPlaceholderClass() {
         return classSet('placeholder-rectangle').toString();
     }
 
-    reserveSpaceForDraggedItem(draggedItem, hoveredItem) {
+    reserveSpaceForDraggedItem(hoveredItem) {
         const hoveredItemIndex = Number(hoveredItem.dataset.index);
-        const draggedItemIndex = Number(draggedItem.dataset.index);
+        const draggedItemIndex = Number(this._draggedElement.dataset.index);
 
         if (
             hoveredItemIndex !== undefined &&
@@ -655,46 +770,36 @@ export default class List extends LightningElement {
                 this.hoveredPositionTopLeft &&
                 this.draggedItemDimensions
             ) {
-                placeHolder.style.top = this.hoveredPositionTopLeft.x + 'px';
-                placeHolder.style.left = this.hoveredPositionTopLeft.y + 'px';
+                placeHolder.style.top = this.hoveredPositionTopLeft.y + 'px';
+                placeHolder.style.left = this.hoveredPositionTopLeft.x + 'px';
                 placeHolder.style.width =
                     this.draggedItemDimensions.width + 'px';
                 placeHolder.style.height =
                     this.draggedItemDimensions.height + 'px';
-            }
 
-            // and then displace all items to the position of the next item, or previous item
+                // console.log(this.hoveredPositionTopLeft, this.draggedItemDimensions);
 
-            this._itemElements.forEach((item, itemIndex) => {
-                // dragging item to lower index
-                if (hoveredItemIndex < draggedItemIndex) {
-                    if (
-                        Number(item.dataset.index) <= draggedItemIndex &&
-                        Number(item.dataset.index) > hoveredItemIndex
-                    ) {
-                        // if the dragged item goes down, items in between will go up. the next position of the displaced item will be the same as index + 1;
-                        const nextPosition =
-                            this._itemElements[
-                                itemIndex + 1
-                            ].getBoundingClientRect();
-                        const currentPosition = item.getBoundingClientRect();
-                        console.log(
-                            'nextPosition',
-                            currentPosition.x,
-                            nextPosition.x,
-                            currentPosition.y,
-                            nextPosition.y
-                        );
-
-                        // 🤦‍♂️
-                        // item.style.transform = `translate(${
-                        //     nextPosition.x - currentPosition.x
-                        // }px, ${nextPosition.y - currentPosition.y}px)`;
+                if (this.variant === 'list') {
+                    if (hoveredItemIndex > draggedItemIndex) {
+                        // console.log('move before hovered item');
+                        hoveredItem.style.transform = `translate(0px, -${this.draggedItemDimensions.height}px)`;
+                        // hoveredItem.style.top = (this.hoveredPositionTopLeft.y + this.draggedItemDimensions.height) + 'px';
+                        // hoveredItem.style.borderColor = 'red';
+                    } else if (hoveredItemIndex < draggedItemIndex) {
+                        // console.log('move after hovered item');
+                        hoveredItem.style.transform = `translate(0px, ${this.draggedItemDimensions.height}px)`;
                     }
-                } else {
-                    // dragging item to higher index
+
+                    // Make the switch in computed items
+                    [
+                        this.computedItems[hoveredItem],
+                        this.computedItems[this._draggedElement]
+                    ] = [
+                        this.computedItems[this._draggedElement],
+                        this.computedItems[hoveredItem]
+                    ];
                 }
-            });
+            }
         }
     }
 
@@ -921,12 +1026,16 @@ export default class List extends LightningElement {
         // const position = this._draggedElement.getBoundingClientRect();
         // const center = position.bottom - position.height / 2;
 
-        // console.log('drag2', event.pageY, center);
-        const hoveredItem = this.getHoveredItem(this._draggedElement);
+        const hoveredItem = this.getHoveredItem(
+            this._draggedElement,
+            currentX,
+            currentY
+        );
+        // const hoveredItem = this.getHoveredItem(this._draggedElement);
 
         if (hoveredItem) {
             // this.switchWithItem(hoveredItem);
-            this.reserveSpaceForDraggedItem(this._draggedElement, hoveredItem);
+            this.reserveSpaceForDraggedItem(hoveredItem);
         }
 
         const buttonMenu = event.currentTarget.querySelector(

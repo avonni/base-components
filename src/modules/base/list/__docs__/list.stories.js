@@ -55,6 +55,46 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        // cols
+        // small-container-cols (mqSmall)
+        // medium-container-cols (mqMedium)
+        // large-container-cols (mqLarge)
+        cols: {
+            control: { type: 'number' },
+            minimum: 1,
+            maximum: 12,
+            description: 'Default number of columns',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        smallContainerCols: {
+            control: { type: 'number' },
+            minimum: 1,
+            maximum: 12,
+            description: 'Number of columns for small containers',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        mediumContainerCols: {
+            control: { type: 'number' },
+            minimum: 1,
+            maximum: 12,
+            description: 'Number of columns for medium containers',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        largeContainerColumns: {
+            control: { type: 'number' },
+            minimum: 1,
+            maximum: 12,
+            description: 'Number of columns for large containers',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         divider: {
             name: 'divider',
             control: {
@@ -75,6 +115,19 @@ export default {
             options: ['small', 'medium', 'large'],
             description:
                 'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'large' }
+            }
+        },
+        imageHeight: {
+            name: 'image-height',
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large'],
+            description:
+                'Fixed height of image (3 sizes: (small 48px, medium 72px and large 128px)',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'large' }
@@ -427,4 +480,20 @@ SortableGridWithImagesAndAvatars.args = {
     divider: 'around',
     imageWidth: 'medium',
     variant: 'grid'
+};
+
+export const GridWithImages = Template.bind({});
+GridWithImages.args = {
+    label: 'Sortable grid with Avatars and Icons',
+    items: itemsWithImages,
+    actions: actions,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'right',
+    divider: 'around',
+    imageHeight: 'large',
+    variant: 'grid',
+    cols: 6,
+    smallContainerCols: 2,
+    mediumContainerCols: 3,
+    largeContainerCols: 4
 };

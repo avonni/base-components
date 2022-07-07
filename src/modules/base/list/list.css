@@ -32,6 +32,7 @@
 
 :host() {
     /* --avonni-list-item-menu-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1); */
+    /* --avonni-list-item-img-object-fit: contain; */
 }
 
 .placeholder-rectangle {
@@ -127,7 +128,6 @@
         );
     }
 }
-
 .avonni-list__item-sortable > div {
     width: 100%;
 }
@@ -153,10 +153,20 @@
     );
 }
 
+.avonni-list__image-slot {
+    height: 100%;
+    width: 100%;
+}
+.avonni-list__image_container {
+    height: 100%;
+    width: 100%;
+}
+
 .avonni-list__item-img {
     position: absolute;
     height: 100%;
-    object-fit: cover;
+    width: 100%;
+    object-fit: var(--avonni-list-item-img-object-fit, cover);
     pointer-events: none;
 }
 
@@ -164,6 +174,7 @@
     position: relative;
     overflow: hidden;
     height: 100%;
+    width: 100%;
 }
 
 .avonni-list__item-image-container_rounded-corners {
@@ -176,6 +187,36 @@
         --avonni-list-item-around-border-radius,
         0.25rem
     );
+}
+
+.avonni-list__item-image_small-width {
+    width: 48px;
+    min-width: 48px;
+}
+
+.avonni-list__item-image_medium-width {
+    width: 72px;
+    min-width: 72px;
+}
+
+.avonni-list__item-image_large-width {
+    width: 128px;
+    min-width: 128px;
+}
+
+.avonni-list__item-image_small-height {
+    height: 48px;
+    min-height: 48px;
+}
+
+.avonni-list__item-image_medium-height {
+    height: 100px;
+    min-height: 100px;
+}
+
+.avonni-list__item-image_large-height {
+    height: 200px;
+    min-height: 200px;
 }
 
 .avonni-list__item-divider_top {
