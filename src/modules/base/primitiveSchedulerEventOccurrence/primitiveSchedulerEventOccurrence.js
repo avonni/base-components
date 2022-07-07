@@ -687,10 +687,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     (this._focused && theme === 'transparent'),
                 'avonni-scheduler__event-wrapper_focused': this._focused,
                 'slds-p-vertical_xx-small':
-                    theme !== 'line' && !this.isVerticalTimeline,
+                    theme !== 'line' &&
+                    !this.isVerticalTimeline &&
+                    !this.isCalendar,
                 'avonni-scheduler__event_vertical':
-                    (theme !== 'line' && this.isVerticalTimeline) ||
-                    this.isCalendar,
+                    theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line'
             })
             .toString();
@@ -716,7 +717,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'avonni-scheduler__disabled-date-title_vertical':
-                    this.isVerticalTimeline || this.isCalendar
+                    this.isVertical
             })
             .toString();
     }
@@ -732,8 +733,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalTimeline,
-                'slds-m-top_small':
-                    this.isVerticalTimeline && this.theme === 'line'
+                'slds-m-top_small': this.isVertical && this.theme === 'line'
             })
             .toString();
     }
@@ -747,40 +747,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return classSet('slds-grid')
             .add({
                 'slds-grid_vertical-align-center slds-p-vertical_x-small':
-                    !this.isVerticalTimeline,
-                'avonni-scheduler__event-wrapper_vertical':
-                    this.isVerticalTimeline || this.isCalendar
-            })
-            .toString();
-    }
-
-    /**
-     * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-    }
-
-    /**
-     * Computed CSS classes for the first column.
-     *
-     * @type {string}
-     */
-    get firstColClass() {
-        return classSet(
-            'slds-border_right avonni-scheduler__first-col slds-grid'
-        )
-            .add({
-                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-                'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-                'avonni-scheduler__first-col_horizontal':
-                    this.isVerticalTimeline,
-                'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-                    this.isVerticalTimeline
+                    !this.isVerticalTimeline && !this.isCalendar,
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
     }
@@ -800,6 +768,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     get isTimeline() {
         return this.variant.startsWith('timeline');
+    }
+
+    get isVertical() {
+        return this.isVerticalTimeline || this.isCalendar;
     }
 
     /**
@@ -1036,11 +1008,61 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateLength() {
-        if (this.isCalendar) {
-            // this.updateLengthInCalendar();
-        } else {
-            this.updateLengthInTimeline();
+        const { cellHeight, cellWidth, cellDuration } = this;
+        const from = this.getComparableTime(this.from);
+        const headerCells = this.isCalendar
+            ? this.headerCells.yAxis
+            : this.timelineHeaderCells;
+
+        let to = this.getComparableTime(this.to);
+        const cellSize = this.isVertical ? cellHeight : cellWidth;
+        if (!headerCells || !cellSize || !cellDuration) {
+            return;
         }
+
+        // Find the cell where the event starts
+        let i = this.getStartCellIndex(headerCells);
+        if (i < 0) return;
+
+        let length = 0;
+        const startsInMiddleOfCell =
+            this.getComparableTime(headerCells[i].start) < from;
+
+        if (startsInMiddleOfCell) {
+            // If the event starts in the middle of a cell,
+            // add only the appropriate length in the first cell
+            const cellEnd = this.getComparableTime(headerCells[i].end);
+            length += this.getOffsetStart(cellEnd, cellSize);
+            if (this.referenceLine) return;
+
+            if (cellEnd > to) {
+                // If the event ends before the end of the first column
+                // remove the appropriate length of the first column
+                length -= this.getOffsetEnd(cellEnd, cellSize, to);
+                this.setLength(length);
+                return;
+            }
+            i += 1;
+        } else if (this.referenceLine) return;
+
+        // Add the length of the header cells completely filled by the event
+        while (i < headerCells.length) {
+            const cellStart = this.getComparableTime(headerCells[i].start);
+            if (cellStart + cellDuration > to) break;
+            length += cellSize;
+            i += 1;
+        }
+
+        // If the event ends in the middle of a column,
+        // add the remaining length
+        const cell = headerCells[i];
+        const cellStart = cell && this.getComparableTime(cell.start);
+        if (cell && cellStart < to) {
+            const eventDurationLeft = to - cellStart;
+            const colPercentEnd = eventDurationLeft / cellDuration;
+            length += cellSize * colPercentEnd;
+        }
+        this.setLength(length);
     }
 
     /**
@@ -1082,240 +1104,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    alignPositionWithResource() {
-        if (this.referenceLine) {
-            return;
-        }
-
-        if (this.isVerticalTimeline) {
-            const resourceIndex = this.resources.findIndex((resource) => {
-                return resource.name === this.resourceKey;
-            });
-            this._x = resourceIndex * this.cellWidth;
-        } else {
-            let y = 0;
-            for (let i = 0; i < this.resources.length; i++) {
-                const resource = this.resources[i];
-                const resourceKey = resource.name;
-                if (resourceKey === this.resourceKey) break;
-
-                y += resource.height;
-            }
-            y += this.offsetSide;
-            this._y = y;
-        }
-    }
-
-    toTime(date) {
-        const time = new Date(date);
-        return time.setFullYear(1, 0, 0);
-    }
-
-    // updateLengthInCalendar() {
-    //     const { cellHeight, cellDuration } = this;
-    //     const headerCells = this.headerCells.yAxis;
-    //     const cellSize = cellHeight;
-    //     const fromTime = this.toTime(this.from);
-
-    //     const totalDuration = dateTimeObjectFrom(this.to - this.from);
-    //     const lastsMoreThanOneDay = totalDuration.day > 1;
-    //     const toTime = lastsMoreThanOneDay ? this.to.ts : this.toTime(this.to);
-
-    //     if (!headerCells || !cellSize || !cellDuration) {
-    //         return;
-    //     }
-
-    //     // Find the cell where the event starts
-    //     let i = headerCells.findIndex((cell) => {
-    //         return this.toTime(cell.end) > fromTime;
-    //     });
-
-    //     if (i < 0) return;
-
-    //     let length = 0;
-    //     const cellStartTime = this.toTime(headerCells[i].start);
-    //     const startsInMiddleOfCell = cellStartTime < fromTime;
-
-    //     // If the event starts in the middle of a cell,
-    //     // add only the appropriate length in the first cell
-    //     if (startsInMiddleOfCell) {
-    //         const cellEndTime = this.toTime(headerCells[i].end);
-    //         const eventDuration = cellEndTime - fromTime;
-    //         const emptyDuration = cellDuration - eventDuration;
-    //         const emptyPercentageOfCell = emptyDuration / cellDuration;
-    //         this._offsetStart = cellSize * emptyPercentageOfCell;
-    //         this.updateHostTranslate();
-    //         if (this.referenceLine) return;
-
-    //         const eventPercentageOfCell = eventDuration / cellDuration;
-    //         const offsetSize = cellSize * eventPercentageOfCell;
-    //         length += offsetSize;
-
-    //         // If the event ends before the end of the first column
-    //         // remove the appropriate length of the first column
-    //         if (cellEndTime > toTime) {
-    //             const durationLeft = cellEndTime - toTime;
-    //             const percentageLeft = durationLeft / cellDuration;
-    //             length = length - percentageLeft * cellSize;
-    //             this.setLength(length);
-    //             return;
-    //         }
-
-    //         i += 1;
-    //     } else if (this.referenceLine) return;
-
-    //     // Add the length of the header cells completely filled by the event
-    //     let startTime;
-    //     while (i < headerCells.length) {
-    //         startTime = this.toTime(headerCells[i].start);
-    //         if (startTime + cellDuration > toTime) break;
-    //         length += cellSize;
-    //         i += 1;
-    //     }
-
-    //     // If the event ends in the middle of a column,
-    //     // add the remaining length
-    //     if (headerCells[i] && startTime < toTime) {
-    //         const eventDurationLeft = toTime - startTime;
-    //         const colPercentEnd = eventDurationLeft / cellDuration;
-    //         length += cellSize * colPercentEnd;
-    //     }
-    //     this.setLength(length);
-    // }
-
-    updateLengthInTimeline() {
-        const { from, to, cellHeight, cellWidth, cellDuration } = this;
-        const headerCells = this.timelineHeaderCells;
-        const cellSize = this.isVerticalTimeline ? cellHeight : cellWidth;
-
-        if (!headerCells || !cellSize || !cellDuration) {
-            return;
-        }
-
-        // Find the cell where the event starts
-        let i = headerCells.findIndex((cell) => {
-            return cell.end > from;
-        });
-
-        if (i < 0) return;
-
-        let length = 0;
-
-        // If the event starts in the middle of a cell,
-        // add only the appropriate length in the first cell
-        if (headerCells[i].start < from) {
-            const cellEnd = DateTime.fromMillis(headerCells[i].end);
-            const eventDuration = cellEnd.diff(from).milliseconds;
-            const emptyDuration = cellDuration - eventDuration;
-            const emptyPercentageOfCell = emptyDuration / cellDuration;
-            this._offsetStart = cellSize * emptyPercentageOfCell;
-            this.updateHostTranslate();
-            if (this.referenceLine) return;
-
-            const eventPercentageOfCell = eventDuration / cellDuration;
-            const offsetSize = cellSize * eventPercentageOfCell;
-            length += offsetSize;
-
-            // If the event ends before the end of the first column
-            // remove the appropriate length of the first column
-            if (cellEnd > to) {
-                const durationLeft = cellEnd.diff(to).milliseconds;
-                const percentageLeft = durationLeft / cellDuration;
-                length = length - percentageLeft * cellSize;
-                this.setLength(length);
-                return;
-            }
-
-            i += 1;
-        } else if (this.referenceLine) return;
-
-        // Add the length of the header cells completely filled by the event
-        while (i < headerCells.length) {
-            if (headerCells[i].start + cellDuration > to) break;
-            length += cellSize;
-            i += 1;
-        }
-
-        // If the event ends in the middle of a column,
-        // add the remaining length
-        if (headerCells[i] && headerCells[i].start < to) {
-            const cellStart = DateTime.fromMillis(headerCells[i].start);
-            const eventDurationLeft = to.diff(cellStart).milliseconds;
-            const colPercentEnd = eventDurationLeft / cellDuration;
-            length += cellSize * colPercentEnd;
-        }
-        this.setLength(length);
-    }
-
-    updatePositionInCalendar() {
-        const { cellHeight, headerCells, cellWidth } = this;
-        if (
-            !headerCells.xAxis ||
-            !headerCells.yAxis ||
-            !cellWidth ||
-            !cellHeight
-        ) {
-            return;
-        }
-
-        // Get the vertical and horizontal cells indices
-        const yIndex = headerCells.yAxis.findIndex((cell) => {
-            return this.toTime(cell.end) > this.toTime(this.from);
-        });
-        const xIndex = headerCells.xAxis.findIndex((cell) => {
-            return cell.end > this.from;
-        });
-
-        if (yIndex < 0 || xIndex < 0) {
-            return;
-        }
-        this._y = yIndex * cellHeight;
-        this._x = xIndex * cellWidth;
-    }
-
-    updatePositionInTimeline() {
-        const { from, cellHeight, cellWidth } = this;
-        if (!this.timelineHeaderCells || !cellHeight || !cellWidth) {
-            return;
-        }
-
-        // Find the cell where the event starts
-        const i = this.timelineHeaderCells.findIndex((cell) => {
-            return cell.end > from;
-        });
-
-        if (i < 0) return;
-
-        // Place the event at the right header
-        if (this.isVerticalTimeline) {
-            this._y = i * cellHeight;
-        } else {
-            this._x = i * cellWidth;
-        }
-
-        this.alignPositionWithResource();
-    }
-
-    /**
-     * Set the left position of the sticky label.
-     */
-    updateStickyLabels() {
-        const stickyLabel = this.template.querySelector(
-            '[data-element-id="div-center-label-wrapper"]'
-        );
-        if (!stickyLabel) {
-            return;
-        }
-
-        if (this.isVerticalTimeline) {
-            const top = this.scrollOffset - this.y - this._offsetStart;
-            stickyLabel.style.top = `${top}px`;
-        } else if (!this.zoomToFit) {
-            const left = this.scrollOffset - this.x - this._offsetStart;
-            stickyLabel.style.left = `${left}px`;
-        }
-    }
 
     /**
      * Initialize the labels values.
@@ -1368,6 +1156,68 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         });
     }
 
+    alignPositionWithResource() {
+        if (this.referenceLine) {
+            return;
+        }
+
+        if (this.isVerticalTimeline) {
+            const resourceIndex = this.resources.findIndex((resource) => {
+                return resource.name === this.resourceKey;
+            });
+            this._x = resourceIndex * this.cellWidth;
+        } else {
+            let y = 0;
+            for (let i = 0; i < this.resources.length; i++) {
+                const resource = this.resources[i];
+                const resourceKey = resource.name;
+                if (resourceKey === this.resourceKey) break;
+
+                y += resource.height;
+            }
+            y += this.offsetSide;
+            this._y = y;
+        }
+    }
+
+    getComparableTime(date) {
+        if (!this.isCalendar) {
+            return date;
+        }
+        const time = new Date(date);
+        return time.setFullYear(1, 0, 0);
+    }
+
+    getOffsetEnd(cellEnd, cellSize, to) {
+        const durationLeft = cellEnd - to;
+        const percentageLeft = durationLeft / this.cellDuration;
+        return percentageLeft * cellSize;
+    }
+
+    getOffsetStart(cellEnd, cellSize) {
+        const cellDuration = this.cellDuration;
+        const from = this.getComparableTime(this.from);
+
+        const eventDuration = cellEnd - from;
+        const emptyDuration = cellDuration - eventDuration;
+        const emptyPercentageOfCell = emptyDuration / cellDuration;
+        this._offsetStart = cellSize * emptyPercentageOfCell;
+        this.updateHostTranslate();
+        if (this.referenceLine) return 0;
+
+        const eventPercentageOfCell = eventDuration / cellDuration;
+        return cellSize * eventPercentageOfCell;
+    }
+
+    getStartCellIndex(cells) {
+        return cells.findIndex((cell) => {
+            return (
+                this.getComparableTime(cell.end) >
+                this.getComparableTime(this.from)
+            );
+        });
+    }
+
     /**
      * Set the length of the event through its CSS style.
      *
@@ -1375,12 +1225,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     setLength(length) {
         const style = this.hostElement.style;
-        if (this.isVerticalTimeline || this.isCalendar) {
+        if (this.isVertical) {
             style.height = `${length}px`;
             if (this.cellWidth && this.numberOfEventsInThisTimeFrame) {
                 const width =
                     this.cellWidth / this.numberOfEventsInThisTimeFrame;
                 style.width = `${width}px`;
+            } else if (this.isCalendar) {
+                style.width = `${this.cellWidth}px`;
             } else {
                 style.width = null;
             }
@@ -1394,12 +1246,73 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Add the computed position to the inline style of the component host.
      */
     updateHostTranslate() {
-        const x = this.isVerticalTimeline
+        const x = this.isVertical
             ? this.x + this.offsetSide
             : this.x + this._offsetStart;
-        const y = this.isVerticalTimeline ? this.y + this._offsetStart : this.y;
+        const y = this.isVertical ? this.y + this._offsetStart : this.y;
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
+        }
+    }
+
+    updatePositionInCalendar() {
+        const { cellHeight, headerCells, cellWidth } = this;
+        if (
+            !headerCells.xAxis ||
+            !headerCells.yAxis ||
+            !cellWidth ||
+            !cellHeight
+        ) {
+            return;
+        }
+
+        // Get the vertical and horizontal cells indices
+        const yIndex = this.getStartCellIndex(headerCells.yAxis);
+        const xIndex = headerCells.xAxis.findIndex((cell) => {
+            return cell.end > this.from;
+        });
+
+        if (yIndex < 0 || xIndex < 0) {
+            return;
+        }
+        this._y = yIndex * cellHeight;
+        this._x = xIndex * cellWidth;
+    }
+
+    updatePositionInTimeline() {
+        const { cellHeight, cellWidth, timelineHeaderCells } = this;
+
+        // Find the cell where the event starts
+        const i = this.getStartCellIndex(timelineHeaderCells);
+        if (i < 0) return;
+
+        // Place the event at the right header
+        if (this.isVerticalTimeline) {
+            this._y = i * cellHeight;
+        } else {
+            this._x = i * cellWidth;
+        }
+
+        this.alignPositionWithResource();
+    }
+
+    /**
+     * Set the left position of the sticky label.
+     */
+    updateStickyLabels() {
+        const stickyLabel = this.template.querySelector(
+            '[data-element-id="div-center-label-wrapper"]'
+        );
+        if (!stickyLabel) {
+            return;
+        }
+
+        if (this.isVerticalTimeline) {
+            const top = this.scrollOffset - this.y - this._offsetStart;
+            stickyLabel.style.top = `${top}px`;
+        } else if (!this.zoomToFit) {
+            const left = this.scrollOffset - this.x - this._offsetStart;
+            stickyLabel.style.left = `${left}px`;
         }
     }
 
