@@ -489,11 +489,26 @@ GridWithImages.args = {
     actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'right',
+    imageHeight: 'large',
+    variant: 'grid',
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
+};
+
+export const GridCardWithImages = Template.bind({});
+GridCardWithImages.args = {
+    label: 'Sortable grid with Avatars and Icons',
+    items: itemsWithImages,
+    actions: actions,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'right',
     divider: 'around',
     imageHeight: 'large',
     variant: 'grid',
-    cols: 6,
-    smallContainerCols: 2,
-    mediumContainerCols: 3,
-    largeContainerCols: 4
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
 };

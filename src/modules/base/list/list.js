@@ -141,7 +141,9 @@ export default class List extends LightningElement {
     }
 
     connectedCallback() {
+        // i'm still trying to calculate the correct column count as soon as possible.
         window.addEventListener('resize', this.listResize.bind(this));
+        window.addEventListener('pageshow', this.listResize.bind(this));
     }
 
     /*

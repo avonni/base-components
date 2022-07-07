@@ -36,8 +36,6 @@
 }
 
 .placeholder-rectangle {
-    /* min-width: 200px;
-    height: 60px; */
     position: absolute;
     top: 0;
     left: 0;
@@ -72,13 +70,10 @@
 
 .avonni-list__has-card-style {
     row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
+    /* column-gap does not work with slds-grid */
     /* column-gap: var(--avonni-list-item-spacing-inline-between, 0.5rem); */
     --avonni-card-sizing-border: 1px;
 }
-
-/* .avonni-list__grid-item {
-    width: 400px;
-} */
 
 .avonni-list__grid-display .avonni-list_item {
     padding-right: 30px;
