@@ -120,7 +120,6 @@
                     available-time-frames={availableTimeFrames}
                     available-time-spans={availableTimeSpans}
                     headers={computedHeaders}
-                    scroll-left-offset={firstColWidth}
                     start={start}
                     time-span={timeSpan}
                     variant="vertical"
@@ -235,7 +234,7 @@
                                     <c-primitive-scheduler-event-occurrence
                                         key={occurrence.key}
                                         color={event.color}
-                                        header-cells={smallestHeader.cells}
+                                        header-cells={eventHeaderCells}
                                         cell-duration={smallestCellDuration}
                                         cell-height={cellHeight}
                                         cell-width={cellWidth}
@@ -256,7 +255,7 @@
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
-                                        variant={variant}
+                                        variant={eventVariant}
                                         zoom-to-fit={zoomToFit}
                                         data-disabled={event.disabled}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"

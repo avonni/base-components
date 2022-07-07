@@ -475,6 +475,10 @@
             "path": "src/modules/base/scheduler/scheduler.js"
         },
         {
+            "name": "c/schedulerUtils",
+            "path": "src/modules/base/schedulerUtils/schedulerUtils.js"
+        },
+        {
             "name": "c/scopedNotification",
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },

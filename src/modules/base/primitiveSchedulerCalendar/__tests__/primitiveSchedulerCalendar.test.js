@@ -30,39 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-scheduler__calendar-cell {
-    height: var(--avonni-scheduler-cell-height);
-    min-height: var(--avonni-scheduler-cell-height);
-}
+import { createElement } from 'lwc';
+import PrimitiveSchedulerCalendar from '../primitiveSchedulerCalendar';
 
-/* Splitter bar between the left panel and the schedule --------- */
-.avonni-scheduler__splitter {
-    z-index: 5;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 20px;
-}
-.avonni-scheduler__first-col_open .avonni-scheduler__splitter {
-    left: -12px;
-}
-.avonni-scheduler__splitter:hover > div,
-.avonni-scheduler__splitter:focus-within > div {
-    width: 15px;
-}
-.avonni-scheduler__splitter:hover .avonni-scheduler__splitter-icon,
-.avonni-scheduler__splitter-icon:focus {
-    left: 0;
-}
-.avonni-scheduler__splitter > div {
-    height: 100%;
-    overflow: hidden;
-    width: 4px;
-    transition: width 300ms;
-}
-.avonni-scheduler__splitter:not(.avonni-scheduler__splitter_disabled) > div {
-    cursor: col-resize;
-}
-.avonni-scheduler__splitter-icon {
-    left: 30px;
-}
+let element;
+describe('Primitive Scheduler Calendar', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    beforeEach(() => {
+        element = createElement('avonni-primitive-scheduler-calendar', {
+            is: PrimitiveSchedulerCalendar
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        // expect(element.title).toBeUndefined();
+    });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // title
+    it('title', () => {
+        // element.title = 'This is a title text';
+        // return Promise.resolve().then(() => {
+        //     const title = element.shadowRoot.querySelector(
+        //         '.slds-section__title'
+        //     );
+        //     expect(title.textContent).toBe('This is a title text');
+        // });
+    });
+});

@@ -600,7 +600,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             this.dispatchEvent(
                 new CustomEvent('privateheaderchange', {
                     detail: {
-                        smallestHeader: this.smallestHeader
+                        smallestHeader: this.smallestHeader,
+                        visibleInterval: this.visibleInterval
                     }
                 })
             );

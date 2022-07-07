@@ -48,7 +48,7 @@ import {
     RECURRENCES,
     EVENTS_THEMES,
     REFERENCE_LINE_VARIANTS
-} from './defaults';
+} from '../primitiveSchedulerTimeline/defaults';
 
 /**
  * @class
@@ -102,7 +102,7 @@ import {
  *
  */
 
-export default class SchedulerTimelineEvent {
+export default class SchedulerEvent {
     constructor(props) {
         this.key = generateUUID();
         this.allDay = props.allDay;

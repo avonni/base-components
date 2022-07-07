@@ -31,17 +31,22 @@
  */
 
 import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
-import SchedulerTimelineEvent from './event';
-import SchedulerTimelineEventDrag from './eventDrag';
-import { getCellFromPosition } from './utils';
+import SchedulerEvent from './event';
+import { SchedulerEventDrag } from './eventDrag';
+import {
+    dispatchEventChange,
+    dispatchEventCreate,
+    getCellFromPosition
+} from './schedulerUtils';
 
-export default class SchedulerTimelineEventData {
+export class SchedulerEventData {
     events = [];
     eventDrag;
     selection;
+    visibleInterval;
 
-    constructor(timeline) {
-        this.timeline = timeline;
+    constructor(schedule) {
+        this.schedule = schedule;
     }
 
     get shouldInitDraggedEvent() {
@@ -53,13 +58,14 @@ export default class SchedulerTimelineEventData {
     /**
      * Create the computed events that are included in the currently visible interval of time.
      */
-    initEvents() {
-        const interval = this.timeline.visibleInterval;
+    initEvents(interval) {
+        this.visibleInterval = interval;
         if (!interval) {
             this.events = [];
+            return;
         }
 
-        const events = this.timeline.events.filter((event) => {
+        const events = this.schedule.events.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
             return (
@@ -73,13 +79,15 @@ export default class SchedulerTimelineEventData {
         this.events = events.reduce((computedEvents, evt) => {
             const event = { ...evt };
             this.updateEventDefaults(event);
-            const computedEvent = new SchedulerTimelineEvent(event);
+            const computedEvent = new SchedulerEvent(event);
 
             if (computedEvent.occurrences.length) {
                 computedEvents.push(computedEvent);
             }
             return computedEvents;
         }, []);
+
+        this.refreshEvents();
     }
 
     /**
@@ -112,7 +120,7 @@ export default class SchedulerTimelineEventData {
     createEvent(event) {
         const computedEvent = { ...event };
         this.updateEventDefaults(computedEvent);
-        this.events.push(new SchedulerTimelineEvent(computedEvent));
+        this.events.push(new SchedulerEvent(computedEvent));
         this.refreshEvents();
     }
 
@@ -176,11 +184,11 @@ export default class SchedulerTimelineEventData {
      * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
      */
     newEvent({ resourceElement, x, y }, saveEvent = true) {
-        const resourceAxisPosition = this.timeline.isVertical ? y : x;
+        const resourceAxisPosition = this.schedule.isVertical ? y : x;
         const cell = getCellFromPosition(
             resourceElement,
             resourceAxisPosition,
-            this.timeline.isVertical
+            this.schedule.isVertical
         );
         const resourceNames = [resourceElement.dataset.name];
         const from = Number(cell.dataset.start);
@@ -188,12 +196,12 @@ export default class SchedulerTimelineEventData {
 
         const event = {
             resourceNames,
-            title: this.timeline.newEventTitle,
+            title: this.schedule.newEventTitle,
             from,
             to
         };
         this.updateEventDefaults(event);
-        const computedEvent = new SchedulerTimelineEvent(event);
+        const computedEvent = new SchedulerEvent(event);
         this.selection = {
             event: computedEvent,
             occurrences: computedEvent.occurrences,
@@ -211,7 +219,7 @@ export default class SchedulerTimelineEventData {
 
     refreshEvents() {
         this.events = [...this.events];
-        this.timeline.computedEvents = this.events;
+        this.schedule.computedEvents = this.events;
     }
 
     /**
@@ -259,13 +267,13 @@ export default class SchedulerTimelineEventData {
             // Generate a name for the new event, based on its title
             const lowerCaseName = event.title.toLowerCase();
             event.name = lowerCaseName.replace(/\s/g, '-').concat(event.key);
-            this.timeline.dispatchEventCreate(event);
+            dispatchEventCreate.call(this.schedule, event);
         } else {
             const detail = {
                 name: event.name,
                 draftValues: draftValues
             };
-            this.timeline.dispatchEventChange(detail);
+            dispatchEventChange.call(this.schedule, detail);
         }
 
         event.initOccurrences();
@@ -334,7 +342,7 @@ export default class SchedulerTimelineEventData {
                 to: occurrence.to.toUTC().toISO()
             }
         };
-        this.timeline.dispatchEventChange(detail);
+        dispatchEventChange.call(this.schedule, detail);
         this.refreshEvents();
     }
 
@@ -364,7 +372,7 @@ export default class SchedulerTimelineEventData {
         }
 
         const key = this.selection.occurrence.key;
-        const draggedEvent = this.timeline.template.querySelector(
+        const draggedEvent = this.schedule.template.querySelector(
             `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"]`
         );
         if (draggedEvent) {
@@ -387,30 +395,30 @@ export default class SchedulerTimelineEventData {
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
         event.data = { ...event };
-        event.schedulerEnd = this.timeline.visibleInterval.e;
-        event.schedulerStart = this.timeline.visibleInterval.s;
-        event.availableMonths = this.timeline.availableMonths;
-        event.availableDaysOfTheWeek = this.timeline.availableDaysOfTheWeek;
-        event.availableTimeFrames = this.timeline.availableTimeFrames;
-        event.smallestHeader = this.timeline.smallestHeader;
+        event.schedulerEnd = this.visibleInterval.e;
+        event.schedulerStart = this.visibleInterval.s;
+        event.availableMonths = this.schedule.availableMonths;
+        event.availableDaysOfTheWeek = this.schedule.availableDaysOfTheWeek;
+        event.availableTimeFrames = this.schedule.availableTimeFrames;
+        event.smallestHeader = this.schedule.smallestHeader;
         event.theme = event.disabled
             ? 'disabled'
-            : event.theme || this.timeline.eventsTheme;
+            : event.theme || this.schedule.eventsTheme;
 
         event.labels =
             typeof event.labels === 'object'
                 ? event.labels
-                : this.timeline.eventsLabels;
+                : this.schedule.eventsLabels;
     }
 
     handleExistingEventMouseDown(mouseEvent, resource, resourceElement) {
-        const isVertical = this.timeline.isVertical;
-        this.eventDrag = new SchedulerTimelineEventDrag({
+        const isVertical = this.schedule.isVertical;
+        this.eventDrag = new SchedulerEventDrag({
             event: mouseEvent,
             isVertical,
             resource,
             resourceElement,
-            boundaries: this.timeline.timelinePosition
+            boundaries: this.schedule.timelinePosition
         });
         this.selectEvent(mouseEvent.detail);
     }
@@ -429,7 +437,7 @@ export default class SchedulerTimelineEventData {
             const y = event.clientY;
             const { resourceElement, resizeSide } = this.eventDrag;
             const resourceName = resourceElement.dataset.name;
-            const resource = this.timeline.getResourceFromName(resourceName);
+            const resource = this.schedule.getResourceFromName(resourceName);
             const { occurrence, newEvent } = this.selection;
 
             if (resizeSide || newEvent) {
@@ -467,13 +475,13 @@ export default class SchedulerTimelineEventData {
         const side = this.eventDrag.resizeSide;
 
         // Find the resource and cell the event was dropped on
-        const resourceElement = this.timeline.getResourceElementFromPosition(
+        const resourceElement = this.schedule.getResourceElementFromPosition(
             valueOnTheHeadersAxis
         );
         const cellElement = getCellFromPosition(
             resourceElement,
             valueOnTheResourceAxis,
-            this.timeline.isVertical
+            this.schedule.isVertical
         );
 
         // Update the draft values
@@ -504,9 +512,9 @@ export default class SchedulerTimelineEventData {
             return { eventToDispatch: 'edit' };
         }
         const recurrentEvent = event.recurrence;
-        const recurrenceModes = this.timeline.recurrentEditModes;
+        const recurrenceModes = this.schedule.recurrentEditModes;
         const onlyOccurrenceEditAllowed =
-            this.timeline.onlyOccurrenceEditAllowed;
+            this.schedule.onlyOccurrenceEditAllowed;
 
         if (recurrentEvent && recurrenceModes.length > 1) {
             return { eventToDispatch: 'recurrence' };
@@ -521,13 +529,13 @@ export default class SchedulerTimelineEventData {
     }
 
     handleNewEventMouseDown({ event, resourceElement, x, y }) {
-        const isVertical = this.timeline.isVertical;
-        this.eventDrag = new SchedulerTimelineEventDrag({
+        const isVertical = this.schedule.isVertical;
+        this.eventDrag = new SchedulerEventDrag({
             event,
             isVertical,
             resourceElement,
             isNewEvent: true,
-            boundaries: this.timeline.timelinePosition
+            boundaries: this.schedule.timelinePosition
         });
 
         this.newEvent({ resourceElement, x, y }, false);

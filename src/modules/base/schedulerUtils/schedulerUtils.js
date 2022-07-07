@@ -30,39 +30,48 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-scheduler__calendar-cell {
-    height: var(--avonni-scheduler-cell-height);
-    min-height: var(--avonni-scheduler-cell-height);
+/**
+ * Find the cell element at a given schedule position.
+ *
+ * @param {HTMLElement} resource The resource element the cell is in.
+ * @param {number} position The position of the cell.
+ * @returns {(HTMLElement|undefined)} The cell element or undefined.
+ */
+export function getCellFromPosition(resource, position, isVertical) {
+    const cellElements = Array.from(
+        resource.querySelectorAll('[data-element-id="div-cell"]')
+    );
+
+    return cellElements.find((cellElement, index) => {
+        const cellPosition = cellElement.getBoundingClientRect();
+        const start = isVertical ? cellPosition.top : cellPosition.left;
+        const end = isVertical ? cellPosition.bottom : cellPosition.right;
+
+        const isFirstCell = index === 0;
+        const isLastCell = index === cellElements.length - 1;
+        const isBeforeFirstCell = isFirstCell && start >= position;
+        const isAfterLastCell = isLastCell && position > end;
+        const isInCell = position >= start && position < end;
+        return isBeforeFirstCell || isAfterLastCell || isInCell;
+    });
 }
 
-/* Splitter bar between the left panel and the schedule --------- */
-.avonni-scheduler__splitter {
-    z-index: 5;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 20px;
-}
-.avonni-scheduler__first-col_open .avonni-scheduler__splitter {
-    left: -12px;
-}
-.avonni-scheduler__splitter:hover > div,
-.avonni-scheduler__splitter:focus-within > div {
-    width: 15px;
-}
-.avonni-scheduler__splitter:hover .avonni-scheduler__splitter-icon,
-.avonni-scheduler__splitter-icon:focus {
-    left: 0;
-}
-.avonni-scheduler__splitter > div {
-    height: 100%;
-    overflow: hidden;
-    width: 4px;
-    transition: width 300ms;
-}
-.avonni-scheduler__splitter:not(.avonni-scheduler__splitter_disabled) > div {
-    cursor: col-resize;
-}
-.avonni-scheduler__splitter-icon {
-    left: 30px;
-}
+export { SchedulerEventData } from './eventData';
+export { SchedulerEventDrag } from './eventDrag';
+export {
+    dispatchEventChange,
+    dispatchEventCreate,
+    dispatchHidePopovers,
+    dispatchOpenEditDialog,
+    dispatchOpenRecurrenceDialog,
+    dispatchVisibleIntervalChange
+} from './dispatchers';
+
+export {
+    handleDoubleClick,
+    handleEmptySpotContextMenu,
+    handleEventContextMenu,
+    handleEventDoubleClick,
+    handleEventFocus,
+    handleEventMouseEnter
+} from './actionHandlers';

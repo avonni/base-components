@@ -30,9 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { getCellFromPosition } from './utils';
+import { getCellFromPosition } from './schedulerUtils';
 
-export default class SchedulerTimelineEventDrag {
+export class SchedulerEventDrag {
     draggedEvent;
     resizeSide;
 
@@ -60,9 +60,8 @@ export default class SchedulerTimelineEventDrag {
             this._initialState = { mouseX, mouseY };
         } else {
             this.resizeSide = event.detail.side;
-            this.draggedEvent = event.currentTarget;
+            this.setDraggedEvent(event.currentTarget, { mouseX, mouseY });
             this.draggedEvent.classList.add('avonni-scheduler__event-dragged');
-            this.initDraggedEventState(mouseX, mouseY);
         }
     }
 
@@ -291,12 +290,9 @@ export default class SchedulerTimelineEventDrag {
         return null;
     }
 
-    setDraggedEvent(draggedEvent) {
+    setDraggedEvent(draggedEvent, { mouseX, mouseY } = this._initialState) {
         this.draggedEvent = draggedEvent;
-        this.initDraggedEventState(
-            this._initialState.mouseX,
-            this._initialState.mouseY
-        );
+        this.initDraggedEventState(mouseX, mouseY);
     }
 
     /**

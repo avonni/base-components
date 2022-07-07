@@ -43,7 +43,7 @@ import {
     previousAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 import {
     EDIT_MODES,
     EVENTS_THEMES,
@@ -65,7 +65,6 @@ import {
     TIME_SPANS,
     VARIANTS
 } from './defaults';
-import CalendarData from './calendarData';
 
 /**
  * @class
@@ -109,7 +108,6 @@ export default class Scheduler extends LightningElement {
 
     _connected = false;
     _toolbarCalendarIsFocused = false;
-    calendarData = new CalendarData(this);
     computedDisabledDatesTimes = [];
     computedHeaders = [];
     computedReferenceLines = [];
@@ -130,10 +128,6 @@ export default class Scheduler extends LightningElement {
     connectedCallback() {
         this.initCurrentTimeSpan();
         this.updateSelectedDisplay();
-        if (this.isCalendar) {
-            this.setStartToBeginningOfUnit();
-        }
-        this.initHeaders();
         this.initEvents();
         this.initResources();
         this._connected = true;
@@ -778,11 +772,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.updateSelectedDisplay();
-
-            if (this.isCalendar) {
-                this.setStartToBeginningOfUnit();
-            }
-            this.initHeaders();
         }
     }
 
@@ -803,7 +792,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
-            this.initHeaders();
         }
     }
 
@@ -822,10 +810,6 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
         this.selectedDate = dateTimeObjectFrom(this._start);
-
-        if (this._connected && this.isCalendar) {
-            this.setStartToBeginningOfUnit();
-        }
     }
 
     /**
@@ -909,7 +893,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
-            this.initHeaders();
         }
     }
 
@@ -1182,10 +1165,6 @@ export default class Scheduler extends LightningElement {
         return items;
     }
 
-    get uniqueKey() {
-        return generateUUID();
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1317,15 +1296,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Create the computed headers.
-     */
-    initHeaders() {
-        if (!this.isTimeline) {
-            this.calendarData.initHeaders(this.currentTimeSpan);
-        }
-    }
-
-    /**
      * Create the computed events.
      */
     initEvents() {
@@ -1366,22 +1336,6 @@ export default class Scheduler extends LightningElement {
             colorIndex += 1;
             return computedResource;
         });
-    }
-
-    /**
-     * Vertically align the datatable header with the smallest unit schedule header.
-     */
-    pushLeftColumnDown() {
-        const headers = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="horizontal"]'
-        );
-
-        if (!this.isTimeline) {
-            const verticalHeaders = this.template.querySelector(
-                '[data-element-id="avonni-primitive-scheduler-header-group"][data-orientation="vertical"]'
-            );
-            verticalHeaders.style.marginTop = `${headers.offsetHeight}px`;
-        }
     }
 
     /**
@@ -1448,17 +1402,6 @@ export default class Scheduler extends LightningElement {
         popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
         popover.style.top = `${y}px`;
         popover.style.left = `${x}px`;
-    }
-
-    setStartToBeginningOfUnit() {
-        const unit = this.currentTimeSpan.unit;
-        const selectedDate = this.selectedDate || this.start;
-        this._start = selectedDate.startOf(unit);
-
-        if (unit === 'week') {
-            // Compensate the fact that luxon weeks start on Monday
-            this._start = removeFromDate(this.start, 'day', 1);
-        }
     }
 
     /**
@@ -1888,8 +1831,6 @@ export default class Scheduler extends LightningElement {
         this._selectedTimeSpan = name;
         const timeSpan = this.timeSpans.find((ts) => ts.name === name);
         this.currentTimeSpan = timeSpan;
-        this.setStartToBeginningOfUnit();
-        this.initHeaders();
 
         /**
          * The event fired when the selected time span changes.

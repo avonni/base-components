@@ -34,11 +34,7 @@
 
 <template>
     <div
-        class="
-            slds-grid slds-is-relative
-            avonni-scheduler__wrapper
-            slds-theme_shade
-        "
+        class="slds-grid slds-is-relative avonni-scheduler__wrapper"
         data-element-id="div-schedule-wrapper"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
@@ -52,7 +48,7 @@
                 <c-input-choice-set
                     is-multi-select
                     label="Resources"
-                    options={calendarData.resourceOptions}
+                    options={resourceOptions}
                 ></c-input-choice-set>
             </div>
 
@@ -91,54 +87,47 @@
             </div>
         </div>
 
-        <!-- Schedule -->
-        <div class="slds-grid">
+        <!-- Calendar -->
+        <div class="slds-grid slds-col">
             <!-- Hours -->
             <c-primitive-scheduler-header-group
                 class="avonni-scheduler__header"
                 available-time-frames={availableTimeFrames}
-                available-time-spans={timeSpans}
-                headers={calendarData.verticalHeaders}
+                available-time-spans={availableTimeSpans}
+                headers={hourHeaders}
                 scroll-left-offset={firstColWidth}
                 start={start}
                 time-span={dayTimeSpan}
                 variant="vertical"
                 zoom-to-fit={zoomToFit}
-                data-element-id="avonni-primitive-scheduler-header-group"
-                data-orientation="vertical"
+                data-element-id="avonni-primitive-scheduler-header-group-vertical"
                 onprivatecellsizechange={handleHeaderCellSizeChange}
-                onprivateheaderchange={handleHeaderChange}
+                onprivateheaderchange={handleVerticalHeaderChange}
             ></c-primitive-scheduler-header-group>
 
-            <div>
+            <div class="slds-col">
                 <!-- Day(s) header -->
                 <c-primitive-scheduler-header-group
                     class="avonni-scheduler__header"
                     available-days-of-the-week={availableDaysOfTheWeek}
-                    available-time-spans={timeSpans}
-                    headers={calendarData.horizontalHeaders}
-                    scroll-left-offset={firstColWidth}
+                    available-time-spans={availableTimeSpans}
+                    headers={dayHeaders}
                     start={start}
-                    time-span={currentTimeSpan}
-                    visible-width={scheduleColWidth}
+                    time-span={timeSpan}
                     zoom-to-fit
-                    data-element-id="avonni-primitive-scheduler-header-group"
-                    data-orientation="horizontal"
+                    data-element-id="avonni-primitive-scheduler-header-group-horizontal"
                     onprivatecellsizechange={handleHeaderCellSizeChange}
-                    onprivateheaderchange={handleHeaderChange}
+                    onprivateheaderchange={handleHorizontalHeaderChange}
                 ></c-primitive-scheduler-header-group>
 
                 <div
                     class="slds-is-relative slds-grid slds-theme_default"
                     data-element-id="div-schedule-body"
                 >
-                    <template for:each={calendarData.columns} for:item="column">
+                    <template for:each={columns} for:item="column">
                         <div class="slds-col" key={uniqueKey}>
                             <!-- Cells -->
-                            <template
-                                for:each={calendarData.cells}
-                                for:item="cell"
-                            >
+                            <template for:each={cells} for:item="cell">
                                 <div
                                     key={cell.start}
                                     class="
@@ -167,8 +156,8 @@
                                     <c-primitive-scheduler-event-occurrence
                                         key={occurrence.key}
                                         color={event.color}
-                                        header-cells={calendarData.cells}
-                                        cell-duration={smallestCellDuration}
+                                        header-cells={eventHeaderCells}
+                                        cell-duration={cellDuration}
                                         cell-height={cellHeight}
                                         cell-width={cellWidth}
                                         date-format={dateFormat}
@@ -183,23 +172,22 @@
                                         read-only={readOnly}
                                         reference-line={event.referenceLine}
                                         resource-key={occurrence.resourceName}
-                                        resources={computedResources}
-                                        scroll-offset={scrollOffset}
+                                        resources={resources}
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
-                                        variant="vertical"
+                                        variant="calendar"
                                         zoom-to-fit={zoomToFit}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}
                                         data-resource-name={occurrence.resourceName}
                                         onprivatefocus={handleEventFocus}
-                                        onprivateblur={hideDetailPopover}
+                                        onprivateblur={handleHideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}
                                         onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                         onprivatemouseenter={handleEventMouseEnter}
-                                        onprivatemouseleave={hideDetailPopover}
+                                        onprivatemouseleave={handleHideDetailPopover}
                                         onprivatedblclick={handleEventDoubleClick}
                                         onprivatedisableddblclick={handleDoubleClick}
                                         onprivatemousedown={handleEventMouseDown}

@@ -564,10 +564,10 @@ export const Calendar = Template.bind({});
 Calendar.args = {
     resources,
     start,
-    events: basicEvents,
+    events,
     selectedDisplay: 'calendar',
-    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan'
-    // availableTimeFrames: ['08:00-17:00']
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    availableTimeFrames: ['08:00-17:00']
 };
 
 export const VerticalTimeline = Template.bind({});

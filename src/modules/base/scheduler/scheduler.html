@@ -183,6 +183,26 @@
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-timeline>
+
+        <c-primitive-scheduler-calendar
+            if:true={isCalendar}
+            available-days-of-the-week={availableDaysOfTheWeek}
+            available-months={availableMonths}
+            available-time-frames={availableTimeFrames}
+            available-time-spans={timeSpans}
+            collapse-disabled={collapseDisabled}
+            date-format={dateFormat}
+            events={computedEvents}
+            read-only={readOnly}
+            resize-column-disabled={resizeColumnDisabled}
+            resources={computedResources}
+            selected-date={selectedDate}
+            time-span={currentTimeSpan}
+            zoom-to-fit={zoomToFit}
+            oneventmouseenter={handleEventMouseEnter}
+            onhidepopovers={handleHidePopovers}
+            onvisibleintervalchange={handleVisibleIntervalChange}
+        ></c-primitive-scheduler-calendar>
     </template>
 
     <!-- Complete schedule loading spinner -->
