@@ -158,6 +158,50 @@ describe('Calendar', () => {
         });
     });
 
+    // Go To Date
+    it('Calendar: goToDate', () => {
+        element.value = '05/12/2022';
+
+        return Promise.resolve().then(() => {
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
+                .closest('td');
+            const spy8 = jest.spyOn(day8, 'focus');
+
+            element.goToDate('05/08/2022');
+            jest.runAllTimers();
+
+            expect(spy8).toHaveBeenCalled();
+        });
+    });
+
+    // Next Month
+    it('Calendar: nextMonth', () => {
+        element.value = '05/12/2022';
+        element.nextMonth();
+
+        return Promise.resolve().then(() => {
+            const monthValue = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            ).textContent;
+            console.log(`value of innerHtml: ${monthValue}`);
+            expect(monthValue).toBe('June');
+        });
+    });
+
+    // Previous Month
+    it('Calendar: previousMonth', () => {
+        element.value = '05/12/2022';
+        element.previousMonth();
+
+        return Promise.resolve().then(() => {
+            const monthValue = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            ).textContent;
+            expect(monthValue).toBe('April');
+        });
+    });
+
     /**
      * Keyboard accessibility:
      *  [right = 39], [left = 37], [down = 40], [up = 38]
