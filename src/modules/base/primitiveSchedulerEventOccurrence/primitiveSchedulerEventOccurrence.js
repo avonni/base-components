@@ -583,6 +583,44 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Position of the end extremity of the occurrence. Right for horizontal, bottom for vertical.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get endPosition() {
+        if (this.isVertical) {
+            return (
+                this.startPosition +
+                this.hostElement.getBoundingClientRect().height
+            );
+        }
+        return (
+            this.x +
+            this._offsetStart +
+            this.hostElement.getBoundingClientRect().width +
+            this.rightLabelWidth
+        );
+    }
+
+    /**
+     * Left label element width.
+     *
+     * @type {HTMLElement}
+     * @public
+     * @default 0
+     */
+    @api
+    get leftLabelWidth() {
+        const label = this.template.querySelector(
+            '.avonni-scheduler__event-label_left'
+        );
+        return label ? label.getBoundingClientRect().width : 0;
+    }
+
+    /**
      * Deprecated. Use `start-position` instead.
      *
      * @type {number}
@@ -596,26 +634,18 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Position of the end extremity of the occurrence. Right for horizontal, bottom for vertical.
+     * Right label element width.
      *
-     * @type {number}
+     * @type {HTMLElement}
      * @public
      * @default 0
      */
     @api
-    get endPosition() {
-        if (this.isVerticalTimeline) {
-            return (
-                this.startPosition +
-                this.hostElement.getBoundingClientRect().height
-            );
-        }
-        return (
-            this.x +
-            this._offsetStart +
-            this.hostElement.getBoundingClientRect().width +
-            this.rightLabelWidth
+    get rightLabelWidth() {
+        const label = this.template.querySelector(
+            '.avonni-scheduler__event-label_right'
         );
+        return label ? label.getBoundingClientRect().width : 0;
     }
 
     /**
@@ -640,7 +670,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     get startPosition() {
-        if (this.isVerticalTimeline) {
+        if (this.isVertical) {
             const top = this.y + this._offsetStart;
             return top;
         }
@@ -800,36 +830,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get offsetSide() {
         return this.occurrence.offsetSide || 0;
-    }
-
-    /**
-     * Left label element width.
-     *
-     * @type {HTMLElement}
-     * @public
-     * @default 0
-     */
-    @api
-    get leftLabelWidth() {
-        const label = this.template.querySelector(
-            '.avonni-scheduler__event-label_left'
-        );
-        return label ? label.getBoundingClientRect().width : 0;
-    }
-
-    /**
-     * Right label element width.
-     *
-     * @type {HTMLElement}
-     * @public
-     * @default 0
-     */
-    @api
-    get rightLabelWidth() {
-        const label = this.template.querySelector(
-            '.avonni-scheduler__event-label_right'
-        );
-        return label ? label.getBoundingClientRect().width : 0;
     }
 
     /**

@@ -37,7 +37,8 @@ import {
     isAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 import {
     dispatchHidePopovers,
@@ -77,8 +78,9 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
-    _eventData = new SchedulerEventData(this);
+    _eventData;
     _mouseIsDown = false;
+    _resizeObserver;
     columns = [];
     computedEvents = [];
     cells = [];
@@ -89,7 +91,10 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
     cellDuration = 0;
     cellHeight = 0;
     cellWidth = 0;
+    multiDayEvents = [];
+    singleDayEvents = [];
     start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _updateOccurrencesLength = false;
     visibleInterval;
 
     connectedCallback() {
@@ -99,7 +104,12 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
     }
 
     renderedCallback() {
-        this.pushVerticalHeadersDown();
+        this.updateOccurrencesOffset();
+        this.updateOccurrencesPosition();
+
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
     }
 
     /*
@@ -122,9 +132,10 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
-        const days = normalizeArray(value);
-        this._availableDaysOfTheWeek =
-            days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+        let days = normalizeArray(value, 'number');
+        days = days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+        days.sort();
+        this._availableDaysOfTheWeek = days;
 
         if (this._connected) {
             this.initHeaders();
@@ -328,6 +339,13 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get calendarPosition() {
+        const body = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        return body.getBoundingClientRect();
+    }
+
     get dayHeaders() {
         return [
             {
@@ -400,10 +418,6 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
         });
     }
 
-    get smallestHeader() {
-        return this.hourHeaders[0];
-    }
-
     /**
      * If true, the left collapse button is displayed on the splitter bar.
      *
@@ -439,10 +453,6 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
             .toString();
     }
 
-    get uniqueKey() {
-        return generateUUID();
-    }
-
     get verticalHeaders() {
         return this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
@@ -465,6 +475,22 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initEvents() {
+        this._eventData = new SchedulerEventData(this, {
+            availableDaysOfTheWeek: this.availableDaysOfTheWeek,
+            availableMonths: this.availableMonths,
+            availableTimeFrames: this.availableTimeFrames,
+            events: this.events,
+            eventsLabels: this.eventsLabels,
+            eventsTheme: this.eventsTheme,
+            isCalendar: true,
+            newEventTitle: this.newEventTitle,
+            recurrentEditModes: this.recurrentEditModes,
+            smallestHeader: this.hourHeaders[0],
+            visibleInterval: this.visibleInterval
+        });
+    }
 
     initHeaders() {
         this.eventHeaderCells = {};
@@ -496,11 +522,118 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
             : 1;
 
         for (let i = 0; i < numberOfColumns; i++) {
-            columns.push(i);
+            columns.push({
+                index: i,
+                weekday: this.availableDaysOfTheWeek[i],
+                events: []
+            });
         }
 
         this.cells = cells;
         this.columns = columns;
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            const cell = this.template.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            if (cell) {
+                this.cellWidth = cell.getBoundingClientRect().width;
+                this._updateOccurrencesLength = true;
+            }
+        });
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        resizeObserver.observe(schedule);
+        return resizeObserver;
+    }
+
+    /**
+     * Push an event occurrence down a level, until it doesn't overlap another occurrence.
+     *
+     * @param {object[]} previousOccurrences Array of previous occurrences for which the level has already been computed.
+     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
+     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top (horizontal variant) or the left (vertical variant) of its resource.
+     * @returns {object} Object with two keys:
+     * * level (number): level of the event occurrence in the resource.
+     * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
+     */
+    computeEventLevelInColumn(
+        previousOccurrences,
+        startPosition,
+        title,
+        level = 0
+    ) {
+        // Find the last event with the same level
+        const sameLevelEvent = previousOccurrences.find((occ) => {
+            return occ.level === level;
+        });
+
+        const overlapsEvent =
+            sameLevelEvent && startPosition < sameLevelEvent.end;
+        if (overlapsEvent) {
+            level += 1;
+
+            // Make sure there isn't another event at the same position
+            level = this.computeEventLevelInColumn(
+                previousOccurrences,
+                startPosition,
+                title,
+                level
+            ).level;
+        }
+
+        let numberOfOverlap = level + 1;
+        numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+            previousOccurrences,
+            startPosition,
+            numberOfOverlap
+        );
+
+        return { level, numberOfOverlap };
+    }
+
+    /**
+     * Get the total number of event occurrences that overlap one.
+     *
+     * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
+     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
+     * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
+     * @returns {number} The total number of occurrences overlapping, including the one evaluated.
+     */
+    getTotalOfOccurrencesOverlapping(
+        previousOccurrences,
+        startPosition,
+        minOverlap
+    ) {
+        let numberOfOverlap = minOverlap;
+
+        const overlappingOccurrences = previousOccurrences.filter((occ) => {
+            return startPosition < occ.end;
+        });
+
+        overlappingOccurrences.forEach((occ) => {
+            if (occ.numberOfOverlap >= numberOfOverlap) {
+                numberOfOverlap = occ.numberOfOverlap;
+            } else {
+                // Update the total of levels of the overlapped event occurrence
+                occ.numberOfOverlap = numberOfOverlap;
+                numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+                    previousOccurrences,
+                    occ.start,
+                    numberOfOverlap
+                );
+            }
+        });
+
+        return numberOfOverlap;
     }
 
     /**
@@ -521,6 +654,107 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
             // Compensate the fact that luxon weeks start on Monday
             this.start = removeFromDate(this.start, 'day', 1);
         }
+    }
+
+    updateColumnEvents() {
+        this.columns.forEach((col) => {
+            const weekday = col.weekday;
+            const events = [];
+            this.singleDayEvents.forEach((event) => {
+                if (!event.disabled) {
+                    const occurrences = event.occurrences.filter(
+                        (occurrence) => {
+                            return occurrence.weekday === weekday;
+                        }
+                    );
+                    events.push(occurrences);
+                }
+            });
+            col.events = events.flat();
+        });
+    }
+
+    /**
+     * Prevent the events from overlapping by computing their horizontal position.
+     */
+    updateOccurrencesOffset() {
+        // For each day column
+        this.columns.forEach(({ weekday, events }) => {
+            // Get all the event occurrences for the current weekday
+            const occurrenceElements = Array.from(
+                this.template.querySelectorAll(
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-weekday="${weekday}"]:not([data-disabled="true"])`
+                )
+            );
+
+            // Sort the occurrences by ascending start date
+            occurrenceElements.sort((a, b) => a.from - b.from);
+
+            // Compute the level of the occurrences in the weekday
+            const previousOccurrences = [];
+            occurrenceElements.forEach((occElement) => {
+                const start = occElement.startPosition;
+                const { level, numberOfOverlap } =
+                    this.computeEventLevelInColumn(
+                        previousOccurrences,
+                        start,
+                        occElement.title
+                    );
+
+                const occurrence = events.find((occ) => {
+                    return occ.key === occElement.occurrenceKey;
+                });
+
+                const selection = this._eventData.selection;
+                previousOccurrences.unshift({
+                    level,
+                    numberOfOverlap,
+                    start,
+                    end: occElement.endPosition,
+                    occurrence:
+                        occurrence || (selection && selection.occurrence)
+                });
+            });
+
+            // Add the corresponding offset to the left of the occurrences
+            previousOccurrences.forEach((position) => {
+                const { level, occurrence, numberOfOverlap } = position;
+                let offsetSide = 0;
+
+                offsetSide = (level * this.cellWidth) / numberOfOverlap;
+                occurrence.numberOfEventsInThisTimeFrame = numberOfOverlap;
+                this._updateOccurrencesLength = true;
+                occurrence.offsetSide = offsetSide;
+            });
+        });
+    }
+
+    /**
+     * Update the primitive occurrences height, width and position.
+     */
+    updateOccurrencesPosition() {
+        const eventOccurrences = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+        );
+        eventOccurrences.forEach((occurrence) => {
+            if (this._updateOccurrencesLength) {
+                occurrence.updateLength();
+            }
+            if (occurrence.disabled) {
+                occurrence.updateThickness();
+            }
+            occurrence.updatePosition();
+        });
+        this._updateOccurrencesLength = false;
+
+        // Set the reference line height to the width of the schedule
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        const scheduleWidth = this.calendarPosition.width;
+        schedule.style = `
+            --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
+        `;
     }
 
     /*
@@ -592,8 +826,11 @@ export default class PrimitiveSchedulerCalendar extends LightningElement {
             this.visibleInterval
         );
 
-        this._eventData.initEvents(this.visibleInterval);
-        this.pushVerticalHeadersDown();
+        this.initEvents();
+        this.updateColumnEvents();
+        requestAnimationFrame(() => {
+            this.pushVerticalHeadersDown();
+        });
     }
 
     handleMouseDown() {}

@@ -125,7 +125,7 @@
                     data-element-id="div-schedule-body"
                 >
                     <template for:each={columns} for:item="column">
-                        <div class="slds-col" key={uniqueKey}>
+                        <div class="slds-col" key={column.index}>
                             <!-- Cells -->
                             <template for:each={cells} for:item="cell">
                                 <div
@@ -135,6 +135,7 @@
                                         slds-border_right slds-border_bottom
                                         slds-p-around_none
                                     "
+                                    data-element-id="div-cell"
                                     data-end={cell.end}
                                     data-start={cell.start}
                                     oncontextmenu={handleEmptySpotContextMenu}
@@ -147,7 +148,7 @@
 
                     <!-- Events -->
                     <div class="avonni-scheduler__events slds-is-absolute">
-                        <template for:each={computedEvents} for:item="event">
+                        <template for:each={singleDayEvents} for:item="event">
                             <div key={event.key}>
                                 <template
                                     for:each={event.occurrences}
@@ -178,6 +179,7 @@
                                         to={occurrence.to}
                                         variant="calendar"
                                         zoom-to-fit={zoomToFit}
+                                        data-weekday={occurrence.weekday}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}

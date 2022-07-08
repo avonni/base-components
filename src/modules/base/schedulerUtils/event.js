@@ -31,6 +31,7 @@
  */
 
 import {
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
@@ -48,7 +49,7 @@ import {
     RECURRENCES,
     EVENTS_THEMES,
     REFERENCE_LINE_VARIANTS
-} from '../primitiveSchedulerTimeline/defaults';
+} from './defaults';
 
 /**
  * @class
@@ -395,12 +396,15 @@ export default class SchedulerEvent {
         );
 
         if (containsAllowedTimes) {
+            const weekday =
+                from.weekday === 7 ? from.weekday - 1 : from.weekday;
             if (this.referenceLine) {
                 const occurrence = {
                     from,
                     to,
                     key: `${this.title}-${this.occurrences.length}`,
-                    title: this.title
+                    title: this.title,
+                    weekday
                 };
                 this.occurrences.push(occurrence);
             } else {
@@ -412,7 +416,8 @@ export default class SchedulerEvent {
                         offsetTop: 0,
                         resourceName: name,
                         title: this.title,
-                        to: computedTo
+                        to: computedTo,
+                        weekday
                     };
                     this.occurrences.push(occurrence);
                 });
@@ -533,14 +538,10 @@ export default class SchedulerEvent {
                 break;
             }
             case 'weekly': {
-                const weekdays =
+                const normalizedWeekdays = normalizeArray(
                     attributes && attributes.weekdays
-                        ? JSON.parse(
-                              JSON.stringify(
-                                  normalizeArray(attributes.weekdays)
-                              )
-                          )
-                        : [];
+                );
+                const weekdays = deepCopy(normalizedWeekdays);
 
                 let weekdayIndex;
                 if (weekdays.length) {
@@ -552,7 +553,7 @@ export default class SchedulerEvent {
                     weekdays.sort();
 
                     // Set the starting week day
-                    let startingDate = dateTimeObjectFrom(from.ts);
+                    let startingDate = dateTimeObjectFrom(from);
                     while (weekdayIndex === undefined) {
                         for (let i = 0; i < weekdays.length; i++) {
                             date = startingDate.set({ weekday: weekdays[i] });
