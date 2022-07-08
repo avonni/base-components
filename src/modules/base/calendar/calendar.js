@@ -523,7 +523,6 @@ export default class Calendar extends LightningElement {
             return;
         }
         this.displayDate = selectedDate;
-        this.focusDate(date);
         this.updateDateParameters();
     }
 
