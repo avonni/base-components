@@ -224,11 +224,11 @@ export default {
             }
         },
         name: {
-            name: 'name',
             control: {
                 type: 'text'
             },
-            description: 'Avatar group Name identifier',
+            description:
+                'Name of the avatar group. It will be returned by the actionclick event.',
             table: {
                 type: { summary: 'string' }
             }
@@ -413,14 +413,16 @@ const itemsWithStatusAndEntity = [
 
 export const BaseWithTwoAvatars = Template.bind({});
 BaseWithTwoAvatars.args = {
-    items: items
+    items: items,
+    name: 'avatar-group'
 };
 
 export const BaseExtraLargeWithTwoAvatars = Template.bind({});
 BaseExtraLargeWithTwoAvatars.args = {
     items: items,
     size: 'x-large',
-    variant: 'circle'
+    variant: 'circle',
+    name: 'avatar-group'
 };
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
@@ -434,14 +436,16 @@ BaseLargeWithMoreThanTwoAvatars.args = {
     size: 'large',
     maxCount: 6,
     variant: 'circle',
-    actionIconName: 'utility:add'
+    actionIconName: 'utility:add',
+    name: 'avatar-group'
 };
 
 export const Grid = Template.bind({});
 Grid.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     layout: 'grid',
-    maxCount: 6
+    maxCount: 6,
+    name: 'avatar-group'
 };
 
 export const GridWithPresence = Template.bind({});
@@ -456,7 +460,8 @@ GridWithPresence.args = {
     ],
     layout: 'grid',
     maxCount: 6,
-    variant: 'circle'
+    variant: 'circle',
+    name: 'avatar-group'
 };
 
 export const GridSmall = Template.bind({});
@@ -464,7 +469,8 @@ GridSmall.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     size: 'small',
     layout: 'grid',
-    maxCount: 7
+    maxCount: 7,
+    name: 'avatar-group'
 };
 
 export const ListDoubleExtraLarge = Template.bind({});
@@ -478,5 +484,6 @@ ListDoubleExtraLarge.args = {
     maxCount: 3,
     size: 'xx-large',
     listButtonShowMoreIconName: 'utility:down',
-    listButtonShowLessIconName: 'utility:up'
+    listButtonShowLessIconName: 'utility:up',
+    name: 'avatar-group'
 };

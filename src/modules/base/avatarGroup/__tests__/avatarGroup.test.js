@@ -108,6 +108,7 @@ describe('Avatar Group', () => {
         expect(element.items).toMatchObject([]);
         expect(element.layout).toBe('stack');
         expect(element.maxCount).toBe(5);
+        expect(element.name).toBeUndefined();
         expect(element.listButtonShowLessIconName).toBeUndefined();
         expect(element.listButtonShowLessIconPosition).toBe('left');
         expect(element.listButtonShowLessLabel).toBe('Show less');
