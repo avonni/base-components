@@ -161,17 +161,19 @@ describe('Calendar', () => {
     // Go To Date
     it('Calendar: goToDate', () => {
         element.value = '05/12/2022';
+        element.goToDate('08/04/2002');
 
         return Promise.resolve().then(() => {
-            const day8 = element.shadowRoot
-                .querySelector('span[data-date="8"]')
-                .closest('td');
-            const spy8 = jest.spyOn(day8, 'focus');
+            const monthValue = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            ).textContent;
 
-            element.goToDate('05/08/2022');
-            jest.runAllTimers();
+            const yearValue = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            ).value;
 
-            expect(spy8).toHaveBeenCalled();
+            expect(monthValue).toBe('August');
+            expect(yearValue).toBe(2002);
         });
     });
 
@@ -184,7 +186,6 @@ describe('Calendar', () => {
             const monthValue = element.shadowRoot.querySelector(
                 '[data-element-id="h2"]'
             ).textContent;
-            console.log(`value of innerHtml: ${monthValue}`);
             expect(monthValue).toBe('June');
         });
     });
