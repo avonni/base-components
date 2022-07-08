@@ -78,12 +78,8 @@ export default class Card extends LightningElement {
      */
     @api mediaSrc;
 
-    _title;
-    _iconName;
     _mediaPosition = MEDIA_POSITIONS.default;
-    _mediaSrc;
 
-    showMedia = true;
     showMediaSlot = true;
     showTitleSlot = true;
     showActionsSlot = true;
@@ -112,7 +108,6 @@ export default class Card extends LightningElement {
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
 
-        this.showMedia = this.mediaSrc || this.showMediaSlot;
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
     }
@@ -204,6 +199,15 @@ export default class Card extends LightningElement {
         return this.template.querySelector(
             'slot[data-element-id="avonni-card-default-slot"], slot[data-element-id="avonni-card-center-default-slot"]'
         );
+    }
+
+    /**
+     * Get show media.
+     *
+     * @type {boolean}
+     */
+    get showMedia() {
+        return this.mediaSrc || this.showMediaSlot;
     }
 
     /*** Styling Conditions ***/
