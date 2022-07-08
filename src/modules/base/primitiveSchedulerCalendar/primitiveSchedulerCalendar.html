@@ -38,7 +38,6 @@
         data-element-id="div-schedule-wrapper"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
-        onscroll={handleScroll}
     >
         <!-- Left panel -->
         <div class={firstColClass} data-element-id="div-first-column">
@@ -125,9 +124,13 @@
                     data-element-id="div-schedule-body"
                 >
                     <template for:each={columns} for:item="column">
-                        <div class="slds-col" key={column.index}>
+                        <div
+                            key={column.weekday}
+                            class="slds-col"
+                            data-element-id="div-column"
+                        >
                             <!-- Cells -->
-                            <template for:each={cells} for:item="cell">
+                            <template for:each={column.cells} for:item="cell">
                                 <div
                                     key={cell.start}
                                     class="

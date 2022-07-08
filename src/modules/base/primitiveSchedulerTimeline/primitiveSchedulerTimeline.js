@@ -30,79 +30,47 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api, track } from 'lwc';
+import { api, track } from 'lwc';
 import {
     addToDate,
     dateTimeObjectFrom,
     deepCopy,
     normalizeArray,
-    normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import {
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_MONTHS,
-    DEFAULT_DATE_FORMAT,
-    DEFAULT_EVENTS_LABELS,
-    DEFAULT_NEW_EVENT_TITLE,
     DEFAULT_START_DATE,
-    DEFAULT_TIME_SPAN,
-    EDIT_MODES,
-    EVENTS_THEMES,
     HEADERS,
     PRESET_HEADERS,
     UNITS,
     VARIANTS
 } from './defaults';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import SchedulerResource from './resource';
 import {
-    dispatchHidePopovers,
-    dispatchOpenEditDialog,
-    dispatchOpenRecurrenceDialog,
-    dispatchVisibleIntervalChange,
-    handleDoubleClick,
-    handleEmptySpotContextMenu,
-    handleEventContextMenu,
-    handleEventDoubleClick,
-    handleEventFocus,
-    handleEventMouseEnter,
-    SchedulerEventData
+    getElementOnXAxis,
+    getElementOnYAxis,
+    PrimitiveScheduleBase,
+    updateOccurrencesOffset,
+    updateOccurrencesPosition
 } from 'c/schedulerUtils';
 
-export default class PrimitiveSchedulerTimeline extends LightningElement {
-    _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-    _availableMonths = DEFAULT_AVAILABLE_MONTHS;
-    _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
-    _availableTimeSpans = [];
-    _collapseDisabled = false;
+export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
     _columns = [];
-    _dateFormat = DEFAULT_DATE_FORMAT;
-    _events = [];
-    _newEventTitle = DEFAULT_NEW_EVENT_TITLE;
-    _readOnly = false;
-    _recurrentEditModes = EDIT_MODES;
-    _resizeColumnDisabled = false;
-    _resources = [];
     _start = DEFAULT_START_DATE;
-    _timeSpan = DEFAULT_TIME_SPAN;
     _variant = VARIANTS.default;
-    _zoomToFit = false;
 
     _draggedSplitter;
-    _eventData = new SchedulerEventData(this);
+    _eventData;
     _headersAreLoading = true;
     _initialFirstColWidth;
     _initialState = {};
-    _connected = false;
     _mouseIsDown = false;
     _rowsHeight = [];
     _updateOccurrencesLength = false;
     cellWidth = 0;
-    computedHeaders = [];
     @track computedEvents = [];
+    computedHeaders = [];
     computedResources = [];
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
@@ -112,7 +80,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     connectedCallback() {
         this.initHeaders();
         this.initResources();
-        this._connected = true;
+        super.connectedCallback();
     }
 
     renderedCallback() {
@@ -127,13 +95,10 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         if (!this._rowsHeight.length) {
             this.updateRowsHeight();
         }
-        this.updateOccurrencesOffset();
-        this.updateResourcesStyle();
-        this.updateOccurrencesPosition();
 
-        if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
-        }
+        this.updateOccurrencesOffset();
+        updateOccurrencesPosition.call(this, this.isVertical);
+        this.updateResourcesStyle();
 
         if (this._eventData.shouldInitDraggedEvent) {
             // A new event is being created by dragging.
@@ -141,12 +106,8 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             this.updateVisibleResources();
             this._eventData.setDraggedEvent();
         }
-    }
 
-    disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-        }
+        super.renderedCallback();
     }
 
     /*
@@ -154,94 +115,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
-     * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
-     * For example, if the available days are Monday to Friday, the value would be: <code>[1, 2, 3, 4, 5]</code>
-     *
-     * @type {number[]}
-     * @public
-     * @default [0, 1, ... , 5, 6]
-     */
-    @api
-    get availableDaysOfTheWeek() {
-        return this._availableDaysOfTheWeek;
-    }
-    set availableDaysOfTheWeek(value) {
-        const days = normalizeArray(value);
-        this._availableDaysOfTheWeek =
-            days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-    }
-
-    /**
-     * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
-     * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
-     * For example, if the available months are January, February, June, July, August and December, the value would be: <code>[0, 1, 5, 6, 7, 11]</code>
-     *
-     * @type {number[]}
-     * @public
-     * @default [0, 1, … , 10, 11]
-     */
-    @api
-    get availableMonths() {
-        return this._availableMonths;
-    }
-    set availableMonths(value) {
-        const months = normalizeArray(value);
-        this._availableMonths =
-            months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
-    }
-
-    /**
-     * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
-     * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
-     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: <code>['10:00-11:59', '14:30-18:44']</code>
-     *
-     * @type {string[]}
-     * @public
-     * @default ['00:00-23:59']
-     */
-    @api
-    get availableTimeFrames() {
-        return this._availableTimeFrames;
-    }
-    set availableTimeFrames(value) {
-        const timeFrames = normalizeArray(value);
-        this._availableTimeFrames =
-            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
-    }
-
-    /**
-     * Array of available time spans. Each time span object must have the following properties:
-     * * unit: The unit of the time span.
-     * * span: The span of the time span.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get availableTimeSpans() {
-        return this._availableTimeSpans;
-    }
-    set availableTimeSpans(value) {
-        this._availableTimeSpans = normalizeArray(value, 'object');
-    }
-
-    /**
-     * If present, the schedule column is not collapsible or expandable.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get collapseDisabled() {
-        return this._collapseDisabled;
-    }
-    set collapseDisabled(value) {
-        this._collapseDisabled = normalizeBoolean(value);
-    }
 
     /**
      * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the horizontal variant.
@@ -257,179 +130,24 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         this._columns = deepCopy(normalizeArray(value));
     }
 
-    /**
-     * The date format to use in the events' details popup and the labels. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format. If you want to insert text in the label, you need to escape it using single quote.
-     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
-     *
-     * @type {string}
-     * @public
-     * @default ff
-     */
-    @api
-    get dateFormat() {
-        return this._dateFormat;
-    }
-    set dateFormat(value) {
-        this._dateFormat =
-            value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
-    }
-
-    /**
-     * Array of event objects.
-     *
-     * @type {object[]}
-     * @public
-     */
     @api
     get events() {
-        return this._events;
+        return super.events;
     }
     set events(value) {
-        this._events = normalizeArray(value, 'object');
+        super.events = value;
 
         if (this._connected) {
             this.updateVisibleResources();
         }
     }
 
-    /**
-     * Labels of the events. Valid keys include:
-     * * top
-     * * bottom
-     * * left
-     * * right
-     * * center
-     * The value of each key should be a label object.
-     * Not supported for vertical variant.
-     *
-     * @type {object}
-     * @public
-     * @default {
-     *   center: {
-     *      fieldName: 'title'
-     *   }
-     * }
-     */
-    @api
-    get eventsLabels() {
-        return this._eventsLabels;
-    }
-    set eventsLabels(value) {
-        this._eventsLabels =
-            typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
-
-        if (this._connected) {
-            this._eventData.updateAllEventsDefaults();
-            this._eventData.refreshEvents();
-        }
-    }
-
-    /**
-     * Theme of the events. Valid values include default, transparent, line, hollow and rounded.
-     *
-     * @type {string}
-     * @public
-     * @default default
-     */
-    @api
-    get eventsTheme() {
-        return this._eventsTheme;
-    }
-    set eventsTheme(value) {
-        this._eventsTheme = normalizeString(value, {
-            fallbackValue: EVENTS_THEMES.default,
-            validValues: EVENTS_THEMES.valid
-        });
-
-        if (this._connected) {
-            this._eventData.updateAllEventsDefaults();
-            this._eventData.refreshEvents();
-        }
-    }
-
-    /**
-     * Default title of the new events.
-     *
-     * @type {string}
-     * @public
-     * @default New event
-     */
-    @api
-    get newEventTitle() {
-        return this._newEventTitle;
-    }
-    set newEventTitle(value) {
-        this._newEventTitle =
-            typeof value === 'string' ? value : DEFAULT_NEW_EVENT_TITLE;
-    }
-
-    /**
-     * If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
-    }
-
-    /**
-     * Allowed edition modes for recurring events. Available options are:
-     * * `all`: All recurrent event occurrences will be updated when a change is made to one occurrence.
-     * * `one`: Only the selected occurrence will be updated when a change is made.
-     *
-     * @type {string[]}
-     * @public
-     * @default ['all', 'one']
-     */
-    @api
-    get recurrentEditModes() {
-        return this._recurrentEditModes;
-    }
-    set recurrentEditModes(value) {
-        const modes = normalizeArray(value);
-        this._recurrentEditModes = modes.filter((mode) => {
-            return EDIT_MODES.includes(mode);
-        });
-
-        if (!this._recurrentEditModes.length) {
-            this._recurrentEditModes = EDIT_MODES;
-        }
-    }
-
-    /**
-     * If present, column resizing is disabled.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get resizeColumnDisabled() {
-        return this._resizeColumnDisabled;
-    }
-    set resizeColumnDisabled(value) {
-        this._resizeColumnDisabled = normalizeBoolean(value);
-    }
-
-    /**
-     * Array of resource objects. The resources can be bound to events.
-     *
-     * @type {object[]}
-     * @public
-     * @required
-     */
     @api
     get resources() {
-        return this._resources;
+        return super.resources;
     }
     set resources(value) {
-        this._resources = normalizeArray(value, 'object');
+        super.resources = value;
 
         if (this._connected) {
             this.initResources();
@@ -452,21 +170,12 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
     }
 
-    /**
-     * Object used to set the duration of the timeline. It should have two keys:
-     * * unit (minute, hour, day, week, month or year)
-     * * span (number).
-     *
-     * @type {object}
-     * @public
-     * @default { unit: 'day', span: 1 }
-     */
     @api
     get timeSpan() {
-        return this._timeSpan;
+        return super.timeSpan;
     }
     set timeSpan(value) {
-        this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
+        super.timeSpan = value;
 
         if (this._connected) {
             this.initHeaders();
@@ -491,21 +200,10 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         });
 
         this._initialFirstColWidth = null;
-    }
 
-    /**
-     * If present, horizontal scrolling will be prevented.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get zoomToFit() {
-        return this._zoomToFit;
-    }
-    set zoomToFit(value) {
-        this._zoomToFit = normalizeBoolean(value);
+        if (this._connected) {
+            this.initEvents();
+        }
     }
 
     /*
@@ -551,17 +249,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
     get eventVariant() {
         return this.isVertical ? 'timeline-vertical' : 'timeline-horizontal';
-    }
-
-    /**
-     * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
     }
 
     /**
@@ -691,26 +378,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * If true, the left collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseLeft() {
-        return !this.collapseDisabled && !this.firstColumnIsHidden;
-    }
-
-    /**
-     * If true, the right collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseRight() {
-        return !this.collapseDisabled && !this.firstColumnIsOpen;
-    }
-
-    /**
      * Duration of one cell of the smallest unit header, in milliseconds.
      *
      * @type {number}
@@ -742,18 +409,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
                 'avonni-scheduler__splitter_vertical': this.isVertical
             })
             .toString();
-    }
-
-    /**
-     * Position and dimensions of the schedule body.
-     *
-     * @type {object}
-     */
-    get timelinePosition() {
-        const scheduleElement = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        return scheduleElement.getBoundingClientRect();
     }
 
     /**
@@ -790,74 +445,39 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
     @api
     cleanSelection(cancelNewEvent) {
-        this._eventData.cleanSelection(cancelNewEvent);
-        this._eventData.refreshEvents();
+        super.cleanSelection(cancelNewEvent);
         this.updateVisibleResources();
     }
 
     @api
     createEvent(event) {
-        this._eventData.createEvent(event);
+        super.createEvent(event);
         this.updateVisibleResources();
     }
 
     @api
     deleteEvent(name) {
-        this._eventData.deleteEvent(name);
+        super.deleteEvent(name);
         this.updateVisibleResources();
-    }
-
-    @api
-    focusEvent(name) {
-        const event = this.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${name}"]`
-        );
-        if (event) {
-            event.focus();
-        }
     }
 
     @api
     newEvent(x, y, saveEvent) {
-        const position = this.isVertical ? x : y;
-        const resourceElement = this.getResourceElementFromPosition(position);
-        this._eventData.newEvent({ resourceElement, x, y }, saveEvent);
+        const resourceElement = this.getResourceElementFromPosition(x, y);
+        const selector = '[data-element-id="div-cell"]';
+        const cell = this.isVertical
+            ? getElementOnYAxis(resourceElement, y, selector)
+            : getElementOnXAxis(resourceElement, x, selector);
+        const resourceNames = [resourceElement.dataset.name];
+        const from = Number(cell.dataset.start);
+        const to = Number(cell.dataset.end) + 1;
+        this._eventData.newEvent({ resourceNames, from, to, x, y }, saveEvent);
     }
 
     @api
     saveSelection(recurrenceMode) {
-        const { event, occurrence } = this._eventData.selection;
-        if (
-            recurrenceMode === 'one' ||
-            (event.recurrence && this.onlyOccurrenceEditAllowed)
-        ) {
-            this._eventData.saveOccurrence();
-        } else {
-            // Update the event with the selected occurrence values,
-            // in case the selected occurrence had already been edited
-            if (occurrence.from !== event.from) {
-                event._from = occurrence.from;
-            }
-            if (occurrence.to !== event.to) {
-                event._to = occurrence.to;
-            }
-            if (occurrence.title !== event.title) {
-                event.title = occurrence.title;
-            }
-            if (occurrence.resourceNames !== event.resourceNames) {
-                event.resourceNames = occurrence.resourceNames;
-            }
-
-            // Update the event with the draft values from the edit form
-            this._eventData.saveEvent();
-        }
-        this._eventData.cleanSelection();
+        super.saveSelection(recurrenceMode);
         this.updateVisibleResources();
-    }
-
-    @api
-    selectEvent(detail) {
-        return this._eventData.selectEvent(detail);
     }
 
     /*
@@ -865,6 +485,13 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initEvents() {
+        super.initEvents();
+        this._eventData.isVertical = this.isVertical;
+        this._eventData.smallestHeader = this.smallestHeader;
+        this._eventData.initEvents();
+    }
 
     /**
      * Create the computed headers.
@@ -894,22 +521,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         });
 
         this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeadersName]);
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateCellWidth();
-        });
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        resizeObserver.observe(schedule);
-        return resizeObserver;
     }
 
     initResources() {
@@ -965,47 +576,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * Push an event occurrence down a level, until it doesn't overlap another occurrence.
-     *
-     * @param {object[]} previousOccurrences Array of previous occurrences for which the level has already been computed.
-     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
-     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top (horizontal variant) or the left (vertical variant) of its resource.
-     * @returns {object} Object with two keys:
-     * * level (number): level of the event occurrence in the resource.
-     * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
-     */
-    computeEventLevelInResource(previousOccurrences, startPosition, level = 0) {
-        // Find the last event with the same level
-        const sameLevelEvent = previousOccurrences.find((occ) => {
-            return occ.level === level;
-        });
-
-        const overlapsEvent =
-            sameLevelEvent && startPosition < sameLevelEvent.end;
-        if (overlapsEvent) {
-            level += 1;
-
-            // Make sure there isn't another event at the same position
-            level = this.computeEventLevelInResource(
-                previousOccurrences,
-                startPosition,
-                level
-            ).level;
-        }
-
-        let numberOfOverlap = level + 1;
-        if (this.isVertical) {
-            numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-                previousOccurrences,
-                startPosition,
-                numberOfOverlap
-            );
-        }
-
-        return { level, numberOfOverlap };
-    }
-
-    /**
      * Find the event occurrences for a given resource name.
      *
      * @param {string} name The unique name of the resource.
@@ -1025,25 +595,14 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         return occurrences.flat();
     }
 
-    /**
-     * Find a resource element from its position in the schedule.
-     *
-     * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
-     * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
-     */
-    getResourceElementFromPosition(position) {
-        const resources = Array.from(
-            this.template.querySelectorAll('[data-element-id="div-resource"]')
-        );
-        return resources.find((div) => {
-            const divPosition = div.getBoundingClientRect();
-            const start = this.isVertical ? divPosition.left : divPosition.top;
-            const end = this.isVertical
-                ? divPosition.right
-                : divPosition.bottom;
+    getResourceElementFromPosition(x, y) {
+        const position = this.isVertical ? x : y;
+        const selector = '[data-element-id="div-resource"]';
 
-            return position >= start && position <= end;
-        });
+        if (this.isVertical) {
+            return getElementOnXAxis(this.template, position, selector);
+        }
+        return getElementOnYAxis(this.template, position, selector);
     }
 
     /**
@@ -1056,42 +615,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         return this.computedResources.find(
             (resource) => resource.name === name
         );
-    }
-
-    /**
-     * Get the total number of event occurrences that overlap one.
-     *
-     * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
-     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
-     * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
-     * @returns {number} The total number of occurrences overlapping, including the one evaluated.
-     */
-    getTotalOfOccurrencesOverlapping(
-        previousOccurrences,
-        startPosition,
-        minOverlap
-    ) {
-        let numberOfOverlap = minOverlap;
-
-        const overlappingOccurrences = previousOccurrences.filter((occ) => {
-            return startPosition < occ.end;
-        });
-
-        overlappingOccurrences.forEach((occ) => {
-            if (occ.numberOfOverlap >= numberOfOverlap) {
-                numberOfOverlap = occ.numberOfOverlap;
-            } else {
-                // Update the total of levels of the overlapped event occurrence
-                occ.numberOfOverlap = numberOfOverlap;
-                numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
-                    previousOccurrences,
-                    occ.start,
-                    numberOfOverlap
-                );
-            }
-        });
-
-        return numberOfOverlap;
     }
 
     /**
@@ -1148,31 +671,12 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             this.setResourceHeaderFirstCellWidth();
         }
 
-        const cell = this.template.querySelector(
-            '[data-element-id="div-cell"]'
-        );
-        if (!cell) {
-            return;
-        }
-
-        const cellWidth = cell.getBoundingClientRect().width;
-        if (cellWidth !== this.cellWidth) {
-            this.cellWidth = cellWidth;
-            this._updateOccurrencesLength = true;
-        }
+        super.updateCellWidth();
     }
 
-    /**
-     * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
-     */
     updateOccurrencesOffset() {
-        const scheduleRightBorder = this.timelinePosition.right;
-
         // For each resource
         this.computedResources.forEach((resource) => {
-            let rowHeight = 0;
-            let levelHeight = 0;
-
             // Get all the event occurrences of the resource
             const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
@@ -1180,118 +684,16 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
                 )
             );
 
-            if (occurrenceElements.length) {
-                // Sort the occurrences by ascending start date
-                occurrenceElements.sort((a, b) => a.from - b.from);
-
-                // Compute the level of the occurrences in the resource
-                const previousOccurrences = [];
-                occurrenceElements.forEach((occElement) => {
-                    const start = occElement.startPosition;
-                    const { level, numberOfOverlap } =
-                        this.computeEventLevelInResource(
-                            previousOccurrences,
-                            start
-                        );
-
-                    const occurrence = resource.events.find((occ) => {
-                        return occ.key === occElement.occurrenceKey;
-                    });
-
-                    const selection = this._eventData.selection;
-                    previousOccurrences.unshift({
-                        level,
-                        numberOfOverlap,
-                        start,
-                        end: occElement.endPosition,
-                        occurrence:
-                            occurrence || (selection && selection.occurrence)
-                    });
-
-                    if (!this.isVertical) {
-                        if (occElement.labels.right) {
-                            // Hide the right label if it overflows the schedule
-                            const elementRightBorder =
-                                occElement.getBoundingClientRect().right +
-                                occElement.rightLabelWidth;
-                            if (elementRightBorder >= scheduleRightBorder) {
-                                occElement.hideRightLabel();
-                            } else {
-                                occElement.showRightLabel();
-                            }
-                        }
-
-                        // If the occurrence is taller than the previous ones,
-                        // update the default level height
-                        const height =
-                            occElement.getBoundingClientRect().height;
-                        if (height > levelHeight) {
-                            levelHeight = height;
-                        }
-                    }
-                });
-
-                // Add the corresponding offset to the top (horizontal variant)
-                // or left (vertical variant) of the occurrences
-                previousOccurrences.forEach((position) => {
-                    const { level, occurrence, numberOfOverlap } = position;
-                    let offsetSide = 0;
-
-                    if (this.isVertical) {
-                        offsetSide = (level * this.cellWidth) / numberOfOverlap;
-                        occurrence.numberOfEventsInThisTimeFrame =
-                            numberOfOverlap;
-                        this._updateOccurrencesLength = true;
-                    } else {
-                        offsetSide = level * levelHeight;
-
-                        // If the occurrence offset is bigger than the previous occurrences,
-                        // update the row height
-                        const totalHeight = levelHeight + offsetSide;
-                        if (totalHeight > rowHeight) {
-                            rowHeight = totalHeight;
-                        }
-                    }
-
-                    occurrence.offsetSide = offsetSide;
-                });
-            }
-
-            if (!this.isVertical) {
-                // Add 10 pixels to the row for padding
-                resource.height = rowHeight + 10;
-            }
-        });
-    }
-
-    /**
-     * Update the primitive occurrences height, width and position.
-     */
-    updateOccurrencesPosition() {
-        const eventOccurrences = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-        );
-        eventOccurrences.forEach((occurrence) => {
-            if (this._updateOccurrencesLength) {
-                occurrence.updateLength();
-            }
-            if (occurrence.disabled) {
-                occurrence.updateThickness();
-            }
-            occurrence.updatePosition();
-        });
-        this._updateOccurrencesLength = false;
-
-        if (this.isVertical) {
-            // Set the reference line height to the width of the schedule
-            const schedule = this.template.querySelector(
-                '[data-element-id="div-schedule-body"]'
+            const resourceHeight = updateOccurrencesOffset.call(
+                this,
+                occurrenceElements,
+                resource.events,
+                this.isVertical
             );
-            const scheduleWidth = this.timelinePosition.width;
-            schedule.style = `
-                 --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
-             `;
-        }
+            if (resourceHeight) {
+                resource.height = resourceHeight;
+            }
+        });
     }
 
     /**
@@ -1399,63 +801,19 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     }
 
     /**
-     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
-     */
-    handleDoubleClick(event) {
-        handleDoubleClick.call(this, event);
-    }
-
-    /**
-     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
-     */
-    handleEmptySpotContextMenu(event) {
-        handleEmptySpotContextMenu.call(this, event);
-    }
-
-    /**
-     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
-     */
-    handleEventContextMenu(event) {
-        handleEventContextMenu.call(this, event);
-    }
-
-    /**
-     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
-     */
-    handleEventDoubleClick(event) {
-        handleEventDoubleClick.call(this, event);
-    }
-
-    /**
-     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
-     */
-    handleEventFocus(event) {
-        handleEventFocus.call(this, event);
-    }
-
-    /**
      * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
      */
     handleEventMouseDown(mouseEvent) {
         this._mouseIsDown = true;
         const { x, y } = mouseEvent.detail;
-        const resourceAxis = this.isVertical ? x : y;
-        const resourceElement =
-            this.getResourceElementFromPosition(resourceAxis);
+        const resourceElement = this.getResourceElementFromPosition(x, y);
         const resource = this.getResourceFromName(resourceElement.dataset.name);
         this._eventData.handleExistingEventMouseDown(
             mouseEvent,
             resource,
             resourceElement
         );
-        dispatchHidePopovers.call(this);
-    }
-
-    /**
-     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
-     */
-    handleEventMouseEnter(event) {
-        handleEventMouseEnter.call(this, event);
+        this.dispatchHidePopovers();
     }
 
     /**
@@ -1480,12 +838,8 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         // Update the start date in case it was not available
         this._start = this.smallestHeader.start;
 
-        dispatchVisibleIntervalChange.call(
-            this,
-            this.start,
-            this.visibleInterval
-        );
-        this._eventData.initEvents(this.visibleInterval);
+        this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
+        this.initEvents();
         this.updateVisibleResources();
         this._initialFirstColWidth = 0;
         this._rowsHeight = [];
@@ -1496,15 +850,11 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         });
     }
 
-    handleHideDetailPopover() {
-        dispatchHidePopovers.call(this, ['detail']);
-    }
-
     /**
      * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
      */
     handleHideFirstCol() {
-        dispatchHidePopovers.call(this);
+        this.dispatchHidePopovers();
         this.firstCol.style.width = null;
         this.firstCol.style.minWidth = null;
 
@@ -1536,13 +886,11 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         }
 
         this._mouseIsDown = true;
-        dispatchHidePopovers.call(this);
+        this.dispatchHidePopovers();
 
         const x = event.clientX || event.detail.x;
         const y = event.clientY || event.detail.y;
-        const headersAxisPosition = this.isVertical ? x : y;
-        const resourceElement =
-            this.getResourceElementFromPosition(headersAxisPosition);
+        const resourceElement = this.getResourceElementFromPosition(x, y);
         const resource = this.getResourceFromName(resourceElement.dataset.name);
 
         this._eventData.handleNewEventMouseDown({
@@ -1612,13 +960,10 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
 
             switch (eventToDispatch) {
                 case 'edit':
-                    dispatchOpenEditDialog.call(
-                        this,
-                        this._eventData.selection
-                    );
+                    this.dispatchOpenEditDialog(this._eventData.selection);
                     break;
                 case 'recurrence':
-                    dispatchOpenRecurrenceDialog.call(this);
+                    this.dispatchOpenRecurrenceDialog();
                     break;
                 default:
                     break;
@@ -1633,7 +978,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
      * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
      */
     handleOpenFirstCol() {
-        dispatchHidePopovers.call(this);
+        this.dispatchHidePopovers();
         this.firstCol.style.width = null;
         this.clearDatatableColumnWidth();
         if (!this.isVertical) {
@@ -1669,11 +1014,11 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
             if (occurrence) {
                 const eventPosition = occurrence.getBoundingClientRect();
                 if (eventPosition.right < 0 || eventPosition.bottom < 0) {
-                    dispatchHidePopovers.call(this, ['detail']);
+                    this.dispatchHidePopovers(['detail']);
                 }
             }
         }
-        dispatchHidePopovers.call(this, ['context']);
+        this.dispatchHidePopovers(['context']);
 
         if (this.isVertical && !this.zoomToFit) {
             // Create an artificial scroll for the resource headers in vertical
@@ -1708,6 +1053,6 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
         };
         this.firstColumnIsHidden = false;
         this.firstColumnIsOpen = false;
-        dispatchHidePopovers.call(this);
+        this.dispatchHidePopovers();
     }
 }

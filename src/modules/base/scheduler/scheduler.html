@@ -199,8 +199,14 @@
             selected-date={selectedDate}
             time-span={currentTimeSpan}
             zoom-to-fit={zoomToFit}
+            data-element-id="avonni-primitive-scheduler-calendar"
+            onemptyspotcontextmenu={handleEmptySpotContextMenu}
+            oneventchange={handleEventChange}
+            oneventcontextmenu={handleEventContextMenu}
             oneventmouseenter={handleEventMouseEnter}
             onhidepopovers={handleHidePopovers}
+            onopeneditdialog={handleOpenEditDialog}
+            onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-calendar>
     </template>

@@ -33,13 +33,13 @@
 /**
  * Find the cell element at a given schedule position.
  *
- * @param {HTMLElement} resource The resource element the cell is in.
+ * @param {HTMLElement} column The column element the cell is in.
  * @param {number} position The position of the cell.
  * @returns {(HTMLElement|undefined)} The cell element or undefined.
  */
-export function getCellFromPosition(resource, position, isVertical) {
+export function getCellFromPosition(column, position, isVertical) {
     const cellElements = Array.from(
-        resource.querySelectorAll('[data-element-id="div-cell"]')
+        column.querySelectorAll('[data-element-id="div-cell"]')
     );
 
     return cellElements.find((cellElement, index) => {
@@ -56,22 +56,30 @@ export function getCellFromPosition(resource, position, isVertical) {
     });
 }
 
-export { SchedulerEventData } from './eventData';
-export { SchedulerEventDrag } from './eventDrag';
-export {
-    dispatchEventChange,
-    dispatchEventCreate,
-    dispatchHidePopovers,
-    dispatchOpenEditDialog,
-    dispatchOpenRecurrenceDialog,
-    dispatchVisibleIntervalChange
-} from './dispatchers';
+export function getElementOnXAxis(parentElement, x, selector) {
+    const elements = Array.from(parentElement.querySelectorAll(selector));
+    return elements.find((div) => {
+        const divPosition = div.getBoundingClientRect();
+        const start = divPosition.left;
+        const end = divPosition.right;
 
+        return x >= start && x <= end;
+    });
+}
+
+export function getElementOnYAxis(parentElement, y, selector) {
+    const elements = Array.from(parentElement.querySelectorAll(selector));
+    return elements.find((div) => {
+        const divPosition = div.getBoundingClientRect();
+        const start = divPosition.top;
+        const end = divPosition.bottom;
+
+        return y >= start && y <= end;
+    });
+}
+
+export { PrimitiveScheduleBase } from './primitiveScheduleBase';
 export {
-    handleDoubleClick,
-    handleEmptySpotContextMenu,
-    handleEventContextMenu,
-    handleEventDoubleClick,
-    handleEventFocus,
-    handleEventMouseEnter
-} from './actionHandlers';
+    updateOccurrencesOffset,
+    updateOccurrencesPosition
+} from './eventPositionning';

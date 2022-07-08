@@ -32,7 +32,7 @@
 
 import { getCellFromPosition } from './schedulerUtils';
 
-export class SchedulerEventDrag {
+export default class SchedulerEventDrag {
     draggedEvent;
     resizeSide;
 

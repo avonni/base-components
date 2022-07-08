@@ -1113,10 +1113,14 @@ export default class Scheduler extends LightningElement {
         return this.timeSpans.length > 1;
     }
 
-    get timeline() {
-        return this.template.querySelector(
+    get schedule() {
+        const timeline = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-timeline"]'
         );
+        const calendar = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-calendar"]'
+        );
+        return this.isTimeline ? timeline : calendar;
     }
 
     /**
@@ -1179,8 +1183,8 @@ export default class Scheduler extends LightningElement {
      */
     @api
     createEvent(eventObject) {
-        if (this.timeline) {
-            this.timeline.createEvent(eventObject);
+        if (this.schedule) {
+            this.schedule.createEvent(eventObject);
         }
     }
 
@@ -1192,8 +1196,8 @@ export default class Scheduler extends LightningElement {
      */
     @api
     deleteEvent(eventName) {
-        if (this.timeline) {
-            this.timeline.deleteEvent(eventName);
+        if (this.schedule) {
+            this.schedule.deleteEvent(eventName);
         }
     }
 
@@ -1205,9 +1209,9 @@ export default class Scheduler extends LightningElement {
      */
     @api
     focusEvent(eventName) {
-        if (this.timeline) {
+        if (this.schedule) {
             this._programmaticFocus = true;
-            this.timeline.focusEvent(eventName);
+            this.schedule.focusEvent(eventName);
         }
     }
 
@@ -1461,7 +1465,7 @@ export default class Scheduler extends LightningElement {
      * Handle the closing of the delete confirmation dialog.
      */
     handleCloseDeleteConfirmationDialog() {
-        this.timeline.cleanSelection();
+        this.schedule.cleanSelection();
         this.hideDeleteConfirmationDialog();
     }
 
@@ -1558,7 +1562,7 @@ export default class Scheduler extends LightningElement {
      */
     handleEmptySpotContextMenu(event) {
         if (!this.computedContextMenuEmptySpot.length) {
-            this.timeline.cleanSelection(true);
+            this.schedule.cleanSelection(true);
             return;
         }
         this.hideAllPopovers();
@@ -1607,7 +1611,7 @@ export default class Scheduler extends LightningElement {
                 this.computedEvents.push(this.selection.event);
                 break;
             default:
-                this.timeline.cleanSelection();
+                this.schedule.cleanSelection();
                 break;
         }
     }
@@ -1643,7 +1647,7 @@ export default class Scheduler extends LightningElement {
      * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
      */
     handleCloseEditDialog() {
-        this.timeline.cleanSelection(true);
+        this.schedule.cleanSelection(true);
         this.selection = null;
         this.hideAllPopovers();
     }
@@ -1652,7 +1656,7 @@ export default class Scheduler extends LightningElement {
      * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
      */
     handleCloseRecurrenceDialog() {
-        this.timeline.cleanSelection(true);
+        this.schedule.cleanSelection(true);
         this.selection = null;
         this.hideRecurrenceDialog();
     }
@@ -1664,7 +1668,7 @@ export default class Scheduler extends LightningElement {
         const recurrenceMode =
             mouseEvent.detail.value || mouseEvent.currentTarget.value;
 
-        this.timeline.saveSelection(recurrenceMode);
+        this.schedule.saveSelection(recurrenceMode);
         this.selection = null;
         this.hideAllPopovers();
     }

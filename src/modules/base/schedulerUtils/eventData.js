@@ -33,17 +33,16 @@
 import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import SchedulerEvent from './event';
-import { SchedulerEventDrag } from './eventDrag';
+import SchedulerEventDrag from './eventDrag';
 import { getCellFromPosition } from './schedulerUtils';
 
-export class SchedulerEventData {
+export default class SchedulerEventData {
     eventDrag;
     selection;
 
     constructor(schedule, props) {
         this.schedule = schedule;
         Object.assign(this, props);
-        this.initEvents(this.events, this.visibleInterval);
     }
 
     get boundaries() {
@@ -75,13 +74,14 @@ export class SchedulerEventData {
     /**
      * Create the computed events that are included in the currently visible interval of time.
      */
-    initEvents(events, interval) {
+    initEvents() {
+        const interval = this.visibleInterval;
         if (!interval) {
             this.events = [];
             return;
         }
 
-        const visibleEvents = events.filter((event) => {
+        const visibleEvents = this.events.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
             return (
@@ -219,19 +219,9 @@ export class SchedulerEventData {
      * @param {number} y Vertical position of the event in the schedule, in pixels.
      * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
      */
-    newEvent({ resourceElement, x, y }, saveEvent = true) {
-        const resourceAxisPosition = this.isVertical ? y : x;
-        const cell = getCellFromPosition(
-            resourceElement,
-            resourceAxisPosition,
-            this.isVertical
-        );
-        const resourceNames = [resourceElement.dataset.name];
-        const from = Number(cell.dataset.start);
-        const to = Number(cell.dataset.end) + 1;
-
+    newEvent({ resourceNames, from, to, x, y }, saveEvent = true) {
         const event = {
-            resourceNames,
+            resourceNames: normalizeArray(resourceNames, 'string'),
             title: this.newEventTitle,
             from,
             to
@@ -255,9 +245,12 @@ export class SchedulerEventData {
 
     refreshEvents() {
         this.events = [...this.events];
-        this.singleDayEvents = [...this.singleDayEvents];
-        this.multiDayEvents = [...this.multiDayEvents];
         if (this.isCalendar) {
+            this.singleDayEvents = [];
+            this.multiDayEvents = [];
+            this.events.forEach((event) =>
+                this.addToSingleAndMultiDayEvents(event)
+            );
             this.schedule.singleDayEvents = this.singleDayEvents;
             this.schedule.multiDayEvents = this.multiDayEvents;
         } else {
