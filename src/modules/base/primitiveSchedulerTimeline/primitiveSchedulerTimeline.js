@@ -55,6 +55,8 @@ import {
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
 
+const CELL_SELECTOR = '[data-element-id="div-cell"]';
+
 export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
     _columns = [];
     _start = DEFAULT_START_DATE;
@@ -464,10 +466,9 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
     @api
     newEvent(x, y, saveEvent) {
         const resourceElement = this.getResourceElementFromPosition(x, y);
-        const selector = '[data-element-id="div-cell"]';
         const cell = this.isVertical
-            ? getElementOnYAxis(resourceElement, y, selector)
-            : getElementOnXAxis(resourceElement, x, selector);
+            ? getElementOnYAxis(resourceElement, y, CELL_SELECTOR)
+            : getElementOnXAxis(resourceElement, x, CELL_SELECTOR);
         const resourceNames = [resourceElement.dataset.name];
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
@@ -807,10 +808,8 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
         this._mouseIsDown = true;
         const { x, y } = mouseEvent.detail;
         const resourceElement = this.getResourceElementFromPosition(x, y);
-        const resource = this.getResourceFromName(resourceElement.dataset.name);
         this._eventData.handleExistingEventMouseDown(
             mouseEvent,
-            resource,
             resourceElement
         );
         this.dispatchHidePopovers();
@@ -891,12 +890,19 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
         const x = event.clientX || event.detail.x;
         const y = event.clientY || event.detail.y;
         const resourceElement = this.getResourceElementFromPosition(x, y);
-        const resource = this.getResourceFromName(resourceElement.dataset.name);
+        const cell = this.isVertical
+            ? getElementOnYAxis(resourceElement, y, CELL_SELECTOR)
+            : getElementOnXAxis(resourceElement, x, CELL_SELECTOR);
+        const resourceNames = [resourceElement.dataset.name];
+        const from = Number(cell.dataset.start);
+        const to = Number(cell.dataset.end) + 1;
 
         this._eventData.handleNewEventMouseDown({
             event,
-            resource,
-            resourceElement,
+            cellGroupElement: resourceElement,
+            resourceNames,
+            from,
+            to,
             x,
             y
         });
@@ -955,7 +961,7 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
         } else {
             const x = mouseEvent.clientX;
             const y = mouseEvent.clientY;
-            const { eventToDispatch, updateResources } =
+            const { eventToDispatch, updateCellGroups } =
                 this._eventData.handleMouseUp(x, y);
 
             switch (eventToDispatch) {
@@ -968,7 +974,7 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
                 default:
                     break;
             }
-            if (updateResources) {
+            if (updateCellGroups) {
                 this.updateVisibleResources();
             }
         }

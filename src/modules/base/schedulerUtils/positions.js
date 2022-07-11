@@ -30,6 +30,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { CELL_SELECTOR } from './defaults';
+
+export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
+    const elements = Array.from(parentElement.querySelectorAll(selector));
+    return elements.find((div, index) => {
+        const divPosition = div.getBoundingClientRect();
+        const start = divPosition.left;
+        const end = divPosition.right;
+
+        const isFirstElement = index === 0;
+        const isLastElement = index === elements.length - 1;
+        const isBeforeFirstElement = isFirstElement && start >= x;
+        const isAfterLastElement = isLastElement && x > end;
+        const isInCell = x >= start && x <= end;
+        return isBeforeFirstElement || isAfterLastElement || isInCell;
+    });
+}
+
+export function getElementOnYAxis(parentElement, y, selector = CELL_SELECTOR) {
+    const elements = Array.from(parentElement.querySelectorAll(selector));
+    return elements.find((div, index) => {
+        const divPosition = div.getBoundingClientRect();
+        const start = divPosition.top;
+        const end = divPosition.bottom;
+
+        const isFirstElement = index === 0;
+        const isLastElement = index === elements.length - 1;
+        const isBeforeFirstElement = isFirstElement && start >= y;
+        const isAfterLastElement = isLastElement && y > end;
+        const isInElement = y >= start && y <= end;
+        return isBeforeFirstElement || isAfterLastElement || isInElement;
+    });
+}
+
 /**
  * Get the total number of event occurrences that overlap one.
  *
@@ -76,7 +110,7 @@ function getTotalOfOccurrencesOverlapping(
  * * level (number): level of the event occurrence in the resource.
  * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
  */
-function computeEventLevelInResource(
+function computeEventLevelInCellGroup(
     isVertical,
     previousOccurrences,
     startPosition,
@@ -92,7 +126,7 @@ function computeEventLevelInResource(
         level += 1;
 
         // Make sure there isn't another event at the same position
-        level = computeEventLevelInResource(
+        level = computeEventLevelInCellGroup(
             isVertical,
             previousOccurrences,
             startPosition,
@@ -130,7 +164,7 @@ export function updateOccurrencesOffset(
     const previousOccurrences = [];
     occurrenceElements.forEach((occElement) => {
         const start = occElement.startPosition;
-        const { level, numberOfOverlap } = computeEventLevelInResource(
+        const { level, numberOfOverlap } = computeEventLevelInCellGroup(
             isVertical,
             previousOccurrences,
             start

@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { getCellFromPosition } from './schedulerUtils';
+import { getElementOnXAxis, getElementOnYAxis } from './schedulerUtils';
 
 export default class SchedulerEventDrag {
     draggedEvent;
@@ -40,19 +40,19 @@ export default class SchedulerEventDrag {
     _isVertical = false;
     _initialState = {};
     _isNewEvent = false;
-    resourceElement;
+    cellGroupElement;
 
     constructor({
         event,
         isVertical,
-        resourceElement,
+        cellGroupElement,
         isNewEvent,
         boundaries
     }) {
         this._boundaries = boundaries;
         this._isVertical = isVertical;
         this._isNewEvent = isNewEvent;
-        this.resourceElement = resourceElement;
+        this.cellGroupElement = cellGroupElement;
         const mouseX = event.clientX || event.detail.x;
         const mouseY = event.clientY || event.detail.y;
 
@@ -129,7 +129,7 @@ export default class SchedulerEventDrag {
         this.draggedEvent.y = y + initialY;
     }
 
-    resize(x, y, occurrence, resource) {
+    resize(x, y, occurrence, cellGroup) {
         const normalizedPosition = this.normalizeMousePosition(x, y);
         const position = this._isVertical
             ? normalizedPosition.y
@@ -148,7 +148,7 @@ export default class SchedulerEventDrag {
         const hoveredEventCell = this.getHoveredEventCell(
             position,
             occurrence,
-            resource
+            cellGroup
         );
         if (hoveredEventCell) {
             return hoveredEventCell;
@@ -204,7 +204,7 @@ export default class SchedulerEventDrag {
         return { right, left, top, bottom };
     }
 
-    getValueOnTheResourceAxis(x, y) {
+    getValueOnTheCellGroupAxis(x, y) {
         const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
             this._initialState;
         const position = this.normalizeMousePosition(x, y);
@@ -219,7 +219,7 @@ export default class SchedulerEventDrag {
         return this.resizeSide === 'end' ? endPosition : startPosition;
     }
 
-    getValueOnTheHeadersAxis(x, y) {
+    getValueOnTheCellsAxis(x, y) {
         const position = this.normalizeMousePosition(x, y);
         return this._isVertical ? position.x : position.y;
     }
@@ -257,7 +257,7 @@ export default class SchedulerEventDrag {
      *
      * @param {number} position New position of the occurrence.
      */
-    getHoveredEventCell(position, occurrence, resource) {
+    getHoveredEventCell(position, occurrence, cellGroup) {
         const labelWidth =
             this.resizeSide === 'start'
                 ? this.draggedEvent.leftLabelWidth * -1
@@ -265,17 +265,16 @@ export default class SchedulerEventDrag {
         const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
-        const hoveredCell = getCellFromPosition(
-            this.resourceElement,
-            computedPosition,
-            this._isVertical
-        );
-        const computedCell = resource.getCellFromStart(
+        const hoveredCell = this._isVertical
+            ? getElementOnYAxis(this.cellGroupElement, computedPosition)
+            : getElementOnXAxis(this.cellGroupElement, computedPosition);
+
+        const computedCell = cellGroup.getCellFromStart(
             Number(hoveredCell.dataset.start)
         );
         const cellEvents = computedCell.events;
 
-        // Check if any event in the cell has the same offsetTop
+        // Check if any event in the cell has the same offset
         const eventIsHovered = cellEvents.some((cellEvent) => {
             const isDifferent = cellEvent.key !== occurrence.key;
             const overlaps = cellEvent.offsetSide === occurrence.offsetSide;

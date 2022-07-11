@@ -34,7 +34,7 @@ import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
-import { getCellFromPosition } from './schedulerUtils';
+import { getElementOnXAxis, getElementOnYAxis } from './positions';
 
 export default class SchedulerEventData {
     eventDrag;
@@ -181,10 +181,10 @@ export default class SchedulerEventData {
     /**
      * Drag an event to a cell and save the change.
      *
-     * @param {HTMLElement} resource The resource element the event is being dragged to.
+     * @param {HTMLElement} cellGroupElement The cell group element the event is being dragged to.
      * @param {HTMLElement} cell The cell element the event is being dragged to.
      */
-    dragEventTo(resource, cell) {
+    dragEventTo(cellGroupElement, cell) {
         const { occurrence, draftValues } = this.selection;
 
         // Update the start and end date
@@ -195,19 +195,21 @@ export default class SchedulerEventData {
             .toUTC()
             .toISO();
 
-        // Update the resources
-        const resourceName = resource.dataset.name;
-        const previousResourceName = occurrence.resourceName;
+        if (!this.isCalendar) {
+            // Update the resources
+            const resourceName = cellGroupElement.dataset.name;
+            const previousResourceName = occurrence.resourceName;
 
-        if (previousResourceName !== resourceName) {
-            const resourceIndex = occurrence.resourceNames.findIndex(
-                (name) => name === previousResourceName
-            );
-            draftValues.resourceNames = [...occurrence.resourceNames];
-            draftValues.resourceNames.splice(resourceIndex, 1);
+            if (previousResourceName !== resourceName) {
+                const resourceIndex = occurrence.resourceNames.findIndex(
+                    (name) => name === previousResourceName
+                );
+                draftValues.resourceNames = [...occurrence.resourceNames];
+                draftValues.resourceNames.splice(resourceIndex, 1);
 
-            if (!draftValues.resourceNames.includes(resourceName)) {
-                draftValues.resourceNames.push(resourceName);
+                if (!draftValues.resourceNames.includes(resourceName)) {
+                    draftValues.resourceNames.push(resourceName);
+                }
             }
         }
     }
@@ -263,12 +265,12 @@ export default class SchedulerEventData {
      *
      * @param {HTMLElement} cell The cell element.
      */
-    resizeEventToCell(cell, resource) {
+    resizeEventToCell(cell, cellGroup) {
         const occurrence = this.selection.occurrence;
-        const side = this.resizeSide;
+        const side = this.eventDrag.resizeSide;
 
-        // Remove the occurrence from the resource
-        resource.removeEvent(occurrence);
+        // Remove the occurrence from the cell group (resource or day column)
+        cellGroup.removeEvent(occurrence);
 
         if (side === 'end') {
             // Update the end date if the event was resized from the right
@@ -278,9 +280,10 @@ export default class SchedulerEventData {
             occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
         }
 
-        // Add the occurrence to the resource with the updated start/end date
-        resource.events.push(occurrence);
-        resource.addEventToCells(occurrence);
+        // Add the occurrence to the cell group (resource or day column)
+        // with the updated start/end date
+        cellGroup.events.push(occurrence);
+        cellGroup.addEventToCells(occurrence);
         this.refreshEvents();
     }
 
@@ -446,12 +449,11 @@ export default class SchedulerEventData {
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
-    handleExistingEventMouseDown(mouseEvent, resource, resourceElement) {
+    handleExistingEventMouseDown(mouseEvent, cellGroupElement) {
         this.eventDrag = new SchedulerEventDrag({
             event: mouseEvent,
             isVertical: this.isVertical,
-            resource,
-            resourceElement,
+            cellGroupElement,
             boundaries: this.boundaries
         });
         this.selectEvent(mouseEvent.detail);
@@ -469,20 +471,26 @@ export default class SchedulerEventData {
             this.selection.isMoving = true;
             const x = event.clientX;
             const y = event.clientY;
-            const { resourceElement, resizeSide } = this.eventDrag;
-            const resourceName = resourceElement.dataset.name;
-            const resource = this.schedule.getResourceFromName(resourceName);
+            const { cellGroupElement, resizeSide } = this.eventDrag;
             const { occurrence, newEvent } = this.selection;
 
             if (resizeSide || newEvent) {
+                let cellGroup;
+                if (this.isCalendar) {
+                    const index = Number(cellGroupElement.dataset.index);
+                    cellGroup = this.schedule.columns[index];
+                } else {
+                    const resourceName = cellGroupElement.dataset.name;
+                    cellGroup = this.schedule.getResourceFromName(resourceName);
+                }
                 const hoveredEventCell = this.eventDrag.resize(
                     x,
                     y,
                     occurrence,
-                    resource
+                    cellGroup
                 );
                 if (hoveredEventCell) {
-                    this.resizeEventToCell(hoveredEventCell, resource);
+                    this.resizeEventToCell(hoveredEventCell, cellGroup);
                 }
             } else {
                 this.eventDrag.drag(x, y);
@@ -497,26 +505,26 @@ export default class SchedulerEventData {
         }
 
         // Get the new position
-        const valueOnTheResourceAxis = this.eventDrag.getValueOnTheResourceAxis(
-            x,
-            y
-        );
-        const valueOnTheHeadersAxis = this.eventDrag.getValueOnTheHeadersAxis(
-            x,
-            y
-        );
+        const valueOnTheCellGroupAxis =
+            this.eventDrag.getValueOnTheCellGroupAxis(x, y);
+        const valueOnTheCellsAxis = this.eventDrag.getValueOnTheCellsAxis(x, y);
         const { draftValues, newEvent, event, occurrence } = this.selection;
         const side = this.eventDrag.resizeSide;
 
         // Find the resource and cell the event was dropped on
-        const resourceElement = this.schedule.getResourceElementFromPosition(
-            valueOnTheHeadersAxis
-        );
-        const cellElement = getCellFromPosition(
-            resourceElement,
-            valueOnTheResourceAxis,
-            this.isVertical
-        );
+        let cellGroupElement;
+        if (this.isCalendar) {
+            cellGroupElement =
+                this.schedule.getColumnElementFromPosition(valueOnTheCellsAxis);
+        } else {
+            cellGroupElement = this.schedule.getResourceElementFromPosition(
+                x,
+                y
+            );
+        }
+        const cellElement = this.isVertical
+            ? getElementOnYAxis(cellGroupElement, valueOnTheCellGroupAxis)
+            : getElementOnXAxis(cellGroupElement, valueOnTheCellGroupAxis);
 
         // Update the draft values
         const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
@@ -537,7 +545,7 @@ export default class SchedulerEventData {
                 }
                 break;
             default:
-                this.dragEventTo(resourceElement, cellElement);
+                this.dragEventTo(cellGroupElement, cellElement);
                 break;
         }
 
@@ -558,18 +566,26 @@ export default class SchedulerEventData {
             this.saveEvent();
         }
         this.cleanSelection();
-        return { updateResources: true };
+        return { updateCellGroups: true };
     }
 
-    handleNewEventMouseDown({ event, resourceElement, x, y }) {
+    handleNewEventMouseDown({
+        event,
+        cellGroupElement,
+        from,
+        to,
+        resourceNames,
+        x,
+        y
+    }) {
         this.eventDrag = new SchedulerEventDrag({
             event,
             isVertical: this.isVertical,
-            resourceElement,
+            cellGroupElement,
             isNewEvent: true,
             boundaries: this.boundaries
         });
 
-        this.newEvent({ resourceElement, x, y }, false);
+        this.newEvent({ resourceNames, from, to, x, y }, false);
     }
 }

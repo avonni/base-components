@@ -38,16 +38,17 @@ import {
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import Column from './column';
 import {
+    getElementOnXAxis,
+    getElementOnYAxis,
     PrimitiveScheduleBase,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
-import {
-    getElementOnXAxis,
-    getElementOnYAxis
-} from '../schedulerUtils/schedulerUtils';
 
+const CELL_SELECTOR = '[data-element-id="div-cell"]';
+const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
@@ -55,8 +56,10 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     _eventData;
     _mouseIsDown = false;
     _resizeObserver;
+    _updateOccurrencesLength = false;
     columns = [];
     computedEvents = [];
+    computedResources = [];
     eventHeaderCells = {};
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
@@ -67,11 +70,11 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     multiDayEvents = [];
     singleDayEvents = [];
     start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
-    _updateOccurrencesLength = false;
     visibleInterval;
 
     connectedCallback() {
         this.setStartToBeginningOfUnit();
+        this.initResources();
         this.initHeaders();
         this._connected = true;
     }
@@ -83,6 +86,13 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+
+        if (this._eventData && this._eventData.shouldInitDraggedEvent) {
+            // A new event is being created by dragging.
+            // On the first move, display the event on the timeline.
+            this.updateColumnEvents();
+            this._eventData.setDraggedEvent();
+        }
     }
 
     /*
@@ -90,6 +100,18 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    @api
+    get resources() {
+        return super.resources;
+    }
+    set resources(value) {
+        super.resources = value;
+
+        if (this._connected) {
+            this.initResources();
+        }
+    }
 
     /**
      * Specifies the selected date/timedate on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -234,16 +256,8 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
     @api
     newEvent(x, y, saveEvent) {
-        const column = getElementOnXAxis(
-            this.template,
-            x,
-            '[data-element-id="div-column"]'
-        );
-        const cell = getElementOnYAxis(
-            column,
-            y,
-            '[data-element-id="div-cell"]'
-        );
+        const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
+        const cell = getElementOnYAxis(column, y, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
         const resourceNames = [this.resources[0].name];
@@ -265,6 +279,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     initEvents() {
         super.initEvents();
         this._eventData.isCalendar = true;
+        this._eventData.isVertical = true;
         this._eventData.smallestHeader = this.hourHeaders[0];
         this._eventData.initEvents();
     }
@@ -294,34 +309,32 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
             const column = {
                 weekday,
                 events: [],
-                cells: []
+                referenceCells: []
             };
 
             for (let j = 0; j < availableHours.length; j++) {
                 startDate = startDate.set({ hour: availableHours[j] });
                 const start = startDate.startOf('hour');
                 const end = startDate.endOf('hour');
-                column.cells.push({
+                column.referenceCells.push({
                     start: start.ts,
                     end: end.ts
                 });
             }
-            columns.push(column);
+            columns.push(new Column(column));
             startDate = addToDate(startDate, 'day', 1);
         }
         this.columns = columns;
     }
 
-    getResourceElementFromPosition(position) {
-        const resources = Array.from(
-            this.template.querySelectorAll('[data-element-id="div-column"]')
-        );
-        return resources.find((div) => {
-            const divPosition = div.getBoundingClientRect();
-            const start = divPosition.left;
-            const end = divPosition.right;
-            return position >= start && position <= end;
+    initResources() {
+        this.computedResources = this.resources.map((res) => {
+            return { ...res, data: { res } };
         });
+    }
+
+    getColumnElementFromPosition(x) {
+        return getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
     }
 
     /**
@@ -360,10 +373,12 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
                             return occurrence.weekday === weekday;
                         }
                     );
+
                     events.push(occurrences);
                 }
             });
             col.events = events.flat();
+            col.initCells();
         });
     }
 
@@ -397,9 +412,16 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
      * -------------------------------------------------------------
      */
 
-    handleEventMouseDown() {}
-
-    handleEventResize() {}
+    /**
+     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+     */
+    handleEventMouseDown(mouseEvent) {
+        this._mouseIsDown = true;
+        const x = mouseEvent.detail.x;
+        const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
+        this._eventData.handleExistingEventMouseDown(mouseEvent, column);
+        this.dispatchHidePopovers();
+    }
 
     handleHeaderCellSizeChange(event) {
         const { cellSize, orientation } = event.detail;
@@ -432,11 +454,97 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         });
     }
 
-    handleMouseDown() {}
+    /**
+     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+     */
+    handleMouseDown(event) {
+        if (event.button || this.readOnly) {
+            return;
+        }
 
-    handleMouseMove() {}
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
 
-    handleMouseUp() {}
+        const x = event.clientX || event.detail.x;
+        const y = event.clientY || event.detail.y;
+        const columnElement = getElementOnXAxis(
+            this.template,
+            x,
+            COLUMN_SELECTOR
+        );
+
+        const cell = getElementOnYAxis(columnElement, y, CELL_SELECTOR);
+        const resourceNames = [this.resources[0].name];
+        const from = Number(cell.dataset.start);
+        const to = Number(cell.dataset.end) + 1;
+        this._eventData.handleNewEventMouseDown({
+            event,
+            cellGroupElement: columnElement,
+            from,
+            resourceNames,
+            to,
+            x,
+            y
+        });
+    }
+
+    /**
+     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
+     */
+    handleMouseMove(mouseEvent) {
+        if (!this._mouseIsDown) {
+            return;
+        }
+
+        // Prevent scrolling
+        mouseEvent.preventDefault();
+
+        if (this._draggedSplitter) {
+            // The splitter between the left column and the schedule is being dragged
+            const { mouseX, firstColWidth } = this._initialState;
+            const x = mouseEvent.clientX;
+            const width = firstColWidth + (x - mouseX);
+            this.firstCol.style.width = `${width}px`;
+            this.firstCol.style.minWidth = `${width}px`;
+            this.firstColWidth = width;
+        } else {
+            this._eventData.handleMouseMove(mouseEvent);
+
+            if (this._eventData.shouldInitDraggedEvent) {
+                this.updateColumnEvents();
+            }
+        }
+    }
+
+    handleMouseUp(mouseEvent) {
+        if (!this._mouseIsDown) {
+            return;
+        }
+        this._mouseIsDown = false;
+
+        if (this._draggedSplitter) {
+            this._draggedSplitter = false;
+        } else {
+            const x = mouseEvent.clientX;
+            const y = mouseEvent.clientY;
+            const { eventToDispatch, updateCellGroups } =
+                this._eventData.handleMouseUp(x, y);
+
+            switch (eventToDispatch) {
+                case 'edit':
+                    this.dispatchOpenEditDialog(this._eventData.selection);
+                    break;
+                case 'recurrence':
+                    this.dispatchOpenRecurrenceDialog();
+                    break;
+                default:
+                    break;
+            }
+            if (updateCellGroups) {
+                this.updateColumnEvents();
+            }
+        }
+    }
 
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;

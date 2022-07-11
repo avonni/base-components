@@ -30,56 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Find the cell element at a given schedule position.
- *
- * @param {HTMLElement} column The column element the cell is in.
- * @param {number} position The position of the cell.
- * @returns {(HTMLElement|undefined)} The cell element or undefined.
- */
-export function getCellFromPosition(column, position, isVertical) {
-    const cellElements = Array.from(
-        column.querySelectorAll('[data-element-id="div-cell"]')
-    );
-
-    return cellElements.find((cellElement, index) => {
-        const cellPosition = cellElement.getBoundingClientRect();
-        const start = isVertical ? cellPosition.top : cellPosition.left;
-        const end = isVertical ? cellPosition.bottom : cellPosition.right;
-
-        const isFirstCell = index === 0;
-        const isLastCell = index === cellElements.length - 1;
-        const isBeforeFirstCell = isFirstCell && start >= position;
-        const isAfterLastCell = isLastCell && position > end;
-        const isInCell = position >= start && position < end;
-        return isBeforeFirstCell || isAfterLastCell || isInCell;
-    });
-}
-
-export function getElementOnXAxis(parentElement, x, selector) {
-    const elements = Array.from(parentElement.querySelectorAll(selector));
-    return elements.find((div) => {
-        const divPosition = div.getBoundingClientRect();
-        const start = divPosition.left;
-        const end = divPosition.right;
-
-        return x >= start && x <= end;
-    });
-}
-
-export function getElementOnYAxis(parentElement, y, selector) {
-    const elements = Array.from(parentElement.querySelectorAll(selector));
-    return elements.find((div) => {
-        const divPosition = div.getBoundingClientRect();
-        const start = divPosition.top;
-        const end = divPosition.bottom;
-
-        return y >= start && y <= end;
-    });
-}
-
 export { PrimitiveScheduleBase } from './primitiveScheduleBase';
 export {
+    getElementOnXAxis,
+    getElementOnYAxis,
     updateOccurrencesOffset,
     updateOccurrencesPosition
-} from './eventPositionning';
+} from './positions';
+export { SchedulerCellGroup } from './cellGroup';

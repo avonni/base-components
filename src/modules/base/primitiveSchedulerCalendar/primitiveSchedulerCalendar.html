@@ -123,11 +123,16 @@
                     class="slds-is-relative slds-grid slds-theme_default"
                     data-element-id="div-schedule-body"
                 >
-                    <template for:each={columns} for:item="column">
+                    <template
+                        for:each={columns}
+                        for:item="column"
+                        for:index="index"
+                    >
                         <div
                             key={column.weekday}
                             class="slds-col"
                             data-element-id="div-column"
+                            data-index={index}
                         >
                             <!-- Cells -->
                             <template for:each={column.cells} for:item="cell">
@@ -176,7 +181,7 @@
                                         read-only={readOnly}
                                         reference-line={event.referenceLine}
                                         resource-key={occurrence.resourceName}
-                                        resources={resources}
+                                        resources={computedResources}
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
@@ -197,7 +202,6 @@
                                         onprivatedisableddblclick={handleDoubleClick}
                                         onprivatemousedown={handleEventMouseDown}
                                         onprivatedisabledmousedown={handleMouseDown}
-                                        onprivateresize={handleEventResize}
                                     ></c-primitive-scheduler-event-occurrence>
                                 </template>
                             </div>
