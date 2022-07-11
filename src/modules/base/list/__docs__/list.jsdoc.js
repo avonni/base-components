@@ -166,6 +166,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-spacing-inline-between
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
  * @type dimension
  */

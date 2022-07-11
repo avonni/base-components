@@ -30,11 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host() {
-    /* --avonni-list-item-menu-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1); */
-    /* --avonni-list-item-img-object-fit: contain; */
-}
-
 .placeholder-rectangle {
     position: absolute;
     top: 0;
@@ -46,10 +41,15 @@
 }
 
 .avonni-list__item-menu {
-    /* display: flex;
-    flex-direction: column; */
     flex-wrap: wrap;
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
+}
+
+.avonni-list__item-wrapper {
+    padding-top: var(--avonni-list-item-spacing-block-start, 0px);
+    padding-bottom: var(--avonni-list-item-spacing-block-end, 0px);
+    padding-left: var(--avonni-list-item-spacing-inline-start, 0px);
+    padding-right: var(--avonni-list-item-spacing-inline-end, 0px);
 }
 
 .avonni-list__item {
@@ -57,10 +57,6 @@
         --avonni-list-item-color-background,
         transparent
     );
-    padding-top: var(--avonni-list-item-spacing-block-start);
-    padding-bottom: var(--avonni-list-item-spacing-block-end);
-    padding-left: var(--avonni-list-item-spacing-inline-start);
-    padding-right: var(--avonni-list-item-spacing-inline-end);
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-body-spacing-block-start: 0rem;
     --avonni-card-body-spacing-block-end: 0rem;
@@ -70,9 +66,21 @@
 
 .avonni-list__has-card-style {
     row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
-    /* column-gap does not work with slds-grid */
-    /* column-gap: var(--avonni-list-item-spacing-inline-between, 0.5rem); */
+    margin-inline: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
+    );
     --avonni-card-sizing-border: 1px;
+}
+
+.avonni-list__item-gutters {
+    padding-left: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2 +
+            var(--avonni-list-item-spacing-inline-start, 0px)
+    );
+    padding-right: calc(
+        (var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2) +
+            var(--avonni-list-item-spacing-inline-end, 0px)
+    );
 }
 
 .avonni-list__grid-display .avonni-list_item {
@@ -151,10 +159,12 @@
 .avonni-list__image-slot {
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 .avonni-list__image_container {
     height: 100%;
     width: 100%;
+    overflow: hidden;
 }
 
 .avonni-list__item-img {
@@ -163,6 +173,7 @@
     width: 100%;
     object-fit: var(--avonni-list-item-img-object-fit, cover);
     pointer-events: none;
+    overflow: hidden;
 }
 
 .avonni-list__item-image-container {
@@ -213,7 +224,6 @@
     height: 200px;
     min-height: 200px;
 }
-
 .avonni-list__item-divider_top {
     --avonni-card-shadow: none;
     --avonni-card-sizing-border: 0px;

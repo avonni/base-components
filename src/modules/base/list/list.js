@@ -136,14 +136,9 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _effectiveColumnCount;
 
-    renderedCallback() {
-        console.log('rerendered');
-    }
-
     connectedCallback() {
-        // i'm still trying to calculate the correct column count as soon as possible.
         window.addEventListener('resize', this.listResize.bind(this));
-        window.addEventListener('pageshow', this.listResize.bind(this));
+        window.addEventListener('DOMContentLoaded', this.listResize.bind(this));
     }
 
     /*
@@ -185,7 +180,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Width of the item images. Valid values include small, medium and large. Used only when the variant is list.
+     * Fixed width of image in list variant. 3 sizes: small (48px), medium (72px) and large (128px).
      *
      * @type {string}
      * @public
@@ -204,7 +199,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Height of the item images. Valid values include small, medium and large. Used only when variant is grid.
+     * Fixed height of image in grid variant. 3 sizes: small (48px), medium (100px) and large (200px).
      *
      * @type {string}
      * @public
@@ -233,7 +228,6 @@ export default class List extends LightningElement {
     }
     set cols(value) {
         this._columns = this.normalizeColumns(value);
-        // this.listResize();
     }
 
     /**
@@ -247,7 +241,6 @@ export default class List extends LightningElement {
     }
     set smallContainerCols(value) {
         this._smallContainerCols = this.normalizeColumns(value);
-        // this.listResize();
     }
 
     /**
@@ -262,7 +255,6 @@ export default class List extends LightningElement {
     }
     set mediumContainerCols(value) {
         this._mediumContainerCols = this.normalizeColumns(value);
-        // this.listResize();
     }
 
     /**
@@ -277,7 +269,6 @@ export default class List extends LightningElement {
     }
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
-        // this.listResize();
     }
 
     /**
@@ -479,7 +470,9 @@ export default class List extends LightningElement {
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'avonni-list__has-images': this.hasImages
+                'avonni-list__has-images': this.hasImages,
+                'slds-grid_pull-padded-medium':
+                    this.variant === 'grid' && this.divider === 'around'
             })
             .toString();
     }
@@ -513,7 +506,15 @@ export default class List extends LightningElement {
                 'avonni-list__item-borderless': !this._divider,
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
-                'avonni-list__item-card-style': this._divider === 'around',
+                'avonni-list__item-card-style': this._divider === 'around'
+            })
+            .toString();
+    }
+
+    get computedItemWrapperClass() {
+        return classSet('avonni-list__item-wrapper')
+            .add({
+                'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12':
                     this._effectiveColumnCount === 1 && this.variant === 'grid',
                 'slds-col slds-size_6-of-12':
