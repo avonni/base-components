@@ -518,7 +518,7 @@ export default class Calendar extends LightningElement {
     @api
     goToDate(date) {
         const selectedDate = this.formattedWithTimezoneOffset(new Date(date));
-        if (!selectedDate) {
+        if (this.isInvalidDate(selectedDate)) {
             console.warn(`The date ${date} is not valid.`);
             return;
         }
