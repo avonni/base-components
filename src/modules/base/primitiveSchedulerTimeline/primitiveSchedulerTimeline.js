@@ -80,6 +80,7 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
     smallestHeader;
 
     connectedCallback() {
+        window.addEventListener('mouseup', this.handleMouseUp);
         this.initHeaders();
         this.initResources();
         super.connectedCallback();
@@ -110,6 +111,11 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
         }
 
         super.renderedCallback();
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        window.removeEventListener('mouseup', this.handleMouseUp);
     }
 
     /*
@@ -950,7 +956,7 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
     /**
      * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
      */
-    handleMouseUp(mouseEvent) {
+    handleMouseUp = (mouseEvent) => {
         if (!this._mouseIsDown) {
             return;
         }
@@ -978,7 +984,7 @@ export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
                 this.updateVisibleResources();
             }
         }
-    }
+    };
 
     /**
      * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.

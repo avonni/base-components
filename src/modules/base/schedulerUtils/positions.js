@@ -42,8 +42,8 @@ export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
         const isFirstElement = index === 0;
         const isLastElement = index === elements.length - 1;
         const isBeforeFirstElement = isFirstElement && start >= x;
-        const isAfterLastElement = isLastElement && x > end;
-        const isInCell = x >= start && x <= end;
+        const isAfterLastElement = isLastElement && x >= end;
+        const isInCell = x >= start && x < end;
         return isBeforeFirstElement || isAfterLastElement || isInCell;
     });
 }
@@ -58,8 +58,8 @@ export function getElementOnYAxis(parentElement, y, selector = CELL_SELECTOR) {
         const isFirstElement = index === 0;
         const isLastElement = index === elements.length - 1;
         const isBeforeFirstElement = isFirstElement && start >= y;
-        const isAfterLastElement = isLastElement && y > end;
-        const isInElement = y >= start && y <= end;
+        const isAfterLastElement = isLastElement && y >= end;
+        const isInElement = y >= start && y < end;
         return isBeforeFirstElement || isAfterLastElement || isInElement;
     });
 }

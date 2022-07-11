@@ -73,10 +73,11 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     visibleInterval;
 
     connectedCallback() {
+        window.addEventListener('mouseup', this.handleMouseUp);
         this.setStartToBeginningOfUnit();
         this.initResources();
         this.initHeaders();
-        this._connected = true;
+        super.connectedCallback();
     }
 
     renderedCallback() {
@@ -93,6 +94,11 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
             this.updateColumnEvents();
             this._eventData.setDraggedEvent();
         }
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        window.removeEventListener('mouseup', this.handleMouseUp);
     }
 
     /*
@@ -305,7 +311,9 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
         startDate = dateTimeObjectFrom(startDate);
         for (let i = 0; i < numberOfColumns; i++) {
-            const weekday = this.availableDaysOfTheWeek[i];
+            const weekday = this.isWeek
+                ? this.availableDaysOfTheWeek[i]
+                : startDate.weekday;
             const column = {
                 weekday,
                 events: [],
@@ -516,7 +524,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         }
     }
 
-    handleMouseUp(mouseEvent) {
+    handleMouseUp = (mouseEvent) => {
         if (!this._mouseIsDown) {
             return;
         }
@@ -544,7 +552,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
                 this.updateColumnEvents();
             }
         }
-    }
+    };
 
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;

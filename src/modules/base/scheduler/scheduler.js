@@ -107,6 +107,7 @@ export default class Scheduler extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
+    _mouseInDetailPopover = false;
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -1469,6 +1470,15 @@ export default class Scheduler extends LightningElement {
         this.hideDeleteConfirmationDialog();
     }
 
+    handleDetailPopoverMouseEnter() {
+        this._mouseInDetailPopover = true;
+    }
+
+    handleDetailPopoverMouseLeave() {
+        this._mouseInDetailPopover = false;
+        this.hideDetailPopover();
+    }
+
     /**
      * Handle the selection of a display.
      *
@@ -1723,7 +1733,9 @@ export default class Scheduler extends LightningElement {
         list.forEach((popover) => {
             switch (popover) {
                 case 'detail':
-                    this.hideDetailPopover();
+                    if (!this._mouseInDetailPopover) {
+                        this.hideDetailPopover();
+                    }
                     break;
                 case 'context':
                     this.hideContextMenu();
