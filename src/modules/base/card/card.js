@@ -272,7 +272,7 @@ export default class Card extends LightningElement {
      */
     get computedCardClasses() {
         return classSet(
-            'avonni-card__body-container slds-grid slds-is-relative slds-scrollable_none slds-col'
+            'avonni-card__body-container slds-grid slds-is-relative slds-col'
         )
             .add({
                 'avonni-card__media-top slds-grid_vertical avonni-card__media-top-left-radius avonni-card__media-top-right-radius':

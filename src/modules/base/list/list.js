@@ -417,6 +417,7 @@ export default class List extends LightningElement {
      */
     get showIconRight() {
         return (
+            this.variant === 'list' &&
             this.sortable &&
             this.sortableIconName &&
             this.sortableIconPosition === 'right'
@@ -430,6 +431,7 @@ export default class List extends LightningElement {
      */
     get showIconLeft() {
         return (
+            this.variant === 'list' &&
             this.sortable &&
             this.sortableIconName &&
             this.sortableIconPosition === 'left' &&
@@ -444,6 +446,7 @@ export default class List extends LightningElement {
      */
     get showImageIconLeft() {
         return (
+            this.variant === 'list' &&
             this.hasImages &&
             this.sortable &&
             this.sortableIconName &&
@@ -501,11 +504,10 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet('avonni-list__item')
             .add({
-                'avonni-list__item-sortable': this.sortable,
+                'avonni-list__item-sortable':
+                    this.sortable && this.variant === 'list',
                 'avonni-list__item-expanded': this._hasActions,
                 'avonni-list__item-borderless': !this._divider,
-                'avonni-list__item-divider_top': this._divider === 'top',
-                'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-card-style': this._divider === 'around'
             })
             .toString();
@@ -514,6 +516,8 @@ export default class List extends LightningElement {
     get computedItemWrapperClass() {
         return classSet('avonni-list__item-wrapper')
             .add({
+                'avonni-list__item-divider_top': this._divider === 'top',
+                'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12':
                     this._effectiveColumnCount === 1 && this.variant === 'grid',
