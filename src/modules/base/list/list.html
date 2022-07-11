@@ -50,7 +50,11 @@
         >{alternativeText}</span
     >
 
-    <ul class={computedListClass} role={menuRole}>
+    <ul
+        class={computedListClass}
+        role={menuRole}
+        data-element-id="list-wrapper"
+    >
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
                 role="listitem"

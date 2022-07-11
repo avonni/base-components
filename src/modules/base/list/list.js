@@ -38,6 +38,7 @@ import {
     deepCopy
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -136,9 +137,18 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _effectiveColumnCount;
 
-    connectedCallback() {
-        window.addEventListener('resize', this.listResize.bind(this));
-        window.addEventListener('DOMContentLoaded', this.listResize.bind(this));
+    _resizeObserver;
+
+    renderedCallback() {
+        this.listResize();
+        this.initWrapObserver();
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
     }
 
     /*
@@ -559,11 +569,34 @@ export default class List extends LightningElement {
      */
 
     /**
+     * Setup the screen resize observer. That counts the number of wrapped chips.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initWrapObserver() {
+        if (!this._resizeObserver) {
+            const resizeObserver = new AvonniResizeObserver(() => {
+                this.listResize();
+            });
+            resizeObserver.observe(
+                this.template.querySelector('[data-element-id="list-wrapper"]')
+            );
+            this._resizeObserver = resizeObserver;
+        }
+    }
+
+    /**
      * Calculate the number of columns depending on the width of the list.
      * @private
      */
-    listResize(list) {
-        const listWidth = list.currentTarget.innerWidth;
+    listResize() {
+        const list = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
+        if (!list) {
+            return;
+        }
+        const listWidth = list.offsetWidth;
         if (!listWidth) {
             return;
         }
@@ -655,7 +688,6 @@ export default class List extends LightningElement {
                     (this._draggedIndex > itemIndex && center < itemCenter) ||
                     (this._draggedIndex < itemIndex && center > itemCenter)
                 ) {
-                    console.log(itemIndex);
                     return item;
                 }
             }
