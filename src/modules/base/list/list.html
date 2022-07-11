@@ -50,31 +50,30 @@
         >{alternativeText}</span
     >
 
-    <div class={computedListClass} role={menuRole}>
-        <div
-            class={computedPlaceholderClass}
-            data-element-id="placeholder-rectangle"
-        ></div>
+    <ul class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
-            <div class={computedItemWrapperClass} key={generateKey}>
+            <li
+                role="listitem"
+                class={computedItemWrapperClass}
+                key={generateKey}
+                onmousedown={dragStart}
+                onmousemove={drag}
+                onmouseup={dragEnd}
+                ontouchstart={dragStart}
+                ontouchmove={drag}
+                ontouchend={dragEnd}
+                onkeydown={handleKeyDown}
+                onclick={handleItemClick}
+                data-index={index}
+                data-position="0"
+                tabindex="0"
+                aria-label={item.label}
+                aria-describedby="instructions"
+                data-element-id="li-item"
+            >
                 <c-card
-                    role="listitem"
                     class={computedItemClass}
                     media-position={mediaPosition}
-                    onmousedown={dragStart}
-                    onmousemove={drag}
-                    onmouseup={dragEnd}
-                    ontouchstart={dragStart}
-                    ontouchmove={drag}
-                    ontouchend={dragEnd}
-                    onkeydown={handleKeyDown}
-                    onclick={handleItemClick}
-                    data-index={index}
-                    data-position="0"
-                    tabindex="0"
-                    aria-label={item.label}
-                    aria-describedby="instructions"
-                    data-element-id="li-item"
                 >
                     <div
                         slot="media"
@@ -301,7 +300,7 @@
                         </div>
                     </div>
                 </c-card>
-            </div>
+            </li>
         </template>
-    </div>
+    </ul>
 </template>

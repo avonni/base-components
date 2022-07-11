@@ -504,8 +504,6 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet('avonni-list__item')
             .add({
-                'avonni-list__item-sortable':
-                    this.sortable && this.variant === 'list',
                 'avonni-list__item-expanded': this._hasActions,
                 'avonni-list__item-borderless': !this._divider,
                 'avonni-list__item-card-style': this._divider === 'around'
@@ -516,6 +514,8 @@ export default class List extends LightningElement {
     get computedItemWrapperClass() {
         return classSet('avonni-list__item-wrapper')
             .add({
+                'avonni-list__item-sortable':
+                    this.sortable && this.variant === 'list',
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
@@ -640,49 +640,34 @@ export default class List extends LightningElement {
     /**
      * Compute hovered items center coordinates for ordering.
      *
-     * @param {DOMElement} center
+     * @param {number} center
      * @returns {object} item
      */
-    getHoveredItem(draggedItem, cursorX, cursorY) {
+    getHoveredItem(center) {
         return this._itemElements.find((item) => {
-            if (item !== draggedItem) {
+            if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
-                // const draggedItemIndex = Number(draggedItem.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
-
-                const itemTopLeft = {
-                    x: itemPosition.left,
-                    y: itemPosition.top
-                };
-                const itemBottomRight = {
-                    x: itemPosition.left + itemPosition.width,
-                    y: itemPosition.top + itemPosition.height
-                };
+                const itemCenter =
+                    itemPosition.bottom - itemPosition.height / 2;
 
                 if (
-                    cursorX > itemTopLeft.x &&
-                    cursorX < itemBottomRight.x &&
-                    cursorY > itemTopLeft.y &&
-                    cursorY < itemBottomRight.y
+                    (this._draggedIndex > itemIndex && center < itemCenter) ||
+                    (this._draggedIndex < itemIndex && center > itemCenter)
                 ) {
-                    this.hoveredPositionTopLeft = itemTopLeft;
-                    this.draggedItemDimensions = {
-                        width: draggedItem.offsetWidth,
-                        height: draggedItem.offsetHeight
-                    };
-
-                    if (this._draggedElement !== item) {
-                        this._hoveredItem = item;
-                        console.log('dragged item', itemIndex);
-                        return item;
-                    }
+                    console.log(itemIndex);
+                    return item;
                 }
             }
             return undefined;
         });
     }
 
-    // old version
+    /**
+     * Compute swap between dragged items.
+     *
+     * @param {Element} target
+     */
     switchWithItem(target) {
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
@@ -713,140 +698,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Compute swap between dragged items.
-     *
-     * @param {Element} target
-     */
-    // switchWithItem(target) {
-    //     console.log('switchWithItem', target);
-    //     const targetIndex = Number(target.dataset.index);
-    //     const index = this._draggedIndex;
-    //     target.classList.add('avonni-list__item-sortable_moved');
-
-    //     // If the target has already been moved, move it back to its original position
-    //     // Else, move it up or down
-    //     if (target.style.transform !== '') {
-    //         target.style.transform = '';
-    //     } else {
-    //         // this works for virtical lists,
-    //         const translationXValue =
-    //             targetIndex > index
-    //                 ? -this._currentItemDraggedWidth
-    //                 : this._currentItemDraggedWidth;
-    //         const translationYValue =
-    //             targetIndex > index
-    //                 ? -this._currentItemDraggedHeight
-    //                 : this._currentItemDraggedHeight;
-    //         target.style.transform = `translate(0px, ${
-    //             translationYValue + 'px'
-    //         })`;
-    //     }
-
-    //     // Make the switch in computed items
-    //     [this.computedItems[targetIndex], this.computedItems[index]] = [
-    //         this.computedItems[index],
-    //         this.computedItems[targetIndex]
-    //     ];
-
-    //     this._draggedIndex = targetIndex;
-    //     this._draggedElement.dataset.index = targetIndex;
-    //     target.dataset.index = index;
-    //     this.updateAssistiveText();
-    // }
-
-    get computedPlaceholderClass() {
-        return classSet('placeholder-rectangle').toString();
-    }
-
-    reserveSpaceForDraggedItem(hoveredItem) {
-        const hoveredItemIndex = Number(hoveredItem.dataset.index);
-        const draggedItemIndex = Number(this._draggedElement.dataset.index);
-
-        if (
-            hoveredItemIndex !== undefined &&
-            draggedItemIndex !== undefined &&
-            hoveredItemIndex !== draggedItemIndex
-        ) {
-            // show a gray rectangle as a placeholder to visualize the target location
-            let placeHolder = this.template.querySelector(
-                '[data-element-id="placeholder-rectangle"]'
-            );
-
-            if (
-                placeHolder &&
-                this.hoveredPositionTopLeft &&
-                this.draggedItemDimensions
-            ) {
-                placeHolder.style.top = this.hoveredPositionTopLeft.y + 'px';
-                placeHolder.style.left = this.hoveredPositionTopLeft.x + 'px';
-                placeHolder.style.width =
-                    this.draggedItemDimensions.width + 'px';
-                placeHolder.style.height =
-                    this.draggedItemDimensions.height + 'px';
-
-                // console.log(this.hoveredPositionTopLeft, this.draggedItemDimensions);
-
-                if (this.variant === 'list') {
-                    if (hoveredItemIndex > draggedItemIndex) {
-                        // console.log('move before hovered item');
-                        hoveredItem.style.transform = `translate(0px, -${this.draggedItemDimensions.height}px)`;
-                        // hoveredItem.style.top = (this.hoveredPositionTopLeft.y + this.draggedItemDimensions.height) + 'px';
-                        // hoveredItem.style.borderColor = 'red';
-                    } else if (hoveredItemIndex < draggedItemIndex) {
-                        // console.log('move after hovered item');
-                        hoveredItem.style.transform = `translate(0px, ${this.draggedItemDimensions.height}px)`;
-                    }
-
-                    // Make the switch in computed items
-                    [
-                        this.computedItems[hoveredItem],
-                        this.computedItems[this._draggedElement]
-                    ] = [
-                        this.computedItems[this._draggedElement],
-                        this.computedItems[hoveredItem]
-                    ];
-                }
-            }
-        }
-    }
-
-    insertDraggedItem(draggedItem) {
-        console.log('insertDraggedItem');
-
-        let placeHolder = this.template.querySelector(
-            '[data-element-id="placeholder-rectangle"]'
-        );
-        if (placeHolder) {
-            placeHolder.style = '';
-        }
-
-        const draggedItemIndex = Number(draggedItem.dataset.index);
-        const hoveredItemIndex = Number(this._hoveredItem.dataset.index);
-
-        // Insert item at position
-        if (draggedItemIndex !== undefined && hoveredItemIndex !== undefined) {
-            console.log(draggedItemIndex, hoveredItemIndex);
-            if (draggedItemIndex > hoveredItemIndex) {
-                this.computedItems.splice(
-                    hoveredItemIndex,
-                    0,
-                    this.computedItems[draggedItemIndex]
-                );
-                this.computedItems.splice(draggedItemIndex + 1, 1);
-            } else {
-                this.computedItems.splice(
-                    hoveredItemIndex + 1,
-                    0,
-                    this.computedItems[draggedItemIndex]
-                );
-                this.computedItems.splice(draggedItemIndex, 1);
-            }
-
-            this.computedItems = [...this.computedItems];
-        }
-    }
-
-    /**
      * Erase the list styles and dataset - clear tracked variables.
      */
     clearSelection() {
@@ -873,7 +724,6 @@ export default class List extends LightningElement {
         // Clean the tracked variables
         this._draggedElement =
             this._draggedIndex =
-            this._initialX =
             this._initialY =
             this._savedComputedItems =
                 undefined;
@@ -890,17 +740,11 @@ export default class List extends LightningElement {
             .getBoundingClientRect();
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
-        this._menuLeft = menuPosition.left;
-        this._menuRight = menuPosition.right;
 
         this._initialY =
             event.type === 'touchstart'
                 ? event.touches[0].clientY
                 : event.clientY;
-        this._initialX =
-            event.type === 'touchstart'
-                ? event.touches[0].clientX
-                : event.clientX;
     }
 
     /**
@@ -957,7 +801,6 @@ export default class List extends LightningElement {
         );
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
-        this._currentItemDraggedWidth = this._draggedElement.offsetWidth;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
 
         if (event.type !== 'keydown') {
@@ -993,59 +836,27 @@ export default class List extends LightningElement {
             event.type === 'touchmove'
                 ? event.touches[0].clientY
                 : event.clientY;
-        const mouseX =
-            event.type === 'touchmove'
-                ? event.touches[0].clientX
-                : event.clientX;
+        const menuTop = this._menuTop;
+        const menuBottom = this._menuBottom;
 
-        // console.log('drag', mouseX, mouseY);
         // Make sure it is not possible to drag the item out of the menu
         let currentY;
-        if (mouseY < this._menuTop) {
-            currentY = this._menuTop;
-        } else if (mouseY > this._menuBottom) {
-            currentY = this._menuBottom;
+        if (mouseY < menuTop) {
+            currentY = menuTop;
+        } else if (mouseY > menuBottom) {
+            currentY = menuBottom;
         } else {
             currentY = mouseY;
         }
-        let currentX;
-        if (mouseX < this._menuLeft) {
-            currentX = this._menuLeft;
-        } else if (mouseX > this._menuRight) {
-            currentX = this._menuRight;
-        } else {
-            currentX = mouseX;
-        }
-
-        // console.log(
-        //     'darg1',
-        //     currentX,
-        //     this._initialX,
-        //     currentY,
-        //     this._initialY
-        // );
 
         // Stick the dragged item to the mouse position
-        this._draggedElement.style.transform = `translate(
-            ${currentX - this._initialX + 'px'},
-            ${currentY - this._initialY + 'px'}
-       )`;
+        this._draggedElement.style.transform = `translateY(${
+            currentY - this._initialY
+        }px)`;
 
         // Get the position of the dragged item
         const position = this._draggedElement.getBoundingClientRect();
         const center = position.bottom - position.height / 2;
-
-        // const hoveredItem = this.getHoveredItem(
-        //     this._draggedElement,
-        //     currentX,
-        //     currentY
-        // );
-        // // const hoveredItem = this.getHoveredItem(this._draggedElement);
-
-        // if (hoveredItem) {
-        //     // this.switchWithItem(hoveredItem);
-        //     this.reserveSpaceForDraggedItem(hoveredItem);
-        // }
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) {
@@ -1060,10 +871,6 @@ export default class List extends LightningElement {
     }
 
     dragEnd(event) {
-        this.insertDraggedItem(this._draggedElement);
-        this._hoveredItem = undefined;
-
-        this.showPlaceholder = false;
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.items[index];
