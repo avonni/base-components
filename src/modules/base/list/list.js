@@ -924,13 +924,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmousedown
              * @param {object} item Item clicked.
+             * @param {string} name Name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmousedown', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -1026,21 +1028,25 @@ export default class List extends LightningElement {
        )`;
 
         // Get the position of the dragged item
-        // const position = this._draggedElement.getBoundingClientRect();
-        // const center = position.bottom - position.height / 2;
+        const position = this._draggedElement.getBoundingClientRect();
+        const center = position.bottom - position.height / 2;
 
-        const hoveredItem = this.getHoveredItem(
-            this._draggedElement,
-            currentX,
-            currentY
-        );
-        // const hoveredItem = this.getHoveredItem(this._draggedElement);
+        // const hoveredItem = this.getHoveredItem(
+        //     this._draggedElement,
+        //     currentX,
+        //     currentY
+        // );
+        // // const hoveredItem = this.getHoveredItem(this._draggedElement);
 
+        // if (hoveredItem) {
+        //     // this.switchWithItem(hoveredItem);
+        //     this.reserveSpaceForDraggedItem(hoveredItem);
+        // }
+
+        const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) {
-            // this.switchWithItem(hoveredItem);
-            this.reserveSpaceForDraggedItem(hoveredItem);
+            this.switchWithItem(hoveredItem);
         }
-
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
         );
@@ -1064,13 +1070,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmouseup
              * @param {object} item Item clicked.
+             * @param {string} name Name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmouseup', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -1186,13 +1194,15 @@ export default class List extends LightningElement {
          * @name actionclick
          * @param {string} name  Name of the action clicked.
          * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item: this.computedItems[itemIndex]
+                    item: this.computedItems[itemIndex],
+                    targetName: this.computedItems[itemIndex].name
                 }
             })
         );
@@ -1218,14 +1228,17 @@ export default class List extends LightningElement {
          * @event
          * @name itemclick
          * @param {object}  item Item clicked.
-         * @param {DOMRect} bounds Bounds of the item clicked.
+         * @param {DOMRect} bounds The size and position of the item in the viewport.
+         * @param {string}  name Name of the clicked item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
                     item: this.computedItems[event.currentTarget.dataset.index],
-                    bounds: event.currentTarget.getBoundingClientRect()
+                    bounds: event.currentTarget.getBoundingClientRect(),
+                    name: this.computedItems[event.currentTarget.dataset.index]
+                        .name
                 }
             })
         );

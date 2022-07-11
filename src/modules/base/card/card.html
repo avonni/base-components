@@ -52,8 +52,8 @@
                     data-element-id="avonni-card-media-image"
                 />
 
-                <div if:true={showMediaSlot} style="height: 100%">
-                    <slot name="media" style="height: 100%"></slot>
+                <div if:true={showMediaSlot}>
+                    <slot name="media"></slot>
                 </div>
 
                 <div class="avonni-card__media-action">
@@ -64,7 +64,6 @@
             <!-- title and actions -->
             <div class="slds-has-flexi-truncate avonni-card__content-container">
                 <header
-                    if:true={showTitle}
                     class="
                         slds-has-flexi-truncate
                         avonni-card__header
