@@ -1,5 +1,5 @@
 /**
- * @typedef {object} MetricsAvatar
+ * @typedef {object} MetricAvatar
  * @name avatar
  * @property {string} alternativeText The alternative text used to describe the avatar.
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
@@ -16,229 +16,229 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-alignment
+ * @name --avonni-metric-alignment
  * @default left
  * @type string
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-description-font-size
+ * @name --avonni-metric-description-font-size
  * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-description-font-weight
+ * @name --avonni-metric-description-font-weight
  * @default normal
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-description-text-color
+ * @name --avonni-metric-description-text-color
  * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-label-font-size
+ * @name --avonni-metric-label-font-size
  * @default 0.875rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-label-font-weigth
+ * @name --avonni-metric-label-font-weigth
  * @default normal
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-label-text-color
+ * @name --avonni-metric-label-text-color
  * @default #444444
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-negative-trend-text-color
+ * @name --avonni-metric-negative-trend-text-color
  * @default #ba0517
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-neutral-trend-text-color
+ * @name --avonni-metric-neutral-trend-text-color
  * @default #444444
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-prefix-font-size
+ * @name --avonni-metric-prefix-font-size
  * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-prefix-font-weight
+ * @name --avonni-metric-prefix-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-prefix-text-color
+ * @name --avonni-metric-prefix-text-color
  * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-negative-trend-color-background
+ * @name --avonni-metric-secondary-negative-trend-color-background
  * @default #feded8
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-negative-trend-radius
+ * @name --avonni-metric-secondary-negative-trend-radius
  * @default 0.25rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-negative-trend-text-color
+ * @name --avonni-metric-secondary-negative-trend-text-color
  * @default #ba0517
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-neutral-trend-color-background
+ * @name --avonni-metric-secondary-neutral-trend-color-background
  * @default #f3f3f3
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-neutral-trend-radius
+ * @name --avonni-metric-secondary-neutral-trend-radius
  * @default 0.25rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-neutral-trend-text-color
+ * @name --avonni-metric-secondary-neutral-trend-text-color
  * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-positive-trend-color-background
+ * @name --avonni-metric-secondary-positive-trend-color-background
  * @default #cdefc4
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-positive-trend-radius
+ * @name --avonni-metric-secondary-positive-trend-radius
  * @default 0.25rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-positive-trend-text-color
+ * @name --avonni-metric-secondary-positive-trend-text-color
  * @default #2e844a
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-prefix-font-size
+ * @name --avonni-metric-secondary-prefix-font-size
  * @default 0.8125rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-prefix-font-weight
+ * @name --avonni-metric-secondary-prefix-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-prefix-text-color
+ * @name --avonni-metric-secondary-prefix-text-color
  * @default #444444
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-suffix-font-size
+ * @name --avonni-metric-secondary-suffix-font-size
  * @default 0.8125rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-suffix-font-weight
+ * @name --avonni-metric-secondary-suffix-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-suffix-text-color
+ * @name --avonni-metric-secondary-suffix-text-color
  * @default #444444
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-value-font-size
+ * @name --avonni-metric-secondary-value-font-size
  * @default 0.8125rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-value-font-weight
+ * @name --avonni-metric-secondary-value-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-secondary-value-text-color
+ * @name --avonni-metric-secondary-value-text-color
  * @default #444444
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-suffix-font-size
+ * @name --avonni-metric-suffix-font-size
  * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-suffix-font-weight
+ * @name --avonni-metric-suffix-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-suffix-text-color
+ * @name --avonni-metric-suffix-text-color
  * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-value-font-size
+ * @name --avonni-metric-value-font-size
  * @default 1.5rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-value-font-weight
+ * @name --avonni-metric-value-font-weight
  * @default bold
  * @type (string|number)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-value-line-height
+ * @name --avonni-metric-value-line-height
  * @default 1.25
  * @type number
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-value-text-color
+ * @name --avonni-metric-value-text-color
  * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metrics-positive-trend-text-color
+ * @name --avonni-metric-positive-trend-text-color
  * @default #2e844a
  * @type color
  */

@@ -69,11 +69,11 @@ const VALUE_SIGNS = {
 
 /**
  * @class
- * @descriptor avonni-metrics
- * @storyId example-metrics--secondary-trend-up
+ * @descriptor avonni-metric
+ * @storyId example-metric--secondary-trend-up
  * @public
  */
-export default class Metrics extends LightningElement {
+export default class Metric extends LightningElement {
     /**
      * Only used if `format-style="currency"`, this attribute determines which currency is displayed. Possible values are the ISO 4217 currency codes, such as `USD` for the US dollar.
      *
@@ -91,7 +91,7 @@ export default class Metrics extends LightningElement {
     @api description;
 
     /**
-     * Label of the metrics. If present, it will be displayed on top of the data.
+     * Label of the metric. If present, it will be displayed on top of the data.
      *
      * @type {string}
      * @public
@@ -670,10 +670,10 @@ export default class Metrics extends LightningElement {
 
         return classSet({
             'slds-m-right_x-small': position === 'left',
-            'avonni-metrics__avatar_after-text slds-m-left_x-small':
+            'avonni-metric__avatar_after-text slds-m-left_x-small':
                 position === 'right',
             'slds-m-bottom_x-small slds-size_1-of-1': position === 'top',
-            'slds-m-top_x-small avonni-metrics__avatar_after-text slds-size_1-of-1':
+            'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1':
                 position === 'bottom'
         }).toString();
     }
@@ -684,16 +684,16 @@ export default class Metrics extends LightningElement {
      * @type {string}
      */
     get primaryClass() {
-        const classes = classSet('avonni-metrics__primary');
+        const classes = classSet('avonni-metric__primary');
 
         if (this.showTrendColor) {
             const isPositive = this.value > this.trendBreakpointValue;
             const isNegative = this.value < this.trendBreakpointValue;
             classes.add({
-                'avonni-metrics__primary_neutral-trend':
+                'avonni-metric__primary_neutral-trend':
                     !isPositive && !isNegative,
-                'avonni-metrics__primary_positive-trend': isPositive,
-                'avonni-metrics__primary_negative-trend': isNegative
+                'avonni-metric__primary_positive-trend': isPositive,
+                'avonni-metric__primary_negative-trend': isNegative
             });
         }
         return classes.toString();
@@ -706,7 +706,7 @@ export default class Metrics extends LightningElement {
      */
     get secondaryClass() {
         const classes = classSet(
-            'slds-m-left_x-small avonni-metrics__secondary'
+            'slds-m-left_x-small avonni-metric__secondary'
         );
 
         if (this.secondaryShowTrendColor) {
@@ -716,10 +716,10 @@ export default class Metrics extends LightningElement {
                 this.secondaryValue < this.secondaryTrendBreakpointValue;
             classes
                 .add({
-                    'avonni-metrics__secondary_neutral-trend':
+                    'avonni-metric__secondary_neutral-trend':
                         !isPositive && !isNegative,
-                    'avonni-metrics__secondary_positive-trend': isPositive,
-                    'avonni-metrics__secondary_negative-trend': isNegative
+                    'avonni-metric__secondary_positive-trend': isPositive,
+                    'avonni-metric__secondary_negative-trend': isNegative
                 })
                 .toString();
         }
