@@ -1349,6 +1349,7 @@ export default class Calendar extends LightningElement {
 
         if (event.altKey) {
             if (event.keyCode === keyCodes.pageup) {
+                event.preventDefault();
                 nextDate = new Date(
                     initialFocusDate.setFullYear(
                         initialFocusDate.getFullYear() - 1
@@ -1356,6 +1357,7 @@ export default class Calendar extends LightningElement {
                 );
             }
             if (event.keyCode === keyCodes.pagedown) {
+                event.preventDefault();
                 nextDate = initialFocusDate.setFullYear(
                     initialFocusDate.getFullYear() + 1
                 );
@@ -1363,48 +1365,57 @@ export default class Calendar extends LightningElement {
         } else {
             switch (event.keyCode) {
                 case keyCodes.left:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 1
                     );
                     break;
                 case keyCodes.right:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 1
                     );
                     break;
                 case keyCodes.up:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 7
                     );
                     break;
                 case keyCodes.down:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 7
                     );
                     break;
                 case keyCodes.home:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - initialFocusDate.getDay()
                     );
                     break;
                 case keyCodes.end:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() +
                             (6 - initialFocusDate.getDay())
                     );
                     break;
                 case keyCodes.pagedown:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() - 1
                     );
                     break;
                 case keyCodes.pageup:
+                    event.preventDefault();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() + 1
                     );
                     break;
                 case keyCodes.space:
                 case keyCodes.enter:
+                    event.preventDefault();
                     {
                         const selectedDay = event.target.querySelector(
                             '[data-element-id="span-day-label"]'
