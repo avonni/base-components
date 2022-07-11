@@ -31,12 +31,17 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString, deepCopy } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray,
+    deepCopy
+} from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import { StraightToolManager } from './straightToolManager';
 import { SmoothToolManager } from './smoothToolManager';
-import { AvonniResizeObserver } from '../resizeObserver/resizeObserver';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
@@ -66,13 +71,6 @@ const DEFAULT_SIZE = 10;
  */
 export default class InputPen extends LightningElement {
     /**
-     * Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.
-     *
-     * @type {string[]}
-     * @public
-     */
-    @api disabledButtons = [];
-    /**
      * Help text detailing the purpose and function of the input.
      *
      * @type {string}
@@ -96,6 +94,7 @@ export default class InputPen extends LightningElement {
 
     _color = DEFAULT_COLOR;
     _disabled = false;
+    _disabledButtons = [];
     _hideControls = false;
     _mode = PEN_MODES.default;
     _readOnly = false;
@@ -142,18 +141,9 @@ export default class InputPen extends LightningElement {
 
     constructor() {
         super();
-        this.mouseUpCallback = (event) => {
-            this.handleMouseUp(event);
-        };
-        this.mouseMoveCallback = (event) => {
-            this.handleMouseMove(event);
-        };
-        this.keyDownCallback = (event) => {
-            this.handleKeyDown(event);
-        };
-        window.addEventListener('mouseup', this.mouseUpCallback);
-        window.addEventListener('mousemove', this.mouseMoveCallback);
-        window.addEventListener('keydown', this.keyDownCallback);
+        window.addEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('mousemove', this.handleMouseMove);
+        window.addEventListener('keydown', this.handleKeyDown);
     }
 
     connectedCallback() {
@@ -163,9 +153,9 @@ export default class InputPen extends LightningElement {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('mouseup', this.mouseUpCallback);
-        window.removeEventListener('mousemove', this.mouseMoveCallback);
-        window.removeEventListener('keydown', this.keyDownCallback);
+        window.removeEventListener('mouseup', this.handleMouseUp);
+        window.removeEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 
     renderedCallback() {
@@ -229,13 +219,20 @@ export default class InputPen extends LightningElement {
     }
 
     set color(value) {
-        const normalizedValue = normalizeString(value);
-        const hexColorRegex = /^#([0-9a-f]{3}){1,2}$/i;
-        if (hexColorRegex.test(normalizedValue)) {
-            this._color = normalizedValue;
-            this.canvasInfo.color = this._color;
-            this.initCursorStyles();
+        const normalizedValue = normalizeString(value, {
+            fallbackValue: this._color
+        });
+        let style = new Option().style;
+        style.color = normalizedValue;
+        if (
+            ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
+            style.color === ''
+        ) {
+            return;
         }
+        this._color = normalizedValue;
+        this.canvasInfo.color = this._color;
+        this.initCursorStyles();
     }
 
     /**
@@ -254,6 +251,20 @@ export default class InputPen extends LightningElement {
         if (this._disabled) {
             this.classList.add('avonni-disabled');
         }
+    }
+
+    /**
+     * Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get disabledButtons() {
+        return this._disabledButtons;
+    }
+    set disabledButtons(value) {
+        this._disabledButtons = normalizeArray(value, 'string');
     }
 
     /**
@@ -568,10 +579,7 @@ export default class InputPen extends LightningElement {
      *
      */
     get showBackground() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('background') === -1
-        );
+        return this._disabledButtons.indexOf('background') === -1;
     }
 
     /**
@@ -580,10 +588,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showClear() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('clear') === -1
-        );
+        return this.disabledButtons.indexOf('clear') === -1;
     }
 
     /**
@@ -592,10 +597,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showColor() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('color') === -1
-        );
+        return this.disabledButtons.indexOf('color') === -1;
     }
 
     /**
@@ -613,10 +615,7 @@ export default class InputPen extends LightningElement {
      *
      */
     get showDownload() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('download') === -1
-        );
+        return this.disabledButtons.indexOf('download') === -1;
     }
 
     /**
@@ -625,10 +624,7 @@ export default class InputPen extends LightningElement {
      *
      */
     get showErase() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('eraser') === -1
-        );
+        return this.disabledButtons.indexOf('eraser') === -1;
     }
 
     /**
@@ -637,9 +633,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showInk() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('ink') === -1
-        );
+        return this.disabledButtons.indexOf('ink') === -1;
     }
 
     /**
@@ -648,10 +642,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showPaint() {
-        return (
-            !this.disabledButtons ||
-            this.disabledButtons.indexOf('paintbrush') === -1
-        );
+        return this.disabledButtons.indexOf('paintbrush') === -1;
     }
 
     /**
@@ -659,9 +650,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showPen() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('pen') === -1
-        );
+        return this.disabledButtons.indexOf('pen') === -1;
     }
 
     /**
@@ -670,9 +659,7 @@ export default class InputPen extends LightningElement {
      *
      */
     get showRedo() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('redo') === -1
-        );
+        return this.disabledButtons.indexOf('redo') === -1;
     }
 
     /**
@@ -681,9 +668,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showSize() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('size') === -1
-        );
+        return this.disabledButtons.indexOf('size') === -1;
     }
 
     /**
@@ -692,9 +677,7 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showUndo() {
-        return (
-            !this.disabledButtons || this.disabledButtons.indexOf('undo') === -1
-        );
+        return this.disabledButtons.indexOf('undo') === -1;
     }
 
     /**
@@ -1288,27 +1271,27 @@ export default class InputPen extends LightningElement {
      *
      * @param {Event} event
      */
-    handleMouseMove(event) {
+    handleMouseMove = (event) => {
         this.manageMouseEvent('move', event);
-    }
+    };
 
     /**
      * Mouse down handler. Search canvas coordinates on event trigger.
      *
      * @param {Event} event
      */
-    handleMouseDown(event) {
+    handleMouseDown = (event) => {
         this.manageMouseEvent('down', event);
-    }
+    };
 
     /**
      * Mouse up handler. Search canvas coordinates on event trigger.
      *
      * @param {Event} event
      */
-    handleMouseUp(event) {
+    handleMouseUp = (event) => {
         this.manageMouseEvent('up', event);
-    }
+    };
 
     /**
      * Mouse Enter handler. Set opacity to 1. Search canvas coordinates on event trigger.
