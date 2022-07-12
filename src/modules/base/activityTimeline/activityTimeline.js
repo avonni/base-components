@@ -891,15 +891,6 @@ export default class ActivityTimeline extends LightningElement {
          * @public
          */
 
-        // Check if click is on close button of popover
-        if (
-            event.target !== null &&
-            event.target.getAttribute('class') &&
-            event.target.getAttribute('class').includes('slds-popover__close')
-        ) {
-            return;
-        }
-
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
@@ -914,7 +905,11 @@ export default class ActivityTimeline extends LightningElement {
      * Handle close of item's tooltip for horizontal view timeline.
      *
      */
-    handleTooltipClose() {
+    handleTooltipClose(event) {
+        // To prevent item click event to be dispatch when closing tooltip
+        if (event) {
+            event.stopPropagation();
+        }
         this.showItemPopOver = false;
         this.selectedItem = null;
     }
