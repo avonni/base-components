@@ -707,19 +707,18 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get computedClass() {
         const theme = this.theme;
+        const centerLabel = normalizeObject(this.labels.center);
         return classSet(
-            `avonni-scheduler__event slds-p-horizontal_x-small slds-grid slds-has-flexi-truncate avonni-scheduler__event_${theme}`
+            `avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-scheduler__event_${theme}`
         )
             .add({
+                'slds-p-horizontal_x-small': !this.isCalendar,
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
                     (this._focused && theme === 'transparent'),
                 'avonni-scheduler__event-wrapper_focused': this._focused,
-                'slds-p-vertical_xx-small':
-                    theme !== 'line' &&
-                    !this.isVerticalTimeline &&
-                    !this.isCalendar,
+                'slds-p-vertical_xx-small': centerLabel.iconName,
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line'
@@ -776,7 +775,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get eventOccurrenceClass() {
         return classSet('slds-grid')
             .add({
-                'slds-grid_vertical-align-center slds-p-vertical_x-small':
+                'slds-grid_vertical-align-center slds-p-vertical_xx-small':
                     !this.isVerticalTimeline && !this.isCalendar,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
@@ -1281,6 +1280,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     updatePositionInTimeline() {
         const { cellHeight, cellWidth, timelineHeaderCells } = this;
+        if (!timelineHeaderCells) {
+            return;
+        }
 
         // Find the cell where the event starts
         const i = this.getStartCellIndex(timelineHeaderCells);

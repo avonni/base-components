@@ -30,43 +30,22 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-scheduler__calendar-cell {
-    height: var(--avonni-scheduler-cell-height);
-    min-height: var(--avonni-scheduler-cell-height);
-}
+export default class SchedulerEventOccurrence {
+    constructor(props) {
+        this.offsetTop = 0;
+        Object.assign(this, props);
+    }
 
-.avonni-primitive-scheduler-calendar__inherit-height {
-    height: inherit;
-}
+    get endOfTo() {
+        return this.to.endOf('day');
+    }
 
-/* Splitter bar between the left panel and the schedule --------- */
-.avonni-scheduler__splitter {
-    z-index: 5;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 20px;
-}
-.avonni-scheduler__first-col_open .avonni-scheduler__splitter {
-    left: -12px;
-}
-.avonni-scheduler__splitter:hover > div,
-.avonni-scheduler__splitter:focus-within > div {
-    width: 15px;
-}
-.avonni-scheduler__splitter:hover .avonni-scheduler__splitter-icon,
-.avonni-scheduler__splitter-icon:focus {
-    left: 0;
-}
-.avonni-scheduler__splitter > div {
-    height: 100%;
-    overflow: hidden;
-    width: 4px;
-    transition: width 300ms;
-}
-.avonni-scheduler__splitter:not(.avonni-scheduler__splitter_disabled) > div {
-    cursor: col-resize;
-}
-.avonni-scheduler__splitter-icon {
-    left: 30px;
+    get startOfFrom() {
+        return this.from.startOf('day');
+    }
+
+    get fromWeekday() {
+        const weekday = this.from.weekday;
+        return weekday === 7 ? weekday - 1 : weekday;
+    }
 }

@@ -57,16 +57,18 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     _mouseIsDown = false;
     _resizeObserver;
     _updateOccurrencesLength = false;
+    cellHeight = 0;
+    cellWidth = 0;
     columns = [];
     computedEvents = [];
     computedResources = [];
+    dayCellDuration = 0;
     eventHeaderCells = {};
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
     firstColWidth = 0;
-    cellDuration = 0;
-    cellHeight = 0;
-    cellWidth = 0;
+    hourCellDuration = 0;
+    multiDayCellHeight = 0;
     multiDayEvents = [];
     singleDayEvents = [];
     start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
@@ -337,7 +339,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
     initResources() {
         this.computedResources = this.resources.map((res) => {
-            return { ...res, data: { res } };
+            return { ...res, height: 0, data: { res } };
         });
     }
 
@@ -350,7 +352,14 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
      */
     pushVerticalHeadersDown() {
         if (this.horizontalHeaders && this.verticalHeaders) {
-            const height = this.horizontalHeaders.offsetHeight;
+            let height = this.horizontalHeaders.offsetHeight;
+
+            const multiDayEventsWrapper = this.template.querySelector(
+                '[data-element-id="div-multi-day-events-wrapper"]'
+            );
+            if (multiDayEventsWrapper) {
+                height += multiDayEventsWrapper.offsetHeight;
+            }
             this.verticalHeaders.style.marginTop = `${height}px`;
         }
     }
@@ -378,7 +387,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
                 if (!event.disabled) {
                     const occurrences = event.occurrences.filter(
                         (occurrence) => {
-                            return occurrence.weekday === weekday;
+                            return occurrence.fromWeekday === weekday;
                         }
                     );
 
@@ -397,21 +406,42 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         // For each day column
         this.columns.forEach(({ weekday, events }) => {
             if (events.length) {
-                // Get all the event occurrences for the current weekday
-                const occurrenceElements = Array.from(
+                // Get all the event occurrences for the current weekday column
+                const singleDayOccurrences = Array.from(
                     this.template.querySelectorAll(
-                        `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-weekday="${weekday}"]:not([data-disabled="true"])`
+                        `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${weekday}"]:not([data-disabled="true"])`
                     )
                 );
 
                 updateOccurrencesOffset.call(
                     this,
-                    occurrenceElements,
+                    singleDayOccurrences,
                     events,
                     true
                 );
             }
         });
+
+        if (this.multiDayEvents.length) {
+            const multiDayOccurrences = Array.from(
+                this.template.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]:not([data-disabled="true"])'
+                )
+            );
+            const events = this.multiDayEvents.map((ev) => ev.occurrences);
+            const occurrences = events.flat();
+            const multiDayRowHeight = updateOccurrencesOffset.call(
+                this,
+                multiDayOccurrences,
+                occurrences
+            );
+
+            const multiDayEventsWrapper = this.template.querySelector(
+                '[data-element-id="div-multi-day-events-wrapper"]'
+            );
+            multiDayEventsWrapper.style.height = `${multiDayRowHeight}px`;
+            this.pushVerticalHeadersDown();
+        }
     }
 
     /*
@@ -436,6 +466,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
         if (orientation === 'vertical') {
             this.cellHeight = cellSize;
+            this.multiDayCellHeight = cellSize;
         } else {
             this.cellWidth = cellSize;
         }
@@ -446,14 +477,17 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     }
 
     handleHorizontalHeaderChange(event) {
-        const smallestHeader = event.detail.smallestHeader;
+        const { smallestHeader, visibleInterval } = event.detail;
+        const { start, cells, unit, span } = smallestHeader;
 
         // Update the start date in case it was not available
-        this.start = smallestHeader.start;
+        this.start = start;
 
-        this.eventHeaderCells.xAxis = smallestHeader.cells;
-        this.visibleInterval = event.detail.visibleInterval;
-        this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
+        this.eventHeaderCells.xAxis = cells;
+        this.visibleInterval = visibleInterval;
+        this.dispatchVisibleIntervalChange(start, visibleInterval);
+        const end = addToDate(start, unit, span) - 1;
+        this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
 
         this.initEvents();
         this.updateColumnEvents();
@@ -562,6 +596,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
         this.eventHeaderCells.yAxis = cells;
         const end = addToDate(start, unit, span) - 1;
-        this.cellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
+        this.hourCellDuration =
+            dateTimeObjectFrom(end).diff(start).milliseconds;
     }
 }

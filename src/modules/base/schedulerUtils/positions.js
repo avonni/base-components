@@ -246,7 +246,7 @@ export function updateOccurrencesOffset(
  */
 export function updateOccurrencesPosition(isVertical) {
     const eventOccurrences = this.template.querySelectorAll(
-        '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+        '[data-element-id^="avonni-primitive-scheduler-event-occurrence"]'
     );
     eventOccurrences.forEach((occurrence) => {
         if (this._updateOccurrencesLength) {

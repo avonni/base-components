@@ -114,12 +114,7 @@ export default class SchedulerEventData {
     }
 
     addToSingleAndMultiDayEvents(event) {
-        const interval = Interval.fromDateTimes(
-            event.computedFrom,
-            event.computedTo
-        );
-        const lastsMoreThanOneDay = interval.length('days') > 1;
-        if (lastsMoreThanOneDay) {
+        if (this.isMultiDay(event, event.computedFrom, event.computedTo)) {
             this.multiDayEvents.push(event);
         } else {
             this.singleDayEvents.push(event);
@@ -214,6 +209,15 @@ export default class SchedulerEventData {
         }
     }
 
+    isMultiDay(event, from, to) {
+        const interval = Interval.fromDateTimes(from, to);
+        const lastsMoreThanOneDay = interval.length('days') > 1;
+        const hasWeekdayRecurrence = normalizeArray(
+            event.recurrenceAttributes && event.recurrenceAttributes.weekdays
+        );
+        return lastsMoreThanOneDay && !hasWeekdayRecurrence.length;
+    }
+
     /**
      * Display a new event on the schedule grid and open the edition dialog if showDialog is true.
      *
@@ -243,6 +247,18 @@ export default class SchedulerEventData {
         if (saveEvent) {
             this.events.push(computedEvent);
         }
+    }
+
+    normalizedEventTo(event) {
+        let to = dateTimeObjectFrom(event.to);
+        const from = dateTimeObjectFrom(event.from);
+
+        if (event.allDay && to) {
+            to = to.endOf('day');
+        } else if (from && (event.allDay || to < from)) {
+            to = from.endOf('day');
+        }
+        return to;
     }
 
     refreshEvents() {
@@ -381,8 +397,8 @@ export default class SchedulerEventData {
                 to: occurrence.to.toUTC().toISO()
             }
         };
-        this.schedule.dispatchEventChange(detail);
         this.refreshEvents();
+        this.schedule.dispatchEventChange(detail);
     }
 
     selectEvent({ eventName, from, x, y, key }) {
@@ -390,7 +406,7 @@ export default class SchedulerEventData {
             return evt.name === eventName;
         });
         const occurrences = event.occurrences.filter((occ) => {
-            return occ.from.ts === from.ts;
+            return occ.from.ts === from.ts || occ.startOfFrom.ts === from.ts;
         });
         const occurrence = occurrences.find((occ) => occ.key === key);
 
@@ -412,7 +428,7 @@ export default class SchedulerEventData {
 
         const key = this.selection.occurrence.key;
         const draggedEvent = this.schedule.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"]`
+            `[data-element-id^="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"]`
         );
         if (draggedEvent) {
             this.eventDrag.setDraggedEvent(draggedEvent);
@@ -432,11 +448,20 @@ export default class SchedulerEventData {
      * @param {object} event The event object.
      */
     updateEventDefaults(event) {
+        // If the event is a calendar multi-day event,
+        // do not cut it at the currently visible schedule start/end
+        const visibleEnd = this.visibleInterval.e;
+        const visibleStart = this.visibleInterval.s;
+        const from = dateTimeObjectFrom(event.from);
+        const to = this.normalizedEventTo(event);
+        const isMultiDay = this.isMultiDay(event, from, to);
+        const isCalendarMultiDay = isMultiDay && this.isCalendar;
+        event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
+        event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
+
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
         event.data = { ...event };
-        event.schedulerEnd = this.visibleInterval.e;
-        event.schedulerStart = this.visibleInterval.s;
         event.availableMonths = this.availableMonths;
         event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
         event.availableTimeFrames = this.availableTimeFrames;

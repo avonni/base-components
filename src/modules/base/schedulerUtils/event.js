@@ -41,6 +41,7 @@ import {
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { DateTime, Interval } from 'c/luxon';
+import Occurrence from './eventOccurrence';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -331,10 +332,7 @@ export default class SchedulerEvent {
 
         if (this.allDay && to) {
             to = to.endOf('day');
-        } else if (
-            (this.allDay && this.from) ||
-            (this.from && to < this.from)
-        ) {
+        } else if (this.from && (this.allDay || to < this.from)) {
             to = this.from.endOf('day');
         }
 
@@ -396,30 +394,23 @@ export default class SchedulerEvent {
         );
 
         if (containsAllowedTimes) {
-            const weekday =
-                from.weekday === 7 ? from.weekday - 1 : from.weekday;
             if (this.referenceLine) {
-                const occurrence = {
-                    from,
-                    to,
-                    key: `${this.title}-${this.occurrences.length}`,
-                    title: this.title,
-                    weekday
-                };
-                this.occurrences.push(occurrence);
+                const key = `${this.title}-${this.occurrences.length}`;
+                this.occurrences.push(
+                    new Occurrence({ from, to, key, title: this.title })
+                );
             } else {
                 resourceNames.forEach((name) => {
-                    const occurrence = {
-                        from,
-                        key: `${this.name}-${name}-${from.ts}`,
-                        resourceNames: resourceNames,
-                        offsetTop: 0,
-                        resourceName: name,
-                        title: this.title,
-                        to: computedTo,
-                        weekday
-                    };
-                    this.occurrences.push(occurrence);
+                    this.occurrences.push(
+                        new Occurrence({
+                            from,
+                            key: `${this.name}-${name}-${from.ts}`,
+                            resourceName: name,
+                            resourceNames,
+                            title: this.title,
+                            to: computedTo
+                        })
+                    );
                 });
             }
         }
