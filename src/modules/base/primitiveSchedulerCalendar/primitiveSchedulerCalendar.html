@@ -146,7 +146,7 @@
                                 data-end={cell.end}
                                 data-start={cell.start}
                                 oncontextmenu={handleEmptySpotContextMenu}
-                                onmousedown={handleMouseDown}
+                                onmousedown={handleMultiDayEmptyCellMouseDown}
                                 ondblclick={handleDoubleClick}
                             ></div>
                         </template>
@@ -159,7 +159,7 @@
                             <c-primitive-scheduler-event-occurrence
                                 key={occurrence.key}
                                 color={event.color}
-                                header-cells={eventHeaderCells}
+                                header-cells={multiDayEventHeaderCells}
                                 cell-duration={dayCellDuration}
                                 cell-height={multiDayCellHeight}
                                 cell-width={cellWidth}
@@ -192,7 +192,7 @@
                                 onprivatedblclick={handleEventDoubleClick}
                                 onprivatedisableddblclick={handleDoubleClick}
                                 onprivatemousedown={handleMultiDayEventMouseDown}
-                                onprivatedisabledmousedown={handleMouseDown}
+                                onprivatedisabledmousedown={handleMultiDayEmptyCellMouseDown}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>
                     </template>

@@ -322,14 +322,6 @@ export default class SchedulerEvent {
             : this.schedulerStart;
     }
 
-    get computedIsAllDay() {
-        const startAtBeginningOfDay =
-            this.computedFrom.startOf('day').ts === this.computedFrom.ts;
-        const endAtEndOfDay =
-            this.computedTo.endOf('day').ts === this.computedTo.ts;
-        return this.allDay || (startAtBeginningOfDay && endAtEndOfDay);
-    }
-
     /**
      * Computed ending date of the event.
      *

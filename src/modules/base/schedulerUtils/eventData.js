@@ -250,7 +250,10 @@ export default class SchedulerEventData {
                     normalizedY,
                     true
                 );
-                return { cellGroupElement: dayCell, cellElement: dayCell };
+                return {
+                    cellGroupElement: this.schedule.multiDayWrapper,
+                    cellElement: dayCell
+                };
             }
             default: {
                 const resourceRow =
@@ -266,8 +269,12 @@ export default class SchedulerEventData {
     }
 
     isMultiDay(event, from, to) {
+        const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
+        const endAtEndOfDay = to.endOf('day').ts === to.ts;
+        const isAllDay =
+            event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
+
         const interval = Interval.fromDateTimes(from, to);
-        const isAllDay = event.computedIsAllDay;
         const lastsMoreThanOneDay = interval.length('days') > 1;
         const hasWeekdayRecurrence = normalizeArray(
             event.recurrenceAttributes && event.recurrenceAttributes.weekdays
@@ -371,8 +378,7 @@ export default class SchedulerEventData {
         // Update the event with the new values
         Object.entries(draftValues).forEach((entry) => {
             const [key, value] = entry;
-
-            if (value.length || key === 'allDay') {
+            if (key === 'allDay' || value.length) {
                 event[key] = value;
             }
         });
@@ -652,6 +658,7 @@ export default class SchedulerEventData {
         event,
         cellGroupElement,
         from,
+        isVertical = this.isVertical,
         to,
         resourceNames,
         x,
@@ -659,7 +666,7 @@ export default class SchedulerEventData {
     }) {
         this.eventDrag = new SchedulerEventDrag({
             event,
-            isVertical: this.isVertical,
+            isVertical,
             cellGroupElement,
             isNewEvent: true,
             boundaries: this.boundaries

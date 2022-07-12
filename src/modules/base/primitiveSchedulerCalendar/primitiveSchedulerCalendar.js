@@ -215,6 +215,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return unit === 'week' || (unit === 'day' && span === 7);
     }
 
+    get multiDayEventHeaderCells() {
+        // Normalize the end and start of the first and last cells
+        const cells = [...this.eventHeaderCells.xAxis];
+        const start = dateTimeObjectFrom(cells[0].start);
+        const end = dateTimeObjectFrom(cells[cells.length - 1].end);
+        cells[0].start = start.startOf('day').ts;
+        cells[cells.length - 1].end = end.endOf('day').ts;
+        return { xAxis: cells };
+    }
+
+    get multiDayWrapper() {
+        return this.template.querySelector(
+            '[data-element-id="div-multi-day-events-wrapper"]'
+        );
+    }
+
     get resourceOptions() {
         return this.resources.map((res) => {
             return {
@@ -299,9 +315,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 end: col.end.ts - 1
             };
         });
+        const multiDayOccurrences = this.multiDayEvents
+            .map((ev) => ev.occurrences)
+            .flat();
         this.multiDayEventsCellGroup = new Column({
             referenceCells,
-            events: this.multiDayEvents
+            events: multiDayOccurrences
         });
         this._eventData.multiDayEventsCellGroup = this.multiDayEventsCellGroup;
     }
@@ -371,12 +390,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     pushVerticalHeadersDown() {
         if (this.horizontalHeaders && this.verticalHeaders) {
             let height = this.horizontalHeaders.offsetHeight;
-
-            const multiDayEventsWrapper = this.template.querySelector(
-                '[data-element-id="div-multi-day-events-wrapper"]'
-            );
-            if (multiDayEventsWrapper) {
-                height += multiDayEventsWrapper.offsetHeight;
+            if (this.multiDayWrapper) {
+                height += this.multiDayWrapper.offsetHeight;
             }
             this.verticalHeaders.style.marginTop = `${height}px`;
         }
@@ -415,6 +430,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             col.events = events.flat();
             col.initCells();
         });
+
+        const multiDayOccurrences = [];
+        this.multiDayEvents.forEach((event) => {
+            if (!event.disabled) {
+                multiDayOccurrences.push(...event.occurrences);
+            }
+        });
+        this.multiDayEventsCellGroup.events = multiDayOccurrences;
     }
 
     /**
@@ -454,10 +477,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 occurrences
             );
 
-            const multiDayEventsWrapper = this.template.querySelector(
-                '[data-element-id="div-multi-day-events-wrapper"]'
-            );
-            multiDayEventsWrapper.style.height = `${multiDayRowHeight}px`;
+            this.multiDayWrapper.style.height = `${multiDayRowHeight}px`;
             this.pushVerticalHeadersDown();
         }
     }
@@ -476,15 +496,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const x = mouseEvent.detail.x;
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
         this._eventData.handleExistingEventMouseDown(mouseEvent, column);
-        this.dispatchHidePopovers();
-    }
-
-    handleMultiDayEventMouseDown(mouseEvent) {
-        this._mouseIsDown = true;
-        const row = this.template.querySelector(
-            '[data-element-id="div-multi-day-events-wrapper"]'
-        );
-        this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
         this.dispatchHidePopovers();
     }
 
@@ -614,6 +625,40 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             }
         }
     };
+
+    handleMultiDayEmptyCellMouseDown(event) {
+        if (event.button || this.readOnly) {
+            return;
+        }
+
+        this._mouseIsDown = true;
+        this.dispatchHidePopovers();
+
+        const x = event.clientX || event.detail.x;
+        const y = event.clientY || event.detail.y;
+        const row = this.multiDayWrapper;
+        const cell = getElementOnXAxis(row, x, CELL_SELECTOR);
+        const resourceNames = [this.resources[0].name];
+        const from = Number(cell.dataset.start);
+        const to = Number(cell.dataset.end) + 1;
+        this._eventData.handleNewEventMouseDown({
+            event,
+            cellGroupElement: row,
+            from,
+            isVertical: false,
+            resourceNames,
+            to,
+            x,
+            y
+        });
+    }
+
+    handleMultiDayEventMouseDown(mouseEvent) {
+        this._mouseIsDown = true;
+        const row = this.multiDayWrapper;
+        this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
+        this.dispatchHidePopovers();
+    }
 
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;

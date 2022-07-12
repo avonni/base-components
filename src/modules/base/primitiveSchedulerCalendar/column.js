@@ -45,6 +45,6 @@ export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup
     }
 
     get weekday() {
-        return this.start.weekday;
+        return this.start.weekday === 7 ? 0 : this.start.weekday;
     }
 }
