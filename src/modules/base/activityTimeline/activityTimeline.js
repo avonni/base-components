@@ -337,7 +337,7 @@ export default class ActivityTimeline extends LightningElement {
         if (this._isConnected) this.initActivityTimeline();
     }
 
-     /**
+    /**
      * If true, the date of each item is hidden.
      *
      * @public
@@ -348,7 +348,7 @@ export default class ActivityTimeline extends LightningElement {
     get hideItemDate() {
         return this._hideItemDate;
     }
-  
+
     set hideItemDate(value) {
         this._hideItemDate = normalizeBoolean(value);
     }
@@ -911,10 +911,10 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Handle the mouse leave on item for horizontal view timeline.
+     * Handle close of item's tooltip for horizontal view timeline.
      *
      */
-    handleItemMouseLeave() {
+    handleTooltipClose() {
         this.showItemPopOver = false;
         this.selectedItem = null;
     }

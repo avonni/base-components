@@ -1386,7 +1386,7 @@ export class HorizontalActivityTimeline {
     handleMouseOutOnItem() {
         setTimeout(() => {
             if (!this._isMouseOverOnPopover) {
-                this._activityTimeline.handleItemMouseLeave();
+                this._activityTimeline.handleTooltipClose();
             }
         }, 1500);
     }
@@ -1403,7 +1403,7 @@ export class HorizontalActivityTimeline {
      */
     handleMouseOutOfPopover() {
         this._isMouseOverOnPopover = false;
-        this._activityTimeline.handleItemMouseLeave();
+        this._activityTimeline.handleTooltipClose();
     }
 
     /**
