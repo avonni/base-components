@@ -43,13 +43,13 @@ export const List = ({
     sortableIconName,
     sortableIconPosition,
     divider,
-    imageWidth,
     variant,
     imageHeight,
     cols,
     smallContainerCols,
     mediumContainerCols,
-    largeContainerCols
+    largeContainerCols,
+    imageAttributes
 }) => {
     const element = document.createElement('ac-base-list');
     element.label = label;
@@ -60,12 +60,12 @@ export const List = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.divider = divider;
-    element.imageWidth = imageWidth;
     element.variant = variant;
     element.imageHeight = imageHeight;
     element.cols = cols;
     element.smallContainerCols = smallContainerCols;
     element.mediumContainerCols = mediumContainerCols;
     element.largeContainerCols = largeContainerCols;
+    element.imageAttributes = imageAttributes;
     return element;
 };

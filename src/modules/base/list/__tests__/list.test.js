@@ -68,6 +68,8 @@ describe('List', () => {
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
+        expect(element.variant).tobe('list');
+        expect(element.imageHeight).toBe('large');
     });
 
     /* ----- ATTRIBUTES ----- */

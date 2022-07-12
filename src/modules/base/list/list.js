@@ -51,14 +51,14 @@ const DIVIDER = {
 
 const DEFAULT_ITEM_HEIGHT = 44;
 
-const IMAGE_WIDTH = {
+const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
 };
 
-const IMAGE_HEIGHT = {
-    valid: ['small', 'medium', 'large'],
-    default: 'large'
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
 };
 
 const VARIANTS = {
@@ -104,10 +104,12 @@ export default class List extends LightningElement {
 
     _actions = [];
     _divider;
-    _imageWidth = IMAGE_WIDTH.default;
     _items = [];
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
+    _imageSize = IMAGE_SIZE.default;
+    _imageCropFit = IMAGE_CROP_FIT.default;
+    _imageAttributes;
 
     _draggedIndex;
     _draggedElement;
@@ -190,40 +192,60 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Fixed width of image in list variant. 3 sizes: small (48px), medium (72px) and large (128px).
+     * Deprecated. Use 'size' attribute instead.
      *
      * @type {string}
-     * @public
      * @default large
+     * @deprecated
      */
     @api
     get imageWidth() {
         return this._imageWidth;
     }
 
-    set imageWidth(width) {
-        this._imageWidth = normalizeString(width, {
-            validValues: IMAGE_WIDTH.valid,
-            defaultValue: IMAGE_WIDTH.default
+    set imageWidth(size) {
+        this._imageSize = normalizeString(size, {
+            validValues: IMAGE_SIZE.valid,
+            defaultValue: IMAGE_SIZE.default
         });
+        console.warn(
+            "'imageWidth' is deprecated. Use image attribute 'size' instead."
+        );
     }
 
     /**
-     * Fixed height of image in grid variant. 3 sizes: small (48px), medium (100px) and large (200px).
+     * Image attributes: cropFit, position and size.
      *
-     * @type {string}
+     * @type {object}
      * @public
-     * @default large
      */
     @api
-    get imageHeight() {
-        return this._imageHeight;
+    get imageAttributes() {
+        return this._imageAttributes;
     }
-    set imageHeight(height) {
-        this._imageHeight = normalizeString(height, {
-            validValues: IMAGE_HEIGHT.valid,
-            defaultValue: IMAGE_HEIGHT.default
-        });
+    set imageAttributes(value) {
+        if (!value) {
+            return;
+        }
+        if (value.size) {
+            this._imageSize = normalizeString(value.size, {
+                validValues: IMAGE_SIZE.valid,
+                defaultValue: IMAGE_SIZE.default
+            });
+        }
+        if (value.cropPositionX) {
+            this._imagePositionY = value.cropPositionY;
+        }
+        if (value.cropPositionY) {
+            this._imagePositionY = value.cropPositionY;
+        }
+        if (value.cropFit) {
+            this._imageCropFit = normalizeString(value.cropFit, {
+                validValues: IMAGE_CROP_FIT.valid,
+                defaultValue: IMAGE_CROP_FIT.default
+            });
+        }
+        console.log(value);
     }
 
     /**
@@ -362,17 +384,17 @@ export default class List extends LightningElement {
     get computedImageClass() {
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
-                this._imageWidth === 'small' && this._variant === 'list',
+                this._imageSize === 'small' && this._variant === 'list',
             'avonni-list__item-image_medium-width':
-                this._imageWidth === 'medium' && this._variant === 'list',
+                this._imageSize === 'medium' && this._variant === 'list',
             'avonni-list__item-image_large-width':
-                this._imageWidth === 'large' && this._variant === 'list',
+                this._imageSize === 'large' && this._variant === 'list',
             'avonni-list__item-image_small-height':
-                this._imageHeight === 'small' && this._variant === 'grid',
+                this._imageSize === 'small' && this._variant === 'grid',
             'avonni-list__item-image_medium-height':
-                this._imageHeight === 'medium' && this._variant === 'grid',
+                this._imageSize === 'medium' && this._variant === 'grid',
             'avonni-list__item-image_large-height':
-                this._imageHeight === 'large' && this._variant === 'grid'
+                this._imageSize === 'large' && this._variant === 'grid'
         });
     }
 
@@ -522,7 +544,7 @@ export default class List extends LightningElement {
     }
 
     get computedItemWrapperClass() {
-        return classSet('avonni-list__item-wrapper')
+        return classSet('avonni-list__item-wrapper slds-grid')
             .add({
                 'avonni-list__item-sortable':
                     this.sortable && this.variant === 'list',

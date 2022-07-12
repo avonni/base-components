@@ -33,6 +33,7 @@
 /* outer card */
 
 article.avonni-card {
+    height: 100%;
     background-color: var(--avonni-card-color-background, white);
     color: var(--avonni-card-text-color);
 

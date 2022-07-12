@@ -107,30 +107,13 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        imageWidth: {
-            name: 'image-width',
+        imageAttribute: {
             control: {
-                type: 'select'
+                type: 'object'
             },
-            options: ['small', 'medium', 'large'],
-            description:
-                'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
+            description: 'Object of attributes for the list item images.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'large' }
-            }
-        },
-        imageHeight: {
-            name: 'image-height',
-            control: {
-                type: 'select'
-            },
-            options: ['small', 'medium', 'large'],
-            description:
-                'Fixed height of image (3 sizes: (small 48px, medium 72px and large 128px)',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'large' }
+                type: { summary: 'object' }
             }
         },
         items: {
@@ -194,7 +177,6 @@ export default {
         }
     },
     args: {
-        imageWidth: 'large',
         sortable: false,
         sortableIconPosition: 'right'
     }
@@ -486,7 +468,9 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
-    imageWidth: 'medium'
+    imageAttribute: {
+        size: 'medium'
+    }
 };
 
 export const SortableGridWithImagesAndAvatars = Template.bind({});
@@ -495,7 +479,9 @@ SortableGridWithImagesAndAvatars.args = {
     items: itemsWithAvatars,
     actions: actions,
     divider: 'around',
-    imageWidth: 'medium',
+    imageAttribute: {
+        size: 'medium'
+    },
     variant: 'grid',
     cols: 1,
     smallContainerCols: 3
@@ -506,7 +492,11 @@ GridWithImages.args = {
     label: 'Sortable grid with Avatars and Icons',
     items: itemsWithImages,
     actions: actions,
-    imageHeight: 'large',
+    imageAttribute: {
+        cropPositionX: 100,
+        cropPositionY: 100,
+        size: 'large'
+    },
     variant: 'grid',
     cols: 1,
     smallContainerCols: 3,
@@ -520,7 +510,9 @@ GridCardWithImages.args = {
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
-    imageHeight: 'medium',
+    imageAttribute: {
+        size: 'medium'
+    },
     variant: 'grid',
     cols: 1,
     smallContainerCols: 3,

@@ -28,7 +28,25 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+ add hooks for width and height for all images
+ ✅ deprecate image-width
+ ✅ use image-size instead. styling hook for hieght and width. hook has priority
+ ✅ image attribute, corp fit, position, and size.
+ Use lazy loading for images
+ infinite loading!
+ ✅ stretch to same height
+ action top right on the image in grid
+ ✅ background color behind image
+ padding around image, padding around body
+ and inside border on body
  */
+
+:host() {
+    /* --avonni-list-item-image-color-background: red; */
+    --avonni-list-item-image-width: 40px;
+}
 
 .placeholder-rectangle {
     position: absolute;
@@ -53,6 +71,7 @@
 }
 
 .avonni-list__item {
+    align-self: stretch;
     --avonni-card-color-background: var(
         --avonni-list-item-color-background,
         transparent
@@ -83,10 +102,6 @@
         (var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2) +
             var(--avonni-list-item-spacing-inline-end, 0px)
     );
-}
-
-.avonni-list__grid-display .avonni-list_item {
-    padding-right: 30px;
 }
 
 .avonni-list__item-sortable {
@@ -166,25 +181,47 @@
 .avonni-list__image_container {
     height: 100%;
     width: 100%;
+    background-color: var(--avonni-list-item-image-color-background);
 }
 
 .avonni-list__item-img {
     position: absolute;
     height: 100%;
     width: 100%;
-    object-fit: var(--avonni-list-item-img-object-fit, cover);
+    object-fit: cover;
     pointer-events: none;
+
+    width: var(--avonni-list-item-image-width, 100%);
+    height: var(--avonni-list-item-image-height, 100%);
 }
 
 .avonni-list__item-image-container {
     position: relative;
     height: 100%;
     width: 100%;
+    width: var(--avonni-list-item-image-width, 100%) !important;
+    height: var(--avonni-list-item-image-height, 100%);
 }
 
 .avonni-list__item-image-container_rounded-corners {
     border-top-left-radius: 0.16rem;
     border-bottom-left-radius: 0.16rem;
+}
+
+.avonni-list__item-image_object-fit-cover {
+    object-fit: cover;
+}
+
+.avonni-list__item-image_object-fit-contain {
+    object-fit: contain;
+}
+
+.avonni-list__item-image_object-fit-fill {
+    object-fit: fill;
+}
+
+.avonni-list__item-image_object-fit-none {
+    object-fit: none;
 }
 
 .avonni-list__item-card-style {
@@ -222,6 +259,12 @@
 .avonni-list__item-image_large-height {
     height: 192px;
     min-height: 192px;
+}
+
+.avonni-list__item-image-container {
+    /* 
+    width: var(--avonni-list-item-image-width, 100%);
+    height: var(--avonni-list-item-image-height, 100%); */
 }
 .avonni-list__item-divider_top {
     --avonni-card-shadow: none;
