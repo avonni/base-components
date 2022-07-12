@@ -45,7 +45,7 @@
 }
 
 .avonni-activity-timeline__horizontal-timeline {
-    overflow-x: hidden;
+    overflow: hidden;
     overscroll-behavior-x: contain;
     overscroll-behavior-block: contain;
 }
