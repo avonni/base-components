@@ -107,7 +107,6 @@ export default class Scheduler extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
-    _mouseInDetailPopover = false;
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -1401,8 +1400,8 @@ export default class Scheduler extends LightningElement {
         const bottomView = window.innerHeight;
         const rightView = window.innerWidth;
 
-        const yTransform = popoverBottom > bottomView ? height * -1 : 0;
-        const xTransform = popoverRight > rightView ? width * -1 : 0;
+        const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
+        const xTransform = popoverRight > rightView ? (width + 10) * -1 : 10;
 
         popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
         popover.style.top = `${y}px`;
@@ -1468,15 +1467,6 @@ export default class Scheduler extends LightningElement {
     handleCloseDeleteConfirmationDialog() {
         this.schedule.cleanSelection();
         this.hideDeleteConfirmationDialog();
-    }
-
-    handleDetailPopoverMouseEnter() {
-        this._mouseInDetailPopover = true;
-    }
-
-    handleDetailPopoverMouseLeave() {
-        this._mouseInDetailPopover = false;
-        this.hideDetailPopover();
     }
 
     /**
@@ -1733,9 +1723,7 @@ export default class Scheduler extends LightningElement {
         list.forEach((popover) => {
             switch (popover) {
                 case 'detail':
-                    if (!this._mouseInDetailPopover) {
-                        this.hideDetailPopover();
-                    }
+                    this.hideDetailPopover();
                     break;
                 case 'context':
                     this.hideContextMenu();
