@@ -58,7 +58,7 @@ export class SchedulerCellGroup {
 
     addEventToCells(event) {
         const cells = this.cells;
-        event.offsetTop = 0;
+        event.offsetSide = 0;
 
         // Find the cell where the event starts
         let i = cells.findIndex((cell) => {

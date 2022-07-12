@@ -121,43 +121,36 @@
                 <!-- Multi day events -->
                 <div
                     if:true={multiDayEvents.length}
-                    class="
-                        slds-grid
-                        slds-border_left
-                        slds-theme_shade
-                        slds-is-relative
-                    "
+                    class="slds-border_left slds-theme_shade slds-is-relative"
                     data-element-id="div-multi-day-events-wrapper"
                 >
-                    <template
-                        for:each={columns}
-                        for:item="column"
-                        for:index="index"
+                    <div
+                        class="
+                            slds-grid
+                            avonni-primitive-scheduler-calendar__inherit-height
+                        "
                     >
-                        <div
-                            key={column.weekday}
-                            class="
-                                slds-col
-                                avonni-primitive-scheduler-calendar__inherit-height
-                            "
-                            data-index={index}
+                        <!-- Cells -->
+                        <template
+                            for:each={multiDayEventsCellGroup.cells}
+                            for:item="cell"
                         >
-                            <!-- Cells -->
-                            <template iterator:cell={column.cells}>
-                                <div
-                                    if:true={cell.first}
-                                    key={cell.value.start}
-                                    class="
-                                        slds-border_right slds-border_bottom
-                                        avonni-primitive-scheduler-calendar__inherit-height
-                                    "
-                                    oncontextmenu={handleEmptySpotContextMenu}
-                                    onmousedown={handleMouseDown}
-                                    ondblclick={handleDoubleClick}
-                                ></div>
-                            </template>
-                        </div>
-                    </template>
+                            <div
+                                key={cell.start}
+                                class="
+                                    slds-col
+                                    slds-border_right slds-border_bottom
+                                    avonni-primitive-scheduler-calendar__inherit-height
+                                "
+                                data-element-id="div-cell"
+                                data-end={cell.end}
+                                data-start={cell.start}
+                                oncontextmenu={handleEmptySpotContextMenu}
+                                onmousedown={handleMouseDown}
+                                ondblclick={handleDoubleClick}
+                            ></div>
+                        </template>
+                    </div>
                     <template for:each={multiDayEvents} for:item="event">
                         <template
                             for:each={event.occurrences}
@@ -198,7 +191,7 @@
                                 onprivatemouseleave={handleHideDetailPopover}
                                 onprivatedblclick={handleEventDoubleClick}
                                 onprivatedisableddblclick={handleDoubleClick}
-                                onprivatemousedown={handleEventMouseDown}
+                                onprivatemousedown={handleMultiDayEventMouseDown}
                                 onprivatedisabledmousedown={handleMouseDown}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>

@@ -50,14 +50,14 @@ import SchedulerResource from './resource';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    PrimitiveScheduleBase,
+    ScheduleBase,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 
-export default class PrimitiveSchedulerTimeline extends PrimitiveScheduleBase {
+export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _columns = [];
     _start = DEFAULT_START_DATE;
     _variant = VARIANTS.default;

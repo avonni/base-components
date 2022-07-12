@@ -48,9 +48,9 @@ import {
     EDIT_MODES,
     EVENTS_THEMES
 } from './defaults';
-import SchedulerEventData from './eventData';
+import EventData from './eventData';
 
-export class PrimitiveScheduleBase extends LightningElement {
+export class ScheduleBase extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
@@ -521,7 +521,7 @@ export class PrimitiveScheduleBase extends LightningElement {
      */
 
     initEvents() {
-        this._eventData = new SchedulerEventData(this, {
+        this._eventData = new EventData(this, {
             availableDaysOfTheWeek: this.availableDaysOfTheWeek,
             availableMonths: this.availableMonths,
             availableTimeFrames: this.availableTimeFrames,

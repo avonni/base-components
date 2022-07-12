@@ -42,7 +42,7 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    PrimitiveScheduleBase,
+    ScheduleBase,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
@@ -50,7 +50,7 @@ import {
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
-export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
+export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
     _eventData;
@@ -70,6 +70,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
     hourCellDuration = 0;
     multiDayCellHeight = 0;
     multiDayEvents = [];
+    multiDayEventsCellGroup = {};
     singleDayEvents = [];
     start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     visibleInterval;
@@ -290,14 +291,31 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         this._eventData.isVertical = true;
         this._eventData.smallestHeader = this.hourHeaders[0];
         this._eventData.initEvents();
+
+        // Create a cell group for the multi day events row
+        const referenceCells = this.columns.map((col) => {
+            return {
+                start: col.start.ts,
+                end: col.end.ts - 1
+            };
+        });
+        this.multiDayEventsCellGroup = new Column({
+            referenceCells,
+            events: this.multiDayEvents
+        });
+        this._eventData.multiDayEventsCellGroup = this.multiDayEventsCellGroup;
     }
 
     initHeaders() {
+        // Reset the header cells used by the events to position themselves
         this.eventHeaderCells = {};
+
+        // Start at the begining of the first day
         let startDate = new Date(this.start.ts);
         startDate.setHours(0, 0, 0, 0);
-
         let time = dateTimeObjectFrom(startDate);
+
+        // Find all the available hours
         const availableHours = [];
         for (let i = 0; i < 24; i++) {
             if (isAllowedTime(time, this.availableTimeFrames)) {
@@ -306,6 +324,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
             time = addToDate(time, 'hour', 1);
         }
 
+        // Create a column for each available day
         const columns = [];
         const numberOfColumns = this.isWeek
             ? this.availableDaysOfTheWeek.length
@@ -313,11 +332,7 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
 
         startDate = dateTimeObjectFrom(startDate);
         for (let i = 0; i < numberOfColumns; i++) {
-            const weekday = this.isWeek
-                ? this.availableDaysOfTheWeek[i]
-                : startDate.weekday;
             const column = {
-                weekday,
                 events: [],
                 referenceCells: []
             };
@@ -343,8 +358,11 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         });
     }
 
-    getColumnElementFromPosition(x) {
-        return getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
+    getColumnElementFromPosition(x, isMultiDayColumn) {
+        const selector = isMultiDayColumn
+            ? `[data-element-id="div-multi-day-events-wrapper"] ${CELL_SELECTOR}`
+            : COLUMN_SELECTOR;
+        return getElementOnXAxis(this.template, x, selector);
     }
 
     /**
@@ -458,6 +476,15 @@ export default class PrimitiveSchedulerCalendar extends PrimitiveScheduleBase {
         const x = mouseEvent.detail.x;
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
         this._eventData.handleExistingEventMouseDown(mouseEvent, column);
+        this.dispatchHidePopovers();
+    }
+
+    handleMultiDayEventMouseDown(mouseEvent) {
+        this._mouseIsDown = true;
+        const row = this.template.querySelector(
+            '[data-element-id="div-multi-day-events-wrapper"]'
+        );
+        this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
         this.dispatchHidePopovers();
     }
 

@@ -37,10 +37,10 @@ export default class SchedulerEventDrag {
     resizeSide;
 
     _boundaries;
-    _isVertical = false;
     _initialState = {};
     _isNewEvent = false;
     cellGroupElement;
+    isVertical = false;
 
     constructor({
         event,
@@ -50,9 +50,9 @@ export default class SchedulerEventDrag {
         boundaries
     }) {
         this._boundaries = boundaries;
-        this._isVertical = isVertical;
         this._isNewEvent = isNewEvent;
         this.cellGroupElement = cellGroupElement;
+        this.isVertical = isVertical;
         const mouseX = event.clientX || event.detail.x;
         const mouseY = event.clientY || event.detail.y;
 
@@ -80,15 +80,15 @@ export default class SchedulerEventDrag {
             mouseY
         );
 
-        const eventStartPosition = this._isVertical
+        const eventStartPosition = this.isVertical
             ? eventPosition.top
             : eventPosition.left;
 
-        const eventEndPosition = this._isVertical
+        const eventEndPosition = this.isVertical
             ? eventPosition.bottom
             : eventPosition.right;
 
-        const eventSize = this._isVertical
+        const eventSize = this.isVertical
             ? eventPosition.height
             : eventPosition.width;
 
@@ -131,12 +131,12 @@ export default class SchedulerEventDrag {
 
     resize(x, y, occurrence, cellGroup) {
         const normalizedPosition = this.normalizeMousePosition(x, y);
-        const position = this._isVertical
+        const position = this.isVertical
             ? normalizedPosition.y
             : normalizedPosition.x;
 
         const { mouseX, mouseY } = this._initialState;
-        const distanceMoved = this._isVertical
+        const distanceMoved = this.isVertical
             ? position - mouseY
             : position - mouseX;
 
@@ -174,7 +174,7 @@ export default class SchedulerEventDrag {
         const boundaries = this._boundaries;
 
         let right, left, top, bottom;
-        if (this._isVertical) {
+        if (this.isVertical) {
             const topOfEvent = eventPosition.top + 24;
             const topOfSchedule = boundaries.top + (mouseY - eventPosition.top);
             top = resizeEnd ? topOfEvent : topOfSchedule;
@@ -208,11 +208,11 @@ export default class SchedulerEventDrag {
         const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
             this._initialState;
         const position = this.normalizeMousePosition(x, y);
-        const startPosition = this._isVertical
+        const startPosition = this.isVertical
             ? position.y - (mouseY - eventStartPosition)
             : position.x - (mouseX - eventStartPosition);
 
-        const endPosition = this._isVertical
+        const endPosition = this.isVertical
             ? position.y + (eventEndPosition - mouseY)
             : position.x + (eventEndPosition - mouseX);
 
@@ -221,7 +221,7 @@ export default class SchedulerEventDrag {
 
     getValueOnTheCellsAxis(x, y) {
         const position = this.normalizeMousePosition(x, y);
-        return this._isVertical ? position.x : position.y;
+        return this.isVertical ? position.x : position.y;
     }
 
     /**
@@ -265,7 +265,7 @@ export default class SchedulerEventDrag {
         const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
-        const hoveredCell = this._isVertical
+        const hoveredCell = this.isVertical
             ? getElementOnYAxis(this.cellGroupElement, computedPosition)
             : getElementOnXAxis(this.cellGroupElement, computedPosition);
 
@@ -304,20 +304,20 @@ export default class SchedulerEventDrag {
         const multiplier = side === 'start' ? -1 : 1;
 
         const size = eventSize + distanceMoved * multiplier;
-        if (this._isVertical) {
+        if (this.isVertical) {
             event.style.height = `${size}px`;
         } else {
             event.style.width = `${size}px`;
         }
 
         if (side === 'start') {
-            const initialPosition = this._isVertical ? initialY : initialX;
+            const initialPosition = this.isVertical ? initialY : initialX;
             const computedStart =
                 side === 'start'
                     ? distanceMoved + initialPosition
                     : distanceMoved;
 
-            if (this._isVertical) {
+            if (this.isVertical) {
                 event.y = computedStart;
             } else {
                 event.x = computedStart;

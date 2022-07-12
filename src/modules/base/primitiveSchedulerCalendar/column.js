@@ -31,10 +31,20 @@
  */
 
 import { SchedulerCellGroup } from 'c/schedulerUtils';
+import { dateTimeObjectFrom } from 'c/utilsPrivate';
 
 export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup {
-    constructor(props) {
-        super(props);
-        this.weekday = props.weekday;
+    get start() {
+        const start = dateTimeObjectFrom(this.cells[0].start);
+        return start.startOf('day');
+    }
+
+    get end() {
+        const end = dateTimeObjectFrom(this.cells[0].end);
+        return end.endOf('day');
+    }
+
+    get weekday() {
+        return this.start.weekday;
     }
 }

@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export { PrimitiveScheduleBase } from './primitiveScheduleBase';
+export { ScheduleBase } from './scheduleBase';
 export {
     getElementOnXAxis,
     getElementOnYAxis,

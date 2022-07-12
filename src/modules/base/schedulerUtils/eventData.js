@@ -209,13 +209,72 @@ export default class SchedulerEventData {
         }
     }
 
+    getGridElementsAtPosition(x, y) {
+        let dragState = 'HORIZONTAL_TIMELINE';
+        if (this.isCalendar && !this.eventDrag.isVertical) {
+            dragState = 'MULTI_DAY_EVENT_CALENDAR';
+        } else if (this.isCalendar) {
+            dragState = 'SINGLE_DAY_EVENT_CALENDAR';
+        } else if (this.isVertical) {
+            dragState = 'VERTICAL_TIMELINE';
+        }
+
+        switch (dragState) {
+            case 'VERTICAL_TIMELINE': {
+                const resourceColumn =
+                    this.schedule.getResourceElementFromPosition(x, y);
+                const normalizedY = this.eventDrag.getValueOnTheCellGroupAxis(
+                    x,
+                    y
+                );
+                const cell = getElementOnYAxis(resourceColumn, normalizedY);
+                return { cellGroupElement: resourceColumn, cellElement: cell };
+            }
+            case 'SINGLE_DAY_EVENT_CALENDAR': {
+                const normalizedX = this.eventDrag.getValueOnTheCellsAxis(x, y);
+                const dayColumn =
+                    this.schedule.getColumnElementFromPosition(normalizedX);
+                const normalizedY = this.eventDrag.getValueOnTheCellGroupAxis(
+                    x,
+                    y
+                );
+                const hourCell = getElementOnYAxis(dayColumn, normalizedY);
+                return { cellGroupElement: dayColumn, cellElement: hourCell };
+            }
+            case 'MULTI_DAY_EVENT_CALENDAR': {
+                const normalizedY = this.eventDrag.getValueOnTheCellGroupAxis(
+                    x,
+                    y
+                );
+                const dayCell = this.schedule.getColumnElementFromPosition(
+                    normalizedY,
+                    true
+                );
+                return { cellGroupElement: dayCell, cellElement: dayCell };
+            }
+            default: {
+                const resourceRow =
+                    this.schedule.getResourceElementFromPosition(x, y);
+                const normalizedX = this.eventDrag.getValueOnTheCellGroupAxis(
+                    x,
+                    y
+                );
+                const cell = getElementOnXAxis(resourceRow, normalizedX);
+                return { cellGroupElement: resourceRow, cellElement: cell };
+            }
+        }
+    }
+
     isMultiDay(event, from, to) {
         const interval = Interval.fromDateTimes(from, to);
+        const isAllDay = event.computedIsAllDay;
         const lastsMoreThanOneDay = interval.length('days') > 1;
         const hasWeekdayRecurrence = normalizeArray(
             event.recurrenceAttributes && event.recurrenceAttributes.weekdays
         );
-        return lastsMoreThanOneDay && !hasWeekdayRecurrence.length;
+        return (
+            (isAllDay || lastsMoreThanOneDay) && !hasWeekdayRecurrence.length
+        );
     }
 
     /**
@@ -474,10 +533,14 @@ export default class SchedulerEventData {
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
-    handleExistingEventMouseDown(mouseEvent, cellGroupElement) {
+    handleExistingEventMouseDown(
+        mouseEvent,
+        cellGroupElement,
+        isVertical = this.isVertical
+    ) {
         this.eventDrag = new SchedulerEventDrag({
             event: mouseEvent,
-            isVertical: this.isVertical,
+            isVertical,
             cellGroupElement,
             boundaries: this.boundaries
         });
@@ -503,7 +566,9 @@ export default class SchedulerEventData {
                 let cellGroup;
                 if (this.isCalendar) {
                     const index = Number(cellGroupElement.dataset.index);
-                    cellGroup = this.schedule.columns[index];
+                    cellGroup = !isNaN(index)
+                        ? this.schedule.columns[index]
+                        : this.multiDayEventsCellGroup;
                 } else {
                     const resourceName = cellGroupElement.dataset.name;
                     cellGroup = this.schedule.getResourceFromName(resourceName);
@@ -530,40 +595,29 @@ export default class SchedulerEventData {
         }
 
         // Get the new position
-        const valueOnTheCellGroupAxis =
-            this.eventDrag.getValueOnTheCellGroupAxis(x, y);
-        const valueOnTheCellsAxis = this.eventDrag.getValueOnTheCellsAxis(x, y);
         const { draftValues, newEvent, event, occurrence } = this.selection;
         const side = this.eventDrag.resizeSide;
+        const isCalendarMultiDayEvent =
+            this.isCalendar && !this.eventDrag.isVertical;
 
-        // Find the resource and cell the event was dropped on
-        let cellGroupElement;
-        if (this.isCalendar) {
-            cellGroupElement =
-                this.schedule.getColumnElementFromPosition(valueOnTheCellsAxis);
-        } else {
-            cellGroupElement = this.schedule.getResourceElementFromPosition(
-                x,
-                y
-            );
-        }
-        const cellElement = this.isVertical
-            ? getElementOnYAxis(cellGroupElement, valueOnTheCellGroupAxis)
-            : getElementOnXAxis(cellGroupElement, valueOnTheCellGroupAxis);
+        // Find the column/row and cell the event was dropped on
+        const { cellGroupElement, cellElement } =
+            this.getGridElementsAtPosition(x, y);
 
         // Update the draft values
         const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
         const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
+
         switch (side) {
             case 'end':
-                draftValues.allDay = false;
+                draftValues.allDay = isCalendarMultiDayEvent;
                 draftValues.to = to.toUTC().toISO();
                 if (newEvent) {
                     occurrence.to = to;
                 }
                 break;
             case 'start':
-                draftValues.allDay = false;
+                draftValues.allDay = isCalendarMultiDayEvent;
                 draftValues.from = from.toUTC().toISO();
                 if (newEvent) {
                     occurrence.from = from;

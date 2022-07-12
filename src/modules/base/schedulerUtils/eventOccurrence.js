@@ -32,7 +32,7 @@
 
 export default class SchedulerEventOccurrence {
     constructor(props) {
-        this.offsetTop = 0;
+        this.offsetSide = 0;
         Object.assign(this, props);
     }
 
