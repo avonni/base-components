@@ -955,16 +955,14 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Check if event is on timeline and if user is scrolling vertically.
+     * Check if user is scrolling vertically.
      *
-     * @return {Boolean}
+     * @return {boolean}
      */
     isScrollingVerticallyOnTimeline(event) {
         return (
             Math.abs(event.deltaY) > 0 &&
-            event.toElement.getAttribute('data-element-id') ===
-                'avonni-horizontal-activity-timeline__timeline-items-svg' &&
-            d3.select(this.divTimelineScroll).style('overflow-y') === 'scroll'
+            Math.abs(event.deltaY) > Math.abs(event.deltaX)
         );
     }
 
@@ -1545,6 +1543,9 @@ export class HorizontalActivityTimeline {
         if (this.isScrollingVerticallyOnTimeline(event)) {
             return;
         }
+
+        event.stopPropagation();
+        event.preventDefault();
 
         this.cancelSwipeLeftIfScrollLeft(event);
         this.cancelEditIntervalSizeMode();
