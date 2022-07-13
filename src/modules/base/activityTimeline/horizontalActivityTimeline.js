@@ -1106,7 +1106,7 @@ export class HorizontalActivityTimeline {
                 iconCategory +
                 '-sprite/svg/symbols.svg#' +
                 nameOfIcon,
-            categoryIconClass: iconClass + nameOfIcon.replaceAll('_', '-')
+            categoryIconClass: iconClass + nameOfIcon.replace(/_/g, '-')
         };
     }
 
