@@ -126,6 +126,21 @@ describe('Activity Timeline', () => {
 
     // validateXMousePosition
     it('Horizontal Activity Timeline: validateXMousePosition', () => {
+        jest.spyOn(element, 'intervalWidth', 'get').mockImplementation(
+            () => 189
+        );
+        jest.spyOn(element, 'scrollAxisMaxDate', 'get').mockImplementation(
+            () =>
+                new Date(
+                    'Tue Mar 29 2022 08:30:00 GMT-0400 (Eastern Daylight Saving Time)'
+                )
+        );
+        jest.spyOn(element, 'scrollAxisMinDate', 'get').mockImplementation(
+            () =>
+                new Date(
+                    'Fri Dec 17 2021 11:30:00 GMT-0500 (Eastern Standard Time)'
+                )
+        );
         const minPosition = 16.5;
         const maxPosition = 1111;
         const positionsSmallerThanMin = [-100, -40, 0, 10, 16, 16.5];
