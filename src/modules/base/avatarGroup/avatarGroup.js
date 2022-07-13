@@ -633,7 +633,9 @@ export default class AvatarGroup extends LightningElement {
      * If another avatar was clicked, dispatch the avatarclick event.
      */
     handleAvatarClick(event) {
-        if (event.type === 'keyup' && event.key !== 'Enter') return;
+        if (event.type === 'keyup' && event.key !== 'Enter') {
+            return;
+        }
 
         const itemId = event.target.dataset.itemId;
         const type = event.target.dataset.type;
@@ -656,6 +658,7 @@ export default class AvatarGroup extends LightningElement {
              * @event
              * @name avatarclick
              * @param {object} item The avatar detail.
+             * @param {string} name Name of the avatar.
              * @bubbles
              * @cancelable
              * @public
@@ -665,7 +668,8 @@ export default class AvatarGroup extends LightningElement {
                     bubbles: true,
                     cancelable: true,
                     detail: {
-                        item
+                        item,
+                        name: item.name
                     }
                 })
             );
@@ -722,13 +726,15 @@ export default class AvatarGroup extends LightningElement {
          * @name avataractionclick
          * @param {object} item The avatar detail.
          * @param {string} name The action name.
+         * @param {string} targetName Name of the avatar.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('avataractionclick', {
                 detail: {
                     item,
-                    name
+                    name,
+                    targetName: item.name
                 }
             })
         );
