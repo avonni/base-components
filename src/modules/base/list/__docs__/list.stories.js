@@ -107,7 +107,7 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        imageAttribute: {
+        imageAttributes: {
             control: {
                 type: 'object'
             },
@@ -468,7 +468,7 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
-    imageAttribute: {
+    imageAttributes: {
         size: 'medium'
     }
 };
@@ -479,7 +479,7 @@ SortableGridWithImagesAndAvatars.args = {
     items: itemsWithAvatars,
     actions: actions,
     divider: 'around',
-    imageAttribute: {
+    imageAttributes: {
         size: 'medium'
     },
     variant: 'grid',
@@ -492,7 +492,7 @@ GridWithImages.args = {
     label: 'Sortable grid with Avatars and Icons',
     items: itemsWithImages,
     actions: actions,
-    imageAttribute: {
+    imageAttributes: {
         cropPositionX: 100,
         cropPositionY: 100,
         size: 'large'
@@ -510,7 +510,7 @@ GridCardWithImages.args = {
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
-    imageAttribute: {
+    imageAttributes: {
         size: 'medium'
     },
     variant: 'grid',

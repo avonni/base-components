@@ -227,6 +227,14 @@ export default class List extends LightningElement {
         if (!value) {
             return;
         }
+
+        console.log(
+            value.size,
+            value.cropPositionX,
+            value.cropPositionY,
+            value.cropFit
+        );
+
         if (value.size) {
             this._imageSize = normalizeString(value.size, {
                 validValues: IMAGE_SIZE.valid,
@@ -245,7 +253,6 @@ export default class List extends LightningElement {
                 defaultValue: IMAGE_CROP_FIT.default
             });
         }
-        console.log(value);
     }
 
     /**
@@ -382,6 +389,7 @@ export default class List extends LightningElement {
 
     // add description
     get computedImageClass() {
+        console.log(this._imageSize);
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
                 this._imageSize === 'small' && this._variant === 'list',
@@ -544,7 +552,7 @@ export default class List extends LightningElement {
     }
 
     get computedItemWrapperClass() {
-        return classSet('avonni-list__item-wrapper slds-grid')
+        return classSet('avonni-list__item-wrapper')
             .add({
                 'avonni-list__item-sortable':
                     this.sortable && this.variant === 'list',
@@ -565,6 +573,16 @@ export default class List extends LightningElement {
                     this._effectiveColumnCount === 12 && this.variant === 'grid'
             })
             .toString();
+    }
+
+    get showMediaAction() {
+        return (
+            this.variant === 'grid' && this.hasImages && this.actions.length > 0
+        );
+    }
+
+    get showActionRight() {
+        return this.variant === 'list' && this.actions.length > 0;
     }
 
     /*

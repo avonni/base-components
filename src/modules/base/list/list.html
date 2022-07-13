@@ -115,7 +115,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="slds-grid slds-grid_vertical-align-center">
+                    <div
+                        class="
+                            slds-grid slds-grid_vertical-align-center
+                            avonni-list-item-body
+                        "
+                    >
                         <lightning-icon
                             if:true={showIconLeft}
                             class="
@@ -245,7 +250,7 @@
 
                         <!-- Actions -->
                         <div
-                            if:true={actions.length}
+                            if:true={showActionRight}
                             class="slds-m-right_x-small"
                         >
                             <lightning-button-menu
@@ -302,6 +307,63 @@
                                 ></lightning-button-icon>
                             </template>
                         </div>
+                    </div>
+
+                    <div if:true={showMediaAction} slot="media-actions">
+                        <lightning-button-menu
+                            if:true={hasMultipleActions}
+                            class="slds-m-right_none"
+                            menu-alignment="right"
+                            icon-size="x-small"
+                            data-element-id="lightning-button-menu"
+                            data-item-index={index}
+                            onmousedown={stopPropagation}
+                            ontouchstart={stopPropagation}
+                            onselect={handleActionClick}
+                            variant="border-filled"
+                        >
+                            <template
+                                for:each={computedActions}
+                                for:item="action"
+                            >
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    disabled={action.disabled}
+                                    icon-name={action.iconName}
+                                    data-element-id="lightning-menu-item"
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                        <template if:false={hasMultipleActions}>
+                            <lightning-button
+                                if:true={firstAction.label}
+                                class="slds-m-right_none"
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                label={firstAction.label}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                                data-item-index={index}
+                                data-element-id="lightning-button"
+                                onclick={handleActionClick}
+                                ontouchstart={stopPropagation}
+                            ></lightning-button>
+                            <lightning-button-icon
+                                if:false={firstAction.label}
+                                class="slds-m-right_none"
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                                variant="bare"
+                                data-item-index={index}
+                                data-element-id="lightning-button-icon"
+                                onclick={handleActionClick}
+                                ontouchstart={stopPropagation}
+                            ></lightning-button-icon>
+                        </template>
                     </div>
                 </c-card>
             </li>
