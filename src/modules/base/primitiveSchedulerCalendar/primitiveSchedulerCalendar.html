@@ -118,7 +118,7 @@
                     onprivateheaderchange={handleHorizontalHeaderChange}
                 ></c-primitive-scheduler-header-group>
 
-                <!-- Multi day events -->
+                <!-- Multi day events grid -->
                 <div
                     if:true={multiDayEvents.length}
                     class="slds-border_left slds-theme_shade slds-is-relative"
@@ -151,6 +151,7 @@
                             ></div>
                         </template>
                     </div>
+                    <!-- Multi day events -->
                     <template for:each={multiDayEvents} for:item="event">
                         <template
                             for:each={event.occurrences}
@@ -233,7 +234,7 @@
                         </div>
                     </template>
 
-                    <!-- Events -->
+                    <!-- Single day events -->
                     <div class="avonni-scheduler__events slds-is-absolute">
                         <template
                             if:true={singleDayEvents.length}

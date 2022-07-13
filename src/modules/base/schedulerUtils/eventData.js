@@ -45,13 +45,6 @@ export default class SchedulerEventData {
         Object.assign(this, props);
     }
 
-    get boundaries() {
-        const body = this.schedule.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        return body.getBoundingClientRect();
-    }
-
     /**
      * If true, editing a recurring event only updates the occurrence, never the complete event.
      *
@@ -186,7 +179,7 @@ export default class SchedulerEventData {
         const duration = occurrence.to - occurrence.from;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
         draftValues.from = start.toUTC().toISO();
-        draftValues.to = addToDate(start, 'millisecond', duration + 1)
+        draftValues.to = addToDate(start, 'millisecond', duration)
             .toUTC()
             .toISO();
 
@@ -207,6 +200,22 @@ export default class SchedulerEventData {
                 }
             }
         }
+    }
+
+    getDraggingBoundaries(isVertical) {
+        if (this.isCalendar && !isVertical) {
+            // Get the multi day events grid boundaries
+            const multiDayGrid = this.schedule.template.querySelector(
+                '[data-element-id="div-multi-day-events-wrapper"]'
+            );
+            return multiDayGrid.getBoundingClientRect();
+        }
+
+        // Get the schedule boundaries
+        const body = this.schedule.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        return body.getBoundingClientRect();
     }
 
     getGridElementsAtPosition(x, y) {
@@ -548,7 +557,7 @@ export default class SchedulerEventData {
             event: mouseEvent,
             isVertical,
             cellGroupElement,
-            boundaries: this.boundaries
+            boundaries: this.getDraggingBoundaries(isVertical)
         });
         this.selectEvent(mouseEvent.detail);
     }
@@ -669,7 +678,7 @@ export default class SchedulerEventData {
             isVertical,
             cellGroupElement,
             isNewEvent: true,
-            boundaries: this.boundaries
+            boundaries: this.getDraggingBoundaries(isVertical)
         });
 
         this.newEvent({ resourceNames, from, to, x, y }, false);
