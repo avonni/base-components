@@ -29,6 +29,7 @@ $RECYCLE.BIN/
 
 # VS Code settings
 .vscode/settings.json
+.vs
 
 # Github pages storybook
 storybook-static/*
