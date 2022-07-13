@@ -100,7 +100,6 @@ describe('List', () => {
                 expect(item.dataset.index).toBe(index.toString());
                 expect(item.ariaLabel).toBe(originalItem.label);
                 expect(item.textContent).toBe(originalItem.label);
-                expect(item.dataset.name).toBe(originalItem.name);
             });
 
             [0, 2].forEach((index) => {

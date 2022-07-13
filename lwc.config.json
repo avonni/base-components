@@ -247,8 +247,8 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
-            "name": "c/metrics",
-            "path": "src/modules/base/metrics/metrics.js"
+            "name": "c/metric",
+            "path": "src/modules/base/metric/metric.js"
         },
         {
             "name": "c/outputData",
@@ -747,8 +747,8 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
-            "name": "avonni/metrics",
-            "path": "src/modules/base/metrics/metrics.js"
+            "name": "avonni/metric",
+            "path": "src/modules/base/metric/metric.js"
         },
         {
             "name": "avonni/outputData",
@@ -944,7 +944,7 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
-        "avonni/metrics",
+        "avonni/metric",
         "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",

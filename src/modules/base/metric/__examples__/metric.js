@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../metrics';
+import Component from '../metric';
 
-customElements.define('ac-metrics', Component.CustomElementConstructor);
+customElements.define('ac-metric', Component.CustomElementConstructor);
 
-export const Metrics = ({
+export const Metric = ({
     align,
     avatar,
     currencyCode,
@@ -71,7 +71,7 @@ export const Metrics = ({
     valueSign,
     value
 }) => {
-    const element = document.createElement('ac-metrics');
+    const element = document.createElement('ac-metric');
     element.align = align;
     element.avatar = avatar;
     element.currencyCode = currencyCode;
