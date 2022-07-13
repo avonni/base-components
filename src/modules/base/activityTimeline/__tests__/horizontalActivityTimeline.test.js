@@ -127,9 +127,9 @@ describe('Activity Timeline', () => {
     // validateXMousePosition
     it('Horizontal Activity Timeline: validateXMousePosition', () => {
         const minPosition = 16.5;
-        const maxPosition = 1110;
+        const maxPosition = 1111;
         const positionsSmallerThanMin = [-100, -40, 0, 10, 16, 16.5];
-        const positionsBiggerThanMax = [1110, 1111, 1300, 2000, 234234];
+        const positionsBiggerThanMax = [1111, 1112, 1300, 2000, 234234];
         const validPositions = [17, 40, 233, 425, 734, 923, 1093];
 
         for (const position of positionsSmallerThanMin) {
@@ -137,7 +137,7 @@ describe('Activity Timeline', () => {
         }
 
         for (const position of positionsBiggerThanMax) {
-            expect(Math.floor(element.validateXMousePosition(position))).toBe(
+            expect(Math.ceil(element.validateXMousePosition(position))).toBe(
                 maxPosition
             );
         }
