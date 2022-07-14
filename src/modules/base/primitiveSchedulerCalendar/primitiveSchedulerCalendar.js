@@ -315,13 +315,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 end: col.end.ts - 1
             };
         });
-        const multiDayOccurrences = this.multiDayEvents
-            .map((ev) => ev.occurrences)
-            .flat();
-        this.multiDayEventsCellGroup = new Column({
-            referenceCells,
-            events: multiDayOccurrences
-        });
+
+        this.multiDayEventsCellGroup = new Column({ referenceCells });
         this._eventData.multiDayEventsCellGroup = this.multiDayEventsCellGroup;
     }
 
@@ -444,6 +439,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.multiDayEventsCellGroup.events = multiDayOccurrences;
         this.multiDayEventsCellGroup.disabledEvents =
             disabledMultiDayOccurrences;
+        this.multiDayEventsCellGroup.initCells();
     }
 
     updateOccurrencesOffset(column, selector, isSingleDayOccurrence) {
