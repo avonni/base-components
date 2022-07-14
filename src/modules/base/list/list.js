@@ -241,18 +241,19 @@ export default class List extends LightningElement {
                 defaultValue: IMAGE_SIZE.default
             });
         }
-        if (value.cropPositionX) {
-            this._imagePositionY = value.cropPositionY;
-        }
-        if (value.cropPositionY) {
-            this._imagePositionY = value.cropPositionY;
-        }
+
+        this._imagePositionY =
+            value.cropPositionY !== undefined ? value.cropPositionY : 50;
+        this._imagePositionX =
+            value.cropPositionX !== undefined ? value.cropPositionX : 50;
+
         if (value.cropFit) {
             this._imageCropFit = normalizeString(value.cropFit, {
                 validValues: IMAGE_CROP_FIT.valid,
                 defaultValue: IMAGE_CROP_FIT.default
             });
         }
+        console.log(this._imageCropFit);
     }
 
     /**
@@ -389,7 +390,7 @@ export default class List extends LightningElement {
 
     // add description
     get computedImageClass() {
-        console.log(this._imageSize);
+        console.log(this._imageCropFit);
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
                 this._imageSize === 'small' && this._variant === 'list',
@@ -404,6 +405,22 @@ export default class List extends LightningElement {
             'avonni-list__item-image_large-height':
                 this._imageSize === 'large' && this._variant === 'grid'
         });
+    }
+
+    get computedImageMediaClass() {
+        return classSet('avonni-list__item-img').add({
+            'avonni-list__item-image_object-fit-contain':
+                this._imageCropFit === 'contain',
+            'avonni-list__item-image_object-fit-fill':
+                this._imageCropFit === 'fill',
+            'avonni-list__item-image_object-fit-none':
+                this._imageCropFit === 'none'
+        });
+    }
+
+    get computedImageStyle() {
+        // return '0';
+        return `object-position: ${this._imagePositionX}% ${this._imagePositionY}%`;
     }
 
     /**
@@ -521,28 +538,12 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Computed Image container class styling based on icon position and divider attributes.
-     *
-     * @type {string}
-     */
-    get computedImageContainerClass() {
-        return classSet('avonni-list__item-image-container')
-            .add({
-                'avonni-list__item-image-container_rounded-corners':
-                    this.divider === 'around' &&
-                    this.sortableIconName &&
-                    this.sortableIconPosition === 'right'
-            })
-            .toString();
-    }
-
-    /**
      * Computed item class styling based on user specified attributes.
      *
      * @type {string}
      */
     get computedItemClass() {
-        return classSet('avonni-list__item')
+        return classSet()
             .add({
                 'avonni-list__item-expanded': this._hasActions,
                 'avonni-list__item-borderless': !this._divider,
@@ -552,7 +553,7 @@ export default class List extends LightningElement {
     }
 
     get computedItemWrapperClass() {
-        return classSet('avonni-list__item-wrapper')
+        return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
                     this.sortable && this.variant === 'list',

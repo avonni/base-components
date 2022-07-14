@@ -201,3 +201,42 @@
  * @name --avonni-list-item-cursor
  * @type string
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-block-start
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-block-end
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-inline-start
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-inline-end
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-height
+ * @type dimension
+ */

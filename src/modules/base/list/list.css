@@ -33,22 +33,29 @@
  ✅ add hooks for width and height for all images
  ✅ deprecate image-width
  ✅ use image-size instead. styling hook for hieght and width. hook has priority
- image attribute, corp fit, position, and size.
+ ✅ image attribute, corp fit, position, and size.
  Use lazy loading for images infinite loading!
  ✅ stretch to same height
  ✅ action top right on the image in grid
  ✅ background color behind image
- padding around image, 
+ ✅ padding around image, 
  ✅ padding around body and inside border on body
- add back graby cursor on sortable.
+ restore graby cursor on sortable.
  */
 
 :host() {
-    /* --avonni-list-item-image-color-background: red; */
+    --avonni-list-item-image-color-background: rgb(255, 244, 194);
     /* --avonni-list-item-image-width: 40px;
     --avonni-list-item-image-height: 40px; */
-    /* --avonni-list-item-spacing-inline-start: 30px;
-    --avonni-list-item-spacing-inline-end: 30px; */
+    /* --avonni-list-item-spacing-inline-start: 0rem;
+    --avonni-list-item-spacing-inline-end: 0rem; */
+    /* --avonni-list-item-spacing-block-start: 0rem;
+    --avonni-list-item-spacing-block-end: 0rem;  */
+
+    /* --avonni-list-item-image-spacing-block-start: 10px;
+    --avonni-list-item-image-spacing-block-end: 10px;
+    --avonni-list-item-image-spacing-inline-start: 10px;
+    --avonni-list-item-image-spacing-inline-end: 10px; */
 }
 
 .placeholder-rectangle {
@@ -77,17 +84,25 @@
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-body-spacing-block-start: var(
         --avonni-list-item-spacing-block-start,
-        0px
+        0.5rem
     );
     --avonni-card-body-spacing-block-end: var(
         --avonni-list-item-spacing-block-end,
-        0px
+        0.5rem
+    );
+    --avonni-card-body-spacing-inline-start: var(
+        --avonni-list-item-spacing-inline-start,
+        0.5rem
+    );
+    --avonni-card-body-spacing-inline-end: var(
+        --avonni-list-item-spacing-inline-end,
+        0.5rem
     );
 }
 
 .avonni-list-item-body {
-    padding-left: var(--avonni-list-item-spacing-inline-start, 0px);
-    padding-right: var(--avonni-list-item-spacing-inline-end, 0px);
+    padding-left: var(--avonni-list-item-spacing-inline-start, 0.5rem);
+    padding-right: var(--avonni-list-item-spacing-inline-end, 0.5rem);
 }
 
 .avonni-list__has-card-style {
@@ -178,47 +193,39 @@
 }
 
 .avonni-list__image-slot {
+    position: relative;
     height: 100%;
     width: 100%;
 }
 .avonni-list__image_container {
     height: 100%;
     width: 100%;
-    background-color: var(--avonni-list-item-image-color-background);
 }
 
 .avonni-list__item-img {
     position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     object-fit: cover;
     pointer-events: none;
+    padding-top: var(--avonni-list-item-image-spacing-block-start, 0px);
+    padding-bottom: var(--avonni-list-item-image-spacing-block-end, 0px);
+    padding-left: var(--avonni-list-item-image-spacing-inline-start, 0px);
+    padding-right: var(--avonni-list-item-image-spacing-inline-end, 0px);
+    background-color: var(--avonni-list-item-image-color-background);
 }
 
-.avonni-list__item-image-container {
-    position: relative;
-    height: 100%;
-    width: 100%;
-}
-
-.avonni-list__item-image-container_rounded-corners {
-    border-top-left-radius: 0.16rem;
-    border-bottom-left-radius: 0.16rem;
-}
-
-.avonni-list__item-image-container.avonni-list__item-image_object-fit-cover {
-    object-fit: cover;
-}
-
-.avonni-list__item-image-container.avonni-list__item-image_object-fit-contain {
+.avonni-list__item-image_object-fit-contain {
     object-fit: contain;
 }
 
-.avonni-list__item-image-container.avonni-list__item-image_object-fit-fill {
+.avonni-list__item-image_object-fit-fill {
     object-fit: fill;
 }
 
-.avonni-list__item-image-container.avonni-list__item-image_object-fit-none {
+.avonni-list__item-image_object-fit-none {
     object-fit: none;
 }
 

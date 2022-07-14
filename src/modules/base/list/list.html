@@ -84,12 +84,7 @@
                         class="avonni-list__image-slot"
                         if:true={hasImages}
                     >
-                        <div
-                            class="
-                                slds-grid slds-grid_vertical-align-center
-                                avonni-list__image_container
-                            "
-                        >
+                        <div class="slds-grid slds-grid_vertical-align-center">
                             <div>
                                 <lightning-icon
                                     if:true={showImageIconLeft}
@@ -105,8 +100,9 @@
                             </div>
                             <div class={computedImageClass}>
                                 <img
+                                    style={computedImageStyle}
                                     if:true={item.imageSrc}
-                                    class="avonni-list__item-img"
+                                    class={computedImageMediaClass}
                                     key={item.imageSrc}
                                     src={item.imageSrc}
                                     draggable="false"
@@ -115,12 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div
-                        class="
-                            slds-grid slds-grid_vertical-align-center
-                            avonni-list-item-body
-                        "
-                    >
+                    <div class="slds-grid slds-grid_vertical-align-center">
                         <lightning-icon
                             if:true={showIconLeft}
                             class="
@@ -136,8 +127,8 @@
                             class="
                                 slds-grid slds-col
                                 slds-grid_vertical-align-center
-                                slds-p-around_x-small
                                 slds-has-flexi-truncate
+                                avonni-list-item-body
                             "
                         >
                             <!-- Avatar -->

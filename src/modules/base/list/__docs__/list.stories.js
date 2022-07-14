@@ -494,8 +494,9 @@ GridWithImages.args = {
     actions: actions,
     imageAttributes: {
         cropPositionX: 100,
-        cropPositionY: 100,
-        size: 'large'
+        cropPositionY: 0,
+        cropFit: 'contain',
+        size: 'medium'
     },
     variant: 'grid',
     cols: 1,
