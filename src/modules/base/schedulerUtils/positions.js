@@ -181,7 +181,8 @@ export function updateOccurrencesOffset(
             numberOfOverlap,
             start,
             end: occElement.endPosition,
-            occurrence: occurrence || (selection && selection.occurrence)
+            occurrence: occurrence || (selection && selection.occurrence),
+            width: occElement.width
         });
 
         if (!isVertical) {
@@ -214,12 +215,13 @@ export function updateOccurrencesOffset(
     // Add the corresponding offset to the top (horizontal display)
     // or left (vertical display) of the occurrences
     previousOccurrences.forEach((position) => {
-        const { level, occurrence, numberOfOverlap } = position;
+        const { level, occurrence, numberOfOverlap, width } = position;
         let offsetSide = 0;
 
         if (isVertical) {
             offsetSide = (level * verticalCellSize) / numberOfOverlap;
             occurrence.numberOfEventsInThisTimeFrame = numberOfOverlap;
+            occurrence.right = offsetSide + width;
             this._updateOccurrencesLength = true;
         } else {
             offsetSide = level * levelHeight;

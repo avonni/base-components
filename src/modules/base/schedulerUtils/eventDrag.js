@@ -107,6 +107,20 @@ export default class SchedulerEventDrag {
         };
     }
 
+    areOverlapping(first, second) {
+        if (!this.isVertical) {
+            return first.offsetSide === second.offsetSide;
+        }
+        const firstLeft = first.offsetSide;
+        const firstRight = parseInt(first.right, 10);
+        const secondLeft = second.offsetSide;
+        const secondRight = parseInt(second.right, 10);
+        const leftOverlap = firstLeft <= secondLeft && firstRight >= secondLeft;
+        const rightOverlap =
+            firstRight >= secondRight && firstLeft <= secondRight;
+        return leftOverlap || rightOverlap;
+    }
+
     /**
      * Clear the dragged class and empty the draggedEvent and resizeSide variables.
      */
@@ -277,7 +291,7 @@ export default class SchedulerEventDrag {
         // Check if any event in the cell has the same offset
         const eventIsHovered = cellEvents.some((cellEvent) => {
             const isDifferent = cellEvent.key !== occurrence.key;
-            const overlaps = cellEvent.offsetSide === occurrence.offsetSide;
+            const overlaps = this.areOverlapping(occurrence, cellEvent);
             return isDifferent && overlaps;
         });
 

@@ -118,16 +118,23 @@ export default class SchedulerEventData {
      * Clear the selected or new event.
      */
     cleanSelection(cancelEdition = false) {
-        // If a new event was being created, remove the unfinished event from the events
         const lastEvent = this.events[this.events.length - 1];
-        if (
-            cancelEdition &&
-            this.selection &&
+        const reset = cancelEdition && this.selection;
+        const resetNewEvent =
+            reset &&
             this.selection.newEvent &&
-            lastEvent === this.selection.event
-        ) {
+            lastEvent === this.selection.event;
+
+        if (resetNewEvent) {
+            // Cancel the creation of a new event
             this.events.pop();
             this.refreshEvents();
+        } else if (reset) {
+            // Cancel the edition of an existing event
+            Object.keys(this.selection.draftValues).forEach((key) => {
+                const { occurrence, originalValues } = this.selection;
+                occurrence[key] = originalValues[key];
+            });
         }
         this.selection = undefined;
         if (this.eventDrag) {
@@ -490,6 +497,7 @@ export default class SchedulerEventData {
             occurrence,
             x,
             y,
+            originalValues: { ...occurrence },
             draftValues: {}
         };
         return this.selection;
