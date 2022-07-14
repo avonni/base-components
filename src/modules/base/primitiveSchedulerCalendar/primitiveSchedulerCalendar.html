@@ -121,7 +121,12 @@
                 <!-- Multi day events grid -->
                 <div
                     if:true={multiDayEvents.length}
-                    class="slds-border_left slds-theme_shade slds-is-relative"
+                    class="
+                        slds-border_left
+                        slds-theme_shade
+                        slds-is-relative
+                        avonni-scheduler__calendar-multi-day-wrapper
+                    "
                     data-element-id="div-multi-day-events-wrapper"
                 >
                     <div
@@ -179,8 +184,9 @@
                                 title={occurrence.title}
                                 theme={event.theme}
                                 to={occurrence.endOfTo}
-                                variant="timeline-horizontal"
+                                variant="calendar-horizontal"
                                 zoom-to-fit={zoomToFit}
+                                data-disabled={event.disabled}
                                 data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"
                                 data-event-name={event.name}
                                 data-key={occurrence.key}
@@ -269,12 +275,13 @@
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
-                                        variant="calendar"
+                                        variant="calendar-vertical"
                                         zoom-to-fit={zoomToFit}
-                                        data-weekday={occurrence.fromWeekday}
+                                        data-disabled={event.disabled}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}
+                                        data-weekday={occurrence.fromWeekday}
                                         onprivatefocus={handleEventFocus}
                                         onprivateblur={handleHideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}

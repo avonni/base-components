@@ -31,9 +31,14 @@
  */
 
 import { SchedulerCellGroup } from 'c/schedulerUtils';
-import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup {
+    constructor(props) {
+        super(props);
+        this.disabledEvents = normalizeArray(props.disabledEvents);
+    }
+
     get start() {
         const start = dateTimeObjectFrom(this.cells[0].start);
         return start.startOf('day');

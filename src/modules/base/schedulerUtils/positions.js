@@ -152,7 +152,8 @@ function computeEventLevelInCellGroup(
 export function updateOccurrencesOffset(
     occurrenceElements,
     events,
-    isVertical
+    isVertical,
+    verticalCellSize = this.cellWidth
 ) {
     let rowHeight = 0;
     let levelHeight = 0;
@@ -217,7 +218,7 @@ export function updateOccurrencesOffset(
         let offsetSide = 0;
 
         if (isVertical) {
-            offsetSide = (level * this.cellWidth) / numberOfOverlap;
+            offsetSide = (level * verticalCellSize) / numberOfOverlap;
             occurrence.numberOfEventsInThisTimeFrame = numberOfOverlap;
             this._updateOccurrencesLength = true;
         } else {

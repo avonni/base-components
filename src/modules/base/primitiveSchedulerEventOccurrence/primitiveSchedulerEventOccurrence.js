@@ -48,7 +48,12 @@ import referenceLine from './referenceLine.html';
 const DEFAULT_DATE_FORMAT = 'ff';
 const VARIANTS = {
     default: 'timeline-horizontal',
-    valid: ['timeline-horizontal', 'timeline-vertical', 'calendar']
+    valid: [
+        'timeline-horizontal',
+        'timeline-vertical',
+        'calendar-vertical',
+        'calendar-horizontal'
+    ]
 };
 
 /**
@@ -712,7 +717,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             `avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-scheduler__event_${theme}`
         )
             .add({
-                'slds-p-horizontal_x-small': !this.isCalendar,
+                'slds-p-horizontal_x-small': !this.isVerticalCalendar,
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
@@ -733,6 +738,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get computedColor() {
         return this.color || this.resourceColor;
+    }
+
+    get disabledStyle() {
+        if (this.isTimeline) {
+            return 'background-color: #f3f3f3;';
+        }
+        return `background-color: ${this.transparentColor};`;
     }
 
     /**
@@ -776,7 +788,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return classSet('slds-grid')
             .add({
                 'slds-grid_vertical-align-center slds-p-vertical_xx-small':
-                    !this.isVerticalTimeline && !this.isCalendar,
+                    !this.isVerticalTimeline && !this.isVerticalCalendar,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
@@ -792,7 +804,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get isCalendar() {
-        return this.variant === 'calendar';
+        return this.variant.startsWith('calendar');
     }
 
     get isTimeline() {
@@ -800,7 +812,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get isVertical() {
-        return this.isVerticalTimeline || this.isCalendar;
+        return this.isVerticalTimeline || this.isVerticalCalendar;
+    }
+
+    get isVerticalCalendar() {
+        return this.variant === 'calendar-vertical';
     }
 
     /**
@@ -991,7 +1007,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updatePosition() {
-        if (this.isTimeline) {
+        if (this.isTimeline || !this.isVerticalCalendar) {
             this.updatePositionInTimeline();
         } else {
             this.updatePositionInCalendar();
@@ -1009,7 +1025,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updateLength() {
         const { cellHeight, cellWidth, cellDuration } = this;
         const from = this.getComparableTime(this.from);
-        const headerCells = this.isCalendar
+        const headerCells = this.isVerticalCalendar
             ? this.headerCells.yAxis
             : this.timelineHeaderCells;
 
@@ -1065,7 +1081,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Update the height of the occurrence in the scheduler grid.
+     * Update the thickness of a disabled occurrence.
      *
      * @public
      */
@@ -1074,9 +1090,20 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (!this.disabled) return;
 
         const element = this.hostElement;
+
         if (this.isVerticalTimeline) {
+            // Vertical timeline
             element.style.width = `${this.cellWidth}px`;
+        } else if (this.isVerticalCalendar) {
+            // Calendar single-day event
+            const width = this.cellWidth / this.numberOfEventsInThisTimeFrame;
+            element.style.width = `${width}px`;
+        } else if (this.isCalendar) {
+            // Calendar multi-day event
+            const height = this.cellHeight / this.numberOfEventsInThisTimeFrame;
+            element.style.height = `${height}px`;
         } else {
+            // Horizontal timeline
             const resource = this.resources.find(
                 (res) => res.name === this.resourceKey
             );
@@ -1180,7 +1207,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     getComparableTime(date) {
-        if (!this.isCalendar) {
+        if (!this.isVerticalCalendar) {
             return date;
         }
         const time = new Date(date);

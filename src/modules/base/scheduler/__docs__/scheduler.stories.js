@@ -567,7 +567,8 @@ Calendar.args = {
     events,
     selectedDisplay: 'calendar',
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
-    availableTimeFrames: ['08:00-17:00']
+    availableTimeFrames: ['08:00-17:00'],
+    disabledDatesTimes
 };
 
 export const VerticalTimeline = Template.bind({});

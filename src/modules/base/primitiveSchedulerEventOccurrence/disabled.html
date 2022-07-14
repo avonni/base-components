@@ -37,8 +37,9 @@
         class="
             slds-is-absolute
             avonni-scheduler__disabled-date
-            slds-theme_alert-texture slds-theme_shade
+            slds-theme_alert-texture
         "
+        style={disabledStyle}
         oncontextmenu={handleDisabledContextMenu}
         ondblclick={handleDisabledDoubleClick}
         onmousedown={handleDisabledMouseDown}
@@ -49,13 +50,18 @@
             title={title}
             data-element-id="div-disabled-title-wrapper"
         >
-            <lightning-icon
-                if:true={iconName}
-                icon-name={iconName}
-                size="x-small"
-                class="slds-m-right_xx-small slds-current-color"
-            ></lightning-icon>
-            <span class="slds-truncate" data-element-id="div-disabled-title"
+            <span>
+                <lightning-icon
+                    if:true={iconName}
+                    class="slds-m-right_xx-small slds-current-color"
+                    icon-name={iconName}
+                    size="x-small"
+                ></lightning-icon>
+            </span>
+            <span
+                class="slds-truncate slds-col"
+                title={title}
+                data-element-id="div-disabled-title"
                 >{title}</span
             >
         </div>

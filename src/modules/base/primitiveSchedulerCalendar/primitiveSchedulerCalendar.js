@@ -84,7 +84,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     renderedCallback() {
-        this.updateOccurrencesOffset();
+        this.updateSingleAndMultiDayEventsOffset();
         updateOccurrencesPosition.call(this, true);
 
         if (!this._resizeObserver) {
@@ -416,68 +416,97 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.columns.forEach((col) => {
             const weekday = col.weekday;
             const events = [];
+            const disabledEvents = [];
             this.singleDayEvents.forEach((event) => {
-                if (!event.disabled) {
-                    const occurrences = event.occurrences.filter(
-                        (occurrence) => {
-                            return occurrence.fromWeekday === weekday;
-                        }
-                    );
-
+                const occurrences = event.occurrences.filter((occurrence) => {
+                    return occurrence.fromWeekday === weekday;
+                });
+                if (event.disabled) {
+                    disabledEvents.push(occurrences);
+                } else {
                     events.push(occurrences);
                 }
             });
             col.events = events.flat();
+            col.disabledEvents = disabledEvents.flat();
             col.initCells();
         });
 
         const multiDayOccurrences = [];
+        const disabledMultiDayOccurrences = [];
         this.multiDayEvents.forEach((event) => {
-            if (!event.disabled) {
+            if (event.disabled) {
+                disabledMultiDayOccurrences.push(...event.occurrences);
+            } else {
                 multiDayOccurrences.push(...event.occurrences);
             }
         });
         this.multiDayEventsCellGroup.events = multiDayOccurrences;
+        this.multiDayEventsCellGroup.disabledEvents =
+            disabledMultiDayOccurrences;
+    }
+
+    updateOccurrencesOffset(column, selector, isSingleDayOccurrence) {
+        const { events, disabledEvents } = column;
+        let rowHeight = 0;
+
+        if (events.length) {
+            // Update the occurrences offset
+            const occurrences = Array.from(
+                this.template.querySelectorAll(
+                    `${selector}:not([data-disabled="true"])`
+                )
+            );
+
+            rowHeight += updateOccurrencesOffset.call(
+                this,
+                occurrences,
+                events,
+                isSingleDayOccurrence
+            );
+        }
+
+        if (disabledEvents.length) {
+            // Update the disabled occurrences offset
+            const disabledOccurrences = Array.from(
+                this.template.querySelectorAll(
+                    `${selector}[data-disabled="true"]`
+                )
+            );
+
+            const cellSize = isSingleDayOccurrence
+                ? this.cellWidth
+                : this.multiDayCellHeight;
+            rowHeight += updateOccurrencesOffset.call(
+                this,
+                disabledOccurrences,
+                disabledEvents,
+                true,
+                cellSize
+            );
+        }
+        return rowHeight;
     }
 
     /**
      * Prevent the events from overlapping by computing their horizontal position.
      */
-    updateOccurrencesOffset() {
-        // For each day column
-        this.columns.forEach(({ weekday, events }) => {
-            if (events.length) {
-                // Get all the event occurrences for the current weekday column
-                const singleDayOccurrences = Array.from(
-                    this.template.querySelectorAll(
-                        `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${weekday}"]:not([data-disabled="true"])`
-                    )
-                );
-
-                updateOccurrencesOffset.call(
-                    this,
-                    singleDayOccurrences,
-                    events,
-                    true
-                );
-            }
+    updateSingleAndMultiDayEventsOffset() {
+        this.columns.forEach((column) => {
+            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"]`;
+            this.updateOccurrencesOffset(column, selector, true);
         });
 
-        if (this.multiDayEvents.length) {
-            const multiDayOccurrences = Array.from(
-                this.template.querySelectorAll(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]:not([data-disabled="true"])'
-                )
+        if (this.multiDayEvents.length && this.multiDayWrapper) {
+            const multiDaySelector =
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]';
+            const rowHeight = this.updateOccurrencesOffset(
+                this.multiDayEventsCellGroup,
+                multiDaySelector
             );
-            const events = this.multiDayEvents.map((ev) => ev.occurrences);
-            const occurrences = events.flat();
-            const multiDayRowHeight = updateOccurrencesOffset.call(
-                this,
-                multiDayOccurrences,
-                occurrences
-            );
-
-            this.multiDayWrapper.style.height = `${multiDayRowHeight}px`;
+            const height = rowHeight || this.cellHeight;
+            this.multiDayCellHeight = height;
+            this.multiDayWrapper.style.height = `${height}px`;
             this.pushVerticalHeadersDown();
         }
     }
