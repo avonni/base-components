@@ -562,6 +562,7 @@ Base.args = {
 
 export const Calendar = Template.bind({});
 Calendar.args = {
+    columns,
     resources,
     start,
     events,

@@ -1473,8 +1473,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleDoubleClick(event) {
-        if (this.readOnly) return;
-
         /**
          * The event fired when the user double-clicks on the occurrence, if it is not disabled.
          *
@@ -1495,8 +1493,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleDisabledDoubleClick(event) {
-        if (this.readOnly) return;
-
         const customEvent = new CustomEvent('privatedisableddblclick');
         customEvent.clientX = event.clientX;
         customEvent.clientY = event.clientY;
@@ -1598,7 +1594,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleDisabledMouseDown(event) {
-        if (event.button !== 0 || this.readOnly) return;
+        if (event.button !== 0) return;
 
         /**
          * The event fired when the mouse is pressed on a disabled or reference line occurrence.

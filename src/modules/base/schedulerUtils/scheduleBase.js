@@ -573,6 +573,9 @@ export class ScheduleBase extends LightningElement {
      * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
      */
     handleDoubleClick(event) {
+        if (this.readOnly) {
+            return;
+        }
         const x = event.clientX;
         const y = event.clientY;
         this.newEvent(x, y, true);
@@ -615,6 +618,9 @@ export class ScheduleBase extends LightningElement {
      * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
      */
     handleEventDoubleClick(event) {
+        if (this.readOnly) {
+            return;
+        }
         this._eventData.cleanSelection(true);
         this.selectEvent(event.detail);
         this.dispatchHidePopovers();

@@ -210,12 +210,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         ];
     }
 
+    get isDay() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'day' && span === 1;
+    }
+
     get isWeek() {
         const { span, unit } = this.timeSpan;
         return unit === 'week' || (unit === 'day' && span === 7);
     }
 
     get multiDayEventHeaderCells() {
+        if (!this.eventHeaderCells.xAxis) {
+            return [];
+        }
         // Normalize the end and start of the first and last cells
         const cells = [...this.eventHeaderCells.xAxis];
         const start = dateTimeObjectFrom(cells[0].start);
