@@ -245,7 +245,7 @@ export function updateOccurrencesOffset(
 /**
  * Update the primitive occurrences height, width and position.
  */
-export function updateOccurrencesPosition(isVertical) {
+export function updateOccurrencesPosition() {
     const eventOccurrences = this.template.querySelectorAll(
         '[data-element-id^="avonni-primitive-scheduler-event-occurrence"]'
     );
@@ -259,15 +259,4 @@ export function updateOccurrencesPosition(isVertical) {
         occurrence.updatePosition();
     });
     this._updateOccurrencesLength = false;
-
-    if (isVertical) {
-        // Set the reference line height to the width of the schedule
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        const scheduleWidth = schedule.getBoundingClientRect().width;
-        schedule.style = `
-             --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
-         `;
-    }
 }

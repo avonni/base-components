@@ -100,7 +100,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
 
         this.updateOccurrencesOffset();
-        updateOccurrencesPosition.call(this, this.isVertical);
+        this.updateOccurrencesPosition();
         this.updateResourcesStyle();
 
         if (this._eventData.shouldInitDraggedEvent) {
@@ -701,6 +701,21 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 resource.height = resourceHeight;
             }
         });
+    }
+
+    updateOccurrencesPosition() {
+        updateOccurrencesPosition.call(this);
+
+        if (this.isVertical) {
+            // Set the reference line height to the width of the schedule
+            const schedule = this.template.querySelector(
+                '[data-element-id="div-schedule-body"]'
+            );
+            const scheduleWidth = schedule.getBoundingClientRect().width;
+            schedule.style = `
+                --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
+            `;
+        }
     }
 
     /**

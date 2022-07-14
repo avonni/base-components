@@ -85,7 +85,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     renderedCallback() {
         this.updateSingleAndMultiDayEventsOffset();
-        updateOccurrencesPosition.call(this, true);
+        this.updateOccurrencesPosition();
 
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
@@ -482,6 +482,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             );
         }
         return rowHeight;
+    }
+
+    updateOccurrencesPosition() {
+        updateOccurrencesPosition.call(this);
+
+        // Set the reference line height to the width of one cell
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        schedule.style = `
+            --avonni-primitive-scheduler-event-reference-line-length: ${this.cellWidth}px
+        `;
     }
 
     /**

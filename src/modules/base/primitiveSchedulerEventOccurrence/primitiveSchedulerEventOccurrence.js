@@ -856,7 +856,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return classSet('avonni-scheduler__reference-line slds-is-absolute')
             .add({
                 'avonni-scheduler__reference-line_vertical':
-                    this.isVerticalTimeline
+                    this.isVerticalTimeline || this.isVerticalCalendar
             })
             .toString();
     }
@@ -1272,9 +1272,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Add the computed position to the inline style of the component host.
      */
     updateHostTranslate() {
-        const x = this.isVertical
-            ? this.x + this.offsetSide
-            : this.x + this._offsetStart;
+        let x = this.x;
+        if (this.isVertical && !this.referenceLine) {
+            x = this.x + this.offsetSide;
+        } else if (!this.isVertical) {
+            x = this.x + this._offsetStart;
+        }
         const y = this.isVertical ? this.y + this._offsetStart : this.y;
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
