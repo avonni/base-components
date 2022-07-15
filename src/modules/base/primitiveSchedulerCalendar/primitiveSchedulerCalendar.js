@@ -525,12 +525,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const hourHeader = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
         );
+        const hourGrid = this.template.querySelector(
+            '[data-element-id="div-hours-grid"]'
+        );
 
-        if (wrapper && leftPanel && hourHeader) {
+        if (wrapper && leftPanel && hourHeader && hourGrid) {
+            const scrollBarWidth = hourGrid.offsetWidth - hourGrid.clientWidth;
             const width =
                 wrapper.offsetWidth -
                 leftPanel.offsetWidth -
-                hourHeader.offsetWidth;
+                hourHeader.offsetWidth -
+                scrollBarWidth;
             const cellWidth = width / this.columns.length;
             this.dayHeadersVisibleWidth =
                 this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
@@ -869,8 +874,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.firstColumnIsHidden = false;
             this.firstColWidth = this._initialFirstColWidth;
         } else {
+            const splitter = this.template.querySelector(
+                '[data-element-id="div-splitter"]'
+            );
+            const splitterWidth = splitter.getBoundingClientRect().width;
             this.firstColumnIsOpen = true;
-            const width = this.template.host.getBoundingClientRect().width;
+            const width =
+                this.template.host.getBoundingClientRect().width -
+                splitterWidth;
             this.firstColWidth = width;
             this.leftPanelContent.style.width = `${width}px`;
         }
