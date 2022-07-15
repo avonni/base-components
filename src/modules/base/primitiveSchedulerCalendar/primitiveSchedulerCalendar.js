@@ -52,11 +52,13 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
+const MINIMUM_DAY_COLUMN_WIDTH = 48;
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     _selectedResources = [];
 
     _eventData;
+    _initialFirstColWidth = 0;
     _mouseIsDown = false;
     _resizeObserver;
     _updateOccurrencesLength = false;
@@ -90,6 +92,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     renderedCallback() {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
+        }
+
+        if (!this._initialFirstColWidth) {
+            this.resetFirstColumnWidth();
         }
 
         this.updateSingleAndMultiDayEventsOffset();
@@ -198,20 +204,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         };
     }
 
-    /**
-     * Computed CSS classes for the first column.
-     *
-     * @type {string}
-     */
-    get firstColClass() {
-        return classSet('slds-border_right slds-grid')
-            .add({
-                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-                'avonni-scheduler__first-col_open': this.firstColumnIsOpen
-            })
-            .toString();
-    }
-
     get horizontalHeaders() {
         return this.template.querySelector(
             '[data-element-id="div-horizontal-header-wrapper"]'
@@ -236,6 +228,34 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     get isWeek() {
         const { span, unit } = this.timeSpan;
         return unit === 'week' || (unit === 'day' && span === 7);
+    }
+
+    /**
+     * Computed CSS classes for the left panel.
+     *
+     * @type {string}
+     */
+    get leftPanelClass() {
+        return classSet('slds-border_right slds-grid')
+            .add({
+                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
+                'avonni-scheduler__first-col_open': this.firstColumnIsOpen
+            })
+            .toString();
+    }
+
+    get leftPanelContent() {
+        return this.template.querySelector(
+            '[data-element-id="div-panel-content"]'
+        );
+    }
+
+    get leftPanelContentClass() {
+        return classSet('slds-scrollable_y')
+            .add({
+                'slds-p-around_small': !this.firstColumnIsHidden
+            })
+            .toString();
     }
 
     get multiDayEventHeaderCells() {
@@ -272,6 +292,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 value: res.name
             };
         });
+    }
+
+    /**
+     * Computed CSS class for the schedule column.
+     *
+     * @type {string}
+     */
+    get scheduleColClass() {
+        return classSet(
+            'slds-col avonni-primitive-scheduler-calendar__inherit-height slds-grid slds-grid_vertical'
+        )
+            .add({
+                'slds-hide': this.firstColumnIsOpen,
+                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+            })
+            .toString();
     }
 
     /**
@@ -415,6 +451,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             '[data-element-id="div-hours-grid"]'
         );
         resizeObserver.observe(schedule);
+        resizeObserver.observe(this.leftPanelContent);
         return resizeObserver;
     }
 
@@ -429,6 +466,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             ? `[data-element-id="div-multi-day-events-wrapper"] ${CELL_SELECTOR}`
             : COLUMN_SELECTOR;
         return getElementOnXAxis(this.template, x, selector);
+    }
+
+    /**
+     * Reset the width of the first column to the width it had before being collapsed.
+     */
+    resetFirstColumnWidth() {
+        const columnWidth = this.leftPanelContent.getBoundingClientRect().width;
+        this._initialFirstColWidth = columnWidth;
+        this.firstColWidth = columnWidth;
     }
 
     /**
@@ -473,18 +519,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-schedule-wrapper"]'
         );
-        const firstCol = this.template.querySelector(
-            '[data-element-id="div-first-column"]'
+        const leftPanel = this.template.querySelector(
+            '[data-element-id="div-left-panel"]'
         );
         const hourHeader = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
         );
 
-        if (wrapper && firstCol && hourHeader) {
-            this.dayHeadersVisibleWidth =
+        if (wrapper && leftPanel && hourHeader) {
+            const width =
                 wrapper.offsetWidth -
-                firstCol.offsetWidth -
+                leftPanel.offsetWidth -
                 hourHeader.offsetWidth;
+            const cellWidth = width / this.columns.length;
+            this.dayHeadersVisibleWidth =
+                this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
+                    ? width
+                    : 0;
         }
     }
 
@@ -648,6 +699,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         `;
     }
 
+    /**
+     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
+     */
+    handleHideFirstCol() {
+        this.dispatchHidePopovers();
+
+        if (this.firstColumnIsOpen) {
+            this.firstColumnIsOpen = false;
+            this.firstColWidth = this._initialFirstColWidth;
+            this.leftPanelContent.style.width = `${this._initialFirstColWidth}px`;
+        } else {
+            this.firstColumnIsHidden = true;
+            this.firstColWidth = 0;
+        }
+    }
+
     handleHorizontalHeaderChange(event) {
         const { smallestHeader, visibleInterval } = event.detail;
         const { start, cells, unit, span } = smallestHeader;
@@ -714,8 +781,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const { mouseX, firstColWidth } = this._initialState;
             const x = mouseEvent.clientX;
             const width = firstColWidth + (x - mouseX);
-            this.firstCol.style.width = `${width}px`;
-            this.firstCol.style.minWidth = `${width}px`;
+            this.leftPanelContent.style.width = `${width}px`;
             this.firstColWidth = width;
         } else {
             this._eventData.handleMouseMove(mouseEvent);
@@ -792,6 +858,26 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.dispatchHidePopovers();
     }
 
+    /**
+     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
+     */
+    handleOpenFirstCol() {
+        this.dispatchHidePopovers();
+        this.leftPanelContent.style.width = null;
+
+        if (this.firstColumnIsHidden) {
+            this.firstColumnIsHidden = false;
+            this.firstColWidth = this._initialFirstColWidth;
+        } else {
+            this.firstColumnIsOpen = true;
+            const width = this.template.host.getBoundingClientRect().width;
+            this.firstColWidth = width;
+            this.leftPanelContent.style.width = `${width}px`;
+        }
+
+        this.updateCellWidth();
+    }
+
     handleResourceToggle(event) {
         const name = event.currentTarget.value;
         const selected = event.detail.checked;
@@ -809,6 +895,29 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         );
     }
 
+    /**
+     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
+     */
+    handleSplitterMouseDown(mouseEvent) {
+        if (
+            this.resizeColumnDisabled ||
+            mouseEvent.button !== 0 ||
+            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
+        ) {
+            return;
+        }
+
+        this._mouseIsDown = true;
+        this._draggedSplitter = true;
+        this._initialState = {
+            mouseX: mouseEvent.clientX,
+            firstColWidth: this.leftPanelContent.offsetWidth
+        };
+        this.firstColumnIsHidden = false;
+        this.firstColumnIsOpen = false;
+        this.dispatchHidePopovers();
+    }
+
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;
 
@@ -819,5 +928,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const end = addToDate(start, unit, span) - 1;
         this.hourCellDuration =
             dateTimeObjectFrom(end).diff(start).milliseconds;
+        this._initialFirstColWidth = 0;
     }
 }

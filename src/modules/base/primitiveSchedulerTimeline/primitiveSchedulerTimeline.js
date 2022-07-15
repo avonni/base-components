@@ -263,6 +263,17 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
+     * First column HTML Element.
+     *
+     * @type {HTMLElement}
+     */
+    get firstCol() {
+        return this.template.querySelector(
+            '[data-element-id="div-first-column"]'
+        );
+    }
+
+    /**
      * Computed CSS classes for the first column.
      *
      * @type {string}
@@ -341,7 +352,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         )
             .add({
                 'slds-hide': this.firstColumnIsOpen,
-                'avonni-scheduler__schedule-col_vertical': this.isVertical,
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();

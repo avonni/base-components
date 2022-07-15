@@ -33,6 +33,7 @@
 .avonni-scheduler__wrapper {
     height: 100%;
     max-height: calc(100vh - 50px);
+    max-width: 100%;
 }
 
 .avonni-scheduler__calendar-cell {
@@ -78,6 +79,19 @@
     height: 4px;
 }
 
+.avonni-scheduler__first-col_hidden {
+    width: 0;
+}
+
+.avonni-scheduler__first-col_open {
+    width: 100%;
+}
+
+.avonni-scheduler__schedule-col_zoom-to-fit {
+    /* Prevent the flex column from allowing overflow */
+    min-width: 0;
+}
+
 /* Splitter bar between the left panel and the schedule --------- */
 .avonni-scheduler__splitter {
     z-index: 5;
@@ -85,6 +99,9 @@
     bottom: 0;
     left: 0;
     width: 20px;
+}
+.avonni-scheduler__first-col_hidden .avonni-scheduler__splitter {
+    left: 0;
 }
 .avonni-scheduler__first-col_open .avonni-scheduler__splitter {
     left: -12px;

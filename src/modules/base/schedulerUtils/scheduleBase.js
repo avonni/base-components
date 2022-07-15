@@ -410,17 +410,6 @@ export class ScheduleBase extends LightningElement {
      */
 
     /**
-     * First column HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-    }
-
-    /**
      * If true, the left collapse button is displayed on the splitter bar.
      *
      * @type {boolean}

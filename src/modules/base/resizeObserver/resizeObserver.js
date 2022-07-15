@@ -30,12 +30,12 @@ export class AvonniResizeObserver {
         }
     }
 
-    observe(lightningElement) {
+    observe(element) {
         // Using requestAnimationFrame as the element may not be physically in the DOM yet.
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this._requestAnimationId = requestAnimationFrame(() => {
             if (this._resizeObserverAvailable) {
-                this._resizeObserver.observe(lightningElement);
+                this._resizeObserver.observe(element);
             } else if (!this._hasWindowResizeHandler) {
                 window.addEventListener('resize', this._delayedResizeCallback);
                 this._hasWindowResizeHandler = true;

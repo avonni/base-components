@@ -43,8 +43,11 @@
         onmousemove={handleMouseMove}
     >
         <!-- Left panel -->
-        <div class={firstColClass} data-element-id="div-first-column">
-            <div class="slds-p-around_small slds-scrollable_y">
+        <div class={leftPanelClass} data-element-id="div-left-panel">
+            <div
+                class={leftPanelContentClass}
+                data-element-id="div-panel-content"
+            >
                 <c-calendar
                     value={selectedDate}
                     onchange={handleCalendarChange}
@@ -101,13 +104,7 @@
         </div>
 
         <!-- Schedule -->
-        <div
-            class="
-                slds-col
-                avonni-primitive-scheduler-calendar__inherit-height
-                slds-grid slds-grid_vertical
-            "
-        >
+        <div class={scheduleColClass}>
             <div
                 class="
                     avonni-scheduler__calendar-day-header-wrapper
