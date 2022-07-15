@@ -86,6 +86,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     renderedCallback() {
         this.updateSingleAndMultiDayEventsOffset();
         this.updateOccurrencesPosition();
+        this.setHorizontalHeadersSideSpacing();
 
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
@@ -411,11 +412,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     /**
      * Push the vertical headers, so their top is aligned with the bottom of the horizontal headers.
      */
-    pushHorizontalHeadersRight() {
-        if (this.horizontalHeaders && this.verticalHeaders) {
-            const width = this.verticalHeaders.getBoundingClientRect().width;
-            // Remove the border width
-            this.horizontalHeaders.style.paddingLeft = `${width - 1}px`;
+    setHorizontalHeadersSideSpacing() {
+        if (this.horizontalHeaders) {
+            if (this.verticalHeaders) {
+                // Align the horizontal headers with the vertical headers
+                const width =
+                    this.verticalHeaders.getBoundingClientRect().width;
+                this.horizontalHeaders.style.paddingLeft = `${width - 1}px`;
+            }
+
+            // Align the horizontal headers with the right scrollbar, if any
+            const hourGrid = this.template.querySelector(
+                '[data-element-id="div-hours-grid"]'
+            );
+            const scrollBarWidth = hourGrid.offsetWidth - hourGrid.clientWidth;
+            this.horizontalHeaders.style.marginRight = `${scrollBarWidth}px`;
         }
     }
 
@@ -542,7 +553,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const height = rowHeight || this.cellHeight;
             this.multiDayCellHeight = height;
             this.multiDayWrapper.style.height = `${height}px`;
-            this.pushHorizontalHeadersRight();
         }
     }
 
@@ -733,9 +743,5 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const end = addToDate(start, unit, span) - 1;
         this.hourCellDuration =
             dateTimeObjectFrom(end).diff(start).milliseconds;
-
-        requestAnimationFrame(() => {
-            this.pushHorizontalHeadersRight();
-        });
     }
 }

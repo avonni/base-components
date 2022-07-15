@@ -91,7 +91,11 @@
 
         <!-- Schedule -->
         <div
-            class="slds-col avonni-primitive-scheduler-calendar__inherit-height"
+            class="
+                slds-col
+                avonni-primitive-scheduler-calendar__inherit-height
+                slds-grid slds-grid_vertical
+            "
         >
             <div
                 class="
@@ -202,7 +206,10 @@
                 </div>
             </div>
 
-            <div class="slds-grid slds-col">
+            <div
+                class="slds-grid slds-col slds-scrollable_y"
+                data-element-id="div-hours-grid"
+            >
                 <!-- Hours -->
                 <c-primitive-scheduler-header-group
                     class="avonni-scheduler__calendar-header"
