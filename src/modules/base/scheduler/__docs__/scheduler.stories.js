@@ -562,13 +562,13 @@ Base.args = {
 
 export const Calendar = Template.bind({});
 Calendar.args = {
-    columns,
+    // columns,
     resources,
     start,
     events,
     selectedDisplay: 'calendar',
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
-    availableTimeFrames: ['08:00-17:00'],
+    availableTimeFrames: ['08:00-23:59'],
     disabledDatesTimes,
     referenceLines
 };

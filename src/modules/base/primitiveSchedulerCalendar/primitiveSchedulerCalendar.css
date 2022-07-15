@@ -30,6 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.avonni-scheduler__wrapper {
+    height: 100%;
+    min-height: 5rem;
+    max-height: 100vh;
+}
+
 .avonni-scheduler__calendar-cell {
     height: var(--avonni-scheduler-cell-height);
     min-height: var(--avonni-scheduler-cell-height);
@@ -37,6 +43,40 @@
 
 .avonni-primitive-scheduler-calendar__inherit-height {
     height: inherit;
+    min-height: inherit;
+    max-height: inherit;
+}
+
+.avonni-scheduler__calendar-header {
+    --avonni-primitive-scheduler-header-group-cell-color-background: #fff;
+    --avonni-primitive-scheduler-header-group-cell-spacing-block-start: 0.5rem;
+    --avonni-primitive-scheduler-header-group-cell-spacing-block-end: 0.5rem;
+    --avonni-primitive-scheduler-header-group-cell-color-border: transparent;
+}
+
+.avonni-scheduler__calendar-day-header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.avonni-scheduler__calendar-day-header-wrapper::before {
+    content: '';
+    background-image: linear-gradient(to right, white, rgba(255, 255, 255, 0));
+    height: 2px;
+    left: 0;
+    bottom: -1px;
+    position: absolute;
+    width: 80px;
+    z-index: 3;
+}
+.avonni-scheduler__calendar-day-header-wrapper::after {
+    box-shadow: inset 0 1px 1px 0 rgb(0 0 0 / 14%),
+        inset 0 2px 1px -1px rgb(0 0 0 / 12%);
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
 }
 
 /* Splitter bar between the left panel and the schedule --------- */

@@ -47,7 +47,23 @@
     width: var(--avonni-scheduler-cell-size);
     min-width: var(--avonni-scheduler-cell-size);
     color: #514f4d;
+    background-color: var(
+        --avonni-primitive-scheduler-header-group-cell-color-background,
+        #f3f3f3
+    );
     font-weight: 700;
+    padding-top: var(
+        --avonni-primitive-scheduler-header-group-cell-spacing-block-start
+    );
+    padding-bottom: var(
+        --avonni-primitive-scheduler-header-group-cell-spacing-block-end
+    );
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom: var(
+        --avonni-primitive-scheduler-header-group-cell-color-border,
+        #e5e5e5
+    );
 }
 
 .avonni-scheduler-header-group__header_vertical

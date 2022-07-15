@@ -576,6 +576,12 @@ const disabledDatesTimes = [
         to: new Date(2021, 11, 20)
     },
     {
+        resourceNames: ['Dave'],
+        title: 'Day off',
+        from: new Date(2021, 11, 18),
+        allDay: true
+    },
+    {
         resourceNames: ['Jung'],
         title: 'Day off',
         from: new Date(2021, 11, 23),

@@ -173,6 +173,27 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         ];
     }
 
+    get dayHeadersVisibleWidth() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        const firstCol = this.template.querySelector(
+            '[data-element-id="div-first-column"]'
+        );
+        const hourHeader = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+        );
+
+        if (wrapper && firstCol && hourHeader) {
+            return (
+                wrapper.offsetWidth -
+                firstCol.offsetWidth -
+                hourHeader.offsetWidth
+            );
+        }
+        return 0;
+    }
+
     get dayTimeSpan() {
         return {
             unit: 'day',
@@ -196,7 +217,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     get horizontalHeaders() {
         return this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
+            '[data-element-id="div-horizontal-header-wrapper"]'
         );
     }
 
@@ -390,13 +411,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     /**
      * Push the vertical headers, so their top is aligned with the bottom of the horizontal headers.
      */
-    pushVerticalHeadersDown() {
+    pushHorizontalHeadersRight() {
         if (this.horizontalHeaders && this.verticalHeaders) {
-            let height = this.horizontalHeaders.offsetHeight;
-            if (this.multiDayWrapper) {
-                height += this.multiDayWrapper.offsetHeight;
-            }
-            this.verticalHeaders.style.marginTop = `${height}px`;
+            const width = this.verticalHeaders.getBoundingClientRect().width;
+            // Remove the border width
+            this.horizontalHeaders.style.paddingLeft = `${width - 1}px`;
         }
     }
 
@@ -523,7 +542,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const height = rowHeight || this.cellHeight;
             this.multiDayCellHeight = height;
             this.multiDayWrapper.style.height = `${height}px`;
-            this.pushVerticalHeadersDown();
+            this.pushHorizontalHeadersRight();
         }
     }
 
@@ -574,9 +593,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         this.initEvents();
         this.updateColumnEvents();
-        requestAnimationFrame(() => {
-            this.pushVerticalHeadersDown();
-        });
     }
 
     /**
@@ -660,7 +676,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     this.dispatchOpenEditDialog(this._eventData.selection);
                     break;
                 case 'recurrence':
-                    this.dispatchOpenRecurrenceDialog();
+                    this.dispatchOpenRecurrenceDialog(
+                        this._eventData.selection
+                    );
                     break;
                 default:
                     break;
@@ -715,5 +733,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const end = addToDate(start, unit, span) - 1;
         this.hourCellDuration =
             dateTimeObjectFrom(end).diff(start).milliseconds;
+
+        requestAnimationFrame(() => {
+            this.pushHorizontalHeadersRight();
+        });
     }
 }
