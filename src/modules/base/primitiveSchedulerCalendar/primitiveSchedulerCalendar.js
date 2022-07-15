@@ -46,6 +46,7 @@ import {
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
@@ -63,6 +64,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     computedEvents = [];
     computedResources = [];
     dayCellDuration = 0;
+    dayHeadersVisibleWidth = 0;
     eventHeaderCells = {};
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
@@ -84,13 +86,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     renderedCallback() {
-        this.updateSingleAndMultiDayEventsOffset();
-        this.updateOccurrencesPosition();
-        this.setHorizontalHeadersSideSpacing();
-
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+
+        this.updateSingleAndMultiDayEventsOffset();
+        this.updateOccurrencesPosition();
+        this.setHorizontalHeadersSideSpacing();
 
         if (this._eventData && this._eventData.shouldInitDraggedEvent) {
             // A new event is being created by dragging.
@@ -172,27 +174,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 span: 1
             }
         ];
-    }
-
-    get dayHeadersVisibleWidth() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        const firstCol = this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-        const hourHeader = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
-        );
-
-        if (wrapper && firstCol && hourHeader) {
-            return (
-                wrapper.offsetWidth -
-                firstCol.offsetWidth -
-                hourHeader.offsetWidth
-            );
-        }
-        return 0;
     }
 
     get dayTimeSpan() {
@@ -396,6 +377,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.columns = columns;
     }
 
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.updateCellWidth();
+        });
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-hours-grid"]'
+        );
+        resizeObserver.observe(schedule);
+        return resizeObserver;
+    }
+
     initResources() {
         this.computedResources = this.resources.map((res) => {
             return { ...res, height: 0, data: { res } };
@@ -442,6 +439,27 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             if (this.isWeek) {
                 this.start = removeFromDate(this.start, 'day', 1);
             }
+        }
+    }
+
+    updateCellWidth() {
+        super.updateCellWidth();
+
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        const firstCol = this.template.querySelector(
+            '[data-element-id="div-first-column"]'
+        );
+        const hourHeader = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+        );
+
+        if (wrapper && firstCol && hourHeader) {
+            this.dayHeadersVisibleWidth =
+                wrapper.offsetWidth -
+                firstCol.offsetWidth -
+                hourHeader.offsetWidth;
         }
     }
 

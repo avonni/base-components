@@ -36,7 +36,6 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -73,12 +72,6 @@ export class ScheduleBase extends LightningElement {
 
     connectedCallback() {
         this._connected = true;
-    }
-
-    renderedCallback() {
-        if (!this._resizeObserver) {
-            this._resizeObserver = this.initResizeObserver();
-        }
     }
 
     disconnectedCallback() {
@@ -532,22 +525,6 @@ export class ScheduleBase extends LightningElement {
             recurrentEditModes: this.recurrentEditModes,
             visibleInterval: this.visibleInterval
         });
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateCellWidth();
-        });
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        resizeObserver.observe(schedule);
-        return resizeObserver;
     }
 
     updateCellWidth() {

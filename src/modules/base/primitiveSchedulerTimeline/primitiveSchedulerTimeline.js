@@ -54,6 +54,7 @@ import {
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 
@@ -68,6 +69,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _initialFirstColWidth;
     _initialState = {};
     _mouseIsDown = false;
+    _resizeObserver;
     _rowsHeight = [];
     _updateOccurrencesLength = false;
     cellWidth = 0;
@@ -87,6 +89,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     renderedCallback() {
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
         if (!this.smallestHeader) {
             return;
         }
@@ -528,6 +533,22 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         });
 
         this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeadersName]);
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.updateCellWidth();
+        });
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        resizeObserver.observe(schedule);
+        return resizeObserver;
     }
 
     initResources() {
