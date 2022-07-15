@@ -41,7 +41,7 @@ const columns = [
             alternativeText: 'Avatar',
             fallbackIconName: { fieldName: 'avatarFallbackIconName' },
             initials: { fieldName: 'avatarInitials' },
-            primaryText: { fieldName: 'name' }
+            primaryText: { fieldName: 'label' }
         }
     },
     {

@@ -51,6 +51,7 @@ import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_COLUMNS,
     DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
@@ -77,7 +78,7 @@ export default class Scheduler extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
-    _columns = [];
+    _columns = DEFAULT_COLUMNS;
     _contextMenuEmptySpotActions = [];
     _contextMenuEventActions = [];
     _customEventsPalette = [];
@@ -233,7 +234,8 @@ export default class Scheduler extends LightningElement {
         return this._columns;
     }
     set columns(value) {
-        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
+        const columns = deepCopy(normalizeArray(value, 'object'));
+        this._columns = columns.length ? columns : DEFAULT_COLUMNS;
     }
 
     /**

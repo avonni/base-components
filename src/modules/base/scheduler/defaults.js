@@ -33,6 +33,19 @@
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const DEFAULT_COLUMNS = [
+    {
+        label: 'Resource',
+        fieldName: 'avatarSrc',
+        type: 'avatar',
+        typeAttributes: {
+            alternativeText: { fieldName: 'name' },
+            fallbackIconName: { fieldName: 'avatarFallbackIconName' },
+            initials: { fieldName: 'avatarInitials' },
+            primaryText: { fieldName: 'label' }
+        }
+    }
+];
 const DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS = [
     {
         name: 'Standard.Scheduler.AddEvent',
@@ -259,6 +272,7 @@ export {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_COLUMNS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_DATE_FORMAT,
