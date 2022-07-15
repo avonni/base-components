@@ -118,7 +118,7 @@ export default class SchedulerEvent {
         this.disabled = props.disabled;
         this.schedulerEnd = props.schedulerEnd;
         this.schedulerStart = props.schedulerStart;
-        this.selectedResources = props.selectedResources;
+        this.selectedResources = normalizeArray(props.selectedResources);
         this.smallestHeader = props.smallestHeader;
         this.from = props.from;
         this.to = props.to;
@@ -404,7 +404,10 @@ export default class SchedulerEvent {
                 );
             } else {
                 resourceNames.forEach((name) => {
-                    if (this.selectedResources.includes(name)) {
+                    if (
+                        !this.selectedResources.length ||
+                        this.selectedResources.includes(name)
+                    ) {
                         this.occurrences.push(
                             new Occurrence({
                                 from,

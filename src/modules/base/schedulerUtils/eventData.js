@@ -116,7 +116,11 @@ export default class SchedulerEventData {
     }
 
     belongsToSelectedResources(event) {
-        if (!this.selectedResources.length || event.referenceLine) {
+        if (
+            !this.selectedResources ||
+            !this.selectedResources.length ||
+            event.referenceLine
+        ) {
             return true;
         }
         const names = normalizeArray(event.resourceNames);

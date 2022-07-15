@@ -114,8 +114,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             this.updateVisibleResources();
             this._eventData.setDraggedEvent();
         }
-
-        super.renderedCallback();
     }
 
     disconnectedCallback() {
