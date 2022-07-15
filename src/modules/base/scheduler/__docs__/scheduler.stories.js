@@ -392,6 +392,17 @@ export default {
                 category: 'Panels and Toolbar'
             }
         },
+        selectedResources: {
+            name: 'selected-resources',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of selected resources names. Only the events of the selected resources will be visible.',
+            table: {
+                type: { summary: 'string[]' }
+            }
+        },
         selectedTimeSpan: {
             name: 'selected-time-span',
             control: {
@@ -562,11 +573,11 @@ Base.args = {
 
 export const Calendar = Template.bind({});
 Calendar.args = {
-    // columns,
     resources,
     start,
     events,
     selectedDisplay: 'calendar',
+    selectedResources: ['Dave', 'Reginald'],
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
     availableTimeFrames: ['08:00-23:59'],
     disabledDatesTimes,

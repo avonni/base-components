@@ -35,6 +35,7 @@ import {
     addToDate,
     dateTimeObjectFrom,
     isAllowedTime,
+    normalizeArray,
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -53,6 +54,7 @@ const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _selectedResources = [];
 
     _eventData;
     _mouseIsDown = false;
@@ -144,6 +146,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
+        }
+    }
+
+    @api
+    get selectedResources() {
+        return this._selectedResources;
+    }
+    set selectedResources(value) {
+        this._selectedResources = normalizeArray(value, 'string');
+
+        if (this._connected) {
+            this._eventData.selectedResources = this._selectedResources;
+            this.initEvents();
         }
     }
 
@@ -244,8 +259,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     get resourceOptions() {
         return this.resources.map((res) => {
+            const style = `
+                --sds-c-checkbox-color-background-checked: ${res.color}; --slds-c-checkbox-color-border: ${res.color};
+                --slds-c-checkbox-mark-color-foreground: #fff;
+                --sds-c-checkbox-shadow-focus: 0 0 3px ${res.color};
+                --slds-c-checkbox-color-border-focus: ${res.color};
+            `;
             return {
                 label: res.label || res.name,
+                selected: this.selectedResources.includes(res.name),
+                style,
                 value: res.name
             };
         });
@@ -317,6 +340,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.isCalendar = true;
         this._eventData.isVertical = true;
         this._eventData.smallestHeader = this.hourHeaders[0];
+        this._eventData.selectedResources = this.selectedResources;
         this._eventData.initEvents();
 
         // Create a cell group for the multi day events row
@@ -329,6 +353,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         this.multiDayEventsCellGroup = new Column({ referenceCells });
         this._eventData.multiDayEventsCellGroup = this.multiDayEventsCellGroup;
+        this.updateColumnEvents();
     }
 
     initHeaders() {
@@ -580,6 +605,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    handleCalendarChange(event) {
+        const value = event.detail.value;
+        if (!value) {
+            event.currentTarget.value = this.selectedDate;
+            return;
+        }
+
+        this._selectedDate = dateTimeObjectFrom(value);
+        this.dispatchEvent(
+            new CustomEvent('datechange', {
+                detail: {
+                    value: this.selectedDate
+                }
+            })
+        );
+    }
+
     /**
      * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
      */
@@ -620,7 +662,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
 
         this.initEvents();
-        this.updateColumnEvents();
     }
 
     /**
@@ -749,6 +790,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const row = this.multiDayWrapper;
         this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
         this.dispatchHidePopovers();
+    }
+
+    handleResourceToggle(event) {
+        const name = event.currentTarget.value;
+        const selected = event.detail.checked;
+        if (selected) {
+            this.selectedResources.push(name);
+        } else {
+            const index = this.selectedResources.indexOf(name);
+            this.selectedResources.splice(index, 1);
+        }
+        this.initEvents();
+        this.dispatchEvent(
+            new CustomEvent('resourceselect', {
+                detail: { name }
+            })
+        );
     }
 
     handleVerticalHeaderChange(event) {

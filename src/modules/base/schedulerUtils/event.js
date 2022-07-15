@@ -94,6 +94,8 @@ import {
  *
  * @param {DateTime} schedulerStart Starting date of the scheduler.
  *
+ * @param {string[]} selectedResources Array of selected resources name. If present, only the occurrences belonging to these resources will be created.
+ *
  * @param {SchedulerHeader} smallestHeader Required. Scheduler header with the smallest unit.
  *
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
@@ -116,6 +118,7 @@ export default class SchedulerEvent {
         this.disabled = props.disabled;
         this.schedulerEnd = props.schedulerEnd;
         this.schedulerStart = props.schedulerStart;
+        this.selectedResources = props.selectedResources;
         this.smallestHeader = props.smallestHeader;
         this.from = props.from;
         this.to = props.to;
@@ -401,16 +404,18 @@ export default class SchedulerEvent {
                 );
             } else {
                 resourceNames.forEach((name) => {
-                    this.occurrences.push(
-                        new Occurrence({
-                            from,
-                            key: `${this.name}-${name}-${from.ts}`,
-                            resourceName: name,
-                            resourceNames,
-                            title: this.title,
-                            to: computedTo
-                        })
-                    );
+                    if (this.selectedResources.includes(name)) {
+                        this.occurrences.push(
+                            new Occurrence({
+                                from,
+                                key: `${this.name}-${name}-${from.ts}`,
+                                resourceName: name,
+                                resourceNames,
+                                title: this.title,
+                                to: computedTo
+                            })
+                        );
+                    }
                 });
             }
         }

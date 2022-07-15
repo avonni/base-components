@@ -74,21 +74,22 @@ export default class SchedulerEventData {
             return;
         }
 
-        const visibleEvents = this.events.filter((event) => {
+        const eventsInTimeFrame = this.events.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
             return (
-                interval.contains(from) ||
-                interval.contains(to) ||
-                (interval.isAfter(from) && interval.isBefore(to)) ||
-                event.recurrence
+                this.belongsToSelectedResources(event) &&
+                (interval.contains(from) ||
+                    interval.contains(to) ||
+                    (interval.isAfter(from) && interval.isBefore(to)) ||
+                    event.recurrence)
             );
         });
 
         this.singleDayEvents = [];
         this.multiDayEvents = [];
 
-        this.events = visibleEvents.reduce((computedEvents, evt) => {
+        this.events = eventsInTimeFrame.reduce((computedEvents, evt) => {
             const event = { ...evt };
             this.updateEventDefaults(event);
             const computedEvent = new SchedulerEvent(event);
@@ -112,6 +113,16 @@ export default class SchedulerEventData {
         } else {
             this.singleDayEvents.push(event);
         }
+    }
+
+    belongsToSelectedResources(event) {
+        if (!this.selectedResources.length || event.referenceLine) {
+            return true;
+        }
+        const names = normalizeArray(event.resourceNames);
+        return names.find((name) => {
+            return this.selectedResources.includes(name);
+        });
     }
 
     /**
@@ -540,6 +551,7 @@ export default class SchedulerEventData {
         const isCalendarMultiDay = isMultiDay && this.isCalendar;
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
+        event.selectedResources = this.selectedResources;
 
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels

@@ -44,14 +44,25 @@
     >
         <!-- Left panel -->
         <div class={firstColClass} data-element-id="div-first-column">
-            <div class="slds-p-around_small">
-                <c-calendar></c-calendar>
+            <div class="slds-p-around_small slds-scrollable_y">
+                <c-calendar
+                    value={selectedDate}
+                    onchange={handleCalendarChange}
+                ></c-calendar>
 
-                <c-input-choice-set
-                    is-multi-select
-                    label="Resources"
-                    options={resourceOptions}
-                ></c-input-choice-set>
+                <div class="slds-m-top_medium">
+                    <template for:each={resourceOptions} for:item="resource">
+                        <lightning-input
+                            key={resource.value}
+                            label={resource.label}
+                            checked={resource.selected}
+                            type="checkbox"
+                            value={resource.value}
+                            style={resource.style}
+                            onchange={handleResourceToggle}
+                        ></lightning-input>
+                    </template>
+                </div>
             </div>
 
             <!-- Resizing splitter -->

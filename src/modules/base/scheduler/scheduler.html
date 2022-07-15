@@ -197,9 +197,11 @@
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}
             selected-date={selectedDate}
+            selected-resources={selectedResources}
             time-span={currentTimeSpan}
             zoom-to-fit={zoomToFit}
             data-element-id="avonni-primitive-scheduler-calendar"
+            ondatechange={handleCalendarDateChange}
             onemptyspotcontextmenu={handleEmptySpotContextMenu}
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
@@ -207,11 +209,12 @@
             onhidepopovers={handleHidePopovers}
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
+            onresourceselect={handleResourceSelect}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-calendar>
     </template>
 
-    <!-- Complete schedule loading spinner -->
+    <!-- Loading spinner -->
     <lightning-spinner
         if:true={isLoading}
         alternative-text={loadingStateAlternativeText}

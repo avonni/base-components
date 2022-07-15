@@ -59,6 +59,7 @@ export const Scheduler = ({
     resizeColumnDisabled,
     resources,
     selectedDisplay,
+    selectedResources,
     selectedTimeSpan,
     start,
     timeSpans,
@@ -90,6 +91,7 @@ export const Scheduler = ({
     element.resizeColumnDisabled = resizeColumnDisabled;
     element.resources = resources;
     element.selectedDisplay = selectedDisplay;
+    element.selectedResources = selectedResources;
     element.selectedTimeSpan = selectedTimeSpan;
     element.start = start;
     element.timeSpans = timeSpans;

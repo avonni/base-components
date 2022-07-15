@@ -100,6 +100,7 @@ export default class Scheduler extends LightningElement {
     _resizeColumnDisabled = false;
     _resources = [];
     _selectedDisplay = DISPLAYS.default;
+    _selectedResources = [];
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpans = TIME_SPANS.default;
@@ -773,6 +774,20 @@ export default class Scheduler extends LightningElement {
         if (this._connected) {
             this.updateSelectedDisplay();
         }
+    }
+
+    /**
+     * Array of selected resources names. Only the events of the selected resources will be visible.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get selectedResources() {
+        return this._selectedResources;
+    }
+    set selectedResources(value) {
+        this._selectedResources = normalizeArray(value, 'string');
     }
 
     /**
@@ -1461,6 +1476,10 @@ export default class Scheduler extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleCalendarDateChange(event) {
+        this.goToDate(event.detail.value);
+    }
+
     /**
      * Handle the closing of the delete confirmation dialog.
      */
@@ -1744,10 +1763,10 @@ export default class Scheduler extends LightningElement {
         this.selection = event.detail.selection;
     }
 
-    handleVisibleIntervalChange(event) {
-        this._start = event.detail.start;
-        const { s, e } = event.detail.visibleInterval;
-        this.computeVisibleIntervalLabel(s, e);
+    handleResourceSelect(event) {
+        this.dispatchEvent(
+            new CustomEvent('resourceselect', { detail: event.detail })
+        );
     }
 
     handleToggleToolbarCalendar() {
@@ -1856,5 +1875,11 @@ export default class Scheduler extends LightningElement {
      */
     handleToolbarTodayClick() {
         this.goToDate(new Date());
+    }
+
+    handleVisibleIntervalChange(event) {
+        this._start = event.detail.start;
+        const { s, e } = event.detail.visibleInterval;
+        this.computeVisibleIntervalLabel(s, e);
     }
 }
