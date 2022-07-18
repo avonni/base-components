@@ -31,6 +31,7 @@
  */
 
 import { normalizeArray } from 'c/utilsPrivate';
+import Cell from './cell';
 
 export class SchedulerCellGroup {
     constructor(props) {
@@ -43,11 +44,7 @@ export class SchedulerCellGroup {
     initCells() {
         this.cells = [];
         this.referenceCells.forEach((element) => {
-            this.cells.push({
-                start: element.start,
-                end: element.end,
-                events: []
-            });
+            this.cells.push(new Cell(element));
         });
 
         const events = this.events;

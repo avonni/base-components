@@ -121,16 +121,16 @@
                     available-time-spans={availableTimeSpans}
                     headers={dayHeaders}
                     start={start}
-                    time-span={timeSpan}
+                    time-span={dayHeadersTimeSpan}
                     visible-width={dayHeadersVisibleWidth}
                     zoom-to-fit
                     data-element-id="avonni-primitive-scheduler-header-group-horizontal"
                     onprivatecellsizechange={handleHeaderCellSizeChange}
                     onprivateheaderchange={handleHorizontalHeaderChange}
                 ></c-primitive-scheduler-header-group>
-                <!-- Multi day events grid -->
+                <!-- Day and week multi day events grid -->
                 <div
-                    if:true={multiDayEvents.length}
+                    if:true={showTopMultiDayEvents}
                     class="
                         slds-border_left
                         slds-is-relative
@@ -217,17 +217,18 @@
 
             <div
                 class="slds-grid slds-col slds-scrollable_y"
-                data-element-id="div-hours-grid"
+                data-element-id="div-cells-grid"
             >
                 <!-- Hours -->
                 <c-primitive-scheduler-header-group
+                    if:true={showHourHeaders}
                     class="avonni-scheduler__calendar-header"
                     available-time-frames={availableTimeFrames}
                     available-time-spans={availableTimeSpans}
                     headers={hourHeaders}
                     scroll-left-offset={firstColWidth}
                     start={start}
-                    time-span={dayTimeSpan}
+                    time-span={hourHeadersTimeSpan}
                     variant="vertical"
                     zoom-to-fit={zoomToFit}
                     data-element-id="avonni-primitive-scheduler-header-group-vertical"
@@ -257,18 +258,23 @@
                                 >
                                     <div
                                         key={cell.start}
-                                        class="
-                                            avonni-scheduler__calendar-cell
-                                            slds-border_right slds-border_bottom
-                                            slds-p-around_none
-                                        "
+                                        class={cell.computedClass}
                                         data-element-id="div-cell"
                                         data-end={cell.end}
                                         data-start={cell.start}
                                         oncontextmenu={handleEmptySpotContextMenu}
                                         onmousedown={handleMouseDown}
                                         ondblclick={handleDoubleClick}
-                                    ></div>
+                                    >
+                                        <span
+                                            if:true={isMonth}
+                                            class="
+                                                slds-p-around_small
+                                                slds-show
+                                            "
+                                            >{cell.day}</span
+                                        >
+                                    </div>
                                 </template>
                             </div>
                         </template>

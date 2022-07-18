@@ -41,6 +41,10 @@
     min-height: var(--avonni-scheduler-cell-height);
 }
 
+.avonni-scheduler__calendar-cell_outside-of-current-month {
+    color: #adadad;
+}
+
 .avonni-primitive-scheduler-calendar__inherit-height {
     height: inherit;
     min-height: inherit;

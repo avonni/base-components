@@ -1394,10 +1394,19 @@ export default class Scheduler extends LightningElement {
 
         const formattedStart = start.toFormat(format);
         const formattedEnd = end.toFormat(format);
-        this.visibleIntervalLabel =
-            formattedStart === formattedEnd
-                ? formattedStart
-                : `${formattedStart} - ${formattedEnd}`;
+        if (this.isCalendar && unit === 'month') {
+            this.visibleIntervalLabel = formattedEnd;
+        } else {
+            this.visibleIntervalLabel =
+                formattedStart === formattedEnd
+                    ? formattedStart
+                    : `${formattedStart} - ${formattedEnd}`;
+        }
+    }
+
+    normalizeDateToStartOfMonth(date) {
+        date = addToDate(date, 'week', 1);
+        return date.startOf('month');
     }
 
     /**
@@ -1810,7 +1819,13 @@ export default class Scheduler extends LightningElement {
 
     handleToolbarNextClick() {
         const { unit, span } = this.currentTimeSpan;
-        const date = addToDate(this.start, unit, span);
+        let date = dateTimeObjectFrom(this.start);
+
+        if (this.isCalendar && unit === 'month') {
+            // Make sure the start is on the first day of the month
+            date = this.normalizeDateToStartOfMonth(date);
+        }
+        date = addToDate(date, unit, span);
         this.goToDate(date);
     }
 
@@ -1822,6 +1837,10 @@ export default class Scheduler extends LightningElement {
         // preventing the schedule from going in the past
         let date = removeFromDate(this.start, unit, span);
         if (unit === 'year' || unit === 'month') {
+            if (this.isCalendar) {
+                // Make sure the start is on the first day of the month
+                date = this.normalizeDateToStartOfMonth(date);
+            }
             date = previousAllowedMonth(date, this.availableMonths);
         } else if (unit === 'week' || unit === 'day') {
             date = previousAllowedDay(

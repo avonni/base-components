@@ -35,6 +35,8 @@ import {
     addToDate,
     dateTimeObjectFrom,
     isAllowedTime,
+    nextAllowedMonth,
+    nextAllowedDay,
     normalizeArray,
     removeFromDate
 } from 'c/utilsPrivate';
@@ -187,17 +189,34 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    get cellsGrid() {
+        return this.template.querySelector(
+            '[data-element-id="div-cells-grid"]'
+        );
+    }
+
     get dayHeaders() {
+        const label = this.isMonth ? 'ccc' : 'ccc dd';
         return [
             {
-                label: 'ccc dd',
+                label,
                 unit: 'day',
                 span: 1
             }
         ];
     }
 
-    get dayTimeSpan() {
+    get dayHeadersTimeSpan() {
+        if (this.isDay) {
+            return this.hourHeadersTimeSpan;
+        }
+        return {
+            unit: 'week',
+            span: 1
+        };
+    }
+
+    get hourHeadersTimeSpan() {
         return {
             unit: 'day',
             span: 1
@@ -223,6 +242,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     get isDay() {
         const { span, unit } = this.timeSpan;
         return unit === 'day' && span === 1;
+    }
+
+    get isMonth() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'month' && span === 1;
     }
 
     get isWeek() {
@@ -308,6 +332,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();
+    }
+
+    get showHourHeaders() {
+        return this.isDay || this.isWeek;
+    }
+
+    get showTopMultiDayEvents() {
+        return this.multiDayEvents.length && (this.isDay || this.isWeek);
     }
 
     /**
@@ -399,41 +431,41 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         // Start at the begining of the first day
         let startDate = new Date(this.start.ts);
         startDate.setHours(0, 0, 0, 0);
-        let time = dateTimeObjectFrom(startDate);
-
-        // Find all the available hours
-        const availableHours = [];
-        for (let i = 0; i < 24; i++) {
-            if (isAllowedTime(time, this.availableTimeFrames)) {
-                availableHours.push(time.hour);
-            }
-            time = addToDate(time, 'hour', 1);
-        }
+        startDate = dateTimeObjectFrom(startDate);
 
         // Create a column for each available day
         const columns = [];
-        const numberOfColumns = this.isWeek
-            ? this.availableDaysOfTheWeek.length
-            : 1;
+        const availableDays = this.isDay
+            ? [startDate.weekday]
+            : this.availableDaysOfTheWeek;
 
-        startDate = dateTimeObjectFrom(startDate);
-        for (let i = 0; i < numberOfColumns; i++) {
+        for (let i = 0; i < availableDays.length; i++) {
             const column = {
                 events: [],
                 referenceCells: []
             };
+            let weekday = availableDays[i];
 
-            for (let j = 0; j < availableHours.length; j++) {
-                startDate = startDate.set({ hour: availableHours[j] });
-                const start = startDate.startOf('hour');
-                const end = startDate.endOf('hour');
-                column.referenceCells.push({
-                    start: start.ts,
-                    end: end.ts
-                });
+            if (startDate.weekday === 7 && weekday !== 0) {
+                // Make sure the day will be set to the next weekday,
+                // not the previous weekday
+                startDate = addToDate(startDate, 'day', 1);
+            } else if (weekday === 0) {
+                // Luxon's Sunday is 7, not 0
+                weekday = 7;
+            }
+            startDate = startDate.set({ weekday });
+
+            if (this.isMonth) {
+                const firstColumn = columns[0];
+                const minNumberOfCells = firstColumn
+                    ? firstColumn.cells.length
+                    : 0;
+                this.computeDayCells(column, startDate, minNumberOfCells);
+            } else {
+                this.computeHourCells(column, startDate);
             }
             columns.push(new Column(column));
-            startDate = addToDate(startDate, 'day', 1);
         }
         this.columns = columns;
     }
@@ -446,11 +478,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     initResizeObserver() {
         const resizeObserver = new AvonniResizeObserver(() => {
             this.updateCellWidth();
+            this.updateVisibleWidth();
+            if (this.isMonth) {
+                this.updateCellHeight();
+            }
         });
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-hours-grid"]'
-        );
-        resizeObserver.observe(schedule);
+        resizeObserver.observe(this.cellsGrid);
         resizeObserver.observe(this.leftPanelContent);
         return resizeObserver;
     }
@@ -461,11 +494,80 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    computeDayCells(column, date, minNumberOfCells) {
+        const currentMonth = addToDate(date, 'week', 1).month;
+        let notEnoughCells = true;
+        let isCurrentMonth = true;
+
+        while (notEnoughCells || isCurrentMonth) {
+            const start = date.startOf('day');
+            const end = date.endOf('day');
+            column.referenceCells.push({
+                currentMonth,
+                start: start.ts,
+                end: end.ts
+            });
+            date = addToDate(date, 'week', 1);
+            notEnoughCells =
+                minNumberOfCells &&
+                column.referenceCells.length < minNumberOfCells;
+            const beginningOfJanuary = date.month === 1 && currentMonth === 12;
+            isCurrentMonth = date.month <= currentMonth && !beginningOfJanuary;
+        }
+    }
+
+    computeHourCells(column, date) {
+        const availableHours = this.getAvailableHours(date);
+
+        for (let j = 0; j < availableHours.length; j++) {
+            date = date.set({ hour: availableHours[j] });
+            const start = date.startOf('hour');
+            const end = start.endOf('hour');
+            column.referenceCells.push({
+                start: start.ts,
+                end: end.ts
+            });
+        }
+    }
+
+    getAvailableHours(start) {
+        let time = dateTimeObjectFrom(start);
+        const availableHours = [];
+
+        for (let i = 0; i < 24; i++) {
+            if (isAllowedTime(time, this.availableTimeFrames)) {
+                availableHours.push(time.hour);
+            }
+            time = addToDate(time, 'hour', 1);
+        }
+        return availableHours;
+    }
+
     getColumnElementFromPosition(x, isMultiDayColumn) {
         const selector = isMultiDayColumn
             ? `[data-element-id="div-multi-day-events-wrapper"] ${CELL_SELECTOR}`
             : COLUMN_SELECTOR;
         return getElementOnXAxis(this.template, x, selector);
+    }
+
+    getFirstAvailableWeek(start) {
+        let date = dateTimeObjectFrom(start);
+        const availableDays = [...this.availableDaysOfTheWeek];
+        if (availableDays[0] === 0) {
+            // Transform "0" Sunday to a "7" Luxon Sunday
+            availableDays[0] = 7;
+            availableDays.sort();
+        }
+
+        let hasAvailableDayThisWeek = false;
+        while (date.weekday !== 7 && !hasAvailableDayThisWeek) {
+            hasAvailableDayThisWeek = availableDays.includes(date.weekday);
+            date = addToDate(date, 'day', 1);
+        }
+        if (!hasAvailableDayThisWeek) {
+            return addToDate(start, 'week', 1);
+        }
+        return start;
     }
 
     /**
@@ -487,61 +589,67 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const width =
                     this.verticalHeaders.getBoundingClientRect().width;
                 this.horizontalHeaders.style.paddingLeft = `${width - 1}px`;
+            } else {
+                this.horizontalHeaders.style.paddingLeft = null;
             }
 
             // Align the horizontal headers with the right scrollbar, if any
-            const hourGrid = this.template.querySelector(
-                '[data-element-id="div-hours-grid"]'
-            );
-            const scrollBarWidth = hourGrid.offsetWidth - hourGrid.clientWidth;
+            const scrollBarWidth =
+                this.cellsGrid.offsetWidth - this.cellsGrid.clientWidth;
             this.horizontalHeaders.style.marginRight = `${scrollBarWidth}px`;
         }
     }
 
-    setStartToBeginningOfUnit() {
-        const unit = this.timeSpan.unit;
-        const isSunday = this.selectedDate.weekday === 7;
-
-        if (this.isWeek && isSunday) {
-            this.start = this.selectedDate.startOf('day');
+    setSelectedDateToAvailableDate() {
+        if (this.isMonth) {
+            this._selectedDate = nextAllowedMonth(
+                this.selectedDate,
+                this.availableMonths
+            );
         } else {
-            this.start = this.selectedDate.startOf(unit);
-
-            if (this.isWeek) {
-                this.start = removeFromDate(this.start, 'day', 1);
-            }
+            this._selectedDate = nextAllowedDay(
+                this.selectedDate,
+                this.availableMonths,
+                this.availableDaysOfTheWeek
+            );
         }
     }
 
-    updateCellWidth() {
-        super.updateCellWidth();
+    setStartToBeginningOfUnit() {
+        this.setSelectedDateToAvailableDate();
+        const isSunday = this.selectedDate.weekday === 7;
 
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        const leftPanel = this.template.querySelector(
-            '[data-element-id="div-left-panel"]'
-        );
-        const hourHeader = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
-        );
-        const hourGrid = this.template.querySelector(
-            '[data-element-id="div-hours-grid"]'
-        );
+        if (this.isDay || (this.isWeek && isSunday)) {
+            this.start = this.selectedDate.startOf('day');
+        } else {
+            this.start = this.selectedDate;
+            if (this.isMonth) {
+                this.start = this.start.startOf('month');
 
-        if (wrapper && leftPanel && hourHeader && hourGrid) {
-            const scrollBarWidth = hourGrid.offsetWidth - hourGrid.clientWidth;
-            const width =
-                wrapper.offsetWidth -
-                leftPanel.offsetWidth -
-                hourHeader.offsetWidth -
-                scrollBarWidth;
-            const cellWidth = width / this.columns.length;
-            this.dayHeadersVisibleWidth =
-                this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
-                    ? width
-                    : 0;
+                if (this.start.weekday !== 7) {
+                    // Make sure there are available days in the current week.
+                    // Otherwise, go to the next week.
+                    this.start = this.getFirstAvailableWeek(this.start);
+                }
+            }
+            this.start = this.start.startOf('week');
+            this.start = removeFromDate(this.start, 'day', 1);
         }
+    }
+
+    updateCellHeight() {
+        const numberOfRows = this.columns[0].referenceCells.length;
+        const leftPanelHeight =
+            this.leftPanelContent.getBoundingClientRect().height;
+        const dayHeaders = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
+        );
+        const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
+        const availableHeight = leftPanelHeight - dayHeadersHeight;
+        this.cellHeight = availableHeight / numberOfRows;
+        this.template.host.style = `
+            --avonni-scheduler-cell-height: ${this.cellHeight}px;
+        `;
     }
 
     updateColumnEvents() {
@@ -655,6 +763,34 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    updateVisibleWidth() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        const leftPanel = this.template.querySelector(
+            '[data-element-id="div-left-panel"]'
+        );
+        const hourHeader = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+        );
+
+        if (wrapper && leftPanel && this.cellsGrid) {
+            const scrollBarWidth =
+                this.cellsGrid.offsetWidth - this.cellsGrid.clientWidth;
+            const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
+            const width =
+                wrapper.offsetWidth -
+                leftPanel.offsetWidth -
+                verticalHeaderWidth -
+                scrollBarWidth;
+            const cellWidth = width / this.columns.length;
+            this.dayHeadersVisibleWidth =
+                this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
+                    ? width
+                    : 0;
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -695,13 +831,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (orientation === 'vertical') {
             this.cellHeight = cellSize;
             this.multiDayCellHeight = cellSize;
+            this.template.host.style = `
+                --avonni-scheduler-cell-height: ${this.cellHeight}px;
+            `;
         } else {
             this.cellWidth = cellSize;
         }
-
-        this.template.host.style = `
-            --avonni-scheduler-cell-height: ${this.cellHeight}px;
-        `;
     }
 
     /**
@@ -734,6 +869,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
 
         this.initEvents();
+        if (this.isMonth) {
+            this.updateCellHeight();
+        }
     }
 
     /**
@@ -887,6 +1025,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
 
         this.updateCellWidth();
+        this.updateVisibleWidth();
     }
 
     handleResourceToggle(event) {
