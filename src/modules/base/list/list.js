@@ -228,13 +228,6 @@ export default class List extends LightningElement {
             return;
         }
 
-        console.log(
-            value.size,
-            value.cropPositionX,
-            value.cropPositionY,
-            value.cropFit
-        );
-
         if (value.size) {
             this._imageSize = normalizeString(value.size, {
                 validValues: IMAGE_SIZE.valid,
@@ -253,7 +246,23 @@ export default class List extends LightningElement {
                 defaultValue: IMAGE_CROP_FIT.default
             });
         }
-        console.log(this._imageCropFit);
+    }
+
+    /**
+     * If present, you can load a subset of data and then display more
+     * when users scroll to the end of the table.
+     * Use with the onloadmore event handler to retrieve more data.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return super.enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        super.enableInfiniteLoading = normalizeBoolean(value);
     }
 
     /**
@@ -390,7 +399,6 @@ export default class List extends LightningElement {
 
     // add description
     get computedImageClass() {
-        console.log(this._imageCropFit);
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
                 this._imageSize === 'small' && this._variant === 'list',

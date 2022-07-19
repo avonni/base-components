@@ -40,7 +40,7 @@
  ✅ background color behind image
  ✅ padding around image, 
  ✅ padding around body and inside border on body
- restore graby cursor on sortable.
+ ✅ restore graby cursor on sortable.
  */
 
 :host() {
@@ -193,11 +193,15 @@
 }
 
 .avonni-list__image-slot {
-    position: relative;
     height: 100%;
     width: 100%;
 }
 .avonni-list__image_container {
+    height: 100%;
+    width: 100%;
+}
+.avonni-list__item-image-container {
+    position: relative;
     height: 100%;
     width: 100%;
 }

@@ -57,7 +57,7 @@
     >
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
-                role="listitem"
+                role={itemRole}
                 class={computedItemWrapperClass}
                 key={generateKey}
                 onmousedown={dragStart}
@@ -72,6 +72,7 @@
                 data-position="0"
                 tabindex="0"
                 aria-label={item.label}
+                data-name={item.name}
                 aria-describedby="instructions"
                 data-element-id="li-item"
             >
@@ -84,7 +85,12 @@
                         class="avonni-list__image-slot"
                         if:true={hasImages}
                     >
-                        <div class="slds-grid slds-grid_vertical-align-center">
+                        <div
+                            class="
+                                slds-grid slds-grid_vertical-align-center
+                                avonni-list__image_container
+                            "
+                        >
                             <div>
                                 <lightning-icon
                                     if:true={showImageIconLeft}
