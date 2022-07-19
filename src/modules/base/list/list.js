@@ -132,6 +132,7 @@ export default class List extends LightningElement {
     showPlaceholder = false;
     hoveredPositionTopLeft;
     draggedItemDimensions;
+    _isLoadingMore = false;
 
     _columns;
     _smallContainerCols;
@@ -144,13 +145,73 @@ export default class List extends LightningElement {
     renderedCallback() {
         this.listResize();
         this.initWrapObserver();
+
+        setTimeout(() => {
+            // this._isLoadingMore = false;
+        }, 2000);
+
+        this.checkIfEndReached();
     }
+
+    connectedCallback() {}
 
     disconnectedCallback() {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         }
+    }
+
+    get isLoadingMore() {
+        return this._isLoadingMore;
+    }
+
+    checkIfEndReached() {
+        if (this._isLoading) {
+            return;
+        }
+
+        const scrollableList = this.template.querySelector(
+            '.avonni-list__item-menu'
+        );
+        if (scrollableList) {
+            console.log('scrollBar', this.isScrollerVisible(scrollableList));
+        }
+    }
+
+    handleScroll(event) {
+        const el = event.target;
+
+        const offsetFromBottom =
+            el.scrollHeight - el.scrollTop - el.clientHeight;
+
+        if (offsetFromBottom < 100) {
+            console.log('load more');
+            this._isLoadingMore = true;
+            this.dispatchEvent(new CustomEvent('loadmore'));
+        }
+    }
+
+    /**
+     * Determines if a DOM element's scroll bars are visible
+     *
+     * @param {Element} element The DOM element to check
+     * @returns {Boolean} Whether or not the element's scroll bars are visible
+     */
+    isScrollerVisible(element) {
+        console.log(
+            element.offsetHeight,
+            element.offsetParent,
+            visualViewport.height
+        );
+        return (
+            element &&
+            !!(
+                element.offsetParent ||
+                element.offsetHeight ||
+                element.offsetWidth
+            )
+        );
     }
 
     /*
@@ -246,23 +307,6 @@ export default class List extends LightningElement {
                 defaultValue: IMAGE_CROP_FIT.default
             });
         }
-    }
-
-    /**
-     * If present, you can load a subset of data and then display more
-     * when users scroll to the end of the table.
-     * Use with the onloadmore event handler to retrieve more data.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get enableInfiniteLoading() {
-        return super.enableInfiniteLoading;
-    }
-
-    set enableInfiniteLoading(value) {
-        super.enableInfiniteLoading = normalizeBoolean(value);
     }
 
     /**
@@ -531,7 +575,7 @@ export default class List extends LightningElement {
         ) {
             this.hasImages = true;
         }
-        return classSet('avonni-list__item-menu slds-grid')
+        return classSet('avonni-list__item-menu slds-grid slds-scrollable_y')
             .add({
                 'slds-grid_vertical': this.variant === 'list',
                 'avonni-list__grid-display': this.variant === 'grid',

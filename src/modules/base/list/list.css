@@ -69,8 +69,11 @@
 }
 
 .avonni-list__item-menu {
-    flex-wrap: wrap;
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
+}
+
+.avonni-list__grid-display {
+    flex-wrap: wrap;
 }
 
 .avonni-list__item {

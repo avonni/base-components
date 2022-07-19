@@ -520,3 +520,18 @@ GridCardWithImages.args = {
     mediumContainerCols: 4,
     largeContainerCols: 6
 };
+
+export const ListWithInfiniteLoading = Template.bind({});
+ListWithInfiniteLoading.args = {
+    label: 'Sortable grid with Avatars and Icons',
+    items: itemsWithImages,
+    actions: actions,
+    divider: 'around',
+    imageAttributes: {
+        size: 'medium'
+    },
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
+};
