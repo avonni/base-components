@@ -116,11 +116,7 @@ export default class SchedulerEventData {
     }
 
     belongsToSelectedResources(event) {
-        if (
-            !this.selectedResources ||
-            !this.selectedResources.length ||
-            event.referenceLine
-        ) {
+        if (event.referenceLine) {
             return true;
         }
         const names = normalizeArray(event.resourceNames);
@@ -363,9 +359,9 @@ export default class SchedulerEventData {
         if (this.isCalendar) {
             this.singleDayEvents = [];
             this.multiDayEvents = [];
-            this.events.forEach((event) =>
-                this.addToSingleAndMultiDayEvents(event)
-            );
+            this.events.forEach((event) => {
+                this.addToSingleAndMultiDayEvents(event);
+            });
             this.schedule.singleDayEvents = this.singleDayEvents;
             this.schedule.multiDayEvents = this.multiDayEvents;
         } else {
@@ -555,7 +551,7 @@ export default class SchedulerEventData {
         const isCalendarMultiDay = isMultiDay && this.isCalendar;
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
-        event.selectedResources = this.selectedResources;
+        event.selectedResources = normalizeArray(this.selectedResources);
 
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels

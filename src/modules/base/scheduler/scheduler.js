@@ -933,7 +933,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Orientation of the scheduler. Valid values include horizontal and vertical.
+     * Orientation of the scheduler when the selected display is timeline. Valid values include horizontal and vertical.
      *
      * @type {string}
      * @default horizontal

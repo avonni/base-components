@@ -52,7 +52,8 @@ const VARIANTS = {
         'timeline-horizontal',
         'timeline-vertical',
         'calendar-vertical',
-        'calendar-horizontal'
+        'calendar-horizontal',
+        'calendar-month'
     ]
 };
 
@@ -807,6 +808,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.variant.startsWith('calendar');
     }
 
+    get isHorizontalCalendar() {
+        return this.variant === 'calendar-horizontal';
+    }
+
+    get isMonthCalendar() {
+        return this.variant === 'calendar-month';
+    }
+
     get isTimeline() {
         return this.variant.startsWith('timeline');
     }
@@ -1007,7 +1016,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updatePosition() {
-        if (this.isTimeline || !this.isVerticalCalendar) {
+        if (this.isTimeline || this.isHorizontalCalendar) {
             this.updatePositionInTimeline();
         } else {
             this.updatePositionInCalendar();
@@ -1298,7 +1307,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         // Get the vertical and horizontal cells indices
         const yIndex = this.getStartCellIndex(headerCells.yAxis);
         const xIndex = headerCells.xAxis.findIndex((cell) => {
-            return cell.end > this.from;
+            const cellEnd = dateTimeObjectFrom(cell.end);
+            const sameWeekDay = cellEnd.weekday === this.from.weekday;
+            return (
+                cell.end > this.from && (!this.isMonthCalendar || sameWeekDay)
+            );
         });
 
         if (yIndex < 0 || xIndex < 0) {

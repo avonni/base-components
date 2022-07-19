@@ -31,6 +31,7 @@
  */
 
 import { api } from 'lwc';
+import { Interval } from 'c/luxon';
 import {
     addToDate,
     dateTimeObjectFrom,
@@ -342,6 +343,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this.multiDayEvents.length && (this.isDay || this.isWeek);
     }
 
+    get singleDayEventVariant() {
+        return this.isMonth ? 'calendar-month' : 'calendar-vertical';
+    }
+
     /**
      * Class list of the splitter.
      *
@@ -468,6 +473,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             columns.push(new Column(column));
         }
         this.columns = columns;
+
+        if (this.isMonth) {
+            this.initMonthTimeBoundaries();
+        }
+    }
+
+    initMonthTimeBoundaries() {
+        // Set the vertical event header reference cells
+        const lastColumn = this.columns[this.columns.length - 1];
+        const yAxis = [...this.columns[0].referenceCells];
+        yAxis.forEach((cell, index) => {
+            const lastColumnCell = lastColumn.referenceCells[index];
+            cell.end = lastColumnCell.end;
+        });
+        this.eventHeaderCells.yAxis = yAxis;
+
+        // Set the horizontal event header reference cells
+        this.eventHeaderCells.xAxis = this.columns.map((col) => {
+            const cells = col.referenceCells;
+            const lastCell = cells[cells.length - 1];
+            return {
+                start: cells[0].start,
+                end: lastCell.end
+            };
+        });
+
+        // Set the visible interval
+        const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
+        const end = dateTimeObjectFrom(lastCell.end);
+        this.visibleInterval = Interval.fromDateTimes(this.start, end);
     }
 
     /**
@@ -632,8 +667,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     this.start = this.getFirstAvailableWeek(this.start);
                 }
             }
-            this.start = this.start.startOf('week');
-            this.start = removeFromDate(this.start, 'day', 1);
+
+            if (this.start.weekday !== 7) {
+                this.start = this.start.startOf('week');
+                this.start = removeFromDate(this.start, 'day', 1);
+            }
         }
     }
 
@@ -862,8 +900,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         // Update the start date in case it was not available
         this.start = start;
 
-        this.eventHeaderCells.xAxis = cells;
-        this.visibleInterval = visibleInterval;
+        if (!this.isMonth) {
+            this.eventHeaderCells.xAxis = cells;
+            this.visibleInterval = visibleInterval;
+        }
         this.dispatchVisibleIntervalChange(start, visibleInterval);
         const end = addToDate(start, unit, span) - 1;
         this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;

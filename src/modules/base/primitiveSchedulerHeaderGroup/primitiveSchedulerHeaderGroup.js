@@ -652,7 +652,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             header.computeCellWidths(cellSize, this.smallestHeader.cells);
         });
         this.dispatchCellSizeChange(cellSize);
-        this.updateCellsSize();
+        requestAnimationFrame(() => {
+            this.updateCellsSize();
+        });
     }
 
     /**
