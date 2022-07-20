@@ -536,7 +536,7 @@ export default class Calendar extends LightningElement {
         let date = new Date(this.displayDate.getTime());
         date.setDate(1);
         if (date.getDay() > 0) date.setDate(-date.getDay() + 1);
-        return date;
+        return date.toISOString();
     }
 
     /**

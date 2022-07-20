@@ -141,14 +141,14 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar: hideHeader', () => {
-        element.hideHeader = true;
+    it('Calendar: hideNavigation', () => {
+        element.hideNavigation = true;
 
         return Promise.resolve().then(() => {
-            const calendarHeader = element.shadowRoot.querySelector(
+            const calendarNavigation = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-calendar__header"]'
             );
-            expect(calendarHeader).toBeNull();
+            expect(calendarNavigation).toBeNull();
         });
     });
 
@@ -1069,6 +1069,44 @@ describe('Calendar', () => {
                 normalizedStart,
                 normalizedEnd
             ]);
+        });
+    });
+
+    it('Calendar: event navigate next-month', () => {
+        element.value = '05/08/2022';
+
+        const handler = jest.fn();
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve().then(() => {
+            const nextMonthButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-lightning-button-icon"]'
+            );
+            nextMonthButton.click();
+            expect(handler).toHaveBeenCalled();
+            const firstVisibleDay = new Date('05/29/2022').toISOString();
+            expect(handler.mock.calls[0][0].detail.date).toEqual(
+                firstVisibleDay
+            );
+        });
+    });
+
+    it('Calendar: event navigate previous-month', () => {
+        element.value = '05/08/2022';
+
+        const handler = jest.fn();
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve().then(() => {
+            const previousMonthButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-lightning-button-icon"]'
+            );
+            previousMonthButton.click();
+            expect(handler).toHaveBeenCalled();
+            const firstVisibleDay = new Date('03/27/2022').toISOString();
+            expect(handler.mock.calls[0][0].detail.date).toEqual(
+                firstVisibleDay
+            );
         });
     });
 });
