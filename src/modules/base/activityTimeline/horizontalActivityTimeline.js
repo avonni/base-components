@@ -32,6 +32,8 @@
 
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
+import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch';
+import { isValidName } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -78,6 +80,19 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
+/**
+ *  Questions :
+ *  - how to use tmpl function
+ *  - Problem : Delay to fetch all libraries with tmpl conversion to string
+ *  - If tmpl conversion method : handle multiple g, path, d, fill, etc.
+ *  - Cannot use c-primitive-icon
+ *  - Method :
+ *       1) check if path assets/... ok,
+ *       2) check if path website ok,
+ *       3) else, convert to string tmpl and extract infos
+ *  - Find way to always find assets/icons folder ?
+ */
+
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
@@ -112,16 +127,128 @@ export class HorizontalActivityTimeline {
     _scrollAxisDiv;
     _scrollAxisSVG;
 
+    // Icon libraries
+    standardIconLibrary = null;
+    utilityIconLibrary = null;
+    actionIconLibrary = null;
+    doctypeIconLibrary = null;
+    customIconLibrary = null;
+
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
         this._activityTimeline = activityTimeline;
         this.setDefaultIntervalDates();
+        this.setIconLibraries();
+    }
+
+    async setIconLibraries() {
+        this.standardIconLibrary = getIconLibrary('ltr', 'standard');
+        this.utilityIconLibrary = getIconLibrary('ltr', 'utility');
+        this.actionIconLibrary = getIconLibrary('ltr', 'action');
+        this.doctypeIconLibrary = getIconLibrary('ltr', 'doctype');
+        this.customIconLibrary = getIconLibrary('ltr', 'custom');
+
+        try {
+            this.standardIconLibrary = await fetchIconLibrary(
+                'ltr',
+                'standard'
+            );
+            this.utilityIconLibrary = await fetchIconLibrary('ltr', 'utility');
+            this.actionIconLibrary = await fetchIconLibrary('ltr', 'action');
+            this.doctypeIconLibrary = await fetchIconLibrary('ltr', 'doctype');
+            this.customIconLibrary = await fetchIconLibrary('ltr', 'custom');
+            this._activityTimeline.renderedCallback();
+        } catch (e) {
+            console.error('!!!! WARNING!!!!, ', e);
+        }
+    }
+
+    get areIconLibrariesReady() {
+        return (
+            this.standardIconLibrary !== null &&
+            this.utilityIconLibrary !== null &&
+            this.actionIconLibrary !== null &&
+            this.doctypeIconLibrary !== null &&
+            this.customIconLibrary !== null
+        );
     }
 
     /**
      * Create horizontal view timeline
      */
-    createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
+    async createHorizontalActivityTimeline(
+        sortedItems,
+        maxVisibleItems,
+        width
+    ) {
+        if (!this.areIconLibrariesReady) {
+            this.setIconLibraries();
+        }
+
+        // TEST
+        // customElements.define('c-primitive-icon', PrimitiveIcon);
+        // console.log(PrimitiveIcon);
+        // const icon = createElement('c-primitive-icon', {
+        //     is: PrimitiveIcon
+        // });
+        // icon.setAttribute('icon-name', 'standard:bot');
+        // icon.setAttribute('class', 'slds-icon slds-icon-standard-bot');
+        // icon.setAttribute('variant', 'bare');
+
+        // console.log(icon);
+
+        // // const toto = d3.select(this._activityTimeline.template.querySelector('.testing'));
+        // // toto.append(icon);
+        // document.body.appendChild(icon);
+        // // const svg = toto.append('svg').attr('width', 50).attr('height', 50).style('border', '1px solid red');
+        // // const foreignObject = svg.append('foreignObject');
+        // // foreignObject
+        // //     .attr('width', 40)
+        // //     .attr('height', 40)
+        // //     .style("border", "1px solid green");
+
+        // // foreignObject.html('<c-primitive-icon class="slds-icon  slds-icon_container slds-icon-standard-bot" icon-name="standard:bot" size="large" data-element-id="avonni-primitive-icon-sign" variant="success" style="fill:yellow;"></c-primitive-icon>');
+        // // foreignObject.html('<lightning-icon icon-name="standard:account" size="medium" alternative-text="Account" title="Account"></lightning-icon>');
+        // toto
+        //     .insert('c-primitive-icon')
+        //     .attr('class', 'slds-icon slds-icon_container slds-icon-standard-bot')
+        //     .attr('icon-name', "standard:bot").attr('variant', 'bare')
+        //     .attr('data-element-id', 'avonni-primitive-icon-sign');
+
+        // console.log(foreignObject);
+
+        // foreignObject
+        //     .append('lightning:icon')
+        //     .attr('icon-name', "standard:account")
+        //     .attr('alternative-text', "Account")
+        //     .attr('size', 'medium')
+        //     .attr('title', "Account" );
+
+        // if(this.areIconLibrariesReady){
+        //     const template = (this.standardIconLibrary[`${'standard'}_${'bot'}`]).toString();
+        //     console.log(template);
+
+        //     const toto = d3.select(this._activityTimeline.template.querySelector('.testing'));
+        //     const pathTemplate = "M49.6 25.8c7.2 0 13 5.8 13 13v3.3c-4.3-.5-8.7-.7-13-.7-4.3 0-8.7.2-13 .7v-3.3c0-7.1 5.8-13 13-13zM73.2 63.8l1.3-11.4c2.9.5 5.1 2.9 5.1 5.6 0 3.2-2.9 5.8-6.4 5.8zM25.9 63.8c-3.5 0-6.4-2.6-6.4-5.8 0-2.8 2.2-5.1 5.1-5.6l1.3 11.4zM68.7 44.9c-6.6-.7-12.9-1-19-1s-12.5.3-19 1c-2.2.2-3.8 2.2-3.5 4.3l2 19.4c.2 1.8 1.6 3.3 3.5 3.5 5.6.7 11.3 1 17.1 1s11.5-.3 17.1-1c1.8-.2 3.3-1.7 3.5-3.5l2-19.4c0-2.2-1.5-4.1-3.7-4.3zM38.6 62.5c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7zm16.7 4.1c0 .2-.1.4-.2.5-.1.1-.3.2-.5.2h-9.9c-.2 0-.4-.1-.5-.2-.1-.1-.2-.3-.2-.5v-1.8c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v.9h8.1v-.9c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v1.8zm5.3-4.1c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7z";
+        //     toto.append('svg').attr('width', 200).attr('height', 100).append('path').attr('d' ,pathTemplate);
+        //     // const svg = toto.append('svg').attr('width', 200).attr('height', 100).style('border', 'solid 1px red');
+
+        //     // const cmp = {
+        //     //     name:'testing-icon-name',
+        //     //     computedClass:
+        //     //         'slds-icon slds-icon-text-default slds-icon_x-small'
+        //     // };
+        //     // template(svg, cmp);
+        //     // polyfill(svg);
+        //     // console.log(template.toString());
+        //     // console.log(template.content)
+        //     // console.log(getIconPath('standard:bot'));
+        //     // template(this, cmp);
+
+        //     // console.log(Object.keys(template));
+        //     // console.log(template.registerTemplate);
+        // }
+
         this.resetHorizontalTimeline();
         this._sortedItems = sortedItems;
 
@@ -563,6 +690,9 @@ export class HorizontalActivityTimeline {
      *  Create svg to display lightning icon.
      */
     createSVGIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
+        let template = null;
+        let pathTemplate;
+
         const iconInformation = this.setIconInformation(iconName);
         const foreignObjectForIcon = destinationSVG.append('foreignObject');
         foreignObjectForIcon
@@ -571,18 +701,99 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
+        if (isValidName(iconName) && this.areIconLibrariesReady) {
+            let [categoryName, nameOfIcon] = iconName.split(':');
+
+            switch (categoryName) {
+                case 'action':
+                    template =
+                        this.actionIconLibrary[`${categoryName}_${nameOfIcon}`];
+                    break;
+                case 'standard':
+                    template =
+                        this.standardIconLibrary[
+                            `${categoryName}_${nameOfIcon}`
+                        ];
+                    break;
+                case 'utility':
+                    template =
+                        this.utilityIconLibrary[
+                            `${categoryName}_${nameOfIcon}`
+                        ];
+                    break;
+                case 'custom':
+                    template =
+                        this.customIconLibrary[`${categoryName}_${nameOfIcon}`];
+                    break;
+                case 'doctype':
+                    template =
+                        this.doctypeIconLibrary[
+                            `${categoryName}_${nameOfIcon}`
+                        ];
+                    break;
+                default:
+                    //standard-empty
+                    categoryName = 'standard';
+                    nameOfIcon = 'empty';
+                    template =
+                        this.standardIconLibrary[
+                            `${categoryName}_${nameOfIcon}`
+                        ];
+            }
+
+            template = template.toString();
+            template = template.slice(
+                template.indexOf('path'),
+                template.length
+            );
+            const paths = template.split('path');
+
+            paths.forEach((path) => {
+                path = path.replaceAll('\n', '');
+                path = path.slice(path.indexOf('"d"'), path.indexOf('},'));
+                if (path.substring(0, '"d":'.length) === '"d":') {
+                    path = path.substring('"d": "'.length, path.length);
+                    pathTemplate = path.substring(0, path.indexOf('"'));
+                }
+            });
+        } else {
+            // default
+            pathTemplate =
+                'M49.6 25.8c7.2 0 13 5.8 13 13v3.3c-4.3-.5-8.7-.7-13-.7-4.3 0-8.7.2-13 .7v-3.3c0-7.1 5.8-13 13-13zM73.2 63.8l1.3-11.4c2.9.5 5.1 2.9 5.1 5.6 0 3.2-2.9 5.8-6.4 5.8zM25.9 63.8c-3.5 0-6.4-2.6-6.4-5.8 0-2.8 2.2-5.1 5.1-5.6l1.3 11.4zM68.7 44.9c-6.6-.7-12.9-1-19-1s-12.5.3-19 1c-2.2.2-3.8 2.2-3.5 4.3l2 19.4c.2 1.8 1.6 3.3 3.5 3.5 5.6.7 11.3 1 17.1 1s11.5-.3 17.1-1c1.8-.2 3.3-1.7 3.5-3.5l2-19.4c0-2.2-1.5-4.1-3.7-4.3zM38.6 62.5c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7zm16.7 4.1c0 .2-.1.4-.2.5-.1.1-.3.2-.5.2h-9.9c-.2 0-.4-.1-.5-.2-.1-.1-.2-.3-.2-.5v-1.8c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v.9h8.1v-.9c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v1.8zm5.3-4.1c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7z';
+        }
+
+        // foreignObjectForIcon
+        //     .append('xhtml:span')
+        //     .attr(
+        //         'class',
+        //         'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
+        //             iconInformation.categoryIconClass
+        //     )
+        //     .html(
+        //         '<svg class="slds-icon"><use xlink:href=' +
+        //             iconInformation.xLinkHref +
+        //             '></use></svg>'
+        //     );
+        //
+
         foreignObjectForIcon
-            .append('xhtml:span')
+            .append('svg')
             .attr(
                 'class',
-                'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
-                    iconInformation.categoryIconClass
+                `slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ${iconInformation.categoryIconClass}`
             )
-            .html(
-                '<svg class="slds-icon"><use xlink:href=' +
-                    iconInformation.xLinkHref +
-                    '></use></svg>'
-            );
+            .attr('focusable', 'false')
+            .attr('viewBox', '0 0 100 100')
+            .append('g')
+            .append('path')
+            .attr('d', pathTemplate);
+
+        // .append('svg').attr('class', 'slds-icon').append('path').attr('d', pathTemplate);
+        // .html(
+        //     '<svg class="slds-icon"><use xlink:href=' +
+        //         iconInformation.xLinkHref +
+        //         '></use></svg>'
+        // );
     }
 
     /**
