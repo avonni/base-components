@@ -63,8 +63,8 @@ export default {
                 type: { summary: 'string|string[]' }
             }
         },
-        hideHeader: {
-            name: 'hide-header',
+        hideNavigation: {
+            name: 'hide-navigation',
             control: {
                 type: 'boolean'
             },
@@ -146,7 +146,7 @@ export default {
         disabled: false,
         dateLabels: [],
         disabledDates: [],
-        hideHeader: false,
+        hideNavigation: false,
         markedDates: [],
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),

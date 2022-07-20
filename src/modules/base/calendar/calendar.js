@@ -86,7 +86,7 @@ export default class Calendar extends LightningElement {
     _disabled = false;
     _disabledDates = [];
     _focusDate;
-    _hideHeader = false;
+    _hideNavigation = false;
     _isConnected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
@@ -203,11 +203,11 @@ export default class Calendar extends LightningElement {
      * @type {boolean}
      */
     @api
-    get hideHeader() {
-        return this._hideHeader;
+    get hideNavigation() {
+        return this._hideNavigation;
     }
-    set hideHeader(value) {
-        this._hideHeader = normalizeBoolean(value);
+    set hideNavigation(value) {
+        this._hideNavigation = normalizeBoolean(value);
     }
 
     /**
@@ -529,6 +529,15 @@ export default class Calendar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+    /**
+     * Returns the first visible day on the calendar.
+     */
+    getFirstVisibleDay() {
+        let date = new Date(this.displayDate.getTime());
+        date.setDate(1);
+        if (date.getDay() > 0) date.setDate(-date.getDay() + 1);
+        return date;
+    }
 
     /**
      * Check if value is after max date.
@@ -1069,6 +1078,18 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
         this.computeFocus(false);
+        const date = this.getFirstVisibleDay();
+        console.log(date);
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                bubbles: false,
+                cancelable: false,
+                composed: false,
+                detail: {
+                    date
+                }
+            })
+        );
     }
 
     /**
@@ -1078,6 +1099,18 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
         this.computeFocus(false);
+        const date = this.getFirstVisibleDay();
+        console.log(date);
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                bubbles: false,
+                cancelable: false,
+                composed: false,
+                detail: {
+                    date
+                }
+            })
+        );
     }
 
     /**
