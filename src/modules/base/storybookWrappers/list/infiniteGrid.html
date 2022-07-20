@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,43 +30,29 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import Component from 'c/list';
-
-customElements.define('ac-base-list', Component.CustomElementConstructor);
-
-export const List = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
-    actions,
-    sortableIconName,
-    sortableIconPosition,
-    divider,
-    variant,
-    cols,
-    smallContainerCols,
-    mediumContainerCols,
-    largeContainerCols,
-    imageAttributes,
-    enableInfiniteLoading
-}) => {
-    const element = document.createElement('ac-base-list');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
-    element.actions = actions;
-    element.sortableIconName = sortableIconName;
-    element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.variant = variant;
-    element.cols = cols;
-    element.smallContainerCols = smallContainerCols;
-    element.mediumContainerCols = mediumContainerCols;
-    element.largeContainerCols = largeContainerCols;
-    element.imageAttributes = imageAttributes;
-    element.enableInfiniteLoading = enableInfiniteLoading;
-    return element;
-};
+<template>
+    <div style="height: 400px; max-height: 400px">
+        <c-list
+            label={label}
+            alternative-text={alternativeText}
+            sortable={sortable}
+            items={items}
+            actions={actions}
+            sortable-icon-name={sortableIconName}
+            sortable-icon-position={sortableIconPosition}
+            divider={divider}
+            variant={variant}
+            cols={cols}
+            small-container-cols={smallContainerCols}
+            medium-container-cols={mediumContainerCols}
+            large-container-cols={largeContainerCols}
+            image-attributes={imageAttributes}
+            enable-infinite-loading
+            is-loading={isLoading}
+            onloadmore={loadMoreData}
+        >
+        </c-list>
+    </div>
+</template>

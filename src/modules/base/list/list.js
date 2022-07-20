@@ -102,6 +102,8 @@ export default class List extends LightningElement {
      */
     @api sortableIconName;
 
+    // add getter and setters for these two properties
+    @api enableInfiniteLoading;
     _actions = [];
     _divider;
     _items = [];
@@ -132,28 +134,22 @@ export default class List extends LightningElement {
     showPlaceholder = false;
     hoveredPositionTopLeft;
     draggedItemDimensions;
-    _isLoadingMore = false;
 
     _columns;
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
     _effectiveColumnCount;
+    _savedScrollTop;
 
     _resizeObserver;
+    _isLoading = false;
 
     renderedCallback() {
         this.listResize();
         this.initWrapObserver();
-
-        setTimeout(() => {
-            // this._isLoadingMore = false;
-        }, 2000);
-
         this.checkIfEndReached();
     }
-
-    connectedCallback() {}
 
     disconnectedCallback() {
         if (this._resizeObserver) {
@@ -162,34 +158,74 @@ export default class List extends LightningElement {
         }
     }
 
-    get isLoadingMore() {
-        return this._isLoadingMore;
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+
+        this.getScrollPosition();
     }
 
     checkIfEndReached() {
-        if (this._isLoading) {
-            return;
-        }
-
-        const scrollableList = this.template.querySelector(
-            '.avonni-list__item-menu'
-        );
-        if (scrollableList) {
-            console.log('scrollBar', this.isScrollerVisible(scrollableList));
-        }
+        // if (this._isLoading) {
+        //     return;
+        // }
+        // const list = this.template.querySelector('.avonni-list__item-menu');
     }
 
     handleScroll(event) {
         const el = event.target;
-
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        if (offsetFromBottom < 100) {
-            console.log('load more');
-            this._isLoadingMore = true;
+        this.checkIfEndReached();
+
+        if (offsetFromBottom < 100 && !this._isLoading) {
+            this.saveScrollPosition();
             this.dispatchEvent(new CustomEvent('loadmore'));
         }
+    }
+
+    getScrollPositionTop() {
+        const list = this.template.querySelector('.avonni-list__item-menu');
+        if (!list) {
+            return null;
+        }
+        return list.scrollTop;
+    }
+
+    getScrollPositionBottom() {
+        const list = this.template.querySelector('.avonni-list__item-menu');
+        if (!list) {
+            return null;
+        }
+        return list.scrollTop;
+    }
+
+    getScrollPosition() {
+        const list = this.template.querySelector('.avonni-list__item-menu');
+        if (list) {
+            const scrollTop = list.scrollTop;
+            console.log('getScrollPosition', scrollTop, this._savedScrollTop);
+        }
+    }
+
+    restoreScrollPosition() {
+        if (!this._savedScrollTop) {
+            return;
+        }
+        const list = this.template.querySelector('.avonni-list__item-menu');
+
+        window.requestAnimationFrame(() => {
+            list.scrollTo(0, this._savedScrollTop);
+        });
+    }
+
+    saveScrollPosition() {
+        this._savedScrollTop = this.getScrollPositionTop();
     }
 
     /**
@@ -370,12 +406,14 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
+        this.saveScrollPosition();
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
+        this.restoreScrollPosition();
     }
 
     /**

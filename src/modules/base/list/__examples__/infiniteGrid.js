@@ -30,11 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'c/list';
+import Component from '../../storybookWrappers/list/infiniteGrid';
 
-customElements.define('ac-base-list', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-infinite-grid',
+    Component.CustomElementConstructor
+);
 
-export const List = ({
+export const InifiniteGrid = ({
     label,
     alternativeText,
     sortable,
@@ -49,9 +52,10 @@ export const List = ({
     mediumContainerCols,
     largeContainerCols,
     imageAttributes,
+    isLoading,
     enableInfiniteLoading
 }) => {
-    const element = document.createElement('ac-base-list');
+    const element = document.createElement('ac-base-infinite-grid');
     element.label = label;
     element.alternativeText = alternativeText;
     element.sortable = sortable;
@@ -66,6 +70,7 @@ export const List = ({
     element.mediumContainerCols = mediumContainerCols;
     element.largeContainerCols = largeContainerCols;
     element.imageAttributes = imageAttributes;
+    element.isLoading = isLoading;
     element.enableInfiniteLoading = enableInfiniteLoading;
     return element;
 };

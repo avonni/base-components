@@ -30,42 +30,41 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'c/list';
+import { LightningElement, api } from 'lwc';
 
-customElements.define('ac-base-list', Component.CustomElementConstructor);
+export default class InfiniteGrid extends LightningElement {
+    @api label;
+    @api alternativeText;
+    @api items;
+    @api sortable;
+    @api actions;
+    @api sortableIconName;
+    @api sortableIconPosition;
+    @api divider;
+    @api variant;
+    @api cols;
+    @api smallContainerCols;
+    @api mediumContainerCols;
+    @api largeContainerCols;
+    @api imageAttributes;
+    @api isLoading;
+    @api enableInfiniteLoading;
 
-export const List = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
-    actions,
-    sortableIconName,
-    sortableIconPosition,
-    divider,
-    variant,
-    cols,
-    smallContainerCols,
-    mediumContainerCols,
-    largeContainerCols,
-    imageAttributes,
-    enableInfiniteLoading
-}) => {
-    const element = document.createElement('ac-base-list');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
-    element.actions = actions;
-    element.sortableIconName = sortableIconName;
-    element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.variant = variant;
-    element.cols = cols;
-    element.smallContainerCols = smallContainerCols;
-    element.mediumContainerCols = mediumContainerCols;
-    element.largeContainerCols = largeContainerCols;
-    element.imageAttributes = imageAttributes;
-    element.enableInfiniteLoading = enableInfiniteLoading;
-    return element;
-};
+    connectedCallback() {
+        this._items = this.items;
+    }
+
+    loadMoreData(event) {
+        // console.log('loadMoreData');
+        const target = event.target;
+        target.isLoading = true;
+
+        setTimeout(() => {
+            if (target.isLoading) {
+                target.isLoading = false;
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.items = this.items.concat(this._items);
+            }
+        }, 2000);
+    }
+}

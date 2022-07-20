@@ -31,6 +31,7 @@
  */
 
 import { List } from '../__examples__/list';
+import { InifiniteGrid } from '../__examples__/infiniteGrid';
 
 export default {
     title: 'Example/List',
@@ -55,10 +56,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        // cols
-        // small-container-cols (mqSmall)
-        // medium-container-cols (mqMedium)
-        // large-container-cols (mqLarge)
         cols: {
             control: { type: 'number' },
             minimum: 1,
@@ -107,6 +104,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Enable infinite loading. When enabled, the list will load more items when the user scrolls to the bottom of the list.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         imageAttributes: {
             control: {
                 type: 'object'
@@ -114,6 +122,16 @@ export default {
             description: 'Object of attributes for the list item images.',
             table: {
                 type: { summary: 'object' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Set to true to indicate that the list is loading.',
+            table: {
+                type: { summary: 'boolean' }
             }
         },
         items: {
@@ -183,6 +201,7 @@ export default {
 };
 
 const Template = (args) => List(args);
+const InifiniteGridTemplate = (args) => InifiniteGrid(args);
 
 const items = [
     {
@@ -521,15 +540,17 @@ GridCardWithImages.args = {
     largeContainerCols: 6
 };
 
-export const ListWithInfiniteLoading = Template.bind({});
-ListWithInfiniteLoading.args = {
-    label: 'Sortable grid with Avatars and Icons',
+export const InfiniteGrid = InifiniteGridTemplate.bind({});
+InfiniteGrid.args = {
+    label: 'Grid with infinite loading',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'medium'
+        size: 'large'
     },
+    enableInfiniteLoading: true,
+    variant: 'grid',
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,

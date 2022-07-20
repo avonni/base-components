@@ -50,7 +50,7 @@
         >{alternativeText}</span
     >
 
-    <div style="height: 100vh">
+    <div style="height: 100%">
         <ul
             class={computedListClass}
             role={menuRole}
@@ -374,17 +374,14 @@
                     </c-card>
                 </li>
             </template>
-            <li
-                class="slds-col slds-size_12-of-12 slds-is-relative"
-                if:true={isLoadingMore}
-            >
+            <li class="slds-col slds-size_12-of-12 slds-is-relative">
                 <div style="height: 40px">
-                    Loading...
-                    <!-- <lightning-spinner
-                size="small"
-                class="slds-spinner_container"
-                alternative-text="Loading..."
-            ></lightning-spinner> -->
+                    <lightning-spinner
+                        if:true={isLoading}
+                        size="small"
+                        class="slds-spinner_container"
+                        alternative-text="Loading..."
+                    ></lightning-spinner>
                 </div>
             </li>
         </ul>
