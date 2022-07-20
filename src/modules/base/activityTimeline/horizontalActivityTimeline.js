@@ -285,6 +285,13 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Left position offset of scroll axis element.
+     */
+    get scrollAxisLeftPosition() {
+        return this.scrollAxisRectangle.getBoundingClientRect().left;
+    }
+
+    /**
      * Find the max date displayed in the scroll axis
      */
     get scrollAxisMaxDate() {
@@ -296,6 +303,15 @@ export class HorizontalActivityTimeline {
      */
     get scrollAxisMinDate() {
         return this.findNextDate(this.minDate, -15);
+    }
+
+    /**
+     * Select the scroll axis rectangle element.
+     */
+    get scrollAxisRectangle() {
+        return this._activityTimeline.template.querySelector(
+            '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-rectangle"]'
+        );
     }
 
     /**
@@ -1361,7 +1377,7 @@ export class HorizontalActivityTimeline {
         const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         const maxXPosition =
             this.scrollTimeScale(this._intervalMaxDate) - MIN_INTERVAL_WIDTH;
-        let xPosition = event.x;
+        let xPosition = event.x - this.scrollAxisLeftPosition;
 
         if (xPosition < minXPosition) {
             xPosition = minXPosition;
@@ -1518,7 +1534,7 @@ export class HorizontalActivityTimeline {
         const minXPosition =
             this.scrollTimeScale(this._intervalMinDate) + MIN_INTERVAL_WIDTH;
         const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
-        let xPosition = event.x;
+        let xPosition = event.x - this.scrollAxisLeftPosition;
 
         if (xPosition < minXPosition) {
             xPosition = minXPosition;
