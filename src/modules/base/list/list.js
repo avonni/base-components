@@ -199,11 +199,6 @@ export default class List extends LightningElement {
      * @returns {Boolean} Whether or not the element's scroll bars are visible
      */
     isScrollerVisible(element) {
-        console.log(
-            element.offsetHeight,
-            element.offsetParent,
-            visualViewport.height
-        );
         return (
             element &&
             !!(
