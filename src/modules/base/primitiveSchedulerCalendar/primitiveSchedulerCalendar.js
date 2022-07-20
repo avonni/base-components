@@ -39,7 +39,6 @@ import {
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
-    normalizeArray,
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -47,6 +46,7 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
+    positionPopover,
     ScheduleBase,
     updateOccurrencesOffset,
     updateOccurrencesPosition
@@ -69,7 +69,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     cellHeight = 0;
     cellWidth = 0;
     columns = [];
-    computedEvents = [];
     computedResources = [];
     dayCellDuration = 0;
     dayHeadersVisibleWidth = 0;
@@ -81,6 +80,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     multiDayCellHeight = 0;
     multiDayEvents = [];
     multiDayEventsCellGroup = {};
+    showMorePopover;
     singleDayEvents = [];
     start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     visibleInterval;
@@ -115,6 +115,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             // On the first move, display the event on the timeline.
             this.updateColumnEvents();
             this._eventData.setDraggedEvent();
+        }
+
+        if (this.showMorePopover) {
+            const popover = this.template.querySelector(
+                '[data-element-id="div-popover"]'
+            );
+            positionPopover(popover, this.showMorePopover.position, true);
         }
     }
 
@@ -160,19 +167,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
-        }
-    }
-
-    @api
-    get selectedResources() {
-        return this._selectedResources;
-    }
-    set selectedResources(value) {
-        this._selectedResources = normalizeArray(value, 'string');
-
-        if (this._connected) {
-            this._eventData.selectedResources = this._selectedResources;
-            this.initEvents();
         }
     }
 
@@ -418,7 +412,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.isCalendar = true;
         this._eventData.isVertical = true;
         this._eventData.smallestHeader = this.hourHeaders[0];
-        this._eventData.selectedResources = this.selectedResources;
         this._eventData.initEvents();
 
         // Create a cell group for the multi day events row
@@ -945,6 +938,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    handleMonthCellShowMoreClick(event) {
+        const columnIndex = Number(event.currentTarget.dataset.columnIndex);
+        const start = Number(event.currentTarget.dataset.start);
+        const cell = this.columns[columnIndex].cells.find((c) => {
+            return c.start === start;
+        });
+        const events = cell.events.map((occ) => {
+            const occurrence = { ...occ };
+            occurrence.overflowsCell = false;
+            occurrence.event = this._eventData.events.find((e) => {
+                return e.key === occ.eventKey;
+            });
+            return occurrence;
+        });
+
+        const { x, width } = event.currentTarget.getBoundingClientRect();
+        const buttonCenter = x + width / 2;
+        const position = {
+            x: buttonCenter,
+            y: event.clientY
+        };
+
+        const date = dateTimeObjectFrom(start);
+        this.showMorePopover = {
+            events,
+            position,
+            label: date.toFormat('cccc d')
+        };
+    }
+
     /**
      * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
      */
@@ -997,7 +1020,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const width = firstColWidth + (x - mouseX);
             this.leftPanelContent.style.width = `${width}px`;
             this.firstColWidth = width;
-        } else {
+        } else if (!this.isMonth) {
             this._eventData.handleMouseMove(mouseEvent);
 
             if (this._eventData.shouldInitDraggedEvent) {
@@ -1014,7 +1037,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this._draggedSplitter) {
             this._draggedSplitter = false;
-        } else {
+        } else if (!this.isMonth) {
             const x = mouseEvent.clientX;
             const y = mouseEvent.clientY;
             const { eventToDispatch, updateCellGroups } =

@@ -568,7 +568,8 @@ Base.args = {
     columns,
     resources,
     start,
-    events: basicEvents
+    events: basicEvents,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const Calendar = Template.bind({});
@@ -593,7 +594,8 @@ VerticalTimeline.args = {
     events,
     disabledDatesTimes,
     referenceLines,
-    variant: 'vertical'
+    variant: 'vertical',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});

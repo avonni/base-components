@@ -64,6 +64,7 @@ export class ScheduleBase extends LightningElement {
     _recurrentEditModes = EDIT_MODES;
     _resizeColumnDisabled = false;
     _resources = [];
+    _selectedResources = [];
     _timeSpan = DEFAULT_TIME_SPAN;
     _zoomToFit = false;
 
@@ -371,6 +372,19 @@ export class ScheduleBase extends LightningElement {
         this._resources = normalizeArray(value, 'object');
     }
 
+    @api
+    get selectedResources() {
+        return this._selectedResources;
+    }
+    set selectedResources(value) {
+        this._selectedResources = normalizeArray(value, 'string');
+
+        if (this._connected) {
+            this._eventData.selectedResources = this._selectedResources;
+            this.initEvents();
+        }
+    }
+
     /**
      * Object used to set the duration of the timeline. It should have two keys:
      * * unit (minute, hour, day, week, month or year)
@@ -512,6 +526,7 @@ export class ScheduleBase extends LightningElement {
             eventsTheme: this.eventsTheme,
             newEventTitle: this.newEventTitle,
             recurrentEditModes: this.recurrentEditModes,
+            selectedResources: this.selectedResources,
             visibleInterval: this.visibleInterval
         });
     }

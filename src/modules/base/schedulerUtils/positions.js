@@ -150,6 +150,29 @@ function computeEventLevelInCellGroup(
     return { level, numberOfOverlap };
 }
 
+export function positionPopover(popover, { x, y }, horizontalCenter) {
+    // Make sure the popover is not outside of the screen
+    const height = popover.offsetHeight;
+    const width = popover.offsetWidth;
+    const popoverBottom = y + height;
+    const popoverRight = x + width;
+
+    const bottomView = window.innerHeight;
+    const rightView = window.innerWidth;
+
+    const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
+    let xTransform = 10;
+    if (popoverRight > rightView) {
+        xTransform = (width + 10) * -1;
+    } else if (horizontalCenter) {
+        xTransform = (width / 2) * -1;
+    }
+
+    popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
+    popover.style.top = `${y}px`;
+    popover.style.left = `${x}px`;
+}
+
 /**
  * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
  */

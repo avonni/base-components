@@ -34,6 +34,7 @@
 
 :host.avonni-scheduler__event_horizontal {
     height: 100%;
+    position: absolute;
 }
 
 .avonni-scheduler__reference-line {

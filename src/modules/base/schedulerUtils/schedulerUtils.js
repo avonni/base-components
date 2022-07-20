@@ -34,6 +34,7 @@ export { ScheduleBase } from './scheduleBase';
 export {
     getElementOnXAxis,
     getElementOnYAxis,
+    positionPopover,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from './positions';

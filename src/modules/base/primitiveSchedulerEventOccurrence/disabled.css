@@ -34,6 +34,7 @@
 
 :host {
     overflow: hidden;
+    position: absolute;
 }
 
 .avonni-scheduler__disabled-date {

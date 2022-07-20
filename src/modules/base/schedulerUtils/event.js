@@ -410,6 +410,7 @@ export default class SchedulerEvent {
                     ) {
                         this.occurrences.push(
                             new Occurrence({
+                                eventKey: this.key,
                                 from,
                                 key: `${this.name}-${name}-${from.ts}`,
                                 resourceName: name,

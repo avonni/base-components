@@ -173,6 +173,7 @@
                         >
                             <c-primitive-scheduler-event-occurrence
                                 key={occurrence.key}
+                                class="slds-is-absolute"
                                 color={event.color}
                                 header-cells={multiDayEventHeaderCells}
                                 cell-duration={dayCellDuration}
@@ -285,8 +286,10 @@
                                                 "
                                                 label={cell.showMoreLabel}
                                                 variant="base"
+                                                data-column-index={index}
                                                 data-start={cell.start}
                                                 data-element-id="lightning-button-month-show-more"
+                                                onclick={handleMonthCellShowMoreClick}
                                             ></lightning-button>
                                         </div>
                                     </div>
@@ -307,6 +310,7 @@
                                 >
                                     <c-primitive-scheduler-event-occurrence
                                         key={occurrence.key}
+                                        class="slds-is-absolute"
                                         color={event.color}
                                         header-cells={eventHeaderCells}
                                         cell-duration={hourCellDuration}
@@ -354,6 +358,59 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Show more popover -->
+    <div
+        if:true={showMorePopover}
+        class="
+            slds-is-fixed slds-popover slds-popover_small
+            avonni-scheduler__calendar-show-more-popover
+        "
+        role="tooltip"
+        aria-live="polite"
+        data-element-id="div-popover"
+    >
+        <div class="slds-popover__body">
+            <div
+                class="
+                    slds-m-around_x-small
+                    slds-p-bottom_xx-small
+                    slds-text-title_caps
+                "
+            >
+                {showMorePopover.label}
+            </div>
+            <template for:each={showMorePopover.events} for:item="occurrence">
+                <c-primitive-scheduler-event-occurrence
+                    key={occurrence.key}
+                    class="slds-m-bottom_xx-small"
+                    color={occurrence.color}
+                    date-format={dateFormat}
+                    disabled={occurrence.event.disabled}
+                    event-data={occurrence.event.data}
+                    event-name={occurrence.event.name}
+                    from={occurrence.from}
+                    icon-name={occurrence.event.iconName}
+                    labels={occurrence.event.labels}
+                    occurrence={occurrence}
+                    occurrence-key={occurrence.key}
+                    read-only={readOnly}
+                    resource-key={occurrence.resourceName}
+                    resources={computedResources}
+                    title={occurrence.title}
+                    to={occurrence.to}
+                    variant="calendar-month"
+                    data-event-name={occurrence.event.name}
+                    data-key={occurrence.key}
+                    data-day={occurrence.from.day}
+                    data-month={occurrence.from.month}
+                    data-weekday={occurrence.fromWeekday}
+                    onprivatecontextmenu={handleEventContextMenu}
+                    onprivatedblclick={handleEventDoubleClick}
+                ></c-primitive-scheduler-event-occurrence>
+            </template>
         </div>
     </div>
 </template>

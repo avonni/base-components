@@ -1068,9 +1068,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     updateLength() {
         if (this.eventOccurrenceWrapper) {
-            this.eventOccurrenceWrapper.style.maxWidth = this.isMonthCalendar
-                ? `${this.cellWidth}px`
-                : null;
+            this.eventOccurrenceWrapper.style.maxWidth =
+                this.isMonthCalendar && this.cellWidth
+                    ? `${this.cellWidth}px`
+                    : null;
             if (this.isMonthCalendar) {
                 return;
             }

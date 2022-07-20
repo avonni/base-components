@@ -43,6 +43,7 @@ import {
     previousAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
+import { positionPopover } from 'c/schedulerUtils';
 import { classSet } from 'c/utils';
 import {
     EDIT_MODES,
@@ -141,7 +142,7 @@ export default class Scheduler extends LightningElement {
             const popover = this.template.querySelector(
                 '[data-element-id="div-detail-popover"]'
             );
-            this.positionPopover(popover);
+            positionPopover(popover, this.selection);
         }
 
         // Position the context menu
@@ -149,7 +150,7 @@ export default class Scheduler extends LightningElement {
             const contextMenu = this.template.querySelector(
                 '[data-element-id="avonni-primitive-dropdown-menu"]'
             );
-            this.positionPopover(contextMenu);
+            positionPopover(contextMenu, this.selection);
         }
 
         // If the edit dialog is opened, focus on the first input
@@ -1407,31 +1408,6 @@ export default class Scheduler extends LightningElement {
     normalizeDateToStartOfMonth(date) {
         date = addToDate(date, 'week', 1);
         return date.startOf('month');
-    }
-
-    /**
-     * Update the given popover position so it is next to the currently selected event occurrence.
-     *
-     * @param {HTMLElement} popover Popover element.
-     */
-    positionPopover(popover) {
-        // Make sure the popover is not outside of the screen
-        const y = this.selection.y;
-        const x = this.selection.x;
-        const height = popover.offsetHeight;
-        const width = popover.offsetWidth;
-        const popoverBottom = y + height;
-        const popoverRight = x + width;
-
-        const bottomView = window.innerHeight;
-        const rightView = window.innerWidth;
-
-        const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
-        const xTransform = popoverRight > rightView ? (width + 10) * -1 : 10;
-
-        popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
-        popover.style.top = `${y}px`;
-        popover.style.left = `${x}px`;
     }
 
     /**
