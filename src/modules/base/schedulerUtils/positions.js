@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { CELL_SELECTOR } from './defaults';
+import {
+    CELL_SELECTOR,
+    MONTH_DAY_LABEL_HEIGHT,
+    MONTH_EVENT_HEIGHT
+} from './defaults';
 
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
@@ -234,6 +238,12 @@ export function updateOccurrencesOffset(
             }
         }
 
+        if (this.isMonth) {
+            const availableHeight =
+                (this.cellHeight - MONTH_DAY_LABEL_HEIGHT) / (level + 2);
+            occurrence.overflowsCell = availableHeight < MONTH_EVENT_HEIGHT;
+            offsetSide += MONTH_DAY_LABEL_HEIGHT;
+        }
         occurrence.offsetSide = offsetSide;
     });
 

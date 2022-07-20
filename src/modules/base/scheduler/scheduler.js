@@ -1895,7 +1895,11 @@ export default class Scheduler extends LightningElement {
      * Handle a click on the toolbar "Today" button.
      */
     handleToolbarTodayClick() {
-        this.goToDate(new Date());
+        const today = new Date().setHours(0, 0, 0, 0);
+        if (today === this.selectedDate.ts) {
+            return;
+        }
+        this.goToDate(today);
     }
 
     handleVisibleIntervalChange(event) {

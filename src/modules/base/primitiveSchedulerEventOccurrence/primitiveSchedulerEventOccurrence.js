@@ -714,22 +714,29 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get computedClass() {
         const theme = this.theme;
         const centerLabel = normalizeObject(this.labels.center);
-        return classSet(
-            `avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-scheduler__event_${theme}`
+        let classes = classSet(
+            'avonni-scheduler__event slds-grid slds-has-flexi-truncate'
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
                 'slds-text-color_inverse slds-current-color':
-                    theme === 'default' ||
-                    theme === 'rounded' ||
-                    (this._focused && theme === 'transparent'),
+                    !this.isMonthCalendar &&
+                    (theme === 'default' ||
+                        theme === 'rounded' ||
+                        (this._focused && theme === 'transparent')),
                 'avonni-scheduler__event-wrapper_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
-                'slds-p-bottom_xx-small': theme === 'line'
+                'slds-p-bottom_xx-small': theme === 'line',
+                'avonni-scheduler__event_month': this.isMonthCalendar
             })
             .toString();
+
+        if (!this.isMonthCalendar) {
+            classes += `avonni-scheduler__event_${theme}`;
+        }
+        return classes;
     }
 
     /**
@@ -774,8 +781,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             'slds-truncate slds-grid avonni-scheduler__event-label_center'
         )
             .add({
-                'slds-p-horizontal_x-small': !this.isVerticalTimeline,
-                'slds-m-top_small': this.isVertical && this.theme === 'line'
+                'slds-p-horizontal_x-small':
+                    !this.isVerticalTimeline && !this.isMonthCalendar,
+                'slds-m-top_small': this.isVertical && this.theme === 'line',
+                'slds-grid slds-grid_vertical-align-center':
+                    this.isMonthCalendar
             })
             .toString();
     }
@@ -789,10 +799,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return classSet('slds-grid')
             .add({
                 'slds-grid_vertical-align-center slds-p-vertical_xx-small':
-                    !this.isVerticalTimeline && !this.isVerticalCalendar,
+                    !this.isVerticalTimeline &&
+                    !this.isVerticalCalendar &&
+                    !this.isMonthCalendar,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
+    }
+
+    get eventOccurrenceWrapper() {
+        return this.template.querySelector(
+            '[data-element-id="div-event-occurrence"]'
+        );
+    }
+
+    get hideResizeIcon() {
+        return this.readOnly || this.isMonthCalendar;
     }
 
     /**
@@ -837,6 +859,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.variant === 'timeline-vertical';
     }
 
+    get monthColorChipStyle() {
+        return `background-color: ${this.computedColor};`;
+    }
+
     /**
      * Total number of events (including this one) that overlap in this time frame.
      *
@@ -854,6 +880,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get offsetSide() {
         return this.occurrence.offsetSide || 0;
+    }
+
+    get overflowsCell() {
+        return this.occurrence.overflowsCell;
     }
 
     /**
@@ -892,12 +922,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.disabled && (this.title || this.iconName);
     }
 
+    get startTime() {
+        return this.from.toFormat('HH:mm');
+    }
+
     /**
      * Computed inline style of the occurrence.
      *
      * @type {string}
      */
     get style() {
+        if (this.isMonthCalendar) {
+            return '';
+        }
         const { computedColor, transparentColor, theme } = this;
         const isDefault = theme === 'default';
         const isTransparent = theme === 'transparent';
@@ -965,9 +1002,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     focus() {
-        this.template
-            .querySelector('[data-element-id="div-event-occurrence"]')
-            .focus();
+        this.eventOccurrenceWrapper.focus();
     }
 
     /**
@@ -1032,6 +1067,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateLength() {
+        if (this.eventOccurrenceWrapper) {
+            this.eventOccurrenceWrapper.style.maxWidth = this.isMonthCalendar
+                ? `${this.cellWidth}px`
+                : null;
+            if (this.isMonthCalendar) {
+                return;
+            }
+        }
         const { cellHeight, cellWidth, cellDuration } = this;
         const from = this.getComparableTime(this.from);
         const headerCells = this.isVerticalCalendar
@@ -1156,7 +1199,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             for (let i = 0; i < Object.entries(this.labels).length; i++) {
                 const label = Object.entries(this.labels)[i];
                 const position = label[0];
-                if (this.isVerticalTimeline && position !== 'center') {
+                const hideLabels =
+                    this.isVertical ||
+                    this.isMonthCalendar ||
+                    this.isHorizontalCalendar;
+                if (hideLabels && position !== 'center') {
                     continue;
                 }
 
@@ -1294,6 +1341,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     updatePositionInCalendar() {
+        if (!this.referenceLine && !this.disabled) {
+            // Hide the overflowing events in the month calendar display
+            this.eventOccurrenceWrapper.style.display =
+                this.isMonthCalendar && this.overflowsCell ? 'none' : null;
+            if (this.overflowsCell) {
+                return;
+            }
+        }
+
         const { cellHeight, headerCells, cellWidth } = this;
         if (
             !headerCells.xAxis ||
@@ -1319,6 +1375,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
         this._y = yIndex * cellHeight;
         this._x = xIndex * cellWidth;
+
+        if (this.isMonthCalendar) {
+            this._y += this.offsetSide;
+        }
     }
 
     updatePositionInTimeline() {

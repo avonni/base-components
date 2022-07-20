@@ -50,6 +50,8 @@ const EVENTS_THEMES = {
     valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
     default: 'default'
 };
+const MONTH_DAY_LABEL_HEIGHT = 30;
+const MONTH_EVENT_HEIGHT = 20;
 const RECURRENCES = [
     {
         name: 'daily',
@@ -84,6 +86,8 @@ export {
     DEFAULT_TIME_SPAN,
     EDIT_MODES,
     EVENTS_THEMES,
+    MONTH_DAY_LABEL_HEIGHT,
+    MONTH_EVENT_HEIGHT,
     RECURRENCES,
     REFERENCE_LINE_VARIANTS
 };

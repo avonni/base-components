@@ -41,6 +41,16 @@
     min-height: var(--avonni-scheduler-cell-height);
 }
 
+.avonni-scheduler__calendar-cell-show-more-button {
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.avonni-scheduler__calendar-cell-month-day {
+    font-size: 0.75rem;
+}
+
 .avonni-scheduler__calendar-cell_outside-of-current-month {
     color: #adadad;
 }

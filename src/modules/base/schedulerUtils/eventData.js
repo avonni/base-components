@@ -120,8 +120,9 @@ export default class SchedulerEventData {
             return true;
         }
         const names = normalizeArray(event.resourceNames);
+        const resources = normalizeArray(this.selectedResources);
         return names.find((name) => {
-            return this.selectedResources.includes(name);
+            return resources.includes(name);
         });
     }
 

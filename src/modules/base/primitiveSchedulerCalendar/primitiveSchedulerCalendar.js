@@ -35,6 +35,7 @@ import { Interval } from 'c/luxon';
 import {
     addToDate,
     dateTimeObjectFrom,
+    deepCopy,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
@@ -104,6 +105,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.updateSingleAndMultiDayEventsOffset();
         this.updateOccurrencesPosition();
         this.setHorizontalHeadersSideSpacing();
+
+        if (this.isMonth) {
+            this.toggleShowMoreButtonsVisibility();
+        }
 
         if (this._eventData && this._eventData.shouldInitDraggedEvent) {
             // A new event is being created by dragging.
@@ -482,7 +487,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     initMonthTimeBoundaries() {
         // Set the vertical event header reference cells
         const lastColumn = this.columns[this.columns.length - 1];
-        const yAxis = [...this.columns[0].referenceCells];
+        const yAxis = deepCopy(this.columns[0].referenceCells);
         yAxis.forEach((cell, index) => {
             const lastColumnCell = lastColumn.referenceCells[index];
             cell.end = lastColumnCell.end;
@@ -512,11 +517,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     initResizeObserver() {
         const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateCellWidth();
-            this.updateVisibleWidth();
             if (this.isMonth) {
                 this.updateCellHeight();
             }
+            this.updateCellWidth();
+            this.updateVisibleWidth();
         });
         resizeObserver.observe(this.cellsGrid);
         resizeObserver.observe(this.leftPanelContent);
@@ -737,11 +742,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 )
             );
 
+            const isVertical = isSingleDayOccurrence && !this.isMonth;
             rowHeight += updateOccurrencesOffset.call(
                 this,
                 occurrences,
                 events,
-                isSingleDayOccurrence
+                isVertical
             );
         }
 
@@ -784,8 +790,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     updateSingleAndMultiDayEventsOffset() {
         this.columns.forEach((column) => {
-            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"]`;
-            this.updateOccurrencesOffset(column, selector, true);
+            if (this.isMonth) {
+                // Set the events offset per day cell
+                column.cells.forEach((cell) => {
+                    const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
+                    this.updateOccurrencesOffset(cell, selector, true);
+                });
+            } else {
+                // Set the events offset per day column
+                const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"]`;
+                this.updateOccurrencesOffset(column, selector, true);
+            }
         });
 
         if (this.multiDayEvents.length && this.multiDayWrapper) {
@@ -827,6 +842,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     ? width
                     : 0;
         }
+    }
+
+    toggleShowMoreButtonsVisibility() {
+        this.columns.forEach((col) => {
+            col.cells.forEach((cell) => {
+                const button = this.template.querySelector(
+                    `[data-element-id="lightning-button-month-show-more"][data-start="${cell.start}"]`
+                );
+                if (cell.overflowingEvents.length) {
+                    button.classList.remove('slds-hide');
+                    button.label = cell.showMoreLabel;
+                } else {
+                    button.classList.add('slds-hide');
+                }
+            });
+        });
     }
 
     /*

@@ -109,7 +109,7 @@
             >
                 <!-- Start resize icon -->
                 <lightning-icon
-                    if:false={readOnly}
+                    if:false={hideResizeIcon}
                     class="
                         avonni-scheduler__event-resize-icon
                         avonni-scheduler__event-resize-icon_start
@@ -126,6 +126,14 @@
                     class={eventOccurrenceCenterLabelClass}
                     data-element-id="div-center-label-wrapper"
                 >
+                    <div
+                        if:true={isMonthCalendar}
+                        class="
+                            avonni-scheduler__event-month-chip
+                            slds-m-right_xx-small
+                        "
+                        style={monthColorChipStyle}
+                    ></div>
                     <lightning-icon
                         if:true={computedLabels.center.iconName}
                         icon-name={computedLabels.center.iconName}
@@ -142,13 +150,22 @@
                         title={computedLabels.center.value}
                         data-element-id="span-center-label"
                     >
+                        <span
+                            if:true={isMonthCalendar}
+                            class="
+                                slds-p-right_xx-small
+                                avonni-scheduler__event-month-time
+                                slds-text-color_weak
+                            "
+                            >{startTime}</span
+                        >
                         {computedLabels.center.value}
                     </span>
                 </div>
 
                 <!-- End resize icon -->
                 <lightning-icon
-                    if:false={readOnly}
+                    if:false={hideResizeIcon}
                     class="
                         avonni-scheduler__event-resize-icon
                         avonni-scheduler__event-resize-icon_end

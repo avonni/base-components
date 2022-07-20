@@ -266,14 +266,29 @@
                                         onmousedown={handleMouseDown}
                                         ondblclick={handleDoubleClick}
                                     >
-                                        <span
+                                        <div
                                             if:true={isMonth}
-                                            class="
-                                                slds-p-around_small
-                                                slds-show
-                                            "
-                                            >{cell.day}</span
+                                            class="slds-p-around_xx-small"
                                         >
+                                            <div
+                                                class="
+                                                    avonni-scheduler__calendar-cell-month-day
+                                                "
+                                            >
+                                                {cell.day}
+                                            </div>
+                                            <lightning-button
+                                                class="
+                                                    slds-is-absolute
+                                                    avonni-scheduler__calendar-cell-show-more-button
+                                                    slds-text-align_center
+                                                "
+                                                label={cell.showMoreLabel}
+                                                variant="base"
+                                                data-start={cell.start}
+                                                data-element-id="lightning-button-month-show-more"
+                                            ></lightning-button>
+                                        </div>
                                     </div>
                                 </template>
                             </div>
@@ -285,54 +300,55 @@
                                 for:each={singleDayEvents}
                                 for:item="event"
                             >
-                                <div key={event.key}>
-                                    <template
-                                        for:each={event.occurrences}
-                                        for:item="occurrence"
-                                    >
-                                        <c-primitive-scheduler-event-occurrence
-                                            key={occurrence.key}
-                                            color={event.color}
-                                            header-cells={eventHeaderCells}
-                                            cell-duration={hourCellDuration}
-                                            cell-height={cellHeight}
-                                            cell-width={cellWidth}
-                                            date-format={dateFormat}
-                                            disabled={event.disabled}
-                                            event-data={event.data}
-                                            event-name={event.name}
-                                            from={occurrence.from}
-                                            icon-name={event.iconName}
-                                            labels={event.labels}
-                                            occurrence={occurrence}
-                                            occurrence-key={occurrence.key}
-                                            read-only={readOnly}
-                                            reference-line={event.referenceLine}
-                                            resource-key={occurrence.resourceName}
-                                            resources={computedResources}
-                                            title={occurrence.title}
-                                            theme={event.theme}
-                                            to={occurrence.to}
-                                            variant={singleDayEventVariant}
-                                            zoom-to-fit={zoomToFit}
-                                            data-disabled={event.disabled}
-                                            data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
-                                            data-event-name={event.name}
-                                            data-key={occurrence.key}
-                                            data-weekday={occurrence.fromWeekday}
-                                            onprivatefocus={handleEventFocus}
-                                            onprivateblur={handleHideDetailPopover}
-                                            onprivatecontextmenu={handleEventContextMenu}
-                                            onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                            onprivatemouseenter={handleEventMouseEnter}
-                                            onprivatemouseleave={handleHideDetailPopover}
-                                            onprivatedblclick={handleEventDoubleClick}
-                                            onprivatedisableddblclick={handleDoubleClick}
-                                            onprivatemousedown={handleEventMouseDown}
-                                            onprivatedisabledmousedown={handleMouseDown}
-                                        ></c-primitive-scheduler-event-occurrence>
-                                    </template>
-                                </div>
+                                <template
+                                    for:each={event.occurrences}
+                                    for:item="occurrence"
+                                    key={event.key}
+                                >
+                                    <c-primitive-scheduler-event-occurrence
+                                        key={occurrence.key}
+                                        color={event.color}
+                                        header-cells={eventHeaderCells}
+                                        cell-duration={hourCellDuration}
+                                        cell-height={cellHeight}
+                                        cell-width={cellWidth}
+                                        date-format={dateFormat}
+                                        disabled={event.disabled}
+                                        event-data={event.data}
+                                        event-name={event.name}
+                                        from={occurrence.from}
+                                        icon-name={event.iconName}
+                                        labels={event.labels}
+                                        occurrence={occurrence}
+                                        occurrence-key={occurrence.key}
+                                        read-only={readOnly}
+                                        reference-line={event.referenceLine}
+                                        resource-key={occurrence.resourceName}
+                                        resources={computedResources}
+                                        title={occurrence.title}
+                                        theme={event.theme}
+                                        to={occurrence.to}
+                                        variant={singleDayEventVariant}
+                                        zoom-to-fit={zoomToFit}
+                                        data-disabled={event.disabled}
+                                        data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
+                                        data-event-name={event.name}
+                                        data-key={occurrence.key}
+                                        data-day={occurrence.from.day}
+                                        data-month={occurrence.from.month}
+                                        data-weekday={occurrence.fromWeekday}
+                                        onprivatefocus={handleEventFocus}
+                                        onprivateblur={handleHideDetailPopover}
+                                        onprivatecontextmenu={handleEventContextMenu}
+                                        onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                        onprivatemouseenter={handleEventMouseEnter}
+                                        onprivatemouseleave={handleHideDetailPopover}
+                                        onprivatedblclick={handleEventDoubleClick}
+                                        onprivatedisableddblclick={handleDoubleClick}
+                                        onprivatemousedown={handleEventMouseDown}
+                                        onprivatedisabledmousedown={handleMouseDown}
+                                    ></c-primitive-scheduler-event-occurrence>
+                                </template>
                             </template>
                         </div>
                     </div>

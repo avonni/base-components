@@ -579,9 +579,9 @@ Calendar.args = {
     selectedDisplay: 'calendar',
     selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung'],
     selectedTimeSpan: 'Standard.Scheduler.MonthTimeSpan',
-    availableTimeFrames: ['08:00-23:59'],
-    disabledDatesTimes,
-    referenceLines
+    availableTimeFrames: ['08:00-23:59']
+    // disabledDatesTimes,
+    // referenceLines
 };
 
 export const VerticalTimeline = Template.bind({});
@@ -727,7 +727,7 @@ Labels.args = {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'resourceName',
+            fieldName: 'name',
             iconName: 'utility:user'
         }
     },

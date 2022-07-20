@@ -39,10 +39,13 @@
 
 .avonni-scheduler__event {
     width: 100%;
-    opacity: 0.8;
     cursor: pointer;
     position: relative;
     z-index: 2;
+}
+
+.avonni-scheduler__event:not(.avonni-scheduler__event_month) {
+    opacity: 0.8;
 }
 
 .avonni-scheduler__event-wrapper:focus {
@@ -91,6 +94,17 @@
 .avonni-scheduler__event-wrapper_vertical,
 .avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event {
     height: 100%;
+}
+
+.avonni-scheduler__event-month-chip {
+    min-height: 8px;
+    min-width: 8px;
+    border-radius: 50%;
+}
+
+.avonni-scheduler__event-month-time {
+    font-size: 0.75rem;
+    font-weight: 300;
 }
 
 /* Themes --------- */
