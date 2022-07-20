@@ -1486,9 +1486,13 @@ export class HorizontalActivityTimeline {
      */
     handleTimeIntervalDrag(event) {
         // To allow only horizontal drag
-        const xPosition = this.validateXMousePosition(
+        let xPosition = this.validateXMousePosition(
             event.sourceEvent.offsetX - this._distanceBetweenDragAndMin
         );
+
+        if (event.sourceEvent.pageX < this.scrollAxisLeftPosition) {
+            xPosition = this.scrollTimeScale(this.scrollAxisMinDate);
+        }
 
         this._timeIntervalSelector
             .attr('x', xPosition)
