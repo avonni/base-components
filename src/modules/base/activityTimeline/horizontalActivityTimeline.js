@@ -1486,8 +1486,7 @@ export class HorizontalActivityTimeline {
      */
     handleTimeIntervalDragStart(event) {
         this._distanceBetweenDragAndMin =
-            event.sourceEvent.clientX -
-            this.scrollTimeScale(this._intervalMinDate);
+            event.x - this.scrollTimeScale(this._intervalMinDate);
     }
 
     /**
