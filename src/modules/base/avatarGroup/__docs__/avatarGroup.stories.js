@@ -224,11 +224,11 @@ export default {
             }
         },
         name: {
-            name: 'name',
             control: {
                 type: 'text'
             },
-            description: 'Avatar group Name identifier',
+            description:
+                'Name of the avatar group. It will be returned by the actionclick event.',
             table: {
                 type: { summary: 'string' }
             }
@@ -255,7 +255,8 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1'
     },
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -264,7 +265,8 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2'
     }
 ];
 const itemsWithPresence = [
@@ -276,7 +278,8 @@ const itemsWithPresence = [
         presenceTitle: 'Online',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1'
     },
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -287,7 +290,8 @@ const itemsWithPresence = [
         presenceTitle: 'Blocked',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2'
     },
     {
         fallbackIconName: 'standard:user',
@@ -296,7 +300,8 @@ const itemsWithPresence = [
         presenceTitle: 'Offline',
         primaryText: 'Vishnu Doe',
         secondaryText: 'VP, Research and Development',
-        tertiaryText: 'MadeUp Co.'
+        tertiaryText: 'MadeUp Co.',
+        name: 'user-3'
     },
     {
         fallbackIconName: 'standard:user',
@@ -306,7 +311,8 @@ const itemsWithPresence = [
         presenceTitle: 'Busy',
         primaryText: 'Eliott Beauchesne',
         secondaryText: 'CEO',
-        tertiaryText: 'MadeUp Co.'
+        tertiaryText: 'MadeUp Co.',
+        name: 'user-4'
     }
 ];
 const itemsWithStatusAndEntity = [
@@ -324,6 +330,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
         tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'brand', outline: true },
@@ -357,6 +364,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
         tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2',
         tags: [
             { label: 'tag-01', variant: 'warning' },
             { label: 'tag-02', variant: 'error' }
@@ -373,6 +381,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Vishnu Doe',
         secondaryText: 'VP, Research and Development',
         tertiaryText: 'MadeUp Co.',
+        name: 'user-3',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },
@@ -392,6 +401,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Eliott Beauchesne',
         secondaryText: 'CEO',
         tertiaryText: 'MadeUp Co.',
+        name: 'user-4',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },
@@ -403,14 +413,16 @@ const itemsWithStatusAndEntity = [
 
 export const BaseWithTwoAvatars = Template.bind({});
 BaseWithTwoAvatars.args = {
-    items: items
+    items: items,
+    name: 'avatar-group'
 };
 
 export const BaseExtraLargeWithTwoAvatars = Template.bind({});
 BaseExtraLargeWithTwoAvatars.args = {
     items: items,
     size: 'x-large',
-    variant: 'circle'
+    variant: 'circle',
+    name: 'avatar-group'
 };
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
@@ -424,14 +436,16 @@ BaseLargeWithMoreThanTwoAvatars.args = {
     size: 'large',
     maxCount: 6,
     variant: 'circle',
-    actionIconName: 'utility:add'
+    actionIconName: 'utility:add',
+    name: 'avatar-group'
 };
 
 export const Grid = Template.bind({});
 Grid.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     layout: 'grid',
-    maxCount: 6
+    maxCount: 6,
+    name: 'avatar-group'
 };
 
 export const GridWithPresence = Template.bind({});
@@ -446,7 +460,8 @@ GridWithPresence.args = {
     ],
     layout: 'grid',
     maxCount: 6,
-    variant: 'circle'
+    variant: 'circle',
+    name: 'avatar-group'
 };
 
 export const GridSmall = Template.bind({});
@@ -454,7 +469,8 @@ GridSmall.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     size: 'small',
     layout: 'grid',
-    maxCount: 7
+    maxCount: 7,
+    name: 'avatar-group'
 };
 
 export const ListDoubleExtraLarge = Template.bind({});
@@ -468,5 +484,6 @@ ListDoubleExtraLarge.args = {
     maxCount: 3,
     size: 'xx-large',
     listButtonShowMoreIconName: 'utility:down',
-    listButtonShowLessIconName: 'utility:up'
+    listButtonShowLessIconName: 'utility:up',
+    name: 'avatar-group'
 };

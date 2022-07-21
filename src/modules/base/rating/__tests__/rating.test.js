@@ -316,14 +316,18 @@ describe('Rating', () => {
             );
             buttons.forEach((button, index) => {
                 if (index > 2) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain('slds-button_brand');
                 } else {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain('slds-button_brand');
                 }
             });
@@ -340,14 +344,18 @@ describe('Rating', () => {
             );
             buttons.forEach((button, index) => {
                 if (index < 1) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain('slds-button_brand');
                 } else {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain('slds-button_brand');
                 }
             });

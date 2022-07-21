@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-grid slds-grid_vertical-align-end avonni-metrics__wrapper">
+    <div class="slds-grid slds-grid_vertical-align-end avonni-metric__wrapper">
         <!-- Trend icon -->
         <lightning-dynamic-icon
             if:true={showDynamicIcon}
@@ -47,7 +47,7 @@
         <template if:true={showIcon}>
             <c-primitive-icon
                 class="
-                    avonni-metrics__icon
+                    avonni-metric__icon
                     slds-current-color slds-align-middle
                     slds-m-right_xx-small
                 "
@@ -64,7 +64,7 @@
         <!-- Prefix -->
         <span
             if:true={prefix}
-            class="avonni-metrics__prefix avonni-metrics__primary-text"
+            class="avonni-metric__prefix avonni-metric__primary-text"
             data-element-id="span-prefix"
             >{prefix}&nbsp;</span
         >
@@ -74,13 +74,13 @@
             if:true={mathSign}
             class="
                 slds-align-middle
-                avonni-metrics__value avonni-metrics__primary-text
+                avonni-metric__value avonni-metric__primary-text
             "
             data-element-id="span-math-sign"
             >{mathSign}&nbsp;</span
         >
         <lightning-formatted-number
-            class="avonni-metrics__value avonni-metrics__primary-text"
+            class="avonni-metric__value avonni-metric__primary-text"
             currency-code={currencyCode}
             currency-display-as={currencyDisplayAs}
             format-style={formatStyle}
@@ -96,7 +96,7 @@
         <!-- Suffix -->
         <span
             if:true={suffix}
-            class="avonni-metrics__suffix avonni-metrics__primary-text"
+            class="avonni-metric__suffix avonni-metric__primary-text"
             data-element-id="span-suffix"
             >&nbsp;{suffix}</span
         >

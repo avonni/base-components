@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-grid slds-wrap avonni-metrics__wrapper">
+    <div class="slds-grid slds-wrap avonni-metric__wrapper">
         <c-avatar
             if:true={avatar}
             class={avatarClass}
@@ -51,7 +51,7 @@
             <!-- Label -->
             <div
                 if:true={label}
-                class="avonni-metrics__label"
+                class="avonni-metric__label"
                 data-element-id="div-label"
             >
                 {label}
@@ -59,7 +59,7 @@
             <div
                 class="
                     slds-grid slds-grid_vertical-align-end
-                    avonni-metrics__primary-and-secondary-wrapper
+                    avonni-metric__primary-and-secondary-wrapper
                 "
             >
                 <!-- Primary -->
@@ -106,7 +106,7 @@
             <!-- Description -->
             <div
                 if:true={description}
-                class="avonni-metrics__description"
+                class="avonni-metric__description"
                 data-element-id="div-description"
             >
                 {description}
