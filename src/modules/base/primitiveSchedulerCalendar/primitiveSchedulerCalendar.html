@@ -278,6 +278,23 @@
                                             >
                                                 {cell.day}
                                             </div>
+                                            <!-- Multi day placeholder, displayed in cells it goes through to push the other events down-->
+                                            <template
+                                                for:each={cell.placeholders}
+                                                for:item="placeholder"
+                                            >
+                                                <div
+                                                    key={placeholder.key}
+                                                    class="
+                                                        avonni-scheduler__calendar-month-multi-day-placeholder
+                                                    "
+                                                    data-day={cell.day}
+                                                    data-element-id="div-month-multi-day-event-placeholder"
+                                                    data-event-key={placeholder.eventKey}
+                                                    data-key={placeholder.key}
+                                                    data-month={cell.month}
+                                                ></div>
+                                            </template>
                                             <lightning-button
                                                 class="
                                                     slds-is-absolute
@@ -290,6 +307,7 @@
                                                 data-start={cell.start}
                                                 data-element-id="lightning-button-month-show-more"
                                                 onclick={handleMonthCellShowMoreClick}
+                                                onmousedown={stopPropagation}
                                             ></lightning-button>
                                         </div>
                                     </div>
@@ -299,8 +317,8 @@
                         <!-- Single day events -->
                         <div class="avonni-scheduler__events slds-is-absolute">
                             <template
-                                if:true={singleDayEvents.length}
-                                for:each={singleDayEvents}
+                                if:true={mainGridEvents.length}
+                                for:each={mainGridEvents}
                                 for:item="event"
                             >
                                 <template
@@ -312,7 +330,6 @@
                                         key={occurrence.key}
                                         class="slds-is-absolute"
                                         color={event.color}
-                                        header-cells={eventHeaderCells}
                                         cell-duration={hourCellDuration}
                                         cell-height={cellHeight}
                                         cell-width={cellWidth}
@@ -321,6 +338,7 @@
                                         event-data={event.data}
                                         event-name={event.name}
                                         from={occurrence.from}
+                                        header-cells={eventHeaderCells}
                                         icon-name={event.iconName}
                                         labels={event.labels}
                                         occurrence={occurrence}
@@ -416,10 +434,11 @@
                         labels={occurrence.event.labels}
                         occurrence={occurrence}
                         occurrence-key={occurrence.key}
-                        read-only={readOnly}
+                        read-only
                         resource-key={occurrence.resourceName}
                         resources={computedResources}
                         title={occurrence.title}
+                        theme={occurrence.event.theme}
                         to={occurrence.to}
                         variant="calendar-month"
                         data-event-name={occurrence.event.name}

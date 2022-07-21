@@ -30,6 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { Interval } from 'c/luxon';
+import { normalizeArray } from 'c/utilsPrivate';
+
+export function isAllDay(event, from, to) {
+    const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
+    const endAtEndOfDay = to.endOf('day').ts === to.ts;
+    return event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
+}
+
+export function isOneDayOrMore(event, from, to) {
+    const interval = Interval.fromDateTimes(from, to);
+    const lastsMoreThanOneDay = interval.length('days') > 1;
+    const hasWeekdayRecurrence = normalizeArray(
+        event.recurrenceAttributes && event.recurrenceAttributes.weekdays
+    );
+    return (
+        (isAllDay(event, from, to) || lastsMoreThanOneDay) &&
+        !hasWeekdayRecurrence.length
+    );
+}
+
 export { ScheduleBase } from './scheduleBase';
 export {
     getElementOnXAxis,

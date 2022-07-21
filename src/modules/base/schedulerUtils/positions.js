@@ -30,11 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import {
-    CELL_SELECTOR,
-    MONTH_DAY_LABEL_HEIGHT,
-    MONTH_EVENT_HEIGHT
-} from './defaults';
+import { CELL_SELECTOR, MONTH_EVENT_HEIGHT } from './defaults';
 
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
@@ -115,6 +111,7 @@ function getTotalOfOccurrencesOverlapping(
  * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
  */
 function computeEventLevelInCellGroup(
+    occElement,
     isVertical,
     previousOccurrences,
     startPosition,
@@ -131,6 +128,7 @@ function computeEventLevelInCellGroup(
 
         // Make sure there isn't another event at the same position
         level = computeEventLevelInCellGroup(
+            occElement,
             isVertical,
             previousOccurrences,
             startPosition,
@@ -180,7 +178,7 @@ export function updateOccurrencesOffset(
     occurrenceElements,
     events,
     isVertical,
-    verticalCellSize = this.cellWidth
+    cellSize = this.cellWidth
 ) {
     let rowHeight = 0;
     let levelHeight = 0;
@@ -193,6 +191,7 @@ export function updateOccurrencesOffset(
     occurrenceElements.forEach((occElement) => {
         const start = occElement.startPosition;
         const { level, numberOfOverlap } = computeEventLevelInCellGroup(
+            occElement,
             isVertical,
             previousOccurrences,
             start
@@ -246,7 +245,7 @@ export function updateOccurrencesOffset(
         let offsetSide = 0;
 
         if (isVertical) {
-            offsetSide = (level * verticalCellSize) / numberOfOverlap;
+            offsetSide = (level * cellSize) / numberOfOverlap;
             occurrence.numberOfEventsInThisTimeFrame = numberOfOverlap;
             occurrence.right = offsetSide + width;
             this._updateOccurrencesLength = true;
@@ -262,10 +261,9 @@ export function updateOccurrencesOffset(
         }
 
         if (this.isMonth) {
-            const availableHeight =
-                (this.cellHeight - MONTH_DAY_LABEL_HEIGHT) / (level + 2);
+            const availableHeight = cellSize / (level + 2);
             occurrence.overflowsCell = availableHeight < MONTH_EVENT_HEIGHT;
-            offsetSide += MONTH_DAY_LABEL_HEIGHT;
+            offsetSide += this.cellHeight - cellSize;
         }
         occurrence.offsetSide = offsetSide;
     });

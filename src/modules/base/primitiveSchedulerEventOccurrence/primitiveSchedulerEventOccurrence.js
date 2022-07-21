@@ -41,6 +41,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utilsPrivate';
+import { isAllDay, isOneDayOrMore } from 'c/schedulerUtils';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -720,7 +721,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
                 'slds-text-color_inverse slds-current-color':
-                    !this.isMonthCalendar &&
+                    !this.isMonthCalendarSingleDay &&
                     (theme === 'default' ||
                         theme === 'rounded' ||
                         (this._focused && theme === 'transparent')),
@@ -729,11 +730,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line',
-                'avonni-scheduler__event_month': this.isMonthCalendar
+                'avonni-scheduler__event_month': this.isMonthCalendarSingleDay
             })
             .toString();
 
-        if (!this.isMonthCalendar) {
+        if (!this.isMonthCalendarSingleDay) {
             classes += `avonni-scheduler__event_${theme}`;
         }
         return classes;
@@ -782,10 +783,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-p-horizontal_x-small':
-                    !this.isVerticalTimeline && !this.isMonthCalendar,
+                    !this.isVerticalTimeline && !this.isMonthCalendarSingleDay,
                 'slds-m-top_small': this.isVertical && this.theme === 'line',
                 'slds-grid slds-grid_vertical-align-center':
-                    this.isMonthCalendar
+                    this.isMonthCalendarSingleDay
             })
             .toString();
     }
@@ -798,10 +799,16 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get eventOccurrenceClass() {
         return classSet('slds-grid')
             .add({
-                'slds-grid_vertical-align-center slds-p-vertical_xx-small':
+                'slds-grid_vertical-align-center':
+                    !this.isVerticalTimeline &&
+                    !this.isVerticalCalendar &&
+                    !this.isMonthCalendarSingleDay,
+                'slds-p-vertical_xx-small':
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
                     !this.isMonthCalendar,
+                'slds-p-bottom_xx-small':
+                    this.isMonthCalendar && this.isOneDayOrMore,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
@@ -814,7 +821,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get hideResizeIcon() {
-        return this.readOnly || this.isMonthCalendar;
+        return this.readOnly || this.isMonthCalendarSingleDay;
     }
 
     /**
@@ -824,6 +831,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get hostElement() {
         return this.template.host;
+    }
+
+    get isAllDay() {
+        return isAllDay(this.eventData, this.from, this.to);
     }
 
     get isCalendar() {
@@ -836,6 +847,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     get isMonthCalendar() {
         return this.variant === 'calendar-month';
+    }
+
+    get isMonthCalendarSingleDay() {
+        return this.isMonthCalendar && !this.isOneDayOrMore;
+    }
+
+    get isOneDayOrMore() {
+        return isOneDayOrMore(this.eventData, this.from, this.to);
     }
 
     get isTimeline() {
@@ -932,7 +951,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {string}
      */
     get style() {
-        if (this.isMonthCalendar) {
+        if (this.isMonthCalendarSingleDay) {
             return '';
         }
         const { computedColor, transparentColor, theme } = this;
@@ -1067,14 +1086,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateLength() {
-        if (this.eventOccurrenceWrapper) {
-            this.eventOccurrenceWrapper.style.maxWidth =
-                this.isMonthCalendar && this.cellWidth
-                    ? `${this.cellWidth}px`
-                    : null;
-            if (this.isMonthCalendar) {
-                return;
-            }
+        if (this.isMonthCalendar) {
+            this.updateLengthInMonthCalendar();
+            return;
+        } else if (this.eventOccurrenceWrapper) {
+            this.eventOccurrenceWrapper.style.maxWidth = null;
         }
         const { cellHeight, cellWidth, cellDuration } = this;
         const from = this.getComparableTime(this.from);
@@ -1152,7 +1168,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             const width = this.cellWidth / this.numberOfEventsInThisTimeFrame;
             element.style.width = `${width}px`;
         } else if (this.isCalendar) {
-            // Calendar multi-day event
+            // Calendar day/week multi-day event
             const height = this.cellHeight / this.numberOfEventsInThisTimeFrame;
             element.style.height = `${height}px`;
         } else {
@@ -1339,6 +1355,39 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
         }
+    }
+
+    updateLengthInMonthCalendar() {
+        const headerCells = this.headerCells.xAxis;
+        const { from, to, cellWidth } = this;
+        const isOneCellLength = !this.isOneDayOrMore || this.isAllDay;
+
+        if ((isOneCellLength || !headerCells) && this.eventOccurrenceWrapper) {
+            // The event should not span on more than one cell
+            this.eventOccurrenceWrapper.style.maxWidth = cellWidth
+                ? `${cellWidth}px`
+                : null;
+            return;
+        }
+
+        // The event should span on more than one cell.
+        // Find the cell where it starts.
+        let i = headerCells.findIndex((cell) => {
+            const cellStart = dateTimeObjectFrom(cell.start);
+            return cellStart.weekday === from.weekday;
+        });
+        if (i < 0) return;
+
+        let length = 0;
+
+        // Add the full length of the cells the event passes through
+        while (i < headerCells.length) {
+            const cellStart = dateTimeObjectFrom(headerCells[i].start);
+            if (cellStart.weekday > to.weekday) break;
+            length += cellWidth;
+            i += 1;
+        }
+        this.setLength(length);
     }
 
     updatePositionInCalendar() {

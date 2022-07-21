@@ -31,10 +31,10 @@
  */
 
 import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
-import { Interval } from 'c/luxon';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
+import { isOneDayOrMore } from './schedulerUtils';
 
 export default class SchedulerEventData {
     eventDrag;
@@ -108,7 +108,7 @@ export default class SchedulerEventData {
     }
 
     addToSingleAndMultiDayEvents(event) {
-        if (this.isMultiDay(event, event.computedFrom, event.computedTo)) {
+        if (isOneDayOrMore(event, event.computedFrom, event.computedTo)) {
             this.multiDayEvents.push(event);
         } else {
             this.singleDayEvents.push(event);
@@ -294,22 +294,6 @@ export default class SchedulerEventData {
                 return { cellGroupElement: resourceRow, cellElement: cell };
             }
         }
-    }
-
-    isMultiDay(event, from, to) {
-        const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
-        const endAtEndOfDay = to.endOf('day').ts === to.ts;
-        const isAllDay =
-            event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
-
-        const interval = Interval.fromDateTimes(from, to);
-        const lastsMoreThanOneDay = interval.length('days') > 1;
-        const hasWeekdayRecurrence = normalizeArray(
-            event.recurrenceAttributes && event.recurrenceAttributes.weekdays
-        );
-        return (
-            (isAllDay || lastsMoreThanOneDay) && !hasWeekdayRecurrence.length
-        );
     }
 
     /**
@@ -548,7 +532,7 @@ export default class SchedulerEventData {
         const visibleStart = this.visibleInterval.s;
         const from = dateTimeObjectFrom(event.from);
         const to = this.normalizedEventTo(event);
-        const isMultiDay = this.isMultiDay(event, from, to);
+        const isMultiDay = isOneDayOrMore(event, from, to);
         const isCalendarMultiDay = isMultiDay && this.isCalendar;
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;

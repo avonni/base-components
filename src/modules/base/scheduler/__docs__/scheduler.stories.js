@@ -578,7 +578,7 @@ Calendar.args = {
     start,
     events,
     selectedDisplay: 'calendar',
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung'],
+    selectedResources: ['Nina', 'Dave'],
     selectedTimeSpan: 'Standard.Scheduler.MonthTimeSpan',
     availableTimeFrames: ['08:00-23:59']
     // disabledDatesTimes,

@@ -7,6 +7,7 @@ export default class SchedulerCell {
         this.start = props.start;
         this.end = props.end;
         this.events = normalizeArray(props.events);
+        this.placeholders = normalizeArray(props.placeholders);
         this._startDate = dateTimeObjectFrom(this.start);
     }
 

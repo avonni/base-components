@@ -37,6 +37,7 @@ export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup
     constructor(props) {
         super(props);
         this.disabledEvents = normalizeArray(props.disabledEvents);
+        this.multiDayPlaceholders = normalizeArray(props.multiDayPlaceholders);
     }
 
     get start() {
@@ -51,5 +52,15 @@ export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup
 
     get weekday() {
         return this.start.weekday === 7 ? 0 : this.start.weekday;
+    }
+
+    initCells() {
+        super.initCells();
+
+        if (this.multiDayPlaceholders) {
+            this.multiDayPlaceholders.forEach((placeholder) => {
+                this.addEventToCells(placeholder, 'placeholders');
+            });
+        }
     }
 }

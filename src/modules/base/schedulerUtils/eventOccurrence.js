@@ -48,4 +48,9 @@ export default class SchedulerEventOccurrence {
         const weekday = this.from.weekday;
         return weekday === 7 ? 0 : weekday;
     }
+
+    get toWeekday() {
+        const weekday = this.to.weekday;
+        return weekday === 7 ? 0 : weekday;
+    }
 }

@@ -53,7 +53,7 @@ export class SchedulerCellGroup {
         });
     }
 
-    addEventToCells(event) {
+    addEventToCells(event, target = 'events') {
         const cells = this.cells;
         event.offsetSide = 0;
 
@@ -64,9 +64,9 @@ export class SchedulerCellGroup {
 
         if (i > -1) {
             // Add the event to every cell it crosses
-            while (i < cells.length && event.to > cells[i].start) {
-                cells[i].events.push(event);
-                cells[i].events = cells[i].events.sort(
+            while (i < cells.length && event.to >= cells[i].start) {
+                cells[i][target].push(event);
+                cells[i][target] = cells[i][target].sort(
                     (a, b) => a.from - b.from
                 );
                 i += 1;

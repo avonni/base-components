@@ -115,6 +115,10 @@
     right: 0;
 }
 
+.avonni-scheduler__calendar-month-multi-day-placeholder {
+    height: 20px;
+}
+
 /* Splitter bar between the left panel and the schedule --------- */
 .avonni-scheduler__splitter {
     z-index: 5;
