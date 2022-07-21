@@ -371,46 +371,67 @@
         role="tooltip"
         aria-live="polite"
         data-element-id="div-popover"
+        onmouseenter={handleShowMorePopoverMouseEnter}
+        onmouseleave={handleShowMorePopoverMouseLeave}
     >
-        <div class="slds-popover__body">
-            <div
-                class="
-                    slds-m-around_x-small
-                    slds-p-bottom_xx-small
-                    slds-text-title_caps
-                "
-            >
-                {showMorePopover.label}
+        <lightning-focus-trap
+            onfocusin={handleShowMorePopoverFocusin}
+            onfocusout={handleShowMorePopoverFocusout}
+        >
+            <div class="slds-popover__body">
+                <lightning-button-icon
+                    class="
+                        slds-is-absolute
+                        slds-p-around_x-small
+                        avonni-scheduler__calendar-show-more-popover-close-button
+                    "
+                    icon-name="utility:close"
+                    variant="bare"
+                    data-element-id="lightning-button-icon-show-more-close"
+                    onclick={handleShowMorePopoverClose}
+                ></lightning-button-icon>
+                <div
+                    class="
+                        slds-m-around_x-small
+                        slds-p-bottom_xx-small
+                        slds-text-title_caps
+                    "
+                >
+                    {showMorePopover.label}
+                </div>
+                <template
+                    for:each={showMorePopover.events}
+                    for:item="occurrence"
+                >
+                    <c-primitive-scheduler-event-occurrence
+                        key={occurrence.key}
+                        class="slds-m-bottom_xx-small"
+                        color={occurrence.color}
+                        date-format={dateFormat}
+                        disabled={occurrence.event.disabled}
+                        event-data={occurrence.event.data}
+                        event-name={occurrence.event.name}
+                        from={occurrence.from}
+                        icon-name={occurrence.event.iconName}
+                        labels={occurrence.event.labels}
+                        occurrence={occurrence}
+                        occurrence-key={occurrence.key}
+                        read-only={readOnly}
+                        resource-key={occurrence.resourceName}
+                        resources={computedResources}
+                        title={occurrence.title}
+                        to={occurrence.to}
+                        variant="calendar-month"
+                        data-event-name={occurrence.event.name}
+                        data-key={occurrence.key}
+                        data-day={occurrence.from.day}
+                        data-month={occurrence.from.month}
+                        data-weekday={occurrence.fromWeekday}
+                        onprivatecontextmenu={handleEventContextMenu}
+                        onprivatedblclick={handleEventDoubleClick}
+                    ></c-primitive-scheduler-event-occurrence>
+                </template>
             </div>
-            <template for:each={showMorePopover.events} for:item="occurrence">
-                <c-primitive-scheduler-event-occurrence
-                    key={occurrence.key}
-                    class="slds-m-bottom_xx-small"
-                    color={occurrence.color}
-                    date-format={dateFormat}
-                    disabled={occurrence.event.disabled}
-                    event-data={occurrence.event.data}
-                    event-name={occurrence.event.name}
-                    from={occurrence.from}
-                    icon-name={occurrence.event.iconName}
-                    labels={occurrence.event.labels}
-                    occurrence={occurrence}
-                    occurrence-key={occurrence.key}
-                    read-only={readOnly}
-                    resource-key={occurrence.resourceName}
-                    resources={computedResources}
-                    title={occurrence.title}
-                    to={occurrence.to}
-                    variant="calendar-month"
-                    data-event-name={occurrence.event.name}
-                    data-key={occurrence.key}
-                    data-day={occurrence.from.day}
-                    data-month={occurrence.from.month}
-                    data-weekday={occurrence.fromWeekday}
-                    onprivatecontextmenu={handleEventContextMenu}
-                    onprivatedblclick={handleEventDoubleClick}
-                ></c-primitive-scheduler-event-occurrence>
-            </template>
-        </div>
+        </lightning-focus-trap>
     </div>
 </template>

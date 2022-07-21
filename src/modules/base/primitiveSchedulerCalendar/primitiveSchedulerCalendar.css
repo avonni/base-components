@@ -110,6 +110,11 @@
     --slds-c-popover-position-zindex: 1;
 }
 
+.avonni-scheduler__calendar-show-more-popover-close-button {
+    top: 0;
+    right: 0;
+}
+
 /* Splitter bar between the left panel and the schedule --------- */
 .avonni-scheduler__splitter {
     z-index: 5;

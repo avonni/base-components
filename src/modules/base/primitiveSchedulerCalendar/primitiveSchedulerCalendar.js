@@ -63,8 +63,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     _eventData;
     _initialFirstColWidth = 0;
+    _mouseInShowMorePopover = false;
     _mouseIsDown = false;
     _resizeObserver;
+    _showMorePopoverIsFocused = false;
     _updateOccurrencesLength = false;
     cellHeight = 0;
     cellWidth = 0;
@@ -122,6 +124,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 '[data-element-id="div-popover"]'
             );
             positionPopover(popover, this.showMorePopover.position, true);
+            this.focusPopoverClose();
         }
     }
 
@@ -560,6 +563,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 start: start.ts,
                 end: end.ts
             });
+        }
+    }
+
+    focusPopoverClose() {
+        const closeButton = this.template.querySelector(
+            '[data-element-id="lightning-button-icon-show-more-close"]'
+        );
+        if (closeButton) {
+            closeButton.focus();
+            this._showMorePopoverIsFocused = true;
         }
     }
 
@@ -1137,6 +1150,42 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 detail: { name }
             })
         );
+    }
+
+    handleShowMorePopoverClose() {
+        this.showMorePopover = null;
+        this._showMorePopoverIsFocused = false;
+        this._mouseInShowMorePopover = false;
+    }
+
+    handleShowMorePopoverFocusin() {
+        this._showMorePopoverIsFocused = true;
+    }
+
+    handleShowMorePopoverFocusout() {
+        this._showMorePopoverIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (
+                !this._showMorePopoverIsFocused &&
+                this._mouseInShowMorePopover
+            ) {
+                this.focusPopoverClose();
+            } else if (
+                !this._showMorePopoverIsFocused &&
+                !this._mouseInShowMorePopover
+            ) {
+                this.showMorePopover = null;
+            }
+        });
+    }
+
+    handleShowMorePopoverMouseEnter() {
+        this._mouseInShowMorePopover = true;
+    }
+
+    handleShowMorePopoverMouseLeave() {
+        this._mouseInShowMorePopover = false;
     }
 
     /**
