@@ -374,15 +374,16 @@
                     </c-card>
                 </li>
             </template>
-            <li class="slds-col slds-size_12-of-12 slds-is-relative">
-                <div style="height: 40px">
-                    <lightning-spinner
-                        if:true={isLoading}
-                        size="small"
-                        class="slds-spinner_container"
-                        alternative-text="Loading..."
-                    ></lightning-spinner>
-                </div>
+            <li
+                class="slds-col slds-size_12-of-12 slds-is-relative"
+                style="height: 40px"
+            >
+                <lightning-spinner
+                    if:true={isLoading}
+                    size="small"
+                    class="slds-spinner_container"
+                    alternative-text="Loading..."
+                ></lightning-spinner>
             </li>
         </ul>
     </div>

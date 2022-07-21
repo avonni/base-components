@@ -61,9 +61,9 @@ export default class InfiniteGrid extends LightningElement {
 
         setTimeout(() => {
             if (target.isLoading) {
-                target.isLoading = false;
                 // eslint-disable-next-line @lwc/lwc/no-api-reassignments
                 this.items = this.items.concat(this._items);
+                target.isLoading = false;
             }
         }, 2000);
     }

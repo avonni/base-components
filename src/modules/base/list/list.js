@@ -166,7 +166,7 @@ export default class List extends LightningElement {
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
 
-        this.getScrollPosition();
+        // this.getScrollPosition();
     }
 
     checkIfEndReached() {
@@ -181,9 +181,11 @@ export default class List extends LightningElement {
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        this.checkIfEndReached();
+        // this.checkIfEndReached();
+        // this.saveScrollPosition();
 
-        if (offsetFromBottom < 100 && !this._isLoading) {
+        if (offsetFromBottom < 10 && !this._isLoading) {
+            console.log('get scroll');
             this.saveScrollPosition();
             this.dispatchEvent(new CustomEvent('loadmore'));
         }
@@ -194,6 +196,11 @@ export default class List extends LightningElement {
         if (!list) {
             return null;
         }
+        console.log(
+            'getScroll',
+            Math.round(list.scrollTop),
+            Math.round(this._savedScrollTop)
+        );
         return list.scrollTop;
     }
 
@@ -205,14 +212,6 @@ export default class List extends LightningElement {
         return list.scrollTop;
     }
 
-    getScrollPosition() {
-        const list = this.template.querySelector('.avonni-list__item-menu');
-        if (list) {
-            const scrollTop = list.scrollTop;
-            console.log('getScrollPosition', scrollTop, this._savedScrollTop);
-        }
-    }
-
     restoreScrollPosition() {
         if (!this._savedScrollTop) {
             return;
@@ -221,6 +220,11 @@ export default class List extends LightningElement {
 
         window.requestAnimationFrame(() => {
             list.scrollTo(0, this._savedScrollTop);
+            console.log(
+                'restore',
+                Math.round(list.scrollTop),
+                Math.round(this._savedScrollTop)
+            );
         });
     }
 
@@ -406,14 +410,16 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
-        this.saveScrollPosition();
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
-        this.restoreScrollPosition();
+
+        window.requestAnimationFrame(() => {
+            this.restoreScrollPosition();
+        });
     }
 
     /**
