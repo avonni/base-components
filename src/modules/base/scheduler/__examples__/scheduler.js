@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/scheduler';
+import Component from '../../storybookWrappers/scheduler/scheduler';
 
 customElements.define('ac-base-scheduler', Component.CustomElementConstructor);
 

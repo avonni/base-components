@@ -175,25 +175,6 @@ const EVENTS_PALETTES = {
     default: 'aurora'
 };
 
-const HEADERS = {
-    valid: [
-        'minuteAndHour',
-        'minuteHourAndDay',
-        'hourAndDay',
-        'hourDayAndWeek',
-        'dayAndWeek',
-        'dayAndMonth',
-        'dayLetterAndWeek',
-        'dayWeekAndMonth',
-        'weekAndMonth',
-        'weekMonthAndYear',
-        'monthAndYear',
-        'quartersAndYear',
-        'fiveYears'
-    ],
-    default: 'hourAndDay'
-};
-
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
     bluegrass: [
@@ -285,7 +266,6 @@ export {
     EDIT_MODES,
     EVENTS_THEMES,
     EVENTS_PALETTES,
-    HEADERS,
     PALETTES,
     RECURRENCES,
     REFERENCE_LINE_VARIANTS,

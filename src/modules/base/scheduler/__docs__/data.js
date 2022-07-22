@@ -338,7 +338,7 @@ const events = [
         recurrence: 'daily'
     },
     {
-        resourceNames: ['Jung', 'Dave'],
+        resourceNames: ['Jung'],
         name: 'seminar',
         title: 'Online seminar',
         from: new Date(2021, 11, 14, 8),

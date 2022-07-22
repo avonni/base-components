@@ -32,8 +32,12 @@
 
 .avonni-scheduler__wrapper {
     height: 100%;
-    max-height: calc(100vh - 50px);
+    max-height: calc(100vh - 70px);
     max-width: 100%;
+}
+
+.avonni-scheduler__calendar-column {
+    flex: 1 0 0;
 }
 
 .avonni-scheduler__calendar-cell {
@@ -41,10 +45,8 @@
     min-height: var(--avonni-scheduler-cell-height);
 }
 
-.avonni-scheduler__calendar-cell-show-more-button {
-    bottom: 0;
-    left: 0;
-    right: 0;
+.avonni-scheduler__calendar-cell-month {
+    height: 100%;
 }
 
 .avonni-scheduler__calendar-cell-month-day {
@@ -116,7 +118,7 @@
 }
 
 .avonni-scheduler__calendar-month-multi-day-placeholder {
-    height: 20px;
+    visibility: hidden;
 }
 
 /* Splitter bar between the left panel and the schedule --------- */

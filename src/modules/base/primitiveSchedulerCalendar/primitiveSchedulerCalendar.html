@@ -248,7 +248,7 @@
                         >
                             <div
                                 key={column.weekday}
-                                class="slds-col"
+                                class="avonni-scheduler__calendar-column"
                                 data-element-id="div-column"
                                 data-index={index}
                             >
@@ -269,7 +269,11 @@
                                     >
                                         <div
                                             if:true={isMonth}
-                                            class="slds-p-around_xx-small"
+                                            class="
+                                                slds-p-around_xx-small
+                                                slds-grid slds-grid_vertical
+                                                avonni-scheduler__calendar-cell-month
+                                            "
                                         >
                                             <div
                                                 class="
@@ -279,28 +283,36 @@
                                                 {cell.day}
                                             </div>
                                             <!-- Multi day placeholder, displayed in cells it goes through to push the other events down-->
-                                            <template
-                                                for:each={cell.placeholders}
-                                                for:item="placeholder"
-                                            >
-                                                <div
-                                                    key={placeholder.key}
-                                                    class="
-                                                        avonni-scheduler__calendar-month-multi-day-placeholder
-                                                    "
-                                                    data-day={cell.day}
-                                                    data-element-id="div-month-multi-day-event-placeholder"
-                                                    data-event-key={placeholder.eventKey}
-                                                    data-key={placeholder.key}
-                                                    data-month={cell.month}
-                                                ></div>
-                                            </template>
+                                            <div class="slds-col">
+                                                <template
+                                                    for:each={cell.placeholders}
+                                                    for:item="placeholder"
+                                                >
+                                                    <c-primitive-scheduler-event-occurrence
+                                                        key={placeholder.key}
+                                                        class="
+                                                            avonni-scheduler__calendar-month-multi-day-placeholder
+                                                            slds-is-absolute
+                                                        "
+                                                        cell-height={cellHeight}
+                                                        cell-width={cellWidth}
+                                                        from={placeholder.from}
+                                                        header-cells={eventHeaderCells}
+                                                        occurrence={placeholder}
+                                                        title={placeholder.title}
+                                                        to={placeholder.to}
+                                                        variant="calendar-month"
+                                                        data-day={cell.day}
+                                                        data-element-id="div-month-multi-day-event-placeholder"
+                                                        data-event-key={placeholder.eventKey}
+                                                        data-is-placeholder="true"
+                                                        data-key={placeholder.key}
+                                                        data-month={cell.month}
+                                                    ></c-primitive-scheduler-event-occurrence>
+                                                </template>
+                                            </div>
                                             <lightning-button
-                                                class="
-                                                    slds-is-absolute
-                                                    avonni-scheduler__calendar-cell-show-more-button
-                                                    slds-text-align_center
-                                                "
+                                                class="slds-text-align_center"
                                                 label={cell.showMoreLabel}
                                                 variant="base"
                                                 data-column-index={index}

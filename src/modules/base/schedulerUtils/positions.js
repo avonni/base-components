@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { CELL_SELECTOR, MONTH_EVENT_HEIGHT } from './defaults';
+import {
+    CELL_SELECTOR,
+    MONTH_DAY_LABEL_HEIGHT,
+    MONTH_EVENT_HEIGHT
+} from './defaults';
 
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
@@ -111,7 +115,6 @@ function getTotalOfOccurrencesOverlapping(
  * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
  */
 function computeEventLevelInCellGroup(
-    occElement,
     isVertical,
     previousOccurrences,
     startPosition,
@@ -119,7 +122,7 @@ function computeEventLevelInCellGroup(
 ) {
     // Find the last event with the same level
     const sameLevelEvent = previousOccurrences.find((occ) => {
-        return occ.level === level;
+        return occ.level === level && !occ.occurrence.overflowsCell;
     });
 
     const overlapsEvent = sameLevelEvent && startPosition < sameLevelEvent.end;
@@ -128,7 +131,6 @@ function computeEventLevelInCellGroup(
 
         // Make sure there isn't another event at the same position
         level = computeEventLevelInCellGroup(
-            occElement,
             isVertical,
             previousOccurrences,
             startPosition,
@@ -176,7 +178,6 @@ export function positionPopover(popover, { x, y }, horizontalCenter) {
  */
 export function updateOccurrencesOffset(
     occurrenceElements,
-    events,
     isVertical,
     cellSize = this.cellWidth
 ) {
@@ -189,17 +190,34 @@ export function updateOccurrencesOffset(
     // Compute the level of the occurrences in the resource
     const previousOccurrences = [];
     occurrenceElements.forEach((occElement) => {
+        const occurrence = occElement.occurrence;
+        const isPlaceholder = occElement.dataset.isPlaceholder;
         const start = occElement.startPosition;
-        const { level, numberOfOverlap } = computeEventLevelInCellGroup(
-            occElement,
-            isVertical,
-            previousOccurrences,
-            start
-        );
 
-        const occurrence = events.find((occ) => {
-            return occ.key === occElement.occurrenceKey;
-        });
+        let level = 0;
+        let numberOfOverlap = 0;
+
+        if (this.isMonth && isPlaceholder) {
+            // Do not change the level of the original occurrence
+            // if the current occurrence is a placeholder
+            // placed in a subsequent month cell
+            level = occurrence.level;
+        } else {
+            const position = computeEventLevelInCellGroup(
+                isVertical,
+                previousOccurrences,
+                start
+            );
+            level = position.level;
+            numberOfOverlap = position.numberOfOverlap;
+        }
+
+        if (this.isMonth) {
+            // If the current occurrence is overflowing the cell height,
+            // it will only be displayed in the "show more" popover
+            const availableHeight = cellSize / (level + 2);
+            occurrence.overflowsCell = availableHeight < MONTH_EVENT_HEIGHT;
+        }
 
         const selection = this._eventData.selection;
         previousOccurrences.unshift({
@@ -212,23 +230,6 @@ export function updateOccurrencesOffset(
         });
 
         if (!isVertical) {
-            if (occElement.labels.right) {
-                // Hide the right label if it overflows the schedule
-                const elementRightBorder =
-                    occElement.getBoundingClientRect().right +
-                    occElement.rightLabelWidth;
-                const schedule = this.template.querySelector(
-                    '[data-element-id="div-schedule-body"]'
-                );
-                const scheduleRightBorder =
-                    schedule.getBoundingClientRect().right;
-                if (elementRightBorder >= scheduleRightBorder) {
-                    occElement.hideRightLabel();
-                } else {
-                    occElement.showRightLabel();
-                }
-            }
-
             // If the occurrence is taller than the previous ones,
             // update the default level height
             const height = occElement.getBoundingClientRect().height;
@@ -242,15 +243,16 @@ export function updateOccurrencesOffset(
     // or left (vertical display) of the occurrences
     previousOccurrences.forEach((position) => {
         const { level, occurrence, numberOfOverlap, width } = position;
-        let offsetSide = 0;
+        let offsetSide = this.isMonth ? MONTH_DAY_LABEL_HEIGHT : 0;
 
         if (isVertical) {
-            offsetSide = (level * cellSize) / numberOfOverlap;
+            offsetSide += (level * cellSize) / numberOfOverlap;
             occurrence.numberOfEventsInThisTimeFrame = numberOfOverlap;
             occurrence.right = offsetSide + width;
             this._updateOccurrencesLength = true;
         } else {
-            offsetSide = level * levelHeight;
+            offsetSide += level * levelHeight;
+            occurrence.numberOfEventsInThisTimeFrame = null;
 
             // If the occurrence offset is bigger than the previous occurrences,
             // update the row height
@@ -260,12 +262,8 @@ export function updateOccurrencesOffset(
             }
         }
 
-        if (this.isMonth) {
-            const availableHeight = cellSize / (level + 2);
-            occurrence.overflowsCell = availableHeight < MONTH_EVENT_HEIGHT;
-            offsetSide += this.cellHeight - cellSize;
-        }
         occurrence.offsetSide = offsetSide;
+        occurrence.level = level;
     });
 
     if (!isVertical) {

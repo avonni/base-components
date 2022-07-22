@@ -46,19 +46,20 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
+    isOneDayOrMore,
     positionPopover,
     ScheduleBase,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { isOneDayOrMore } from '../schedulerUtils/schedulerUtils';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
 const MINIMUM_DAY_COLUMN_WIDTH = 48;
 const MONTH_DAY_LABEL_HEIGHT = 30;
+
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     _selectedResources = [];
@@ -625,29 +626,29 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return start;
     }
 
-    getMonthCellAvailableHeight(cell) {
-        let unavailableHeight = MONTH_DAY_LABEL_HEIGHT;
+    getVisiblePlaceholdersInCell(cell) {
+        const placeholders = [];
 
         if (cell.events.length) {
             const cellStart = cell.events[0].from;
             const day = cellStart.day;
             const month = cellStart.month;
-            const placeholders = this.template.querySelectorAll(
+            const placeholderElements = this.template.querySelectorAll(
                 `[data-element-id="div-month-multi-day-event-placeholder"][data-month="${month}"][data-day="${day}"]`
             );
-            placeholders.forEach((placeholder) => {
+            placeholderElements.forEach((placeholder) => {
                 const { key, eventKey } = placeholder.dataset;
                 const event = this._eventData.events.find(
                     (e) => e.key === eventKey
                 );
                 const occ = event.occurrences.find((o) => o.key === key);
                 if (!occ.overflowsCell) {
-                    unavailableHeight += placeholder.offsetHeight;
+                    placeholders.push(placeholder);
                 }
             });
         }
 
-        return this.cellHeight - unavailableHeight;
+        return placeholders;
     }
 
     /**
@@ -787,27 +788,31 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
-    updateOccurrencesOffset(
-        { events, disabledEvents },
-        selector,
-        isSingleDayOccurrence,
-        cellSize
-    ) {
+    updateOccurrencesOffset(columnOrCell, selector, isSingleDayOccurrence) {
         let rowHeight = 0;
+        const { events, disabledEvents } = columnOrCell;
 
         if (events.length) {
             // Update the occurrences offset
-            const occurrences = Array.from(
+            let occurrences = Array.from(
                 this.template.querySelectorAll(
                     `${selector}:not([data-disabled="true"])`
                 )
             );
 
+            if (this.isMonth) {
+                const placeholders =
+                    this.getVisiblePlaceholdersInCell(columnOrCell);
+                occurrences = occurrences.concat(placeholders);
+            }
+
             const isVertical = isSingleDayOccurrence && !this.isMonth;
+            const cellSize = this.isMonth
+                ? this.cellHeight - MONTH_DAY_LABEL_HEIGHT
+                : this.cellWidth;
             rowHeight += updateOccurrencesOffset.call(
                 this,
                 occurrences,
-                events,
                 isVertical,
                 cellSize
             );
@@ -827,7 +832,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             rowHeight += updateOccurrencesOffset.call(
                 this,
                 disabledOccurrences,
-                disabledEvents,
                 true,
                 disabledCellSize
             );
@@ -855,14 +859,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             if (this.isMonth) {
                 column.cells.forEach((cell) => {
                     // Set the events offset per day cell
-                    const cellSize = this.getMonthCellAvailableHeight(cell);
                     const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
-                    this.updateOccurrencesOffset(
-                        cell,
-                        selector,
-                        true,
-                        cellSize
-                    );
+                    this.updateOccurrencesOffset(cell, selector, true);
                 });
             } else {
                 // Set the events offset per day column
@@ -1016,6 +1014,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleMonthCellShowMoreClick(event) {
         const columnIndex = Number(event.currentTarget.dataset.columnIndex);
         const start = Number(event.currentTarget.dataset.start);
+        const startDate = dateTimeObjectFrom(start);
         const cell = this.columns[columnIndex].cells.find((c) => {
             return c.start === start;
         });
@@ -1032,6 +1031,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             occurrence.event = this._eventData.events.find((e) => {
                 return e.key === occ.eventKey;
             });
+            occurrence.startsInPreviousCell = occ.from.day < startDate.day;
+            occurrence.endsInLaterCell = occ.to.day > startDate.day;
             return occurrence;
         });
 

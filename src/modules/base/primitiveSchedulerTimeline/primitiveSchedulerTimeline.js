@@ -327,6 +327,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    get scheduleBody() {
+        return this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+    }
+
     /**
      * Computed CSS class for the schedule body.
      *
@@ -552,10 +558,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         const resizeObserver = new AvonniResizeObserver(() => {
             this.updateCellWidth();
         });
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        resizeObserver.observe(schedule);
+        resizeObserver.observe(this.scheduleBody);
         return resizeObserver;
     }
 
@@ -723,12 +726,27 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             const resourceHeight = updateOccurrencesOffset.call(
                 this,
                 occurrenceElements,
-                resource.events,
                 this.isVertical
             );
             if (resourceHeight) {
                 resource.height = resourceHeight;
             }
+
+            occurrenceElements.forEach((occElement) => {
+                if (occElement.labels.right) {
+                    // Hide the right label if it overflows the schedule
+                    const elementRightBorder =
+                        occElement.getBoundingClientRect().right +
+                        occElement.rightLabelWidth;
+                    const scheduleRightBorder =
+                        this.scheduleBody.getBoundingClientRect().right;
+                    if (elementRightBorder >= scheduleRightBorder) {
+                        occElement.hideRightLabel();
+                    } else {
+                        occElement.showRightLabel();
+                    }
+                }
+            });
         });
     }
 
@@ -737,11 +755,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
         if (this.isVertical) {
             // Set the reference line height to the width of the schedule
-            const schedule = this.template.querySelector(
-                '[data-element-id="div-schedule-body"]'
-            );
-            const scheduleWidth = schedule.getBoundingClientRect().width;
-            schedule.style = `
+            const scheduleWidth =
+                this.scheduleBody.getBoundingClientRect().width;
+            this.scheduleBody.style = `
                 --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
             `;
         }

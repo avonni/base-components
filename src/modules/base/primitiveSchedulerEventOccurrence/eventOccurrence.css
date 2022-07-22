@@ -107,6 +107,29 @@
     font-weight: 300;
 }
 
+.avonni-scheduler__event_month-multi-day-starts-in-previous-cell::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent
+        var(--avonni-primitive-scheduler-event-occurrence-background-color)
+        transparent transparent;
+}
+
+.avonni-scheduler__event_month-multi-day-ends-in-later-cell::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    border-style: solid;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent
+        var(--avonni-primitive-scheduler-event-occurrence-background-color);
+}
+
 /* Themes --------- */
 .avonni-scheduler__event_transparent {
     border-left-width: 3px;

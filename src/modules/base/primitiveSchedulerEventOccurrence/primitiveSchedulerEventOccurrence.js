@@ -534,6 +534,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             'avonni-scheduler__event_horizontal':
                 this._variant === 'timeline-horizontal'
         });
+
+        if (this._connected) {
+            this.updatePosition();
+            this.updateLength();
+            this.updateThickness();
+            this.updateStickyLabels();
+        }
     }
 
     /**
@@ -716,7 +723,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const theme = this.theme;
         const centerLabel = normalizeObject(this.labels.center);
         let classes = classSet(
-            'avonni-scheduler__event slds-grid slds-has-flexi-truncate'
+            'avonni-scheduler__event slds-grid slds-has-flexi-truncate slds-col'
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
@@ -730,12 +737,18 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line',
-                'avonni-scheduler__event_month': this.isMonthCalendarSingleDay
+                'avonni-scheduler__event_month': this.isMonthCalendarSingleDay,
+                'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
+                    !this.isMonthCalendarSingleDay &&
+                    this.occurrence.startsInPreviousCell,
+                'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
+                    !this.isMonthCalendarSingleDay &&
+                    this.occurrence.endsInLaterCell
             })
             .toString();
 
         if (!this.isMonthCalendarSingleDay) {
-            classes += `avonni-scheduler__event_${theme}`;
+            classes += ` avonni-scheduler__event_${theme}`;
         }
         return classes;
     }
@@ -812,12 +825,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
-    }
-
-    get eventOccurrenceWrapper() {
-        return this.template.querySelector(
-            '[data-element-id="div-event-occurrence"]'
-        );
     }
 
     get hideResizeIcon() {
@@ -963,9 +970,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         let style = '';
         if (isDefault || isRounded || (isTransparent && this._focused)) {
-            style += `background-color: ${computedColor};`;
+            style += `
+                background-color: ${computedColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${computedColor};
+            `;
         } else if (isTransparent && !this._focused) {
-            style += `background-color: ${transparentColor};`;
+            style += `
+                background-color: ${transparentColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${transparentColor};
+            `;
         }
         if (isTransparent) {
             style += `border-left-color: ${computedColor};`;
@@ -1021,7 +1034,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     focus() {
-        this.eventOccurrenceWrapper.focus();
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-event-occurrence"]'
+        );
+        wrapper.focus();
     }
 
     /**
@@ -1088,9 +1104,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updateLength() {
         if (this.isMonthCalendar) {
             this.updateLengthInMonthCalendar();
+            this._offsetStart = 0;
             return;
-        } else if (this.eventOccurrenceWrapper) {
-            this.eventOccurrenceWrapper.style.maxWidth = null;
+        } else if (this.hostElement) {
+            this.hostElement.style.width = null;
         }
         const { cellHeight, cellWidth, cellDuration } = this;
         const from = this.getComparableTime(this.from);
@@ -1362,11 +1379,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const { from, to, cellWidth } = this;
         const isOneCellLength = !this.isOneDayOrMore || this.isAllDay;
 
-        if ((isOneCellLength || !headerCells) && this.eventOccurrenceWrapper) {
-            // The event should not span on more than one cell
-            this.eventOccurrenceWrapper.style.maxWidth = cellWidth
-                ? `${cellWidth}px`
-                : null;
+        if ((isOneCellLength || !headerCells) && this.hostElement) {
+            // The event should span on one cell
+            this.hostElement.style.width = cellWidth ? `${cellWidth}px` : null;
+            this.hostElement.style.height = null;
             return;
         }
 
@@ -1393,7 +1409,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updatePositionInCalendar() {
         if (!this.referenceLine && !this.disabled) {
             // Hide the overflowing events in the month calendar display
-            this.eventOccurrenceWrapper.style.display =
+            this.hostElement.style.display =
                 this.isMonthCalendar && this.overflowsCell ? 'none' : null;
             if (this.overflowsCell) {
                 return;

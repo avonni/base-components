@@ -62,7 +62,6 @@ import {
     DEFAULT_START_DATE,
     DEFAULT_SELECTED_TIME_SPAN,
     DISPLAYS,
-    HEADERS,
     PALETTES,
     TIME_SPANS,
     VARIANTS
@@ -84,14 +83,12 @@ export default class Scheduler extends LightningElement {
     _contextMenuEventActions = [];
     _customEventsPalette = [];
     _collapseDisabled = false;
-    _customHeaders = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _disabledDatesTimes = [];
     _events = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
-    _headers = HEADERS.default;
     _hiddenDisplays = [];
     _hideToolbar = false;
     _isLoading = false;
