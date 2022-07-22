@@ -145,10 +145,17 @@ export default class List extends LightningElement {
     _resizeObserver;
     _isLoading = false;
 
+    firstRender = 0;
+    finishedLoading = true;
+
     renderedCallback() {
-        this.listResize();
+        if (this.firstRender === 0) {
+            // if you wait until the resize observer, the rerender is very apparent.
+            this.listResize();
+            this.firstRender++;
+        }
+
         this.initWrapObserver();
-        this.checkIfEndReached();
     }
 
     disconnectedCallback() {
@@ -166,14 +173,15 @@ export default class List extends LightningElement {
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
 
-        // this.getScrollPosition();
-    }
-
-    checkIfEndReached() {
-        // if (this._isLoading) {
-        //     return;
-        // }
-        // const list = this.template.querySelector('.avonni-list__item-menu');
+        if (this._isLoading) {
+            console.log('🟢');
+            this.finishedLoading = false;
+        } else {
+            console.log('🛑');
+            setTimeout(() => {
+                this.finishedLoading = true;
+            }, 10);
+        }
     }
 
     handleScroll(event) {
@@ -181,30 +189,18 @@ export default class List extends LightningElement {
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        // this.checkIfEndReached();
-        // this.saveScrollPosition();
+        console.log('🛼');
 
-        if (offsetFromBottom < 10 && !this._isLoading) {
-            console.log('get scroll');
+        if (this.finishedLoading) {
             this.saveScrollPosition();
+        }
+        if (offsetFromBottom < 10 && !this._isLoading) {
             this.dispatchEvent(new CustomEvent('loadmore'));
+            console.log('▶️ dispatch loadmore');
         }
     }
 
     getScrollPositionTop() {
-        const list = this.template.querySelector('.avonni-list__item-menu');
-        if (!list) {
-            return null;
-        }
-        console.log(
-            'getScroll',
-            Math.round(list.scrollTop),
-            Math.round(this._savedScrollTop)
-        );
-        return list.scrollTop;
-    }
-
-    getScrollPositionBottom() {
         const list = this.template.querySelector('.avonni-list__item-menu');
         if (!list) {
             return null;
@@ -221,7 +217,7 @@ export default class List extends LightningElement {
         window.requestAnimationFrame(() => {
             list.scrollTo(0, this._savedScrollTop);
             console.log(
-                'restore',
+                '⌖ restore',
                 Math.round(list.scrollTop),
                 Math.round(this._savedScrollTop)
             );
@@ -230,23 +226,7 @@ export default class List extends LightningElement {
 
     saveScrollPosition() {
         this._savedScrollTop = this.getScrollPositionTop();
-    }
-
-    /**
-     * Determines if a DOM element's scroll bars are visible
-     *
-     * @param {Element} element The DOM element to check
-     * @returns {Boolean} Whether or not the element's scroll bars are visible
-     */
-    isScrollerVisible(element) {
-        return (
-            element &&
-            !!(
-                element.offsetParent ||
-                element.offsetHeight ||
-                element.offsetWidth
-            )
-        );
+        console.log('💾 scroll', Math.round(this._savedScrollTop));
     }
 
     /*
@@ -410,16 +390,18 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
+        console.log('➕ items');
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
-
-        window.requestAnimationFrame(() => {
-            this.restoreScrollPosition();
-        });
+        this.restoreScrollPosition();
+        setTimeout(() => {
+            console.log('🏁 items loaded');
+            this.finishedLoading = true;
+        }, 10);
     }
 
     /**
