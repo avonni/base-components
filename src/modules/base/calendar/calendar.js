@@ -201,6 +201,7 @@ export default class Calendar extends LightningElement {
      *
      * @public
      * @type {boolean}
+     * @default false
      */
     @api
     get hideNavigation() {
@@ -530,13 +531,12 @@ export default class Calendar extends LightningElement {
      * -------------------------------------------------------------
      */
     /**
-     * Returns the first visible day on the calendar.
+     * Returns the first day of the current month.
      */
-    getFirstVisibleDay() {
-        let date = new Date(this.displayDate.getTime());
-        date.setDate(1);
-        if (date.getDay() > 0) date.setDate(-date.getDay() + 1);
-        return date.toISOString();
+    getFirstDayOfMonth(date) {
+        let dateValue = new Date(date.getTime());
+        dateValue.setDate(1);
+        return dateValue.toISOString();
     }
 
     /**
@@ -576,6 +576,17 @@ export default class Calendar extends LightningElement {
         });
 
         return dates;
+    }
+
+    /**
+     * Check if both dates have the same month.
+     *
+     * @param {Date} dateA A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @param {Date} dateB A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @returns {boolean}
+     */
+    haveSameMonth(dateA, dateB) {
+        return new Date(dateA).getMonth() === new Date(dateB).getMonth();
     }
 
     /**
@@ -1078,18 +1089,7 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
         this.computeFocus(false);
-        const date = this.getFirstVisibleDay();
-        console.log(date);
-        this.dispatchEvent(
-            new CustomEvent('navigate', {
-                bubbles: false,
-                cancelable: false,
-                composed: false,
-                detail: {
-                    date
-                }
-            })
-        );
+        this.dispatchNavigateEvent(this.displayDate);
     }
 
     /**
@@ -1099,18 +1099,7 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
         this.computeFocus(false);
-        const date = this.getFirstVisibleDay();
-        console.log(date);
-        this.dispatchEvent(
-            new CustomEvent('navigate', {
-                bubbles: false,
-                cancelable: false,
-                composed: false,
-                detail: {
-                    date
-                }
-            })
-        );
+        this.dispatchNavigateEvent(this.displayDate);
     }
 
     /**
@@ -1234,6 +1223,26 @@ export default class Calendar extends LightningElement {
                 detail: {
                     value: this.normalizedValue,
                     clickedDate: this._clickedDate
+                }
+            })
+        );
+    }
+
+    /**
+     * The event fired when the month is changed.
+     *
+     * @event
+     * @public
+     * @name navigate
+     * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     */
+    dispatchNavigateEvent(date) {
+        const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
+        console.log(`event navigate date value: ${firstDayOfMonth}`);
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: {
+                    date: firstDayOfMonth
                 }
             })
         );
@@ -1393,6 +1402,7 @@ export default class Calendar extends LightningElement {
         const initialFocusDate = new Date(
             parseInt(event.target.dataset.cellDay, 10)
         );
+        const initialFocusDateCopy = new Date(initialFocusDate);
         let nextDate;
 
         if (event.altKey) {
@@ -1414,41 +1424,71 @@ export default class Calendar extends LightningElement {
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 1
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.right:
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 1
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.up:
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 7
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.down:
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 7
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.home:
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - initialFocusDate.getDay()
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.end:
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() +
                             (6 - initialFocusDate.getDay())
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.pagedown:
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() - 1
                     );
+                    this.dispatchNavigateEvent(
+                        new Date(nextDate).toISOString()
+                    );
                     break;
                 case keyCodes.pageup:
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() + 1
+                    );
+                    this.dispatchNavigateEvent(
+                        new Date(nextDate).toISOString()
                     );
                     break;
                 case keyCodes.space:
