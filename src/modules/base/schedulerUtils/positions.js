@@ -225,11 +225,12 @@ export function updateOccurrencesOffset(
             numberOfOverlap,
             start,
             end: occElement.endPosition,
+            isPlaceholder,
             occurrence: occurrence || (selection && selection.occurrence),
             width: occElement.width
         });
 
-        if (!isVertical) {
+        if (!isVertical && !isPlaceholder) {
             // If the occurrence is taller than the previous ones,
             // update the default level height
             const height = occElement.getBoundingClientRect().height;
@@ -241,8 +242,12 @@ export function updateOccurrencesOffset(
 
     // Add the corresponding offset to the top (horizontal display)
     // or left (vertical display) of the occurrences
-    previousOccurrences.forEach((position) => {
-        const { level, occurrence, numberOfOverlap, width } = position;
+    for (let i = 0; i < previousOccurrences.length; i++) {
+        const { level, occurrence, numberOfOverlap, width, isPlaceholder } =
+            previousOccurrences[i];
+        if (isPlaceholder) {
+            continue;
+        }
         let offsetSide = this.isMonth ? MONTH_DAY_LABEL_HEIGHT : 0;
 
         if (isVertical) {
@@ -264,7 +269,7 @@ export function updateOccurrencesOffset(
 
         occurrence.offsetSide = offsetSide;
         occurrence.level = level;
-    });
+    }
 
     if (!isVertical) {
         // Add 10 pixels to the row for padding
