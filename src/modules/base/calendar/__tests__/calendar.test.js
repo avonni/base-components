@@ -1084,7 +1084,7 @@ describe('Calendar', () => {
             );
             nextMonthButton.click();
             expect(handler).toHaveBeenCalled();
-            const firstVisibleDay = new Date('05/29/2022').toISOString();
+            const firstVisibleDay = new Date('06/01/2022').toISOString();
             expect(handler.mock.calls[0][0].detail.date).toEqual(
                 firstVisibleDay
             );
@@ -1103,10 +1103,210 @@ describe('Calendar', () => {
             );
             previousMonthButton.click();
             expect(handler).toHaveBeenCalled();
-            const firstVisibleDay = new Date('03/27/2022').toISOString();
+            const firstVisibleDay = new Date('04/01/2022').toISOString();
             expect(handler.mock.calls[0][0].detail.date).toEqual(
                 firstVisibleDay
             );
         });
+    });
+
+    it('Calendar: event navigate previous month - [left]', () => {
+        const handler = jest.fn();
+        element.value = '05/01/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="1"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 37, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('04/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate next month - [right]', () => {
+        const handler = jest.fn();
+        element.value = '05/31/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="31"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 39, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('06/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate previous month - [up]', () => {
+        const handler = jest.fn();
+        element.value = '05/07/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="7"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 38, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('04/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate next month - [down]', () => {
+        const handler = jest.fn();
+        element.value = '05/28/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="28"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 40, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('06/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate previous month - [home]', () => {
+        const handler = jest.fn();
+        element.value = '06/04/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="4"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 36, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('05/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate next month - [end]', () => {
+        const handler = jest.fn();
+        element.value = '05/29/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="29"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 35, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('06/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate next month - [PageDown]', () => {
+        const handler = jest.fn();
+        element.value = '05/29/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="29"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 35, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('06/01/2022').toISOString()
+                );
+            });
+    });
+
+    it('Calendar: event navigate previous month - [PageUp]', () => {
+        const handler = jest.fn();
+        element.value = '05/29/2022';
+        element.addEventListener('navigate', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="29"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 34, bubbles: true })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].detail.date).toBe(
+                    new Date('04/01/2022').toISOString()
+                );
+            });
     });
 });
