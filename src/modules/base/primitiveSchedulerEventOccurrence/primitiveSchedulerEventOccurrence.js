@@ -36,6 +36,8 @@ import { DateTime } from 'c/luxon';
 import {
     classListMutation,
     dateTimeObjectFrom,
+    getWeekday,
+    getWeekNumber,
     normalizeArray,
     normalizeBoolean,
     normalizeObject,
@@ -1326,10 +1328,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     getStartCellIndex(cells) {
+        const start = this.occurrence.weekStart || this.from;
         return cells.findIndex((cell) => {
             return (
-                this.getComparableTime(cell.end) >
-                this.getComparableTime(this.from)
+                this.getComparableTime(cell.end) > this.getComparableTime(start)
             );
         });
     }
@@ -1376,7 +1378,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     updateLengthInMonthCalendar() {
         const headerCells = this.headerCells.xAxis;
-        const { from, to, cellWidth } = this;
+        const { to, cellWidth } = this;
         const isOneCellLength = !this.isOneDayOrMore || this.isAllDay;
 
         if ((isOneCellLength || !headerCells) && this.hostElement) {
@@ -1388,6 +1390,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         // The event should span on more than one cell.
         // Find the cell where it starts.
+        const from = this.occurrence.weekStart || this.from;
         let i = headerCells.findIndex((cell) => {
             const cellStart = dateTimeObjectFrom(cell.start);
             return cellStart.weekday === from.weekday;
@@ -1399,7 +1402,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         // Add the full length of the cells the event passes through
         while (i < headerCells.length) {
             const cellStart = dateTimeObjectFrom(headerCells[i].start);
-            if (cellStart.weekday > to.weekday) break;
+            const sameWeek = getWeekNumber(from) === getWeekNumber(to);
+            if (getWeekday(cellStart) > getWeekday(to) && sameWeek) {
+                break;
+            }
             length += cellWidth;
             i += 1;
         }
@@ -1430,10 +1436,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const yIndex = this.getStartCellIndex(headerCells.yAxis);
         const xIndex = headerCells.xAxis.findIndex((cell) => {
             const cellEnd = dateTimeObjectFrom(cell.end);
-            const sameWeekDay = cellEnd.weekday === this.from.weekday;
-            return (
-                cell.end > this.from && (!this.isMonthCalendar || sameWeekDay)
-            );
+            const start = this.occurrence.weekStart || this.from;
+            const sameWeekDay = cellEnd.weekday === start.weekday;
+            return cell.end > start && (!this.isMonthCalendar || sameWeekDay);
         });
 
         if (yIndex < 0 || xIndex < 0) {

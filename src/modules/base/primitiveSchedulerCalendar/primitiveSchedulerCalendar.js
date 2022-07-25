@@ -36,12 +36,14 @@ import {
     addToDate,
     dateTimeObjectFrom,
     deepCopy,
+    getWeekNumber,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
+    normalizeArray,
     removeFromDate
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import Column from './column';
 import {
     getElementOnXAxis,
@@ -49,6 +51,7 @@ import {
     isOneDayOrMore,
     positionPopover,
     ScheduleBase,
+    SchedulerEventOccurrence,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
@@ -373,6 +376,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             .toString();
     }
 
+    get uniqueKey() {
+        return generateUUID();
+    }
+
     get verticalHeaders() {
         return this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
@@ -576,6 +583,31 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    createVisibleMultiWeekPlaceholders(occ, cells, event) {
+        const placeholders = [];
+        const eventKeysToCopy = [
+            'color',
+            'data',
+            'iconName',
+            'labels',
+            'name',
+            'theme'
+        ];
+
+        for (let i = 0; i < cells.length; i++) {
+            // Create a new visible placeholder
+            // for each week the occurrence spans on
+            const duplicate = new SchedulerEventOccurrence(occ);
+            eventKeysToCopy.forEach((key) => {
+                duplicate[key] = event[key];
+            });
+
+            duplicate.weekStart = dateTimeObjectFrom(cells[i].start);
+            placeholders.push(duplicate);
+        }
+        return placeholders;
+    }
+
     focusPopoverClose() {
         const closeButton = this.template.querySelector(
             '[data-element-id="lightning-button-icon-show-more-close"]'
@@ -626,15 +658,44 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return start;
     }
 
-    getVisiblePlaceholdersInCell(cell) {
+    getMultiDayPlaceholders(isFirstCol, col, event, occ) {
+        const { from, to } = occ;
+        const isMultiDay = isOneDayOrMore(
+            event,
+            event.computedFrom,
+            event.computedTo
+        );
+        const cellsPassed = col.cells.filter((cell) => {
+            return cell.start > from && cell.end <= to.endOf('day');
+        });
+        const spansOnMoreThanOneWeek =
+            getWeekNumber(from) !== getWeekNumber(to);
+        const isPlaceholder =
+            isMultiDay && (cellsPassed.length || spansOnMoreThanOneWeek);
+
+        if (isPlaceholder && spansOnMoreThanOneWeek && isFirstCol) {
+            const placeholders = this.createVisibleMultiWeekPlaceholders(
+                occ,
+                cellsPassed,
+                event
+            );
+            occ.copies = placeholders;
+            return placeholders;
+        } else if (isPlaceholder) {
+            return [occ];
+        }
+        return [];
+    }
+
+    getMultiDayPlaceholdersInCell(cell) {
         const placeholders = [];
 
-        if (cell.events.length) {
-            const cellStart = cell.events[0].from;
+        if (cell.events.length || cell.placeholders.length) {
+            const cellStart = dateTimeObjectFrom(cell.start);
             const day = cellStart.day;
             const month = cellStart.month;
             const placeholderElements = this.template.querySelectorAll(
-                `[data-element-id="div-month-multi-day-event-placeholder"][data-month="${month}"][data-day="${day}"]`
+                `[data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"][data-month="${month}"][data-day="${day}"]`
             );
             placeholderElements.forEach((placeholder) => {
                 const { key, eventKey } = placeholder.dataset;
@@ -737,28 +798,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     updateColumnEvents() {
-        this.columns.forEach((col) => {
-            const weekday = col.weekday;
+        this.columns.forEach((col, index) => {
             const events = [];
             const disabledEvents = [];
-            const multiDayPlaceholders = [];
-            this.mainGridEvents.forEach((event) => {
-                const isMultiDay = isOneDayOrMore(
-                    event,
-                    event.computedFrom,
-                    event.computedTo
-                );
+            let multiDayPlaceholders = [];
+            const isFirstCol = index === 0;
 
+            this.mainGridEvents.forEach((event) => {
                 const occurrences = event.occurrences.filter((occurrence) => {
-                    const isPassingThrough =
-                        weekday > occurrence.fromWeekday &&
-                        weekday <= occurrence.toWeekday;
-                    if (this.isMonth && isMultiDay && isPassingThrough) {
-                        multiDayPlaceholders.push(occurrence);
-                        return false;
+                    if (this.isMonth) {
+                        const placeholders = this.getMultiDayPlaceholders(
+                            isFirstCol,
+                            col,
+                            event,
+                            occurrence
+                        );
+                        if (placeholders.length) {
+                            multiDayPlaceholders =
+                                multiDayPlaceholders.concat(placeholders);
+                            return false;
+                        }
                     }
-                    return occurrence.fromWeekday === weekday;
+                    return occurrence.fromWeekday === col.weekday;
                 });
+
                 if (event.disabled) {
                     disabledEvents.push(occurrences);
                 } else {
@@ -772,27 +835,34 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
 
         if (!this.isMonth) {
-            const multiDayOccurrences = [];
-            const disabledMultiDayOccurrences = [];
-            this.multiDayEvents.forEach((event) => {
-                if (event.disabled) {
-                    disabledMultiDayOccurrences.push(...event.occurrences);
-                } else {
-                    multiDayOccurrences.push(...event.occurrences);
-                }
-            });
-            this.multiDayEventsCellGroup.events = multiDayOccurrences;
-            this.multiDayEventsCellGroup.disabledEvents =
-                disabledMultiDayOccurrences;
-            this.multiDayEventsCellGroup.initCells();
+            this.updateMultiDayCellGroupEvents();
         }
+    }
+
+    updateMultiDayCellGroupEvents() {
+        const multiDayOccurrences = [];
+        const disabledMultiDayOccurrences = [];
+        this.multiDayEvents.forEach((event) => {
+            if (event.disabled) {
+                disabledMultiDayOccurrences.push(...event.occurrences);
+            } else {
+                multiDayOccurrences.push(...event.occurrences);
+            }
+        });
+        this.multiDayEventsCellGroup.events = multiDayOccurrences;
+        this.multiDayEventsCellGroup.disabledEvents =
+            disabledMultiDayOccurrences;
+        this.multiDayEventsCellGroup.initCells();
     }
 
     updateOccurrencesOffset(columnOrCell, selector, isSingleDayOccurrence) {
         let rowHeight = 0;
-        const { events, disabledEvents } = columnOrCell;
+        const { events, disabledEvents, placeholders } = columnOrCell;
+        const visiblePlaceholders = normalizeArray(placeholders).some((pl) => {
+            return pl.weekStart;
+        });
 
-        if (events.length) {
+        if (events.length || visiblePlaceholders) {
             // Update the occurrences offset
             let occurrences = Array.from(
                 this.template.querySelectorAll(
@@ -801,9 +871,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             );
 
             if (this.isMonth) {
-                const placeholders =
-                    this.getVisiblePlaceholdersInCell(columnOrCell);
-                occurrences = occurrences.concat(placeholders);
+                const cellPlaceholders =
+                    this.getMultiDayPlaceholdersInCell(columnOrCell);
+                occurrences = occurrences.concat(cellPlaceholders);
             }
 
             const isVertical = isSingleDayOccurrence && !this.isMonth;

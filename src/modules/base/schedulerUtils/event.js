@@ -41,7 +41,7 @@ import {
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { DateTime, Interval } from 'c/luxon';
-import Occurrence from './eventOccurrence';
+import { SchedulerEventOccurrence } from './eventOccurrence';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -400,7 +400,12 @@ export default class SchedulerEvent {
             if (this.referenceLine) {
                 const key = `${this.title}-${this.occurrences.length}`;
                 this.occurrences.push(
-                    new Occurrence({ from, to, key, title: this.title })
+                    new SchedulerEventOccurrence({
+                        from,
+                        to,
+                        key,
+                        title: this.title
+                    })
                 );
             } else {
                 resourceNames.forEach((name) => {
@@ -409,7 +414,7 @@ export default class SchedulerEvent {
                         this.selectedResources.includes(name)
                     ) {
                         this.occurrences.push(
-                            new Occurrence({
+                            new SchedulerEventOccurrence({
                                 eventKey: this.key,
                                 from,
                                 key: `${this.name}-${name}-${from.ts}`,

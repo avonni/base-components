@@ -51,7 +51,7 @@ const EVENTS_THEMES = {
     default: 'default'
 };
 const MONTH_DAY_LABEL_HEIGHT = 30;
-const MONTH_EVENT_HEIGHT = 25;
+const MONTH_EVENT_HEIGHT = 28;
 const RECURRENCES = [
     {
         name: 'daily',

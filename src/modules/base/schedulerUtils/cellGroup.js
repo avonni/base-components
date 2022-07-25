@@ -53,23 +53,32 @@ export class SchedulerCellGroup {
         });
     }
 
-    addEventToCells(event, target = 'events') {
+    addEventToCells(event, eventType = 'events') {
         const cells = this.cells;
         event.offsetSide = 0;
 
         // Find the cell where the event starts
         let i = cells.findIndex((cell) => {
-            return cell.end >= event.from;
+            // If the event is a calendar month placeholder
+            // that spans on multiple weeks,
+            // use the beginning of the current week as a start
+            const start = event.weekStart || event.from;
+            return cell.end >= start;
         });
 
         if (i > -1) {
             // Add the event to every cell it crosses
             while (i < cells.length && event.to >= cells[i].start) {
-                cells[i][target].push(event);
-                cells[i][target] = cells[i][target].sort(
+                cells[i][eventType].push(event);
+                cells[i][eventType] = cells[i][eventType].sort(
                     (a, b) => a.from - b.from
                 );
                 i += 1;
+                if (event.weekStart) {
+                    // If the event is a visible calendar month placeholder,
+                    // add it only to the first week it crosses
+                    break;
+                }
             }
         }
     }

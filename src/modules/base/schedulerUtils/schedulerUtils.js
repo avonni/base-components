@@ -60,3 +60,4 @@ export {
     updateOccurrencesPosition
 } from './positions';
 export { SchedulerCellGroup } from './cellGroup';
+export { SchedulerEventOccurrence } from './eventOccurrence';

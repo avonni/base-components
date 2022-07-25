@@ -1,4 +1,8 @@
-import { dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
+import {
+    dateTimeObjectFrom,
+    getWeekNumber,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 export default class SchedulerCell {
@@ -35,10 +39,15 @@ export default class SchedulerCell {
     }
 
     get overflowingEvents() {
-        return this.events.filter((event) => event.overflowsCell);
+        const events = this.events.concat(this.placeholders);
+        return events.filter((event) => event.overflowsCell);
     }
 
     get showMoreLabel() {
         return `+${this.overflowingEvents.length} more`;
+    }
+
+    get weekNumber() {
+        return getWeekNumber(this._startDate);
     }
 }

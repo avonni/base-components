@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class SchedulerEventOccurrence {
+export class SchedulerEventOccurrence {
     constructor(props) {
         this.offsetSide = 0;
         Object.assign(this, props);

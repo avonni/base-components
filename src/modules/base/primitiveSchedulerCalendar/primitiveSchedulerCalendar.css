@@ -109,16 +109,12 @@
 }
 
 .avonni-scheduler__calendar-show-more-popover {
-    --slds-c-popover-position-zindex: 1;
+    --slds-c-popover-position-zindex: 5;
 }
 
 .avonni-scheduler__calendar-show-more-popover-close-button {
     top: 0;
     right: 0;
-}
-
-.avonni-scheduler__calendar-month-multi-day-placeholder {
-    visibility: hidden;
 }
 
 /* Splitter bar between the left panel and the schedule --------- */
@@ -127,13 +123,17 @@
     top: 0;
     bottom: 0;
     left: 0;
-    width: 20px;
+    width: 10px;
 }
 .avonni-scheduler__first-col_hidden .avonni-scheduler__splitter {
     left: 0;
 }
 .avonni-scheduler__first-col_open .avonni-scheduler__splitter {
     left: -12px;
+}
+.avonni-scheduler__splitter:hover,
+.avonni-scheduler__first-col_open .avonni-scheduler__splitter {
+    width: 20px;
 }
 .avonni-scheduler__splitter:hover > div,
 .avonni-scheduler__splitter:focus-within > div {

@@ -267,6 +267,7 @@
                                         onmousedown={handleMouseDown}
                                         ondblclick={handleDoubleClick}
                                     >
+                                        <!-- Cell content visible only for the month time span -->
                                         <div
                                             if:true={isMonth}
                                             class="
@@ -282,32 +283,43 @@
                                             >
                                                 {cell.day}
                                             </div>
-                                            <!-- Multi day placeholder, displayed in cells it goes through to push the other events down-->
+                                            <!-- Placeholders used to take space in cells the multi-day events go through -->
                                             <div class="slds-col">
                                                 <template
                                                     for:each={cell.placeholders}
                                                     for:item="placeholder"
                                                 >
                                                     <c-primitive-scheduler-event-occurrence
-                                                        key={placeholder.key}
-                                                        class="
-                                                            avonni-scheduler__calendar-month-multi-day-placeholder
-                                                            slds-is-absolute
-                                                        "
+                                                        key={uniqueKey}
+                                                        class="slds-is-absolute"
+                                                        aria-hidden="true"
                                                         cell-height={cellHeight}
                                                         cell-width={cellWidth}
+                                                        color={placeholder.color}
+                                                        date-format={dateFormat}
+                                                        event-data={placeholder.data}
+                                                        event-name={placeholder.name}
                                                         from={placeholder.from}
                                                         header-cells={eventHeaderCells}
+                                                        icon-name={placeholder.iconName}
+                                                        labels={placeholder.labels}
                                                         occurrence={placeholder}
+                                                        read-only={readOnly}
+                                                        resource-key={placeholder.resourceName}
+                                                        resources={computedResources}
                                                         title={placeholder.title}
+                                                        theme={placeholder.theme}
                                                         to={placeholder.to}
                                                         variant="calendar-month"
+                                                        zoom-to-fit={zoomToFit}
                                                         data-day={cell.day}
-                                                        data-element-id="div-month-multi-day-event-placeholder"
+                                                        data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"
                                                         data-event-key={placeholder.eventKey}
                                                         data-is-placeholder="true"
+                                                        data-is-visible-placeholder={placeholder.weekStart}
                                                         data-key={placeholder.key}
                                                         data-month={cell.month}
+                                                        data-week-number={cell.weekNumber}
                                                     ></c-primitive-scheduler-event-occurrence>
                                                 </template>
                                             </div>
@@ -371,8 +383,8 @@
                                         data-day={occurrence.from.day}
                                         data-month={occurrence.from.month}
                                         data-weekday={occurrence.fromWeekday}
-                                        onprivatefocus={handleEventFocus}
                                         onprivateblur={handleHideDetailPopover}
+                                        onprivatefocus={handleEventFocus}
                                         onprivatecontextmenu={handleEventContextMenu}
                                         onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                         onprivatemouseenter={handleEventMouseEnter}

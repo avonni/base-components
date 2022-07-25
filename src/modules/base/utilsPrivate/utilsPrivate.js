@@ -81,6 +81,8 @@ export {
     addToDate,
     containsAllowedDateTimes,
     dateTimeObjectFrom,
+    getWeekday,
+    getWeekNumber,
     isAllowedTime,
     nextAllowedDay,
     nextAllowedMonth,
