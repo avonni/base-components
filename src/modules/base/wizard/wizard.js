@@ -147,9 +147,11 @@ export default class Wizard extends LightningElement {
     _previousButtonVariant = BUTTON_VARIANTS.defaultPreviousButton;
     _variant = VARIANTS.default;
 
-    steps = [];
-    showWizard = true;
     errorMessage;
+    steps = [];
+    showHeader = true;
+    showTitle = true;
+    showWizard = true;
 
     handleStepRegister(event) {
         event.stopPropagation();
@@ -173,6 +175,11 @@ export default class Wizard extends LightningElement {
                 nav.steps = this.steps;
             });
         }
+
+        if (this.titleSlot) {
+            this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
+        }
+        this.showHeader = this.title || this.showTitleSlot || this.iconName;
     }
 
     render() {
@@ -556,7 +563,6 @@ export default class Wizard extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
     get currentStepHasError() {
         return normalizeBoolean(this.errorMessage);
     }
@@ -592,6 +598,15 @@ export default class Wizard extends LightningElement {
             (this.indicatorPosition === 'left' ||
                 this.indicatorPosition === 'right')
         );
+    }
+
+    /**
+     * Get slot dom element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     /**
