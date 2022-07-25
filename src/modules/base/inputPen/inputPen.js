@@ -264,7 +264,12 @@ export default class InputPen extends LightningElement {
         return this._disabledButtons;
     }
     set disabledButtons(value) {
-        this._disabledButtons = normalizeArray(value, 'string');
+        let arrayValue = value;
+        if (typeof arrayValue === 'string') {
+            arrayValue = [value];
+        }
+        this._disabledButtons = normalizeArray(arrayValue, 'string');
+        this._updatedDOM = true;
     }
 
     /**
@@ -1318,18 +1323,15 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      *
      */
-    handleKeyDown(event) {
-        switch (event.keyCode) {
-            case 89: // ctrl-y
-                this.redo();
-                break;
-            case 90: // ctrl-z
-                this.undo();
-                break;
-            default:
-                break;
+    handleKeyDown = (event) => {
+        if (event.keyCode === 89 && event.ctrlKey) {
+            // ctrl-y
+            this.redo();
+        } else if (event.keyCode === 90 && event.ctrlKey) {
+            // ctrl-z
+            this.undo();
         }
-    }
+    };
 
     /**
      * handle reset event

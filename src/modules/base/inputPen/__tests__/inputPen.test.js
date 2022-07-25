@@ -161,7 +161,7 @@ describe('Input pen', () => {
         expect(element.variant).toBe('bottom-toolbar');
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /* ------ ATTRIBUTES ------ */
 
     // color
     it('color = valid', () => {
@@ -1094,13 +1094,13 @@ describe('Input pen', () => {
             })
             .then(() => {
                 window.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 90 }) // ctrl-z
+                    new KeyboardEvent('keydown', { keyCode: 90, ctrlKey: true }) // ctrl-z
                 );
                 expect(strokeSpy).toHaveBeenCalledTimes(3);
             })
             .then(() => {
                 window.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 89 }) // ctrl-y
+                    new KeyboardEvent('keydown', { keyCode: 89, ctrlKey: true }) // ctrl-y
                 );
                 expect(strokeSpy).toHaveBeenCalledTimes(4);
             });
