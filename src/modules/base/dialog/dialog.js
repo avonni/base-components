@@ -88,8 +88,8 @@ export default class Dialog extends LightningElement {
     renderedCallback() {
         if (this.titleSlot) {
             this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
+            this.showHeader = this.title || this.showTitleSlot;
         }
-        this.showHeader = this.title || this.showTitleSlot;
 
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;

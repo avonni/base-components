@@ -97,13 +97,6 @@ export default class Wizard extends LightningElement {
      */
     @api finishButtonIconName;
     /**
-     * The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.
-     *
-     * @type {string}
-     * @public
-     */
-    @api iconName;
-    /**
      * The name of an icon to display for the next button.
      *
      * @type {string}
@@ -117,14 +110,6 @@ export default class Wizard extends LightningElement {
      * @public
      */
     @api previousButtonIconName;
-    /**
-     * Title of the wizard, displayed in the header.
-     * To include additional markup or another component, use the title slot.
-     *
-     * @type {string}
-     * @public
-     */
-    @api title;
 
     _actionPosition = POSITIONS.defaultAction;
     _buttonAlignmentBump;
@@ -149,9 +134,10 @@ export default class Wizard extends LightningElement {
 
     errorMessage;
     steps = [];
-    showHeader = true;
-    showTitle = true;
+    showAction = true;
+    showTitleSlot = true;
     showWizard = true;
+    _showHeader = true;
 
     handleStepRegister(event) {
         event.stopPropagation();
@@ -176,10 +162,31 @@ export default class Wizard extends LightningElement {
             });
         }
 
-        if (this.titleSlot) {
+        if (this.actionSlot)
+            this.showAction = this.actionSlot.assignedElements().length !== 0;
+
+        if (this.titleSlot)
             this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
-        }
-        this.showHeader = this.title || this.showTitleSlot || this.iconName;
+
+        this._showHeader = this.title || this.showTitleSlot || this.iconName;
+    }
+
+    /**
+     * Get action slot dom element.
+     *
+     * @type {Element}
+     */
+    get actionSlot() {
+        return this.template.querySelector('slot[name=action]');
+    }
+
+    /**
+     * Get ttitle slot dom element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
     }
 
     render() {
@@ -398,6 +405,22 @@ export default class Wizard extends LightningElement {
     }
 
     /**
+     * The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+
+    set iconName(value) {
+        this._iconName = value;
+        this._showHeader = value || this.title || this.titleSlot;
+    }
+
+    /**
      * Changes the indicator position. Valid values are top, bottom, left and right.
      *
      * @type {string}
@@ -540,6 +563,22 @@ export default class Wizard extends LightningElement {
     }
 
     /**
+     * Title of the wizard, displayed in the header.
+     * To include additional markup or another component, use the title slot.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get title() {
+        return this._title;
+    }
+    set title(value) {
+        this._title = value;
+        this._showHeader = this.title || this.iconName || this.titleSlot;
+    }
+
+    /**
      * Variant of the wizard. Valid values include base, modal, quickActionPanel and card.
      *
      * @type {string}
@@ -601,15 +640,6 @@ export default class Wizard extends LightningElement {
     }
 
     /**
-     * Get slot dom element.
-     *
-     * @type {Element}
-     */
-    get titleSlot() {
-        return this.template.querySelector('slot[name=title]');
-    }
-
-    /**
      * Computed wrapper class styling.
      *
      * @type {string}
@@ -653,6 +683,15 @@ export default class Wizard extends LightningElement {
             'slds-p-bottom_large':
                 this.variant === 'base' && this.indicatorType === 'fractions'
         });
+    }
+
+    /**
+     * Returns true if there is a title, a title slot or a iconName.
+     *
+     * @type {boolean}
+     */
+    get showHeader() {
+        return this._showHeader;
     }
 
     /*
