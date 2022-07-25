@@ -1238,7 +1238,6 @@ export default class Calendar extends LightningElement {
      */
     dispatchNavigateEvent(date) {
         const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
-        console.log(`event navigate date value: ${firstDayOfMonth}`);
         this.dispatchEvent(
             new CustomEvent('navigate', {
                 detail: {
