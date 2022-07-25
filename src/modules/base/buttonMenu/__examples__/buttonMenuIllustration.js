@@ -42,6 +42,7 @@ export const ButtonMenuIllustration = ({
     alternativeText,
     disabled,
     draftAlternatveText,
+    hideDownArrow,
     iconName,
     iconSize,
     isDraft,
@@ -60,6 +61,7 @@ export const ButtonMenuIllustration = ({
     element.alternativeText = alternativeText;
     element.disabled = disabled;
     element.draftAlternatveText = draftAlternatveText;
+    element.hideDownArrow = hideDownArrow;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isDraft = isDraft;
