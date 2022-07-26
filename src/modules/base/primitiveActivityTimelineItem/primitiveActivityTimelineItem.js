@@ -55,7 +55,6 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 const ICON_SIZES = {
@@ -454,7 +453,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
               )
             : '';
     }
-  
+
     /**
      * Check if the type of the icon is action
      */

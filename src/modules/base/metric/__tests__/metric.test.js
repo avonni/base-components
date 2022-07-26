@@ -31,13 +31,13 @@
  */
 
 import { createElement } from 'lwc';
-import Metrics from '../metrics';
+import Metric from '../metric';
 import { Tooltip } from 'c/tooltipLibrary';
 
 jest.mock('c/tooltipLibrary');
 
 let element;
-describe('Metrics', () => {
+describe('Metric', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -45,15 +45,15 @@ describe('Metrics', () => {
     });
 
     beforeEach(() => {
-        element = createElement('avonni-metrics', {
-            is: Metrics
+        element = createElement('avonni-metric', {
+            is: Metric
         });
         document.body.appendChild(element);
 
         Tooltip.mockClear();
     });
 
-    it('Metrics: Default attributes', () => {
+    it('Metric: Default attributes', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.currencyCode).toBeUndefined();
         expect(element.currencyDisplayAs).toBe('symbol');
@@ -97,7 +97,7 @@ describe('Metrics', () => {
      */
 
     // avatar
-    it('Metrics: avatar', () => {
+    it('Metric: avatar', () => {
         const avatar = {
             alternativeText: 'Avonni components',
             fallbackIconName: 'standard:user',
@@ -124,7 +124,7 @@ describe('Metrics', () => {
         });
     });
 
-    it('Metrics: avatar, top position', () => {
+    it('Metric: avatar, top position', () => {
         element.avatar = {
             position: 'top'
         };
@@ -138,7 +138,7 @@ describe('Metrics', () => {
         });
     });
 
-    it('Metrics: avatar, bottom position', () => {
+    it('Metric: avatar, bottom position', () => {
         element.avatar = {
             position: 'bottom'
         };
@@ -147,12 +147,12 @@ describe('Metrics', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'slds-m-top_x-small avonni-metrics__avatar_after-text slds-size_1-of-1'
+                'slds-m-top_x-small avonni-metric__avatar_after-text slds-size_1-of-1'
             );
         });
     });
 
-    it('Metrics: avatar, right position', () => {
+    it('Metric: avatar, right position', () => {
         element.avatar = {
             position: 'right'
         };
@@ -161,13 +161,13 @@ describe('Metrics', () => {
                 '[data-element-id="avonni-avatar"]'
             );
             expect(avatarElement.className).toBe(
-                'avonni-metrics__avatar_after-text slds-m-left_x-small'
+                'avonni-metric__avatar_after-text slds-m-left_x-small'
             );
         });
     });
 
     // currency-code
-    it('Metrics: currencyCode', () => {
+    it('Metric: currencyCode', () => {
         element.currencyCode = 'CAD';
 
         return Promise.resolve().then(() => {
@@ -179,7 +179,7 @@ describe('Metrics', () => {
     });
 
     // currency-display-as
-    it('Metrics: currencyDisplayAs', () => {
+    it('Metric: currencyDisplayAs', () => {
         element.currencyDisplayAs = 'code';
 
         return Promise.resolve().then(() => {
@@ -191,7 +191,7 @@ describe('Metrics', () => {
     });
 
     // description
-    it('Metrics: description', () => {
+    it('Metric: description', () => {
         element.description = 'some description';
 
         return Promise.resolve().then(() => {
@@ -203,7 +203,7 @@ describe('Metrics', () => {
     });
 
     // format-style
-    it('Metrics: formatStyle', () => {
+    it('Metric: formatStyle', () => {
         element.formatStyle = 'percent';
 
         return Promise.resolve().then(() => {
@@ -215,7 +215,7 @@ describe('Metrics', () => {
     });
 
     // label
-    it('Metrics: label', () => {
+    it('Metric: label', () => {
         element.label = 'some label';
 
         return Promise.resolve().then(() => {
@@ -227,7 +227,7 @@ describe('Metrics', () => {
     });
 
     // maximum-fraction-digits
-    it('Metrics: maximumFractionDigits', () => {
+    it('Metric: maximumFractionDigits', () => {
         element.maximumFractionDigits = 3;
 
         return Promise.resolve().then(() => {
@@ -239,7 +239,7 @@ describe('Metrics', () => {
     });
 
     // maximum-significant-digits
-    it('Metrics: maximumSignificantDigits', () => {
+    it('Metric: maximumSignificantDigits', () => {
         element.maximumSignificantDigits = 3;
 
         return Promise.resolve().then(() => {
@@ -251,7 +251,7 @@ describe('Metrics', () => {
     });
 
     // minimum-fraction-digits
-    it('Metrics: minimumFractionDigits', () => {
+    it('Metric: minimumFractionDigits', () => {
         element.minimumFractionDigits = 3;
 
         return Promise.resolve().then(() => {
@@ -263,7 +263,7 @@ describe('Metrics', () => {
     });
 
     // minimum-integer-digits
-    it('Metrics: minimumIntegerDigits', () => {
+    it('Metric: minimumIntegerDigits', () => {
         element.minimumIntegerDigits = 3;
 
         return Promise.resolve().then(() => {
@@ -275,7 +275,7 @@ describe('Metrics', () => {
     });
 
     // minimum-significant-digits
-    it('Metrics: minimumSignificantDigits', () => {
+    it('Metric: minimumSignificantDigits', () => {
         element.minimumSignificantDigits = 3;
 
         return Promise.resolve().then(() => {
@@ -287,7 +287,7 @@ describe('Metrics', () => {
     });
 
     // prefix
-    it('Metrics: prefix', () => {
+    it('Metric: prefix', () => {
         element.prefix = 'some prefix';
 
         return Promise.resolve().then(() => {
@@ -299,7 +299,7 @@ describe('Metrics', () => {
     });
 
     // secondary-currency-code
-    it('Metrics: secondaryCurrencyCode', () => {
+    it('Metric: secondaryCurrencyCode', () => {
         element.secondaryCurrencyCode = 'CAD';
         element.secondaryValue = 16;
 
@@ -312,7 +312,7 @@ describe('Metrics', () => {
     });
 
     // secondary-currency-display-as
-    it('Metrics: secondaryCurrencyDisplayAs', () => {
+    it('Metric: secondaryCurrencyDisplayAs', () => {
         element.secondaryCurrencyDisplayAs = 'code';
         element.secondaryValue = 16;
 
@@ -325,7 +325,7 @@ describe('Metrics', () => {
     });
 
     // secondary-format-style
-    it('Metrics: secondaryFormatStyle', () => {
+    it('Metric: secondaryFormatStyle', () => {
         element.secondaryFormatStyle = 'percent';
         element.secondaryValue = 16;
 
@@ -338,7 +338,7 @@ describe('Metrics', () => {
     });
 
     // secondary-maximum-fraction-digits
-    it('Metrics: secondaryMaximumFractionDigits', () => {
+    it('Metric: secondaryMaximumFractionDigits', () => {
         element.secondaryMaximumFractionDigits = 3;
         element.secondaryValue = 16;
 
@@ -351,7 +351,7 @@ describe('Metrics', () => {
     });
 
     // secondary-maximum-significant-digits
-    it('Metrics: secondaryMaximumSignificantDigits', () => {
+    it('Metric: secondaryMaximumSignificantDigits', () => {
         element.secondaryMaximumSignificantDigits = 3;
         element.secondaryValue = 16;
 
@@ -364,7 +364,7 @@ describe('Metrics', () => {
     });
 
     // secondary-minimum-fraction-digits
-    it('Metrics: secondaryMinimumFractionDigits', () => {
+    it('Metric: secondaryMinimumFractionDigits', () => {
         element.secondaryMinimumFractionDigits = 3;
         element.secondaryValue = 16;
 
@@ -377,7 +377,7 @@ describe('Metrics', () => {
     });
 
     // secondary-minimum-integer-digits
-    it('Metrics: secondaryMinimumIntegerDigits', () => {
+    it('Metric: secondaryMinimumIntegerDigits', () => {
         element.secondaryMinimumIntegerDigits = 3;
         element.secondaryValue = 16;
 
@@ -390,7 +390,7 @@ describe('Metrics', () => {
     });
 
     // secondary-minimum-significant-digits
-    it('Metrics: secondaryMinimumSignificantDigits', () => {
+    it('Metric: secondaryMinimumSignificantDigits', () => {
         element.secondaryMinimumSignificantDigits = 3;
         element.secondaryValue = 16;
 
@@ -403,7 +403,7 @@ describe('Metrics', () => {
     });
 
     // secondary-prefix
-    it('Metrics: secondaryPrefix', () => {
+    it('Metric: secondaryPrefix', () => {
         element.secondaryPrefix = 'prefix';
         element.secondaryValue = 16;
 
@@ -416,7 +416,7 @@ describe('Metrics', () => {
     });
 
     // secondary-suffix
-    it('Metrics: secondarySuffix', () => {
+    it('Metric: secondarySuffix', () => {
         element.secondarySuffix = 'suffix';
         element.secondaryValue = 16;
 
@@ -429,7 +429,7 @@ describe('Metrics', () => {
     });
 
     // secondary-show-trend-color and secondary-trend-breakpoint-value
-    it('Metrics: secondaryShowTrendColor = false', () => {
+    it('Metric: secondaryShowTrendColor = false', () => {
         element.secondaryShowTrendColor = false;
         element.secondaryTrendBreakpointValue = 10;
         element.secondaryValue = 16;
@@ -439,12 +439,12 @@ describe('Metrics', () => {
                 '[data-element-id="avonni-primitive-metric-secondary"]'
             );
             expect(metric.className).toBe(
-                'slds-m-left_x-small avonni-metrics__secondary'
+                'slds-m-left_x-small avonni-metric__secondary'
             );
         });
     });
 
-    it('Metrics: secondaryShowTrendColor and secondaryTrendBreakPointValue', () => {
+    it('Metric: secondaryShowTrendColor and secondaryTrendBreakPointValue', () => {
         element.secondaryShowTrendColor = true;
         element.secondaryTrendBreakpointValue = 10;
         element.secondaryValue = 16;
@@ -456,7 +456,7 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metrics__secondary avonni-metrics__secondary_positive-trend'
+                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_positive-trend'
                 );
 
                 element.secondaryValue = 8;
@@ -467,7 +467,7 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metrics__secondary avonni-metrics__secondary_negative-trend'
+                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_negative-trend'
                 );
 
                 element.secondaryValue = 10;
@@ -478,13 +478,13 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metrics__secondary avonni-metrics__secondary_neutral-trend'
+                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_neutral-trend'
                 );
             });
     });
 
     // secondary-trend-icon
-    it('Metrics: secondaryTrendIcon', () => {
+    it('Metric: secondaryTrendIcon', () => {
         element.secondaryTrendIcon = 'dynamic';
         element.secondaryValue = 16;
 
@@ -497,7 +497,7 @@ describe('Metrics', () => {
     });
 
     // secondary-value
-    it('Metrics: secondaryValue', () => {
+    it('Metric: secondaryValue', () => {
         element.secondaryValue = 16;
 
         return Promise.resolve().then(() => {
@@ -509,7 +509,7 @@ describe('Metrics', () => {
     });
 
     // secondary-value-sign
-    it('Metrics: secondaryValueSign', () => {
+    it('Metric: secondaryValueSign', () => {
         element.secondaryValueSign = 'positive-and-negative';
         element.secondaryValue = 16;
 
@@ -522,7 +522,7 @@ describe('Metrics', () => {
     });
 
     // show-trend-color and trend-breakpoint-value
-    it('Metrics: showTrendColor = false', () => {
+    it('Metric: showTrendColor = false', () => {
         element.showTrendColor = false;
         element.trendBreakpointValue = 10;
         element.value = 16;
@@ -531,11 +531,11 @@ describe('Metrics', () => {
             const metric = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-primary"]'
             );
-            expect(metric.className).toBe('avonni-metrics__primary');
+            expect(metric.className).toBe('avonni-metric__primary');
         });
     });
 
-    it('Metrics: showTrendColor and trendBreakpointValue', () => {
+    it('Metric: showTrendColor and trendBreakpointValue', () => {
         element.showTrendColor = true;
         element.trendBreakpointValue = 10;
         element.value = 16;
@@ -547,7 +547,7 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metrics__primary avonni-metrics__primary_positive-trend'
+                    'avonni-metric__primary avonni-metric__primary_positive-trend'
                 );
 
                 element.value = 8;
@@ -558,7 +558,7 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metrics__primary avonni-metrics__primary_negative-trend'
+                    'avonni-metric__primary avonni-metric__primary_negative-trend'
                 );
 
                 element.value = 10;
@@ -569,13 +569,13 @@ describe('Metrics', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metrics__primary avonni-metrics__primary_neutral-trend'
+                    'avonni-metric__primary avonni-metric__primary_neutral-trend'
                 );
             });
     });
 
     // suffix
-    it('Metrics: suffix', () => {
+    it('Metric: suffix', () => {
         element.suffix = 'some suffix';
 
         return Promise.resolve().then(() => {
@@ -587,7 +587,7 @@ describe('Metrics', () => {
     });
 
     // tooltip
-    it('Metrics: tooltip', () => {
+    it('Metric: tooltip', () => {
         element.tooltip = 'some tooltip';
         expect(Tooltip).toHaveBeenCalled();
         expect(Tooltip.mock.calls[0][0]).toBe('some tooltip');
@@ -597,7 +597,7 @@ describe('Metrics', () => {
     });
 
     // trend-icon
-    it('Metrics: trendIcon', () => {
+    it('Metric: trendIcon', () => {
         element.trendIcon = 'dynamic';
 
         return Promise.resolve().then(() => {
@@ -609,7 +609,7 @@ describe('Metrics', () => {
     });
 
     // value
-    it('Metrics: value', () => {
+    it('Metric: value', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
@@ -621,7 +621,7 @@ describe('Metrics', () => {
     });
 
     // value-sign
-    it('Metrics: valueSign', () => {
+    it('Metric: valueSign', () => {
         element.valueSign = 'positive-and-negative';
 
         return Promise.resolve().then(() => {

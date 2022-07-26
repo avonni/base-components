@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Metrics } from '../__examples__/metrics';
+import { Metric } from '../__examples__/metric';
 
 export default {
-    title: 'Example/Metrics',
+    title: 'Example/Metric',
     argTypes: {
         avatar: {
             control: {
@@ -431,7 +431,7 @@ export default {
     }
 };
 
-const Template = (args) => Metrics(args);
+const Template = (args) => Metric(args);
 
 export const Base = Template.bind({});
 Base.args = {

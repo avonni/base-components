@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class MetricsSecondaryTrendUp extends LightningElement {
+export default class MetricSecondaryTrendUp extends LightningElement {
     avatar = {
         fallbackIconName: 'standard:customers',
         size: 'large'
