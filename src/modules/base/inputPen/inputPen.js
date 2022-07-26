@@ -1324,10 +1324,16 @@ export default class InputPen extends LightningElement {
      *
      */
     handleKeyDown = (event) => {
-        if (event.key === 'y' && (event.ctrlKey || event.metaKey)) {
+        if (
+            event.key === 'y' &&
+            (event.ctrlKey || (event.metaKey && event.shiftKey))
+        ) {
             // ctrl-y
             this.redo();
-        } else if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+        } else if (
+            event.key === 'z' &&
+            (event.ctrlKey || (event.metaKey && event.shiftKey))
+        ) {
             // ctrl-z
             this.undo();
         }
