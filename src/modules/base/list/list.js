@@ -51,6 +51,8 @@ const DIVIDER = {
 
 const DEFAULT_ITEM_HEIGHT = 44;
 
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+
 const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
@@ -135,6 +137,8 @@ export default class List extends LightningElement {
     hoveredPositionTopLeft;
     draggedItemDimensions;
 
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+
     _columns;
     _smallContainerCols;
     _mediumContainerCols;
@@ -147,15 +151,18 @@ export default class List extends LightningElement {
 
     firstRender = 0;
     finishedLoading = true;
+    waitForMore = false;
 
     renderedCallback() {
         if (this.firstRender === 0) {
             // if you wait until the resize observer, the rerender is very apparent.
             this.listResize();
+            this.initWrapObserver();
             this.firstRender++;
         }
 
-        this.initWrapObserver();
+        this.handleScroll();
+        console.log('rendered');
     }
 
     disconnectedCallback() {
@@ -172,36 +179,44 @@ export default class List extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-
-        if (this._isLoading) {
-            console.log('🟢');
-            this.finishedLoading = false;
-        } else {
-            console.log('🛑');
-            setTimeout(() => {
-                this.finishedLoading = true;
-            }, 10);
-        }
     }
 
-    handleScroll(event) {
-        const el = event.target;
+    handleScroll() {
+        const el = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        console.log('🛼');
+        console.log('🛼', offsetFromBottom);
 
-        if (this.finishedLoading) {
-            this.saveScrollPosition();
-        }
-        if (offsetFromBottom < 10 && !this._isLoading) {
+        if (
+            offsetFromBottom <= this.loadMoreOffset &&
+            !this._isLoading &&
+            this.finishedLoading
+        ) {
             this.dispatchEvent(new CustomEvent('loadmore'));
             console.log('▶️ dispatch loadmore');
         }
     }
 
+    checkIfBottomReached() {}
+
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = Number.isNaN(parseInt(value, 10))
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : parseInt(value, 10);
+    }
+
     getScrollPositionTop() {
-        const list = this.template.querySelector('.avonni-list__item-menu');
+        const list = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
         if (!list) {
             return null;
         }
@@ -212,7 +227,9 @@ export default class List extends LightningElement {
         if (!this._savedScrollTop) {
             return;
         }
-        const list = this.template.querySelector('.avonni-list__item-menu');
+        const list = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
 
         window.requestAnimationFrame(() => {
             list.scrollTo(0, this._savedScrollTop);
@@ -377,6 +394,7 @@ export default class List extends LightningElement {
     }
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
+        console.log('📏 largeContainerCols', this._largeContainerCols);
     }
 
     /**
@@ -390,6 +408,7 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
+        this.saveScrollPosition();
         console.log('➕ items');
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
@@ -397,11 +416,13 @@ export default class List extends LightningElement {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
-        this.restoreScrollPosition();
-        setTimeout(() => {
+
+        this.finishedLoading = false;
+        window.requestAnimationFrame(() => {
+            this.restoreScrollPosition();
             console.log('🏁 items loaded');
             this.finishedLoading = true;
-        }, 10);
+        });
     }
 
     /**

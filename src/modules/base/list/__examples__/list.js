@@ -49,7 +49,8 @@ export const List = ({
     mediumContainerCols,
     largeContainerCols,
     imageAttributes,
-    enableInfiniteLoading
+    enableInfiniteLoading,
+    loadMoreOffset
 }) => {
     const element = document.createElement('ac-base-list');
     element.label = label;
@@ -67,5 +68,6 @@ export const List = ({
     element.largeContainerCols = largeContainerCols;
     element.imageAttributes = imageAttributes;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.loadMoreOffset = loadMoreOffset;
     return element;
 };

@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div style="height: 400px; max-height: 400px">
+    <div style="height: 580px; max-height: 580px">
         <c-list
             label={label}
             alternative-text={alternativeText}
@@ -52,6 +52,7 @@
             enable-infinite-loading
             is-loading={isLoading}
             onloadmore={loadMoreData}
+            load-more-offset={loadMoreOffset}
         >
         </c-list>
     </div>

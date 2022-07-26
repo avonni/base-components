@@ -53,7 +53,8 @@ export const InifiniteGrid = ({
     largeContainerCols,
     imageAttributes,
     isLoading,
-    enableInfiniteLoading
+    enableInfiniteLoading,
+    loadMoreOffset
 }) => {
     const element = document.createElement('ac-base-infinite-grid');
     element.label = label;
@@ -72,5 +73,6 @@ export const InifiniteGrid = ({
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.loadMoreOffset = loadMoreOffset;
     return element;
 };

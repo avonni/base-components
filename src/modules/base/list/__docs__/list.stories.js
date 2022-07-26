@@ -66,6 +66,7 @@ export default {
             }
         },
         smallContainerCols: {
+            name: 'small-container-cols',
             control: { type: 'number' },
             minimum: 1,
             maximum: 12,
@@ -75,6 +76,7 @@ export default {
             }
         },
         mediumContainerCols: {
+            name: 'medium-container-cols',
             control: { type: 'number' },
             minimum: 1,
             maximum: 12,
@@ -83,7 +85,8 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        largeContainerColumns: {
+        largeContainerCols: {
+            name: 'large-container-cols',
             control: { type: 'number' },
             minimum: 1,
             maximum: 12,
@@ -93,7 +96,6 @@ export default {
             }
         },
         divider: {
-            name: 'divider',
             control: {
                 type: 'select'
             },
@@ -150,6 +152,17 @@ export default {
             description: 'Label of the list.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.",
+            table: {
+                type: { summary: 'number' }
             }
         },
         sortable: {
@@ -549,10 +562,24 @@ InfiniteGrid.args = {
     imageAttributes: {
         size: 'large'
     },
+    loadMoreOffset: 100,
     enableInfiniteLoading: true,
     variant: 'grid',
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,
     largeContainerCols: 6
+};
+
+export const InfiniteList = InifiniteGridTemplate.bind({});
+InfiniteList.args = {
+    label: 'Grid with infinite loading',
+    items,
+    actions: actions,
+    loadMoreOffset: 0,
+    // divider: 'around',
+    imageAttributes: {
+        size: 'large'
+    },
+    enableInfiniteLoading: true
 };

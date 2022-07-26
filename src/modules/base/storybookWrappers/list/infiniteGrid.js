@@ -49,6 +49,7 @@ export default class InfiniteGrid extends LightningElement {
     @api imageAttributes;
     @api isLoading;
     @api enableInfiniteLoading;
+    @api loadMoreOffset;
 
     connectedCallback() {
         this._items = this.items;
@@ -62,10 +63,11 @@ export default class InfiniteGrid extends LightningElement {
         setTimeout(() => {
             if (target.isLoading) {
                 target.isLoading = false;
-                window.requestAnimationFrame(() => {
-                    // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-                    this.items = this.items.concat(this._items);
-                });
+
+                // window.requestAnimationFrame(() => {
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.items = this.items.concat(this._items);
+                // });
             }
         }, 2000);
     }
