@@ -55,15 +55,17 @@ export default class InfiniteGrid extends LightningElement {
     }
 
     loadMoreData(event) {
-        // console.log('loadMoreData');
         const target = event.target;
+
         target.isLoading = true;
 
         setTimeout(() => {
             if (target.isLoading) {
-                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-                this.items = this.items.concat(this._items);
                 target.isLoading = false;
+                window.requestAnimationFrame(() => {
+                    // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                    this.items = this.items.concat(this._items);
+                });
             }
         }, 2000);
     }
