@@ -149,16 +149,16 @@ export default class List extends LightningElement {
     _resizeObserver;
     _isLoading = false;
 
-    firstRender = 0;
+    renderNumber = 0;
     finishedLoading = true;
     waitForMore = false;
 
     renderedCallback() {
-        if (this.firstRender === 0) {
+        if (this.renderNumber === 0) {
             // if you wait until the resize observer, the rerender is very apparent.
             this.listResize();
             this.initWrapObserver();
-            this.firstRender++;
+            this.renderNumber++;
         }
 
         this.handleScroll();
@@ -188,7 +188,13 @@ export default class List extends LightningElement {
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        console.log('🛼', offsetFromBottom);
+        console.log(
+            '🛼',
+            offsetFromBottom,
+            el.scrollHeight,
+            el.scrollTop,
+            el.clientHeight
+        );
 
         if (
             offsetFromBottom <= this.loadMoreOffset &&
@@ -197,6 +203,8 @@ export default class List extends LightningElement {
         ) {
             this.dispatchEvent(new CustomEvent('loadmore'));
             console.log('▶️ dispatch loadmore');
+        } else if (el.scrollTop === 0 && el.scrollHeight === el.clientHeight) {
+            console.log('dispatch');
         }
     }
 
