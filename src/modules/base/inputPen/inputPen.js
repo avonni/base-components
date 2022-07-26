@@ -1332,7 +1332,7 @@ export default class InputPen extends LightningElement {
             this.redo();
         } else if (
             (event.key === 'z' && event.ctrlKey) ||
-            (event.key === 'z' && event.shiftKey)
+            (event.key === 'z' && event.metaKey)
         ) {
             // ctrl-z
             this.undo();
