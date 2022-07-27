@@ -102,8 +102,7 @@ export default class Kanban extends LightningElement {
     kanbanGroup;
 
     connectedCallback() {
-        this.initGroups();
-        console.log(this._computedGroups);
+        this.updateTiles();
     }
 
     renderedCallback() {
@@ -519,13 +518,20 @@ export default class Kanban extends LightningElement {
      * @param {object} group Group containing the summary value to animate
      */
     animateSummary(group) {
-        group.summarize.value = this.truncateNumber(
-            this._summarizeValues[group.index]
-        );
+        // TODO: Fix : marche plus :/
+        requestAnimationFrame(() => {
+            const summary = this.template.querySelectorAll(
+                '[data-element-id="summarize"]'
+            )[group.index];
+            summary.value = this.truncateNumber(
+                this._oldSummarizeValues[group.index]
+            );
+        });
+
         this._groupsLength.push(group.tiles.length);
         const summarizeUpdate = this.truncateNumber(
-            this._oldSummarizeValues[group.index] -
-                this._summarizeValues[group.index]
+            this._summarizeValues[group.index] -
+                this._oldSummarizeValues[group.index]
         );
         if (summarizeUpdate !== 0) {
             for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
@@ -533,7 +539,6 @@ export default class Kanban extends LightningElement {
                     const summary = this.template.querySelectorAll(
                         '[data-element-id="summarize"]'
                     )[group.index];
-
                     summary.value += this.truncateNumber(
                         summarizeUpdate / SUMMARY_UPDATE_SPEED
                     );
@@ -1218,6 +1223,7 @@ export default class Kanban extends LightningElement {
         const beforeIndex = this._records.indexOf(beforeTile) + 1;
 
         this._records = this.swapRecords(currentIndex, beforeIndex);
+        this.updateTiles();
     }
 
     /**
@@ -1426,15 +1432,12 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Inits the groups to separate tiles and calculate the summary values.
-     *
+     * Updates the groups to separate tiles and calculate the summary values.
      */
-    initGroups() {
+    updateTiles() {
         if (!this.hideHeader) this.clearSummarizeTimeouts();
         const kanbanGroupsBuilder = new KanbanGroupsBuilder({
             groupValues: this._groupValues,
-            summarizeValues: this._summarizeValues,
-            oldSummarizeValues: this._oldSummarizeValues,
             records: this._records,
             fields: this._fields,
             groupFieldName: this.groupFieldName,
@@ -1442,22 +1445,24 @@ export default class Kanban extends LightningElement {
             coverImageFieldName: this.coverImageFieldName,
             subGroupFieldName: this.subGroupFieldName
         });
+        if (this._computedGroups.length === 0) {
+            this._groupValues.forEach((_, i) => {
+                this._oldSummarizeValues[i] = 0;
+            });
+        } else {
+            this._computedGroups.forEach((group, i) => {
+                this._oldSummarizeValues[i] = group.summarize.value ?? 0;
+            });
+        }
 
         this._computedGroups = kanbanGroupsBuilder.computeGroups();
-
-        // this._summarizeValues = this.kanbanGroup._summarizeValues;
-        // this._oldSummarizeValues = this.kanbanGroup._oldSummarizeValues;
         this._hasSubGroups = kanbanGroupsBuilder.hasSubGroups;
         this._currentSubGroupIndex = 0;
 
-        // computedGroups.forEach((group) => {
-        //     if (!this.hideHeader) this.animateSummary(group);
-        //     this.setBackgroundColor(group);
-        // });
-
-        // this.displayCoverImage(computedGroups);
-
-        // this._computedGroups = computedGroups;
+        this._computedGroups.forEach((group, i) => {
+            this._summarizeValues[i] = group.summarize.value ?? 0;
+            if (!this.hideHeader) this.animateSummary(group);
+        });
     }
 
     /**
@@ -1627,6 +1632,8 @@ export default class Kanban extends LightningElement {
                 array.splice(this._clickedGroupIndex, 1)[0]
             );
         });
+
+        this.updateTiles();
     }
 
     /**

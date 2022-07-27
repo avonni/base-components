@@ -63,7 +63,9 @@ export default class KanbanGroupsBuilder {
                     footerActions: groupValue.footerActions,
                     backgroundColor: groupValue.backgroundColor,
                     pathColor: groupValue.pathColor,
-                    showItemCount: groupValue.showItemCount
+                    showItemCount: groupValue.showItemCount,
+                    avatar: groupValue.avatar,
+                    summarizeFieldName: this.summarizeFieldName
                 })
             );
         });

@@ -45,10 +45,16 @@ export default class KanbanGroup {
         this._backgroundColor = props.backgroundColor ?? '';
         this._pathColor = props.pathColor ?? '';
         this._showItemCount = props.showItemCount ?? false;
+        this._avatar = props.avatar;
+        this._summarizeFieldName = props.summarizeFieldName;
     }
 
     addTile(tile) {
         this._tiles.push(tile);
+    }
+
+    get avatar() {
+        return this._avatar;
     }
 
     get index() {
@@ -89,6 +95,19 @@ export default class KanbanGroup {
     }
 
     updateSummarize() {
-        console.log('updateSummarize');
+        this._summarize.value = 0;
+        this._summarize.type = '';
+        this._summarize.typeAttributes = {};
+
+        this._tiles.forEach((tile) => {
+            const toSummarize = tile.field.find(
+                (field) => field.label === this._summarizeFieldName
+            );
+            if (toSummarize && typeof toSummarize.value === 'number') {
+                this._summarize.type = toSummarize.type;
+                this._summarize.typeAttributes = toSummarize.typeAttributes;
+                this._summarize.value += toSummarize.value;
+            }
+        });
     }
 }
