@@ -126,6 +126,7 @@
                     class={eventOccurrenceCenterLabelClass}
                     data-element-id="div-center-label-wrapper"
                 >
+                    <!-- Month calendar chip -->
                     <div
                         if:true={isMonthCalendarSingleDay}
                         class="
@@ -134,6 +135,7 @@
                         "
                         style={monthColorChipStyle}
                     ></div>
+
                     <lightning-icon
                         if:true={computedLabels.center.iconName}
                         icon-name={computedLabels.center.iconName}

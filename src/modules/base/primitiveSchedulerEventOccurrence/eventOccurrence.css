@@ -32,7 +32,7 @@
 
 @import './shared.css';
 
-:host.avonni-scheduler__primitive-event {
+:host {
     z-index: 1;
     display: block;
 }
@@ -94,40 +94,6 @@
 .avonni-scheduler__event-wrapper_vertical,
 .avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event {
     height: 100%;
-}
-
-.avonni-scheduler__event-month-chip {
-    min-height: 8px;
-    min-width: 8px;
-    border-radius: 50%;
-}
-
-.avonni-scheduler__event-month-time {
-    font-size: 0.75rem;
-    font-weight: 300;
-}
-
-.avonni-scheduler__event_month-multi-day-starts-in-previous-cell::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    background-color: #fff;
-    border-style: solid;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent
-        var(--avonni-primitive-scheduler-event-occurrence-background-color)
-        transparent transparent;
-}
-
-.avonni-scheduler__event_month-multi-day-ends-in-later-cell::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    background-color: #fff;
-    border-style: solid;
-    border-width: 10px 0 10px 10px;
-    border-color: transparent transparent transparent
-        var(--avonni-primitive-scheduler-event-occurrence-background-color);
 }
 
 /* Themes --------- */

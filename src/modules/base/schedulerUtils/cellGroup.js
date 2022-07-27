@@ -69,10 +69,17 @@ export class SchedulerCellGroup {
         if (i > -1) {
             // Add the event to every cell it crosses
             while (i < cells.length && event.to >= cells[i].start) {
-                cells[i][eventType].push(event);
-                cells[i][eventType] = cells[i][eventType].sort(
-                    (a, b) => a.from - b.from
+                // If the event is a calendar month placeholder,
+                // make sure it hasn't been added already
+                const exists = cells[i][eventType].find(
+                    (evt) => evt.key === event.key
                 );
+                if (!exists) {
+                    cells[i][eventType].push(event);
+                    cells[i][eventType] = cells[i][eventType].sort(
+                        (a, b) => a.from - b.from
+                    );
+                }
                 i += 1;
                 if (event.weekStart) {
                     // If the event is a visible calendar month placeholder,

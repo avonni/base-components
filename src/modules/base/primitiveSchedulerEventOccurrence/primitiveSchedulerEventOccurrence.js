@@ -136,11 +136,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     computedLabels = {};
 
     connectedCallback() {
-        if (!this.disabled)
-            this.template.host.classList.add(
-                'avonni-scheduler__primitive-event'
-            );
-
         this.initLabels();
         this._connected = true;
     }
@@ -740,6 +735,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_month': this.isMonthCalendarSingleDay,
+                'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
+                    this.disabled,
                 'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
                     !this.isMonthCalendarSingleDay &&
                     this.occurrence.startsInPreviousCell,
@@ -764,11 +761,32 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.color || this.resourceColor;
     }
 
+    get disabledClass() {
+        return classSet(
+            'slds-theme_alert-texture avonni-scheduler__disabled-date'
+        )
+            .add({
+                'slds-theme_shade': this.isTimeline,
+                'slds-is-absolute': !this.isMonthCalendar,
+                'avonni-scheduler__disabled-date_calendar-month slds-p-horizontal_xx-small slds-m-bottom_xx-small slds-is-relative':
+                    this.isMonthCalendar,
+                'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
+                    !this.isMonthCalendarSingleDay &&
+                    this.occurrence.startsInPreviousCell,
+                'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
+                    !this.isMonthCalendarSingleDay &&
+                    this.occurrence.endsInLaterCell
+            })
+            .toString();
+    }
+
     get disabledStyle() {
-        if (this.isTimeline) {
-            return 'background-color: #f3f3f3;';
-        }
-        return `background-color: ${this.transparentColor};`;
+        return this.isTimeline
+            ? null
+            : `
+                background-color: ${this.transparentColor};
+                --avonni-primitive-scheduler-event-occurrence-background-color: ${this.transparentColor};
+            `;
     }
 
     /**
@@ -830,7 +848,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get hideResizeIcon() {
-        return this.readOnly || this.isMonthCalendarSingleDay;
+        return this.readOnly || this.isMonthCalendar;
     }
 
     /**
@@ -888,6 +906,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get monthColorChipStyle() {
+        if (this.disabled) {
+            // return `border: 2px solid ${this.computedColor};`;
+            // return `background-color: ${this.transparentColor};`;
+        }
         return `background-color: ${this.computedColor};`;
     }
 
@@ -938,16 +960,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             (res) => res.name === this.resourceKey
         );
         return resource && resource.color;
-    }
-
-    /**
-     * If true, the title HTML element will be displayed. This property is only used by disabled occurrences.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get showTitle() {
-        return this.disabled && (this.title || this.iconName);
     }
 
     get startTime() {
@@ -1175,7 +1187,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateThickness() {
-        if (!this.disabled) return;
+        if (!this.disabled || this.isMonthCalendar) return;
 
         const element = this.hostElement;
 
@@ -1413,7 +1425,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     updatePositionInCalendar() {
-        if (!this.referenceLine && !this.disabled) {
+        if (!this.referenceLine) {
             const style = this.hostElement.style;
             const isMonth = this.isMonthCalendar;
 

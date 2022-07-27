@@ -561,7 +561,6 @@ const disabledDatesTimes = [
     {
         resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
         title: 'Lunch',
-        iconName: 'custom:custom51',
         from: new Date(2021, 0, 1, 12),
         to: new Date(2021, 0, 1, 14),
         recurrence: 'weekly',
