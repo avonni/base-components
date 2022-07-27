@@ -1414,12 +1414,25 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     updatePositionInCalendar() {
         if (!this.referenceLine && !this.disabled) {
+            const style = this.hostElement.style;
+            const isMonth = this.isMonthCalendar;
+
+            // Hide the placeholders in the month calendar display
+            const { isPlaceholder, columnIndex } = this.hostElement.dataset;
+            const isHidden = isMonth && isPlaceholder && columnIndex !== '0';
+            style.visibility = isHidden ? 'hidden' : 'visible';
+
             // Hide the overflowing events in the month calendar display
-            this.hostElement.style.display =
-                this.isMonthCalendar && this.overflowsCell ? 'none' : null;
-            if (this.overflowsCell) {
-                return;
+            let overflows = this.overflowsCell;
+            const yAxis = this.headerCells.yAxis;
+            if (yAxis && !overflows && !isPlaceholder) {
+                const firstVisibleDate = dateTimeObjectFrom(yAxis[0].start);
+                const startsBeforeBeginningOfMonth =
+                    this.from < firstVisibleDate &&
+                    this.to > firstVisibleDate.endOf('day');
+                overflows = startsBeforeBeginningOfMonth;
             }
+            style.display = isMonth && overflows ? 'none' : null;
         }
 
         const { cellHeight, headerCells, cellWidth } = this;

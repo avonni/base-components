@@ -36,25 +36,6 @@ import {
     MONTH_EVENT_HEIGHT
 } from './defaults';
 
-import { getWeekNumber } from 'c/utilsPrivate';
-
-function getCurrentWeekVisibleOccurrenceLevel(occurrence, occElement) {
-    const spansOnMoreThanOneWeek = !!occurrence.copies;
-    const firstWeek = getWeekNumber(occurrence.from);
-    const currentWeek = Number(occElement.dataset.weekNumber);
-
-    if (spansOnMoreThanOneWeek && firstWeek !== currentWeek) {
-        // The current placeholder is not on the first week of the occurrence.
-        // Get the level of the occurrence in the current week.
-        const currentWeekOccurrence = occurrence.copies.find((occ) => {
-            const occWeekNumber = getWeekNumber(occ.weekStart);
-            return occWeekNumber === currentWeek;
-        });
-        return currentWeekOccurrence.level;
-    }
-    return occurrence.level;
-}
-
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
     return elements.find((div, index) => {
@@ -209,9 +190,9 @@ export function updateOccurrencesOffset(
     // Compute the level of the occurrences in the resource
     const previousOccurrences = [];
     occurrenceElements.forEach((occElement) => {
-        const occurrence = occElement.occurrence;
         const isPlaceholder = occElement.dataset.isPlaceholder;
-        const isVisiblePlaceholder = occElement.dataset.isVisiblePlaceholder;
+        const occurrence = occElement.occurrence;
+        const isVisiblePlaceholder = occElement.dataset.columnIndex === '0';
         const start = occElement.startPosition;
 
         let level = 0;
@@ -221,10 +202,7 @@ export function updateOccurrencesOffset(
             // Do not change the level of the original occurrence
             // if the current occurrence is a placeholder
             // placed in a subsequent month cell
-            level = getCurrentWeekVisibleOccurrenceLevel(
-                occurrence,
-                occElement
-            );
+            level = occurrence.level;
         } else {
             const position = computeEventLevelInCellGroup(
                 isVertical,
@@ -235,7 +213,7 @@ export function updateOccurrencesOffset(
             numberOfOverlap = position.numberOfOverlap;
         }
 
-        if (this.isMonth) {
+        if (this.isMonth && (!isPlaceholder || isVisiblePlaceholder)) {
             occurrence.level = level;
 
             // If the current occurrence is overflowing the cell height,

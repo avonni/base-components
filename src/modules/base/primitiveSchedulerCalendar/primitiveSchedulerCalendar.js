@@ -174,8 +174,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             computedDate || dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
         if (this._connected) {
+            const previousStart = this.start.ts;
             this.setStartToBeginningOfUnit();
-            this.initHeaders();
+
+            if (previousStart !== this.start.ts) {
+                this.initHeaders();
+            }
         }
     }
 
@@ -189,6 +193,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
+
+            // If the hour headers appear or disappear, the visible width changes
+            requestAnimationFrame(() => {
+                this.updateVisibleWidth();
+            });
         }
     }
 
@@ -673,18 +682,38 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const isPlaceholder =
             isMultiDay && (cellsPassed.length || spansOnMoreThanOneWeek);
 
-        if (isPlaceholder && spansOnMoreThanOneWeek && isFirstCol) {
-            const placeholders = this.createVisibleMultiWeekPlaceholders(
+        if (!isPlaceholder) {
+            return [];
+        }
+
+        let placeholders = [];
+        if (spansOnMoreThanOneWeek && isFirstCol) {
+            // Create copies of the occurrence for each subsequent week it spans on.
+            // These placeholders will be visible.
+            placeholders = this.createVisibleMultiWeekPlaceholders(
                 occ,
                 cellsPassed,
                 event
             );
             occ.copies = placeholders;
-            return placeholders;
-        } else if (isPlaceholder) {
-            return [occ];
+        } else {
+            // Create hidden placeholders in any other column
+            cellsPassed.forEach((cell) => {
+                let placeholderOccurrence = occ;
+                if (occ.copies) {
+                    const copy = occ.copies.find((cop) => {
+                        return cell.weekNumber === getWeekNumber(cop.weekStart);
+                    });
+                    if (copy) {
+                        // Always use the first column occurrence or visible placeholder
+                        // as a reference for the other row placeholders
+                        placeholderOccurrence = copy;
+                    }
+                }
+                placeholders.push(placeholderOccurrence);
+            });
         }
-        return [];
+        return placeholders;
     }
 
     getMultiDayPlaceholdersInCell(cell) {
@@ -698,17 +727,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 `[data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"][data-month="${month}"][data-day="${day}"]`
             );
             placeholderElements.forEach((placeholder) => {
-                const { key, eventKey } = placeholder.dataset;
-                const event = this._eventData.events.find(
-                    (e) => e.key === eventKey
-                );
-                const occ = event.occurrences.find((o) => o.key === key);
-                if (!occ.overflowsCell) {
+                if (!placeholder.occurrence.overflowsCell) {
                     placeholders.push(placeholder);
                 }
             });
         }
-
         return placeholders;
     }
 

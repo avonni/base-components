@@ -70,23 +70,6 @@ const getWeekday = (date) => {
 };
 
 /**
- * Get the week number of a date, starting the weeks from Sunday.
- *
- * @param {Date|DateTime|number|string} date The date we want to get the week number of.
- * @returns {number|null} The week number or null if the date is not a valid date.
- */
-const getWeekNumber = (date) => {
-    let normalizedDate = date;
-    if (!(date instanceof DateTime)) {
-        normalizedDate = dateTimeObjectFrom(date);
-        if (!normalizedDate) return null;
-    }
-
-    const { weekday, weekNumber } = normalizedDate;
-    return weekday === 7 ? weekNumber + 1 : weekNumber;
-};
-
-/**
  * Check if a time is included in a time frame.
  *
  * @param {DateTime} date DateTime object.
@@ -147,6 +130,25 @@ const removeFromDate = (date, unit, span) => {
     const options = {};
     options[unit] = -span;
     return date.plus(options);
+};
+
+/**
+ * Get the week number of a date, starting the weeks from Sunday.
+ *
+ * @param {Date|DateTime|number|string} date The date we want to get the week number of.
+ * @returns {number|null} The week number or null if the date is not a valid date.
+ */
+const getWeekNumber = (date) => {
+    let normalizedDate = date;
+    if (!(date instanceof DateTime)) {
+        normalizedDate = dateTimeObjectFrom(date);
+        if (!normalizedDate) return null;
+    }
+
+    if (normalizedDate.weekday === 7) {
+        normalizedDate = addToDate(normalizedDate, 'day', 1);
+    }
+    return normalizedDate.weekNumber;
 };
 
 /**
