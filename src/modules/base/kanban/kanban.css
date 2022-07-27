@@ -363,8 +363,6 @@
 
 .avonni-kanban__expandable_section .avonni-kanban__tiles_container {
     height: 100%;
-    /* position: sticky;
-    top: 10px; */
 }
 
 .avonni-kanban__expandable_section_collapsed {

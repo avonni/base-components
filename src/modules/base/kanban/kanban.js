@@ -118,6 +118,39 @@ export default class Kanban extends LightningElement {
      */
 
     /**
+     * Name of the field containing the cover image of the tile.
+     * @type {string}
+     * @public
+     */
+    @api coverImageFieldName;
+
+    /**
+     * Name of the data field containing the group label the data belongs to.
+     *
+     * @type {string}
+     * @public
+     */
+    @api groupFieldName;
+
+    /**
+     *
+     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     *
+     * @type {string}
+     * @public
+     */
+    @api summarizeFieldName;
+
+    /**
+     *
+     * Name of the data field containing the sub-group label the data belongs to.
+     *
+     * @type {string}
+     * @public
+     */
+    @api subGroupFieldName;
+
+    /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
      *
      * @type {object[]}
@@ -130,13 +163,6 @@ export default class Kanban extends LightningElement {
     set actions(values) {
         this._actions = normalizeArray(values);
     }
-
-    /**
-     * Name of the field containing the cover image of the tile.
-     * @type {string}
-     * @public
-     */
-    @api coverImageFieldName;
 
     /**
      *
@@ -187,14 +213,6 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Name of the data field containing the group label the data belongs to.
-     *
-     * @type {string}
-     * @public
-     */
-    @api groupFieldName;
-
-    /**
      * Array of group objects. Each group represents one step of the path.
      *
      * @type {object[]}
@@ -241,7 +259,8 @@ export default class Kanban extends LightningElement {
 
     /**
      * Array of data objects. Each object will be displayed as a data card in one of the steps.
-     * The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.
+     * The objects should have a key <code>id</code>, used as their unique identifier. A <code>warningIcon</code> key can also be used to display a warning icon at the bottom right of the tile.
+     * The other keys should correspond to the available fields, and/or the summarize and group field names.
      *
      * @type {object[]}
      * @public
@@ -253,24 +272,6 @@ export default class Kanban extends LightningElement {
     set records(values) {
         this._records = normalizeArray(values);
     }
-
-    /**
-     *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
-     *
-     * @type {string}
-     * @public
-     */
-    @api summarizeFieldName;
-
-    /**
-     *
-     * Name of the data field containing the sub-group label the data belongs to.
-     *
-     * @type {string}
-     * @public
-     */
-    @api subGroupFieldName;
 
     /**
      * The variant changes the apparence of the kanban. Valid values include base and path. Default to base.
@@ -820,10 +821,6 @@ export default class Kanban extends LightningElement {
                 group.style.paddingBottom = `${paddingBottom}px`;
             }
         });
-
-        if (this._hasSubGroups) {
-            // currentField.style.height = `calc(${}px + ${this._draggedTile.offsetHeight}px)`;
-        }
     }
 
     /**
@@ -1400,8 +1397,7 @@ export default class Kanban extends LightningElement {
         let currentY =
             event.clientY +
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
-        // +
-        // (this._hasSubGroups ? expandableContainer.scrollTop : 0);
+
         let currentX = event.clientX + fieldContainer.scrollLeft;
         if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;

@@ -33,7 +33,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-kanban-column-sizing-min-width
- * @default 14.5em
+ * @default 14em
  * @type (length|percentage)
  */
 /**
@@ -70,7 +70,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-kanban-summarize-font-size
- * @default 1.25rem
+ * @default 1.5rem
  * @type font
  */
 /**
