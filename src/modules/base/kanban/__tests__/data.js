@@ -116,7 +116,7 @@ const FIELDS = [
 const RECORDS = [
     {
         id: '001',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 1',
         amount: 25000,
         warningIcon: 'utility:warning',
@@ -127,7 +127,7 @@ const RECORDS = [
     },
     {
         id: '002',
-        status: 'Closed',
+        status: 'closed',
         opportunityName: 'Opportunity 2',
         amount: 13200,
         phone: '+375292567896',
@@ -137,7 +137,7 @@ const RECORDS = [
     },
     {
         id: '003',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 3',
         amount: 5100,
         assignee: 'John Doe',
@@ -148,7 +148,7 @@ const RECORDS = [
     },
     {
         id: '004',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 4',
         assignee: 'John Doe',
         amount: 21570,
@@ -159,7 +159,7 @@ const RECORDS = [
     },
     {
         id: '005',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 5',
         amount: 200,
         phone: '+375299999999',
@@ -169,7 +169,7 @@ const RECORDS = [
     },
     {
         id: '006',
-        status: 'Closed',
+        status: 'closed',
         opportunityName: 'Opportunity 6',
         amount: 17500,
         phone: '+375292567896',

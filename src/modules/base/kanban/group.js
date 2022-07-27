@@ -105,7 +105,7 @@ export default class KanbanGroups {
         // updates the summarize field if needed
         computedFields.forEach((tile) => {
             const group = computedGroups.find(
-                (computedGroup) => computedGroup.label === tile.group
+                (computedGroup) => computedGroup.value === tile.group
             );
             if (group) {
                 group.tiles.push(tile);

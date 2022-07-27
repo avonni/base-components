@@ -80,7 +80,7 @@ export default class KanbanBase extends LightningElement {
     records = [
         {
             id: '001',
-            status: 'Open',
+            status: 'open',
             opportunityName: 'Opportunity 1',
             amount: 25000,
             warningIcon: 'utility:warning',
@@ -91,7 +91,7 @@ export default class KanbanBase extends LightningElement {
         },
         {
             id: '002',
-            status: 'Closed',
+            status: 'closed',
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
@@ -101,7 +101,7 @@ export default class KanbanBase extends LightningElement {
         },
         {
             id: '003',
-            status: 'In Progress',
+            status: 'inProgress',
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
@@ -111,7 +111,7 @@ export default class KanbanBase extends LightningElement {
         },
         {
             id: '004',
-            status: 'Open',
+            status: 'open',
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
@@ -121,7 +121,7 @@ export default class KanbanBase extends LightningElement {
         },
         {
             id: '005',
-            status: 'Open',
+            status: 'open',
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
@@ -131,7 +131,7 @@ export default class KanbanBase extends LightningElement {
         },
         {
             id: '006',
-            status: 'Closed',
+            status: 'closed',
             opportunityName: 'Opportunity 6',
             amount: 17500,
             phone: '+375292567896',

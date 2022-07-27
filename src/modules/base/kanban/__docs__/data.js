@@ -109,7 +109,7 @@ const FIELDS = [
 const RECORDS = [
     {
         id: '001',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 1',
         amount: 25000,
         warningIcon: 'utility:warning',
@@ -123,7 +123,7 @@ const RECORDS = [
     },
     {
         id: '002',
-        status: 'Closed',
+        status: 'closed',
         opportunityName: 'Opportunity 2',
         amount: 13200,
         phone: '+375292567896',
@@ -134,7 +134,7 @@ const RECORDS = [
     },
     {
         id: '003',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 3',
         amount: 5100,
         phone: '+37529888888',
@@ -145,7 +145,7 @@ const RECORDS = [
     },
     {
         id: '004',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 4',
         amount: 21570,
         phone: '+375292567896',
@@ -156,7 +156,7 @@ const RECORDS = [
     },
     {
         id: '005',
-        status: 'Open',
+        status: 'open',
         opportunityName: 'Opportunity 5',
         amount: 200,
         phone: '+375299999999',
@@ -167,7 +167,7 @@ const RECORDS = [
     },
     {
         id: '006',
-        status: 'Closed',
+        status: 'closed',
         opportunityName: 'Opportunity 6',
         amount: 17500,
         assignee: 'John Doe',
@@ -176,7 +176,7 @@ const RECORDS = [
     },
     {
         id: '007',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 7',
         amount: 5100,
         phone: '+37529888888',
@@ -187,7 +187,7 @@ const RECORDS = [
     },
     {
         id: '008',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 8',
         amount: 5100,
         phone: '+37529888888',
@@ -197,7 +197,7 @@ const RECORDS = [
     },
     {
         id: '009',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 9',
         amount: 5100,
         phone: '+37529888888',
@@ -206,7 +206,7 @@ const RECORDS = [
     },
     {
         id: '010',
-        status: 'In Progress',
+        status: 'inProgress',
         opportunityName: 'Opportunity 10',
         amount: 5100,
         phone: '+37529888888',

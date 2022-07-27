@@ -375,7 +375,7 @@ export default class Kanban extends LightningElement {
         this._records.forEach((tile) => {
             const group = computedGroups.find(
                 (computedGroup) =>
-                    computedGroup.label === tile[this.groupFieldName]
+                    computedGroup.value === tile[this.groupFieldName]
             );
             if (group) {
                 group.tiles.push(tile);
@@ -1255,6 +1255,7 @@ export default class Kanban extends LightningElement {
 
         const currentIndex = this._records.indexOf(currentTile);
         const beforeIndex = this._records.indexOf(beforeTile) + 1;
+
         this._records = this.swapRecords(currentIndex, beforeIndex);
     }
 
@@ -1290,7 +1291,7 @@ export default class Kanban extends LightningElement {
             event.currentTarget.parentElement.offsetWidth +
             0.5 * parseFloat(getComputedStyle(this.template.host).fontSize);
 
-        this._groupWidth = this._groupWidth ? this._groupWidth : 10;
+        this._groupWidth = this._groupWidth ?? 10;
 
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
@@ -1631,9 +1632,10 @@ export default class Kanban extends LightningElement {
         }
         const arr = JSON.parse(JSON.stringify(this._records));
         arr[fromIndex][this.groupFieldName] =
-            this._groupValues[this._releasedGroupIndex].label;
+            this._groupValues[this._releasedGroupIndex].value;
         this._groupsLength[this._clickedGroupIndex]--;
         this._groupsLength[this._releasedGroupIndex]++;
+
         /**
          * The event fired when a card is moved from a step to another.
          *
@@ -1670,7 +1672,7 @@ export default class Kanban extends LightningElement {
         return this._records.find((record) => {
             if (
                 record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].label &&
+                    this._groupValues[groupIndex].value &&
                 record[this.subGroupFieldName] === this._currentSubGroup
             ) {
                 tileCount++;
@@ -1678,7 +1680,7 @@ export default class Kanban extends LightningElement {
             return (
                 tileCount === tileIndex &&
                 record[this.groupFieldName] ===
-                    this._groupValues[groupIndex].label &&
+                    this._groupValues[groupIndex].value &&
                 record[this.subGroupFieldName] === this._currentSubGroup
             );
         });
