@@ -1235,7 +1235,7 @@ export default class Calendar extends LightningElement {
      * @event
      * @public
      * @name navigate
-     * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
      */
     dispatchNavigateEvent(date) {
         const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
