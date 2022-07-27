@@ -32,6 +32,8 @@
 
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import kanban from './kanban.html';
+import kanbanSubGroups from './kanbanSubGroups.html';
 
 import { classSet } from 'c/utils';
 import {
@@ -113,6 +115,18 @@ export default class Kanban extends LightningElement {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
         }
+    }
+
+    /**
+     * Render the kanban depending on its subgroups.
+     *
+     * @returns {File} kanban.html | kanbanSubgroup.html
+     */
+    render() {
+        if (this.hasSubGroups()) {
+            return kanbanSubGroups;
+        }
+        return kanban;
     }
 
     /*
@@ -396,20 +410,6 @@ export default class Kanban extends LightningElement {
      */
     get hasActions() {
         return this.actions && this.actions.length > 0;
-    }
-
-    /**
-     * Returns weather the group has subgroups or not.
-     *
-     * @type {boolean}
-     */
-    get hasSubGroups() {
-        this._records.forEach((record) => {
-            if (record[this.subGroupFieldName]) {
-                this._hasSubGroups = true;
-            }
-        });
-        return this._hasSubGroups;
     }
 
     /**
@@ -1447,6 +1447,20 @@ export default class Kanban extends LightningElement {
             return;
         }
         this.endDrag();
+    }
+
+    /**
+     * Returns whether the group has subgroups or not.
+     *
+     * @type {boolean}
+     */
+    hasSubGroups() {
+        this._records.forEach((record) => {
+            if (record[this.subGroupFieldName]) {
+                this._hasSubGroups = true;
+            }
+        });
+        return this._hasSubGroups;
     }
 
     /**

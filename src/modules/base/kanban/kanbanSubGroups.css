@@ -233,6 +233,7 @@
 
 .avonni-kanban__container::-webkit-scrollbar,
 .avonni-kanban__tiles_container::-webkit-scrollbar,
+.avonni-kanban__container_subgroups::-webkit-scrollbar,
 .avonni-kanban_expandable_container::-webkit-scrollbar {
     width: 7px;
     height: 7px;
@@ -240,12 +241,14 @@
 
 .avonni-kanban__container::-webkit-scrollbar-track,
 .avonni-kanban__tiles_container::-webkit-scrollbar-track,
+.avonni-kanban__container_subgroups::-webkit-scrollbar-track,
 .avonni-kanban_expandable_container::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .avonni-kanban__container::-webkit-scrollbar-thumb,
 .avonni-kanban__tiles_container::-webkit-scrollbar-thumb,
+.avonni-kanban__container_subgroups::-webkit-scrollbar-thumb,
 .avonni-kanban_expandable_container::-webkit-scrollbar-thumb {
     background: #dbdbdb;
     border-radius: 5px;
