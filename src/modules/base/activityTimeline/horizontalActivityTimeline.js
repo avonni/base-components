@@ -33,11 +33,13 @@
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch';
-import { isValidName } from 'c/iconUtils';
+// import { isValidName } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const BORDER_OFFSET = 0.5;
+const DEFAULT_ICON_PATH = '/assets';
+const DEFAULT_ICON_WEBSITE_PATH = '/assets/slds';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_POPOVER_CLASSES =
@@ -91,6 +93,7 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
  *       2) check if path website ok,
  *       3) else, convert to string tmpl and extract infos
  *  - Find way to always find assets/icons folder ?
+ * --"  /assets/slds/path to icon"
  */
 
 export class HorizontalActivityTimeline {
@@ -127,7 +130,8 @@ export class HorizontalActivityTimeline {
     _scrollAxisDiv;
     _scrollAxisSVG;
 
-    // Icon libraries
+    // Icons
+    _iconsFolderPath = DEFAULT_ICON_PATH;
     standardIconLibrary = null;
     utilityIconLibrary = null;
     actionIconLibrary = null;
@@ -138,7 +142,7 @@ export class HorizontalActivityTimeline {
         this._sortedItems = sortedItems;
         this._activityTimeline = activityTimeline;
         this.setDefaultIntervalDates();
-        this.setIconLibraries();
+        this.testIconPath(DEFAULT_ICON_PATH, 'standard', 'empty');
     }
 
     async setIconLibraries() {
@@ -690,8 +694,8 @@ export class HorizontalActivityTimeline {
      *  Create svg to display lightning icon.
      */
     createSVGIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
-        let template = null;
-        let pathTemplate;
+        // let template = null;
+        // let pathTemplate;
 
         const iconInformation = this.setIconInformation(iconName);
         const foreignObjectForIcon = destinationSVG.append('foreignObject');
@@ -701,99 +705,95 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
-        if (isValidName(iconName) && this.areIconLibrariesReady) {
-            let [categoryName, nameOfIcon] = iconName.split(':');
+        // // TESTING
+        // if (isValidName(iconName) && this.areIconLibrariesReady) {
+        //     let [categoryName, nameOfIcon] = iconName.split(':');
 
-            switch (categoryName) {
-                case 'action':
-                    template =
-                        this.actionIconLibrary[`${categoryName}_${nameOfIcon}`];
-                    break;
-                case 'standard':
-                    template =
-                        this.standardIconLibrary[
-                            `${categoryName}_${nameOfIcon}`
-                        ];
-                    break;
-                case 'utility':
-                    template =
-                        this.utilityIconLibrary[
-                            `${categoryName}_${nameOfIcon}`
-                        ];
-                    break;
-                case 'custom':
-                    template =
-                        this.customIconLibrary[`${categoryName}_${nameOfIcon}`];
-                    break;
-                case 'doctype':
-                    template =
-                        this.doctypeIconLibrary[
-                            `${categoryName}_${nameOfIcon}`
-                        ];
-                    break;
-                default:
-                    //standard-empty
-                    categoryName = 'standard';
-                    nameOfIcon = 'empty';
-                    template =
-                        this.standardIconLibrary[
-                            `${categoryName}_${nameOfIcon}`
-                        ];
-            }
+        //     switch (categoryName) {
+        //         case 'action':
+        //             template =
+        //                 this.actionIconLibrary[`${categoryName}_${nameOfIcon}`];
+        //             break;
+        //         case 'standard':
+        //             template =
+        //                 this.standardIconLibrary[
+        //                     `${categoryName}_${nameOfIcon}`
+        //                 ];
+        //             break;
+        //         case 'utility':
+        //             template =
+        //                 this.utilityIconLibrary[
+        //                     `${categoryName}_${nameOfIcon}`
+        //                 ];
+        //             break;
+        //         case 'custom':
+        //             template =
+        //                 this.customIconLibrary[`${categoryName}_${nameOfIcon}`];
+        //             break;
+        //         case 'doctype':
+        //             template =
+        //                 this.doctypeIconLibrary[
+        //                     `${categoryName}_${nameOfIcon}`
+        //                 ];
+        //             break;
+        //         default:
+        //             //standard-empty
+        //             categoryName = 'standard';
+        //             nameOfIcon = 'empty';
+        //             template =
+        //                 this.standardIconLibrary[
+        //                     `${categoryName}_${nameOfIcon}`
+        //                 ];
+        //     }
 
-            template = template.toString();
-            template = template.slice(
-                template.indexOf('path'),
-                template.length
-            );
-            const paths = template.split('path');
+        //     console.log(template);
 
-            paths.forEach((path) => {
-                path = path.replaceAll('\n', '');
-                path = path.slice(path.indexOf('"d"'), path.indexOf('},'));
-                if (path.substring(0, '"d":'.length) === '"d":') {
-                    path = path.substring('"d": "'.length, path.length);
-                    pathTemplate = path.substring(0, path.indexOf('"'));
-                }
-            });
-        } else {
-            // default
-            pathTemplate =
-                'M49.6 25.8c7.2 0 13 5.8 13 13v3.3c-4.3-.5-8.7-.7-13-.7-4.3 0-8.7.2-13 .7v-3.3c0-7.1 5.8-13 13-13zM73.2 63.8l1.3-11.4c2.9.5 5.1 2.9 5.1 5.6 0 3.2-2.9 5.8-6.4 5.8zM25.9 63.8c-3.5 0-6.4-2.6-6.4-5.8 0-2.8 2.2-5.1 5.1-5.6l1.3 11.4zM68.7 44.9c-6.6-.7-12.9-1-19-1s-12.5.3-19 1c-2.2.2-3.8 2.2-3.5 4.3l2 19.4c.2 1.8 1.6 3.3 3.5 3.5 5.6.7 11.3 1 17.1 1s11.5-.3 17.1-1c1.8-.2 3.3-1.7 3.5-3.5l2-19.4c0-2.2-1.5-4.1-3.7-4.3zM38.6 62.5c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7zm16.7 4.1c0 .2-.1.4-.2.5-.1.1-.3.2-.5.2h-9.9c-.2 0-.4-.1-.5-.2-.1-.1-.2-.3-.2-.5v-1.8c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v.9h8.1v-.9c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v1.8zm5.3-4.1c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7z';
-        }
+        //     template = template.toString();
+        //     template = template.slice(
+        //         template.indexOf('path'),
+        //         template.length
+        //     );
+        //     const paths = template.split('path');
+
+        //     paths.forEach((path) => {
+        //         path = path.replaceAll('\n', '');
+        //         path = path.slice(path.indexOf('"d"'), path.indexOf('},'));
+        //         if (path.substring(0, '"d":'.length) === '"d":') {
+        //             path = path.substring('"d": "'.length, path.length);
+        //             pathTemplate = path.substring(0, path.indexOf('"'));
+        //         }
+        //     });
+        // } else {
+        //     // default
+        //     pathTemplate =
+        //         'M49.6 25.8c7.2 0 13 5.8 13 13v3.3c-4.3-.5-8.7-.7-13-.7-4.3 0-8.7.2-13 .7v-3.3c0-7.1 5.8-13 13-13zM73.2 63.8l1.3-11.4c2.9.5 5.1 2.9 5.1 5.6 0 3.2-2.9 5.8-6.4 5.8zM25.9 63.8c-3.5 0-6.4-2.6-6.4-5.8 0-2.8 2.2-5.1 5.1-5.6l1.3 11.4zM68.7 44.9c-6.6-.7-12.9-1-19-1s-12.5.3-19 1c-2.2.2-3.8 2.2-3.5 4.3l2 19.4c.2 1.8 1.6 3.3 3.5 3.5 5.6.7 11.3 1 17.1 1s11.5-.3 17.1-1c1.8-.2 3.3-1.7 3.5-3.5l2-19.4c0-2.2-1.5-4.1-3.7-4.3zM38.6 62.5c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7zm16.7 4.1c0 .2-.1.4-.2.5-.1.1-.3.2-.5.2h-9.9c-.2 0-.4-.1-.5-.2-.1-.1-.2-.3-.2-.5v-1.8c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v.9h8.1v-.9c0-.4.3-.7.7-.7h.2c.4 0 .7.3.7.7v1.8zm5.3-4.1c-1.6 0-2.8-1.6-2.8-3.7s1.3-3.7 2.8-3.7 2.8 1.6 2.8 3.7-1.2 3.7-2.8 3.7z';
+        // }
 
         // foreignObjectForIcon
-        //     .append('xhtml:span')
+        //     .append('svg')
         //     .attr(
         //         'class',
-        //         'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
-        //             iconInformation.categoryIconClass
+        //         `slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ${iconInformation.categoryIconClass}`
         //     )
-        //     .html(
-        //         '<svg class="slds-icon"><use xlink:href=' +
-        //             iconInformation.xLinkHref +
-        //             '></use></svg>'
-        //     );
-        //
+        //     .attr('focusable', 'false')
+        //     .attr('viewBox', '0 0 100 100')
+        //     .append('g')
+        //     .append('path')
+        //     .attr('d', pathTemplate);
+        // END OF WORKING-ish
 
         foreignObjectForIcon
-            .append('svg')
+            .append('xhtml:span')
             .attr(
                 'class',
-                `slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ${iconInformation.categoryIconClass}`
+                'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
+                    iconInformation.categoryIconClass
             )
-            .attr('focusable', 'false')
-            .attr('viewBox', '0 0 100 100')
-            .append('g')
-            .append('path')
-            .attr('d', pathTemplate);
-
-        // .append('svg').attr('class', 'slds-icon').append('path').attr('d', pathTemplate);
-        // .html(
-        //     '<svg class="slds-icon"><use xlink:href=' +
-        //         iconInformation.xLinkHref +
-        //         '></use></svg>'
-        // );
+            .html(
+                '<svg class="slds-icon"><use xlink:href=' +
+                    iconInformation.xLinkHref +
+                    '></use></svg>'
+            );
     }
 
     /**
@@ -1230,7 +1230,7 @@ export class HorizontalActivityTimeline {
     setDefaultIconInformation() {
         return {
             iconName: 'empty',
-            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#empty',
+            xLinkHref: `${this._iconsFolderPath}/icons/standard-sprite/svg/symbols.svg#empty`,
             categoryIconClass: 'slds-icon-standard-empty'
         };
     }
@@ -1312,11 +1312,7 @@ export class HorizontalActivityTimeline {
 
         return {
             iconName: nameOfIcon,
-            xLinkHref:
-                '/assets/icons/' +
-                iconCategory +
-                '-sprite/svg/symbols.svg#' +
-                nameOfIcon,
+            xLinkHref: `${this._iconsFolderPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`,
             categoryIconClass: iconClass + nameOfIcon.replace(/_/g, '-')
         };
     }
@@ -1492,6 +1488,35 @@ export class HorizontalActivityTimeline {
         });
 
         return dataToDisplay;
+    }
+
+    /**
+     * Test if icon's path is correct to determine the best method to fetch icons.
+     */
+    async testIconPath(iconPath, iconCategory, nameOfIcon) {
+        fetch(
+            `${iconPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`
+        ).then((response) => {
+            // The path is incorrect
+            if (response.status === 404 || response.ok === false) {
+                if (iconPath === DEFAULT_ICON_PATH) {
+                    this._iconsFolderPath = DEFAULT_ICON_WEBSITE_PATH;
+                    this.testIconPath(
+                        DEFAULT_ICON_WEBSITE_PATH,
+                        'standard',
+                        'empty'
+                    );
+                } else {
+                    // The two default paths are not working, we fetch the icons' library
+                    this._iconsFolderPath = '';
+                    this.setIconLibraries();
+                }
+            }
+            // The path is correct
+            else {
+                this._iconsFolderPath = iconPath;
+            }
+        });
     }
 
     /**
