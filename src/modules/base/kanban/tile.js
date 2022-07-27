@@ -29,66 +29,45 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-export default class KanbanGroup {
+export default class KanbanTile {
     constructor(props) {
-        this._tiles = [];
         this._index = props.index;
-        this._summarize = {
-            value: 0,
-            type: '',
-            typeAttributes: {}
-        };
-        this._label = props.label;
-        this._value = props.value;
-        this._headerActions = props.headerActions ?? [];
-        this._footerActions = props.footerActions ?? [];
-        this._backgroundColor = props.backgroundColor ?? '';
-        this._pathColor = props.pathColor ?? '';
-        this._showItemCount = props.showItemCount ?? false;
-    }
-
-    addTile(tile) {
-        this._tiles.push(tile);
+        this._group = props.group;
+        this._warningIcon = props.warningIcon;
+        this._field = [];
+        this._subGroup = props.subGroup;
+        this._coverImage = null;
     }
 
     get index() {
         return this._index;
     }
 
-    get label() {
-        return this._label;
+    get group() {
+        return this._group;
     }
 
-    get value() {
-        return this._value;
+    get warningIcon() {
+        return this._warningIcon;
     }
 
-    get tiles() {
-        return this._tiles;
+    get field() {
+        return this._field;
     }
 
-    get summarize() {
-        this.updateSummarize();
-        return this._summarize;
+    get subGroup() {
+        return this._subGroup;
     }
 
-    get headerActions() {
-        return this._headerActions;
+    get coverImage() {
+        return this._coverImage;
     }
 
-    get footerActions() {
-        return this._footerActions;
+    set coverImage(coverImage) {
+        this._coverImage = coverImage;
     }
 
-    get backgroundColor() {
-        return this._backgroundColor;
-    }
-
-    get pathColor() {
-        return this._pathColor;
-    }
-
-    updateSummarize() {
-        console.log('updateSummarize');
+    addField(field) {
+        this._field.push(field);
     }
 }

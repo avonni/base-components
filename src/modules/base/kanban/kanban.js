@@ -41,7 +41,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import KanbanGroups from './group';
+import KanbanGroupsBuilder from './groupBuilder';
 
 const KANBAN_VARIANTS = {
     valid: ['base', 'path'],
@@ -100,6 +100,11 @@ export default class Kanban extends LightningElement {
     _summaryTimeoutsId = [];
     _variant = KANBAN_VARIANTS.default;
     kanbanGroup;
+
+    connectedCallback() {
+        this.initGroups();
+        console.log(this._computedGroups);
+    }
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -410,43 +415,6 @@ export default class Kanban extends LightningElement {
      */
     get hasActions() {
         return this.actions && this.actions.length > 0;
-    }
-
-    /**
-     * Inits the groups to separate tiles and calculate the summary values.
-     *
-     * @type {object[]}
-     */
-    get initGroups() {
-        if (!this.hideHeader) this.clearSummarizeTimeouts();
-        this.kanbanGroup = new KanbanGroups({
-            groupValues: this._groupValues,
-            summarizeValues: this._summarizeValues,
-            oldSummarizeValues: this._oldSummarizeValues,
-            records: this._records,
-            fields: this._fields,
-            groupFieldName: this.groupFieldName,
-            summarizeFieldName: this.summarizeFieldName,
-            coverImageFieldName: this.coverImageFieldName,
-            subGroupFieldName: this.subGroupFieldName
-        });
-        const computedGroups = this.kanbanGroup.computeGroups();
-
-        this._summarizeValues = this.kanbanGroup._summarizeValues;
-        this._oldSummarizeValues = this.kanbanGroup._oldSummarizeValues;
-        this._hasSubGroups = this.kanbanGroup.hasSubGroups;
-        this._currentSubGroupIndex = 0;
-
-        computedGroups.forEach((group) => {
-            if (!this.hideHeader) this.animateSummary(group);
-            this.setBackgroundColor(group);
-        });
-
-        this.displayCoverImage(computedGroups);
-
-        this._computedGroups = computedGroups;
-
-        return computedGroups;
     }
 
     /**
@@ -1455,6 +1423,41 @@ export default class Kanban extends LightningElement {
             }
         });
         return this._hasSubGroups;
+    }
+
+    /**
+     * Inits the groups to separate tiles and calculate the summary values.
+     *
+     */
+    initGroups() {
+        if (!this.hideHeader) this.clearSummarizeTimeouts();
+        const kanbanGroupsBuilder = new KanbanGroupsBuilder({
+            groupValues: this._groupValues,
+            summarizeValues: this._summarizeValues,
+            oldSummarizeValues: this._oldSummarizeValues,
+            records: this._records,
+            fields: this._fields,
+            groupFieldName: this.groupFieldName,
+            summarizeFieldName: this.summarizeFieldName,
+            coverImageFieldName: this.coverImageFieldName,
+            subGroupFieldName: this.subGroupFieldName
+        });
+
+        this._computedGroups = kanbanGroupsBuilder.computeGroups();
+
+        // this._summarizeValues = this.kanbanGroup._summarizeValues;
+        // this._oldSummarizeValues = this.kanbanGroup._oldSummarizeValues;
+        this._hasSubGroups = kanbanGroupsBuilder.hasSubGroups;
+        this._currentSubGroupIndex = 0;
+
+        // computedGroups.forEach((group) => {
+        //     if (!this.hideHeader) this.animateSummary(group);
+        //     this.setBackgroundColor(group);
+        // });
+
+        // this.displayCoverImage(computedGroups);
+
+        // this._computedGroups = computedGroups;
     }
 
     /**
