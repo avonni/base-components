@@ -63,7 +63,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-kanban-summary-color-text
+ * @name --avonni-kanban-summary-text-color
  * @default #10AA52
  * @type color
  */

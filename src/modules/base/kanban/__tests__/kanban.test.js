@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-focused-tests */
 /**
  * BSD 3-Clause License
  *
