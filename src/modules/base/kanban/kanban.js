@@ -103,6 +103,10 @@ export default class Kanban extends LightningElement {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+
+        this.capContainerWidth();
+        this.setContainerDimensions();
+        this.capFieldHeight();
     }
 
     disconnectedCallback() {
@@ -439,11 +443,6 @@ export default class Kanban extends LightningElement {
         });
 
         this.displayCoverImage(computedGroups);
-        requestAnimationFrame(() => {
-            this.capContainerWidth();
-            this.setContainerDimensions();
-            this.capFieldHeight();
-        });
 
         this._computedGroups = computedGroups;
 

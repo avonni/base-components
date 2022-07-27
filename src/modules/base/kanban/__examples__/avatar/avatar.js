@@ -71,7 +71,7 @@ export default class KanbanAvatar extends LightningElement {
     records = [
         {
             id: '001',
-            responsible: 'John Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 1',
             amount: 25000,
             warningIcon: 'utility:warning',
@@ -82,7 +82,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             id: '002',
-            responsible: 'John Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
@@ -92,8 +92,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             id: '003',
-            responsible: 'John Doe',
-
+            responsible: 'janeDoe',
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
@@ -103,7 +102,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             id: '004',
-            responsible: 'Jane Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
@@ -113,8 +112,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             id: '005',
-            responsible: 'John Smith',
-
+            responsible: 'johnSmith',
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
@@ -124,7 +122,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             id: '006',
-            responsible: 'Jane Doe',
+            responsible: 'janeDoe',
             opportunityName: 'Opportunity 6',
             amount: 17500,
             phone: '+375292567896',

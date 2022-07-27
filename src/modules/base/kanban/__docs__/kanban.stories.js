@@ -262,20 +262,18 @@ avatar.args = {
     records: [
         {
             id: '001',
-            responsible: 'John Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 1',
             amount: 25000,
             warningIcon: 'utility:warning',
             phone: '+375292567896',
             date: '1547250828000',
             percent: 0.28,
-            available: true,
-            coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+            available: true
         },
         {
             id: '002',
-            responsible: 'John Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
@@ -285,8 +283,7 @@ avatar.args = {
         },
         {
             id: '003',
-            responsible: 'John Doe',
-
+            responsible: 'janeDoe',
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
@@ -296,7 +293,7 @@ avatar.args = {
         },
         {
             id: '004',
-            responsible: 'Jane Doe',
+            responsible: 'johnDoe',
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
@@ -306,8 +303,7 @@ avatar.args = {
         },
         {
             id: '005',
-            responsible: 'John Smith',
-
+            responsible: 'johnSmith',
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
@@ -317,7 +313,7 @@ avatar.args = {
         },
         {
             id: '006',
-            responsible: 'Jane Doe',
+            responsible: 'janeDoe',
             opportunityName: 'Opportunity 6',
             amount: 17500,
             phone: '+375292567896',
