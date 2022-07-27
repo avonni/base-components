@@ -1077,6 +1077,7 @@ export default class Calendar extends LightningElement {
             this.displayDate.setMonth(this.max.getMonth());
         }
 
+        this.dispatchNavigateEvent(new Date(this.displayDate).toISOString());
         this.updateDateParameters();
         event.stopPropagation();
         this.computeFocus(true);
@@ -1238,6 +1239,7 @@ export default class Calendar extends LightningElement {
      */
     dispatchNavigateEvent(date) {
         const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
+        console.log(firstDayOfMonth);
         this.dispatchEvent(
             new CustomEvent('navigate', {
                 detail: {
@@ -1411,11 +1413,13 @@ export default class Calendar extends LightningElement {
                         initialFocusDate.getFullYear() - 1
                     )
                 );
+                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
             }
             if (event.keyCode === keyCodes.pagedown) {
                 nextDate = initialFocusDate.setFullYear(
                     initialFocusDate.getFullYear() + 1
                 );
+                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
             }
         } else {
             switch (event.keyCode) {
