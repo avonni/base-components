@@ -906,6 +906,7 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
+        "avonni/kanban",
         "avonni/list",
         "avonni/map",
         "avonni/mediaObject",

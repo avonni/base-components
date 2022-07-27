@@ -46,6 +46,8 @@ const KANBAN_VARIANTS = {
     default: 'base'
 };
 
+const SUMMARY_UPDATE_SPEED = 300;
+
 /**
  * @class
  * @storyId example-kanban--base
@@ -57,12 +59,10 @@ export default class Kanban extends LightningElement {
     _disableColumnDragAndDrop = false;
     _disableItemDragAndDrop = false;
     _fields = [];
-    _groupFieldName;
     _groupValues = [];
     _hideHeader = false;
     _isLoading = false;
     _records = [];
-    _summarizeFieldName;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -81,7 +81,6 @@ export default class Kanban extends LightningElement {
     _initialScrollHeight = 0;
     _initialScrollWidth = 0;
     _initialTileIndex = 0;
-    _isDragged = false;
     _kanbanPos = {
         top: 0,
         bottom: 0,
@@ -97,9 +96,8 @@ export default class Kanban extends LightningElement {
     _subGroupsHeight = [];
     _summarizeValues = [];
     _summaryTimeoutsId = [];
+    _variant = KANBAN_VARIANTS.default;
     kanbanGroup;
-
-    SUMMARY_UPDATE_SPEED = 300;
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -562,14 +560,14 @@ export default class Kanban extends LightningElement {
                 this._summarizeValues[group.index]
         );
         if (summarizeUpdate !== 0) {
-            for (let j = 0; j < this.SUMMARY_UPDATE_SPEED; j++) {
+            for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
                 this._summaryTimeoutsId[j] = window.setTimeout(() => {
                     const summary = this.template.querySelectorAll(
                         '[data-element-id="summarize"]'
                     )[group.index];
 
                     summary.value += this.truncateNumber(
-                        summarizeUpdate / this.SUMMARY_UPDATE_SPEED
+                        summarizeUpdate / SUMMARY_UPDATE_SPEED
                     );
 
                     summary.value = this.truncateNumber(summary.value);
