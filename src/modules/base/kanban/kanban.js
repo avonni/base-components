@@ -608,27 +608,26 @@ export default class Kanban extends LightningElement {
      *
      */
     capContainerWidth() {
+        const subgroupContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+
+        const header = this.template.querySelector(
+            '[data-element-id="avonni-kanban__header"]'
+        );
+
+        const path = this.template.querySelector('[data-element-id="path"]');
+
         if (this._hasSubGroups) {
             const expandable = this.template.querySelector(
                 '[data-element-id="avonni-kanban__expandable_container"]'
             );
 
-            const subgroupContainer = this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            );
-
             const headerWidth =
-                this.variant === 'path'
-                    ? this.template.querySelector('[data-element-id="path"]')
-                          .offsetWidth
-                    : this.template.querySelector(
-                          '[data-element-id="avonni-kanban__header"]'
-                      ).scrollWidth;
+                this.variant === 'path' ? path.offsetWidth : header.scrollWidth;
 
             if (this.variant === 'path') {
-                this.template.querySelector(
-                    '[data-element-id="avonni-kanban__header"]'
-                ).style.width = `${headerWidth}px`;
+                header.style.width = `${headerWidth}px`;
             }
 
             if (headerWidth === subgroupContainer.offsetWidth) {
@@ -649,12 +648,7 @@ export default class Kanban extends LightningElement {
                 }rem)`;
             }
         } else if (this.variant === 'path') {
-            this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).style.width = `${
-                this.template.querySelector('[data-element-id="path"]')
-                    .offsetWidth
-            }px`;
+            subgroupContainer.style.width = `${path.offsetWidth}px`;
         }
     }
 
