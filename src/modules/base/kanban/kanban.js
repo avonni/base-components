@@ -518,16 +518,7 @@ export default class Kanban extends LightningElement {
      * @param {object} group Group containing the summary value to animate
      */
     animateSummary(group) {
-        // TODO: Fix : marche plus :/
-        requestAnimationFrame(() => {
-            const summary = this.template.querySelectorAll(
-                '[data-element-id="summarize"]'
-            )[group.index];
-            summary.value = this.truncateNumber(
-                this._oldSummarizeValues[group.index]
-            );
-        });
-
+        console.log(this._oldSummarizeValues, this._summarizeValues);
         this._groupsLength.push(group.tiles.length);
         const summarizeUpdate = this.truncateNumber(
             this._summarizeValues[group.index] -
@@ -539,6 +530,20 @@ export default class Kanban extends LightningElement {
                     const summary = this.template.querySelectorAll(
                         '[data-element-id="summarize"]'
                     )[group.index];
+
+                    // Set the summary value to the old one to animate it gradually
+                    if (
+                        summary.value ===
+                            this.truncateNumber(
+                                this._summarizeValues[group.index]
+                            ) &&
+                        j !== SUMMARY_UPDATE_SPEED - 1
+                    ) {
+                        summary.value = this.truncateNumber(
+                            this._oldSummarizeValues[group.index]
+                        );
+                    }
+
                     summary.value += this.truncateNumber(
                         summarizeUpdate / SUMMARY_UPDATE_SPEED
                     );
@@ -1621,7 +1626,8 @@ export default class Kanban extends LightningElement {
             this._summarizeValues,
             this._groupsHeight,
             this._groupsLength,
-            this._fieldsDistance
+            this._fieldsDistance,
+            this._computedGroups
         ];
 
         // Swaps groups in every group-related array
