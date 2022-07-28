@@ -518,7 +518,6 @@ export default class Kanban extends LightningElement {
      * @param {object} group Group containing the summary value to animate
      */
     animateSummary(group) {
-        console.log(this._oldSummarizeValues, this._summarizeValues);
         this._groupsLength.push(group.tiles.length);
         const summarizeUpdate = this.truncateNumber(
             this._summarizeValues[group.index] -
