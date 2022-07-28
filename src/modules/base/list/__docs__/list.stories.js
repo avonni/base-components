@@ -560,7 +560,7 @@ InfiniteGrid.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'large'
+        size: 'small'
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,
@@ -576,7 +576,7 @@ InfiniteList.args = {
     label: 'Grid with infinite loading',
     items,
     actions: actions,
-    loadMoreOffset: 0,
+    loadMoreOffset: 10,
     // divider: 'around',
     imageAttributes: {
         size: 'large'

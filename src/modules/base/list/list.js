@@ -148,21 +148,20 @@ export default class List extends LightningElement {
 
     _resizeObserver;
     _isLoading = false;
+    finishedLoading = true;
 
     renderNumber = 0;
-    finishedLoading = true;
-    waitForMore = false;
-
     renderedCallback() {
         if (this.renderNumber === 0) {
-            // if you wait until the resize observer, the rerender is very apparent.
             this.listResize();
             this.initWrapObserver();
             this.renderNumber++;
         }
 
-        this.handleScroll();
-        console.log('rendered');
+        setTimeout(() => {
+            this.handleScroll();
+        }, 0);
+        console.log('👾 rendered');
     }
 
     disconnectedCallback() {
@@ -179,79 +178,6 @@ export default class List extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-    }
-
-    handleScroll() {
-        const el = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
-        );
-        const offsetFromBottom =
-            el.scrollHeight - el.scrollTop - el.clientHeight;
-
-        console.log(
-            '🛼',
-            offsetFromBottom,
-            el.scrollHeight,
-            el.scrollTop,
-            el.clientHeight
-        );
-
-        if (
-            offsetFromBottom <= this.loadMoreOffset &&
-            !this._isLoading &&
-            this.finishedLoading
-        ) {
-            this.dispatchEvent(new CustomEvent('loadmore'));
-            console.log('▶️ dispatch loadmore');
-        } else if (el.scrollTop === 0 && el.scrollHeight === el.clientHeight) {
-            console.log('dispatch');
-        }
-    }
-
-    checkIfBottomReached() {}
-
-    @api
-    get loadMoreOffset() {
-        return this._loadMoreOffset;
-    }
-
-    set loadMoreOffset(value) {
-        this._loadMoreOffset = Number.isNaN(parseInt(value, 10))
-            ? DEFAULT_LOAD_MORE_OFFSET
-            : parseInt(value, 10);
-    }
-
-    getScrollPositionTop() {
-        const list = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
-        );
-        if (!list) {
-            return null;
-        }
-        return list.scrollTop;
-    }
-
-    restoreScrollPosition() {
-        if (!this._savedScrollTop) {
-            return;
-        }
-        const list = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
-        );
-
-        window.requestAnimationFrame(() => {
-            list.scrollTo(0, this._savedScrollTop);
-            console.log(
-                '⌖ restore',
-                Math.round(list.scrollTop),
-                Math.round(this._savedScrollTop)
-            );
-        });
-    }
-
-    saveScrollPosition() {
-        this._savedScrollTop = this.getScrollPositionTop();
-        console.log('💾 scroll', Math.round(this._savedScrollTop));
     }
 
     /*
@@ -402,7 +328,6 @@ export default class List extends LightningElement {
     }
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
-        console.log('📏 largeContainerCols', this._largeContainerCols);
     }
 
     /**
@@ -416,8 +341,9 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
+        this.finishedLoading = false;
         this.saveScrollPosition();
-        console.log('➕ items');
+
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
         this.computedItems.forEach((item) => {
@@ -425,12 +351,30 @@ export default class List extends LightningElement {
             item.icons = normalizeArray(item.icons);
         });
 
-        this.finishedLoading = false;
-        window.requestAnimationFrame(() => {
-            this.restoreScrollPosition();
+        console.log('➕ items');
+        this.restoreScrollPosition();
+
+        setTimeout(() => {
             console.log('🏁 items loaded');
             this.finishedLoading = true;
-        });
+        }, 10);
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.
+     *
+     * @type {Number}
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = Number.isNaN(parseInt(value, 10))
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : parseInt(value, 10);
     }
 
     /**
@@ -797,6 +741,77 @@ export default class List extends LightningElement {
             // eslint-disable-next-line consistent-return
             return _value;
         }
+    }
+
+    /**
+     * Determine is a loadmore event should be fired.
+     * @private
+     */
+    handleScroll() {
+        const el = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
+        const offsetFromBottom =
+            el.scrollHeight - el.scrollTop - el.clientHeight;
+
+        console.log(
+            '🎢',
+            this.finishedLoading,
+            el.scrollHeight,
+            el.clientHeight,
+            offsetFromBottom
+        );
+
+        if (
+            offsetFromBottom <= this.loadMoreOffset &&
+            !this._isLoading &&
+            this.finishedLoading
+        ) {
+            this.handleLoadMore();
+        }
+
+        if (
+            el.scrollTop === 0 &&
+            el.scrollHeight === el.clientHeight &&
+            !this.finishedLoading
+        ) {
+            this.handleLoadMore();
+        }
+    }
+
+    /**
+     * Restore the scroll position from the top of the list.
+     * @private
+     */
+    restoreScrollPosition() {
+        if (this._savedScrollTop === null) {
+            return;
+        }
+        const list = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
+
+        window.requestAnimationFrame(() => {
+            list.scrollTo(0, this._savedScrollTop);
+            console.log(
+                '🔃 restore',
+                Math.round(list.scrollTop),
+                Math.round(this._savedScrollTop)
+            );
+        });
+    }
+
+    /**
+     * Record the scroll position from the top of the list.
+     * @private
+     */
+    saveScrollPosition() {
+        const list = this.template.querySelector(
+            '[data-element-id="list-wrapper"]'
+        );
+
+        this._savedScrollTop = list ? list.scrollTop : null;
+        console.log('💾 scroll', Math.round(this._savedScrollTop));
     }
 
     /**
@@ -1228,6 +1243,14 @@ export default class List extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Dispatch loadmore event.
+     */
+    handleLoadMore() {
+        this.dispatchEvent(new CustomEvent('loadmore'));
+        console.log('▶️ dispatch loadmore');
     }
 
     /**

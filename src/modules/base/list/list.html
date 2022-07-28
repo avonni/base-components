@@ -376,20 +376,14 @@
             </template>
             <li
                 class="slds-col slds-size_12-of-12 slds-is-relative"
-                style="
-                    display: block;
-                    height: 40px;
-                    min-height: 40px;
-                    max-height: 40px;
-                "
+                style="height: 40px"
             >
-                <div if:true={isLoading}>
-                    <lightning-spinner
-                        size="small"
-                        class="slds-spinner_container"
-                        alternative-text="Loading..."
-                    ></lightning-spinner>
-                </div>
+                <lightning-spinner
+                    if:true={isLoading}
+                    size="small"
+                    class="slds-spinner_container"
+                    alternative-text="Loading..."
+                ></lightning-spinner>
             </li>
         </ul>
     </div>
