@@ -341,7 +341,8 @@ export default class Kanban extends LightningElement {
      */
     get computedFieldClassHeader() {
         return classSet(this.computedFieldClass).add({
-            'avonni-kanban__field_header_hidden': this._hideHeader
+            'avonni-kanban__field_header_hidden': this._hideHeader,
+            'avonni-kanban__field_header': true
         });
     }
 
@@ -367,7 +368,6 @@ export default class Kanban extends LightningElement {
             computedGroups[i].backgroundStyle = group.backgroundStyle;
         });
         this._currentSubGroupIndex++;
-        console.log(computedGroups);
         return computedGroups;
     }
 
@@ -565,45 +565,37 @@ export default class Kanban extends LightningElement {
         const subgroupContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
-
+        const groupHeader = this.template.querySelector(
+            '[data-element-id="avonni-kanban__group_header"]'
+        );
         const header = this.template.querySelector(
             '[data-element-id="avonni-kanban__header"]'
         );
-
-        const path = this.template.querySelector('[data-element-id="path"]');
-
+        // const path = this.template.querySelector('[data-element-id="path"]');
         if (this._hasSubGroups) {
-            const expandable = this.template.querySelector(
-                '[data-element-id="avonni-kanban__expandable_container"]'
-            );
+            const headerWidth = header.scrollWidth;
 
-            const headerWidth =
-                this.variant === 'path' ? path.offsetWidth : header.scrollWidth;
+            // if (this.variant === 'path') {
+            //     header.style.width = `${headerWidth}px`;
+            // }
 
-            if (this.variant === 'path') {
-                header.style.width = `${headerWidth}px`;
-            }
-
-            if (headerWidth === subgroupContainer.offsetWidth) {
+            if (headerWidth === subgroupContainer.clientWidth) {
                 subgroupContainer.style.overflowX = 'hidden';
-                expandable.style.width = `calc(${
-                    this.template.querySelector(
-                        '[data-element-id="avonni-kanban__group_header"]'
-                    ).offsetWidth * this._groupValues.length
-                }px + ${this._groupValues.length - 1}rem - ${
-                    this.variant === 'path'
-                        ? this._groupValues.length / 2
-                        : (this._groupValues.length - 1) / 4
-                }rem)`;
+
+                const totalWidth =
+                    groupHeader.offsetWidth * this._groupValues.length;
+
+                const totalMargins = this._groupValues.length;
+
+                subgroupContainer.style.width = `calc(${totalWidth}px + ${totalMargins}rem - 0.75rem)`;
             } else {
                 subgroupContainer.style.overflowX = 'auto';
-                expandable.style.width = `calc(${headerWidth}px + ${
-                    this.variant === 'path' ? 0 : 0.1 * this._groupValues.length
-                }rem)`;
+                subgroupContainer.style.width = `100%`;
             }
-        } else if (this.variant === 'path') {
-            subgroupContainer.style.width = `${path.offsetWidth}px`;
         }
+        // else if (this.variant === 'path') {
+        //     subgroupContainer.style.width = `${path.offsetWidth}px`;
+        // }
     }
 
     /**
@@ -617,21 +609,17 @@ export default class Kanban extends LightningElement {
         const fields = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
-
         const container = this.template.querySelector(
             '[data-element-id="avonni-kanban__field_container"]'
         );
-
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
-
         if (this._hasSubGroups) {
             const subGroupsHeight = [];
             this._subGroupsHeight.forEach(() => {
                 subGroupsHeight.push([]);
             });
-
             groups.forEach((group, i) => {
                 group.style.height = 'auto';
                 subGroupsHeight[Math.floor(i / this.groupValues.length)][
@@ -652,7 +640,6 @@ export default class Kanban extends LightningElement {
                 }
             });
         }
-
         this._droppedTileHeight = 0;
     }
 
@@ -1312,16 +1299,18 @@ export default class Kanban extends LightningElement {
             : this._kanbanPos.bottom;
 
         // Prevents from dragging outside of the kanban
-        if (this._initialScrollWidth === fieldContainer.offsetWidth) {
-            fieldContainer.style.overflowX = 'hidden';
-        } else {
-            fieldContainer.style.overflowX = 'scroll';
-        }
+        // TODO: !
+        // if (this._initialScrollWidth === fieldContainer.offsetWidth) {
+        //     fieldContainer.style.overflowX = 'hidden';
+        // } else {
+        //     fieldContainer.style.overflowX = 'scroll';
+        // }
 
-        if (this._hasSubGroups) {
-            fieldContainer.style.overflowX = 'visible';
-            fieldContainer.style.overflowY = 'hidden';
-        }
+        // if (this._hasSubGroups) {
+        //     fieldContainer.style.overflowX = 'visible';
+        //     fieldContainer.style.overflowY = 'hidden';
+        // }
+
         // Calculates the position of the mouse depending on the kanban boundaries
         let currentY =
             event.clientY +
@@ -1446,6 +1435,7 @@ export default class Kanban extends LightningElement {
 
             this.capFieldHeight();
             this.capContainerWidth();
+            this.setContainerDimensions();
         });
         resizeObserver.observe(container);
         return resizeObserver;
@@ -1501,7 +1491,6 @@ export default class Kanban extends LightningElement {
             .forEach((fieldContainer, i) => {
                 this._subGroupsHeight[i] = fieldContainer.scrollHeight;
             });
-
         this._initialScrollWidth = this.template.querySelector(
             '[data-element-id="avonni-kanban__field_container"]'
         ).scrollWidth;
