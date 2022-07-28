@@ -593,7 +593,7 @@ VerticalTimeline.args = {
     disabledDatesTimes,
     referenceLines,
     variant: 'vertical',
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});

@@ -849,7 +849,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     return occurrence.fromWeekday === col.weekday;
                 });
 
-                if (event.disabled) {
+                if (event.disabled && !this.isMonth) {
                     disabledEvents.push(occurrences);
                 } else {
                     events.push(occurrences);

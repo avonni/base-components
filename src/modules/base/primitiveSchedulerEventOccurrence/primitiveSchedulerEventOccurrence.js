@@ -768,7 +768,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'slds-theme_shade': this.isTimeline,
                 'slds-is-absolute': !this.isMonthCalendar,
-                'avonni-scheduler__disabled-date_calendar-month slds-p-horizontal_xx-small slds-m-bottom_xx-small slds-is-relative':
+                'avonni-scheduler__disabled-date_calendar-month slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
                     this.isMonthCalendar,
                 'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
                     !this.isMonthCalendarSingleDay &&

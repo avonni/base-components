@@ -110,6 +110,7 @@
 
 .avonni-scheduler__calendar-show-more-popover {
     --slds-c-popover-position-zindex: 5;
+    min-width: var(--lwc-sizeXSmall, 12rem);
 }
 
 .avonni-scheduler__calendar-show-more-popover-close-button {

@@ -54,7 +54,7 @@
     top: 0;
     background-color: #fff;
     border-style: solid;
-    border-width: 10px 10px 10px 0;
+    border-width: 9px 9px 9px 0;
     border-color: transparent
         var(--avonni-primitive-scheduler-event-occurrence-background-color)
         transparent transparent;
@@ -67,7 +67,7 @@
     top: 0;
     background-color: #fff;
     border-style: solid;
-    border-width: 10px 0 10px 10px;
+    border-width: 9px 0 9px 9px;
     border-color: transparent transparent transparent
         var(--avonni-primitive-scheduler-event-occurrence-background-color);
 }
