@@ -571,15 +571,14 @@ export default class Kanban extends LightningElement {
         const header = this.template.querySelector(
             '[data-element-id="avonni-kanban__header"]'
         );
-        // const path = this.template.querySelector('[data-element-id="path"]');
+        const path = this.template.querySelector('[data-element-id="path"]');
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
         if (this._hasSubGroups) {
             const headerWidth = header.scrollWidth;
 
-            // if (this.variant === 'path') {
-            //     header.style.width = `${headerWidth}px`;
-            // }
-
-            if (headerWidth === subgroupContainer.clientWidth) {
+            if (headerWidth <= subgroupContainer.clientWidth) {
                 subgroupContainer.style.overflowX = 'hidden';
 
                 const totalWidth =
@@ -587,15 +586,20 @@ export default class Kanban extends LightningElement {
 
                 const totalMargins = this._groupValues.length;
 
-                subgroupContainer.style.width = `calc(${totalWidth}px + ${totalMargins}rem - 0.75rem)`;
+                const offset = this.variant === 'path' ? 2 : 0.75;
+
+                subgroupContainer.style.width = `calc(${totalWidth}px + ${totalMargins}rem - ${offset}rem)`;
             } else {
                 subgroupContainer.style.overflowX = 'auto';
                 subgroupContainer.style.width = `100%`;
+                expandableContainer.style.width = `${path.clientWidth}px`;
+                if (this.variant === 'path') {
+                    header.style.width = `${path.clientWidth}px`;
+                }
             }
+        } else if (this.variant === 'path') {
+            expandableContainer.style.width = `${path.clientWidth}px`;
         }
-        // else if (this.variant === 'path') {
-        //     subgroupContainer.style.width = `${path.offsetWidth}px`;
-        // }
     }
 
     /**
