@@ -1509,58 +1509,6 @@ export default class Kanban extends LightningElement {
 
     /**
      *
-     *  Sets the background color of each field, and each path item for the path variant.
-     *
-     */
-    setBackgroundColor(group) {
-        // Set the right background color on each group
-        const defaultBackgroundColor =
-            this.variant === 'path' ? '#ffffff' : '#fcfcfc';
-        if (!group.backgroundColor) {
-            group.backgroundColor = defaultBackgroundColor;
-        }
-        requestAnimationFrame(() => {
-            if (
-                this.variant === 'path' &&
-                group.pathColor &&
-                !this.hideHeader
-            ) {
-                /* eslint-disable no-unexpected-multiline */
-
-                this.template
-                    .querySelectorAll(
-                        '[data-element-id="avonni-kanban__path_item"]'
-                    )
-                    [group.index].setAttribute(
-                        'style',
-                        `background:${group.pathColor} !important`
-                    );
-            }
-            for (
-                let i = 0;
-                i < (group.subGroups ? group.subGroups.length : 1);
-                i++
-            ) {
-                this.template.querySelectorAll(
-                    '[data-element-id="avonni-kanban__field"]'
-                )[group.index + i * this._groupValues.length].style.background =
-                    group.backgroundColor;
-            }
-
-            if (this._hasSubGroups) {
-                this.template.querySelectorAll(
-                    '[data-element-id="avonni-kanban__group_header_wrapper"]'
-                )[group.index].style.background = group.backgroundColor;
-
-                this.template.querySelector(
-                    '[data-element-id="avonni-kanban__container"]'
-                ).style.overflowY = 'hidden';
-            }
-        });
-    }
-
-    /**
-     *
      * Determines the scroll dimensions of the container for drag and drop translate calculations.
      *
      */
