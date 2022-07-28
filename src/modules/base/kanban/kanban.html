@@ -59,9 +59,10 @@
                                 aria-orientation="horizontal"
                             >
                                 <li
-                                    for:each={groupsHeader}
+                                    for:each={computedGroups}
                                     for:item="item"
                                     key={item.label}
+                                    style={item.pathStyle}
                                     class="
                                         slds-path__item
                                         slds-is-active
@@ -123,6 +124,7 @@
                     for:each={computedGroups}
                     for:item="group"
                     key={group.index}
+                    style={group.backgroundStyle}
                 >
                     <div
                         if:true={hideHeader}

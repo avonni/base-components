@@ -562,7 +562,7 @@ export default class Kanban extends LightningElement {
      *
      */
     capContainerWidth() {
-        const subgroupContainer = this.template.querySelector(
+        const container = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
         const groupHeader = this.template.querySelector(
@@ -578,8 +578,8 @@ export default class Kanban extends LightningElement {
         if (this._hasSubGroups) {
             const headerWidth = header.scrollWidth;
 
-            if (headerWidth <= subgroupContainer.clientWidth) {
-                subgroupContainer.style.overflowX = 'hidden';
+            if (headerWidth <= container.clientWidth) {
+                container.style.overflowX = 'hidden';
 
                 const totalWidth =
                     groupHeader.offsetWidth * this._groupValues.length;
@@ -588,17 +588,17 @@ export default class Kanban extends LightningElement {
 
                 const offset = this.variant === 'path' ? 2 : 0.75;
 
-                subgroupContainer.style.width = `calc(${totalWidth}px + ${totalMargins}rem - ${offset}rem)`;
+                container.style.width = `calc(${totalWidth}px + ${totalMargins}rem - ${offset}rem)`;
             } else {
-                subgroupContainer.style.overflowX = 'auto';
-                subgroupContainer.style.width = `100%`;
+                container.style.overflowX = 'auto';
+                container.style.width = `100%`;
                 expandableContainer.style.width = `${path.clientWidth}px`;
                 if (this.variant === 'path') {
                     header.style.width = `${path.clientWidth}px`;
                 }
             }
         } else if (this.variant === 'path') {
-            expandableContainer.style.width = `${path.clientWidth}px`;
+            container.style.width = `${path.clientWidth}px`;
         }
     }
 
