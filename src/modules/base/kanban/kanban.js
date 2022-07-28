@@ -364,10 +364,9 @@ export default class Kanban extends LightningElement {
         this._computedGroups.forEach((group, i) => {
             computedGroups[i].subGroups =
                 group.subGroups[this._currentSubGroupIndex];
+            computedGroups[i].backgroundStyle = group.backgroundStyle;
         });
         this._currentSubGroupIndex++;
-        console.log(computedGroups);
-        console.log(this._computedGroups);
         return computedGroups;
     }
 
