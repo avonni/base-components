@@ -33,6 +33,13 @@
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch';
+import {
+    UTILITY_ICON_NAMES,
+    STANDARD_ICON_NAMES,
+    ACTION_ICON_NAMES,
+    CUSTOM_ICON_NAMES,
+    DOCTYPE_ICON_NAMES
+} from './lwc-icon-names';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -180,23 +187,25 @@ export class HorizontalActivityTimeline {
      * Create horizontal view timeline
      */
     createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
+        console.log(sortedItems, maxVisibleItems, width);
         if (!this.areIconLibrariesReady) {
             this.setIconLibraries();
         }
 
-        this.resetHorizontalTimeline();
-        this._sortedItems = sortedItems;
+        // this.resetHorizontalTimeline();
+        // this._sortedItems = sortedItems;
 
-        if (this.isHeightDifferent(sortedItems, maxVisibleItems)) {
-            this._requestHeightChange = true;
-            this._maxVisibleItems = maxVisibleItems;
-        }
+        // if (this.isHeightDifferent(sortedItems, maxVisibleItems)) {
+        //     this._requestHeightChange = true;
+        //     this._maxVisibleItems = maxVisibleItems;
+        // }
 
-        this.setTimelineWidth(width);
-        this.createTimelineScrollAxis();
-        this.createTimelineAxis();
-        this.createTimeline();
-        this.initializeIntervalHorizontalScroll();
+        // this.setTimelineWidth(width);
+        // this.createTimelineScrollAxis();
+        // this.createTimelineAxis();
+        // this.createTimeline();
+        // this.initializeIntervalHorizontalScroll();
+        this.testingAllIcons();
     }
 
     /*
@@ -642,6 +651,53 @@ export class HorizontalActivityTimeline {
         return template;
     }
 
+    // TESTING IF ALL ICONS ARE CREATED COMPLETELY
+    testingAllIcons() {
+        d3.select(
+            this._activityTimeline.template.querySelector('.testing-icons')
+        )
+            .selectAll('*')
+            .remove();
+        const div = d3
+            .select(
+                this._activityTimeline.template.querySelector('.testing-icons')
+            )
+            .append('svg')
+            .attr('width', 3000)
+            .attr('height', 1500);
+
+        this.printAllIcons(div, UTILITY_ICON_NAMES, 15, 15);
+        this.printAllIcons(div, STANDARD_ICON_NAMES, 650, 15);
+        this.printAllIcons(div, ACTION_ICON_NAMES, 15, 825);
+        this.printAllIcons(div, CUSTOM_ICON_NAMES, 650, 725); // Congrats!
+        this.printAllIcons(div, DOCTYPE_ICON_NAMES, 650, 950); // Congrats!
+    }
+
+    printAllIcons(container, iconNames, offsetX, offsetY) {
+        const maxColumns = 20;
+        const maxRows = iconNames.length / maxColumns;
+        for (let row = 0; row <= Math.ceil(maxRows); ++row) {
+            for (let i = 0; i < maxColumns; ++i) {
+                if (i + row * maxColumns < iconNames.length) {
+                    const iconInfos = this.setIconInformation(
+                        iconNames[i + row * maxColumns]
+                    );
+                    const foreignObjectForIcon =
+                        container.append('foreignObject');
+                    foreignObjectForIcon
+                        .attr('width', 25)
+                        .attr('height', 25)
+                        .attr('x', 30 * i + offsetX)
+                        .attr('y', row * 30 + offsetY);
+                    this.createIconFromTemplate(
+                        foreignObjectForIcon,
+                        iconInfos
+                    );
+                }
+            }
+        }
+    }
+
     createIconFromTemplate(foreignObjectForIcon, iconInformation) {
         let elementsTemplate = [];
         let svgAttributes = {};
@@ -652,38 +708,54 @@ export class HorizontalActivityTimeline {
             if (template && template !== null) {
                 const apiElements = template.split('api_element(');
 
+                // if(iconInformation.iconName === 'travel_mode'){
+                //     console.log(apiElements);
+                //     console.log("GGG -> ", numberOfG )
+                // }
+                const ELEMENTS_TYPES = [
+                    'path',
+                    'circle',
+                    'ellipse',
+                    'mask',
+                    'rect',
+                    'g',
+                    'svg',
+                    'line',
+                    'polygon',
+                    'linearGradient',
+                    'defs',
+                    'stop'
+                ];
                 // Find all elements and attributes to create icon
                 apiElements.forEach((element) => {
-                    if (element.includes('svg')) {
+                    const elementType = ELEMENTS_TYPES.find((type) =>
+                        element.includes(`"${type}"`)
+                    );
+
+                    if (elementType && elementType === 'svg') {
                         element = element.slice(
                             element.indexOf('attrs: {') + 'attrs: {'.length,
                             element.indexOf('},')
                         );
+
                         svgAttributes =
                             this.extractAllAttributesOfElement(element);
-                    }
-                    if (element.includes('path')) {
-                        element = element.slice(
-                            element.indexOf('"d"'),
-                            element.indexOf('},')
+                    } else if (elementType && elementType !== -1) {
+                        this.addIconElement(
+                            elementsTemplate,
+                            element,
+                            elementType
                         );
-                        elementsTemplate.push({
-                            element: 'path',
-                            value: this.extractAllAttributesOfElement(element)
-                        });
-                    } else if (element.includes('circle')) {
-                        element = element.substring(
-                            '"circle", {attrs: {'.length,
-                            element.indexOf('}')
-                        );
-                        elementsTemplate.push({
-                            element: 'circle',
-                            value: this.extractAllAttributesOfElement(element)
-                        });
                     }
                 });
             }
         }
+
+        // if(iconInformation.iconName === 'travel_mode'){
+        //     // imbrication for travel mode
+        //     console.log(svgAttributes);
+        //     console.log(elementsTemplate);
+        // }
 
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
@@ -693,23 +765,37 @@ export class HorizontalActivityTimeline {
                 `slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ${iconInformation.categoryIconClass}`
             )
             .attr(
+                'data-key',
+                svgAttributes.dataKey
+                    ? svgAttributes.dataKey
+                    : iconInformation.iconName
+            )
+            .attr(
                 'focusable',
                 svgAttributes.focusable ? svgAttributes.focusable : 'false'
             )
             .attr(
                 'viewBox',
                 svgAttributes.viewBox ? svgAttributes.viewBox : '0 0 100 100'
-            )
-            .append('g');
+            );
 
         // Add all attributes to svg
-        elementsTemplate.forEach((path) => {
-            const element = iconSVG.append(path.element);
+        elementsTemplate.forEach((elementToAdd) => {
+            const element = iconSVG.append(elementToAdd.element);
 
             // Add all the attributes of element
-            Object.keys(path.value).forEach((attribute) => {
-                element.attr(attribute, path.value[`${attribute}`]);
+            Object.keys(elementToAdd.value).forEach((attribute) => {
+                element.attr(attribute, elementToAdd.value[`${attribute}`]);
             });
+        });
+    }
+
+    addIconElement(elementsTemplate, element, tag) {
+        const attrIndex = element.indexOf('attrs: {') + 'attrs: {'.length;
+        element = element.slice(attrIndex, element.indexOf('},'));
+        elementsTemplate.push({
+            element: tag,
+            value: this.extractAllAttributesOfElement(element)
         });
     }
 
