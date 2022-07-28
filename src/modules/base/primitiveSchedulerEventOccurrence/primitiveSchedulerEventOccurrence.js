@@ -529,7 +529,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         classListMutation(this.classList, {
             'avonni-scheduler__event_horizontal':
-                this._variant === 'timeline-horizontal'
+                this._variant === 'timeline-horizontal',
+            'avonni-scheduler__month-calendar-event': this.isMonthCalendar
         });
 
         if (this._connected) {
@@ -906,10 +907,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get monthColorChipStyle() {
-        if (this.disabled) {
-            // return `border: 2px solid ${this.computedColor};`;
-            // return `background-color: ${this.transparentColor};`;
-        }
         return `background-color: ${this.computedColor};`;
     }
 
@@ -945,7 +942,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return classSet('avonni-scheduler__reference-line slds-is-absolute')
             .add({
                 'avonni-scheduler__reference-line_vertical':
-                    this.isVerticalTimeline || this.isVerticalCalendar
+                    this.isVerticalTimeline || this.isVerticalCalendar,
+                'avonni-scheduler__reference-line_month-calendar':
+                    this.isMonthCalendar
             })
             .toString();
     }
@@ -1425,27 +1424,25 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     updatePositionInCalendar() {
-        if (!this.referenceLine) {
-            const style = this.hostElement.style;
-            const isMonth = this.isMonthCalendar;
+        const style = this.hostElement.style;
+        const isMonth = this.isMonthCalendar;
 
-            // Hide the placeholders in the month calendar display
-            const { isPlaceholder, columnIndex } = this.hostElement.dataset;
-            const isHidden = isMonth && isPlaceholder && columnIndex !== '0';
-            style.visibility = isHidden ? 'hidden' : 'visible';
+        // Hide the placeholders in the month calendar display
+        const { isPlaceholder, columnIndex } = this.hostElement.dataset;
+        const isHidden = isMonth && isPlaceholder && columnIndex !== '0';
+        style.visibility = isHidden ? 'hidden' : 'visible';
 
-            // Hide the overflowing events in the month calendar display
-            let overflows = this.overflowsCell;
-            const yAxis = this.headerCells.yAxis;
-            if (yAxis && !overflows && !isPlaceholder) {
-                const firstVisibleDate = dateTimeObjectFrom(yAxis[0].start);
-                const startsBeforeBeginningOfMonth =
-                    this.from < firstVisibleDate &&
-                    this.to > firstVisibleDate.endOf('day');
-                overflows = startsBeforeBeginningOfMonth;
-            }
-            style.display = isMonth && overflows ? 'none' : null;
+        // Hide the overflowing events in the month calendar display
+        let overflows = this.overflowsCell;
+        const yAxis = this.headerCells.yAxis;
+        if (yAxis && !overflows && !isPlaceholder) {
+            const firstVisibleDate = dateTimeObjectFrom(yAxis[0].start);
+            const startsBeforeBeginningOfMonth =
+                this.from < firstVisibleDate &&
+                this.to > firstVisibleDate.endOf('day');
+            overflows = startsBeforeBeginningOfMonth;
         }
+        style.display = isMonth && overflows ? 'none' : null;
 
         const { cellHeight, headerCells, cellWidth } = this;
         if (
@@ -1473,6 +1470,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._x = xIndex * cellWidth;
 
         if (this.isMonthCalendar) {
+            if (this.title === 'Deadline') console.log(this.offsetSide, this.y);
             this._y += this.offsetSide;
         }
     }

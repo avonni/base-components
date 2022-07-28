@@ -401,6 +401,7 @@ export default class SchedulerEvent {
                 const key = `${this.title}-${this.occurrences.length}`;
                 this.occurrences.push(
                     new SchedulerEventOccurrence({
+                        eventKey: this.key,
                         from,
                         to,
                         key,

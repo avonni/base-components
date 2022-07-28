@@ -33,7 +33,8 @@
 import {
     CELL_SELECTOR,
     MONTH_DAY_LABEL_HEIGHT,
-    MONTH_EVENT_HEIGHT
+    MONTH_EVENT_HEIGHT,
+    MONTH_REFERENCE_LINE_HEIGHT
 } from './defaults';
 
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
@@ -219,7 +220,10 @@ export function updateOccurrencesOffset(
             // If the current occurrence is overflowing the cell height,
             // it will only be displayed in the "show more" popover
             const availableHeight = cellSize / (level + 2);
-            occurrence.overflowsCell = availableHeight < MONTH_EVENT_HEIGHT;
+            const occHeight = occElement.referenceLine
+                ? MONTH_REFERENCE_LINE_HEIGHT
+                : MONTH_EVENT_HEIGHT;
+            occurrence.overflowsCell = availableHeight < occHeight;
         }
 
         const selection = this._eventData.selection;

@@ -461,17 +461,13 @@
                         occurrence={occurrence}
                         occurrence-key={occurrence.key}
                         read-only
+                        reference-line={occurrence.event.referenceLine}
                         resource-key={occurrence.resourceName}
                         resources={computedResources}
                         title={occurrence.title}
                         theme={occurrence.event.theme}
                         to={occurrence.to}
                         variant="calendar-month"
-                        data-event-name={occurrence.event.name}
-                        data-key={occurrence.key}
-                        data-day={occurrence.from.day}
-                        data-month={occurrence.from.month}
-                        data-weekday={occurrence.fromWeekday}
                         onprivatecontextmenu={handleEventContextMenu}
                         onprivatedblclick={handleEventDoubleClick}
                     ></c-primitive-scheduler-event-occurrence>

@@ -580,7 +580,8 @@ Calendar.args = {
     selectedDisplay: 'calendar',
     selectedResources: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
     selectedTimeSpan: 'Standard.Scheduler.MonthTimeSpan',
-    disabledDatesTimes
+    disabledDatesTimes,
+    referenceLines
 };
 
 export const VerticalTimeline = Template.bind({});
