@@ -367,6 +367,7 @@ export default class Kanban extends LightningElement {
             computedGroups[i].backgroundStyle = group.backgroundStyle;
         });
         this._currentSubGroupIndex++;
+        console.log(computedGroups);
         return computedGroups;
     }
 
@@ -766,26 +767,6 @@ export default class Kanban extends LightningElement {
                         : 0;
                 group.style.paddingBottom = `${paddingBottom}px`;
             }
-        });
-    }
-
-    /**
-     * Displays the cover image if needed
-     * @param {object} groups
-     */
-    displayCoverImage(groups) {
-        groups.forEach((group) => {
-            group.tiles.forEach((tile) => {
-                if (tile.field.coverImage) {
-                    requestAnimationFrame(() => {
-                        const tileElement = this.findTileElement(tile);
-                        tileElement.children[0].style.backgroundImage = `url(${tile.field.coverImage})`;
-                        tileElement.children[0].style.height = `${
-                            tileElement.offsetWidth * 0.75
-                        }px`;
-                    });
-                }
-            });
         });
     }
 

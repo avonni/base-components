@@ -237,12 +237,13 @@
                             onmousemove={handleDropZone}
                         >
                             <div
-                                if:true={record.field.coverImage}
+                                if:true={record.coverImage}
                                 class="
                                     avonni-kanban__tile_image
                                     slds-m-bottom_small
                                 "
                                 data-element-id="avonni-kanban__tile_image"
+                                style={record.coverImageStyle}
                             ></div>
                             <ul
                                 data-element-id="fields"

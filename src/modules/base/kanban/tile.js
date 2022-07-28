@@ -59,6 +59,10 @@ export default class KanbanTile {
         return this._subGroup;
     }
 
+    get coverImageStyle() {
+        return `background-image: url(${this._coverImage}); height: 250px;`;
+    }
+
     get coverImage() {
         return this._coverImage;
     }
