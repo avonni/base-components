@@ -86,12 +86,12 @@ export default class KanbanGroup {
         return this._footerActions;
     }
 
-    get backgroundColor() {
-        return this._backgroundColor;
+    get backgroundStyle() {
+        return `background-color: ${this._backgroundColor};`;
     }
 
-    get pathColor() {
-        return this._pathColor;
+    get pathStyle() {
+        return `background-color: ${this._pathColor} !important;`;
     }
 
     updateSummarize() {

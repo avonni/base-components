@@ -64,9 +64,10 @@
                                 aria-orientation="horizontal"
                             >
                                 <li
-                                    for:each={groupsHeader}
+                                    for:each={computedGroups}
                                     for:item="item"
                                     key={item.label}
+                                    style={item.pathStyle}
                                     class="
                                         slds-path__item
                                         slds-is-active
@@ -243,6 +244,7 @@
                             for:item="group"
                             data-element-id="avonni-kanban__field"
                             data-subgroup-field={section.label}
+                            style={group.backgroundStyle}
                             key={group._value}
                         >
                             <div

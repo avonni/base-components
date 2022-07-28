@@ -366,6 +366,8 @@ export default class Kanban extends LightningElement {
                 group.subGroups[this._currentSubGroupIndex];
         });
         this._currentSubGroupIndex++;
+        console.log(computedGroups);
+        console.log(this._computedGroups);
         return computedGroups;
     }
 
@@ -380,31 +382,6 @@ export default class Kanban extends LightningElement {
         ).add({
             'avonni-kanban__tile_disabled_drag': this.disableItemDragAndDrop
         });
-    }
-
-    /**
-     * Gets the name and the length of the groups
-     *
-     * @type {object[]}
-     */
-    get groupsHeader() {
-        let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
-
-        computedGroups.forEach((group) => {
-            group.tiles = [];
-        });
-
-        this._records.forEach((tile) => {
-            const group = computedGroups.find(
-                (computedGroup) =>
-                    computedGroup.value === tile[this.groupFieldName]
-            );
-            if (group) {
-                group.tiles.push(tile);
-            }
-        });
-
-        return computedGroups;
     }
 
     /**
