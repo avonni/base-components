@@ -37,7 +37,12 @@
 
     <div if:false={isLoading} class={variantClass}>
         <div
-            class="slds-path avonni-kanban__container slds-is-relative"
+            class="
+                slds-path
+                avonni-kanban__container
+                slds-scrollable_x
+                slds-is-relative
+            "
             data-element-id="avonni-kanban__container"
         >
             <div if:true={isPath} class="slds-grid slds-path__track">
@@ -231,6 +236,7 @@
                         data-element-id="avonni-kanban__group"
                         class="
                             avonni-kanban__tiles_container
+                            slds-scrollable_y
                             slds-has-dividers_around-space
                         "
                     >

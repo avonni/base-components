@@ -1,9 +1,3 @@
-.avonni-kanban__container {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: 100%;
-}
-
 .avonni-kanban__disabled_column_drag .avonni-kanban__group_header {
     pointer-events: none;
 }
@@ -66,7 +60,6 @@
 }
 
 .avonni-kanban__tiles_container {
-    overflow-y: scroll;
     overflow-x: hidden;
 }
 
