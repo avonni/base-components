@@ -372,7 +372,7 @@
     position: sticky;
     border: none;
     z-index: 999;
-    top: 0;
+    top: 96px;
     border-radius: 0.25rem;
 }
 
