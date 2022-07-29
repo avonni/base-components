@@ -937,19 +937,20 @@ export default class Kanban extends LightningElement {
             return;
         }
 
+        const remToPx = parseFloat(
+            getComputedStyle(this.template.host).fontSize
+        );
+        const scrolledWidth = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        ).scrollLeft;
+
+        const scrolledGroupsCount = scrolledWidth / this._groupWidth;
+
+        const mouseHoveringGroup =
+            (event.clientX + 0.5 * remToPx) / this._groupWidth;
+
         this._releasedGroupIndex = Math.min(
-            Math.floor(
-                (event.clientX +
-                    0.5 *
-                        parseFloat(
-                            getComputedStyle(this.template.host).fontSize
-                        )) /
-                    this._groupWidth +
-                    this.template.querySelector(
-                        '[data-element-id="avonni-kanban__container"]'
-                    ).scrollLeft /
-                        this._groupWidth
-            ),
+            Math.floor(mouseHoveringGroup + scrolledGroupsCount),
             this.groupValues.length - 1
         );
 
