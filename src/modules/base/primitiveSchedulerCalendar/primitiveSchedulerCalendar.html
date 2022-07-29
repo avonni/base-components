@@ -291,7 +291,10 @@
                                                 >
                                                     <c-primitive-scheduler-event-occurrence
                                                         key={uniqueKey}
-                                                        class="slds-is-absolute"
+                                                        class="
+                                                            slds-is-absolute
+                                                            avonni-scheduler__calendar-month-multi-day-placeholder
+                                                        "
                                                         aria-hidden="true"
                                                         cell-height={cellHeight}
                                                         cell-width={cellWidth}
@@ -305,6 +308,7 @@
                                                         icon-name={placeholder.iconName}
                                                         labels={placeholder.labels}
                                                         occurrence={placeholder}
+                                                        occurrence-key={placeholder.key}
                                                         read-only={readOnly}
                                                         resource-key={placeholder.resourceName}
                                                         resources={computedResources}
@@ -322,6 +326,7 @@
                                                         data-key={placeholder.key}
                                                         data-month={cell.month}
                                                         data-week-number={cell.weekNumber}
+                                                        onprivatemousedown={handlePlaceholderMouseDown}
                                                     ></c-primitive-scheduler-event-occurrence>
                                                 </template>
                                             </div>

@@ -76,9 +76,7 @@ export class SchedulerCellGroup {
                 );
                 if (!exists) {
                     cells[i][eventType].push(event);
-                    cells[i][eventType] = cells[i][eventType].sort(
-                        (a, b) => a.from - b.from
-                    );
+                    cells[i][eventType].sort((a, b) => a.from - b.from);
                 }
                 i += 1;
                 if (event.weekStart) {

@@ -1470,7 +1470,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._x = xIndex * cellWidth;
 
         if (this.isMonthCalendar) {
-            if (this.title === 'Deadline') console.log(this.offsetSide, this.y);
             this._y += this.offsetSide;
         }
     }

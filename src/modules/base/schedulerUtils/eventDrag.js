@@ -143,37 +143,6 @@ export default class SchedulerEventDrag {
         this.draggedEvent.y = y + initialY;
     }
 
-    resize(x, y, occurrence, cellGroup) {
-        const normalizedPosition = this.normalizeMousePosition(x, y);
-        const position = this.isVertical
-            ? normalizedPosition.y
-            : normalizedPosition.x;
-
-        const { mouseX, mouseY } = this._initialState;
-        const distanceMoved = this.isVertical
-            ? position - mouseY
-            : position - mouseX;
-
-        // If a new event is created through click and drag,
-        // Set the direction the user is going to
-        if (this._isNewEvent) {
-            this.resizeSide = distanceMoved >= 0 ? 'end' : 'start';
-        }
-        const hoveredEventCell = this.getHoveredEventCell(
-            position,
-            occurrence,
-            cellGroup
-        );
-        if (hoveredEventCell) {
-            return hoveredEventCell;
-        }
-
-        // If we are not passing above another event,
-        // change the styling of the dragged event to follow the cursor
-        this.updateDraggedEventStyleAfterResize(distanceMoved);
-        return null;
-    }
-
     /**
      * Get the boundaries of the dragging/resizing zone.
      *
@@ -216,6 +185,43 @@ export default class SchedulerEventDrag {
         }
 
         return { right, left, top, bottom };
+    }
+
+    /**
+     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
+     *
+     * @param {number} position New position of the occurrence.
+     */
+    getHoveredEventCell(position, occurrence, cellGroup) {
+        const labelWidth =
+            this.resizeSide === 'start'
+                ? this.draggedEvent.leftLabelWidth * -1
+                : this.draggedEvent.rightLabelWidth;
+        const computedPosition = position + labelWidth;
+
+        // Get the events present in the cell crossed
+        const hoveredCell = this.isVertical
+            ? getElementOnYAxis(this.cellGroupElement, computedPosition)
+            : getElementOnXAxis(this.cellGroupElement, computedPosition);
+
+        const computedCell = cellGroup.getCellFromStart(
+            Number(hoveredCell.dataset.start)
+        );
+        const cellEvents = computedCell.events;
+
+        // Check if any event in the cell has the same offset
+        const eventIsHovered = cellEvents.some((cellEvent) => {
+            const isDifferent = cellEvent.key !== occurrence.key;
+            const overlaps = this.areOverlapping(occurrence, cellEvent);
+            return isDifferent && overlaps;
+        });
+
+        // If one of them do, the dragged event is overlapping it.
+        // We have to rerender the scheduler so the resource height enlarges.
+        if (eventIsHovered) {
+            return hoveredCell;
+        }
+        return null;
     }
 
     getValueOnTheCellGroupAxis(x, y) {
@@ -266,45 +272,51 @@ export default class SchedulerEventDrag {
         return { x, y };
     }
 
-    /**
-     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
-     *
-     * @param {number} position New position of the occurrence.
-     */
-    getHoveredEventCell(position, occurrence, cellGroup) {
-        const labelWidth =
-            this.resizeSide === 'start'
-                ? this.draggedEvent.leftLabelWidth * -1
-                : this.draggedEvent.rightLabelWidth;
-        const computedPosition = position + labelWidth;
+    resize(x, y, occurrence, cellGroup) {
+        const normalizedPosition = this.normalizeMousePosition(x, y);
+        const position = this.isVertical
+            ? normalizedPosition.y
+            : normalizedPosition.x;
 
-        // Get the events present in the cell crossed
-        const hoveredCell = this.isVertical
-            ? getElementOnYAxis(this.cellGroupElement, computedPosition)
-            : getElementOnXAxis(this.cellGroupElement, computedPosition);
+        const { mouseX, mouseY } = this._initialState;
+        const distanceMoved = this.isVertical
+            ? position - mouseY
+            : position - mouseX;
 
-        const computedCell = cellGroup.getCellFromStart(
-            Number(hoveredCell.dataset.start)
-        );
-        const cellEvents = computedCell.events;
-
-        // Check if any event in the cell has the same offset
-        const eventIsHovered = cellEvents.some((cellEvent) => {
-            const isDifferent = cellEvent.key !== occurrence.key;
-            const overlaps = this.areOverlapping(occurrence, cellEvent);
-            return isDifferent && overlaps;
-        });
-
-        // If one of them do, the dragged event is overlapping it.
-        // We have to rerender the scheduler so the resource height enlarges.
-        if (eventIsHovered) {
-            return hoveredCell;
+        // If a new event is created through click and drag,
+        // Set the direction the user is going to
+        if (this._isNewEvent) {
+            this.resizeSide = distanceMoved >= 0 ? 'end' : 'start';
         }
+        const hoveredEventCell = this.getHoveredEventCell(
+            position,
+            occurrence,
+            cellGroup
+        );
+        if (hoveredEventCell) {
+            return hoveredEventCell;
+        }
+
+        // If we are not passing above another event,
+        // change the styling of the dragged event to follow the cursor
+        this.updateDraggedEventStyleAfterResize(distanceMoved);
         return null;
     }
 
     setDraggedEvent(draggedEvent, { mouseX, mouseY } = this._initialState) {
         this.draggedEvent = draggedEvent;
+        this.initDraggedEventState(mouseX, mouseY);
+    }
+
+    shrinkDraggedEvent(width, mouseX, mouseY) {
+        if (!this.draggedEvent) {
+            return;
+        }
+        this.draggedEvent.style.width = `${width}px`;
+        const { left, top } = this._boundaries;
+        const x = mouseX - left - width / 2;
+        this.draggedEvent.x = x;
+        this.draggedEvent.y = mouseY - top;
         this.initDraggedEventState(mouseX, mouseY);
     }
 

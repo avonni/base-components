@@ -226,6 +226,10 @@ export function updateOccurrencesOffset(
             occurrence.overflowsCell = availableHeight < occHeight;
         }
 
+        // Remove any previous display: none,
+        // to make sure the occElement.endPosition is right
+        occElement.style.display = null;
+
         const selection = this._eventData.selection;
         previousOccurrences.unshift({
             level,
@@ -237,7 +241,7 @@ export function updateOccurrencesOffset(
             width: occElement.width
         });
 
-        if (!isVertical && (!isPlaceholder || isVisiblePlaceholder)) {
+        if (!isVertical && !occurrence.overflowsCell) {
             // If the occurrence is taller than the previous ones,
             // update the default level height
             const height = occElement.getBoundingClientRect().height;

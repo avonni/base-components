@@ -196,7 +196,17 @@ export default class SchedulerEventData {
 
         // Update the start and end date
         const duration = occurrence.to - occurrence.from;
-        const start = dateTimeObjectFrom(Number(cell.dataset.start));
+        let start = dateTimeObjectFrom(Number(cell.dataset.start));
+        if (this.isCalendar && this.schedule.isMonth) {
+            // Keep the original time
+            // when dragging an event to a calendar month cell
+            start = start.set({
+                hour: occurrence.from.hour,
+                minute: occurrence.from.minute,
+                second: occurrence.from.second,
+                millisecond: occurrence.from.millisecond
+            });
+        }
         draftValues.from = start.toUTC().toISO();
         draftValues.to = addToDate(start, 'millisecond', duration)
             .toUTC()
@@ -421,7 +431,10 @@ export default class SchedulerEventData {
         const resourceNames = draftResourceNames.length
             ? draftResourceNames
             : occurrence.resourceNames;
-        const processedResourceNames = [...resourceNames];
+        const processedResourceNames = [...resourceNames].filter((name) => {
+            // Update only the selected resources occurrences
+            return this.selectedResources.includes(name);
+        });
         const newOccurrences = [];
 
         occurrences.forEach((occ) => {
@@ -434,7 +447,7 @@ export default class SchedulerEventData {
                 Object.entries(draftValues).forEach((entry) => {
                     const [key, value] = entry;
 
-                    if (value.length || key === 'allDay') {
+                    if (key === 'allDay' || value.length) {
                         if (key === 'from' || key === 'to') {
                             // Convert the ISO dates into DateTime objects
                             occ[key] = dateTimeObjectFrom(value);
@@ -506,11 +519,19 @@ export default class SchedulerEventData {
 
         const key = this.selection.occurrence.key;
         const draggedEvent = this.schedule.template.querySelector(
-            `[data-element-id^="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"]`
+            `[data-element-id^="avonni-primitive-scheduler-event-occurrence"][data-key="${key}"]:not([data-element-id$="-placeholder"])`
         );
         if (draggedEvent) {
             this.eventDrag.setDraggedEvent(draggedEvent);
         }
+    }
+
+    shrinkDraggedEvent(width, mouseX, mouseY) {
+        if (!this.eventDrag) {
+            return;
+        }
+        this.eventDrag.shrinkDraggedEvent(width, mouseX, mouseY);
+        this.selection.isMoving = true;
     }
 
     updateAllEventsDefaults() {
@@ -654,12 +675,11 @@ export default class SchedulerEventData {
         }
         const recurrentEvent = event.recurrence;
         const recurrenceModes = this.recurrentEditModes;
-        const onlyOccurrenceEditAllowed = this.onlyOccurrenceEditAllowed;
 
         if (recurrentEvent && recurrenceModes.length > 1) {
             return { eventToDispatch: 'recurrence' };
         }
-        if (recurrentEvent && onlyOccurrenceEditAllowed) {
+        if (recurrentEvent && this.onlyOccurrenceEditAllowed) {
             this.saveOccurrence();
         } else {
             this.saveEvent();

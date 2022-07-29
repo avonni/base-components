@@ -113,6 +113,10 @@
     min-width: var(--lwc-sizeXSmall, 12rem);
 }
 
+.avonni-scheduler__calendar-month-multi-day-placeholder {
+    height: 1.5rem;
+}
+
 .avonni-scheduler__calendar-show-more-popover-close-button {
     top: 0;
     right: 0;

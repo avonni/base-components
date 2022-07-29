@@ -58,6 +58,14 @@ export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup
         super.initCells();
 
         if (this.multiDayPlaceholders) {
+            // Order the placeholders that are spanning on multiple weeks
+            // from the latest to the earliest, so the last cells do not
+            // use the first week's placeholder as their occurrence
+            this.multiDayPlaceholders.sort((a, b) => {
+                if (!a.weekStart) return 1;
+                if (!b.weekStart) return -1;
+                return b.weekStart - a.weekStart;
+            });
             this.multiDayPlaceholders.forEach((placeholder) => {
                 this.addEventToCells(placeholder, 'placeholders');
             });
