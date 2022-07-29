@@ -995,6 +995,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 }
             });
         });
+
+        if (this._eventData && this._eventData.eventDrag) {
+            const occurrence = this._eventData.selection.occurrence;
+            occurrence.overflowsCell = false;
+        }
     }
 
     updateVisibleWidth() {
@@ -1341,7 +1346,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handlePlaceholderMouseDown(mouseEvent) {
         const isVisible = mouseEvent.currentTarget.dataset.columnIndex === '0';
         if (isVisible) {
-            this.handleEventMouseDown(mouseEvent);
+            this._mouseIsDown = true;
+            this._eventData.handleExistingEventMouseDown(mouseEvent);
+            this.dispatchHidePopovers();
             this._eventData.setDraggedEvent();
         }
     }
@@ -1367,6 +1374,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.showMorePopover = null;
         this._showMorePopoverIsFocused = false;
         this._mouseInShowMorePopover = false;
+    }
+
+    handleShowMorePopoverEventMouseDown(mouseEvent) {
+        this._mouseIsDown = true;
+        const key = mouseEvent.currentTarget.dataset.key;
+        const draggedEvent = this.template.querySelector(
+            `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-key="${key}"]`
+        );
+        const eventInfo = {
+            currentTarget: draggedEvent,
+            detail: mouseEvent.detail
+        };
+        this._eventData.handleExistingEventMouseDown(eventInfo);
+        this.showMorePopover = null;
+        this.dispatchHidePopovers();
+
+        requestAnimationFrame(() => {
+            // If the event was only visible in the popover,
+            // we need to update the dragged element after render,
+            // and center it under the mouse
+            const { x, y } = mouseEvent.detail;
+            this._eventData.setDraggedEvent();
+            this._eventData.shrinkDraggedEvent(this.cellWidth, x, y);
+        });
     }
 
     handleShowMorePopoverFocusin() {

@@ -408,76 +408,77 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Show more popover -->
-    <div
-        if:true={showMorePopover}
-        class="
-            slds-is-fixed slds-dropdown
-            avonni-scheduler__calendar-show-more-popover
-        "
-        role="tooltip"
-        aria-live="polite"
-        data-element-id="div-popover"
-        onmouseenter={handleShowMorePopoverMouseEnter}
-        onmouseleave={handleShowMorePopoverMouseLeave}
-    >
-        <lightning-focus-trap
-            onfocusin={handleShowMorePopoverFocusin}
-            onfocusout={handleShowMorePopoverFocusout}
+        <!-- Show more popover -->
+        <div
+            if:true={showMorePopover}
+            class="
+                slds-is-fixed slds-dropdown
+                avonni-scheduler__calendar-show-more-popover
+            "
+            role="tooltip"
+            aria-live="polite"
+            data-element-id="div-popover"
+            onmouseenter={handleShowMorePopoverMouseEnter}
+            onmouseleave={handleShowMorePopoverMouseLeave}
         >
-            <div class="slds-popover__body">
-                <lightning-button-icon
-                    class="
-                        slds-is-absolute
-                        slds-p-horizontal_x-small
-                        avonni-scheduler__calendar-show-more-popover-close-button
-                    "
-                    icon-name="utility:close"
-                    variant="bare"
-                    data-element-id="lightning-button-icon-show-more-close"
-                    onclick={handleShowMorePopoverClose}
-                ></lightning-button-icon>
-                <div
-                    class="
-                        slds-m-horizontal_x-small
-                        slds-p-bottom_xx-small
-                        slds-text-title_caps
-                    "
-                >
-                    {showMorePopover.label}
+            <lightning-focus-trap
+                onfocusin={handleShowMorePopoverFocusin}
+                onfocusout={handleShowMorePopoverFocusout}
+            >
+                <div class="slds-popover__body">
+                    <lightning-button-icon
+                        class="
+                            slds-is-absolute
+                            slds-p-horizontal_x-small
+                            avonni-scheduler__calendar-show-more-popover-close-button
+                        "
+                        icon-name="utility:close"
+                        variant="bare"
+                        data-element-id="lightning-button-icon-show-more-close"
+                        onclick={handleShowMorePopoverClose}
+                    ></lightning-button-icon>
+                    <div
+                        class="
+                            slds-m-horizontal_x-small
+                            slds-p-bottom_xx-small
+                            slds-text-title_caps
+                        "
+                    >
+                        {showMorePopover.label}
+                    </div>
+                    <template
+                        for:each={showMorePopover.events}
+                        for:item="occurrence"
+                    >
+                        <c-primitive-scheduler-event-occurrence
+                            key={occurrence.key}
+                            class="slds-m-bottom_xx-small"
+                            color={occurrence.color}
+                            date-format={dateFormat}
+                            disabled={occurrence.event.disabled}
+                            event-data={occurrence.event.data}
+                            event-name={occurrence.event.name}
+                            from={occurrence.from}
+                            icon-name={occurrence.event.iconName}
+                            labels={occurrence.event.labels}
+                            occurrence={occurrence}
+                            occurrence-key={occurrence.key}
+                            reference-line={occurrence.event.referenceLine}
+                            resource-key={occurrence.resourceName}
+                            resources={computedResources}
+                            title={occurrence.title}
+                            theme={occurrence.event.theme}
+                            to={occurrence.to}
+                            variant="calendar-month"
+                            data-key={occurrence.key}
+                            onprivatecontextmenu={handleEventContextMenu}
+                            onprivatedblclick={handleEventDoubleClick}
+                            onprivatemousedown={handleShowMorePopoverEventMouseDown}
+                        ></c-primitive-scheduler-event-occurrence>
+                    </template>
                 </div>
-                <template
-                    for:each={showMorePopover.events}
-                    for:item="occurrence"
-                >
-                    <c-primitive-scheduler-event-occurrence
-                        key={occurrence.key}
-                        class="slds-m-bottom_xx-small"
-                        color={occurrence.color}
-                        date-format={dateFormat}
-                        disabled={occurrence.event.disabled}
-                        event-data={occurrence.event.data}
-                        event-name={occurrence.event.name}
-                        from={occurrence.from}
-                        icon-name={occurrence.event.iconName}
-                        labels={occurrence.event.labels}
-                        occurrence={occurrence}
-                        occurrence-key={occurrence.key}
-                        read-only
-                        reference-line={occurrence.event.referenceLine}
-                        resource-key={occurrence.resourceName}
-                        resources={computedResources}
-                        title={occurrence.title}
-                        theme={occurrence.event.theme}
-                        to={occurrence.to}
-                        variant="calendar-month"
-                        onprivatecontextmenu={handleEventContextMenu}
-                        onprivatedblclick={handleEventDoubleClick}
-                    ></c-primitive-scheduler-event-occurrence>
-                </template>
-            </div>
-        </lightning-focus-trap>
+            </lightning-focus-trap>
+        </div>
     </div>
 </template>
