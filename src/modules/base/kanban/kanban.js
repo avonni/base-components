@@ -593,8 +593,9 @@ export default class Kanban extends LightningElement {
             } else {
                 container.style.overflowX = 'auto';
                 container.style.width = `100%`;
-                expandableContainer.style.width = `${path.clientWidth}px`;
                 if (this.variant === 'path') {
+                    expandableContainer.style.width = `${path.clientWidth}px`;
+
                     header.style.width = `${path.clientWidth}px`;
                 }
             }
@@ -701,10 +702,6 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__container"]'
         );
 
-        const expandableContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__expandable_container"]'
-        );
-
         let scrollStep = {
             x: 0,
             y: 0
@@ -716,17 +713,9 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        if (
-            currentY + 50 >
-            this._kanbanPos.bottom +
-                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
-        ) {
+        if (currentY + 50 > this._kanbanPos.bottom) {
             scrollStep.y = 10;
-        } else if (
-            currentY - 50 <
-            this._kanbanPos.top +
-                (this._hasSubGroups ? expandableContainer.scrollTop : 0)
-        ) {
+        } else if (currentY - 50 < this._kanbanPos.top) {
             scrollStep.y = -10;
         }
 
