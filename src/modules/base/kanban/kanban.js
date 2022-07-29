@@ -326,11 +326,12 @@ export default class Kanban extends LightningElement {
      */
     get computedFieldClass() {
         return classSet(
-            'avonni-kanban__field slds-p-vertical_x-small slds-col slds-is-relative'
+            'avonni-kanban__field slds-grid slds-p-vertical_x-small slds-col slds-is-relative'
         ).add({
             'avonni-kanban__field_disabled_column_drag':
                 this.disableColumnDragAndDrop,
-            'slds-m-around_xx-small': this.variant === 'base'
+            'slds-m-around_xx-small': this.variant === 'base',
+            'slds-grid slds-col': this.variant === 'path'
         });
     }
 

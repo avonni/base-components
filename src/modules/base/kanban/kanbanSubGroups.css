@@ -54,7 +54,6 @@
     height: 100%;
     right: 0;
     left: 0;
-    display: flex;
     width: 100%;
 }
 
@@ -64,8 +63,6 @@
 
 .avonni-kanban__variant_path .avonni-kanban__field {
     height: calc(100% - 1rem);
-    display: flex;
-    flex-direction: column;
 }
 
 .avonni-kanban__tiles_container {
@@ -100,9 +97,6 @@
     color: var(--avonni-kanban-summary-text-color, #10aa52);
     font-size: var(--avonni-kanban-summarize-font-size, 1.5rem);
     font-weight: var(--avonni-kanban-summarize-font-weight, 400);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__group_header {
@@ -111,7 +105,6 @@
 }
 
 .avonni-kanban__field {
-    display: flex;
     flex-direction: column;
     min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
     max-width: var(--avonni-kanban-column-sizing-max-width, 22.5em);
@@ -214,16 +207,6 @@
     pointer-events: none;
 }
 
-.avonni-kanban__footer_action {
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    transition: background 0.1s;
-    border-radius: 0.25rem;
-}
-
 .avonni-kanban__footer_action:not(:disabled):hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
@@ -301,15 +284,7 @@
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.avonni-kanban__tile-title {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
 .avonni-kanban_path__title {
-    display: flex;
-    align-items: center;
     justify-content: space-around;
 }
 
@@ -348,8 +323,6 @@
 }
 
 .avonni-kanban_subgroup_header_base {
-    display: flex;
-    align-items: center;
     overflow: visible;
 }
 
