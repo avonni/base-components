@@ -1302,6 +1302,15 @@ export default class Kanban extends LightningElement {
             ? this._initialScrollHeight
             : this._kanbanPos.bottom;
 
+        if (
+            this._initialScrollWidth === fieldContainer.offsetWidth &&
+            !this._hasSubGroups
+        ) {
+            fieldContainer.style.overflowX = 'hidden';
+        } else if (!this._hasSubGroups) {
+            fieldContainer.style.overflowX = 'scroll';
+        }
+
         // Calculates the position of the mouse depending on the kanban boundaries
         let currentY =
             event.clientY +
