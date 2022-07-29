@@ -57,6 +57,20 @@ const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_WIDTH = 1300;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
+const ICON_ELEMENT_TYPES = [
+    'svg',
+    'g',
+    'path',
+    'circle',
+    'ellipse',
+    'rect',
+    'line',
+    'polygon',
+    'linearGradient',
+    'defs',
+    'mask',
+    'stop'
+];
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
@@ -666,9 +680,9 @@ export class HorizontalActivityTimeline {
             .attr('width', 3000)
             .attr('height', 1500);
 
-        this.printAllIcons(div, UTILITY_ICON_NAMES, 15, 15);
-        this.printAllIcons(div, STANDARD_ICON_NAMES, 650, 15);
-        this.printAllIcons(div, ACTION_ICON_NAMES, 15, 825);
+        this.printAllIcons(div, UTILITY_ICON_NAMES, 15, 15); // congrats!
+        this.printAllIcons(div, STANDARD_ICON_NAMES, 650, 15); // congrats!
+        this.printAllIcons(div, ACTION_ICON_NAMES, 15, 825); // fix size
         this.printAllIcons(div, CUSTOM_ICON_NAMES, 650, 725); // Congrats!
         this.printAllIcons(div, DOCTYPE_ICON_NAMES, 650, 950); // Congrats!
     }
@@ -708,27 +722,9 @@ export class HorizontalActivityTimeline {
             if (template && template !== null) {
                 const apiElements = template.split('api_element(');
 
-                // if(iconInformation.iconName === 'travel_mode'){
-                //     console.log(apiElements);
-                //     console.log("GGG -> ", numberOfG )
-                // }
-                const ELEMENTS_TYPES = [
-                    'path',
-                    'circle',
-                    'ellipse',
-                    'mask',
-                    'rect',
-                    'g',
-                    'svg',
-                    'line',
-                    'polygon',
-                    'linearGradient',
-                    'defs',
-                    'stop'
-                ];
                 // Find all elements and attributes to create icon
                 apiElements.forEach((element) => {
-                    const elementType = ELEMENTS_TYPES.find((type) =>
+                    const elementType = ICON_ELEMENT_TYPES.find((type) =>
                         element.includes(`"${type}"`)
                     );
 
@@ -750,12 +746,6 @@ export class HorizontalActivityTimeline {
                 });
             }
         }
-
-        // if(iconInformation.iconName === 'travel_mode'){
-        //     // imbrication for travel mode
-        //     console.log(svgAttributes);
-        //     console.log(elementsTemplate);
-        // }
 
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
@@ -779,9 +769,21 @@ export class HorizontalActivityTimeline {
                 svgAttributes.viewBox ? svgAttributes.viewBox : '0 0 100 100'
             );
 
+        let containerElement;
+        let element;
         // Add all attributes to svg
         elementsTemplate.forEach((elementToAdd) => {
-            const element = iconSVG.append(elementToAdd.element);
+            if (
+                elementToAdd.element === 'g' ||
+                elementToAdd.element === 'mask'
+            ) {
+                containerElement = iconSVG.append(elementToAdd.element);
+                element = containerElement;
+            } else if (containerElement) {
+                element = containerElement.append(elementToAdd.element);
+            } else {
+                element = iconSVG.append(elementToAdd.element);
+            }
 
             // Add all the attributes of element
             Object.keys(elementToAdd.value).forEach((attribute) => {
