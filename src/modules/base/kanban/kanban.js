@@ -713,15 +713,20 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        if (currentY + 50 > this._kanbanPos.bottom) {
+        const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
+        const isCloseToTop = currentY - 50 < this._kanbanPos.top;
+        const isCloseToRight = currentX + 50 > right;
+        const isCloseToLeft = currentX - 50 < left;
+
+        if (isCloseToBottom) {
             scrollStep.y = 10;
-        } else if (currentY - 50 < this._kanbanPos.top) {
+        } else if (isCloseToTop) {
             scrollStep.y = -10;
         }
 
-        if (currentX + 50 > right) {
+        if (isCloseToRight) {
             scrollStep.x = 10;
-        } else if (currentX - 50 < left) {
+        } else if (isCloseToLeft) {
             scrollStep.x = -10;
         }
 
@@ -875,15 +880,9 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__tile"]'
         );
 
-        let correspondingTile;
-
-        tiles.forEach((tileElement) => {
-            if (tileElement.dataset.recordIndex === tile.index) {
-                correspondingTile = tileElement;
-            }
-        });
-
-        return correspondingTile;
+        return tiles.find(
+            (tileElement) => tileElement.dataset.recordIndex === tile.index
+        );
     }
 
     /**
