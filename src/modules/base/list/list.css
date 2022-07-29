@@ -34,13 +34,16 @@
  ✅ deprecate image-width
  ✅ use image-size instead. styling hook for hieght and width. hook has priority
  ✅ image attribute, corp fit, position, and size.
- Use lazy loading for images infinite loading!
+ ✅ Use lazy loading for images infinite loading!
  ✅ stretch to same height
  ✅ action top right on the image in grid
  ✅ background color behind image
  ✅ padding around image, 
  ✅ padding around body and inside border on body
  ✅ restore graby cursor on sortable.
+
+ Add docs
+ Test new props
  */
 
 :host() {

@@ -107,19 +107,21 @@
                                         "
                                         icon-name={sortableIconName}
                                         size="x-small"
-                                        data-element-id="lightning-icon-sort-left"
+                                        data-element-id="lightning-icon-sort-left-image"
                                     ></lightning-icon>
                                 </div>
-                                <div class={computedImageClass}>
+                                <div
+                                    class={computedImageClass}
+                                    data-element-id="list-img"
+                                >
                                     <img
-                                        lazyload="true"
+                                        loading="lazy"
                                         style={computedImageStyle}
                                         if:true={item.imageSrc}
                                         class={computedImageMediaClass}
                                         key={item.imageSrc}
                                         src={item.imageSrc}
                                         draggable="false"
-                                        data-element-id="list-img"
                                     />
                                 </div>
                             </div>

@@ -131,7 +131,7 @@ export default class List extends LightningElement {
     computedActions = [];
     computedItems = [];
     hasImages;
-    _variant;
+    _variant = VARIANTS.default;
     showMediaDragIcon = true;
     showPlaceholder = false;
     hoveredPositionTopLeft;
@@ -161,7 +161,7 @@ export default class List extends LightningElement {
         setTimeout(() => {
             this.handleScroll();
         }, 0);
-        console.log('👾 rendered');
+        // console.log('👾 rendered');
     }
 
     disconnectedCallback() {
@@ -351,11 +351,11 @@ export default class List extends LightningElement {
             item.icons = normalizeArray(item.icons);
         });
 
-        console.log('➕ items');
+        // console.log('➕ items');
         this.restoreScrollPosition();
 
         setTimeout(() => {
-            console.log('🏁 items loaded');
+            // console.log('🏁 items loaded');
             this.finishedLoading = true;
         }, 10);
     }
@@ -533,12 +533,17 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get showIconLeft() {
+        // console.log(this.variant === 'list',
+        // !this.hasImages,
+        // this.sortable,
+        // !!this.sortableIconName,
+        // this.sortableIconPosition === 'left');
         return (
             this.variant === 'list' &&
+            !this.hasImages &&
             this.sortable &&
-            this.sortableIconName &&
-            this.sortableIconPosition === 'left' &&
-            !this.showImageIconLeft
+            !!this.sortableIconName &&
+            this.sortableIconPosition === 'left'
         );
     }
 
@@ -552,7 +557,7 @@ export default class List extends LightningElement {
             this.variant === 'list' &&
             this.hasImages &&
             this.sortable &&
-            this.sortableIconName &&
+            !!this.sortableIconName &&
             this.sortableIconPosition === 'left'
         );
     }
@@ -754,13 +759,13 @@ export default class List extends LightningElement {
         const offsetFromBottom =
             el.scrollHeight - el.scrollTop - el.clientHeight;
 
-        console.log(
-            '🎢',
-            this.finishedLoading,
-            el.scrollHeight,
-            el.clientHeight,
-            offsetFromBottom
-        );
+        // console.log(
+        //     '🎢',
+        //     this.finishedLoading,
+        //     el.scrollHeight,
+        //     el.clientHeight,
+        //     offsetFromBottom
+        // );
 
         if (
             offsetFromBottom <= this.loadMoreOffset &&
@@ -793,11 +798,11 @@ export default class List extends LightningElement {
 
         window.requestAnimationFrame(() => {
             list.scrollTo(0, this._savedScrollTop);
-            console.log(
-                '🔃 restore',
-                Math.round(list.scrollTop),
-                Math.round(this._savedScrollTop)
-            );
+            // console.log(
+            //     '🔃 restore',
+            //     Math.round(list.scrollTop),
+            //     Math.round(this._savedScrollTop)
+            // );
         });
     }
 
@@ -811,7 +816,7 @@ export default class List extends LightningElement {
         );
 
         this._savedScrollTop = list ? list.scrollTop : null;
-        console.log('💾 scroll', Math.round(this._savedScrollTop));
+        // console.log('💾 scroll', Math.round(this._savedScrollTop));
     }
 
     /**
@@ -1250,7 +1255,7 @@ export default class List extends LightningElement {
      */
     handleLoadMore() {
         this.dispatchEvent(new CustomEvent('loadmore'));
-        console.log('▶️ dispatch loadmore');
+        // console.log('▶️ dispatch loadmore');
     }
 
     /**
