@@ -155,10 +155,6 @@
     font-weight: 500;
 }
 
-.avonni-kanban__variant_path .avonni-kanban__tile-title {
-    display: none;
-}
-
 .avonni-kanban__tile:not(.avonni-kanban__dragged) {
     z-index: 1;
 }
