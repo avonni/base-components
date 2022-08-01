@@ -900,18 +900,13 @@ export default class Kanban extends LightningElement {
          * @param {string} action Unique name of the action.
          * @public
          * @bubbles
-         * @cancelable
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    ...event.detail,
-                    id: event.currentTarget.key,
-                    action: event.currentTarget.label
+                    action: event.detail.value
                 },
-                composed: false,
-                bubbles: true,
-                cancelable: true
+                bubbles: true
             })
         );
     }
@@ -1543,6 +1538,8 @@ export default class Kanban extends LightningElement {
         this._groupsLength[this._clickedGroupIndex]--;
         this._groupsLength[this._releasedGroupIndex]++;
 
+        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+
         /**
          * The event fired when a card is moved from a step to another.
          *
@@ -1556,14 +1553,14 @@ export default class Kanban extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    id: arr[fromIndex].id,
-                    action: arr[fromIndex][this.groupFieldName],
-                    records: this.records
+                    tileId: this._draggedTile.dataset.recordIndex,
+                    droppedTo:
+                        this._groupValues[this._releasedGroupIndex].value,
+                    records: arr
                 }
             })
         );
 
-        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
         return arr;
     }
 

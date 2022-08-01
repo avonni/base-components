@@ -60,6 +60,8 @@ describe('Kanban', () => {
         expect(element.groupFieldName).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
         expect(element.variant).toBeUndefined();
+        expect(element.hideHeader).toBeFalsy();
+        expect(element.subGroupFieldName).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
