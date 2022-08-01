@@ -107,6 +107,7 @@ export default class Scheduler extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
+    _focusCalendarPopover;
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -1424,6 +1425,11 @@ export default class Scheduler extends LightningElement {
     hideContextMenu() {
         this.contextMenuActions.splice(0);
         this.showContextMenu = false;
+
+        if (this.isCalendar && this._focusCalendarPopover) {
+            this._focusCalendarPopover();
+            this._focusCalendarPopover = null;
+        }
     }
 
     /**
@@ -1554,10 +1560,14 @@ export default class Scheduler extends LightningElement {
         if (!this.computedContextMenuEvent.length) {
             return;
         }
-        this.hideAllPopovers();
+        this.hideDetailPopover();
         this.contextMenuActions = [...this.computedContextMenuEvent];
         this.selection = event.currentTarget.selectEvent(event.detail);
         this.showContextMenu = true;
+
+        if (this.isCalendar) {
+            this._focusCalendarPopover = event.detail.focusPopover;
+        }
     }
 
     /**

@@ -41,6 +41,10 @@
     width: auto;
 }
 
+.avonni-scheduler__calendar {
+    z-index: 0;
+}
+
 .avonni-scheduler__context-menu {
     z-index: 1;
 }

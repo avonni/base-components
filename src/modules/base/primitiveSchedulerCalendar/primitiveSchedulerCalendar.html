@@ -326,6 +326,14 @@
                                                         data-key={placeholder.key}
                                                         data-month={cell.month}
                                                         data-week-number={cell.weekNumber}
+                                                        oncontextmenu={stopPropagation}
+                                                        onprivateblur={handleHideDetailPopover}
+                                                        onprivatecontextmenu={handleEventContextMenu}
+                                                        onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                                        onprivatedblclick={handleEventDoubleClick}
+                                                        onprivatefocus={handleEventFocus}
+                                                        onprivatemouseenter={handleEventMouseEnter}
+                                                        onprivatemouseleave={handleHideDetailPopover}
                                                         onprivatemousedown={handlePlaceholderMouseDown}
                                                     ></c-primitive-scheduler-event-occurrence>
                                                 </template>
@@ -472,9 +480,9 @@
                             to={occurrence.to}
                             variant="calendar-month"
                             data-key={occurrence.key}
-                            onprivatecontextmenu={handleEventContextMenu}
+                            onprivatecontextmenu={handleShowMorePopoverEventContextMenu}
                             onprivatedblclick={handleEventDoubleClick}
-                            onprivatemousedown={handleShowMorePopoverEventMouseDown}
+                            onprivatemousedown={handleHiddenEventMouseDown}
                         ></c-primitive-scheduler-event-occurrence>
                     </template>
                 </div>

@@ -66,12 +66,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     _selectedResources = [];
 
+    _centerDraggedEvent = false;
     _eventData;
     _initialFirstColWidth = 0;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
     _resizeObserver;
+    _showMorePopoverContextMenuIsOpened = false;
     _showMorePopoverIsFocused = false;
+    _showPlaceholderOccurrence = false;
     _updateOccurrencesLength = false;
     cellHeight = 0;
     cellWidth = 0;
@@ -627,7 +630,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return placeholders;
     }
 
-    focusPopoverClose() {
+    focusPopoverClose = () => {
         const closeButton = this.template.querySelector(
             '[data-element-id="lightning-button-icon-show-more-close"]'
         );
@@ -635,7 +638,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             closeButton.focus();
             this._showMorePopoverIsFocused = true;
         }
-    }
+        this._showMorePopoverContextMenuIsOpened = false;
+    };
 
     getAvailableHours(start) {
         let time = dateTimeObjectFrom(start);
@@ -1228,19 +1232,31 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.leftPanelContent.style.width = `${width}px`;
             this.firstColWidth = width;
         } else {
-            const { event, occurrence, isMoving } = this._eventData.selection;
+            const { event, occurrence, occurrences, isMoving } =
+                this._eventData.selection;
             const shouldShrinkMultiDayEvent =
                 this.isMonth &&
                 !isMoving &&
                 isOneDayOrMore(event, occurrence.from, occurrence.to);
 
-            if (shouldShrinkMultiDayEvent) {
-                // On first move,
-                // shrink the width of the month multi-day events
+            if (this._showPlaceholderOccurrence) {
+                // Make sure the main occurrence is not hidden in a popover
+                const mainOccurrence = occurrences.find(
+                    (occ) => occ.key === occurrence.key
+                );
+                mainOccurrence.overflowsCell = false;
+                this.updateOccurrencesPosition();
+                this._showPlaceholderOccurrence = false;
+            }
+
+            if (shouldShrinkMultiDayEvent || this._centerDraggedEvent) {
+                // On first move, shrink the width of the month multi-day events
+                // and center the dragged event under the mouse
                 const x = mouseEvent.clientX;
                 const y = mouseEvent.clientY;
                 this._eventData.shrinkDraggedEvent(this.cellWidth, x, y);
                 this.hideSelectionPlaceholders();
+                this._centerDraggedEvent = false;
             } else {
                 this._eventData.handleMouseMove(mouseEvent);
 
@@ -1256,6 +1272,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             return;
         }
         this._mouseIsDown = false;
+        this._showPlaceholderOccurrence = false;
+        this._centerDraggedEvent = false;
 
         if (this._draggedSplitter) {
             this._draggedSplitter = false;
@@ -1345,12 +1363,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     handlePlaceholderMouseDown(mouseEvent) {
         const isVisible = mouseEvent.currentTarget.dataset.columnIndex === '0';
-        if (isVisible) {
-            this._mouseIsDown = true;
-            this._eventData.handleExistingEventMouseDown(mouseEvent);
-            this.dispatchHidePopovers();
-            this._eventData.setDraggedEvent();
+        if (!isVisible) {
+            return;
         }
+        this._showPlaceholderOccurrence = true;
+        this.handleHiddenEventMouseDown(mouseEvent);
     }
 
     handleResourceToggle(event) {
@@ -1372,11 +1389,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     handleShowMorePopoverClose() {
         this.showMorePopover = null;
-        this._showMorePopoverIsFocused = false;
         this._mouseInShowMorePopover = false;
+        this._showMorePopoverIsFocused = false;
+        this._showMorePopoverContextMenuIsOpened = false;
     }
 
-    handleShowMorePopoverEventMouseDown(mouseEvent) {
+    handleShowMorePopoverEventContextMenu(event) {
+        const target = event.currentTarget;
+        if (target.disabled || target.referenceLine) {
+            return;
+        }
+
+        this.dispatchEvent(
+            new CustomEvent('eventcontextmenu', {
+                detail: {
+                    ...event.detail,
+                    focusPopover: this.focusPopoverClose
+                }
+            })
+        );
+
+        this._showMorePopoverContextMenuIsOpened = true;
+    }
+
+    handleHiddenEventMouseDown(mouseEvent) {
         this._mouseIsDown = true;
         const key = mouseEvent.currentTarget.dataset.key;
         const draggedEvent = this.template.querySelector(
@@ -1389,14 +1425,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.handleExistingEventMouseDown(eventInfo);
         this.showMorePopover = null;
         this.dispatchHidePopovers();
+        this._centerDraggedEvent = true;
 
         requestAnimationFrame(() => {
             // If the event was only visible in the popover,
-            // we need to update the dragged element after render,
-            // and center it under the mouse
-            const { x, y } = mouseEvent.detail;
+            // or if the main event was hidden,
+            // we need to update the dragged element after render
             this._eventData.setDraggedEvent();
-            this._eventData.shrinkDraggedEvent(this.cellWidth, x, y);
         });
     }
 
@@ -1410,12 +1445,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         requestAnimationFrame(() => {
             if (
                 !this._showMorePopoverIsFocused &&
-                this._mouseInShowMorePopover
+                this._mouseInShowMorePopover &&
+                !this._showMorePopoverContextMenuIsOpened
             ) {
                 this.focusPopoverClose();
             } else if (
                 !this._showMorePopoverIsFocused &&
-                !this._mouseInShowMorePopover
+                !this._mouseInShowMorePopover &&
+                !this._showMorePopoverContextMenuIsOpened
             ) {
                 this.showMorePopover = null;
             }
