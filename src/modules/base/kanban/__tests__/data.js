@@ -60,8 +60,7 @@ const GROUP_VALUES = [
         headerActions: [
             { disabled: false, label: 'Action 1', name: 'Action 1' },
             { disabled: false, label: 'Action 2', name: 'Action 2' }
-        ],
-        showItemCount: true
+        ]
     },
     {
         label: 'Closed',
