@@ -33,13 +33,6 @@
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch';
-import {
-    UTILITY_ICON_NAMES,
-    STANDARD_ICON_NAMES,
-    ACTION_ICON_NAMES,
-    CUSTOM_ICON_NAMES,
-    DOCTYPE_ICON_NAMES
-} from './lwc-icon-names';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -178,57 +171,6 @@ export class HorizontalActivityTimeline {
         this.createTimelineAxis();
         this.createTimeline();
         this.initializeIntervalHorizontalScroll();
-
-        // TESTING
-        // this.testingAllIcons();
-    }
-
-    // TESTING IF ALL ICONS ARE CREATED COMPLETELY
-    testingAllIcons() {
-        d3.select(
-            this._activityTimeline.template.querySelector('.testing-icons')
-        )
-            .selectAll('*')
-            .remove();
-        const div = d3
-            .select(
-                this._activityTimeline.template.querySelector('.testing-icons')
-            )
-            .append('svg')
-            .attr('width', 3000)
-            .attr('height', 1500);
-
-        this.printAllIcons(div, UTILITY_ICON_NAMES, 15, 15); // congrats!
-        this.printAllIcons(div, STANDARD_ICON_NAMES, 650, 15); // congrats!
-        this.printAllIcons(div, ACTION_ICON_NAMES, 15, 825); // fix size
-        this.printAllIcons(div, CUSTOM_ICON_NAMES, 650, 725); // Congrats!
-        this.printAllIcons(div, DOCTYPE_ICON_NAMES, 650, 950); // Congrats!
-    }
-
-    // TESTING
-    printAllIcons(container, iconNames, offsetX, offsetY) {
-        const maxColumns = 20;
-        const maxRows = iconNames.length / maxColumns;
-        for (let row = 0; row <= Math.ceil(maxRows); ++row) {
-            for (let i = 0; i < maxColumns; ++i) {
-                if (i + row * maxColumns < iconNames.length) {
-                    const iconInfos = this.setIconInformation(
-                        iconNames[i + row * maxColumns]
-                    );
-                    const foreignObjectForIcon =
-                        container.append('foreignObject');
-                    foreignObjectForIcon
-                        .attr('width', 25)
-                        .attr('height', 25)
-                        .attr('x', 30 * i + offsetX)
-                        .attr('y', row * 30 + offsetY);
-                    this.createIconFromTemplate(
-                        foreignObjectForIcon,
-                        iconInfos
-                    );
-                }
-            }
-        }
     }
 
     /*
@@ -694,6 +636,38 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     *  Create icon from one of the default path.
+     */
+    createIconFromDefaultPath(foreignObjectForIcon, iconInformation) {
+        const iconContainer = foreignObjectForIcon
+            .append('xhtml:span')
+            .attr(
+                'class',
+                'slds-icon slds-icon_container ' +
+                    iconInformation.categoryIconClass
+            )
+
+            .html(
+                '<svg class="slds-icon"><use xlink:href=' +
+                    iconInformation.xLinkHref +
+                    '></use></svg>'
+            );
+
+        const iconSVG = iconContainer
+            .select('svg')
+            .attr(
+                'class',
+                `slds-icon slds-icon_${this.getIconSize(
+                    iconInformation.category
+                )} `
+            );
+
+        if (iconInformation.category === 'action') {
+            this.setActionIconPosition(iconSVG);
+        }
+    }
+
+    /**
      *  Create item on horizontal timeline to display lightning icon and item's title
      */
     createItem(itemGroup, item) {
@@ -731,26 +705,13 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
-        // --- TESTING ---
-        this._iconsFolderPath = '';
-
         if (!this._iconsFolderPath) {
             this.createIconFromTemplate(foreignObjectForIcon, iconInformation);
-        }
-        // Using one of the default path
-        else {
-            foreignObjectForIcon
-                .append('xhtml:span')
-                .attr(
-                    'class',
-                    'slds-icon slds-icon_container slds-grid slds-grid_vertical-align-center ' +
-                        iconInformation.categoryIconClass
-                )
-                .html(
-                    '<svg class="slds-icon"><use xlink:href=' +
-                        iconInformation.xLinkHref +
-                        '></use></svg>'
-                );
+        } else {
+            this.createIconFromDefaultPath(
+                foreignObjectForIcon,
+                iconInformation
+            );
         }
     }
 
@@ -977,9 +938,6 @@ export class HorizontalActivityTimeline {
         const [svgAttributes, elementsToCreateIcon] =
             this.extractElementsFromIconTemplate(iconInformation);
 
-        const iconSize =
-            iconInformation.category === 'action' ? 'x-small' : 'small';
-
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
             .append('xhtml:span')
@@ -991,7 +949,12 @@ export class HorizontalActivityTimeline {
             .append('svg')
             .attr('width', SVG_ICON_SIZE)
             .attr('height', SVG_ICON_SIZE)
-            .attr('class', `slds-icon slds-icon_${iconSize} `)
+            .attr(
+                'class',
+                `slds-icon slds-icon_${this.getIconSize(
+                    iconInformation.category
+                )} `
+            )
             .attr(
                 'data-key',
                 svgAttributes.dataKey
@@ -1198,6 +1161,18 @@ export class HorizontalActivityTimeline {
             SPACE_BETWEEN_ICON_AND_TEXT -
             DISTANCE_BETWEEN_POPOVER_AND_ITEM
         );
+    }
+
+    /**
+     * Get size of icon depending of category.
+     *
+     * @return {string}
+     */
+    getIconSize(category) {
+        if (category === 'action') {
+            return 'x-small';
+        }
+        return 'small';
     }
 
     /**
