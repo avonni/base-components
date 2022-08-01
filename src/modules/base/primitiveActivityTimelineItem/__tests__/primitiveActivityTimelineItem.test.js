@@ -78,6 +78,7 @@ describe('Primitive Activity Timeline Item', () => {
     it('Activity Timeline Item: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.description).toBeUndefined();
+        expect(element.dateFormat).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -121,12 +122,26 @@ describe('Primitive Activity Timeline Item', () => {
     // datetime value
     it('Activity timeline item: datetimeValue', () => {
         element.datetimeValue = 1621605600000;
+        element.dateFormat = 'x';
 
         return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
             );
-            expect(date.value).toBe(1621605600000);
+            expect(dateTime.textContent).toBe('1621605600000');
+        });
+    });
+
+    // dateFormat
+    it('Activity timeline item: dateFormat', () => {
+        element.dateFormat = 'dd MMM yyyy';
+        element.datetimeValue = 1621605600000;
+
+        return Promise.resolve().then(() => {
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
+            );
+            expect(dateTime.textContent).toBe('21 May 2021');
         });
     });
 

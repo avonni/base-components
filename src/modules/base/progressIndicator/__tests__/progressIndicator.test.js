@@ -406,12 +406,13 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepclick', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -431,11 +432,12 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepblur', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -456,11 +458,12 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepfocus', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -481,11 +484,12 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseenter', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -506,11 +510,12 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseleave', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -531,11 +536,12 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepbuttonclick', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -556,12 +562,13 @@ describe('Progress Indicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('steppopoverclick', {
                 detail: {
-                    value: 'someValue'
+                    value: 'step-1'
                 },
                 bubbles: true
             }));
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

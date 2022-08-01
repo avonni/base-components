@@ -566,7 +566,7 @@ export default class PillContainer extends LightningElement {
          * @name actionclick
          * @param {number} index Index of the item clicked.
          * @param {string} name Name of the action.
-         * @param {string} targetName Unique name of the item the action belongs to.
+         * @param {string} targetName Name of the item the action belongs to.
          * @public
          */
         this.dispatchEvent(

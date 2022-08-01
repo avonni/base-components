@@ -624,8 +624,8 @@ describe('PrimitiveProgressStep', () => {
     /* ----- EVENTS ----- */
     it('Primitive progress step: step click', () => {
         const handler = jest.fn();
+        element.value = '1';
         element.addEventListener('stepclick', handler);
-        element.value = 'someValue';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -635,7 +635,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -643,9 +643,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: step mouseenter', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.addEventListener('stepmouseenter', handler);
-        element.value = 'someValue';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -655,7 +655,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -663,9 +663,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: step mouseleave', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.addEventListener('stepmouseleave', handler);
-        element.value = 'someValue';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -675,7 +675,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -683,9 +683,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: step focus', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.addEventListener('stepfocus', handler);
-        element.value = 'someValue';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -695,7 +695,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -703,9 +703,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: step blur', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.addEventListener('stepblur', handler);
-        element.value = 'someValue';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -715,7 +715,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -723,9 +723,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: popover click', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.popoverHidden = false;
-        element.value = 'someValue';
         element.popoverLabel = 'A string label';
         element.addEventListener('steppopoverclick', handler);
 
@@ -735,7 +735,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -743,9 +743,9 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('Primitive progress step: button click', () => {
+        element.value = '1';
         const handler = jest.fn();
         element.buttonLabel = 'A string label';
-        element.value = 'someValue';
         element.addEventListener('stepbuttonclick', handler);
 
         return Promise.resolve().then(() => {
@@ -756,7 +756,7 @@ describe('PrimitiveProgressStep', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('someValue');
+            expect(call.detail.value).toBe('1');
             expect(call.bubbles).toBeTruthy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();

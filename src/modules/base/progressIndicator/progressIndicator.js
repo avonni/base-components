@@ -355,7 +355,6 @@ export default class ProgressIndicator extends LightningElement {
          *
          * @event
          * @name stepmouseleave
-         * @param {object} step Step left by the mouse.
          * @param {string} value Unique value of the step left by the mouse.
          * @public
          */
@@ -376,7 +375,6 @@ export default class ProgressIndicator extends LightningElement {
          *
          * @event
          * @name stepbuttonclick
-         * @param {object} step Step the button belongs to.
          * @param {string} value Unique value of the step the clicked button belongs to.
          * @public
          */
@@ -397,7 +395,6 @@ export default class ProgressIndicator extends LightningElement {
          *
          * @event
          * @name steppopoverclick
-         * @param {object} step Step the popover belongs to.
          * @param {string} value Unique value of the step the clicked popover belongs to.
          * @public
          */

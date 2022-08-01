@@ -11,6 +11,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api timeSpan;
     @api visibleInterval;
     @api variant;
+    @api visibleWidth;
     @api zoomToFit;
 
     _start;
