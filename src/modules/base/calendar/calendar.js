@@ -92,6 +92,9 @@ export default class Calendar extends LightningElement {
     _selectionMode = SELECTION_MODES.default;
     _value = [];
     _weekNumber = false;
+
+    _applyFocus = false;
+    _updateTabindices = true;
     displayDate = DEFAULT_DATE; // The calendar displays this date's month
     year;
     month;
@@ -114,7 +117,14 @@ export default class Calendar extends LightningElement {
         this.displayDate = new Date(setDate);
 
         this.updateDateParameters();
-        this.computeFocus(false);
+    }
+
+    renderedCallback() {
+        if (this._updateTabindices) {
+            this.computeFocus(this._applyFocus);
+            this._applyFocus = false;
+            this._updateTabindices = false;
+        }
     }
 
     /*
@@ -464,7 +474,8 @@ export default class Calendar extends LightningElement {
 
         this.displayDate = new Date(value);
         this._focusDate = new Date(value);
-        this.computeFocus(true);
+        this._applyFocus = true;
+        this._updateTabindices = true;
     }
 
     /**
@@ -550,6 +561,7 @@ export default class Calendar extends LightningElement {
         this.month = MONTHS[this.displayDate.getMonth()];
         this.day = this.displayDate.getDay();
         this.generateViewData();
+        this._updateTabindices = true;
     }
 
     /**
@@ -838,7 +850,7 @@ export default class Calendar extends LightningElement {
 
         this.updateDateParameters();
         event.stopPropagation();
-        this.computeFocus(true);
+        this._applyFocus = true;
     }
 
     /**
@@ -847,7 +859,6 @@ export default class Calendar extends LightningElement {
     handlerPreviousMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
-        this.computeFocus(false);
     }
 
     /**
@@ -856,7 +867,6 @@ export default class Calendar extends LightningElement {
     handlerNextMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
-        this.computeFocus(false);
     }
 
     /**
@@ -956,7 +966,7 @@ export default class Calendar extends LightningElement {
 
             this.updateDateParameters();
             this.dispatchChange();
-            this.computeFocus(true);
+            this._applyFocus = true;
         }
     }
 
@@ -1225,7 +1235,7 @@ export default class Calendar extends LightningElement {
         }
         this.displayDate = this._focusDate;
         this.updateDateParameters();
-        this.computeFocus(true);
+        this._applyFocus = true;
     }
 
     /**
@@ -1247,79 +1257,77 @@ export default class Calendar extends LightningElement {
         const firstOfMonthDate = monthFirst.getTime();
         const rovingDate = new Date(this._focusDate).getTime();
 
-        requestAnimationFrame(() => {
-            const rovingFocusDate = this.template.querySelector(
-                `td[data-cell-day="${rovingDate}"]`
-            );
-            let selectedDate = this.template.querySelectorAll(
-                'td.slds-is-selected'
-            );
-            selectedDate = selectedDate.length === 0 ? null : selectedDate;
-            const todaysDate = this.template.querySelector(
-                `td[data-cell-day="${new Date().setHours(0, 0, 0, 0)}"]`
-            );
-            const firstOfMonth = this.template.querySelector(
-                `span[data-day="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
-            );
-            let firstOfMonthCell;
-            if (firstOfMonth) {
-                firstOfMonthCell = firstOfMonth.parentElement;
-            }
-            const rovingMonthDate = this.template.querySelector(
-                `td[data-cell-day="${selectedMonthDate}"]`
-            );
-            const firstValidDate = this.template.querySelector(
-                'span.slds-day:not(.avonni-calendar__disabled-cell)'
-            );
-            let firstValidDateCell;
-            if (firstValidDate) {
-                firstValidDateCell = firstValidDate.parentElement;
-            }
+        const rovingFocusDate = this.template.querySelector(
+            `td[data-cell-day="${rovingDate}"]`
+        );
+        let selectedDate = this.template.querySelectorAll(
+            'td.slds-is-selected'
+        );
+        selectedDate = selectedDate.length === 0 ? null : selectedDate;
+        const todaysDate = this.template.querySelector(
+            `td[data-cell-day="${new Date().setHours(0, 0, 0, 0)}"]`
+        );
+        const firstOfMonth = this.template.querySelector(
+            `span[data-day="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
+        );
+        let firstOfMonthCell;
+        if (firstOfMonth) {
+            firstOfMonthCell = firstOfMonth.parentElement;
+        }
+        const rovingMonthDate = this.template.querySelector(
+            `td[data-cell-day="${selectedMonthDate}"]`
+        );
+        const firstValidDate = this.template.querySelector(
+            'span.slds-day:not(.avonni-calendar__disabled-cell)'
+        );
+        let firstValidDateCell;
+        if (firstValidDate) {
+            firstValidDateCell = firstValidDate.parentElement;
+        }
 
-            const focusTarget =
-                rovingFocusDate ||
-                selectedDate ||
-                rovingMonthDate ||
-                todaysDate ||
-                firstOfMonthCell ||
-                firstValidDateCell;
+        const focusTarget =
+            rovingFocusDate ||
+            selectedDate ||
+            rovingMonthDate ||
+            todaysDate ||
+            firstOfMonthCell ||
+            firstValidDateCell;
 
-            const existingFocusPoints =
-                this.template.querySelectorAll('td[tabindex="0"]');
-            if (existingFocusPoints) {
-                existingFocusPoints.forEach((focusPoint) => {
-                    focusPoint.setAttribute('tabindex', '-1');
+        const existingFocusPoints =
+            this.template.querySelectorAll('td[tabindex="0"]');
+        if (existingFocusPoints) {
+            existingFocusPoints.forEach((focusPoint) => {
+                focusPoint.setAttribute('tabindex', '-1');
+            });
+        }
+
+        if (selectedDate) {
+            if (this.selectionMode === 'single') {
+                selectedDate[0].setAttribute('tabindex', '0');
+            } else if (this.selectionMode === 'multiple') {
+                selectedDate.forEach((target) => {
+                    target.setAttribute('tabindex', '0');
                 });
+            } else if (this.selectionMode === 'interval') {
+                selectedDate[0].setAttribute('tabindex', '0');
+                selectedDate[selectedDate.length - 1].setAttribute(
+                    'tabindex',
+                    '0'
+                );
             }
+        }
 
-            if (selectedDate) {
-                if (this.selectionMode === 'single') {
-                    selectedDate[0].setAttribute('tabindex', '0');
-                } else if (this.selectionMode === 'multiple') {
-                    selectedDate.forEach((target) => {
-                        target.setAttribute('tabindex', '0');
-                    });
-                } else if (this.selectionMode === 'interval') {
-                    selectedDate[0].setAttribute('tabindex', '0');
-                    selectedDate[selectedDate.length - 1].setAttribute(
-                        'tabindex',
-                        '0'
-                    );
+        if (focusTarget) {
+            if (focusTarget.length > 0) {
+                focusTarget[0].setAttribute('tabindex', '0');
+                if (applyFocus) focusTarget[0].focus();
+            } else {
+                focusTarget.setAttribute('tabindex', '0');
+                if (applyFocus) {
+                    focusTarget.focus();
                 }
             }
-
-            if (focusTarget) {
-                if (focusTarget.length > 0) {
-                    focusTarget[0].setAttribute('tabindex', '0');
-                    if (applyFocus) focusTarget[0].focus();
-                } else {
-                    focusTarget.setAttribute('tabindex', '0');
-                    if (applyFocus) {
-                        focusTarget.focus();
-                    }
-                }
-            }
-        });
+        }
     }
 }
 
