@@ -1377,8 +1377,11 @@ export default class Scheduler extends LightningElement {
                 format = 'ccc, LLLL d, kkkk';
                 break;
             }
-            case 'month':
             case 'year': {
+                format = 'yyyy';
+                break;
+            }
+            case 'month': {
                 format = 'LLLL yyyy';
                 break;
             }
@@ -1393,7 +1396,7 @@ export default class Scheduler extends LightningElement {
 
         const formattedStart = start.toFormat(format);
         const formattedEnd = end.toFormat(format);
-        if (this.isCalendar && unit === 'month') {
+        if (this.isCalendar && (unit === 'month' || unit === 'year')) {
             this.visibleIntervalLabel = formattedEnd;
         } else {
             this.visibleIntervalLabel =

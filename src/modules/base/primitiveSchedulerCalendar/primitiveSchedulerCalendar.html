@@ -106,315 +106,351 @@
 
         <!-- Schedule -->
         <div class={scheduleColClass}>
-            <div
-                class="
-                    avonni-scheduler__calendar-day-header-wrapper
-                    slds-theme_default
-                    slds-is-relative
-                "
-                data-element-id="div-horizontal-header-wrapper"
-            >
-                <!-- Day(s) header -->
-                <c-primitive-scheduler-header-group
-                    class="avonni-scheduler__calendar-header slds-border_left"
-                    available-days-of-the-week={availableDaysOfTheWeek}
-                    available-time-spans={availableTimeSpans}
-                    headers={dayHeaders}
-                    start={start}
-                    time-span={dayHeadersTimeSpan}
-                    visible-width={dayHeadersVisibleWidth}
-                    zoom-to-fit
-                    data-element-id="avonni-primitive-scheduler-header-group-horizontal"
-                    onprivatecellsizechange={handleHeaderCellSizeChange}
-                    onprivateheaderchange={handleHorizontalHeaderChange}
-                ></c-primitive-scheduler-header-group>
-                <!-- Day and week multi day events grid -->
+            <!-- Day, week and month schedule -->
+            <template if:false={isYear}>
                 <div
-                    if:true={showTopMultiDayEvents}
                     class="
-                        slds-border_left
+                        avonni-scheduler__calendar-day-header-wrapper
+                        slds-theme_default
                         slds-is-relative
-                        avonni-scheduler__calendar-multi-day-wrapper
                     "
-                    data-element-id="div-multi-day-events-wrapper"
+                    data-element-id="div-horizontal-header-wrapper"
                 >
-                    <div
+                    <!-- Day(s) header -->
+                    <c-primitive-scheduler-header-group
                         class="
-                            slds-grid
-                            avonni-primitive-scheduler-calendar__inherit-height
+                            avonni-scheduler__calendar-header
+                            slds-border_left
                         "
+                        available-days-of-the-week={availableDaysOfTheWeek}
+                        available-time-spans={availableTimeSpans}
+                        headers={dayHeaders}
+                        start={start}
+                        time-span={dayHeadersTimeSpan}
+                        visible-width={dayHeadersVisibleWidth}
+                        zoom-to-fit
+                        data-element-id="avonni-primitive-scheduler-header-group-horizontal"
+                        onprivatecellsizechange={handleHeaderCellSizeChange}
+                        onprivateheaderchange={handleHorizontalHeaderChange}
+                    ></c-primitive-scheduler-header-group>
+                    <!-- Day and week multi day events grid -->
+                    <div
+                        if:true={showTopMultiDayEvents}
+                        class="
+                            slds-border_left
+                            slds-is-relative
+                            avonni-scheduler__calendar-multi-day-wrapper
+                        "
+                        data-element-id="div-multi-day-events-wrapper"
                     >
-                        <!-- Cells -->
-                        <template
-                            for:each={multiDayEventsCellGroup.cells}
-                            for:item="cell"
+                        <div
+                            class="
+                                slds-grid
+                                avonni-primitive-scheduler-calendar__inherit-height
+                            "
                         >
-                            <div
-                                key={cell.start}
-                                class="
-                                    slds-col
-                                    slds-border_right
-                                    avonni-primitive-scheduler-calendar__inherit-height
-                                "
-                                data-element-id="div-cell"
-                                data-end={cell.end}
-                                data-start={cell.start}
-                                oncontextmenu={handleEmptySpotContextMenu}
-                                onmousedown={handleMultiDayEmptyCellMouseDown}
-                                ondblclick={handleDoubleClick}
-                            ></div>
+                            <!-- Cells -->
+                            <template
+                                for:each={multiDayEventsCellGroup.cells}
+                                for:item="cell"
+                            >
+                                <div
+                                    key={cell.start}
+                                    class="
+                                        slds-col
+                                        slds-border_right
+                                        avonni-primitive-scheduler-calendar__inherit-height
+                                    "
+                                    data-element-id="div-cell"
+                                    data-end={cell.end}
+                                    data-start={cell.start}
+                                    oncontextmenu={handleEmptySpotContextMenu}
+                                    onmousedown={handleMultiDayEmptyCellMouseDown}
+                                    ondblclick={handleDoubleClick}
+                                ></div>
+                            </template>
+                        </div>
+                        <!-- Multi day events -->
+                        <template for:each={multiDayEvents} for:item="event">
+                            <template
+                                for:each={event.occurrences}
+                                for:item="occurrence"
+                            >
+                                <c-primitive-scheduler-event-occurrence
+                                    key={occurrence.key}
+                                    class="slds-is-absolute"
+                                    color={event.color}
+                                    header-cells={multiDayEventHeaderCells}
+                                    cell-duration={dayCellDuration}
+                                    cell-height={multiDayCellHeight}
+                                    cell-width={cellWidth}
+                                    date-format={dateFormat}
+                                    disabled={event.disabled}
+                                    event-data={event.data}
+                                    event-name={event.name}
+                                    from={occurrence.startOfFrom}
+                                    icon-name={event.iconName}
+                                    labels={event.labels}
+                                    occurrence={occurrence}
+                                    occurrence-key={occurrence.key}
+                                    read-only={isDay}
+                                    resource-key={occurrence.resourceName}
+                                    resources={computedResources}
+                                    title={occurrence.title}
+                                    theme={event.theme}
+                                    to={occurrence.endOfTo}
+                                    variant="calendar-horizontal"
+                                    zoom-to-fit={zoomToFit}
+                                    data-disabled={event.disabled}
+                                    data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"
+                                    data-event-name={event.name}
+                                    data-key={occurrence.key}
+                                    onprivatefocus={handleEventFocus}
+                                    onprivateblur={handleHideDetailPopover}
+                                    onprivatecontextmenu={handleEventContextMenu}
+                                    onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                    onprivatemouseenter={handleEventMouseEnter}
+                                    onprivatemouseleave={handleHideDetailPopover}
+                                    onprivatedblclick={handleEventDoubleClick}
+                                    onprivatedisableddblclick={handleDoubleClick}
+                                    onprivatemousedown={handleMultiDayEventMouseDown}
+                                    onprivatedisabledmousedown={handleMultiDayEmptyCellMouseDown}
+                                ></c-primitive-scheduler-event-occurrence>
+                            </template>
                         </template>
                     </div>
-                    <!-- Multi day events -->
-                    <template for:each={multiDayEvents} for:item="event">
-                        <template
-                            for:each={event.occurrences}
-                            for:item="occurrence"
-                        >
-                            <c-primitive-scheduler-event-occurrence
-                                key={occurrence.key}
-                                class="slds-is-absolute"
-                                color={event.color}
-                                header-cells={multiDayEventHeaderCells}
-                                cell-duration={dayCellDuration}
-                                cell-height={multiDayCellHeight}
-                                cell-width={cellWidth}
-                                date-format={dateFormat}
-                                disabled={event.disabled}
-                                event-data={event.data}
-                                event-name={event.name}
-                                from={occurrence.startOfFrom}
-                                icon-name={event.iconName}
-                                labels={event.labels}
-                                occurrence={occurrence}
-                                occurrence-key={occurrence.key}
-                                read-only={isDay}
-                                resource-key={occurrence.resourceName}
-                                resources={computedResources}
-                                title={occurrence.title}
-                                theme={event.theme}
-                                to={occurrence.endOfTo}
-                                variant="calendar-horizontal"
-                                zoom-to-fit={zoomToFit}
-                                data-disabled={event.disabled}
-                                data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"
-                                data-event-name={event.name}
-                                data-key={occurrence.key}
-                                onprivatefocus={handleEventFocus}
-                                onprivateblur={handleHideDetailPopover}
-                                onprivatecontextmenu={handleEventContextMenu}
-                                onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                onprivatemouseenter={handleEventMouseEnter}
-                                onprivatemouseleave={handleHideDetailPopover}
-                                onprivatedblclick={handleEventDoubleClick}
-                                onprivatedisableddblclick={handleDoubleClick}
-                                onprivatemousedown={handleMultiDayEventMouseDown}
-                                onprivatedisabledmousedown={handleMultiDayEmptyCellMouseDown}
-                            ></c-primitive-scheduler-event-occurrence>
-                        </template>
-                    </template>
                 </div>
-            </div>
-
-            <div
-                class="slds-grid slds-col slds-scrollable_y"
-                data-element-id="div-cells-grid"
-            >
-                <!-- Hours -->
-                <c-primitive-scheduler-header-group
-                    if:true={showHourHeaders}
-                    class="avonni-scheduler__calendar-header"
-                    available-time-frames={availableTimeFrames}
-                    available-time-spans={availableTimeSpans}
-                    headers={hourHeaders}
-                    scroll-left-offset={firstColWidth}
-                    start={start}
-                    time-span={hourHeadersTimeSpan}
-                    variant="vertical"
-                    zoom-to-fit={zoomToFit}
-                    data-element-id="avonni-primitive-scheduler-header-group-vertical"
-                    onprivatecellsizechange={handleHeaderCellSizeChange}
-                    onprivateheaderchange={handleVerticalHeaderChange}
-                ></c-primitive-scheduler-header-group>
-                <div class="slds-col">
-                    <div
-                        class="slds-is-relative slds-grid slds-theme_default"
-                        data-element-id="div-schedule-body"
-                    >
-                        <template
-                            for:each={columns}
-                            for:item="column"
-                            for:index="index"
+                <div
+                    class="slds-grid slds-col slds-scrollable_y"
+                    data-element-id="div-cells-grid"
+                >
+                    <!-- Hours -->
+                    <c-primitive-scheduler-header-group
+                        if:true={showHourHeaders}
+                        class="avonni-scheduler__calendar-header"
+                        available-time-frames={availableTimeFrames}
+                        available-time-spans={availableTimeSpans}
+                        headers={hourHeaders}
+                        scroll-left-offset={firstColWidth}
+                        start={start}
+                        time-span={hourHeadersTimeSpan}
+                        variant="vertical"
+                        zoom-to-fit={zoomToFit}
+                        data-element-id="avonni-primitive-scheduler-header-group-vertical"
+                        onprivatecellsizechange={handleHeaderCellSizeChange}
+                        onprivateheaderchange={handleVerticalHeaderChange}
+                    ></c-primitive-scheduler-header-group>
+                    <div class="slds-col">
+                        <div
+                            class="
+                                slds-is-relative slds-grid
+                                slds-theme_default
+                            "
+                            data-element-id="div-schedule-body"
                         >
-                            <div
-                                key={column.weekday}
-                                class="avonni-scheduler__calendar-column"
-                                data-element-id="div-column"
-                                data-index={index}
+                            <template
+                                for:each={columns}
+                                for:item="column"
+                                for:index="index"
                             >
-                                <!-- Cells -->
-                                <template
-                                    for:each={column.cells}
-                                    for:item="cell"
+                                <div
+                                    key={column.weekday}
+                                    class="avonni-scheduler__calendar-column"
+                                    data-element-id="div-column"
+                                    data-index={index}
                                 >
-                                    <div
-                                        key={cell.start}
-                                        class={cell.computedClass}
-                                        data-element-id="div-cell"
-                                        data-end={cell.end}
-                                        data-start={cell.start}
-                                        oncontextmenu={handleEmptySpotContextMenu}
-                                        onmousedown={handleMouseDown}
-                                        ondblclick={handleDoubleClick}
+                                    <!-- Cells -->
+                                    <template
+                                        for:each={column.cells}
+                                        for:item="cell"
                                     >
-                                        <!-- Cell content visible only for the month time span -->
                                         <div
-                                            if:true={isMonth}
-                                            class="
-                                                slds-p-around_xx-small
-                                                slds-grid slds-grid_vertical
-                                                avonni-scheduler__calendar-cell-month
-                                            "
+                                            key={cell.start}
+                                            class={cell.computedClass}
+                                            data-element-id="div-cell"
+                                            data-end={cell.end}
+                                            data-start={cell.start}
+                                            oncontextmenu={handleEmptySpotContextMenu}
+                                            onmousedown={handleMouseDown}
+                                            ondblclick={handleDoubleClick}
                                         >
+                                            <!-- Cell content visible only for the month time span -->
                                             <div
+                                                if:true={isMonth}
                                                 class="
-                                                    avonni-scheduler__calendar-cell-month-day
+                                                    slds-p-around_xx-small
+                                                    slds-grid slds-grid_vertical
+                                                    avonni-scheduler__calendar-cell-month
                                                 "
                                             >
-                                                {cell.day}
-                                            </div>
-                                            <!-- Placeholders used to take space in cells the multi-day events go through -->
-                                            <div class="slds-col">
-                                                <template
-                                                    for:each={cell.placeholders}
-                                                    for:item="placeholder"
+                                                <div
+                                                    class="
+                                                        avonni-scheduler__calendar-cell-month-day
+                                                    "
                                                 >
-                                                    <c-primitive-scheduler-event-occurrence
-                                                        key={uniqueKey}
-                                                        class="
-                                                            slds-is-absolute
-                                                            avonni-scheduler__calendar-month-multi-day-placeholder
-                                                        "
-                                                        aria-hidden="true"
-                                                        cell-height={cellHeight}
-                                                        cell-width={cellWidth}
-                                                        color={placeholder.color}
-                                                        date-format={dateFormat}
-                                                        disabled={placeholder.disabled}
-                                                        event-data={placeholder.data}
-                                                        event-name={placeholder.name}
-                                                        from={placeholder.from}
-                                                        header-cells={eventHeaderCells}
-                                                        icon-name={placeholder.iconName}
-                                                        labels={placeholder.labels}
-                                                        occurrence={placeholder}
-                                                        occurrence-key={placeholder.key}
-                                                        read-only={readOnly}
-                                                        resource-key={placeholder.resourceName}
-                                                        resources={computedResources}
-                                                        title={placeholder.title}
-                                                        theme={placeholder.theme}
-                                                        to={placeholder.to}
-                                                        variant="calendar-month"
-                                                        zoom-to-fit={zoomToFit}
-                                                        data-day={cell.day}
-                                                        data-disabled={placeholder.disabled}
-                                                        data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"
-                                                        data-event-key={placeholder.eventKey}
-                                                        data-is-placeholder="true"
-                                                        data-column-index={index}
-                                                        data-key={placeholder.key}
-                                                        data-month={cell.month}
-                                                        data-week-number={cell.weekNumber}
-                                                        oncontextmenu={stopPropagation}
-                                                        onprivateblur={handleHideDetailPopover}
-                                                        onprivatecontextmenu={handleEventContextMenu}
-                                                        onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                                        onprivatedblclick={handleEventDoubleClick}
-                                                        onprivatefocus={handleEventFocus}
-                                                        onprivatemouseenter={handleEventMouseEnter}
-                                                        onprivatemouseleave={handleHideDetailPopover}
-                                                        onprivatemousedown={handlePlaceholderMouseDown}
-                                                    ></c-primitive-scheduler-event-occurrence>
-                                                </template>
+                                                    {cell.day}
+                                                </div>
+                                                <!-- Placeholders used to take space in cells the multi-day events go through -->
+                                                <div class="slds-col">
+                                                    <template
+                                                        for:each={cell.placeholders}
+                                                        for:item="placeholder"
+                                                    >
+                                                        <c-primitive-scheduler-event-occurrence
+                                                            key={uniqueKey}
+                                                            class="
+                                                                slds-is-absolute
+                                                                avonni-scheduler__calendar-month-multi-day-placeholder
+                                                            "
+                                                            aria-hidden="true"
+                                                            cell-height={cellHeight}
+                                                            cell-width={cellWidth}
+                                                            color={placeholder.color}
+                                                            date-format={dateFormat}
+                                                            disabled={placeholder.disabled}
+                                                            event-data={placeholder.data}
+                                                            event-name={placeholder.name}
+                                                            from={placeholder.from}
+                                                            header-cells={eventHeaderCells}
+                                                            icon-name={placeholder.iconName}
+                                                            labels={placeholder.labels}
+                                                            occurrence={placeholder}
+                                                            occurrence-key={placeholder.key}
+                                                            read-only={readOnly}
+                                                            resource-key={placeholder.resourceName}
+                                                            resources={computedResources}
+                                                            title={placeholder.title}
+                                                            theme={placeholder.theme}
+                                                            to={placeholder.to}
+                                                            variant="calendar-month"
+                                                            zoom-to-fit={zoomToFit}
+                                                            data-day={cell.day}
+                                                            data-disabled={placeholder.disabled}
+                                                            data-element-id="avonni-primitive-scheduler-event-occurrence-placeholder"
+                                                            data-event-key={placeholder.eventKey}
+                                                            data-is-placeholder="true"
+                                                            data-column-index={index}
+                                                            data-key={placeholder.key}
+                                                            data-month={cell.month}
+                                                            data-week-number={cell.weekNumber}
+                                                            oncontextmenu={stopPropagation}
+                                                            onprivateblur={handleHideDetailPopover}
+                                                            onprivatecontextmenu={handleEventContextMenu}
+                                                            onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                                            onprivatedblclick={handleEventDoubleClick}
+                                                            onprivatefocus={handleEventFocus}
+                                                            onprivatemouseenter={handleEventMouseEnter}
+                                                            onprivatemouseleave={handleHideDetailPopover}
+                                                            onprivatemousedown={handlePlaceholderMouseDown}
+                                                        ></c-primitive-scheduler-event-occurrence>
+                                                    </template>
+                                                </div>
+                                                <lightning-button
+                                                    class="
+                                                        slds-text-align_center
+                                                    "
+                                                    label={cell.showMoreLabel}
+                                                    variant="base"
+                                                    data-column-index={index}
+                                                    data-start={cell.start}
+                                                    data-element-id="lightning-button-month-show-more"
+                                                    onclick={handleMonthCellShowMoreClick}
+                                                    onmousedown={stopPropagation}
+                                                ></lightning-button>
                                             </div>
-                                            <lightning-button
-                                                class="slds-text-align_center"
-                                                label={cell.showMoreLabel}
-                                                variant="base"
-                                                data-column-index={index}
-                                                data-start={cell.start}
-                                                data-element-id="lightning-button-month-show-more"
-                                                onclick={handleMonthCellShowMoreClick}
-                                                onmousedown={stopPropagation}
-                                            ></lightning-button>
                                         </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </template>
-                        <!-- Single day events -->
-                        <div class="avonni-scheduler__events slds-is-absolute">
-                            <template
-                                if:true={mainGridEvents.length}
-                                for:each={mainGridEvents}
-                                for:item="event"
+                                    </template>
+                                </div>
+                            </template>
+                            <!-- Single day events -->
+                            <div
+                                class="
+                                    avonni-scheduler__events
+                                    slds-is-absolute
+                                "
                             >
                                 <template
-                                    for:each={event.occurrences}
-                                    for:item="occurrence"
-                                    key={event.key}
+                                    if:true={mainGridEvents.length}
+                                    for:each={mainGridEvents}
+                                    for:item="event"
                                 >
-                                    <c-primitive-scheduler-event-occurrence
-                                        key={occurrence.key}
-                                        class="slds-is-absolute"
-                                        color={event.color}
-                                        cell-duration={hourCellDuration}
-                                        cell-height={cellHeight}
-                                        cell-width={cellWidth}
-                                        date-format={dateFormat}
-                                        disabled={event.disabled}
-                                        event-data={event.data}
-                                        event-name={event.name}
-                                        from={occurrence.from}
-                                        header-cells={eventHeaderCells}
-                                        icon-name={event.iconName}
-                                        labels={event.labels}
-                                        occurrence={occurrence}
-                                        occurrence-key={occurrence.key}
-                                        read-only={readOnly}
-                                        reference-line={event.referenceLine}
-                                        resource-key={occurrence.resourceName}
-                                        resources={computedResources}
-                                        title={occurrence.title}
-                                        theme={event.theme}
-                                        to={occurrence.to}
-                                        variant={singleDayEventVariant}
-                                        zoom-to-fit={zoomToFit}
-                                        data-disabled={event.disabled}
-                                        data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
-                                        data-event-name={event.name}
-                                        data-key={occurrence.key}
-                                        data-day={occurrence.from.day}
-                                        data-month={occurrence.from.month}
-                                        data-weekday={occurrence.fromWeekday}
-                                        onprivateblur={handleHideDetailPopover}
-                                        onprivatefocus={handleEventFocus}
-                                        onprivatecontextmenu={handleEventContextMenu}
-                                        onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                        onprivatemouseenter={handleEventMouseEnter}
-                                        onprivatemouseleave={handleHideDetailPopover}
-                                        onprivatedblclick={handleEventDoubleClick}
-                                        onprivatedisableddblclick={handleDoubleClick}
-                                        onprivatemousedown={handleEventMouseDown}
-                                        onprivatedisabledmousedown={handleMouseDown}
-                                    ></c-primitive-scheduler-event-occurrence>
+                                    <template
+                                        for:each={event.occurrences}
+                                        for:item="occurrence"
+                                        key={event.key}
+                                    >
+                                        <c-primitive-scheduler-event-occurrence
+                                            key={occurrence.key}
+                                            class="slds-is-absolute"
+                                            color={event.color}
+                                            cell-duration={hourCellDuration}
+                                            cell-height={cellHeight}
+                                            cell-width={cellWidth}
+                                            date-format={dateFormat}
+                                            disabled={event.disabled}
+                                            event-data={event.data}
+                                            event-name={event.name}
+                                            from={occurrence.from}
+                                            header-cells={eventHeaderCells}
+                                            icon-name={event.iconName}
+                                            labels={event.labels}
+                                            occurrence={occurrence}
+                                            occurrence-key={occurrence.key}
+                                            read-only={readOnly}
+                                            reference-line={event.referenceLine}
+                                            resource-key={occurrence.resourceName}
+                                            resources={computedResources}
+                                            title={occurrence.title}
+                                            theme={event.theme}
+                                            to={occurrence.to}
+                                            variant={singleDayEventVariant}
+                                            zoom-to-fit={zoomToFit}
+                                            data-disabled={event.disabled}
+                                            data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
+                                            data-event-name={event.name}
+                                            data-key={occurrence.key}
+                                            data-day={occurrence.from.day}
+                                            data-month={occurrence.from.month}
+                                            data-weekday={occurrence.fromWeekday}
+                                            onprivateblur={handleHideDetailPopover}
+                                            onprivatefocus={handleEventFocus}
+                                            onprivatecontextmenu={handleEventContextMenu}
+                                            onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                            onprivatemouseenter={handleEventMouseEnter}
+                                            onprivatemouseleave={handleHideDetailPopover}
+                                            onprivatedblclick={handleEventDoubleClick}
+                                            onprivatedisableddblclick={handleDoubleClick}
+                                            onprivatemousedown={handleEventMouseDown}
+                                            onprivatedisabledmousedown={handleMouseDown}
+                                        ></c-primitive-scheduler-event-occurrence>
+                                    </template>
                                 </template>
-                            </template>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
+
+            <!-- Year schedule -->
+            <template if:true={isYear}>
+                <div
+                    for:each={computedAvailableMonths}
+                    for:item="month"
+                    key={month.key}
+                    class="slds-p-around_small"
+                >
+                    <div class="slds-text-title slds-p-left_x-small">
+                        {month.label}
+                    </div>
+                    <c-calendar
+                        marked-dates={month.markedDates}
+                        value={month.value}
+                        data-element-id="avonni-calendar-year-month"
+                        data-month={month.key}
+                        onchange={handleYearDateClick}
+                    ></c-calendar>
+                </div>
+            </template>
         </div>
 
         <!-- Show more popover -->
@@ -454,6 +490,12 @@
                         "
                     >
                         {showMorePopover.label}
+                    </div>
+                    <div
+                        if:false={showMorePopover.events.length}
+                        class="slds-m-horizontal_x-small"
+                    >
+                        There are no events scheduled on this day.
                     </div>
                     <template
                         for:each={showMorePopover.events}
