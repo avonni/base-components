@@ -49,9 +49,21 @@ describe('Activity Timeline', () => {
     });
 
     beforeEach(() => {
+        HorizontalActivityTimeline.setIconLibraries = jest.fn(() => {});
+
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                response: () => {
+                    return { status: 200, ok: true };
+                },
+                error: jest.fn(() => {})
+            })
+        );
+
         element = createElement('avonni-activity-timeline', {
             is: ActivityTimeline
         });
+
         document.body.appendChild(element);
     });
 
@@ -853,7 +865,7 @@ describe('Activity Timeline', () => {
                 expect(itemSVGGroup).toBeDefined();
                 expect(itemSVGGroup.textContent).toContain(item.title);
                 expect(itemIcon.className).toContain(
-                    'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center slds-icon-' +
+                    'slds-icon slds-icon_container slds-icon_small slds-icon-' +
                         itemCategoryIcon +
                         '-' +
                         itemNameIcon
