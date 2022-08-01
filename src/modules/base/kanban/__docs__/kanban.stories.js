@@ -192,8 +192,7 @@ export default {
         hideHeader: false,
         summarizeFieldName: 'Amount',
         groupFieldName: 'status',
-        variant: 'base',
-        subGroupFieldName: 'assignee'
+        variant: 'base'
     }
 };
 
@@ -334,6 +333,11 @@ export const path = Template.bind({});
 path.args = {
     variant: 'path',
     summarizeFieldName: 'Percent'
+};
+
+export const subGroups = Template.bind({});
+subGroups.args = {
+    subGroupFieldName: 'assignee'
 };
 
 export const disabledItemDrag = Template.bind({});
