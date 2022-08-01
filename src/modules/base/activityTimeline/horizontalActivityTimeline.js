@@ -179,6 +179,7 @@ export class HorizontalActivityTimeline {
         this.createTimeline();
         this.initializeIntervalHorizontalScroll();
 
+        // TESTING
         // this.testingAllIcons();
     }
 
@@ -976,13 +977,21 @@ export class HorizontalActivityTimeline {
         const [svgAttributes, elementsToCreateIcon] =
             this.extractElementsFromIconTemplate(iconInformation);
 
+        const iconSize =
+            iconInformation.category === 'action' ? 'x-small' : 'small';
+
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
-            .append('svg')
+            .append('xhtml:span')
             .attr(
                 'class',
-                `slds-icon slds-icon_container slds-grid slds-grid_vertical-align-center ${iconInformation.categoryIconClass}`
+                'slds-icon slds-icon_container ' +
+                    iconInformation.categoryIconClass
             )
+            .append('svg')
+            .attr('width', SVG_ICON_SIZE)
+            .attr('height', SVG_ICON_SIZE)
+            .attr('class', `slds-icon slds-icon_${iconSize} `)
             .attr(
                 'data-key',
                 svgAttributes.dataKey
@@ -999,6 +1008,10 @@ export class HorizontalActivityTimeline {
             );
 
         this.appendAllElementsToIconSVG(elementsToCreateIcon, iconSVG);
+
+        if (iconInformation.category === 'action') {
+            this.setActionIconPosition(iconSVG);
+        }
     }
 
     /**
@@ -1336,6 +1349,29 @@ export class HorizontalActivityTimeline {
 
         this._scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
         this._scrollAxisDiv.selectAll('*').remove();
+    }
+
+    /**
+     * For action icon, set position of icon to center it in container.
+     */
+    setActionIconPosition(iconSVG) {
+        const svgElement = iconSVG.node();
+        const parentSpanElement = iconSVG.node().parentElement;
+
+        if (svgElement && parentSpanElement) {
+            const iconWidth = svgElement.getBoundingClientRect().width;
+            const iconHeight = svgElement.getBoundingClientRect().height;
+
+            const offsetX =
+                (parentSpanElement.getBoundingClientRect().width - iconWidth) /
+                2;
+            const offsetY =
+                (parentSpanElement.getBoundingClientRect().height -
+                    iconHeight) /
+                2;
+
+            iconSVG.attr('transform', `translate(-${offsetX}, -${offsetY})`);
+        }
     }
 
     /**
