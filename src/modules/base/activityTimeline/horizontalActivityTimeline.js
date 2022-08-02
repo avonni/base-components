@@ -931,8 +931,8 @@ export class HorizontalActivityTimeline {
      * Create icon from template found in libraries. This method will be used if the default path are invalid.
      */
     createIconFromTemplate(foreignObjectForIcon, iconInformation) {
-        const [svgAttributes, elementsToCreateIcon] =
-            this.extractElementsFromIconTemplate(iconInformation);
+        const elementsToCreateIcon = this.extractElementsFromIconTemplate(iconInformation);
+        const svgAttributes = elementsToCreateIcon.svg;
 
         // Create svg to contain icon
         const iconSVG = foreignObjectForIcon
@@ -966,7 +966,9 @@ export class HorizontalActivityTimeline {
                 svgAttributes.viewBox ? svgAttributes.viewBox : '0 0 100 100'
             );
 
-        this.appendAllElementsToIconSVG(elementsToCreateIcon, iconSVG);
+        
+
+        this.appendAllElementsToIconSVG(elementsToCreateIcon.childrenElements, iconSVG);
 
         if (iconInformation.category === 'action') {
             this.setActionIconPosition(iconSVG);
@@ -1050,11 +1052,13 @@ export class HorizontalActivityTimeline {
     /**
      * Extract all elements and attributes from icon's template.
      *
-     * @return {[object, array]]}
+     * @return {object}
      */
     extractElementsFromIconTemplate(iconInformation) {
-        let elementsToCreateIcon = [];
-        let svgAttributes = {};
+        let elementsToCreateIcon = {
+            svg: {},
+            childrenElements: []
+        };
 
         if (this.areIconLibrariesReady) {
             const template = this.findIconTemplate(iconInformation);
@@ -1069,12 +1073,11 @@ export class HorizontalActivityTimeline {
                     );
 
                     if (elementType && elementType === 'svg') {
-                        element = this.sliceAttributes(element);
-                        svgAttributes =
+                        elementsToCreateIcon.svg =
                             this.extractAllAttributesOfElement(element);
                     } else if (elementType && elementType !== -1) {
                         this.addIconElement(
-                            elementsToCreateIcon,
+                            elementsToCreateIcon.childrenElements,
                             element,
                             elementType
                         );
@@ -1082,7 +1085,7 @@ export class HorizontalActivityTimeline {
                 });
             }
         }
-        return [svgAttributes, elementsToCreateIcon];
+        return elementsToCreateIcon;
     }
 
     /**
