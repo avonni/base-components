@@ -1214,11 +1214,8 @@ export class HorizontalActivityTimeline {
      */
     initializeItemPopover(element) {
         let tooltipElement = d3.select(this.itemPopoverSelector);
-
-        if (
-            !tooltipElement._groups[0][0] ||
-            tooltipElement._groups[0][0] === null
-        ) {
+        
+        if (!tooltipElement._groups[0][0]) {
             return;
         }
 
