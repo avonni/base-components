@@ -63,6 +63,17 @@ export default {
                 type: { summary: 'string|string[]' }
             }
         },
+        hideNavigation: {
+            name: 'hide-navigation',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Specifies if the calendar header should be hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         markedDates: {
             name: 'marked-dates',
             control: {
@@ -135,6 +146,7 @@ export default {
         disabled: false,
         dateLabels: [],
         disabledDates: [],
+        hideNavigation: false,
         markedDates: [],
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
