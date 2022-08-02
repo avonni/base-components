@@ -133,11 +133,13 @@ export class HorizontalActivityTimeline {
 
     // Icons
     _iconsFolderPath = DEFAULT_ICON_PATH;
-    standardIconLibrary = null;
-    utilityIconLibrary = null;
-    actionIconLibrary = null;
-    doctypeIconLibrary = null;
-    customIconLibrary = null;
+    _iconLibraries = {
+        standard: null,
+        utility: null,
+        action: null,
+        doctype: null,
+        custom: null,
+    };
 
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
@@ -185,13 +187,7 @@ export class HorizontalActivityTimeline {
      * @return {boolean}
      */
     get areIconLibrariesReady() {
-        return (
-            this.standardIconLibrary !== null &&
-            this.utilityIconLibrary !== null &&
-            this.actionIconLibrary !== null &&
-            this.doctypeIconLibrary !== null &&
-            this.customIconLibrary !== null
-        );
+        return Object.keys(this._iconLibraries).every((category)=> this._iconLibraries[category] !== null);
     }
 
     /**
@@ -1117,9 +1113,8 @@ export class HorizontalActivityTimeline {
         let template = null;
 
         if (this.areIconLibrariesReady) {
-            const libraryName = `${iconInformation.category}IconLibrary`;
             const iconFileName = `${iconInformation.category}_${iconInformation.iconName}`;
-            template = this[libraryName][iconFileName];
+            template = this._iconLibraries[iconInformation.category][iconFileName];
 
             if (template && template !== null) {
                 // Removing different whitespace characters and end of string
@@ -1452,21 +1447,19 @@ export class HorizontalActivityTimeline {
      *  Set all the icon's libraries if the default paths are not working.
      */
     async setIconLibraries() {
-        this.standardIconLibrary = getIconLibrary('ltr', 'standard');
-        this.utilityIconLibrary = getIconLibrary('ltr', 'utility');
-        this.actionIconLibrary = getIconLibrary('ltr', 'action');
-        this.doctypeIconLibrary = getIconLibrary('ltr', 'doctype');
-        this.customIconLibrary = getIconLibrary('ltr', 'custom');
+        for(const category of VALID_ICON_CATEGORIES){
+            this._iconLibraries[category] = getIconLibrary('ltr', category);
+        }
 
         try {
-            this.standardIconLibrary = await fetchIconLibrary(
+            this._iconLibraries.standard = await fetchIconLibrary(
                 'ltr',
                 'standard'
             );
-            this.utilityIconLibrary = await fetchIconLibrary('ltr', 'utility');
-            this.actionIconLibrary = await fetchIconLibrary('ltr', 'action');
-            this.doctypeIconLibrary = await fetchIconLibrary('ltr', 'doctype');
-            this.customIconLibrary = await fetchIconLibrary('ltr', 'custom');
+            this._iconLibraries.utility = await fetchIconLibrary('ltr', 'utility');
+            this._iconLibraries.action = await fetchIconLibrary('ltr', 'action');
+            this._iconLibraries.doctype = await fetchIconLibrary('ltr', 'doctype');
+            this._iconLibraries.custom = await fetchIconLibrary('ltr', 'custom');
             this._activityTimeline.renderedCallback();
         } catch (error) {
             console.error(error);
