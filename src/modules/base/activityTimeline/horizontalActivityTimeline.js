@@ -1039,7 +1039,7 @@ export class HorizontalActivityTimeline {
         let attributes = {};
         allAttributes.forEach((attribute) => {
             const [attributeName, attributeValue] = attribute
-                .replaceAll('"', '')
+                .replace(/"/g, '')
                 .split(':');
             attributes[attributeName] = attributeValue.trim();
         });
@@ -1117,12 +1117,11 @@ export class HorizontalActivityTimeline {
             template = this._iconLibraries[iconInformation.category][iconFileName];
 
             if (template && template !== null) {
-                // Removing different whitespace characters and end of string
+                // Removing different whitespace characters
                 template = template
                     .toString()
-                    .replaceAll(/\s{2,}/g, '')
-                    .replaceAll('\n', '')
-                    .replaceAll('[])])])];}', '');
+                    .replace(/\s{2,}/g, '')
+                    .replace(/\n/g, '');
             }
         }
 
