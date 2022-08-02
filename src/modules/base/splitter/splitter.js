@@ -306,7 +306,7 @@ export default class Splitter extends LightningElement {
         this.template
             .querySelectorAll('.splitter-orientation-horizontal')
             .forEach((element) => {
-                element.style.height = `${element.offsetHeight}px`;
+                element.style.height = '100%';
             });
 
         this.listenerOnMouseUp = this.onMouseUp.bind(this);
