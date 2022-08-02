@@ -78,17 +78,6 @@ export default {
                 category: 'Background'
             }
         },
-        avatarSrc: {
-            name: 'avatar-src',
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the avatar image.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Avatar'
-            }
-        },
         avatarAlternativeText: {
             name: 'avatar-alternative-text',
             control: {
@@ -108,27 +97,6 @@ export default {
             description:
                 "The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.",
             table: {
-                type: { summary: 'string' },
-                category: 'Avatar'
-            }
-        },
-        avatarPosition: {
-            name: 'avatar-position',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'top-left',
-                'top-center',
-                'top-right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right'
-            ],
-            description:
-                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
-            table: {
-                defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
                 category: 'Avatar'
             }
@@ -154,16 +122,23 @@ export default {
                 category: 'Avatar'
             }
         },
-        avatarVariant: {
-            name: 'avatar-variant',
+        avatarPosition: {
+            name: 'avatar-position',
             control: {
                 type: 'select'
             },
-            options: ['circle', 'square'],
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
             description:
-                'The variant change the shape of the avatar. Valid values are circle, square.',
+                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
             table: {
-                defaultValue: { summary: 'circle' },
+                defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
                 category: 'Avatar'
             }
@@ -177,7 +152,33 @@ export default {
                 'The size of the avatar. Valid values include x-small, small, medium, large, x-large.',
             table: {
                 defaultValue: { summary: 'medium' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
+        avatarSrc: {
+            name: 'avatar-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the avatar image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
+        avatarVariant: {
+            name: 'avatar-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['circle', 'square'],
+            description:
+                'The variant change the shape of the avatar. Valid values are circle, square.',
+            table: {
+                defaultValue: { summary: 'circle' },
+                type: { summary: 'string' },
+                category: 'Avatar'
             }
         }
     },

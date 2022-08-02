@@ -277,6 +277,24 @@ export default class ProfileCard extends LightningElement {
         });
     }
 
+    /**
+     * Deprecated. Use `resources` instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
+    get size() {
+        return this.avatarSize;
+    }
+    set size(value) {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.avatarSize = value;
+        console.warn(
+            'The "size" attribute is deprecated. Use "avatar-size" instead.'
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
