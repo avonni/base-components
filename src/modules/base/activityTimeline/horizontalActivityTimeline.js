@@ -32,7 +32,7 @@
 
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
-import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch';
+import { fetchIconLibrary, getIconLibrary } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
