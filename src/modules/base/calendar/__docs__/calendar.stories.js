@@ -144,10 +144,7 @@ export default {
     },
     args: {
         disabled: false,
-        dateLabels: [],
-        disabledDates: [],
         hideNavigation: false,
-        markedDates: [],
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
         selectionMode: 'single',

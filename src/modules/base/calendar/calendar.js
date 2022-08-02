@@ -87,7 +87,7 @@ export default class Calendar extends LightningElement {
     _disabledDates = [];
     _focusDate;
     _hideNavigation = false;
-    _isConnected = false;
+    _connected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
@@ -117,7 +117,7 @@ export default class Calendar extends LightningElement {
         }
 
         this.displayDate = new Date(setDate);
-        this._isConnected = true;
+        this._connected = true;
         this.validateCurrentDayValue();
         this.updateDateParameters();
     }
@@ -233,13 +233,17 @@ export default class Calendar extends LightningElement {
     }
 
     set markedDates(value) {
-        this._markedDates = normalizeArray(value).map((x) => {
-            const isDate =
-                new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
-                !isNaN(Date.parse(x.date))
-                    ? this.formattedWithTimezoneOffset(new Date(x.date))
-                    : x.date;
-            return { date: isDate, color: x.color };
+        this._markedDates = normalizeArray(value).map((marker) => {
+            const normalizedDate = new Date(marker.date).setHours(0, 0, 0, 0);
+            const isNull = normalizedDate === NULL_DATE;
+            const isFullDate = !isNull && !isNaN(normalizedDate);
+            const date = isFullDate
+                ? this.formattedWithTimezoneOffset(new Date(marker.date))
+                : marker.date;
+            return {
+                date,
+                color: marker.color
+            };
         });
         this.updateDateParameters();
     }
@@ -259,7 +263,7 @@ export default class Calendar extends LightningElement {
     set max(max) {
         this._max = this.formattedWithTimezoneOffset(new Date(max));
         this._max.setHours(0, 0, 0, 0);
-        if (this._isConnected) {
+        if (this._connected) {
             this.validateCurrentDayValue();
         }
         if (this.displayDate > this.max) {
@@ -283,7 +287,7 @@ export default class Calendar extends LightningElement {
     set min(min) {
         this._min = this.formattedWithTimezoneOffset(new Date(min));
         this._min.setHours(0, 0, 0, 0);
-        if (this._isConnected) {
+        if (this._connected) {
             this.validateCurrentDayValue();
         }
         if (this.displayDate < this.min) {
@@ -337,7 +341,7 @@ export default class Calendar extends LightningElement {
                               )
                           )
                       ];
-            if (this._isConnected) {
+            if (this._connected) {
                 this.validateCurrentDayValue();
             }
         }
@@ -454,15 +458,6 @@ export default class Calendar extends LightningElement {
             this.min.getTime() <= new Date().getTime() &&
             new Date().getTime() <= this.max.getTime()
         );
-    }
-
-    /**
-     * Generate array of dates from marked dates object.
-     */
-    get markedDatesArray() {
-        return this.markedDates.map((date) => {
-            return date.date;
-        });
     }
 
     get normalizedValue() {
@@ -619,7 +614,8 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'object') {
-                dates.push(date.setHours(0, 0, 0, 0));
+                const newDate = new Date(date);
+                dates.push(newDate.setHours(0, 0, 0, 0));
             }
         });
 
@@ -749,8 +745,7 @@ export default class Calendar extends LightningElement {
                 let dayClass = 'slds-day';
                 let currentDate = null;
                 let disabled = this.isInArray(date, this.disabledDates);
-                const marked = this.isInArray(date, this.markedDatesArray);
-                const markedColors = this.isInArrayMarker(date);
+                const markedColors = this.getMarkers(date);
                 let time = date.getTime();
                 let valueTime = this._value.length
                     ? this._value[0].getTime()
@@ -848,11 +843,6 @@ export default class Calendar extends LightningElement {
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
                 }
 
-                let markedDate = false;
-                if (marked && label > 0) {
-                    markedDate = true;
-                }
-
                 dateClass += ' avonni-calendar__date-cell';
 
                 weekData.push({
@@ -862,8 +852,8 @@ export default class Calendar extends LightningElement {
                     selected: selected,
                     currentDate: currentDate,
                     fullDate: time,
-                    marked: markedDate,
-                    markedColors: markedColors,
+                    marked: markedColors.length && label > 0,
+                    markedColors,
                     labeled: labeled,
                     chip: {
                         showLeft: showLeft,
@@ -912,6 +902,35 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Get the markers for a date.
+     *
+     * @param {object | Date} date
+     * @returns {object[]} Array of marker objects
+     */
+    getMarkers(date) {
+        let markers = [];
+        const normalizedDate = new Date(new Date(date).setHours(0, 0, 0, 0));
+        let time = normalizedDate.getTime();
+        let weekDay = normalizedDate.getDay();
+        let monthDay = normalizedDate.getDate();
+
+        this.markedDates.forEach((marker) => {
+            const dateArray = [marker.date];
+            if (
+                this.fullDatesFromArray(dateArray).indexOf(time) > -1 ||
+                this.weekDaysFromArray(dateArray).indexOf(weekDay) > -1 ||
+                this.monthDaysFromArray(dateArray).indexOf(monthDay) > -1
+            ) {
+                const color = marker.color
+                    ? `background-color: ${marker.color}`
+                    : '';
+                markers.push({ color });
+            }
+        });
+        return markers;
+    }
+
+    /**
      * Find if date entry is in the date array.
      *
      * @param {object | Date} date
@@ -920,9 +939,10 @@ export default class Calendar extends LightningElement {
      */
     isInArray(date, array) {
         let disabled = false;
-        let time = date.getTime();
-        let weekDay = date.getDay();
-        let monthDay = date.getDate();
+        const normalizedDate = new Date(new Date(date).setHours(0, 0, 0, 0));
+        let time = normalizedDate.getTime();
+        let weekDay = normalizedDate.getDay();
+        let monthDay = normalizedDate.getDate();
 
         if (
             this.fullDatesFromArray(array).indexOf(time) > -1 ||
@@ -933,36 +953,6 @@ export default class Calendar extends LightningElement {
         }
 
         return disabled;
-    }
-
-    /**
-     * Find if date entry is in the markedDate array.
-     *
-     * @param {object | Date} date
-     * @returns marked
-     */
-    isInArrayMarker(date) {
-        let marked = [];
-        let time = date.getTime();
-        let weekDay = date.getDay();
-        let monthDay = date.getDate();
-
-        this._markedDates.forEach((marker) => {
-            const dateArray = [marker.date];
-            if (
-                this.fullDatesFromArray(dateArray).indexOf(time) > -1 ||
-                this.weekDaysFromArray(dateArray).indexOf(weekDay) > -1 ||
-                this.monthDaysFromArray(dateArray).indexOf(monthDay) > -1
-            ) {
-                marked.push({
-                    marked: true,
-                    color: marker.color
-                        ? `background-color: ${marker.color}`
-                        : ''
-                });
-            }
-        });
-        return marked;
     }
 
     /**
