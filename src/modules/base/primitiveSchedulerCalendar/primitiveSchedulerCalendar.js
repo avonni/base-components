@@ -114,9 +114,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.setStartToBeginningOfUnit();
         this.initResources();
         this.initHeaders();
-        if (this.isYear) {
-            this.initEvents();
-        }
         super.connectedCallback();
     }
 
@@ -138,7 +135,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         } else if (this.isWeek || this.isDay) {
             this.updateDayAndWeekEventsOffset();
         }
-        if (!this.isYear) {
+        if (this.isYear) {
+            this.centerCalendarsOnRightMonths();
+        } else {
             this.updateOccurrencesPosition();
         }
         this.setHorizontalHeadersSideSpacing();
@@ -194,9 +193,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this._selectedDate;
     }
     set selectedDate(value) {
-        const computedDate = dateTimeObjectFrom(value);
         this._selectedDate =
-            computedDate || dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+            dateTimeObjectFrom(value) ||
+            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
         if (this._connected) {
             const previousStart = this.start.ts;
@@ -242,7 +241,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this.availableMonths.map((month) => {
             const luxonMonth = month + 1;
             const markedDates = this.getMonthMarkedDates(luxonMonth);
-            const value = this.selectedDate.set({ month: luxonMonth });
+            const value =
+                this.selectedDate.month === luxonMonth
+                    ? this.selectedDate
+                    : null;
             return {
                 key: month,
                 label: MONTHS[month],
@@ -499,6 +501,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     initHeaders() {
         if (this.isYear) {
+            this.initEvents();
             return;
         }
 
@@ -598,6 +601,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     initResources() {
         this.computedResources = this.resources.map((res) => {
             return { ...res, height: 0, data: { res } };
+        });
+    }
+
+    centerCalendarsOnRightMonths() {
+        const calendars = this.template.querySelectorAll(
+            '[data-element-id="avonni-calendar-year-month"]'
+        );
+        let date = dateTimeObjectFrom(this.start);
+        calendars.forEach((calendar) => {
+            calendar.goToDate(date.ts);
+            date = addToDate(date, 'month', 1);
         });
     }
 
@@ -719,23 +733,37 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const monthStart = monthDate.startOf('month');
         const monthEnd = monthDate.endOf('month');
         const monthInterval = Interval.fromDateTimes(monthStart, monthEnd);
+        const dayMap = {};
 
         return this._eventData.events.reduce((markedDates, event) => {
             event.occurrences.forEach((occ) => {
                 const { from, to, resourceName } = occ;
                 const occInterval = Interval.fromDateTimes(from, to);
                 const intersection = monthInterval.intersection(occInterval);
+
                 if (intersection) {
                     const days = intersection.count('days');
                     const color =
                         event.color || this.getResourceColor(resourceName);
                     let currentDate = intersection.s;
+
                     for (let i = 0; i < days; i++) {
-                        markedDates.push({
-                            color,
-                            date: currentDate.toUTC().toISO()
-                        });
-                        currentDate = addToDate(currentDate, 'day', 1);
+                        // Only add one marker per resource per day
+                        const alreadyMarked =
+                            dayMap[currentDate.day] &&
+                            dayMap[currentDate.day].includes(resourceName);
+                        if (!alreadyMarked) {
+                            markedDates.push({
+                                color,
+                                date: currentDate.toUTC().toISO()
+                            });
+
+                            if (!dayMap[currentDate.day]) {
+                                dayMap[currentDate.day] = [];
+                            }
+                            dayMap[currentDate.day].push(resourceName);
+                            currentDate = addToDate(currentDate, 'day', 1);
+                        }
                     }
                 }
             });

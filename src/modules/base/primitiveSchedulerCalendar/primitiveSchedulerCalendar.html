@@ -439,10 +439,17 @@
                     key={month.key}
                     class="slds-p-around_small"
                 >
-                    <div class="slds-text-title slds-p-left_x-small">
+                    <div
+                        class="
+                            slds-text-title
+                            slds-p-left_x-small
+                            slds-m-bottom_x-small
+                        "
+                    >
                         {month.label}
                     </div>
                     <c-calendar
+                        hide-navigation
                         marked-dates={month.markedDates}
                         value={month.value}
                         data-element-id="avonni-calendar-year-month"
