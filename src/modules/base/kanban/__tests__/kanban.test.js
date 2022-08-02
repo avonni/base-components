@@ -106,21 +106,21 @@ describe('Kanban', () => {
     });
 
     // subgroups
-    // it('Kanban : subgroups', () => {
-    //     element.groupValues = GROUP_VALUES;
-    //     element.records = RECORDS;
-    //     element.fields = FIELDS;
-    //     element.groupFieldName = 'status';
-    //     element.summarizeFieldName = 'amount';
-    //     element.subGroupFieldName = 'assignee';
-    //     element.actions = ACTIONS;
-    //     return Promise.resolve().then(() => {
-    //         const records = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-kanban__group"]'
-    //         );
-    //         expect(records.children.length).toBe(1);
-    //     });
-    // });
+    it('Kanban : subgroups', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.subGroupFieldName = 'assignee';
+        element.actions = ACTIONS;
+        return Promise.resolve().then(() => {
+            const records = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__group"]'
+            );
+            expect(records.children.length).toBe(1);
+        });
+    });
 
     // hideHeader
     it('Kanban : hideHeader', () => {
@@ -198,7 +198,6 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.subGroupFieldName = 'Available';
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__tile"]'
@@ -261,7 +260,6 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.subGroupFieldName = 'Available';
 
         const handler = jest.fn();
         element.addEventListener('change', handler);

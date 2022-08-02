@@ -69,6 +69,7 @@ export default class Kanban extends LightningElement {
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
     _computedGroups = [];
+    _connected = false;
     _currentSubGroup = '';
     _currentSubGroupIndex = 0;
     _draggedGroup;
@@ -104,6 +105,7 @@ export default class Kanban extends LightningElement {
 
     connectedCallback() {
         this.updateTiles();
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -185,6 +187,9 @@ export default class Kanban extends LightningElement {
     }
     set actions(values) {
         this._actions = normalizeArray(values);
+        if (this._connected) {
+            this.updateTiles();
+        }
     }
 
     /**
@@ -233,6 +238,9 @@ export default class Kanban extends LightningElement {
     }
     set fields(values) {
         this._fields = normalizeArray(values);
+        if (this._connected) {
+            this.updateTiles();
+        }
     }
 
     /**
@@ -247,6 +255,9 @@ export default class Kanban extends LightningElement {
     }
     set groupValues(values) {
         this._groupValues = normalizeArray(values);
+        if (this._connected) {
+            this.updateTiles();
+        }
     }
 
     /**
@@ -294,6 +305,9 @@ export default class Kanban extends LightningElement {
     }
     set records(values) {
         this._records = normalizeArray(values);
+        if (this._connected) {
+            this.updateTiles();
+        }
     }
 
     /**
@@ -1193,7 +1207,10 @@ export default class Kanban extends LightningElement {
             event.currentTarget.parentElement.offsetWidth +
             0.5 * parseFloat(getComputedStyle(this.template.host).fontSize);
 
-        this._groupWidth = this._groupWidth ?? 10;
+        this._groupWidth =
+            this._groupWidth && !isNaN(this._groupWidth)
+                ? this._groupWidth
+                : 10;
 
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
