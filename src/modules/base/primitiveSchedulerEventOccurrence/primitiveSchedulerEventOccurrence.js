@@ -43,7 +43,7 @@ import {
     normalizeObject,
     normalizeString
 } from 'c/utilsPrivate';
-import { isAllDay, isOneDayOrMore } from 'c/schedulerUtils';
+import { isAllDay, spansOnMoreThanOneDay } from 'c/schedulerUtils';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
@@ -842,7 +842,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     !this.isVerticalCalendar &&
                     !this.isMonthCalendar,
                 'slds-p-bottom_xx-small':
-                    this.isMonthCalendar && this.isOneDayOrMore,
+                    this.isMonthCalendar && this.spansOnMoreThanOneDay,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
@@ -878,11 +878,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     get isMonthCalendarSingleDay() {
-        return this.isMonthCalendar && !this.isOneDayOrMore;
+        return this.isMonthCalendar && !this.spansOnMoreThanOneDay;
     }
 
-    get isOneDayOrMore() {
-        return isOneDayOrMore(this.eventData, this.from, this.to);
+    get spansOnMoreThanOneDay() {
+        return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
     }
 
     get isTimeline() {
@@ -1390,7 +1390,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updateLengthInMonthCalendar() {
         const headerCells = this.headerCells.xAxis;
         const { to, cellWidth } = this;
-        const isOneCellLength = !this.isOneDayOrMore || this.isAllDay;
+        const isOneCellLength = !this.spansOnMoreThanOneDay || this.isAllDay;
 
         if ((isOneCellLength || !headerCells) && this.hostElement) {
             // The event should span on one cell

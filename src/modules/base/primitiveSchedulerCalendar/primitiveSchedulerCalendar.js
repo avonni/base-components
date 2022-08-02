@@ -47,7 +47,7 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    isOneDayOrMore,
+    spansOnMoreThanOneDay,
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
@@ -411,7 +411,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get showTopMultiDayEvents() {
-        return this.multiDayEvents.length && !this.isMonth;
+        return (
+            !this.isMonth &&
+            this.multiDayEvents.length &&
+            this.multiDayEventsCellGroup.cells
+        );
     }
 
     get singleDayEventVariant() {
@@ -773,7 +777,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     getMultiDayPlaceholders(isFirstCol, col, event, occ) {
         const { from, to } = occ;
-        const isMultiDay = isOneDayOrMore(
+        const isMultiDay = spansOnMoreThanOneDay(
             event,
             event.computedFrom,
             event.computedTo
@@ -1118,11 +1122,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 }
             });
         });
-
-        if (this._eventData && this._eventData.eventDrag) {
-            const occurrence = this._eventData.selection.occurrence;
-            occurrence.overflowsCell = false;
-        }
     }
 
     updateVisibleWidth() {
@@ -1356,7 +1355,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const shouldShrinkMultiDayEvent =
                 this.isMonth &&
                 !isMoving &&
-                isOneDayOrMore(event, occurrence.from, occurrence.to);
+                spansOnMoreThanOneDay(event, occurrence.from, occurrence.to);
 
             if (this._showPlaceholderOccurrence) {
                 // Make sure the main occurrence is not hidden in a popover
@@ -1559,6 +1558,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.handleShowMorePopoverClose();
         this.dispatchHidePopovers();
         this._centerDraggedEvent = true;
+        this._showPlaceholderOccurrence = true;
 
         requestAnimationFrame(() => {
             // If the event was only visible in the popover,

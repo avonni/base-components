@@ -34,7 +34,7 @@ import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
-import { isOneDayOrMore } from './schedulerUtils';
+import { spansOnMoreThanOneDay } from './schedulerUtils';
 
 export default class SchedulerEventData {
     eventDrag;
@@ -108,7 +108,9 @@ export default class SchedulerEventData {
     }
 
     addToSingleAndMultiDayEvents(event) {
-        if (isOneDayOrMore(event, event.computedFrom, event.computedTo)) {
+        if (
+            spansOnMoreThanOneDay(event, event.computedFrom, event.computedTo)
+        ) {
             this.multiDayEvents.push(event);
         } else {
             this.singleDayEvents.push(event);
@@ -553,7 +555,7 @@ export default class SchedulerEventData {
         const visibleStart = this.visibleInterval.s;
         const from = dateTimeObjectFrom(event.from);
         const to = this.normalizedEventTo(event);
-        const isMultiDay = isOneDayOrMore(event, from, to);
+        const isMultiDay = spansOnMoreThanOneDay(event, from, to);
         const isCalendarMultiDay = isMultiDay && this.isCalendar;
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;

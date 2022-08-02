@@ -578,10 +578,10 @@ Calendar.args = {
     start,
     events,
     selectedDisplay: 'calendar',
-    selectedResources: ['Dave', 'Jung', 'Lily', 'Reginald'],
-    selectedTimeSpan: 'Standard.Scheduler.YearTimeSpan'
-    // disabledDatesTimes,
-    // referenceLines
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    disabledDatesTimes,
+    referenceLines
 };
 
 export const VerticalTimeline = Template.bind({});
