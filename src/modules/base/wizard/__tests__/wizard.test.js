@@ -502,7 +502,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '[data-element-id="h1"]'
+                '[data-element-id="title"]'
             );
             expect(title.textContent).toBe('A string title');
         });
