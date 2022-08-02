@@ -53,7 +53,7 @@
     <!-- <button onclick={previousPage}>previous</button>
     <button onclick={nextPage}>next</button> -->
 
-    <div style="height: 100%" class="slds-grid slds-grid_vertical-align-center">
+    <div style="height: 100%" class="slds-grid">
         <div class="slds-col" if:true={showPaginationButtons}>
             <lightning-button-icon
                 alternative-text="Previous Items"
@@ -392,9 +392,9 @@
             <li
                 class="slds-col slds-size_12-of-12 slds-is-relative"
                 style="height: 40px"
-                if:true={isLoading}
             >
                 <lightning-spinner
+                    if:true={isLoading}
                     size="small"
                     class="slds-spinner_container"
                     alternative-text="Loading..."

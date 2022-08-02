@@ -157,7 +157,6 @@ export default class List extends LightningElement {
     renderNumber = 0;
     renderedCallback() {
         if (this.renderNumber === 0) {
-            this.listResize();
             this.initWrapObserver();
             this.renderNumber++;
         }
@@ -165,7 +164,9 @@ export default class List extends LightningElement {
         setTimeout(() => {
             this.handleScroll();
         }, 0);
-        // console.log('👾 rendered');
+
+        this.listResize();
+        console.log('👾 rendered');
     }
 
     disconnectedCallback() {
