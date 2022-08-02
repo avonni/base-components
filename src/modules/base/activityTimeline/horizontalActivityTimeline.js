@@ -502,7 +502,7 @@ export class HorizontalActivityTimeline {
             Object.keys(element.attributes).forEach((attribute) => {
                 elementToAdd.attr(
                     attribute,
-                    element.attributes[`${attribute}`]
+                    element.attributes[attribute]
                 );
             });
         });
@@ -1045,7 +1045,7 @@ export class HorizontalActivityTimeline {
             const [attributeName, attributeValue] = attribute
                 .replaceAll('"', '')
                 .split(':');
-            attributes[`${attributeName}`] = attributeValue.trim();
+            attributes[attributeName] = attributeValue.trim();
         });
 
         return attributes;
@@ -1119,7 +1119,7 @@ export class HorizontalActivityTimeline {
         if (this.areIconLibrariesReady) {
             const libraryName = `${iconInformation.category}IconLibrary`;
             const iconFileName = `${iconInformation.category}_${iconInformation.iconName}`;
-            template = this[`${libraryName}`][`${iconFileName}`];
+            template = this[libraryName][iconFileName];
 
             if (template && template !== null) {
                 // Removing different whitespace characters and end of string
