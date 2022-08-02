@@ -75,6 +75,7 @@ const MONTHS = {
     10: 'November',
     11: 'December'
 };
+const SPLITTER_BAR_WIDTH = 12;
 
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
@@ -82,7 +83,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     _centerDraggedEvent = false;
     _eventData;
-    _initialFirstColWidth = 0;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
     _resizeObserver;
@@ -97,9 +97,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     dayCellDuration = 0;
     dayHeadersVisibleWidth = 0;
     eventHeaderCells = {};
-    firstColumnIsHidden = false;
-    firstColumnIsOpen = false;
-    firstColWidth = 0;
     hourCellDuration = 0;
     multiDayCellHeight = 0;
     multiDayEvents = [];
@@ -123,10 +120,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         } else if (this._resizeObserver && this.isYear) {
             this._resizeObserver.disconnect();
             this._resizeObserver = null;
-        }
-
-        if (!this._initialFirstColWidth) {
-            this.resetFirstColumnWidth();
         }
 
         if (this.isMonth) {
@@ -265,6 +258,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         ];
     }
 
+    get dayHeadersClass() {
+        return classSet('avonni-scheduler__calendar-header')
+            .add({
+                'slds-border_left': !this.isMonth
+            })
+            .toString();
+    }
+
     get dayHeadersTimeSpan() {
         if (this.isDay) {
             return this.hourHeadersTimeSpan;
@@ -318,32 +319,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return unit === 'year' || (unit === 'month' && span >= 12);
     }
 
-    /**
-     * Computed CSS classes for the left panel.
-     *
-     * @type {string}
-     */
-    get leftPanelClass() {
-        return classSet('slds-border_right slds-grid')
-            .add({
-                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-                'avonni-scheduler__first-col_open': this.firstColumnIsOpen
-            })
-            .toString();
-    }
-
     get leftPanelContent() {
         return this.template.querySelector(
             '[data-element-id="div-panel-content"]'
         );
-    }
-
-    get leftPanelContentClass() {
-        return classSet('slds-scrollable_y')
-            .add({
-                'slds-p-around_small': !this.firstColumnIsHidden
-            })
-            .toString();
     }
 
     get mainGridEvents() {
@@ -395,10 +374,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get scheduleColClass() {
         return classSet(
-            'slds-col avonni-primitive-scheduler-calendar__inherit-height slds-grid'
+            'avonni-primitive-scheduler-calendar__inherit-height slds-grid'
         )
             .add({
-                'slds-hide': this.firstColumnIsOpen,
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit,
                 'slds-grid_vertical': !this.isYear,
                 'slds-wrap slds-scrollable_y': this.isYear
@@ -420,21 +398,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     get singleDayEventVariant() {
         return this.isMonth ? 'calendar-month' : 'calendar-vertical';
-    }
-
-    /**
-     * Class list of the splitter.
-     *
-     * @type {string}
-     */
-    get splitterClass() {
-        return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
-            .add({
-                'avonni-scheduler__splitter_disabled':
-                    this.resizeColumnDisabled,
-                'slds-grid_align-end': this.firstColumnIsOpen
-            })
-            .toString();
     }
 
     get uniqueKey() {
@@ -861,15 +824,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Reset the width of the first column to the width it had before being collapsed.
-     */
-    resetFirstColumnWidth() {
-        const columnWidth = this.leftPanelContent.getBoundingClientRect().width;
-        this._initialFirstColWidth = columnWidth;
-        this.firstColWidth = columnWidth;
-    }
-
-    /**
      * Push the vertical headers, so their top is aligned with the bottom of the horizontal headers.
      */
     setHorizontalHeadersSideSpacing() {
@@ -1126,24 +1080,33 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     updateVisibleWidth() {
         const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        const leftPanel = this.template.querySelector(
-            '[data-element-id="div-left-panel"]'
+            '[data-element-id="div-wrapper"]'
         );
         const hourHeader = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
         );
+        const splitter = this.template.querySelector(
+            '[data-element-id="avonni-splitter"]'
+        );
 
-        if (wrapper && leftPanel && this.cellsGrid) {
+        if (wrapper && splitter) {
+            const leftPanel = splitter.shadowRoot.querySelector(
+                '[data-element-id="avonni-splitter-pane-left"]'
+            );
+            const rightPanel = splitter.shadowRoot.querySelector(
+                '[data-element-id="avonni-splitter-pane-right"]'
+            );
             const scrollBarWidth =
-                this.cellsGrid.offsetWidth - this.cellsGrid.clientWidth;
+                rightPanel.offsetWidth - rightPanel.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
+
             const width =
                 wrapper.offsetWidth -
                 leftPanel.offsetWidth -
+                SPLITTER_BAR_WIDTH -
                 verticalHeaderWidth -
                 scrollBarWidth;
+
             const cellWidth = width / this.columns.length;
             this.dayHeadersVisibleWidth =
                 this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
@@ -1213,22 +1176,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             `;
         } else {
             this.cellWidth = cellSize;
-        }
-    }
-
-    /**
-     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
-     */
-    handleHideFirstCol() {
-        this.dispatchHidePopovers();
-
-        if (this.firstColumnIsOpen) {
-            this.firstColumnIsOpen = false;
-            this.firstColWidth = this._initialFirstColWidth;
-            this.leftPanelContent.style.width = `${this._initialFirstColWidth}px`;
-        } else {
-            this.firstColumnIsHidden = true;
-            this.firstColWidth = 0;
         }
     }
 
@@ -1332,7 +1279,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
+     * Handle the mousemove event fired by the schedule. If an event is being clicked, compute its resizing or dragging.
      */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) {
@@ -1342,45 +1289,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         // Prevent scrolling
         mouseEvent.preventDefault();
 
-        if (this._draggedSplitter) {
-            // The splitter between the left column and the schedule is being dragged
-            const { mouseX, firstColWidth } = this._initialState;
+        const { event, occurrence, occurrences, isMoving } =
+            this._eventData.selection;
+        const shouldShrinkMultiDayEvent =
+            this.isMonth &&
+            !isMoving &&
+            spansOnMoreThanOneDay(event, occurrence.from, occurrence.to);
+
+        if (this._showPlaceholderOccurrence) {
+            // Make sure the main occurrence is not hidden in a popover
+            const mainOccurrence = occurrences.find(
+                (occ) => occ.key === occurrence.key
+            );
+            mainOccurrence.overflowsCell = false;
+            this.updateOccurrencesPosition();
+            this._showPlaceholderOccurrence = false;
+        }
+
+        if (shouldShrinkMultiDayEvent || this._centerDraggedEvent) {
+            // On first move, shrink the width of the month multi-day events
+            // and center the dragged event under the mouse
             const x = mouseEvent.clientX;
-            const width = firstColWidth + (x - mouseX);
-            this.leftPanelContent.style.width = `${width}px`;
-            this.firstColWidth = width;
+            const y = mouseEvent.clientY;
+            this._eventData.shrinkDraggedEvent(this.cellWidth, x, y);
+            this.hideSelectionPlaceholders();
+            this._centerDraggedEvent = false;
         } else {
-            const { event, occurrence, occurrences, isMoving } =
-                this._eventData.selection;
-            const shouldShrinkMultiDayEvent =
-                this.isMonth &&
-                !isMoving &&
-                spansOnMoreThanOneDay(event, occurrence.from, occurrence.to);
+            this._eventData.handleMouseMove(mouseEvent);
 
-            if (this._showPlaceholderOccurrence) {
-                // Make sure the main occurrence is not hidden in a popover
-                const mainOccurrence = occurrences.find(
-                    (occ) => occ.key === occurrence.key
-                );
-                mainOccurrence.overflowsCell = false;
-                this.updateOccurrencesPosition();
-                this._showPlaceholderOccurrence = false;
-            }
-
-            if (shouldShrinkMultiDayEvent || this._centerDraggedEvent) {
-                // On first move, shrink the width of the month multi-day events
-                // and center the dragged event under the mouse
-                const x = mouseEvent.clientX;
-                const y = mouseEvent.clientY;
-                this._eventData.shrinkDraggedEvent(this.cellWidth, x, y);
-                this.hideSelectionPlaceholders();
-                this._centerDraggedEvent = false;
-            } else {
-                this._eventData.handleMouseMove(mouseEvent);
-
-                if (this._eventData.shouldInitDraggedEvent) {
-                    this.updateColumnEvents();
-                }
+            if (this._eventData.shouldInitDraggedEvent) {
+                this.updateColumnEvents();
             }
         }
     }
@@ -1392,30 +1330,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._mouseIsDown = false;
         this._showPlaceholderOccurrence = false;
         this._centerDraggedEvent = false;
+        const x = mouseEvent.clientX;
+        const y = mouseEvent.clientY;
+        const { eventToDispatch, updateCellGroups } =
+            this._eventData.handleMouseUp(x, y);
 
-        if (this._draggedSplitter) {
-            this._draggedSplitter = false;
-        } else {
-            const x = mouseEvent.clientX;
-            const y = mouseEvent.clientY;
-            const { eventToDispatch, updateCellGroups } =
-                this._eventData.handleMouseUp(x, y);
-
-            switch (eventToDispatch) {
-                case 'edit':
-                    this.dispatchOpenEditDialog(this._eventData.selection);
-                    break;
-                case 'recurrence':
-                    this.dispatchOpenRecurrenceDialog(
-                        this._eventData.selection
-                    );
-                    break;
-                default:
-                    break;
-            }
-            if (updateCellGroups) {
-                this.updateColumnEvents();
-            }
+        switch (eventToDispatch) {
+            case 'edit':
+                this.dispatchOpenEditDialog(this._eventData.selection);
+                break;
+            case 'recurrence':
+                this.dispatchOpenRecurrenceDialog(this._eventData.selection);
+                break;
+            default:
+                break;
+        }
+        if (updateCellGroups) {
+            this.updateColumnEvents();
         }
     };
 
@@ -1450,33 +1381,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const row = this.multiDayWrapper;
         this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
         this.dispatchHidePopovers();
-    }
-
-    /**
-     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
-     */
-    handleOpenFirstCol() {
-        this.dispatchHidePopovers();
-        this.leftPanelContent.style.width = null;
-
-        if (this.firstColumnIsHidden) {
-            this.firstColumnIsHidden = false;
-            this.firstColWidth = this._initialFirstColWidth;
-        } else {
-            const splitter = this.template.querySelector(
-                '[data-element-id="div-splitter"]'
-            );
-            const splitterWidth = splitter.getBoundingClientRect().width;
-            this.firstColumnIsOpen = true;
-            const width =
-                this.template.host.getBoundingClientRect().width -
-                splitterWidth;
-            this.firstColWidth = width;
-            this.leftPanelContent.style.width = `${width}px`;
-        }
-
-        this.updateCellWidth();
-        this.updateVisibleWidth();
     }
 
     handlePlaceholderMouseDown(mouseEvent) {
@@ -1608,29 +1512,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._mouseInShowMorePopover = false;
     }
 
-    /**
-     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
-     */
-    handleSplitterMouseDown(mouseEvent) {
-        if (
-            this.resizeColumnDisabled ||
-            mouseEvent.button !== 0 ||
-            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
-        ) {
-            return;
-        }
-
-        this._mouseIsDown = true;
-        this._draggedSplitter = true;
-        this._initialState = {
-            mouseX: mouseEvent.clientX,
-            firstColWidth: this.leftPanelContent.offsetWidth
-        };
-        this.firstColumnIsHidden = false;
-        this.firstColumnIsOpen = false;
-        this.dispatchHidePopovers();
-    }
-
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;
 
@@ -1641,7 +1522,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const end = addToDate(start, unit, span) - 1;
         this.hourCellDuration =
             dateTimeObjectFrom(end).diff(start).milliseconds;
-        this._initialFirstColWidth = 0;
     }
 
     handleYearDateClick(event) {
