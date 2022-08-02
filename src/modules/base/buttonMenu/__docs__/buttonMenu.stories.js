@@ -78,6 +78,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        hideDownArrow: {
+            name: 'hide-down-arrow',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present the additional down arrow displayed on the right of the custom icon is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         iconName: {
             name: 'icon-name',
             control: {
@@ -236,6 +248,7 @@ export default {
     args: {
         alternativeText: 'Show Menu',
         disabled: false,
+        hideDownArrow: false,
         iconName: 'utility:down',
         iconSize: 'medium',
         isDraft: false,
@@ -250,7 +263,5 @@ export default {
 const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
 
-export const Base = Template.bind({
-    label: 'gello'
-});
+export const Base = Template.bind({});
 export const Illustration = TemplateIllustration.bind({});
