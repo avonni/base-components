@@ -96,8 +96,6 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         return Promise.resolve().then(() => {
-            console.log(element.groupValues);
-
             const records = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__group"]'
             );
@@ -285,7 +283,34 @@ describe('Kanban', () => {
             tile.dispatchEvent(new MouseEvent('mouseup'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.id).toBe('001');
+        });
+    });
+
+    it('Kanban : actionclick event', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'Amount';
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const headerAction = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__header_action_menu"]'
+            );
+
+            headerAction.dispatchEvent(
+                new CustomEvent('select', {
+                    detail: {
+                        value: '001'
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
         });
     });
 });
