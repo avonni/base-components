@@ -64,11 +64,9 @@ export default class InfiniteGrid extends LightningElement {
             if (target.isLoading) {
                 target.isLoading = false;
 
-                // window.requestAnimationFrame(() => {
                 // eslint-disable-next-line @lwc/lwc/no-api-reassignments
                 this.items = this.items.concat(this._items);
-                // });
             }
-        }, 2000);
+        }, 0);
     }
 }

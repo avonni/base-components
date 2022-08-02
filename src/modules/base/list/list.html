@@ -50,7 +50,20 @@
         >{alternativeText}</span
     >
 
-    <div style="height: 100%">
+    <!-- <button onclick={previousPage}>previous</button>
+    <button onclick={nextPage}>next</button> -->
+
+    <div style="height: 100%" class="slds-grid slds-grid_vertical-align-center">
+        <div class="slds-col" if:true={showPaginationButtons}>
+            <lightning-button-icon
+                alternative-text="Previous Items"
+                disabled={previousPageDisabled}
+                icon-name="utility:chevronleft"
+                size="large"
+                variant="bare"
+                onclick={previousPage}
+            ></lightning-button-icon>
+        </div>
         <ul
             class={computedListClass}
             role={menuRole}
@@ -58,7 +71,7 @@
             onscroll={handleScroll}
         >
             <template
-                for:each={computedItems}
+                for:each={displayedItems}
                 for:item="item"
                 for:index="index"
             >
@@ -379,14 +392,25 @@
             <li
                 class="slds-col slds-size_12-of-12 slds-is-relative"
                 style="height: 40px"
+                if:true={isLoading}
             >
                 <lightning-spinner
-                    if:true={isLoading}
                     size="small"
                     class="slds-spinner_container"
                     alternative-text="Loading..."
                 ></lightning-spinner>
             </li>
         </ul>
+        <div class="slds-col" if:true={showPaginationButtons}>
+            <lightning-button-icon
+                alternative-text="Previous Items"
+                disabled={nextPageDisabled}
+                icon-name="utility:chevronright"
+                class="slds-"
+                size="large"
+                variant="bare"
+                onclick={nextPage}
+            ></lightning-button-icon>
+        </div>
     </div>
 </template>

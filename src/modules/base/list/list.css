@@ -44,6 +44,11 @@
 
  Add docs
  Test new props
+
+ ? when sort icon present, drag only on the icon to allow normal scrolling
+
+ task: 
+ on mobile only sort with icon
  */
 
 :host() {
@@ -73,6 +78,7 @@
 
 .avonni-list__item-menu {
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
+    /* only smooth scroll on hover --- scroll-behavior: smooth; */
 }
 
 .avonni-list__grid-display {
@@ -129,6 +135,7 @@
 }
 
 .avonni-list__item-sortable {
+    user-select: none;
     --avonni-card-color-background: var(
         --avonni-list-item-color-background-sortable,
         var(--avonni-list-item-color-background, transparent)

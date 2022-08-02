@@ -42,7 +42,8 @@ export default {
             },
             description: 'Array of actions',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Base'
             }
         },
         alternativeText: {
@@ -53,7 +54,8 @@ export default {
             description:
                 'Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: “Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel.”',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
             }
         },
         cols: {
@@ -62,7 +64,8 @@ export default {
             maximum: 12,
             description: 'Default number of columns',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Grid'
             }
         },
         smallContainerCols: {
@@ -72,7 +75,8 @@ export default {
             maximum: 12,
             description: 'Number of columns for small containers',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Grid'
             }
         },
         mediumContainerCols: {
@@ -82,7 +86,8 @@ export default {
             maximum: 12,
             description: 'Number of columns for medium containers',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Grid'
             }
         },
         largeContainerCols: {
@@ -92,7 +97,8 @@ export default {
             maximum: 12,
             description: 'Number of columns for large containers',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Grid'
             }
         },
         divider: {
@@ -103,7 +109,8 @@ export default {
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
             }
         },
         enableInfiniteLoading: {
@@ -114,7 +121,8 @@ export default {
             description:
                 'Enable infinite loading. When enabled, the list will load more items when the user scrolls to the bottom of the list.',
             table: {
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Inifinite Loading'
             }
         },
         imageAttributes: {
@@ -123,7 +131,8 @@ export default {
             },
             description: 'Object of attributes for the list item images.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Base'
             }
         },
         isLoading: {
@@ -133,7 +142,8 @@ export default {
             },
             description: 'Set to true to indicate that the list is loading.',
             table: {
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Inifinite Loading'
             }
         },
         items: {
@@ -142,7 +152,8 @@ export default {
             },
             description: 'Array of item objects.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Base'
             }
         },
         label: {
@@ -151,7 +162,8 @@ export default {
             },
             description: 'Label of the list.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
             }
         },
         loadMoreOffset: {
@@ -162,7 +174,8 @@ export default {
             description:
                 "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.",
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Inifinite Loading'
             }
         },
         sortable: {
@@ -173,7 +186,8 @@ export default {
                 'If true, it will be possible to reorder the list items.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Sorting'
             }
         },
         sortableIconName: {
@@ -184,7 +198,8 @@ export default {
             description:
                 "The Lightning Design System name of the sortable icon. \nNames are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Sorting'
             }
         },
         sortableIconPosition: {
@@ -197,19 +212,27 @@ export default {
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'right' }
+                defaultValue: { summary: 'right' },
+                category: 'Sorting'
             }
         },
         variant: {
             control: {
                 type: 'select'
             },
-            options: ['list', 'grid']
+            options: ['list', 'grid', 'single-line'],
+            description: 'Variant of the list.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'list' },
+                category: 'Base'
+            }
         }
     },
     args: {
         sortable: false,
-        sortableIconPosition: 'right'
+        sortableIconPosition: 'right',
+        variant: 'list'
     }
 };
 
@@ -553,6 +576,17 @@ GridCardWithImages.args = {
     largeContainerCols: 6
 };
 
+export const SingleLine = Template.bind({});
+SingleLine.args = {
+    label: 'Single Line',
+    items: [...itemsWithImages, ...itemsWithImages],
+    divider: 'around',
+    variant: 'single-line',
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4
+};
+
 export const InfiniteGrid = InifiniteGridTemplate.bind({});
 InfiniteGrid.args = {
     label: 'Grid with infinite loading',
@@ -577,6 +611,7 @@ InfiniteList.args = {
     items,
     actions: actions,
     loadMoreOffset: 10,
+    sortable: true,
     // divider: 'around',
     imageAttributes: {
         size: 'large'

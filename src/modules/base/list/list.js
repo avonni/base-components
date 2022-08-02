@@ -64,7 +64,7 @@ const IMAGE_CROP_FIT = {
 };
 
 const VARIANTS = {
-    valid: ['list', 'grid'],
+    valid: ['list', 'grid', 'single-line'],
     default: 'list'
 };
 
@@ -149,6 +149,10 @@ export default class List extends LightningElement {
     _resizeObserver;
     _isLoading = false;
     finishedLoading = true;
+    _scrollUpIntervalId;
+    _scrollDownIntervalId;
+
+    _singleLinePage = 0;
 
     renderNumber = 0;
     renderedCallback() {
@@ -427,6 +431,7 @@ export default class List extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+        console.log('variant', this._variant);
     }
 
     /*
@@ -445,11 +450,14 @@ export default class List extends LightningElement {
             'avonni-list__item-image_large-width':
                 this._imageSize === 'large' && this._variant === 'list',
             'avonni-list__item-image_small-height':
-                this._imageSize === 'small' && this._variant === 'grid',
+                this._imageSize === 'small' &&
+                (this._variant === 'grid' || this._variant === 'single-line'),
             'avonni-list__item-image_medium-height':
-                this._imageSize === 'medium' && this._variant === 'grid',
+                this._imageSize === 'medium' &&
+                (this._variant === 'grid' || this._variant === 'single-line'),
             'avonni-list__item-image_large-height':
-                this._imageSize === 'large' && this._variant === 'grid'
+                this._imageSize === 'large' &&
+                (this._variant === 'grid' || this._variant === 'single-line')
         });
     }
 
@@ -467,6 +475,10 @@ export default class List extends LightningElement {
     get computedImageStyle() {
         // return '0';
         return `object-position: ${this._imagePositionX}% ${this._imagePositionY}%`;
+    }
+
+    get listWrapper() {
+        return this.template.querySelector('[data-element-id="list-wrapper"]');
     }
 
     /**
@@ -510,7 +522,9 @@ export default class List extends LightningElement {
     }
 
     get mediaPosition() {
-        return this.variant === 'grid' ? 'top' : 'left';
+        return this.variant === 'grid' || this.variant === 'single-line'
+            ? 'top'
+            : 'left';
     }
 
     /**
@@ -533,11 +547,6 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get showIconLeft() {
-        // console.log(this.variant === 'list',
-        // !this.hasImages,
-        // this.sortable,
-        // !!this.sortableIconName,
-        // this.sortableIconPosition === 'left');
         return (
             this.variant === 'list' &&
             !this.hasImages &&
@@ -562,6 +571,53 @@ export default class List extends LightningElement {
         );
     }
 
+    get displayedItems() {
+        if (
+            this.variant === 'single-line' &&
+            this._effectiveColumnCount !== null
+        ) {
+            const pageStart = this._effectiveColumnCount * this._singleLinePage;
+            let pageItems = this.computedItems.slice(
+                pageStart,
+                this._effectiveColumnCount + pageStart
+            );
+            return pageItems;
+        }
+        return this.computedItems;
+    }
+
+    // make sure the total page is calculated on page resize
+    get totalPages() {
+        return (
+            Math.ceil(this.computedItems.length / this._effectiveColumnCount) ||
+            1
+        );
+    }
+
+    nextPage() {
+        if (this._singleLinePage < this.totalPages - 1) {
+            this._singleLinePage++;
+        }
+    }
+
+    previousPage() {
+        if (this._singleLinePage > 0) {
+            this._singleLinePage--;
+        }
+    }
+
+    get showPaginationButtons() {
+        return this.variant === 'single-line';
+    }
+
+    get nextPageDisabled() {
+        return this._singleLinePage === this.totalPages - 1;
+    }
+
+    get previousPageDisabled() {
+        return this._singleLinePage === 0;
+    }
+
     /**
      * Check if Image is present and set the list class styling according to attributes.
      *
@@ -574,16 +630,21 @@ export default class List extends LightningElement {
         ) {
             this.hasImages = true;
         }
-        return classSet('avonni-list__item-menu slds-grid slds-scrollable_y')
+        return classSet(
+            'avonni-list__item-menu slds-grid slds-scrollable_y slds-is-relative slds-col'
+        )
             .add({
                 'slds-grid_vertical': this.variant === 'list',
-                'avonni-list__grid-display': this.variant === 'grid',
+                'avonni-list__grid-display':
+                    this.variant === 'grid' || this.variant === 'single-line',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
                 'avonni-list__has-images': this.hasImages,
                 'slds-grid_pull-padded-medium':
-                    this.variant === 'grid' && this.divider === 'around'
+                    this.variant === 'grid' ||
+                    (this.variant === 'single-line' &&
+                        this.divider === 'around')
             })
             .toString();
     }
@@ -612,24 +673,38 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12':
-                    this._effectiveColumnCount === 1 && this.variant === 'grid',
+                    this._effectiveColumnCount === 1 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line'),
                 'slds-col slds-size_6-of-12':
-                    this._effectiveColumnCount === 2 && this.variant === 'grid',
+                    this._effectiveColumnCount === 2 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line'),
                 'slds-col slds-size_4-of-12':
-                    this._effectiveColumnCount === 3 && this.variant === 'grid',
+                    this._effectiveColumnCount === 3 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line'),
                 'slds-col slds-size_3-of-12':
-                    this._effectiveColumnCount === 4 && this.variant === 'grid',
+                    this._effectiveColumnCount === 4 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line'),
                 'slds-col slds-size_2-of-12':
-                    this._effectiveColumnCount === 6 && this.variant === 'grid',
+                    this._effectiveColumnCount === 6 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line'),
                 'slds-col slds-size_1-of-12':
-                    this._effectiveColumnCount === 12 && this.variant === 'grid'
+                    this._effectiveColumnCount === 12 &&
+                    (this._variant === 'grid' ||
+                        this._variant === 'single-line')
             })
             .toString();
     }
 
     get showMediaAction() {
         return (
-            this.variant === 'grid' && this.hasImages && this.actions.length > 0
+            (this.variant === 'grid' || this.variant === 'single-line') &&
+            this.hasImages &&
+            this.actions.length > 0
         );
     }
 
@@ -670,9 +745,7 @@ export default class List extends LightningElement {
             const resizeObserver = new AvonniResizeObserver(() => {
                 this.listResize();
             });
-            resizeObserver.observe(
-                this.template.querySelector('[data-element-id="list-wrapper"]')
-            );
+            resizeObserver.observe(this.listWrapper);
             this._resizeObserver = resizeObserver;
         }
     }
@@ -682,13 +755,11 @@ export default class List extends LightningElement {
      * @private
      */
     listResize() {
-        const list = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
-        );
-        if (!list) {
+        const previousCols = this._effectiveColumnCount;
+        if (!this.listWrapper) {
             return;
         }
-        const listWidth = list.offsetWidth;
+        const listWidth = this.listWrapper.offsetWidth;
         if (!listWidth) {
             return;
         }
@@ -717,6 +788,11 @@ export default class List extends LightningElement {
 
         if (calculatedColumns !== this._effectiveColumnCount) {
             this._effectiveColumnCount = calculatedColumns;
+        }
+
+        // go back to first page in single line view
+        if (previousCols !== this._effectiveColumnCount) {
+            this._singleLinePage = 0;
         }
     }
 
@@ -753,35 +829,65 @@ export default class List extends LightningElement {
      * @private
      */
     handleScroll() {
-        const el = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
-        );
         const offsetFromBottom =
-            el.scrollHeight - el.scrollTop - el.clientHeight;
-
-        // console.log(
-        //     '🎢',
-        //     this.finishedLoading,
-        //     el.scrollHeight,
-        //     el.clientHeight,
-        //     offsetFromBottom
-        // );
+            this.listWrapper.scrollHeight -
+            this.listWrapper.scrollTop -
+            this.listWrapper.clientHeight;
 
         if (
-            offsetFromBottom <= this.loadMoreOffset &&
-            !this._isLoading &&
-            this.finishedLoading
+            (offsetFromBottom <= this.loadMoreOffset &&
+                !this._isLoading &&
+                this.finishedLoading) ||
+            (this.listWrapper.scrollTop === 0 &&
+                this.listWrapper.scrollHeight ===
+                    this.listWrapper.clientHeight &&
+                !this.finishedLoading)
         ) {
             this.handleLoadMore();
         }
+    }
 
-        if (
-            el.scrollTop === 0 &&
-            el.scrollHeight === el.clientHeight &&
-            !this.finishedLoading
+    /**
+     * When dragging an item to the top or the bottom of the list,
+     * scroll the list in the direction of the drag.
+     * @private
+     */
+    checkDragToScroll(position) {
+        if (position.top < this.listWrapper.getBoundingClientRect().top + 20) {
+            this._scrollUpIntervalId = setInterval(this.scrollUp(), 1000);
+        } else if (
+            position.bottom >
+            this.listWrapper.getBoundingClientRect().bottom - 20
         ) {
-            this.handleLoadMore();
+            this._scrollDownIntervalId = setInterval(this.scrollDown(), 1000);
+        } else {
+            this.stopScroll();
         }
+    }
+
+    /**
+     * Scroll the list up.
+     * @private
+     */
+    scrollUp() {
+        this.listWrapper.scrollTo(0, this.listWrapper.scrollTop - 3);
+    }
+
+    /**
+     * Scroll the list down.
+     * @private
+     */
+    scrollDown() {
+        this.listWrapper.scrollTo(0, this.listWrapper.scrollTop + 3);
+    }
+
+    /**
+     * Stop scrolling the list.
+     * @private
+     */
+    stopScroll() {
+        clearInterval(this._scrollUpIntervalId);
+        clearInterval(this._scrollDownIntervalId);
     }
 
     /**
@@ -842,10 +948,12 @@ export default class List extends LightningElement {
     getHoveredItem(center) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
+                // const listTop = this.listWrapper.scrollTop;
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
                 const itemCenter =
                     itemPosition.bottom - itemPosition.height / 2;
+                // itemPosition.bottom - itemPosition.height / 2 + listTop;
 
                 if (
                     (this._draggedIndex > itemIndex && center < itemCenter) ||
@@ -853,6 +961,12 @@ export default class List extends LightningElement {
                 ) {
                     return item;
                 }
+
+                // console.log(this._draggedElement.getBoundingClientRect().top);
+
+                // check if at top of list to scroll top, or bottom of list to scroll bottom
+
+                // if top of item within 30px of top of list, scroll to top
             }
             return undefined;
         });
@@ -959,7 +1073,7 @@ export default class List extends LightningElement {
     dragStart(event) {
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
-            const item = this.items[index];
+            const item = this.computedItems[index];
 
             /**
              * The event fired when the mouse is pressed on an item.
@@ -1008,7 +1122,7 @@ export default class List extends LightningElement {
 
         if (event.type === 'touchstart') {
             // Make sure touch events don't trigger mouse events
-            event.preventDefault();
+            // event.preventDefault();
             // Close any open button menu
             this._draggedElement.focus();
         }
@@ -1031,18 +1145,20 @@ export default class List extends LightningElement {
             event.type === 'touchmove'
                 ? event.touches[0].clientY
                 : event.clientY;
-        const menuTop = this._menuTop;
-        const menuBottom = this._menuBottom;
+        // const mouseY =
+        //     event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
+        // const menuTop = this._menuTop;
+        // const menuBottom = this._menuBottom;
 
         // Make sure it is not possible to drag the item out of the menu
-        let currentY;
-        if (mouseY < menuTop) {
-            currentY = menuTop;
-        } else if (mouseY > menuBottom) {
-            currentY = menuBottom;
-        } else {
-            currentY = mouseY;
-        }
+        let currentY = mouseY;
+        // if (mouseY < menuTop) {
+        //     currentY = menuTop;
+        // } else if (mouseY > menuBottom) {
+        //     currentY = menuBottom;
+        // } else {
+        //     currentY = mouseY;
+        // }
 
         // Stick the dragged item to the mouse position
         this._draggedElement.style.transform = `translateY(${
@@ -1052,8 +1168,12 @@ export default class List extends LightningElement {
         // Get the position of the dragged item
         const position = this._draggedElement.getBoundingClientRect();
         const center = position.bottom - position.height / 2;
+        // const center = position.bottom - position.height / 2 + listTop;
 
         const hoveredItem = this.getHoveredItem(center);
+
+        this.checkDragToScroll(position);
+
         if (hoveredItem) {
             this.switchWithItem(hoveredItem);
         }
@@ -1066,12 +1186,15 @@ export default class List extends LightningElement {
     }
 
     dragEnd(event) {
+        clearInterval(this._intervalId);
+        // event.button is not reliable on touch devices
+        // finding hovered
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
-            const item = this.items[index];
+            const item = this.computedItems[index];
 
             /**
-             * The event fired when the mouse is realeased on an item.
+             * The event fired when the mouse is released on an item.
              *
              * @event
              * @name itemmouseup
