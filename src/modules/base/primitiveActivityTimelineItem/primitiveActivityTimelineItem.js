@@ -55,7 +55,6 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 const ICON_SIZES = {

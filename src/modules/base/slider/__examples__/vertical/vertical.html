@@ -1,0 +1,43 @@
+<template>
+    <span class="slds-grid slds-grid_align-center">Vertical Sliders</span>
+    <div
+        class="
+            slds-grid slds-grid_align-center slds-grid_vertical-align-center
+            slds-m-horizontal_medium
+        "
+        style="max-height: 1350px"
+    >
+        <avonni-slider
+            variant="label-hidden"
+            type="vertical"
+            size="x-small"
+            class="first-slider"
+            style="z-index: 5; margin: 0 20px"
+            hide-min-max-values
+            show-pin
+        >
+        </avonni-slider>
+        <avonni-slider
+            variant="label-hidden"
+            type="vertical"
+            size="x-small"
+            value={secondSliderValues}
+            style="z-index: 3; margin: 0 20px"
+            hide-min-max-values
+            show-pin
+        >
+        </avonni-slider>
+        <avonni-slider
+            variant="label-hidden"
+            type="vertical"
+            size="x-small"
+            unit-attributes={unitAttributes}
+            unit="custom"
+            class="third-slider"
+            style="z-index: 1; margin: 0 20px"
+            hide-min-max-values
+            show-pin
+        >
+        </avonni-slider>
+    </div>
+</template>

@@ -677,6 +677,7 @@ describe('RelationshipGraph', () => {
 
                 if (actions[index].iconName) {
                     const icon = button.querySelector('lightning-icon');
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(icon.iconName).toBe(actions[index].iconName);
                 }
             });
@@ -866,7 +867,9 @@ describe('RelationshipGraph', () => {
             const actionsWrapper =
                 element.shadowRoot.querySelector('div:nth-of-type(2)');
             const actionButtons = element.shadowRoot.querySelectorAll('button');
-            const line = element.shadowRoot.querySelector('[data-element-id="div-line"]');
+            const line = element.shadowRoot.querySelector(
+                '[data-element-id="div-line"]'
+            );
 
             expect(level.variant).toBe('horizontal');
             expect(wrapper.classList).toContain('slds-grid');
@@ -908,7 +911,9 @@ describe('RelationshipGraph', () => {
             const actionsWrapper =
                 element.shadowRoot.querySelector('div:nth-of-type(2)');
             const actionButtons = element.shadowRoot.querySelectorAll('button');
-            const line = element.shadowRoot.querySelector('[data-element-id="div-line"]');
+            const line = element.shadowRoot.querySelector(
+                '[data-element-id="div-line"]'
+            );
 
             expect(level.variant).toBe('vertical');
             expect(wrapper.classList).not.toContain('slds-grid');

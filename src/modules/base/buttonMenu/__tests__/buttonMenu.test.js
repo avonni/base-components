@@ -58,6 +58,7 @@ describe('Button Menu', () => {
         expect(element.alternativeText).toBe('Show Menu');
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
+        expect(element.hideDownArrow).toBeFalsy();
         expect(element.iconName).toBe('utility:down');
         expect(element.iconSize).toBe('medium');
         expect(element.isDraft).toBeFalsy();
@@ -70,7 +71,6 @@ describe('Button Menu', () => {
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBe('');
         expect(element.variant).toBe('border');
-        expect(element.hideDownArrow).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
