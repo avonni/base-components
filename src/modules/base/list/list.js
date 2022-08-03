@@ -160,13 +160,12 @@ export default class List extends LightningElement {
             this.initWrapObserver();
             this.renderNumber++;
         }
-
         setTimeout(() => {
             this.handleScroll();
         }, 0);
 
         this.listResize();
-        console.log('👾 rendered');
+        // console.log('👾 rendered');
     }
 
     disconnectedCallback() {
@@ -183,6 +182,13 @@ export default class List extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    get isLoadingBelow() {
+        return (
+            this.isLoading &&
+            (this.variant === 'list' || this.variant === 'grid')
+        );
     }
 
     /*
@@ -478,8 +484,10 @@ export default class List extends LightningElement {
         return `object-position: ${this._imagePositionX}% ${this._imagePositionY}%`;
     }
 
-    get listWrapper() {
-        return this.template.querySelector('[data-element-id="list-wrapper"]');
+    get listContainer() {
+        return this.template.querySelector(
+            '[data-element-id="list-container"]'
+        );
     }
 
     /**
@@ -746,7 +754,7 @@ export default class List extends LightningElement {
             const resizeObserver = new AvonniResizeObserver(() => {
                 this.listResize();
             });
-            resizeObserver.observe(this.listWrapper);
+            resizeObserver.observe(this.listContainer);
             this._resizeObserver = resizeObserver;
         }
     }
@@ -757,10 +765,10 @@ export default class List extends LightningElement {
      */
     listResize() {
         const previousCols = this._effectiveColumnCount;
-        if (!this.listWrapper) {
+        if (!this.listContainer) {
             return;
         }
-        const listWidth = this.listWrapper.offsetWidth;
+        const listWidth = this.listContainer.offsetWidth;
         if (!listWidth) {
             return;
         }
@@ -831,17 +839,23 @@ export default class List extends LightningElement {
      */
     handleScroll() {
         const offsetFromBottom =
-            this.listWrapper.scrollHeight -
-            this.listWrapper.scrollTop -
-            this.listWrapper.clientHeight;
+            this.listContainer.scrollHeight -
+            this.listContainer.scrollTop -
+            this.listContainer.clientHeight;
+
+        // const wrapper = this.template.querySelector(
+        //     '[data-element-id="list-wrapper"]'
+        // );
+
+        // console.log(wrapper.getBoundingClientRect(), window.scrollTop, wrapper.scrollTop);
 
         if (
             (offsetFromBottom <= this.loadMoreOffset &&
                 !this._isLoading &&
                 this.finishedLoading) ||
-            (this.listWrapper.scrollTop === 0 &&
-                this.listWrapper.scrollHeight ===
-                    this.listWrapper.clientHeight &&
+            (this.listContainer.scrollTop === 0 &&
+                this.listContainer.scrollHeight ===
+                    this.listContainer.clientHeight &&
                 !this.finishedLoading)
         ) {
             this.handleLoadMore();
@@ -854,11 +868,14 @@ export default class List extends LightningElement {
      * @private
      */
     checkDragToScroll(position) {
-        if (position.top < this.listWrapper.getBoundingClientRect().top + 20) {
+        if (
+            position.top <
+            this.listContainer.getBoundingClientRect().top + 20
+        ) {
             this._scrollUpIntervalId = setInterval(this.scrollUp(), 1000);
         } else if (
             position.bottom >
-            this.listWrapper.getBoundingClientRect().bottom - 20
+            this.listContainer.getBoundingClientRect().bottom - 20
         ) {
             this._scrollDownIntervalId = setInterval(this.scrollDown(), 1000);
         } else {
@@ -871,7 +888,7 @@ export default class List extends LightningElement {
      * @private
      */
     scrollUp() {
-        this.listWrapper.scrollTo(0, this.listWrapper.scrollTop - 3);
+        this.listContainer.scrollTo(0, this.listContainer.scrollTop - 3);
     }
 
     /**
@@ -879,7 +896,7 @@ export default class List extends LightningElement {
      * @private
      */
     scrollDown() {
-        this.listWrapper.scrollTo(0, this.listWrapper.scrollTop + 3);
+        this.listContainer.scrollTo(0, this.listContainer.scrollTop + 3);
     }
 
     /**
@@ -900,7 +917,7 @@ export default class List extends LightningElement {
             return;
         }
         const list = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
+            '[data-element-id="list-container"]'
         );
 
         window.requestAnimationFrame(() => {
@@ -919,7 +936,7 @@ export default class List extends LightningElement {
      */
     saveScrollPosition() {
         const list = this.template.querySelector(
-            '[data-element-id="list-wrapper"]'
+            '[data-element-id="list-container"]'
         );
 
         this._savedScrollTop = list ? list.scrollTop : null;
@@ -949,7 +966,7 @@ export default class List extends LightningElement {
     getHoveredItem(center) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
-                // const listTop = this.listWrapper.scrollTop;
+                // const listTop = this.listContainer.scrollTop;
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
                 const itemCenter =

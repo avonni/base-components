@@ -78,6 +78,7 @@
 
 .avonni-list__item-menu {
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
+    align-self: baseline;
     /* only smooth scroll on hover --- scroll-behavior: smooth; */
 }
 

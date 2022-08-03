@@ -329,11 +329,10 @@ describe('List', () => {
             const icons = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="lightning-icon-sort"]'
             );
-            expect(icons).toHaveLength(4);
-
             icons.forEach((icon) => {
                 expect(icon.iconName).toBe('utility:apps');
             });
+            expect(icons).toHaveLength(4);
         });
     });
 
@@ -351,8 +350,8 @@ describe('List', () => {
             const iconsLeft = element.shadowRoot.querySelectorAll(
                 '[data-element-id="lightning-icon-sort-left"]'
             );
-            expect(iconsRight).toHaveLength(4);
             expect(iconsLeft).toHaveLength(0);
+            expect(iconsRight).toHaveLength(4);
         });
     });
 
@@ -378,7 +377,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id="list-img"]'
+                '[data-element-id="list-img-media"]'
             );
             expect(images).toHaveLength(3);
         });
@@ -440,30 +439,6 @@ describe('List', () => {
             );
             expect(images[2].classList).toContain(
                 'avonni-list__item-image_large-width'
-            );
-        });
-    });
-
-    it('List: Images rounded on sortable icon right', () => {
-        element.items = ITEMS;
-        element.imageAttributes = { size: 'large' };
-        element.divider = 'around';
-        element.sortable = true;
-        element.sortableIconName = 'utility:add';
-        element.sortableIconPosition = 'right';
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '.avonni-list__item-image-container'
-            );
-            expect(images[0].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
             );
         });
     });

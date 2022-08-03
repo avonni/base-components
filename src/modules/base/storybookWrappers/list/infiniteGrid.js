@@ -67,6 +67,6 @@ export default class InfiniteGrid extends LightningElement {
                 // eslint-disable-next-line @lwc/lwc/no-api-reassignments
                 this.items = this.items.concat(this._items);
             }
-        }, 0);
+        }, 1000);
     }
 }
