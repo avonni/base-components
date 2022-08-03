@@ -38,6 +38,7 @@ export const Calendar = ({
     dateLabels,
     disabled,
     disabledDates,
+    hideNavigation,
     markedDates,
     min,
     max,
@@ -49,6 +50,7 @@ export const Calendar = ({
     element.dateLabels = dateLabels;
     element.disabled = disabled;
     element.disabledDates = disabledDates;
+    element.hideNavigation = hideNavigation;
     element.markedDates = markedDates;
     element.max = max;
     element.min = min;

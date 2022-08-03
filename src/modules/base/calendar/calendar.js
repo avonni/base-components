@@ -86,6 +86,7 @@ export default class Calendar extends LightningElement {
     _disabled = false;
     _disabledDates = [];
     _focusDate;
+    _hideNavigation = false;
     _isConnected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
@@ -193,6 +194,21 @@ export default class Calendar extends LightningElement {
         });
 
         this.updateDateParameters();
+    }
+
+    /**
+     * Specifies if the calendar header should be hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideNavigation() {
+        return this._hideNavigation;
+    }
+    set hideNavigation(value) {
+        this._hideNavigation = normalizeBoolean(value);
     }
 
     /**
@@ -509,11 +525,56 @@ export default class Calendar extends LightningElement {
         }
     }
 
+    /**
+     * Move the position of the calendar so the specified date is visible.
+     *
+     * @param {string | number | Date} date Date the calendar should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const selectedDate = this.formattedWithTimezoneOffset(new Date(date));
+        if (this.isInvalidDate(selectedDate)) {
+            console.warn(`The date ${date} is not valid.`);
+            return;
+        }
+        this.displayDate = selectedDate;
+        this.updateDateParameters();
+    }
+
+    /**
+     * Simulates a click on the next month button
+     *
+     * @public
+     */
+    @api
+    nextMonth() {
+        this.handlerNextMonth();
+    }
+
+    /**
+     * Simulates a click on the previous month button
+     *
+     * @public
+     */
+    @api
+    previousMonth() {
+        this.handlerPreviousMonth();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+    /**
+     * Returns the first day of the current month.
+     */
+    getFirstDayOfMonth(date) {
+        let dateValue = new Date(date.getTime());
+        dateValue.setDate(1);
+        return dateValue.toISOString();
+    }
 
     /**
      * Check if value is after max date.
@@ -552,6 +613,17 @@ export default class Calendar extends LightningElement {
         });
 
         return dates;
+    }
+
+    /**
+     * Check if both dates have the same month.
+     *
+     * @param {Date} dateA A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @param {Date} dateB A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @returns {boolean}
+     */
+    haveSameMonth(dateA, dateB) {
+        return new Date(dateA).getMonth() === new Date(dateB).getMonth();
     }
 
     /**
@@ -1042,6 +1114,7 @@ export default class Calendar extends LightningElement {
             this.displayDate.setMonth(this.max.getMonth());
         }
 
+        this.dispatchNavigateEvent(new Date(this.displayDate).toISOString());
         this.updateDateParameters();
         event.stopPropagation();
         this.computeFocus(true);
@@ -1054,6 +1127,7 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
         this.computeFocus(false);
+        this.dispatchNavigateEvent(this.displayDate);
     }
 
     /**
@@ -1063,6 +1137,7 @@ export default class Calendar extends LightningElement {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
         this.computeFocus(false);
+        this.dispatchNavigateEvent(this.displayDate);
     }
 
     /**
@@ -1186,6 +1261,25 @@ export default class Calendar extends LightningElement {
                 detail: {
                     value: this.normalizedValue,
                     clickedDate: this._clickedDate
+                }
+            })
+        );
+    }
+
+    /**
+     * The event fired when the month is changed.
+     *
+     * @event
+     * @public
+     * @name navigate
+     * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
+     */
+    dispatchNavigateEvent(date) {
+        const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: {
+                    date: firstDayOfMonth
                 }
             })
         );
@@ -1345,6 +1439,7 @@ export default class Calendar extends LightningElement {
         const initialFocusDate = new Date(
             parseInt(event.target.dataset.cellDay, 10)
         );
+        const initialFocusDateCopy = new Date(initialFocusDate);
         let nextDate;
 
         if (event.altKey) {
@@ -1355,12 +1450,14 @@ export default class Calendar extends LightningElement {
                         initialFocusDate.getFullYear() - 1
                     )
                 );
+                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
             }
             if (event.keyCode === keyCodes.pagedown) {
                 event.preventDefault();
                 nextDate = initialFocusDate.setFullYear(
                     initialFocusDate.getFullYear() + 1
                 );
+                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
             }
         } else {
             switch (event.keyCode) {
@@ -1369,30 +1466,50 @@ export default class Calendar extends LightningElement {
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 1
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.right:
                     event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 1
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.up:
                     event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 7
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.down:
                     event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 7
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.home:
                     event.preventDefault();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - initialFocusDate.getDay()
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.end:
                     event.preventDefault();
@@ -1400,17 +1517,27 @@ export default class Calendar extends LightningElement {
                         initialFocusDate.getDate() +
                             (6 - initialFocusDate.getDay())
                     );
+                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
+                        this.dispatchNavigateEvent(
+                            new Date(nextDate).toISOString()
+                        );
                     break;
                 case keyCodes.pagedown:
                     event.preventDefault();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() - 1
                     );
+                    this.dispatchNavigateEvent(
+                        new Date(nextDate).toISOString()
+                    );
                     break;
                 case keyCodes.pageup:
                     event.preventDefault();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() + 1
+                    );
+                    this.dispatchNavigateEvent(
+                        new Date(nextDate).toISOString()
                     );
                     break;
                 case keyCodes.space:
