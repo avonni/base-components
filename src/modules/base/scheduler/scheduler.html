@@ -196,6 +196,7 @@
             date-format={dateFormat}
             events={computedEvents}
             events-labels={eventsLabels}
+            events-theme={eventsTheme}
             read-only={readOnly}
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}
@@ -204,7 +205,7 @@
             time-span={currentTimeSpan}
             zoom-to-fit={zoomToFit}
             data-element-id="avonni-primitive-scheduler-calendar"
-            ondatechange={handleCalendarDateChange}
+            ondatechange={handleSelectedDateChange}
             onemptyspotcontextmenu={handleEmptySpotContextMenu}
             oneventchange={handleEventChange}
             oneventcontextmenu={handleEventContextMenu}
@@ -215,6 +216,26 @@
             onresourceselect={handleResourceSelect}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-calendar>
+
+        <c-primitive-scheduler-agenda
+            if:true={isAgenda}
+            available-days-of-the-week={availableDaysOfTheWeek}
+            available-months={availableMonths}
+            available-time-frames={availableTimeFrames}
+            collapse-disabled={collapseDisabled}
+            date-format={dateFormat}
+            events={computedEvents}
+            events-labels={eventsLabels}
+            read-only={readOnly}
+            resize-column-disabled={resizeColumnDisabled}
+            resources={computedResources}
+            selected-date={selectedDate}
+            selected-resources={selectedResources}
+            time-span={currentTimeSpan}
+            ondatechange={handleSelectedDateChange}
+            onresourceselect={handleResourceSelect}
+            onvisibleintervalchange={handleVisibleIntervalChange}
+        ></c-primitive-scheduler-agenda>
     </template>
 
     <!-- Loading spinner -->

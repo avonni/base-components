@@ -34,7 +34,7 @@ import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
-import { spansOnMoreThanOneDay } from './schedulerUtils';
+import { spansOnMoreThanOneDay } from './dateComputations';
 
 export default class SchedulerEventData {
     eventDrag;

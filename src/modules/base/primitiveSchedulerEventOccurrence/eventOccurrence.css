@@ -44,7 +44,7 @@
     z-index: 2;
 }
 
-.avonni-scheduler__event:not(.avonni-scheduler__event_month) {
+.avonni-scheduler__event:not(.avonni-scheduler__event_display-as-dot) {
     opacity: 0.8;
 }
 

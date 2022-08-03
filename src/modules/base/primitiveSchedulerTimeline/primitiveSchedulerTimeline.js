@@ -84,7 +84,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initHeaders();
-        this.initResources();
         super.connectedCallback();
     }
 
@@ -402,6 +401,26 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get scrollOffset() {
         return this.isVertical ? 0 : this.firstColWidth;
+    }
+
+    /**
+     * If true, the left collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
+    get showCollapseLeft() {
+        return !this.collapseDisabled && !this.firstColumnIsHidden;
+    }
+
+    /**
+     * If true, the right collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
+    get showCollapseRight() {
+        return !this.collapseDisabled && !this.firstColumnIsOpen;
     }
 
     /**

@@ -38,12 +38,14 @@ import {
     dateTimeObjectFrom,
     addToDate,
     deepCopy,
-    previousAllowedDay,
-    previousAllowedMonth,
-    previousAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
-import { positionPopover } from 'c/schedulerUtils';
+import {
+    positionPopover,
+    previousAllowedDay,
+    previousAllowedMonth,
+    previousAllowedTime
+} from 'c/schedulerUtils';
 import { classSet } from 'c/utils';
 import {
     EDIT_MODES,
@@ -1035,6 +1037,10 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    get isAgenda() {
+        return this.selectedDisplay === 'agenda';
+    }
+
     get isCalendar() {
         return this.selectedDisplay === 'calendar';
     }
@@ -1469,7 +1475,7 @@ export default class Scheduler extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    handleCalendarDateChange(event) {
+    handleSelectedDateChange(event) {
         this.goToDate(event.detail.value);
     }
 

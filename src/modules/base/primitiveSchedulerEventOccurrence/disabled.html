@@ -41,7 +41,7 @@
         onmousedown={handleDisabledMouseDown}
     >
         <div
-            if:false={isMonthCalendar}
+            if:false={isStandalone}
             class={disabledTitleClass}
             title={title}
             data-element-id="div-disabled-title-wrapper"
@@ -63,16 +63,16 @@
             >
         </div>
 
-        <div if:true={isMonthCalendar} class={eventOccurrenceCenterLabelClass}>
-            <!-- Month calendar chip -->
+        <div if:true={isStandalone} class={eventOccurrenceCenterLabelClass}>
+            <!-- Standalone chip -->
             <div
-                if:true={isMonthCalendarSingleDay}
+                if:true={displayAsDot}
                 class="
-                    avonni-scheduler__event-month-chip
+                    avonni-scheduler__event-dot-chip
                     slds-m-right_xx-small
                     slds-theme_shade
                 "
-                style={monthColorChipStyle}
+                style={standaloneChipStyle}
             ></div>
 
             <lightning-icon
@@ -87,10 +87,10 @@
                 title={title}
             >
                 <span
-                    if:true={isMonthCalendarSingleDay}
+                    if:true={displayAsDot}
                     class="
                         slds-p-right_xx-small
-                        avonni-scheduler__event-month-time
+                        avonni-scheduler__event-dot-time
                         slds-text-color_weak
                     "
                     >{startTime}</span

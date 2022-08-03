@@ -52,11 +52,12 @@ const DEFAULT_DATE_FORMAT = 'ff';
 const VARIANTS = {
     default: 'timeline-horizontal',
     valid: [
-        'timeline-horizontal',
-        'timeline-vertical',
-        'calendar-vertical',
+        'agenda',
         'calendar-horizontal',
-        'calendar-month'
+        'calendar-month',
+        'calendar-vertical',
+        'timeline-horizontal',
+        'timeline-vertical'
     ]
 };
 
@@ -530,7 +531,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         classListMutation(this.classList, {
             'avonni-scheduler__event_horizontal':
                 this._variant === 'timeline-horizontal',
-            'avonni-scheduler__month-calendar-event': this.isMonthCalendar
+            'avonni-scheduler__standalone-event': this.isStandalone
         });
 
         if (this._connected) {
@@ -726,7 +727,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
                 'slds-text-color_inverse slds-current-color':
-                    !this.isMonthCalendarSingleDay &&
+                    !this.displayAsDot &&
                     (theme === 'default' ||
                         theme === 'rounded' ||
                         (this._focused && theme === 'transparent')),
@@ -735,19 +736,17 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line',
-                'avonni-scheduler__event_month': this.isMonthCalendarSingleDay,
+                'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
                     this.disabled,
-                'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
-                    !this.isMonthCalendarSingleDay &&
-                    this.occurrence.startsInPreviousCell,
-                'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
-                    !this.isMonthCalendarSingleDay &&
-                    this.occurrence.endsInLaterCell
+                'avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell':
+                    !this.displayAsDot && this.occurrence.startsInPreviousCell,
+                'avonni-scheduler__event_standalone-multi-day-ends-in-later-cell':
+                    !this.displayAsDot && this.occurrence.endsInLaterCell
             })
             .toString();
 
-        if (!this.isMonthCalendarSingleDay) {
+        if (!this.displayAsDot) {
             classes += ` avonni-scheduler__event_${theme}`;
         }
         return classes;
@@ -769,14 +768,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'slds-theme_shade': this.isTimeline,
                 'slds-is-absolute': !this.isMonthCalendar,
-                'avonni-scheduler__disabled-date_calendar-month slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
-                    this.isMonthCalendar,
+                'avonni-scheduler__disabled-date_standalone slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
+                    this.isStandalone,
                 'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
-                    !this.isMonthCalendarSingleDay &&
-                    this.occurrence.startsInPreviousCell,
+                    !this.displayAsDot && this.occurrence.startsInPreviousCell,
                 'avonni-scheduler__event_month-multi-day-ends-in-later-cell':
-                    !this.isMonthCalendarSingleDay &&
-                    this.occurrence.endsInLaterCell
+                    !this.displayAsDot && this.occurrence.endsInLaterCell
             })
             .toString();
     }
@@ -806,6 +803,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .toString();
     }
 
+    get displayAsDot() {
+        return this.isStandalone && !this.spansOnMoreThanOneDay;
+    }
+
     /**
      * Computed CSS classes of the event occurence center label.
      *
@@ -817,10 +818,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-p-horizontal_x-small':
-                    !this.isVerticalTimeline && !this.isMonthCalendarSingleDay,
+                    !this.isVerticalTimeline && !this.displayAsDot,
                 'slds-m-top_small': this.isVertical && this.theme === 'line',
-                'slds-grid slds-grid_vertical-align-center':
-                    this.isMonthCalendarSingleDay
+                'slds-grid slds-grid_vertical-align-center': this.displayAsDot
             })
             .toString();
     }
@@ -836,20 +836,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'slds-grid_vertical-align-center':
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
-                    !this.isMonthCalendarSingleDay,
+                    !this.displayAsDot,
                 'slds-p-vertical_xx-small':
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
-                    !this.isMonthCalendar,
+                    !this.isMonthCalendar &&
+                    !this.isAgenda,
                 'slds-p-bottom_xx-small':
-                    this.isMonthCalendar && this.spansOnMoreThanOneDay,
+                    this.isStandalone && this.spansOnMoreThanOneDay,
                 'avonni-scheduler__event-wrapper_vertical': this.isVertical
             })
             .toString();
     }
 
     get hideResizeIcon() {
-        return this.readOnly || this.isMonthCalendar;
+        return this.readOnly || this.isStandalone;
     }
 
     /**
@@ -859,6 +860,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get hostElement() {
         return this.template.host;
+    }
+
+    get isAgenda() {
+        return this.variant === 'agenda';
     }
 
     get isAllDay() {
@@ -879,6 +884,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     get isMonthCalendarSingleDay() {
         return this.isMonthCalendar && !this.spansOnMoreThanOneDay;
+    }
+
+    get isStandalone() {
+        return this.isMonthCalendar || this.isAgenda;
     }
 
     get spansOnMoreThanOneDay() {
@@ -904,10 +913,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get isVerticalTimeline() {
         return this.variant === 'timeline-vertical';
-    }
-
-    get monthColorChipStyle() {
-        return `background-color: ${this.computedColor};`;
     }
 
     /**
@@ -943,8 +948,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'avonni-scheduler__reference-line_vertical':
                     this.isVerticalTimeline || this.isVerticalCalendar,
-                'avonni-scheduler__reference-line_month-calendar':
-                    this.isMonthCalendar
+                'avonni-scheduler__reference-line_standalone': this.isStandalone
             })
             .toString();
     }
@@ -961,6 +965,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return resource && resource.color;
     }
 
+    get standaloneChipStyle() {
+        return `background-color: ${this.computedColor};`;
+    }
+
     get startTime() {
         return this.from.toFormat('HH:mm');
     }
@@ -971,7 +979,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {string}
      */
     get style() {
-        if (this.isMonthCalendarSingleDay) {
+        if (this.displayAsDot) {
             return '';
         }
         const { computedColor, transparentColor, theme } = this;
@@ -1115,8 +1123,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateLength() {
-        if (this.isMonthCalendar) {
-            this.updateLengthInMonthCalendar();
+        if (this.isStandalone) {
+            this.updateStandaloneLength();
             this._offsetStart = 0;
             return;
         } else if (this.hostElement) {
@@ -1186,7 +1194,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updateThickness() {
-        if (!this.disabled || this.isMonthCalendar) return;
+        if (!this.disabled || this.isStandalone) return;
 
         const element = this.hostElement;
 
@@ -1249,6 +1257,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 const hideLabels =
                     this.isVertical ||
                     this.isMonthCalendar ||
+                    this.isAgenda ||
                     this.isHorizontalCalendar;
                 if (hideLabels && position !== 'center') {
                     continue;
@@ -1387,7 +1396,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
-    updateLengthInMonthCalendar() {
+    updateStandaloneLength() {
         const headerCells = this.headerCells.xAxis;
         const { to, cellWidth } = this;
         const isOneCellLength = !this.spansOnMoreThanOneDay || this.isAllDay;

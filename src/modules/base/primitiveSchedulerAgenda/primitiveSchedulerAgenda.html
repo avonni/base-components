@@ -1,0 +1,118 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <c-splitter class="avonni-primitive-scheduler-calendar__inherit-height">
+        <!-- Left panel -->
+        <c-splitter-pane
+            collapsible={allowCollapse}
+            resizable={allowResizeColumn}
+            scrollable
+            size="310px"
+        >
+            <div
+                class="slds-p-around_medium"
+                data-element-id="div-panel-content"
+            >
+                <c-calendar
+                    value={selectedDate}
+                    onchange={handleCalendarChange}
+                ></c-calendar>
+
+                <div class="slds-m-top_medium">
+                    <template for:each={resourceOptions} for:item="resource">
+                        <lightning-input
+                            key={resource.value}
+                            label={resource.label}
+                            checked={resource.selected}
+                            type="checkbox"
+                            value={resource.value}
+                            style={resource.style}
+                            onchange={handleResourceToggle}
+                        ></lightning-input>
+                    </template>
+                </div>
+            </div>
+        </c-splitter-pane>
+
+        <c-splitter-pane
+            collapsible={allowCollapse}
+            resizable={allowResizeColumn}
+            scrollable
+            style="flex: 1 1 0"
+        >
+            <div
+                for:each={computedGroups}
+                for:item="group"
+                key={uniqueKey}
+                class="slds-p-around_medium slds-grid slds-border_bottom"
+            >
+                <div class="slds-m-right_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <div class={group.dayClass}>{group.day}</div>
+                        <div class="slds-text-title_caps">{group.month}, {group.weekday}</div>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <template for:each={group.events} for:item="occurrence">
+                        <c-primitive-scheduler-event-occurrence
+                            key={occurrence.key}
+                            class="
+                                slds-m-bottom_xx-small
+                                avonni-scheduler__agenda-event
+                            "
+                            color={occurrence.event.color}
+                            date-format={dateFormat}
+                            disabled={occurrence.event.disabled}
+                            event-data={occurrence.event.data}
+                            event-name={occurrence.event.name}
+                            from={occurrence.from}
+                            icon-name={occurrence.event.iconName}
+                            labels={occurrence.event.labels}
+                            occurrence={occurrence}
+                            occurrence-key={occurrence.key}
+                            reference-line={occurrence.event.referenceLine}
+                            resource-key={occurrence.resourceName}
+                            resources={computedResources}
+                            title={occurrence.title}
+                            theme={occurrence.event.theme}
+                            to={occurrence.to}
+                            variant="agenda"
+                        ></c-primitive-scheduler-event-occurrence>
+                    </template>
+                </div>
+            </div>
+        </c-splitter-pane>
+    </c-splitter>
+</template>

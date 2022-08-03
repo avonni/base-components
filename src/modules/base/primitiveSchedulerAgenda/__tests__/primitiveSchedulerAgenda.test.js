@@ -1,3 +1,4 @@
+
 /**
  * BSD 3-Clause License
  *
@@ -30,26 +31,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export {
-    containsAllowedDateTimes,
-    getFirstAvailableWeek,
-    isAllDay,
-    isAllowedTime,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
-    previousAllowedDay,
-    previousAllowedMonth,
-    previousAllowedTime,
-    spansOnMoreThanOneDay,
-} from './dateComputations';
-export { ScheduleBase } from './scheduleBase';
-export {
-    getElementOnXAxis,
-    getElementOnYAxis,
-    positionPopover,
-    updateOccurrencesOffset,
-    updateOccurrencesPosition
-} from './positions';
-export { SchedulerCellGroup } from './cellGroup';
-export { SchedulerEventOccurrence } from './eventOccurrence';
+import { createElement } from 'lwc';
+import PrimitiveSchedulerAgenda from '../primitiveSchedulerAgenda';
+
+let element;
+describe('Primitive Scheduler Agenda', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    beforeEach(() => {
+        element = createElement('avonni-primitive-scheduler-agenda', {
+            is: PrimitiveSchedulerAgenda
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        // expect(element.title).toBeUndefined();
+    });
+
+    /*
+    * ------------------------------------------------------------
+    *  ATTRIBUTES
+    * -------------------------------------------------------------
+    */
+
+    // title
+    it('Primitive Scheduler Agenda: title', () => {
+        // element.title = 'This is a title text';
+
+        // return Promise.resolve().then(() => {
+        //     const title = element.shadowRoot.querySelector(
+        //         '[data-element-id="div-title"]'
+        //     );
+        //     expect(title.textContent).toBe('This is a title text');
+        // });
+    });à
+});

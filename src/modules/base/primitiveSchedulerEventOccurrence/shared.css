@@ -36,22 +36,23 @@
     user-select: none;
 }
 
-.avonni-scheduler__event-month-chip {
-    min-height: 8px;
-    min-width: 8px;
+.avonni-scheduler__event-dot-chip {
+    min-height: var(--avonni-primitive-scheduler-event-occurrence-standalone-chip-size, 8px);
+    min-width: var(--avonni-primitive-scheduler-event-occurrence-standalone-chip-size, 8px);
     border-radius: 50%;
 }
 
-.avonni-scheduler__event-month-time {
+.avonni-scheduler__event-dot-time {
     font-size: 0.75rem;
     font-weight: 300;
 }
 
-.avonni-scheduler__event_month-multi-day-starts-in-previous-cell::before {
+.avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
+    bottom: 0;
     background-color: #fff;
     border-style: solid;
     border-width: 9px 9px 9px 0;
@@ -60,11 +61,12 @@
         transparent transparent;
 }
 
-.avonni-scheduler__event_month-multi-day-ends-in-later-cell::after {
+.avonni-scheduler__event_standalone-multi-day-ends-in-later-cell::after {
     content: '';
     position: absolute;
     right: 0;
     top: 0;
+    bottom: 0;
     background-color: #fff;
     border-style: solid;
     border-width: 9px 0 9px 9px;

@@ -79,18 +79,10 @@ export { observePosition } from './observers';
 export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
     addToDate,
-    containsAllowedDateTimes,
     dateTimeObjectFrom,
     getWeekday,
     getWeekNumber,
-    isAllowedTime,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
     numberOfUnitsBetweenDates,
-    previousAllowedDay,
-    previousAllowedMonth,
-    previousAllowedTime,
     removeFromDate
 } from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';

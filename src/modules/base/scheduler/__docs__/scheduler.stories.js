@@ -584,6 +584,18 @@ Calendar.args = {
     referenceLines
 };
 
+export const Agenda = Template.bind({});
+Agenda.args = {
+    resources,
+    start,
+    events,
+    selectedDisplay: 'agenda',
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    // disabledDatesTimes,
+    // referenceLines
+};
+
 export const VerticalTimeline = Template.bind({});
 VerticalTimeline.args = {
     resources,

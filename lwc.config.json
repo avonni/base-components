@@ -419,6 +419,10 @@
             "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
+            "name": "c/primitiveSchedulerAgenda",
+            "path": "src/modules/base/primitiveSchedulerAgenda/primitiveSchedulerAgenda.js"
+        },
+        {
             "name": "c/primitiveSchedulerCalendar",
             "path": "src/modules/base/primitiveSchedulerCalendar/primitiveSchedulerCalendar.js"
         },

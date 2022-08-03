@@ -37,9 +37,6 @@ import {
     dateTimeObjectFrom,
     deepCopy,
     getWeekNumber,
-    isAllowedTime,
-    nextAllowedMonth,
-    nextAllowedDay,
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
@@ -47,10 +44,14 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    spansOnMoreThanOneDay,
+    getFirstAvailableWeek,
+    isAllowedTime,
+    nextAllowedMonth,
+    nextAllowedDay,
     positionPopover,
     ScheduleBase,
     SchedulerEventOccurrence,
+    spansOnMoreThanOneDay,
     updateOccurrencesOffset,
     updateOccurrencesPosition
 } from 'c/schedulerUtils';
@@ -109,7 +110,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.setStartToBeginningOfUnit();
-        this.initResources();
         this.initHeaders();
         super.connectedCallback();
     }
@@ -297,26 +297,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 span: 1
             }
         ];
-    }
-
-    get isDay() {
-        const { span, unit } = this.timeSpan;
-        return unit === 'day' && span === 1;
-    }
-
-    get isMonth() {
-        const { span, unit } = this.timeSpan;
-        return unit === 'month' && span === 1;
-    }
-
-    get isWeek() {
-        const { span, unit } = this.timeSpan;
-        return unit === 'week' || (unit === 'day' && span === 7);
-    }
-
-    get isYear() {
-        const { span, unit } = this.timeSpan;
-        return unit === 'year' || (unit === 'month' && span >= 12);
     }
 
     get leftPanelContent() {
@@ -675,26 +655,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return getElementOnXAxis(this.template, x, selector);
     }
 
-    getFirstAvailableWeek(start) {
-        let date = dateTimeObjectFrom(start);
-        const availableDays = [...this.availableDaysOfTheWeek];
-        if (availableDays[0] === 0) {
-            // Transform "0" Sunday to a "7" Luxon Sunday
-            availableDays[0] = 7;
-            availableDays.sort();
-        }
-
-        let hasAvailableDayThisWeek = false;
-        while (date.weekday !== 7 && !hasAvailableDayThisWeek) {
-            hasAvailableDayThisWeek = availableDays.includes(date.weekday);
-            date = addToDate(date, 'day', 1);
-        }
-        if (!hasAvailableDayThisWeek) {
-            return addToDate(start, 'week', 1);
-        }
-        return start;
-    }
-
     getMonthMarkedDates(month) {
         const monthDate = this.selectedDate.set({ month });
         const monthStart = monthDate.startOf('month');
@@ -882,7 +842,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 if (this.start.weekday !== 7) {
                     // Make sure there are available days in the current week.
                     // Otherwise, go to the next week.
-                    this.start = this.getFirstAvailableWeek(this.start);
+                    this.start = getFirstAvailableWeek(this.start, this.availableDaysOfTheWeek);
                 }
             }
 
@@ -893,10 +853,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
 
         if (this.isYear) {
-            this.visibleInterval = Interval.fromDateTimes(
-                this.start,
-                this.start.endOf('year')
-            );
+            const { span, unit } = this.timeSpan;
+            const end = addToDate(this.start, unit, span);
+            this.visibleInterval = Interval.fromDateTimes(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,
                 this.visibleInterval
@@ -1137,23 +1096,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
-    handleCalendarChange(event) {
-        const value = event.detail.value;
-        if (!value) {
-            event.currentTarget.value = this.selectedDate;
-            return;
-        }
-
-        this._selectedDate = dateTimeObjectFrom(value);
-        this.dispatchEvent(
-            new CustomEvent('datechange', {
-                detail: {
-                    value: this.selectedDate
-                }
-            })
-        );
-    }
-
     /**
      * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
      */
@@ -1390,23 +1332,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this._showPlaceholderOccurrence = true;
         this.handleHiddenEventMouseDown(mouseEvent);
-    }
-
-    handleResourceToggle(event) {
-        const name = event.currentTarget.value;
-        const selected = event.detail.checked;
-        if (selected) {
-            this.selectedResources.push(name);
-        } else {
-            const index = this.selectedResources.indexOf(name);
-            this.selectedResources.splice(index, 1);
-        }
-        this.initEvents();
-        this.dispatchEvent(
-            new CustomEvent('resourceselect', {
-                detail: { name }
-            })
-        );
     }
 
     handleShowMorePopoverClose() {

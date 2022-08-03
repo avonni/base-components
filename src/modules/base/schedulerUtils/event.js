@@ -36,12 +36,12 @@ import {
     normalizeBoolean,
     normalizeString,
     addToDate,
-    containsAllowedDateTimes,
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { DateTime, Interval } from 'c/luxon';
 import { SchedulerEventOccurrence } from './eventOccurrence';
+import { containsAllowedDateTimes } from './dateComputations';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,

@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    dateTimeObjectFrom,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -72,6 +73,7 @@ export class ScheduleBase extends LightningElement {
     _resizeObserver;
 
     connectedCallback() {
+        this.initResources();
         this._connected = true;
     }
 
@@ -423,24 +425,32 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * If true, the left collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseLeft() {
-        return !this.collapseDisabled && !this.firstColumnIsHidden;
+    get allowCollapse() {
+        return !this.collapseDisabled;
     }
 
-    /**
-     * If true, the right collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseRight() {
-        return !this.collapseDisabled && !this.firstColumnIsOpen;
+    get allowResizeColumn() {
+        return !this.resizeColumnDisabled;
+    }
+
+    get isDay() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'day' && span <= 1;
+    }
+
+    get isMonth() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'month' && span <= 1;
+    }
+
+    get isWeek() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'week' || (unit === 'day' && span > 1);
+    }
+
+    get isYear() {
+        const { span, unit } = this.timeSpan;
+        return unit === 'year' || (unit === 'month' && span > 1);
     }
 
     /*
@@ -550,6 +560,23 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    handleCalendarChange(event) {
+        const value = event.detail.value;
+        if (!value) {
+            event.currentTarget.value = this.selectedDate;
+            return;
+        }
+
+        this._selectedDate = dateTimeObjectFrom(value);
+        this.dispatchEvent(
+            new CustomEvent('datechange', {
+                detail: {
+                    value: this.selectedDate
+                }
+            })
+        );
+    }
+
     /**
      * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
      */
@@ -647,6 +674,23 @@ export class ScheduleBase extends LightningElement {
 
     handleHideDetailPopover() {
         this.dispatchHidePopovers(['detail']);
+    }
+
+    handleResourceToggle(event) {
+        const name = event.currentTarget.value;
+        const selected = event.detail.checked;
+        if (selected) {
+            this.selectedResources.push(name);
+        } else {
+            const index = this.selectedResources.indexOf(name);
+            this.selectedResources.splice(index, 1);
+        }
+        this.initEvents();
+        this.dispatchEvent(
+            new CustomEvent('resourceselect', {
+                detail: { name }
+            })
+        );
     }
 
     dispatchEventChange(detail) {

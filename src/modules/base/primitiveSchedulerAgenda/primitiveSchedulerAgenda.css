@@ -1,0 +1,16 @@
+.avonni-scheduler__agenda-event {
+    --avonni-primitive-scheduler-event-occurrence-standalone-chip-size: 0.75rem;
+    max-width: 15rem;
+}
+
+.avonni-scheduler__agenda-day {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+}
+
+.avonni-scheduler__agenda-day_today {
+    background-color: var(--lwc-brandAccessible, #0176d3);
+    border-radius: 50%;
+    color: var(--lwc-colorTextInverse, #fff);
+}

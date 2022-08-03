@@ -37,7 +37,7 @@
     position: absolute;
 }
 
-:host.avonni-scheduler__month-calendar-event {
+:host.avonni-scheduler__standalone-event {
     min-height: 2.3rem;
     display: block;
     overflow: hidden;
@@ -67,13 +67,13 @@
     left: 0;
 }
 
-.avonni-scheduler__reference-line_month-calendar {
+.avonni-scheduler__reference-line_standalone {
     --avonni-reference-line-length: 2rem;
     --avonni-reference-line-badge-height: 1rem;
     left: 0.7rem;
 }
 
-.avonni-scheduler__event-month-time {
+.avonni-scheduler__event-dot-time {
     top: 1.2rem;
     left: 0.7rem;
 }

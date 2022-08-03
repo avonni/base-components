@@ -30,26 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export {
-    containsAllowedDateTimes,
-    getFirstAvailableWeek,
-    isAllDay,
-    isAllowedTime,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
-    previousAllowedDay,
-    previousAllowedMonth,
-    previousAllowedTime,
-    spansOnMoreThanOneDay,
-} from './dateComputations';
-export { ScheduleBase } from './scheduleBase';
-export {
-    getElementOnXAxis,
-    getElementOnYAxis,
-    positionPopover,
-    updateOccurrencesOffset,
-    updateOccurrencesPosition
-} from './positions';
-export { SchedulerCellGroup } from './cellGroup';
-export { SchedulerEventOccurrence } from './eventOccurrence';
+import { classSet } from 'c/utils';
+
+export default class SchedulerAgendaDayGroup {
+    constructor(props) {
+        Object.assign(this, props);
+    }
+
+    get dayClass() {
+        return classSet('avonni-scheduler__agenda-day slds-grid slds-m-right_small slds-grid_vertical-align-center slds-grid_align-center').add({
+            'avonni-scheduler__agenda-day_today': this.isToday
+        }).toString();
+    }
+
+    get day() {
+        return this.date.day;
+    }
+
+    get month() {
+        return this.date.toFormat('LLL');
+    }
+
+    get weekday() {
+        return this.date.toFormat('ccc');
+    }
+}

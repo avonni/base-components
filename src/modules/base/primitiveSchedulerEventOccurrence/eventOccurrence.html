@@ -126,14 +126,14 @@
                     class={eventOccurrenceCenterLabelClass}
                     data-element-id="div-center-label-wrapper"
                 >
-                    <!-- Month calendar chip -->
+                    <!-- Standalone chip -->
                     <div
-                        if:true={isMonthCalendarSingleDay}
+                        if:true={displayAsDot}
                         class="
-                            avonni-scheduler__event-month-chip
+                            avonni-scheduler__event-dot-chip
                             slds-m-right_xx-small
                         "
-                        style={monthColorChipStyle}
+                        style={standaloneChipStyle}
                     ></div>
 
                     <lightning-icon
@@ -153,10 +153,10 @@
                         data-element-id="span-center-label"
                     >
                         <span
-                            if:true={isMonthCalendarSingleDay}
+                            if:true={displayAsDot}
                             class="
                                 slds-p-right_xx-small
-                                avonni-scheduler__event-month-time
+                                avonni-scheduler__event-dot-time
                                 slds-text-color_weak
                             "
                             >{startTime}</span

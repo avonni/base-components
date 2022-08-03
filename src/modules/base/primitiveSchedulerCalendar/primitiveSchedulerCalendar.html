@@ -44,8 +44,8 @@
         >
             <!-- Left panel -->
             <c-splitter-pane
-                collapsible
-                resizable
+                collapsible={allowCollapse}
+                resizable={allowResizeColumn}
                 scrollable
                 size="310px"
                 data-element-id="avonni-splitter-pane-left"
@@ -79,8 +79,8 @@
             </c-splitter-pane>
 
             <c-splitter-pane
-                collapsible
-                resizable
+                collapsible={allowCollapse}
+                resizable={allowResizeColumn}
                 scrollable
                 style="flex: 1 1 0"
                 data-element-id="avonni-splitter-pane-right"
