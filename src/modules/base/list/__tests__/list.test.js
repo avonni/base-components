@@ -327,7 +327,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const icons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-icon-sort"]'
+                '[data-element-id^="lightning-icon-sort-left"]'
             );
             icons.forEach((icon) => {
                 expect(icon.iconName).toBe('utility:apps');
@@ -345,11 +345,23 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const iconsRight =
-                element.shadowRoot.querySelectorAll('.icon-right');
+            const iconsRight = element.shadowRoot.querySelectorAll(
+                '[data-element-id="right-lightning-icon-sort"]'
+            );
             const iconsLeft = element.shadowRoot.querySelectorAll(
                 '[data-element-id="lightning-icon-sort-left"]'
             );
+            const listItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-item"]'
+            );
+
+            iconsRight.forEach((item) => {
+                console.log(item.parentElement.innerHTML);
+            });
+            listItems.forEach((item) => {
+                console.log(item.innerHTML);
+            });
+            expect(listItems).toHaveLength(4);
             expect(iconsLeft).toHaveLength(0);
             expect(iconsRight).toHaveLength(4);
         });
