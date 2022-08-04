@@ -30,11 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-scheduler__wrapper {
-    height: 100%;
-    min-height: 5rem;
-    max-height: 100vh;
-    overflow: auto;
+:host {
+    --avonni-splitter-horizontal-color-border-around: transparent;
 }
 
 .avonni-scheduler__event-detail-popover {

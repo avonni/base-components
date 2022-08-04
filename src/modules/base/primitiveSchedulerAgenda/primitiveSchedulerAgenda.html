@@ -69,10 +69,15 @@
                 </div>
             </c-splitter-pane>
             <c-splitter-pane
+                class="slds-border_top slds-border_bottom slds-border_right"
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable
-                style="flex: 1 1 0"
+                style="
+                    flex: 1 1 0;
+                    margin: -1px 0;
+                    min-height: calc(100% + 2px);
+                "
             >
                 <div
                     for:each={computedGroups}
