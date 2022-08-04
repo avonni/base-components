@@ -386,6 +386,10 @@ export default class Splitter extends LightningElement {
      * @param {Event} event
      */
     onMouseDown(event) {
+        if (event.button) {
+            return;
+        }
+
         let selectedSeparator = event.target;
 
         if (selectedSeparator.className.indexOf('icon') > -1) {
