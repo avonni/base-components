@@ -67,8 +67,12 @@ export class SchedulerCellGroup {
         });
 
         if (i > -1) {
+            // If the event is a reference line,
+            // use the start date as an end date too
+            const to = event.to || event.from;
+
             // Add the event to every cell it crosses
-            while (i < cells.length && event.to >= cells[i].start) {
+            while (i < cells.length && to >= cells[i].start) {
                 // If the event is a calendar month placeholder,
                 // make sure it hasn't been added already
                 const exists = cells[i][eventType].find(

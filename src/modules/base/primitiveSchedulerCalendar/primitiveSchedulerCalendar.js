@@ -659,7 +659,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this._eventData.events.reduce((markedDates, event) => {
             event.occurrences.forEach((occ) => {
                 const { from, to, resourceName } = occ;
-                const occInterval = Interval.fromDateTimes(from, to);
+                const normalizedTo = event.referenceLine ? from : to;
+                const occInterval = Interval.fromDateTimes(from, normalizedTo);
                 const intersection = monthInterval.intersection(occInterval);
 
                 if (intersection) {
@@ -700,7 +701,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             event.computedTo
         );
         const cellsPassed = col.cells.filter((cell) => {
-            return cell.start > from && cell.end <= to.endOf('day');
+            return (
+                cell.start > from &&
+                (event.referenceLine || cell.end <= to.endOf('day'))
+            );
         });
         const spansOnMoreThanOneWeek =
             getWeekNumber(from) !== getWeekNumber(to);
@@ -862,13 +866,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     updateCellHeight() {
         const numberOfRows = this.columns[0].referenceCells.length;
-        const leftPanelHeight =
-            this.leftPanelContent.getBoundingClientRect().height;
+        const splitter = this.template.querySelector(
+            '[data-element-id="avonni-splitter"]'
+        );
+        const splitterHeight = splitter.getBoundingClientRect().height;
         const dayHeaders = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
         );
         const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
-        const availableHeight = leftPanelHeight - dayHeadersHeight;
+        const availableHeight = splitterHeight - dayHeadersHeight;
         this.cellHeight = availableHeight / numberOfRows;
         this.template.host.style = `
             --avonni-scheduler-cell-height: ${this.cellHeight}px;
@@ -1159,8 +1165,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             occurrence.event = this._eventData.events.find((e) => {
                 return e.key === occ.eventKey;
             });
+            // If the event is a reference line,
+            // use the start date as an end date too
+            const to = occ.to ? occ.to : occ.from;
             occurrence.startsInPreviousCell = occ.from.day < startDate.day;
-            occurrence.endsInLaterCell = occ.to.day > startDate.day;
+            occurrence.endsInLaterCell = to.day > startDate.day;
             return occurrence;
         });
 
@@ -1461,7 +1470,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const events = this._eventData.events.map((ev) => {
             const occurrences = [];
             ev.occurrences.forEach((occ) => {
-                const interval = Interval.fromDateTimes(occ.from, occ.to);
+                // If the event is a reference line,
+                // use the start date as an end date too
+                const to = occ.to ? occ.to : occ.from;
+                const interval = Interval.fromDateTimes(occ.from, to);
                 const day = Interval.fromDateTimes(
                     date.startOf('day'),
                     date.endOf('day')
@@ -1471,7 +1483,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                         ...occ,
                         event: ev,
                         startsInPreviousCell: occ.from.day < date.day,
-                        endsInLaterCell: occ.to.day > date.day
+                        endsInLaterCell: to.day > date.day
                     });
                 }
             });

@@ -38,7 +38,7 @@
 }
 
 :host.avonni-scheduler__standalone-event {
-    min-height: 2.3rem;
+    min-height: 1.3rem;
     display: block;
     overflow: hidden;
 }
@@ -68,15 +68,12 @@
 }
 
 .avonni-scheduler__reference-line_standalone {
-    --avonni-reference-line-length: 2rem;
     --avonni-reference-line-badge-height: 1rem;
-}
-
-.avonni-scheduler__reference-line_month,
-.avonni-scheduler__reference-line_month .avonni-scheduler__event-dot-time {
-    left: 0.7rem;
+    left: 0.5rem;
+    right: 2.75rem;
+    overflow: hidden;
 }
 
 .avonni-scheduler__event-dot-time {
-    top: 1.2rem;
+    right: 0.5rem;
 }

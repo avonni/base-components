@@ -579,7 +579,7 @@ Calendar.args = {
     events,
     selectedDisplay: 'calendar',
     selectedResources: ['Dave', 'Jung', 'Reginald'],
-    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    selectedTimeSpan: 'Standard.Scheduler.YearTimeSpan',
     disabledDatesTimes,
     referenceLines
 };

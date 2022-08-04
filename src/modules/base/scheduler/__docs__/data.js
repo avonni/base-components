@@ -600,8 +600,9 @@ const referenceLines = [
     },
     {
         label: 'Coffee break',
-        date: new Date(2021, 1, 1, 10),
-        recurrence: 'daily'
+        date: new Date(2022, 1, 1, 10),
+        recurrence: 'daily',
+        recurrenceEndDate: new Date(2022, 1, 5)
     }
 ];
 

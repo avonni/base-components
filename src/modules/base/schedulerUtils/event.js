@@ -510,6 +510,9 @@ export default class SchedulerEvent {
                 end = start.set({ hours, minutes, seconds });
                 break;
         }
+        if (this.referenceLine && end.ts === start.ts) {
+            end = addToDate(end, 'minute', 1);
+        }
         return end;
     }
 

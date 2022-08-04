@@ -948,9 +948,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'avonni-scheduler__reference-line_vertical':
                     this.isVerticalTimeline || this.isVerticalCalendar,
-                'avonni-scheduler__reference-line_standalone':
-                    this.isStandalone,
-                'avonni-scheduler__reference-line_month': this.isMonthCalendar
+                'avonni-scheduler__reference-line_standalone': this.isStandalone
             })
             .toString();
     }
