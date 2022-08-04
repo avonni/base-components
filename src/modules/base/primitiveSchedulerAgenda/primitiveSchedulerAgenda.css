@@ -12,17 +12,22 @@
 
 .avonni-scheduler__agenda-event {
     --avonni-primitive-scheduler-event-occurrence-standalone-chip-size: 0.75rem;
-    max-width: 15rem;
 }
 
 .avonni-scheduler__agenda-day {
-    width: 2rem;
-    height: 2rem;
-    font-size: 1rem;
+    font-size: 2.625rem;
+    width: 3rem;
+    height: 3rem;
 }
 
 .avonni-scheduler__agenda-day_today {
     background-color: var(--lwc-brandAccessible, #0176d3);
     border-radius: 50%;
     color: var(--lwc-colorTextInverse, #fff);
+}
+
+.avonni-scheduler__agenda-time {
+    max-width: 11rem;
+    min-width: 6rem;
+    font-size: 0.75rem;
 }

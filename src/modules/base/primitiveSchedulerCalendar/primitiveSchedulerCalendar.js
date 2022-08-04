@@ -855,7 +855,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this.isYear) {
             const { span, unit } = this.timeSpan;
-            const end = addToDate(this.start, unit, span);
+            const endOfSpan = addToDate(this.start, unit, span) - 1;
+            const end = dateTimeObjectFrom(endOfSpan);
             this.visibleInterval = Interval.fromDateTimes(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,

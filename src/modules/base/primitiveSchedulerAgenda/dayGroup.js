@@ -38,9 +38,13 @@ export default class SchedulerAgendaDayGroup {
     }
 
     get dayClass() {
-        return classSet('avonni-scheduler__agenda-day slds-grid slds-m-right_small slds-grid_vertical-align-center slds-grid_align-center').add({
-            'avonni-scheduler__agenda-day_today': this.isToday
-        }).toString();
+        return classSet(
+            'avonni-scheduler__agenda-day slds-grid slds-m-right_small slds-grid_vertical-align-center slds-grid_align-center'
+        )
+            .add({
+                'avonni-scheduler__agenda-day_today': this.isToday
+            })
+            .toString();
     }
 
     get day() {
@@ -52,6 +56,10 @@ export default class SchedulerAgendaDayGroup {
     }
 
     get weekday() {
-        return this.date.toFormat('ccc');
+        return this.date.toFormat('cccc');
+    }
+
+    get year() {
+        return this.date.toFormat('yyyy');
     }
 }

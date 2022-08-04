@@ -37,11 +37,13 @@ import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
     getFirstAvailableWeek,
+    isAllDay,
     nextAllowedDay,
     nextAllowedMonth,
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
+import { spansOnMoreThanOneDay } from '../schedulerUtils/dateComputations';
 
 const DEFAULT_SELECTED_DATE = new Date();
 
@@ -176,21 +178,36 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const dayMap = {};
         this.computedEvents.forEach((event) => {
             event.occurrences.forEach((occ) => {
-                const to = event.referenceLine ? occ.from.endOf('day') : occ.to;
-                const interval = Interval.fromDateTimes(occ.from, to);
+                const from = occ.from;
+                const to = event.referenceLine ? from.endOf('day') : occ.to;
+                const interval = Interval.fromDateTimes(from, to);
                 const days = interval.count('days');
-                let date = occ.from;
+                let date = from;
 
                 for (let i = 0; i < days; i++) {
                     const ISODay = date.startOf('day').toISO();
+                    let time = `${from.toFormat('HH:mm')} - ${to.toFormat(
+                        'HH:mm'
+                    )}`;
+                    if (event.referenceLine) {
+                        time = from.toFormat('HH:mm');
+                    } else if (isAllDay(event, from, to)) {
+                        time = 'All Day';
+                    } else if (spansOnMoreThanOneDay(event, from, to)) {
+                        time = `${from.toFormat('dd LLL')} - ${to.toFormat(
+                            'dd LLL'
+                        )}`;
+                    }
+
                     if (!dayMap[ISODay]) {
                         dayMap[ISODay] = [];
                     }
                     dayMap[ISODay].push({
                         ...occ,
+                        endsInLaterCell: to.day > date.day,
                         event,
-                        startsInPreviousCell: occ.from.day < date.day,
-                        endsInLaterCell: to.day > date.day
+                        startsInPreviousCell: from.day < date.day,
+                        time
                     });
                     date = addToDate(date, 'day', 1);
                 }

@@ -83,22 +83,41 @@
                     data-date={group.date.ts}
                     oncontextmenu={handleEmptySpotContextMenu}
                 >
-                    <div class="slds-m-right_medium">
+                    <div class="slds-m-right_large slds-col slds-size_1-of-5">
                         <div class="slds-grid slds-grid_vertical-align-center">
                             <div class={group.dayClass}>{group.day}</div>
-                            <div class="slds-text-title_caps">
-                                {group.month}, {group.weekday}
+                            <div class="slds-text-title_caps slds-truncate">
+                                <div class="slds-truncate">{group.weekday}</div>
+                                <div class="slds-truncate">
+                                    {group.month} {group.year}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="slds-col">
-                        <template for:each={group.events} for:item="occurrence">
+                        <div
+                            for:each={group.events}
+                            for:item="occurrence"
+                            key={occurrence.key}
+                            class="slds-grid slds-m-bottom_x-small"
+                        >
+                            <div
+                                class="
+                                    slds-col
+                                    slds-size_1-of-5
+                                    slds-has-flexi-truncate
+                                    avonni-scheduler__agenda-time
+                                "
+                            >
+                                <div class="slds-truncate slds-text-color_weak">
+                                    {occurrence.time}
+                                </div>
+                            </div>
                             <c-primitive-scheduler-event-occurrence
-                                key={occurrence.key}
                                 class="
                                     slds-m-bottom_xx-small
                                     avonni-scheduler__agenda-event
-                                    slds-show
+                                    slds-show slds-col
                                 "
                                 color={occurrence.event.color}
                                 date-format={dateFormat}
@@ -127,7 +146,7 @@
                                 onprivatemouseenter={handleEventMouseEnter}
                                 onprivatemouseleave={handleHideDetailPopover}
                             ></c-primitive-scheduler-event-occurrence>
-                        </template>
+                        </div>
                     </div>
                 </div>
             </c-splitter-pane>
