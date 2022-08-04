@@ -34,7 +34,7 @@
 
 <template>
     <p if:true={label} class="slds-m-bottom_x-small avonni-list__header_font">
-        {label}
+        {label} - {items.length}
     </p>
     <span
         id="instructions"
@@ -264,7 +264,7 @@
                                 "
                                 icon-name={sortableIconName}
                                 size="x-small"
-                                data-element-id="right-lightning-icon-sort"
+                                data-element-id="lightning-icon-sort-right"
                             ></lightning-icon>
 
                             <!-- Actions -->
@@ -399,9 +399,9 @@
                 ></lightning-spinner>
             </li>
         </ul>
-        <div class="slds-col" if:true={showPaginationButtons}>
+        <div class="slds-col slds-is-relative" if:true={showPaginationButtons}>
             <lightning-button-icon
-                alternative-text="Previous Items"
+                alternative-text="Next Items"
                 disabled={nextPageDisabled}
                 icon-name="utility:chevronright"
                 class="slds-"
@@ -409,6 +409,12 @@
                 variant="bare"
                 onclick={nextPage}
             ></lightning-button-icon>
+            <lightning-spinner
+                if:true={isLoading}
+                size="small"
+                class="slds-spinner_container"
+                alternative-text="Loading..."
+            ></lightning-spinner>
         </div>
     </div>
 </template>

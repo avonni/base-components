@@ -6,6 +6,7 @@ module.exports = {
     moduleNameMapper: {
         d3: '<rootDir>/node_modules/d3/dist/d3.min.js',
         '^lightning/(.+)$': '<rootDir>/jest-mock/components/lightning/$1/$1',
+        '^c/(card)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(colorGradient)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',

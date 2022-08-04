@@ -153,6 +153,9 @@ export default class List extends LightningElement {
     _scrollDownIntervalId;
 
     _singleLinePage = 0;
+    _scrollTop;
+    _previousScrollTop;
+    _isLastItemVisible;
 
     renderNumber = 0;
     renderedCallback() {
@@ -361,12 +364,11 @@ export default class List extends LightningElement {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
-
-        // console.log('➕ items');
         this.restoreScrollPosition();
 
         setTimeout(() => {
-            // console.log('🏁 items loaded');
+            console.log('🔥 items changed');
+            this._isLoading = false;
             this.finishedLoading = true;
         }, 10);
     }
@@ -438,7 +440,6 @@ export default class List extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
-        console.log('variant', this._variant);
     }
 
     /*
@@ -580,6 +581,13 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Items to be displayed in the list. On single-line lists, displayed items
+     * are a portion of total computed items.
+     *
+     * @type {array}
+     * @private
+     */
     get displayedItems() {
         if (
             this.variant === 'single-line' &&
@@ -590,9 +598,21 @@ export default class List extends LightningElement {
                 pageStart,
                 this._effectiveColumnCount + pageStart
             );
+            let nextPageItems = this.computedItems.slice(
+                this._effectiveColumnCount + pageStart,
+                this._effectiveColumnCount * 2 + pageStart
+            );
+            if (nextPageItems.length < this._effectiveColumnCount) {
+                this.handleLoadMore();
+                console.log('⏭', nextPageItems.length);
+            }
             return pageItems;
         }
         return this.computedItems;
+    }
+
+    get itemCount() {
+        return this.computedItems.length;
     }
 
     // make sure the total page is calculated on page resize
@@ -607,6 +627,8 @@ export default class List extends LightningElement {
         if (this._singleLinePage < this.totalPages - 1) {
             this._singleLinePage++;
         }
+
+        // if last item visible, launch loadmore;
     }
 
     previousPage() {
@@ -834,20 +856,36 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Determine is a loadmore event should be fired.
+     * Determine scroll position to trigger loadmore and adjust dragged item position.
      * @private
      */
     handleScroll() {
+        this._previousScrollTop = this._scrollTop;
+        this._scrollTop = this.listContainer.scrollTop;
+        const scrollDelta = this._scrollTop - this._previousScrollTop;
+
+        setTimeout(() => {
+            this._initialY -= scrollDelta;
+        }, 0);
+
         const offsetFromBottom =
             this.listContainer.scrollHeight -
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
-        // const wrapper = this.template.querySelector(
-        //     '[data-element-id="list-wrapper"]'
-        // );
+        if (this.variant === 'single-line') {
+            return;
+        }
 
-        // console.log(wrapper.getBoundingClientRect(), window.scrollTop, wrapper.scrollTop);
+        console.log(
+            offsetFromBottom <= this.loadMoreOffset &&
+                !this._isLoading &&
+                this.finishedLoading,
+            this.listContainer.scrollTop === 0 &&
+                this.listContainer.scrollHeight ===
+                    this.listContainer.clientHeight &&
+                !this.finishedLoading
+        );
 
         if (
             (offsetFromBottom <= this.loadMoreOffset &&
@@ -858,6 +896,7 @@ export default class List extends LightningElement {
                     this.listContainer.clientHeight &&
                 !this.finishedLoading)
         ) {
+            console.log('🛼 load on scroll');
             this.handleLoadMore();
         }
     }
@@ -868,44 +907,31 @@ export default class List extends LightningElement {
      * @private
      */
     checkDragToScroll(position) {
-        if (
-            position.top <
-            this.listContainer.getBoundingClientRect().top + 20
-        ) {
-            this._scrollUpIntervalId = setInterval(this.scrollUp(), 1000);
+        if (position < this.listContainer.getBoundingClientRect().top + 30) {
+            this._scrollUpIntervalId = setInterval(
+                this.listContainer.scrollTo(
+                    0,
+                    this.listContainer.scrollTop - 2
+                ),
+                10
+            );
         } else if (
-            position.bottom >
-            this.listContainer.getBoundingClientRect().bottom - 20
+            position >
+            this.listContainer.getBoundingClientRect().bottom - 30
         ) {
-            this._scrollDownIntervalId = setInterval(this.scrollDown(), 1000);
+            this._scrollDownIntervalId = setInterval(
+                this.listContainer.scrollTo(
+                    0,
+                    this.listContainer.scrollTop + 2
+                ),
+                10
+            );
         } else {
-            this.stopScroll();
+            clearInterval(this._scrollUpIntervalId);
+            clearInterval(this._scrollDownIntervalId);
+
+            console.log(this._scrollDownIntervalId);
         }
-    }
-
-    /**
-     * Scroll the list up.
-     * @private
-     */
-    scrollUp() {
-        this.listContainer.scrollTo(0, this.listContainer.scrollTop - 3);
-    }
-
-    /**
-     * Scroll the list down.
-     * @private
-     */
-    scrollDown() {
-        this.listContainer.scrollTo(0, this.listContainer.scrollTop + 3);
-    }
-
-    /**
-     * Stop scrolling the list.
-     * @private
-     */
-    stopScroll() {
-        clearInterval(this._scrollUpIntervalId);
-        clearInterval(this._scrollDownIntervalId);
     }
 
     /**
@@ -916,17 +942,9 @@ export default class List extends LightningElement {
         if (this._savedScrollTop === null) {
             return;
         }
-        const list = this.template.querySelector(
-            '[data-element-id="list-container"]'
-        );
 
         window.requestAnimationFrame(() => {
-            list.scrollTo(0, this._savedScrollTop);
-            // console.log(
-            //     '🔃 restore',
-            //     Math.round(list.scrollTop),
-            //     Math.round(this._savedScrollTop)
-            // );
+            this.listContainer.scrollTo(0, this._savedScrollTop);
         });
     }
 
@@ -935,12 +953,9 @@ export default class List extends LightningElement {
      * @private
      */
     saveScrollPosition() {
-        const list = this.template.querySelector(
-            '[data-element-id="list-container"]'
-        );
-
-        this._savedScrollTop = list ? list.scrollTop : null;
-        // console.log('💾 scroll', Math.round(this._savedScrollTop));
+        this._savedScrollTop = this.listContainer
+            ? this.listContainer.scrollTop
+            : null;
     }
 
     /**
@@ -966,12 +981,10 @@ export default class List extends LightningElement {
     getHoveredItem(center) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
-                // const listTop = this.listContainer.scrollTop;
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
                 const itemCenter =
                     itemPosition.bottom - itemPosition.height / 2;
-                // itemPosition.bottom - itemPosition.height / 2 + listTop;
 
                 if (
                     (this._draggedIndex > itemIndex && center < itemCenter) ||
@@ -979,12 +992,6 @@ export default class List extends LightningElement {
                 ) {
                     return item;
                 }
-
-                // console.log(this._draggedElement.getBoundingClientRect().top);
-
-                // check if at top of list to scroll top, or bottom of list to scroll bottom
-
-                // if top of item within 30px of top of list, scroll to top
             }
             return undefined;
         });
@@ -1160,23 +1167,14 @@ export default class List extends LightningElement {
         );
 
         const mouseY =
-            event.type === 'touchmove'
-                ? event.touches[0].clientY
-                : event.clientY;
-        // const mouseY =
-        //     event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
-        // const menuTop = this._menuTop;
-        // const menuBottom = this._menuBottom;
+            event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
+
+        this.checkDragToScroll(mouseY);
+        // check if scrolling and adjust the position of the dragged element
 
         // Make sure it is not possible to drag the item out of the menu
+        // this._currentY
         let currentY = mouseY;
-        // if (mouseY < menuTop) {
-        //     currentY = menuTop;
-        // } else if (mouseY > menuBottom) {
-        //     currentY = menuBottom;
-        // } else {
-        //     currentY = mouseY;
-        // }
 
         // Stick the dragged item to the mouse position
         this._draggedElement.style.transform = `translateY(${
@@ -1189,8 +1187,6 @@ export default class List extends LightningElement {
         // const center = position.bottom - position.height / 2 + listTop;
 
         const hoveredItem = this.getHoveredItem(center);
-
-        this.checkDragToScroll(position);
 
         if (hoveredItem) {
             this.switchWithItem(hoveredItem);
@@ -1395,8 +1391,11 @@ export default class List extends LightningElement {
      * Dispatch loadmore event.
      */
     handleLoadMore() {
-        this.dispatchEvent(new CustomEvent('loadmore'));
-        // console.log('▶️ dispatch loadmore');
+        if (this.enableInfiniteLoading) {
+            this.dispatchEvent(new CustomEvent('loadmore'));
+            this._isLoading = true;
+            console.log('▶️ dispatch loadmore');
+        }
     }
 
     /**

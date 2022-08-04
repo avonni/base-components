@@ -31,7 +31,7 @@
  */
 
 import { List } from '../__examples__/list';
-import { InifiniteGrid } from '../__examples__/infiniteGrid';
+import { InfiniteGrid } from '../__examples__/infiniteGrid';
 
 export default {
     title: 'Example/List',
@@ -237,7 +237,7 @@ export default {
 };
 
 const Template = (args) => List(args);
-const InifiniteGridTemplate = (args) => InifiniteGrid(args);
+const InfiniteGridTemplate = (args) => InfiniteGrid(args);
 
 const items = [
     {
@@ -498,7 +498,7 @@ SortableWithAvatars.args = {
     items: itemsWithAvatars,
     actions,
     sortableIconName: 'utility:drag_and_drop',
-    sortableIconPosition: 'left',
+    // sortableIconPosition: 'left',
     sortable: true,
     divider: 'around'
 };
@@ -576,20 +576,22 @@ GridCardWithImages.args = {
     largeContainerCols: 6
 };
 
-export const SingleLine = Template.bind({});
+export const SingleLine = InfiniteGridTemplate.bind({});
 SingleLine.args = {
     label: 'Single Line',
-    items: [...itemsWithImages, ...itemsWithImages],
-    divider: 'around',
     variant: 'single-line',
+    items: [...itemsWithImages, ...itemsWithImages],
+    enableInfiniteLoading: true,
+    divider: 'around',
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4
 };
 
-export const InfiniteGrid = InifiniteGridTemplate.bind({});
-InfiniteGrid.args = {
+export const InfiniteLoadingGrid = InfiniteGridTemplate.bind({});
+InfiniteLoadingGrid.args = {
     label: 'Grid with infinite loading',
+    variant: 'grid',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
@@ -598,21 +600,20 @@ InfiniteGrid.args = {
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,
-    variant: 'grid',
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,
     largeContainerCols: 6
 };
 
-export const InfiniteList = InifiniteGridTemplate.bind({});
+export const InfiniteList = InfiniteGridTemplate.bind({});
 InfiniteList.args = {
     label: 'Grid with infinite loading',
     items,
     actions: actions,
     loadMoreOffset: 10,
     sortable: true,
-    // divider: 'around',
+    divider: 'around',
     imageAttributes: {
         size: 'large'
     },

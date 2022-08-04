@@ -37,7 +37,7 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const InifiniteGrid = ({
+export const InfiniteGrid = ({
     label,
     alternativeText,
     sortable,

@@ -93,49 +93,47 @@ describe('List', () => {
     });
 
     // items
-    // it('List: Items', () => {
-    //     element.items = ITEMS;
+    it('List: Items', () => {
+        element.items = ITEMS;
 
-    //     return Promise.resolve().then(() => {
-    //         const items = element.shadowRoot.querySelectorAll(
-    //             '[data-element-id^="li-item"'
-    //         );
-    //         expect(items).toHaveLength(5);
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="li-item"'
+            );
+            expect(items).toHaveLength(5);
 
-    //         items.forEach((item, index) => {
-    //             const originalItem = ITEMS[index];
+            items.forEach((item, index) => {
+                const originalItem = ITEMS[index];
 
-    //             console.log(item);
-    //             expect(item.dataset.index).toBe(index.toString());
-    //             expect(item.ariaLabel).toBe(originalItem.label);
-    //             expect(item.textContent).toBe(originalItem.label);
-    //         });
+                expect(item.dataset.index).toBe(index.toString());
+                expect(item.ariaLabel).toBe(originalItem.label);
+            });
 
-    //         [0, 2].forEach((index) => {
-    //             const item = items[index];
-    //             const avatar = item.querySelector(
-    //                 '[data-element-id="avonni-avatar"]'
-    //             );
-    //             expect(avatar.fallbackIconName).toBe(
-    //                 ITEMS[index].avatar.fallbackIconName
-    //             );
-    //             expect(avatar.src).toBe(ITEMS[index].avatar.src);
-    //         });
+            [0, 2].forEach((index) => {
+                const item = items[index];
+                const avatar = item.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.fallbackIconName).toBe(
+                    ITEMS[index].avatar.fallbackIconName
+                );
+                expect(avatar.src).toBe(ITEMS[index].avatar.src);
+            });
 
-    //         [0, 1, 2, 4].forEach((index) => {
-    //             const item = items[index];
-    //             const avatar = item.querySelector(
-    //                 '[data-element-id="avonni-avatar"]'
-    //             );
-    //             expect(avatar).toBeTruthy();
-    //         });
-    //         const item = items[3];
-    //         const avatar = item.querySelector(
-    //             '[data-element-id="avonni-avatar"]'
-    //         );
-    //         expect(avatar).toBeNull();
-    //     });
-    // });
+            [0, 1, 2, 4].forEach((index) => {
+                const item = items[index];
+                const avatar = item.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar).toBeTruthy();
+            });
+            const item = items[3];
+            const avatar = item.querySelector(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatar).toBeNull();
+        });
+    });
 
     // label
     it('List: Label', () => {
@@ -314,7 +312,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const icons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-icon-sort"]'
+                '[data-element-id="lightning-icon-sort-right"]'
             );
             expect(icons).toHaveLength(0);
         });
@@ -327,7 +325,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const icons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-icon-sort-left"]'
+                '[data-element-id="lightning-icon-sort-right"]'
             );
             icons.forEach((icon) => {
                 expect(icon.iconName).toBe('utility:apps');
@@ -346,22 +344,11 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const iconsRight = element.shadowRoot.querySelectorAll(
-                '[data-element-id="right-lightning-icon-sort"]'
+                '[data-element-id="lightning-icon-sort-right"]'
             );
             const iconsLeft = element.shadowRoot.querySelectorAll(
                 '[data-element-id="lightning-icon-sort-left"]'
             );
-            const listItems = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-item"]'
-            );
-
-            iconsRight.forEach((item) => {
-                console.log(item.parentElement.innerHTML);
-            });
-            listItems.forEach((item) => {
-                console.log(item.innerHTML);
-            });
-            expect(listItems).toHaveLength(4);
             expect(iconsLeft).toHaveLength(0);
             expect(iconsRight).toHaveLength(4);
         });

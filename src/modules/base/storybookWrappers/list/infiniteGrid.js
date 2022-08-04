@@ -34,8 +34,8 @@ import { LightningElement, api } from 'lwc';
 
 export default class InfiniteGrid extends LightningElement {
     @api label;
-    @api alternativeText;
     @api items;
+    @api alternativeText;
     @api sortable;
     @api actions;
     @api sortableIconName;
@@ -47,26 +47,21 @@ export default class InfiniteGrid extends LightningElement {
     @api mediumContainerCols;
     @api largeContainerCols;
     @api imageAttributes;
-    @api isLoading;
     @api enableInfiniteLoading;
     @api loadMoreOffset;
+    @api isLoading;
 
     connectedCallback() {
-        this._items = this.items;
+        this._loadedItems = this.items;
     }
 
     loadMoreData(event) {
         const target = event.target;
 
-        target.isLoading = true;
-
         setTimeout(() => {
-            if (target.isLoading) {
-                target.isLoading = false;
-
-                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-                this.items = this.items.concat(this._items);
-            }
+            console.log('🚮 new items loading');
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            target.items = this.items.concat(this._loadedItems);
         }, 1000);
     }
 }
