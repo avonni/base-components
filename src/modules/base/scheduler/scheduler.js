@@ -1136,13 +1136,19 @@ export default class Scheduler extends LightningElement {
     }
 
     get schedule() {
-        const timeline = this.template.querySelector(
+        if (this.isCalendar) {
+            return this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-calendar"]'
+            );
+        }
+        if (this.isAgenda) {
+            return this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-agenda"]'
+            );
+        }
+        return this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-timeline"]'
         );
-        const calendar = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-calendar"]'
-        );
-        return this.isTimeline ? timeline : calendar;
     }
 
     /**

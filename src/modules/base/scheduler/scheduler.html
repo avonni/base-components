@@ -232,7 +232,14 @@
             selected-date={selectedDate}
             selected-resources={selectedResources}
             time-span={currentTimeSpan}
+            data-element-id="avonni-primitive-scheduler-agenda"
             ondatechange={handleSelectedDateChange}
+            onemptyspotcontextmenu={handleEmptySpotContextMenu}
+            oneventcontextmenu={handleEventContextMenu}
+            oneventmouseenter={handleEventMouseEnter}
+            onhidepopovers={handleHidePopovers}
+            onopeneditdialog={handleOpenEditDialog}
+            onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onresourceselect={handleResourceSelect}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-agenda>

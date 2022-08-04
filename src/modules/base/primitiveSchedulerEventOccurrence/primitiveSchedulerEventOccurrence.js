@@ -767,7 +767,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-theme_shade': this.isTimeline,
-                'slds-is-absolute': !this.isMonthCalendar,
+                'slds-is-absolute': !this.isStandalone,
                 'avonni-scheduler__disabled-date_standalone slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative':
                     this.isStandalone,
                 'avonni-scheduler__event_month-multi-day-starts-in-previous-cell':
@@ -948,7 +948,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .add({
                 'avonni-scheduler__reference-line_vertical':
                     this.isVerticalTimeline || this.isVerticalCalendar,
-                'avonni-scheduler__reference-line_standalone': this.isStandalone
+                'avonni-scheduler__reference-line_standalone':
+                    this.isStandalone,
+                'avonni-scheduler__reference-line_month': this.isMonthCalendar
             })
             .toString();
     }
@@ -1399,7 +1401,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updateStandaloneLength() {
         const headerCells = this.headerCells.xAxis;
         const { to, cellWidth } = this;
-        const isOneCellLength = !this.spansOnMoreThanOneDay || this.isAllDay;
+        const isOneCellLength =
+            this.referenceLine || !this.spansOnMoreThanOneDay || this.isAllDay;
 
         if ((isOneCellLength || !headerCells) && this.hostElement) {
             // The event should span on one cell

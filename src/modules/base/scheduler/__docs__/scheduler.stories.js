@@ -592,8 +592,8 @@ Agenda.args = {
     selectedDisplay: 'agenda',
     selectedResources: ['Dave', 'Jung', 'Reginald'],
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
-    // disabledDatesTimes,
-    // referenceLines
+    disabledDatesTimes,
+    referenceLines
 };
 
 export const VerticalTimeline = Template.bind({});

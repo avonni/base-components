@@ -1,3 +1,15 @@
+.avonni-scheduler__wrapper {
+    height: 100%;
+    max-height: calc(100vh - 70px);
+    max-width: 100%;
+}
+
+.avonni-primitive-scheduler-calendar__inherit-height {
+    height: inherit;
+    min-height: inherit;
+    max-height: inherit;
+}
+
 .avonni-scheduler__agenda-event {
     --avonni-primitive-scheduler-event-occurrence-standalone-chip-size: 0.75rem;
     max-width: 15rem;

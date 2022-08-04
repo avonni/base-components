@@ -361,7 +361,9 @@ const getFirstAvailableWeek = (start, availableDaysOfTheWeek) => {
 
 const isAllDay = (event, from, to) => {
     const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
-    const endAtEndOfDay = to.endOf('day').ts === to.ts;
+    // A time set to 23:59 is considered to be at the end of the day,
+    // even if the seconds/ms are not at 59
+    const endAtEndOfDay = to.endOf('day').ts === to.endOf('minute').ts;
     return event.allDay || (startAtBeginningOfDay && endAtEndOfDay);
 };
 

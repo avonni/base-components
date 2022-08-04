@@ -433,6 +433,12 @@ export class ScheduleBase extends LightningElement {
         return !this.resizeColumnDisabled;
     }
 
+    get firstSelectedResource() {
+        return this.resources.find((res) => {
+            return this.selectedResources.includes(res.name);
+        });
+    }
+
     get isDay() {
         const { span, unit } = this.timeSpan;
         return unit === 'day' && span <= 1;

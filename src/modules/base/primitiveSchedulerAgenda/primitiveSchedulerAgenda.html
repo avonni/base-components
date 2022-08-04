@@ -33,86 +33,104 @@
 -->
 
 <template>
-    <c-splitter class="avonni-primitive-scheduler-calendar__inherit-height">
-        <!-- Left panel -->
-        <c-splitter-pane
-            collapsible={allowCollapse}
-            resizable={allowResizeColumn}
-            scrollable
-            size="310px"
-        >
-            <div
-                class="slds-p-around_medium"
-                data-element-id="div-panel-content"
+    <div class="avonni-scheduler__wrapper">
+        <c-splitter class="avonni-primitive-scheduler-calendar__inherit-height">
+            <!-- Left panel -->
+            <c-splitter-pane
+                collapsible={allowCollapse}
+                resizable={allowResizeColumn}
+                scrollable
+                size="310px"
             >
-                <c-calendar
-                    value={selectedDate}
-                    onchange={handleCalendarChange}
-                ></c-calendar>
-
-                <div class="slds-m-top_medium">
-                    <template for:each={resourceOptions} for:item="resource">
-                        <lightning-input
-                            key={resource.value}
-                            label={resource.label}
-                            checked={resource.selected}
-                            type="checkbox"
-                            value={resource.value}
-                            style={resource.style}
-                            onchange={handleResourceToggle}
-                        ></lightning-input>
-                    </template>
-                </div>
-            </div>
-        </c-splitter-pane>
-
-        <c-splitter-pane
-            collapsible={allowCollapse}
-            resizable={allowResizeColumn}
-            scrollable
-            style="flex: 1 1 0"
-        >
-            <div
-                for:each={computedGroups}
-                for:item="group"
-                key={uniqueKey}
-                class="slds-p-around_medium slds-grid slds-border_bottom"
-            >
-                <div class="slds-m-right_medium">
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div class={group.dayClass}>{group.day}</div>
-                        <div class="slds-text-title_caps">{group.month}, {group.weekday}</div>
+                <div
+                    class="slds-p-around_medium"
+                    data-element-id="div-panel-content"
+                >
+                    <c-calendar
+                        value={selectedDate}
+                        onchange={handleCalendarChange}
+                    ></c-calendar>
+                    <div class="slds-m-top_medium">
+                        <template
+                            for:each={resourceOptions}
+                            for:item="resource"
+                        >
+                            <lightning-input
+                                key={resource.value}
+                                label={resource.label}
+                                checked={resource.selected}
+                                type="checkbox"
+                                value={resource.value}
+                                style={resource.style}
+                                onchange={handleResourceToggle}
+                            ></lightning-input>
+                        </template>
                     </div>
                 </div>
-                <div class="slds-col">
-                    <template for:each={group.events} for:item="occurrence">
-                        <c-primitive-scheduler-event-occurrence
-                            key={occurrence.key}
-                            class="
-                                slds-m-bottom_xx-small
-                                avonni-scheduler__agenda-event
-                            "
-                            color={occurrence.event.color}
-                            date-format={dateFormat}
-                            disabled={occurrence.event.disabled}
-                            event-data={occurrence.event.data}
-                            event-name={occurrence.event.name}
-                            from={occurrence.from}
-                            icon-name={occurrence.event.iconName}
-                            labels={occurrence.event.labels}
-                            occurrence={occurrence}
-                            occurrence-key={occurrence.key}
-                            reference-line={occurrence.event.referenceLine}
-                            resource-key={occurrence.resourceName}
-                            resources={computedResources}
-                            title={occurrence.title}
-                            theme={occurrence.event.theme}
-                            to={occurrence.to}
-                            variant="agenda"
-                        ></c-primitive-scheduler-event-occurrence>
-                    </template>
+            </c-splitter-pane>
+            <c-splitter-pane
+                collapsible={allowCollapse}
+                resizable={allowResizeColumn}
+                scrollable
+                style="flex: 1 1 0"
+            >
+                <div
+                    for:each={computedGroups}
+                    for:item="group"
+                    key={uniqueKey}
+                    class="slds-p-around_medium slds-grid slds-border_bottom"
+                    data-element-id="div-day-group"
+                    data-date={group.date.ts}
+                    oncontextmenu={handleEmptySpotContextMenu}
+                >
+                    <div class="slds-m-right_medium">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <div class={group.dayClass}>{group.day}</div>
+                            <div class="slds-text-title_caps">
+                                {group.month}, {group.weekday}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <template for:each={group.events} for:item="occurrence">
+                            <c-primitive-scheduler-event-occurrence
+                                key={occurrence.key}
+                                class="
+                                    slds-m-bottom_xx-small
+                                    avonni-scheduler__agenda-event
+                                    slds-show
+                                "
+                                color={occurrence.event.color}
+                                date-format={dateFormat}
+                                disabled={occurrence.event.disabled}
+                                event-data={occurrence.event.data}
+                                event-name={occurrence.event.name}
+                                from={occurrence.from}
+                                icon-name={occurrence.event.iconName}
+                                labels={occurrence.event.labels}
+                                occurrence={occurrence}
+                                occurrence-key={occurrence.key}
+                                reference-line={occurrence.event.referenceLine}
+                                resource-key={occurrence.resourceName}
+                                resources={computedResources}
+                                title={occurrence.title}
+                                theme={occurrence.event.theme}
+                                to={occurrence.to}
+                                variant="agenda"
+                                oncontextmenu={stopPropagation}
+                                onprivateblur={handleHideDetailPopover}
+                                onprivatecontextmenu={handleEventContextMenu}
+                                onprivatedblclick={handleEventDoubleClick}
+                                onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                onprivatedisableddblclick={handleDoubleClick}
+                                onprivatefocus={handleEventFocus}
+                                onprivatemouseenter={handleEventMouseEnter}
+                                onprivatemouseleave={handleHideDetailPopover}
+                            ></c-primitive-scheduler-event-occurrence>
+                        </template>
+                    </div>
                 </div>
-            </div>
-        </c-splitter-pane>
-    </c-splitter>
+            </c-splitter-pane>
+        </c-splitter>
+    </div>
 </template>

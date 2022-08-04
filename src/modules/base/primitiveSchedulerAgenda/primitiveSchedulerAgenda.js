@@ -35,6 +35,7 @@ import { addToDate, dateTimeObjectFrom, removeFromDate } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { Interval } from 'c/luxon';
 import {
+    getElementOnYAxis,
     getFirstAvailableWeek,
     nextAllowedDay,
     nextAllowedMonth,
@@ -47,6 +48,7 @@ const DEFAULT_SELECTED_DATE = new Date();
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _selectedDate;
 
+    _computedEvents = [];
     computedGroups = [];
     start;
 
@@ -109,6 +111,19 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Events computed by the `SchedulerEventData` class instance. The setter is called every time the events are refreshed in `_eventData`, allowing for the groups to be updated too.
+     *
+     * @type {object[]}
+     */
+    get computedEvents() {
+        return this._computedEvents;
+    }
+    set computedEvents(value) {
+        this._computedEvents = value;
+        this.initEventGroups();
+    }
+
     get resourceOptions() {
         return this.resources.map((res) => {
             const style = `
@@ -132,6 +147,26 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    newEvent(x, y, saveEvent) {
+        const dayGroupElement = getElementOnYAxis(
+            this.template,
+            y,
+            '[data-element-id="div-day-group"]'
+        );
+        const date = dateTimeObjectFrom(Number(dayGroupElement.dataset.date));
+        const from = date.startOf('day');
+        const to = from.endOf('day');
+        const resourceNames = [this.firstSelectedResource.name];
+        this._eventData.newEvent({ from, resourceNames, to, x, y }, saveEvent);
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -141,12 +176,13 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const dayMap = {};
         this.computedEvents.forEach((event) => {
             event.occurrences.forEach((occ) => {
-                const interval = Interval.fromDateTimes(occ.from, occ.to);
+                const to = event.referenceLine ? occ.from.endOf('day') : occ.to;
+                const interval = Interval.fromDateTimes(occ.from, to);
                 const days = interval.count('days');
                 let date = occ.from;
 
                 for (let i = 0; i < days; i++) {
-                    const ISODay = date.toFormat('yyyy-LL-dd');
+                    const ISODay = date.startOf('day').toISO();
                     if (!dayMap[ISODay]) {
                         dayMap[ISODay] = [];
                     }
@@ -154,7 +190,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                         ...occ,
                         event,
                         startsInPreviousCell: occ.from.day < date.day,
-                        endsInLaterCell: occ.to.day > date.day
+                        endsInLaterCell: to.day > date.day
                     });
                     date = addToDate(date, 'day', 1);
                 }
@@ -170,12 +206,14 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const groups = [];
         Object.entries(dayMap).forEach(([ISODay, events]) => {
             const date = dateTimeObjectFrom(ISODay);
-            const today = new Date().toISOString().split('T')[0];
-            groups.push(new DayGroup({
-                date,
-                events,
-                isToday: ISODay === today
-            }));
+            const today = dateTimeObjectFrom(new Date()).startOf('day');
+            groups.push(
+                new DayGroup({
+                    date,
+                    events,
+                    isToday: ISODay === today.toISO()
+                })
+            );
         });
         groups.sort((a, b) => a.date - b.date);
         this.computedGroups = groups;
@@ -185,7 +223,6 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         super.initEvents();
         this._eventData.smallestHeader = { unit: 'day', span: 1 };
         this._eventData.initEvents();
-        this.initEventGroups();
     }
 
     initResources() {
@@ -248,4 +285,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    stopPropagation(event) {
+        event.stopPropagation();
+    }
 }

@@ -276,12 +276,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         };
     }
 
-    get firstSelectedResource() {
-        return this.resources.find((res) => {
-            return this.selectedResources.includes(res.name);
-        });
-    }
-
     get hourHeadersTimeSpan() {
         return {
             unit: 'day',
@@ -842,7 +836,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 if (this.start.weekday !== 7) {
                     // Make sure there are available days in the current week.
                     // Otherwise, go to the next week.
-                    this.start = getFirstAvailableWeek(this.start, this.availableDaysOfTheWeek);
+                    this.start = getFirstAvailableWeek(
+                        this.start,
+                        this.availableDaysOfTheWeek
+                    );
                 }
             }
 
