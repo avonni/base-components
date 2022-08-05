@@ -36,7 +36,6 @@ import { generateUUID } from 'c/utils';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
-    getFirstAvailableWeek,
     isAllDay,
     nextAllowedDay,
     nextAllowedMonth,
@@ -185,19 +184,12 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 let date = from;
 
                 for (let i = 0; i < days; i++) {
-                    const ISODay = date.startOf('day').toISO();
-                    let time = `${from.toFormat('HH:mm')} - ${to.toFormat(
-                        'HH:mm'
-                    )}`;
-                    if (event.referenceLine) {
-                        time = from.toFormat('HH:mm');
-                    } else if (isAllDay(event, from, to)) {
-                        time = 'All Day';
-                    } else if (spansOnMoreThanOneDay(event, from, to)) {
-                        time = `${from.toFormat('dd LLL')} - ${to.toFormat(
-                            'dd LLL'
-                        )}`;
+                    if (!this.visibleInterval.contains(date)) {
+                        // Do not display the days outside of the visible interval
+                        date = addToDate(date, 'day', 1);
+                        continue;
                     }
+                    const ISODay = date.startOf('day').toISO();
 
                     if (!dayMap[ISODay]) {
                         dayMap[ISODay] = [];
@@ -207,7 +199,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                         endsInLaterCell: to.day > date.day,
                         event,
                         startsInPreviousCell: from.day < date.day,
-                        time
+                        time: this.formatTime(event, from, to)
                     });
                     date = addToDate(date, 'day', 1);
                 }
@@ -239,6 +231,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     initEvents() {
         super.initEvents();
         this._eventData.smallestHeader = { unit: 'day', span: 1 };
+        this._eventData.isAgenda = true;
         this._eventData.initEvents();
     }
 
@@ -246,6 +239,17 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this.computedResources = this.resources.map((res) => {
             return { ...res, height: 0, data: { res } };
         });
+    }
+
+    formatTime(event, from, to) {
+        if (event.referenceLine) {
+            return from.toFormat('HH:mm');
+        } else if (isAllDay(event, from, to)) {
+            return 'All Day';
+        } else if (spansOnMoreThanOneDay(event, from, to)) {
+            return `${from.toFormat('dd LLL')} - ${to.toFormat('dd LLL')}`;
+        }
+        return `${from.toFormat('HH:mm')} - ${to.toFormat('HH:mm')}`;
     }
 
     setSelectedDateToAvailableDate() {
@@ -268,30 +272,15 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.start = this.selectedDate.startOf('day');
         } else if (this.isYear) {
             this.start = this.selectedDate.startOf('year');
+        } else if (this.isWeek) {
+            this.start = this.selectedDate.startOf('week');
+            this.start = removeFromDate(this.start, 'day', 1);
         } else {
-            this.start = this.selectedDate;
-
-            if (this.isMonth) {
-                this.start = this.start.startOf('month');
-
-                if (this.start.weekday !== 7) {
-                    // Make sure there are available days in the current week.
-                    // Otherwise, go to the next week.
-                    this.start = getFirstAvailableWeek(
-                        this.start,
-                        this.availableDaysOfTheWeek
-                    );
-                }
-            }
-
-            if (this.start.weekday !== 7) {
-                this.start = this.start.startOf('week');
-                this.start = removeFromDate(this.start, 'day', 1);
-            }
+            this.start = this.selectedDate.startOf('month');
         }
 
         const { span, unit } = this.timeSpan;
-        const end = addToDate(this.start, unit, span);
+        const end = dateTimeObjectFrom(addToDate(this.start, unit, span) - 1);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();

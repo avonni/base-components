@@ -556,7 +556,8 @@ export default class SchedulerEventData {
         const from = dateTimeObjectFrom(event.from);
         const to = this.normalizedEventTo(event);
         const isMultiDay = spansOnMoreThanOneDay(event, from, to);
-        const isCalendarMultiDay = isMultiDay && this.isCalendar;
+        const isCalendarMultiDay =
+            isMultiDay && (this.isCalendar || this.isAgenda);
         event.schedulerEnd = isCalendarMultiDay ? null : visibleEnd;
         event.schedulerStart = isCalendarMultiDay ? null : visibleStart;
         event.selectedResources = normalizeArray(this.selectedResources);

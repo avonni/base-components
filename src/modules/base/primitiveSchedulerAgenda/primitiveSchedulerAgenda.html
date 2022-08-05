@@ -68,6 +68,8 @@
                     </div>
                 </div>
             </c-splitter-pane>
+
+            <!-- Agenda panel -->
             <c-splitter-pane
                 class="slds-border_top slds-border_bottom slds-border_right"
                 collapsible={allowCollapse}
@@ -80,6 +82,21 @@
                 "
             >
                 <div
+                    if:false={computedGroups.length}
+                    class="
+                        avonni-scheduler__agenda-no-event-wrapper
+                        slds-grid_align-center
+                        slds-grid slds-grid_vertical-align-center
+                    "
+                >
+                    <c-illustration
+                        class="slds-p-around_medium"
+                        variant="no-events"
+                        title="No events for the selected date."
+                    ></c-illustration>
+                </div>
+
+                <div
                     for:each={computedGroups}
                     for:item="group"
                     key={uniqueKey}
@@ -88,6 +105,7 @@
                     data-date={group.date.ts}
                     oncontextmenu={handleEmptySpotContextMenu}
                 >
+                    <!-- Group date -->
                     <div class="slds-m-right_large slds-col slds-size_1-of-5">
                         <div class="slds-grid slds-grid_vertical-align-center">
                             <div class={group.dayClass}>{group.day}</div>
@@ -99,6 +117,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Group events -->
                     <div class="slds-col">
                         <div
                             for:each={group.events}
