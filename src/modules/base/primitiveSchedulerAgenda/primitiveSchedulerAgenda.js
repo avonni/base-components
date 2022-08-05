@@ -37,6 +37,7 @@ import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
     isAllDay,
+    isAllowedDay,
     nextAllowedDay,
     nextAllowedMonth,
     ScheduleBase
@@ -184,11 +185,17 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 let date = from;
 
                 for (let i = 0; i < days; i++) {
-                    if (!this.visibleInterval.contains(date)) {
+                    const isVisible = this.visibleInterval.contains(date);
+                    const isAllowed = isAllowedDay(
+                        date,
+                        this.availableDaysOfTheWeek
+                    );
+                    if (!isVisible || !isAllowed) {
                         // Do not display the days outside of the visible interval
                         date = addToDate(date, 'day', 1);
                         continue;
                     }
+
                     const ISODay = date.startOf('day').toISO();
 
                     if (!dayMap[ISODay]) {
@@ -230,7 +237,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
 
     initEvents() {
         super.initEvents();
-        this._eventData.smallestHeader = { unit: 'day', span: 1 };
+        this._eventData.smallestHeader = { unit: 'hour', span: 1 };
         this._eventData.isAgenda = true;
         this._eventData.initEvents();
     }

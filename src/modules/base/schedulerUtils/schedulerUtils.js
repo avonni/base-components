@@ -34,6 +34,7 @@ export {
     containsAllowedDateTimes,
     getFirstAvailableWeek,
     isAllDay,
+    isAllowedDay,
     isAllowedTime,
     nextAllowedDay,
     nextAllowedMonth,
@@ -41,7 +42,7 @@ export {
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime,
-    spansOnMoreThanOneDay,
+    spansOnMoreThanOneDay
 } from './dateComputations';
 export { ScheduleBase } from './scheduleBase';
 export {

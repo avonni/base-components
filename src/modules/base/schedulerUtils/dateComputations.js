@@ -382,6 +382,7 @@ export {
     containsAllowedDateTimes,
     getFirstAvailableWeek,
     isAllDay,
+    isAllowedDay,
     isAllowedTime,
     nextAllowedDay,
     nextAllowedMonth,
