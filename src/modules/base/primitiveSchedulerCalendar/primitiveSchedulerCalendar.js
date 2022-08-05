@@ -782,6 +782,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    isDisabledCell(cell) {
+        const start = Number(cell.dataset.start);
+        if (this.isMonth && start) {
+            const cellMonth = new Date(start).getMonth();
+            if (!this.availableMonths.includes(cellMonth)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Push the vertical headers, so their top is aligned with the bottom of the horizontal headers.
      */
@@ -1100,6 +1111,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    handleDoubleClick(event) {
+        if (this.isDisabledCell(event.currentTarget)) {
+            return;
+        }
+        super.handleDoubleClick(event);
+    }
+
+    handleEmptySpotContextMenu(event) {
+        if (this.isDisabledCell(event.currentTarget)) {
+            return;
+        }
+        super.handleEmptySpotContextMenu(event);
+    }
 
     /**
      * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
