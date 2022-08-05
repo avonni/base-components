@@ -925,20 +925,35 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        const recordAction = this._records.find((record) => {
+            return record[this.keyField] === event.target.dataset.keyField;
+        });
+
+        const actionName =
+            event.detail.value || event.currentTarget.dataset.name;
+        const keyField = event.currentTarget.dataset.keyField || '';
+        const group =
+            event.currentTarget.dataset.group ||
+            recordAction[this.groupFieldName] ||
+            '';
+
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
-         * @param {string} id Unique data id.
-         * @param {string} action Unique name of the action.
+         * @param {string} targetKeyField Unique data keyField value.
+         * @param {string} groupValue Group value the action belongs to.
+         * @param {string} name Unique name of the action.
          * @public
          * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    action: event.detail.value
+                    name: actionName,
+                    targetKeyField: keyField,
+                    groupValue: group
                 },
                 bubbles: true
             })

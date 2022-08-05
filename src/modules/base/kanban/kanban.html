@@ -160,6 +160,7 @@
                                 variant="bare"
                                 icon-name="action:more"
                                 onselect={handleActionClick}
+                                data-group={group.value}
                                 data-element-id="avonni-kanban__header_action_menu"
                                 hide-down-arrow
                             >
@@ -304,6 +305,8 @@
                                         avonni-kanban__actions_menu
                                         slds-is-relative
                                     "
+                                    data-key-field={record.index}
+                                    data-group={group.value}
                                     onselect={handleActionClick}
                                     variant="border-filled"
                                 >
@@ -348,6 +351,8 @@
                                     avonni-kanban__footer_action
                                 "
                                 disabled={action.disabled}
+                                data-name={action.label}
+                                data-group={group.value}
                             >
                                 <lightning-icon
                                     if:true={action.iconName}

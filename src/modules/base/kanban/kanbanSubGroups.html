@@ -149,6 +149,7 @@
                                 variant="bare"
                                 icon-name="action:more"
                                 onselect={handleActionClick}
+                                data-group={group.value}
                                 hide-down-arrow
                             >
                                 <template
@@ -341,6 +342,8 @@
                                                 slds-is-relative
                                             "
                                             onselect={handleActionClick}
+                                            data-key-field={record.index}
+                                            data-group={group.value}
                                             variant="border-filled"
                                         >
                                             <template
