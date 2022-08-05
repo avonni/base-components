@@ -116,6 +116,17 @@ export default class Kanban extends LightningElement {
         this.capContainerWidth();
         this.setContainerDimensions();
         this.capFieldHeight();
+
+        if (this._hideHeader && this._hasSubGroups) {
+            const subGroupHeaders = Array.from(
+                this.template.querySelectorAll(
+                    "[data-element-id='avonni-kanban__expandable_section_header']"
+                )
+            );
+            subGroupHeaders.forEach((header) => {
+                header.style.top = '0px';
+            });
+        }
     }
 
     disconnectedCallback() {
@@ -1397,7 +1408,9 @@ export default class Kanban extends LightningElement {
      * Updates the groups to separate tiles and calculate the summary values.
      */
     updateTiles() {
-        if (!this.hideHeader) this.clearSummarizeTimeouts();
+        if (!this.hideHeader) {
+            this.clearSummarizeTimeouts();
+        }
         const kanbanGroupsBuilder = new KanbanGroupsBuilder({
             groupValues: this._groupValues,
             records: this._records,
