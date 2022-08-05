@@ -41,6 +41,7 @@ import {
     removeFromDate
 } from 'c/utilsPrivate';
 import {
+    getDisabledWeekdays,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
@@ -110,6 +111,7 @@ export default class Scheduler extends LightningElement {
 
     _connected = false;
     _focusCalendarPopover;
+    _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -126,6 +128,7 @@ export default class Scheduler extends LightningElement {
     showDetailPopover = false;
     showRecurrenceDialog = false;
     showToolbarCalendar = false;
+    toolbarCalendarDisabledDates = [];
     visibleIntervalLabel;
 
     connectedCallback() {
@@ -133,6 +136,7 @@ export default class Scheduler extends LightningElement {
         this.updateSelectedDisplay();
         this.initEvents();
         this.initResources();
+        this.initToolbarCalendarDisabledDates();
         this._connected = true;
     }
 
@@ -1370,6 +1374,12 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    initToolbarCalendarDisabledDates() {
+        const disabled = getDisabledWeekdays(this.availableDaysOfTheWeek);
+        this._toolbarCalendarDisabledWeekdays = disabled;
+        this.toolbarCalendarDisabledDates = [...disabled];
+    }
+
     /**
      * Update the computed selected display object.
      */
@@ -1813,6 +1823,20 @@ export default class Scheduler extends LightningElement {
                 this.showToolbarCalendar = false;
             }
         });
+    }
+
+    handleToolbarCalendarNavigate(event) {
+        const date = new Date(event.detail.date);
+        const month = date.getMonth();
+        this.toolbarCalendarDisabledDates = [
+            ...this._toolbarCalendarDisabledWeekdays
+        ];
+
+        if (!this.availableMonths.includes(month)) {
+            for (let day = 1; day < 32; day++) {
+                this.toolbarCalendarDisabledDates.push(day);
+            }
+        }
     }
 
     handleToolbarNextClick() {

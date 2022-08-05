@@ -196,6 +196,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
             if (previousStart !== this.start.ts) {
                 this.initHeaders();
+                this.initLeftPanelCalendarDisabledDates();
             }
         }
     }
@@ -1344,14 +1345,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleShowMorePopoverClose() {
         const date = this.showMorePopover && this.showMorePopover.date;
         if (this.isYear && date) {
-            const calendar = this.template.querySelector(
-                `[data-element-id="avonni-calendar-year-month"][data-month="${
-                    date.month - 1
-                }"]`
-            );
-            if (calendar) {
-                calendar.focusDate(date.ts);
-            }
+            requestAnimationFrame(() => {
+                const calendar = this.template.querySelector(
+                    `[data-element-id="avonni-calendar-year-month"][data-month="${
+                        date.month - 1
+                    }"]`
+                );
+                if (calendar) {
+                    calendar.focusDate(date.ts);
+                }
+            });
         }
         this.showMorePopover = null;
         this._mouseInShowMorePopover = false;
@@ -1454,6 +1457,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const end = addToDate(start, unit, span) - 1;
         this.hourCellDuration =
             dateTimeObjectFrom(end).diff(start).milliseconds;
+    }
+
+    handleYearCalendarNavigate(event) {
+        const calendar = event.currentTarget;
+        const month = calendar.dataset.month;
+        const date = this.start.set({ month: Number(month) + 1, day: 1 });
+        calendar.goToDate(date.ts);
+        calendar.focusDate(date.ts);
     }
 
     handleYearDateClick(event) {

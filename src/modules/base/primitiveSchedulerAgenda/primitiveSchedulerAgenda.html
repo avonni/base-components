@@ -47,8 +47,10 @@
                     data-element-id="div-panel-content"
                 >
                     <c-calendar
+                        disabled-dates={navCalendarDisabledDates}
                         value={selectedDate}
                         onchange={handleCalendarChange}
+                        onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
                     <div class="slds-m-top_medium">
                         <template

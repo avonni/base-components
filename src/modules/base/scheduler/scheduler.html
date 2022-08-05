@@ -105,9 +105,11 @@
             >
                 <lightning-focus-trap>
                     <c-calendar
+                        disabled-dates={toolbarCalendarDisabledDates}
                         value={selectedDate}
                         data-element-id="calendar-toolbar"
                         onchange={handleToolbarCalendarChange}
+                        onnavigate={handleToolbarCalendarNavigate}
                     ></c-calendar>
                 </lightning-focus-trap>
             </div>

@@ -104,6 +104,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
+            this.initLeftPanelCalendarDisabledDates();
         }
     }
 

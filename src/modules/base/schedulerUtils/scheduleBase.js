@@ -49,6 +49,7 @@ import {
     EVENTS_THEMES
 } from './defaults';
 import EventData from './eventData';
+import { getDisabledWeekdays } from './dateComputations';
 
 export class ScheduleBase extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -70,10 +71,13 @@ export class ScheduleBase extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
+    navCalendarDisabledWeekdays = [];
     _resizeObserver;
+    navCalendarDisabledDates = [];
 
     connectedCallback() {
         this.initResources();
+        this.initLeftPanelCalendarDisabledDates();
         this._connected = true;
     }
 
@@ -109,6 +113,7 @@ export class ScheduleBase extends LightningElement {
 
         if (this._connected) {
             this._eventData.updateAllEventsDefaults();
+            this.initLeftPanelCalendarDisabledDates();
         }
     }
 
@@ -547,6 +552,12 @@ export class ScheduleBase extends LightningElement {
         });
     }
 
+    initLeftPanelCalendarDisabledDates() {
+        const disabled = getDisabledWeekdays(this.availableDaysOfTheWeek);
+        this.navCalendarDisabledWeekdays = disabled;
+        this.navCalendarDisabledDates = [...disabled];
+    }
+
     updateCellWidth() {
         const cell = this.template.querySelector(
             '[data-element-id="div-cell"]'
@@ -680,6 +691,18 @@ export class ScheduleBase extends LightningElement {
 
     handleHideDetailPopover() {
         this.dispatchHidePopovers(['detail']);
+    }
+
+    handleLeftPanelCalendarNavigate(event) {
+        const date = new Date(event.detail.date);
+        const month = date.getMonth();
+        this.navCalendarDisabledDates = [...this.navCalendarDisabledWeekdays];
+
+        if (!this.availableMonths.includes(month)) {
+            for (let day = 1; day < 32; day++) {
+                this.navCalendarDisabledDates.push(day);
+            }
+        }
     }
 
     handleResourceToggle(event) {

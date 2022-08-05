@@ -55,8 +55,10 @@
                     data-element-id="div-panel-content"
                 >
                     <c-calendar
+                        disabled-dates={navCalendarDisabledDates}
                         value={selectedDate}
                         onchange={handleCalendarChange}
+                        onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
 
                     <div class="slds-m-top_medium">
@@ -440,12 +442,14 @@
                                 {month.label}
                             </div>
                             <c-calendar
+                                disabled-dates={navCalendarDisabledWeekdays}
                                 hide-navigation
                                 marked-dates={month.markedDates}
                                 value={month.value}
                                 data-element-id="avonni-calendar-year-month"
                                 data-month={month.key}
                                 onchange={handleYearDateClick}
+                                onnavigate={handleYearCalendarNavigate}
                             ></c-calendar>
                         </div>
                     </template>

@@ -32,6 +32,7 @@
 
 export {
     containsAllowedDateTimes,
+    getDisabledWeekdays,
     getFirstAvailableWeek,
     isAllDay,
     isAllowedDay,

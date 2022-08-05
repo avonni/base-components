@@ -5,6 +5,7 @@ import {
     removeFromDate
 } from 'c/utilsPrivate';
 import { DateTime } from 'c/luxon';
+import { DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK } from './defaults';
 
 /**
  * Check if the date day of the week is allowed.
@@ -339,6 +340,22 @@ const containsAllowedDateTimes = (
     return true;
 };
 
+const getDisabledWeekdays = (allowedDays) => {
+    const unavailableWeekDays = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK.filter(
+        (day) => {
+            return !allowedDays.includes(day);
+        }
+    );
+    return unavailableWeekDays.map((dayNumber) => {
+        const weekday = dayNumber === 0 ? 7 : dayNumber;
+        const day = dateTimeObjectFrom(new Date()).set({
+            weekday
+        });
+        const dayLabel = day.toFormat('ccc');
+        return dayLabel;
+    });
+};
+
 const getFirstAvailableWeek = (start, availableDaysOfTheWeek) => {
     let date = dateTimeObjectFrom(start);
     const availableDays = [...availableDaysOfTheWeek];
@@ -380,6 +397,7 @@ const spansOnMoreThanOneDay = (event, from, to) => {
 
 export {
     containsAllowedDateTimes,
+    getDisabledWeekdays,
     getFirstAvailableWeek,
     isAllDay,
     isAllowedDay,
