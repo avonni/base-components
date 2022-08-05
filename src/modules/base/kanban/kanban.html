@@ -33,7 +33,10 @@
 -->
 
 <template>
-    <lightning-spinner if:true={isLoading}></lightning-spinner>
+    <lightning-spinner
+        if:true={isLoading}
+        alternative-text="Loading..."
+    ></lightning-spinner>
 
     <div if:false={isLoading} class={variantClass}>
         <div

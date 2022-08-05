@@ -62,6 +62,7 @@ describe('Kanban', () => {
         expect(element.variant).toBe('base');
         expect(element.hideHeader).toBeFalsy();
         expect(element.subGroupFieldName).toBeUndefined();
+        expect(element.keyField).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -70,6 +71,8 @@ describe('Kanban', () => {
     it('Kanban : groupValues', () => {
         element.groupValues = JSON.parse(JSON.stringify(GROUP_VALUES));
         element.variant = 'path';
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const groups = element.shadowRoot.querySelectorAll(
                 '[data-element-id="path-group"]'
@@ -95,6 +98,8 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__group"]'
@@ -112,6 +117,8 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.subGroupFieldName = 'assignee';
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__group"]'
@@ -129,6 +136,8 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.hideHeader = true;
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const summarize = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__summarize_wrapper"]'
@@ -145,6 +154,8 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const fields = element.shadowRoot.querySelector(
                 '[data-element-id="fields"]'
@@ -162,6 +173,8 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             jest.runAllTimers();
             const summarize = element.shadowRoot.querySelector(
@@ -180,6 +193,8 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         element.disableItemDragAndDrop = true;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__tile"]'
@@ -196,6 +211,8 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__tile"]'
@@ -228,6 +245,8 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         element.variant = 'base';
+        element.keyField = 'id';
+
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__group_header"]'
@@ -258,6 +277,7 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -293,6 +313,7 @@ describe('Kanban', () => {
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.keyField = 'id';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);

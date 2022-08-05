@@ -1608,16 +1608,16 @@ export default class Kanban extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string} id Unique data id.
-         * @param {string} action Label of the group the data card has been moved to.
+         * @param {string} keyField Value of the record’s key field.
+         * @param {string} groupValue Value of the group the data card has been moved to.
          * @param {object[]} records New records of the Kanban.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    tileId: this._draggedTile.dataset.recordIndex,
-                    droppedTo:
+                    keyField: this._draggedTile.dataset.recordIndex,
+                    groupValue:
                         this._groupValues[this._releasedGroupIndex].value,
                     records: arr
                 }
