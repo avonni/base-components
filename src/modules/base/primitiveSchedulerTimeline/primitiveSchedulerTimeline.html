@@ -46,7 +46,7 @@
                     class="slds-show avonni-scheduler__datatable"
                     max-column-width="9999999999"
                     columns={columns}
-                    records={resources}
+                    records={selectedDatatableRecords}
                     hide-checkbox-column
                     key-field="name"
                     resize-column-disabled={resizeColumnDisabled}
@@ -105,7 +105,10 @@
                     class="slds-grid slds-col slds-scrollable_none"
                     data-element-id="div-resource-header-cells"
                 >
-                    <template for:each={computedResources} for:item="resource">
+                    <template
+                        for:each={visibleComputedResources}
+                        for:item="resource"
+                    >
                         <div
                             key={resource.name}
                             class={verticalResourceHeaderCellClass}
@@ -172,7 +175,7 @@
                             data-element-id="div-schedule-body"
                         >
                             <template
-                                for:each={computedResources}
+                                for:each={visibleComputedResources}
                                 for:item="resource"
                                 for:index="index"
                             >
@@ -238,8 +241,7 @@
                                                 read-only={readOnly}
                                                 reference-line={event.referenceLine}
                                                 resource-key={occurrence.resourceName}
-                                                resources={computedResources}
-                                                scroll-offset={scrollOffset}
+                                                resources={visibleComputedResources}
                                                 title={occurrence.title}
                                                 theme={event.theme}
                                                 to={occurrence.to}

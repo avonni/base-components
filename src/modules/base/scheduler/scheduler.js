@@ -137,6 +137,7 @@ export default class Scheduler extends LightningElement {
         this.initEvents();
         this.initResources();
         this.initToolbarCalendarDisabledDates();
+        this.computeVisibleIntervalLabel(this.start, this.start);
         this._connected = true;
     }
 
@@ -1100,6 +1101,15 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    get resourceToolbarMenuItems() {
+        return this.resources.map((res) => {
+            return {
+                label: res.label || res.name,
+                value: res.name
+            };
+        });
+    }
+
     /**
      * Formated starting date of the currently selected event.
      *
@@ -1118,6 +1128,10 @@ export default class Scheduler extends LightningElement {
         return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
+    get showEmptyTimelineMessage() {
+        return this.isTimeline && !this.showTimeline;
+    }
+
     /**
      * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
@@ -1130,6 +1144,16 @@ export default class Scheduler extends LightningElement {
             this.selection.event.recurrence
         );
     }
+
+    get showTimeline() {
+        if (!this.isTimeline) {
+            return false;
+        }
+        return this.resources.some((res) => {
+            return this.selectedResources.includes(res.name);
+        });
+    }
+
     /**
      * True if the toolbar time span buttons should be visible.
      *
@@ -1783,9 +1807,9 @@ export default class Scheduler extends LightningElement {
     }
 
     handleResourceSelect(event) {
-        this.dispatchEvent(
-            new CustomEvent('resourceselect', { detail: event.detail })
-        );
+        const { selectedResources, name } = event.detail;
+        this._selectedResources = selectedResources;
+        this.dispatchResourceSelectEvent(name);
     }
 
     handleToggleToolbarCalendar() {
@@ -1883,6 +1907,22 @@ export default class Scheduler extends LightningElement {
         this.goToDate(date);
     }
 
+    handleToolbarResourceSelect(event) {
+        const selectedResources = [...event.detail.value];
+        let name;
+        if (selectedResources.length > this.selectedResources) {
+            name = selectedResources.find(
+                (res) => !this.selectedResources.includes(res)
+            );
+        } else {
+            name = this.selectedResources.find(
+                (res) => !selectedResources.includes(res)
+            );
+        }
+        this._selectedResources = selectedResources;
+        this.dispatchResourceSelectEvent(name);
+    }
+
     /**
      * Handle a click on one of the toolbar time span buttons.
      *
@@ -1928,5 +1968,16 @@ export default class Scheduler extends LightningElement {
         this._start = event.detail.start;
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
+    }
+
+    dispatchResourceSelectEvent(name) {
+        this.dispatchEvent(
+            new CustomEvent('resourceselect', {
+                detail: {
+                    selectedResources: this.selectedResources,
+                    name
+                }
+            })
+        );
     }
 }

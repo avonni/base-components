@@ -155,6 +155,23 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
     }
 
+    @api
+    get selectedResources() {
+        return super.selectedResources;
+    }
+    set selectedResources(value) {
+        super.selectedResources = value;
+
+        if (this._connected) {
+            this._rowsHeight = [];
+            this.updateVisibleResources();
+
+            requestAnimationFrame(() => {
+                this.updateCellWidth();
+            });
+        }
+    }
+
     /**
      * Specifies the starting date/timedate of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
@@ -400,6 +417,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this.isVertical ? 0 : this.firstColWidth;
     }
 
+    get selectedDatatableRecords() {
+        return this.resources.filter((res) => {
+            return this.selectedResources.includes(res.name);
+        });
+    }
+
     /**
      * Duration of one cell of the smallest unit header, in milliseconds.
      *
@@ -442,6 +465,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             return headers.visibleInterval;
         }
         return null;
+    }
+
+    get visibleComputedResources() {
+        return this.computedResources.filter((res) => {
+            return this.selectedResources.includes(res.name);
+        });
     }
 
     /*
@@ -562,16 +591,18 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
             resource.initCells();
 
-            // Set the min-height to the datatable rows height
-            if (this._rowsHeight.length && !this.isVertical) {
-                const dataRow = this._rowsHeight.find((row) => {
-                    return row.resourceName === name;
-                });
-                resource.minHeight = dataRow.height;
-            }
+            // // Set the min-height to the datatable rows height
+            // if (this._rowsHeight.length && !this.isVertical) {
+            //     const dataRow = this._rowsHeight.find((row) => {
+            //         return row.resourceName === name;
+            //     });
+            //     resource.minHeight = dataRow.height;
+            // }
 
             return resource;
         });
+
+        this._rowsHeight = [];
 
         if (this.isVertical) {
             requestAnimationFrame(() => {
@@ -787,7 +818,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * Update the cells and events of the currently loaded resources.
      */
     updateVisibleResources() {
-        this.computedResources.forEach((resource) => {
+        this.visibleComputedResources.forEach((resource) => {
             resource.events = this.getOccurrencesFromResourceName(
                 resource.name
             );
@@ -901,7 +932,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
+     * Handle the mousemove event fired by the schedule. If an event is being clicked, compute its resizing or dragging.
      */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) {
@@ -919,7 +950,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
+     * Handle the mouseup event fired by the schedule. Save the dragged/resized event new position.
      */
     handleMouseUp = (mouseEvent) => {
         if (!this._mouseIsDown) {

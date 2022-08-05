@@ -606,7 +606,7 @@ VerticalTimeline.args = {
     disabledDatesTimes,
     referenceLines,
     variant: 'vertical',
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
+    selectedResources: ['Dave', 'Reginald', 'Nina']
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});
@@ -642,7 +642,8 @@ AvailableAndDisabledTimes.args = {
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
     disabledDatesTimes,
-    referenceLines
+    referenceLines,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Lily']
 };
 
 export const ReadOnly = Template.bind({});

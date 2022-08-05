@@ -46,6 +46,10 @@
     z-index: 1;
 }
 
+.avonni-scheduler__display-menu {
+    fill: #818181;
+}
+
 .avonni-scheduler__toolbar-date-range {
     --slds-c-button-text-color: #444444;
 }

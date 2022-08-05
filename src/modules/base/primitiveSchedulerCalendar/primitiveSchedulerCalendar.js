@@ -402,7 +402,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
         const cell = getElementOnYAxis(column, y, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
-        const to = Number(cell.dataset.end) + 1;
+        const to = Number(cell.dataset.end);
         const resourceNames = [this.firstSelectedResource.name];
         this._eventData.newEvent({ from, resourceNames, to, x, y }, saveEvent);
     }

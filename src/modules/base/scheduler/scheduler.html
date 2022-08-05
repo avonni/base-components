@@ -47,6 +47,7 @@
             <template for:each={toolbarTimeSpanButtons} for:item="button">
                 <lightning-button
                     key={button.name}
+                    disabled={showEmptyTimelineMessage}
                     label={button.label}
                     variant={button.variant}
                     value={button.name}
@@ -55,6 +56,7 @@
             </template>
             <c-button-menu
                 if:true={toolbarTimeSpanMenuItems.length}
+                disabled={showEmptyTimelineMessage}
                 icon-name="utility:down"
                 data-element-id="avonni-button-menu-toolbar-spans"
             >
@@ -85,11 +87,14 @@
                     slds-text-heading_small
                     avonni-scheduler__toolbar-date-range
                 "
+                disabled={showEmptyTimelineMessage}
                 type="button"
                 data-element-id="button-toolbar-calendar"
                 onclick={handleToggleToolbarCalendar}
             >
-                <span class="slds-truncate">{visibleIntervalLabel}</span>
+                <span class="slds-truncate avonni-scheduler__"
+                    >{visibleIntervalLabel}</span
+                >
                 <span>
                     <lightning-icon
                         class="slds-button__icon slds-button__icon_right"
@@ -118,16 +123,19 @@
         <!-- Toolbar next/today/previous navigation -->
         <lightning-button-group>
             <lightning-button-icon
+                disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronleft"
                 data-element-id="lightning-button-icon-toolbar-prev"
                 onclick={handleToolbarPrevClick}
             ></lightning-button-icon>
             <lightning-button
+                disabled={showEmptyTimelineMessage}
                 label="Today"
                 data-element-id="lightning-button-icon-toolbar-today"
                 onclick={handleToolbarTodayClick}
             ></lightning-button>
             <lightning-button-icon
+                disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronright"
                 data-element-id="lightning-button-icon-toolbar-next"
                 onclick={handleToolbarNextClick}
@@ -136,7 +144,7 @@
 
         <c-button-menu
             if:true={moreThanOneDisplay}
-            class="slds-m-left_small"
+            class="slds-m-left_small avonni-scheduler__display-menu"
             label={computedSelectedDisplay.label}
             menu-alignment="right"
             onselect={handleDisplaySelect}
@@ -151,11 +159,26 @@
                 ></lightning-menu-item>
             </template>
         </c-button-menu>
+
+        <c-filter-menu
+            if:true={isTimeline}
+            class="slds-m-left_small"
+            alternative-text="Select resources"
+            dropdown-alignment="right"
+            hide-apply-reset-buttons
+            hide-selected-items
+            is-multi-select
+            icon-name="utility:filterList"
+            items={resourceToolbarMenuItems}
+            title="Select resources"
+            value={selectedResources}
+            onselect={handleToolbarResourceSelect}
+        ></c-filter-menu>
     </div>
 
     <template if:false={isLoading}>
         <c-primitive-scheduler-timeline
-            if:true={isTimeline}
+            if:true={showTimeline}
             available-days-of-the-week={availableDaysOfTheWeek}
             available-months={availableMonths}
             available-time-frames={availableTimeFrames}
@@ -186,6 +209,12 @@
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-timeline>
+
+        <c-scoped-notification
+            if:true={showEmptyTimelineMessage}
+            icon-name="utility:filterList"
+            title="Select a resource in the toolbar filter to show the timeline."
+        ></c-scoped-notification>
 
         <c-primitive-scheduler-calendar
             if:true={isCalendar}

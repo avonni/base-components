@@ -717,7 +717,10 @@ export class ScheduleBase extends LightningElement {
         this.initEvents();
         this.dispatchEvent(
             new CustomEvent('resourceselect', {
-                detail: { name }
+                detail: {
+                    name,
+                    selectedResources: this.selectedResources
+                }
             })
         );
     }
