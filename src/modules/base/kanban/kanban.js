@@ -116,17 +116,7 @@ export default class Kanban extends LightningElement {
         this.capContainerWidth();
         this.setContainerDimensions();
         this.capFieldHeight();
-
-        if (this._hideHeader && this._hasSubGroups) {
-            const subGroupHeaders = Array.from(
-                this.template.querySelectorAll(
-                    "[data-element-id='avonni-kanban__expandable_section_header']"
-                )
-            );
-            subGroupHeaders.forEach((header) => {
-                header.style.top = '0px';
-            });
-        }
+        this.cropSubGroupHeaders();
     }
 
     disconnectedCallback() {
@@ -525,6 +515,7 @@ export default class Kanban extends LightningElement {
      * @param {object} group Group containing the summary value to animate
      */
     animateSummary(group) {
+        if (this.isLoading) return;
         this._groupsLength.push(group.tiles.length);
         const summarizeUpdate = this.truncateNumber(
             this._summarizeValues[group.index] -
@@ -597,6 +588,8 @@ export default class Kanban extends LightningElement {
      *
      */
     capContainerWidth() {
+        if (this.isLoading) return;
+
         const container = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
@@ -643,6 +636,8 @@ export default class Kanban extends LightningElement {
      * Limits the height of the fields to prevent overflow
      */
     capFieldHeight() {
+        if (this.isLoading) return;
+
         this._scrollWidth = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         ).scrollWidth;
@@ -788,6 +783,19 @@ export default class Kanban extends LightningElement {
                 group.style.paddingBottom = `${paddingBottom}px`;
             }
         });
+    }
+
+    cropSubGroupHeaders() {
+        if (this._hideHeader && this._hasSubGroups && !this.isLoading) {
+            const subGroupHeaders = Array.from(
+                this.template.querySelectorAll(
+                    "[data-element-id='avonni-kanban__expandable_section_header']"
+                )
+            );
+            subGroupHeaders.forEach((header) => {
+                header.style.top = '0px';
+            });
+        }
     }
 
     /**
@@ -1533,6 +1541,8 @@ export default class Kanban extends LightningElement {
      *
      */
     setContainerDimensions() {
+        if (this.isLoading) return;
+
         this.template
             .querySelectorAll(
                 '[data-element-id="avonni-kanban__field_container"]'
