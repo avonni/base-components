@@ -945,6 +945,10 @@ export default class Kanban extends LightningElement {
         );
     }
 
+    handleMenuClick(event) {
+        event.stopPropagation();
+    }
+
     /**
      *
      *  Moves the tiles down when the dragged tile is hovering over
@@ -1427,7 +1431,9 @@ export default class Kanban extends LightningElement {
             });
         } else {
             this._computedGroups.forEach((group, i) => {
-                this._oldSummarizeValues[i] = group.summarize.value ?? 0;
+                this._oldSummarizeValues[i] = group.summarize.value
+                    ? group.summarize.value
+                    : 0;
             });
         }
 
@@ -1436,7 +1442,9 @@ export default class Kanban extends LightningElement {
         this._currentSubGroupIndex = 0;
 
         this._computedGroups.forEach((group, i) => {
-            this._summarizeValues[i] = group.summarize.value ?? 0;
+            this._summarizeValues[i] = group.summarize.value
+                ? group.summarize.value
+                : 0;
             if (!this.hideHeader) this.animateSummary(group);
         });
     }

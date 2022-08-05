@@ -1,3 +1,5 @@
+import { normalizeArray, normalizeBoolean } from '../utilsPrivate/normalize';
+
 /**
  * BSD 3-Clause License
  *
@@ -40,11 +42,11 @@ export default class KanbanGroup {
         };
         this._label = props.label;
         this._value = props.value;
-        this._headerActions = props.headerActions ?? [];
-        this._footerActions = props.footerActions ?? [];
-        this._backgroundColor = props.backgroundColor ?? '';
-        this._pathColor = props.pathColor ?? '';
-        this._showItemCount = props.showItemCount ?? false;
+        this._headerActions = normalizeArray(props.headerActions);
+        this._footerActions = normalizeArray(props.footerActions);
+        this._backgroundColor = props.backgroundColor || '';
+        this._pathColor = props.pathColor || '';
+        this._showItemCount = normalizeBoolean(props.showItemCount);
         this._avatar = props.avatar;
         this._summarizeFieldName = props.summarizeFieldName;
     }

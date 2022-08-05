@@ -11,14 +11,14 @@
 /**
  * @typedef {Object} KanbanGroup
  * @name groups
- * @property {object[]} avatar Avatar object. The avatar is displayed to the left of the group label.
+ * @property {object} avatar Avatar object. The avatar is displayed to the left of the group label.
  * @property {string} backgroundColor Color of the group's background.
  * @property {string} pathColor Color of the path item when the variant is path.
  * @property {string} label Group label.
  * @property {string} value Unique value for the group.
  * @property {object[]} headerActions Array of actions to be displayed in the group header.
  * @property {object[]} footerActions Array of actions to be displayed in the group footer.
- * @property {boolean} showItemCount If true, displays the number of items contained bu the group in it's header.
+ * @property {boolean} showItemCount If true, displays the number of items contained in the group in its header.
  */
 
 /**
