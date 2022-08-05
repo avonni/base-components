@@ -69,9 +69,9 @@ describe('Kanban', () => {
 
     // groupValues
     it('Kanban : groupValues', () => {
+        element.keyField = 'id';
         element.groupValues = JSON.parse(JSON.stringify(GROUP_VALUES));
         element.variant = 'path';
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const groups = element.shadowRoot.querySelectorAll(
@@ -92,13 +92,13 @@ describe('Kanban', () => {
 
     // records
     it('Kanban : records', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
@@ -110,6 +110,7 @@ describe('Kanban', () => {
 
     // subgroups
     it('Kanban : subgroups', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -117,7 +118,6 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.subGroupFieldName = 'assignee';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
@@ -129,6 +129,7 @@ describe('Kanban', () => {
 
     // hideHeader
     it('Kanban : hideHeader', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -136,7 +137,6 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.hideHeader = true;
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const summarize = element.shadowRoot.querySelector(
@@ -148,13 +148,13 @@ describe('Kanban', () => {
 
     // fields
     it('Kanban : fields', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const fields = element.shadowRoot.querySelector(
@@ -167,13 +167,13 @@ describe('Kanban', () => {
     // summarize
     it('Kanban : summarize', () => {
         jest.useFakeTimers();
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -186,6 +186,7 @@ describe('Kanban', () => {
 
     // drag and drop disabled
     it('Kanban : disableItemDragAndDrop true', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -193,7 +194,6 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         element.disableItemDragAndDrop = true;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
@@ -205,13 +205,13 @@ describe('Kanban', () => {
     });
 
     it('Kanban : tile drag and drop', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
@@ -238,6 +238,7 @@ describe('Kanban', () => {
     });
 
     it('Kanban : group drag and drop', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -245,7 +246,6 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         element.variant = 'base';
-        element.keyField = 'id';
 
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
@@ -271,13 +271,13 @@ describe('Kanban', () => {
 
     // events
     it('Kanban : change event', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -303,17 +303,21 @@ describe('Kanban', () => {
             tile.dispatchEvent(new MouseEvent('mouseup'));
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.groupValue).toBe('open');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
     });
 
     it('Kanban : actionclick event', () => {
+        element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
-        element.keyField = 'id';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -326,12 +330,18 @@ describe('Kanban', () => {
             headerAction.dispatchEvent(
                 new CustomEvent('select', {
                     detail: {
-                        value: '001'
+                        value: 'Action 1'
                     }
                 })
             );
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('Action 1');
+            expect(handler.mock.calls[0][0].detail.targetKeyField).toBe('');
+            expect(handler.mock.calls[0][0].detail.groupValue).toBe('open');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
     });
 });
