@@ -90,6 +90,10 @@ export default class Kanban extends LightningElement {
         left: 0,
         right: 0
     };
+    _kanbanOffset = {
+        x: 0,
+        y: 0
+    };
     _oldSummarizeValues = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
@@ -117,6 +121,9 @@ export default class Kanban extends LightningElement {
         this.setContainerDimensions();
         this.capFieldHeight();
         this.cropSubGroupHeaders();
+
+        const { x, y } = this.getBoundingClientRect();
+        this._kanbanOffset = { x, y };
     }
 
     disconnectedCallback() {
@@ -1493,6 +1500,9 @@ export default class Kanban extends LightningElement {
             this.capFieldHeight();
             this.capContainerWidth();
             this.setContainerDimensions();
+
+            const { x, y } = this.getBoundingClientRect();
+            this._kanbanOffset = { x, y };
         });
         resizeObserver.observe(container);
         return resizeObserver;
@@ -1681,9 +1691,10 @@ export default class Kanban extends LightningElement {
         const remToPx = parseFloat(
             getComputedStyle(this.template.host).fontSize
         );
-        const scrolledWidth = this.template.querySelector(
-            '[data-element-id="avonni-kanban__container"]'
-        ).scrollLeft;
+        const scrolledWidth =
+            this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollLeft - this._kanbanOffset.x;
 
         const scrolledGroupsCount = scrolledWidth / this._groupWidth;
 
