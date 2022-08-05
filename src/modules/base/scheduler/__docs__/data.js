@@ -559,7 +559,7 @@ const eventsThemed = [
 
 const disabledDatesTimes = [
     {
-        resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
+        resourceNames: ['Nina', 'Dave'],
         title: 'Lunch',
         from: new Date(2021, 0, 1, 12),
         to: new Date(2021, 0, 1, 14),

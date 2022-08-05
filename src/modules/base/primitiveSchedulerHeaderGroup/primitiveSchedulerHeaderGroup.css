@@ -92,5 +92,8 @@
 .avonni-scheduler-header-group__header-label_sticky {
     position: sticky;
     left: 0;
-    top: 10px;
+    top: var(
+        --avonni-primitive-scheduler-header-group-label-position-top,
+        10px
+    );
 }

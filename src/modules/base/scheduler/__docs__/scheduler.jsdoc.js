@@ -113,13 +113,3 @@
  * @property {number} span The number of unit the scheduler will show. Defaults to 1.
  * @property {string} unit Unit of this time span. Valid values include minute, hour, day, week, month and year. Defaults to day.
  */
-
-/**
- * @namespace stylingHooks
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-scheduler-datatable-column-width
- * @default 300px
- * @type width
- */

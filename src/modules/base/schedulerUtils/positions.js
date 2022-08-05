@@ -176,11 +176,12 @@ export function positionPopover(popover, { x, y }, horizontalCenter) {
 /**
  * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
  */
-export function updateOccurrencesOffset(
+export function updateOccurrencesOffset({
     occurrenceElements,
     isVertical,
-    cellSize = this.cellWidth
-) {
+    cellSize = this.cellWidth,
+    isCalendarMonth
+}) {
     let rowHeight = 0;
     let levelHeight = 0;
 
@@ -198,7 +199,7 @@ export function updateOccurrencesOffset(
         let level = 0;
         let numberOfOverlap = 0;
 
-        if (this.isMonth && isPlaceholder && !isVisiblePlaceholder) {
+        if (isCalendarMonth && isPlaceholder && !isVisiblePlaceholder) {
             // Do not change the level of the original occurrence
             // if the current occurrence is a placeholder
             // placed in a subsequent month cell
@@ -213,7 +214,7 @@ export function updateOccurrencesOffset(
             numberOfOverlap = position.numberOfOverlap;
         }
 
-        if (this.isMonth && (!isPlaceholder || isVisiblePlaceholder)) {
+        if (isCalendarMonth && (!isPlaceholder || isVisiblePlaceholder)) {
             occurrence.level = level;
 
             // If the current occurrence is overflowing the cell height,
@@ -255,7 +256,7 @@ export function updateOccurrencesOffset(
         if (isHidden) {
             continue;
         }
-        let offsetSide = this.isMonth ? MONTH_DAY_LABEL_HEIGHT : 0;
+        let offsetSide = isCalendarMonth ? MONTH_DAY_LABEL_HEIGHT : 0;
 
         if (isVertical) {
             offsetSide += (level * cellSize) / numberOfOverlap;

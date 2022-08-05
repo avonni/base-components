@@ -63,10 +63,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _start = DEFAULT_START_DATE;
     _variant = VARIANTS.default;
 
-    _draggedSplitter;
     _eventData;
     _headersAreLoading = true;
-    _initialFirstColWidth;
     _initialState = {};
     _mouseIsDown = false;
     _resizeObserver;
@@ -76,9 +74,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     @track computedEvents = [];
     computedHeaders = [];
     computedResources = [];
-    firstColumnIsHidden = false;
-    firstColumnIsOpen = false;
-    firstColWidth = 0;
     smallestHeader;
 
     connectedCallback() {
@@ -93,10 +88,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
         if (!this.smallestHeader) {
             return;
-        }
-
-        if (!this._initialFirstColWidth) {
-            this.resetFirstColumnWidth();
         }
 
         if (!this._rowsHeight.length) {
@@ -209,8 +200,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             validValues: VARIANTS.valid
         });
 
-        this._initialFirstColWidth = null;
-
         if (this._connected) {
             this.initEvents();
         }
@@ -278,17 +267,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get firstColClass() {
-        return classSet(
-            'slds-border_right avonni-scheduler__first-col slds-grid'
-        )
+        return classSet('avonni-scheduler__first-col slds-grid')
             .add({
-                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
-                'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-                'avonni-scheduler__first-col_horizontal': !this.isVertical,
-                'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
+                'avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
                     this.isVertical
             })
             .toString();
+    }
+
+    get firstColInitialWidth() {
+        return this.isVertical ? '110px' : '300px';
+    }
+
+    get firstColWidth() {
+        return this.firstCol ? this.firstCol.getBoundingClientRect().width : 0;
     }
 
     /**
@@ -356,7 +348,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
         )
             .add({
-                'slds-hide': this.firstColumnIsOpen,
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();
@@ -371,12 +362,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-schedule-wrapper"]'
         );
-        const firstCol = this.firstCol;
 
-        if (wrapper && firstCol) {
+        if (wrapper && this.firstCol) {
             const wrapperWidth = wrapper.getBoundingClientRect().width;
-            const firstColWidth = firstCol.getBoundingClientRect().width;
-            return wrapperWidth - firstColWidth;
+            return wrapperWidth - this.firstColWidth;
         }
         return 0;
     }
@@ -394,6 +383,14 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    get scheduleWrapperClass() {
+        return classSet('slds-grid slds-is-relative avonni-scheduler__wrapper')
+            .add({
+                'avonni-scheduler__wrapper_vertical': this.isVertical
+            })
+            .toString();
+    }
+
     /**
      * Width of the first column, used by the events to make the labels sticky.
      *
@@ -401,26 +398,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get scrollOffset() {
         return this.isVertical ? 0 : this.firstColWidth;
-    }
-
-    /**
-     * If true, the left collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseLeft() {
-        return !this.collapseDisabled && !this.firstColumnIsHidden;
-    }
-
-    /**
-     * If true, the right collapse button is displayed on the splitter bar.
-     *
-     * @type {boolean}
-     * @default true
-     */
-    get showCollapseRight() {
-        return !this.collapseDisabled && !this.firstColumnIsOpen;
     }
 
     /**
@@ -439,22 +416,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             addToDate(header.start, header.unit, header.span) - 1;
         return dateTimeObjectFrom(headerCellEnd).diff(header.start)
             .milliseconds;
-    }
-
-    /**
-     * Class list of the splitter.
-     *
-     * @type {string}
-     */
-    get splitterClass() {
-        return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
-            .add({
-                'avonni-scheduler__splitter_disabled':
-                    this.resizeColumnDisabled,
-                'slds-grid_align-end': this.firstColumnIsOpen,
-                'avonni-scheduler__splitter_vertical': this.isVertical
-            })
-            .toString();
     }
 
     /**
@@ -690,29 +651,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Reset the width of the first column to the width it had before being collapsed.
-     */
-    resetFirstColumnWidth() {
-        const columnWidth = this.firstCol.getBoundingClientRect().width;
-        this._initialFirstColWidth = columnWidth;
-        this.firstColWidth = columnWidth;
-        if (this.isVertical) {
-            this.setResourceHeaderFirstCellWidth();
-        }
-    }
-
-    /**
-     * Set the CSS style of the resource header first cell, in vertical variant.
-     */
-    setResourceHeaderFirstCellWidth() {
-        const resourceHeaderFirstCell = this.template.querySelector(
-            '[data-element-id="div-vertical-resource-header-first-cell"]'
-        );
-        resourceHeaderFirstCell.style.width = `${this.firstColWidth}px`;
-        resourceHeaderFirstCell.style.minWidth = `${this.firstColWidth}px`;
-    }
-
-    /**
      * Update the cell width property if the cells grew because the splitter moved.
      */
     updateCellWidth() {
@@ -725,8 +663,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 headers.scrollLeftOffset = this.firstColWidth;
             }
             return;
-        } else if (this.isVertical) {
-            this.setResourceHeaderFirstCellWidth();
         }
 
         super.updateCellWidth();
@@ -742,11 +678,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 )
             );
 
-            const resourceHeight = updateOccurrencesOffset.call(
-                this,
+            const resourceHeight = updateOccurrencesOffset.call(this, {
                 occurrenceElements,
-                this.isVertical
-            );
+                isVertical: this.isVertical
+            });
             if (resourceHeight) {
                 resource.height = resourceHeight;
             }
@@ -925,40 +860,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();
         this.updateVisibleResources();
-        this._initialFirstColWidth = 0;
         this._rowsHeight = [];
         this._headersAreLoading = false;
 
         requestAnimationFrame(() => {
             this.pushDatatableDown();
         });
-    }
-
-    /**
-     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
-     */
-    handleHideFirstCol() {
-        this.dispatchHidePopovers();
-        this.firstCol.style.width = null;
-        this.firstCol.style.minWidth = null;
-
-        if (this.firstColumnIsOpen) {
-            this.firstColumnIsOpen = false;
-            this.firstColWidth = this._initialFirstColWidth;
-            if (this.isVertical) {
-                this.setResourceHeaderFirstCellWidth();
-            } else {
-                this.datatable.style.width = null;
-            }
-        } else {
-            this.firstColumnIsHidden = true;
-            this.firstColWidth = 0;
-            if (this.isVertical) {
-                this.setResourceHeaderFirstCellWidth();
-            } else {
-                this.datatable.style.width = 0;
-            }
-        }
     }
 
     /**
@@ -1004,31 +911,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         // Prevent scrolling
         mouseEvent.preventDefault();
 
-        if (this._draggedSplitter) {
-            // The splitter between the left column and the schedule is being dragged
-            const { mouseX, firstColWidth } = this._initialState;
-            const x = mouseEvent.clientX;
-            const width = firstColWidth + (x - mouseX);
+        this._eventData.handleMouseMove(mouseEvent);
 
-            if (!this.isVertical) {
-                this.datatable.style.width = `${width}px`;
-            }
-            this.firstCol.style.width = `${width}px`;
-            this.firstCol.style.minWidth = `${width}px`;
-            this.firstColWidth = width;
-
-            if (this.isVertical && !this.zoomToFit) {
-                // Update the resource header first cell width
-                // even if the schedule body width has not changed (is scrolling).
-                // The rest of the time, the resize observer will trigger the update.
-                this.setResourceHeaderFirstCellWidth();
-            }
-        } else {
-            this._eventData.handleMouseMove(mouseEvent);
-
-            if (this._eventData.shouldInitDraggedEvent) {
-                this.updateVisibleResources();
-            }
+        if (this._eventData.shouldInitDraggedEvent) {
+            this.updateVisibleResources();
         }
     }
 
@@ -1039,58 +925,27 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         if (!this._mouseIsDown) {
             return;
         }
+
         this._mouseIsDown = false;
+        const x = mouseEvent.clientX;
+        const y = mouseEvent.clientY;
+        const { eventToDispatch, updateCellGroups } =
+            this._eventData.handleMouseUp(x, y);
 
-        if (this._draggedSplitter) {
-            this._draggedSplitter = false;
-        } else {
-            const x = mouseEvent.clientX;
-            const y = mouseEvent.clientY;
-            const { eventToDispatch, updateCellGroups } =
-                this._eventData.handleMouseUp(x, y);
-
-            switch (eventToDispatch) {
-                case 'edit':
-                    this.dispatchOpenEditDialog(this._eventData.selection);
-                    break;
-                case 'recurrence':
-                    this.dispatchOpenRecurrenceDialog();
-                    break;
-                default:
-                    break;
-            }
-            if (updateCellGroups) {
-                this.updateVisibleResources();
-            }
+        switch (eventToDispatch) {
+            case 'edit':
+                this.dispatchOpenEditDialog(this._eventData.selection);
+                break;
+            case 'recurrence':
+                this.dispatchOpenRecurrenceDialog();
+                break;
+            default:
+                break;
+        }
+        if (updateCellGroups) {
+            this.updateVisibleResources();
         }
     };
-
-    /**
-     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
-     */
-    handleOpenFirstCol() {
-        this.dispatchHidePopovers();
-        this.firstCol.style.width = null;
-        this.clearDatatableColumnWidth();
-        if (!this.isVertical) {
-            this.datatable.style.width = null;
-        }
-
-        if (this.firstColumnIsHidden) {
-            this.firstColumnIsHidden = false;
-            this.firstColWidth = this._initialFirstColWidth;
-            if (!this.isVertical) {
-                this.datatable.style.width = `${this._initialFirstColWidth}px`;
-            }
-        } else {
-            this.firstColumnIsOpen = true;
-            const width = this.template.host.getBoundingClientRect().width;
-            this.firstColWidth = width;
-            if (!this.isVertical) {
-                this.datatable.style.width = `${width}px`;
-            }
-        }
-    }
 
     /**
      * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
@@ -1111,39 +966,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
         this.dispatchHidePopovers(['context']);
 
-        if (this.isVertical && !this.zoomToFit) {
-            // Create an artificial scroll for the resource headers in vertical
-            const resourceHeaders = this.template.querySelector(
-                '[data-element-id="div-resource-header-cells"]'
+        if (this.isVertical) {
+            // Create an artificial scroll for the vertical headers
+            const verticalHeaders = this.template.querySelector(
+                '[data-element-id="div-vertical-header-wrapper"]'
             );
-            resourceHeaders.scroll(event.currentTarget.scrollLeft, 0);
+            verticalHeaders.scroll(0, event.currentTarget.scrollTop);
         }
-    }
-
-    /**
-     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
-     */
-    handleSplitterMouseDown(mouseEvent) {
-        if (
-            this.resizeColumnDisabled ||
-            mouseEvent.button !== 0 ||
-            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
-        ) {
-            return;
-        }
-
-        this.clearDatatableColumnWidth();
-        this._mouseIsDown = true;
-        this._draggedSplitter = true;
-        const firstColWidth = this.isVertical
-            ? this.firstCol.offsetWidth
-            : this.datatable.offsetWidth;
-        this._initialState = {
-            mouseX: mouseEvent.clientX,
-            firstColWidth
-        };
-        this.firstColumnIsHidden = false;
-        this.firstColumnIsOpen = false;
-        this.dispatchHidePopovers();
     }
 }

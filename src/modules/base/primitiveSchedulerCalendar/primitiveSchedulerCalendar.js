@@ -955,11 +955,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 )
             );
 
-            rowHeight += updateOccurrencesOffset.call(
-                this,
-                occurrences,
-                isSingleDayOccurrence
-            );
+            rowHeight += updateOccurrencesOffset.call(this, {
+                occurrenceElements: occurrences,
+                isVertical: isSingleDayOccurrence,
+                isCalendarMonth: this.isMonth
+            });
         }
 
         if (disabledEvents.length) {
@@ -973,12 +973,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const disabledCellSize = isSingleDayOccurrence
                 ? this.cellWidth
                 : this.multiDayCellHeight;
-            rowHeight += updateOccurrencesOffset.call(
-                this,
-                disabledOccurrences,
-                true,
-                disabledCellSize
-            );
+            rowHeight += updateOccurrencesOffset.call(this, {
+                occurrenceElements: disabledOccurrences,
+                isVertical: true,
+                isCalendarMonth: this.isMonth,
+                cellSize: disabledCellSize
+            });
         }
         return rowHeight;
     }
@@ -1030,12 +1030,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
                 if (allOccurrences.length) {
                     const cellSize = this.cellHeight - MONTH_DAY_LABEL_HEIGHT;
-                    updateOccurrencesOffset.call(
-                        this,
-                        allOccurrences,
-                        false,
+                    updateOccurrencesOffset.call(this, {
+                        occurrenceElements: allOccurrences,
+                        isVertical: false,
+                        isCalendarMonth: this.isMonth,
                         cellSize
-                    );
+                    });
                 }
             });
         });
