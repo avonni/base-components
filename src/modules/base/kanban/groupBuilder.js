@@ -45,6 +45,7 @@ export default class KanbanGroupsBuilder {
         this.subGroupFieldName = props.subGroupFieldName;
         this.hasSubGroups = false;
         this.groups = [];
+        this.keyField = props.keyField;
     }
 
     /**
@@ -76,7 +77,7 @@ export default class KanbanGroupsBuilder {
             );
             if (recordGroup) {
                 const tile = new KanbanTile({
-                    index: record.id,
+                    index: record[this.keyField],
                     group: record[this.groupFieldName],
                     warningIcon: record.warningIcon,
                     subGroup: this.subGroupFieldName

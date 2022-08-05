@@ -36,6 +36,16 @@ import { GROUP_VALUES, FIELDS, RECORDS, ACTIONS } from './data';
 export default {
     title: 'Example/Kanban',
     argTypes: {
+        keyField: {
+            name: 'key-field',
+            control: {
+                type: 'text'
+            },
+            description: ' Name of a key of the records objects. ',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
         actions: {
             control: {
                 type: 'object'
@@ -192,7 +202,8 @@ export default {
         hideHeader: false,
         summarizeFieldName: 'Amount',
         groupFieldName: 'status',
-        variant: 'base'
+        variant: 'base',
+        keyField: 'id'
     }
 };
 

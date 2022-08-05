@@ -13,5 +13,6 @@ export default class Kanban extends LightningElement {
     @api hideHeader;
     @api groupFieldName;
     @api subGroupFieldName;
+    @api keyField;
     @api coverImageFieldName;
 }

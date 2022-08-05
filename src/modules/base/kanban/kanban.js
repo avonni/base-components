@@ -154,8 +154,17 @@ export default class Kanban extends LightningElement {
      *
      * @type {string}
      * @public
+     * @required
      */
     @api groupFieldName;
+
+    /**
+     *
+     * Name of a key of the records objects. This key needs to be present in all records objects. Its value needs to be unique to a record, as it will be used as the record identifier.
+     * @type {string}
+     * @public
+     */
+    @api keyField;
 
     /**
      *
@@ -1396,7 +1405,8 @@ export default class Kanban extends LightningElement {
             groupFieldName: this.groupFieldName,
             summarizeFieldName: this.summarizeFieldName,
             coverImageFieldName: this.coverImageFieldName,
-            subGroupFieldName: this.subGroupFieldName
+            subGroupFieldName: this.subGroupFieldName,
+            keyField: this.keyField
         });
         if (this._computedGroups.length === 0) {
             this._groupValues.forEach((_, i) => {
