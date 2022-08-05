@@ -81,6 +81,7 @@
                     min-height: calc(100% + 2px);
                 "
             >
+                <!-- No result illustration -->
                 <div
                     if:false={computedGroups.length}
                     class="
@@ -96,84 +97,118 @@
                     ></c-illustration>
                 </div>
 
-                <div
-                    for:each={computedGroups}
-                    for:item="group"
-                    key={uniqueKey}
-                    class="slds-p-around_medium slds-grid slds-border_bottom"
-                    data-element-id="div-day-group"
-                    data-date={group.date.ts}
-                    oncontextmenu={handleEmptySpotContextMenu}
-                >
-                    <!-- Group date -->
-                    <div class="slds-m-right_large slds-col slds-size_1-of-5">
-                        <div class="slds-grid slds-grid_vertical-align-center">
-                            <div class={group.dayClass}>{group.day}</div>
-                            <div class="slds-text-title_caps slds-truncate">
-                                <div class="slds-truncate">{group.weekday}</div>
-                                <div class="slds-truncate">
-                                    {group.month} {group.year}
-                                </div>
-                            </div>
-                        </div>
+                <template for:each={computedGroups} for:item="group">
+                    <!-- Month heading -->
+                    <div
+                        if:true={group.isFirstDayOfMonth}
+                        key={uniqueKey}
+                        class="
+                            slds-p-vertical_medium
+                            slds-theme_shade
+                            vertical
+                            slds-text-title_caps
+                            slds-p-left_large
+                            slds-border_bottom
+                            avonni-scheduler__agenda-month-header
+                        "
+                    >
+                        {group.fullMonth}
                     </div>
 
-                    <!-- Group events -->
-                    <div class="slds-col">
+                    <div
+                        key={uniqueKey}
+                        class="
+                            slds-p-around_medium
+                            slds-grid
+                            slds-border_bottom
+                        "
+                        data-element-id="div-day-group"
+                        data-date={group.date.ts}
+                        oncontextmenu={handleEmptySpotContextMenu}
+                        ondblclick={handleDoubleClick}
+                    >
+                        <!-- Day heading -->
                         <div
-                            for:each={group.events}
-                            for:item="occurrence"
-                            key={occurrence.key}
-                            class="slds-grid slds-m-bottom_x-small"
+                            class="slds-m-right_large slds-col slds-size_1-of-5"
                         >
                             <div
                                 class="
-                                    slds-col
-                                    slds-size_1-of-5
-                                    slds-has-flexi-truncate
-                                    avonni-scheduler__agenda-time
+                                    slds-grid slds-grid_vertical-align-center
                                 "
                             >
-                                <div class="slds-truncate slds-text-color_weak">
-                                    {occurrence.time}
+                                <div class={group.dayClass}>{group.day}</div>
+                                <div class="slds-text-title_caps slds-truncate">
+                                    <div class="slds-truncate">
+                                        {group.weekday}
+                                    </div>
+                                    <div class="slds-truncate">
+                                        {group.month} {group.year}
+                                    </div>
                                 </div>
                             </div>
-                            <c-primitive-scheduler-event-occurrence
-                                class="
-                                    slds-m-bottom_xx-small
-                                    avonni-scheduler__agenda-event
-                                    slds-show slds-col
-                                "
-                                color={occurrence.event.color}
-                                date-format={dateFormat}
-                                disabled={occurrence.event.disabled}
-                                event-data={occurrence.event.data}
-                                event-name={occurrence.event.name}
-                                from={occurrence.from}
-                                icon-name={occurrence.event.iconName}
-                                labels={occurrence.event.labels}
-                                occurrence={occurrence}
-                                occurrence-key={occurrence.key}
-                                reference-line={occurrence.event.referenceLine}
-                                resource-key={occurrence.resourceName}
-                                resources={computedResources}
-                                title={occurrence.title}
-                                theme={occurrence.event.theme}
-                                to={occurrence.to}
-                                variant="agenda"
-                                oncontextmenu={stopPropagation}
-                                onprivateblur={handleHideDetailPopover}
-                                onprivatecontextmenu={handleEventContextMenu}
-                                onprivatedblclick={handleEventDoubleClick}
-                                onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                onprivatedisableddblclick={handleDoubleClick}
-                                onprivatefocus={handleEventFocus}
-                                onprivatemouseenter={handleEventMouseEnter}
-                                onprivatemouseleave={handleHideDetailPopover}
-                            ></c-primitive-scheduler-event-occurrence>
+                        </div>
+                        <!-- Day events -->
+                        <div class="slds-col">
+                            <div
+                                for:each={group.events}
+                                for:item="occurrence"
+                                key={occurrence.key}
+                                class="slds-grid slds-m-bottom_x-small"
+                            >
+                                <div
+                                    class="
+                                        slds-col
+                                        slds-size_1-of-5
+                                        slds-has-flexi-truncate
+                                        avonni-scheduler__agenda-time
+                                    "
+                                >
+                                    <div
+                                        class="
+                                            slds-truncate
+                                            slds-text-color_weak
+                                        "
+                                    >
+                                        {occurrence.time}
+                                    </div>
+                                </div>
+                                <c-primitive-scheduler-event-occurrence
+                                    class="
+                                        slds-m-bottom_xx-small
+                                        avonni-scheduler__agenda-event
+                                        slds-show slds-col
+                                    "
+                                    color={occurrence.event.color}
+                                    date-format={dateFormat}
+                                    disabled={occurrence.event.disabled}
+                                    event-data={occurrence.event.data}
+                                    event-name={occurrence.event.name}
+                                    from={occurrence.from}
+                                    icon-name={occurrence.event.iconName}
+                                    labels={occurrence.event.labels}
+                                    occurrence={occurrence}
+                                    occurrence-key={occurrence.key}
+                                    reference-line={occurrence.event.referenceLine}
+                                    resource-key={occurrence.resourceName}
+                                    resources={computedResources}
+                                    title={occurrence.title}
+                                    theme={occurrence.event.theme}
+                                    to={occurrence.to}
+                                    variant="agenda"
+                                    oncontextmenu={stopPropagation}
+                                    onprivateblur={handleHideDetailPopover}
+                                    onprivatecontextmenu={handleEventContextMenu}
+                                    onprivatedblclick={handleEventDoubleClick}
+                                    onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                    onprivatedisableddblclick={handleDoubleClick}
+                                    onprivatefocus={handleEventFocus}
+                                    onprivatemouseenter={handleEventMouseEnter}
+                                    onprivatemouseleave={handleHideDetailPopover}
+                                ></c-primitive-scheduler-event-occurrence>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
             </c-splitter-pane>
         </c-splitter>
     </div>

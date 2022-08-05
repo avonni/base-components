@@ -51,6 +51,10 @@ export default class SchedulerAgendaDayGroup {
         return this.date.day;
     }
 
+    get fullMonth() {
+        return this.date.toFormat('LLLL');
+    }
+
     get month() {
         return this.date.toFormat('LLL');
     }

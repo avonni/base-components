@@ -10,6 +10,12 @@
     max-height: inherit;
 }
 
+.avonni-scheduler__agenda-month-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
 .avonni-scheduler__agenda-event {
     --avonni-primitive-scheduler-event-occurrence-standalone-chip-size: 0.75rem;
 }

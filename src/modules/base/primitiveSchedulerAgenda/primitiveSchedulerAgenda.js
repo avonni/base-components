@@ -218,20 +218,26 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             return;
         }
 
-        // Create a group for each day and sort them by date
+        // Sort the days and create a group for each
+        const days = Object.entries(dayMap).sort((a, b) => {
+            return new Date(a[0]) - new Date(b[0]);
+        });
         const groups = [];
-        Object.entries(dayMap).forEach(([ISODay, events]) => {
+        let currentMonth;
+        days.forEach(([ISODay, events]) => {
             const date = dateTimeObjectFrom(ISODay);
             const today = dateTimeObjectFrom(new Date()).startOf('day');
             groups.push(
                 new DayGroup({
                     date,
                     events,
+                    isFirstDayOfMonth:
+                        this.isYear && date.month !== currentMonth,
                     isToday: ISODay === today.toISO()
                 })
             );
+            currentMonth = date.month;
         });
-        groups.sort((a, b) => a.date - b.date);
         this.computedGroups = groups;
     }
 
