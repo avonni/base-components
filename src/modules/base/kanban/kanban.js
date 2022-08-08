@@ -171,6 +171,7 @@ export default class Kanban extends LightningElement {
      * Name of a key of the records objects. This key needs to be present in all records objects. Its value needs to be unique to a record, as it will be used as the record identifier.
      * @type {string}
      * @public
+     * @required
      */
     @api keyField;
 
@@ -946,11 +947,10 @@ export default class Kanban extends LightningElement {
 
         const actionName =
             event.detail.value || event.currentTarget.dataset.name;
-        const keyField = event.currentTarget.dataset.keyField || '';
+        const keyField = event.currentTarget.dataset.keyField;
         const group =
             event.currentTarget.dataset.group ||
-            recordAction[this.groupFieldName] ||
-            '';
+            recordAction[this.groupFieldName];
 
         /**
          * The event fired when a user clicks on an action.

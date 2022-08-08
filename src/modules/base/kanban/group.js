@@ -1,4 +1,4 @@
-import { normalizeArray, normalizeBoolean } from '../utilsPrivate/normalize';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 /**
  * BSD 3-Clause License

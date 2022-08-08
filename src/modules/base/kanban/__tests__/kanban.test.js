@@ -337,7 +337,9 @@ describe('Kanban', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.name).toBe('Action 1');
-            expect(handler.mock.calls[0][0].detail.targetKeyField).toBe('');
+            expect(
+                handler.mock.calls[0][0].detail.targetKeyField
+            ).toBeUndefined();
             expect(handler.mock.calls[0][0].detail.groupValue).toBe('open');
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
