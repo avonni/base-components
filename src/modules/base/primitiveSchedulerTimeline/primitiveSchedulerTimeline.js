@@ -380,9 +380,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             '[data-element-id="div-schedule-wrapper"]'
         );
 
-        if (wrapper && this.firstCol) {
-            const wrapperWidth = wrapper.getBoundingClientRect().width;
-            return wrapperWidth - this.firstColWidth;
+        if (wrapper) {
+            return wrapper.getBoundingClientRect().width;
         }
         return 0;
     }
@@ -590,15 +589,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             });
 
             resource.initCells();
-
-            // // Set the min-height to the datatable rows height
-            // if (this._rowsHeight.length && !this.isVertical) {
-            //     const dataRow = this._rowsHeight.find((row) => {
-            //         return row.resourceName === name;
-            //     });
-            //     resource.minHeight = dataRow.height;
-            // }
-
             return resource;
         });
 
@@ -692,6 +682,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             );
             if (headers) {
                 headers.scrollLeftOffset = this.firstColWidth;
+                headers.visibleWidth = this.scheduleColWidth;
             }
             return;
         }
