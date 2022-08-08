@@ -48,6 +48,16 @@ describe('Activity Timeline', () => {
     });
 
     beforeEach(() => {
+        // Mock fetch method
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                response: () => {
+                    return { status: 200, ok: true };
+                },
+                error: jest.fn(() => {})
+            })
+        );
+
         activityTimeline = createElement('avonni-activity-timeline', {
             is: ActivityTimeline
         });
@@ -59,6 +69,8 @@ describe('Activity Timeline', () => {
             activityTimeline,
             horizontalItemsTest
         );
+
+        element.setIconLibraries = jest.fn(() => {});
     });
 
     it('Horizontal Activity Timeline: Default attributes', () => {
@@ -177,8 +189,8 @@ describe('Activity Timeline', () => {
         ];
         const expectedIconInformation = {
             iconName: 'empty',
-            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#empty',
-            categoryIconClass: 'slds-icon-standard-empty'
+            xLinkHref: '/icons/standard-sprite/svg/symbols.svg#empty',
+            categoryIconClass: 'slds-icon-standard-empty slds-icon_small'
         };
 
         for (const iconName of invalidIconCategoryNames) {
