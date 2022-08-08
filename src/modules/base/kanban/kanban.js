@@ -1290,7 +1290,9 @@ export default class Kanban extends LightningElement {
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
         this._clickedGroupIndex = Math.min(
-            Math.floor(event.clientX / this._groupWidth),
+            Math.floor(
+                (event.clientX - this._kanbanOffset.x) / this._groupWidth
+            ),
             this.groupValues.length - 1
         );
 
@@ -1378,8 +1380,8 @@ export default class Kanban extends LightningElement {
         }
         if (currentX < this._kanbanPos.left) {
             currentX = this._kanbanPos.left;
-        } else if (currentX > this._scrollWidth) {
-            currentX = this._scrollWidth;
+        } else if (currentX > this._scrollWidth + this._kanbanOffset.x) {
+            currentX = this._scrollWidth + this._kanbanOffset.x;
         }
 
         if (this._draggedTile) {
@@ -1713,7 +1715,7 @@ export default class Kanban extends LightningElement {
      * @param {HTMLElement[]} groupElements Groups containing the tiles
      */
     updateReleasedTileIndex(groupElements) {
-        let offsetHeight = 0;
+        let offsetHeight = this._kanbanOffset.y;
         this._releasedGroupIndex = this._releasedGroupIndex
             ? this._releasedGroupIndex
             : 0;
@@ -1722,21 +1724,30 @@ export default class Kanban extends LightningElement {
         );
         let scrolledHeight = 0;
 
+        let isScrolled = false;
+
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
+            // if the group is scrolled, the kanban's offset isn't influencing the index
+            if (!isScrolled && scrolledHeight > 0) {
+                offsetHeight -= this._kanbanOffset.y;
+                isScrolled = true;
+            }
             const tileIncrementMultiplier =
                 this._releasedGroupIndex === this._clickedGroupIndex ? 1 : -1;
-            offsetHeight +=
-                tile.offsetHeight +
-                parseFloat(getComputedStyle(this.template.host).fontSize);
+
+            const rem = parseFloat(
+                getComputedStyle(this.template.host).fontSize
+            );
+            offsetHeight += tile.offsetHeight + rem;
             this._releasedTileIndex = i;
             if (
                 groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
             ) {
-                scrolledHeight +=
-                    tile.offsetHeight +
-                    parseFloat(getComputedStyle(this.template.host).fontSize);
+                scrolledHeight += tile.offsetHeight + rem;
             }
+
+            // Doesn't count the dragged tile in the index
             if (this._clickedGroupIndex === this._releasedGroupIndex) {
                 this._releasedTileIndex--;
             }
