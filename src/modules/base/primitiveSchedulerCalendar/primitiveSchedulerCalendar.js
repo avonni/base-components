@@ -232,7 +232,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get computedAvailableMonths() {
-        return this.availableMonths.map((month) => {
+        const months = this.getVisibleMonths();
+        return months.map((month) => {
             const luxonMonth = month + 1;
             const markedDates = this.getMonthMarkedDates(luxonMonth);
             const value =
@@ -249,7 +250,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get dayHeaders() {
-        const label = this.isMonth ? 'ccc' : 'ccc dd';
+        const isMonth =
+            this.isMonth || (!this.isWeek && this.timeSpan.unit === 'week');
+        const label = isMonth ? 'ccc' : 'ccc dd';
         return [
             {
                 label,
@@ -268,12 +271,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get dayHeadersTimeSpan() {
-        if (this.isDay) {
+        const oneDay = this.isDay && this.timeSpan.span <= 1;
+        if (oneDay) {
             return this.hourHeadersTimeSpan;
+        } else if (this.isWeek || this.isMonth) {
+            return {
+                unit: 'week',
+                span: 1
+            };
         }
         return {
-            unit: 'week',
-            span: 1
+            unit: 'day',
+            span: this.timeSpan.span
         };
     }
 
@@ -317,6 +326,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         cells[0].start = start.startOf('day').ts;
         cells[cells.length - 1].end = end.endOf('day').ts;
         return { xAxis: cells };
+    }
+
+    get multiDayEventReadOnly() {
+        return this.isDay && !this.timeSpan.span > 1;
     }
 
     get multiDayWrapper() {
@@ -457,9 +470,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         // Create a column for each available day
         const columns = [];
-        const availableDays = this.isDay
-            ? [startDate.weekday]
-            : this.availableDaysOfTheWeek;
+        const availableDays = this.getVisibleWeekdays(startDate);
 
         for (let i = 0; i < availableDays.length; i++) {
             const column = {
@@ -558,11 +569,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     computeDayCells(column, date, minNumberOfCells) {
-        const currentMonth = addToDate(date, 'week', 1).month;
+        const { unit, span } = this.timeSpan;
+        const currentMonth =
+            unit === 'month' ? addToDate(date, 'week', 1).month : date.month;
+        const endOfTimeSpan = addToDate(this.start, unit, span);
         let notEnoughCells = true;
-        let isCurrentMonth = true;
+        let isInTimeSpan = true;
 
-        while (notEnoughCells || isCurrentMonth) {
+        while (notEnoughCells || isInTimeSpan) {
             const start = date.startOf('day');
             const end = date.endOf('day');
             column.referenceCells.push({
@@ -571,11 +585,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 end: end.ts
             });
             date = addToDate(date, 'week', 1);
+
             notEnoughCells =
                 minNumberOfCells &&
                 column.referenceCells.length < minNumberOfCells;
-            const beginningOfJanuary = date.month === 1 && currentMonth === 12;
-            isCurrentMonth = date.month <= currentMonth && !beginningOfJanuary;
+            if (unit === 'month') {
+                const beginningOfJanuary =
+                    date.month === 1 && currentMonth === 12;
+                isInTimeSpan =
+                    date.month <= currentMonth && !beginningOfJanuary;
+            } else {
+                isInTimeSpan = date < endOfTimeSpan;
+            }
         }
     }
 
@@ -651,9 +672,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     getMonthMarkedDates(month) {
-        const monthDate = this.selectedDate.set({ month });
-        const monthStart = monthDate.startOf('month');
-        const monthEnd = monthDate.endOf('month');
+        let date = this.start;
+        if (month < this.start.month) {
+            // Make sure the month is in the future
+            date = addToDate(this.start, 'year', 1);
+        }
+        date = date.set({ month });
+        const monthStart = date.startOf('month');
+        const monthEnd = date.endOf('month');
         const monthInterval = Interval.fromDateTimes(monthStart, monthEnd);
         const dayMap = {};
 
@@ -772,6 +798,57 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return resource && resource.color;
     }
 
+    getStartOfWeek(date) {
+        const isSunday = this.selectedDate.weekday === 7;
+        if (isSunday) {
+            return date.startOf('day');
+        }
+        const monday = date.startOf('week');
+        return removeFromDate(monday, 'day', 1);
+    }
+
+    getVisibleWeekdays(startDate) {
+        const span = this.timeSpan.span;
+        const oneDay = this.isDay && span <= 1;
+        let availableDays = this.availableDaysOfTheWeek;
+
+        if (oneDay) {
+            availableDays = [startDate.weekday];
+        } else if (this.isDay) {
+            availableDays = [];
+            const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
+            let dayIndex = this.availableDaysOfTheWeek.findIndex(
+                (dayNumber) => {
+                    return dayNumber === weekday;
+                }
+            );
+            for (let i = 0; i < span; i++) {
+                availableDays.push(this.availableDaysOfTheWeek[dayIndex]);
+                const nextDay = this.availableDaysOfTheWeek[dayIndex + 1];
+                dayIndex = nextDay ? dayIndex + 1 : 0;
+            }
+        }
+        return availableDays;
+    }
+
+    getVisibleMonths() {
+        const { unit, span } = this.timeSpan;
+        if (unit === 'year') {
+            return this.availableMonths;
+        }
+
+        const months = [];
+        let monthIndex = this.availableMonths.findIndex((monthNumber) => {
+            return monthNumber === this.start.month - 1;
+        });
+        for (let i = 0; i < span; i++) {
+            months.push(this.availableMonths[monthIndex]);
+            const nextMonth = this.availableMonths[monthIndex + 1];
+            monthIndex = nextMonth ? monthIndex + 1 : 0;
+        }
+        return months;
+    }
+
     hideSelectionPlaceholders() {
         const key = this._eventData.selection.occurrence.key;
         const placeholders = this.template.querySelectorAll(
@@ -837,18 +914,30 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     setStartToBeginningOfUnit() {
         this.setSelectedDateToAvailableDate();
-        const isSunday = this.selectedDate.weekday === 7;
+        const { unit, span } = this.timeSpan;
 
-        if (this.isDay || (this.isWeek && isSunday)) {
-            this.start = this.selectedDate.startOf('day');
+        let state;
+        if (this.isDay) {
+            state = 'START_OF_DAY';
+        } else if (this.isWeek || (this.isMonth && unit !== 'month')) {
+            state = 'START_OF_WEEK';
+        } else if (this.isMonth && unit === 'month') {
+            state = 'START_OF_MONTH_AND_WEEK';
+        } else if (unit === 'month') {
+            state = 'START_OF_MONTH';
         } else if (this.isYear) {
-            this.start = this.selectedDate.startOf('year');
-        } else {
-            this.start = this.selectedDate;
+            state = 'START_OF_YEAR';
+        }
 
-            if (this.isMonth) {
-                this.start = this.start.startOf('month');
-
+        switch (state) {
+            case 'START_OF_DAY':
+                this.start = this.selectedDate.startOf('day');
+                break;
+            case 'START_OF_WEEK':
+                this.start = this.getStartOfWeek(this.selectedDate);
+                break;
+            case 'START_OF_MONTH_AND_WEEK':
+                this.start = this.selectedDate.startOf('month');
                 if (this.start.weekday !== 7) {
                     // Make sure there are available days in the current week.
                     // Otherwise, go to the next week.
@@ -857,16 +946,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                         this.availableDaysOfTheWeek
                     );
                 }
-            }
-
-            if (this.start.weekday !== 7) {
-                this.start = this.start.startOf('week');
-                this.start = removeFromDate(this.start, 'day', 1);
-            }
+                this.start = this.getStartOfWeek(this.start);
+                break;
+            case 'START_OF_MONTH':
+                this.start = this.selectedDate.startOf('month');
+                break;
+            case 'START_OF_YEAR':
+                this.start = this.selectedDate.startOf('year');
+                break;
+            default:
+                break;
         }
 
         if (this.isYear) {
-            const { span, unit } = this.timeSpan;
+            // Compute the visible interval, since there is no primitive headers
             const endOfSpan = addToDate(this.start, unit, span) - 1;
             const end = dateTimeObjectFrom(endOfSpan);
             this.visibleInterval = Interval.fromDateTimes(this.start, end);
@@ -916,7 +1009,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                             return false;
                         }
                     }
-                    return occurrence.fromWeekday === col.weekday;
+                    return occurrence.firstAllowedWeekday === col.weekday;
                 });
 
                 if (event.disabled && !this.isMonth) {
@@ -1162,7 +1255,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.eventHeaderCells.xAxis = cells;
             this.visibleInterval = visibleInterval;
         }
-        this.dispatchVisibleIntervalChange(start, visibleInterval);
+        this.dispatchVisibleIntervalChange(start, this.visibleInterval);
         const end = addToDate(start, unit, span) - 1;
         this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
 

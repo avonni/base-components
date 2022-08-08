@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import {
     dateTimeObjectFrom,
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -107,7 +108,7 @@ export class ScheduleBase extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
-        const days = normalizeArray(value);
+        const days = deepCopy(normalizeArray(value)).sort();
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
@@ -131,7 +132,7 @@ export class ScheduleBase extends LightningElement {
         return this._availableMonths;
     }
     set availableMonths(value) {
-        const months = normalizeArray(value);
+        const months = deepCopy(normalizeArray(value)).sort();
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
 
@@ -446,17 +447,20 @@ export class ScheduleBase extends LightningElement {
 
     get isDay() {
         const { span, unit } = this.timeSpan;
-        return unit === 'day' && span <= 1;
+        return unit === 'day' && span < 7;
     }
 
     get isMonth() {
         const { span, unit } = this.timeSpan;
-        return unit === 'month' && span <= 1;
+        const manyDays = unit === 'day' && span > 7;
+        const manyWeeks = unit === 'week' && span > 1 && span <= 4;
+        const oneMonth = unit === 'month' && span <= 1;
+        return oneMonth || manyWeeks || manyDays;
     }
 
     get isWeek() {
         const { span, unit } = this.timeSpan;
-        return unit === 'week' || (unit === 'day' && span > 1);
+        return (unit === 'week' && span <= 1) || (unit === 'day' && span === 7);
     }
 
     get isYear() {

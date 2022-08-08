@@ -183,7 +183,7 @@
                                             labels={event.labels}
                                             occurrence={occurrence}
                                             occurrence-key={occurrence.key}
-                                            read-only={isDay}
+                                            read-only={multiDayEventReadOnly}
                                             resource-key={occurrence.resourceName}
                                             resources={computedResources}
                                             title={occurrence.title}
@@ -244,7 +244,7 @@
                                         for:index="index"
                                     >
                                         <div
-                                            key={column.weekday}
+                                            key={column.start.ts}
                                             class="
                                                 avonni-scheduler__calendar-column
                                             "
@@ -402,9 +402,9 @@
                                                     data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
                                                     data-event-name={event.name}
                                                     data-key={occurrence.key}
-                                                    data-day={occurrence.from.day}
-                                                    data-month={occurrence.from.month}
-                                                    data-weekday={occurrence.fromWeekday}
+                                                    data-day={occurrence.firstAllowedDate.day}
+                                                    data-month={occurrence.firstAllowedDate.month}
+                                                    data-weekday={occurrence.firstAllowedWeekday}
                                                     onprivateblur={handleHideDetailPopover}
                                                     onprivatefocus={handleEventFocus}
                                                     onprivatecontextmenu={handleEventContextMenu}

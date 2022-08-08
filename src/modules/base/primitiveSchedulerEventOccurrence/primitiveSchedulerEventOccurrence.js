@@ -1411,7 +1411,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         // The event should span on more than one cell.
         // Find the cell where it starts.
-        const from = this.occurrence.weekStart || this.from;
+        const from = this.occurrence.firstAllowedDate;
         let i = headerCells.findIndex((cell) => {
             const cellStart = dateTimeObjectFrom(cell.start);
             return cellStart.weekday === from.weekday;
@@ -1465,12 +1465,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
 
         // Get the vertical and horizontal cells indices
+        const start = this.occurrence.firstAllowedDate;
         const yIndex = this.getStartCellIndex(headerCells.yAxis);
         const xIndex = headerCells.xAxis.findIndex((cell) => {
             const cellEnd = dateTimeObjectFrom(cell.end);
-            const start = this.occurrence.weekStart || this.from;
             const sameWeekDay = cellEnd.weekday === start.weekday;
-            return cell.end > start && (!this.isMonthCalendar || sameWeekDay);
+            return cellEnd > start && (!this.isMonthCalendar || sameWeekDay);
         });
 
         if (yIndex < 0 || xIndex < 0) {

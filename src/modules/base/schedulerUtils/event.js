@@ -416,6 +416,9 @@ export default class SchedulerEvent {
                     ) {
                         this.occurrences.push(
                             new SchedulerEventOccurrence({
+                                availableDaysOfTheWeek:
+                                    this.availableDaysOfTheWeek,
+                                availableMonths: this.availableMonths,
                                 eventKey: this.key,
                                 from,
                                 key: `${this.name}-${name}-${from.ts}`,

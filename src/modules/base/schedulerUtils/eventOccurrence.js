@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { nextAllowedDay } from 'c/schedulerUtils';
+
 export class SchedulerEventOccurrence {
     constructor(props) {
         this.offsetSide = 0;
@@ -44,13 +46,17 @@ export class SchedulerEventOccurrence {
         return this.from.startOf('day');
     }
 
-    get fromWeekday() {
-        const weekday = this.from.weekday;
-        return weekday === 7 ? 0 : weekday;
+    get firstAllowedDate() {
+        const { availableMonths, availableDaysOfTheWeek } = this;
+        if (!availableMonths || !availableDaysOfTheWeek) {
+            return this.from;
+        }
+        const start = this.weekStart || this.from;
+        return nextAllowedDay(start, availableMonths, availableDaysOfTheWeek);
     }
 
-    get toWeekday() {
-        const weekday = this.to.weekday;
+    get firstAllowedWeekday() {
+        const weekday = this.firstAllowedDate.weekday;
         return weekday === 7 ? 0 : weekday;
     }
 }

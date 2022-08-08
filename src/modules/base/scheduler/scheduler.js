@@ -1415,7 +1415,7 @@ export default class Scheduler extends LightningElement {
     }
 
     computeVisibleIntervalLabel(start, end) {
-        const unit = this.currentTimeSpan.unit;
+        const { unit, span } = this.currentTimeSpan;
         let format;
         switch (unit) {
             case 'day':
@@ -1442,7 +1442,11 @@ export default class Scheduler extends LightningElement {
 
         const formattedStart = start.toFormat(format);
         const formattedEnd = end.toFormat(format);
-        if (this.isCalendar && (unit === 'month' || unit === 'year')) {
+        if (
+            this.isCalendar &&
+            (unit === 'month' || unit === 'year') &&
+            span <= 1
+        ) {
             this.visibleIntervalLabel = formattedEnd;
         } else {
             this.visibleIntervalLabel =
