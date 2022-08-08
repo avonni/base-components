@@ -241,7 +241,11 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     set isLoading(value) {
+        // isLoading causes the spinner to appear and causes unwanted scroll.
+        this.saveScrollPosition();
         this._isLoading = normalizeBoolean(value);
+        
+        this.restoreScrollPosition();
     }
 
     /**
@@ -371,9 +375,11 @@ Use with the onloadmore event handler to retrieve more data.
 
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
-        this.computedItems.forEach((item) => {
+
+        this.computedItems.forEach((item, index) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
+            item.label = normalizeString(item.label + ':' + index);
         });
 
         this.restoreScrollPosition();
@@ -633,17 +639,6 @@ Use with the onloadmore event handler to retrieve more data.
                 pageStart,
                 this._effectiveColumnCount + pageStart
             );
-            let nextPageItems = this.computedItems.slice(
-                this._effectiveColumnCount + pageStart,
-                this._effectiveColumnCount * 2 + pageStart
-            );
-            if (
-                nextPageItems.length === 0 &&
-                !this._isLoading &&
-                this.renderNumber !== 0
-            ) {
-                this.handleLoadMore();
-            }
             return pageItems;
         }
         return this.computedItems;
@@ -680,9 +675,24 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     /**
-     * On single-line variant, go to the next page of elements.
+     * On single-line variant, go to the next page of elements. On next page load, check 
      */
     nextPage() {
+        window.requestAnimationFrame(() => {
+            const pageStart = this._effectiveColumnCount * this._singleLinePage;
+            let nextPageItems = this.computedItems.slice(
+                this._effectiveColumnCount + pageStart,
+                this._effectiveColumnCount * 2 + pageStart
+            );
+            if (
+                nextPageItems.length === 0 &&
+                !this._isLoading &&
+                this.renderNumber !== 0
+            ) {
+                this.handleLoadMore();
+            }
+        });
+
         if (this._singleLinePage < this.totalPages - 1) {
             this._singleLinePage++;
         }
@@ -927,7 +937,7 @@ Use with the onloadmore event handler to retrieve more data.
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      * @private
      */
-    handleScroll() {
+    handleScroll(event) {
         if (this.variant === 'single-line') {
             return;
         }
@@ -944,6 +954,14 @@ Use with the onloadmore event handler to retrieve more data.
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
+        let isTrusted = false;
+        let phase = '';
+        if (event) {
+            isTrusted = event.isTrusted;
+            phase = event.eventPhase;
+        }
+        console.log('🛼', this.listContainer.scrollTop, isTrusted, phase, event);
+
         if (
             (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
             (this.listContainer.scrollTop === 0 &&
@@ -951,7 +969,6 @@ Use with the onloadmore event handler to retrieve more data.
                     this.listContainer.clientHeight &&
                 !this._isLoading)
         ) {
-            console.log('🛼 load on scroll');
             this.handleLoadMore();
         }
     }
@@ -997,7 +1014,8 @@ Use with the onloadmore event handler to retrieve more data.
         if (this._savedScrollTop === null) {
             return;
         }
-
+        console.log('🔵 restore scroll', this._savedScrollTop);
+        // this.listContainer.scrollTo(0, this._savedScrollTop);
         window.requestAnimationFrame(() => {
             this.listContainer.scrollTo(0, this._savedScrollTop);
         });
@@ -1011,6 +1029,8 @@ Use with the onloadmore event handler to retrieve more data.
         this._savedScrollTop = this.listContainer
             ? this.listContainer.scrollTop
             : null;
+
+        console.log('💾 save scroll position', this._savedScrollTop);
     }
 
     /**

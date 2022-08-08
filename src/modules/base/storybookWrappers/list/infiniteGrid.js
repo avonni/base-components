@@ -73,8 +73,8 @@ export default class InfiniteGrid extends LightningElement {
             const newItems = target.items.concat(this._loadedItems);
 
             if (newItems.length >= 50) {
-                target.enableInfiniteLoading = false;
                 this._isLoading = false;
+                target.enableInfiniteLoading = false;
             } else {
                 this._isLoading = false;
                 target.items = newItems;
