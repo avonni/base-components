@@ -40,6 +40,7 @@ export const InputPen = ({
     fieldLevelHelp,
     value,
     color,
+    showSignaturePad,
     size,
     mode,
     disabledButtons,
@@ -55,6 +56,7 @@ export const InputPen = ({
     element.fieldLevelHelp = fieldLevelHelp;
     element.value = value;
     element.mode = mode;
+    element.showSignaturePad = showSignaturePad;
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.required = required;

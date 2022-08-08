@@ -118,7 +118,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['draw', 'erase'],
+            options: ['draw', 'paint', 'ink', 'erase'],
             description: 'Valid modes include draw and erase.',
             table: {
                 type: { summary: 'string' },
@@ -135,6 +135,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: '#000' },
                 category: 'Pen'
+            }
+        },
+        showSignaturePad: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field will become a signature field',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
             }
         },
         size: {
@@ -167,22 +179,10 @@ export default {
                 type: 'object'
             },
             description:
-                'A comma-separated list of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color',
+                'Array of buttons to remove from the toolbar. Values include pen, paintbrush, eraser, ink, size, color, background, download, undo, redo, clear.',
             table: {
                 type: { summary: 'string[]' },
                 category: 'Toolbar'
-            }
-        },
-        invalid: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Validation'
             }
         }
     },
@@ -190,11 +190,11 @@ export default {
         color: '#000',
         disabled: false,
         hideControls: false,
-        invalid: false,
         mode: 'draw',
         readOnly: false,
         required: false,
-        size: 2,
+        showSignaturePad: false,
+        size: 10,
         variant: 'bottom-toolbar'
     }
 };
@@ -235,4 +235,13 @@ Disabled.args = {
     value: value,
     disabled: true,
     fieldLevelHelp: 'A default value has been set'
+};
+
+export const SignaturePad = Template.bind({});
+SignaturePad.args = {
+    label: 'Signature Field',
+    showSignaturePad: true,
+    required: true,
+    hideControls: true,
+    size: 12
 };
