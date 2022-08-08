@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
+    normalizeArray,
     assert,
     getRealDOMId,
     getListHeight
@@ -662,7 +663,10 @@ export default class DualListbox extends LightningElement {
 
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
-        this._selectedValues = newValue || [];
+        this._selectedValues =
+            typeof newValue === 'string'
+                ? [newValue]
+                : [...normalizeArray(newValue)];
         if (this._connected) {
             this.addRequiredOptionsToValue();
         }

@@ -670,7 +670,7 @@ describe('DualListbox', () => {
     });
 
     // value
-    it('Dual Listbox: value', () => {
+    it('Dual Listbox: value array', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
 
@@ -687,6 +687,26 @@ describe('DualListbox', () => {
             expect(
                 selected.querySelectorAll('[data-element-id="li-selected"]')
             ).toHaveLength(3);
+        });
+    });
+
+    it('Dual Listbox: value string', () => {
+        element.options = Options;
+        element.value = '1';
+
+        return Promise.resolve().then(() => {
+            const source = element.shadowRoot.querySelector(
+                '[data-element-id="ul-source-list"]'
+            );
+            const selected = element.shadowRoot.querySelector(
+                '[data-element-id="ul-selected-list"]'
+            );
+            expect(
+                source.querySelectorAll('[data-element-id="li-source"]')
+            ).toHaveLength(9);
+            expect(
+                selected.querySelectorAll('[data-element-id="li-selected"]')
+            ).toHaveLength(1);
         });
     });
 
