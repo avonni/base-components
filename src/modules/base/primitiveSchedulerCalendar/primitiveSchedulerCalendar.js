@@ -1195,8 +1195,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             // If the event is a reference line,
             // use the start date as an end date too
             const to = occ.to ? occ.to : occ.from;
-            occurrence.startsInPreviousCell = occ.from.day < startDate.day;
-            occurrence.endsInLaterCell = to.day > startDate.day;
+            occurrence.startsInPreviousCell =
+                occ.from.startOf('day') < startDate.startOf('day');
+            occurrence.endsInLaterCell =
+                to.endOf('day') > startDate.endOf('day');
             return occurrence;
         });
 
@@ -1519,8 +1521,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     occurrences.push({
                         ...occ,
                         event: ev,
-                        startsInPreviousCell: occ.from.day < date.day,
-                        endsInLaterCell: to.day > date.day
+                        startsInPreviousCell:
+                            occ.from.startOf('day') < date.startOf('day'),
+                        endsInLaterCell: to.endOf('day') > date.endOf('day')
                     });
                 }
             });
