@@ -643,10 +643,14 @@ export default class SchedulerEventData {
         const side = this.eventDrag.resizeSide;
         const isCalendarMultiDayEvent =
             this.isCalendar && !this.eventDrag.isVertical;
+        const isCalendarSingleDayEvent =
+            this.isCalendar && this.eventDrag.isVertical;
 
         // Find the column/row and cell the event was dropped on
+        const normalizedX =
+            isCalendarSingleDayEvent && side ? this.selection.x : x;
         const { cellGroupElement, cellElement } =
-            this.getGridElementsAtPosition(x, y);
+            this.getGridElementsAtPosition(normalizedX, y);
 
         // Update the draft values
         const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
