@@ -104,8 +104,6 @@ export default class List extends LightningElement {
      */
     @api sortableIconName;
 
-    // add getter and setters for these two properties
-    @api enableInfiniteLoading;
     _actions = [];
     _divider;
     _items = [];
@@ -114,7 +112,7 @@ export default class List extends LightningElement {
     _imageSize = IMAGE_SIZE.default;
     _imageCropFit = IMAGE_CROP_FIT.default;
     _imageAttributes;
-
+    _enableInfiniteLoading = false;
     _draggedIndex;
     _draggedElement;
     _initialX;
@@ -148,7 +146,6 @@ export default class List extends LightningElement {
 
     _resizeObserver;
     _isLoading = false;
-    finishedLoading = true;
     _scrollUpIntervalId;
     _scrollDownIntervalId;
 
@@ -168,7 +165,6 @@ export default class List extends LightningElement {
         }, 0);
 
         this.listResize();
-        // console.log('👾 rendered');
     }
 
     disconnectedCallback() {
@@ -176,22 +172,6 @@ export default class List extends LightningElement {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
         }
-    }
-
-    @api
-    get isLoading() {
-        return this._isLoading;
-    }
-
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
-    }
-
-    get isLoadingBelow() {
-        return (
-            this.isLoading &&
-            (this.variant === 'list' || this.variant === 'grid')
-        );
     }
 
     /*
@@ -230,6 +210,38 @@ export default class List extends LightningElement {
         this._divider = normalizeString(value, {
             validValues: DIVIDER.valid
         });
+    }
+
+    /**
+     * If present, you can load a subset of data and then display more
+when users scroll to the end of the list.
+Use with the onloadmore event handler to retrieve more data.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If true a loading animation is shown.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
@@ -277,9 +289,9 @@ export default class List extends LightningElement {
         }
 
         this._imagePositionY =
-            value.cropPositionY !== undefined ? value.cropPositionY : 50;
+            value.cropPositionY !== null ? value.cropPositionY : 50;
         this._imagePositionX =
-            value.cropPositionX !== undefined ? value.cropPositionX : 50;
+            value.cropPositionX !== null ? value.cropPositionX : 50;
 
         if (value.cropFit) {
             this._imageCropFit = normalizeString(value.cropFit, {
@@ -355,7 +367,6 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
-        this.finishedLoading = false;
         this.saveScrollPosition();
 
         this._items = normalizeArray(proxy, 'object');
@@ -364,13 +375,8 @@ export default class List extends LightningElement {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
         });
-        this.restoreScrollPosition();
 
-        setTimeout(() => {
-            console.log('🔥 items changed');
-            this._isLoading = false;
-            this.finishedLoading = true;
-        }, 10);
+        this.restoreScrollPosition();
     }
 
     /**
@@ -448,7 +454,9 @@ export default class List extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    // add description
+    /**
+     * Apply size classes to images. In list variant, the width is set. In grid variant, the height is set.
+     */
     get computedImageClass() {
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
@@ -469,6 +477,9 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * Apply object fit classes to images.
+     */
     get computedImageMediaClass() {
         return classSet('avonni-list__item-img').add({
             'avonni-list__item-image_object-fit-contain':
@@ -480,15 +491,29 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * Apply object position style to images.
+     */
     get computedImageStyle() {
-        // return '0';
         return `object-position: ${this._imagePositionX}% ${this._imagePositionY}%`;
     }
 
+    /**
+     * Query selector for the list container.
+     */
     get listContainer() {
         return this.template.querySelector(
             '[data-element-id="list-container"]'
         );
+    }
+
+    /**
+     * On single-line variant, do not apply height 100% to list container.
+     */
+    get computedListWrapperClass() {
+        return classSet('slds-grid slds-grid_vertical-align-center').add({
+            'avonni-list__list-full-height': this._variant !== 'single-line'
+        });
     }
 
     /**
@@ -511,6 +536,16 @@ export default class List extends LightningElement {
      */
     get hasMultipleActions() {
         return this._actions.length > 1;
+    }
+
+    /**
+     * Show the loading spinner at the end of the list.
+     */
+    get isLoadingBelow() {
+        return (
+            this.isLoading &&
+            (this.variant === 'list' || this.variant === 'grid')
+        );
     }
 
     /**
@@ -602,20 +637,32 @@ export default class List extends LightningElement {
                 this._effectiveColumnCount + pageStart,
                 this._effectiveColumnCount * 2 + pageStart
             );
-            if (nextPageItems.length < this._effectiveColumnCount) {
+            if (
+                nextPageItems.length === 0 &&
+                !this._isLoading &&
+                this.renderNumber !== 0
+            ) {
                 this.handleLoadMore();
-                console.log('⏭', nextPageItems.length);
             }
             return pageItems;
         }
         return this.computedItems;
     }
 
-    get itemCount() {
-        return this.computedItems.length;
+    /**
+     * On single-line variant, show pagination arrows.
+     *
+     * @type {boolean}
+     */
+    get showPaginationButtons() {
+        return this.variant === 'single-line';
     }
 
-    // make sure the total page is calculated on page resize
+    /**
+     * On single-line variant, get the total number of pages.
+     *
+     * @type {number}
+     */
     get totalPages() {
         return (
             Math.ceil(this.computedItems.length / this._effectiveColumnCount) ||
@@ -623,30 +670,40 @@ export default class List extends LightningElement {
         );
     }
 
-    nextPage() {
-        if (this._singleLinePage < this.totalPages - 1) {
-            this._singleLinePage++;
-        }
-
-        // if last item visible, launch loadmore;
-    }
-
+    /**
+     * On single-line variant, go to the previous page of elements.
+     */
     previousPage() {
         if (this._singleLinePage > 0) {
             this._singleLinePage--;
         }
     }
 
-    get showPaginationButtons() {
-        return this.variant === 'single-line';
+    /**
+     * On single-line variant, go to the next page of elements.
+     */
+    nextPage() {
+        if (this._singleLinePage < this.totalPages - 1) {
+            this._singleLinePage++;
+        }
     }
 
-    get nextPageDisabled() {
-        return this._singleLinePage === this.totalPages - 1;
-    }
-
+    /**
+     * On single-line variant, if there are items on the previous page, enable the previous page button.
+     *
+     * @type {boolean}
+     */
     get previousPageDisabled() {
-        return this._singleLinePage === 0;
+        return this._singleLinePage <= 0;
+    }
+
+    /**
+     * On single-line variant, if there are items on the next page, enable the next page button.
+     *
+     * @type {boolean}
+     */
+    get nextPageDisabled() {
+        return this._singleLinePage >= this.totalPages - 1;
     }
 
     /**
@@ -695,6 +752,11 @@ export default class List extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed item class styling based on user specified attributes.
+     *
+     * @type {string}
+     */
     get computedItemWrapperClass() {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
@@ -731,6 +793,11 @@ export default class List extends LightningElement {
             .toString();
     }
 
+    /**
+     * On items with images, show actions in card media-action slot.
+     *
+     * @type {boolean}
+     */
     get showMediaAction() {
         return (
             (this.variant === 'grid' || this.variant === 'single-line') &&
@@ -739,6 +806,11 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Show actions on the right.
+     *
+     * @type {boolean}
+     */
     get showActionRight() {
         return this.variant === 'list' && this.actions.length > 0;
     }
@@ -834,10 +906,6 @@ export default class List extends LightningElement {
      * @returns {number}
      */
     normalizeColumns(cols) {
-        if (!cols) {
-            return;
-        }
-
         let _value = cols;
         if (typeof cols === 'string') {
             _value = parseInt(cols, 10);
@@ -850,9 +918,9 @@ export default class List extends LightningElement {
             _value === 6 ||
             _value === 12
         ) {
-            // eslint-disable-next-line consistent-return
             return _value;
         }
+        return null;
     }
 
     /**
@@ -860,6 +928,9 @@ export default class List extends LightningElement {
      * @private
      */
     handleScroll() {
+        if (this.variant === 'single-line') {
+            return;
+        }
         this._previousScrollTop = this._scrollTop;
         this._scrollTop = this.listContainer.scrollTop;
         const scrollDelta = this._scrollTop - this._previousScrollTop;
@@ -873,28 +944,12 @@ export default class List extends LightningElement {
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
-        if (this.variant === 'single-line') {
-            return;
-        }
-
-        console.log(
-            offsetFromBottom <= this.loadMoreOffset &&
-                !this._isLoading &&
-                this.finishedLoading,
-            this.listContainer.scrollTop === 0 &&
-                this.listContainer.scrollHeight ===
-                    this.listContainer.clientHeight &&
-                !this.finishedLoading
-        );
-
         if (
-            (offsetFromBottom <= this.loadMoreOffset &&
-                !this._isLoading &&
-                this.finishedLoading) ||
+            (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
             (this.listContainer.scrollTop === 0 &&
                 this.listContainer.scrollHeight ===
                     this.listContainer.clientHeight &&
-                !this.finishedLoading)
+                !this._isLoading)
         ) {
             console.log('🛼 load on scroll');
             this.handleLoadMore();
@@ -1147,7 +1202,7 @@ export default class List extends LightningElement {
 
         if (event.type === 'touchstart') {
             // Make sure touch events don't trigger mouse events
-            // event.preventDefault();
+            event.preventDefault();
             // Close any open button menu
             this._draggedElement.focus();
         }
@@ -1169,11 +1224,9 @@ export default class List extends LightningElement {
         const mouseY =
             event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
 
-        this.checkDragToScroll(mouseY);
         // check if scrolling and adjust the position of the dragged element
+        this.checkDragToScroll(mouseY);
 
-        // Make sure it is not possible to drag the item out of the menu
-        // this._currentY
         let currentY = mouseY;
 
         // Stick the dragged item to the mouse position
@@ -1184,7 +1237,6 @@ export default class List extends LightningElement {
         // Get the position of the dragged item
         const position = this._draggedElement.getBoundingClientRect();
         const center = position.bottom - position.height / 2;
-        // const center = position.bottom - position.height / 2 + listTop;
 
         const hoveredItem = this.getHoveredItem(center);
 
@@ -1392,9 +1444,8 @@ export default class List extends LightningElement {
      */
     handleLoadMore() {
         if (this.enableInfiniteLoading) {
+            console.log('➕ load more event');
             this.dispatchEvent(new CustomEvent('loadmore'));
-            this._isLoading = true;
-            console.log('▶️ dispatch loadmore');
         }
     }
 

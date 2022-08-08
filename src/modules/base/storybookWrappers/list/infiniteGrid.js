@@ -49,7 +49,17 @@ export default class InfiniteGrid extends LightningElement {
     @api imageAttributes;
     @api enableInfiniteLoading;
     @api loadMoreOffset;
-    @api isLoading;
+
+    _isLoading = false;
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = value;
+    }
 
     connectedCallback() {
         this._loadedItems = this.items;
@@ -57,11 +67,18 @@ export default class InfiniteGrid extends LightningElement {
 
     loadMoreData(event) {
         const target = event.target;
+        this._isLoading = true;
 
         setTimeout(() => {
-            console.log('🚮 new items loading');
-            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-            target.items = this.items.concat(this._loadedItems);
+            const newItems = target.items.concat(this._loadedItems);
+
+            if (newItems.length >= 50) {
+                target.enableInfiniteLoading = false;
+                this._isLoading = false;
+            } else {
+                this._isLoading = false;
+                target.items = newItems;
+            }
         }, 1000);
     }
 }

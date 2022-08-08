@@ -34,7 +34,7 @@
 
 <template>
     <p if:true={label} class="slds-m-bottom_x-small avonni-list__header_font">
-        {label} - {items.length}
+        {label} - {isLoading}
     </p>
     <span
         id="instructions"
@@ -50,7 +50,7 @@
         >{alternativeText}</span
     >
 
-    <div style="height: 100%" class="slds-grid slds-grid_vertical-align-center">
+    <div class={computedListWrapperClass}>
         <div class="slds-col" if:true={showPaginationButtons}>
             <lightning-button-icon
                 alternative-text="Previous Items"
