@@ -54,10 +54,10 @@ describe('ProfileCard', () => {
         expect(element.avatarPosition).toBe('top-left');
         expect(element.avatarMobilePosition).toBe('top-left');
         expect(element.avatarSrc).toBeUndefined();
+        expect(element.avatarSize).toBe('medium');
         expect(element.avatarVariant).toBe('circle');
         expect(element.backgroundAlternativeText).toBeUndefined();
         expect(element.backgroundSrc).toBeUndefined();
-        expect(element.size).toBe('medium');
         expect(element.subtitle).toBeUndefined();
         expect(element.title).toBeUndefined();
     });
@@ -352,6 +352,102 @@ describe('ProfileCard', () => {
         });
     });
 
+    // avatar-size
+    it('Profile card: avatarSize = medium', () => {
+        element.avatarSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-medium'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-medium'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-medium'
+            );
+            expect(mainContainer).toBeTruthy();
+            expect(header).toBeTruthy();
+            expect(avatar).toBeTruthy();
+        });
+    });
+
+    it('Profile card: avatarSize = x-small', () => {
+        element.avatarSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-x-small'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-x-small'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-x-small'
+            );
+            expect(mainContainer).toBeTruthy();
+            expect(header).toBeTruthy();
+            expect(avatar).toBeTruthy();
+        });
+    });
+
+    it('Profile card: avatarSize = small', () => {
+        element.avatarSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-small'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-small'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-small'
+            );
+            expect(mainContainer).toBeTruthy();
+            expect(header).toBeTruthy();
+            expect(avatar).toBeTruthy();
+        });
+    });
+
+    it('Profile card: avatarSize = large', () => {
+        element.avatarSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-large'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-large'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-large'
+            );
+            expect(mainContainer).toBeTruthy();
+            expect(header).toBeTruthy();
+            expect(avatar).toBeTruthy();
+        });
+    });
+
+    it('Profile card: avatarSize = x-large', () => {
+        element.avatarSize = 'x-large';
+
+        return Promise.resolve().then(() => {
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-x-large'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-x-large'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-x-large'
+            );
+            expect(mainContainer).toBeTruthy();
+            expect(header).toBeTruthy();
+            expect(avatar).toBeTruthy();
+        });
+    });
+
     // avatar-variant
     // Depends on avatarSrc and avatarFallbackIconName
     it('Profile card: avatarVariant = circle, with image', () => {
@@ -483,102 +579,6 @@ describe('ProfileCard', () => {
             expect(header.style.backgroundImage).toBe(
                 'url(https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg)'
             );
-        });
-    });
-
-    // size
-    it('Profile card: size = medium', () => {
-        element.size = 'medium';
-
-        return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.avonni-profile-card__card_size-medium'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.avonni-profile-card__background_size-medium'
-            );
-            const avatar = element.shadowRoot.querySelector(
-                '.avonni-profile-card__avatar_size-medium'
-            );
-            expect(mainContainer).toBeTruthy();
-            expect(header).toBeTruthy();
-            expect(avatar).toBeTruthy();
-        });
-    });
-
-    it('Profile card: size = x-small', () => {
-        element.size = 'x-small';
-
-        return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.avonni-profile-card__card_size-x-small'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.avonni-profile-card__background_size-x-small'
-            );
-            const avatar = element.shadowRoot.querySelector(
-                '.avonni-profile-card__avatar_size-x-small'
-            );
-            expect(mainContainer).toBeTruthy();
-            expect(header).toBeTruthy();
-            expect(avatar).toBeTruthy();
-        });
-    });
-
-    it('Profile card: size = small', () => {
-        element.size = 'small';
-
-        return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.avonni-profile-card__card_size-small'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.avonni-profile-card__background_size-small'
-            );
-            const avatar = element.shadowRoot.querySelector(
-                '.avonni-profile-card__avatar_size-small'
-            );
-            expect(mainContainer).toBeTruthy();
-            expect(header).toBeTruthy();
-            expect(avatar).toBeTruthy();
-        });
-    });
-
-    it('Profile card: size = large', () => {
-        element.size = 'large';
-
-        return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.avonni-profile-card__card_size-large'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.avonni-profile-card__background_size-large'
-            );
-            const avatar = element.shadowRoot.querySelector(
-                '.avonni-profile-card__avatar_size-large'
-            );
-            expect(mainContainer).toBeTruthy();
-            expect(header).toBeTruthy();
-            expect(avatar).toBeTruthy();
-        });
-    });
-
-    it('Profile card: size = x-large', () => {
-        element.size = 'x-large';
-
-        return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.avonni-profile-card__card_size-x-large'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.avonni-profile-card__background_size-x-large'
-            );
-            const avatar = element.shadowRoot.querySelector(
-                '.avonni-profile-card__avatar_size-x-large'
-            );
-            expect(mainContainer).toBeTruthy();
-            expect(header).toBeTruthy();
-            expect(avatar).toBeTruthy();
         });
     });
 
