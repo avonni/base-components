@@ -36,15 +36,13 @@ import {
     addToDate,
     dateTimeObjectFrom,
     deepCopy,
-    getWeekNumber,
-    removeFromDate
+    getWeekNumber
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    getFirstAvailableWeek,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
@@ -561,17 +559,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const calendars = this.template.querySelectorAll(
             '[data-element-id="avonni-calendar-year-month"]'
         );
+        const visibleMonths = this.getVisibleMonths();
         let date = dateTimeObjectFrom(this.start);
+        let monthIndex = visibleMonths.findIndex((month) => {
+            return month + 1 === date.month;
+        });
         calendars.forEach((calendar) => {
             calendar.goToDate(date.ts);
-            date = addToDate(date, 'month', 1);
+            const nextMonth = visibleMonths[monthIndex + 1];
+            monthIndex = nextMonth ? monthIndex + 1 : 0;
+            date = date.set({ month: visibleMonths[monthIndex] + 1 });
         });
     }
 
     computeDayCells(column, date, minNumberOfCells) {
         const { unit, span } = this.timeSpan;
         const currentMonth =
-            unit === 'month' ? addToDate(date, 'week', 1).month : date.month;
+            unit === 'month' ? addToDate(date, 'week', 1).month : null;
         const endOfTimeSpan = addToDate(this.start, unit, span);
         let notEnoughCells = true;
         let isInTimeSpan = true;
@@ -798,15 +802,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return resource && resource.color;
     }
 
-    getStartOfWeek(date) {
-        const isSunday = this.selectedDate.weekday === 7;
-        if (isSunday) {
-            return date.startOf('day');
-        }
-        const monday = date.startOf('week');
-        return removeFromDate(monday, 'day', 1);
-    }
-
     getVisibleWeekdays(startDate) {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
@@ -913,50 +908,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     setStartToBeginningOfUnit() {
-        this.setSelectedDateToAvailableDate();
+        super.setStartToBeginningOfUnit();
         const { unit, span } = this.timeSpan;
-
-        let state;
-        if (this.isDay) {
-            state = 'START_OF_DAY';
-        } else if (this.isWeek || (this.isMonth && unit !== 'month')) {
-            state = 'START_OF_WEEK';
-        } else if (this.isMonth && unit === 'month') {
-            state = 'START_OF_MONTH_AND_WEEK';
-        } else if (unit === 'month') {
-            state = 'START_OF_MONTH';
-        } else if (this.isYear) {
-            state = 'START_OF_YEAR';
-        }
-
-        switch (state) {
-            case 'START_OF_DAY':
-                this.start = this.selectedDate.startOf('day');
-                break;
-            case 'START_OF_WEEK':
-                this.start = this.getStartOfWeek(this.selectedDate);
-                break;
-            case 'START_OF_MONTH_AND_WEEK':
-                this.start = this.selectedDate.startOf('month');
-                if (this.start.weekday !== 7) {
-                    // Make sure there are available days in the current week.
-                    // Otherwise, go to the next week.
-                    this.start = getFirstAvailableWeek(
-                        this.start,
-                        this.availableDaysOfTheWeek
-                    );
-                }
-                this.start = this.getStartOfWeek(this.start);
-                break;
-            case 'START_OF_MONTH':
-                this.start = this.selectedDate.startOf('month');
-                break;
-            case 'START_OF_YEAR':
-                this.start = this.selectedDate.startOf('year');
-                break;
-            default:
-                break;
-        }
 
         if (this.isYear) {
             // Compute the visible interval, since there is no primitive headers

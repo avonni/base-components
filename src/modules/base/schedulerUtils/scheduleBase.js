@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     dateTimeObjectFrom,
     deepCopy,
+    getStartOfWeek,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -50,7 +51,7 @@ import {
     EVENTS_THEMES
 } from './defaults';
 import EventData from './eventData';
-import { getDisabledWeekdays } from './dateComputations';
+import { getDisabledWeekdays, getFirstAvailableWeek } from './dateComputations';
 
 export class ScheduleBase extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -108,7 +109,7 @@ export class ScheduleBase extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
-        const days = deepCopy(normalizeArray(value)).sort();
+        const days = deepCopy(normalizeArray(value)).sort((a, b) => a - b);
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
@@ -132,7 +133,7 @@ export class ScheduleBase extends LightningElement {
         return this._availableMonths;
     }
     set availableMonths(value) {
-        const months = deepCopy(normalizeArray(value)).sort();
+        const months = deepCopy(normalizeArray(value)).sort((a, b) => a - b);
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
 
@@ -560,6 +561,53 @@ export class ScheduleBase extends LightningElement {
         const disabled = getDisabledWeekdays(this.availableDaysOfTheWeek);
         this.navCalendarDisabledWeekdays = disabled;
         this.navCalendarDisabledDates = [...disabled];
+    }
+
+    setStartToBeginningOfUnit() {
+        this.setSelectedDateToAvailableDate();
+        const unit = this.timeSpan.unit;
+
+        let state;
+        if (this.isDay) {
+            state = 'START_OF_DAY';
+        } else if (this.isWeek || (this.isMonth && unit !== 'month')) {
+            state = 'START_OF_WEEK';
+        } else if (this.isMonth && unit === 'month') {
+            state = 'START_OF_MONTH_AND_WEEK';
+        } else if (unit === 'month') {
+            state = 'START_OF_MONTH';
+        } else if (this.isYear) {
+            state = 'START_OF_YEAR';
+        }
+
+        switch (state) {
+            case 'START_OF_DAY':
+                this.start = this.selectedDate.startOf('day');
+                break;
+            case 'START_OF_WEEK':
+                this.start = getStartOfWeek(this.selectedDate);
+                break;
+            case 'START_OF_MONTH_AND_WEEK':
+                this.start = this.selectedDate.startOf('month');
+                if (this.start.weekday !== 7) {
+                    // Make sure there are available days in the current week.
+                    // Otherwise, go to the next week.
+                    this.start = getFirstAvailableWeek(
+                        this.start,
+                        this.availableDaysOfTheWeek
+                    );
+                }
+                this.start = getStartOfWeek(this.start);
+                break;
+            case 'START_OF_MONTH':
+                this.start = this.selectedDate.startOf('month');
+                break;
+            case 'START_OF_YEAR':
+                this.start = this.selectedDate.startOf('year');
+                break;
+            default:
+                break;
+        }
     }
 
     updateCellWidth() {

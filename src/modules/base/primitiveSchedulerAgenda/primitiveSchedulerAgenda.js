@@ -31,7 +31,7 @@
  */
 
 import { api } from 'lwc';
-import { addToDate, dateTimeObjectFrom, removeFromDate } from 'c/utilsPrivate';
+import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { Interval } from 'c/luxon';
 import {
@@ -48,7 +48,7 @@ import { spansOnMoreThanOneDay } from '../schedulerUtils/dateComputations';
 const DEFAULT_SELECTED_DATE = new Date();
 
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
-    _selectedDate;
+    _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
     _computedEvents = [];
     computedGroups = [];
@@ -279,19 +279,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     setStartToBeginningOfUnit() {
-        this.setSelectedDateToAvailableDate();
-        const isSunday = this.selectedDate.weekday === 7;
-
-        if (this.isDay || (this.isWeek && isSunday)) {
-            this.start = this.selectedDate.startOf('day');
-        } else if (this.isYear) {
-            this.start = this.selectedDate.startOf('year');
-        } else if (this.isWeek) {
-            this.start = this.selectedDate.startOf('week');
-            this.start = removeFromDate(this.start, 'day', 1);
-        } else {
-            this.start = this.selectedDate.startOf('month');
-        }
+        super.setStartToBeginningOfUnit();
 
         const { span, unit } = this.timeSpan;
         const end = dateTimeObjectFrom(addToDate(this.start, unit, span) - 1);

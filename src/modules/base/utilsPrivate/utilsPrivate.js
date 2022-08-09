@@ -80,6 +80,7 @@ export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
     addToDate,
     dateTimeObjectFrom,
+    getStartOfWeek,
     getWeekday,
     getWeekNumber,
     numberOfUnitsBetweenDates,

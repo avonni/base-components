@@ -97,6 +97,15 @@ const removeFromDate = (date, unit, span) => {
     return date.plus(options);
 };
 
+const getStartOfWeek = (date) => {
+    const isSunday = date.weekday === 7;
+    if (isSunday) {
+        return date.startOf('day');
+    }
+    const monday = date.startOf('week');
+    return removeFromDate(monday, 'day', 1);
+};
+
 /**
  * Get the week number of a date, starting the weeks from Sunday.
  *
@@ -137,6 +146,7 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
 export {
     addToDate,
     dateTimeObjectFrom,
+    getStartOfWeek,
     getWeekday,
     getWeekNumber,
     numberOfUnitsBetweenDates,

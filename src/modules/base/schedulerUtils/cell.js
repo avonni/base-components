@@ -24,13 +24,11 @@ export default class SchedulerCell {
     }
 
     get computedClass() {
-        const startMonth = this._startDate.month;
         return classSet(
             'avonni-scheduler__calendar-cell slds-border_right slds-border_bottom slds-p-around_none'
         ).add({
-            'slds-text-align_center': this.currentMonth,
             'avonni-scheduler__calendar-cell_outside-of-current-month':
-                this.currentMonth !== startMonth
+                this.currentMonth && this.currentMonth !== this.month
         });
     }
 

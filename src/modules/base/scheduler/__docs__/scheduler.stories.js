@@ -569,7 +569,7 @@ Base.args = {
     resources,
     start,
     events: basicEvents,
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const Calendar = Template.bind({});
@@ -643,7 +643,7 @@ AvailableAndDisabledTimes.args = {
     events,
     disabledDatesTimes,
     referenceLines,
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Lily']
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const ReadOnly = Template.bind({});
@@ -682,7 +682,7 @@ ReadOnly.args = {
             label: 'See details'
         }
     ],
-    contextMenuEmptySpotActions: []
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const ZoomToFit = Template.bind({});
@@ -716,7 +716,8 @@ ZoomToFit.args = {
     ],
     start: new Date(2021, 0, 1),
     events: longEvents,
-    eventsPalette: 'pond'
+    eventsPalette: 'pond',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const Labels = Template.bind({});
@@ -745,7 +746,9 @@ Labels.args = {
             iconName: 'utility:user'
         }
     },
-    dateFormat: 'hh:mm'
+    dateFormat: 'hh:mm',
+    hideToolbar: true,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const ThemesAndColors = Template.bind({});
@@ -755,5 +758,5 @@ ThemesAndColors.args = {
     start,
     events: eventsThemed,
     eventsPalette: 'wildflowers',
-    hideToolbar: true
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };

@@ -22,7 +22,7 @@
 
 .avonni-scheduler__agenda-day {
     font-size: 2.625rem;
-    width: 3rem;
+    min-width: 3rem;
     height: 3rem;
 }
 
