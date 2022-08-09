@@ -41,7 +41,7 @@ import {
     removeFromDate
 } from 'c/utilsPrivate';
 import {
-    getDisabledWeekdays,
+    getDisabledWeekdaysLabels,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
@@ -77,6 +77,9 @@ import {
  * @public
  */
 export default class Scheduler extends LightningElement {
+    temp() {
+        this._availableDaysOfTheWeek = [0, 2, 3];
+    }
     _dialogLabels = DEFAULT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
@@ -1399,7 +1402,7 @@ export default class Scheduler extends LightningElement {
     }
 
     initToolbarCalendarDisabledDates() {
-        const disabled = getDisabledWeekdays(this.availableDaysOfTheWeek);
+        const disabled = getDisabledWeekdaysLabels(this.availableDaysOfTheWeek);
         this._toolbarCalendarDisabledWeekdays = disabled;
         this.toolbarCalendarDisabledDates = [...disabled];
     }

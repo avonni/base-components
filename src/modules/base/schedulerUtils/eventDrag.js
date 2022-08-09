@@ -32,6 +32,15 @@
 
 import { getElementOnXAxis, getElementOnYAxis } from './schedulerUtils';
 
+/**
+ * Dragging or resizing state of a scheduler event occurrence.
+ *
+ * @class
+ * @param {HTMLElement} cellGroupElement HTML element of the cell group (row or column, depending on the orientation) the event belongs to.
+ * @param {HTMLElement} draggedEvent HTML element currently being dragged or resized.
+ * @param {boolean} isVertical If true, the events are displayed vertically.
+ * @param {string} resizeSide Side being resized. Valid values include start and end.
+ */
 export default class SchedulerEventDrag {
     draggedEvent;
     resizeSide;
@@ -107,6 +116,13 @@ export default class SchedulerEventDrag {
         };
     }
 
+    /**
+     * Check if two event occurrences are overlapping.
+     *
+     * @param {SchedulerEventOccurrence} first First event occurrence.
+     * @param {SchedulerEventOccurrence} second Second event occurrence.
+     * @returns {boolean} True if the occurrences are overlapping.
+     */
     areOverlapping(first, second) {
         if (!this.isVertical) {
             return first.offsetSide === second.offsetSide;
@@ -122,7 +138,7 @@ export default class SchedulerEventDrag {
     }
 
     /**
-     * Clear the dragged class and empty the draggedEvent and resizeSide variables.
+     * Clear the dragged class and empty the `draggedEvent` and `resizeSide` variables.
      */
     cleanDraggedElement() {
         if (this.draggedEvent) {
@@ -134,6 +150,12 @@ export default class SchedulerEventDrag {
         this.resizeSide = undefined;
     }
 
+    /**
+     * Move the dragged event to the given position.
+     *
+     * @param {number} currentX Current position of the mouse on the horizontal axis.
+     * @param {number} currentY Current position of the mouse on the vertical axis.
+     */
     drag(currentX, currentY) {
         const { mouseX, mouseY, initialX, initialY } = this._initialState;
         const position = this.normalizeMousePosition(currentX, currentY);
@@ -188,9 +210,12 @@ export default class SchedulerEventDrag {
     }
 
     /**
-     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
+     * Make sure the currently resized event occurrence doesn't overlap another event.
      *
      * @param {number} position New position of the occurrence.
+     * @param {SchedulerEventOccurrence} occurrence Occurrence of the resized event.
+     * @param {SchedulerCellGroup} cellGroup The cell group of the resized event.
+     * @returns {HTMLElement|null} Cell element containing the hovered event, or null if no event is hovered.
      */
     getHoveredEventCell(position, occurrence, cellGroup) {
         const labelWidth =
@@ -224,6 +249,13 @@ export default class SchedulerEventDrag {
         return null;
     }
 
+    /**
+     * Get the position of the event, on the axis of the cell group, whatever the schedule orientation is. The cell groups are the resources (timeline view) or the day columns (calendar view) of the schedule.
+     *
+     * @param {number} x Position of the mouse on the X axis.
+     * @param {number} y Position of the mouse on the Y axis.
+     * @returns {number} Position of the event on the axis of the cell group.
+     */
     getValueOnTheCellGroupAxis(x, y) {
         const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
             this._initialState;
@@ -237,11 +269,6 @@ export default class SchedulerEventDrag {
             : position.x + (eventEndPosition - mouseX);
 
         return this.resizeSide === 'end' ? endPosition : startPosition;
-    }
-
-    getValueOnTheCellsAxis(x, y) {
-        const position = this.normalizeMousePosition(x, y);
-        return this.isVertical ? position.x : position.y;
     }
 
     /**
@@ -272,6 +299,15 @@ export default class SchedulerEventDrag {
         return { x, y };
     }
 
+    /**
+     * Resize the event.
+     *
+     * @param {number} x Position of the mouse on the X axis.
+     * @param {number} y Position of the mouse on the Y axis.
+     * @param {SchedulerEventOccurrence} occurrence Occurrence of the resized event.
+     * @param {SchedulerCellGroup} cellGroup The cell group the resized event belongs to.
+     * @returns {HTMLElement|null} Cell element containing the hovered event, or null if no event is hovered.
+     */
     resize(x, y, occurrence, cellGroup) {
         const normalizedPosition = this.normalizeMousePosition(x, y);
         const position = this.isVertical
@@ -303,11 +339,26 @@ export default class SchedulerEventDrag {
         return null;
     }
 
+    /**
+     * Update the dragged event property.
+     *
+     * @param {HTMLElement} draggedEvent HTML Element of the dragged event occurrence.
+     * @param {object} mousePosition Current position of the mouse. Valid keys are nouseX and mouseY. Defaults to the position saved in the initial state.
+     */
     setDraggedEvent(draggedEvent, { mouseX, mouseY } = this._initialState) {
         this.draggedEvent = draggedEvent;
         this.initDraggedEventState(mouseX, mouseY);
     }
 
+    /**
+     * Shrink the dragged event to the given width.
+     *
+     * @param {number} width New width of the event.
+     * @param {number} mouseX Current position of the mouse on the X axis.
+     * @param {number} mouseY Current position of the mouse on the Y axis.
+     * @returns {}
+     * @public
+     */
     shrinkDraggedEvent(width, mouseX, mouseY) {
         if (!this.draggedEvent) {
             return;
@@ -321,7 +372,9 @@ export default class SchedulerEventDrag {
     }
 
     /**
-     * Update the width of the resized event.
+     * Update the resized event style and position.
+     *
+     * @param {number} distanceMoved Resized length, in pixels.
      */
     updateDraggedEventStyleAfterResize(distanceMoved) {
         const { eventSize, initialY, initialX } = this._initialState;

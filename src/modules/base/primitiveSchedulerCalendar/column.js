@@ -33,7 +33,7 @@
 import { SchedulerCellGroup } from 'c/schedulerUtils';
 import { dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 
-export default class PrimitiveSchedulerCalendarColumn extends SchedulerCellGroup {
+export default class SchedulerCalendarColumn extends SchedulerCellGroup {
     constructor(props) {
         super(props);
         this.disabledEvents = normalizeArray(props.disabledEvents);

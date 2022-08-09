@@ -33,6 +33,14 @@
 import { normalizeArray } from 'c/utilsPrivate';
 import Cell from './cell';
 
+/**
+ * Group of scheduler cells. Corresponds to the resources rows/columns in the tinmeline display, or the day columns in the calendar display.
+ *
+ * @class
+ * @param {SchedulerCell[]} cells Array of SchedulerCell objects.
+ * @param {object[]} referenceCells Array of cell objcts used as a reference to create the cells.
+ * @param {object[]} events Array of event objects.
+ */
 export class SchedulerCellGroup {
     constructor(props) {
         this.cells = [];
@@ -41,6 +49,9 @@ export class SchedulerCellGroup {
         this.initCells();
     }
 
+    /**
+     * Initialize the cells array.
+     */
     initCells() {
         this.cells = [];
         this.referenceCells.forEach((element) => {
@@ -53,6 +64,12 @@ export class SchedulerCellGroup {
         });
     }
 
+    /**
+     * Add the event to the each cell it crosses.
+     *
+     * @param {object} Event Event to add to the cells.
+     * @param {string} eventType Type of the event. Used by the calendar display, in the SchedulerCalendarColumn child class. The event will be added to the corresponding property, depending on its type.
+     */
     addEventToCells(event, eventType = 'events') {
         const cells = this.cells;
         event.offsetSide = 0;
@@ -92,6 +109,11 @@ export class SchedulerCellGroup {
         }
     }
 
+    /**
+     * Remove the event from the cells it crosses.
+     *
+     * @param {object} event Event to remove from the cells.
+     */
     removeEvent(event) {
         const { cells, events } = this;
 
@@ -112,6 +134,12 @@ export class SchedulerCellGroup {
         events.splice(eventIndex, 1);
     }
 
+    /**
+     * Get a cell from its start date.
+     *
+     * @param {number} start Start of the cell to find.
+     * @returns {SchedulerCell|undefined} Cell found, or undefined if not found.
+     */
     getCellFromStart(start) {
         return this.cells.find((cell) => cell.start === start);
     }

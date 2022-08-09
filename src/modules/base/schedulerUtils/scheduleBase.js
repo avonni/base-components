@@ -51,9 +51,23 @@ import {
     EVENTS_THEMES
 } from './defaults';
 import EventData from './eventData';
-import { getDisabledWeekdays, getFirstAvailableWeek } from './dateComputations';
+import {
+    getDisabledWeekdaysLabels,
+    getFirstAvailableWeek
+} from './dateComputations';
 
+/**
+ * Base parent, extended by the primitive scheduler calendar, timeline and agenda.
+ *
+ * @class
+ */
 export class ScheduleBase extends LightningElement {
+    /**
+     * Alternative text of the loading spinner.
+     *
+     * @type {string}
+     * @public
+     */
     @api loadingStateAlternativeText;
 
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -100,7 +114,7 @@ export class ScheduleBase extends LightningElement {
     /**
      * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
      * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
-     * For example, if the available days are Monday to Friday, the value would be: <code>[1, 2, 3, 4, 5]</code>
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
      *
      * @type {number[]}
      * @public
@@ -124,7 +138,7 @@ export class ScheduleBase extends LightningElement {
     /**
      * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
      * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
-     * For example, if the available months are January, February, June, July, August and December, the value would be: <code>[0, 1, 5, 6, 7, 11]</code>
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
      *
      * @type {number[]}
      * @public
@@ -147,7 +161,7 @@ export class ScheduleBase extends LightningElement {
     /**
      * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
      * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
-     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: <code>['10:00-11:59', '14:30-18:44']</code>
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: `['10:00-11:59', '14:30-18:44']`
      *
      * @type {string[]}
      * @public
@@ -204,7 +218,7 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * The date format to use in the events' details popup and the labels. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format. If you want to insert text in the label, you need to escape it using single quote.
-     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     * For example, the format of "Jan 14 day shift" would be `"LLL dd 'day shift'"`.
      *
      * @type {string}
      * @public
@@ -245,7 +259,7 @@ export class ScheduleBase extends LightningElement {
      * * right
      * * center
      * The value of each key should be a label object.
-     * Not supported for vertical variant.
+     * Top, bottom, left and right labels are only supported for the timeline display with a horizontal variant.
      *
      * @type {object}
      * @public
@@ -383,6 +397,12 @@ export class ScheduleBase extends LightningElement {
         this._resources = normalizeArray(value, 'object');
     }
 
+    /**
+     * Array of selected resources names. Only the events of the selected resources will be visible.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get selectedResources() {
         return this._selectedResources;
@@ -397,7 +417,7 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Object used to set the duration of the timeline. It should have two keys:
+     * Object used to set the duration of the schedule. It should have two keys:
      * * unit (minute, hour, day, week, month or year)
      * * span (number).
      *
@@ -414,7 +434,7 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * If present, horizontal scrolling will be prevented.
+     * If present, horizontal scrolling will be prevented in the timeline view.
      *
      * @type {boolean}
      * @default false
@@ -434,25 +454,50 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * True if the panels can be collapsed.
+     *
+     * @type {boolean}
+     */
     get allowCollapse() {
         return !this.collapseDisabled;
     }
 
+    /**
+     * True if the panels can be resized.
+     *
+     * @type {boolean}
+     */
     get allowResizeColumn() {
         return !this.resizeColumnDisabled;
     }
 
+    /**
+     * First selected resource object.
+     *
+     * @type {object}
+     */
     get firstSelectedResource() {
         return this.resources.find((res) => {
             return this.selectedResources.includes(res.name);
         });
     }
 
+    /**
+     * True if the day display is used.
+     *
+     * @type {boolean}
+     */
     get isDay() {
         const { span, unit } = this.timeSpan;
         return unit === 'day' && span < 7;
     }
 
+    /**
+     * True if the month display is used.
+     *
+     * @type {boolean}
+     */
     get isMonth() {
         const { span, unit } = this.timeSpan;
         const manyDays = unit === 'day' && span > 7;
@@ -461,11 +506,21 @@ export class ScheduleBase extends LightningElement {
         return oneMonth || manyWeeks || manyDays;
     }
 
+    /**
+     * True if the week display is used.
+     *
+     * @type {boolean}
+     */
     get isWeek() {
         const { span, unit } = this.timeSpan;
         return (unit === 'week' && span <= 1) || (unit === 'day' && span === 7);
     }
 
+    /**
+     * True if the year display is used.
+     *
+     * @type {boolean}
+     */
     get isYear() {
         const { span, unit } = this.timeSpan;
         return unit === 'year' || (unit === 'month' && span > 1);
@@ -477,22 +532,46 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Clear the selected event.
+     *
+     * @param {boolean} cancelNewEvent If true and a new event was being created, the new event will be canceled.
+     * @public
+     */
     @api
     cleanSelection(cancelNewEvent) {
         this._eventData.cleanSelection(cancelNewEvent);
         this._eventData.refreshEvents();
     }
 
+    /**
+     * Create a new event.
+     *
+     * @param {object} event New event object.
+     * @public
+     */
     @api
     createEvent(event) {
         this._eventData.createEvent(event);
     }
 
+    /**
+     * Delete an event.
+     *
+     * @param {string} name Unique name of the event to delete.
+     * @public
+     */
     @api
     deleteEvent(name) {
         this._eventData.deleteEvent(name);
     }
 
+    /**
+     * Set the focus on an event.
+     *
+     * @param {string} name Unique name of the event to set the focus on.
+     * @public
+     */
     @api
     focusEvent(name) {
         const event = this.template.querySelector(
@@ -503,6 +582,12 @@ export class ScheduleBase extends LightningElement {
         }
     }
 
+    /**
+     * Save the changes made to the selected event.
+     *
+     * @param {string} recurrenceMode Edition mode of the recurrent events. Valid values include one or all.
+     * @public
+     */
     @api
     saveSelection(recurrenceMode) {
         const { event, occurrence } = this._eventData.selection;
@@ -533,6 +618,12 @@ export class ScheduleBase extends LightningElement {
         this._eventData.cleanSelection();
     }
 
+    /**
+     * Select an event.
+     *
+     * @param {object} detail Details on the selected event. Valid keys are `eventName`, `from`, `x`, `y` and `key`.
+     * @public
+     */
     @api
     selectEvent(detail) {
         return this._eventData.selectEvent(detail);
@@ -544,6 +635,9 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the event data.
+     */
     initEvents() {
         this._eventData = new EventData(this, {
             availableDaysOfTheWeek: this.availableDaysOfTheWeek,
@@ -559,12 +653,18 @@ export class ScheduleBase extends LightningElement {
         });
     }
 
+    /**
+     * Initialize the disabled dates of the left panel calendar.
+     */
     initLeftPanelCalendarDisabledDates() {
-        const disabled = getDisabledWeekdays(this.availableDaysOfTheWeek);
+        const disabled = getDisabledWeekdaysLabels(this.availableDaysOfTheWeek);
         this.navCalendarDisabledWeekdays = disabled;
         this.navCalendarDisabledDates = [...disabled];
     }
 
+    /**
+     * Set the starting date of the schedule.
+     */
     setStartToBeginningOfUnit() {
         this.setSelectedDateToAvailableDate();
         const unit = this.timeSpan.unit;
@@ -612,6 +712,9 @@ export class ScheduleBase extends LightningElement {
         }
     }
 
+    /**
+     * Update the cell width property with the DOM cell width.
+     */
     updateCellWidth() {
         const cell = this.template.querySelector(
             '[data-element-id="div-cell"]'
@@ -631,6 +734,11 @@ export class ScheduleBase extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle the selection of a new date in the left panel calendar.
+     *
+     * @param {Event} event
+     */
     handleCalendarChange(event) {
         const value = event.detail.value;
         if (!value) {
@@ -639,6 +747,15 @@ export class ScheduleBase extends LightningElement {
         }
 
         this._selectedDate = dateTimeObjectFrom(value);
+
+        /**
+         * The event fired when the selected date changes.
+         *
+         * @event
+         * @name datechange
+         * @param {DateTime} value The new selected date.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('datechange', {
                 detail: {
@@ -649,7 +766,7 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
+     * Handle the `dblclick` event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
      */
     handleDoubleClick(event) {
         if (this.readOnly) {
@@ -658,12 +775,11 @@ export class ScheduleBase extends LightningElement {
         const x = event.clientX;
         const y = event.clientY;
         this.newEvent(x, y, true);
-
         this.dispatchOpenEditDialog(this._eventData.selection);
     }
 
     /**
-     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     * Handle the `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
      */
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
@@ -672,6 +788,14 @@ export class ScheduleBase extends LightningElement {
         const y = event.clientY;
         this.newEvent(x, y);
 
+        /**
+         * The event fired when the context menu is opened on an empty spot of the schedule.
+         *
+         * @event
+         * @name emptyspotcontextmenu
+         * @param {object} selection Information on the newly created event.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('emptyspotcontextmenu', {
                 detail: { selection: this._eventData.selection }
@@ -680,7 +804,7 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
+     * Handle the `privatecontextmenu` event fired by a primitive event occurrence. Select the event and open its context menu.
      */
     handleEventContextMenu(event) {
         const target = event.currentTarget;
@@ -688,13 +812,23 @@ export class ScheduleBase extends LightningElement {
             return;
         }
 
+        /**
+         * The event fired when the context menu is opened on an event.
+         *
+         * @event
+         * @name eventcontextmenu
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the event occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchEvent(
             new CustomEvent('eventcontextmenu', { detail: event.detail })
         );
     }
 
     /**
-     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
+     * Handle the `privatedblclick` event fired by a primitive event occurrence. Open the edit dialog for this event.
      */
     handleEventDoubleClick(event) {
         if (this.readOnly) {
@@ -707,7 +841,7 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
+     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the `eventselect` event and trigger the behaviour a mouse movement would have.
      */
     handleEventFocus(event) {
         const detail = {
@@ -720,6 +854,16 @@ export class ScheduleBase extends LightningElement {
             };
         }
 
+        /**
+         * The event fired when an event is selected.
+         *
+         * @event
+         * @name eventselect
+         * @param {string} name Name of the event.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys:
+         * * from
+         * * to
+         */
         this.dispatchEvent(
             new CustomEvent('eventselect', {
                 detail,
@@ -730,12 +874,24 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     * Handle the `privatemouseenter` event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
      */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown) {
             return;
         }
+
+        /**
+         * The event fired when the mouse enters an event.
+         *
+         * @event
+         * @name eventmouseenter
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('eventmouseenter', {
                 detail: event.detail
@@ -743,10 +899,18 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `hidepopovers` event only for the detail popover.
+     */
     handleHideDetailPopover() {
         this.dispatchHidePopovers(['detail']);
     }
 
+    /**
+     * Handle navigation in the left panel calendar. Make sure the unavailable months and days are not selectable.
+     *
+     * @param {Event} event
+     */
     handleLeftPanelCalendarNavigate(event) {
         const date = new Date(event.detail.date);
         const month = date.getMonth();
@@ -759,6 +923,11 @@ export class ScheduleBase extends LightningElement {
         }
     }
 
+    /**
+     * Handle the selection or unselection of a resource.
+     *
+     * @param {Event} event
+     */
     handleResourceToggle(event) {
         const name = event.currentTarget.value;
         const selected = event.detail.checked;
@@ -769,6 +938,16 @@ export class ScheduleBase extends LightningElement {
             this.selectedResources.splice(index, 1);
         }
         this.initEvents();
+
+        /**
+         * The event fired when a resource is selected or unselected.
+         *
+         * @event
+         * @name resourceselect
+         * @param {string} name Name of the resource that was selected or unselected.
+         * @param {string[]} selectedResources Updated list of selected resources names.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('resourceselect', {
                 detail: {
@@ -779,7 +958,25 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `eventchange` event.
+     *
+     * @param {Event} event
+     */
     dispatchEventChange(detail) {
+        /**
+         * The event fired when a user edits an event.
+         *
+         * @event
+         * @name eventchange
+         * @param {string} name Name of the event.
+         * @param {object} draftValues Object containing one key-value pair per changed attribute.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys:
+         * * from
+         * * to
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('eventchange', {
                 detail,
@@ -788,7 +985,21 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `eventcreate` event.
+     *
+     * @param {Event} event
+     */
     dispatchEventCreate(event) {
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event Event created.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('eventcreate', {
                 detail: {
@@ -805,7 +1016,20 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `hidepopovers` event.
+     *
+     * @param {Event} event
+     */
     dispatchHidePopovers(list) {
+        /**
+         * The event fired when one or several popovers should be hidden.
+         *
+         * @event
+         * @name hidepopovers
+         * @param {string[]} list List of popover names to hide.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('hidepopovers', {
                 detail: { list }
@@ -813,7 +1037,20 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `openeditdialog` event.
+     *
+     * @param {Event} event
+     */
     dispatchOpenEditDialog(selection) {
+        /**
+         * The event fired when the edit dialog should be opened.
+         *
+         * @event
+         * @name openeditdialog
+         * @param {object} selection Information about the selected event.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('openeditdialog', {
                 detail: {
@@ -823,7 +1060,20 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `openrecurrencedialog` event.
+     *
+     * @param {Event} event
+     */
     dispatchOpenRecurrenceDialog(selection) {
+        /**
+         * The event fired when the recurrence dialog should be opened.
+         *
+         * @event
+         * @name openrecurrencedialog
+         * @param {object} selection Information about the selected event.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('openrecurrencedialog', {
                 detail: {
@@ -833,7 +1083,21 @@ export class ScheduleBase extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `visibleintervalchange` event.
+     *
+     * @param {Event} event
+     */
     dispatchVisibleIntervalChange(start, visibleInterval) {
+        /**
+         * The event fired when the visible interval changes.
+         *
+         * @event
+         * @name visibleintervalchange
+         * @param {DateTime} start Start of the visible interval.
+         * @param {Interval} visibleInterval Visible interval.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('visibleintervalchange', {
                 detail: { start, visibleInterval }

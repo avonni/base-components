@@ -36,6 +36,26 @@ import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
 import { spansOnMoreThanOneDay } from './dateComputations';
 
+/**
+ * Events data of the scheduler.
+ * @class
+ * @param {number[]} availableDaysOfTheWeek Array of available weekday numbers.
+ * @param {number[]} availableMonths Array of available month numbers.
+ * @param {string[]} availableTimeFrames Array of available time frames.
+ * @param {object[]} events Array of event objects.
+ * @param {object} eventsLabels Labels of the events. Valid keys include top, bottom, left, right and center.
+ * @param {string} eventsTheme Theme of the events. Valid values include default, transparent, line, hollow and rounded.
+ * @param {boolean} isAgenda If true, the scheduler scheduler view is agenda.
+ * @param {boolean} isCalendar If true, the selected scheduler view is calendar.
+ * @param {boolean} isVertical If true, the events are displayed vertically.
+ * @param {string} newEventTitle Default title of the new event.
+ * @param {SchedulerCalendarColumn} multiDayEventsCellGroup Used only by the calendar display. Cell group containing the multi-day events.
+ * @param {string[]} recurrentEditModes Allowed edition modes for recurring events.
+ * @param {object} schedule Instance of the primitive schedule (calendar, agenda or timeline) to which the event data belongs.
+ * @param {string[]} selectedResources Array of selected resources names.
+ * @param {object} smallestHeader The smallest time header of the scheduler. Valid keys include unit and span.
+ * @param {Interval} visibleInterval Visible interval of the scheduler.
+ */
 export default class SchedulerEventData {
     eventDrag;
     selection;
@@ -58,6 +78,11 @@ export default class SchedulerEventData {
         );
     }
 
+    /**
+     * If true, a new event is being created by dragging, and the dragged event HTML element should be updated on the next render.
+     *
+     * @type {boolean}
+     */
     get shouldInitDraggedEvent() {
         const newSelectedEvent = this.selection && this.selection.newEvent;
         const noDraggedEvent = this.eventDrag && !this.eventDrag.draggedEvent;
@@ -107,6 +132,11 @@ export default class SchedulerEventData {
         this.refreshEvents();
     }
 
+    /**
+     * Add the given event to the `singleDayEvents` or `multiDayEvents` arrays.
+     *
+     * @param {SchedulerEvent} event The event to add.
+     */
     addToSingleAndMultiDayEvents(event) {
         if (
             spansOnMoreThanOneDay(event, event.computedFrom, event.computedTo)
@@ -117,19 +147,26 @@ export default class SchedulerEventData {
         }
     }
 
+    /**
+     * Check if the given event belongs to any of the selected resources.
+     *
+     * @param {object} event Event object to check.
+     * @returns {boolean} True if the event belongs to any of the selected resources, false otherwise.
+     */
     belongsToSelectedResources(event) {
         if (event.referenceLine) {
             return true;
         }
         const names = normalizeArray(event.resourceNames);
         const resources = normalizeArray(this.selectedResources);
-        return names.find((name) => {
+        return !!names.find((name) => {
             return resources.includes(name);
         });
     }
 
     /**
-     * Clear the selected or new event.
+     * Clear the selection.
+     * @param {boolean} cancelEdition If true, cancel the edition of the selected event. If a new event was being created, delete it.
      */
     cleanSelection(cancelEdition = false) {
         const lastEvent = this.events[this.events.length - 1];
@@ -190,7 +227,7 @@ export default class SchedulerEventData {
     /**
      * Drag an event to a cell and save the change.
      *
-     * @param {HTMLElement} cellGroupElement The cell group element the event is being dragged to.
+     * @param {HTMLElement} cellGroupElement The cell group element the event is being dragged to. It is a resource row/column if the scheduler is a timeline, or a day column if the scheduler is a calendar.
      * @param {HTMLElement} cell The cell element the event is being dragged to.
      */
     dragEventTo(cellGroupElement, cell) {
@@ -233,6 +270,12 @@ export default class SchedulerEventData {
         }
     }
 
+    /**
+     * Get the boundaries of the dragging area.
+     *
+     * @param {boolean} isVertical If true, the events are displayed vertically.
+     * @returns {DOMRect} Boundaries of the dragging area.
+     */
     getDraggingBoundaries(isVertical) {
         if (this.isCalendar && !isVertical) {
             // Get the multi day events grid boundaries
@@ -249,6 +292,13 @@ export default class SchedulerEventData {
         return body.getBoundingClientRect();
     }
 
+    /**
+     * Get the cell group and the cell HTML elements at a specific position.
+     *
+     * @param {number} x Position on the X axis.
+     * @param {number} y Position on the Y axis.
+     * @returns {object} Object with two keys: cellGroupElement and cellElement.
+     */
     getGridElementsAtPosition(x, y) {
         let dragState = 'HORIZONTAL_TIMELINE';
         if (this.isCalendar && !this.eventDrag.isVertical) {
@@ -271,9 +321,10 @@ export default class SchedulerEventData {
                 return { cellGroupElement: resourceColumn, cellElement: cell };
             }
             case 'SINGLE_DAY_EVENT_CALENDAR': {
-                const normalizedX = this.eventDrag.getValueOnTheCellsAxis(x, y);
-                const dayColumn =
-                    this.schedule.getColumnElementFromPosition(normalizedX);
+                const position = this.eventDrag.normalizeMousePosition(x, y);
+                const dayColumn = this.schedule.getColumnElementFromPosition(
+                    position.x
+                );
                 const normalizedY = this.eventDrag.getValueOnTheCellGroupAxis(
                     x,
                     y
@@ -309,11 +360,10 @@ export default class SchedulerEventData {
     }
 
     /**
-     * Display a new event on the schedule grid and open the edition dialog if showDialog is true.
+     * Create and select a new event.
      *
-     * @param {number} x Horizontal position of the event in the schedule, in pixels.
-     * @param {number} y Vertical position of the event in the schedule, in pixels.
-     * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
+     * @param {object} detail Information on the new event to create. Valid keys include `resourceNames`, `from`, `to`, `x` and `y`.
+     * @param {boolean} saveEvent If true, the event is saved in the events list.
      */
     newEvent({ resourceNames, from, to, x, y }, saveEvent = true) {
         const event = {
@@ -339,6 +389,12 @@ export default class SchedulerEventData {
         }
     }
 
+    /**
+     * Get the normalized event end date.
+     *
+     * @param {object} event Event the end date is computed from.
+     * @returns {DateTime} Normalized event end date.
+     */
     normalizedEventTo(event) {
         let to = dateTimeObjectFrom(event.to);
         const from = dateTimeObjectFrom(event.from);
@@ -351,6 +407,9 @@ export default class SchedulerEventData {
         return to;
     }
 
+    /**
+     * Refresh the events to force the schedule rerender.
+     */
     refreshEvents() {
         this.events = [...this.events];
         if (this.isCalendar) {
@@ -369,7 +428,8 @@ export default class SchedulerEventData {
     /**
      * Resize an event to a given cell element and save the change.
      *
-     * @param {HTMLElement} cell The cell element.
+     * @param {HTMLElement} cell Cell element.
+     * @param {SchedulerCellGroup} cellGroup Cell group the resized event belongs to.
      */
     resizeEventToCell(cell, cellGroup) {
         const occurrence = this.selection.occurrence;
@@ -493,6 +553,12 @@ export default class SchedulerEventData {
         this.schedule.dispatchEventChange(detail);
     }
 
+    /**
+     * Select an event.
+     *
+     * @param {object} detail Detail of the event to select. Valid keys include eventName, from, x, y and key.
+     * @returns {object} Selection object.
+     */
     selectEvent({ eventName, from, x, y, key }) {
         const event = this.events.find((evt) => {
             return evt.name === eventName;
@@ -514,6 +580,9 @@ export default class SchedulerEventData {
         return this.selection;
     }
 
+    /**
+     * Set the dragged event element in the `SchedulerEventDrag` instance.
+     */
     setDraggedEvent() {
         if (!this.eventDrag || !this.selection) {
             return;
@@ -528,6 +597,13 @@ export default class SchedulerEventData {
         }
     }
 
+    /**
+     * Shrink the width of the dragged event.
+     *
+     * @param {number} width New width of the dragged event.
+     * @param {number} mouseX Position of the mouse on the X axis.
+     * @param {number} mouseY Position of the mouse on the Y axis.
+     */
     shrinkDraggedEvent(width, mouseX, mouseY) {
         if (!this.eventDrag) {
             return;
@@ -536,9 +612,13 @@ export default class SchedulerEventData {
         this.selection.isMoving = true;
     }
 
+    /**
+     * Update all the events default values and recreate their occurrences.
+     */
     updateAllEventsDefaults() {
         this.events.forEach((event) => {
             this.updateEventDefaults(event);
+            event.initOccurrences();
         });
         this.refreshEvents();
     }
@@ -577,6 +657,13 @@ export default class SchedulerEventData {
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
+    /**
+     * Handle a mouse down on an event. Initialize the event drag instance, and select the event.
+     *
+     * @param {event} mouseEvent
+     * @param {HTMLElement} cellGroupElement Cell group element the event belongs to.
+     * @param {boolean} isVertical If true, the events are displayed vertically.
+     */
     handleExistingEventMouseDown(
         mouseEvent,
         cellGroupElement,
@@ -591,6 +678,11 @@ export default class SchedulerEventData {
         this.selectEvent(mouseEvent.detail);
     }
 
+    /**
+     * Handle a mouse movement. Compute the dragging or resizing of an event.
+     *
+     * @param {Event} event
+     */
     handleMouseMove(event) {
         if (!this.eventDrag) {
             return;
@@ -632,6 +724,13 @@ export default class SchedulerEventData {
         }
     }
 
+    /**
+     * Handle a mouse up. End the dragging or resizing of an event and clean the selection.
+     *
+     * @param {number} x Position of the mouse on the X axis.
+     * @param {number} y Position of the mouse on the Y axis.
+     * @returns {object} Actions to take. Valid keys include eventToDispatch and updateCellGroups.
+     */
     handleMouseUp(x, y) {
         if (!this.selection || !this.selection.isMoving) {
             this.cleanSelection();
@@ -695,6 +794,11 @@ export default class SchedulerEventData {
         return { updateCellGroups: true };
     }
 
+    /**
+     * Handle a mouse down on a new event. Initialize the event drag instance, and create the new event.
+     *
+     * @param {object} detail Detail on the new event. Valid keys include event, cellGroupElement, from, isVertical, to, resourceNames, x and y.
+     */
     handleNewEventMouseDown({
         event,
         cellGroupElement,

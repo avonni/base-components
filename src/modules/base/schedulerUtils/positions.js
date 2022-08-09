@@ -36,6 +36,14 @@ import {
     MONTH_EVENT_HEIGHT
 } from './defaults';
 
+/**
+ * Find an HTML element from its position on the horizontal axis.
+ *
+ * @param {HTMLElement} parentElement The parent element the element should be searched in.
+ * @param {number} x The position of the element on the horizontal axis.
+ * @param {string} selector The query selector used to find the element.
+ * @returns {HTMLElement|undefined} The found element, or undefined if not found.
+ */
 export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
     return elements.find((div, index) => {
@@ -52,6 +60,14 @@ export function getElementOnXAxis(parentElement, x, selector = CELL_SELECTOR) {
     });
 }
 
+/**
+ * Find an HTML element from its position on the vertical axis.
+ *
+ * @param {HTMLElement} parentElement The parent element the element should be searched in.
+ * @param {number} y The position of the element on the vertical axis.
+ * @param {string} selector The query selector used to find the element.
+ * @returns {HTMLElement|undefined} The found element, or undefined if not found.
+ */
 export function getElementOnYAxis(parentElement, y, selector = CELL_SELECTOR) {
     const elements = Array.from(parentElement.querySelectorAll(selector));
     return elements.find((div, index) => {
@@ -73,7 +89,7 @@ export function getElementOnYAxis(parentElement, y, selector = CELL_SELECTOR) {
  *
  * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
  * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
- * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
+ * @param {number} minOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
  * @returns {number} The total number of occurrences overlapping, including the one evaluated.
  */
 function getTotalOfOccurrencesOverlapping(
@@ -105,14 +121,15 @@ function getTotalOfOccurrencesOverlapping(
 }
 
 /**
- * Push an event occurrence down a level, until it doesn't overlap another occurrence.
+ * Find the level an occurrence should have to not overlap another occurrence.
  *
+ * @param {boolean} isVertical If true, the occurrences levels are horizontal, instead of vertical. The number of overlapped occurrences should be computed, to be able to set the width of the occurrence.
  * @param {object[]} previousOccurrences Array of previous occurrences for which the level has already been computed.
- * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
- * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top (horizontal variant) or the left (vertical variant) of its resource.
+ * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal) or the Y axis (vertical).
+ * @param {number} level Level of the occurrence in their cell group. It starts at 0, so the occurrence is at the top (horizontal) or the left (vertical) of its group.
  * @returns {object} Object with two keys:
- * * level (number): level of the event occurrence in the resource.
- * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
+ * * level (number): level of the event occurrence in the cell group.
+ * * numberOfOverlap (number): Total of occurrences overlapping, including the evaluated one.
  */
 function computeEventLevelInCellGroup(
     isVertical,
@@ -150,6 +167,13 @@ function computeEventLevelInCellGroup(
     return { level, numberOfOverlap };
 }
 
+/**
+ * Position a popover in the viewport.
+ *
+ * @param {HTMLElement} popover HTML element of the popover.
+ * @param {object} position Position of the popover. Valid keys are x and y.
+ * @param {boolean} horizontalCenter If true, the popover should be centered horizontally.
+ */
 export function positionPopover(popover, { x, y }, horizontalCenter) {
     // Make sure the popover is not outside of the screen
     const height = popover.offsetHeight;
@@ -174,7 +198,11 @@ export function positionPopover(popover, { x, y }, horizontalCenter) {
 }
 
 /**
- * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
+ * Prevent the events from overlapping. In the horizontal view, compute the vertical position of the events and the rows height. In the vertical view, compute the horizontal position of the events.
+ * @param {HTMLElement[]} occurrenceElements Array of HTML elements of the occurrences.
+ * @param {boolean} isVertical If true, the view is vertical.
+ * @param {number} cellSize Cell size used to determine if the occurrence should be hidden in the calendar month view, and to compute the offset of the occurrence in the vertical view.
+ * @param {boolean} isCalendarMonth If true, the view is the calendar month view.
  */
 export function updateOccurrencesOffset({
     occurrenceElements,
@@ -285,7 +313,7 @@ export function updateOccurrencesOffset({
 }
 
 /**
- * Update the primitive occurrences height, width and position.
+ * Update the event occurrences height, width and position.
  */
 export function updateOccurrencesPosition() {
     const eventOccurrences = this.template.querySelectorAll(

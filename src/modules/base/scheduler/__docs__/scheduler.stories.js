@@ -682,6 +682,7 @@ ReadOnly.args = {
             label: 'See details'
         }
     ],
+    contextMenuEmptySpotActions: [],
     selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 

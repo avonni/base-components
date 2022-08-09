@@ -135,7 +135,6 @@ export default class SchedulerEvent {
         this.title = props.title;
 
         this.initOccurrences();
-        this._isCreated = true;
     }
 
     get allDay() {
@@ -143,8 +142,6 @@ export default class SchedulerEvent {
     }
     set allDay(value) {
         this._allDay = normalizeBoolean(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableDaysOfTheWeek() {
@@ -154,8 +151,6 @@ export default class SchedulerEvent {
         this._availableDaysOfTheWeek = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableMonths() {
@@ -165,8 +160,6 @@ export default class SchedulerEvent {
         this._availableMonths = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_MONTHS;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableTimeFrames() {
@@ -176,8 +169,6 @@ export default class SchedulerEvent {
         this._availableTimeFrames = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_TIME_FRAMES;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get disabled() {
@@ -193,8 +184,6 @@ export default class SchedulerEvent {
     set from(value) {
         this._from =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get resourceNames() {
@@ -202,8 +191,6 @@ export default class SchedulerEvent {
     }
     set resourceNames(value) {
         this._resourceNames = JSON.parse(JSON.stringify(normalizeArray(value)));
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get name() {
@@ -214,8 +201,6 @@ export default class SchedulerEvent {
             value ||
             (!this.referenceLine && !this.disabled && 'new-event') ||
             'disabled';
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrence() {
@@ -226,8 +211,6 @@ export default class SchedulerEvent {
             (recurrenceObject) => recurrenceObject.name === value
         );
         this._recurrence = recurrence || undefined;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceAttributes() {
@@ -236,8 +219,6 @@ export default class SchedulerEvent {
     set recurrenceAttributes(value) {
         this._recurrenceAttributes =
             typeof value === 'object' ? value : undefined;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceCount() {
@@ -245,8 +226,6 @@ export default class SchedulerEvent {
     }
     set recurrenceCount(value) {
         this._recurrenceCount = Number.isInteger(value) ? value : Infinity;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceEndDate() {
@@ -254,8 +233,6 @@ export default class SchedulerEvent {
     }
     set recurrenceEndDate(value) {
         this._recurrenceEndDate = dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get referenceLine() {
@@ -263,8 +240,6 @@ export default class SchedulerEvent {
     }
     set referenceLine(value) {
         this._referenceLine = normalizeBoolean(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerEnd() {
@@ -273,8 +248,6 @@ export default class SchedulerEvent {
     set schedulerEnd(value) {
         this._schedulerEnd =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerStart() {
@@ -283,8 +256,6 @@ export default class SchedulerEvent {
     set schedulerStart(value) {
         this._schedulerStart =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get theme() {
@@ -307,8 +278,6 @@ export default class SchedulerEvent {
     set to(value) {
         this._to =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     /**
