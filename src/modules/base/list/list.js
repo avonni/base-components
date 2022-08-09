@@ -152,6 +152,7 @@ export default class List extends LightningElement {
     _scrollTop;
     _previousScrollTop;
     _isLastItemVisible;
+    _preventDragEnd = false;
 
     renderNumber = 0;
     renderedCallback() {
@@ -164,12 +165,13 @@ export default class List extends LightningElement {
             this.handleScroll();
         }, 0);
 
-        // if (this.isLoading) {
-        //     const spinner = this.template.querySelector('[data-element-id="loading-spinner-below"]');
-        //     if (spinner) {
-        //         spinner.style.height = '40px';
-        //     }
-        // } else
+        // dont allow drag end until next frame
+        this._preventDragEnd = true;
+        window.requestAnimationFrame(() => {
+            this._preventDragEnd = false;
+        } );
+
+        console.log('🏁', this._draggedElement);
 
         this.listResize();
         this.restoreScrollPosition();
@@ -966,7 +968,6 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
-
     /**
      * Restore the scroll position from the top of the list.
      * @private
@@ -975,8 +976,6 @@ Use with the onloadmore event handler to retrieve more data.
         if (this._savedScrollTop === null) {
             return;
         }
-        console.log('🔵 restore scroll', this._savedScrollTop);
-        // this.listContainer.scrollTo(0, this._savedScrollTop);
         window.requestAnimationFrame(() => {
             this.listContainer.scrollTo(0, this._savedScrollTop);
         });
@@ -990,8 +989,6 @@ Use with the onloadmore event handler to retrieve more data.
         this._savedScrollTop = this.listContainer
             ? this.listContainer.scrollTop
             : null;
-
-        console.log('💾 save scroll position', this._savedScrollTop);
     }
 
     /**
@@ -1071,6 +1068,7 @@ Use with the onloadmore event handler to retrieve more data.
      * Erase the list styles and dataset - clear tracked variables.
      */
     clearSelection() {
+        console.log('❌ clearSelection');
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
             item.style = undefined;
@@ -1110,6 +1108,7 @@ Use with the onloadmore event handler to retrieve more data.
             .getBoundingClientRect();
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
+        this._initialScrollHeight = this.listContainer.scrollHeight;
 
         this._initialY =
             event.type === 'touchstart'
@@ -1203,9 +1202,21 @@ Use with the onloadmore event handler to retrieve more data.
         );
 
         const mouseY =
-            event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
+            event.type === 'touchmove'
+                ? event.touches[0].clientY
+                : event.clientY;
+        const menuTop = this._menuTop;
+        const menuBottom = this._menuBottom;
 
-        let currentY = mouseY;
+        // Make sure it is not possible to drag the item out of the menu
+        let currentY;
+        if (mouseY < menuTop) {
+            currentY = menuTop;
+        } else if (mouseY > menuBottom) {
+            currentY = menuBottom;
+        } else {
+            currentY = mouseY;
+        }
 
         // Stick the dragged item to the mouse position
         this._draggedElement.style.transform = `translateY(${
@@ -1236,8 +1247,12 @@ Use with the onloadmore event handler to retrieve more data.
 
         if (!this._scrollingInterval && this._draggedElement) {
             this._scrollingInterval = window.setInterval(() => {
-                console.log(scrollStep);
-                this.listContainer.scrollBy(0, scrollStep);
+                const overflowY =
+                    this.listContainer.scrollHeight > this._initialScrollHeight;
+
+                if (!overflowY) {
+                    this.listContainer.scrollBy(0, scrollStep);
+                }
             }, 20);
         }
 
@@ -1261,6 +1276,10 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     dragEnd(event) {
+        if (this._preventDragEnd) {
+            return;
+        }
+        console.log('🛑 dragEnd', event);
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         // event.button is not reliable on touch devices
@@ -1327,6 +1346,7 @@ Use with the onloadmore event handler to retrieve more data.
      * @param {Event} event
      */
     handleKeyDown(event) {
+
         // If space bar is pressed, select or drop the item
         if (event.key === 'Enter') {
             this.handleItemClick(event);
@@ -1454,7 +1474,6 @@ Use with the onloadmore event handler to retrieve more data.
      */
     handleLoadMore() {
         if (this.enableInfiniteLoading) {
-            console.log('➕ load more event');
             this.dispatchEvent(new CustomEvent('loadmore'));
         }
     }
