@@ -146,8 +146,7 @@ export default class List extends LightningElement {
 
     _resizeObserver;
     _isLoading = false;
-    _scrollUpIntervalId;
-    _scrollDownIntervalId;
+    _scrollingInterval;
 
     _singleLinePage = 0;
     _scrollTop;
@@ -244,7 +243,7 @@ Use with the onloadmore event handler to retrieve more data.
         // isLoading causes the spinner to appear and causes unwanted scroll.
         this.saveScrollPosition();
         this._isLoading = normalizeBoolean(value);
-        
+
         this.restoreScrollPosition();
     }
 
@@ -675,7 +674,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     /**
-     * On single-line variant, go to the next page of elements. On next page load, check 
+     * On single-line variant, go to the next page of elements. On next page load, check
      */
     nextPage() {
         window.requestAnimationFrame(() => {
@@ -937,10 +936,11 @@ Use with the onloadmore event handler to retrieve more data.
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      * @private
      */
-    handleScroll(event) {
+    handleScroll() {
         if (this.variant === 'single-line') {
             return;
         }
+
         this._previousScrollTop = this._scrollTop;
         this._scrollTop = this.listContainer.scrollTop;
         const scrollDelta = this._scrollTop - this._previousScrollTop;
@@ -954,14 +954,6 @@ Use with the onloadmore event handler to retrieve more data.
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
-        let isTrusted = false;
-        let phase = '';
-        if (event) {
-            isTrusted = event.isTrusted;
-            phase = event.eventPhase;
-        }
-        console.log('🛼', this.listContainer.scrollTop, isTrusted, phase, event);
-
         if (
             (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
             (this.listContainer.scrollTop === 0 &&
@@ -973,38 +965,6 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
-    /**
-     * When dragging an item to the top or the bottom of the list,
-     * scroll the list in the direction of the drag.
-     * @private
-     */
-    checkDragToScroll(position) {
-        if (position < this.listContainer.getBoundingClientRect().top + 30) {
-            this._scrollUpIntervalId = setInterval(
-                this.listContainer.scrollTo(
-                    0,
-                    this.listContainer.scrollTop - 2
-                ),
-                10
-            );
-        } else if (
-            position >
-            this.listContainer.getBoundingClientRect().bottom - 30
-        ) {
-            this._scrollDownIntervalId = setInterval(
-                this.listContainer.scrollTo(
-                    0,
-                    this.listContainer.scrollTop + 2
-                ),
-                10
-            );
-        } else {
-            clearInterval(this._scrollUpIntervalId);
-            clearInterval(this._scrollDownIntervalId);
-
-            console.log(this._scrollDownIntervalId);
-        }
-    }
 
     /**
      * Restore the scroll position from the top of the list.
@@ -1244,9 +1204,6 @@ Use with the onloadmore event handler to retrieve more data.
         const mouseY =
             event.type === 'touchmove' ? event.touches[0].pageY : event.pageY;
 
-        // check if scrolling and adjust the position of the dragged element
-        this.checkDragToScroll(mouseY);
-
         let currentY = mouseY;
 
         // Stick the dragged item to the mouse position
@@ -1269,10 +1226,42 @@ Use with the onloadmore event handler to retrieve more data.
         if (buttonMenu) {
             buttonMenu.classList.remove('slds-is-open');
         }
+
+        this.autoScroll(currentY);
+    }
+
+    autoScroll(currentY) {
+        const scrollStep = this.computeScrollStep(currentY);
+
+        if (!this._scrollingInterval && this._draggedElement) {
+            this._scrollingInterval = window.setInterval(() => {
+                console.log(scrollStep);
+                this.listContainer.scrollBy(0, scrollStep);
+            }, 20);
+        }
+
+        if (scrollStep === 0) {
+            window.clearInterval(this._scrollingInterval);
+            this._scrollingInterval = null;
+        }
+    }
+
+    computeScrollStep(currentY) {
+        let scrollStep = 0;
+
+        const closeToTop =
+            currentY - this.listContainer.getBoundingClientRect().top < 50;
+        const closeToBottom =
+            this.listContainer.getBoundingClientRect().bottom - currentY < 50;
+
+        scrollStep = closeToTop ? -5 : closeToBottom ? 5 : 0;
+
+        return scrollStep;
     }
 
     dragEnd(event) {
-        clearInterval(this._intervalId);
+        window.clearInterval(this._scrollingInterval);
+        this._scrollingInterval = null;
         // event.button is not reliable on touch devices
         // finding hovered
         if (event && event.button === 0) {

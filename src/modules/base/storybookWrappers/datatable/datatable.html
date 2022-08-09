@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <c-datatable
+    <c-datatable style="height: 500px;"
         column-widths-mode={columnWidthsMode}
         columns={columns}
         records={records}
@@ -58,5 +58,6 @@
         sorted-by={sortedBy}
         sorted-direction={sortedDirection}
         suppress-bottom-bar={suppressBottomBar}
+        onloadmore={loadMoreData}
     ></c-datatable>
 </template>

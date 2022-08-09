@@ -57,4 +57,22 @@ export default class Datatable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
+
+    _originalData;
+
+    connectedCallback() {
+        this._originalData = this.records;
+    }
+
+    loadMoreData(event) {
+        console.log('loadMoreData');
+        event.target.isLoading = true;
+
+        setTimeout(() => {
+            event.target.records = this._originalData.concat(
+                this._originalData
+            );
+            event.target.isLoading = false;
+        }, 1000);
+    }
 }

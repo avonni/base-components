@@ -419,7 +419,8 @@ DataTypesFromPToR.args = {
     columns: columnsPR,
     records: recordsPR,
     keyField: 'id',
-    selectedRows: ['2']
+    selectedRows: ['2'],
+    enableInfiniteLoading: true
 };
 
 export const DataTypesFromSToZ = Template.bind({});
@@ -427,5 +428,5 @@ DataTypesFromSToZ.args = {
     columns: columnsSZ,
     records: recordsSZ,
     keyField: 'id',
-    columnWidthsMode: 'auto'
+    columnWidthsMode: 'auto',
 };
