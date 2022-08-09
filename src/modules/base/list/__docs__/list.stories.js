@@ -611,7 +611,7 @@ InfiniteList.args = {
     label: 'Grid with infinite loading',
     items,
     actions: actions,
-    loadMoreOffset: 10,
+    loadMoreOffset: 110,
     sortable: true,
     divider: 'around',
     imageAttributes: {

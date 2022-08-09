@@ -155,6 +155,7 @@ export default class List extends LightningElement {
 
     renderNumber = 0;
     renderedCallback() {
+        this.saveScrollPosition();
         if (this.renderNumber === 0) {
             this.initWrapObserver();
             this.renderNumber++;
@@ -163,7 +164,15 @@ export default class List extends LightningElement {
             this.handleScroll();
         }, 0);
 
+        // if (this.isLoading) {
+        //     const spinner = this.template.querySelector('[data-element-id="loading-spinner-below"]');
+        //     if (spinner) {
+        //         spinner.style.height = '40px';
+        //     }
+        // } else
+
         this.listResize();
+        this.restoreScrollPosition();
     }
 
     disconnectedCallback() {
@@ -240,11 +249,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     set isLoading(value) {
-        // isLoading causes the spinner to appear and causes unwanted scroll.
-        this.saveScrollPosition();
         this._isLoading = normalizeBoolean(value);
-
-        this.restoreScrollPosition();
     }
 
     /**
@@ -370,8 +375,6 @@ Use with the onloadmore event handler to retrieve more data.
         return this._items;
     }
     set items(proxy) {
-        this.saveScrollPosition();
-
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
@@ -380,8 +383,6 @@ Use with the onloadmore event handler to retrieve more data.
             item.icons = normalizeArray(item.icons);
             item.label = normalizeString(item.label + ':' + index);
         });
-
-        this.restoreScrollPosition();
     }
 
     /**

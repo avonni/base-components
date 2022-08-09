@@ -346,9 +346,13 @@ export default class Datatable extends LightningDatatable {
         this.computeEditableOption();
 
         if (this.isLoading) {
-            this.template.querySelector(
+            console.log('💫 isLoading');
+            const spinner = this.template.querySelector(
                 'lightning-primitive-datatable-loading-indicator'
-            ).style.height = '40px';
+            )
+            if (spinner) {
+                spinner.style.height = '40px';
+            }
         }
 
         // Make sure custom edited cells stay yellow on hover

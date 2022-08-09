@@ -59,20 +59,28 @@ export default class Datatable extends LightningElement {
     @api suppressBottomBar;
 
     _originalData;
+    _dataLoads = 0;
 
     connectedCallback() {
+        console.log(this.records);
         this._originalData = this.records;
     }
 
     loadMoreData(event) {
-        console.log('loadMoreData');
+        const target = event.target;
+        console.log('loadMoreData', event.target);
         event.target.isLoading = true;
 
-        setTimeout(() => {
-            event.target.records = this._originalData.concat(
-                this._originalData
-            );
-            event.target.isLoading = false;
-        }, 1000);
+        if (this._dataLoads < 2) {
+            setTimeout(() => {
+                const newRecords = target.records.concat(this._originalData);
+                target.records = newRecords;
+                target.isLoading = false;
+                this._dataLoads++;
+            }, 1000);
+        } else {
+            // target.enableInfiniteLoading = false;
+            // target.isLoading = false;
+        }
     }
 }

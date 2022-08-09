@@ -388,11 +388,11 @@
                 </li>
             </template>
             <li
-                class="slds-col slds-size_12-of-12 slds-is-relative"
-                style="height: 40px"
+                class="slds-col slds-size_12-of-12 slds-is-relative avonni-list__lower-spinner"
                 if:true={isLoadingBelow}
             >
                 <lightning-spinner
+                    data-element-id="loading-spinner-below"
                     size="small"
                     class="slds-spinner_container"
                     alternative-text="Loading..."
