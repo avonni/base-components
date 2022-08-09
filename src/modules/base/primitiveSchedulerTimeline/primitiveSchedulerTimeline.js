@@ -64,7 +64,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _variant = VARIANTS.default;
 
     _eventData;
-    _headersAreLoading = true;
     _initialState = {};
     _mouseIsDown = false;
     _resizeObserver;
@@ -74,6 +73,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     @track computedEvents = [];
     computedHeaders = [];
     computedResources = [];
+    headersAreLoading = true;
     smallestHeader;
 
     connectedCallback() {
@@ -86,7 +86,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (!this.smallestHeader) {
+
+        if (this.headersAreLoading) {
+            this.setLoaderHeight();
             return;
         }
 
@@ -531,7 +533,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * Create the computed headers.
      */
     initHeaders() {
-        this._headersAreLoading = true;
+        this.headersAreLoading = true;
         const { customHeaders, headers } = this.timeSpan;
 
         if (customHeaders) {
@@ -563,6 +565,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
+        if (!this.scheduleBody) {
+            return null;
+        }
         const resizeObserver = new AvonniResizeObserver(() => {
             this.updateCellWidth();
         });
@@ -669,6 +674,21 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             '[data-element-id="avonni-primitive-scheduler-header-group"]'
         );
         this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
+    }
+
+    setLoaderHeight() {
+        const loader = this.template.querySelector(
+            '[data-element-id="div-loading-spinner"]'
+        );
+        if (loader) {
+            const headers = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            );
+            const height = this.isVertical
+                ? 80
+                : this.firstCol.offsetHeight - headers.offsetHeight;
+            loader.style.height = `${height}px`;
+        }
     }
 
     /**
@@ -883,7 +903,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.initEvents();
         this.updateVisibleResources();
         this._rowsHeight = [];
-        this._headersAreLoading = false;
+        this.headersAreLoading = false;
 
         requestAnimationFrame(() => {
             this.pushDatatableDown();

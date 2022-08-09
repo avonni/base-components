@@ -170,6 +170,7 @@
             is-multi-select
             icon-name="utility:filterList"
             items={resourceToolbarMenuItems}
+            show-search-box
             title="Select resources"
             value={selectedResources}
             onselect={handleToolbarResourceSelect}
@@ -189,6 +190,7 @@
             events={computedEvents}
             events-labels={eventsLabels}
             events-theme={eventsTheme}
+            loading-state-alternative-text={loadingStateAlternativeText}
             new-event-title={dialogLabels.newEventTitle}
             read-only={readOnly}
             recurrent-edit-modes={recurrentEditModes}
@@ -229,6 +231,7 @@
             events={computedEvents}
             events-labels={eventsLabels}
             events-theme={eventsTheme}
+            loading-state-alternative-text={loadingStateAlternativeText}
             read-only={readOnly}
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}

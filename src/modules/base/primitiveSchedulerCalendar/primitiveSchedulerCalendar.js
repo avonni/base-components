@@ -81,7 +81,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedResources = [];
 
     _centerDraggedEvent = false;
+    _dayHeadersLoading = true;
     _eventData;
+    _hourHeadersLoading = true;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
     _resizeObserver;
@@ -146,6 +148,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             );
             positionPopover(popover, this.showMorePopover.position, true);
             this.focusPopoverClose();
+        }
+
+        if (this.headersAreLoading) {
+            this.setLoaderHeight();
         }
     }
 
@@ -282,6 +288,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             unit: 'day',
             span: this.timeSpan.span
         };
+    }
+
+    get headersAreLoading() {
+        return this.isMonth
+            ? this._dayHeadersLoading
+            : this._dayHeadersLoading || this._hourHeadersLoading;
     }
 
     get hourHeadersTimeSpan() {
@@ -454,9 +466,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     initHeaders() {
         if (this.isYear) {
+            this._dayHeadersLoading = false;
+            this._hourHeadersLoading = false;
             this.initEvents();
             return;
         }
+
+        this._dayHeadersLoading = true;
+        this._hourHeadersLoading = true;
 
         // Reset the header cells used by the events to position themselves
         this.eventHeaderCells = {};
@@ -893,6 +910,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         horizontalHeaders.style.marginRight = `${scrollBarWidth}px`;
     }
 
+    setLoaderHeight() {
+        const loader = this.template.querySelector(
+            '[data-element-id="div-loading-spinner"]'
+        );
+        if (loader) {
+            loader.style.height = `${this.leftPanelContent.offsetWidth}px`;
+        }
+    }
+
     setSelectedDateToAvailableDate() {
         this._selectedDate = nextAllowedMonth(
             this.selectedDate,
@@ -1200,6 +1226,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleHorizontalHeaderChange(event) {
         const { smallestHeader, visibleInterval } = event.detail;
         const { start, cells, unit, span } = smallestHeader;
+        this._dayHeadersLoading = false;
 
         // Update the start date in case it was not available
         this.start = start;
@@ -1522,6 +1549,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;
+        this._hourHeadersLoading = false;
 
         // Update the start date in case it was not available
         this.start = start;

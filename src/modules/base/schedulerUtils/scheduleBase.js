@@ -54,6 +54,8 @@ import EventData from './eventData';
 import { getDisabledWeekdays, getFirstAvailableWeek } from './dateComputations';
 
 export class ScheduleBase extends LightningElement {
+    @api loadingStateAlternativeText;
+
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;

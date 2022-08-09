@@ -169,8 +169,21 @@
                             onprivateheaderchange={handleHeaderChange}
                         ></c-primitive-scheduler-header-group>
 
+                        <!-- Loading spinner -->
+                        <div
+                            if:true={headersAreLoading}
+                            class="slds-is-relative slds-theme_shade"
+                            data-element-id="div-loading-spinner"
+                        >
+                            <lightning-spinner
+                                alternative-text={loadingStateAlternativeText}
+                                size="large"
+                            ></lightning-spinner>
+                        </div>
+
                         <!-- Rows (horizontal variant) or columns (vertical variant) -->
                         <div
+                            if:false={headersAreLoading}
                             class={scheduleBodyClass}
                             data-element-id="div-schedule-body"
                         >
