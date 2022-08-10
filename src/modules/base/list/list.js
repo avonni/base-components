@@ -153,10 +153,10 @@ export default class List extends LightningElement {
     _previousScrollTop;
     _isLastItemVisible;
     _preventDragEnd = false;
+    _initialScrollHeight = 0;
 
     renderNumber = 0;
     renderedCallback() {
-        this.saveScrollPosition();
         if (this.renderNumber === 0) {
             this.initWrapObserver();
             this.renderNumber++;
@@ -165,15 +165,10 @@ export default class List extends LightningElement {
             this.handleScroll();
         }, 0);
 
-        // dont allow drag end until next frame
-        this._preventDragEnd = true;
-        window.requestAnimationFrame(() => {
-            this._preventDragEnd = false;
-        } );
-
-        console.log('🏁', this._draggedElement);
+        console.log('🏁');
 
         this.listResize();
+        this.saveScrollPosition();
         this.restoreScrollPosition();
     }
 
@@ -594,6 +589,14 @@ Use with the onloadmore event handler to retrieve more data.
         );
     }
 
+    get showBottomSpinnerSpacer() {
+        return (
+            this._enableInfiniteLoading &&
+            !this.isLoadingBelow &&
+            this.variant !== 'single-line'
+        );
+    }
+
     /**
      * Check if Icon is to be shown to the left.
      *
@@ -957,6 +960,8 @@ Use with the onloadmore event handler to retrieve more data.
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
+        console.log('🛼', this._scrollTop);
+
         if (
             (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
             (this.listContainer.scrollTop === 0 &&
@@ -978,6 +983,7 @@ Use with the onloadmore event handler to retrieve more data.
         }
         window.requestAnimationFrame(() => {
             this.listContainer.scrollTo(0, this._savedScrollTop);
+            console.log('🛑', this._savedScrollTop);
         });
     }
 
@@ -989,6 +995,8 @@ Use with the onloadmore event handler to retrieve more data.
         this._savedScrollTop = this.listContainer
             ? this.listContainer.scrollTop
             : null;
+
+        console.log('💾', this._savedScrollTop);
     }
 
     /**
@@ -1049,7 +1057,11 @@ Use with the onloadmore event handler to retrieve more data.
                 targetIndex > index
                     ? -this._currentItemDraggedHeight
                     : this._currentItemDraggedHeight;
-            target.style.transform = `translateY(${translationValue + 'px'})`;
+            window.requestAnimationFrame(() => {
+                target.style.transform = `translateY(${
+                    translationValue + 'px'
+                })`;
+            });
         }
 
         // Make the switch in computed items
@@ -1219,19 +1231,15 @@ Use with the onloadmore event handler to retrieve more data.
         }
 
         // Stick the dragged item to the mouse position
-        this._draggedElement.style.transform = `translateY(${
+        this._draggedElement.style.transform = `translate( 0px, ${
             currentY - this._initialY
         }px)`;
 
-        // Get the position of the dragged item
-        const position = this._draggedElement.getBoundingClientRect();
-        const center = position.bottom - position.height / 2;
-
-        const hoveredItem = this.getHoveredItem(center);
-
+        const hoveredItem = this.getHoveredItem(currentY);
         if (hoveredItem) {
             this.switchWithItem(hoveredItem);
         }
+
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
         );
@@ -1243,7 +1251,22 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     autoScroll(currentY) {
-        const scrollStep = this.computeScrollStep(currentY);
+        let scrollStep = 0;
+
+        const closeToTop =
+            currentY - this.listContainer.getBoundingClientRect().top < 50;
+        const closeToBottom =
+            this.listContainer.getBoundingClientRect().bottom - currentY < 50;
+        const scrolledTop = this.listContainer.scrollTop === 0;
+        const scrolledBottom =
+            this.listContainer.scrollHeight - this.listContainer.scrollTop ===
+            this.listContainer.clientHeight;
+
+        scrollStep = closeToTop ? -5 : closeToBottom ? 5 : 0;
+
+        if ((scrolledTop && closeToTop) || (scrolledBottom && closeToBottom)) {
+            scrollStep = 0;
+        }
 
         if (!this._scrollingInterval && this._draggedElement) {
             this._scrollingInterval = window.setInterval(() => {
@@ -1252,6 +1275,17 @@ Use with the onloadmore event handler to retrieve more data.
 
                 if (!overflowY) {
                     this.listContainer.scrollBy(0, scrollStep);
+
+                    // Also animate the dragged item because otherwise it only moves
+                    // when the mouse moves.
+                    this._draggedElement.style.transform = `translate( 0px, ${
+                        currentY - this._initialY
+                    }px)`;
+
+                    const hoveredItem = this.getHoveredItem(currentY);
+                    if (hoveredItem) {
+                        this.switchWithItem(hoveredItem);
+                    }
                 }
             }, 20);
         }
@@ -1260,19 +1294,6 @@ Use with the onloadmore event handler to retrieve more data.
             window.clearInterval(this._scrollingInterval);
             this._scrollingInterval = null;
         }
-    }
-
-    computeScrollStep(currentY) {
-        let scrollStep = 0;
-
-        const closeToTop =
-            currentY - this.listContainer.getBoundingClientRect().top < 50;
-        const closeToBottom =
-            this.listContainer.getBoundingClientRect().bottom - currentY < 50;
-
-        scrollStep = closeToTop ? -5 : closeToBottom ? 5 : 0;
-
-        return scrollStep;
     }
 
     dragEnd(event) {
@@ -1346,7 +1367,6 @@ Use with the onloadmore event handler to retrieve more data.
      * @param {Event} event
      */
     handleKeyDown(event) {
-
         // If space bar is pressed, select or drop the item
         if (event.key === 'Enter') {
             this.handleItemClick(event);
