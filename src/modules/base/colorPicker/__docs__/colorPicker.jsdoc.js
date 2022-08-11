@@ -20,3 +20,31 @@
  * @property {string} color Valid CSS color.
  * @property {object[]} groups Array of group names the color belongs to. If empty, the color will appear at the top of the list.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-label-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-label-font-weight
+ * @default 400
+ * @type font
+ */
