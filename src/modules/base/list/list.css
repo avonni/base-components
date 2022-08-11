@@ -125,7 +125,19 @@
 }
 
 .avonni-list__lower-spinner {
-    height: 30px
+    height: 30px;
+}
+
+.avonni-list__lower-spinner-spacer {
+    height: auto;
+    width: 100%;
+    max-height: 30px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.hide-spinner-spacer {
+    max-height: 0px;
 }
 
 /* Disable the hover on touch */

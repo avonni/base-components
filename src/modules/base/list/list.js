@@ -156,28 +156,39 @@ export default class List extends LightningElement {
     _initialScrollHeight = 0;
     _restrictMotion = false;
     _dragging = false;
+    _recoverDraggedElement = false;
+    _showSpinnerSpacer = false;
+    _hideSpinnerSpacer = false;
 
     renderNumber = 0;
+
     renderedCallback() {
-        if (this.renderNumber === 0) {
+        this.restoreScrollPosition();
+        // console.log('🏁');
+        if (this.renderNumber++ === 1) {
             this.initWrapObserver();
-            this.renderNumber++;
         }
         setTimeout(() => {
             this.handleScroll();
         }, 0);
 
-        console.log('🏁');
+        if (this.enableInfiniteLoading) {
+            this._showSpinnerSpacer = true;
+        }
 
-        // if this._draggedElement is not null, check if it still attached to the cursor;
-        // if not, nail it back.
         if (this._dragging && this._draggedElement) {
-            this.nailItemToMouse();
+            this._recoverDraggedElement = true;
         }
 
         this.listResize();
-        this.saveScrollPosition();
-        this.restoreScrollPosition();
+    }
+
+    get showSpinnerSpacer() {
+        return (
+            this._showSpinnerSpacer &&
+            !this._isLoading &&
+            this.variant !== 'single-line'
+        );
     }
 
     disconnectedCallback() {
@@ -240,6 +251,12 @@ Use with the onloadmore event handler to retrieve more data.
 
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (!this._enableInfiniteLoading) {
+            setTimeout(() => {
+                this._hideSpinnerSpacer = true;
+            }, 500);
+        }
     }
 
     /**
@@ -383,10 +400,10 @@ Use with the onloadmore event handler to retrieve more data.
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
-        this.computedItems.forEach((item, index) => {
+        this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
-            item.label = normalizeString(item.label + ':' + index);
+            item.label = normalizeString(item.label);
         });
     }
 
@@ -594,14 +611,6 @@ Use with the onloadmore event handler to retrieve more data.
             this.sortable &&
             this.sortableIconName &&
             this.sortableIconPosition === 'right'
-        );
-    }
-
-    get showBottomSpinnerSpacer() {
-        return (
-            this._enableInfiniteLoading &&
-            !this.isLoadingBelow &&
-            this.variant !== 'single-line'
         );
     }
 
@@ -816,6 +825,16 @@ Use with the onloadmore event handler to retrieve more data.
             .toString();
     }
 
+    get computedSpinnerClass() {
+        return classSet(
+            'slds-col slds-size_12-of-12 avonni-list__lower-spinner-spacer'
+        )
+            .add({
+                'hide-spinner-spacer': this._hideSpinnerSpacer
+            })
+            .toString();
+    }
+
     /**
      * On items with images, show actions in card media-action slot.
      *
@@ -986,25 +1005,15 @@ Use with the onloadmore event handler to retrieve more data.
      * @private
      */
     restoreScrollPosition() {
-        if (this._savedScrollTop === null) {
-            return;
-        }
-        window.requestAnimationFrame(() => {
-            this.listContainer.scrollTo(0, this._savedScrollTop);
-            console.log('🛑', this._savedScrollTop);
-        });
-    }
-
-    /**
-     * Record the scroll position from the top of the list.
-     * @private
-     */
-    saveScrollPosition() {
-        this._savedScrollTop = this.listContainer
+        const scrollTop = this.listContainer
             ? this.listContainer.scrollTop
             : null;
 
-        console.log('💾', this._savedScrollTop);
+        if (scrollTop !== null) {
+            window.requestAnimationFrame(() => {
+                this.listContainer.scrollTo(0, scrollTop);
+            });
+        }
     }
 
     /**
@@ -1035,6 +1044,7 @@ Use with the onloadmore event handler to retrieve more data.
                 const itemCenter =
                     itemPosition.bottom - itemPosition.height / 2;
 
+                console.log('👀', this._draggedIndex);
                 if (
                     (this._draggedIndex > itemIndex && center < itemCenter) ||
                     (this._draggedIndex < itemIndex && center > itemCenter)
@@ -1087,7 +1097,7 @@ Use with the onloadmore event handler to retrieve more data.
      * Erase the list styles and dataset - clear tracked variables.
      */
     clearSelection() {
-        console.log('❌ clearSelection');
+        // console.log('❌ clearSelection');
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
             item.style = undefined;
@@ -1190,6 +1200,7 @@ Use with the onloadmore event handler to retrieve more data.
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
+        this._initialDraggedIndex = this._draggedIndex;
 
         if (event.type !== 'keydown') {
             this.initPositions(event);
@@ -1207,6 +1218,17 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
+    recoverDraggedElement() {
+        console.log('🚨 current');
+        this._draggedElement = this.template.querySelector(
+            '[data-index="' + this._initialDraggedIndex + '"]'
+        );
+        this._draggedIndex = this._initialDraggedIndex;
+        this.animateItems(this._currentY);
+
+        this._initialScrollHeight = this.listContainer.scrollHeight;
+    }
+
     /**
      * Compute drag event logic.
      *
@@ -1217,10 +1239,18 @@ Use with the onloadmore event handler to retrieve more data.
             return;
         }
 
+        if (this._recoverDraggedElement) {
+            this.recoverDraggedElement();
+        }
+        this._recoverDraggedElement = false;
+
         this._dragging = true;
         this._draggedElement.classList.add(
             'avonni-list__item-sortable_dragged'
         );
+
+        console.log('👋');
+        // console.log('👋', this._draggedElement);
 
         const mouseY =
             event.type === 'touchmove'
@@ -1238,19 +1268,11 @@ Use with the onloadmore event handler to retrieve more data.
         } else {
             currentY = mouseY;
         }
-        console.log('🫳 drag', currentY, event.touches, event.button);
         this._currentY = currentY;
 
-        if (!this._restrictMotion) {
+        if (!this._scrollStep) {
             // Stick the dragged item to the mouse position
-            this._draggedElement.style.transform = `translate( 0px, ${
-                currentY - this._initialY
-            }px)`;
-
-            const hoveredItem = this.getHoveredItem(currentY);
-            if (hoveredItem) {
-                this.switchWithItem(hoveredItem);
-            }
+            this.animateItems(currentY);
         }
 
         const buttonMenu = event.currentTarget.querySelector(
@@ -1260,17 +1282,25 @@ Use with the onloadmore event handler to retrieve more data.
             buttonMenu.classList.remove('slds-is-open');
         }
 
+        // console.log('🫳 drag', this._draggedElement, this._draggedElement.getBoundingClientRect());
         this.autoScroll(currentY);
     }
 
-    nailItemToMouse() {
-        console.log('🔑 nailItemToMouse', this._currentY);
-        this._draggedElement.style.transform = `translateY(${
-            this._currentY - this._initialY + 'px'
-        })`;
+    animateItems(currentY) {
+        if (currentY) {
+            this._draggedElement.style.transform = `translate( 0px, ${
+                currentY - this._initialY
+            }px)`;
+
+            const hoveredItem = this.getHoveredItem(currentY);
+            console.log('🫳 hoveredItem', hoveredItem);
+            if (hoveredItem) {
+                this.switchWithItem(hoveredItem);
+            }
+        }
     }
 
-    autoScroll(currentY) {
+    computeScrollStep(currentY) {
         let scrollStep = 0;
 
         const closeToTop =
@@ -1288,24 +1318,28 @@ Use with the onloadmore event handler to retrieve more data.
             scrollStep = 0;
         }
 
+        this._scrollStep = scrollStep;
+
+        return scrollStep;
+    }
+
+    autoScroll(currentY) {
+        const scrollStep = this.computeScrollStep(currentY);
+
         if (!this._scrollingInterval && this._draggedElement) {
             this._scrollingInterval = window.setInterval(() => {
                 const overflowY =
                     this.listContainer.scrollHeight > this._initialScrollHeight;
 
+                console.log(
+                    '🤖 scrollStep',
+                    this.listContainer.scrollHeight,
+                    this._initialScrollHeight
+                );
                 if (!overflowY) {
                     this.listContainer.scrollBy(0, scrollStep);
 
-                    // Also animate the dragged item because otherwise it only moves
-                    // when the mouse moves.
-                    this._draggedElement.style.transform = `translate( 0px, ${
-                        currentY - this._initialY
-                    }px)`;
-
-                    const hoveredItem = this.getHoveredItem(currentY);
-                    if (hoveredItem) {
-                        this.switchWithItem(hoveredItem);
-                    }
+                    this.animateItems(currentY);
 
                     this._restrictMotion = true;
                     setTimeout(() => {
@@ -1322,7 +1356,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     dragEnd(event) {
-        console.log('🛑 dragEnd', event);
+        // console.log('🛑 dragEnd', event);
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         this._dragging = false;

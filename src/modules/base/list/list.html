@@ -388,11 +388,12 @@
                 </li>
             </template>
             <li
-                class="slds-col slds-size_12-of-12 avonni-list__lower-spinner"
-                if:true={showBottomSpinnerSpacer}
-            >spacer</li>
-            <li
-                class="slds-col slds-size_12-of-12 slds-is-relative avonni-list__lower-spinner"
+                class="
+                    slds-col
+                    slds-size_12-of-12
+                    slds-is-relative
+                    avonni-list__lower-spinner
+                "
                 if:true={isLoadingBelow}
             >
                 <lightning-spinner
@@ -401,6 +402,9 @@
                     class="slds-spinner_container"
                     alternative-text="Loading..."
                 ></lightning-spinner>
+            </li>
+            <li class={computedSpinnerClass} if:true={showSpinnerSpacer}>
+                <div class="avonni-list__lower-spinner"></div>
             </li>
         </ul>
         <div class="slds-col slds-is-relative" if:true={showPaginationButtons}>
