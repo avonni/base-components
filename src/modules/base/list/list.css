@@ -36,6 +36,10 @@
  on mobile only sort with icon
  */
 
+:host() {
+    --avonni-list-item-color-background: white;
+}
+
 .avonni-list__item-menu {
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
     align-self: baseline;
@@ -140,6 +144,13 @@
     max-height: 0px;
 }
 
+.avonni-list__placeholder {
+    position: relative;
+    background-color: rgba(228, 228, 228, 0.716);
+    height: 0px;
+    transition: max-height 0.3s ease-in-out;
+}
+
 /* Disable the hover on touch */
 @media (hover: hover) {
     .avonni-list__item:hover {
@@ -169,7 +180,9 @@
 }
 
 .avonni-list__item-sortable_moved {
-    transition: transform 300ms;
+    /* transition: transform 300ms;
+    transition: padding-bottom 300ms;
+    transition: padding-top 300ms; */
 }
 
 .avonni-list__item-sortable.avonni-list__item-sortable_dragged {

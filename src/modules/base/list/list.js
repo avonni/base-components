@@ -114,6 +114,7 @@ export default class List extends LightningElement {
     _imageAttributes;
     _enableInfiniteLoading = false;
     _draggedIndex;
+    _hoveredIndex;
     _draggedElement;
     _initialX;
     _initialY;
@@ -164,9 +165,11 @@ export default class List extends LightningElement {
 
     renderedCallback() {
         this.restoreScrollPosition();
-        // console.log('🏁');
+        this.listResize();
+
         if (this.renderNumber++ === 1) {
             this.initWrapObserver();
+            console.log('first render');
         }
         setTimeout(() => {
             this.handleScroll();
@@ -179,8 +182,6 @@ export default class List extends LightningElement {
         if (this._dragging && this._draggedElement) {
             this._recoverDraggedElement = true;
         }
-
-        this.listResize();
     }
 
     get showSpinnerSpacer() {
@@ -1031,29 +1032,90 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     /**
-     * Compute hovered items center coordinates for ordering.
+     * Get the item the cursor has entered.
      *
-     * @param {number} center
+     * @param {number} cursorY
      * @returns {object} item
      */
-    getHoveredItem(center) {
+    getHoveredItem(cursorY) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
-                const itemCenter =
-                    itemPosition.bottom - itemPosition.height / 2;
+                const placeholder = item.querySelector(
+                    `.avonni-list__placeholder`
+                );
+                const placeholderPosition = placeholder.getBoundingClientRect();
 
-                console.log('👀', this._draggedIndex);
-                if (
-                    (this._draggedIndex > itemIndex && center < itemCenter) ||
-                    (this._draggedIndex < itemIndex && center > itemCenter)
-                ) {
+                // below top + 10px; above bottom - 10px
+                const hoverTop = itemPosition.top + 10;
+                const hoverBottom = itemPosition.bottom - 10;
+
+                if (cursorY > hoverTop && cursorY < hoverBottom) {
+                    // keep the current hovered item and don't set to null if hovering a gap.
+                    if (itemIndex !== null) {
+                        this._hoveredIndex = itemIndex;
+                    }
                     return item;
                 }
+
+                // are you hovering a placeholder? of what index?
+                if (
+                    cursorY > placeholderPosition.top &&
+                    cursorY < placeholderPosition.bottom
+                ) {
+                    this._hoveredIndex = itemIndex;
+                }
+
+                // const itemCenter =
+                //     itemPosition.bottom - itemPosition.height / 2;
+
+                // if (
+                //     (this._draggedIndex > itemIndex && cursorY < itemCenter) ||
+                //     (this._draggedIndex < itemIndex && cursorY > itemCenter)
+                // ) {
+                //     return item;
+                // }
             }
             return undefined;
         });
+    }
+
+    animateHoveredItem(hoveredItem) {
+        this.template
+            .querySelectorAll('.avonni-list__placeholder')
+            .forEach((placeholder) => {
+                placeholder.style = '';
+            });
+        // if hovering a gap, don't animate
+        const hoveredIndex = this._hoveredIndex;
+        const draggedIndex = this._draggedIndex;
+        let hoveredPlaceholder;
+        let draggedIndexLower;
+
+        if (draggedIndex > hoveredIndex) {
+            draggedIndexLower = false;
+            hoveredPlaceholder = hoveredItem.querySelector(
+                '[data-element-id="avonni-list__placeholder-before"]'
+            );
+        } else if (draggedIndex < hoveredIndex) {
+            draggedIndexLower = true;
+            hoveredPlaceholder = hoveredItem.querySelector(
+                '[data-element-id="avonni-list__placeholder-after"]'
+            );
+        }
+
+        if (hoveredPlaceholder) {
+            hoveredPlaceholder.style.height = `${this._currentItemDraggedHeight}px`;
+
+            if (draggedIndexLower) {
+                hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
+                console.log('draggedIndexLower', draggedIndex, hoveredIndex);
+            } else {
+                hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+            }
+        }
+        // console.log('👩🏽‍🎤', hoveredPlaceholder);
     }
 
     /**
@@ -1066,6 +1128,7 @@ Use with the onloadmore event handler to retrieve more data.
         const index = this._draggedIndex;
         target.classList.add('avonni-list__item-sortable_moved');
 
+        // console.log('🔄', index, targetIndex);
         // If the target has already been moved, move it back to its original position
         // Else, move it up or down
         if (target.style.transform !== '') {
@@ -1083,14 +1146,17 @@ Use with the onloadmore event handler to retrieve more data.
         }
 
         // Make the switch in computed items
-        [this.computedItems[targetIndex], this.computedItems[index]] = [
-            this.computedItems[index],
-            this.computedItems[targetIndex]
-        ];
 
-        this._draggedIndex = targetIndex;
-        this._draggedElement.dataset.index = targetIndex;
-        target.dataset.index = index;
+        // DONT SWITCH index until item is dropped.
+        // [this.computedItems[targetIndex], this.computedItems[index]] = [
+        //     this.computedItems[index],
+        //     this.computedItems[targetIndex]
+        // ];
+
+        // this._draggedIndex = targetIndex;
+        // this._draggedElement.dataset.index = targetIndex;
+        // target.dataset.index = index;
+
         this.updateAssistiveText();
     }
     /**
@@ -1249,7 +1315,7 @@ Use with the onloadmore event handler to retrieve more data.
             'avonni-list__item-sortable_dragged'
         );
 
-        console.log('👋');
+        // console.log('👋');
         // console.log('👋', this._draggedElement);
 
         const mouseY =
@@ -1293,10 +1359,16 @@ Use with the onloadmore event handler to retrieve more data.
             }px)`;
 
             const hoveredItem = this.getHoveredItem(currentY);
-            console.log('🫳 hoveredItem', hoveredItem);
             if (hoveredItem) {
-                this.switchWithItem(hoveredItem);
+                this.animateHoveredItem(hoveredItem);
             }
+
+            // this._hoveredItemIndex = hoveredItem ? hoveredItem.dataset.index : null;
+
+            console.log('🫳', this._draggedIndex, this._hoveredIndex);
+            // if (hoveredItem) {
+            //     this.switchWithItem(hoveredItem);
+            // }
         }
     }
 
