@@ -1042,10 +1042,10 @@ Use with the onloadmore event handler to retrieve more data.
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
-                const placeholder = item.querySelector(
-                    `.avonni-list__placeholder`
-                );
-                const placeholderPosition = placeholder.getBoundingClientRect();
+                // const placeholder = item.querySelector(
+                //     `.avonni-list__placeholder`
+                // );
+                // const placeholderPosition = placeholder.getBoundingClientRect();
 
                 // below top + 10px; above bottom - 10px
                 const hoverTop = itemPosition.top + 10;
@@ -1060,12 +1060,12 @@ Use with the onloadmore event handler to retrieve more data.
                 }
 
                 // are you hovering a placeholder? of what index?
-                if (
-                    cursorY > placeholderPosition.top &&
-                    cursorY < placeholderPosition.bottom
-                ) {
-                    this._hoveredIndex = itemIndex;
-                }
+                // if (
+                //     cursorY > placeholderPosition.top &&
+                //     cursorY < placeholderPosition.bottom
+                // ) {
+                //     this._hoveredIndex = itemIndex;
+                // }
 
                 // const itemCenter =
                 //     itemPosition.bottom - itemPosition.height / 2;
@@ -1081,84 +1081,69 @@ Use with the onloadmore event handler to retrieve more data.
         });
     }
 
+    // this works!!!
+    // now animate all items between the dragged and the hovered item.
     animateHoveredItem(hoveredItem) {
-        this.template
-            .querySelectorAll('.avonni-list__placeholder')
-            .forEach((placeholder) => {
-                placeholder.style = '';
-            });
-        // if hovering a gap, don't animate
         const hoveredIndex = this._hoveredIndex;
         const draggedIndex = this._draggedIndex;
-        let hoveredPlaceholder;
-        let draggedIndexLower;
+        let hoveredTransform;
 
-        if (draggedIndex > hoveredIndex) {
-            draggedIndexLower = false;
-            hoveredPlaceholder = hoveredItem.querySelector(
-                '[data-element-id="avonni-list__placeholder-before"]'
-            );
+        // find all items between the dragged and hovered item.
+        // const itemsBetween = this._itemElements.filter((item) => {
+        //     const itemIndex = Number(item.dataset.index);
+        //     if (itemIndex !== null) {
+        //         if (itemIndex > draggedIndex && itemIndex < hoveredIndex) {
+        //             return item;
+        //         }
+        //     }
+        //     return undefined;
+        // });
+
+        // for each item, in between, animate it.
+
+        if (
+            hoveredItem.classList.contains('avonni-list__item-sortable_moved')
+        ) {
+            hoveredItem.classList.remove('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = 'translateY(0px)';
+        } else if (draggedIndex > hoveredIndex) {
+            console.log('👆');
+            hoveredTransform = `translateY(${this._currentItemDraggedHeight}px)`;
         } else if (draggedIndex < hoveredIndex) {
-            draggedIndexLower = true;
-            hoveredPlaceholder = hoveredItem.querySelector(
-                '[data-element-id="avonni-list__placeholder-after"]'
-            );
+            hoveredTransform = `translateY(-${this._currentItemDraggedHeight}px)`;
         }
 
-        if (hoveredPlaceholder) {
-            hoveredPlaceholder.style.height = `${this._currentItemDraggedHeight}px`;
+        if (hoveredTransform) {
+            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = hoveredTransform;
+        }
+    }
 
-            if (draggedIndexLower) {
-                hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-                console.log('draggedIndexLower', draggedIndex, hoveredIndex);
-            } else {
-                hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+    resetItemAnimations() {
+        this._itemElements.forEach((item) => {
+            if (item.classList.contains('avonni-list__item-sortable_moved')) {
+                item.classList.remove('avonni-list__item-sortable_moved');
+                item.style.transform = 'translateY(0px)';
             }
-        }
-        // console.log('👩🏽‍🎤', hoveredPlaceholder);
+        });
     }
 
     /**
      * Compute swap between dragged items.
      *
-     * @param {Element} target
+     * @param {number} hoveredIndex
+     * @param {number} draggedIndex
      */
-    switchWithItem(target) {
-        const targetIndex = Number(target.dataset.index);
-        const index = this._draggedIndex;
-        target.classList.add('avonni-list__item-sortable_moved');
+    switchWithItem(draggedIndex, hoveredIndex) {
+        const draggedItem = this.computedItems.splice(draggedIndex, 1)[0];
+        this.computedItems.splice(hoveredIndex, 0, draggedItem);
 
-        // console.log('🔄', index, targetIndex);
-        // If the target has already been moved, move it back to its original position
-        // Else, move it up or down
-        if (target.style.transform !== '') {
-            target.style.transform = '';
-        } else {
-            const translationValue =
-                targetIndex > index
-                    ? -this._currentItemDraggedHeight
-                    : this._currentItemDraggedHeight;
-            window.requestAnimationFrame(() => {
-                target.style.transform = `translateY(${
-                    translationValue + 'px'
-                })`;
-            });
-        }
-
-        // Make the switch in computed items
-
-        // DONT SWITCH index until item is dropped.
-        // [this.computedItems[targetIndex], this.computedItems[index]] = [
-        //     this.computedItems[index],
-        //     this.computedItems[targetIndex]
-        // ];
-
-        // this._draggedIndex = targetIndex;
-        // this._draggedElement.dataset.index = targetIndex;
-        // target.dataset.index = index;
+        this.computedItems = [...this.computedItems];
+        this.resetItemAnimations();
 
         this.updateAssistiveText();
     }
+
     /**
      * Erase the list styles and dataset - clear tracked variables.
      */
@@ -1365,10 +1350,7 @@ Use with the onloadmore event handler to retrieve more data.
 
             // this._hoveredItemIndex = hoveredItem ? hoveredItem.dataset.index : null;
 
-            console.log('🫳', this._draggedIndex, this._hoveredIndex);
-            // if (hoveredItem) {
-            //     this.switchWithItem(hoveredItem);
-            // }
+            // console.log('🫳', this._draggedIndex, this._hoveredIndex);
         }
     }
 
@@ -1432,6 +1414,8 @@ Use with the onloadmore event handler to retrieve more data.
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         this._dragging = false;
+
+        this.switchWithItem(this._draggedIndex, this._hoveredIndex);
         // event.button is not reliable on touch devices
         // finding hovered
         if (event && event.button === 0) {

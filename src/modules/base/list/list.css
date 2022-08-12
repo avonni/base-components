@@ -145,7 +145,7 @@
 }
 
 .avonni-list__placeholder {
-    position: relative;
+    position: absolute;
     background-color: rgba(228, 228, 228, 0.716);
     height: 0px;
     transition: max-height 0.3s ease-in-out;
@@ -180,9 +180,8 @@
 }
 
 .avonni-list__item-sortable_moved {
-    /* transition: transform 300ms;
-    transition: padding-bottom 300ms;
-    transition: padding-top 300ms; */
+    /* the transition makes the item animation revert unpredictably */
+    /* transition: transform 300ms; */
 }
 
 .avonni-list__item-sortable.avonni-list__item-sortable_dragged {

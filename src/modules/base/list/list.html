@@ -67,6 +67,10 @@
             data-element-id="list-container"
             onscroll={handleScroll}
         >
+            <li
+                class="avonni-list__placeholder slds-m-around_x-small"
+                data-element-id="avonni-list__placeholder"
+            ></li>
             <template
                 for:each={displayedItems}
                 for:item="item"
@@ -92,10 +96,6 @@
                     aria-describedby="instructions"
                     data-element-id="li-item"
                 >
-                    <div
-                        class="avonni-list__placeholder"
-                        data-element-id="avonni-list__placeholder-before"
-                    ></div>
                     <c-card
                         class={computedItemClass}
                         media-position={mediaPosition}
@@ -389,10 +389,6 @@
                             </template>
                         </div>
                     </c-card>
-                    <div
-                        class="avonni-list__placeholder"
-                        data-element-id="avonni-list__placeholder-after"
-                    ></div>
                 </li>
             </template>
             <li
