@@ -157,7 +157,6 @@ export default class List extends LightningElement {
     _initialScrollHeight = 0;
     _restrictMotion = false;
     _dragging = false;
-    _recoverDraggedElement = false;
     _showSpinnerSpacer = false;
     _hideSpinnerSpacer = false;
 
@@ -166,6 +165,10 @@ export default class List extends LightningElement {
     renderedCallback() {
         this.restoreScrollPosition();
         this.listResize();
+
+        if (this._dragging && this._draggedElement) {
+            this.recoverDraggedElement();
+        }
 
         if (this.renderNumber++ === 1) {
             this.initWrapObserver();
@@ -177,10 +180,6 @@ export default class List extends LightningElement {
 
         if (this.enableInfiniteLoading) {
             this._showSpinnerSpacer = true;
-        }
-
-        if (this._dragging && this._draggedElement) {
-            this._recoverDraggedElement = true;
         }
 
         this._itemElements = Array.from(
@@ -1321,11 +1320,6 @@ Use with the onloadmore event handler to retrieve more data.
         if (!this._draggedElement) {
             return;
         }
-
-        if (this._recoverDraggedElement) {
-            this.recoverDraggedElement();
-        }
-        this._recoverDraggedElement = false;
 
         this._dragging = true;
         this._draggedElement.classList.add(
