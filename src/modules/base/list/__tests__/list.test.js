@@ -70,7 +70,7 @@ describe('List', () => {
         expect(element.imageAttributes).toBeUndefined();
         expect(element.variant).toBe('list');
         expect(element.loadMoreOffset).toBe(20);
-        expect(element.enableInfiniteLoading).toBeUndefined();
+        expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.cols).toBeUndefined();
         expect(element.smallContainerCols).toBeUndefined();
         expect(element.mediumContainerCols).toBeUndefined();

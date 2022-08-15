@@ -169,8 +169,8 @@ export default class List extends LightningElement {
 
         if (this.renderNumber++ === 1) {
             this.initWrapObserver();
-            console.log('first render');
         }
+
         setTimeout(() => {
             this.handleScroll();
         }, 0);
@@ -182,6 +182,10 @@ export default class List extends LightningElement {
         if (this._dragging && this._draggedElement) {
             this._recoverDraggedElement = true;
         }
+
+        this._itemElements = Array.from(
+            this.template.querySelectorAll('.avonni-list__item-sortable')
+        );
     }
 
     get showSpinnerSpacer() {
@@ -404,7 +408,7 @@ Use with the onloadmore event handler to retrieve more data.
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
-            item.label = normalizeString(item.label);
+            // item.label = item.label;
         });
     }
 
@@ -647,7 +651,7 @@ Use with the onloadmore event handler to retrieve more data.
 
     /**
      * Items to be displayed in the list. On single-line lists, displayed items
-     * are a portion of total computed items.
+     * are a portion of total computed items to display on a single page of item.
      *
      * @type {array}
      * @private
@@ -988,8 +992,6 @@ Use with the onloadmore event handler to retrieve more data.
             this.listContainer.scrollTop -
             this.listContainer.clientHeight;
 
-        // console.log('🛼', this._scrollTop);
-
         if (
             (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
             (this.listContainer.scrollTop === 0 &&
@@ -1042,80 +1044,93 @@ Use with the onloadmore event handler to retrieve more data.
             if (item !== this._draggedElement) {
                 const itemIndex = Number(item.dataset.index);
                 const itemPosition = item.getBoundingClientRect();
-                // const placeholder = item.querySelector(
-                //     `.avonni-list__placeholder`
-                // );
-                // const placeholderPosition = placeholder.getBoundingClientRect();
-
-                // below top + 10px; above bottom - 10px
                 const hoverTop = itemPosition.top + 10;
                 const hoverBottom = itemPosition.bottom - 10;
 
-                if (cursorY > hoverTop && cursorY < hoverBottom) {
-                    // keep the current hovered item and don't set to null if hovering a gap.
-                    if (itemIndex !== null) {
+                // keep the current hovered item and don't set to null if hovering a gap.
+                if (
+                    cursorY > hoverTop &&
+                    cursorY < hoverBottom &&
+                    itemIndex != null
+                ) {
+                    if (item.dataset.elementTempIndex != null) {
+                        this._hoveredIndex = parseInt(
+                            item.dataset.elementTempIndex,
+                            10
+                        );
+                    } else {
                         this._hoveredIndex = itemIndex;
                     }
                     return item;
                 }
-
-                // are you hovering a placeholder? of what index?
-                // if (
-                //     cursorY > placeholderPosition.top &&
-                //     cursorY < placeholderPosition.bottom
-                // ) {
-                //     this._hoveredIndex = itemIndex;
-                // }
-
-                // const itemCenter =
-                //     itemPosition.bottom - itemPosition.height / 2;
-
-                // if (
-                //     (this._draggedIndex > itemIndex && cursorY < itemCenter) ||
-                //     (this._draggedIndex < itemIndex && cursorY > itemCenter)
-                // ) {
-                //     return item;
-                // }
             }
             return undefined;
         });
     }
 
-    // this works!!!
-    // now animate all items between the dragged and the hovered item.
     animateHoveredItem(hoveredItem) {
         const hoveredIndex = this._hoveredIndex;
         const draggedIndex = this._draggedIndex;
-        let hoveredTransform;
+        const hoveredElementIndex = parseInt(hoveredItem.dataset.index, 10);
+        const tempHoveredIndex = parseInt(
+            hoveredItem.dataset.elementTempIndex,
+            10
+        );
 
-        // find all items between the dragged and hovered item.
-        // const itemsBetween = this._itemElements.filter((item) => {
-        //     const itemIndex = Number(item.dataset.index);
-        //     if (itemIndex !== null) {
-        //         if (itemIndex > draggedIndex && itemIndex < hoveredIndex) {
-        //             return item;
-        //         }
-        //     }
-        //     return undefined;
-        // });
-
-        // for each item, in between, animate it.
-
+        // this breaks when the transition is animated because the item remains hovered for
+        // a few milliseconds, reversing the animation.
         if (
             hoveredItem.classList.contains('avonni-list__item-sortable_moved')
         ) {
             hoveredItem.classList.remove('avonni-list__item-sortable_moved');
             hoveredItem.style.transform = 'translateY(0px)';
-        } else if (draggedIndex > hoveredIndex) {
-            console.log('👆');
-            hoveredTransform = `translateY(${this._currentItemDraggedHeight}px)`;
-        } else if (draggedIndex < hoveredIndex) {
-            hoveredTransform = `translateY(-${this._currentItemDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
+        } else if (
+            draggedIndex > hoveredIndex ||
+            tempHoveredIndex > hoveredIndex
+        ) {
+            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
+        } else if (
+            draggedIndex < hoveredIndex ||
+            tempHoveredIndex < hoveredIndex
+        ) {
+            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
         }
 
-        if (hoveredTransform) {
-            hoveredItem.classList.add('avonni-list__item-sortable_moved');
-            hoveredItem.style.transform = hoveredTransform;
+        // get all items in between the dragged and hovered.
+        const itemsBetween = this._itemElements.filter((item) => {
+            const itemIndex = Number(item.dataset.index);
+            if (
+                (itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
+                (itemIndex < draggedIndex && itemIndex > hoveredIndex)
+            ) {
+                if (
+                    !item.classList.contains('avonni-list__item-sortable_moved')
+                ) {
+                    return item;
+                }
+            }
+            return undefined;
+        });
+
+        if (itemsBetween.length > 0) {
+            if (draggedIndex > hoveredIndex) {
+                itemsBetween.forEach((item) => {
+                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempHoveredIndex + 1;
+                });
+            } else if (draggedIndex < hoveredIndex) {
+                itemsBetween.forEach((item) => {
+                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempHoveredIndex - 1;
+                });
+            }
         }
     }
 
@@ -1140,7 +1155,6 @@ Use with the onloadmore event handler to retrieve more data.
 
         this.computedItems = [...this.computedItems];
         this.resetItemAnimations();
-
         this.updateAssistiveText();
     }
 
@@ -1148,7 +1162,7 @@ Use with the onloadmore event handler to retrieve more data.
      * Erase the list styles and dataset - clear tracked variables.
      */
     clearSelection() {
-        // console.log('❌ clearSelection');
+        console.log('🧹');
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
             item.style = undefined;
@@ -1172,9 +1186,10 @@ Use with the onloadmore event handler to retrieve more data.
         // Clean the tracked variables
         this._draggedElement =
             this._draggedIndex =
+            this._hoveredIndex =
             this._initialY =
             this._savedComputedItems =
-                undefined;
+                null;
     }
 
     /**
@@ -1248,8 +1263,9 @@ Use with the onloadmore event handler to retrieve more data.
         this._itemElements = Array.from(
             this.template.querySelectorAll('.avonni-list__item-sortable')
         );
-        this._draggedElement = event.currentTarget;
-        this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
+
+        this._currentItemDraggedHeight = this.computeDraggedItemHeight(event);
+
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._initialDraggedIndex = this._draggedIndex;
 
@@ -1269,8 +1285,24 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
+    computeDraggedItemHeight(event) {
+        this._draggedElement = event.currentTarget;
+
+        const listCardItem = this.template.querySelector(
+            '.avonni-list__item-menu'
+        );
+        let rowGap;
+        if (listCardItem) {
+            rowGap = parseInt(
+                getComputedStyle(listCardItem).rowGap.split('px')[0],
+                10
+            );
+        }
+
+        return this._draggedElement.offsetHeight + (rowGap || 0);
+    }
+
     recoverDraggedElement() {
-        console.log('🚨 current');
         this._draggedElement = this.template.querySelector(
             '[data-index="' + this._initialDraggedIndex + '"]'
         );
@@ -1299,9 +1331,6 @@ Use with the onloadmore event handler to retrieve more data.
         this._draggedElement.classList.add(
             'avonni-list__item-sortable_dragged'
         );
-
-        // console.log('👋');
-        // console.log('👋', this._draggedElement);
 
         const mouseY =
             event.type === 'touchmove'
@@ -1333,7 +1362,6 @@ Use with the onloadmore event handler to retrieve more data.
             buttonMenu.classList.remove('slds-is-open');
         }
 
-        // console.log('🫳 drag', this._draggedElement, this._draggedElement.getBoundingClientRect());
         this.autoScroll(currentY);
     }
 
@@ -1347,10 +1375,6 @@ Use with the onloadmore event handler to retrieve more data.
             if (hoveredItem) {
                 this.animateHoveredItem(hoveredItem);
             }
-
-            // this._hoveredItemIndex = hoveredItem ? hoveredItem.dataset.index : null;
-
-            // console.log('🫳', this._draggedIndex, this._hoveredIndex);
         }
     }
 
@@ -1385,11 +1409,6 @@ Use with the onloadmore event handler to retrieve more data.
                 const overflowY =
                     this.listContainer.scrollHeight > this._initialScrollHeight;
 
-                console.log(
-                    '🤖 scrollStep',
-                    this.listContainer.scrollHeight,
-                    this._initialScrollHeight
-                );
                 if (!overflowY) {
                     this.listContainer.scrollBy(0, scrollStep);
 
@@ -1410,12 +1429,14 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     dragEnd(event) {
-        // console.log('🛑 dragEnd', event);
+        console.log('🛑');
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         this._dragging = false;
 
-        this.switchWithItem(this._draggedIndex, this._hoveredIndex);
+        if (this._draggedIndex === null) {
+            return;
+        }
         // event.button is not reliable on touch devices
         // finding hovered
         if (event && event.button === 0) {
@@ -1447,6 +1468,9 @@ Use with the onloadmore event handler to retrieve more data.
             return;
         }
 
+        if (this._draggedIndex != null && this._hoveredIndex != null) {
+            this.switchWithItem(this._draggedIndex, this._hoveredIndex);
+        }
         const orderHasChanged = this._itemElements.some((item, index) => {
             return Number(item.dataset.index) !== index;
         });
@@ -1487,12 +1511,15 @@ Use with the onloadmore event handler to retrieve more data.
             (this.sortable && event.key === ' ') ||
             event.key === 'Spacebar'
         ) {
+            console.log('space');
+            event.preventDefault();
             if (this._draggedElement) {
                 this.dragEnd();
             } else {
                 this.dragStart(event);
             }
         } else if (this.sortable && this._draggedElement) {
+            console.log('👇', event);
             // If escape is pressed, cancel the move
             if (event.key === 'Escape' || event.key === 'Esc') {
                 this.computedItems = [...this._savedComputedItems];
@@ -1507,17 +1534,21 @@ Use with the onloadmore event handler to retrieve more data.
                 event.key === 'ArrowDown' &&
                 index + 1 < this.computedItems.length
             ) {
+                console.log('down');
                 targetIndex = index + 1;
             } else if (event.key === 'ArrowUp') {
+                console.log('up');
                 targetIndex = index - 1;
             }
 
-            if (targetIndex >= 0) {
+            if (targetIndex != null) {
                 const targetItem = this._itemElements.find(
                     (item) => Number(item.dataset.index) === targetIndex
                 );
 
-                this.switchWithItem(targetItem);
+                console.log('♼', index, targetItem);
+
+                this.switchWithItem(index, targetItem);
 
                 // Move the dragged element
                 const currentPosition = Number(

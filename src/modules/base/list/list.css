@@ -38,6 +38,7 @@
 
 :host() {
     --avonni-list-item-color-background: white;
+    --avonni-list-item-spacing-block-between: 20px;
 }
 
 .avonni-list__item-menu {
@@ -195,6 +196,7 @@
         --avonni-list-item-color-background,
         transparent
     );
+    transform: rotate(2deg);
 }
 
 .avonni-list__image-slot {
