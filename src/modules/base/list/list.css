@@ -185,6 +185,11 @@
     /* transition: transform 300ms; */
 }
 
+.avonni-list__item-sortable_keyboard-moved {
+    /* for keyboard moving, the hover issue does not occur */
+    transition: transform 300ms;
+}
+
 .avonni-list__item-sortable.avonni-list__item-sortable_dragged {
     position: relative;
     z-index: 1;
@@ -196,7 +201,6 @@
         --avonni-list-item-color-background,
         transparent
     );
-    transform: rotate(2deg);
 }
 
 .avonni-list__image-slot {

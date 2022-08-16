@@ -528,38 +528,6 @@ SortableWithImagesAndAvatars.args = {
     }
 };
 
-export const SortableGridWithImagesAndAvatars = Template.bind({});
-SortableGridWithImagesAndAvatars.args = {
-    label: 'Sortable grid with Avatars and Icons',
-    items: itemsWithAvatars,
-    actions: actions,
-    divider: 'around',
-    imageAttributes: {
-        size: 'medium'
-    },
-    variant: 'grid',
-    cols: 1,
-    smallContainerCols: 3
-};
-
-export const GridWithImages = Template.bind({});
-GridWithImages.args = {
-    label: 'Sortable grid with Avatars and Icons',
-    items: itemsWithImages,
-    actions: actions,
-    imageAttributes: {
-        cropPositionX: 100,
-        cropPositionY: 0,
-        cropFit: 'contain',
-        size: 'medium'
-    },
-    variant: 'grid',
-    cols: 1,
-    smallContainerCols: 3,
-    mediumContainerCols: 4,
-    largeContainerCols: 6
-};
-
 export const GridCardWithImages = Template.bind({});
 GridCardWithImages.args = {
     label: 'Sortable grid with Avatars and Icons',
@@ -576,8 +544,8 @@ GridCardWithImages.args = {
     largeContainerCols: 6
 };
 
-export const SingleLine = InfiniteGridTemplate.bind({});
-SingleLine.args = {
+export const InfiniteLoadingSingleLine = InfiniteGridTemplate.bind({});
+InfiniteLoadingSingleLine.args = {
     label: 'Single Line',
     variant: 'single-line',
     items: [...itemsWithImages, ...itemsWithImages],
@@ -606,8 +574,8 @@ InfiniteLoadingGrid.args = {
     largeContainerCols: 6
 };
 
-export const InfiniteList = InfiniteGridTemplate.bind({});
-InfiniteList.args = {
+export const InfiniteLoadingList = InfiniteGridTemplate.bind({});
+InfiniteLoadingList.args = {
     label: 'Grid with infinite loading',
     items,
     actions: actions,

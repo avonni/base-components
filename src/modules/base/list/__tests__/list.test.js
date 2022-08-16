@@ -704,7 +704,7 @@ describe('List', () => {
             items[1].dispatchEvent(upDownEvent);
 
             expect(items[2].classList).toContain(
-                'avonni-list__item-sortable_moved'
+                'avonni-list__item-sortable_keyboard-moved'
             );
 
             // Stop dragging

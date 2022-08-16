@@ -49,8 +49,6 @@ const DIVIDER = {
     valid: ['top', 'bottom', 'around']
 };
 
-const DEFAULT_ITEM_HEIGHT = 44;
-
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 
 const IMAGE_SIZE = {
@@ -1161,14 +1159,17 @@ Use with the onloadmore event handler to retrieve more data.
      * Erase the list styles and dataset - clear tracked variables.
      */
     clearSelection() {
-        console.log('🧹');
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
+            item.dataset.elementTempIndex = index;
             item.style = undefined;
-            item.dataset.position = 0;
             item.dataset.index = index;
             item.className = item.className.replace(
                 /avonni-list__item-sortable_moved.*/g,
+                ''
+            );
+            item.className = item.className.replace(
+                /.avonni-list__item-sortable_keyboard-moved.*/g,
                 ''
             );
         });
@@ -1263,7 +1264,10 @@ Use with the onloadmore event handler to retrieve more data.
             this.template.querySelectorAll('.avonni-list__item-sortable')
         );
 
-        this._currentItemDraggedHeight = this.computeDraggedItemHeight(event);
+        this._draggedElement = event.currentTarget;
+        this._currentItemDraggedHeight = this.computeItemHeight(
+            event.currentTarget
+        );
 
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._initialDraggedIndex = this._draggedIndex;
@@ -1282,11 +1286,11 @@ Use with the onloadmore event handler to retrieve more data.
             // Close any open button menu
             this._draggedElement.focus();
         }
+
+        event.stopPropagation();
     }
 
-    computeDraggedItemHeight(event) {
-        this._draggedElement = event.currentTarget;
-
+    computeItemHeight(itemElement) {
         const listCardItem = this.template.querySelector(
             '.avonni-list__item-menu'
         );
@@ -1298,7 +1302,7 @@ Use with the onloadmore event handler to retrieve more data.
             );
         }
 
-        return this._draggedElement.offsetHeight + (rowGap || 0);
+        return itemElement.offsetHeight + (rowGap || 0);
     }
 
     recoverDraggedElement() {
@@ -1317,7 +1321,7 @@ Use with the onloadmore event handler to retrieve more data.
      * @param {Event} event
      */
     drag(event) {
-        if (!this._draggedElement) {
+        if (!this._draggedElement || this._keyboardDragged) {
             return;
         }
 
@@ -1356,6 +1360,7 @@ Use with the onloadmore event handler to retrieve more data.
             buttonMenu.classList.remove('slds-is-open');
         }
 
+        event.stopPropagation();
         this.autoScroll(currentY);
     }
 
@@ -1423,7 +1428,6 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     dragEnd(event) {
-        console.log('🛑');
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         this._dragging = false;
@@ -1465,13 +1469,15 @@ Use with the onloadmore event handler to retrieve more data.
         if (this._draggedIndex != null && this._hoveredIndex != null) {
             this.switchWithItem(this._draggedIndex, this._hoveredIndex);
         }
-        const orderHasChanged = this._itemElements.some((item, index) => {
-            return Number(item.dataset.index) !== index;
+        const orderHasChanged = this._itemElements.some((item) => {
+            return (
+                Number(item.dataset.index) !==
+                Number(item.dataset.elementTempIndex)
+            );
         });
 
         if (orderHasChanged) {
             this.computedItems = [...this.computedItems];
-
             /**
              * The event fired when a user reordered the items.
              *
@@ -1498,6 +1504,9 @@ Use with the onloadmore event handler to retrieve more data.
      * @param {Event} event
      */
     handleKeyDown(event) {
+        if (this.variant === 'grid') {
+            return;
+        }
         // If space bar is pressed, select or drop the item
         if (event.key === 'Enter') {
             this.handleItemClick(event);
@@ -1505,57 +1514,102 @@ Use with the onloadmore event handler to retrieve more data.
             (this.sortable && event.key === ' ') ||
             event.key === 'Spacebar'
         ) {
-            console.log('space');
             event.preventDefault();
             if (this._draggedElement) {
                 this.dragEnd();
+                this._keyboardDragged = false;
             } else {
+                this._keyboardDragged = true;
                 this.dragStart(event);
             }
         } else if (this.sortable && this._draggedElement) {
-            console.log('👇', event);
-            // If escape is pressed, cancel the move
             if (event.key === 'Escape' || event.key === 'Esc') {
-                this.computedItems = [...this._savedComputedItems];
                 this.clearSelection();
             }
 
             // If up/down arrow is pressed, move the item
-            const index = Number(event.currentTarget.dataset.index);
+            const index = Number(event.currentTarget.dataset.elementTempIndex);
             let targetIndex;
 
             if (
                 event.key === 'ArrowDown' &&
                 index + 1 < this.computedItems.length
             ) {
-                console.log('down');
                 targetIndex = index + 1;
             } else if (event.key === 'ArrowUp') {
-                console.log('up');
                 targetIndex = index - 1;
             }
 
             if (targetIndex != null) {
                 const targetItem = this._itemElements.find(
-                    (item) => Number(item.dataset.index) === targetIndex
+                    (item) =>
+                        Number(item.dataset.elementTempIndex) === targetIndex
                 );
 
-                console.log('♼', index, targetItem);
-
-                this.switchWithItem(index, targetItem);
-
-                // Move the dragged element
-                const currentPosition = Number(
-                    this._draggedElement.dataset.position
-                );
-                const position =
-                    targetIndex > index
-                        ? currentPosition + DEFAULT_ITEM_HEIGHT
-                        : currentPosition - DEFAULT_ITEM_HEIGHT;
-
-                this._draggedElement.style.transform = `translateY(${position}px)`;
-                this._draggedElement.dataset.position = position;
+                this.accessMoveItem(event.currentTarget, targetItem);
             }
+        }
+    }
+
+    // if the user wants to reset the list but is lost, click anywhere on the list to reset
+    handleListClick() {
+        if (this._draggedElement) {
+            this.clearSelection();
+        }
+    }
+
+    accessMoveItem(currentItem, targetItem) {
+        const currentIndex = Number(currentItem.dataset.elementTempIndex);
+        const targetIndex = Number(targetItem.dataset.elementTempIndex);
+        const currentItemHeight = this.computeItemHeight(currentItem);
+        const targetItemHeight = this.computeItemHeight(targetItem);
+
+        this._draggedElement = currentItem;
+        this._hoveredIndex = targetIndex;
+
+        const inlineStyle = currentItem.style.transform;
+        let currentItemTransform = 0;
+        if (inlineStyle) {
+            currentItemTransform =
+                Number(
+                    inlineStyle
+                        .substring(inlineStyle.indexOf('translateY(') + 11)
+                        .split('px')[0]
+                ) || 0;
+        }
+
+        if (currentIndex < targetIndex) {
+            currentItem.style.transform = `translateY(${
+                currentItemTransform + targetItemHeight
+            }px)`;
+            targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
+            this.checkKeybaordMoved(targetItem);
+        } else if (currentIndex > targetIndex) {
+            currentItem.style.transform = `translateY(${
+                currentItemTransform - targetItemHeight
+            }px)`;
+            targetItem.style.transform = `translateY(${currentItemHeight}px)`;
+            this.checkKeybaordMoved(targetItem);
+        }
+
+        targetItem.dataset.elementTempIndex = currentIndex;
+        currentItem.dataset.elementTempIndex = targetIndex;
+    }
+
+    checkKeybaordMoved(targetItem) {
+        if (
+            targetItem.classList.contains(
+                'avonni-list__item-sortable_keyboard-moved'
+            )
+        ) {
+            targetItem.classList.remove(
+                'avonni-list__item-sortable_keyboard-moved'
+            );
+            targetItem.style.transform = `translateY(0px)`;
+        } else {
+            targetItem.classList.add(
+                'avonni-list__item-sortable_keyboard-moved'
+            );
         }
     }
 
