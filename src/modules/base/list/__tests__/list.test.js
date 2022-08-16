@@ -50,13 +50,25 @@ describe('List', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+        jest.clearAllTimers();
+        jest.resetAllMocks();
     });
 
     beforeEach(() => {
         element = createElement('base-list', {
             is: List
         });
+        window.scrollTo = jest.fn();
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
     });
 
     it('List: Default attributes', () => {
@@ -177,6 +189,67 @@ describe('List', () => {
             );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
+    });
+
+    // variant
+    it('List: Variant = list', () => {
+        element.variant = 'list';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('slds-grid_vertical');
+        });
+    });
+
+    // variant
+    it('List: Variant = grid', () => {
+        element.variant = 'grid';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('avonni-list__grid-display');
+        });
+    });
+
+    // variant
+    it('List: Variant = single-line', () => {
+        element.variant = 'single-line';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('avonni-list__grid-display');
+        });
+    });
+
+    // single-line with infinite-loading
+    it('List: Variant = single-line with infinite-loading', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.variant = 'single-line';
+        element.enableInfiniteLoading = true;
+        element.items = ITEMS;
+        // trying to mock scroll to
+        window.scrollTo = jest.fn();
+
+        return Promise.resolve()
+            .then(() => {
+                const nextPage = element.shadowRoot.querySelector(
+                    '[data-element-id="next-page-button"]'
+                );
+                expect(nextPage).toBeTruthy();
+                nextPage.click();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                window.scrollTo = jest.fn();
+                expect(handler).toHaveBeenCalled();
+            });
     });
 
     // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON

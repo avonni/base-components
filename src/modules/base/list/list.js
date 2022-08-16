@@ -159,7 +159,7 @@ export default class List extends LightningElement {
     _hideSpinnerSpacer = false;
 
     renderNumber = 0;
-
+    // tests   list.js                                      lines  55.18 | ...93,915-999,1014,1040-1128,1137-1138,1220,1285-1287,1309-1426,1436,1508,1557,1688-1699
     renderedCallback() {
         this.restoreScrollPosition();
         this.listResize();
@@ -703,6 +703,7 @@ Use with the onloadmore event handler to retrieve more data.
      */
     nextPage() {
         window.requestAnimationFrame(() => {
+            console.log('next page');
             const pageStart = this._effectiveColumnCount * this._singleLinePage;
             let nextPageItems = this.computedItems.slice(
                 this._effectiveColumnCount + pageStart,
@@ -1009,8 +1010,9 @@ Use with the onloadmore event handler to retrieve more data.
             ? this.listContainer.scrollTop
             : null;
 
-        if (scrollTop !== null) {
+        if (scrollTop != null) {
             window.requestAnimationFrame(() => {
+                console.log('hi', scrollTop);
                 this.listContainer.scrollTo(0, scrollTop);
             });
         }
