@@ -28,6 +28,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-description-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-description-font-weight
  * @default normal
  * @type (string|number)
@@ -43,6 +49,12 @@
  * @name --avonni-metric-label-font-size
  * @default 0.875rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-label-font-style
+ * @default normal
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -73,6 +85,12 @@
  * @name --avonni-metric-prefix-font-size
  * @default 1rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-prefix-font-style
+ * @default normal
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -148,6 +166,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-secondary-prefix-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-secondary-prefix-font-weight
  * @default bold
  * @type (string|number)
@@ -163,6 +187,12 @@
  * @name --avonni-metric-secondary-suffix-font-size
  * @default 0.8125rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-secondary-suffix-font-style
+ * @default normal
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -184,6 +214,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-secondary-value-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-secondary-value-font-weight
  * @default bold
  * @type (string|number)
@@ -202,6 +238,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-suffix-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-suffix-font-weight
  * @default bold
  * @type (string|number)
@@ -217,6 +259,12 @@
  * @name --avonni-metric-value-font-size
  * @default 1.5rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-value-font-style
+ * @default normal
+ * @type font
  */
 /**
  * @memberof stylingHooks
