@@ -282,6 +282,10 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         super.setStartToBeginningOfUnit();
 
         const { span, unit } = this.timeSpan;
+        if (unit === 'month') {
+            this.start = this.selectedDate.startOf('month');
+        }
+
         const end = dateTimeObjectFrom(addToDate(this.start, unit, span) - 1);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
