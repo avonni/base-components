@@ -421,7 +421,6 @@ export default class PrimitiveCombobox extends LightningElement {
         const options = normalizeArray(value);
         const optionObjects = this.initOptionObjects(options);
         this._options = optionObjects;
-        this.visibleOptions = optionObjects;
 
         if (this._connected) {
             this.initValue();
@@ -431,6 +430,8 @@ export default class PrimitiveCombobox extends LightningElement {
             this.showLoader = this.currentParent
                 ? this.currentParent.isLoading
                 : this.isLoading;
+        } else {
+            this.visibleOptions = optionObjects;
         }
     }
 
@@ -949,7 +950,9 @@ export default class PrimitiveCombobox extends LightningElement {
             (hasItems || this.isLoading)
         ) {
             this.dropdownVisible = true;
-            this.startDropdownAutoPositioning();
+            requestAnimationFrame(() => {
+                this.startDropdownAutoPositioning();
+            });
         }
     }
 
