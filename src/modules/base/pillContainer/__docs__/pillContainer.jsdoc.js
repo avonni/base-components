@@ -54,6 +54,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-pill-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-pill-color-border
  * @default #e5e5e5
  * @type color
