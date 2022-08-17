@@ -516,7 +516,9 @@ export default class IconPicker extends LightningElement {
      * @type {string}
      */
     get computedLegendClass() {
-        return classSet('slds-form-element__label slds-no-flex')
+        return classSet(
+            'slds-form-element__label avonni-icon-picker__label slds-no-flex'
+        )
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
