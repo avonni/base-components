@@ -339,7 +339,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     get multiDayEventReadOnly() {
-        return this.isDay && !this.timeSpan.span > 1;
+        return this.readOnly || (this.isDay && !this.timeSpan.span > 1);
     }
 
     get multiDayWrapper() {
