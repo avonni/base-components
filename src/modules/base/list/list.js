@@ -104,54 +104,41 @@ export default class List extends LightningElement {
 
     _actions = [];
     _divider;
-    _items = [];
-    _sortable = false;
-    _sortableIconPosition = ICON_POSITIONS.default;
-    _imageSize = IMAGE_SIZE.default;
-    _imageCropFit = IMAGE_CROP_FIT.default;
-    _imageAttributes;
-    _enableInfiniteLoading = false;
-    _draggedIndex;
-    _hoveredIndex;
-    _draggedElement;
-    _initialX;
-    _initialY;
-    _menuTop;
-    _menuBottom;
-    _itemElements;
-    _savedComputedItems;
-    _hoveredItem;
-    _currentItemDraggedHeight;
-    _currentItemDraggedWidth;
-    _hasActions = false;
-    _imageSrc = [];
-    computedActions = [];
-    computedItems = [];
-    hasImages;
-    _variant = VARIANTS.default;
-    showMediaDragIcon = true;
-    showPlaceholder = false;
-    hoveredPositionTopLeft;
-    draggedItemDimensions;
-
-    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
-
     _columns;
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
-    _effectiveColumnCount;
-    _savedScrollTop;
-
-    _resizeObserver;
+    _enableInfiniteLoading = false;
+    _items = [];
+    _imageSize = IMAGE_SIZE.default;
+    _imageCropFit = IMAGE_CROP_FIT.default;
+    _imageAttributes;
+    _imageSrc = [];
     _isLoading = false;
-    _scrollingInterval;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _sortable = false;
+    _sortableIconPosition = ICON_POSITIONS.default;
+    _variant = VARIANTS.default;
 
+    _currentItemDraggedHeight;
+    _effectiveColumnCount;
+    _hasActions = false;
+    _initialY;
+    _itemElements;
+    _menuTop;
+    _menuBottom;
+    _savedComputedItems;
+    _draggedElement;
+    _draggedIndex;
+    _hoveredIndex;
+    computedActions = [];
+    computedItems = [];
+    hasImages;
+    _resizeObserver;
+    _scrollingInterval;
     _singleLinePage = 0;
     _scrollTop;
     _previousScrollTop;
-    _isLastItemVisible;
-    _preventDragEnd = false;
     _initialScrollHeight = 0;
     _restrictMotion = false;
     _dragging = false;
@@ -159,22 +146,17 @@ export default class List extends LightningElement {
     _hideSpinnerSpacer = false;
 
     renderNumber = 0;
-    // tests   list.js                                      lines  55.18 | ...93,915-999,1014,1040-1128,1137-1138,1220,1285-1287,1309-1426,1436,1508,1557,1688-1699
     renderedCallback() {
+        if (this.renderNumber++ === 1) {
+            this.initWrapObserver();
+        }
+
         this.restoreScrollPosition();
         this.listResize();
 
         if (this._dragging && this._draggedElement) {
             this.recoverDraggedElement();
         }
-
-        if (this.renderNumber++ === 1) {
-            this.initWrapObserver();
-        }
-
-        setTimeout(() => {
-            this.handleScroll();
-        }, 0);
 
         if (this.enableInfiniteLoading) {
             this._showSpinnerSpacer = true;
@@ -183,6 +165,10 @@ export default class List extends LightningElement {
         this._itemElements = Array.from(
             this.template.querySelectorAll('.avonni-list__item-sortable')
         );
+
+        setTimeout(() => {
+            this.handleScroll();
+        }, 0);
     }
 
     get showSpinnerSpacer() {
@@ -239,9 +225,8 @@ export default class List extends LightningElement {
     }
 
     /**
-     * If present, you can load a subset of data and then display more
-when users scroll to the end of the list.
-Use with the onloadmore event handler to retrieve more data.
+     * If present, you can load a subset of data and then display more when users scroll to the end of the list or reach the last page of items in a single-line variant.
+     * Use with the onloadmore event handler to retrieve more data.
      *
      * @type {boolean}
      * @public
@@ -321,9 +306,9 @@ Use with the onloadmore event handler to retrieve more data.
         }
 
         this._imagePositionY =
-            value.cropPositionY !== null ? value.cropPositionY : 50;
+            value.cropPositionY != null ? value.cropPositionY : 50;
         this._imagePositionX =
-            value.cropPositionX !== null ? value.cropPositionX : 50;
+            value.cropPositionX != null ? value.cropPositionX : 50;
 
         if (value.cropFit) {
             this._imageCropFit = normalizeString(value.cropFit, {
@@ -345,6 +330,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
     set cols(value) {
         this._columns = this.normalizeColumns(value);
+        this.listResize();
     }
 
     /**
@@ -358,6 +344,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
     set smallContainerCols(value) {
         this._smallContainerCols = this.normalizeColumns(value);
+        this.listResize();
     }
 
     /**
@@ -372,6 +359,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
     set mediumContainerCols(value) {
         this._mediumContainerCols = this.normalizeColumns(value);
+        this.listResize();
     }
 
     /**
@@ -386,6 +374,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
+        this.listResize();
     }
 
     /**
@@ -596,6 +585,11 @@ Use with the onloadmore event handler to retrieve more data.
         return this.sortable ? 'listbox' : undefined;
     }
 
+    /**
+     * Show media top or left depending on the variant.
+     *
+     * @type {boolean}
+     */
     get mediaPosition() {
         return this.variant === 'grid' || this.variant === 'single-line'
             ? 'top'
@@ -656,7 +650,7 @@ Use with the onloadmore event handler to retrieve more data.
     get displayedItems() {
         if (
             this.variant === 'single-line' &&
-            this._effectiveColumnCount !== null
+            this._effectiveColumnCount != null
         ) {
             const pageStart = this._effectiveColumnCount * this._singleLinePage;
             let pageItems = this.computedItems.slice(
@@ -687,40 +681,6 @@ Use with the onloadmore event handler to retrieve more data.
             Math.ceil(this.computedItems.length / this._effectiveColumnCount) ||
             1
         );
-    }
-
-    /**
-     * On single-line variant, go to the previous page of elements.
-     */
-    previousPage() {
-        if (this._singleLinePage > 0) {
-            this._singleLinePage--;
-        }
-    }
-
-    /**
-     * On single-line variant, go to the next page of elements. On next page load, check
-     */
-    nextPage() {
-        window.requestAnimationFrame(() => {
-            console.log('next page');
-            const pageStart = this._effectiveColumnCount * this._singleLinePage;
-            let nextPageItems = this.computedItems.slice(
-                this._effectiveColumnCount + pageStart,
-                this._effectiveColumnCount * 2 + pageStart
-            );
-            if (
-                nextPageItems.length === 0 &&
-                !this._isLoading &&
-                this.renderNumber !== 0
-            ) {
-                this.handleLoadMore();
-            }
-        });
-
-        if (this._singleLinePage < this.totalPages - 1) {
-            this._singleLinePage++;
-        }
     }
 
     /**
@@ -828,6 +788,11 @@ Use with the onloadmore event handler to retrieve more data.
             .toString();
     }
 
+    /**
+     * Animate the spinner when loading more items.
+     *
+     * @type {string}
+     */
     get computedSpinnerClass() {
         return classSet(
             'slds-col slds-size_12-of-12 avonni-list__lower-spinner-spacer'
@@ -900,7 +865,6 @@ Use with the onloadmore event handler to retrieve more data.
 
     /**
      * Calculate the number of columns depending on the width of the list.
-     * @private
      */
     listResize() {
         const previousCols = this._effectiveColumnCount;
@@ -935,7 +899,7 @@ Use with the onloadmore event handler to retrieve more data.
         }
 
         if (calculatedColumns !== this._effectiveColumnCount) {
-            this._effectiveColumnCount = calculatedColumns;
+            this._effectiveColumnCount = calculatedColumns || 1;
         }
 
         // go back to first page in single line view
@@ -946,7 +910,7 @@ Use with the onloadmore event handler to retrieve more data.
 
     /**
      * Only accept predetermined number of columns.
-     * @private
+     *
      * @param {number} cols
      * @returns {number}
      */
@@ -965,12 +929,44 @@ Use with the onloadmore event handler to retrieve more data.
         ) {
             return _value;
         }
-        return null;
+        return 1;
+    }
+
+    /**
+     * On single-line variant, go to the previous page of elements.
+     */
+    previousPage() {
+        if (this._singleLinePage > 0) {
+            this._singleLinePage--;
+        }
+    }
+
+    /**
+     * On single-line variant, go to the next page of elements. On next page load, check
+     */
+    nextPage() {
+        window.requestAnimationFrame(() => {
+            const pageStart = this._effectiveColumnCount * this._singleLinePage;
+            let nextPageItems = this.computedItems.slice(
+                this._effectiveColumnCount + pageStart,
+                this._effectiveColumnCount * 2 + pageStart
+            );
+            if (
+                nextPageItems.length === 0 &&
+                !this._isLoading &&
+                this.renderNumber !== 0
+            ) {
+                this.handleLoadMore();
+            }
+        });
+
+        if (this._singleLinePage < this.totalPages - 1) {
+            this._singleLinePage++;
+        }
     }
 
     /**
      * Determine scroll position to trigger loadmore and adjust dragged item position.
-     * @private
      */
     handleScroll() {
         if (this.variant === 'single-line') {
@@ -1002,8 +998,7 @@ Use with the onloadmore event handler to retrieve more data.
     }
 
     /**
-     * Restore the scroll position from the top of the list.
-     * @private
+     * Restore the scroll position when the list is rerendered.
      */
     restoreScrollPosition() {
         const scrollTop = this.listContainer
@@ -1012,7 +1007,6 @@ Use with the onloadmore event handler to retrieve more data.
 
         if (scrollTop != null) {
             window.requestAnimationFrame(() => {
-                console.log('hi', scrollTop);
                 this.listContainer.scrollTo(0, scrollTop);
             });
         }
@@ -1067,6 +1061,11 @@ Use with the onloadmore event handler to retrieve more data.
         });
     }
 
+    /**
+     * Apply transformed to hovered item and items inbetween.
+     *
+     * @param {HTMLElement} hoveredItem
+     */
     animateHoveredItem(hoveredItem) {
         const hoveredIndex = this._hoveredIndex;
         const draggedIndex = this._draggedIndex;
@@ -1133,6 +1132,9 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
+    /**
+     * Remove transform style and class from all itmes.
+     */
     resetItemAnimations() {
         this._itemElements.forEach((item) => {
             if (item.classList.contains('avonni-list__item-sortable_moved')) {
@@ -1163,9 +1165,9 @@ Use with the onloadmore event handler to retrieve more data.
     clearSelection() {
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
-            item.dataset.elementTempIndex = index;
             item.style = undefined;
             item.dataset.index = index;
+            item.dataset.elementTempIndex = index;
             item.className = item.className.replace(
                 /avonni-list__item-sortable_moved.*/g,
                 ''
@@ -1288,10 +1290,12 @@ Use with the onloadmore event handler to retrieve more data.
             // Close any open button menu
             this._draggedElement.focus();
         }
-
-        event.stopPropagation();
     }
 
+    /**
+     * Calculate the height of an item, including the row gap.
+     * @param {HTMLElement} item
+     */
     computeItemHeight(itemElement) {
         const listCardItem = this.template.querySelector(
             '.avonni-list__item-menu'
@@ -1307,6 +1311,9 @@ Use with the onloadmore event handler to retrieve more data.
         return itemElement.offsetHeight + (rowGap || 0);
     }
 
+    /**
+     * After a rerender, recover the element being dragged and keep it.
+     */
     recoverDraggedElement() {
         this._draggedElement = this.template.querySelector(
             '[data-index="' + this._initialDraggedIndex + '"]'
@@ -1362,10 +1369,15 @@ Use with the onloadmore event handler to retrieve more data.
             buttonMenu.classList.remove('slds-is-open');
         }
 
-        event.stopPropagation();
+        this.stopPropagation(event);
         this.autoScroll(currentY);
     }
 
+    /**
+     * Process the animation of the dragged item, and the hovered items.
+     *
+     * @param {number} currentY
+     */
     animateItems(currentY) {
         if (currentY) {
             this._draggedElement.style.transform = `translate( 0px, ${
@@ -1379,6 +1391,12 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
+    /**
+     * Compute whether to scroll up, down or none.
+     *
+     * @param {number} currentY
+     * @return {string}
+     */
     computeScrollStep(currentY) {
         let scrollStep = 0;
 
@@ -1402,6 +1420,11 @@ Use with the onloadmore event handler to retrieve more data.
         return scrollStep;
     }
 
+    /**
+     * Scroll when an item is dragged near the top or bottom of the list.
+     *
+     * @param {number} currentY
+     */
     autoScroll(currentY) {
         const scrollStep = this.computeScrollStep(currentY);
 
@@ -1429,6 +1452,11 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
+    /**
+     * When dragging is finished, reorder items or reset the list.
+     *
+     * @param {Event} event
+     */
     dragEnd(event) {
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
@@ -1437,8 +1465,6 @@ Use with the onloadmore event handler to retrieve more data.
         if (this._draggedIndex === null) {
             return;
         }
-        // event.button is not reliable on touch devices
-        // finding hovered
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1553,13 +1579,21 @@ Use with the onloadmore event handler to retrieve more data.
         }
     }
 
-    // if the user wants to reset the list but is lost, click anywhere on the list to reset
+    /**
+     * In the case the user loses control of the dragged element, clicking anywhere will reset the list.
+     */
     handleListClick() {
         if (this._draggedElement) {
             this.clearSelection();
         }
     }
 
+    /**
+     * Handle moving elements with the keyboard.
+     *
+     * @param {HTMLElement} currentItem
+     * @param {HTMLElement} targetItem
+     */
     accessMoveItem(currentItem, targetItem) {
         const currentIndex = Number(currentItem.dataset.elementTempIndex);
         const targetIndex = Number(targetItem.dataset.elementTempIndex);
@@ -1585,20 +1619,20 @@ Use with the onloadmore event handler to retrieve more data.
                 currentItemTransform + targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
-            this.checkKeybaordMoved(targetItem);
+            this.checkKeyboardMoved(targetItem);
         } else if (currentIndex > targetIndex) {
             currentItem.style.transform = `translateY(${
                 currentItemTransform - targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${currentItemHeight}px)`;
-            this.checkKeybaordMoved(targetItem);
+            this.checkKeyboardMoved(targetItem);
         }
 
         targetItem.dataset.elementTempIndex = currentIndex;
         currentItem.dataset.elementTempIndex = targetIndex;
     }
 
-    checkKeybaordMoved(targetItem) {
+    checkKeyboardMoved(targetItem) {
         if (
             targetItem.classList.contains(
                 'avonni-list__item-sortable_keyboard-moved'
@@ -1688,6 +1722,13 @@ Use with the onloadmore event handler to retrieve more data.
      */
     handleLoadMore() {
         if (this.enableInfiniteLoading) {
+            /**
+             * The event fired when the end of the list is reached.
+             *
+             * @event
+             * @name loadmore
+             * @public
+             */
             this.dispatchEvent(new CustomEvent('loadmore'));
         }
     }

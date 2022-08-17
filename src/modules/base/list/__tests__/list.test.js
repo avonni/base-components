@@ -43,6 +43,7 @@ import List from 'c/list';
 // Not tested:
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
 // Touch events (we can't artificially give a touch position to save in _initialY)
+// Number of columns displayed. It depends on the screen size.
 
 let element;
 describe('List', () => {
@@ -59,7 +60,6 @@ describe('List', () => {
         element = createElement('base-list', {
             is: List
         });
-        window.scrollTo = jest.fn();
         jest.useFakeTimers();
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
             setTimeout(() => cb(), 0);
@@ -110,15 +110,25 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="li-item"'
+                '[data-element-id^="li-item"]'
+            );
+            const itemsLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-item-label"]'
             );
             expect(items).toHaveLength(5);
+            expect(itemsLabels).toHaveLength(5);
 
             items.forEach((item, index) => {
                 const originalItem = ITEMS[index];
 
                 expect(item.dataset.index).toBe(index.toString());
                 expect(item.ariaLabel).toBe(originalItem.label);
+            });
+
+            itemsLabels.forEach((item, index) => {
+                const originalItem = ITEMS[index];
+
+                expect(item.textContent).toBe(originalItem.label);
             });
 
             [0, 2].forEach((index) => {
@@ -234,20 +244,21 @@ describe('List', () => {
         element.variant = 'single-line';
         element.enableInfiniteLoading = true;
         element.items = ITEMS;
-        // trying to mock scroll to
-        window.scrollTo = jest.fn();
 
         return Promise.resolve()
             .then(() => {
                 const nextPage = element.shadowRoot.querySelector(
                     '[data-element-id="next-page-button"]'
                 );
+                const listContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="list-container"]'
+                );
                 expect(nextPage).toBeTruthy();
                 nextPage.click();
+                listContainer.scrollTo = jest.fn();
                 jest.runAllTimers();
             })
             .then(() => {
-                window.scrollTo = jest.fn();
                 expect(handler).toHaveBeenCalled();
             });
     });

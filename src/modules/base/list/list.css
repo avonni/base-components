@@ -38,7 +38,7 @@
 
 :host() {
     --avonni-list-item-color-background: white;
-    --avonni-list-item-spacing-block-between: 20px;
+    /* --avonni-list-item-spacing-block-between: 20px; */
 }
 
 .avonni-list__item-menu {
@@ -143,13 +143,6 @@
 
 .hide-spinner-spacer {
     max-height: 0px;
-}
-
-.avonni-list__placeholder {
-    position: absolute;
-    background-color: rgba(228, 228, 228, 0.716);
-    height: 0px;
-    transition: max-height 0.3s ease-in-out;
 }
 
 /* Disable the hover on touch */
