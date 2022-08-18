@@ -78,6 +78,7 @@ export default class Kanban extends LightningElement {
     _fieldsDistance = [];
     _groupsHeight = [];
     _groupsLength = [];
+    _groupsScrollTop = [];
     _groupWidth = 1;
     _hasSubGroups = false;
     _initialPos = { x: 0, y: 0 };
@@ -104,6 +105,7 @@ export default class Kanban extends LightningElement {
     _subGroupsHeight = [];
     _summarizeValues = [];
     _summaryTimeoutsId = [];
+
     _variant = KANBAN_VARIANTS.default;
     kanbanGroup;
 
@@ -121,6 +123,7 @@ export default class Kanban extends LightningElement {
         this.setContainerDimensions();
         this.capFieldHeight();
         this.cropSubGroupHeaders();
+        this.computeGroupScrollTop();
 
         const { x, y } = this.getBoundingClientRect();
         this._kanbanOffset = { x, y };
@@ -750,8 +753,6 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        console.log(currentY, this._kanbanPos);
-
         const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
         const isCloseToTop = currentY - 50 < this._kanbanPos.top;
         const isCloseToRight = currentX + 50 > right;
@@ -1040,6 +1041,8 @@ export default class Kanban extends LightningElement {
             return;
         }
 
+        this.computeGroupScrollTop();
+
         const groupSelector = this._hasSubGroups
             ? 'avonni-kanban__group_header'
             : 'avonni-kanban__field';
@@ -1165,6 +1168,14 @@ export default class Kanban extends LightningElement {
         const groupSelector = this._hasSubGroups
             ? 'avonni-kanban__group_header'
             : 'avonni-kanban__field';
+
+        const groups = this.template.querySelectorAll(
+            `[data-element-id="avonni-kanban__group"]`
+        );
+
+        groups.forEach((group, i) => {
+            group.scrollTop = this._groupsScrollTop[i];
+        });
 
         this._draggedGroup.style.transform = '';
         this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
@@ -1580,6 +1591,21 @@ export default class Kanban extends LightningElement {
 
     /**
      *
+     * computes the right scrollTop to the groups after a swap.
+     *
+     */
+    computeGroupScrollTop() {
+        const kanbanGroups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        Array.from(kanbanGroups).forEach((group, i) => {
+            this._groupsScrollTop[i] = group.scrollTop;
+        });
+    }
+
+    /**
+     *
      * Swaps the groups after a drag and drop, in all the group-related arrays
      */
     swapGroups() {
@@ -1597,7 +1623,8 @@ export default class Kanban extends LightningElement {
             this._groupsHeight,
             this._groupsLength,
             this._fieldsDistance,
-            this._computedGroups
+            this._computedGroups,
+            this._groupsScrollTop
         ];
 
         // Swaps groups in every group-related array
