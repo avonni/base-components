@@ -750,6 +750,8 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
+        console.log(currentY, this._kanbanPos);
+
         const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
         const isCloseToTop = currentY - 50 < this._kanbanPos.top;
         const isCloseToRight = currentX + 50 > right;
@@ -1344,11 +1346,15 @@ export default class Kanban extends LightningElement {
             return;
         }
 
-        this.computeKanbanBoundaries(event.currentTarget);
-
-        const fieldContainer = this.template.querySelector(
+        const kanbanContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
+
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+
+        this.computeKanbanBoundaries(fieldContainer);
 
         const expandableContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__expandable_container"]'
@@ -1359,12 +1365,12 @@ export default class Kanban extends LightningElement {
             : this._kanbanPos.bottom;
 
         if (
-            this._initialScrollWidth === fieldContainer.offsetWidth &&
+            this._initialScrollWidth === kanbanContainer.offsetWidth &&
             !this._hasSubGroups
         ) {
-            fieldContainer.style.overflowX = 'hidden';
+            kanbanContainer.style.overflowX = 'hidden';
         } else if (!this._hasSubGroups) {
-            fieldContainer.style.overflowX = 'scroll';
+            kanbanContainer.style.overflowX = 'scroll';
         }
 
         // Calculates the position of the mouse depending on the kanban boundaries
@@ -1372,7 +1378,7 @@ export default class Kanban extends LightningElement {
             event.clientY +
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
-        let currentX = event.clientX + fieldContainer.scrollLeft;
+        let currentX = event.clientX + kanbanContainer.scrollLeft;
         if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;
         } else if (currentY > bottom) {
