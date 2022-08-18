@@ -86,7 +86,7 @@ describe('Metric', () => {
         expect(element.tooltip).toBeUndefined();
         expect(element.trendBreakpointValue).toBe(0);
         expect(element.trendIcon).toBeUndefined();
-        expect(element.value).toBe(0);
+        expect(element.value).toBeUndefined();
         expect(element.valueSign).toBe('negative');
     });
 
@@ -438,9 +438,7 @@ describe('Metric', () => {
             const metric = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-secondary"]'
             );
-            expect(metric.className).toBe(
-                'slds-m-left_x-small avonni-metric__secondary'
-            );
+            expect(metric.className).toBe('avonni-metric__secondary');
         });
     });
 
@@ -456,7 +454,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_positive-trend'
+                    'avonni-metric__secondary avonni-metric__secondary_positive-trend'
                 );
 
                 element.secondaryValue = 8;
@@ -467,7 +465,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_negative-trend'
+                    'avonni-metric__secondary avonni-metric__secondary_negative-trend'
                 );
 
                 element.secondaryValue = 10;
@@ -478,7 +476,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'slds-m-left_x-small avonni-metric__secondary avonni-metric__secondary_neutral-trend'
+                    'avonni-metric__secondary avonni-metric__secondary_neutral-trend'
                 );
             });
     });
