@@ -508,6 +508,15 @@ export default class Kanban extends LightningElement {
 
                 if (!overflowX && (!overflowY || !this._hasSubGroups)) {
                     toScroll.scrollBy(scrollStep.x, scrollStep.y);
+                    scrollStep.x =
+                        toScroll.scrollLeft === 0 && scrollStep.x < 0
+                            ? 0
+                            : scrollStep.x;
+                    scrollStep.y =
+                        toScroll.scrollTop === 0 && scrollStep.y < 0
+                            ? 0
+                            : scrollStep.y;
+                    this.translateByDelta(scrollStep);
                 }
                 this.handleScrollTiles(groups, toScroll.scrollTop);
             }, 20);
@@ -752,8 +761,6 @@ export default class Kanban extends LightningElement {
         const left =
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
-
-        console.log(this._kanbanPos);
 
         const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
         const isCloseToTop = currentY - 50 < this._kanbanPos.top;
@@ -1710,6 +1717,29 @@ export default class Kanban extends LightningElement {
                 record[this.subGroupFieldName] === this._currentSubGroup
             );
         });
+    }
+
+    /**
+     *
+     * Translates the dragged item by the given amount.
+     * @param {object} delta Amount of pixels to translate the dragged item
+     */
+    translateByDelta(delta) {
+        const draggedItem = this._draggedTile
+            ? this._draggedTile
+            : this._draggedGroup;
+        const style = window.getComputedStyle(draggedItem);
+        const matrix = new DOMMatrixReadOnly(style.transform);
+        const currentTranslate = {
+            translateX: matrix.m41,
+            translateY: matrix.m42
+        };
+
+        draggedItem.style.transform = `translateX(${
+            currentTranslate.translateX + delta.x
+        }px) translateY(${
+            currentTranslate.translateY + (this._hasSubGroups ? delta.y : 0)
+        }px) rotate(3deg)`;
     }
 
     /**
