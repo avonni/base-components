@@ -1390,9 +1390,9 @@ export default class Kanban extends LightningElement {
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
         let currentX = event.clientX + kanbanContainer.scrollLeft;
-        if (currentY < this._kanbanPos.top) {
+        if (currentY < this._kanbanPos.top && !this._draggedGroup) {
             currentY = this._kanbanPos.top;
-        } else if (currentY > bottom) {
+        } else if (currentY > bottom && !this._draggedGroup) {
             currentY = bottom;
         }
         if (currentX < this._kanbanPos.left) {
