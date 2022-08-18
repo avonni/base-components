@@ -753,6 +753,8 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
+        console.log(this._kanbanPos);
+
         const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
         const isCloseToTop = currentY - 50 < this._kanbanPos.top;
         const isCloseToRight = currentX + 50 > right;
@@ -1365,7 +1367,9 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        this.computeKanbanBoundaries(fieldContainer);
+        this.computeKanbanBoundaries(
+            this._hasSubGroups ? kanbanContainer : fieldContainer
+        );
 
         const expandableContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__expandable_container"]'
