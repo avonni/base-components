@@ -10,7 +10,7 @@ export default class SchedulerLabels extends LightningElement {
                 alternativeText: 'Avatar',
                 fallbackIconName: { fieldName: 'avatarFallbackIconName' },
                 initials: { fieldName: 'avatarInitials' },
-                primaryText: { fieldName: 'name' }
+                primaryText: { fieldName: 'label' }
             }
         },
         {
@@ -106,7 +106,7 @@ export default class SchedulerLabels extends LightningElement {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'firstName',
+            fieldName: 'name',
             iconName: 'utility:user'
         }
     };
@@ -118,6 +118,7 @@ export default class SchedulerLabels extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'NG',
             name: 'Nina',
+            label: 'Nina G.',
             role: 'Lead developer',
             sharedField: `This shouldn't show up`
         },
@@ -127,6 +128,7 @@ export default class SchedulerLabels extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'DM',
             name: 'Dave',
+            label: 'Dave M.',
             role: 'UX Specialist',
             customRowField: 'Label coming from a custom field in the row'
         },
@@ -134,12 +136,14 @@ export default class SchedulerLabels extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'JP',
             name: 'Jung',
+            label: 'Jung P.',
             role: 'Product Owner'
         },
         {
             avatarFallbackIconName: 'standard:article',
             avatarInitials: 'LM',
             name: 'Lily',
+            label: 'Lily M.',
             role: 'Graphic Designer',
             customField: "This comes from the row's custom field"
         },
@@ -149,9 +153,12 @@ export default class SchedulerLabels extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'RM',
             name: 'Reginald',
+            label: 'Reginald M.',
             role: 'Developer'
         }
     ];
+
+    selectedResources = ['Dave', 'Reginald', 'Nina', 'Jung'];
 
     start = new Date(2021, 11, 13, 8);
 

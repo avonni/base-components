@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 
 export default class SchedulerReadOnly extends LightningElement {
+    availableDaysOfTheWeek = [1, 2, 3, 4, 5];
     columns = [
         {
             label: 'Staff',
@@ -10,7 +11,7 @@ export default class SchedulerReadOnly extends LightningElement {
                 alternativeText: 'Avatar',
                 fallbackIconName: { fieldName: 'avatarFallbackIconName' },
                 initials: { fieldName: 'avatarInitials' },
-                primaryText: { fieldName: 'name' }
+                primaryText: { fieldName: 'label' }
             }
         },
         {
@@ -26,8 +27,6 @@ export default class SchedulerReadOnly extends LightningElement {
             label: 'See details'
         }
     ];
-
-    contextMenuEmptySpotActions = [];
 
     events = [
         {
@@ -46,7 +45,7 @@ export default class SchedulerReadOnly extends LightningElement {
             recurrence: 'daily'
         },
         {
-            resourceNames: ['Jung', 'Dave'],
+            resourceNames: ['Jung'],
             name: 'seminar',
             title: 'Online seminar',
             from: new Date(2021, 11, 14, 8),
@@ -150,6 +149,7 @@ export default class SchedulerReadOnly extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'NG',
             name: 'Nina',
+            label: 'Nina G.',
             role: 'Lead developer',
             sharedField: `This shouldn't show up`
         },
@@ -159,6 +159,7 @@ export default class SchedulerReadOnly extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'DM',
             name: 'Dave',
+            label: 'Dave M.',
             role: 'UX Specialist',
             customRowField: 'Label coming from a custom field in the row'
         },
@@ -166,12 +167,14 @@ export default class SchedulerReadOnly extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'JP',
             name: 'Jung',
+            label: 'Jung P.',
             role: 'Product Owner'
         },
         {
             avatarFallbackIconName: 'standard:article',
             avatarInitials: 'LM',
             name: 'Lily',
+            label: 'Lily M.',
             role: 'Graphic Designer',
             customField: "This comes from the row's custom field"
         },
@@ -181,9 +184,12 @@ export default class SchedulerReadOnly extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'RM',
             name: 'Reginald',
+            label: 'Reginald M.',
             role: 'Developer'
         }
     ];
+
+    selectedResources = ['Dave', 'Reginald', 'Nina', 'Jung'];
 
     start = new Date(2021, 11, 13, 8);
 

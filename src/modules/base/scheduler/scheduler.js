@@ -77,9 +77,6 @@ import {
  * @public
  */
 export default class Scheduler extends LightningElement {
-    temp() {
-        this._availableDaysOfTheWeek = [0, 2, 3];
-    }
     _dialogLabels = DEFAULT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
@@ -178,7 +175,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
      * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
-     * For example, if the available days are Monday to Friday, the value would be: <code>[1, 2, 3, 4, 5]</code>
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
      *
      * @type {number[]}
      * @public
@@ -197,7 +194,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
      * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
-     * For example, if the available months are January, February, June, July, August and December, the value would be: <code>[0, 1, 5, 6, 7, 11]</code>
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
      *
      * @type {number[]}
      * @public
@@ -216,7 +213,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
      * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
-     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: <code>['10:00-11:59', '14:30-18:44']</code>
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: `['10:00-11:59', '14:30-18:44']`
      *
      * @type {string[]}
      * @public
@@ -233,7 +230,23 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the horizontal variant.
+     * If present, the schedule column is not collapsible or expandable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the timeline display, in horizontal variant.
+     * The columns will be bound to the resources. If needed, extra keys can be added to the resource objects.
      *
      * @type {object[]}
      * @public
@@ -252,7 +265,7 @@ export default class Scheduler extends LightningElement {
      *
      * @type {object[]}
      * @public
-     * @default Add event
+     * @default [Standard.Scheduler.AddEvent]
      */
     @api
     get contextMenuEmptySpotActions() {
@@ -267,7 +280,7 @@ export default class Scheduler extends LightningElement {
      *
      * @type {object[]}
      * @public
-     * @default Edit and Delete
+     * @default ['Standard.Scheduler.EditEvent', 'Standard.Scheduler.DeleteEvent']
      */
     @api
     get contextMenuEventActions() {
@@ -279,7 +292,7 @@ export default class Scheduler extends LightningElement {
 
     /**
      * Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected.
-     * The color strings have to be a Hexadecimal or RGB color. For example <code>#3A7D44</code> or <code>rgb(58, 125, 68)</code>.
+     * The color strings have to be a Hexadecimal or RGB color. For example `#3A7D44` or `rgb(58, 125, 68)`.
      *
      * @type {string[]}
      * @public
@@ -313,23 +326,8 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If present, the schedule column is not collapsible or expandable.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get collapseDisabled() {
-        return this._collapseDisabled;
-    }
-    set collapseDisabled(value) {
-        this._collapseDisabled = normalizeBoolean(value);
-    }
-
-    /**
      * The date format to use in the events' details popup and the labels. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format. If you want to insert text in the label, you need to escape it using single quote.
-     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     * For example, the format of "Jan 14 day shift" would be `"LLL dd 'day shift'"`.
      *
      * @type {string}
      * @public
@@ -342,32 +340,6 @@ export default class Scheduler extends LightningElement {
     set dateFormat(value) {
         this._dateFormat =
             value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
-    }
-
-    /**
-     * Array of disabled date/time objects.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get disabledDatesTimes() {
-        return this._disabledDatesTimes;
-    }
-    set disabledDatesTimes(value) {
-        this._disabledDatesTimes = normalizeArray(value);
-
-        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
-            (evt) => {
-                const event = { ...evt };
-                event.disabled = true;
-                return event;
-            }
-        );
-
-        if (this._connected) {
-            this.initEvents();
-        }
     }
 
     /**
@@ -431,6 +403,32 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of disabled date/time objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get disabledDatesTimes() {
+        return this._disabledDatesTimes;
+    }
+    set disabledDatesTimes(value) {
+        this._disabledDatesTimes = normalizeArray(value);
+
+        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
+            (evt) => {
+                const event = { ...evt };
+                event.disabled = true;
+                return event;
+            }
+        );
+
+        if (this._connected) {
+            this.initEvents();
+        }
+    }
+
+    /**
      * Array of event objects.
      *
      * @type {object[]}
@@ -456,7 +454,7 @@ export default class Scheduler extends LightningElement {
      * * right
      * * center
      * The value of each key should be a label object.
-     * Not supported for vertical variant.
+     * Top, bottom, left and right labels are only supported for the timeline display with a horizontal variant.
      *
      * @type {object}
      * @public
@@ -622,8 +620,8 @@ export default class Scheduler extends LightningElement {
 
     /**
      * Allowed edition modes for recurring events. Available options are:
-     * * <code>all</code>: All recurrent event occurrences will be updated when a change is made to one occurrence.
-     * * <code>one</code>: Only the selected occurrence will be updated when a change is made.
+     * * `all`: All recurrent event occurrences will be updated when a change is made to one occurrence.
+     * * `one`: Only the selected occurrence will be updated when a change is made.
      *
      * @type {string[]}
      * @public
@@ -822,7 +820,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Specifies the starting date/timedate of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     * Starting date of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
      * @public
@@ -960,7 +958,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If present, horizontal scrolling will be prevented.
+     * If present, horizontal scrolling will be prevented in the timeline view.
      *
      * @type {boolean}
      * @default false
@@ -1045,14 +1043,29 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * True if the selected display is agenda.
+     *
+     * @type {boolean}
+     */
     get isAgenda() {
         return this.selectedDisplay === 'agenda';
     }
 
+    /**
+     * True if the selected display is calendar.
+     *
+     * @type {boolean}
+     */
     get isCalendar() {
         return this.selectedDisplay === 'calendar';
     }
 
+    /**
+     * True if the selected display is timeline.
+     *
+     * @type {boolean}
+     */
     get isTimeline() {
         return this.selectedDisplay === 'timeline';
     }
@@ -1067,7 +1080,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If true, editing a recurring event only updates the occurrence, never the complete event.
+     * True if editing a recurring event only updates the occurrence, never the complete event.
      *
      * @type {boolean}
      * @default false
@@ -1104,6 +1117,11 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Array of resources options to display in the toolbar filter menu.
+     *
+     * @type {object[]}
+     */
     get resourceToolbarMenuItems() {
         return this.resources.map((res) => {
             return {
@@ -1131,6 +1149,11 @@ export default class Scheduler extends LightningElement {
         return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
+    /**
+     * True if the empty timeline message should be displayed.
+     *
+     * @type {boolean}
+     */
     get showEmptyTimelineMessage() {
         return this.isTimeline && !this.showTimeline;
     }
@@ -1139,7 +1162,6 @@ export default class Scheduler extends LightningElement {
      * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
      * @type {boolean}
-     * @default true
      */
     get showRecurrenceSaveOptions() {
         return (
@@ -1148,6 +1170,11 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * True if the timeline should be displayed.
+     *
+     * @type {boolean}
+     */
     get showTimeline() {
         if (!this.isTimeline) {
             return false;
@@ -1166,6 +1193,11 @@ export default class Scheduler extends LightningElement {
         return this.timeSpans.length > 1;
     }
 
+    /**
+     * HTML element of the primitive schedule: timeline, agenda or calendar.
+     *
+     * @type {HTMLElement}
+     */
     get schedule() {
         if (this.isCalendar) {
             return this.template.querySelector(
@@ -1401,6 +1433,9 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Initialize the toolbar calendar disabled dates.
+     */
     initToolbarCalendarDisabledDates() {
         const disabled = getDisabledWeekdaysLabels(this.availableDaysOfTheWeek);
         this._toolbarCalendarDisabledWeekdays = disabled;
@@ -1408,15 +1443,11 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Update the computed selected display object.
+     * Compute the time interval label displayed in the toolbar.
+     *
+     * @param {DateTime} start Start of the time interval.
+     * @param {DateTime} end End of the time interval.
      */
-    updateSelectedDisplay() {
-        const selectedDisplay = DISPLAYS.options.find((display) => {
-            return display.value === this.selectedDisplay;
-        });
-        this.computedSelectedDisplay = { ...selectedDisplay };
-    }
-
     computeVisibleIntervalLabel(start, end) {
         const { unit, span } = this.currentTimeSpan;
         let format;
@@ -1459,13 +1490,8 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    normalizeDateToStartOfMonth(date) {
-        date = addToDate(date, 'week', 1);
-        return date.startOf('month');
-    }
-
     /**
-     * Hide the detail popover, the context menu and the edit dialog if any was open.
+     * Hide the detail popover, the context menu, the edit dialog, the delete dialog and the recurrence dialog.
      */
     hideAllPopovers() {
         this.hideDetailPopover();
@@ -1516,12 +1542,38 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
+    /**
+     * Normalize the given date to be on the first day of the month.
+     *
+     * @param {DateTime} date Date to normalize.
+     * @returns {DateTime} First day of the month.
+     */
+    normalizeDateToStartOfMonth(date) {
+        date = addToDate(date, 'week', 1);
+        return date.startOf('month');
+    }
+
+    /**
+     * Update the computed selected display object.
+     */
+    updateSelectedDisplay() {
+        const selectedDisplay = DISPLAYS.options.find((display) => {
+            return display.value === this.selectedDisplay;
+        });
+        this.computedSelectedDisplay = { ...selectedDisplay };
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle a change of the selected date.
+     *
+     * @param {Event} event
+     */
     handleSelectedDateChange(event) {
         this.goToDate(event.detail.value);
     }
@@ -1587,6 +1639,11 @@ export default class Scheduler extends LightningElement {
         this.hideAllPopovers();
     }
 
+    /**
+     * Handle the selection of an event.
+     *
+     * @param {Event} event
+     */
     handleEventSelect(event) {
         event.stopPropagation();
         if (this._programmaticFocus) {
@@ -1612,6 +1669,11 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * Handle the opening of the context menu on an event.
+     *
+     * @param {Event} event
+     */
     handleEventContextMenu(event) {
         if (!this.computedContextMenuEvent.length) {
             return;
@@ -1627,7 +1689,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     * Handle the `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
      */
     handleEmptySpotContextMenu(event) {
         if (!this.computedContextMenuEmptySpot.length) {
@@ -1754,6 +1816,11 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the change of an event.
+     *
+     * @param {Event} event
+     */
     handleEventChange(event) {
         event.stopPropagation();
 
@@ -1774,6 +1841,11 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * Handle the mouse entering on an event.
+     *
+     * @param {Event} event
+     */
     handleEventMouseEnter(event) {
         if (this.showContextMenu) {
             return;
@@ -1782,6 +1854,11 @@ export default class Scheduler extends LightningElement {
         this.selection = event.currentTarget.selectEvent(event.detail);
     }
 
+    /**
+     * Handle the `hidepopovers` event dispatched by a primitive schedule. Hide the appropriate popovers.
+     *
+     * @param {Event} event
+     */
     handleHidePopovers(event) {
         const list = event.detail.list;
         if (!list) {
@@ -1803,22 +1880,42 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Handle the opening of the edit dialog.
+     *
+     * @param {Event} event
+     */
     handleOpenEditDialog(event) {
         this.showEditDialog = true;
         this.selection = event.detail.selection;
     }
 
+    /**
+     * Handle the opening of the recurrence dialog.
+     *
+     * @param {Event} event
+     */
     handleOpenRecurrenceDialog(event) {
         this.showRecurrenceDialog = true;
         this.selection = event.detail.selection;
     }
 
+    /**
+     * Handle the selection of a resource.
+     *
+     * @param {Event} event
+     */
     handleResourceSelect(event) {
         const { selectedResources, name } = event.detail;
         this._selectedResources = selectedResources;
         this.dispatchResourceSelectEvent(name);
     }
 
+    /**
+     * Handle the toggling of the toolbar calendar.
+     *
+     * @param {Event} event
+     */
     handleToggleToolbarCalendar() {
         this.showToolbarCalendar = !this.showToolbarCalendar;
 
@@ -1832,6 +1929,11 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Handle a change in the toolbar calendar.
+     *
+     * @param {Event} event
+     */
     handleToolbarCalendarChange(event) {
         this.showToolbarCalendar = false;
         const { value } = event.detail;
@@ -1842,10 +1944,16 @@ export default class Scheduler extends LightningElement {
         this.goToDate(value);
     }
 
+    /**
+     * Handle a focus in the toolbar calendar.
+     */
     handleToolbarCalendarFocusin() {
         this._toolbarCalendarIsFocused = true;
     }
 
+    /**
+     * Handle a focus out of the toolbar calendar.
+     */
     handleToolbarCalendarFocusout() {
         this._toolbarCalendarIsFocused = false;
 
@@ -1856,6 +1964,11 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Handle a navigate event coming from the toolbar calendar.
+     *
+     * @param {Event} event
+     */
     handleToolbarCalendarNavigate(event) {
         const date = new Date(event.detail.date);
         const month = date.getMonth();
@@ -1870,6 +1983,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle a click on the "Next" button of the toolbar.
+     */
     handleToolbarNextClick() {
         const { unit, span } = this.currentTimeSpan;
         let date = dateTimeObjectFrom(this.start);
@@ -1882,6 +1998,9 @@ export default class Scheduler extends LightningElement {
         this.goToDate(date);
     }
 
+    /**
+     * Handle a click on the "Previous" button of the toolbar.
+     */
     handleToolbarPrevClick() {
         const { unit, span } = this.currentTimeSpan;
 
@@ -1914,10 +2033,15 @@ export default class Scheduler extends LightningElement {
         this.goToDate(date);
     }
 
+    /**
+     * Handle the selection of a resource through the toolbar filter menu.
+     *
+     * @param {Event} event
+     */
     handleToolbarResourceSelect(event) {
         const selectedResources = [...event.detail.value];
         let name;
-        if (selectedResources.length > this.selectedResources) {
+        if (selectedResources.length > this.selectedResources.length) {
             name = selectedResources.find(
                 (res) => !this.selectedResources.includes(res)
             );
@@ -1971,13 +2095,32 @@ export default class Scheduler extends LightningElement {
         this.goToDate(today);
     }
 
+    /**
+     * Handle a change of the visible interval.
+     *
+     * @param {Event} event
+     */
     handleVisibleIntervalChange(event) {
         this._start = event.detail.start;
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
     }
 
+    /**
+     * Dispatch the resourceselect event.
+     *
+     * @param {string} name Name of the selected or unselected resource.
+     */
     dispatchResourceSelectEvent(name) {
+        /**
+         * The event fired when a resource is selected or unselected.
+         *
+         * @event
+         * @name resourceselect
+         * @param {string} name Name of the resource that was selected or unselected.
+         * @param {string[]} selectedResources Updated list of selected resources names.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('resourceselect', {
                 detail: {

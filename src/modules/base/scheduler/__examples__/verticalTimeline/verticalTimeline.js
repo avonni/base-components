@@ -1,27 +1,8 @@
 import { LightningElement } from 'lwc';
 
-export default class SchedulerAvailableAndDisabledTimes extends LightningElement {
+export default class SchedulerVerticalTimeline extends LightningElement {
     availableDaysOfTheWeek = [1, 2, 3, 4, 5];
     availableTimeFrames = ['08:00-17:00'];
-
-    columns = [
-        {
-            label: 'Staff',
-            fieldName: 'avatarSrc',
-            type: 'avatar',
-            typeAttributes: {
-                alternativeText: 'Avatar',
-                fallbackIconName: { fieldName: 'avatarFallbackIconName' },
-                initials: { fieldName: 'avatarInitials' },
-                primaryText: { fieldName: 'label' }
-            }
-        },
-        {
-            label: 'Role',
-            fieldName: 'role',
-            hideDefaultActions: true
-        }
-    ];
 
     disabledDatesTimes = [
         {
@@ -233,52 +214,7 @@ export default class SchedulerAvailableAndDisabledTimes extends LightningElement
         }
     ];
 
-    selectedResources = ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'];
+    selectedResources = ['Dave', 'Reginald', 'Nina'];
 
     start = new Date(2021, 11, 13, 8);
-
-    timeSpans = [
-        {
-            unit: 'day',
-            span: 1,
-            label: 'Day',
-            headers: 'hourAndDay',
-            name: 'day'
-        },
-        {
-            unit: 'week',
-            span: 2,
-            label: 'Sprint',
-            name: 'sprint',
-            customHeaders: [
-                {
-                    unit: 'week',
-                    span: 1,
-                    label: "'Sprint' W"
-                },
-                {
-                    unit: 'day',
-                    span: 1,
-                    label: 'ccc dd'
-                },
-                {
-                    unit: 'hour',
-                    span: 1,
-                    label: 'h a'
-                },
-                {
-                    unit: 'minute',
-                    span: 15,
-                    label: 'mm'
-                }
-            ]
-        },
-        {
-            unit: 'month',
-            span: 1,
-            label: 'Month',
-            headers: 'dayAndMonth',
-            name: 'month'
-        }
-    ];
 }

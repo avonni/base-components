@@ -1,14 +1,10 @@
 import { LightningElement } from 'lwc';
 
-export default class SchedulerVertical extends LightningElement {
-    availableDaysOfTheWeek = [1, 2, 3, 4, 5];
-    availableTimeFrames = ['08:00-17:00'];
-
+export default class SchedulerCalendar extends LightningElement {
     disabledDatesTimes = [
         {
-            resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
+            resourceNames: ['Nina', 'Dave'],
             title: 'Lunch',
-            iconName: 'custom:custom51',
             from: new Date(2021, 0, 1, 12),
             to: new Date(2021, 0, 1, 14),
             recurrence: 'weekly',
@@ -21,6 +17,12 @@ export default class SchedulerVertical extends LightningElement {
             title: 'Vacation',
             from: new Date(2021, 11, 6),
             to: new Date(2021, 11, 20)
+        },
+        {
+            resourceNames: ['Dave'],
+            title: 'Day off',
+            from: new Date(2021, 11, 18),
+            allDay: true
         },
         {
             resourceNames: ['Jung'],
@@ -47,7 +49,7 @@ export default class SchedulerVertical extends LightningElement {
             recurrence: 'daily'
         },
         {
-            resourceNames: ['Jung', 'Dave'],
+            resourceNames: ['Jung'],
             name: 'seminar',
             title: 'Online seminar',
             from: new Date(2021, 11, 14, 8),
@@ -156,8 +158,9 @@ export default class SchedulerVertical extends LightningElement {
         },
         {
             label: 'Coffee break',
-            date: new Date(2021, 1, 1, 10),
-            recurrence: 'daily'
+            date: new Date(2022, 1, 1, 10),
+            recurrence: 'daily',
+            recurrenceEndDate: new Date(2022, 1, 5)
         }
     ];
 
@@ -168,6 +171,7 @@ export default class SchedulerVertical extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'NG',
             name: 'Nina',
+            label: 'Nina G.',
             role: 'Lead developer',
             sharedField: `This shouldn't show up`
         },
@@ -177,6 +181,7 @@ export default class SchedulerVertical extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'DM',
             name: 'Dave',
+            label: 'Dave M.',
             role: 'UX Specialist',
             customRowField: 'Label coming from a custom field in the row'
         },
@@ -184,12 +189,14 @@ export default class SchedulerVertical extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'JP',
             name: 'Jung',
+            label: 'Jung P.',
             role: 'Product Owner'
         },
         {
             avatarFallbackIconName: 'standard:article',
             avatarInitials: 'LM',
             name: 'Lily',
+            label: 'Lily M.',
             role: 'Graphic Designer',
             customField: "This comes from the row's custom field"
         },
@@ -199,9 +206,12 @@ export default class SchedulerVertical extends LightningElement {
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'RM',
             name: 'Reginald',
+            label: 'Reginald M.',
             role: 'Developer'
         }
     ];
+
+    selectedResources = ['Dave', 'Jung', 'Reginald'];
 
     start = new Date(2021, 11, 13, 8);
 }

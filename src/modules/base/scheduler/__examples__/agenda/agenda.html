@@ -1,15 +1,12 @@
 <template>
     <avonni-scheduler
-        available-days-of-the-week={availableDaysOfTheWeek}
-        available-time-frames={availableTimeFrames}
-        columns={columns}
         disabled-dates-times={disabledDatesTimes}
         events={events}
         reference-lines={referenceLines}
         resources={resources}
+        selected-display="agenda"
         selected-resources={selectedResources}
-        selected-time-span="sprint"
+        selected-time-span="Standard.Scheduler.WeekTimeSpan"
         start={start}
-        time-spans={timeSpans}
     ></avonni-scheduler>
 </template>
