@@ -306,11 +306,24 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Check if there is no data to display. 
+     *
+     * @type {boolean}
+     */
+    get isTimelineEmpty(){
+        return !this._sortedItems.length;
+    }
+
+    /**
      * Find the max date in items
      *
      * @type {Date}
      */
     get maxDate() {
+        if(this.isTimelineEmpty) {
+            return this.findNextDate(new Date(), 2 * DEFAULT_INTERVAL_DAYS_LENGTH);
+        }
+
         const maxIndex =
             this._activityTimeline._sortedDirection === 'desc'
                 ? 0
@@ -324,6 +337,10 @@ export class HorizontalActivityTimeline {
      * @type {Date}
      */
     get minDate() {
+        if(this.isTimelineEmpty) {
+            return new Date();
+        }
+
         const minIndex =
             this._activityTimeline._sortedDirection === 'desc'
                 ? this._sortedItems.length - 1
@@ -1389,10 +1406,13 @@ export class HorizontalActivityTimeline {
      * Set the interval's min date to the middle datetime value of all items
      */
     setDefaultIntervalDates() {
-        const middleIndex = Math.ceil(this._sortedItems.length / 2 - 1);
-        this._intervalMinDate = new Date(
-            this._sortedItems[middleIndex].datetimeValue
-        );
+        if(this.isTimelineEmpty) {
+            this._intervalMinDate = this.findNextDate(new Date(), Math.floor(DEFAULT_INTERVAL_DAYS_LENGTH));
+        } else {
+            const middleIndex = Math.ceil(this._sortedItems.length / 2 - 1);
+            this._intervalMinDate = new Date(this._sortedItems[middleIndex].datetimeValue);
+        }
+
         this._intervalMinDate.setHours(0, 0, 0, 0);
         this.setIntervalMaxDate();
     }
