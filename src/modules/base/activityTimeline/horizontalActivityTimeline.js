@@ -142,7 +142,7 @@ export class HorizontalActivityTimeline {
     };
 
     constructor(activityTimeline, sortedItems) {
-        this._sortedItems = sortedItems;
+        this.addValidItemsToData(sortedItems);
         this._activityTimeline = activityTimeline;
         this.setDefaultIntervalDates();
         this.testIconPath(
@@ -161,7 +161,7 @@ export class HorizontalActivityTimeline {
         }
 
         this.resetHorizontalTimeline();
-        this._sortedItems = sortedItems;
+        this.addValidItemsToData(sortedItems);
 
         if (this.isHeightDifferent(sortedItems, maxVisibleItems)) {
             this._requestHeightChange = true;
@@ -490,6 +490,20 @@ export class HorizontalActivityTimeline {
             tagName: tag,
             attributes: this.extractAllAttributesOfElement(element)
         });
+    }
+
+    /**
+     * Add only items with valid date to sortedItems. 
+     */
+       addValidItemsToData(sortedItems){
+        this._sortedItems = [];
+
+        sortedItems.forEach((item)=> {
+            const itemDate = new Date(item.datetimeValue).toString();
+            if(itemDate !== 'Invalid Date'){
+                this._sortedItems.push(item);
+            } 
+        })
     }
 
     /**
