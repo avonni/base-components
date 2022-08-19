@@ -164,6 +164,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
@@ -237,11 +238,37 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-width
+ * @name --avonni-list-item-image-width-small
  * @type dimension
+ * @default 48px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-height
+ * @name --avonni-list-item-image-width-medium
  * @type dimension
+ * @default 72px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-width-large
+ * @type dimension
+ * @default 128px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-height-small
+ * @type dimension
+ * @default 48px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-height-medium
+ * @type dimension
+ * @default 96px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-height-large
+ * @type dimension
+ * @default 192px
  */

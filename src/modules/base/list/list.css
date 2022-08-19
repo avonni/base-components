@@ -28,18 +28,7 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
- Add docs
- Test new props
-
- task: 
- on mobile only sort with icon
  */
-
-:host() {
-    --avonni-list-item-color-background: white;
-    /* --avonni-list-item-spacing-block-between: 20px; */
-}
 
 .avonni-list__item-menu {
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
@@ -245,33 +234,33 @@
 }
 
 .avonni-list__item-image_small-width {
-    width: var(--avonni-list-item-image-width, 48px);
-    min-width: var(--avonni-list-item-image-width, 48px);
+    width: var(--avonni-list-item-image-width-small, 48px);
+    min-width: var(--avonni-list-item-image-width-small, 48px);
 }
 
 .avonni-list__item-image_medium-width {
-    width: var(--avonni-list-item-image-width, 72px);
-    min-width: var(--avonni-list-item-image-width, 72px);
+    width: var(--avonni-list-item-image-width-medium, 72px);
+    min-width: var(--avonni-list-item-image-width-medium, 72px);
 }
 
 .avonni-list__item-image_large-width {
-    width: var(--avonni-list-item-image-width, 128px);
-    min-width: var(--avonni-list-item-image-width, 128px);
+    width: var(--avonni-list-item-image-width-large, 128px);
+    min-width: var(--avonni-list-item-image-width-large, 128px);
 }
 
 .avonni-list__item-image_small-height {
-    height: var(--avonni-list-item-image-height, 48px);
-    min-height: var(--avonni-list-item-image-height, 48px);
+    height: var(--avonni-list-item-image-height-small, 48px);
+    min-height: var(--avonni-list-item-image-height-small, 48px);
 }
 
 .avonni-list__item-image_medium-height {
-    height: var(--avonni-list-item-image-height, 96px);
-    min-height: var(--avonni-list-item-image-height, 96px);
+    height: var(--avonni-list-item-image-height-medium, 96px);
+    min-height: var(--avonni-list-item-image-height-medium, 96px);
 }
 
 .avonni-list__item-image_large-height {
-    height: var(--avonni-list-item-image-height, 192px);
-    min-height: var(--avonni-list-item-image-height, 192px);
+    height: var(--avonni-list-item-image-height-large, 192px);
+    min-height: var(--avonni-list-item-image-height-large, 192px);
 }
 
 .avonni-list__item-divider_top {

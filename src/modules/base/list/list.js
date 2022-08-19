@@ -1626,27 +1626,22 @@ export default class List extends LightningElement {
         this._draggedElement = currentItem;
         this._hoveredIndex = targetIndex;
 
-        const inlineStyle = currentItem.style.transform;
-        let currentItemTransform = 0;
-        if (inlineStyle) {
-            currentItemTransform =
-                Number(
-                    inlineStyle
-                        .substring(inlineStyle.indexOf('translateY(') + 11)
-                        .split('px')[0]
-                ) || 0;
-        }
+        // come back here 🛑
+        // Fix test: DOMMatrixReadOnly is not supported by jest
+        // because it's available through a web worker interface
+        const matrix = new DOMMatrixReadOnly(currentItem.style.transform);
+        const currentItemYTransform = matrix.f;
 
         if (currentIndex < targetIndex) {
             currentItem.style.transform = `translateY(${
-                currentItemTransform + targetItemHeight
+                currentItemYTransform + targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
             this.listContainer.scrollBy(0, currentItemHeight);
             this.checkKeyboardMoved(targetItem);
         } else if (currentIndex > targetIndex) {
             currentItem.style.transform = `translateY(${
-                currentItemTransform - targetItemHeight
+                currentItemYTransform - targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${currentItemHeight}px)`;
             this.listContainer.scrollBy(0, -currentItemHeight);

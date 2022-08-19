@@ -74,20 +74,19 @@ describe('List', () => {
     it('List: Default attributes', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.alternativeText).toBeUndefined();
+        expect(element.cols).toBe(1);
+        expect(element.smallContainerCols).toBeUndefined();
+        expect(element.mediumContainerCols).toBeUndefined();
+        expect(element.largeContainerCols).toBeUndefined();
+        expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
+        expect(element.imageAttributes).toMatchObject({});
         expect(element.label).toBeUndefined();
+        expect(element.loadMoreOffset).toBe(20);
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
-        expect(element.imageAttributes).toBeUndefined();
         expect(element.variant).toBe('list');
-        expect(element.loadMoreOffset).toBe(20);
-        expect(element.enableInfiniteLoading).toBeFalsy();
-        expect(element.cols).toBeUndefined();
-        expect(element.smallContainerCols).toBeUndefined();
-        expect(element.mediumContainerCols).toBeUndefined();
-        expect(element.LargeContainerCols).toBeUndefined();
-        // add: enableInfiniteLoading, cols + small, medium, large,
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -101,6 +100,21 @@ describe('List', () => {
                 '[data-element-id="span-alternative-text"]'
             );
             expect(span.textContent).toBe('A string alternative text');
+        });
+    });
+
+    // cols
+    it('List: Columns, cols', () => {
+        element.items = ITEMS;
+        element.cols = 1;
+        element.variant = 'grid';
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                '[data-element-id="li-item"]'
+            );
+            expect(element.cols).toBe(1);
+            expect(item.classList).toContain('slds-size_12-of-12');
         });
     });
 
@@ -199,68 +213,6 @@ describe('List', () => {
             );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
-    });
-
-    // variant
-    it('List: Variant = list', () => {
-        element.variant = 'list';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('slds-grid_vertical');
-        });
-    });
-
-    // variant
-    it('List: Variant = grid', () => {
-        element.variant = 'grid';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('avonni-list__grid-display');
-        });
-    });
-
-    // variant
-    it('List: Variant = single-line', () => {
-        element.variant = 'single-line';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('avonni-list__grid-display');
-        });
-    });
-
-    // single-line with infinite-loading
-    it('List: Variant = single-line with infinite-loading', () => {
-        const handler = jest.fn();
-        element.addEventListener('loadmore', handler);
-        element.variant = 'single-line';
-        element.enableInfiniteLoading = true;
-        element.items = ITEMS;
-
-        return Promise.resolve()
-            .then(() => {
-                const nextPage = element.shadowRoot.querySelector(
-                    '[data-element-id="next-page-button"]'
-                );
-                const listContainer = element.shadowRoot.querySelector(
-                    '[data-element-id="list-container"]'
-                );
-                expect(nextPage).toBeTruthy();
-                nextPage.click();
-                listContainer.scrollTo = jest.fn();
-                jest.runAllTimers();
-            })
-            .then(() => {
-                expect(handler).toHaveBeenCalled();
-            });
     });
 
     // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
@@ -454,6 +406,7 @@ describe('List', () => {
             expect(iconsLeft).toHaveLength(4);
         });
     });
+
     /* images */
     it('List: Images presence', () => {
         element.items = ITEMS;
@@ -523,6 +476,42 @@ describe('List', () => {
             expect(images[2].classList).toContain(
                 'avonni-list__item-image_large-width'
             );
+        });
+    });
+
+    // variant
+    it('List: Variant = list', () => {
+        element.variant = 'list';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('slds-grid_vertical');
+        });
+    });
+
+    // variant
+    it('List: Variant = grid', () => {
+        element.variant = 'grid';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('avonni-list__grid-display');
+        });
+    });
+
+    // variant
+    it('List: Variant = single-line', () => {
+        element.variant = 'single-line';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
+            expect(menu.classList).toContain('avonni-list__grid-display');
         });
     });
 
