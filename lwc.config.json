@@ -287,10 +287,6 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
-            "name": "c/primitiveCard",
-            "path": "src/modules/base/primitiveCard/primitiveCard.js"
-        },
-        {
             "name": "c/primitiveCarouselItem",
             "path": "src/modules/base/primitiveCarouselItem/primitiveCarouselItem.js"
         },

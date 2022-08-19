@@ -72,6 +72,8 @@ const MEDIA_QUERY_BREAKPOINTS = {
     large: 1024
 };
 
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
 /**
  * @class
  * @storyId example-list--base
@@ -104,7 +106,7 @@ export default class List extends LightningElement {
 
     _actions = [];
     _divider;
-    _columns;
+    _cols = 1;
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
@@ -112,7 +114,7 @@ export default class List extends LightningElement {
     _items = [];
     _imageSize = IMAGE_SIZE.default;
     _imageCropFit = IMAGE_CROP_FIT.default;
-    _imageAttributes;
+    _imageAttributes = {};
     _imageSrc = [];
     _isLoading = false;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
@@ -121,7 +123,7 @@ export default class List extends LightningElement {
     _variant = VARIANTS.default;
 
     _currentItemDraggedHeight;
-    _effectiveColumnCount;
+    _currentColumnCount = 1;
     _hasActions = false;
     _initialY;
     _itemElements;
@@ -131,13 +133,14 @@ export default class List extends LightningElement {
     _draggedElement;
     _draggedIndex;
     _hoveredIndex;
+    _keyboardMoveIndex;
     computedActions = [];
     computedItems = [];
     hasImages;
     _resizeObserver;
     _scrollingInterval;
     _singleLinePage = 0;
-    _scrollTop;
+    _scrollTop = 0;
     _previousScrollTop;
     _initialScrollHeight = 0;
     _restrictMotion = false;
@@ -145,7 +148,7 @@ export default class List extends LightningElement {
     _showSpinnerSpacer = false;
     _hideSpinnerSpacer = false;
 
-    renderNumber = 0;
+    renderNumber = false;
     renderedCallback() {
         if (this.renderNumber++ === 1) {
             this.initWrapObserver();
@@ -154,7 +157,7 @@ export default class List extends LightningElement {
         this.restoreScrollPosition();
         this.listResize();
 
-        if (this._dragging && this._draggedElement) {
+        if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
             this.recoverDraggedElement();
         }
 
@@ -166,17 +169,10 @@ export default class List extends LightningElement {
             this.template.querySelectorAll('.avonni-list__item-sortable')
         );
 
-        setTimeout(() => {
+        // Necessary to check to load more if the bottom is visible without scrolling
+        window.requestAnimationFrame(() => {
             this.handleScroll();
-        }, 0);
-    }
-
-    get showSpinnerSpacer() {
-        return (
-            this._showSpinnerSpacer &&
-            !this._isLoading &&
-            this.variant !== 'single-line'
-        );
+        });
     }
 
     disconnectedCallback() {
@@ -226,7 +222,7 @@ export default class List extends LightningElement {
 
     /**
      * If present, you can load a subset of data and then display more when users scroll to the end of the list or reach the last page of items in a single-line variant.
-     * Use with the onloadmore event handler to retrieve more data.
+     * Use with the loadmore event handler to retrieve more data.
      *
      * @type {boolean}
      * @public
@@ -235,10 +231,10 @@ export default class List extends LightningElement {
     get enableInfiniteLoading() {
         return this._enableInfiniteLoading;
     }
-
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
 
+        // When infinite loading is disabled, animate the spinner spacer to hide it.
         if (!this._enableInfiniteLoading) {
             setTimeout(() => {
                 this._hideSpinnerSpacer = true;
@@ -256,7 +252,6 @@ export default class List extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -319,22 +314,22 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns in the grid.
+     * Default number of columns in the grid and single-line variants on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @public
      */
     @api
     get cols() {
-        return this._columns;
+        return this._cols;
     }
     set cols(value) {
-        this._columns = this.normalizeColumns(value);
+        this._cols = this.normalizeColumns(value) || COLUMNS.default;
         this.listResize();
     }
 
     /**
-     * Number of columns for small grid container.
+     * Number of columns in the grid and single-line variants on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      * @type {number}
      * @public
      */
@@ -348,7 +343,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns for medium grid container.
+     * Number of columns in the grid and single-line variants on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @public
@@ -363,7 +358,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns for large grid container.
+     * Number of columns in the grid and single-line variants on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @public
@@ -399,10 +394,11 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.
+     * Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table.
      *
      * @type {Number}
      * @public
+     * @default 20
      */
     @api
     get loadMoreOffset() {
@@ -449,7 +445,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Variant to display as grid or list. Default is list.
+     * Variant to display the items as a grid, a single-line or a list. The list is the only variant that supports sorting. Default is list.
      *
      * @type {string}
      * @public
@@ -508,6 +504,17 @@ export default class List extends LightningElement {
             'avonni-list__item-image_object-fit-none':
                 this._imageCropFit === 'none'
         });
+    }
+
+    /**
+     * The spacer provides a better scrolling experience.
+     */
+    get showSpinnerSpacer() {
+        return (
+            this._showSpinnerSpacer &&
+            !this._isLoading &&
+            this.variant !== 'single-line'
+        );
     }
 
     /**
@@ -645,17 +652,14 @@ export default class List extends LightningElement {
      * are a portion of total computed items to display on a single page of item.
      *
      * @type {array}
-     * @private
      */
     get displayedItems() {
-        if (
-            this.variant === 'single-line' &&
-            this._effectiveColumnCount != null
-        ) {
-            const pageStart = this._effectiveColumnCount * this._singleLinePage;
+        if (this.variant === 'single-line') {
+            // the first index is the first item to display
+            const pageStart = this._currentColumnCount * this._singleLinePage;
             let pageItems = this.computedItems.slice(
                 pageStart,
-                this._effectiveColumnCount + pageStart
+                this._currentColumnCount + pageStart
             );
             return pageItems;
         }
@@ -678,8 +682,7 @@ export default class List extends LightningElement {
      */
     get totalPages() {
         return (
-            Math.ceil(this.computedItems.length / this._effectiveColumnCount) ||
-            1
+            Math.ceil(this.computedItems.length / this._currentColumnCount) || 1
         );
     }
 
@@ -761,27 +764,27 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12':
-                    this._effectiveColumnCount === 1 &&
+                    this._currentColumnCount === 1 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line'),
                 'slds-col slds-size_6-of-12':
-                    this._effectiveColumnCount === 2 &&
+                    this._currentColumnCount === 2 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line'),
                 'slds-col slds-size_4-of-12':
-                    this._effectiveColumnCount === 3 &&
+                    this._currentColumnCount === 3 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line'),
                 'slds-col slds-size_3-of-12':
-                    this._effectiveColumnCount === 4 &&
+                    this._currentColumnCount === 4 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line'),
                 'slds-col slds-size_2-of-12':
-                    this._effectiveColumnCount === 6 &&
+                    this._currentColumnCount === 6 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line'),
                 'slds-col slds-size_1-of-12':
-                    this._effectiveColumnCount === 12 &&
+                    this._currentColumnCount === 12 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line')
             })
@@ -867,43 +870,56 @@ export default class List extends LightningElement {
      * Calculate the number of columns depending on the width of the list.
      */
     listResize() {
-        const previousCols = this._effectiveColumnCount;
+        if (this.variant === 'list') {
+            return;
+        }
+        const previousColumnCount = this._currentColumnCount;
         if (!this.listContainer) {
             return;
         }
         const listWidth = this.listContainer.offsetWidth;
-        if (!listWidth) {
-            return;
-        }
+        let calculatedColumns;
 
-        // defaults to cols value
-        let calculatedColumns = this._columns;
-
-        if (
-            listWidth > MEDIA_QUERY_BREAKPOINTS.small &&
-            this._smallContainerCols > 0
+        if (listWidth < MEDIA_QUERY_BREAKPOINTS.small) {
+            calculatedColumns = this._cols;
+        } else if (
+            listWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
+            listWidth < MEDIA_QUERY_BREAKPOINTS.medium
         ) {
-            calculatedColumns = this._smallContainerCols;
-        }
-        if (
-            listWidth > MEDIA_QUERY_BREAKPOINTS.medium &&
-            this._mediumContainerCols > 0
+            if (this._smallContainerCols > 0) {
+                calculatedColumns = this._smallContainerCols;
+            } else {
+                calculatedColumns = this._cols;
+            }
+        } else if (
+            listWidth >= MEDIA_QUERY_BREAKPOINTS.medium &&
+            listWidth < MEDIA_QUERY_BREAKPOINTS.large
         ) {
-            calculatedColumns = this._mediumContainerCols;
-        }
-        if (
-            listWidth > MEDIA_QUERY_BREAKPOINTS.large &&
-            this._largeContainerCols > 0
-        ) {
-            calculatedColumns = this._largeContainerCols;
+            if (this._mediumContainerCols > 0) {
+                calculatedColumns = this._mediumContainerCols;
+            } else if (this._smallContainerCols > 0) {
+                calculatedColumns = this._smallContainerCols;
+            } else {
+                calculatedColumns = this._cols;
+            }
+        } else if (listWidth >= MEDIA_QUERY_BREAKPOINTS.large) {
+            if (this._largeContainerCols > 0) {
+                calculatedColumns = this._largeContainerCols;
+            } else if (this._mediumContainerCols > 0) {
+                calculatedColumns = this._mediumContainerCols;
+            } else if (this._smallContainerCols > 0) {
+                calculatedColumns = this._smallContainerCols;
+            } else {
+                calculatedColumns = this._cols;
+            }
         }
 
-        if (calculatedColumns !== this._effectiveColumnCount) {
-            this._effectiveColumnCount = calculatedColumns || 1;
+        if (calculatedColumns !== this._currentColumnCount) {
+            this._currentColumnCount = calculatedColumns;
         }
 
-        // go back to first page in single line view
-        if (previousCols !== this._effectiveColumnCount) {
+        // If the number of columns changed, go back to first page. The current page might be invalid with the new column count.
+        if (previousColumnCount !== this._currentColumnCount) {
             this._singleLinePage = 0;
         }
     }
@@ -911,25 +927,14 @@ export default class List extends LightningElement {
     /**
      * Only accept predetermined number of columns.
      *
-     * @param {number} cols
+     * @param {number} value
      * @returns {number}
      */
-    normalizeColumns(cols) {
-        let _value = cols;
-        if (typeof cols === 'string') {
-            _value = parseInt(cols, 10);
+    normalizeColumns(value) {
+        if (COLUMNS.valid.includes(value)) {
+            return value;
         }
-        if (
-            _value === 1 ||
-            _value === 2 ||
-            _value === 3 ||
-            _value === 4 ||
-            _value === 6 ||
-            _value === 12
-        ) {
-            return _value;
-        }
-        return 1;
+        return null;
     }
 
     /**
@@ -946,16 +951,12 @@ export default class List extends LightningElement {
      */
     nextPage() {
         window.requestAnimationFrame(() => {
-            const pageStart = this._effectiveColumnCount * this._singleLinePage;
+            const pageStart = this._currentColumnCount * this._singleLinePage;
             let nextPageItems = this.computedItems.slice(
-                this._effectiveColumnCount + pageStart,
-                this._effectiveColumnCount * 2 + pageStart
+                this._currentColumnCount + pageStart,
+                this._currentColumnCount * 2 + pageStart
             );
-            if (
-                nextPageItems.length === 0 &&
-                !this._isLoading &&
-                this.renderNumber !== 0
-            ) {
+            if (nextPageItems.length === 0 && !this._isLoading) {
                 this.handleLoadMore();
             }
         });
@@ -975,11 +976,7 @@ export default class List extends LightningElement {
 
         this._previousScrollTop = this._scrollTop;
         this._scrollTop = this.listContainer.scrollTop;
-        const scrollDelta = this._scrollTop - this._previousScrollTop;
-
-        setTimeout(() => {
-            this._initialY -= scrollDelta;
-        }, 0);
+        this._initialY -= this._scrollTop - this._previousScrollTop;
 
         const offsetFromBottom =
             this.listContainer.scrollHeight -
@@ -998,7 +995,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Restore the scroll position when the list is rerendered.
+     * Restore the scroll position when the list is rerendered. Needed when loading more items.
      */
     restoreScrollPosition() {
         const scrollTop = this.listContainer
@@ -1062,7 +1059,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Apply transformed to hovered item and items inbetween.
+     * Apply transform style to hovered item and items inbetween.
      *
      * @param {HTMLElement} hoveredItem
      */
@@ -1075,8 +1072,8 @@ export default class List extends LightningElement {
             10
         );
 
-        // this breaks when the transition is animated because the item remains hovered for
-        // a few milliseconds, reversing the animation.
+        // This breaks when the transform is animated with css because the item remains hovered for
+        // a few milliseconds, reversing the animation unpredictably.
         if (
             hoveredItem.classList.contains('avonni-list__item-sortable_moved')
         ) {
@@ -1099,7 +1096,7 @@ export default class List extends LightningElement {
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
         }
 
-        // get all items in between the dragged and hovered.
+        // Get all items in between the dragged and hovered.
         const itemsBetween = this._itemElements.filter((item) => {
             const itemIndex = Number(item.dataset.index);
             if (
@@ -1118,15 +1115,23 @@ export default class List extends LightningElement {
         if (itemsBetween.length > 0) {
             if (draggedIndex > hoveredIndex) {
                 itemsBetween.forEach((item) => {
+                    const tempIndex = parseInt(
+                        item.dataset.elementTempIndex,
+                        10
+                    );
                     item.classList.add('avonni-list__item-sortable_moved');
                     item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempHoveredIndex + 1;
+                    item.dataset.elementTempIndex = tempIndex + 1;
                 });
             } else if (draggedIndex < hoveredIndex) {
                 itemsBetween.forEach((item) => {
+                    const tempIndex = parseInt(
+                        item.dataset.elementTempIndex,
+                        10
+                    );
                     item.classList.add('avonni-list__item-sortable_moved');
                     item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempHoveredIndex - 1;
+                    item.dataset.elementTempIndex = tempIndex - 1;
                 });
             }
         }
@@ -1135,7 +1140,7 @@ export default class List extends LightningElement {
     /**
      * Remove transform style and class from all itmes.
      */
-    resetItemAnimations() {
+    resetItemsAnimations() {
         this._itemElements.forEach((item) => {
             if (item.classList.contains('avonni-list__item-sortable_moved')) {
                 item.classList.remove('avonni-list__item-sortable_moved');
@@ -1155,7 +1160,7 @@ export default class List extends LightningElement {
         this.computedItems.splice(hoveredIndex, 0, draggedItem);
 
         this.computedItems = [...this.computedItems];
-        this.resetItemAnimations();
+        this.resetItemsAnimations();
         this.updateAssistiveText();
     }
 
@@ -1202,9 +1207,10 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     initPositions(event) {
-        const menuPosition = this.template
-            .querySelector('.avonni-list__item-menu')
-            .getBoundingClientRect();
+        let menuPosition;
+        if (this.listContainer) {
+            menuPosition = this.listContainer.getBoundingClientRect();
+        }
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
         this._initialScrollHeight = this.listContainer.scrollHeight;
@@ -1255,6 +1261,11 @@ export default class List extends LightningElement {
             );
         }
 
+        if (this._keyboardDragged) {
+            this._keyboardDragged = false;
+            return;
+        }
+
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
@@ -1297,13 +1308,10 @@ export default class List extends LightningElement {
      * @param {HTMLElement} item
      */
     computeItemHeight(itemElement) {
-        const listCardItem = this.template.querySelector(
-            '.avonni-list__item-menu'
-        );
         let rowGap;
-        if (listCardItem) {
+        if (this.listContainer) {
             rowGap = parseInt(
-                getComputedStyle(listCardItem).rowGap.split('px')[0],
+                getComputedStyle(this.listContainer).rowGap.split('px')[0],
                 10
             );
         }
@@ -1316,12 +1324,21 @@ export default class List extends LightningElement {
      */
     recoverDraggedElement() {
         this._draggedElement = this.template.querySelector(
-            '[data-index="' + this._initialDraggedIndex + '"]'
+            `[data-index="${this._initialDraggedIndex}"]`
         );
         this._draggedIndex = this._initialDraggedIndex;
-        this.animateItems(this._currentY);
 
-        this._initialScrollHeight = this.listContainer.scrollHeight;
+        if (this._dragging) {
+            this.animateItems(this._currentY);
+            this._initialScrollHeight = this.listContainer.scrollHeight;
+        }
+        if (this._keyboardDragged && this._draggedElement) {
+            this._draggedElement.focus();
+            this.restoreItemsTransform(
+                this._draggedIndex,
+                this._keyboardMoveIndex
+            );
+        }
     }
 
     /**
@@ -1379,7 +1396,7 @@ export default class List extends LightningElement {
      * @param {number} currentY
      */
     animateItems(currentY) {
-        if (currentY) {
+        if (currentY && this._draggedElement) {
             this._draggedElement.style.transform = `translate( 0px, ${
                 currentY - this._initialY
             }px)`;
@@ -1409,15 +1426,17 @@ export default class List extends LightningElement {
             this.listContainer.scrollHeight - this.listContainer.scrollTop ===
             this.listContainer.clientHeight;
 
-        scrollStep = closeToTop ? -5 : closeToBottom ? 5 : 0;
+        if (closeToTop) {
+            scrollStep = -5;
+        } else if (closeToBottom) {
+            scrollStep = 5;
+        }
 
         if ((scrolledTop && closeToTop) || (scrolledBottom && closeToBottom)) {
             scrollStep = 0;
         }
 
         this._scrollStep = scrollStep;
-
-        return scrollStep;
     }
 
     /**
@@ -1426,7 +1445,7 @@ export default class List extends LightningElement {
      * @param {number} currentY
      */
     autoScroll(currentY) {
-        const scrollStep = this.computeScrollStep(currentY);
+        this.computeScrollStep(currentY);
 
         if (!this._scrollingInterval && this._draggedElement) {
             this._scrollingInterval = window.setInterval(() => {
@@ -1434,19 +1453,19 @@ export default class List extends LightningElement {
                     this.listContainer.scrollHeight > this._initialScrollHeight;
 
                 if (!overflowY) {
-                    this.listContainer.scrollBy(0, scrollStep);
+                    this.listContainer.scrollBy(0, this._scrollStep);
 
                     this.animateItems(currentY);
 
                     this._restrictMotion = true;
-                    setTimeout(() => {
+                    window.requestAnimationFrame(() => {
                         this._restrictMotion = false;
-                    }, 0);
+                    });
                 }
             }, 20);
         }
 
-        if (scrollStep === 0) {
+        if (this._scrollStep === 0) {
             window.clearInterval(this._scrollingInterval);
             this._scrollingInterval = null;
         }
@@ -1547,8 +1566,8 @@ export default class List extends LightningElement {
                 this.dragEnd();
                 this._keyboardDragged = false;
             } else {
-                this._keyboardDragged = true;
                 this.dragStart(event);
+                this._keyboardDragged = true;
             }
         } else if (this.sortable && this._draggedElement) {
             if (event.key === 'Escape' || event.key === 'Esc') {
@@ -1574,7 +1593,10 @@ export default class List extends LightningElement {
                         Number(item.dataset.elementTempIndex) === targetIndex
                 );
 
-                this.accessMoveItem(event.currentTarget, targetItem);
+                if (event.currentTarget && targetItem) {
+                    event.preventDefault();
+                    this.accessMoveItem(event.currentTarget, targetItem);
+                }
             }
         }
     }
@@ -1595,6 +1617,7 @@ export default class List extends LightningElement {
      * @param {HTMLElement} targetItem
      */
     accessMoveItem(currentItem, targetItem) {
+        this._keyboardDragged = true;
         const currentIndex = Number(currentItem.dataset.elementTempIndex);
         const targetIndex = Number(targetItem.dataset.elementTempIndex);
         const currentItemHeight = this.computeItemHeight(currentItem);
@@ -1619,17 +1642,48 @@ export default class List extends LightningElement {
                 currentItemTransform + targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
+            this.listContainer.scrollBy(0, currentItemHeight);
             this.checkKeyboardMoved(targetItem);
         } else if (currentIndex > targetIndex) {
             currentItem.style.transform = `translateY(${
                 currentItemTransform - targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${currentItemHeight}px)`;
+            this.listContainer.scrollBy(0, -currentItemHeight);
             this.checkKeyboardMoved(targetItem);
         }
 
+        // currentIndex;;
+
         targetItem.dataset.elementTempIndex = currentIndex;
         currentItem.dataset.elementTempIndex = targetIndex;
+
+        this._keyboardMoveIndex = targetIndex;
+    }
+
+    restoreItemsTransform(draggedIndex, targetIndex) {
+        window.requestAnimationFrame(() => {
+            const draggedItem = this._itemElements.find(
+                (item) => Number(item.dataset.index) === draggedIndex
+            );
+            const draggedItemHeight = this.computeItemHeight(draggedItem);
+            // get all items between dragged index and target index
+            const itemsBetween = this._itemElements.filter(
+                (item) =>
+                    Number(item.dataset.index) > draggedIndex &&
+                    Number(item.dataset.index) <= targetIndex
+            );
+            let draggedItemTransform = 0;
+            console.log('👩‍👩‍👦‍👦', itemsBetween);
+            itemsBetween.forEach((item) => {
+                draggedItemTransform += this.computeItemHeight(item);
+                item.style.transform = `translateY(${-draggedItemHeight}px)`;
+                item.classList.add('avonni-list__item-sortable_keyboard-moved');
+                item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
+            });
+            console.log(draggedItemTransform, draggedItemHeight);
+            draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
+        });
     }
 
     checkKeyboardMoved(targetItem) {

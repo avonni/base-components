@@ -346,10 +346,9 @@ export default class Datatable extends LightningDatatable {
         this.computeEditableOption();
 
         if (this.isLoading) {
-            console.log('💫 isLoading');
             const spinner = this.template.querySelector(
                 'lightning-primitive-datatable-loading-indicator'
-            )
+            );
             if (spinner) {
                 spinner.style.height = '40px';
             }

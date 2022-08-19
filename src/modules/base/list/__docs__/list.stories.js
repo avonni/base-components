@@ -60,8 +60,8 @@ export default {
         },
         cols: {
             control: { type: 'number' },
-            minimum: 1,
-            maximum: 12,
+            min: 1,
+            max: 12,
             description: 'Default number of columns',
             table: {
                 type: { summary: 'number' },
@@ -71,8 +71,8 @@ export default {
         smallContainerCols: {
             name: 'small-container-cols',
             control: { type: 'number' },
-            minimum: 1,
-            maximum: 12,
+            min: 1,
+            max: 12,
             description: 'Number of columns for small containers',
             table: {
                 type: { summary: 'number' },
@@ -82,8 +82,8 @@ export default {
         mediumContainerCols: {
             name: 'medium-container-cols',
             control: { type: 'number' },
-            minimum: 1,
-            maximum: 12,
+            min: 1,
+            max: 12,
             description: 'Number of columns for medium containers',
             table: {
                 type: { summary: 'number' },
@@ -93,8 +93,8 @@ export default {
         largeContainerCols: {
             name: 'large-container-cols',
             control: { type: 'number' },
-            minimum: 1,
-            maximum: 12,
+            min: 1,
+            max: 12,
             description: 'Number of columns for large containers',
             table: {
                 type: { summary: 'number' },
@@ -498,7 +498,7 @@ SortableWithAvatars.args = {
     items: itemsWithAvatars,
     actions,
     sortableIconName: 'utility:drag_and_drop',
-    // sortableIconPosition: 'left',
+    sortableIconPosition: 'left',
     sortable: true,
     divider: 'around'
 };
@@ -530,7 +530,7 @@ SortableWithImagesAndAvatars.args = {
 
 export const GridCardWithImages = Template.bind({});
 GridCardWithImages.args = {
-    label: 'Sortable grid with Avatars and Icons',
+    label: 'Grid Card with Images',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
@@ -546,7 +546,7 @@ GridCardWithImages.args = {
 
 export const InfiniteLoadingSingleLine = InfiniteGridTemplate.bind({});
 InfiniteLoadingSingleLine.args = {
-    label: 'Single Line',
+    label: 'Single Line with infinite loading',
     variant: 'single-line',
     items: [...itemsWithImages, ...itemsWithImages],
     enableInfiniteLoading: true,
@@ -564,7 +564,7 @@ InfiniteLoadingGrid.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'small'
+        size: 'medium'
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,
@@ -576,14 +576,11 @@ InfiniteLoadingGrid.args = {
 
 export const InfiniteLoadingList = InfiniteGridTemplate.bind({});
 InfiniteLoadingList.args = {
-    label: 'Grid with infinite loading',
+    label: 'Sortable list with infinite loading',
     items,
     actions: actions,
-    loadMoreOffset: 110,
+    // loadMoreOffset: 0,
     sortable: true,
     divider: 'around',
-    imageAttributes: {
-        size: 'large'
-    },
     enableInfiniteLoading: true
 };

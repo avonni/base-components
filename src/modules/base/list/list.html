@@ -51,7 +51,10 @@
     >
 
     <div class={computedListWrapperClass}>
-        <div class="slds-col" if:true={showPaginationButtons}>
+        <div
+            class="slds-col avonni-list__page-change-buttons"
+            if:true={showPaginationButtons}
+        >
             <lightning-button-icon
                 alternative-text="Previous Items"
                 disabled={previousPageDisabled}
@@ -88,7 +91,6 @@
                     onclick={handleItemClick}
                     data-index={index}
                     data-element-temp-index={index}
-                    data-position="0"
                     tabindex="0"
                     aria-label={item.label}
                     data-name={item.name}
@@ -230,30 +232,28 @@
                                     </p>
 
                                     <!-- Info -->
-                                    <template if:true={item.infos}>
-                                        <ul
-                                            if:true={item.infos.length}
-                                            class="
-                                                slds-list_horizontal
-                                                slds-has-dividers_left
-                                                slds-has-block-links
-                                            "
+                                    <ul
+                                        if:true={item.infos.length}
+                                        class="
+                                            slds-list_horizontal
+                                            slds-has-dividers_left
+                                            slds-has-block-links
+                                        "
+                                    >
+                                        <template
+                                            for:each={item.infos}
+                                            for:item="info"
                                         >
-                                            <template
-                                                for:each={item.infos}
-                                                for:item="info"
+                                            <li
+                                                key={info.label}
+                                                class="slds-item"
                                             >
-                                                <li
-                                                    key={info.label}
-                                                    class="slds-item"
+                                                <a href={info.href}
+                                                    >{info.label}</a
                                                 >
-                                                    <a href={info.href}
-                                                        >{info.label}</a
-                                                    >
-                                                </li>
-                                            </template>
-                                        </ul>
-                                    </template>
+                                            </li>
+                                        </template>
+                                    </ul>
                                 </div>
                             </div>
 
@@ -410,7 +410,10 @@
                 <div class="avonni-list__lower-spinner"></div>
             </li>
         </ul>
-        <div class="slds-col slds-is-relative" if:true={showPaginationButtons}>
+        <div
+            class="slds-col slds-is-relative avonni-list__page-change-buttons"
+            if:true={showPaginationButtons}
+        >
             <lightning-button-icon
                 alternative-text="Next Items"
                 disabled={nextPageDisabled}

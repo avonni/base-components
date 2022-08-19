@@ -57,30 +57,4 @@ export default class Datatable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
-
-    _originalData;
-    _dataLoads = 0;
-
-    connectedCallback() {
-        console.log(this.records);
-        this._originalData = this.records;
-    }
-
-    loadMoreData(event) {
-        const target = event.target;
-        console.log('loadMoreData', event.target);
-        event.target.isLoading = true;
-
-        if (this._dataLoads < 2) {
-            setTimeout(() => {
-                const newRecords = target.records.concat(this._originalData);
-                target.records = newRecords;
-                target.isLoading = false;
-                this._dataLoads++;
-            }, 1000);
-        } else {
-            // target.enableInfiniteLoading = false;
-            // target.isLoading = false;
-        }
-    }
 }

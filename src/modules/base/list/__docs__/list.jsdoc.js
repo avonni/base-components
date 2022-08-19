@@ -169,37 +169,42 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-between
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor-sortable
  * @default --avonni-list-item-cursor, grab
- * @type string
+ * @type styling
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor
- * @type string
+ * @type styling
  */
 /**
  * @memberof stylingHooks

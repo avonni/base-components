@@ -145,6 +145,11 @@
     max-height: 0px;
 }
 
+.avonni-list__page-change-buttons {
+    min-width: 30px;
+    max-width: 30px;
+}
+
 /* Disable the hover on touch */
 @media (hover: hover) {
     .avonni-list__item:hover {
@@ -171,11 +176,6 @@
 
 .avonni-list__item-expanded > div {
     width: 100%;
-}
-
-.avonni-list__item-sortable_moved {
-    /* the transition makes the item animation revert unpredictably */
-    /* transition: transform 300ms; */
 }
 
 .avonni-list__item-sortable_keyboard-moved {
