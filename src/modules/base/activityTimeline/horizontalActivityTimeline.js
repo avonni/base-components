@@ -359,14 +359,14 @@ export class HorizontalActivityTimeline {
      * Find the max date displayed in the scroll axis
      */
     get scrollAxisMaxDate() {
-        return this.findNextDate(this.maxDate, 15);
+        return this.findNextDate(this.maxDate, 15).setHours(0, 0, 0, 0);
     }
 
     /**
      * Find the min date displayed in the scroll axis
      */
     get scrollAxisMinDate() {
-        return this.findNextDate(this.minDate, -15);
+        return this.findNextDate(this.minDate, -15).setHours(0, 0, 0, 0);
     }
 
     /**
@@ -386,7 +386,7 @@ export class HorizontalActivityTimeline {
         return d3
             .scaleTime()
             .domain([this.scrollAxisMinDate, this.scrollAxisMaxDate])
-            .range([this._offsetAxis, this._timelineWidth]);
+            .range([this._offsetAxis, this._timelineWidth]);// this._offsetAxis , this._timelineWidth
     }
 
     /**
@@ -1063,7 +1063,7 @@ export class HorizontalActivityTimeline {
             .attr('stroke', TIMELINE_COLORS.timelineBorder)
             .attr('fill', 'transparent')
             .on('click', this.handleClickOnScrollAxis.bind(this));
-
+        
         this.addTimeIntervalToScrollAxis();
     }
 
