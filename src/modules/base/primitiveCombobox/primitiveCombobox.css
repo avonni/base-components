@@ -36,6 +36,8 @@
 
 .avonni-primitive-combobox__dropdown {
     box-sizing: content-box;
+    position: inherit;
+    z-index: 0;
 }
 
 input.avonni-primitive-combobox__input {
