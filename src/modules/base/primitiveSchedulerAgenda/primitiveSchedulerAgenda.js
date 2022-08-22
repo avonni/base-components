@@ -32,7 +32,6 @@
 
 import { api } from 'lwc';
 import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -47,6 +46,13 @@ import DayGroup from './dayGroup';
 
 const DEFAULT_SELECTED_DATE = new Date();
 
+/**
+ * Main part of the scheduler, when the selected display is "agenda".
+ *
+ * @class
+ * @descriptor c-primitive-scheduler-agenda
+ * @extends ScheduleBase
+ */
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
@@ -64,6 +70,28 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     *
+     * @type {(Date|number|string)}
+     * @public
+     * @default new Date()
+     */
+    @api
+    get selectedDate() {
+        return this._selectedDate;
+    }
+    set selectedDate(value) {
+        this._selectedDate =
+            dateTimeObjectFrom(value) ||
+            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+
+        if (this._connected) {
+            this.setStartToBeginningOfUnit();
+            this.initLeftPanelCalendarDisabledDates();
+        }
+    }
 
     /**
      * Object used to set the duration of the timeline. It should have two keys:
@@ -86,28 +114,6 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         }
     }
 
-    /**
-     * Specifies the selected date/timedate on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
-     *
-     * @type {(Date|number|string)}
-     * @public
-     * @default new Date()
-     */
-    @api
-    get selectedDate() {
-        return this._selectedDate;
-    }
-    set selectedDate(value) {
-        this._selectedDate =
-            dateTimeObjectFrom(value) ||
-            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
-
-        if (this._connected) {
-            this.setStartToBeginningOfUnit();
-            this.initLeftPanelCalendarDisabledDates();
-        }
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -127,6 +133,11 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this.initEventGroups();
     }
 
+    /**
+     * Computed resource options, displayed in the left panel as checkboxes.
+     *
+     * @type {object[]}
+     */
     get resourceOptions() {
         return this.resources.map((res) => {
             const style = `
@@ -144,16 +155,20 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         });
     }
 
-    get uniqueKey() {
-        return generateUUID();
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Add a new event to the agenda, without necessarily saving it.
+     *
+     * @param {number} x Position of the new event on the X axis.
+     * @param {number} y Position of the new event on the Y axis.
+     * @param {boolean} saveEvent If true, the event will be saved.
+     * @public
+     */
     @api
     newEvent(x, y, saveEvent) {
         const dayGroupElement = getElementOnYAxis(
@@ -174,6 +189,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the event groups.
+     */
     initEventGroups() {
         // Add the occurrences to each day it crosses in the map
         const dayMap = {};
@@ -242,6 +260,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this.computedGroups = groups;
     }
 
+    /**
+     * Initialize the events.
+     */
     initEvents() {
         super.initEvents();
         this._eventData.smallestHeader = { unit: 'hour', span: 1 };
@@ -249,12 +270,23 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this._eventData.initEvents();
     }
 
+    /**
+     * Initialize the resources.
+     */
     initResources() {
         this.computedResources = this.resources.map((res) => {
             return { ...res, height: 0, data: { res } };
         });
     }
 
+    /**
+     * Format an event time.
+     *
+     * @param {object} event Event of which the time should be formatted.
+     * @param {DateTime} from Starting date of the event.
+     * @param {DateTime} to Ending date of the event.
+     * @returns {string} Formatted time describing the event duration.
+     */
     formatTime(event, from, to) {
         if (event.referenceLine) {
             return from.toFormat('HH:mm');
@@ -266,6 +298,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         return `${from.toFormat('HH:mm')} - ${to.toFormat('HH:mm')}`;
     }
 
+    /**
+     * Set the selected date to the first available date.
+     */
     setSelectedDateToAvailableDate() {
         this._selectedDate = nextAllowedMonth(
             this.selectedDate,
@@ -278,6 +313,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         );
     }
 
+    /**
+     * Set the starting date of the agenda.
+     */
     setStartToBeginningOfUnit() {
         super.setStartToBeginningOfUnit();
 
@@ -290,15 +328,5 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();
-    }
-
-    /*
-     * ------------------------------------------------------------
-     *  EVENT HANDLERS AND DISPATCHERS
-     * -------------------------------------------------------------
-     */
-
-    stopPropagation(event) {
-        event.stopPropagation();
     }
 }

@@ -38,7 +38,7 @@ import {
     deepCopy,
     getWeekNumber
 } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 import Column from './column';
 import {
     getElementOnXAxis,
@@ -77,6 +77,8 @@ const MONTHS = {
 const SPLITTER_BAR_WIDTH = 12;
 
 /**
+ * Main part of the scheduler, when the selected display is "calendar".
+ *
  * @class
  * @descriptor c-primitive-scheduler-calendar
  * @extends ScheduleBase
@@ -190,7 +192,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Specifies the selected date/timedate on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
      * @public
@@ -489,15 +491,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get mainGridEventVariant() {
         return this.isMonth ? 'calendar-month' : 'calendar-vertical';
-    }
-
-    /**
-     * Automatically generated unique key.
-     *
-     * @type {string}
-     */
-    get uniqueKey() {
-        return generateUUID();
     }
 
     /*
@@ -1965,14 +1958,5 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             events: events.flat(),
             date
         };
-    }
-
-    /**
-     * Stop the propagation of an event.
-     *
-     * @param {Event} event
-     */
-    stopPropagation(event) {
-        event.stopPropagation();
     }
 }

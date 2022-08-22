@@ -39,6 +39,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
+import { generateUUID } from 'c/utils';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -524,6 +525,15 @@ export class ScheduleBase extends LightningElement {
     get isYear() {
         const { span, unit } = this.timeSpan;
         return unit === 'year' || (unit === 'month' && span > 1);
+    }
+
+    /**
+     * Automatically generated unique key.
+     *
+     * @type {string}
+     */
+    get uniqueKey() {
+        return generateUUID();
     }
 
     /*
@@ -1115,5 +1125,14 @@ export class ScheduleBase extends LightningElement {
                 detail: { start, visibleInterval }
             })
         );
+    }
+
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 }
