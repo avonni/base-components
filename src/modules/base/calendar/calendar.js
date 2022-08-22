@@ -247,7 +247,9 @@ export default class Calendar extends LightningElement {
     }
 
     set max(max) {
-        this._max = this.formattedWithTimezoneOffset(new Date(max));
+        const date = new Date(max);
+        const normalizedMax = this.isInvalidDate(date) ? DEFAULT_MAX : date;
+        this._max = this.formattedWithTimezoneOffset(normalizedMax);
         this._max.setHours(0, 0, 0, 0);
         if (this._isConnected) {
             this.validateCurrentDayValue();
@@ -271,7 +273,9 @@ export default class Calendar extends LightningElement {
     }
 
     set min(min) {
-        this._min = this.formattedWithTimezoneOffset(new Date(min));
+        const date = new Date(min);
+        const normalizedMin = this.isInvalidDate(date) ? DEFAULT_MIN : date;
+        this._min = this.formattedWithTimezoneOffset(normalizedMin);
         this._min.setHours(0, 0, 0, 0);
         if (this._isConnected) {
             this.validateCurrentDayValue();

@@ -61,7 +61,7 @@ describe('Primitive Metric', () => {
         expect(element.suffix).toBeUndefined();
         expect(element.trendBreakpointValue).toBe(0);
         expect(element.trendIcon).toBeUndefined();
-        expect(element.value).toBe(0);
+        expect(element.value).toBeUndefined();
         expect(element.valueSign).toBe('negative');
     });
 
@@ -74,6 +74,7 @@ describe('Primitive Metric', () => {
     // currency-code
     it('Primitive Metric: currencyCode', () => {
         element.currencyCode = 'EUR';
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -86,6 +87,7 @@ describe('Primitive Metric', () => {
     // currency-display-as
     it('Primitive Metric: currencyDisplayAs', () => {
         element.currencyDisplayAs = 'code';
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -98,6 +100,7 @@ describe('Primitive Metric', () => {
     // format-style
     it('Primitive Metric: formatStyle', () => {
         element.formatStyle = 'percent-fixed';
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -110,6 +113,7 @@ describe('Primitive Metric', () => {
     // maximum-fraction-digits
     it('Primitive Metric: maximumFractionDigits', () => {
         element.maximumFractionDigits = 2;
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -122,6 +126,7 @@ describe('Primitive Metric', () => {
     // maximum-significant-digits
     it('Primitive Metric: maximumSignificantDigits', () => {
         element.maximumSignificantDigits = 2;
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -134,6 +139,7 @@ describe('Primitive Metric', () => {
     // minimum-fraction-digits
     it('Primitive Metric: minimumFractionDigits', () => {
         element.minimumFractionDigits = 2;
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -146,6 +152,7 @@ describe('Primitive Metric', () => {
     // minimum-integer-digits
     it('Primitive Metric: minimumIntegerDigits', () => {
         element.minimumIntegerDigits = 2;
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -158,6 +165,7 @@ describe('Primitive Metric', () => {
     // minimum-significant-digits
     it('Primitive Metric: minimumSignificantDigits', () => {
         element.minimumSignificantDigits = 2;
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const number = element.shadowRoot.querySelector(
@@ -170,6 +178,7 @@ describe('Primitive Metric', () => {
     // prefix
     it('Primitive Metric: prefix', () => {
         element.prefix = 'some prefix';
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const prefix = element.shadowRoot.querySelector(
@@ -182,6 +191,7 @@ describe('Primitive Metric', () => {
     // suffix
     it('Primitive Metric: suffix', () => {
         element.suffix = 'some suffix';
+        element.value = 40;
 
         return Promise.resolve().then(() => {
             const suffix = element.shadowRoot.querySelector(
@@ -363,6 +373,17 @@ describe('Primitive Metric', () => {
                 '[data-element-id="lightning-formatted-number"]'
             );
             expect(number.value).toBe(30);
+        });
+    });
+
+    it('Primitive Metric: no value will hide the primitive', () => {
+        element.value = null;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper).toBeFalsy();
         });
     });
 

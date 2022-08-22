@@ -398,8 +398,7 @@ export default {
             description: 'Value of the statistic.',
             required: true,
             table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                type: { summary: 'number' }
             }
         },
         valueSign: {
@@ -426,7 +425,6 @@ export default {
         secondaryValueSign: 'negative',
         showTrendColor: false,
         trendBreakpointValue: 0,
-        value: 0,
         valueSign: 'negative'
     }
 };

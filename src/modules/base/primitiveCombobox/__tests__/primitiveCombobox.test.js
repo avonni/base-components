@@ -103,106 +103,123 @@ describe('PrimitiveCombobox', () => {
     it('Primitive combobox: actions', () => {
         element.actions = actions;
 
-        return Promise.resolve().then(() => {
-            element.actions.forEach((action) => {
-                expect(action).toBeInstanceOf(Action);
-            });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                element.actions.forEach((action) => {
+                    expect(action).toBeInstanceOf(Action);
+                });
 
-            // Top actions
-            const topActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-top-action"]'
-            );
-            expect(topActionElements).toHaveLength(topActions.length);
-            topActionElements.forEach((actionElement, index) => {
-                expect(actionElement.dataset.name).toBe(topActions[index].name);
-                const label = actionElement.querySelector(
-                    '[data-element-id="span-top-action-label"]'
+                // Top actions
+                const topActionElements = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-top-action"]'
                 );
-                expect(label.textContent).toBe(topActions[index].label);
-            });
+                expect(topActionElements).toHaveLength(topActions.length);
+                topActionElements.forEach((actionElement, index) => {
+                    expect(actionElement.dataset.name).toBe(
+                        topActions[index].name
+                    );
+                    const label = actionElement.querySelector(
+                        '[data-element-id="span-top-action-label"]'
+                    );
+                    expect(label.textContent).toBe(topActions[index].label);
+                });
 
-            // Bottom actions
-            const bottomActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
-            );
-            expect(bottomActionElements).toHaveLength(bottomActions.length);
-            bottomActionElements.forEach((actionElement, index) => {
-                expect(actionElement.dataset.name).toBe(
-                    bottomActions[index].name
-                );
-                const label = actionElement.querySelector(
-                    '.slds-listbox__option-text'
-                );
-                expect(label.textContent).toBe(bottomActions[index].label);
+                // Bottom actions
+                const bottomActionElements =
+                    element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-bottom-action"]'
+                    );
+                expect(bottomActionElements).toHaveLength(bottomActions.length);
+                bottomActionElements.forEach((actionElement, index) => {
+                    expect(actionElement.dataset.name).toBe(
+                        bottomActions[index].name
+                    );
+                    const label = actionElement.querySelector(
+                        '.slds-listbox__option-text'
+                    );
+                    expect(label.textContent).toBe(bottomActions[index].label);
+                });
             });
-        });
     });
 
     it('Primitive combobox: actions, disabled', () => {
         element.actions = actions;
 
-        return Promise.resolve().then(() => {
-            // Top actions
-            const topActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-top-action"]'
-            );
-            expect(topActionElements[2].classList).toContain(
-                'avonni-primitive-combobox__action_disabled'
-            );
-            expect(topActionElements[2].ariaDisabled).toBe('true');
-            [0, 1].forEach((index) => {
-                const action = topActionElements[index];
-                expect(action.classList).not.toContain(
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                // Top actions
+                const topActionElements = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-top-action"]'
+                );
+                expect(topActionElements[2].classList).toContain(
                     'avonni-primitive-combobox__action_disabled'
                 );
-                expect(action.ariaDisabled).toBe('false');
-            });
+                expect(topActionElements[2].ariaDisabled).toBe('true');
+                [0, 1].forEach((index) => {
+                    const action = topActionElements[index];
+                    expect(action.classList).not.toContain(
+                        'avonni-primitive-combobox__action_disabled'
+                    );
+                    expect(action.ariaDisabled).toBe('false');
+                });
 
-            // Bottom actions
-            const bottomActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
-            );
-            expect(bottomActionElements[0].classList).toContain(
-                'avonni-primitive-combobox__action_disabled'
-            );
-            expect(bottomActionElements[0].ariaDisabled).toBe('true');
-            [1, 2].forEach((index) => {
-                const action = bottomActionElements[index];
-                expect(action.classList).not.toContain(
+                // Bottom actions
+                const bottomActionElements =
+                    element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-bottom-action"]'
+                    );
+                expect(bottomActionElements[0].classList).toContain(
                     'avonni-primitive-combobox__action_disabled'
                 );
-                expect(action.ariaDisabled).toBe('false');
+                expect(bottomActionElements[0].ariaDisabled).toBe('true');
+                [1, 2].forEach((index) => {
+                    const action = bottomActionElements[index];
+                    expect(action.classList).not.toContain(
+                        'avonni-primitive-combobox__action_disabled'
+                    );
+                    expect(action.ariaDisabled).toBe('false');
+                });
             });
-        });
     });
 
     it('Primitive combobox: actions, icons', () => {
         element.actions = actions;
 
-        return Promise.resolve().then(() => {
-            // Top actions
-            const topActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-top-action"]'
-            );
-            [1, 2].forEach((index) => {
-                const action = topActionElements[index];
-                const icon = action.querySelector(
-                    '[data-element-id="lightning-icon-top-action"]'
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                // Top actions
+                const topActionElements = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-top-action"]'
+                );
+                [1, 2].forEach((index) => {
+                    const action = topActionElements[index];
+                    const icon = action.querySelector(
+                        '[data-element-id="lightning-icon-top-action"]'
+                    );
+                    expect(icon).toBeTruthy();
+                    expect(icon.iconName).toBe(topActions[index].iconName);
+                });
+
+                // Bottom actions
+                const bottomActionElements =
+                    element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-bottom-action"]'
+                    );
+                const icon = bottomActionElements[1].querySelector(
+                    '[data-element-id="lightning-icon-bottom-action"]'
                 );
                 expect(icon).toBeTruthy();
-                expect(icon.iconName).toBe(topActions[index].iconName);
+                expect(icon.iconName).toBe(bottomActions[1].iconName);
             });
-
-            // Bottom actions
-            const bottomActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
-            );
-            const icon = bottomActionElements[1].querySelector(
-                '[data-element-id="lightning-icon-bottom-action"]'
-            );
-            expect(icon).toBeTruthy();
-            expect(icon.iconName).toBe(bottomActions[1].iconName);
-        });
     });
 
     it('Primitive combobox: actions, fixed', () => {
@@ -211,37 +228,42 @@ describe('PrimitiveCombobox', () => {
         fixedActions[2].fixed = true;
         element.actions = fixedActions;
 
-        return Promise.resolve().then(() => {
-            // Top actions
-            const topActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-top-action"]'
-            );
-            // Fixed actions are always first on top
-            expect(topActionElements[0].classList).toContain(
-                'avonni-primitive-combobox__action_fixed'
-            );
-            [1, 2].forEach((index) => {
-                const action = topActionElements[index];
-                expect(action.classList).not.toContain(
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                // Top actions
+                const topActionElements = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-top-action"]'
+                );
+                // Fixed actions are always first on top
+                expect(topActionElements[0].classList).toContain(
                     'avonni-primitive-combobox__action_fixed'
                 );
-            });
+                [1, 2].forEach((index) => {
+                    const action = topActionElements[index];
+                    expect(action.classList).not.toContain(
+                        'avonni-primitive-combobox__action_fixed'
+                    );
+                });
 
-            // Bottom actions
-            const bottomActionElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
-            );
-            // Bottom actions are always last on bottom
-            expect(bottomActionElements[2].classList).toContain(
-                'avonni-primitive-combobox__action_fixed'
-            );
-            [0, 1].forEach((index) => {
-                const action = bottomActionElements[index];
-                expect(action.classList).not.toContain(
+                // Bottom actions
+                const bottomActionElements =
+                    element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-bottom-action"]'
+                    );
+                // Bottom actions are always last on bottom
+                expect(bottomActionElements[2].classList).toContain(
                     'avonni-primitive-combobox__action_fixed'
                 );
+                [0, 1].forEach((index) => {
+                    const action = bottomActionElements[index];
+                    expect(action.classList).not.toContain(
+                        'avonni-primitive-combobox__action_fixed'
+                    );
+                });
             });
-        });
     });
 
     // allow-search
@@ -322,138 +344,197 @@ describe('PrimitiveCombobox', () => {
     // dropdown-alignment
     it('Primitive combobox: dropdown-alignment = left', () => {
         element.dropdownAlignment = 'left';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_right');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = auto', () => {
         element.dropdownAlignment = 'auto';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_right');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = center', () => {
         element.dropdownAlignment = 'center';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_left');
+                expect(dropdown.classList).toContain('slds-dropdown_center');
+                expect(dropdown.classList).not.toContain('slds-dropdown_right');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = right', () => {
         element.dropdownAlignment = 'right';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).toContain('slds-dropdown_right');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = bottom-center', () => {
         element.dropdownAlignment = 'bottom-center';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_right');
+                expect(dropdown.classList).toContain('slds-dropdown_bottom');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = bottom-right', () => {
         element.dropdownAlignment = 'bottom-right';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom-right');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).toContain('slds-dropdown_right');
+                expect(dropdown.classList).toContain('slds-dropdown_bottom');
+                expect(dropdown.classList).toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     it('Primitive combobox: dropdown-alignment = bottom-left', () => {
         element.dropdownAlignment = 'bottom-left';
+        element.options = options;
 
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector(
-                '[data-element-id="div-dropdown"]'
-            );
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).toContain('slds-dropdown_bottom-left');
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown.classList).toContain('slds-dropdown_left');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_center'
+                );
+                expect(dropdown.classList).not.toContain('slds-dropdown_right');
+                expect(dropdown.classList).toContain('slds-dropdown_bottom');
+                expect(dropdown.classList).not.toContain(
+                    'slds-dropdown_bottom-right'
+                );
+                expect(dropdown.classList).toContain(
+                    'slds-dropdown_bottom-left'
+                );
+            });
     });
 
     // field-level-help
@@ -510,24 +591,32 @@ describe('PrimitiveCombobox', () => {
         element.options = options;
         element.isLoading = false;
 
-        return Promise.resolve().then(() => {
-            const spinner = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-spinner"]'
-            );
-            expect(spinner).toBeFalsy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+            });
     });
 
     it('Primitive combobox: isLoading = true', () => {
         element.options = options;
         element.isLoading = true;
 
-        return Promise.resolve().then(() => {
-            const spinner = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-spinner"]'
-            );
-            expect(spinner).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
+            });
     });
 
     // label
