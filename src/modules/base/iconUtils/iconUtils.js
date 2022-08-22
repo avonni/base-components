@@ -32,7 +32,6 @@
 
 import { getPathPrefix, getToken } from 'lightning/configProvider';
 import isIframeInEdge from './isIframeInEdge';
-export { hasIconLibrary, getIconLibrary, fetchIconLibrary } from './fetch';
 
 const validNameRe = /^([a-zA-Z]+):([a-zA-Z]\w*)$/;
 const underscoreRe = /_/g;
