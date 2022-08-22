@@ -31,6 +31,14 @@
  * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
+/**
+ * @typedef {Object} ImageAttributes
+ * @name imageAttributes
+ * @property {string} size The size of the images in the list, grid or single-line. On the list, the size controls the width of the image. On the grid and single-line, the size controls the height of the image. Valid values are ‘small’, ‘medium’, ‘large’. The value defaults to ‘large’.
+ * @property {string} cropFit The 'object-fit' css property. Supported values are ‘cover', 'contain', 'fill' and 'none'. The value default to 'cover’.
+ * @property {number} cropPositionX The image 'object-position' horizontal percentage property. The default is 50.
+ * @property {number} cropPositionY The image 'object-position' vertical percentage property. The default is 50.
+ */
 
 /**
  * @namespace stylingHooks

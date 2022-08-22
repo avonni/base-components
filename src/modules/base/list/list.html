@@ -231,7 +231,7 @@
 
                                     <!-- Info -->
                                     <ul
-                                        if:true={item.infos.length}
+                                        if:true={item.infos}
                                         class="
                                             slds-list_horizontal
                                             slds-has-dividers_left
@@ -404,11 +404,11 @@
                     alternative-text="Loading..."
                 ></lightning-spinner>
             </li>
-            <!--
-                check when is loading, and scroll to see it if already all the way down
-                <li class={computedSpinnerClass} if:true={showSpinnerSpacer}>
+
+            <!-- check when is loading, and scroll to see it if already all the way down -->
+            <li class={computedSpinnerClass} if:true={showSpinnerSpacer}>
                 <div class="avonni-list__lower-spinner"></div>
-            </li> -->
+            </li>
         </ul>
         <div
             class="slds-col slds-is-relative avonni-list__page-change-buttons"

@@ -43,9 +43,11 @@ import List from 'c/list';
 // Not tested:
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
 // Touch events (we can't artificially give a touch position to save in _initialY)
-// Number of columns displayed. It depends on the screen size.
 
-let element;
+let element = Element.prototype;
+element.scrollTo = jest.fn();
+element.scrollBy = jest.fn();
+
 describe('List', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -60,6 +62,8 @@ describe('List', () => {
         element = createElement('base-list', {
             is: List
         });
+        element.scrollTo = jest.fn();
+        element.scrollBy = jest.fn();
         jest.useFakeTimers();
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
             setTimeout(() => cb(), 0);
@@ -106,16 +110,19 @@ describe('List', () => {
     // cols
     it('List: Columns, cols', () => {
         element.items = ITEMS;
-        element.cols = 1;
+        element.cols = 3;
         element.variant = 'grid';
 
-        return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                '[data-element-id="li-item"]'
-            );
-            expect(element.cols).toBe(1);
-            expect(item.classList).toContain('slds-size_12-of-12');
-        });
+        return Promise.resolve()
+            .then(() => {
+                expect(element.cols).toBe(3);
+            })
+            .then(() => {
+                const item = element.shadowRoot.querySelector(
+                    '[data-element-id="li-item"]'
+                );
+                expect(item.classList).toContain('slds-size_4-of-12');
+            });
     });
 
     // items
@@ -189,7 +196,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('avonni-list__has-card-style');
         });
@@ -199,7 +206,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('slds-has-dividers_top-space');
         });
@@ -209,7 +216,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
@@ -314,7 +321,7 @@ describe('List', () => {
                 '[data-element-id="li-item"]'
             );
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
 
             expect(menu.role).toBe('listbox');
@@ -485,7 +492,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('slds-grid_vertical');
         });
@@ -497,7 +504,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('avonni-list__grid-display');
         });
@@ -509,7 +516,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-container"]'
             );
             expect(menu.classList).toContain('avonni-list__grid-display');
         });

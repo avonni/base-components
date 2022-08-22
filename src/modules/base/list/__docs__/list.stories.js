@@ -564,7 +564,8 @@ InfiniteLoadingGrid.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'medium'
+        size: 'medium',
+        cropPositionX: 0
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,

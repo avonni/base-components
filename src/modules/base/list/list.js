@@ -148,9 +148,8 @@ export default class List extends LightningElement {
     _showSpinnerSpacer = false;
     _hideSpinnerSpacer = false;
 
-    renderNumber = false;
     renderedCallback() {
-        if (this.renderNumber++ === 1) {
+        if (!this._resizeObserver && this._variant !== 'list') {
             this.initWrapObserver();
         }
 
@@ -166,10 +165,10 @@ export default class List extends LightningElement {
         }
 
         this._itemElements = Array.from(
-            this.template.querySelectorAll('.avonni-list__item-sortable')
+            this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
-        // Necessary to check to load more if the bottom is visible without scrolling
+        // To check if the bottom is reached without scrolling.
         window.requestAnimationFrame(() => {
             this.handleScroll();
         });
@@ -225,6 +224,7 @@ export default class List extends LightningElement {
      * Use with the loadmore event handler to retrieve more data.
      *
      * @type {boolean}
+     * @default false
      * @public
      */
     @api
@@ -246,6 +246,7 @@ export default class List extends LightningElement {
      * If true a loading animation is shown.
      *
      * @type {boolean}
+     * @default false
      * @public
      */
     @api
@@ -300,10 +301,12 @@ export default class List extends LightningElement {
             });
         }
 
-        this._imagePositionY =
-            value.cropPositionY != null ? value.cropPositionY : 50;
-        this._imagePositionX =
-            value.cropPositionX != null ? value.cropPositionX : 50;
+        this._imagePositionY = !isNaN(value.cropPositionY)
+            ? value.cropPositionY
+            : 50;
+        this._imagePositionX = !isNaN(value.cropPositionX)
+            ? value.cropPositionX
+            : 50;
 
         if (value.cropFit) {
             this._imageCropFit = normalizeString(value.cropFit, {
@@ -389,7 +392,6 @@ export default class List extends LightningElement {
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
             item.icons = normalizeArray(item.icons);
-            // item.label = item.label;
         });
     }
 
@@ -878,8 +880,8 @@ export default class List extends LightningElement {
             return;
         }
         const listWidth = this.listContainer.offsetWidth;
-        let calculatedColumns;
 
+        let calculatedColumns;
         if (listWidth < MEDIA_QUERY_BREAKPOINTS.small) {
             calculatedColumns = this._cols;
         } else if (
@@ -1626,11 +1628,15 @@ export default class List extends LightningElement {
         this._draggedElement = currentItem;
         this._hoveredIndex = targetIndex;
 
-        // come back here 🛑
-        // Fix test: DOMMatrixReadOnly is not supported by jest
-        // because it's available through a web worker interface
-        const matrix = new DOMMatrixReadOnly(currentItem.style.transform);
-        const currentItemYTransform = matrix.f;
+        // const matrix = new DOMMatrixReadOnly(currentItem.style.transform);
+        // const currentItemYTransform = matrix.f;
+
+        let currentItemYTransform = currentItem.style.transform.match(
+            /translateY\((-?\d+(?:\.\d*)?)px/
+        );
+        if (currentItemYTransform) {
+            currentItemYTransform = parseInt(currentItemYTransform[1], 10) || 0;
+        }
 
         if (currentIndex < targetIndex) {
             currentItem.style.transform = `translateY(${
