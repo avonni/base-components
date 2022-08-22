@@ -76,6 +76,11 @@ const MONTHS = {
 };
 const SPLITTER_BAR_WIDTH = 12;
 
+/**
+ * @class
+ * @descriptor c-primitive-scheduler-calendar
+ * @extends ScheduleBase
+ */
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     _selectedResources = [];
@@ -166,6 +171,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Array of resource objects. The resources can be bound to events.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get resources() {
         return super.resources;
@@ -205,6 +216,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Object used to set the duration of the calendar. It should have two keys:
+     * * unit (minute, hour, day, week, month or year)
+     * * span (number).
+     *
+     * @type {object}
+     * @public
+     * @default { unit: 'day', span: 1 }
+     */
     @api
     get timeSpan() {
         return super.timeSpan;
@@ -229,12 +249,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
-    get cellsGrid() {
-        return this.template.querySelector(
-            '[data-element-id="div-cells-grid"]'
-        );
-    }
-
+    /**
+     * Formatted available months, used to generate the calendars in the year view.
+     *
+     * @type {object[]}
+     */
     get computedAvailableMonths() {
         const months = this.getVisibleMonths();
         return months.map((month) => {
@@ -253,6 +272,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Computed day headers, used by the horizontal primitive headers visible in the day, week and month view.
+     *
+     * @type {object[]}
+     */
     get dayHeaders() {
         const isMonth =
             this.isMonth || (!this.isWeek && this.timeSpan.unit === 'week');
@@ -266,6 +290,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         ];
     }
 
+    /**
+     * Computed CSS class for the horizontal primitive headers visible in the day, week and month view.
+     *
+     * @type {string}
+     */
     get dayHeadersClass() {
         return classSet('avonni-scheduler__calendar-header')
             .add({
@@ -274,6 +303,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             .toString();
     }
 
+    /**
+     * Computed visible time span, used by the horizontal primitive headers visible in the day, week and month view.
+     *
+     * @type {object}
+     */
     get dayHeadersTimeSpan() {
         const oneDay = this.isDay && this.timeSpan.span <= 1;
         if (oneDay) {
@@ -290,12 +324,22 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         };
     }
 
+    /**
+     * True if the primitive headers are loading.
+     *
+     * @type {boolean}
+     */
     get headersAreLoading() {
         return this.isMonth
             ? this._dayHeadersLoading
             : this._dayHeadersLoading || this._hourHeadersLoading;
     }
 
+    /**
+     * Time span used by the vertical primitive headers visible in the day and week view.
+     *
+     * @type {object}
+     */
     get hourHeadersTimeSpan() {
         return {
             unit: 'day',
@@ -303,6 +347,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         };
     }
 
+    /**
+     * Hour headers used by the vertical primitive headers visible in the day and week view.
+     *
+     * @type {object[]}
+     */
     get hourHeaders() {
         return [
             {
@@ -313,21 +362,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         ];
     }
 
+    /**
+     * HTML element of the left panel content.
+     *
+     * @type {HTMLElement}
+     */
     get leftPanelContent() {
         return this.template.querySelector(
             '[data-element-id="div-panel-content"]'
         );
     }
 
+    /**
+     * Computed events displayed in the main grid.
+     *
+     * @type {object[]}
+     */
     get mainGridEvents() {
         return this.isMonth || this.isYear
             ? this.singleDayEvents.concat(this.multiDayEvents)
             : this.singleDayEvents;
     }
 
+    /**
+     * Computed header cells used by the multi-day primitive events visible in the day and week view.
+     *
+     * @type {object}
+     */
     get multiDayEventHeaderCells() {
         if (!this.eventHeaderCells.xAxis) {
-            return [];
+            return {};
         }
         // Normalize the end and start of the first and last cells
         const cells = [...this.eventHeaderCells.xAxis];
@@ -338,16 +402,31 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return { xAxis: cells };
     }
 
+    /**
+     * True if the multi-day events are read-only.
+     *
+     * @type {boolean}
+     */
     get multiDayEventReadOnly() {
         return this.readOnly || (this.isDay && !this.timeSpan.span > 1);
     }
 
+    /**
+     * HTML element of the multi-day events wrapper.
+     *
+     * @type {HTMLElement}
+     */
     get multiDayWrapper() {
         return this.template.querySelector(
             '[data-element-id="div-multi-day-events-wrapper"]'
         );
     }
 
+    /**
+     * Computed resource options, displayed in the left panel as checkboxes.
+     *
+     * @type {object[]}
+     */
     get resourceOptions() {
         return this.resources.map((res) => {
             const style = `
@@ -366,26 +445,35 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the schedule column.
+     * Computed CSS class for the schedule wrapper.
      *
      * @type {string}
      */
-    get scheduleColClass() {
+    get scheduleWrapperClass() {
         return classSet(
-            'avonni-primitive-scheduler-calendar__inherit-height slds-grid'
+            'slds-grid avonni-primitive-scheduler-calendar__inherit-height'
         )
             .add({
-                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit,
                 'slds-grid_vertical': !this.isYear,
                 'slds-wrap slds-scrollable_y': this.isYear
             })
             .toString();
     }
 
+    /**
+     * True if the primitive hour headers should be visible.
+     *
+     * @type {boolean}
+     */
     get showHourHeaders() {
         return this.isDay || this.isWeek;
     }
 
+    /**
+     * True if the multi-day events should be visible.
+     *
+     * @type {boolean}
+     */
     get showTopMultiDayEvents() {
         return (
             !this.isMonth &&
@@ -394,10 +482,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         );
     }
 
-    get singleDayEventVariant() {
+    /**
+     * Variant of the main grid events.
+     *
+     * @type {string}
+     */
+    get mainGridEventVariant() {
         return this.isMonth ? 'calendar-month' : 'calendar-vertical';
     }
 
+    /**
+     * Automatically generated unique key.
+     *
+     * @type {string}
+     */
     get uniqueKey() {
         return generateUUID();
     }
@@ -408,18 +506,38 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Create a new event.
+     *
+     * @param {object} event New event object.
+     * @public
+     */
     @api
     createEvent(event) {
         super.createEvent(event);
         this.updateColumnEvents();
     }
 
+    /**
+     * Delete an event.
+     *
+     * @param {string} name Unique name of the event to delete.
+     * @public
+     */
     @api
     deleteEvent(name) {
         super.deleteEvent(name);
         this.updateColumnEvents();
     }
 
+    /**
+     * Add a new event to the grid, without necessarily saving it.
+     *
+     * @param {number} x Position of the new event on the X axis.
+     * @param {number} y Position of the new event on the Y axis.
+     * @param {boolean} saveEvent If true, the event will be saved.
+     * @public
+     */
     @api
     newEvent(x, y, saveEvent) {
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
@@ -430,6 +548,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.newEvent({ from, resourceNames, to, x, y }, saveEvent);
     }
 
+    /**
+     * Save the changes made to the selected event.
+     *
+     * @param {string} recurrenceMode Edition mode of the recurrent events. Valid values include one or all.
+     * @public
+     */
     @api
     saveSelection(recurrenceMode) {
         super.saveSelection(recurrenceMode);
@@ -442,6 +566,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the event data.
+     */
     initEvents() {
         super.initEvents();
         this._eventData.isCalendar = true;
@@ -464,6 +591,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.updateColumnEvents();
     }
 
+    /**
+     * Initialize the headers.
+     */
     initHeaders() {
         if (this.isYear) {
             this._dayHeadersLoading = false;
@@ -522,6 +652,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Initialize the event header cells and the visible interval for the month view.
+     */
     initMonthTimeBoundaries() {
         // Set the vertical event header reference cells
         const lastColumn = this.columns[this.columns.length - 1];
@@ -561,17 +694,26 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.updateCellWidth();
             this.updateVisibleWidth();
         });
-        resizeObserver.observe(this.cellsGrid);
+        const grid = this.template.querySelector(
+            '[data-element-id="div-cells-grid"]'
+        );
+        resizeObserver.observe(grid);
         resizeObserver.observe(this.leftPanelContent);
         return resizeObserver;
     }
 
+    /**
+     * Initialize the resources.
+     */
     initResources() {
         this.computedResources = this.resources.map((res) => {
             return { ...res, height: 0, data: { res } };
         });
     }
 
+    /**
+     * Center the calendars visible in the year view on their month.
+     */
     centerCalendarsOnRightMonths() {
         const calendars = this.template.querySelectorAll(
             '[data-element-id="avonni-calendar-year-month"]'
@@ -589,6 +731,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Compute the reference cells of a column, in the month view. Each cell is one day long.
+     *
+     * @param {object} column Column of which the reference cells should be computed.
+     * @param {DateTime} date Starting date of the column.
+     * @param {number} minNumberOfCells Minimum number of cells in the column. It is used to make sure that if the first column includes cells from the previous month, the next columns will have the same amount of cells.
+     */
     computeDayCells(column, date, minNumberOfCells) {
         const { unit, span } = this.timeSpan;
         const currentMonth =
@@ -621,8 +770,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Compute the reference cells of a column in the day or week views. Each cell is one hour long.
+     *
+     * @param {object} column Column of which the reference cells should be computed.
+     * @param {DateTime} date Starting date of the column.
+     */
     computeHourCells(column, date) {
-        const availableHours = this.getAvailableHours(date);
+        const availableHours = this.getAvailableHours();
+        availableHours.sort((a, b) => a - b);
 
         for (let j = 0; j < availableHours.length; j++) {
             date = date.set({ hour: availableHours[j] });
@@ -635,6 +791,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Only used by the month view. Create copies of the given event occurrence, one for each subsequent week it spans on. These placeholders will be visible.
+     *
+     * @param {object} occ Event occurrence to be copied.
+     * @param {object[]} cells Cells crossed by the occurrence.
+     * @param {object} event Event the occurrence belongs to.
+     * @returns {object[]} Placeholders created.
+     */
     createVisibleMultiWeekPlaceholders(occ, cells, event) {
         const placeholders = [];
         const eventKeysToCopy = [
@@ -661,6 +825,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return placeholders;
     }
 
+    /**
+     * Focus the close button of the show more popover.
+     */
     focusPopoverClose = () => {
         const closeButton = this.template.querySelector(
             '[data-element-id="lightning-button-icon-show-more-close"]'
@@ -672,8 +839,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._showMorePopoverContextMenuIsOpened = false;
     };
 
-    getAvailableHours(start) {
-        let time = dateTimeObjectFrom(start);
+    /**
+     * Get the available hours in one day.
+     *
+     * @returns {number[]} Available hours.
+     */
+    getAvailableHours() {
+        let time = dateTimeObjectFrom(new Date());
         const availableHours = [];
 
         for (let i = 0; i < 24; i++) {
@@ -685,6 +857,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return availableHours;
     }
 
+    /**
+     * Get the HTML element of a column from its position on the X axis.
+     *
+     * @param {number} x Position of the column on the X axis.
+     * @param {boolean} isMultiDayColumn If true, the column is a multi-day column.
+     * @returns {HTMLElement} HTML element of the column.
+     */
     getColumnElementFromPosition(x, isMultiDayColumn) {
         const selector = isMultiDayColumn
             ? `[data-element-id="div-multi-day-events-wrapper"] ${CELL_SELECTOR}`
@@ -692,6 +871,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return getElementOnXAxis(this.template, x, selector);
     }
 
+    /**
+     * Get the marked dates in the calendar of a specific month of the year view.
+     *
+     * @param {number} month Month of which the marked dates should be returned.
+     * @returns {object[]} Array of valid calendar marked dates.
+     */
     getMonthMarkedDates(month) {
         let date = this.start;
         if (month < this.start.month) {
@@ -741,6 +926,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }, []);
     }
 
+    /**
+     * Get the placeholders for the given occurrence, in a specific column.
+     *
+     * @param {boolean} isFirstCol True if the current column is the first one.
+     * @param {object} col Column in which the placeholders should be created.
+     * @param {object} event Event the occurrence belongs to.
+     * @param {object} occ Occurrence of which the placeholders belong to.
+     * @returns {object[]} Placeholders created.
+     */
     getMultiDayPlaceholders(isFirstCol, col, event, occ) {
         const { from, to } = occ;
         const isMultiDay = spansOnMoreThanOneDay(
@@ -765,8 +959,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         let placeholders = [];
         if (spansOnMoreThanOneWeek && isFirstCol) {
-            // Create copies of the occurrence for each subsequent week it spans on.
-            // These placeholders will be visible.
             placeholders = this.createVisibleMultiWeekPlaceholders(
                 occ,
                 cellsPassed,
@@ -774,7 +966,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             );
             occ.copies = placeholders;
         } else {
-            // Create hidden placeholders in any other column
+            // Create hidden placeholders in any other cell
             cellsPassed.forEach((cell) => {
                 let placeholderOccurrence = occ;
                 if (occ.copies) {
@@ -783,7 +975,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     });
                     if (copy) {
                         // Always use the first column occurrence or visible placeholder
-                        // as a reference for the other row placeholders
+                        // as a reference for the other rows placeholders
                         placeholderOccurrence = copy;
                     }
                 }
@@ -793,6 +985,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return placeholders;
     }
 
+    /**
+     * Get the multi-day placeholders present in a specific cell.
+     *
+     * @param {object} cell Cell in which the placeholders are.
+     * @returns {object[]} Placeholders present in the cell.
+     */
     getMultiDayPlaceholdersInCell(cell) {
         const placeholders = [];
 
@@ -812,6 +1010,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return placeholders;
     }
 
+    /**
+     * Get the color associated with a resource.
+     *
+     * @param {string} resourceName Unique name of the resource.
+     * @returns {string} Color of the resource, or undefined if not found.
+     */
     getResourceColor(resourceName) {
         const resource = this.resources.find(
             (res) => res.name === resourceName
@@ -819,6 +1023,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return resource && resource.color;
     }
 
+    /**
+     * Get the visible week days displayed as columns in the day, week and month views.
+     *
+     * @param {DateTime} startDate Start date.
+     * @returns {number[]} Array of the visible week days numbers.
+     */
     getVisibleWeekdays(startDate) {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
@@ -843,6 +1053,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return availableDays;
     }
 
+    /**
+     * Get the visible months displayed in the year view.
+     *
+     * @returns {number[]} Array of the visible months numbers.
+     */
     getVisibleMonths() {
         const { unit, span } = this.timeSpan;
         if (unit === 'year') {
@@ -861,6 +1076,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return months;
     }
 
+    /**
+     * Hide the placeholders corresponding to the selected event occurrence.
+     */
     hideSelectionPlaceholders() {
         const key = this._eventData.selection.occurrence.key;
         const placeholders = this.template.querySelectorAll(
@@ -871,6 +1089,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Check if a cell is disabled.
+     *
+     * @param {object} cell Cell to check.
+     * @returns {boolean} True if the cell is disabled.
+     */
     isDisabledCell(cell) {
         const start = Number(cell.dataset.start);
         if (this.isMonth && start) {
@@ -883,7 +1107,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Push the vertical headers, so their top is aligned with the bottom of the horizontal headers.
+     * Align the horizontal headers with the end of the vertical headers.
      */
     setHorizontalHeadersSideSpacing() {
         const horizontalHeaders = this.template.querySelector(
@@ -903,13 +1127,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         } else {
             horizontalHeaders.style.paddingLeft = null;
         }
-
-        // Align the horizontal headers with the right scrollbar, if any
-        const scrollBarWidth =
-            this.cellsGrid.offsetWidth - this.cellsGrid.clientWidth;
-        horizontalHeaders.style.marginRight = `${scrollBarWidth}px`;
     }
 
+    /**
+     * Set the headers' loader height to the height of the left panel.
+     */
     setLoaderHeight() {
         const loader = this.template.querySelector(
             '[data-element-id="div-loading-spinner"]'
@@ -919,6 +1141,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Set the selected date to the first available date.
+     */
     setSelectedDateToAvailableDate() {
         this._selectedDate = nextAllowedMonth(
             this.selectedDate,
@@ -933,6 +1158,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Set the starting date of the calendar.
+     */
     setStartToBeginningOfUnit() {
         super.setStartToBeginningOfUnit();
         const { unit, span } = this.timeSpan;
@@ -949,12 +1177,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Update the default cell height.
+     */
     updateCellHeight() {
         const numberOfRows = this.columns[0].referenceCells.length;
         const splitter = this.template.querySelector(
             '[data-element-id="avonni-splitter"]'
         );
-        const splitterHeight = splitter.getBoundingClientRect().height;
+        const splitterHeight = splitter.getBoundingClientRect().height - 2;
         const dayHeaders = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
         );
@@ -966,6 +1197,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         `;
     }
 
+    /**
+     * Update the column objects events and placeholders.
+     */
     updateColumnEvents() {
         this.columns.forEach((col, index) => {
             const events = [];
@@ -1008,6 +1242,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Update the multi-day row object events.
+     */
     updateMultiDayCellGroupEvents() {
         const multiDayOccurrences = [];
         const disabledMultiDayOccurrences = [];
@@ -1024,6 +1261,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.multiDayEventsCellGroup.initCells();
     }
 
+    /**
+     * Update the given event occurrences offset. The offset is used to prevent the occurrences from overlaping even if they are on the same time frame.
+     *
+     * @param {object} cellGroup Object containing the event occurrences to update. Valid keys are `events` and `disabledEvents`.
+     * @param {string} selector Valid CSS selector to use to retreive one occurrence through a query selector.
+     * @param {boolean} isSingleDayOccurrence If true, the grid is considered vertical (as for the single-day events), and the offset will be horizontal. Otherwise, the grid is considered horizontal (as for the multi-day events) and the offset will be vertical.
+     * @returns {number} Cumulative row height, after all the occurrences have been layed down. Used to set the multi-day row height.
+     */
     updateOccurrencesOffset(
         { events, disabledEvents },
         selector,
@@ -1067,6 +1312,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return rowHeight;
     }
 
+    /**
+     * Update the event occurrences position and set the cell width.
+     */
     updateOccurrencesPosition() {
         updateOccurrencesPosition.call(this);
 
@@ -1081,10 +1329,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Update the event occurrences offset in the day and week view.
+     */
     updateDayAndWeekEventsOffset() {
         this.columns.forEach((column) => {
             // Update the single day occurrences offset
-            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"]`;
+            const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"]`;
             this.updateOccurrencesOffset(column, selector, true);
 
             if (this.multiDayEvents.length && this.multiDayWrapper) {
@@ -1102,10 +1353,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Update the event occurrences offset in the month view.
+     */
     updateMonthEventsOffset() {
         this.columns.forEach((column) => {
             column.cells.forEach((cell) => {
-                const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
+                const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"][data-day="${cell.day}"][data-month="${cell.month}"]`;
                 const occurrences = Array.from(
                     this.template.querySelectorAll(selector)
                 );
@@ -1125,6 +1379,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Update the visible width of the calendar, used by the day headers in the day, week and month views.
+     */
     updateVisibleWidth() {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
@@ -1146,13 +1403,17 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const scrollBarWidth =
                 rightPanel.offsetWidth - rightPanel.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
-
+            const splitterBarWidth =
+                this.collapseDisabled && this.resizeColumnDisabled
+                    ? 0
+                    : SPLITTER_BAR_WIDTH;
             const width =
                 wrapper.offsetWidth -
                 leftPanel.offsetWidth -
-                SPLITTER_BAR_WIDTH -
+                splitterBarWidth -
                 verticalHeaderWidth -
-                scrollBarWidth;
+                scrollBarWidth -
+                1;
 
             const cellWidth = width / this.columns.length;
             this.dayHeadersVisibleWidth =
@@ -1162,6 +1423,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Toggle the "Show more" buttons visibility. The button is visible when the number of events visible in the cell is too important.
+     */
     toggleShowMoreButtonsVisibility() {
         this.columns.forEach((col) => {
             col.cells.forEach((cell) => {
@@ -1184,6 +1448,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle a double click on an empty space. Create a new event at this position and open the edit dialog.
+     *
+     * @param {Event} event `dblclick` event fired by an empty spot of the schedule or a disabled primitive event occurrence.
+     */
     handleDoubleClick(event) {
         if (this.isDisabledCell(event.currentTarget)) {
             return;
@@ -1191,6 +1460,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         super.handleDoubleClick(event);
     }
 
+    /**
+     * Handle a context menu action on an empty space. Open the context menu and prepare for the creation of a new event at this position.
+     *
+     * @param {Event} event `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence.
+     */
     handleEmptySpotContextMenu(event) {
         if (this.isDisabledCell(event.currentTarget)) {
             return;
@@ -1199,7 +1473,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+     * Handle a mouse down on an event. Select the event and prepare for it to be dragged or resized.
+     *
+     * @param {Event} mouseEvent `privatemousedown` event fired by a primitive event occurrence.
      */
     handleEventMouseDown(mouseEvent) {
         this._mouseIsDown = true;
@@ -1209,6 +1485,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.dispatchHidePopovers();
     }
 
+    /**
+     * Handle the change of a header cell size. Set the cell width or height, depending on the orientation of the header.
+     *
+     * @param {Event} event `privatecellsizechange` event fired by a primitive header.
+     */
     handleHeaderCellSizeChange(event) {
         const { cellSize, orientation } = event.detail;
 
@@ -1223,6 +1504,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Handle a change of the horizontal header. Update the visible interval with the new computed one.
+     *
+     * @param {Event} event `privateheaderchange` event fired by the horizontal "days" header.
+     */
     handleHorizontalHeaderChange(event) {
         const { smallestHeader, visibleInterval } = event.detail;
         const { start, cells, unit, span } = smallestHeader;
@@ -1245,6 +1531,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Handle the click on the show more button of a month view cell.
+     *
+     * @param {Event} event `click` event.
+     */
     handleMonthCellShowMoreClick(event) {
         const columnIndex = Number(event.currentTarget.dataset.columnIndex);
         const start = Number(event.currentTarget.dataset.start);
@@ -1291,7 +1582,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+     * Handle a mouse down on an empty space. Prepare the calendar for a new event to be created on drag.
+     *
+     * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMouseDown(event) {
         if (
@@ -1329,7 +1622,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the mousemove event fired by the schedule. If an event is being clicked, compute its resizing or dragging.
+     * Handle a movement of the mouse. If an event is being clicked, compute its resizing or dragging.
+     *
+     * @param {Event} mouseEvent `mousemove` event fired by the calendar.
      */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) {
@@ -1373,6 +1668,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Handle a mouse up in the window. If an event was dragged or resize, save the change.
+     *
+     * @param {Event} event `mouseup` event.
+     */
     handleMouseUp = (mouseEvent) => {
         if (!this._mouseIsDown) {
             return;
@@ -1400,6 +1700,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     };
 
+    /**
+     * Handle a mouse down on an empty space, in the multi-day row. Prepare the row for a new event being created on drag.
+     *
+     * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
+     */
     handleMultiDayEmptyCellMouseDown(event) {
         if (event.button || this.readOnly || !this.firstSelectedResource) {
             return;
@@ -1426,22 +1731,35 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
-    handleMultiDayEventMouseDown(mouseEvent) {
+    /**
+     * Handle a mouse down on a multi-day event. Select the event and prepare for it to be dragged or resized.
+     *
+     * @param {Event} event `privatemousedown` event fired by a multi-day event occurrence.
+     */
+    handleMultiDayEventMouseDown(event) {
         this._mouseIsDown = true;
         const row = this.multiDayWrapper;
-        this._eventData.handleExistingEventMouseDown(mouseEvent, row, false);
+        this._eventData.handleExistingEventMouseDown(event, row, false);
         this.dispatchHidePopovers();
     }
 
-    handlePlaceholderMouseDown(mouseEvent) {
-        const isVisible = mouseEvent.currentTarget.dataset.columnIndex === '0';
+    /**
+     * Handle a mouse down on a month view placeholder. If the placeholder is visible, select the event and prepare for it to be dragged or resized.
+     *
+     * @param {Event} event `privatemousedown` event fired by a placeholder event occurrence.
+     */
+    handlePlaceholderMouseDown(event) {
+        const isVisible = event.currentTarget.dataset.columnIndex === '0';
         if (!isVisible) {
             return;
         }
         this._showPlaceholderOccurrence = true;
-        this.handleHiddenEventMouseDown(mouseEvent);
+        this.handleHiddenEventMouseDown(event);
     }
 
+    /**
+     * Handle the closing of a "Show more" popover, in the month view.
+     */
     handleShowMorePopoverClose() {
         const date = this.showMorePopover && this.showMorePopover.date;
         if (this.isYear && date) {
@@ -1462,6 +1780,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._showMorePopoverContextMenuIsOpened = false;
     }
 
+    /**
+     * Handle a context menu click on an occurrence. Select the event and open its context menu.
+     *
+     * @param {Event} event `privatecontextmenu` event fired by a primitive event occurrence.
+     */
     handleShowMorePopoverEventContextMenu(event) {
         const target = event.currentTarget;
         if (target.disabled || target.referenceLine) {
@@ -1480,6 +1803,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._showMorePopoverContextMenuIsOpened = true;
     }
 
+    /**
+     * Handle a mouse down on a hidden event: in the month view "Show more" popover, or as a placeholder.
+     *
+     * @param {Event} mouseEvent
+     */
     handleHiddenEventMouseDown(mouseEvent) {
         if (this.isYear) {
             return;
@@ -1487,7 +1815,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._mouseIsDown = true;
         const key = mouseEvent.currentTarget.dataset.key;
         const draggedEvent = this.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"][data-key="${key}"]`
+            `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-key="${key}"]`
         );
         const eventInfo = {
             currentTarget: draggedEvent,
@@ -1507,10 +1835,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Handle a focus inside the month view "Show more" popover.
+     */
     handleShowMorePopoverFocusin() {
         this._showMorePopoverIsFocused = true;
     }
 
+    /**
+     * Handle a focus out of the month view "Show more" popover. Wait for the next animation frame, and close the popover if the focus was meant to be lost, or refocus it if it wasn't meant to be lost.
+     */
     handleShowMorePopoverFocusout() {
         this._showMorePopoverIsFocused = false;
 
@@ -1539,14 +1873,25 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         });
     }
 
+    /**
+     * Handle the mouse entering the month view "Show more" popover.
+     */
     handleShowMorePopoverMouseEnter() {
         this._mouseInShowMorePopover = true;
     }
 
+    /**
+     * Handle the mouse leaving the month view "Show more" popover.
+     */
     handleShowMorePopoverMouseLeave() {
         this._mouseInShowMorePopover = false;
     }
 
+    /**
+     * Handle a change of the vertical primitive headers, corresponding to the hours in the week and day views.
+     *
+     * @param {Event} event
+     */
     handleVerticalHeaderChange(event) {
         const { start, cells, unit, span } = event.detail.smallestHeader;
         this._hourHeadersLoading = false;
@@ -1560,6 +1905,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             dateTimeObjectFrom(end).diff(start).milliseconds;
     }
 
+    /**
+     * Handle the change of month in a year calendar. The navigation can only occur using the keyboard. Make sure it is prevented and the calendar always show the month it is supposed to show.
+     *
+     * @param {Event} event
+     */
     handleYearCalendarNavigate(event) {
         const calendar = event.currentTarget;
         const month = calendar.dataset.month;
@@ -1568,6 +1918,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         calendar.focusDate(date.ts);
     }
 
+    /**
+     * Handle a click on the date of a year view calendar. Open the "Show more" popover.
+     *
+     * @param {Event} event
+     */
     handleYearDateClick(event) {
         const date = dateTimeObjectFrom(event.detail.clickedDate);
         this._selectedDate = date;
@@ -1612,6 +1967,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         };
     }
 
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
     stopPropagation(event) {
         event.stopPropagation();
     }

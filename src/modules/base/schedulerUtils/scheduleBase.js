@@ -767,6 +767,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the `dblclick` event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
+     *
+     * @param {Event} event
      */
     handleDoubleClick(event) {
         if (this.readOnly) {
@@ -780,6 +782,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     *
+     * @param {Event} event
      */
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
@@ -805,6 +809,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the `privatecontextmenu` event fired by a primitive event occurrence. Select the event and open its context menu.
+     *
+     * @param {Event} event
      */
     handleEventContextMenu(event) {
         const target = event.currentTarget;
@@ -829,6 +835,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the `privatedblclick` event fired by a primitive event occurrence. Open the edit dialog for this event.
+     *
+     * @param {Event} event
      */
     handleEventDoubleClick(event) {
         if (this.readOnly) {
@@ -842,6 +850,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the `eventselect` event and trigger the behaviour a mouse movement would have.
+     *
+     * @param {Event} event
      */
     handleEventFocus(event) {
         const detail = {
@@ -875,6 +885,8 @@ export class ScheduleBase extends LightningElement {
 
     /**
      * Handle the `privatemouseenter` event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     *
+     * @param {Event} event
      */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown) {

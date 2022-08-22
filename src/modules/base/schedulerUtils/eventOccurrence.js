@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { nextAllowedDay } from 'c/schedulerUtils';
+import { nextAllowedDay } from './schedulerUtils';
 
 /**
  * Occurrence of a scheduler event.

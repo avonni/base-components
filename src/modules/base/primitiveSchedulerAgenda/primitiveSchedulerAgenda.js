@@ -40,10 +40,10 @@ import {
     isAllowedDay,
     nextAllowedDay,
     nextAllowedMonth,
+    spansOnMoreThanOneDay,
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
-import { spansOnMoreThanOneDay } from '../schedulerUtils/dateComputations';
 
 const DEFAULT_SELECTED_DATE = new Date();
 

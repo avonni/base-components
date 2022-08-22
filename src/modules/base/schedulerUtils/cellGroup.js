@@ -34,12 +34,12 @@ import { normalizeArray } from 'c/utilsPrivate';
 import Cell from './cell';
 
 /**
- * Group of scheduler cells. Corresponds to the resources rows/columns in the tinmeline display, or the day columns in the calendar display.
+ * Group of scheduler cells. Corresponds to the resources rows/columns in the timeline display, or the day columns in the calendar display.
  *
  * @class
- * @param {SchedulerCell[]} cells Array of SchedulerCell objects.
- * @param {object[]} referenceCells Array of cell objcts used as a reference to create the cells.
+ * @param {SchedulerCell[]} cells Array of `SchedulerCell` objects.
  * @param {object[]} events Array of event objects.
+ * @param {object[]} referenceCells Array of cell objects used as a reference to create the cells.
  */
 export class SchedulerCellGroup {
     constructor(props) {

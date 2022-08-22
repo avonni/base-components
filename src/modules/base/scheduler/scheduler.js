@@ -1474,15 +1474,16 @@ export default class Scheduler extends LightningElement {
                 break;
         }
 
-        const formattedStart = start.toFormat(format);
-        const formattedEnd = end.toFormat(format);
         if (
             this.isCalendar &&
             (unit === 'month' || unit === 'year') &&
             span <= 1
         ) {
-            this.visibleIntervalLabel = formattedEnd;
+            const formatted = addToDate(start, 'week', 1).toFormat(format);
+            this.visibleIntervalLabel = formatted;
         } else {
+            const formattedStart = start.toFormat(format);
+            const formattedEnd = end.toFormat(format);
             this.visibleIntervalLabel =
                 formattedStart === formattedEnd
                     ? formattedStart

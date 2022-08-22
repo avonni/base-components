@@ -93,7 +93,7 @@
                 data-element-id="avonni-splitter-pane-right"
             >
                 <div
-                    class={scheduleColClass}
+                    class={scheduleWrapperClass}
                     data-element-id="div-schedule-wrapper"
                 >
                     <!-- Day, week and month schedule -->
@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div
-                            class="slds-grid slds-col slds-scrollable_y"
+                            class="slds-grid slds-col"
                             data-element-id="div-cells-grid"
                         >
                             <!-- Hours -->
@@ -397,10 +397,10 @@
                                                     title={occurrence.title}
                                                     theme={event.theme}
                                                     to={occurrence.to}
-                                                    variant={singleDayEventVariant}
+                                                    variant={mainGridEventVariant}
                                                     zoom-to-fit={zoomToFit}
                                                     data-disabled={event.disabled}
-                                                    data-element-id="avonni-primitive-scheduler-event-occurrence-single-day"
+                                                    data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"
                                                     data-event-name={event.name}
                                                     data-key={occurrence.key}
                                                     data-day={occurrence.firstAllowedDate.day}
