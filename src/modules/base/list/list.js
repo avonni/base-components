@@ -35,10 +35,12 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
+    normalizeObject,
     deepCopy
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import Item from './item';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -60,6 +62,8 @@ const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
 };
+
+const CROP_POSITION_DEFAULT = 50;
 
 const VARIANTS = {
     valid: ['list', 'grid', 'single-line'],
@@ -112,8 +116,6 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _enableInfiniteLoading = false;
     _items = [];
-    _imageSize = IMAGE_SIZE.default;
-    _imageCropFit = IMAGE_CROP_FIT.default;
     _imageAttributes = {};
     _imageSrc = [];
     _isLoading = false;
@@ -270,9 +272,9 @@ export default class List extends LightningElement {
     }
 
     set imageWidth(size) {
-        this._imageSize = normalizeString(size, {
-            validValues: IMAGE_SIZE.valid,
-            defaultValue: IMAGE_SIZE.default
+        this._imageAttributes.size = normalizeString(size, {
+            fallbackValue: IMAGE_SIZE.default,
+            validValues: IMAGE_SIZE.valid
         });
         console.warn(
             "'imageWidth' is deprecated. Use image attribute 'size' instead."
@@ -290,30 +292,34 @@ export default class List extends LightningElement {
         return this._imageAttributes;
     }
     set imageAttributes(value) {
-        if (!value) {
-            return;
-        }
+        const normalizedImgAttributes = normalizeObject(value);
 
-        if (value.size) {
-            this._imageSize = normalizeString(value.size, {
-                validValues: IMAGE_SIZE.valid,
-                defaultValue: IMAGE_SIZE.default
-            });
-        }
+        this._imageAttributes.size = normalizeString(
+            normalizedImgAttributes.size,
+            {
+                fallbackValue: IMAGE_SIZE.default,
+                validValues: IMAGE_SIZE.valid
+            }
+        );
 
-        this._imagePositionY = !isNaN(value.cropPositionY)
-            ? value.cropPositionY
-            : 50;
-        this._imagePositionX = !isNaN(value.cropPositionX)
-            ? value.cropPositionX
-            : 50;
+        this._imageAttributes.cropPositionX = !isNaN(
+            normalizedImgAttributes.cropPositionX
+        )
+            ? normalizedImgAttributes.cropPositionX
+            : CROP_POSITION_DEFAULT;
+        this._imageAttributes.cropPositionY = !isNaN(
+            normalizedImgAttributes.cropPositionY
+        )
+            ? normalizedImgAttributes.cropPositionY
+            : CROP_POSITION_DEFAULT;
 
-        if (value.cropFit) {
-            this._imageCropFit = normalizeString(value.cropFit, {
-                validValues: IMAGE_CROP_FIT.valid,
-                defaultValue: IMAGE_CROP_FIT.default
-            });
-        }
+        this._imageAttributes.cropFit = normalizeString(
+            normalizedImgAttributes.cropFit,
+            {
+                fallbackValue: IMAGE_CROP_FIT.default,
+                validValues: IMAGE_CROP_FIT.valid
+            }
+        );
     }
 
     /**
@@ -390,9 +396,12 @@ export default class List extends LightningElement {
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
         this.computedItems.forEach((item) => {
-            item.infos = normalizeArray(item.infos);
-            item.icons = normalizeArray(item.icons);
+            return new Item(item);
+            // item.infos = normalizeArray(item.infos);
+            // item.icons = normalizeArray(item.icons);
         });
+
+        this.hasImages = this.computedItems.some((item) => 'imageSrc' in item);
     }
 
     /**
@@ -477,19 +486,22 @@ export default class List extends LightningElement {
     get computedImageClass() {
         return classSet('avonni-list__item-image-container').add({
             'avonni-list__item-image_small-width':
-                this._imageSize === 'small' && this._variant === 'list',
+                this._imageAttributes.size === 'small' &&
+                this._variant === 'list',
             'avonni-list__item-image_medium-width':
-                this._imageSize === 'medium' && this._variant === 'list',
+                this._imageAttributes.size === 'medium' &&
+                this._variant === 'list',
             'avonni-list__item-image_large-width':
-                this._imageSize === 'large' && this._variant === 'list',
+                this._imageAttributes.size === 'large' &&
+                this._variant === 'list',
             'avonni-list__item-image_small-height':
-                this._imageSize === 'small' &&
+                this._imageAttributes.size === 'small' &&
                 (this._variant === 'grid' || this._variant === 'single-line'),
             'avonni-list__item-image_medium-height':
-                this._imageSize === 'medium' &&
+                this._imageAttributes.size === 'medium' &&
                 (this._variant === 'grid' || this._variant === 'single-line'),
             'avonni-list__item-image_large-height':
-                this._imageSize === 'large' &&
+                this._imageAttributes.size === 'large' &&
                 (this._variant === 'grid' || this._variant === 'single-line')
         });
     }
@@ -500,11 +512,11 @@ export default class List extends LightningElement {
     get computedImageMediaClass() {
         return classSet('avonni-list__item-img').add({
             'avonni-list__item-image_object-fit-contain':
-                this._imageCropFit === 'contain',
+                this._imageAttributes.cropFit === 'contain',
             'avonni-list__item-image_object-fit-fill':
-                this._imageCropFit === 'fill',
+                this._imageAttributes.cropFit === 'fill',
             'avonni-list__item-image_object-fit-none':
-                this._imageCropFit === 'none'
+                this._imageAttributes.cropFit === 'none'
         });
     }
 
@@ -523,7 +535,7 @@ export default class List extends LightningElement {
      * Apply object position style to images.
      */
     get computedImageStyle() {
-        return `object-position: ${this._imagePositionX}% ${this._imagePositionY}%`;
+        return `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%`;
     }
 
     /**
@@ -712,12 +724,6 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedListClass() {
-        if (
-            this.computedItems.length > 0 &&
-            Object.keys(...this.computedItems).includes('imageSrc')
-        ) {
-            this.hasImages = true;
-        }
         return classSet(
             'avonni-list__item-menu slds-grid slds-scrollable_y slds-is-relative slds-col'
         )
@@ -1278,7 +1284,7 @@ export default class List extends LightningElement {
         }
 
         this._itemElements = Array.from(
-            this.template.querySelectorAll('.avonni-list__item-sortable')
+            this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
         this._draggedElement = event.currentTarget;

@@ -186,7 +186,9 @@ export default class Metric extends LightningElement {
         return this._avatar;
     }
     set avatar(value) {
+        console.log(value);
         const normalizedAvatar = normalizeObject(value);
+        console.log(normalizedAvatar);
         this._avatar = Object.keys(normalizedAvatar).length
             ? normalizedAvatar
             : undefined;

@@ -124,6 +124,7 @@
                                     data-element-id="lightning-icon-sort-left-image"
                                 ></lightning-icon>
                                 <div
+                                    if:true={item.imageSrc}
                                     class={computedImageClass}
                                     data-element-id="list-img"
                                 >
@@ -224,6 +225,7 @@
                                             avonni-list__item-description_font
                                         "
                                     >
+                                        -{item.hasImage}-
                                         <lightning-formatted-rich-text
                                             value={item.description}
                                         ></lightning-formatted-rich-text>
