@@ -32,15 +32,13 @@
 
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
-import { fetchIconLibrary, getIconLibrary } from './../primitiveIcon/fetch'; 
+import { createSVGIcon } from 'c/iconUtils'
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const BORDER_OFFSET = 0.5;
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
-const DEFAULT_ICON_PATH = '/assets';
-const DEFAULT_ICON_WEBSITE_PATH = '/assets/slds';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_POPOVER_CLASSES =
@@ -52,20 +50,6 @@ const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_WIDTH = 1300;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
-const ICON_ELEMENT_TYPES = [
-    'svg',
-    'g',
-    'path',
-    'circle',
-    'ellipse',
-    'rect',
-    'line',
-    'polygon',
-    'linearGradient',
-    'defs',
-    'mask',
-    'stop'
-];
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
@@ -131,35 +115,16 @@ export class HorizontalActivityTimeline {
     _scrollAxisDiv;
     _scrollAxisSVG;
 
-    // Icons
-    _iconsFolderPath = DEFAULT_ICON_PATH;
-    _iconLibraries = {
-        standard: null,
-        utility: null,
-        action: null,
-        doctype: null,
-        custom: null,
-    };
-
     constructor(activityTimeline, sortedItems) {
         this.addValidItemsToData(sortedItems);
         this._activityTimeline = activityTimeline;
         this.setDefaultIntervalDates();
-        this.testIconPath(
-            DEFAULT_ICON_PATH,
-            DEFAULT_ICON_CATEGORY,
-            DEFAULT_ICON_NAME
-        );
     }
 
     /**
      * Create horizontal view timeline
      */
     createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
-        if (!this.areIconLibrariesReady) {
-            this.setIconLibraries();
-        }
-
         this.resetHorizontalTimeline();
         this.addValidItemsToData(sortedItems);
 
@@ -180,15 +145,6 @@ export class HorizontalActivityTimeline {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     *  Check if all the icon's libraries are ready.
-     *
-     * @return {boolean}
-     */
-    get areIconLibrariesReady() {
-        return Object.keys(this._iconLibraries).every((category)=> this._iconLibraries[category] !== null);
-    }
 
     /**
      * Select only items in min-max interval for horizontal view of the timeline
@@ -500,16 +456,6 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     *  Add element to create icon to data structure.
-     */
-    addIconElement(allElements, element, tag) {
-        allElements.push({
-            tagName: tag,
-            attributes: this.extractAllAttributesOfElement(element)
-        });
-    }
-
-    /**
      * Add only items with valid date to sortedItems. 
      */
        addValidItemsToData(sortedItems){
@@ -521,34 +467,6 @@ export class HorizontalActivityTimeline {
                 this._sortedItems.push(item);
             } 
         })
-    }
-
-    /**
-     *  Append all elements from icon's template to svg.
-     */
-    appendAllElementsToIconSVG(elementsToCreateIcon, iconSVG) {
-        let containerElement;
-        let elementToAdd;
-        // Add all attributes to svg
-        elementsToCreateIcon.forEach((element) => {
-            // Append element to right container
-            if (this.isElementAContainer(element)) {
-                containerElement = iconSVG.append(element.tagName);
-                elementToAdd = containerElement;
-            } else if (containerElement) {
-                elementToAdd = containerElement.append(element.tagName);
-            } else {
-                elementToAdd = iconSVG.append(element.tagName);
-            }
-
-            // Add all the attributes of element
-            Object.keys(element.attributes).forEach((attribute) => {
-                elementToAdd.attr(
-                    attribute,
-                    element.attributes[attribute]
-                );
-            });
-        });
     }
 
     /**
@@ -679,42 +597,10 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     *  Create icon from one of the default path.
-     */
-    createIconFromDefaultPath(foreignObjectForIcon, iconInformation) {
-        const iconContainer = foreignObjectForIcon
-            .append('xhtml:span')
-            .attr(
-                'class',
-                'slds-icon slds-icon_container ' +
-                    iconInformation.categoryIconClass
-            )
-
-            .html(
-                '<svg class="slds-icon"><use xlink:href=' +
-                    iconInformation.xLinkHref +
-                    '></use></svg>'
-            );
-
-        const iconSVG = iconContainer
-            .select('svg')
-            .attr(
-                'class',
-                `slds-icon slds-icon_${this.getIconSize(
-                    iconInformation.category
-                )} `
-            );
-
-        if (iconInformation.category === 'action') {
-            this.setActionIconPosition(iconSVG);
-        }
-    }
-
-    /**
      *  Create item on horizontal timeline to display lightning icon and item's title
      */
     createItem(itemGroup, item) {
-        this.createSVGIcon(
+        this.createIcon(
             itemGroup,
             item.iconName,
             this.viewTimeScale(new Date(item.datetimeValue)),
@@ -739,8 +625,7 @@ export class HorizontalActivityTimeline {
     /**
      *  Create svg to display lightning icon.
      */
-    createSVGIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
-        const iconInformation = this.setIconInformation(iconName);
+    createIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
         const foreignObjectForIcon = destinationSVG.append('foreignObject');
         foreignObjectForIcon
             .attr('width', svgSize)
@@ -748,13 +633,11 @@ export class HorizontalActivityTimeline {
             .attr('x', xPosition)
             .attr('y', yPosition);
 
-        if (!this._iconsFolderPath) {
-            this.createIconFromTemplate(foreignObjectForIcon, iconInformation);
-        } else {
-            this.createIconFromDefaultPath(
-                foreignObjectForIcon,
-                iconInformation
-            );
+        const iconInformation = this.setIconInformation(iconName);
+        const iconSVG = createSVGIcon(iconInformation, foreignObjectForIcon, this.resetAndRedrawTimeline.bind(this));
+      
+        if (iconInformation.category === 'action') {
+            this.setActionIconPosition(iconSVG);
         }
     }
 
@@ -975,54 +858,6 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Create icon from template found in libraries. This method will be used if the default path are invalid.
-     */
-    createIconFromTemplate(foreignObjectForIcon, iconInformation) {
-        const elementsToCreateIcon = this.extractElementsFromIconTemplate(iconInformation);
-        const svgAttributes = elementsToCreateIcon.svg;
-
-        // Create svg to contain icon
-        const iconSVG = foreignObjectForIcon
-            .append('xhtml:span')
-            .attr(
-                'class',
-                'slds-icon slds-icon_container ' +
-                    iconInformation.categoryIconClass
-            )
-            .append('svg')
-            .attr('width', SVG_ICON_SIZE)
-            .attr('height', SVG_ICON_SIZE)
-            .attr(
-                'class',
-                `slds-icon slds-icon_${this.getIconSize(
-                    iconInformation.category
-                )} `
-            )
-            .attr(
-                'data-key',
-                svgAttributes.dataKey
-                    ? svgAttributes.dataKey
-                    : iconInformation.iconName
-            )
-            .attr(
-                'focusable',
-                svgAttributes.focusable ? svgAttributes.focusable : 'false'
-            )
-            .attr(
-                'viewBox',
-                svgAttributes.viewBox ? svgAttributes.viewBox : '0 0 100 100'
-            );
-
-        
-
-        this.appendAllElementsToIconSVG(elementsToCreateIcon.childrenElements, iconSVG);
-
-        if (iconInformation.category === 'action') {
-            this.setActionIconPosition(iconSVG);
-        }
-    }
-
-    /**
      * Create the scroll axis for horizontal timeline to display all dates
      */
     createTimelineScrollAxis() {
@@ -1077,65 +912,6 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     *  Extract all attributes from icon's element (string). The format will be : { attribute1: value, attribute2: value, ... }.
-     *
-     * @return {object}
-     */
-    extractAllAttributesOfElement(element) {
-        element = this.sliceAttributes(element);
-        const allAttributes = element.split(',');
-
-        let attributes = {};
-        allAttributes.forEach((attribute) => {
-            const [attributeName, attributeValue] = attribute
-                .replace(/"/g, '')
-                .split(':');
-            attributes[attributeName] = attributeValue.trim();
-        });
-
-        return attributes;
-    }
-
-    /**
-     * Extract all elements and attributes from icon's template.
-     *
-     * @return {object}
-     */
-    extractElementsFromIconTemplate(iconInformation) {
-        let elementsToCreateIcon = {
-            svg: {},
-            childrenElements: []
-        };
-
-        if (this.areIconLibrariesReady) {
-            const template = this.findIconTemplate(iconInformation);
-
-            if (template && template !== null) {
-                const apiElements = template.split('api_element(');
-
-                // Find all elements and attributes to create icon
-                apiElements.forEach((element) => {
-                    const elementType = ICON_ELEMENT_TYPES.find((type) =>
-                        element.includes(`"${type}"`)
-                    );
-
-                    if (elementType && elementType === 'svg') {
-                        elementsToCreateIcon.svg =
-                            this.extractAllAttributesOfElement(element);
-                    } else if (elementType && elementType !== -1) {
-                        this.addIconElement(
-                            elementsToCreateIcon.childrenElements,
-                            element,
-                            elementType
-                        );
-                    }
-                });
-            }
-        }
-        return elementsToCreateIcon;
-    }
-
-    /**
      * Find the x end position of an item. This position is used to display popover (left).
      *
      * @return {number}
@@ -1152,30 +928,6 @@ export class HorizontalActivityTimeline {
         return (
             xTextStartPosition + textLength + DISTANCE_BETWEEN_POPOVER_AND_ITEM
         );
-    }
-
-    /**
-     * Get the icon's template from library and remove unwanted characters.
-     *
-     * @return {string}
-     */
-    findIconTemplate(iconInformation) {
-        let template = null;
-
-        if (this.areIconLibrariesReady) {
-            const iconFileName = `${iconInformation.category}_${iconInformation.iconName}`;
-            template = this._iconLibraries[iconInformation.category][iconFileName];
-
-            if (template && template !== null) {
-                // Removing different whitespace characters
-                template = template
-                    .toString()
-                    .replace(/\s{2,}/g, '')
-                    .replace(/\n/g, '');
-            }
-        }
-
-        return template;
     }
 
     /**
@@ -1205,18 +957,6 @@ export class HorizontalActivityTimeline {
             SPACE_BETWEEN_ICON_AND_TEXT -
             DISTANCE_BETWEEN_POPOVER_AND_ITEM
         );
-    }
-
-    /**
-     * Get size of icon depending of category.
-     *
-     * @return {string}
-     */
-    getIconSize(category) {
-        if (category === 'action') {
-            return 'x-small';
-        }
-        return 'small';
     }
 
     /**
@@ -1288,15 +1028,6 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     *  Check if element is a container for the svg icon.
-     *
-     * @return {boolean}
-     */
-    isElementAContainer(element) {
-        return element.tagName === 'g' || element.tagName === 'mask';
-    }
-
-    /**
      *  Determine if timeline height is different than last render
      *
      * @return {Boolean}
@@ -1351,6 +1082,17 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Remove timeline (section with items) and re-draw it. This method is used to refresh it's not on salesforce and 
+     * iconLibraries are ready after initial draw.
+     *
+     */
+    resetAndRedrawTimeline() {
+        this._timelineItemsDiv = d3.select(this.divTimelineItemsSelector);
+        this._timelineItemsDiv.selectAll('*').remove();
+        this.createTimeline();
+    }
+
+    /**
      * Select and remove all elements inside the horizontal timeline to build a new one
      *
      */
@@ -1397,7 +1139,7 @@ export class HorizontalActivityTimeline {
         return {
             iconName: DEFAULT_ICON_NAME,
             category: DEFAULT_ICON_CATEGORY,
-            xLinkHref: `${this._iconsFolderPath}/icons/${DEFAULT_ICON_CATEGORY}-sprite/svg/symbols.svg#${DEFAULT_ICON_NAME}`,
+            // xLinkHref: this.getIconXLinkHref(DEFAULT_ICON_CATEGORY, DEFAULT_ICON_NAME), // `${this._iconsFolderPath}/icons/${DEFAULT_ICON_CATEGORY}-sprite/svg/symbols.svg#${DEFAULT_ICON_NAME}`,   
             categoryIconClass: `slds-icon-${DEFAULT_ICON_CATEGORY}-${DEFAULT_ICON_NAME} slds-icon_small`
         };
     }
@@ -1484,7 +1226,7 @@ export class HorizontalActivityTimeline {
         return {
             iconName: nameOfIcon,
             category: iconCategory,
-            xLinkHref: `${this._iconsFolderPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`,
+            // xLinkHref: this.getIconXLinkHref(iconCategory, nameOfIcon),
             categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
                 /_/g,
                 '-'
@@ -1492,28 +1234,10 @@ export class HorizontalActivityTimeline {
         };
     }
 
-    /**
-     *  Set all the icon's libraries if the default paths are not working.
-     */
-    async setIconLibraries() {
-        for(const category of VALID_ICON_CATEGORIES){
-            this._iconLibraries[category] = getIconLibrary('ltr', category);
-        }
-
-        try {
-            this._iconLibraries.standard = await fetchIconLibrary(
-                'ltr',
-                'standard'
-            );
-            this._iconLibraries.utility = await fetchIconLibrary('ltr', 'utility');
-            this._iconLibraries.action = await fetchIconLibrary('ltr', 'action');
-            this._iconLibraries.doctype = await fetchIconLibrary('ltr', 'doctype');
-            this._iconLibraries.custom = await fetchIconLibrary('ltr', 'custom');
-            this._activityTimeline.renderedCallback();
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // getIconXLinkHref(iconCategory, nameOfIcon){
+    //     // SALESFORCE : getIconPath(`${iconCategory}:${nameOfIcon}`
+    //     return `${this._iconCreator._iconsFolderPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`;
+    // }
 
     /**
      * Set the visibility of the interval bounds.
@@ -1686,47 +1410,6 @@ export class HorizontalActivityTimeline {
         });
 
         return dataToDisplay;
-    }
-
-    /**
-     *  Extract attributes (type and value) from element of icon's template.
-     *
-     * @return {string}
-     */
-    sliceAttributes(element) {
-        return element.slice(
-            element.indexOf('attrs: {') + 'attrs: {'.length,
-            element.indexOf('},')
-        );
-    }
-
-    /**
-     * Test if icon's path is correct to determine the best method to fetch icons.
-     */
-    async testIconPath(iconPath, iconCategory, nameOfIcon) {
-        fetch(
-            `${iconPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`
-        ).then((response) => {
-            // The path is incorrect
-            if (response.status === 404 || !response.ok) {
-                if (iconPath === DEFAULT_ICON_PATH) {
-                    this._iconsFolderPath = DEFAULT_ICON_WEBSITE_PATH;
-                    this.testIconPath(
-                        DEFAULT_ICON_WEBSITE_PATH,
-                        DEFAULT_ICON_CATEGORY,
-                        DEFAULT_ICON_NAME
-                    );
-                } else {
-                    // The two default paths are not working, we fetch the icon's libraries
-                    this._iconsFolderPath = '';
-                    this.setIconLibraries();
-                }
-            }
-            // The path is correct
-            else {
-                this._iconsFolderPath = iconPath;
-            }
-        });
     }
 
     /**
