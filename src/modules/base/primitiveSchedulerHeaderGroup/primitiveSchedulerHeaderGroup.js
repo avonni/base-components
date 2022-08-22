@@ -430,7 +430,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * Computed CSS class of each header cell.
+     * Computed CSS classes of each header cell.
      *
      * @type {string}
      */

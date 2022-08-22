@@ -293,7 +293,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the horizontal primitive headers visible in the day, week and month view.
+     * Computed CSS classes for the horizontal primitive headers visible in the day, week and month view.
      *
      * @type {string}
      */
@@ -447,7 +447,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the schedule wrapper.
+     * Computed CSS classes for the schedule wrapper.
      *
      * @type {string}
      */
@@ -1255,7 +1255,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Update the given event occurrences offset. The offset is used to prevent the occurrences from overlaping even if they are on the same time frame.
+     * Update the given event occurrences offset. The offset is used to prevent the occurrences from overlaping when they are on the same time frame.
      *
      * @param {object} cellGroup Object containing the event occurrences to update. Valid keys are `events` and `disabledEvents`.
      * @param {string} selector Valid CSS selector to use to retreive one occurrence through a query selector.

@@ -47,7 +47,7 @@ export default class SchedulerAgendaDayGroup {
     }
 
     /**
-     * Computed CSS class of the day group.
+     * Computed CSS classes of the day group.
      *
      * @type {string}
      */

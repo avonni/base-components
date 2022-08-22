@@ -58,6 +58,13 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 
+/**
+ * Main part of the scheduler, when the selected display is "timeline".
+ *
+ * @class
+ * @descriptor c-primitive-scheduler-timeline
+ * @extends ScheduleBase
+ */
 export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _columns = [];
     _start = DEFAULT_START_DATE;
@@ -120,7 +127,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
 
     /**
-     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the horizontal variant.
+     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the timeline and visible only for the horizontal variant.
      *
      * @type {object[]}
      * @public
@@ -133,6 +140,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this._columns = deepCopy(normalizeArray(value));
     }
 
+    /**
+     * Array of event objects.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get events() {
         return super.events;
@@ -145,6 +158,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
     }
 
+    /**
+     * Array of resource objects. The resources can be bound to events.
+     *
+     * @type {object[]}
+     * @public
+     * @required
+     */
     @api
     get resources() {
         return super.resources;
@@ -157,6 +177,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
     }
 
+    /**
+     * Array of selected resources names. Only the events of the selected resources will be visible.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get selectedResources() {
         return super.selectedResources;
@@ -175,7 +201,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Specifies the starting date/timedate of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     * Specifies the starting date/time of the timeline. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
      * @public
@@ -190,6 +216,15 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
     }
 
+    /**
+     * Object used to set the duration of the timeline. It should have two keys:
+     * * unit (minute, hour, day, week, month or year)
+     * * span (number).
+     *
+     * @type {object}
+     * @public
+     * @default { unit: 'day', span: 1 }
+     */
     @api
     get timeSpan() {
         return super.timeSpan;
@@ -203,7 +238,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Orientation of the scheduler. Valid values include horizontal and vertical.
+     * Orientation of the timeline. Valid values include horizontal and vertical.
      *
      * @type {string}
      * @default horizontal
@@ -258,6 +293,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         );
     }
 
+    /**
+     * Computed header cells used by the primitive events to position themselves.
+     *
+     * @type {object}
+     */
     get eventHeaderCells() {
         if (this.isVertical) {
             return { yAxis: this.smallestHeader.cells };
@@ -265,6 +305,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return { xAxis: this.smallestHeader.cells };
     }
 
+    /**
+     * Variant of the primitive events.
+     *
+     * @type {string}
+     */
     get eventVariant() {
         return this.isVertical ? 'timeline-vertical' : 'timeline-horizontal';
     }
@@ -294,10 +339,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    /**
+     * Initial valid string CSS width of the first column. It is used to set the left panel width, before resize.
+     *
+     * @type {string}
+     */
     get firstColInitialWidth() {
         return this.isVertical ? '110px' : '300px';
     }
 
+    /**
+     * First column width, in pixels.
+     *
+     * @type {number}
+     */
     get firstColWidth() {
         return this.firstCol ? this.firstCol.getBoundingClientRect().width : 0;
     }
@@ -312,7 +367,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * If true, editing a recurring event only updates the occurrence, never the complete event.
+     * True if editing a recurring event only updates the occurrence, never the complete event.
      *
      * @type {boolean}
      * @default false
@@ -325,7 +380,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the schedule resources.
+     * Computed CSS classes for the timeline resources.
      *
      * @type {string}
      */
@@ -337,6 +392,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    /**
+     * HTML element of the timeline body.
+     *
+     * @type {HTMLElement}
+     */
     get scheduleBody() {
         return this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
@@ -344,7 +404,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the schedule body.
+     * Computed CSS classes for the timeline body.
      *
      * @type {string}
      */
@@ -358,7 +418,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the schedule column.
+     * Computed CSS classes for the timeline column.
      *
      * @type {string}
      */
@@ -373,7 +433,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Width of the schedule column, in pixels.
+     * Width of the timeline column, in pixels.
      *
      * @type {number}
      */
@@ -389,7 +449,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS class for the nested schedule column.
+     * Computed CSS classes for the nested schedule column.
      *
      * @type {string}
      */
@@ -401,6 +461,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    /**
+     * Computed CSS classes for the timeline wrapper.
+     *
+     * @type {string}
+     */
     get scheduleWrapperClass() {
         return classSet('slds-grid slds-is-relative avonni-scheduler__wrapper')
             .add({
@@ -418,6 +483,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this.isVertical ? 0 : this.firstColWidth;
     }
 
+    /**
+     * Array of records corresponding to the selected resources data.
+     *
+     * @type {object[]}
+     */
     get selectedDatatableRecords() {
         return this.resources.filter((res) => {
             return this.selectedResources.includes(res.name);
@@ -443,7 +513,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Computed CSS style for the vertical resource header cells.
+     * Computed CSS classes for the vertical resource header cells.
      *
      * @type {string}
      */
@@ -458,6 +528,22 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .toString();
     }
 
+    /**
+     * Array of visible resources.
+     *
+     * @type {object[]}
+     */
+    get visibleComputedResources() {
+        return this.computedResources.filter((res) => {
+            return this.selectedResources.includes(res.name);
+        });
+    }
+
+    /**
+     * Visible interval of time.
+     *
+     * @type {Interval}
+     */
     get visibleInterval() {
         const headers = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group"]'
@@ -468,36 +554,56 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return null;
     }
 
-    get visibleComputedResources() {
-        return this.computedResources.filter((res) => {
-            return this.selectedResources.includes(res.name);
-        });
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Clear the selected event.
+     *
+     * @param {boolean} cancelNewEvent If true and a new event was being created, the new event will be canceled.
+     * @public
+     */
     @api
     cleanSelection(cancelNewEvent) {
         super.cleanSelection(cancelNewEvent);
         this.updateVisibleResources();
     }
 
+    /**
+     * Create a new event.
+     *
+     * @param {object} event New event object.
+     * @public
+     */
     @api
     createEvent(event) {
         super.createEvent(event);
         this.updateVisibleResources();
     }
 
+    /**
+     * Delete an event.
+     *
+     * @param {string} name Unique name of the event to delete.
+     * @public
+     */
     @api
     deleteEvent(name) {
         super.deleteEvent(name);
         this.updateVisibleResources();
     }
 
+    /**
+     * Add a new event to the timeline, without necessarily saving it.
+     *
+     * @param {number} x Position of the new event on the X axis.
+     * @param {number} y Position of the new event on the Y axis.
+     * @param {boolean} saveEvent If true, the event will be saved.
+     * @public
+     */
     @api
     newEvent(x, y, saveEvent) {
         const resourceElement = this.getResourceElementFromPosition(x, y);
@@ -510,6 +616,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this._eventData.newEvent({ resourceNames, from, to, x, y }, saveEvent);
     }
 
+    /**
+     * Save the changes made to the selected event.
+     *
+     * @param {string} recurrenceMode Edition mode of the recurrent events. Valid values include one or all.
+     * @public
+     */
     @api
     saveSelection(recurrenceMode) {
         super.saveSelection(recurrenceMode);
@@ -522,6 +634,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the event data.
+     */
     initEvents() {
         super.initEvents();
         this._eventData.isVertical = this.isVertical;
@@ -575,6 +690,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return resizeObserver;
     }
 
+    /**
+     * Initialize the resources.
+     */
     initResources() {
         this.computedResources = this.resources.map((res) => {
             const name = res.name;
@@ -607,20 +725,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
-     */
-    clearDatatableColumnWidth() {
-        if (this.isVertical) {
-            return;
-        }
-        const lastColumn = this.columns[this.columns.length - 1];
-        if (lastColumn.initialWidth) {
-            lastColumn.initialWidth = undefined;
-            this._columns = [...this.columns];
-        }
-    }
-
-    /**
      * Find the event occurrences for a given resource name.
      *
      * @param {string} name The unique name of the resource.
@@ -640,6 +744,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return occurrences.flat();
     }
 
+    /**
+     * Get the HTML element of a resource, from its position.
+     *
+     * @param {number} x Position of the resource on the X axis.
+     * @param {number} y Position of the resource on the Y axis.
+     * @returns {HTMLElement} Resource element.
+     */
     getResourceElementFromPosition(x, y) {
         const position = this.isVertical ? x : y;
         const selector = '[data-element-id="div-resource"]';
@@ -676,6 +787,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
     }
 
+    /**
+     * Set the headers loader height.
+     */
     setLoaderHeight() {
         const loader = this.template.querySelector(
             '[data-element-id="div-loading-spinner"]'
@@ -710,6 +824,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         super.updateCellWidth();
     }
 
+    /**
+     * Update the event occurrences offset. The offset is used to prevent the occurrences from overlaping when they are on the same time frame.
+     */
     updateOccurrencesOffset() {
         // For each resource
         this.computedResources.forEach((resource) => {
@@ -746,6 +863,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         });
     }
 
+    /**
+     * Update the event occurrences position.
+     */
     updateOccurrencesPosition() {
         updateOccurrencesPosition.call(this);
 
@@ -845,7 +965,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
 
     /**
-     * Handle the resize event fired by the datatable. Update the rows heights.
+     * Handle the datatable resize. Update the rows heights.
+     *
+     * @param {Event} event `resize` event fired by the datatable.
      */
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
@@ -864,7 +986,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+     * Handle a mouse down on an event. Select the event and prepare for it to be dragged or resized.
+     *
+     * * @param {Event} mouseEvent `privatemousedown` event fired by a primitive event occurrence.
      */
     handleEventMouseDown(mouseEvent) {
         this._mouseIsDown = true;
@@ -878,7 +1002,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
+     * Handle the change of a header cell size. Set the cell width or height, depending on the orientation of the header.
+     *
+     * @param {Event} event `privatecellsizechange` event fired by a primitive header.
      */
     handleHeaderCellSizeChange(event) {
         const { cellSize, orientation } = event.detail;
@@ -891,7 +1017,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the `privateheaderchange` event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
+     * Handle a change of the primitive headers. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
+     *
+     * @param {Event} event `privateheaderchange` event fired by the primitive header.
      */
     handleHeaderChange(event) {
         this.smallestHeader = event.detail.smallestHeader;
@@ -911,7 +1039,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+     * Handle a mouse down on an empty space. Prepare the timeline for a new event to be created on drag.
+     *
+     * @param {Event} event `mousedown` event fired by an empty cell or a disabled primitive event occurrence.
      */
     handleMouseDown(event) {
         if (event.button || this.readOnly) {
@@ -943,7 +1073,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the mousemove event fired by the schedule. If an event is being clicked, compute its resizing or dragging.
+     * Handle a movement of the mouse. If an event is being clicked, compute its resizing or dragging.
+     *
+     * @param {Event} mouseEvent `mousemove` event fired by the calendar.
      */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) {
@@ -961,7 +1093,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Handle the mouseup event fired by the schedule. Save the dragged/resized event new position.
+     * Handle a mouse up in the window. If an event was dragged or resize, save the change.
+     *
+     * @param {Event} event `mouseup` event.
      */
     handleMouseUp = (mouseEvent) => {
         if (!this._mouseIsDown) {
@@ -990,7 +1124,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     };
 
     /**
-     * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
+     * Handle a scroll of the timeline. Hide the popovers of the events that are scrolled out of the screen.
+     *
+     * @param {Event} event `scroll` event fired by the right panel.
      */
     handleScroll(event) {
         if (this._eventData.selection) {
