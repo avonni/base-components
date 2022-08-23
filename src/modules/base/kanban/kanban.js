@@ -517,6 +517,10 @@ export default class Kanban extends LightningElement {
                             ? 0
                             : scrollStep.y;
                     this.translateByDelta(scrollStep);
+                    this.handleDropZone({
+                        currentTarget: this._draggedTile,
+                        clientX: currentX
+                    });
                 }
                 this.handleScrollTiles(groups, toScroll.scrollTop);
             }, 20);
@@ -763,7 +767,7 @@ export default class Kanban extends LightningElement {
             fieldContainer.scrollLeft;
 
         const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
-        const isCloseToTop = currentY - 50 < this._kanbanPos.top;
+        const isCloseToTop = currentY - 100 < this._kanbanPos.top;
         const isCloseToRight = currentX + 50 > right;
         const isCloseToLeft = currentX - 50 < left;
 
@@ -1279,9 +1283,11 @@ export default class Kanban extends LightningElement {
         ) {
             return;
         }
+
+        const rem = parseFloat(getComputedStyle(this.template.host).fontSize);
+
         this._groupWidth =
-            event.currentTarget.parentElement.offsetWidth +
-            0.5 * parseFloat(getComputedStyle(this.template.host).fontSize);
+            event.currentTarget.parentElement.offsetWidth + 0.5 * rem;
 
         this._groupWidth =
             this._groupWidth && !isNaN(this._groupWidth)
@@ -1792,9 +1798,6 @@ export default class Kanban extends LightningElement {
      */
     updateReleasedTileIndex(groupElements) {
         let offsetHeight = this._kanbanOffset.y;
-        this._releasedGroupIndex = this._releasedGroupIndex
-            ? this._releasedGroupIndex
-            : 0;
         const currentGroupTiles = Array.from(
             groupElements[this._releasedGroupIndex].children
         );
