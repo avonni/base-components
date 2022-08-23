@@ -430,6 +430,9 @@ const getFirstAvailableWeek = (start, availableDaysOfTheWeek) => {
  * @returns {boolean} True if the event spans on the whole day.
  */
 const isAllDay = (event, from, to) => {
+    if (!event || !from || !to) {
+        return false;
+    }
     const startAtBeginningOfDay = from.startOf('day').ts === from.ts;
     // A time set to 23:59 is considered to be at the end of the day,
     // even if the seconds/ms are not at 59
@@ -446,6 +449,9 @@ const isAllDay = (event, from, to) => {
  * @returns {boolean} True if the event spans on more than one day.
  */
 const spansOnMoreThanOneDay = (event, from, to) => {
+    if (!event || !from || !to) {
+        return false;
+    }
     const differentStartAndEndDay = from.day !== to.day;
     const hasWeekdayRecurrence = normalizeArray(
         event.recurrenceAttributes && event.recurrenceAttributes.weekdays
