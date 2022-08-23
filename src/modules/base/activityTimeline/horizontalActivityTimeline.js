@@ -1489,6 +1489,8 @@ export class HorizontalActivityTimeline {
      * Handle click on scroll axis to change interval values. Timeline is re-render.
      */
     handleClickOnScrollAxis(event) {
+        this.handleMouseOutOfPopover();
+        
         if (!this._changeIntervalSizeMode) {
             let xPosition = event.offsetX - this.intervalWidth / 2;
             const maxPosition =
@@ -1584,9 +1586,11 @@ export class HorizontalActivityTimeline {
      * Handle mouse out of popover.
      */
     handleMouseOutOfPopover() {
-        this.clearPreviousTooltipClosingTimeout();
-        this._isMouseOverOnPopover = false;
-        this._activityTimeline.handleTooltipClose();
+        if(this._activityTimeline.showItemPopOver) {
+            this.clearPreviousTooltipClosingTimeout();
+            this._isMouseOverOnPopover = false;
+            this._activityTimeline.handleTooltipClose();
+        }
     }
 
     /**
@@ -1619,6 +1623,7 @@ export class HorizontalActivityTimeline {
             xPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         }
 
+        this.handleMouseOutOfPopover();
         this.moveIntervalToPosition(xPosition);
     }
 
@@ -1691,10 +1696,7 @@ export class HorizontalActivityTimeline {
 
         this.cancelSwipeLeftIfScrollLeft(event);
         this.cancelEditIntervalSizeMode();
-        
-        if(this._activityTimeline.showItemPopOver){
-            this.handleMouseOutOfPopover();
-        }
+        this.handleMouseOutOfPopover();
        
         // Horizontal scroll of interval
         const requestedPosition =
