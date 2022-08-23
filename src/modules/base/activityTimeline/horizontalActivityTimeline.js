@@ -1651,8 +1651,11 @@ export class HorizontalActivityTimeline {
 
         this.cancelSwipeLeftIfScrollLeft(event);
         this.cancelEditIntervalSizeMode();
-        this.handleMouseOutOfPopover();
-
+        
+        if(this._activityTimeline.showItemPopOver){
+            this.handleMouseOutOfPopover();
+        }
+       
         // Horizontal scroll of interval
         const requestedPosition =
             Number(this._timeIntervalSelector.attr('x')) +

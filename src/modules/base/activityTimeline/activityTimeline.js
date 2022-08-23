@@ -154,6 +154,7 @@ export default class ActivityTimeline extends LightningElement {
 
     // Horizontal Activity Timeline
     _resizeObserver;
+    _isTooltipClosing = false;
     intervalDaysLength;
     intervalMaxDate;
     intervalMinDate;
@@ -181,6 +182,11 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
+        if(this.isTimelineHorizontal && this._isTooltipClosing){
+            this._isTooltipClosing = false;
+            return;
+        }
+
         if (this.isTimelineHorizontal && !this.showItemPopOver) {
             if (!this._resizeObserver) {
                 this._resizeObserver = this.initResizeObserver();
@@ -912,6 +918,7 @@ export default class ActivityTimeline extends LightningElement {
         }
         this.showItemPopOver = false;
         this.selectedItem = null;
+        this._isTooltipClosing = true;
     }
 
     /**
