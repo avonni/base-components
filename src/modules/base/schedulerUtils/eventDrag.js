@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { getElementOnXAxis, getElementOnYAxis } from './schedulerUtils';
+import { getElementOnXAxis, getElementOnYAxis } from './positions';
 
 /**
  * Dragging or resizing state of a scheduler event occurrence.
