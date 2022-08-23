@@ -100,6 +100,7 @@ export class HorizontalActivityTimeline {
     _timelineHeight = DEFAULT_TIMELINE_HEIGHT;
     _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
     _tooltipClosingTimeout = null;
+    _isTimelineMoving = false;
 
     // To change visible height of timeline
     _maxDisplayedItems;
@@ -343,7 +344,7 @@ export class HorizontalActivityTimeline {
         return d3
             .scaleTime()
             .domain([this.scrollAxisMinDate, this.scrollAxisMaxDate])
-            .range([this._offsetAxis, this._timelineWidth]);// this._offsetAxis , this._timelineWidth
+            .range([this._offsetAxis, this._timelineWidth]);
     }
 
     /**
@@ -450,6 +451,9 @@ export class HorizontalActivityTimeline {
                     .drag()
                     .on('start', this.handleTimeIntervalDragStart.bind(this))
                     .on('drag', this.handleTimeIntervalDrag.bind(this))
+                    .on('end', () => {
+                        this._isTimelineMoving = false
+                    })
             );
 
         // Create left and right lines to change width of interval
@@ -789,9 +793,6 @@ export class HorizontalActivityTimeline {
             this._numberOfTimelineAxisTicks,
             axisSVG
         );
-
-        // Remove all ticks marks
-        axisSVG.selectAll('.tick').selectAll('line').remove();
     }
 
     /**
@@ -846,6 +847,7 @@ export class HorizontalActivityTimeline {
             .ticks(numberOfTicks)
             .tickSizeOuter(0);
 
+        // TIMELINE AXIS
         if (axisId === AXIS_TYPE.timelineAxis) {
             destinationSVG
                 .append('g')
@@ -855,7 +857,11 @@ export class HorizontalActivityTimeline {
                 .call(timeAxis);
 
             this._numberOfTimelineAxisTicks = numberOfTicks;
-        } else {
+            // Remove all ticks marks
+            destinationSVG.selectAll('.tick').selectAll('line').remove();
+        } 
+        // TIMELINE SCROLL AXIS
+        else {
             const yPosition = this._timelineAxisHeight + 1.5 * BORDER_OFFSET;
             destinationSVG
                 .append('g')
@@ -1063,15 +1069,38 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Move interval on timeline's scroll axis to new valid position.
+     * Move interval (drag or scroll) on timeline's scroll axis to new valid position.
      */
     moveIntervalToPosition(position) {
+        this._timeIntervalSelector
+            .attr('x',  position)
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
+
         this._intervalMinDate = this.scrollTimeScale
             .invert(position)
             .setHours(0, 0, 0, 0);
 
         this.setIntervalMaxDate();
-        this._activityTimeline.renderedCallback();
+        this.moveTimelineDisplay();
+    }
+
+    /**
+     * Move timeline display with the new interval min and max date. The following elements will be updated : timeline (with items), 
+     * timeline axis (only scale), top header and interval rectangle (on scroll axis) position and bounds (blue lines).
+     */
+    moveTimelineDisplay(){
+        // Set position of interval bounds (blue lines)
+        this._leftIntervalLine
+            .attr('x1', this.scrollTimeScale(new Date(this._intervalMinDate)))
+            .attr('x2', this.scrollTimeScale(new Date(this._intervalMinDate)));
+
+        this._rightIntervalLine
+            .attr('x1', this.scrollTimeScale(new Date(this._intervalMaxDate)))
+            .attr('x2', this.scrollTimeScale(new Date(this._intervalMaxDate)));
+
+        this.resetAndRedrawTimelineAxis();
+        this.resetAndRedrawTimeline();
+        this._activityTimeline.updateHorizontalTimelineHeader();
     }
 
     /**
@@ -1095,12 +1124,28 @@ export class HorizontalActivityTimeline {
     /**
      * Remove timeline (section with items) and re-draw it. This method is used to refresh it's not on salesforce and 
      * iconLibraries are ready after initial draw.
-     *
      */
     resetAndRedrawTimeline() {
         this._timelineItemsDiv = d3.select(this.divTimelineItemsSelector);
         this._timelineItemsDiv.selectAll('*').remove();
         this.createTimeline();
+    }
+
+    /**
+     * Remove timeline axis and redraw it with new scale. 
+     */
+    resetAndRedrawTimelineAxis(){
+        // Select and remove previous timeline axis
+        const timelineAxisSVG = d3.select(this.divTimelineAxisSelector).select('svg');
+        timelineAxisSVG.selectChild('#timeline-axis').remove();
+
+        // Redraw timeline axis
+        this.createTimeAxis(
+            this.viewTimeScale,
+            AXIS_TYPE.timelineAxis,
+            this._numberOfTimelineAxisTicks,
+            timelineAxisSVG
+        );
     }
 
     /**
@@ -1150,7 +1195,6 @@ export class HorizontalActivityTimeline {
         return {
             iconName: DEFAULT_ICON_NAME,
             category: DEFAULT_ICON_CATEGORY,
-            // xLinkHref: this.getIconXLinkHref(DEFAULT_ICON_CATEGORY, DEFAULT_ICON_NAME), // `${this._iconsFolderPath}/icons/${DEFAULT_ICON_CATEGORY}-sprite/svg/symbols.svg#${DEFAULT_ICON_NAME}`,   
             categoryIconClass: `slds-icon-${DEFAULT_ICON_CATEGORY}-${DEFAULT_ICON_NAME} slds-icon_small`
         };
     }
@@ -1237,18 +1281,12 @@ export class HorizontalActivityTimeline {
         return {
             iconName: nameOfIcon,
             category: iconCategory,
-            // xLinkHref: this.getIconXLinkHref(iconCategory, nameOfIcon),
             categoryIconClass: `slds-icon_small ${iconClass}${nameOfIcon.replace(
                 /_/g,
                 '-'
             )}`
         };
     }
-
-    // getIconXLinkHref(iconCategory, nameOfIcon){
-    //     // SALESFORCE : getIconPath(`${iconCategory}:${nameOfIcon}`
-    //     return `${this._iconCreator._iconsFolderPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${nameOfIcon}`;
-    // }
 
     /**
      * Set the visibility of the interval bounds.
@@ -1472,7 +1510,7 @@ export class HorizontalActivityTimeline {
                 .setHours(0, 0, 0, 0);
 
             this.setIntervalMaxDate();
-            this._activityTimeline.renderedCallback();
+            this.moveTimelineDisplay();
         }
     }
 
@@ -1491,6 +1529,7 @@ export class HorizontalActivityTimeline {
         );
 
         this._requestHeightChange = true;
+        this._activityTimeline.requestRedrawTimeline();
         this._activityTimeline.renderedCallback();
     }
 
@@ -1534,6 +1573,9 @@ export class HorizontalActivityTimeline {
      * Handle mouse over on popover.
      */
     handleMouseOverOnPopover() {
+        if(this._isTimelineMoving){
+            return;
+        }
         this.clearPreviousTooltipClosingTimeout();
         this._isMouseOverOnPopover = true;
     }
@@ -1577,10 +1619,6 @@ export class HorizontalActivityTimeline {
             xPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         }
 
-        this._timeIntervalSelector
-            .attr('x', xPosition)
-            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
-
         this.moveIntervalToPosition(xPosition);
     }
 
@@ -1588,6 +1626,7 @@ export class HorizontalActivityTimeline {
      * Handle the drag start of time interval to set the distance between drag position and min value.
      */
     handleTimeIntervalDragStart(event) {
+        this._isTimelineMoving = true;
         this._distanceBetweenDragAndMin =
             event.x - this.scrollTimeScale(this._intervalMinDate);
     }
@@ -1611,6 +1650,7 @@ export class HorizontalActivityTimeline {
         );
 
         this._requestHeightChange = true;
+        this._activityTimeline.requestRedrawTimeline();
         this._activityTimeline.renderedCallback();
     }
 
@@ -1660,6 +1700,7 @@ export class HorizontalActivityTimeline {
         const requestedPosition =
             Number(this._timeIntervalSelector.attr('x')) +
             this.normalizeHorizontalScrollDeltaX(event);
+
         this.moveIntervalToPosition(
             this.validateXMousePosition(requestedPosition)
         );

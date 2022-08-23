@@ -152,6 +152,8 @@ export default class ActivityTimeline extends LightningElement {
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
+    _redrawHorizontalTimeline = true;
+
     // Horizontal Activity Timeline
     _resizeObserver;
     _isTooltipClosing = false;
@@ -196,15 +198,19 @@ export default class ActivityTimeline extends LightningElement {
                 this.initializeHorizontalTimeline();
             }
 
-            this.horizontalTimeline.createHorizontalActivityTimeline(
-                this.sortedItems,
-                this._maxVisibleItems,
-                this.divHorizontalTimeline.clientWidth
-            );
+            if(this._redrawHorizontalTimeline){
+                this.horizontalTimeline.createHorizontalActivityTimeline(
+                    this.sortedItems,
+                    this._maxVisibleItems,
+                    this.divHorizontalTimeline.clientWidth
+                );
+                this._redrawHorizontalTimeline = false;
+            }
+           
             this.updateHorizontalTimelineHeader();
         }
 
-        if (this.showItemPopOver) {
+        if (this.showItemPopOver && !this.horizontalTimeline._isTimelineMoving) {
             this.horizontalTimeline.initializeItemPopover(this.selectedItem);
         }
     }
@@ -731,6 +737,7 @@ export default class ActivityTimeline extends LightningElement {
      */
     initResizeObserver() {
         const resizeObserver = new AvonniResizeObserver(() => {
+            this.requestRedrawTimeline();
             this.renderedCallback();
         });
 
@@ -814,6 +821,10 @@ export default class ActivityTimeline extends LightningElement {
         this.intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
         this.intervalMaxDate = this.horizontalTimeline.intervalMaxDate;
         this.intervalMinDate = this.horizontalTimeline.intervalMinDate;
+    }
+
+    requestRedrawTimeline(){
+        this._redrawHorizontalTimeline = true;
     }
 
     /**
