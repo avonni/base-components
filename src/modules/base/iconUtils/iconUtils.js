@@ -132,6 +132,14 @@ let iconCreator;
 //     return iconCreator.createIconFromDefaultPath(foreignObjectForIcon, iconInformation);
 // }
 
+/**
+ * Create specific svg icon to append in a foreign object.
+ * @param iconInformation valid information to create specific icon. {iconName: String, category: String, categoryIconClass: string}
+ * @param foreignObjectForIcon foreign object that will contain icon's svg
+ * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay, 
+ * it will allow to refresh the icons when the libraries are ready. 
+ * @returns {object} icon's svg created
+ */
 export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethodOfView) => {
     if(!iconCreator){
         iconCreator = new IconSVGCreator(resetMethodOfView); 
