@@ -99,6 +99,7 @@ export class HorizontalActivityTimeline {
     _timelineWidth = DEFAULT_TIMELINE_WIDTH;
     _timelineHeight = DEFAULT_TIMELINE_HEIGHT;
     _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
+    _tooltipClosingTimeout = null;
 
     // To change visible height of timeline
     _maxDisplayedItems;
@@ -594,6 +595,16 @@ export class HorizontalActivityTimeline {
      */
     convertPxToEm(pxValue) {
         return Number(pxValue) / 16.0;
+    }
+
+    /**
+     * Clear active timeout to close item's tooltip.
+     */
+     clearPreviousTooltipClosingTimeout(){
+        if(this._tooltipClosingTimeout){
+            clearTimeout(this._tooltipClosingTimeout);
+            this._tooltipClosingTimeout = null;
+        }
     }
 
     /**
@@ -1511,7 +1522,8 @@ export class HorizontalActivityTimeline {
      * Handle mouse out of item to hide popover
      */
     handleMouseOutOnItem() {
-        setTimeout(() => {
+        this.clearPreviousTooltipClosingTimeout();
+        this._tooltipClosingTimeout = setTimeout(() => {
             if (!this._isMouseOverOnPopover) {
                 this._activityTimeline.handleTooltipClose();
             }
@@ -1522,6 +1534,7 @@ export class HorizontalActivityTimeline {
      * Handle mouse over on popover.
      */
     handleMouseOverOnPopover() {
+        this.clearPreviousTooltipClosingTimeout();
         this._isMouseOverOnPopover = true;
     }
 
@@ -1529,6 +1542,7 @@ export class HorizontalActivityTimeline {
      * Handle mouse out of popover.
      */
     handleMouseOutOfPopover() {
+        this.clearPreviousTooltipClosingTimeout();
         this._isMouseOverOnPopover = false;
         this._activityTimeline.handleTooltipClose();
     }
@@ -1545,6 +1559,7 @@ export class HorizontalActivityTimeline {
      * Handle mouse over on item to display a popover
      */
     handleMouseOverOnItem(element) {
+        this.clearPreviousTooltipClosingTimeout();
         this._isMouseOverOnPopover = false;
         this._activityTimeline.handleItemMouseOver(element);
     }
