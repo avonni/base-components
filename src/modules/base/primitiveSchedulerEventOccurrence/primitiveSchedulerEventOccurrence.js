@@ -102,7 +102,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api occurrenceKey;
 
     /**
-     * Theme of the occurrence. Valid values include default, transparent, line, hollow and rounded.
+     * Theme of the occurrence.
+     * If the event is a reference line, valid values include default, inverse, success, warning, error and lightest. Otherwise, valid values include default, transparent, line, hollow and rounded.
      *
      * @type {string}
      * @public
@@ -175,27 +176,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._cellDuration = !isNaN(Number(value)) ? Number(value) : 0;
 
         if (this._connected) {
-            this.updateLength();
-            this.updateStickyLabels();
-        }
-    }
-
-    /**
-     * The header cells used to position and size the event. Two keys are allowed: xAxis and yAxis. If present, each key must be an array of cell objects.
-     *
-     * @type {object}
-     * @public
-     * @required
-     */
-    @api
-    get headerCells() {
-        return this._headerCells;
-    }
-    set headerCells(value) {
-        this._headerCells = normalizeObject(value);
-
-        if (this._connected) {
-            this.updatePosition();
             this.updateLength();
             this.updateStickyLabels();
         }
@@ -309,6 +289,27 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     set from(value) {
         this._from =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
+
+        if (this._connected) {
+            this.updatePosition();
+            this.updateLength();
+            this.updateStickyLabels();
+        }
+    }
+
+    /**
+     * The header cells used to position and size the event. Two keys are allowed: xAxis and yAxis. If present, each key must be an array of cell objects.
+     *
+     * @type {object}
+     * @public
+     * @required
+     */
+    @api
+    get headerCells() {
+        return this._headerCells;
+    }
+    set headerCells(value) {
+        this._headerCells = normalizeObject(value);
 
         if (this._connected) {
             this.updatePosition();
@@ -820,7 +821,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'slds-p-horizontal_x-small':
                     !this.isVerticalTimeline && !this.displayAsDot,
                 'slds-m-top_small': this.isVertical && this.theme === 'line',
-                'slds-grid slds-grid_vertical-align-center': this.displayAsDot
+                'slds-grid_vertical-align-center': this.displayAsDot
             })
             .toString();
     }
@@ -1037,7 +1038,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             /rgb\(([0-9]+,\s?[0-9]+,\s?[0-9]+)\)/
         );
         if (isRGB) {
-            return `rgba(${isRGB[1]}, .3)`;
+            return `rgba(${isRGB[1]}, 0.3)`;
         }
         return this.computedColor;
     }
@@ -1242,8 +1243,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Initialize the labels values.
      */
     initLabels() {
-        if (!this.eventData || !this.resources.length || !this.resourceKey)
-            return;
+        if (!this.resources.length || !this.resourceKey) return;
 
         const labels = {};
         const resource = this.resources.find(
@@ -1450,6 +1450,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             const startsBeforeBeginningOfMonth =
                 this.from < firstVisibleDate &&
                 this.to > firstVisibleDate.endOf('day');
+            // The visible weeks placeholders will be displayed,
+            // but not the original event
             overflows = startsBeforeBeginningOfMonth;
         }
         style.display = isMonth && overflows ? 'none' : null;
