@@ -1214,7 +1214,7 @@ export default class Kanban extends LightningElement {
      */
     handleScrollTiles(groups, scrollTop) {
         if (this._draggedTile && this._hasSubGroups) {
-            this._scrollOffset = scrollTop - this._initialScrollTop;
+            this._scrollOffset = scrollTop - this._initialContainerScrollTop;
         } else {
             this._scrollOffset = 0;
         }
@@ -1263,7 +1263,7 @@ export default class Kanban extends LightningElement {
             return;
         }
 
-        this._initialScrollTop = this.template.querySelector(
+        this._initialContainerScrollTop = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         ).scrollTop;
 
@@ -1288,6 +1288,24 @@ export default class Kanban extends LightningElement {
                 ? this._groupWidth
                 : 10;
 
+        this._clickedGroupIndex = Math.min(
+            Math.floor(
+                (event.clientX - this._kanbanOffset.x) / this._groupWidth
+            ),
+            this.groupValues.length - 1
+        );
+
+        this._clickedGroupIndex += Math.floor(
+            this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollLeft / this._groupWidth
+        );
+
+        const clickedGroup = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        )[this._clickedGroupIndex];
+        const initialGroupScroll = clickedGroup.scrollTop;
+
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
         this._draggedTile.style.width = `calc(${parseInt(
@@ -1311,19 +1329,6 @@ export default class Kanban extends LightningElement {
             event.currentTarget.getBoundingClientRect().y +
             (this._hasSubGroups ? expandableContainer.scrollTop : 0);
 
-        this._clickedGroupIndex = Math.min(
-            Math.floor(
-                (event.clientX - this._kanbanOffset.x) / this._groupWidth
-            ),
-            this.groupValues.length - 1
-        );
-
-        this._clickedGroupIndex += Math.floor(
-            this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollLeft / this._groupWidth
-        );
-
         this._currentSubGroup = this._draggedTile.dataset.subgroup;
 
         const groupSelector = this._hasSubGroups
@@ -1341,16 +1346,20 @@ export default class Kanban extends LightningElement {
 
         this._releasedGroupIndex = this._clickedGroupIndex;
 
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
         // Calculates the height of each group
-        this.template
-            .querySelectorAll('[data-element-id="avonni-kanban__group"]')
-            .forEach((group, i) => {
-                this._groupsHeight[i] = group.offsetHeight;
-            });
+
+        groups.forEach((group, i) => {
+            this._groupsHeight[i] = group.offsetHeight;
+        });
 
         this._draggedTile.style.transform = `rotate(3deg)`;
 
         this.createTileSpace();
+        clickedGroup.scrollTop = initialGroupScroll;
+
         this.handleDropZone(event);
         this.handleTileMouseMove(event);
     }
