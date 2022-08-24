@@ -156,7 +156,6 @@ export default class ActivityTimeline extends LightningElement {
 
     // Horizontal Activity Timeline
     _resizeObserver;
-    _isTooltipClosing = false;
     intervalDaysLength;
     intervalMaxDate;
     intervalMinDate;
@@ -184,31 +183,30 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        if(this.isTimelineHorizontal && this._isTooltipClosing){
-            this._isTooltipClosing = false;
-            return;
+        if(this.isTimelineHorizontal){
+            this.renderedCallbackHorizontalTimeline();
+        }
+    }
+
+    renderedCallbackHorizontalTimeline(){
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
         }
 
-        if (this.isTimelineHorizontal && !this.showItemPopOver) {
-            if (!this._resizeObserver) {
-                this._resizeObserver = this.initResizeObserver();
-            }
-
-            if (!this.horizontalTimeline) {
-                this.initializeHorizontalTimeline();
-            }
-
-            if(this._redrawHorizontalTimeline){
-                this.horizontalTimeline.createHorizontalActivityTimeline(
-                    this.sortedItems,
-                    this._maxVisibleItems,
-                    this.divHorizontalTimeline.clientWidth
-                );
-                this._redrawHorizontalTimeline = false;
-            }
-           
-            this.updateHorizontalTimelineHeader();
+        if (!this.horizontalTimeline) {
+            this.initializeHorizontalTimeline();
         }
+
+        if(this._redrawHorizontalTimeline) {
+            this.horizontalTimeline.createHorizontalActivityTimeline(
+                this.sortedItems,
+                this._maxVisibleItems,
+                this.divHorizontalTimeline.clientWidth
+            );
+            this._redrawHorizontalTimeline = false;
+        }
+        
+        this.updateHorizontalTimelineHeader();
 
         if (this.showItemPopOver && !this.horizontalTimeline._isTimelineMoving) {
             this.horizontalTimeline.initializeItemPopover(this.selectedItem);
@@ -929,7 +927,6 @@ export default class ActivityTimeline extends LightningElement {
         }
         this.showItemPopOver = false;
         this.selectedItem = null;
-        this._isTooltipClosing = true;
     }
 
     /**
