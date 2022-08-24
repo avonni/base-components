@@ -1739,6 +1739,9 @@ export default class List extends LightningElement {
             : event.target.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
 
+        // Return only the original object.
+        const itemCopy = deepCopy(this.computedItems[itemIndex]);
+        delete itemCopy.index;
         /**
          * The event fired when a user clicks on an action.
          *
@@ -1753,7 +1756,7 @@ export default class List extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item: this.computedItems[itemIndex],
+                    item: itemCopy,
                     targetName: this.computedItems[itemIndex].name
                 }
             })
