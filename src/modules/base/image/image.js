@@ -317,6 +317,7 @@ export default class Image extends LightningElement {
      *
      * @public
      * @type {boolean}
+     * @default false
      */
     @api
     get staticImages() {
