@@ -1566,9 +1566,9 @@ export class HorizontalActivityTimeline {
         const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         const maxXPosition =
             this.scrollTimeScale(this._intervalMaxDate) - MIN_INTERVAL_WIDTH;
-        let xPosition = event.x - this.scrollAxisLeftPosition;
 
-        if (xPosition < minXPosition) {
+        let xPosition = event.sourceEvent.offsetX;
+        if (event.sourceEvent.pageX < this.scrollAxisLeftPosition || xPosition < minXPosition) {
             xPosition = minXPosition;
         } else if (xPosition > maxXPosition) {
             xPosition = maxXPosition;
@@ -1697,9 +1697,9 @@ export class HorizontalActivityTimeline {
         const minXPosition =
             this.scrollTimeScale(this._intervalMinDate) + MIN_INTERVAL_WIDTH;
         const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
-        let xPosition = event.x - this.scrollAxisLeftPosition;
 
-        if (xPosition < minXPosition) {
+        let xPosition = event.sourceEvent.offsetX;
+        if (event.sourceEvent.pageX < this.scrollAxisLeftPosition || xPosition < minXPosition) {
             xPosition = minXPosition;
         } else if (xPosition > maxXPosition) {
             xPosition = maxXPosition;
