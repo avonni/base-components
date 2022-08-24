@@ -404,9 +404,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepclick', { detail: { value: 'step-1' } })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepclick', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
@@ -427,9 +430,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepblur', { detail: { value: 'step-1' } })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepblur', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
@@ -450,9 +456,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepfocus', { detail: { value: 'step-1' } })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepfocus', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
@@ -473,11 +482,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepmouseenter', {
-                    detail: { value: 'step-1' }
-                })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepmouseenter', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
@@ -498,11 +508,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepmouseleave', {
-                    detail: { value: 'step-1' }
-                })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepmouseleave', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
@@ -523,11 +534,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('stepbuttonclick', {
-                    detail: { value: 'step-1' }
-                })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('stepbuttonclick', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
@@ -548,11 +560,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(
-                new CustomEvent('steppopoverclick', {
-                    detail: { value: 'step-1' }
-                })
-            );
+            primitives[1].dispatchEvent(new CustomEvent('steppopoverclick', {
+                detail: {
+                    value: 'step-1'
+                },
+                bubbles: true
+            }));
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe('step-1');

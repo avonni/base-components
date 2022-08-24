@@ -264,31 +264,10 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * Click on step dispatcher.
-     */
-    dispatchStepClick(event) {
-        const value = event.detail.value;
-        /**
-         * The event fired when a step is clicked.
-         *
-         * @event
-         * @name stepclick
-         * @param {string} value Unique value of the clicked step.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('stepclick', {
-                detail: {
-                    value: value
-                }
-            })
-        );
-    }
-
-    /**
      * Blur step dispatcher.
-     */
-    dispatchStepBlur(event) {
+     */ 
+    handleStepBlur(event) {
+        event.stopPropagation();
         const value = event.detail.value;
 
         /**
@@ -299,20 +278,38 @@ export default class ProgressIndicator extends LightningElement {
          * @param {string} value Unique value of the blurred step.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('stepblur', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepblur', {
+            detail: { value }
+        }));
+    }
+
+    /**
+     * Click on step dispatcher.
+     */
+    handleStepClick(event) {
+        event.stopPropagation();
+        const value = event.detail.value;
+
+        /**
+         * The event fired when a step is clicked.
+         *
+         * @event
+         * @name stepclick
+         * @param {string} value Unique value of the clicked step.
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('stepclick', {
+            detail: { value }
+        }));
     }
 
     /**
      * Focus on step dispatcher.
      */
-    dispatchStepFocus(event) {
+    handleStepFocus(event) {
+        event.stopPropagation();
         const value = event.detail.value;
+
         /**
          * The event fired when a step receives focus.
          *
@@ -321,19 +318,16 @@ export default class ProgressIndicator extends LightningElement {
          * @param {string} value Unique value of the focused step.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('stepfocus', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepfocus', {
+            detail: { value }
+        }));
     }
 
     /**
      * Mouse Enter step dispatcher.
      */
-    dispatchStepMouseEnter(event) {
+    handleStepMouseEnter(event) {
+        event.stopPropagation();
         const value = event.detail.value;
 
         /**
@@ -344,42 +338,38 @@ export default class ProgressIndicator extends LightningElement {
          * @param {string} value Unique value of the step entered by the mouse.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('stepmouseenter', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepmouseenter', {
+            detail: { value }
+        }));
     }
 
     /**
      * Mouse Leave step dispatcher.
      */
-    dispatchStepMouseLeave(event) {
+    handleStepMouseLeave(event) {
+        event.stopPropagation();
         const value = event.detail.value;
+
         /**
-         * Event that fires when mouse leaves step.
+         * The event fired when the mouse leaves a step.
          *
          * @event
          * @name stepmouseleave
          * @param {string} value Unique value of the step left by the mouse.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('stepmouseleave', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepmouseleave', {
+            detail: { value }
+        }));
     }
 
     /**
      * Click on step button dispatcher.
      */
-    dispatchStepButtonClick(event) {
+    handleStepButtonClick(event) {
+        event.stopPropagation();
         const value = event.detail.value;
+
         /**
          * The event fired when a step button is clicked.
          *
@@ -388,20 +378,18 @@ export default class ProgressIndicator extends LightningElement {
          * @param {string} value Unique value of the step the clicked button belongs to.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('stepbuttonclick', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepbuttonclick', {
+            detail: { value }
+        }));
     }
 
     /**
      * Click on step popover dispatcher.
      */
-    dispatchStepPopoverClick(event) {
+    handleStepPopoverClick(event) {
+        event.stopPropagation();
         const value = event.detail.value;
+
         /**
          * The event fired when a step popover is clicked.
          *
@@ -410,12 +398,8 @@ export default class ProgressIndicator extends LightningElement {
          * @param {string} value Unique value of the step the clicked popover belongs to.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('steppopoverclick', {
-                detail: {
-                    value: value
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('steppopoverclick', {
+            detail: { value }
+        }));
     }
 }

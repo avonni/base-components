@@ -634,10 +634,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -653,10 +654,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -672,10 +674,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('mouseleave'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -691,10 +694,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('focus'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -710,10 +714,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('blur'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -729,10 +734,11 @@ describe('PrimitiveProgressStep', () => {
             popover.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -749,10 +755,11 @@ describe('PrimitiveProgressStep', () => {
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('1');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('1');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 });

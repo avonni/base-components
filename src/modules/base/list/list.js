@@ -767,7 +767,8 @@ export default class List extends LightningElement {
         const actionName = this.hasMultipleActions
             ? event.detail.value
             : event.target.value;
-        const itemIndex = event.currentTarget.dataset.itemIndex;
+        const itemIndex = Number(event.currentTarget.dataset.itemIndex);
+        const item = deepCopy(this.items[itemIndex]);
 
         /**
          * The event fired when a user clicks on an action.
@@ -783,8 +784,8 @@ export default class List extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item: this.computedItems[itemIndex],
-                    targetName: this.computedItems[itemIndex].name
+                    item,
+                    targetName: item.name
                 }
             })
         );
@@ -804,6 +805,8 @@ export default class List extends LightningElement {
             return;
         }
 
+        const index = Number(event.currentTarget.dataset.index);
+        const item = deepCopy(this.items[index]);
         /**
          * The event fired when a user clicks on an item.
          *
@@ -817,10 +820,9 @@ export default class List extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: this.computedItems[event.currentTarget.dataset.index],
+                    item,
                     bounds: event.currentTarget.getBoundingClientRect(),
-                    name: this.computedItems[event.currentTarget.dataset.index]
-                        .name
+                    name: item.name
                 }
             })
         );

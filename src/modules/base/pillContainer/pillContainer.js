@@ -556,6 +556,9 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        const index = Number(event.target.dataset.index);
+        const item = deepCopy(this.items[index]);
+
         /**
          * The event fired when a user clicks on an action.
          *
@@ -569,9 +572,9 @@ export default class PillContainer extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
+                    index,
                     name: event.detail.name,
-                    index: Number(event.target.dataset.index),
-                    targetName: event.detail.targetName
+                    targetName: item.name
                 }
             })
         );
