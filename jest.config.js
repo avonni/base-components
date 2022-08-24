@@ -17,6 +17,8 @@ module.exports = {
         '^c/(primitiveSchedulerHeaderGroup)$':
             '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveTreeItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(splitter)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(splitterPane)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(verticalProgressIndicator)$':
             '<rootDir>/jest-mock/components/base/$1/$1'
     },

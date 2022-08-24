@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import SplitterPane from 'c/splitterPane';
+import SplitterPane from '../splitterPane';
 
 let element;
 describe('SplitterPane', () => {
