@@ -715,7 +715,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
 
     /**
-     * Computed class of the occurrence.
+     * Computed CSS classes of the occurrence.
      *
      * @type {string}
      */
@@ -762,6 +762,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.color || this.resourceColor;
     }
 
+    /**
+     * Computed CSS classes for the disabled events wrapper.
+     *
+     * @type {string}
+     */
     get disabledClass() {
         return classSet(
             'slds-theme_alert-texture avonni-scheduler__disabled-date'
@@ -779,6 +784,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .toString();
     }
 
+    /**
+     * Computed CSS style for the disabled events wrapper.
+     *
+     * @type {string}
+     */
     get disabledStyle() {
         return this.isTimeline
             ? null
@@ -804,6 +814,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .toString();
     }
 
+    /**
+     * True if the event should be displayed as a dot.
+     *
+     * @type {boolean}
+     */
     get displayAsDot() {
         return this.isStandalone && !this.spansOnMoreThanOneDay;
     }
@@ -850,6 +865,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             .toString();
     }
 
+    /**
+     * True if the resize icons should be hidden.
+     *
+     * @type {boolean}
+     */
     get hideResizeIcon() {
         return this.readOnly || this.isStandalone;
     }
@@ -863,52 +883,107 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this.template.host;
     }
 
+    /**
+     * True if the variant is agenda.
+     *
+     * @type {boolean}
+     */
     get isAgenda() {
         return this.variant === 'agenda';
     }
 
+    /**
+     * True if the event spans on one full day.
+     *
+     * @type {boolean}
+     */
     get isAllDay() {
         return isAllDay(this.eventData, this.from, this.to);
     }
 
+    /**
+     * True if the event is part of a calendar.
+     *
+     * @type {boolean}
+     */
     get isCalendar() {
         return this.variant.startsWith('calendar');
     }
 
+    /**
+     * True if the variant is calendar-horizontal.
+     *
+     * @type {boolean}
+     */
     get isHorizontalCalendar() {
         return this.variant === 'calendar-horizontal';
     }
 
+    /**
+     * True if the variant is calendar-month.
+     *
+     * @type {boolean}
+     */
     get isMonthCalendar() {
         return this.variant === 'calendar-month';
     }
 
+    /**
+     * True if the event is part of a calendar in the month view, and it doesn't span on more than one day.
+     *
+     * @type {boolean}
+     */
     get isMonthCalendarSingleDay() {
         return this.isMonthCalendar && !this.spansOnMoreThanOneDay;
     }
 
+    /**
+     * True if the event orientation is horizontal, but it is not set to one row. The standalone events are positionned in absolute on a grid (in a calendar), or positionned statically (in an agenda).
+     *
+     * @type {boolean}
+     */
     get isStandalone() {
         return this.isMonthCalendar || this.isAgenda;
     }
 
+    /**
+     * True if the event start and end are on different days.
+     *
+     * @type {boolean}
+     */
     get spansOnMoreThanOneDay() {
         return spansOnMoreThanOneDay(this.eventData, this.from, this.to);
     }
 
+    /**
+     * True if the event is part of a timeline.
+     *
+     * @type {boolean}
+     */
     get isTimeline() {
         return this.variant.startsWith('timeline');
     }
 
+    /**
+     * True if the orientation of the event is vertical.
+     *
+     * @type {boolean}
+     */
     get isVertical() {
         return this.isVerticalTimeline || this.isVerticalCalendar;
     }
 
+    /**
+     * True if the variant is calendar-vertical.
+     *
+     * @type {boolean}
+     */
     get isVerticalCalendar() {
         return this.variant === 'calendar-vertical';
     }
 
     /**
-     * True if the variant is vertical.
+     * True if the variant is timeline-vertical.
      *
      * @type {boolean}
      */
@@ -1294,6 +1369,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         });
     }
 
+    /**
+     * Align the event with its resource.
+     */
     alignPositionWithResource() {
         if (this.referenceLine) {
             return;
@@ -1318,6 +1396,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
+    /**
+     * If the event is in a vertical setup of a calendar, remove the year, month and day from the date, to allow for comparison of the time only.
+     *
+     * @param {Date} date Date to transform.
+     * @returns {Date}
+     */
     getComparableTime(date) {
         if (!this.isVerticalCalendar) {
             return date;
@@ -1326,12 +1410,27 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return time.setFullYear(1, 0, 0);
     }
 
+    /**
+     * Get the size (in pixels) between the end of the event, and the end of the last cell it crosses.
+     *
+     * @param {Date} cellEnd Time at which the cell ends.
+     * @param {number} cellSize Size of the cell, in pixels.
+     * @param {DateTime} to End date of the event.
+     * @returns {number} Size of the offset between the end of the event, and the end of the cell.
+     */
     getOffsetEnd(cellEnd, cellSize, to) {
         const durationLeft = cellEnd - to;
         const percentageLeft = durationLeft / this.cellDuration;
         return percentageLeft * cellSize;
     }
 
+    /**
+     * Get the size (in pixels) between the start of the event, and the end of the first cell it crosses.
+     *
+     * @param {Date} cellEnd Time at which the cell ends.
+     * @param {number} cellSize Size of the cell, in pixels.
+     * @returns {number} Size of the offset between the start of the event, and the end of the cell.
+     */
     getOffsetStart(cellEnd, cellSize) {
         const cellDuration = this.cellDuration;
         const from = this.getComparableTime(this.from);
@@ -1347,6 +1446,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return cellSize * eventPercentageOfCell;
     }
 
+    /**
+     * Get the first cell that the event crosses.
+     *
+     * @param {object[]} cells Array of cell objects.
+     * @returns {object} First cell crossed.
+     */
     getStartCellIndex(cells) {
         const start = this.occurrence.weekStart || this.from;
         return cells.findIndex((cell) => {
@@ -1396,6 +1501,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
+    /**
+     * Compute and update the length of a standalone event.
+     */
     updateStandaloneLength() {
         const headerCells = this.headerCells.xAxis;
         const { to, cellWidth } = this;
@@ -1433,6 +1541,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.setLength(length);
     }
 
+    /**
+     * Update the position of the event if it is set in a calendar.
+     */
     updatePositionInCalendar() {
         const style = this.hostElement.style;
         const isMonth = this.isMonthCalendar;
@@ -1486,6 +1597,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
+    /**
+     * Update the position of the event if it is set in a timeline.
+     */
     updatePositionInTimeline() {
         const { cellHeight, cellWidth, timelineHeaderCells } = this;
         if (!timelineHeaderCells) {
