@@ -1363,6 +1363,8 @@ export default class Kanban extends LightningElement {
 
         this._draggedTile.style.transform = `rotate(3deg)`;
 
+        this.handleTileMouseMove(event);
+
         this.createTileSpace();
         clickedGroup.scrollTop = initialGroupScroll;
 
