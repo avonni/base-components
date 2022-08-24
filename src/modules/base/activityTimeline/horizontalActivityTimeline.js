@@ -57,6 +57,7 @@ const MIN_INTERVAL_WIDTH = 2;
 const NUBBIN_TOP_POSITION_PX = 36;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
+const SCROLL_AXIS_RECTANGLES_G_ID = 'avonni-horizontal-activity-timeline__scroll-axis-rectangles';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
 const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
@@ -383,9 +384,14 @@ export class HorizontalActivityTimeline {
             (item) => item.yPosition < DEFAULT_TIMELINE_AXIS_HEIGHT
         );
 
+        // Select or create rectangles container
+        let rectanglesContainer = this._scrollAxisSVG.select('#' + SCROLL_AXIS_RECTANGLES_G_ID);
+        if(!rectanglesContainer.node()) {
+            rectanglesContainer = this._scrollAxisSVG.append('g').attr('id', SCROLL_AXIS_RECTANGLES_G_ID);
+        }
+
         // Draw rectangle for each item
-        this._scrollAxisSVG
-            .append('g')
+        rectanglesContainer
             .selectAll('rect')
             .data(itemsToDisplay)
             .enter()
@@ -581,6 +587,15 @@ export class HorizontalActivityTimeline {
      */
     convertDateToFormat(date) {
         return dateTimeObjectFrom(date).toFormat(this._dateFormat);
+    }
+
+    /**
+     * Convert a valid xPosition to a date (timestamp format) based on specific scale.
+     * 
+     * @return {number}
+     */
+    convertPositionToScaleDate(scale, xPosition){
+        return scale.invert(xPosition).setHours(0, 0, 0, 0);
     }
 
     /**
@@ -923,6 +938,7 @@ export class HorizontalActivityTimeline {
      * End the interval resizing mode.
      */
     endIntervalResizing() {
+        this._isTimelineMoving = false;
         this._isResizingInterval = false;
         this._changeIntervalSizeMode = false;
         this.setIntervalBoundsState();
@@ -1076,10 +1092,7 @@ export class HorizontalActivityTimeline {
             .attr('x',  position)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-        this._intervalMinDate = this.scrollTimeScale
-            .invert(position)
-            .setHours(0, 0, 0, 0);
-
+        this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, position);
         this.setIntervalMaxDate();
         this.moveTimelineDisplay();
     }
@@ -1129,6 +1142,17 @@ export class HorizontalActivityTimeline {
         this._timelineItemsDiv = d3.select(this.divTimelineItemsSelector);
         this._timelineItemsDiv.selectAll('*').remove();
         this.createTimeline();
+    }
+
+    /**
+     * Remove all scroll axis rectangles and redraw them with new positions.
+     */
+    resetAndRedrawScrollAxisRectangle(){
+        // Remove all rectangles of scroll axis
+        this._scrollAxisSVG.select('#' + SCROLL_AXIS_RECTANGLES_G_ID).selectAll('*').remove();
+
+        // Redraw rectangles with new positions
+        this.addItemsToScrollAxis();
     }
 
     /**
@@ -1507,10 +1531,8 @@ export class HorizontalActivityTimeline {
             this._timeIntervalSelector
                 .attr('x', xPosition)
                 .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
-            this._intervalMinDate = this.scrollTimeScale
-                .invert(xPosition)
-                .setHours(0, 0, 0, 0);
 
+            this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, xPosition);
             this.setIntervalMaxDate();
             this.moveTimelineDisplay();
         }
@@ -1522,23 +1544,25 @@ export class HorizontalActivityTimeline {
     handleLowerBoundIntervalChange() {
         this._isResizingInterval = true;
         const xDateMinPosition = this._timeIntervalSelector.attr('x');
-        this._intervalMinDate = this.scrollTimeScale
-            .invert(xDateMinPosition)
-            .setHours(0, 0, 0, 0);
+        this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, xDateMinPosition);
         this._intervalDaysLength = this.calculateDaysBetweenDates(
             this._intervalMinDate,
             this._intervalMaxDate
         );
 
         this._requestHeightChange = true;
-        this._activityTimeline.requestRedrawTimeline();
-        this._activityTimeline.renderedCallback();
+        this.resetAndRedrawScrollAxisRectangle();
+        this.moveTimelineDisplay();
     }
 
     /**
      * Handle the drag of the lower bound of interval to expand or reduce interval size.
      */
     handleLowerBoundIntervalDrag(event) {
+        // Keep popover close while resizing
+        this.handleMouseOutOfPopover();
+        this._isTimelineMoving = true;
+
         const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         const maxXPosition =
             this.scrollTimeScale(this._intervalMaxDate) - MIN_INTERVAL_WIDTH;
@@ -1555,7 +1579,7 @@ export class HorizontalActivityTimeline {
         this._timeIntervalSelector
             .attr('x', xPosition)
             .attr('width', newRectangleWidth);
-
+        
         this.handleLowerBoundIntervalChange();
     }
 
@@ -1605,6 +1629,9 @@ export class HorizontalActivityTimeline {
      * Handle mouse over on item to display a popover
      */
     handleMouseOverOnItem(element) {
+        if(this._isTimelineMoving) {
+            return;
+        }
         this.clearPreviousTooltipClosingTimeout();
         this._isMouseOverOnPopover = false;
         this._activityTimeline.handleItemMouseOver(element);
@@ -1655,14 +1682,18 @@ export class HorizontalActivityTimeline {
         );
 
         this._requestHeightChange = true;
-        this._activityTimeline.requestRedrawTimeline();
-        this._activityTimeline.renderedCallback();
+        this.resetAndRedrawScrollAxisRectangle();
+        this.moveTimelineDisplay();
     }
 
     /**
      * Handle the drag of the upper bound of interval to expand or reduce interval size.
      */
     handleUpperBoundIntervalDrag(event) {
+        // Keep popover close while resizing
+        this.handleMouseOutOfPopover();
+        this._isTimelineMoving = true;
+
         const minXPosition =
             this.scrollTimeScale(this._intervalMinDate) + MIN_INTERVAL_WIDTH;
         const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
