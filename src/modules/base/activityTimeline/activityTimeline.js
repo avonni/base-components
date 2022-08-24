@@ -890,7 +890,6 @@ export default class ActivityTimeline extends LightningElement {
          * @param {string} name Name of the item clicked.
          * @public
          */
-
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
