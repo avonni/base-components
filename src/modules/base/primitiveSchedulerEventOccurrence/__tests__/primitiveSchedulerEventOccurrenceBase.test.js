@@ -31,71 +31,24 @@
  */
 
 import { createElement } from 'lwc';
-import PrimitiveSchedulerEventOccurrence from 'c/primitiveSchedulerEventOccurrence';
+import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';
+import {
+    CELL_DURATION,
+    CELL_HEIGHT,
+    CELL_WIDTH,
+    FROM,
+    HOUR_HEADER_CELLS,
+    RESOURCE_KEY,
+    RESOURCES,
+    TO
+} from './defaults';
 
 // Not tested because depends on DOM measurements:
 // leftLabelWidth
 // rightLabelWidth
-// rightPosition
-// width
-
-const CELL_WIDTH = 50;
-const CELL_HEIGHT = 30;
-const CELL_DURATION = 3599999;
-const HEADER_CELLS = [
-    {
-        start: new Date(2021, 7, 30, 6).getTime(),
-        end: new Date(2021, 7, 30, 7).getTime() - 1
-    },
-    {
-        start: new Date(2021, 7, 30, 7).getTime(),
-        end: new Date(2021, 7, 30, 8).getTime() - 1
-    },
-    {
-        start: new Date(2021, 7, 30, 8).getTime(),
-        end: new Date(2021, 7, 30, 9).getTime() - 1
-    },
-    {
-        start: new Date(2021, 7, 30, 9).getTime(),
-        end: new Date(2021, 7, 30, 10).getTime() - 1
-    },
-    {
-        start: new Date(2021, 7, 30, 10).getTime(),
-        end: new Date(2021, 7, 30, 11).getTime() - 1
-    }
-];
-const FROM = new Date(2021, 7, 30, 8);
-const TO = new Date(2021, 7, 30, 10);
-const RESOURCE_KEY = '3';
-const RESOURCES = [
-    {
-        name: '1',
-        height: 30,
-        color: 'rgb(0, 0, 0)',
-        data: {
-            customField: 'Some useless string',
-            overwrittenField: 'Another useless string',
-            height: 30,
-            name: '1',
-            color: 'rgb(0, 0, 0)'
-        }
-    },
-    {
-        name: '3',
-        height: 50,
-        color: 'rgb(51, 51, 51)',
-        data: {
-            customField: 'Row field',
-            overwrittenField: 'This will not show',
-            height: 50,
-            name: '3',
-            color: 'rgb(51, 51, 51)'
-        }
-    }
-];
 
 let element;
-describe('PrimitiveSchedulerEventOccurrence', () => {
+describe('Primitive Scheduler Event Occurrence: base', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -112,13 +65,14 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     it('Scheduler event occurence: Default attributes', () => {
         expect(element.color).toBeUndefined();
         expect(element.cellDuration).toBe(0);
-        expect(element.headerCells).toMatchObject([]);
+        expect(element.cellHeight).toBe(0);
         expect(element.cellWidth).toBe(0);
         expect(element.dateFormat).toBe('ff');
         expect(element.disabled).toBeFalsy();
         expect(element.eventData).toMatchObject({});
         expect(element.eventName).toBeUndefined();
         expect(element.from).toBeUndefined();
+        expect(element.headerCells).toMatchObject([]);
         expect(element.iconName).toBeUndefined();
         expect(element.labels).toMatchObject({});
         expect(element.startPosition).toBe(0);
@@ -133,7 +87,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(element.theme).toBeUndefined();
         expect(element.title).toBeUndefined();
         expect(element.to).toBeUndefined();
-        expect(element.variant).toBe('horizontal');
+        expect(element.variant).toBe('timeline-horizontal');
         expect(element.width).toBe(0);
         expect(element.x).toBe(0);
         expect(element.y).toBe(0);
@@ -141,10 +95,10 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
-    // NB: almost all attributes depends on from and to
+    // NB: almost all attributes depend on from and to
 
     // color
-    // Depends on theme, rows and rowKey
+    // Depends on theme, resources and resourceKey
     it('Scheduler event occurence: color', () => {
         element.from = FROM;
         element.to = TO;
@@ -159,7 +113,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('Scheduler event occurence: color defined by the row color', () => {
+    it('Scheduler event occurence: color defined by the resource color', () => {
         element.from = FROM;
         element.to = TO;
         element.theme = 'default';
@@ -175,7 +129,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // date-format
-    // Depends on labels, rows and rowKey
+    // Depends on labels, resources and resourceKey
     it('Scheduler event occurence: dateFormat', () => {
         element.from = FROM;
         element.to = TO;
@@ -192,12 +146,12 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
             const label = element.shadowRoot.querySelector(
                 '[data-element-id="div-center-label-wrapper"] span'
             );
-            expect(label.textContent).toBe('30/08/21');
+            expect(label.textContent).toBe('31/08/21');
         });
     });
 
     // disabled
-    // Depends on rows and rowKey
+    // Depends on resources and resourceKey
     it('Scheduler event occurence: disabled = false', () => {
         element.disabled = false;
 
@@ -220,18 +174,8 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('Scheduler event occurence: disabled occurrence height', () => {
-        element.disabled = true;
-        element.resources = RESOURCES;
-        element.resourceKey = RESOURCE_KEY;
-
-        return Promise.resolve().then(() => {
-            expect(element.style.height).toBe('50px');
-        });
-    });
-
     // event-data
-    // Depends on labels, rows and rowKey
+    // Depends on labels, resources and resourceKey
     it('Scheduler event occurence: eventData', () => {
         element.resources = RESOURCES;
         element.resourceKey = RESOURCE_KEY;
@@ -267,7 +211,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // labels
-    // Depends on title, eventData, rows and rowKey
+    // Depends on title, eventData, resources and resourceKey
     it('Scheduler event occurence: labels', () => {
         element.resources = RESOURCES;
         element.resourceKey = RESOURCE_KEY;
@@ -332,10 +276,10 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('Scheduler event occurence: only center label is displayed with vertical variant', () => {
+    it('Scheduler event occurence: only center label is displayed with other variants than timeline-horizontal', () => {
         element.resources = RESOURCES;
         element.resourceKey = RESOURCE_KEY;
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
         element.title = 'Title of the event';
         element.labels = {
             top: {
@@ -474,77 +418,22 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     it('Scheduler event occurence: read-only = true', () => {
         element.readOnly = true;
-        const dblClickHandler = jest.fn();
         const mouseDownHandler = jest.fn();
-        element.addEventListener('privatedblclick', dblClickHandler);
         element.addEventListener('privatemousedown', mouseDownHandler);
 
         return Promise.resolve().then(() => {
             const eventWrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-event-occurrence"]'
             );
-            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
             const mouseDown = new CustomEvent('mousedown');
             mouseDown.button = 0;
             eventWrapper.dispatchEvent(mouseDown);
-
-            expect(dblClickHandler).not.toHaveBeenCalled();
             expect(mouseDownHandler).not.toHaveBeenCalled();
 
             const resizeIcons = element.shadowRoot.querySelectorAll(
                 '.avonni-scheduler__event-resize-icon'
             );
             expect(resizeIcons).toHaveLength(0);
-        });
-    });
-
-    it('Scheduler event occurence: read-only = true, disabled occurrence', () => {
-        element.readOnly = true;
-        element.disabled = true;
-        const disabledDblClickHandler = jest.fn();
-        const mouseDownHandler = jest.fn();
-        element.addEventListener(
-            'privatedisableddblclick',
-            disabledDblClickHandler
-        );
-        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
-
-        return Promise.resolve().then(() => {
-            const eventWrapper = element.shadowRoot.querySelector(
-                '.avonni-scheduler__disabled-date'
-            );
-            const mouseDown = new CustomEvent('mousedown');
-            mouseDown.button = 0;
-            eventWrapper.dispatchEvent(mouseDown);
-            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
-
-            expect(disabledDblClickHandler).not.toHaveBeenCalled();
-            expect(mouseDownHandler).not.toHaveBeenCalled();
-        });
-    });
-
-    it('Scheduler event occurence: read-only = true, reference line', () => {
-        element.readOnly = true;
-        element.referenceLine = true;
-        const disabledDblClickHandler = jest.fn();
-        const mouseDownHandler = jest.fn();
-        element.addEventListener(
-            'privatedisableddblclick',
-            disabledDblClickHandler
-        );
-        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
-
-        return Promise.resolve().then(() => {
-            const eventWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-reference-line"]'
-            );
-            const mouseDown = new CustomEvent('mousedown');
-            mouseDown.button = 0;
-            eventWrapper.dispatchEvent(mouseDown);
-            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
-
-            expect(disabledDblClickHandler).not.toHaveBeenCalled();
-            expect(mouseDownHandler).not.toHaveBeenCalled();
         });
     });
 
@@ -568,28 +457,11 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
                 '[data-element-id="avonni-primitive-reference-line"]'
             );
             expect(referenceLineEvent).toBeTruthy();
-            expect(referenceLineEvent.classList).not.toContain(
-                'avonni-scheduler__reference-line_vertical'
-            );
-        });
-    });
-
-    it('Scheduler event occurence: referenceLine = true and variant = vertical', () => {
-        element.referenceLine = true;
-        element.variant = 'vertical';
-
-        return Promise.resolve().then(() => {
-            const referenceLineEvent = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-reference-line"]'
-            );
-            expect(referenceLineEvent.classList).toContain(
-                'avonni-scheduler__reference-line_vertical'
-            );
         });
     });
 
     // scroll-left-offset
-    // Depends on labels, rows, and rowKey
+    // Depends on labels, resources, and resourceKey
     it('Scheduler event occurence: scrollOffset', () => {
         element.scrollOffset = 30;
         element.from = FROM;
@@ -621,7 +493,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
                 value: 'String value'
             }
         };
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
@@ -763,7 +635,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     it('Scheduler event occurence: title, disabled = true and variant = vertical', () => {
         element.title = 'Title string';
         element.disabled = true;
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
 
         return Promise.resolve().then(() => {
             const titleWrapper = element.shadowRoot.querySelector(
@@ -771,70 +643,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
             );
             expect(titleWrapper.classList).toContain(
                 'avonni-scheduler__disabled-date-title_vertical'
-            );
-        });
-    });
-
-    // variant
-    // Depends on x and y
-    it('Scheduler event occurence: horizontal variant', () => {
-        element.variant = 'horizontal';
-        element.x = 10;
-        element.y = 56;
-
-        return Promise.resolve().then(() => {
-            expect(element.classList).toContain(
-                'avonni-scheduler__event_horizontal'
-            );
-            expect(element.endPosition).toBe(10);
-            expect(element.startPosition).toBe(10);
-
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
-            );
-            expect(wrapper.classList).toContain(
-                'slds-grid_vertical-align-center'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scheduler__event-wrapper_vertical'
-            );
-
-            const eventContent = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-content"]'
-            );
-            expect(eventContent.classList).toContain(
-                'slds-p-vertical_xx-small'
-            );
-        });
-    });
-
-    it('Scheduler event occurence: vertical variant', () => {
-        element.variant = 'vertical';
-        element.x = 10;
-        element.y = 56;
-
-        return Promise.resolve().then(() => {
-            expect(element.classList).not.toContain(
-                'avonni-scheduler__event_horizontal'
-            );
-            expect(element.endPosition).toBe(56);
-            expect(element.startPosition).toBe(56);
-
-            const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-occurrence"]'
-            );
-            expect(wrapper.classList).not.toContain(
-                'slds-grid_vertical-align-center'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scheduler__event-wrapper_vertical'
-            );
-
-            const eventContent = element.shadowRoot.querySelector(
-                '[data-element-id="div-event-content"]'
-            );
-            expect(eventContent.classList).not.toContain(
-                'slds-p-vertical_xx-small'
             );
         });
     });
@@ -913,7 +721,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // hideRightLabel
-    // Depends on labels, rowKey and rows
+    // Depends on labels, resourceKey and resources
     it('Scheduler event occurence: hideRightLabel method', () => {
         element.resourceKey = RESOURCE_KEY;
         element.resources = RESOURCES;
@@ -934,7 +742,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // showRightLabel
-    // Depends on hideRightLabel() labels, rowKey and rows
+    // Depends on hideRightLabel() labels, resourceKey and resources
     it('Scheduler event occurence: showRightLabel method', () => {
         element.resourceKey = RESOURCE_KEY;
         element.resources = RESOURCES;
@@ -964,7 +772,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.to = TO;
         element.cellWidth = CELL_WIDTH;
         element.cellHeight = CELL_HEIGHT;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { xAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
         element.occurrence = {
             numberOfEventsInThisTimeFrame: 2
@@ -986,9 +794,9 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.to = TO;
         element.cellWidth = CELL_WIDTH;
         element.cellHeight = CELL_HEIGHT;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { yAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
         element.occurrence = {
             numberOfEventsInThisTimeFrame: 2
         };
@@ -1008,7 +816,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.from = new Date(FROM.getTime()).setHours(7, 30);
         element.to = new Date(TO.getTime()).setHours(9, 30);
         element.cellWidth = CELL_WIDTH;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { xAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
 
         element.updateLength();
@@ -1028,9 +836,9 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.to = new Date(TO.getTime()).setHours(9, 30);
         element.cellWidth = CELL_WIDTH;
         element.cellHeight = CELL_HEIGHT;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { yAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
 
         element.updateLength();
         element.updatePosition();
@@ -1050,7 +858,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.to = new Date(TO.getTime()).setHours(8, 45);
         element.cellWidth = CELL_WIDTH;
         element.cellHeight = CELL_HEIGHT;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { xAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
         element.occurrence = {
             numberOfEventsInThisTimeFrame: 2,
@@ -1070,14 +878,14 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('Scheduler event occurence: updateLength and updatePosition methods, event spans on only part of a cell with vertical variant', () => {
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
         element.resourceKey = RESOURCE_KEY;
         element.resources = RESOURCES;
         element.from = new Date(FROM.getTime()).setHours(8, 15);
         element.to = new Date(TO.getTime()).setHours(8, 45);
         element.cellWidth = CELL_WIDTH;
         element.cellHeight = CELL_HEIGHT;
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { yAxis: HOUR_HEADER_CELLS };
         element.cellDuration = CELL_DURATION;
         element.occurrence = {
             numberOfEventsInThisTimeFrame: 2,
@@ -1111,14 +919,14 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.resources = RESOURCES;
         element.cellWidth = 30;
         element.disabled = true;
-        element.variant = 'vertical';
+        element.variant = 'timeline-vertical';
 
         element.updateThickness();
         expect(element.style.width).toBe('30px');
     });
 
     // Vertical position: updatePosition()
-    // occurrence, y, headerCells, rows and rowKey
+    // occurrence, y, headerCells, resources and resourceKey
     it('Scheduler event occurence: updatePosition method, vertical position', () => {
         element.from = FROM;
         element.to = TO;
@@ -1127,7 +935,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         element.occurrence = {
             offsetSide: 12
         };
-        element.headerCells = HEADER_CELLS;
+        element.headerCells = { xAxis: HOUR_HEADER_CELLS };
 
         element.updatePosition();
         expect(element.y).toBe(42);
@@ -1254,8 +1062,8 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
             eventElement.dispatchEvent(event);
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.x).toBe(10);
-            expect(handler.mock.calls[0][0].detail.y).toBe(20);
+            expect(handler.mock.calls[0][0].clientX).toBe(10);
+            expect(handler.mock.calls[0][0].clientY).toBe(20);
         });
     });
 
@@ -1277,8 +1085,8 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
             eventElement.dispatchEvent(event);
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.x).toBe(10);
-            expect(handler.mock.calls[0][0].detail.y).toBe(20);
+            expect(handler.mock.calls[0][0].clientX).toBe(10);
+            expect(handler.mock.calls[0][0].clientY).toBe(20);
         });
     });
 
