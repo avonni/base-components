@@ -1,24 +1,28 @@
 import { normalizeArray } from 'c/utilsPrivate';
+import { classSet } from '../utils/classSet';
 
 export default class Item {
     constructor(value) {
+        this.avatar = value.avatar;
+        this.fallbackIconName = value.fallbackIconName;
         this.label = value.label;
         this.description = value.description;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
-        this.hasImage = this.imageSrc;
-        console.log(this);
     }
 
     get hasImage() {
-        console.log(this._hasImage);
-        return this._hasImage;
+        if (!this.imageSrc) {
+            return false;
+        }
+        return this.imageSrc.length > 0;
     }
 
-    set hasImage(imageSrc) {
-        if (imageSrc) {
-            this._hasImage = imageSrc.length > 0;
-        }
+    get actionsClass() {
+        return classSet('slds-m-right_x-small').add({
+            'avonni-list__item-action-top-right':
+                this.hasImage && this.variant !== 'list'
+        });
     }
 }

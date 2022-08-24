@@ -81,7 +81,7 @@ const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 /**
  * @class
  * @storyId example-list--base
- * @description The List component allows for a user to enumerate a vertical list with items.
+ * @description The List component allows to enumerate items in a vertical list form, in a grid form or in a paginated single-line form.
  * @descriptor avonni-list
  * @public
  */
@@ -124,6 +124,9 @@ export default class List extends LightningElement {
     _sortableIconPosition = ICON_POSITIONS.default;
     _variant = VARIANTS.default;
 
+    _columnsSizes = {
+        default: 1
+    };
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
     _hasActions = false;
@@ -142,6 +145,7 @@ export default class List extends LightningElement {
     _resizeObserver;
     _scrollingInterval;
     _singleLinePage = 0;
+    _singleLinePageFirstIndex;
     _scrollTop = 0;
     _previousScrollTop;
     _initialScrollHeight = 0;
@@ -334,6 +338,7 @@ export default class List extends LightningElement {
     }
     set cols(value) {
         this._cols = this.normalizeColumns(value) || COLUMNS.default;
+        this._columnsSizes.default = this._cols;
         this.listResize();
     }
 
@@ -348,6 +353,7 @@ export default class List extends LightningElement {
     }
     set smallContainerCols(value) {
         this._smallContainerCols = this.normalizeColumns(value);
+        this._columnsSizes.small = this._smallContainerCols;
         this.listResize();
     }
 
@@ -363,6 +369,7 @@ export default class List extends LightningElement {
     }
     set mediumContainerCols(value) {
         this._mediumContainerCols = this.normalizeColumns(value);
+        this._columnsSizes.medium = this._mediumContainerCols;
         this.listResize();
     }
 
@@ -378,6 +385,7 @@ export default class List extends LightningElement {
     }
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
+        this._columnsSizes.large = this._largeContainerCols;
         this.listResize();
     }
 
@@ -395,10 +403,9 @@ export default class List extends LightningElement {
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
-        this.computedItems.forEach((item) => {
-            return new Item(item);
-            // item.infos = normalizeArray(item.infos);
-            // item.icons = normalizeArray(item.icons);
+        this.computedItems.forEach((item, index) => {
+            this.computedItems[index] = new Item(item);
+            this.computedItems[index].index = index;
         });
 
         this.hasImages = this.computedItems.some((item) => 'imageSrc' in item);
@@ -471,6 +478,9 @@ export default class List extends LightningElement {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
+        });
+        this.computedItems.forEach((item) => {
+            item.variant = this._variant;
         });
     }
 
@@ -578,6 +588,13 @@ export default class List extends LightningElement {
         return this._actions.length > 1;
     }
 
+    get hasActions() {
+        if (!this._actions) {
+            return false;
+        }
+        return this._actions.length > 0;
+    }
+
     /**
      * Show the loading spinner at the end of the list.
      */
@@ -675,6 +692,7 @@ export default class List extends LightningElement {
                 pageStart,
                 this._currentColumnCount + pageStart
             );
+            this._singleLinePageFirstIndex = pageStart;
             return pageItems;
         }
         return this.computedItems;
@@ -814,28 +832,6 @@ export default class List extends LightningElement {
             .toString();
     }
 
-    /**
-     * On items with images, show actions in card media-action slot.
-     *
-     * @type {boolean}
-     */
-    get showMediaAction() {
-        return (
-            (this.variant === 'grid' || this.variant === 'single-line') &&
-            this.hasImages &&
-            this.actions.length > 0
-        );
-    }
-
-    /**
-     * Show actions on the right.
-     *
-     * @type {boolean}
-     */
-    get showActionRight() {
-        return this.variant === 'list' && this.actions.length > 0;
-    }
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -887,49 +883,66 @@ export default class List extends LightningElement {
         }
         const listWidth = this.listContainer.offsetWidth;
 
-        let calculatedColumns;
-        if (listWidth < MEDIA_QUERY_BREAKPOINTS.small) {
-            calculatedColumns = this._cols;
-        } else if (
-            listWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
-            listWidth < MEDIA_QUERY_BREAKPOINTS.medium
+        let setSize = 'default';
+        if (
+            listWidth >= MEDIA_QUERY_BREAKPOINTS.large &&
+            this._largeContainerCols > 0
         ) {
-            if (this._smallContainerCols > 0) {
-                calculatedColumns = this._smallContainerCols;
-            } else {
-                calculatedColumns = this._cols;
-            }
+            setSize = 'large';
         } else if (
             listWidth >= MEDIA_QUERY_BREAKPOINTS.medium &&
-            listWidth < MEDIA_QUERY_BREAKPOINTS.large
+            this._mediumContainerCols
         ) {
-            if (this._mediumContainerCols > 0) {
-                calculatedColumns = this._mediumContainerCols;
-            } else if (this._smallContainerCols > 0) {
-                calculatedColumns = this._smallContainerCols;
-            } else {
-                calculatedColumns = this._cols;
-            }
-        } else if (listWidth >= MEDIA_QUERY_BREAKPOINTS.large) {
-            if (this._largeContainerCols > 0) {
-                calculatedColumns = this._largeContainerCols;
-            } else if (this._mediumContainerCols > 0) {
-                calculatedColumns = this._mediumContainerCols;
-            } else if (this._smallContainerCols > 0) {
-                calculatedColumns = this._smallContainerCols;
-            } else {
-                calculatedColumns = this._cols;
-            }
+            setSize = 'medium';
+        } else if (
+            listWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
+            this._smallContainerCols
+        ) {
+            setSize = 'small';
         }
 
+        // If this._currentColumnCount is set at each resize, it causes unnecessary rerenders.
+        const calculatedColumns = this._columnsSizes[setSize];
         if (calculatedColumns !== this._currentColumnCount) {
             this._currentColumnCount = calculatedColumns;
         }
 
-        // If the number of columns changed, go back to first page. The current page might be invalid with the new column count.
-        if (previousColumnCount !== this._currentColumnCount) {
-            this._singleLinePage = 0;
+        // Go to page on which the page's first item appears.
+        if (
+            this.variant === 'single-line' &&
+            previousColumnCount !== this._currentColumnCount
+        ) {
+            const firstItem = this.template.querySelector(
+                '[data-element-id="li-item"]'
+            );
+
+            let firstIndex;
+            if (firstItem) {
+                firstIndex = parseInt(firstItem.dataset.index, 10);
+            }
+            if (!isNaN(firstIndex)) {
+                this._singleLinePage = this.findNewPageOfItem(
+                    firstIndex,
+                    this._currentColumnCount
+                );
+            }
         }
+    }
+
+    findNewPageOfItem(index, columns) {
+        let page = 0;
+        for (let i = 0; i < this.computedItems.length; i += columns) {
+            const chunk = this.computedItems.slice(i, i + columns);
+            const chunkIndexes = [];
+            chunk.forEach((item) => {
+                chunkIndexes.push(item.index);
+            });
+            if (chunkIndexes.includes(index)) {
+                return page;
+            }
+            page++;
+        }
+        return page;
     }
 
     /**
@@ -1166,6 +1179,11 @@ export default class List extends LightningElement {
     switchWithItem(draggedIndex, hoveredIndex) {
         const draggedItem = this.computedItems.splice(draggedIndex, 1)[0];
         this.computedItems.splice(hoveredIndex, 0, draggedItem);
+
+        // Update indexes
+        this.computedItems.forEach((item, index) => {
+            item.index = index;
+        });
 
         this.computedItems = [...this.computedItems];
         this.resetItemsAnimations();
