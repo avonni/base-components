@@ -141,7 +141,6 @@ export default class List extends LightningElement {
     _keyboardMoveIndex;
     computedActions = [];
     computedItems = [];
-    hasImages;
     _resizeObserver;
     _scrollingInterval;
     _singleLinePage = 0;
@@ -261,6 +260,11 @@ export default class List extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+
+        if (this._isLoading) {
+            this.showLoading()
+            // window.requestAnimationFrame(() => this.showLoading());
+        }
     }
 
     /**
@@ -407,8 +411,6 @@ export default class List extends LightningElement {
             this.computedItems[index] = new Item(item);
             this.computedItems[index].index = index;
         });
-
-        this.hasImages = this.computedItems.some((item) => 'imageSrc' in item);
     }
 
     /**
@@ -639,7 +641,7 @@ export default class List extends LightningElement {
      *
      * @type {boolean}
      */
-    get showIconRight() {
+    get showSortIconRight() {
         return (
             this.variant === 'list' &&
             this.sortable &&
@@ -649,29 +651,13 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Check if Icon is to be shown to the left.
-     *
-     * @type {boolean}
-     */
-    get showIconLeft() {
-        return (
-            this.variant === 'list' &&
-            !this.hasImages &&
-            this.sortable &&
-            !!this.sortableIconName &&
-            this.sortableIconPosition === 'left'
-        );
-    }
-
-    /**
      * Check if Icon is left of the image.
      *
      * @type {boolean}
      */
-    get showImageIconLeft() {
+    get showSortIconLeft() {
         return (
             this.variant === 'list' &&
-            this.hasImages &&
             this.sortable &&
             !!this.sortableIconName &&
             this.sortableIconPosition === 'left'
@@ -752,7 +738,6 @@ export default class List extends LightningElement {
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'avonni-list__has-images': this.hasImages,
                 'slds-grid_pull-padded-medium':
                     this.variant === 'grid' ||
                     (this.variant === 'single-line' &&
@@ -929,6 +914,10 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * When the single-line page is resized, the first item on the page previously
+     * displayed will be on a different page.
+     */
     findNewPageOfItem(index, columns) {
         let page = 0;
         for (let i = 0; i < this.computedItems.length; i += columns) {
@@ -987,10 +976,30 @@ export default class List extends LightningElement {
         }
     }
 
+    showLoading() {
+        const offsetFromBottom =
+            this.listContainer.scrollHeight -
+            this.listContainer.scrollTop -
+            this.listContainer.clientHeight;
+        if (offsetFromBottom < 220) {
+            window.requestAnimationFrame(() => {
+                const spinner = this.template.querySelector(
+                    '[data-element-id="loading-spinner-container"]'
+                );
+                spinner.scrollIntoView({behavior: "smooth", block: "end"});
+                const offsetFromBottom2 =
+                    this.listContainer.scrollHeight -
+                    this.listContainer.scrollTop -
+                    this.listContainer.clientHeight;
+                console.log('🔵', this._isLoading, offsetFromBottom2, spinner);
+            })
+        }
+    }
+
     /**
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
-    handleScroll() {
+     handleScroll() {
         if (this.variant === 'single-line') {
             return;
         }
@@ -1095,23 +1104,23 @@ export default class List extends LightningElement {
 
         // This breaks when the transform is animated with css because the item remains hovered for
         // a few milliseconds, reversing the animation unpredictably.
-        if (
-            hoveredItem.classList.contains('avonni-list__item-sortable_moved')
-        ) {
+        const itemHasMoved = hoveredItem.classList.contains(
+            'avonni-list__item-sortable_moved'
+        );
+        const itemHoveringSmallerItem =
+            draggedIndex > hoveredIndex || tempHoveredIndex > hoveredIndex;
+        const itemHoveringLargerItem =
+            draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
+
+        if (itemHasMoved) {
             hoveredItem.classList.remove('avonni-list__item-sortable_moved');
             hoveredItem.style.transform = 'translateY(0px)';
             hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
-        } else if (
-            draggedIndex > hoveredIndex ||
-            tempHoveredIndex > hoveredIndex
-        ) {
+        } else if (itemHoveringSmallerItem) {
             hoveredItem.classList.add('avonni-list__item-sortable_moved');
             hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
-        } else if (
-            draggedIndex < hoveredIndex ||
-            tempHoveredIndex < hoveredIndex
-        ) {
+        } else if (itemHoveringLargerItem) {
             hoveredItem.classList.add('avonni-list__item-sortable_moved');
             hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
@@ -1120,15 +1129,12 @@ export default class List extends LightningElement {
         // Get all items in between the dragged and hovered.
         const itemsBetween = this._itemElements.filter((item) => {
             const itemIndex = Number(item.dataset.index);
-            if (
-                (itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
-                (itemIndex < draggedIndex && itemIndex > hoveredIndex)
-            ) {
-                if (
-                    !item.classList.contains('avonni-list__item-sortable_moved')
-                ) {
-                    return item;
-                }
+            const itemMovedAndBetweenDraggedAndHovered =
+                ((itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
+                (itemIndex < draggedIndex && itemIndex > hoveredIndex)) && 
+                !item.classList.contains('avonni-list__item-sortable_moved');
+            if (itemMovedAndBetweenDraggedAndHovered) {
+                return item;
             }
             return undefined;
         });
@@ -1248,13 +1254,32 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Prevent ghost image on avatar drag.
-     *
-     * @param {Event} event
+     * After a rerender, recover the element being dragged and keep it.
      */
-    handleAvatarDragStart(event) {
-        event.preventDefault();
+    recoverDraggedElement() {
+        this._draggedElement = this.template.querySelector(
+            `[data-index="${this._initialDraggedIndex}"]`
+        );
+        this._draggedIndex = this._initialDraggedIndex;
+
+        if (this._dragging) {
+            this.animateItems(this._currentY);
+            this._initialScrollHeight = this.listContainer.scrollHeight;
+        }
+        if (this._keyboardDragged && this._draggedElement) {
+            this._draggedElement.focus();
+            this.restoreItemsTransform(
+                this._draggedIndex,
+                this._keyboardMoveIndex
+            );
+        }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLING
+     * -------------------------------------------------------------
+     */
 
     /**
      * Compute drag event start element positions and indexes // Prevent certain elements from being dragged.
@@ -1343,28 +1368,6 @@ export default class List extends LightningElement {
         }
 
         return itemElement.offsetHeight + (rowGap || 0);
-    }
-
-    /**
-     * After a rerender, recover the element being dragged and keep it.
-     */
-    recoverDraggedElement() {
-        this._draggedElement = this.template.querySelector(
-            `[data-index="${this._initialDraggedIndex}"]`
-        );
-        this._draggedIndex = this._initialDraggedIndex;
-
-        if (this._dragging) {
-            this.animateItems(this._currentY);
-            this._initialScrollHeight = this.listContainer.scrollHeight;
-        }
-        if (this._keyboardDragged && this._draggedElement) {
-            this._draggedElement.focus();
-            this.restoreItemsTransform(
-                this._draggedIndex,
-                this._keyboardMoveIndex
-            );
-        }
     }
 
     /**
@@ -1572,6 +1575,15 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Prevent ghost image on avatar drag.
+     *
+     * @param {Event} event
+     */
+    handleAvatarDragStart(event) {
+        event.preventDefault();
+    }
+
+    /**
      * Handle a key pressed on an item.
      *
      * @param {Event} event
@@ -1699,14 +1711,12 @@ export default class List extends LightningElement {
                     Number(item.dataset.index) <= targetIndex
             );
             let draggedItemTransform = 0;
-            console.log('👩‍👩‍👦‍👦', itemsBetween);
             itemsBetween.forEach((item) => {
                 draggedItemTransform += this.computeItemHeight(item);
                 item.style.transform = `translateY(${-draggedItemHeight}px)`;
                 item.classList.add('avonni-list__item-sortable_keyboard-moved');
                 item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
             });
-            console.log(draggedItemTransform, draggedItemHeight);
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
         });
     }

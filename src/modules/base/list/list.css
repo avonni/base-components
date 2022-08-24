@@ -299,9 +299,3 @@
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
 }
-
-@media (max-width: 320px) {
-    .avonni-list__has-images {
-        justify-content: center;
-    }
-}

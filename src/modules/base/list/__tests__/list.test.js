@@ -53,8 +53,6 @@ describe('List', () => {
         element = createElement('base-list', {
             is: List
         });
-        element.scrollTo = jest.fn();
-        element.scrollBy = jest.fn();
         jest.useFakeTimers();
         jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
             setTimeout(() => cb(), 0);
@@ -66,13 +64,7 @@ describe('List', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        window.requestAnimationFrame.mockRestore();
         jest.clearAllTimers();
-        jest.resetAllMocks();
-    });
-
-    afterAll(() => {
-        jest.clearAllMocks();
     });
 
     it('List: Default attributes', () => {
@@ -397,22 +389,23 @@ describe('List', () => {
         });
     });
 
-    // it('List: SortableIconPosition = left', () => {
-    //     element.sortableIconName = 'utility:apps';
-    //     element.sortable = true;
-    //     element.sortableIconPosition = 'left';
-    //     element.items = ITEMS_WITHOUT_ICONS;
+    it('List: SortableIconPosition = left', () => {
+        element.sortableIconName = 'utility:apps';
+        element.sortable = true;
+        element.sortableIconPosition = 'left';
+        element.items = ITEMS_WITHOUT_ICONS;
 
-    //     return Promise.resolve().then(() => {
-    //         const iconsRight =
-    //             element.shadowRoot.querySelectorAll('.icon-right');
-    //         const iconsLeft = element.shadowRoot.querySelectorAll(
-    //             '[data-element-id="lightning-icon-sort-left"]'
-    //         );
-    //         expect(iconsRight).toHaveLength(0);
-    //         expect(iconsLeft).toHaveLength(4);
-    //     });
-    // });
+        return Promise.resolve().then(() => {
+            const iconsRight = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-right"]'
+            );
+            const iconsLeft = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-left"]'
+            );
+            expect(iconsRight).toHaveLength(0);
+            expect(iconsLeft).toHaveLength(4);
+        });
+    });
 
     /* images */
     it('List: Images presence', () => {

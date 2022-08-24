@@ -109,7 +109,7 @@
                                 "
                             >
                                 <lightning-icon
-                                    if:true={showImageIconLeft}
+                                    if:true={showSortIconLeft}
                                     class="
                                         slds-p-horizontal_xx-small
                                         icon-left
@@ -117,7 +117,7 @@
                                     "
                                     icon-name={sortableIconName}
                                     size="x-small"
-                                    data-element-id="lightning-icon-sort-left-image"
+                                    data-element-id="lightning-icon-sort-left"
                                 ></lightning-icon>
                                 <div
                                     if:true={item.imageSrc}
@@ -138,17 +138,6 @@
                             </div>
                         </div>
                         <div class="slds-grid slds-grid_vertical-align-center">
-                            <lightning-icon
-                                if:true={showIconLeft}
-                                class="
-                                    slds-p-horizontal_xx-small
-                                    icon-left
-                                    avonni-list__item-sortable-icon-cursor
-                                "
-                                icon-name={sortableIconName}
-                                size="x-small"
-                                data-element-id="lightning-icon-sort-left"
-                            ></lightning-icon>
                             <div
                                 class="
                                     slds-grid slds-col
@@ -166,6 +155,7 @@
                                     src={item.avatar.src}
                                     size={item.avatar.size}
                                     initials={item.avatar.initials}
+                                    onmousedown={handleAvatarDragStart}
                                     variant={item.avatar.variant}
                                     presence={item.presence}
                                     presence-position={item.presencePosition}
@@ -254,7 +244,7 @@
 
                             <!-- Sort icon -->
                             <lightning-icon
-                                if:true={showIconRight}
+                                if:true={showSortIconRight}
                                 class="
                                     slds-m-right_x-small
                                     icon-right
@@ -333,6 +323,7 @@
                     slds-is-relative
                     avonni-list__lower-spinner
                 "
+                data-element-id="loading-spinner-container"
                 if:true={isLoadingBelow}
             >
                 <lightning-spinner
@@ -344,9 +335,9 @@
             </li>
 
             <!-- check when is loading, and scroll to see it if already all the way down -->
-            <li class={computedSpinnerClass} if:true={showSpinnerSpacer}>
+            <!-- <li class={computedSpinnerClass} if:true={showSpinnerSpacer}>
                 <div class="avonni-list__lower-spinner"></div>
-            </li>
+            </li> -->
         </ul>
         <div
             class="slds-col slds-is-relative avonni-list__page-change-buttons"
