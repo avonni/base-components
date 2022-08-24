@@ -452,6 +452,10 @@ export default class ActivityTimeline extends LightningElement {
     set maxVisibleItems(value) {
         if (value && value > 0) {
             this._maxVisibleItems = value;
+
+            if(this.isTimelineHorizontal) {
+                this.requestRedrawTimeline();
+            }
         }
     }
 
@@ -813,16 +817,19 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Triggers a redraw of horizontal activity timeline.
+     */
+    requestRedrawTimeline(){
+        this._redrawHorizontalTimeline = true;
+    }
+
+    /**
      * Update horizontal timeline header's value.
      */
     updateHorizontalTimelineHeader() {
         this.intervalDaysLength = this.horizontalTimeline.intervalDaysLength;
         this.intervalMaxDate = this.horizontalTimeline.intervalMaxDate;
         this.intervalMinDate = this.horizontalTimeline.intervalMinDate;
-    }
-
-    requestRedrawTimeline(){
-        this._redrawHorizontalTimeline = true;
     }
 
     /**

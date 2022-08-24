@@ -45,7 +45,7 @@ const DEFAULT_POPOVER_CLASSES =
     'slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small';
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
-const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
+const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_WIDTH = 1300;
@@ -94,7 +94,6 @@ export class HorizontalActivityTimeline {
     _isMouseOverOnPopover = false;
     _isResizingInterval = false;
     _maxYPositionOfItem = 0;
-    _numberOfScrollAxisTicks = DEFAULT_SCROLL_AXIS_TICKS_NUMBER;
     _numberOfTimelineAxisTicks = DEFAULT_TIMELINE_AXIS_TICKS_NUMBER;
     _offsetAxis = DEFAULT_TIMELINE_AXIS_OFFSET;
     _timelineWidth = DEFAULT_TIMELINE_WIDTH;
@@ -104,10 +103,7 @@ export class HorizontalActivityTimeline {
     _isTimelineMoving = false;
 
     // To change visible height of timeline
-    _maxDisplayedItems;
     _maxVisibleItems;
-    _previousMaxYPosition;
-    _requestHeightChange = false;
     _timelineHeightDisplayed;
 
     // D3 selector DOM elements
@@ -130,11 +126,7 @@ export class HorizontalActivityTimeline {
     createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
         this.resetHorizontalTimeline();
         this.addValidItemsToData(sortedItems);
-
-        if (this.isHeightDifferent(sortedItems, maxVisibleItems)) {
-            this._requestHeightChange = true;
-            this._maxVisibleItems = maxVisibleItems;
-        }
+        this._maxVisibleItems = maxVisibleItems;
 
         this.setTimelineWidth(width);
         this.createTimelineScrollAxis();
@@ -727,9 +719,7 @@ export class HorizontalActivityTimeline {
             Y_GAP_BETWEEN_ITEMS_TIMELINE
         );
 
-        if (this._requestHeightChange) {
-            this.setVisibleTimelineHeight();
-        }
+        this.setVisibleTimelineHeight();
 
         this._timelineHeight = Math.max(
             this._maxYPositionOfItem + 30,
@@ -910,7 +900,7 @@ export class HorizontalActivityTimeline {
         this.createTimeAxis(
             this.scrollTimeScale,
             AXIS_TYPE.scrollAxis,
-            12,
+            DEFAULT_SCROLL_AXIS_TICKS_NUMBER,
             this._scrollAxisSVG
         );
 
@@ -1403,32 +1393,19 @@ export class HorizontalActivityTimeline {
      * Set the visible height of the timeline according to the max visible items number
      */
     setVisibleTimelineHeight() {
-        if (
-            !this._previousMaxYPosition ||
-            this._maxYPositionOfItem >= this._previousMaxYPosition
-        ) {
-            this._previousMaxYPosition = this._maxYPositionOfItem;
-            this._maxDisplayedItems =
-                (this._maxYPositionOfItem - Y_START_POSITION_TIMELINE_ITEM) /
-                    Y_GAP_BETWEEN_ITEMS_TIMELINE +
-                1;
+        // To limit height to number of items in timeline
+        if (this._maxVisibleItems > this._sortedItems.length){
+            this._maxVisibleItems = this._sortedItems.length;
         }
+
         this._timelineHeightDisplayed =
             this._maxVisibleItems * Y_GAP_BETWEEN_ITEMS_TIMELINE +
             Y_START_POSITION_TIMELINE_ITEM * 1.5;
-
-        // To prevent timeline height to be bigger than the max number of items displayed
-        if (this._maxVisibleItems > this._maxDisplayedItems) {
-            this._timelineHeightDisplayed =
-                this._maxDisplayedItems * Y_GAP_BETWEEN_ITEMS_TIMELINE +
-                Y_START_POSITION_TIMELINE_ITEM * 1.5;
-        }
 
         d3.select(this.divTimelineScroll).style(
             'height',
             this._timelineHeightDisplayed + 'px'
         );
-        this._requestHeightChange = false;
     }
 
     /**
@@ -1550,7 +1527,6 @@ export class HorizontalActivityTimeline {
             this._intervalMaxDate
         );
 
-        this._requestHeightChange = true;
         this.resetAndRedrawScrollAxisRectangle();
         this.moveTimelineDisplay();
     }
@@ -1681,7 +1657,6 @@ export class HorizontalActivityTimeline {
             this._intervalMaxDate
         );
 
-        this._requestHeightChange = true;
         this.resetAndRedrawScrollAxisRectangle();
         this.moveTimelineDisplay();
     }
