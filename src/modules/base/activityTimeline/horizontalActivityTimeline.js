@@ -300,6 +300,26 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Calculate the minimum interval width. If the distance for one day is bigger than minimum width, we take this distance.
+     * If not, we calculate to find the number of days necessary to obtain the minimum.
+     * 
+     * @type {number}
+     */
+    get minimumIntervalWidth() {
+        const beginningOfDayPosition = this.findBeginningOfDayPosition(this.scrollTimeScale(this._intervalMinDate));
+        const endOfDayPosition = this.findEndOfDayPosition(this.scrollTimeScale(this._intervalMinDate));
+        const distanceForOneDay = Math.abs(endOfDayPosition - beginningOfDayPosition);
+
+        // To make sure there is minimum distance respected
+        if(distanceForOneDay < MIN_INTERVAL_WIDTH) {
+            const numberOfDays = Math.floor( MIN_INTERVAL_WIDTH / distanceForOneDay );
+            return numberOfDays * distanceForOneDay;
+        }
+
+        return distanceForOneDay;
+    }
+
+    /**
      * Left position offset of scroll axis element.
      */
     get scrollAxisLeftPosition() {
@@ -310,7 +330,7 @@ export class HorizontalActivityTimeline {
      * Find the max date displayed in the scroll axis
      */
     get scrollAxisMaxDate() {
-        return this.findNextDate(this.maxDate, 15).setHours(0, 0, 0, 0);
+        return this.findNextDate(this.maxDate, 15).setHours(23, 59, 59, 999);
     }
 
     /**
@@ -937,6 +957,26 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Find the position of the beginning of the day based on scrollTimeScale. 
+     * 
+     * @return {number}
+     */
+    findBeginningOfDayPosition(position){
+        const beginningOfDay = this.convertPositionToScaleDate(this.scrollTimeScale, position);
+        return this.scrollTimeScale(beginningOfDay);
+    }
+
+    /**
+     * Find the position of the end of the day based on scrollTimeScale. 
+     * 
+     * @return {number}
+     */
+    findEndOfDayPosition(position){
+        const endOfDay = this.scrollTimeScale.invert(position).setHours(23, 59, 59, 999);      
+        return this.scrollTimeScale(endOfDay);
+    }
+
+    /**
      * Find the x end position of an item. This position is used to display popover (left).
      *
      * @return {number}
@@ -1077,11 +1117,13 @@ export class HorizontalActivityTimeline {
      * Move interval (drag or scroll) on timeline's scroll axis to new valid position.
      */
     moveIntervalToPosition(position) {
+        this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, position);
+
         this._timeIntervalSelector
             .attr('x',  position)
+            .attr('width', this.intervalWidth)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-        this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, position);
         this.setIntervalMaxDate();
         this.moveTimelineDisplay();
     }
@@ -1330,6 +1372,11 @@ export class HorizontalActivityTimeline {
         this._intervalMaxDate.setDate(
             this._intervalMaxDate.getDate() + this._intervalDaysLength
         );
+        this._intervalMaxDate.setHours(23, 59, 59, 999);
+
+        if(this._intervalMaxDate > this.scrollAxisMaxDate) {
+            this._intervalMaxDate = this.scrollAxisMaxDate;
+        }
     }
 
     /**
@@ -1492,10 +1539,8 @@ export class HorizontalActivityTimeline {
         this.handleMouseOutOfPopover();
         
         if (!this._changeIntervalSizeMode) {
-            let xPosition = event.offsetX - this.intervalWidth / 2;
-            const maxPosition =
-                this.scrollTimeScale(this.scrollAxisMaxDate) -
-                this.intervalWidth;
+            let xPosition = this.findBeginningOfDayPosition(event.offsetX - this.intervalWidth / 2);
+            const maxPosition = this.scrollTimeScale(this.scrollAxisMaxDate) - this.intervalWidth;
             const minPosition = this.scrollTimeScale(this.scrollAxisMinDate);
 
             if (xPosition < minPosition) {
@@ -1504,12 +1549,15 @@ export class HorizontalActivityTimeline {
                 xPosition = maxPosition;
             }
 
-            this._timeIntervalSelector
-                .attr('x', xPosition)
-                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
-
             this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, xPosition);
             this.setIntervalMaxDate();
+
+            // The width is set again because of setHours that can add small offset if scale is on short period of time
+            this._timeIntervalSelector
+                .attr('x', this.scrollTimeScale(this._intervalMinDate))
+                .attr('width', this.intervalWidth)
+                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
+
             this.moveTimelineDisplay();
         }
     }
@@ -1540,17 +1588,17 @@ export class HorizontalActivityTimeline {
 
         const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
         const maxXPosition =
-            this.scrollTimeScale(this._intervalMaxDate) - MIN_INTERVAL_WIDTH;
+            this.scrollTimeScale(this._intervalMaxDate) - this.minimumIntervalWidth;
+    
 
-        let xPosition = event.sourceEvent.offsetX;
+        let xPosition = this.findBeginningOfDayPosition(event.sourceEvent.offsetX);
         if (event.sourceEvent.pageX < this.scrollAxisLeftPosition || xPosition < minXPosition) {
             xPosition = minXPosition;
         } else if (xPosition > maxXPosition) {
             xPosition = maxXPosition;
         }
 
-        const newRectangleWidth =
-            this.scrollTimeScale(this._intervalMaxDate) - xPosition;
+        const newRectangleWidth = this.scrollTimeScale(this._intervalMaxDate) - xPosition;
         this._timeIntervalSelector
             .attr('x', xPosition)
             .attr('width', newRectangleWidth);
@@ -1616,10 +1664,10 @@ export class HorizontalActivityTimeline {
      * Handle the drag of interval on scroll axis to change dates displayed on main timeline. Timeline is re-render.
      */
     handleTimeIntervalDrag(event) {
+        let xPosition = this.findBeginningOfDayPosition(event.sourceEvent.offsetX - this._distanceBetweenDragAndMin);
+
         // To allow only horizontal drag
-        let xPosition = this.validateXMousePosition(
-            event.sourceEvent.offsetX - this._distanceBetweenDragAndMin
-        );
+        xPosition = this.validateXMousePosition(xPosition);
 
         if (event.sourceEvent.pageX < this.scrollAxisLeftPosition) {
             xPosition = this.scrollTimeScale(this.scrollAxisMinDate);
@@ -1669,10 +1717,10 @@ export class HorizontalActivityTimeline {
         this._isTimelineMoving = true;
 
         const minXPosition =
-            this.scrollTimeScale(this._intervalMinDate) + MIN_INTERVAL_WIDTH;
+            this.scrollTimeScale(this._intervalMinDate) + this.minimumIntervalWidth;
         const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
 
-        let xPosition = event.sourceEvent.offsetX;
+        let xPosition = this.findEndOfDayPosition(event.sourceEvent.offsetX);
         if (event.sourceEvent.pageX < this.scrollAxisLeftPosition || xPosition < minXPosition) {
             xPosition = minXPosition;
         } else if (xPosition > maxXPosition) {
@@ -1704,10 +1752,13 @@ export class HorizontalActivityTimeline {
         this.handleMouseOutOfPopover();
        
         // Horizontal scroll of interval
-        const requestedPosition =
+        let requestedPosition =
             Number(this._timeIntervalSelector.attr('x')) +
             this.normalizeHorizontalScrollDeltaX(event);
 
+        // To set hours at 0,0,0,0 for min date
+        requestedPosition = this.findBeginningOfDayPosition(requestedPosition);
+        
         this.moveIntervalToPosition(
             this.validateXMousePosition(requestedPosition)
         );
