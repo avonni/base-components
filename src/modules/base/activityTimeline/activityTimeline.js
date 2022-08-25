@@ -476,6 +476,10 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: ORIENTATIONS.default,
             validValues: ORIENTATIONS.valid
         });
+
+        if(this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+        }
     }
 
     /**

@@ -461,12 +461,11 @@ export class HorizontalActivityTimeline {
     /**
      * Add only items with valid date to sortedItems. 
      */
-       addValidItemsToData(sortedItems){
+    addValidItemsToData(sortedItems){
         this._sortedItems = [];
 
         sortedItems.forEach((item)=> {
-            const itemDate = new Date(item.datetimeValue).toString();
-            if(itemDate !== 'Invalid Date'){
+            if(!this.isDateInvalid(item.datetimeValue)) {
                 this._sortedItems.push(item);
             } 
         })
@@ -578,6 +577,9 @@ export class HorizontalActivityTimeline {
      * @returns string
      */
     convertDateToFormat(date) {
+        if(this.isDateInvalid(date)) {
+            return '';
+        }
         return dateTimeObjectFrom(date).toFormat(this._dateFormat);
     }
 
@@ -1051,16 +1053,13 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     *  Determine if timeline height is different than last render
-     *
-     * @return {Boolean}
+     * Check if date is invalid.
+     * 
+     * @return {boolean} 
      */
-    isHeightDifferent(sortedItems, maxVisibleItems) {
-        return (
-            maxVisibleItems !== this._maxVisibleItems ||
-            this._sortedItems.length !== sortedItems.length
-        );
-    }
+    isDateInvalid(date) {
+        return new Date(date).toString() === 'Invalid Date';
+    } 
 
     /**
      * Check if user is scrolling vertically.
