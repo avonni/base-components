@@ -453,7 +453,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
               )
             : '';
     }
- 
+  
     /**
      * Check if the type of the icon is action
      */
