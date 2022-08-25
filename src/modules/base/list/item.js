@@ -12,6 +12,7 @@ export default class Item {
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
+        this.listHasImages = value.listHasImages;
     }
 
     get hasImage() {
@@ -23,8 +24,11 @@ export default class Item {
 
     get actionsClass() {
         return classSet('slds-m-right_x-small').add({
-            'avonni-list__item-action-top-right':
+            'slds-m-top_x-small slds-is-absolute avonni-list__item-action-image-top-right':
                 this.hasImage && this.variant !== 'list'
+        }).add({
+            'slds-align-top':
+                this.listHasImages && !this.hasImage && this.variant !== 'list'
         });
     }
 }

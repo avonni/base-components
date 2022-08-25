@@ -407,9 +407,11 @@ export default class List extends LightningElement {
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
+        this.listHasImages = this.computedItems.some((item) => item.imageSrc);
         this.computedItems.forEach((item, index) => {
             this.computedItems[index] = new Item(item);
             this.computedItems[index].index = index;
+            this.computedItems[index].listHasImages = this.listHasImages;
         });
     }
 
@@ -979,20 +981,17 @@ export default class List extends LightningElement {
     showLoading() {
         const offsetFromBottom =
             this.listContainer.scrollHeight -
-            this.listContainer.scrollTop -
-            this.listContainer.clientHeight;
-        if (offsetFromBottom < 220) {
-            window.requestAnimationFrame(() => {
+            (this.listContainer.scrollTop +
+            this.listContainer.clientHeight);
+        if (offsetFromBottom < 100) {
+            setTimeout(() => {
                 const spinner = this.template.querySelector(
-                    '[data-element-id="loading-spinner-container"]'
+                    '[data-element-id="loading-spinner-below"]'
                 );
-                spinner.scrollIntoView({behavior: "smooth", block: "end"});
-                const offsetFromBottom2 =
-                    this.listContainer.scrollHeight -
-                    this.listContainer.scrollTop -
-                    this.listContainer.clientHeight;
-                console.log('🔵', this._isLoading, offsetFromBottom2, spinner);
-            })
+                if (spinner) {
+                    spinner.scrollIntoView({behavior: "smooth", block: "end"});
+                }
+            }, 10)
         }
     }
 
