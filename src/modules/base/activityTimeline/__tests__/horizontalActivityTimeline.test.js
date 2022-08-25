@@ -40,7 +40,7 @@ import {
 
 let element;
 let activityTimeline;
-describe('Activity Timeline', () => {
+describe('Horizontal Activity Timeline', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -80,12 +80,10 @@ describe('Activity Timeline', () => {
         expect(element._offsetAxis).toBe(16.5);
         expect(element._displayedItems).toMatchObject([]);
         expect(element._maxYPositionOfItem).toBe(0);
-        expect(element._numberOfScrollAxisTicks).toBe(10);
         expect(element._numberOfTimelineAxisTicks).toBe(9);
         expect(element._timelineWidth).toBe(1300);
         expect(element._timelineHeight).toBe(350);
         expect(element._timelineAxisHeight).toBe(30);
-        expect(element._requestHeightChange).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -189,7 +187,7 @@ describe('Activity Timeline', () => {
         ];
         const expectedIconInformation = {
             iconName: 'empty',
-            xLinkHref: '/icons/standard-sprite/svg/symbols.svg#empty',
+            category: 'standard',
             categoryIconClass: 'slds-icon-standard-empty slds-icon_small'
         };
 
