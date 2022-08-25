@@ -232,7 +232,7 @@ Labels.args = {
             iconVariant: 'inverse'
         },
         {
-            date: new Date('05/25/2022'),
+            date: '05/25/2022',
             label: '25 may long label',
             variant: 'error',
             iconName: 'standard:lightning_component',

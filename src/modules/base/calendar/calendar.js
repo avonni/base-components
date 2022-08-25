@@ -81,15 +81,16 @@ export default class Calendar extends LightningElement {
     _dateLabels = [];
     _disabled = false;
     _disabledDates = [];
-    _focusDate;
     _hideNavigation = false;
-    _isConnected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
     _value = [];
     _weekNumber = false;
+
+    _focusDate;
+    _connected = false;
     displayDate = DEFAULT_DATE; // The calendar displays this date's month
     year;
     month;
@@ -110,7 +111,7 @@ export default class Calendar extends LightningElement {
         }
 
         this.displayDate = new Date(setDate);
-        this._isConnected = true;
+        this._connected = true;
         this.validateCurrentDayValue();
         this.updateDateParameters();
         this.computeFocus(false);
@@ -123,7 +124,7 @@ export default class Calendar extends LightningElement {
      */
 
     /**
-     * Array of date label objects. Priority is given to dates placed toward the end of the array.
+     * Array of date label objects. If a date has several labels, the first one in the array will be used.
      *
      * @public
      * @type {object[]}
@@ -247,7 +248,7 @@ export default class Calendar extends LightningElement {
         const normalizedMax = this.isInvalidDate(date) ? DEFAULT_MAX : date;
         this._max = this.formattedWithTimezoneOffset(normalizedMax);
         this._max.setHours(0, 0, 0, 0);
-        if (this._isConnected) {
+        if (this._connected) {
             this.validateCurrentDayValue();
         }
         if (this.displayDate > this.max) {
@@ -273,7 +274,7 @@ export default class Calendar extends LightningElement {
         const normalizedMin = this.isInvalidDate(date) ? DEFAULT_MIN : date;
         this._min = this.formattedWithTimezoneOffset(normalizedMin);
         this._min.setHours(0, 0, 0, 0);
-        if (this._isConnected) {
+        if (this._connected) {
             this.validateCurrentDayValue();
         }
         if (this.displayDate < this.min) {
@@ -316,22 +317,19 @@ export default class Calendar extends LightningElement {
     }
 
     set value(value) {
-        if (value) {
-            this._value =
-                typeof value === 'string' || !Array.isArray(value)
-                    ? [this.formattedWithTimezoneOffset(new Date(value))]
-                    : [
-                          ...normalizeArray(
-                              value.map((x) =>
-                                  this.formattedWithTimezoneOffset(new Date(x))
-                              )
-                          )
-                      ];
-            if (this._isConnected) {
-                this.validateCurrentDayValue();
-            }
+        const dates = Array.isArray(value) ? value : [value];
+        this._value = dates.map((date) => {
+            const normalizedDate = this.formattedWithTimezoneOffset(
+                new Date(date)
+            );
+            normalizedDate.setHours(0, 0, 0, 0);
+            return normalizedDate;
+        });
+        this._value.sort((a, b) => a - b);
+
+        if (this._connected) {
+            this.validateCurrentDayValue();
         }
-        this.value.sort((a, b) => a - b);
         this.updateDate();
     }
 
@@ -483,7 +481,7 @@ export default class Calendar extends LightningElement {
      */
 
     /**
-     * Set initial focus
+     * Set the focus on a given date.
      *
      * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
      * @public
@@ -561,7 +559,7 @@ export default class Calendar extends LightningElement {
      * Returns the first day of the current month.
      */
     getFirstDayOfMonth(date) {
-        let dateValue = new Date(date.getTime());
+        const dateValue = new Date(date);
         dateValue.setDate(1);
         return dateValue.toISOString();
     }
@@ -598,7 +596,9 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'object') {
-                const newDate = new Date(date);
+                const newDate = this.formattedWithTimezoneOffset(
+                    new Date(date)
+                );
                 dates.push(newDate.setHours(0, 0, 0, 0));
             }
         });
@@ -608,16 +608,21 @@ export default class Calendar extends LightningElement {
 
     getLabel(date) {
         const weekday = DAYS[date.getDay()];
-        return this.dateLabels.find((lab) => {
-            const labelAsNumber = Number(lab.date);
-            const labelAsDate =
-                !this.isInvalidDate(lab.date) &&
-                this.formattedWithTimezoneOffset(new Date(lab.date)).getTime();
+        return this.dateLabels.find((label) => {
+            const labelAsNumber = Number(label.date);
+            let labelAsTime;
+            if (!this.isInvalidDate(label.date)) {
+                const labelAsDate = this.formattedWithTimezoneOffset(
+                    new Date(label.date)
+                );
+                labelAsDate.setHours(0, 0, 0, 0);
+                labelAsTime = labelAsDate.getTime();
+            }
 
             return (
-                labelAsDate === date.getTime() ||
+                labelAsTime === date.getTime() ||
                 labelAsNumber === date.getDate() ||
-                weekday === lab.date
+                weekday === label.date
             );
         });
     }
@@ -674,8 +679,7 @@ export default class Calendar extends LightningElement {
      */
     updateDate() {
         this._value = this._value.filter((date) => {
-            const newDate = new Date(date);
-            return newDate.setHours(0, 0, 0, 0) !== NULL_DATE;
+            return date.getTime() !== NULL_DATE;
         });
         if (this._value[0]) {
             this.displayDate = new Date(this._value[0]);
@@ -700,7 +704,7 @@ export default class Calendar extends LightningElement {
         const calendarData = [];
         const today = new Date().setHours(0, 0, 0, 0);
         const currentMonth = this.displayDate.getMonth();
-        let date = new Date(this.displayDate.getTime());
+        const date = new Date(this.displayDate);
         date.setDate(1);
 
         if (date.getDay() > 0) {
@@ -720,7 +724,7 @@ export default class Calendar extends LightningElement {
                 // Week number
                 weekData.push(
                     new CalendarDate({
-                        date,
+                        date: date.getTime(),
                         isWeekNumber: true
                     })
                 );
@@ -758,43 +762,12 @@ export default class Calendar extends LightningElement {
                         selected
                     })
                 );
-                date = new Date(date.setDate(date.getDate() + 1));
+                date.setDate(date.getDate() + 1);
             }
             calendarData.push(weekData);
         }
 
         this.calendarData = calendarData;
-    }
-
-    /**
-     * Return an index if the days date is in the date array.
-     *
-     * @param {object | Date} date Date to find in array
-     * @param {object[]} array Array of dates
-     * @returns index
-     */
-    findArrayPosition(day, array) {
-        let index;
-
-        // The dates are prioritize from last to first from the array.
-        // We might wnat to fix this in the future.
-        array
-            .map((x) => x.date)
-            .forEach((x, _index) => {
-                if (DAYS.includes(x)) {
-                    index = _index;
-                }
-
-                if (x === day.getDate()) {
-                    index = _index;
-                }
-
-                if (typeof x === 'object' && x.getTime() === day.getTime()) {
-                    index = _index;
-                }
-            });
-
-        return index;
     }
 
     /**
@@ -806,7 +779,7 @@ export default class Calendar extends LightningElement {
      */
     isInArray(date, array) {
         let disabled = false;
-        let time = date.getTime();
+        let time = new Date(date).setHours(0, 0, 0, 0);
         let weekDay = date.getDay();
         let monthDay = date.getDate();
 
@@ -829,7 +802,7 @@ export default class Calendar extends LightningElement {
      */
     getMarkers(date) {
         const markers = [];
-        const time = date.getTime();
+        const time = new Date(date).setHours(0, 0, 0, 0);
         const weekDay = date.getDay();
         const monthDay = date.getDate();
 
@@ -890,19 +863,10 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Sort all values from min to max
-     */
-    sortValuesFromMinToMax() {
-        this._value = this._value.sort((dateA, dateB) => {
-            return dateA - dateB;
-        });
-    }
-
-    /**
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
-        if (!Array.isArray(this._value) || !this._value[0]) {
+        if (!this._value[0]) {
             return;
         }
 
@@ -924,7 +888,6 @@ export default class Calendar extends LightningElement {
      * Validate values for interval selection mode.
      */
     validateValueIntervalMode() {
-        this.sortValuesFromMinToMax();
         const minValue = this._value[0];
         const maxValue = this._value[this._value.length - 1];
 
@@ -1101,14 +1064,14 @@ export default class Calendar extends LightningElement {
      *
      * @param {object} event
      */
-    handlerSelectDate(event) {
+    handleSelectDate(event) {
         this.handleDateFocus(event);
-        if (!event.currentTarget.dataset.day) {
+        if (!event.currentTarget.dataset.fullDate) {
             return;
         }
 
         this._selectionMethod = event.pointerType === '' ? 'keyboard' : 'mouse';
-        let date = new Date(Number(event.target.dataset.day));
+        let date = new Date(Number(event.target.dataset.fullDate));
         const disabledDate = event.target.classList.contains(
             'avonni-calendar__disabled-cell'
         );
@@ -1168,7 +1131,7 @@ export default class Calendar extends LightningElement {
      * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
      */
     dispatchNavigateEvent(date) {
-        const firstDayOfMonth = this.getFirstDayOfMonth(new Date(date));
+        const firstDayOfMonth = this.getFirstDayOfMonth(date);
         this.dispatchEvent(
             new CustomEvent('navigate', {
                 detail: {
@@ -1226,7 +1189,7 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        let focusDate = new Date(Number(event.currentTarget.dataset.day));
+        let focusDate = new Date(Number(event.currentTarget.dataset.fullDate));
         if (focusDate) {
             this._focusDate = focusDate;
         }
@@ -1238,8 +1201,10 @@ export default class Calendar extends LightningElement {
      * Mouse over handler.
      */
     handleMouseOver(event) {
-        const day = event.target.getAttribute('data-day');
-        const dayCell = this.template.querySelector(`[data-day="${day}"]`);
+        const day = event.target.getAttribute('data-full-date');
+        const dayCell = this.template.querySelector(
+            `[data-full-date="${day}"]`
+        );
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
@@ -1251,8 +1216,8 @@ export default class Calendar extends LightningElement {
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
-                            x.getAttribute('data-cell-day') >= timeArray[0] &&
-                            x.getAttribute('data-cell-day') <= day
+                            x.getAttribute('data-full-date') >= timeArray[0] &&
+                            x.getAttribute('data-full-date') <= day
                         ) {
                             x.classList.add(
                                 'avonni-calendar__cell_bordered-top_bottom'
@@ -1266,8 +1231,8 @@ export default class Calendar extends LightningElement {
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
-                            x.getAttribute('data-cell-day') <= timeArray[0] &&
-                            x.getAttribute('data-cell-day') >= day
+                            x.getAttribute('data-full-date') <= timeArray[0] &&
+                            x.getAttribute('data-full-date') >= day
                         ) {
                             x.classList.add(
                                 'avonni-calendar__cell_bordered-top_bottom'
@@ -1282,8 +1247,8 @@ export default class Calendar extends LightningElement {
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
-                            x.getAttribute('data-cell-day') >= timeArray[1] &&
-                            x.getAttribute('data-cell-day') <= day
+                            x.getAttribute('data-full-date') >= timeArray[1] &&
+                            x.getAttribute('data-full-date') <= day
                         ) {
                             x.classList.add(
                                 'avonni-calendar__cell_bordered-top_bottom'
@@ -1297,8 +1262,8 @@ export default class Calendar extends LightningElement {
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
-                            x.getAttribute('data-cell-day') <= timeArray[0] &&
-                            x.getAttribute('data-cell-day') >= day
+                            x.getAttribute('data-full-date') <= timeArray[0] &&
+                            x.getAttribute('data-full-date') >= day
                         ) {
                             x.classList.add(
                                 'avonni-calendar__cell_bordered-top_bottom'
@@ -1330,7 +1295,7 @@ export default class Calendar extends LightningElement {
      */
     handleKeyDown(event) {
         const initialFocusDate = new Date(
-            parseInt(event.target.dataset.cellDay, 10)
+            parseInt(event.target.dataset.fullDate, 10)
         );
         const initialFocusDateCopy = new Date(initialFocusDate);
         let nextDate;
@@ -1482,28 +1447,28 @@ export default class Calendar extends LightningElement {
         monthFirst.setDate(1);
         monthFirst.setHours(0, 0, 0, 0);
         const firstOfMonthDate = monthFirst.getTime();
-        const rovingDate = new Date(this._focusDate).getTime();
+        const rovingDate = this._focusDate && this._focusDate.getDate();
 
         requestAnimationFrame(() => {
             const rovingFocusDate = this.template.querySelector(
-                `td[data-cell-day="${rovingDate}"]`
+                `td[data-date="${rovingDate}"]`
             );
             let selectedDate = this.template.querySelectorAll(
                 'td.slds-is-selected'
             );
             selectedDate = selectedDate.length === 0 ? null : selectedDate;
             const todaysDate = this.template.querySelector(
-                `td[data-cell-day="${new Date().setHours(0, 0, 0, 0)}"]`
+                `td[data-full-date="${new Date().setHours(0, 0, 0, 0)}"]`
             );
             const firstOfMonth = this.template.querySelector(
-                `span[data-day="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
+                `span[data-full-date="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
             );
             let firstOfMonthCell;
             if (firstOfMonth) {
                 firstOfMonthCell = firstOfMonth.parentElement;
             }
             const rovingMonthDate = this.template.querySelector(
-                `td[data-cell-day="${selectedMonthDate}"]`
+                `td[data-full-date="${selectedMonthDate}"]`
             );
             const firstValidDate = this.template.querySelector(
                 'span.slds-day:not(.avonni-calendar__disabled-cell)'
