@@ -479,6 +479,24 @@ describe('Calendar', () => {
         });
     });
 
+    it('Calendar: marked dates, a maximum of 3 per date is displayed', () => {
+        element.value = '05/09/2021';
+        element.markedDates = [
+            { date: new Date('05/05/2021'), color: 'tomato' },
+            { date: new Date('05/05/2021'), color: 'blue' },
+            { date: new Date('05/05/2021'), color: 'violet' },
+            { date: new Date('05/05/2021'), color: 'purple' },
+            { date: new Date('05/05/2021'), color: 'orange' }
+        ];
+
+        return Promise.resolve().then(() => {
+            const markedDates = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-marked-cells"]'
+            );
+            expect(markedDates).toHaveLength(3);
+        });
+    });
+
     // enable current month only
     it('Calendar: disable dates of previous and next months', () => {
         element.value = '05/09/2021';

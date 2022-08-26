@@ -209,7 +209,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Array of marked date objects.
+     * Array of marked date objects. A maximum of three markers can be displayed on a same date.
      *
      * @public
      * @type {object[]}
@@ -816,7 +816,8 @@ export default class Calendar extends LightningElement {
                 markers.push(`background-color: ${marker.color}`);
             }
         });
-        return markers;
+        // A maximum of 3 markers are displayed per date
+        return markers.slice(0, 3);
     }
 
     /**
