@@ -117,7 +117,6 @@ describe('List', () => {
                 expect(menuItem[2].disabled).toBeTruthy();
             });
     });
-
     it('List: Action lightning-button', () => {
         element.items = ITEMS;
         element.actions = ACTION;
@@ -133,7 +132,6 @@ describe('List', () => {
             expect(button.value).toBe('completed-action');
         });
     });
-
     it('List: Action lightning-button-icon', () => {
         element.items = ITEMS;
         element.actions = ACTION_NO_LABEL;
@@ -177,6 +175,107 @@ describe('List', () => {
                 );
                 expect(item.classList).toContain('slds-size_4-of-12');
             });
+    });
+
+    // divider
+    it('List: Divider = around', () => {
+        element.divider = 'around';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-container"]'
+            );
+            expect(menu.classList).toContain('avonni-list__has-card-style');
+        });
+    });
+    it('List: Divider = top', () => {
+        element.divider = 'top';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-container"]'
+            );
+            expect(menu.classList).toContain('slds-has-dividers_top-space');
+        });
+    });
+    it('List: Divider = bottom', () => {
+        element.divider = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-container"]'
+            );
+            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
+        });
+    });
+
+    /* images */
+    it('List: Images presence', () => {
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img-media"]'
+            );
+            expect(images).toHaveLength(3);
+        });
+    });
+    it('List: Images size small', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'small' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].classList).toContain(
+                'avonni-list__list-image-width-small'
+            );
+            expect(images[1].classList).toContain(
+                'avonni-list__list-image-width-small'
+            );
+            expect(images[2].classList).toContain(
+                'avonni-list__list-image-width-small'
+            );
+        });
+    });
+    it('List: Images width medium', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'medium' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].classList).toContain(
+                'avonni-list__list-image-width-medium'
+            );
+            expect(images[1].classList).toContain(
+                'avonni-list__list-image-width-medium'
+            );
+            expect(images[2].classList).toContain(
+                'avonni-list__list-image-width-medium'
+            );
+        });
+    });
+    it('List: Images width large', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'large' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].classList).toContain(
+                'avonni-list__list-image-width-large'
+            );
+            expect(images[1].classList).toContain(
+                'avonni-list__list-image-width-large'
+            );
+            expect(images[2].classList).toContain(
+                'avonni-list__list-image-width-large'
+            );
+        });
     });
 
     // items
@@ -241,38 +340,6 @@ describe('List', () => {
                 '.avonni-list__header_font'
             );
             expect(label.textContent).toBe('A string label');
-        });
-    });
-
-    // divider
-    it('List: Divider = around', () => {
-        element.divider = 'around';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
-            );
-            expect(menu.classList).toContain('avonni-list__has-card-style');
-        });
-    });
-    it('List: Divider = top', () => {
-        element.divider = 'top';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
-            );
-            expect(menu.classList).toContain('slds-has-dividers_top-space');
-        });
-    });
-    it('List: Divider = bottom', () => {
-        element.divider = 'bottom';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
-            );
-            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
     });
 
@@ -352,7 +419,6 @@ describe('List', () => {
             expect(icons).toHaveLength(0);
         });
     });
-
     it('List: SortableIconName, with sortable = true', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
@@ -388,7 +454,6 @@ describe('List', () => {
             expect(iconsRight).toHaveLength(4);
         });
     });
-
     it('List: SortableIconPosition = left', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
@@ -407,78 +472,6 @@ describe('List', () => {
         });
     });
 
-    /* images */
-    it('List: Images presence', () => {
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id="list-img-media"]'
-            );
-            expect(images).toHaveLength(3);
-        });
-    });
-
-    it('List: Images size small', () => {
-        element.items = ITEMS;
-        element.imageAttributes = { size: 'small' };
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id="list-img"]'
-            );
-            expect(images[0].classList).toContain(
-                'avonni-list__item-image_small-width'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__item-image_small-width'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__item-image_small-width'
-            );
-        });
-    });
-
-    it('List: Images width medium', () => {
-        element.items = ITEMS;
-        element.imageAttributes = { size: 'medium' };
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id="list-img"]'
-            );
-            expect(images[0].classList).toContain(
-                'avonni-list__item-image_medium-width'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__item-image_medium-width'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__item-image_medium-width'
-            );
-        });
-    });
-
-    it('List: Images width large', () => {
-        element.items = ITEMS;
-        element.imageAttributes = { size: 'large' };
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id="list-img"]'
-            );
-            expect(images[0].classList).toContain(
-                'avonni-list__item-image_large-width'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__item-image_large-width'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__item-image_large-width'
-            );
-        });
-    });
-
     // variant
     it('List: Variant = list', () => {
         element.variant = 'list';
@@ -490,8 +483,6 @@ describe('List', () => {
             expect(menu.classList).toContain('slds-grid_vertical');
         });
     });
-
-    // variant
     it('List: Variant = grid', () => {
         element.variant = 'grid';
 
@@ -499,11 +490,9 @@ describe('List', () => {
             const menu = element.shadowRoot.querySelector(
                 '[data-element-id="list-container"]'
             );
-            expect(menu.classList).toContain('avonni-list__grid-display');
+            expect(menu.classList).toContain('slds-wrap');
         });
     });
-
-    // variant
     it('List: Variant = single-line', () => {
         element.variant = 'single-line';
 
@@ -511,7 +500,7 @@ describe('List', () => {
             const menu = element.shadowRoot.querySelector(
                 '[data-element-id="list-container"]'
             );
-            expect(menu.classList).toContain('avonni-list__grid-display');
+            expect(menu.classList).toContain('slds-wrap');
         });
     });
 

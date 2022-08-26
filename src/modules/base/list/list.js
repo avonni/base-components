@@ -249,7 +249,7 @@ export default class List extends LightningElement {
         this._isLoading = normalizeBoolean(value);
 
         if (this._isLoading) {
-            this.showLoading()
+            this.showLoading();
         }
     }
 
@@ -570,21 +570,21 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Check whether Actions has multiple entries.
-     *
-     * @type {boolean}
-     */
-    get hasMultipleActions() {
-        return this._actions.length > 1;
-    }
-
-    /**
      * Check if there are any Actions.
      *
      * @type {boolean}
      */
     get hasActions() {
         return this._actions.length;
+    }
+
+    /**
+     * Check whether Actions has multiple entries.
+     *
+     * @type {boolean}
+     */
+    get hasMultipleActions() {
+        return this._actions.length > 1;
     }
 
     /**
@@ -723,7 +723,8 @@ export default class List extends LightningElement {
         )
             .add({
                 'slds-grid_vertical': this.variant === 'list',
-                'slds-wrap': this.variant === 'grid' || this.variant === 'single-line',
+                'slds-wrap':
+                    this.variant === 'grid' || this.variant === 'single-line',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
@@ -815,6 +816,362 @@ export default class List extends LightningElement {
      */
 
     /**
+     * Handle moving elements with the keyboard.
+     *
+     * @param {HTMLElement} currentItem
+     * @param {HTMLElement} targetItem
+     */
+    accessMoveItem(currentItem, targetItem) {
+        this._keyboardDragged = true;
+        const currentIndex = Number(currentItem.dataset.elementTempIndex);
+        const targetIndex = Number(targetItem.dataset.elementTempIndex);
+        const currentItemHeight = this.computeItemHeight(currentItem);
+        const targetItemHeight = this.computeItemHeight(targetItem);
+
+        this._draggedElement = currentItem;
+        this._hoveredIndex = targetIndex;
+
+        let currentItemYTransform = currentItem.style.transform.match(
+            /translateY\((-?\d+(?:\.\d*)?)px/
+        );
+        if (currentItemYTransform) {
+            currentItemYTransform = parseInt(currentItemYTransform[1], 10) || 0;
+        }
+
+        if (currentIndex < targetIndex) {
+            currentItem.style.transform = `translateY(${
+                currentItemYTransform + targetItemHeight
+            }px)`;
+            targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
+            this.checkIfKeyboardMoved(targetItem);
+        } else if (currentIndex > targetIndex) {
+            currentItem.style.transform = `translateY(${
+                currentItemYTransform - targetItemHeight
+            }px)`;
+            targetItem.style.transform = `translateY(${currentItemHeight}px)`;
+            this.checkIfKeyboardMoved(targetItem);
+        }
+
+        this.scrollItemIntoView(currentItem);
+        targetItem.dataset.elementTempIndex = currentIndex;
+        currentItem.dataset.elementTempIndex = targetIndex;
+
+        this._keyboardMoveIndex = targetIndex;
+    }
+
+    /**
+     * Apply transform style to hovered item and items in-between.
+     *
+     * @param {HTMLElement} hoveredItem
+     */
+    animateHoveredItem(hoveredItem) {
+        const hoveredIndex = this._hoveredIndex;
+        const draggedIndex = this._draggedIndex;
+        const hoveredElementIndex = parseInt(hoveredItem.dataset.index, 10);
+        const tempHoveredIndex = parseInt(
+            hoveredItem.dataset.elementTempIndex,
+            10
+        );
+
+        // This breaks when the transform is animated with css because the item remains hovered for
+        // a few milliseconds, reversing the animation unpredictably.
+        const itemHasMoved = hoveredItem.classList.contains(
+            'avonni-list__item-sortable_moved'
+        );
+        const itemHoveringSmallerItem =
+            draggedIndex > hoveredIndex || tempHoveredIndex > hoveredIndex;
+        const itemHoveringLargerItem =
+            draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
+
+        if (itemHasMoved) {
+            hoveredItem.classList.remove('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = 'translateY(0px)';
+            hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
+        } else if (itemHoveringSmallerItem) {
+            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
+        } else if (itemHoveringLargerItem) {
+            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
+            hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
+        }
+
+        // Get all items in between the dragged and hovered.
+        const itemsBetween = this._itemElements.filter((item) => {
+            const itemIndex = Number(item.dataset.index);
+            const itemMovedAndBetweenDraggedAndHovered =
+                ((itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
+                    (itemIndex < draggedIndex && itemIndex > hoveredIndex)) &&
+                !item.classList.contains('avonni-list__item-sortable_moved');
+            if (itemMovedAndBetweenDraggedAndHovered) {
+                return item;
+            }
+            return undefined;
+        });
+
+        if (itemsBetween.length) {
+            if (draggedIndex > hoveredIndex) {
+                itemsBetween.forEach((item) => {
+                    const tempIndex = parseInt(
+                        item.dataset.elementTempIndex,
+                        10
+                    );
+                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempIndex + 1;
+                });
+            } else if (draggedIndex < hoveredIndex) {
+                itemsBetween.forEach((item) => {
+                    const tempIndex = parseInt(
+                        item.dataset.elementTempIndex,
+                        10
+                    );
+                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
+                    item.dataset.elementTempIndex = tempIndex - 1;
+                });
+            }
+        }
+    }
+
+    /**
+     * Process the animation of the dragged item, and the hovered items.
+     *
+     * @param {number} currentY
+     */
+    animateItems(currentY) {
+        if (currentY && this._draggedElement) {
+            this._draggedElement.style.transform = `translate( 0px, ${
+                currentY - this._initialY
+            }px)`;
+
+            const hoveredItem = this.getHoveredItem(currentY);
+            if (hoveredItem) {
+                this.animateHoveredItem(hoveredItem);
+            }
+        }
+    }
+
+    /**
+     * Scroll when an item is dragged near the top or bottom of the list.
+     *
+     * @param {number} currentY
+     */
+    autoScroll(currentY) {
+        this._scrollStep = this.computeScrollStep(currentY);
+
+        if (!this._scrollingInterval && this._draggedElement) {
+            this._scrollingInterval = window.setInterval(() => {
+                const overflowY =
+                    this.listContainer.scrollHeight > this._initialScrollHeight;
+
+                if (!overflowY) {
+                    this.listContainer.scrollBy(0, this._scrollStep);
+
+                    this.animateItems(currentY);
+
+                    this._restrictMotion = true;
+                    window.requestAnimationFrame(() => {
+                        this._restrictMotion = false;
+                    });
+                }
+            }, 20);
+        }
+
+        if (this._scrollStep === 0) {
+            window.clearInterval(this._scrollingInterval);
+            this._scrollingInterval = null;
+        }
+    }
+
+    checkIfKeyboardMoved(targetItem) {
+        const itemHasMoved = targetItem.classList.contains(
+            'avonni-list__item-sortable_keyboard-moved'
+        );
+        if (itemHasMoved) {
+            targetItem.classList.remove(
+                'avonni-list__item-sortable_keyboard-moved'
+            );
+            targetItem.style.transform = `translateY(0px)`;
+        } else {
+            targetItem.classList.add(
+                'avonni-list__item-sortable_keyboard-moved'
+            );
+        }
+    }
+
+    /**
+     * Erase the list styles and dataset - clear tracked variables.
+     */
+    clearSelection() {
+        // Clean the styles and dataset
+        this._itemElements.forEach((item, index) => {
+            item.style = undefined;
+            item.dataset.index = index;
+            item.dataset.elementTempIndex = index;
+            item.className = item.className.replace(
+                /avonni-list__item-sortable_moved.*/g,
+                ''
+            );
+            item.className = item.className.replace(
+                /.avonni-list__item-sortable_keyboard-moved.*/g,
+                ''
+            );
+        });
+        if (this._draggedElement) {
+            this._draggedElement.classList.remove(
+                'avonni-list__item-sortable_dragged'
+            );
+        }
+
+        this.template.querySelector(
+            '.slds-assistive-text[aria-live="assertive"]'
+        ).textContent = '';
+
+        // Clean the tracked variables
+        this._draggedElement =
+            this._draggedIndex =
+            this._hoveredIndex =
+            this._initialY =
+            this._savedComputedItems =
+                null;
+    }
+
+    cleanUpItem(item) {
+        const itemCopy = deepCopy(item);
+        delete itemCopy.index;
+        delete itemCopy.variant;
+        delete itemCopy.listHasImages;
+        delete itemCopy.infos;
+        delete itemCopy.icons;
+
+        return itemCopy;
+    }
+
+    /**
+     * Compute whether to scroll up, down or none.
+     *
+     * @param {number} currentY
+     * @return {string}
+     */
+    computeScrollStep(currentY) {
+        let scrollStep = 0;
+
+        const closeToTop =
+            currentY - this.listContainer.getBoundingClientRect().top < 50;
+        const closeToBottom =
+            this.listContainer.getBoundingClientRect().bottom - currentY < 50;
+        const scrolledTop = this.listContainer.scrollTop === 0;
+        const scrolledBottom =
+            this.listContainer.scrollHeight - this.listContainer.scrollTop ===
+            this.listContainer.clientHeight;
+
+        if (closeToTop) {
+            scrollStep = -5;
+        } else if (closeToBottom) {
+            scrollStep = 5;
+        }
+
+        if ((scrolledTop && closeToTop) || (scrolledBottom && closeToBottom)) {
+            scrollStep = 0;
+        }
+
+        return scrollStep;
+    }
+
+    /**
+     * Calculate the height of an item, including the row gap.
+     * @param {HTMLElement} item
+     */
+    computeItemHeight(itemElement) {
+        let rowGap;
+        if (this.listContainer) {
+            rowGap = parseInt(
+                getComputedStyle(this.listContainer).rowGap.split('px')[0],
+                10
+            );
+        }
+
+        return itemElement.offsetHeight + (rowGap || 0);
+    }
+
+    /**
+     * When the single-line page is resized, the first item on the page previously
+     * displayed will be on a different page.
+     */
+    findNewPageOfItem(index, columns) {
+        let page = 0;
+        for (let i = 0; i < this.computedItems.length; i += columns) {
+            const chunk = this.computedItems.slice(i, i + columns);
+            const chunkIndexes = [];
+            chunk.forEach((item) => {
+                chunkIndexes.push(item.index);
+            });
+            if (chunkIndexes.includes(index)) {
+                return page;
+            }
+            page++;
+        }
+        return page;
+    }
+
+    /**
+     * Get the item the cursor has entered.
+     *
+     * @param {number} cursorY
+     * @returns {object} item
+     */
+    getHoveredItem(cursorY) {
+        return this._itemElements.find((item) => {
+            if (item !== this._draggedElement) {
+                const itemIndex = Number(item.dataset.index);
+                const itemPosition = item.getBoundingClientRect();
+                const hoverTop = itemPosition.top + 10;
+                const hoverBottom = itemPosition.bottom - 10;
+
+                // keep the current hovered item and don't set to null if hovering a gap.
+                if (
+                    cursorY > hoverTop &&
+                    cursorY < hoverBottom &&
+                    itemIndex != null
+                ) {
+                    if (item.dataset.elementTempIndex != null) {
+                        this._hoveredIndex = parseInt(
+                            item.dataset.elementTempIndex,
+                            10
+                        );
+                    } else {
+                        this._hoveredIndex = itemIndex;
+                    }
+                    return item;
+                }
+            }
+            return undefined;
+        });
+    }
+
+    /**
+     * Get initial list menu position and initial Y position on user interaction.
+     *
+     * @param {Event} event
+     */
+    initPositions(event) {
+        let menuPosition;
+        if (this.listContainer) {
+            menuPosition = this.listContainer.getBoundingClientRect();
+        }
+        this._menuTop = menuPosition.top;
+        this._menuBottom = menuPosition.bottom;
+        this._initialScrollHeight = this.listContainer.scrollHeight;
+
+        this._initialY =
+            event.type === 'touchstart'
+                ? event.touches[0].clientY
+                : event.clientY;
+    }
+
+    /**
      * Setup the screen resize observer. That counts the number of wrapped chips.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -889,53 +1246,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * When the single-line page is resized, the first item on the page previously
-     * displayed will be on a different page.
-     */
-    findNewPageOfItem(index, columns) {
-        let page = 0;
-        for (let i = 0; i < this.computedItems.length; i += columns) {
-            const chunk = this.computedItems.slice(i, i + columns);
-            const chunkIndexes = [];
-            chunk.forEach((item) => {
-                chunkIndexes.push(item.index);
-            });
-            if (chunkIndexes.includes(index)) {
-                return page;
-            }
-            page++;
-        }
-        return page;
-    }
-
-    /**
-     * Only accept predetermined number of columns.
-     *
-     * @param {number} value
-     * @returns {number}
-     */
-    normalizeColumns(value) {
-        const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) {
-            return null
-        } 
-
-        if (COLUMNS.valid.includes(numValue)) {
-            return numValue;
-        }
-        return null;
-    }
-
-    /**
-     * On single-line variant, go to the previous page of elements.
-     */
-    previousPage() {
-        if (this._singleLinePage > 0) {
-            this._singleLinePage--;
-        }
-    }
-
-    /**
      * On single-line variant, go to the next page of elements. On next page load, check
      */
     nextPage() {
@@ -956,59 +1266,80 @@ export default class List extends LightningElement {
     }
 
     /**
-     * When the use has reached the bottom of the list, and the load-more spinner appears,
-     * scroll to view the spinner.
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
      */
-    showLoading() {
-        const offsetFromBottom =
-            this.listContainer.scrollHeight -
-            (this.listContainer.scrollTop +
-            this.listContainer.clientHeight);
+    normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) {
+            return null;
+        }
 
-        // Show the spinner if close to bottom, and not scrolled to the top
-        const closeToBottom = offsetFromBottom < 100 && this.listContainer.scrollTop > 0
-        if (closeToBottom) {
-            setTimeout(() => {
-                const spinner = this.template.querySelector(
-                    '[data-element-id="loading-spinner-below"]'
-                );
-                if (spinner) {
-                    spinner.scrollIntoView({behavior: "smooth"});
-                }
-            }, 10)
+        if (COLUMNS.valid.includes(numValue)) {
+            return numValue;
+        }
+        return null;
+    }
+
+    /**
+     * On single-line variant, go to the previous page of elements.
+     */
+    previousPage() {
+        if (this._singleLinePage > 0) {
+            this._singleLinePage--;
+        }
+    }
+
+    scrollItemIntoView(draggedItem) {
+        const draggedItemPosition = draggedItem.getBoundingClientRect();
+        const containerSize = this.listContainer.getBoundingClientRect();
+        const moveUpWithItem = draggedItemPosition.top < 0;
+        const moveDownWithItem =
+            draggedItemPosition.bottom > containerSize.height;
+
+        if (moveUpWithItem) {
+            draggedItem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        if (moveDownWithItem) {
+            draggedItem.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
     }
 
     /**
-     * Determine scroll position to trigger loadmore and adjust dragged item position.
+     * After a rerender, recover the element being dragged and keep it.
      */
-     handleScroll() {
-        if (this.variant === 'single-line') {
-            return;
+    recoverDraggedElement() {
+        this._draggedElement = this.template.querySelector(
+            `[data-index="${this._initialDraggedIndex}"]`
+        );
+        this._draggedIndex = this._initialDraggedIndex;
+
+        if (this._dragging) {
+            this.animateItems(this._currentY);
+            this._initialScrollHeight = this.listContainer.scrollHeight;
         }
-
-        this._previousScrollTop = this._scrollTop;
-        this._scrollTop = this.listContainer.scrollTop;
-        this._initialY -= this._scrollTop - this._previousScrollTop;
-
-        if (!this.enableInfiniteLoading) {
-            return;
+        if (this._keyboardDragged && this._draggedElement) {
+            this._draggedElement.focus();
+            this.restoreItemsTransform(
+                this._draggedIndex,
+                this._keyboardMoveIndex
+            );
         }
+    }
 
-        const offsetFromBottom =
-            this.listContainer.scrollHeight -
-            this.listContainer.scrollTop -
-            this.listContainer.clientHeight;
-
-        if (
-            (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
-            (this.listContainer.scrollTop === 0 &&
-                this.listContainer.scrollHeight ===
-                    this.listContainer.clientHeight &&
-                !this._isLoading)
-        ) {
-            this.handleLoadMore();
-        }
+    /**
+     * Remove transform style and class from all items.
+     */
+    resetItemsAnimations() {
+        this._itemElements.forEach((item) => {
+            if (item.classList.contains('avonni-list__item-sortable_moved')) {
+                item.classList.remove('avonni-list__item-sortable_moved');
+                item.style.transform = 'translateY(0px)';
+            }
+        });
     }
 
     /**
@@ -1026,141 +1357,52 @@ export default class List extends LightningElement {
         }
     }
 
-    /**
-     * Update assistive text based on new item ordering.
-     */
-    updateAssistiveText() {
-        const label = this.computedItems[this._draggedIndex].label;
-        const position = this._draggedIndex + 1;
-        const total = this.computedItems.length;
-        const element = this.template.querySelector(
-            '.slds-assistive-text[aria-live="assertive"]'
-        );
-        // We don't use a variable to avoid rerendering
-        element.textContent = `${label}. ${position} / ${total}`;
+    restoreItemsTransform(draggedIndex, targetIndex) {
+        setTimeout(() => {
+            const draggedItem = this._itemElements.find(
+                (item) => Number(item.dataset.index) === draggedIndex
+            );
+            draggedItem.dataset.elementTempIndex = targetIndex;
+            const draggedItemHeight = this.computeItemHeight(draggedItem);
+
+            const itemsBetween = this._itemElements.filter(
+                (item) =>
+                    Number(item.dataset.index) > draggedIndex &&
+                    Number(item.dataset.index) <= targetIndex
+            );
+            let draggedItemTransform = 0;
+            itemsBetween.forEach((item) => {
+                draggedItemTransform += this.computeItemHeight(item);
+                item.style.transform = `translateY(${-draggedItemHeight}px)`;
+                item.classList.add('avonni-list__item-sortable_keyboard-moved');
+                item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
+            });
+            draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
+        }, 0);
     }
 
     /**
-     * Get the item the cursor has entered.
-     *
-     * @param {number} cursorY
-     * @returns {object} item
+     * When the use has reached the bottom of the list, and the load-more spinner appears,
+     * scroll to view the spinner.
      */
-    getHoveredItem(cursorY) {
-        return this._itemElements.find((item) => {
-            if (item !== this._draggedElement) {
-                const itemIndex = Number(item.dataset.index);
-                const itemPosition = item.getBoundingClientRect();
-                const hoverTop = itemPosition.top + 10;
-                const hoverBottom = itemPosition.bottom - 10;
+    showLoading() {
+        const offsetFromBottom =
+            this.listContainer.scrollHeight -
+            (this.listContainer.scrollTop + this.listContainer.clientHeight);
 
-                // keep the current hovered item and don't set to null if hovering a gap.
-                if (
-                    cursorY > hoverTop &&
-                    cursorY < hoverBottom &&
-                    itemIndex != null
-                ) {
-                    if (item.dataset.elementTempIndex != null) {
-                        this._hoveredIndex = parseInt(
-                            item.dataset.elementTempIndex,
-                            10
-                        );
-                    } else {
-                        this._hoveredIndex = itemIndex;
-                    }
-                    return item;
+        // Show the spinner if close to bottom, and not scrolled to the top
+        const closeToBottom =
+            offsetFromBottom < 100 && this.listContainer.scrollTop > 0;
+        if (closeToBottom) {
+            setTimeout(() => {
+                const spinner = this.template.querySelector(
+                    '[data-element-id="loading-spinner-below"]'
+                );
+                if (spinner) {
+                    spinner.scrollIntoView({ behavior: 'smooth' });
                 }
-            }
-            return undefined;
-        });
-    }
-
-    /**
-     * Apply transform style to hovered item and items in-between.
-     *
-     * @param {HTMLElement} hoveredItem
-     */
-    animateHoveredItem(hoveredItem) {
-        const hoveredIndex = this._hoveredIndex;
-        const draggedIndex = this._draggedIndex;
-        const hoveredElementIndex = parseInt(hoveredItem.dataset.index, 10);
-        const tempHoveredIndex = parseInt(
-            hoveredItem.dataset.elementTempIndex,
-            10
-        );
-
-        // This breaks when the transform is animated with css because the item remains hovered for
-        // a few milliseconds, reversing the animation unpredictably.
-        const itemHasMoved = hoveredItem.classList.contains(
-            'avonni-list__item-sortable_moved'
-        );
-        const itemHoveringSmallerItem =
-            draggedIndex > hoveredIndex || tempHoveredIndex > hoveredIndex;
-        const itemHoveringLargerItem =
-            draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
-
-        if (itemHasMoved) {
-            hoveredItem.classList.remove('avonni-list__item-sortable_moved');
-            hoveredItem.style.transform = 'translateY(0px)';
-            hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
-        } else if (itemHoveringSmallerItem) {
-            hoveredItem.classList.add('avonni-list__item-sortable_moved');
-            hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
-            hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
-        } else if (itemHoveringLargerItem) {
-            hoveredItem.classList.add('avonni-list__item-sortable_moved');
-            hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-            hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
+            }, 10);
         }
-
-        // Get all items in between the dragged and hovered.
-        const itemsBetween = this._itemElements.filter((item) => {
-            const itemIndex = Number(item.dataset.index);
-            const itemMovedAndBetweenDraggedAndHovered =
-                ((itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
-                (itemIndex < draggedIndex && itemIndex > hoveredIndex)) && 
-                !item.classList.contains('avonni-list__item-sortable_moved');
-            if (itemMovedAndBetweenDraggedAndHovered) {
-                return item;
-            }
-            return undefined;
-        });
-
-        if (itemsBetween.length) {
-            if (draggedIndex > hoveredIndex) {
-                itemsBetween.forEach((item) => {
-                    const tempIndex = parseInt(
-                        item.dataset.elementTempIndex,
-                        10
-                    );
-                    item.classList.add('avonni-list__item-sortable_moved');
-                    item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempIndex + 1;
-                });
-            } else if (draggedIndex < hoveredIndex) {
-                itemsBetween.forEach((item) => {
-                    const tempIndex = parseInt(
-                        item.dataset.elementTempIndex,
-                        10
-                    );
-                    item.classList.add('avonni-list__item-sortable_moved');
-                    item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
-                    item.dataset.elementTempIndex = tempIndex - 1;
-                });
-            }
-        }
-    }
-
-    /**
-     * Remove transform style and class from all items.
-     */
-    resetItemsAnimations() {
-        this._itemElements.forEach((item) => {
-            if (item.classList.contains('avonni-list__item-sortable_moved')) {
-                item.classList.remove('avonni-list__item-sortable_moved');
-                item.style.transform = 'translateY(0px)';
-            }
-        });
     }
 
     /**
@@ -1184,82 +1426,26 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Erase the list styles and dataset - clear tracked variables.
-     */
-    clearSelection() {
-        // Clean the styles and dataset
-        this._itemElements.forEach((item, index) => {
-            item.style = undefined;
-            item.dataset.index = index;
-            item.dataset.elementTempIndex = index;
-            item.className = item.className.replace(
-                /avonni-list__item-sortable_moved.*/g,
-                ''
-            );
-            item.className = item.className.replace(
-                /.avonni-list__item-sortable_keyboard-moved.*/g,
-                ''
-            );
-        });
-        if (this._draggedElement) {
-            this._draggedElement.classList.remove(
-                'avonni-list__item-sortable_dragged'
-            );
-        }
-
-        this.template.querySelector(
-            '.slds-assistive-text[aria-live="assertive"]'
-        ).textContent = '';
-
-        // Clean the tracked variables
-        this._draggedElement =
-            this._draggedIndex =
-            this._hoveredIndex =
-            this._initialY =
-            this._savedComputedItems =
-                null;
-    }
-
-    /**
-     * Get initial list menu position and initial Y position on user interaction.
+     * Stop the propagation of an event.
      *
      * @param {Event} event
      */
-    initPositions(event) {
-        let menuPosition;
-        if (this.listContainer) {
-            menuPosition = this.listContainer.getBoundingClientRect();
-        }
-        this._menuTop = menuPosition.top;
-        this._menuBottom = menuPosition.bottom;
-        this._initialScrollHeight = this.listContainer.scrollHeight;
-
-        this._initialY =
-            event.type === 'touchstart'
-                ? event.touches[0].clientY
-                : event.clientY;
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 
     /**
-     * After a rerender, recover the element being dragged and keep it.
+     * Update assistive text based on new item ordering.
      */
-    recoverDraggedElement() {
-        this._draggedElement = this.template.querySelector(
-            `[data-index="${this._initialDraggedIndex}"]`
+    updateAssistiveText() {
+        const label = this.computedItems[this._draggedIndex].label;
+        const position = this._draggedIndex + 1;
+        const total = this.computedItems.length;
+        const element = this.template.querySelector(
+            '.slds-assistive-text[aria-live="assertive"]'
         );
-        this._draggedIndex = this._initialDraggedIndex;
-
-        if (this._dragging) {
-            this.animateItems(this._currentY);
-            this._initialScrollHeight = this.listContainer.scrollHeight;
-        }
-        if (this._keyboardDragged && this._draggedElement) {
-            this._draggedElement.focus();
-            this.restoreItemsTransform(
-                this._draggedIndex,
-                this._keyboardMoveIndex
-            );
-        }
+        // We don't use a variable to avoid rerendering
+        element.textContent = `${label}. ${position} / ${total}`;
     }
 
     /*
@@ -1291,7 +1477,7 @@ export default class List extends LightningElement {
             this.dispatchEvent(
                 new CustomEvent('itemmousedown', {
                     detail: {
-                        item: deepCopy(item),
+                        item: this.cleanUpItem(item),
                         name: item.name
                     },
                     bubbles: true
@@ -1339,22 +1525,6 @@ export default class List extends LightningElement {
             // Close any open button menu
             this._draggedElement.focus();
         }
-    }
-
-    /**
-     * Calculate the height of an item, including the row gap.
-     * @param {HTMLElement} item
-     */
-    computeItemHeight(itemElement) {
-        let rowGap;
-        if (this.listContainer) {
-            rowGap = parseInt(
-                getComputedStyle(this.listContainer).rowGap.split('px')[0],
-                10
-            );
-        }
-
-        return itemElement.offsetHeight + (rowGap || 0);
     }
 
     /**
@@ -1407,87 +1577,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Process the animation of the dragged item, and the hovered items.
-     *
-     * @param {number} currentY
-     */
-    animateItems(currentY) {
-        if (currentY && this._draggedElement) {
-            this._draggedElement.style.transform = `translate( 0px, ${
-                currentY - this._initialY
-            }px)`;
-
-            const hoveredItem = this.getHoveredItem(currentY);
-            if (hoveredItem) {
-                this.animateHoveredItem(hoveredItem);
-            }
-        }
-    }
-
-    /**
-     * Compute whether to scroll up, down or none.
-     *
-     * @param {number} currentY
-     * @return {string}
-     */
-    computeScrollStep(currentY) {
-        let scrollStep = 0;
-
-        const closeToTop =
-            currentY - this.listContainer.getBoundingClientRect().top < 50;
-        const closeToBottom =
-            this.listContainer.getBoundingClientRect().bottom - currentY < 50;
-        const scrolledTop = this.listContainer.scrollTop === 0;
-        const scrolledBottom =
-            this.listContainer.scrollHeight - this.listContainer.scrollTop ===
-            this.listContainer.clientHeight;
-
-        if (closeToTop) {
-            scrollStep = -5;
-        } else if (closeToBottom) {
-            scrollStep = 5;
-        }
-
-        if ((scrolledTop && closeToTop) || (scrolledBottom && closeToBottom)) {
-            scrollStep = 0;
-        }
-
-        return scrollStep;
-    }
-
-    /**
-     * Scroll when an item is dragged near the top or bottom of the list.
-     *
-     * @param {number} currentY
-     */
-    autoScroll(currentY) {
-        this._scrollStep = this.computeScrollStep(currentY);
-
-        if (!this._scrollingInterval && this._draggedElement) {
-            this._scrollingInterval = window.setInterval(() => {
-                const overflowY =
-                    this.listContainer.scrollHeight > this._initialScrollHeight;
-
-                if (!overflowY) {
-                    this.listContainer.scrollBy(0, this._scrollStep);
-
-                    this.animateItems(currentY);
-
-                    this._restrictMotion = true;
-                    window.requestAnimationFrame(() => {
-                        this._restrictMotion = false;
-                    });
-                }
-            }, 20);
-        }
-
-        if (this._scrollStep === 0) {
-            window.clearInterval(this._scrollingInterval);
-            this._scrollingInterval = null;
-        }
-    }
-
-    /**
      * When dragging is finished, reorder items or reset the list.
      *
      * @param {Event} event
@@ -1517,7 +1606,7 @@ export default class List extends LightningElement {
             this.dispatchEvent(
                 new CustomEvent('itemmouseup', {
                     detail: {
-                        item: deepCopy(item),
+                        item: this.cleanUpItem(item),
                         name: item.name
                     },
                     bubbles: true
@@ -1541,6 +1630,10 @@ export default class List extends LightningElement {
 
         if (orderHasChanged) {
             this.computedItems = [...this.computedItems];
+            const cleanItems = [];
+            this.computedItems.forEach((item) => {
+                cleanItems.push(this.cleanUpItem(item));
+            });
             /**
              * The event fired when a user reordered the items.
              *
@@ -1552,13 +1645,45 @@ export default class List extends LightningElement {
             this.dispatchEvent(
                 new CustomEvent('reorder', {
                     detail: {
-                        items: this.computedItems
+                        items: cleanItems
                     }
                 })
             );
         }
 
         this.clearSelection();
+    }
+
+    /**
+     * Handles a click on an item action.
+     *
+     * @param {Event} event
+     */
+    handleActionClick(event) {
+        const actionName = this.hasMultipleActions
+            ? event.detail.value
+            : event.target.value;
+        const itemIndex = event.currentTarget.dataset.itemIndex;
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name  Name of the action clicked.
+         * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    targetName: this.computedItems[itemIndex].name
+                }
+            })
+        );
     }
 
     /**
@@ -1637,140 +1762,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Handle moving elements with the keyboard.
-     *
-     * @param {HTMLElement} currentItem
-     * @param {HTMLElement} targetItem
-     */
-    accessMoveItem(currentItem, targetItem) {
-        this._keyboardDragged = true;
-        const currentIndex = Number(currentItem.dataset.elementTempIndex);
-        const targetIndex = Number(targetItem.dataset.elementTempIndex);
-        const currentItemHeight = this.computeItemHeight(currentItem);
-        const targetItemHeight = this.computeItemHeight(targetItem);
-
-        this._draggedElement = currentItem;
-        this._hoveredIndex = targetIndex;
-
-        let currentItemYTransform = currentItem.style.transform.match(
-            /translateY\((-?\d+(?:\.\d*)?)px/
-        );
-        if (currentItemYTransform) {
-            currentItemYTransform = parseInt(currentItemYTransform[1], 10) || 0;
-        }
-
-        if (currentIndex < targetIndex) {
-            currentItem.style.transform = `translateY(${
-                currentItemYTransform + targetItemHeight
-            }px)`;
-            targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
-            this.checkKeyboardMoved(targetItem);
-        } else if (currentIndex > targetIndex) {
-            currentItem.style.transform = `translateY(${
-                currentItemYTransform - targetItemHeight
-            }px)`;
-            targetItem.style.transform = `translateY(${currentItemHeight}px)`;
-            this.checkKeyboardMoved(targetItem);
-        }
-
-        this.scrollItemIntoView(currentItem);
-        targetItem.dataset.elementTempIndex = currentIndex;
-        currentItem.dataset.elementTempIndex = targetIndex;
-
-        this._keyboardMoveIndex = targetIndex;
-    }
-
-    scrollItemIntoView(draggedItem) {
-        const draggedItemPosition = draggedItem.getBoundingClientRect();
-        const containerSize = this.listContainer.getBoundingClientRect();
-        const moveUpWithItem = draggedItemPosition.top < 0;
-        const moveDownWithItem = draggedItemPosition.bottom > containerSize.height;
-
-        if (moveUpWithItem) {
-            draggedItem.scrollIntoView({behavior: "smooth", block: "start"});
-        }
-
-        if (moveDownWithItem) {
-            draggedItem.scrollIntoView({behavior: "smooth", block: "end"});
-        }
-    }
-
-    restoreItemsTransform(draggedIndex, targetIndex) {
-        setTimeout(() => {
-            const draggedItem = this._itemElements.find(
-                (item) => Number(item.dataset.index) === draggedIndex
-            );
-            draggedItem.dataset.elementTempIndex = targetIndex
-            const draggedItemHeight = this.computeItemHeight(draggedItem);
-            
-            const itemsBetween = this._itemElements.filter(
-                (item) =>
-                    Number(item.dataset.index) > draggedIndex &&
-                    Number(item.dataset.index) <= targetIndex
-            );
-            let draggedItemTransform = 0;
-            itemsBetween.forEach((item) => {
-                draggedItemTransform += this.computeItemHeight(item);
-                item.style.transform = `translateY(${-draggedItemHeight}px)`;
-                item.classList.add('avonni-list__item-sortable_keyboard-moved');
-                item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
-            });
-            draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
-        },0);
-    }
-
-    checkKeyboardMoved(targetItem) {
-        const itemHasMoved = targetItem.classList.contains(
-            'avonni-list__item-sortable_keyboard-moved'
-        )
-        if ( itemHasMoved ) {
-            targetItem.classList.remove(
-                'avonni-list__item-sortable_keyboard-moved'
-            );
-            targetItem.style.transform = `translateY(0px)`;
-        } else {
-            targetItem.classList.add(
-                'avonni-list__item-sortable_keyboard-moved'
-            );
-        }
-    }
-
-    /**
-     * Handles a click on an item action.
-     *
-     * @param {Event} event
-     */
-    handleActionClick(event) {
-        const actionName = this.hasMultipleActions
-            ? event.detail.value
-            : event.target.value;
-        const itemIndex = event.currentTarget.dataset.itemIndex;
-
-        // Return only the original object.
-        const itemCopy = deepCopy(this.computedItems[itemIndex]);
-        delete itemCopy.index;
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name  Name of the action clicked.
-         * @param {object} item Item clicked.
-         * @param {string} targetName Name of the item.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: actionName,
-                    item: itemCopy,
-                    targetName: this.computedItems[itemIndex].name
-                }
-            })
-        );
-    }
-
-    /**
      * Handles a click on an item.
      * The click event will not dispatch an event if the clicked element already has a purpose (action or link).
      *
@@ -1783,6 +1774,7 @@ export default class List extends LightningElement {
         ) {
             return;
         }
+        const itemIndex = event.currentTarget.dataset.index;
 
         /**
          * The event fired when a user clicks on an item.
@@ -1797,7 +1789,7 @@ export default class List extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: this.computedItems[event.currentTarget.dataset.index],
+                    item: this.cleanUpItem(this.computedItems[itemIndex]),
                     bounds: event.currentTarget.getBoundingClientRect(),
                     name: this.computedItems[event.currentTarget.dataset.index]
                         .name
@@ -1823,11 +1815,34 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Stop the propagation of an event.
-     *
-     * @param {Event} event
+     * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
-    stopPropagation(event) {
-        event.stopPropagation();
+    handleScroll() {
+        if (this.variant === 'single-line') {
+            return;
+        }
+
+        this._previousScrollTop = this._scrollTop;
+        this._scrollTop = this.listContainer.scrollTop;
+        this._initialY -= this._scrollTop - this._previousScrollTop;
+
+        if (!this.enableInfiniteLoading) {
+            return;
+        }
+
+        const offsetFromBottom =
+            this.listContainer.scrollHeight -
+            this.listContainer.scrollTop -
+            this.listContainer.clientHeight;
+
+        if (
+            (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
+            (this.listContainer.scrollTop === 0 &&
+                this.listContainer.scrollHeight ===
+                    this.listContainer.clientHeight &&
+                !this._isLoading)
+        ) {
+            this.handleLoadMore();
+        }
     }
 }
