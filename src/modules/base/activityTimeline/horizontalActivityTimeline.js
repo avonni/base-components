@@ -1098,7 +1098,7 @@ export class HorizontalActivityTimeline {
      * @return {boolean} 
      */
     isDateInvalid(date) {
-        return new Date(date).toString() === 'Invalid Date';
+        return new Date(date).toString() === 'Invalid Date' || !date;
     } 
 
     /**
