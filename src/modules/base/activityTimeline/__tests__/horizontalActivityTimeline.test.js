@@ -237,6 +237,17 @@ describe('Horizontal Activity Timeline', () => {
                 name: 'item6',
                 datetimeValue: '01/01/2000 40:02',  // invalid time
             },
+            {
+                name: 'item7',
+                datetimeValue: null,                // null
+            },
+            {
+                name: 'item8',                      // no date
+            },
+            {
+                name: 'item9',
+                datetimeValue: undefined,           // undefined
+            },
         ];
         element.addValidItemsToData(invalidDateItems);
         expect(element._sortedItems.length).toBe(0);
