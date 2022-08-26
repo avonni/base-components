@@ -44,8 +44,8 @@
 
 .avonni-separator__lines_styling {
     border-color: var(--avonni-separator-color-border, #dddbda);
-    border-width: var(--avonni-separator-border-width, 1px);
-    border-style: var(--avonni-separator-border-style, solid);
+    border-width: var(--avonni-separator-sizing-border, 1px);
+    border-style: var(--avonni-separator-styling-border, solid);
 }
 
 .avonni-separator__line-one.slds-border_left,

@@ -692,6 +692,35 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // check
+    it('Activity Timeline: click event', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call'
+            }
+        ];
+        element.items = ITEM;
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-activity-timeline-item'
+            );
+            item.dispatchEvent(new CustomEvent('click', {}));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('item1');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
     it('Activity Timeline: button clicked event', () => {
         const ITEM = [
             {

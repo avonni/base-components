@@ -1334,6 +1334,7 @@ export default class DualListbox extends LightningElement {
      * @param {Event} event
      */
     handleSearch(event) {
+        event.stopPropagation();
         this._searchTerm = event.detail.value;
     }
 
