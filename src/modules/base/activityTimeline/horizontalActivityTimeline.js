@@ -1170,6 +1170,7 @@ export class HorizontalActivityTimeline {
      * iconLibraries are ready after initial draw.
      */
     resetAndRedrawTimeline() {
+        this._maxYPositionOfItem = 0;
         this._timelineItemsDiv = d3.select(this.divTimelineItemsSelector);
         this._timelineItemsDiv.selectAll('*').remove();
         this.createTimeline();
