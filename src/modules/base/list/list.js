@@ -109,16 +109,18 @@ export default class List extends LightningElement {
     @api sortableIconName;
 
     _actions = [];
-    _divider;
+    computedActions = [];
+    computedItems = [];
     _cols = 1;
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
+    _divider;
     _enableInfiniteLoading = false;
-    _items = [];
     _imageAttributes = {};
     _imageSrc = [];
     _isLoading = false;
+    _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
@@ -139,8 +141,6 @@ export default class List extends LightningElement {
     _draggedIndex;
     _hoveredIndex;
     _keyboardMoveIndex;
-    computedActions = [];
-    computedItems = [];
     _resizeObserver;
     _scrollingInterval;
     _singleLinePage = 0;
@@ -150,8 +150,6 @@ export default class List extends LightningElement {
     _initialScrollHeight = 0;
     _restrictMotion = false;
     _dragging = false;
-    _showSpinnerSpacer = false;
-    _hideSpinnerSpacer = false;
 
     renderedCallback() {
         if (!this._resizeObserver && this._variant !== 'list') {
@@ -165,15 +163,11 @@ export default class List extends LightningElement {
             this.recoverDraggedElement();
         }
 
-        if (this.enableInfiniteLoading) {
-            this._showSpinnerSpacer = true;
-        }
-
         this._itemElements = Array.from(
             this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
-        // To check if the bottom is reached without scrolling.
+        // Wait for the card to render before checking if the bottom is reached.
         window.requestAnimationFrame(() => {
             this.handleScroll();
         });
@@ -209,7 +203,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Position of the item divider. Valid valus include top, bottom and around.
+     * Position of the item divider. Valid values include top, bottom and around.
      *
      * @type {string}
      * @public
@@ -238,13 +232,6 @@ export default class List extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
-
-        // When infinite loading is disabled, animate the spinner spacer to hide it.
-        if (!this._enableInfiniteLoading) {
-            setTimeout(() => {
-                this._hideSpinnerSpacer = true;
-            }, 500);
-        }
     }
 
     /**
@@ -263,7 +250,6 @@ export default class List extends LightningElement {
 
         if (this._isLoading) {
             this.showLoading()
-            // window.requestAnimationFrame(() => this.showLoading());
         }
     }
 
@@ -285,7 +271,7 @@ export default class List extends LightningElement {
             validValues: IMAGE_SIZE.valid
         });
         console.warn(
-            "'imageWidth' is deprecated. Use image attribute 'size' instead."
+            "'imageWidth' is deprecated. Use image-attributes 'size' instead."
         );
     }
 
@@ -334,6 +320,7 @@ export default class List extends LightningElement {
      * Default number of columns in the grid and single-line variants on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
+     * @default 1
      * @public
      */
     @api
@@ -406,12 +393,13 @@ export default class List extends LightningElement {
     set items(proxy) {
         this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
+        const listHasImages = this.computedItems.some((item) => item.imageSrc);
 
-        this.listHasImages = this.computedItems.some((item) => item.imageSrc);
         this.computedItems.forEach((item, index) => {
             this.computedItems[index] = new Item(item);
             this.computedItems[index].index = index;
-            this.computedItems[index].listHasImages = this.listHasImages;
+            this.computedItems[index].listHasImages = listHasImages;
+            this.computedItems[index].variant = this._variant;
         });
     }
 
@@ -495,28 +483,37 @@ export default class List extends LightningElement {
      */
 
     /**
-     * Apply size classes to images. In list variant, the width is set. In grid variant, the height is set.
+     * Apply size classes to images. In list variant, the width is set. In grid and single-line variants, the height is set.
      */
     get computedImageClass() {
-        return classSet('avonni-list__item-image-container').add({
-            'avonni-list__item-image_small-width':
+        return classSet('avonni-list__image_container slds-is-relative').add({
+            'avonni-list__list-image-width-small':
                 this._imageAttributes.size === 'small' &&
                 this._variant === 'list',
-            'avonni-list__item-image_medium-width':
+            'avonni-list__list-image-width-medium':
                 this._imageAttributes.size === 'medium' &&
                 this._variant === 'list',
-            'avonni-list__item-image_large-width':
+            'avonni-list__list-image-width-large':
                 this._imageAttributes.size === 'large' &&
                 this._variant === 'list',
-            'avonni-list__item-image_small-height':
+            'avonni-list__grid-image-height-small':
                 this._imageAttributes.size === 'small' &&
-                (this._variant === 'grid' || this._variant === 'single-line'),
-            'avonni-list__item-image_medium-height':
+                this._variant === 'grid',
+            'avonni-list__grid-image-height-medium':
                 this._imageAttributes.size === 'medium' &&
-                (this._variant === 'grid' || this._variant === 'single-line'),
-            'avonni-list__item-image_large-height':
+                this._variant === 'grid',
+            'avonni-list__grid-image-height-large':
                 this._imageAttributes.size === 'large' &&
-                (this._variant === 'grid' || this._variant === 'single-line')
+                this._variant === 'grid',
+            'avonni-list__single-line-image-height-small':
+                this._imageAttributes.size === 'small' &&
+                this._variant === 'single-line',
+            'avonni-list__single-line-image-height-medium':
+                this._imageAttributes.size === 'medium' &&
+                this._variant === 'single-line',
+            'avonni-list__single-line-image-height-large':
+                this._imageAttributes.size === 'large' &&
+                this._variant === 'single-line'
         });
     }
 
@@ -532,17 +529,6 @@ export default class List extends LightningElement {
             'avonni-list__item-image_object-fit-none':
                 this._imageAttributes.cropFit === 'none'
         });
-    }
-
-    /**
-     * The spacer provides a better scrolling experience.
-     */
-    get showSpinnerSpacer() {
-        return (
-            this._showSpinnerSpacer &&
-            !this._isLoading &&
-            this.variant !== 'single-line'
-        );
     }
 
     /**
@@ -592,11 +578,13 @@ export default class List extends LightningElement {
         return this._actions.length > 1;
     }
 
+    /**
+     * Check if there are any Actions.
+     *
+     * @type {boolean}
+     */
     get hasActions() {
-        if (!this._actions) {
-            return false;
-        }
-        return this._actions.length > 0;
+        return this._actions.length;
     }
 
     /**
@@ -735,8 +723,7 @@ export default class List extends LightningElement {
         )
             .add({
                 'slds-grid_vertical': this.variant === 'list',
-                'avonni-list__grid-display':
-                    this.variant === 'grid' || this.variant === 'single-line',
+                'slds-wrap': this.variant === 'grid' || this.variant === 'single-line',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
@@ -800,21 +787,6 @@ export default class List extends LightningElement {
                     this._currentColumnCount === 12 &&
                     (this._variant === 'grid' ||
                         this._variant === 'single-line')
-            })
-            .toString();
-    }
-
-    /**
-     * Animate the spinner when loading more items.
-     *
-     * @type {string}
-     */
-    get computedSpinnerClass() {
-        return classSet(
-            'slds-col slds-size_12-of-12 avonni-list__lower-spinner-spacer'
-        )
-            .add({
-                'hide-spinner-spacer': this._hideSpinnerSpacer
             })
             .toString();
     }
@@ -943,8 +915,13 @@ export default class List extends LightningElement {
      * @returns {number}
      */
     normalizeColumns(value) {
-        if (COLUMNS.valid.includes(value)) {
-            return value;
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) {
+            return null
+        } 
+
+        if (COLUMNS.valid.includes(numValue)) {
+            return numValue;
         }
         return null;
     }
@@ -978,18 +955,25 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * When the use has reached the bottom of the list, and the load-more spinner appears,
+     * scroll to view the spinner.
+     */
     showLoading() {
         const offsetFromBottom =
             this.listContainer.scrollHeight -
             (this.listContainer.scrollTop +
             this.listContainer.clientHeight);
-        if (offsetFromBottom < 100) {
+
+        // Show the spinner if close to bottom, and not scrolled to the top
+        const closeToBottom = offsetFromBottom < 100 && this.listContainer.scrollTop > 0
+        if (closeToBottom) {
             setTimeout(() => {
                 const spinner = this.template.querySelector(
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    spinner.scrollIntoView({behavior: "smooth", block: "end"});
+                    spinner.scrollIntoView({behavior: "smooth"});
                 }
             }, 10)
         }
@@ -1006,6 +990,10 @@ export default class List extends LightningElement {
         this._previousScrollTop = this._scrollTop;
         this._scrollTop = this.listContainer.scrollTop;
         this._initialY -= this._scrollTop - this._previousScrollTop;
+
+        if (!this.enableInfiniteLoading) {
+            return;
+        }
 
         const offsetFromBottom =
             this.listContainer.scrollHeight -
@@ -1088,7 +1076,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Apply transform style to hovered item and items inbetween.
+     * Apply transform style to hovered item and items in-between.
      *
      * @param {HTMLElement} hoveredItem
      */
@@ -1138,7 +1126,7 @@ export default class List extends LightningElement {
             return undefined;
         });
 
-        if (itemsBetween.length > 0) {
+        if (itemsBetween.length) {
             if (draggedIndex > hoveredIndex) {
                 itemsBetween.forEach((item) => {
                     const tempIndex = parseInt(
@@ -1164,7 +1152,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Remove transform style and class from all itmes.
+     * Remove transform style and class from all items.
      */
     resetItemsAnimations() {
         this._itemElements.forEach((item) => {
@@ -1404,7 +1392,7 @@ export default class List extends LightningElement {
 
         if (!this._scrollStep) {
             // Stick the dragged item to the mouse position
-            this.animateItems(currentY);
+            this.animateItems(this._currentY);
         }
 
         const buttonMenu = event.currentTarget.querySelector(
@@ -1415,7 +1403,7 @@ export default class List extends LightningElement {
         }
 
         this.stopPropagation(event);
-        this.autoScroll(currentY);
+        this.autoScroll(this._currentY);
     }
 
     /**
@@ -1464,7 +1452,7 @@ export default class List extends LightningElement {
             scrollStep = 0;
         }
 
-        this._scrollStep = scrollStep;
+        return scrollStep;
     }
 
     /**
@@ -1473,7 +1461,7 @@ export default class List extends LightningElement {
      * @param {number} currentY
      */
     autoScroll(currentY) {
-        this.computeScrollStep(currentY);
+        this._scrollStep = this.computeScrollStep(currentY);
 
         if (!this._scrollingInterval && this._draggedElement) {
             this._scrollingInterval = window.setInterval(() => {
@@ -1644,6 +1632,7 @@ export default class List extends LightningElement {
     handleListClick() {
         if (this._draggedElement) {
             this.clearSelection();
+            this._scrollStep = 0;
         }
     }
 
@@ -1663,9 +1652,6 @@ export default class List extends LightningElement {
         this._draggedElement = currentItem;
         this._hoveredIndex = targetIndex;
 
-        // const matrix = new DOMMatrixReadOnly(currentItem.style.transform);
-        // const currentItemYTransform = matrix.f;
-
         let currentItemYTransform = currentItem.style.transform.match(
             /translateY\((-?\d+(?:\.\d*)?)px/
         );
@@ -1678,32 +1664,45 @@ export default class List extends LightningElement {
                 currentItemYTransform + targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${-currentItemHeight}px)`;
-            this.listContainer.scrollBy(0, currentItemHeight);
             this.checkKeyboardMoved(targetItem);
         } else if (currentIndex > targetIndex) {
             currentItem.style.transform = `translateY(${
                 currentItemYTransform - targetItemHeight
             }px)`;
             targetItem.style.transform = `translateY(${currentItemHeight}px)`;
-            this.listContainer.scrollBy(0, -currentItemHeight);
             this.checkKeyboardMoved(targetItem);
         }
 
-        // currentIndex;;
-
+        this.scrollItemIntoView(currentItem);
         targetItem.dataset.elementTempIndex = currentIndex;
         currentItem.dataset.elementTempIndex = targetIndex;
 
         this._keyboardMoveIndex = targetIndex;
     }
 
+    scrollItemIntoView(draggedItem) {
+        const draggedItemPosition = draggedItem.getBoundingClientRect();
+        const containerSize = this.listContainer.getBoundingClientRect();
+        const moveUpWithItem = draggedItemPosition.top < 0;
+        const moveDownWithItem = draggedItemPosition.bottom > containerSize.height;
+
+        if (moveUpWithItem) {
+            draggedItem.scrollIntoView({behavior: "smooth", block: "start"});
+        }
+
+        if (moveDownWithItem) {
+            draggedItem.scrollIntoView({behavior: "smooth", block: "end"});
+        }
+    }
+
     restoreItemsTransform(draggedIndex, targetIndex) {
-        window.requestAnimationFrame(() => {
+        setTimeout(() => {
             const draggedItem = this._itemElements.find(
                 (item) => Number(item.dataset.index) === draggedIndex
             );
+            draggedItem.dataset.elementTempIndex = targetIndex
             const draggedItemHeight = this.computeItemHeight(draggedItem);
-            // get all items between dragged index and target index
+            
             const itemsBetween = this._itemElements.filter(
                 (item) =>
                     Number(item.dataset.index) > draggedIndex &&
@@ -1717,15 +1716,14 @@ export default class List extends LightningElement {
                 item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
-        });
+        },0);
     }
 
     checkKeyboardMoved(targetItem) {
-        if (
-            targetItem.classList.contains(
-                'avonni-list__item-sortable_keyboard-moved'
-            )
-        ) {
+        const itemHasMoved = targetItem.classList.contains(
+            'avonni-list__item-sortable_keyboard-moved'
+        )
+        if ( itemHasMoved ) {
             targetItem.classList.remove(
                 'avonni-list__item-sortable_keyboard-moved'
             );

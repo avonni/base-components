@@ -34,10 +34,10 @@
 /**
  * @typedef {Object} ImageAttributes
  * @name imageAttributes
- * @property {string} size The size of the images in the list, grid or single-line. On the list, the size controls the width of the image. On the grid and single-line, the size controls the height of the image. Valid values are ‘small’, ‘medium’, ‘large’. The value defaults to ‘large’.
- * @property {string} cropFit The 'object-fit' css property. Supported values are ‘cover', 'contain', 'fill' and 'none'. The value default to 'cover’.
- * @property {number} cropPositionX The image 'object-position' horizontal percentage property. The default is 50.
- * @property {number} cropPositionY The image 'object-position' vertical percentage property. The default is 50.
+ * @property {string} size The size of the images in the list, grid or single-line. On the list, the size controls the width of the image. On the grid and single-line, the size controls the height of the image. Valid values are small, medium, large. The value defaults to large.
+ * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
+ * @property {number} cropPositionX The image object-position horizontal percentage property. The value defaults to 50.
+ * @property {number} cropPositionY The image object-position vertical percentage property. The value defaults to 50.
  */
 
 /**
@@ -208,12 +208,12 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor-sortable
  * @default --avonni-list-item-cursor, grab
- * @type styling
+ * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor
- * @type styling
+ * @type string
  */
 /**
  * @memberof stylingHooks
@@ -246,37 +246,55 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-width-small
+ * @name --avonni-list-item-image-size-small
  * @type dimension
  * @default 48px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-width-medium
+ * @name --avonni-list-item-image-size-medium
  * @type dimension
  * @default 72px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-width-large
+ * @name --avonni-list-item-image-size-large
  * @type dimension
  * @default 128px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-height-small
+ * @name --avonni-list-grid-item-image-size-small
  * @type dimension
  * @default 48px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-height-medium
+ * @name --avonni-list-grid-item-image-size-medium
  * @type dimension
  * @default 96px
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-height-large
+ * @name --avonni-list-grid-item-image-size-large
+ * @type dimension
+ * @default 192px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-small
+ * @type dimension
+ * @default 48px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-medium
+ * @type dimension
+ * @default 96px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-large
  * @type dimension
  * @default 192px
  */

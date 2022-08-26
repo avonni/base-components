@@ -59,9 +59,7 @@ export default {
             }
         },
         cols: {
-            control: { type: 'number' },
-            min: 1,
-            max: 12,
+            control: { type: 'number', min: 1, max: 12 },
             description: 'Default number of columns',
             table: {
                 type: { summary: 'number' },
@@ -70,9 +68,7 @@ export default {
         },
         smallContainerCols: {
             name: 'small-container-cols',
-            control: { type: 'number' },
-            min: 1,
-            max: 12,
+            control: { type: 'number', min: 1, max: 12 },
             description: 'Number of columns for small containers',
             table: {
                 type: { summary: 'number' },
@@ -81,9 +77,7 @@ export default {
         },
         mediumContainerCols: {
             name: 'medium-container-cols',
-            control: { type: 'number' },
-            min: 1,
-            max: 12,
+            control: { type: 'number', min: 1, max: 12 },
             description: 'Number of columns for medium containers',
             table: {
                 type: { summary: 'number' },
@@ -92,9 +86,7 @@ export default {
         },
         largeContainerCols: {
             name: 'large-container-cols',
-            control: { type: 'number' },
-            min: 1,
-            max: 12,
+            control: { type: 'number', min: 1, max: 12 },
             description: 'Number of columns for large containers',
             table: {
                 type: { summary: 'number' },
@@ -283,12 +275,12 @@ const itemsWithImages = [
         name: 'name-item-1'
     },
     {
-        // label: 'Item 2',
+        label: 'Item 2',
         href: '/path/to_somewhere',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        // imageSrc:
-        //     'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
+        imageSrc:
+            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
         name: 'name-item-2'
     },
     {
@@ -388,8 +380,8 @@ const itemsWithImagesAndAvatars = [
         href: '/path/to_somewhere',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        // imageSrc:
-        //     'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
+        imageSrc:
+            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85',
         name: 'name-item-2'
     },
     {
@@ -580,7 +572,6 @@ InfiniteLoadingList.args = {
     label: 'Sortable list with infinite loading',
     items,
     actions: actions,
-    // loadMoreOffset: 0,
     sortable: true,
     divider: 'around',
     enableInfiniteLoading: true

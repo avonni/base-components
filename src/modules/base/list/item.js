@@ -12,7 +12,6 @@ export default class Item {
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
-        this.listHasImages = value.listHasImages;
     }
 
     get hasImage() {
