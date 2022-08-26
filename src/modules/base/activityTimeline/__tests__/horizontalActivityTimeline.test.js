@@ -208,4 +208,37 @@ describe('Horizontal Activity Timeline', () => {
         expect(element._isResizingInterval).toBeFalsy();
         expect(element._changeIntervalSizeMode).toBeFalsy();
     });
+
+    // addValidItemsToData
+    it('Horizontal Activity Timeline: addValidItemsToData with invalid dates', () => {
+        element.position = 'horizontal';
+        const invalidDateItems = [
+            {
+                name: 'item1',
+                datetimeValue: '13/01/2022 11:30',  // invalid month
+            },
+            {
+                name: 'item2',
+                datetimeValue: 'Not a date',        // no date
+            },
+            {
+                name: 'item3',
+                datetimeValue: '',                  // empty input
+            },
+            {
+                name: 'item4',
+                datetimeValue: '01/32/2022 11:30',  // invalid day
+            },
+            {
+                name: 'item5',
+                datetimeValue: '01/01/-122',        // invalid  year
+            },
+            {
+                name: 'item6',
+                datetimeValue: '01/01/2000 40:02',  // invalid time
+            },
+        ];
+        element.addValidItemsToData(invalidDateItems);
+        expect(element._sortedItems.length).toBe(0);
+    });
 });

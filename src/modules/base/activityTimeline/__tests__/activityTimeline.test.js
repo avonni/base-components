@@ -917,7 +917,7 @@ describe('Activity Timeline', () => {
     });
 
     // Edit interval size mode : drag right interval line to change interval's width
-    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle', () => {
+    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle (to the left)', () => {
         jest.spyOn(HorizontalActivityTimeline.prototype, 'minimumIntervalWidth', 'get').mockReturnValue(2);
         const handleUpperBoundIntervalDragSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
@@ -942,7 +942,7 @@ describe('Activity Timeline', () => {
             receivedX = intervalRectangle.getAttribute('x');
             expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
 
-            // Drag of left interval line
+            // Drag of right interval line
             const scrollAxisSVG = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
             );
@@ -1041,8 +1041,71 @@ describe('Activity Timeline', () => {
         });
     });
 
+    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle (to the right)', () => {
+        const handleUpperBoundIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleUpperBoundIntervalDrag'
+        );
+        const handleUpperBoundIntervalChangeSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleUpperBoundIntervalChange'
+        );
+
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+        const initialIntervalPosition = 602;
+        let receivedX;
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            // Activate edit mode
+            intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
+            receivedX = intervalRectangle.getAttribute('x');
+            expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
+
+            // Drag of right interval line
+            const scrollAxisSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
+            );
+            const rightIntervalLine = scrollAxisSVG.querySelector(
+                '#avonni-horizontal-activity-timeline__right-interval-line'
+            );
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const mouseEvent = new MouseEvent('mousedown', { view: window });
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 2000;
+            const mouseUp = new MouseEvent('mouseup', { view: window });
+            rightIntervalLine.dispatchEvent(mouseEvent);
+            rightIntervalLine.dispatchEvent(sourceEvent);
+            rightIntervalLine.dispatchEvent(mouseUp);
+
+            expect(handleUpperBoundIntervalDragSpy).toBeCalled();
+            expect(handleUpperBoundIntervalChangeSpy).toBeCalled();
+            receivedX = intervalRectangle.getAttribute('x');
+            expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
+            expect(Math.ceil(Number(intervalRectangle.getAttribute('width')))).toBe(1300 - initialIntervalPosition);
+
+            // Check the items displayed, the new interval should be : [02/02/2022, 30/03/2022]
+            const timelineSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+            );
+            const idOfItemsInInterval = ['item4', 'item5', 'item6', 'item7', 'item8', 'item9','item10', 'item11', 'item12', 'item13', 'item14'];
+            expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(idOfItemsInInterval.length);
+
+            for (const id of idOfItemsInInterval) {
+                const itemElement = timelineSVG.querySelector(
+                    '#timeline-item-' + id
+                );
+                expect(itemElement).not.toBeNull();
+            }
+        });
+    });
+
     // Edit interval size mode : drag left interval line to change interval's width
-    it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle', () => {
+    it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle (to the left)', () => {
         jest.spyOn(HorizontalActivityTimeline.prototype, 'minimumIntervalWidth', 'get').mockReturnValue(2);
         const handleLowerBoundIntervalDragSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
@@ -1140,6 +1203,56 @@ describe('Activity Timeline', () => {
                 const title = itemElement.querySelector('text');
                 expect(title.textContent).toBe(item.title);
             }
+        });
+    });
+
+     // Edit interval size mode : drag left interval line to change interval's width
+     it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle (to the right)', () => {
+        const minimumIntervalWidth = 2; 
+        jest.spyOn(HorizontalActivityTimeline.prototype, 'minimumIntervalWidth', 'get').mockReturnValue(minimumIntervalWidth);
+        const handleLowerBoundIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleLowerBoundIntervalDrag'
+        );
+        const handleLowerBoundIntervalChangeSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleLowerBoundIntervalChange'
+        );
+
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            // Activate edit mode
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('x')))
+            ).toBe(602);
+
+            // drag of left interval line
+            const scrollAxisSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
+            );
+            const leftIntervalLine = scrollAxisSVG.querySelector(
+                '#avonni-horizontal-activity-timeline__left-interval-line'
+            );
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const mouseEvent = new MouseEvent('mousedown', { view: window });
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 2000;
+            const mouseUp = new MouseEvent('mouseup', { view: window });
+            leftIntervalLine.dispatchEvent(mouseEvent);
+            leftIntervalLine.dispatchEvent(sourceEvent);
+            leftIntervalLine.dispatchEvent(mouseUp);
+
+            expect(handleLowerBoundIntervalDragSpy).toBeCalled();
+            expect(handleLowerBoundIntervalChangeSpy).toBeCalled();
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('width')))
+            ).toBe(minimumIntervalWidth);
         });
     });
 
@@ -1256,6 +1369,52 @@ describe('Activity Timeline', () => {
                 1
             );
             expect(timelineSVG.querySelector('#timeline-item-item1')).not.toBeNull();
+        });
+    });
+
+    // Drag interval rectangle : if drag position is greater than maxPosition, the interval rectangle is set to the maximum
+    it('Activity Timeline: horizontal - drag of interval rectangle (max)', () => {
+        const handleTimeIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleTimeIntervalDrag'
+        );
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+        const initialXMinPosition = 602;
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('x')))
+            ).toBe(initialXMinPosition);
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 3000;
+            const mouseDownEvent = new MouseEvent('mousedown', {
+                view: window
+            });
+            jest.spyOn(mouseDownEvent, 'clientX', 'get').mockImplementation(
+                () => initialXMinPosition
+            );
+
+            intervalRectangle.dispatchEvent(mouseDownEvent);
+            intervalRectangle.dispatchEvent(sourceEvent);
+
+            expect(handleTimeIntervalDragSpy).toBeCalled();
+            expect(Math.floor(Number(intervalRectangle.getAttribute('x')))).toBe(1100);
+
+            // Check the items displayed, the new interval should be : [14/03/2022, 30/03/2022]. 30/03/2022 is the maximum date of scroll axis.
+            // One item should be displayed (item14 at 03/14/2022)
+            const timelineSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+            );
+            expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
+                1
+            );
+            expect(timelineSVG.querySelector('#timeline-item-item14')).not.toBeNull();
         });
     });
 
