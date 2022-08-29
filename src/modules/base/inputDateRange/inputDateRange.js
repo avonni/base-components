@@ -207,7 +207,7 @@ export default class InputDateRange extends LightningElement {
 
     set endDate(value) {
         const date = new Date(value);
-        this._endDate = isNaN(date) ? null : date;
+        this._endDate = isNaN(date) || value === null ? null : date;
 
         if (this._connected) {
             this.initEndDate();
@@ -258,7 +258,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     set startDate(value) {
-        const date = isNaN(new Date(value)) ? null : new Date(value);
+        const date =
+            isNaN(new Date(value)) || value === null ? null : new Date(value);
         this._startDate = date;
         this._initialStartDate = date ? new Date(date) : null;
 
@@ -796,10 +797,10 @@ export default class InputDateRange extends LightningElement {
         if (!dateObject) {
             return null;
         }
-        const time = timeString && `T${timeString}`;
+        const time = timeString ? `T${timeString}` : 'T00:00:00';
         const date = dateObject && dateObject.toISOString();
 
-        let dateTime = time ? date.replace(/T[^Z]+/, time) : date;
+        let dateTime = date.replace(/T[^Z]+/, time);
         try {
             const formattedWithTimeZone = new Date(dateTime).toLocaleString(
                 'default',
@@ -1054,57 +1055,73 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Manage focus between inputs and input icons:
-     * Close calendar on input focus out,
-     * unless focus is in input icon or calendar
-     *
-     * @param {Event} event
+     * Handle a blur of the end date button icon. Close the calendar popover if the focus is really lost.
      */
-    handleBlurDateInput(event) {
-        if (!event.target) {
-            return;
+    handleBlurEndButtonIcon() {
+        requestAnimationFrame(() => {
+            if (!this.enteredEndCalendar) {
+                this.showEndDate = false;
+            }
+            this.enteredEndCalendar = false;
+        });
+    }
+
+    /**
+     * Handle a blur of the end date input. Empty the value if the input was cleared, anc close the calendar popover if the focus is really lost.
+     */
+    handleBlurEndInput(event) {
+        const value = event.currentTarget.value;
+        if (!value) {
+            this._endDate = null;
+            this.dispatchChange();
         }
-        const blurredInput = event.target.dataset.elementId;
 
         requestAnimationFrame(() => {
-            let newFocus;
-            if (this.template.activeElement) {
-                newFocus = this.template.activeElement.dataset.elementId;
-            }
+            const activeElement = this.template.activeElement;
+            const activeButton =
+                activeElement &&
+                activeElement.dataset.elementId === 'lightning-icon-start-date';
 
-            switch (blurredInput) {
-                case 'input-start-date':
-                    if (
-                        !this.enteredStartCalendar &&
-                        // don't hide the calendar if the focus was moved to the icon
-                        !(newFocus === 'lightning-icon-start-date')
-                    ) {
-                        this.showStartDate = false;
-                    }
-                    break;
-                case 'input-end-date':
-                    if (
-                        !this.enteredEndCalendar &&
-                        !(newFocus === 'lightning-icon-end-date')
-                    ) {
-                        this.showEndDate = false;
-                    }
-                    break;
-                case 'lightning-icon-start-date':
-                    if (!this.enteredStartCalendar) {
-                        this.showStartDate = false;
-                    }
-                    break;
-                case 'lightning-icon-end-date':
-                    if (!this.enteredEndCalendar) {
-                        this.showEndDate = false;
-                    }
-                    break;
-                default:
+            if (!this.enteredEndCalendar && !activeButton) {
+                // Don't hide the calendar if the focus was moved to the icon
+                this.showEndDate = false;
             }
+        });
+    }
 
+    /**
+     * Handle a blur of the start date button icon. Close the calendar popover if the focus is really lost.
+     */
+    handleBlurStartButtonIcon() {
+        requestAnimationFrame(() => {
+            if (!this.enteredStartCalendar) {
+                this.showStartDate = false;
+            }
             this.enteredStartCalendar = false;
-            this.enteredEndCalendar = false;
+        });
+    }
+
+    /**
+     * Handle a blur of the start date input. Empty the value if the input was cleared, anc close the calendar popover if the focus is really lost.
+     */
+    handleBlurStartInput(event) {
+        const value = event.currentTarget.value;
+        if (!value) {
+            this._startDate = null;
+            this.dispatchChange();
+        }
+
+        requestAnimationFrame(() => {
+            const activeElement = this.template.activeElement;
+            const activeButton =
+                activeElement &&
+                activeElement.dataset.elementId === 'lightning-icon-start-date';
+
+            if (!this.enteredStartCalendar && !activeButton) {
+                // Don't hide the calendar if the focus was moved to the icon
+                this.showStartDate = false;
+            }
+            this.enteredStartCalendar = false;
         });
     }
 
