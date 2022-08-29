@@ -797,10 +797,10 @@ export default class InputDateRange extends LightningElement {
         if (!dateObject) {
             return null;
         }
-        const time = timeString && `T${timeString}`;
+        const time = timeString ? `T${timeString}` : 'T00:00:00';
         const date = dateObject && dateObject.toISOString();
 
-        let dateTime = time ? date.replace(/T[^Z]+/, time) : date;
+        let dateTime = date.replace(/T[^Z]+/, time);
         try {
             const formattedWithTimeZone = new Date(dateTime).toLocaleString(
                 'default',
