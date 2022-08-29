@@ -527,7 +527,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                     name: event.detail.value,
                     targetName: this.name,
                     fieldData: deepCopy(this.fields)
-                }
+                },
+                bubbles: true
             })
         );
     }
@@ -542,7 +543,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
          * @public
          * @name buttonclick
          */
-        this.dispatchEvent(new CustomEvent('buttonclick'));
+        this.dispatchEvent(
+            new CustomEvent('buttonclick', {
+                detail: { name: this.name },
+                bubbles: true
+            })
+        );
     }
 
     /**
@@ -566,11 +572,24 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('check', {
                 detail: {
-                    checked: event.detail.checked
+                    checked: event.detail.checked,
+                    name: this.name
                 },
-                bubbles: true,
-                cancelable: false,
-                composed: true
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle a click on the title. Dispatch the `itemclick` event.
+     */
+    handleTitleClick() {
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    name: this.name
+                },
+                bubbles: true
             })
         );
     }

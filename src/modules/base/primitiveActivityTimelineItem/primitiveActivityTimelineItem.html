@@ -98,8 +98,11 @@
                         >
                         </lightning-input>
 
-                        <!-- this div.slds-has-flexi-truncate does the magic -->
-                        <div class="slds-has-flexi-truncate">
+                        <div
+                            class="slds-has-flexi-truncate"
+                            data-element-id="div-title"
+                            onclick={handleTitleClick}
+                        >
                             <a if:true={href} href={href}>
                                 <h3 class="slds-truncate">{title}</h3>
                             </a>

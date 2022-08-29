@@ -529,9 +529,46 @@ describe('Primitive Activity Timeline Item', () => {
 
     /* ----- EVENTS ----- */
 
+    // actionclick
+    it('Activity timeline item: actionclick event', () => {
+        element.fields = FIELDS;
+        element.name = 'someName';
+        element.actions = [
+            {
+                label: 'First action',
+                name: 'action1'
+            }
+        ];
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const actionsMenu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu-actions"]'
+            );
+            actionsMenu.dispatchEvent(
+                new CustomEvent('select', {
+                    detail: {
+                        value: 'action1'
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe('action1');
+            expect(call.detail.targetName).toBe('someName');
+            expect(call.detail.fieldData).toEqual(FIELDS);
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
     // check
-    it('check event', () => {
+    it('Activity timeline item: check event', () => {
         element.hasCheckbox = true;
+        element.name = 'someName';
 
         const handler = jest.fn();
         element.addEventListener('check', handler);
@@ -548,16 +585,19 @@ describe('Primitive Activity Timeline Item', () => {
                 })
             );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-            expect(handler.mock.calls[0][0].composed).toBeTruthy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.checked).toBeTruthy();
+            expect(call.detail.name).toBe('someName');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
     // button clicked
-    it('button clicked event', () => {
+    it('Activity timeline item: button clicked event', () => {
         element.buttonLabel = 'button';
+        element.name = 'someName';
 
         const handler = jest.fn();
         element.addEventListener('buttonclick', handler);
@@ -566,7 +606,27 @@ describe('Primitive Activity Timeline Item', () => {
             const button = element.shadowRoot.querySelector('lightning-button');
             button.click();
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].detail.name).toBe('someName');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // item clicked
+    it('Activity timeline item: item clicked event', () => {
+        element.name = 'aName';
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="div-title"]'
+            );
+            title.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('aName');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
