@@ -207,7 +207,7 @@ export default class InputDateRange extends LightningElement {
 
     set endDate(value) {
         const date = new Date(value);
-        this._endDate = isNaN(date) ? null : date;
+        this._endDate = isNaN(date) || value === null ? null : date;
 
         if (this._connected) {
             this.initEndDate();
@@ -258,7 +258,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     set startDate(value) {
-        const date = isNaN(new Date(value)) ? null : new Date(value);
+        const date =
+            isNaN(new Date(value)) || value === null ? null : new Date(value);
         this._startDate = date;
         this._initialStartDate = date ? new Date(date) : null;
 
