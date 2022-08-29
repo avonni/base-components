@@ -68,12 +68,6 @@ const ICON_SIZES = {
  */
 export default class PrimitiveActivityTimelineItem extends LightningElement {
     /**
-     * Actions object sent from Activity Timeline
-     *
-     * @type {object[]}
-     */
-    @api actions = [];
-    /**
      * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
      * @public
@@ -154,6 +148,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api isActive;
 
+    _actions = [];
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
@@ -175,6 +170,19 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Array of action objects.
+     *
+     * @type {object[]}
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value, 'object');
+    }
 
     /**
      * If true, the button is disabled.
@@ -361,15 +369,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Check if actions exist.
-     *
-     * @type {boolean}
-     */
-    get hasActions() {
-        return this.actions && this.actions.length > 0;
-    }
-
-    /**
      * Return styling for item background color.
      *
      * @type {string}
@@ -453,7 +452,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
               )
             : '';
     }
-  
+
     /**
      * Check if the type of the icon is action
      */
@@ -513,8 +512,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
-        const name = event.currentTarget.value;
-
         /**
          * The event fired when a user clicks on an action.
          *
@@ -527,8 +524,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: name,
-                    fieldData: deepCopy(this._fields)
+                    name: event.detail.value,
+                    targetName: this.name,
+                    fieldData: deepCopy(this.fields)
                 }
             })
         );

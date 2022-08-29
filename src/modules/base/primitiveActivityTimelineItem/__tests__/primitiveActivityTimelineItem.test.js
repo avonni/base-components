@@ -33,8 +33,23 @@
 import { createElement } from 'lwc';
 import ActivityTimelineItem from '../primitiveActivityTimelineItem';
 
-// not tested
-// event action clicked because actions come from parent
+const ACTIONS = [
+    {
+        label: 'Action 1',
+        name: 'firstAction',
+        iconName: 'utility:apps'
+    },
+    {
+        label: 'Action 2',
+        name: 'secondAction',
+        disabled: true,
+        iconName: 'standard:user'
+    },
+    {
+        label: 'Action 3',
+        name: 'thirdAction'
+    }
+];
 
 const FIELDS = [
     {
@@ -76,28 +91,61 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity Timeline Item: Default attributes', () => {
-        expect(element.title).toBeUndefined();
-        expect(element.description).toBeUndefined();
+        expect(element.actions).toEqual([]);
+        expect(element.buttonDisabled).toBeFalsy();
+        expect(element.buttonIconName).toBeUndefined();
+        expect(element.buttonIconPosition).toBe('left');
+        expect(element.buttonLabel).toBeUndefined();
+        expect(element.buttonVariant).toBe('neutral');
+        expect(element.closed).toBeFalsy();
         expect(element.dateFormat).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
+        expect(element.description).toBeUndefined();
+        expect(element.hasCheckbox).toBeFalsy();
+        expect(element.hasError).toBeFalsy();
+        expect(element.fields).toMatchObject([]);
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('small');
-        expect(element.fields).toMatchObject([]);
-        expect(element.hasCheckbox).toBeFalsy();
-        expect(element.hasError).toBeFalsy();
+        expect(element.isActive).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
         expect(element.loadingStateAlternativeText).toBe('Loading');
-        expect(element.closed).toBeFalsy();
-        expect(element.buttonLabel).toBeUndefined();
-        expect(element.buttonIconName).toBeUndefined();
-        expect(element.buttonIconPosition).toBe('left');
-        expect(element.buttonVariant).toBe('neutral');
-        expect(element.buttonDisabled).toBeFalsy();
-        expect(element.isActive).toBeUndefined();
+        expect(element.title).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // actions
+    it('Activity timeline item: actions', () => {
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            const actionMenu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu-actions"]'
+            );
+            expect(actionMenu).toBeTruthy();
+
+            const actionItems = actionMenu.querySelectorAll(
+                '[data-element-id="lightning-menu-item-action"]'
+            );
+            expect(actionItems).toHaveLength(ACTIONS.length);
+            actionItems.forEach((item, index) => {
+                expect(item.disabled).toBe(ACTIONS[index].disabled);
+                expect(item.label).toBe(ACTIONS[index].label);
+                expect(item.prefixIconName).toBe(ACTIONS[index].iconName);
+                expect(item.value).toBe(ACTIONS[index].name);
+            });
+        });
+    });
+
+    it('Activity timeline item: no actions', () => {
+        return Promise.resolve().then(() => {
+            const actionMenu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu-actions"]'
+            );
+            expect(actionMenu).toBeFalsy();
+        });
+    });
 
     // title
     it('Activity timeline item: title', () => {
