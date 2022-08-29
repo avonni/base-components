@@ -842,6 +842,8 @@ export default class ActivityTimeline extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when a user clicks on an action.
          *
@@ -854,15 +856,14 @@ export default class ActivityTimeline extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
-                detail: {
-                    ...event.detail,
-                    targetName: event.currentTarget.dataset.name
-                }
+                detail: event.detail
             })
         );
     }
 
     handleButtonClick(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when the button in the details section is clicked.
          *
@@ -874,7 +875,7 @@ export default class ActivityTimeline extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('buttonclick', {
                 detail: {
-                    targetName: event.currentTarget.dataset.name
+                    targetName: event.detail.name
                 }
             })
         );
@@ -882,6 +883,7 @@ export default class ActivityTimeline extends LightningElement {
 
     handleCheck(event) {
         event.stopPropagation();
+        const { checked, name } = event.detail;
 
         /**
          * The event fired when an item is checked or unchecked.
@@ -895,8 +897,8 @@ export default class ActivityTimeline extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('check', {
                 detail: {
-                    checked: event.detail.checked,
-                    targetName: event.currentTarget.dataset.name
+                    checked,
+                    targetName: name
                 }
             })
         );
@@ -908,6 +910,9 @@ export default class ActivityTimeline extends LightningElement {
      * @param {Event} event
      */
     handleItemClick(event) {
+        event.stopPropagation();
+        const name = event.detail.name || event.currentTarget.dataset.name;
+
         /**
          * The event fired when a user clicks on an item.
          *
@@ -918,10 +923,7 @@ export default class ActivityTimeline extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
-                detail: {
-                    ...event.detail,
-                    name: event.currentTarget.dataset.name
-                }
+                detail: { name }
             })
         );
     }

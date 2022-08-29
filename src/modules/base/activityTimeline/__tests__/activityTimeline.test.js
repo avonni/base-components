@@ -658,17 +658,7 @@ describe('Activity Timeline', () => {
 
     // check
     it('Activity Timeline: check event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call'
-            }
-        ];
-        element.items = ITEM;
+        element.items = testItems;
         const handler = jest.fn();
         element.addEventListener('check', handler);
 
@@ -679,32 +669,26 @@ describe('Activity Timeline', () => {
             item.dispatchEvent(
                 new CustomEvent('check', {
                     detail: {
-                        checked: true
-                    }
+                        checked: true,
+                        name: testItems[0].name
+                    },
+                    bubbles: true
                 })
             );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
-    // check
-    it('Activity Timeline: click event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call'
-            }
-        ];
-        element.items = ITEM;
+    // itemclick
+    it('Activity Timeline: itemclick event', () => {
+        element.items = testItems;
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
 
@@ -712,28 +696,25 @@ describe('Activity Timeline', () => {
             const item = element.shadowRoot.querySelector(
                 'c-primitive-activity-timeline-item'
             );
-            item.dispatchEvent(new CustomEvent('click', {}));
+            item.dispatchEvent(
+                new CustomEvent('itemclick', {
+                    detail: { name: testItems[0].name },
+                    bubbles: true
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                testItems[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
-    it('Activity Timeline: button clicked event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call',
-                buttonLabel: 'button'
-            }
-        ];
-        element.items = ITEM;
+    // buttonclick
+    it('Activity Timeline: buttonclick event', () => {
+        element.items = testItems;
 
         const handler = jest.fn();
         element.addEventListener('buttonclick', handler);
@@ -742,9 +723,16 @@ describe('Activity Timeline', () => {
             const item = element.shadowRoot.querySelector(
                 'c-primitive-activity-timeline-item'
             );
-            item.dispatchEvent(new CustomEvent('buttonclick'));
+            item.dispatchEvent(
+                new CustomEvent('buttonclick', {
+                    detail: { name: testItems[0].name },
+                    bubbles: true
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -752,18 +740,9 @@ describe('Activity Timeline', () => {
     });
 
     // action clicked
-    it('Activity Timeline: action clicked event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call'
-            }
-        ];
-        element.items = ITEM;
+    it('Activity Timeline: actionclick event', () => {
+        element.actions = actions;
+        element.items = testItems;
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -772,9 +751,24 @@ describe('Activity Timeline', () => {
             const item = element.shadowRoot.querySelector(
                 'c-primitive-activity-timeline-item'
             );
-            item.dispatchEvent(new CustomEvent('actionclick'));
+            item.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: actions[0].name,
+                        targetName: testItems[0].name,
+                        fieldData: testItems[0].fields
+                    },
+                    bubbles: true
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.name).toBe(actions[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.fieldData).toEqual(
+                testItems[0].fields
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
