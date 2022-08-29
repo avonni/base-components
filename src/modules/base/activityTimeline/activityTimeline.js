@@ -152,6 +152,8 @@ export default class ActivityTimeline extends LightningElement {
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
+    _redrawHorizontalTimeline = true;
+
     // Horizontal Activity Timeline
     _resizeObserver;
     intervalDaysLength;
@@ -181,24 +183,32 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.isTimelineHorizontal && !this.showItemPopOver) {
-            if (!this._resizeObserver) {
-                this._resizeObserver = this.initResizeObserver();
-            }
+        if(this.isTimelineHorizontal){
+            this.renderedCallbackHorizontalTimeline();
+        }
+    }
 
-            if (!this.horizontalTimeline) {
-                this.initializeHorizontalTimeline();
-            }
+    renderedCallbackHorizontalTimeline(){
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
 
+        if (!this.horizontalTimeline) {
+            this.initializeHorizontalTimeline();
+        }
+
+        if(this._redrawHorizontalTimeline) {
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
                 this._maxVisibleItems,
                 this.divHorizontalTimeline.clientWidth
             );
-            this.updateHorizontalTimelineHeader();
+            this._redrawHorizontalTimeline = false;
         }
+        
+        this.updateHorizontalTimelineHeader();
 
-        if (this.showItemPopOver) {
+        if (this.showItemPopOver && !this.horizontalTimeline._isTimelineMoving) {
             this.horizontalTimeline.initializeItemPopover(this.selectedItem);
         }
     }
@@ -442,6 +452,10 @@ export default class ActivityTimeline extends LightningElement {
     set maxVisibleItems(value) {
         if (value && value > 0) {
             this._maxVisibleItems = value;
+
+            if(this.isTimelineHorizontal) {
+                this.requestRedrawTimeline();
+            }
         }
     }
 
@@ -462,6 +476,10 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: ORIENTATIONS.default,
             validValues: ORIENTATIONS.valid
         });
+
+        if(this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+        }
     }
 
     /**
@@ -725,6 +743,7 @@ export default class ActivityTimeline extends LightningElement {
      */
     initResizeObserver() {
         const resizeObserver = new AvonniResizeObserver(() => {
+            this.requestRedrawTimeline();
             this.renderedCallback();
         });
 
@@ -799,6 +818,13 @@ export default class ActivityTimeline extends LightningElement {
                 items: array[date]
             });
         });
+    }
+
+    /**
+     * Triggers a redraw of horizontal activity timeline.
+     */
+    requestRedrawTimeline(){
+        this._redrawHorizontalTimeline = true;
     }
 
     /**
