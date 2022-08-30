@@ -62,6 +62,7 @@ article.avonni-card {
     height: 100%;
     width: 100%;
 }
+
 .avonni-card__media-center .avonni-card__content-container {
     order: -1;
 }
