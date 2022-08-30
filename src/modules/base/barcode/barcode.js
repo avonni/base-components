@@ -34,51 +34,26 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    LIBRARY_ENCODING_VALUE,
-    BARCODE_LIBRARY,
-    BARCODE_VALUE_FORMAT
 } from 'c/utilsPrivate';
+import {
+    BARCODE_VALUE_FORMAT,
+    BWIPP_ENCODERS
+} from './barcodeUtils';
 import bwipjs from 'bwip-js';
-import JsBarcode from 'jsbarcode';
 
 const SYMBOLOGY = {
-    valid: [
-        'EAN8',
-        'EAN13',
-        'UPCE',
-        'UPCA',
-        'Code11',
-        'CODE39',
-        'Code39Extended',
-        'Code93',
-        'Code93Extended',
-        'CODE128',
-        'CODE128A',
-        'CODE128B',
-        'CODE128C',
-        'GS1-128',
-        'MSImod10',
-        'MSImod11',
-        'MSImod1010',
-        'MSImod1110',
-        'POSTNET'
-    ],
-    default: 'CODE39'
-};
-
-const RENDERING_ENGINE = {
-    valid: ['canvas', 'svg'],
-    default: 'svg'
+    valid: BWIPP_ENCODERS,
+    default: 'code39'
 };
 
 const DEFAULT_BACKGROUND = '#ffffff';
 const DEFAULT_COLOR = '#000000';
-const DEFAULT_SIZE = 300;
 const DEFAULT_TEXT_COLOR = '#000000';
 
 /**
  * @class
  * @name Barcode
+ * @description The barcode provides a builder to create a plethora of different types of barcodes.
  * @descriptor avonni-barcode
  * @storyId example-barcode--base
  * @public
@@ -102,15 +77,6 @@ export default class Barcode extends LightningElement {
     @api color = DEFAULT_COLOR;
 
     /**
-     * The width of the barcode in pixels.
-     *
-     * @public
-     * @type {number}
-     * @default 300
-     */
-    @api size = DEFAULT_SIZE;
-
-    /**
      * The color of the text.
      *
      * @public
@@ -120,11 +86,11 @@ export default class Barcode extends LightningElement {
     @api textColor = DEFAULT_TEXT_COLOR;
 
     /**
-     * The type of the symbology (barcode encoding). Valid values include EAN8, EAN13, UPCE, UPCA, Code11, Code39, Code39Extended, Code93, Code93Extended, Code128, Code128A, Code128B, Code128C, GS1-128, MSImod10, MSImod11, MSImod1010, MSImod1110 and POSTNET.
+     * The barcode type. The supported barcode types are auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni,  databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, datamatrixrectangularextension, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1dotcode, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, mailmark, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode, pharmacode2, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, rectangularmicroqrcode, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce and upcecomposite.
      *
      * @public
      * @type {string}
-     * @default CODE39
+     * @default code39
      */
     @api type = SYMBOLOGY.default;
 
@@ -138,19 +104,16 @@ export default class Barcode extends LightningElement {
 
     _checksum = false;
     _hideValue = false;
-    _renderAs = RENDERING_ENGINE.default;
     _type = SYMBOLOGY.default;
 
-    _initialRender = false;
     invalidValue = false;
 
     renderedCallback() {
-        if (!this._initialRender) this.setCanvasWidth();
-        this._initialRender = true;
         try {
             this.renderBarcode();
             this.invalidValue = false;
         } catch (e) {
+            console.log(e, this.type);
             this.invalidValue = true;
         }
     }
@@ -160,14 +123,6 @@ export default class Barcode extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-    /**
-     * Returns wether the barcode can be rendered as an svg element.
-     *
-     * @returns {boolean}
-     */
-    get renderAsSVG() {
-        return this.renderAs === 'svg' && this.barcodeLibrary === 'jsbarcode';
-    }
 
     /**
      * The format that the barcode value should follow.
@@ -208,21 +163,31 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The rendering engine of the barcode. Valid values include svg and canvas.
+     * The width of the code.
      *
      * @public
-     * @type {string}
-     * @default svg
+     * @type {boolean}
      */
     @api
-    get renderAs() {
-        return this._renderAs;
+    get width() {
+        return this._width;
     }
-    set renderAs(value) {
-        this._renderAs = normalizeString(value, {
-            fallbackValue: RENDERING_ENGINE.actionDefault,
-            validValues: RENDERING_ENGINE.valid
-        });
+    set width(value) {
+        this._width = value;
+    }
+
+    /**
+     * The max-height of the code.
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        this._height = value;
     }
 
     /*
@@ -235,17 +200,8 @@ export default class Barcode extends LightningElement {
      *
      * @returns {string} color value
      */
-    extractColorFromHEX(color) {
+    colorHexCode(color) {
         return color.substring(1);
-    }
-
-    /**
-     * Returns the library used to render the barcode.
-     *
-     * @returns {string} canvas
-     */
-    get barcodeLibrary() {
-        return BARCODE_LIBRARY.get(this.type);
     }
 
     /**
@@ -257,84 +213,36 @@ export default class Barcode extends LightningElement {
         return this.template.querySelector('[data-element-id="barcode"]');
     }
 
-    /**
-     * Returns the value for the encoding.
-     *
-     * @returns {string} canvas
-     */
-    get libraryEncodingValue() {
-        return LIBRARY_ENCODING_VALUE.get(this.type);
+    get widthStyle() {
+        return this.width != null ? `width: ${this.width}px;`: 'width: 100%;';
+    }
+    get heightStyle() {
+        return this.height != null ? `height: ${this.height}px;`: '';
     }
 
     /**
      * Sets the width for the canvas.
      */
-    setCanvasWidth() {
-        const element = this.template.querySelector(
-            '[data-element-id="canvas-wrapper"]'
-        );
-        element.style.width = `${this.size}px`;
-    }
-
-    /**
-     * Switch case switches based on the library used to render the barcode. The libraries are BwipJs and JsBarCode.Each case calls the corresponding render method.
-     */
-    renderBarcode() {
-        switch (this.barcodeLibrary) {
-            case 'bwipjs':
-                this.renderWithBwipJs();
-                break;
-            case 'jsbarcode':
-                this.renderWithJsBarCode();
-                break;
-            default:
-                break;
-        }
+    get barcodeStyle() {
+        return `${this.widthStyle} ${this.heightStyle} object-fit: contain;`;
     }
 
     /**
      * Renders barcode with Bwipjs library.
      */
-    renderWithBwipJs() {
+    // renderWithBwipJs() {
+    renderBarcode() {
         const canvas = this.canvas;
         bwipjs.toCanvas(canvas, {
-            bcid: this.libraryEncodingValue,
+            bcid: this.type,
             text: this.value,
             includetext: !this.hideValue,
             includecheck: this.checksum,
             includecheckintext: this.checksum,
             textxalign: 'center',
-            barcolor: this.extractColorFromHEX(this.color),
-            backgroundcolor: this.extractColorFromHEX(this.background),
-            textcolor: this.extractColorFromHEX(this.textColor)
+            barcolor: this.colorHexCode(this.color),
+            backgroundcolor: this.colorHexCode(this.background),
+            textcolor: this.colorHexCode(this.textColor)
         });
-    }
-
-    /**
-     * Renders barcode with JsBarCode library.
-     */
-    renderWithJsBarCode() {
-        if (this.checksum) {
-            JsBarcode(this.canvas, this.value, {
-                format: this.libraryEncodingValue,
-                lineColor: this.color,
-                background: this.background,
-                displayValue: !this.hideValue,
-                margin: 0,
-                fontSize: 15
-            });
-            JsBarcode('.barcode').init();
-            return;
-        }
-        JsBarcode(this.canvas, this.value, {
-            format: this.libraryEncodingValue,
-            lineColor: this.color,
-            background: this.background,
-            text: this.value,
-            displayValue: !this.hideValue,
-            margin: 0,
-            fontSize: 15
-        });
-        JsBarcode('.barcode').init();
     }
 }

@@ -62,6 +62,16 @@ export default {
                 category: 'Color'
             }
         },
+        height: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the max-height of the barcode.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
         hideValue: {
             control: {
                 type: 'boolean'
@@ -69,28 +79,6 @@ export default {
             description: 'If present, the barcode value is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                category: 'Layout'
-            }
-        },
-        renderAs: {
-            control: {
-                type: 'select'
-            },
-            options: ['svg', 'canvas'],
-            description: 'Sets the preferred rendering engine.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Values'
-            }
-        },
-        size: {
-            control: {
-                type: 'number'
-            },
-            description: 'Defines the width of the barcode.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 300 },
                 category: 'Layout'
             }
         },
@@ -107,26 +95,112 @@ export default {
                 type: 'select'
             },
             options: [
-                'EAN8',
-                'EAN13',
-                'UPCE',
-                'UPCA',
-                'Code11',
-                'CODE39',
-                'Code39Extended',
-                'Code93',
-                'Code93Extended',
-                'CODE128',
-                'CODE128A',
-                'CODE128B',
-                'CODE128C',
-                'GS1-128',
-                'MSImod10',
-                'MSImod11',
-                'MSImod1010',
-                'MSImod1110',
-                'POSTNET'
-            ],
+                'auspost',
+                'azteccode',
+                'azteccodecompact',
+                'aztecrune',
+                'bc412',
+                'channelcode',
+                'codablockf',
+                'code11',
+                'code128',
+                'code16k',
+                'code2of5',
+                'code32',
+                'code39',
+                'code39ext',
+                'code49',
+                'code93',
+                'code93ext',
+                'codeone',
+                'coop2of5',
+                'daft',
+                'databarexpanded',
+                'databarexpandedcomposite',
+                'databarexpandedstacked',
+                'databarexpandedstackedcomposite',
+                'databarlimited',
+                'databarlimitedcomposite',
+                'databaromni',
+                'databaromnicomposite',
+                'databarstacked',
+                'databarstackedcomposite',
+                'databarstackedomni',
+                'databarstackedomnicomposite',
+                'databartruncated',
+                'databartruncatedcomposite',
+                'datalogic2of5',
+                'datamatrix',
+                'datamatrixrectangular',
+                'datamatrixrectangularextension',
+                'dotcode',
+                'ean13',
+                'ean13composite',
+                'ean14',
+                'ean2',
+                'ean5',
+                'ean8',
+                'ean8composite',
+                'flattermarken',
+                'gs1-128',
+                'gs1-128composite',
+                'gs1-cc',
+                'gs1datamatrix',
+                'gs1datamatrixrectangular',
+                'gs1dotcode',
+                'gs1northamericancoupon',
+                'gs1qrcode',
+                'hanxin',
+                'hibcazteccode',
+                'hibccodablockf',
+                'hibccode128',
+                'hibccode39',
+                'hibcdatamatrix',
+                'hibcdatamatrixrectangular',
+                'hibcmicropdf417',
+                'hibcpdf417',
+                'hibcqrcode',
+                'iata2of5',
+                'identcode',
+                'industrial2of5',
+                'interleaved2of5',
+                'isbn',
+                'ismn',
+                'issn',
+                'itf14',
+                'japanpost',
+                'kix',
+                'leitcode',
+                'mailmark',
+                'matrix2of5',
+                'maxicode',
+                'micropdf417',
+                'microqrcode',
+                'msi',
+                'onecode',
+                'pdf417',
+                'pdf417compact',
+                'pharmacode',
+                'pharmacode2',
+                'planet',
+                'plessey',
+                'posicode',
+                'postnet',
+                'pzn',
+                'qrcode',
+                'rationalizedCodabar',
+                'raw',
+                'rectangularmicroqrcode',
+                'royalmail',
+                'sscc18',
+                'symbol',
+                'telepen',
+                'telepennumeric',
+                'ultracode',
+                'upca',
+                'upcacomposite',
+                'upce',
+                'upcecomposite'],
             description: 'The type changes the encoding of the barcode value.',
             table: {
                 type: { summary: 'string' },
@@ -142,6 +216,16 @@ export default {
                 type: { summary: 'string' },
                 category: 'Values'
             }
+        },
+        width: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the width of the barcode.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
         }
     },
     args: {
@@ -149,10 +233,9 @@ export default {
         checksum: false,
         color: '#000000',
         hideValue: false,
-        renderAs: 'svg',
         size: 300,
         textColor: '#000000',
-        type: 'CODE39'
+        type: 'code39'
     }
 };
 
@@ -161,7 +244,86 @@ const Template = (args) => Barcode(args);
 export const Base = Template.bind({});
 Base.args = {
     value: '12000-311123',
-    size: 200,
-    type: 'CODE128',
+    type: 'code128',
     hideValue: false
 };
+
+export const azteccode = Template.bind({});
+azteccode.args = {
+    value: '12000-311123',
+    type: 'azteccode',
+};
+
+export const code11 = Template.bind({});
+code11.args = {
+    value: '12000-311123',
+    type: 'code11',
+};
+
+export const code39 = Template.bind({});
+code39.args = {
+    value: '12000-311123',
+    type: 'code39',
+};
+
+export const databarexpanded = Template.bind({});
+databarexpanded.args = {
+    value: '12000-311123',
+    type: 'databarexpanded',
+};
+
+export const ean13 = Template.bind({});
+ean13.args = {
+    value: '12000-311123',
+    type: 'ean13',
+};
+
+export const gs1128 = Template.bind({});
+gs1128.args = {
+    value: '12000-311123',
+    type: 'gs1-128',
+};
+
+export const hanxin = Template.bind({});
+hanxin.args = {
+    value: '12000-311123',
+    type: 'hanxin',
+};
+
+export const isbn = Template.bind({});
+isbn.args = {
+    value: '978-3-16-148410-0', // add format to doc 
+    type: 'isbn',
+};
+
+export const pdf417 = Template.bind({});
+pdf417.args = {
+    value: '12000-311123',
+    type: 'pdf417',
+};
+
+export const plessey = Template.bind({});
+plessey.args = {
+    value: '12000-311123',
+    type: 'plessey',
+};
+
+export const postnet = Template.bind({});
+postnet.args = {
+    value: '12000',
+    type: 'postnet'
+};
+
+export const qrcode = Template.bind({});
+qrcode.args = {
+    value: '12000',
+    type: 'qrcode'
+};
+
+export const upce = Template.bind({});
+upce.args = {
+    value: '1200034',
+    type: 'upce'
+};
+
+// Provide examples for: azteccode, code11, code39, databarexpanded, ean13, gs1-128, hanxin, isbn, pdf417, plessey, qrcode, upce

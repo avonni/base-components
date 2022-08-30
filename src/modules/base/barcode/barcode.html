@@ -34,35 +34,14 @@
 
 <template>
     <template if:false={invalidValue}>
-        <div
-            class="
-                slds-grid
-                slds-grid_vertical
-                slds-grid_align-center
-                slds-grid_vertical-align-center
-            "
-            data-element-id="canvas-wrapper"
-        >
-            <template if:true={renderAsSVG}>
-                <svg
-                    class="avonni-barcode__canvas"
-                    data-element-id="barcode"
-                    lwc:dom="manual"
-                ></svg>
-            </template>
-            <template if:false={renderAsSVG}>
-                <canvas
-                    class="avonni-barcode__canvas"
-                    data-element-id="barcode"
-                    lwc:dom="manual"
-                ></canvas>
-            </template>
-        </div>
+        <canvas style={barcodeStyle} data-element-id="barcode"></canvas>
     </template>
     <template if:true={invalidValue}>
         <div class="slds-text-color_error">
-            Invalid value format for {type} barcode. Follow these format rules:
-            {formatRules}
+            <p>Invalid value format for {type} barcode.</p>
+            <p if:true={formatRules}>
+                Follow these format rules: {formatRules}.
+            </p>
         </div>
     </template>
 </template>

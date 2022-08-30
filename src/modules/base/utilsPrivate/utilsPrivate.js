@@ -38,11 +38,6 @@ export { deepCopy, arraysEqual, ArraySlice, equal } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
-    LIBRARY_ENCODING_VALUE,
-    BARCODE_LIBRARY,
-    BARCODE_VALUE_FORMAT
-} from './barcodeUtils';
-export {
     normalizeBoolean,
     normalizeString,
     normalizeArray,
