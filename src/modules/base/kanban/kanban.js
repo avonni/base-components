@@ -528,8 +528,7 @@ export default class Kanban extends LightningElement {
 
         // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
         if (!scrollStep.x && !scrollStep.y) {
-            window.clearInterval(this._scrollingInterval);
-            this._scrollingInterval = null;
+            this.clearScrollInterval();
         }
     }
 
@@ -717,6 +716,15 @@ export default class Kanban extends LightningElement {
         this._kanbanPos.left = currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + currentTarget.scrollWidth;
+    }
+
+    /**
+     * Clears the intervals related to autoscroll .
+     *
+     */
+    clearScrollInterval() {
+        window.clearInterval(this._scrollingInterval);
+        this._scrollingInterval = null;
     }
 
     /**
@@ -1177,6 +1185,7 @@ export default class Kanban extends LightningElement {
             return;
         }
         this.swapGroups();
+        this.clearScrollInterval();
 
         const groupSelector = this._hasSubGroups
             ? 'avonni-kanban__group_header'
@@ -1468,6 +1477,7 @@ export default class Kanban extends LightningElement {
         ) {
             return;
         }
+        this.clearScrollInterval();
         this.endDrag();
     }
 
