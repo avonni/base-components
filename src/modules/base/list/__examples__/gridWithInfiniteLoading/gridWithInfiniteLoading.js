@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class SingleLineWithInfiniteLoading extends LightningElement {
+export default class GridWithInfiniteLoading extends LightningElement {
     _isLoading = false;
 
     get isLoading() {
@@ -14,6 +14,10 @@ export default class SingleLineWithInfiniteLoading extends LightningElement {
     connectedCallback() {
         this._loadedItems = this.items;
     }
+
+    imageAttributes = {
+        size: 'medium'
+    };
 
     itemsWithImages = [
         {

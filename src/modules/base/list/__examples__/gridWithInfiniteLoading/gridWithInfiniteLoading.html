@@ -1,10 +1,12 @@
 <template>
     <avonni-list
-        variant="single-line"
-        label="Single-line with infinite loading"
-        items={itemsWithImages}
-        divider="around"
         actions={actions}
+        divider="around"
+        image-attributes={imageAttributes}
+        items={items}
+        label="Grid with infinite loading"
+        load-more-offset="100"
+        variant="grid"
         cols="1"
         small-container-cols="3"
         medium-container-cols="4"

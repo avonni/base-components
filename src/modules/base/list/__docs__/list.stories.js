@@ -536,11 +536,11 @@ GridCardWithImages.args = {
     largeContainerCols: 6
 };
 
-export const InfiniteLoadingSingleLine = InfiniteGridTemplate.bind({});
-InfiniteLoadingSingleLine.args = {
+export const SingleLineWithInfiniteLoading = InfiniteGridTemplate.bind({});
+SingleLineWithInfiniteLoading.args = {
     label: 'Single Line with infinite loading',
     variant: 'single-line',
-    items: [...itemsWithImages, ...itemsWithImages],
+    items: itemsWithImages,
     enableInfiniteLoading: true,
     divider: 'around',
     cols: 1,
@@ -548,16 +548,15 @@ InfiniteLoadingSingleLine.args = {
     mediumContainerCols: 4
 };
 
-export const InfiniteLoadingGrid = InfiniteGridTemplate.bind({});
-InfiniteLoadingGrid.args = {
+export const GridWithInfiniteLoading = InfiniteGridTemplate.bind({});
+GridWithInfiniteLoading.args = {
     label: 'Grid with infinite loading',
     variant: 'grid',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'medium',
-        cropPositionX: 0
+        size: 'medium'
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,
@@ -567,8 +566,8 @@ InfiniteLoadingGrid.args = {
     largeContainerCols: 6
 };
 
-export const InfiniteLoadingList = InfiniteGridTemplate.bind({});
-InfiniteLoadingList.args = {
+export const ListWithInfiniteLoading = InfiniteGridTemplate.bind({});
+ListWithInfiniteLoading.args = {
     label: 'Sortable list with infinite loading',
     items,
     actions: actions,
