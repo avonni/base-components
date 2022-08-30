@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import IconPicker from 'c/iconPicker';
 
@@ -25,11 +57,7 @@ describe('IconPicker', () => {
         expect(element.label).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.variant).toBe('standard');
-        expect(element.hiddenCategories).toEqual([
-            'Utility',
-            'Doctype',
-            'Action'
-        ]);
+        expect(element.hiddenCategories).toEqual([]);
         expect(element.menuVariant).toBe('border');
         expect(element.menuIconSize).toBe('medium');
         expect(element.menuLabel).toBeUndefined();
@@ -349,6 +377,48 @@ describe('IconPicker', () => {
             });
     });
 
+    it('Small action icon  scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_small-scaling'
+            );
+        });
+    });
+
+    it('Medium action icon scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_medium-scaling'
+            );
+        });
+    });
+
+    it('Large action icon large scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_large-scaling'
+            );
+        });
+    });
+
     /* ----- TABS ----- */
 
     it('Initial tabs on no hidden categories', () => {
@@ -389,11 +459,10 @@ describe('IconPicker', () => {
                 expect(tabs.labels).toEqual([
                     'Standard',
                     'Custom',
-                    'Doctype',
-                    'Action',
-                    'Utility'
+                    'Utility',
+                    'Action'
                 ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.tabsHidden).toBe(2);
             });
     });
 
@@ -410,14 +479,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Doctype',
-                    'Standard',
-                    'Custom',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Utility', 'Doctype', 'Action']);
+                expect(tabs.tabsHidden).toBe(1);
             });
     });
 
@@ -434,14 +497,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Doctype',
-                    'Action',
-                    'Standard',
-                    'Custom',
-                    'Utility'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Doctype', 'Action']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -458,14 +515,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Standard',
-                    'Custom',
-                    'Doctype',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(4);
+                expect(tabs.labels).toEqual(['Utility']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -488,14 +539,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Standard',
-                    'Custom',
-                    'Utility',
-                    'Doctype',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(4);
+                expect(tabs.labels).toEqual(['Standard']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -518,14 +563,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Doctype',
-                    'Standard',
-                    'Custom',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Utility', 'Doctype']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -803,6 +842,40 @@ describe('IconPicker', () => {
                     'standard:account'
                 );
                 expect(handler.mock.calls[1][0].detail.value).toBeNull();
+            });
+    });
+
+    /* ----- PUBLIC METHODS ----- */
+
+    it('Input element focused when component focused', () => {
+        return Promise.resolve()
+            .then(() => {
+                // exterior call of focus() method
+                element.focus();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                expect(element.shadowRoot.activeElement).toEqual(input);
+            });
+    });
+
+    it('Input element not focused when input does not exist', () => {
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+        return Promise.resolve()
+            .then(() => {
+                // input is no longer present in DOM
+                input.remove();
+            })
+            .then(() => {
+                // exterior call of focus() method
+                element.focus();
+            })
+            .then(() => {
+                expect(element.shadowRoot.activeElement).not.toEqual(input);
             });
     });
 

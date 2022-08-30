@@ -33,7 +33,7 @@
 import SchedulerEvent from '../event';
 import { DateTime } from 'c/luxon';
 
-const KEY_FIELDS = ['1'];
+const RESOURCE_NAMES = ['1'];
 const NAME = 'event-name';
 const SMALLEST_HEADER = {
     unit: 'hour',
@@ -42,7 +42,7 @@ const SMALLEST_HEADER = {
 const FROM = new Date(2021, 8, 1, 10);
 const TO = new Date(2021, 8, 4, 15, 30);
 const DEFAULTS = {
-    keyFields: KEY_FIELDS,
+    resourceNames: RESOURCE_NAMES,
     name: NAME,
     smallestHeader: SMALLEST_HEADER,
     from: FROM,
@@ -66,7 +66,7 @@ describe('SchedulerEvent', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.from).toBeFalsy();
         expect(element.iconName).toBeUndefined();
-        expect(element.keyFields).toMatchObject([]);
+        expect(element.resourceNames).toMatchObject([]);
         expect(element.key).not.toBeUndefined();
         expect(element.labels).toMatchObject({
             center: { fieldName: 'title' }
@@ -89,7 +89,7 @@ describe('SchedulerEvent', () => {
     // allDay
     it('Scheduler event: allDay with undefined "to"', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 1, 10),
@@ -102,7 +102,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: allDay set after event constructor', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 1, 10),
@@ -117,7 +117,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: allDay spanning on several days', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 1, 10),
@@ -132,7 +132,7 @@ describe('SchedulerEvent', () => {
     // availableDaysOfTheWeek
     it('Scheduler event: availableDaysOfTheWeek, event contains available days', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: FROM,
@@ -145,7 +145,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: availableDaysOfTheWeek, event does not contain available days', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: FROM,
@@ -159,7 +159,7 @@ describe('SchedulerEvent', () => {
     // availableMonths
     it('Scheduler event: availableMonths, event contains available months', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: FROM,
@@ -172,7 +172,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: availableMonths, event does not contain available months', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: FROM,
@@ -186,7 +186,7 @@ describe('SchedulerEvent', () => {
     // availableTimeFrames
     it('Scheduler event: availableTimeFrames, event contains available time frames', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 1, 10),
@@ -199,7 +199,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: availableTimeFrames, event does not contain available time frames', () => {
         const options = {
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 1, 10),
@@ -247,19 +247,19 @@ describe('SchedulerEvent', () => {
         expect(element.iconName).toBe('utility:apps');
     });
 
-    // keyFields
-    it('Scheduler event: keyFields', () => {
-        const keyFields = ['1', '2', '3'];
+    // resourceNames
+    it('Scheduler event: resourceNames', () => {
+        const resourceNames = ['1', '2', '3'];
         const element = new SchedulerEvent({
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: FROM,
             to: TO,
-            keyFields
+            resourceNames
         });
-        expect(element.occurrences).toHaveLength(keyFields.length);
+        expect(element.occurrences).toHaveLength(resourceNames.length);
         element.occurrences.forEach((occurrence, index) => {
-            expect(occurrence.key).toContain(keyFields[index]);
+            expect(occurrence.key).toContain(resourceNames[index]);
         });
     });
 
@@ -424,7 +424,7 @@ describe('SchedulerEvent', () => {
 
     it('Scheduler event: recurrenceAttributes, sameDaySameWeek', () => {
         const element = new SchedulerEvent({
-            keyFields: KEY_FIELDS,
+            resourceNames: RESOURCE_NAMES,
             name: NAME,
             smallestHeader: SMALLEST_HEADER,
             from: new Date(2021, 8, 15, 11),

@@ -512,6 +512,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('expand');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([2]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                2
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBe('regular');
             expect(handler.mock.calls[0][0].detail.items[2]).toMatchObject(
                 item
@@ -556,6 +559,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('expand');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([2]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                2
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBe('regular');
             expect(handler.mock.calls[0][0].detail.items[2]).toMatchObject(
                 item
@@ -601,6 +607,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('add');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                3
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBe('simple');
             expect(handler.mock.calls[0][0].detail.items[3]).toMatchObject(
                 item
@@ -628,6 +637,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('add');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
+                ITEMS.length - 1
+            ]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
                 ITEMS.length - 1
             ]);
             expect(handler.mock.calls[0][0].detail.name).toBeNull();
@@ -663,6 +675,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('delete');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                3
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBe('simple');
             expect(handler.mock.calls[0][0].detail.items).toHaveLength(3);
             expect(
@@ -693,6 +708,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('duplicate');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                3
+            ]);
             expect(handler.mock.calls[0][0].detail.name).not.toBe(
                 ITEMS[3].name
             );
@@ -747,6 +765,9 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('edit');
             expect(handler.mock.calls[0][0].detail.levelPath).toEqual([0]);
+            expect(handler.mock.calls[0][0].detail.previousLevelPath).toEqual([
+                0
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBe('new name');
             expect(handler.mock.calls[0][0].detail.items[0]).toMatchObject(
                 item
@@ -838,7 +859,10 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(2);
             expect(handler.mock.calls[1][0].detail.action).toBe('move');
-            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([1]);
+            expect(handler.mock.calls[1][0].detail.previousLevelPath).toEqual([
+                1
+            ]);
+            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([2]);
             expect(handler.mock.calls[1][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[1][0].detail.previousName
@@ -915,7 +939,10 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(2);
             expect(handler.mock.calls[1][0].detail.action).toBe('move');
-            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([1]);
+            expect(handler.mock.calls[1][0].detail.previousLevelPath).toEqual([
+                1
+            ]);
+            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([0]);
             expect(handler.mock.calls[1][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[1][0].detail.previousName
@@ -995,7 +1022,10 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(3);
             expect(handler.mock.calls[2][0].detail.action).toBe('move');
-            expect(handler.mock.calls[2][0].detail.levelPath).toEqual([1]);
+            expect(handler.mock.calls[2][0].detail.previousLevelPath).toEqual([
+                1
+            ]);
+            expect(handler.mock.calls[2][0].detail.levelPath).toEqual([1, 0]);
             expect(handler.mock.calls[2][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[2][0].detail.previousName
@@ -1095,7 +1125,8 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             const detail = handler.mock.calls[0][0].detail;
             expect(detail.action).toBe('move');
-            expect(detail.levelPath).toEqual([3]);
+            expect(detail.levelPath).toEqual([2, 0, 3]);
+            expect(detail.previousLevelPath).toEqual([3]);
             expect(detail.name).toBe(ITEMS[3].name);
             expect(detail.previousName).toBeUndefined();
             expect(detail.items).toHaveLength(3);

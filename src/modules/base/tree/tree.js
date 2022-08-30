@@ -87,7 +87,7 @@ export default class Tree extends LightningElement {
     _dragState;
     _editedItemKey;
     _focusedItem;
-    _isConnected = false;
+    _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
     _selectTimeout;
@@ -98,7 +98,7 @@ export default class Tree extends LightningElement {
 
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -229,7 +229,7 @@ export default class Tree extends LightningElement {
 
     set isMultiSelect(value) {
         this._isMultiSelect = value;
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -249,7 +249,7 @@ export default class Tree extends LightningElement {
             return this.treedata.cloneItems(item);
         });
 
-        if (this._isConnected) this.initItems();
+        if (this._connected) this.initItems();
     }
 
     /**
@@ -290,7 +290,7 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? [value]
                 : deepCopy(normalizeArray(value));
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -908,6 +908,11 @@ export default class Tree extends LightningElement {
             if (selectedItem) {
                 this.treedata.expandTo(selectedItem);
                 this.setFocusToItem(selectedItem);
+            } else if (this._focusedItem) {
+                const callbacks = this.callbackMap[this._focusedItem.key];
+                callbacks.setSelected(false);
+                callbacks.unfocus();
+                this._focusedItem = null;
             }
             this.forceChildrenSelectionUpdate();
         }
@@ -1326,9 +1331,15 @@ export default class Tree extends LightningElement {
      */
     dispatchChange({ key, name, action, previousName }) {
         // If no key is given, it's a new item at the root of the tree
-        const levelPath = this.treedata.getLevelPath(
+        let levelPath = this.treedata.getLevelPath(
             (key || this.items.length - 1).toString()
         );
+
+        const previousLevelPath = levelPath;
+        if (action === 'move') {
+            const newItem = this.treedata.getItemFromName(name);
+            levelPath = this.treedata.getLevelPath(newItem.key);
+        }
 
         /**
          * The event fired when a change is made to the tree.
@@ -1341,6 +1352,8 @@ export default class Tree extends LightningElement {
          * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: ``[1, 2]``.
          * @param {string} name Name of the specific item the change was made to.
          * @param {string} previousName For the ``duplicate`` action, name of the original item. For the ``edit`` action, if the name has changed, previous name of the item.
+         * @param {number[]} previousLevelPath Array of the levels of depth, of the previous position of the changed item.
+         * This value will differ from the levelPath only if the action is move.
          * @public
          */
         this.dispatchEvent(
@@ -1350,6 +1363,7 @@ export default class Tree extends LightningElement {
                     items: deepCopy(this.items),
                     levelPath,
                     name,
+                    previousLevelPath,
                     previousName
                 }
             })

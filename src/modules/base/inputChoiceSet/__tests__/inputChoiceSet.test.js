@@ -529,6 +529,23 @@ describe('Input choice set', () => {
         });
     });
 
+    it('Input choice set: change event is prevented with type button not multi select', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.options = options;
+        element.type = 'button';
+        element.isMultiSelect = false;
+        element.value = options[0].value;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.click();
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
+
     it('Input choice set: change event multiple', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);

@@ -1,17 +1,19 @@
 import { LightningElement, api } from 'lwc';
-import { Interval } from 'c/luxon';
 import { dateTimeObjectFrom, addToDate } from 'c/utilsPrivate';
 
 export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api availableDaysOfTheWeek;
     @api availableMonths;
     @api availableTimeFrames;
+    @api availableTimeSpans;
     @api headers;
     @api scrollLeftOffset;
     @api timeSpan;
     @api visibleInterval;
+    @api variant;
+    @api visibleWidth;
+    @api zoomToFit;
 
-    _rendered = false;
     _start;
 
     connectedCallback() {
@@ -19,22 +21,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             throw new Error('Please set a valid start date');
         }
 
-        this.dispatchEvent(
-            new CustomEvent('privateheaderregister', {
-                detail: {
-                    callbacks: {
-                        scrollHeadersTo: this.scrollHeadersTo.bind(this)
-                    }
-                }
-            })
-        );
-
         // Create the smallestHeader
-        const columns = [];
+        const cells = [];
         let start = this.start;
         for (let i = 0; i < 100; i++) {
             const end = start.endOf('day');
-            columns.push({
+            cells.push({
                 start: start.ts,
                 end: end.ts
             });
@@ -45,30 +37,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             new CustomEvent('privateheaderchange', {
                 detail: {
                     smallestHeader: {
-                        columns,
+                        cells,
                         start: this.start,
-                        end: columns[columns.length - 1].end
+                        end: cells[cells.length - 1].end
                     }
                 }
             })
         );
-    }
-
-    renderedCallback() {
-        if (!this._rendered) {
-            const start = this.start;
-            const end = addToDate(start, 'month', 3);
-            this.dispatchEvent(
-                new CustomEvent('privatevisibleheaderchange', {
-                    detail: {
-                        visibleCells: 0,
-                        visibleInterval: Interval.fromDateTimes(start, end)
-                    }
-                })
-            );
-
-            this._rendered = true;
-        }
     }
 
     @api
@@ -77,9 +52,5 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set start(value) {
         this._start = dateTimeObjectFrom(value);
-    }
-
-    scrollHeadersTo() {
-        return true;
     }
 }

@@ -3,6 +3,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-input-pen-body-sizing-height
+ * @default 350px
+ * @type size
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-input-pen-header-text-color
  * @default #3e3e3c
  * @type color
@@ -25,6 +31,7 @@
  * @default 400
  * @type font
  */
+
 /**
  * @namespace examples
  */
@@ -52,4 +59,12 @@
  * @memberof examples
  * @name disabled
  * @storyId example-input-pen--disabled
+ */
+/**
+ * @namespace slots
+ */
+/**
+ * Actions slot for adding additional actions.
+ * @memberof slots
+ * @name actions
  */

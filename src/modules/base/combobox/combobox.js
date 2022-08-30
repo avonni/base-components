@@ -142,6 +142,15 @@ export default class Combobox extends LightningElement {
      */
     @api search;
 
+    /**
+     * The Lightning Design System name of the icon indicating that the selected options are sortable. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
+     * The icon is visible only if `sortable-selected-options` is present, and selected-options-direction is vertical.
+     *
+     * @type {string}
+     * @public
+     */
+    @api sortableSelectedOptionsIconName;
+
     _actions = [];
     _allowSearch = false;
     _backAction = DEFAULT_BACK_ACTION;
@@ -792,6 +801,16 @@ export default class Combobox extends LightningElement {
     @api
     reportValidity() {
         return this.mainCombobox.reportValidity();
+    }
+
+    /**
+     * Reset the combobox to the first options level.
+     *
+     * @public
+     */
+    @api
+    resetLevel() {
+        this.mainCombobox.resetLevel();
     }
 
     /**

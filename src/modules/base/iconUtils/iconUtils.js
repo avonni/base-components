@@ -32,6 +32,7 @@
 
 import { getPathPrefix, getToken } from 'lightning/configProvider';
 import isIframeInEdge from './isIframeInEdge';
+import { IconSVGCreator } from './iconSVGCreator'
 
 const validNameRe = /^([a-zA-Z]+):([a-zA-Z]\w*)$/;
 const underscoreRe = /_/g;
@@ -118,3 +119,42 @@ export const computeSldsClass = (iconName) => {
 };
 
 export { polyfill } from './polyfill';
+
+let iconCreator;
+
+// SALESFORCE ?
+// export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethodOfView) => {
+//     if(!iconCreator){
+//         iconCreator = new IconSVGCreator(resetMethodOfView); 
+//     }
+
+//     iconInformation.xLinkHref = getIconPath(`${iconInformation.category}:${iconInformation.iconName}`);
+//     return iconCreator.createIconFromDefaultPath(foreignObjectForIcon, iconInformation);
+// }
+
+/**
+ * Create specific svg icon to append in a foreign object.
+ * @param iconInformation valid information to create specific icon. {iconName: String, category: String, categoryIconClass: string}
+ * @param foreignObjectForIcon foreign object that will contain icon's svg
+ * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay, 
+ * it will allow to refresh the icons when the libraries are ready. 
+ * @returns {object} icon's svg created
+ */
+export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethodOfView) => {
+    if(!iconCreator){
+        iconCreator = new IconSVGCreator(resetMethodOfView); 
+    }
+
+    let iconSVG;
+    if (!iconCreator.isIconPathAvailable) {
+        iconSVG = iconCreator.createIconFromTemplate(foreignObjectForIcon, iconInformation);
+    } else { 
+        iconInformation.xLinkHref = iconCreator.getIconXLinkHref(iconInformation.category, iconInformation.iconName); 
+        iconSVG = iconCreator.createIconFromDefaultPath(
+            foreignObjectForIcon,
+            iconInformation
+        );
+    }
+
+    return iconSVG;
+}

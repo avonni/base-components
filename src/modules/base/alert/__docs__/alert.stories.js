@@ -92,27 +92,32 @@ const Template = (args) => Alert(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    iconName: 'utility:user'
+};
+
+export const DismissibleWithCloseAction = Template.bind({});
+DismissibleWithCloseAction.args = {
     iconName: 'utility:user',
-    closeAction: () => console.log('Close action')
+    isDismissible: true,
+    closeAction: () => {
+        console.log('Close action triggered');
+    }
 };
 
 export const Error = Template.bind({});
 Error.args = {
     iconName: 'utility:error',
-    variant: 'error',
-    closeAction: () => console.log('Close action')
+    variant: 'error'
 };
 
 export const Offline = Template.bind({});
 Offline.args = {
     iconName: 'utility:clock',
-    variant: 'offline',
-    closeAction: () => console.log('Close action')
+    variant: 'offline'
 };
 
 export const Warning = Template.bind({});
 Warning.args = {
     iconName: 'utility:warning',
-    variant: 'warning',
-    closeAction: () => console.log('Close action')
+    variant: 'warning'
 };

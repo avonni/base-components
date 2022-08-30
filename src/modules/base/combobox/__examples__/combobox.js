@@ -64,6 +64,7 @@ export const Combobox = ({
     selectedOptionsAriaLabel,
     selectedOptionsDirection,
     sortableSelectedOptions,
+    sortableSelectedOptionsIconName,
     value,
     variant
 }) => {
@@ -97,6 +98,7 @@ export const Combobox = ({
     element.selectedOptionsAriaLabel = selectedOptionsAriaLabel;
     element.selectedOptionsDirection = selectedOptionsDirection;
     element.sortableSelectedOptions = sortableSelectedOptions;
+    element.sortableSelectedOptionsIconName = sortableSelectedOptionsIconName;
     element.value = value;
     element.variant = variant;
     return element;

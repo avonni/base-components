@@ -16,6 +16,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-1',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'brand', outline: true },
@@ -38,6 +39,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-2',
             tags: [
                 { label: 'tag-01', variant: 'warning' },
                 { label: 'tag-02', variant: 'error' }
@@ -54,6 +56,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-3',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
@@ -73,6 +76,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-4',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
@@ -94,6 +98,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-5',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'brand', outline: true },
@@ -116,6 +121,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-6',
             tags: [
                 { label: 'tag-01', variant: 'warning' },
                 { label: 'tag-02', variant: 'error' }
@@ -132,6 +138,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-7',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
@@ -151,6 +158,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-8',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
@@ -172,6 +180,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-9',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'brand', outline: true },
@@ -194,6 +203,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
             tertiaryText: 'FakeCompany Inc.',
+            name: 'user-10',
             tags: [
                 { label: 'tag-01', variant: 'warning' },
                 { label: 'tag-02', variant: 'error' }
@@ -210,6 +220,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-11',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
@@ -229,6 +240,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
             tertiaryText: 'MadeUp Co.',
+            name: 'user-12',
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },

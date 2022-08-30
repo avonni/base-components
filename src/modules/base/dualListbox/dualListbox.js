@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
+    normalizeArray,
     assert,
     getRealDOMId,
     getListHeight
@@ -74,7 +75,7 @@ const BUTTON_SIZES = {
 
 const BOXES_SIZES = {
     valid: ['small', 'medium', 'large', 'responsive'],
-    default: 'medium'
+    default: 'responsive'
 };
 
 const i18n = {
@@ -619,7 +620,7 @@ export default class DualListbox extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default medium
+     * @default responsive
      */
     @api
     get size() {
@@ -662,7 +663,10 @@ export default class DualListbox extends LightningElement {
 
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
-        this._selectedValues = newValue || [];
+        this._selectedValues =
+            typeof newValue === 'string'
+                ? [newValue]
+                : [...normalizeArray(newValue)];
         if (this._connected) {
             this.addRequiredOptionsToValue();
         }
@@ -1330,6 +1334,7 @@ export default class DualListbox extends LightningElement {
      * @param {Event} event
      */
     handleSearch(event) {
+        event.stopPropagation();
         this._searchTerm = event.detail.value;
     }
 

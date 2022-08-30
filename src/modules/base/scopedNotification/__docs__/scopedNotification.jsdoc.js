@@ -8,7 +8,7 @@
  * @name title
  */
 /**
- * Placeholder for your content in the popover body.
+ * Placeholder for your content in the scoped notification.
  *
  * @memberof slots
  * @name default

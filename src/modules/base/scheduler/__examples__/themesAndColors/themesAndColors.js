@@ -10,7 +10,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
                 alternativeText: 'Avatar',
                 fallbackIconName: { fieldName: 'avatarFallbackIconName' },
                 initials: { fieldName: 'avatarInitials' },
-                primaryText: { fieldName: 'firstName' }
+                primaryText: { fieldName: 'name' }
             }
         },
         {
@@ -22,7 +22,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
 
     events = [
         {
-            keyFields: ['1', '5', '4'],
+            resourceNames: ['Nina', 'Reginald', 'Lily'],
             name: 'event-1',
             title: 'Theme hollow',
             from: 1639400400000,
@@ -30,7 +30,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
             theme: 'hollow'
         },
         {
-            keyFields: ['4'],
+            resourceNames: ['Lily'],
             name: 'event-2',
             title: 'Theme line',
             from: 1639404000000,
@@ -38,7 +38,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
             theme: 'line'
         },
         {
-            keyFields: ['5', '3'],
+            resourceNames: ['Reginald', 'Jung'],
             name: 'event-3',
             title: 'Custom color',
             from: 1639432800000,
@@ -46,7 +46,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
             color: 'tomato'
         },
         {
-            keyFields: ['2', '4'],
+            resourceNames: ['Dave', 'Lily'],
             name: 'event-4',
             title: 'Theme transparent',
             from: 1639411200000,
@@ -54,7 +54,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
             theme: 'transparent'
         },
         {
-            keyFields: ['2', '1'],
+            resourceNames: ['Dave', 'Nina'],
             name: 'event-5',
             title: 'Theme rounded',
             from: 1639414800000,
@@ -62,7 +62,7 @@ export default class SchedulerThemesAndColors extends LightningElement {
             theme: 'rounded'
         },
         {
-            keyFields: ['4', '1'],
+            resourceNames: ['Lily', 'Nina'],
             name: 'event-6',
             title: 'Default theme',
             from: 1639425600000,
@@ -70,46 +70,44 @@ export default class SchedulerThemesAndColors extends LightningElement {
         }
     ];
 
-    rows = [
+    resources = [
         {
-            id: '1',
             avatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'NG',
-            firstName: 'Nina',
-            role: 'Lead developer'
+            name: 'Nina',
+            role: 'Lead developer',
+            sharedField: `This shouldn't show up`
         },
         {
-            id: '2',
             avatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'DM',
-            firstName: 'Dave',
-            role: 'UX Specialist'
+            name: 'Dave',
+            role: 'UX Specialist',
+            customRowField: 'Label coming from a custom field in the row'
         },
         {
-            id: '3',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'JP',
-            firstName: 'Jung',
+            name: 'Jung',
             role: 'Product Owner'
         },
         {
-            id: '4',
             avatarFallbackIconName: 'standard:article',
             avatarInitials: 'LM',
-            firstName: 'Lily',
-            role: 'Graphic Designer'
+            name: 'Lily',
+            role: 'Graphic Designer',
+            customField: "This comes from the row's custom field"
         },
         {
-            id: '5',
             avatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'RM',
-            firstName: 'Reginald',
+            name: 'Reginald',
             role: 'Developer'
         }
     ];

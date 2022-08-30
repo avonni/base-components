@@ -351,10 +351,10 @@ CurrencyLarge.args = {
 export const MinMaxStep = Template.bind({});
 MinMaxStep.args = {
     label: 'Input with min 30, max 80 and step 3',
-    valueLower: 28,
-    valueUpper: 73,
+    valueLower: 30,
+    valueUpper: 72,
     min: 30,
-    max: 80,
+    max: 78,
     step: 3
 };
 

@@ -396,15 +396,17 @@ export default class Splitter extends LightningElement {
         let second = selectedSeparator.nextSibling;
         this.selectedSeparator = selectedSeparator;
 
-        this.data = {
-            event,
-            offsetLeft: selectedSeparator.offsetLeft,
-            offsetTop: selectedSeparator.offsetTop,
-            firstWidth: first.offsetWidth,
-            firstHeight: first.offsetHeight,
-            secondWidth: second.offsetWidth,
-            secondHeight: second.offsetHeight
-        };
+        if (second && first) {
+            this.data = {
+                event,
+                offsetLeft: selectedSeparator.offsetLeft,
+                offsetTop: selectedSeparator.offsetTop,
+                firstWidth: first.offsetWidth,
+                firstHeight: first.offsetHeight,
+                secondWidth: second.offsetWidth,
+                secondHeight: second.offsetHeight
+            };
+        }
 
         if (selectedSeparator.style.cursor !== 'auto') {
             this.down = true;

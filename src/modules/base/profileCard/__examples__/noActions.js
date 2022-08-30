@@ -46,7 +46,7 @@ export const NoActionsProfileCard = ({
     avatarSrc,
     avatarAlternativeText,
     avatarFallbackIconName,
-    size,
+    avatarSize,
     avatarPosition,
     avatarMobilePosition,
     avatarVariant
@@ -59,7 +59,7 @@ export const NoActionsProfileCard = ({
     element.avatarSrc = avatarSrc;
     element.avatarAlternativeText = avatarAlternativeText;
     element.avatarFallbackIconName = avatarFallbackIconName;
-    element.size = size;
+    element.avatarSize = avatarSize;
     element.avatarPosition = avatarPosition;
     element.avatarMobilePosition = avatarMobilePosition;
     element.avatarVariant = avatarVariant;

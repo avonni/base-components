@@ -127,6 +127,13 @@ export default class FilterMenu extends LightningElement {
      */
     @api label;
     /**
+     * Specifies the name of the filter menu.
+     *
+     * @type {string}
+     * @public
+     */
+    @api name;
+    /**
      * Title of the button (horizontal variant) or the label (vertical variant).
      *
      * @type {string}
@@ -1282,6 +1289,7 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event
      */
     handleSearch(event) {
+        event.stopPropagation();
         const searchTerm = event.currentTarget.value;
 
         this.computedItems.forEach((item) => {

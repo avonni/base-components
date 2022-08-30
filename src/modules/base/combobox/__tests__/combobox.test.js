@@ -81,6 +81,7 @@ describe('Combobox', () => {
         expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.selectedOptionsDirection).toBe('horizontal');
         expect(element.sortableSelectedOptions).toBeFalsy();
+        expect(element.sortableSelectedOptionsIconName).toBeUndefined();
         expect(element.scopes).toMatchObject([]);
         expect(element.scopesGroups).toMatchObject([]);
         expect(element.search).toBeUndefined();
@@ -613,6 +614,35 @@ describe('Combobox', () => {
             });
     });
 
+    // sortable-selected-options-icon-name
+    // Depends on selectedOptionsDirection, isMultiSelect and options
+    it('Combobox: sortableSelectedOptionsIconName', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.sortableSelectedOptionsIconName = 'utility:user';
+        element.selectedOptionsDirection = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                expect(list.sortableIconName).toBe('utility:user');
+            });
+    });
+
     // validity
     // Depends on required
     it('Combobox: validity', () => {
@@ -774,6 +804,17 @@ describe('Combobox', () => {
         const spy = jest.spyOn(combobox, 'reportValidity');
 
         element.reportValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // resetLevel
+    it('Combobox: resetLevel method', () => {
+        const combobox = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+        const spy = jest.spyOn(combobox, 'resetLevel');
+
+        element.resetLevel();
         expect(spy).toHaveBeenCalled();
     });
 

@@ -78,6 +78,27 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-image-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-image-sizing-height
+ * @type length-percentage
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-image-positioning-object-fit
+ * @type keyword
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-image-positioning-object-position
+ * @type length-percentage
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-title-text-color
  * @default #ffffff
  * @type color

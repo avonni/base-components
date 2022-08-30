@@ -35,13 +35,154 @@ import { FilterMenu } from '../__examples__/filterMenu';
 export default {
     title: 'Example/Filter Menu',
     argTypes: {
-        label: {
+        accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
             },
-            description: 'Label of the menu.',
+            description:
+                'The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The assistive text for the button menu. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        applyButtonLabel: {
+            name: 'apply-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Label of the apply button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Apply' },
+                category: 'Button'
+            }
+        },
+        buttonVariant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'border',
+                'bare',
+                'container',
+                'border-filled',
+                'bare-inverse',
+                'border-inverse'
+            ],
+            description:
+                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'border' },
+                category: 'Button'
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the menu cannot be used by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        dropdownAlignment: {
+            name: 'dropdown-alignment',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'auto',
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Determines the alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Dropdown menu'
+            }
+        },
+        dropdownLength: {
+            name: 'dropdown-length',
+            control: {
+                type: 'select'
+            },
+            options: ['5-items', '7-items', '10-items'],
+            description:
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '7-items' },
+                category: 'Dropdown menu'
+            }
+        },
+        dropdownNubbin: {
+            name: 'dropdown-nubbin',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Dropdown menu'
+            }
+        },
+        dropdownWidth: {
+            name: 'dropdown-width',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' },
+                category: 'Dropdown menu'
+            }
+        },
+        hideApplyResetButtons: {
+            name: 'hide-apply-reset-buttons',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the apply and reset buttons are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Button'
+            }
+        },
+        hideSelectedItems: {
+            name: 'hide-selected-items',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         iconName: {
@@ -72,16 +213,6 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the menu cannot be used by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -93,6 +224,35 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Search'
+            }
+        },
+        isMultiSelect: {
+            name: 'is-multi-select',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, multiple items can be selected.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        items: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of item objects',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Label of the menu.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         loadingStateAlternativeText: {
@@ -107,117 +267,13 @@ export default {
                 category: 'Search'
             }
         },
-        items: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of item objects',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
-        isMultiSelect: {
-            name: 'is-multi-select',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, multiple items can be selected.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        value: {
-            control: {
-                type: 'object'
-            },
-            description: "Array of selected item's values.",
-            table: {
-                type: { summary: 'string[]' }
-            }
-        },
-        buttonVariant: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'border',
-                'bare',
-                'container',
-                'border-filled',
-                'bare-inverse',
-                'border-inverse'
-            ],
-            description:
-                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: ['horizontal', 'vertical'],
-            description:
-                'The variant changes the look of the menu. Accepted variants include horizontal and vertical.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'horizontal' }
-            }
-        },
-        title: {
+        name: {
             control: {
                 type: 'text'
             },
-            description:
-                'Title of the button (horizontal variant) or the label (vertical variant).',
+            description: 'Specifies the name of the filter menu.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        tooltip: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        accessKey: {
-            name: 'access-key',
-            control: {
-                type: 'text'
-            },
-            description:
-                'The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        alternativeText: {
-            name: 'alternative-text',
-            control: {
-                type: 'text'
-            },
-            description:
-                'The assistive text for the button menu. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        hideSelectedItems: {
-            name: 'hide-selected-items',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the selected items are hidden.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
             }
         },
         searchInputPlaceholder: {
@@ -245,17 +301,6 @@ export default {
                 category: 'Search'
             }
         },
-        applyButtonLabel: {
-            name: 'apply-button-label',
-            control: {
-                type: 'text'
-            },
-            description: 'Label of the apply button.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Apply' }
-            }
-        },
         resetButtonLabel: {
             name: 'reset-button-label',
             control: {
@@ -264,81 +309,49 @@ export default {
             description: 'Label of the reset button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Reset' }
+                defaultValue: { summary: 'Reset' },
+                category: 'Button'
             }
         },
-        hideApplyResetButtons: {
-            name: 'hide-apply-reset-buttons',
+        title: {
             control: {
-                type: 'boolean'
+                type: 'text'
             },
-            description: 'If present, the apply and reset buttons are hidden.',
+            description:
+                'Title of the button (horizontal variant) or the label (vertical variant).',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                type: { summary: 'string' }
             }
         },
-        dropdownAlignment: {
-            name: 'dropdown-alignment',
+        tooltip: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'object'
+            },
+            description: "Array of selected item's values.",
+            table: {
+                type: { summary: 'string[]' }
+            }
+        },
+        variant: {
             control: {
                 type: 'select'
             },
-            options: [
-                'auto',
-                'left',
-                'center',
-                'right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right'
-            ],
+            options: ['horizontal', 'vertical'],
             description:
-                'Determines the alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This attribute isn’t supported for the vertical variant.',
+                'The variant changes the look of the menu. Accepted variants include horizontal and vertical.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Dropdown menu'
-            }
-        },
-        dropdownWidth: {
-            name: 'dropdown-width',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            description:
-                'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'small' },
-                category: 'Dropdown menu'
-            }
-        },
-        dropdownLength: {
-            name: 'dropdown-length',
-            control: {
-                type: 'select'
-            },
-            options: ['5-items', '7-items', '10-items'],
-            description:
-                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '7-items' },
-                category: 'Dropdown menu'
-            }
-        },
-        dropdownNubbin: {
-            name: 'dropdown-nubbin',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Dropdown menu'
+                defaultValue: { summary: 'horizontal' }
             }
         }
     },

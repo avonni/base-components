@@ -2,13 +2,14 @@
     <avonni-scheduler
         columns={columns}
         context-menu-event-actions={contextMenuEventActions}
+        context-menu-empty-spot-actions={contextMenuEmptySpotActions}
         events={events}
         events-theme="line"
         events-palette="dusk"
         read-only
-        rows-key-field="id"
-        rows={rows}
+        resources={resources}
+        selected-time-span="workWeek"
         start={start}
-        time-span={timeSpan}
+        time-spans={timeSpans}
     ></avonni-scheduler>
 </template>

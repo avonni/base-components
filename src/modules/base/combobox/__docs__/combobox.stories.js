@@ -377,6 +377,17 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        sortableSelectedOptionsIconName: {
+            name: 'sortable-selected-options-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon indicating that the selected options are sortable. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed. The icon is visible only if sortable-selected-options is present, and selected-options-direction is vertical.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         validity: {
             description:
                 'Represents the validity states that an element can be in, with respect to constraint validation.',
@@ -476,6 +487,7 @@ VerticalSelectedOptions.args = {
     actions,
     selectedOptionsDirection: 'vertical',
     sortableSelectedOptions: true,
+    sortableSelectedOptionsIconName: 'utility:drag_and_drop',
     value: ['tyrell', 'oil-sla', 'dickenson']
 };
 

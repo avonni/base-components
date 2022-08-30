@@ -91,6 +91,10 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "c/card",
+            "path": "src/modules/base/card/card.js"
+        },
+        {
             "name": "c/carousel",
             "path": "src/modules/base/carousel/carousel.js"
         },
@@ -247,6 +251,10 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/metric",
+            "path": "src/modules/base/metric/metric.js"
+        },
+        {
             "name": "c/outputData",
             "path": "src/modules/base/outputData/outputData.js"
         },
@@ -339,6 +347,14 @@
             "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
         },
         {
+            "name": "c/primitiveChip",
+            "path": "src/modules/base/primitiveChip/primitiveChip.js"
+        },
+        {
+            "name": "c/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
@@ -377,6 +393,10 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
+        },
+        {
+            "name": "c/primitiveMetric",
+            "path": "src/modules/base/primitiveMetric/primitiveMetric.js"
         },
         {
             "name": "c/primitivePill",
@@ -457,6 +477,10 @@
         {
             "name": "c/range",
             "path": "src/modules/base/range/range.js"
+        },
+        {
+            "name": "c/slider",
+            "path": "src/modules/base/slider/slider.js"
         },
         {
             "name": "c/rating",
@@ -599,12 +623,20 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "avonni/card",
+            "path": "src/modules/base/card/card.js"
+        },
+        {
             "name": "avonni/carousel",
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
+        },
+        {
+            "name": "avonni/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
             "name": "avonni/colorGradient",
@@ -723,6 +755,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "avonni/metric",
+            "path": "src/modules/base/metric/metric.js"
+        },
+        {
             "name": "avonni/outputData",
             "path": "src/modules/base/outputData/outputData.js"
         },
@@ -807,6 +843,10 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
+            "name": "avonni/slider",
+            "path": "src/modules/base/slider/slider.js"
+        },
+        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -880,8 +920,10 @@
         "avonni/buttonMenu",
         "avonni/buttonPopover",
         "avonni/calendar",
+        "avonni/card",
         "avonni/carousel",
         "avonni/chip",
+        "avonni/chipContainer",
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
@@ -911,6 +953,7 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/metric",
         "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",
@@ -931,6 +974,7 @@
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
+        "avonni/slider",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",

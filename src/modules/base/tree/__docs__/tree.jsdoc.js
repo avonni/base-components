@@ -101,25 +101,43 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-tree-item-text-color-header
+ * @name --avonni-tree-item-header-text-color
  * @type color
  * @default #080707
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-tree-item-text-color-header-disabled
+ * @name --avonni-tree-item-header-text-color-disabled
  * @type color
  * @default #dddbda
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-tree-item-text-color-metatext
+ * @name --avonni-tree-item-header-text-font-size
+ * @type font
+ * @default 0.8125rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-text-font-style
+ * @type font
+ * @default normal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-text-font-weight
+ * @type font
+ * @default 400
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-metatext-text-color
  * @type color
  * @default #3e3e3c
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-tree-item-text-color-metatext-disabled
+ * @name --avonni-tree-item-metatext-text-color-disabled
  * @type color
  * @default #dddbda
  */

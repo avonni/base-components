@@ -8,7 +8,8 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        name: 'item-1'
     },
     {
         label: 'Item 2',
@@ -17,7 +18,8 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
+            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+        name: 'item-2'
     },
     {
         label: 'Item 3',
@@ -26,10 +28,12 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
         },
         avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        name: 'item-3'
     },
     {
-        label: 'Item 4'
+        label: 'Item 4',
+        name: 'item-4'
     },
     {
         label: 'Item 5',
@@ -38,7 +42,8 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        name: 'item-5'
     }
 ];
 

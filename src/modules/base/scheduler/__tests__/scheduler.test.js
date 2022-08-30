@@ -31,35 +31,58 @@
  */
 
 import { createElement } from 'lwc';
-import Scheduler from 'c/scheduler';
-import { DateTime } from 'c/luxon';
+import Scheduler from '../scheduler';
+import { DateTime, Interval } from 'c/luxon';
 import {
     COLUMNS,
-    ROWS,
-    ROWS_KEY_FIELD,
+    RESOURCES,
     EVENTS,
     START,
-    DISABLED_DATES_TIMES
+    DISABLED_DATES_TIMES,
+    MONTH_TIME_SPAN,
+    TIME_SPANS
 } from './data';
 
 // Not tested:
-// getRowFromPosition() and getCellFromPosition(), because they depend on DOM measurements.
+// getResourceElementFromPosition() and getCellFromPosition(), because they depend on DOM measurements.
 // openEditEventDialog() and eventselect, because it depends on the primitive occurrences sending an event on focus.
+// Resize observer
 // Resizing and dragging events
-// Scrolling and loading new events, headers and rows
 // Keyboard navigation
 
+jest.useFakeTimers();
 let element;
+
+const setVisibleInterval = (
+    start = START,
+    timeSpan = { unit: 'day', span: 1 }
+) => {
+    const { unit, span } = timeSpan;
+    const header = element.shadowRoot.querySelector(
+        '[data-element-id="avonni-primitive-scheduler-header-group"]'
+    );
+    const s = DateTime.fromJSDate(start);
+    let e = s.plus({ [unit]: span });
+    e = DateTime.fromMillis(e.ts - 1);
+    header.visibleInterval = Interval.fromDateTimes(s, e);
+};
+
 describe('Scheduler', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-scheduler', {
             is: Scheduler
+        });
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => {
+                cb();
+            }, 0);
         });
     });
 
@@ -76,7 +99,6 @@ describe('Scheduler', () => {
         expect(element.contextMenuEventActions).toMatchObject([]);
         expect(element.contextMenuEmptySpotActions).toMatchObject([]);
         expect(element.customEventsPalette).toMatchObject([]);
-        expect(element.customHeaders).toMatchObject([]);
         expect(element.dateFormat).toBe('ff');
         expect(element.disabledDatesTimes).toMatchObject([]);
         expect(element.dialogLabels).toMatchObject({
@@ -100,20 +122,55 @@ describe('Scheduler', () => {
         });
         expect(element.eventsPalette).toBe('aurora');
         expect(element.eventsTheme).toBe('default');
-        expect(element.headers).toBe('hourAndDay');
+        expect(element.hideToolbar).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.readOnly).toBeFalsy();
         expect(element.recurrentEditModes).toMatchObject(['all', 'one']);
         expect(element.referenceLines).toMatchObject([]);
         expect(element.resizeColumnDisabled).toBeFalsy();
-        expect(element.rows).toMatchObject([]);
-        expect(element.rowsKeyField).toBeUndefined();
+        expect(element.resources).toMatchObject([]);
+        expect(element.selectedTimeSpan).toBe('Standard.Scheduler.DayTimeSpan');
         expect(element.start).toBeInstanceOf(DateTime);
-        expect(element.timeSpan).toMatchObject({ unit: 'hour', span: 12 });
+        expect(element.timeSpans).toEqual([
+            {
+                headers: 'hourAndDay',
+                label: 'Day',
+                name: 'Standard.Scheduler.DayTimeSpan',
+                span: 1,
+                unit: 'day'
+            },
+            {
+                headers: 'hourAndDay',
+                label: 'Week',
+                name: 'Standard.Scheduler.WeekTimeSpan',
+                span: 1,
+                unit: 'week'
+            },
+            {
+                headers: 'dayAndMonth',
+                label: 'Month',
+                name: 'Standard.Scheduler.MonthTimeSpan',
+                span: 1,
+                unit: 'month'
+            },
+            {
+                headers: 'dayAndMonth',
+                label: 'Year',
+                name: 'Standard.Scheduler.YearTimeSpan',
+                span: 1,
+                unit: 'year'
+            }
+        ]);
+        expect(element.variant).toBe('horizontal');
+        expect(element.zoomToFit).toBeFalsy();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     // available-days-of-the-week
     it('Scheduler: availableDaysOfTheWeek', () => {
@@ -158,7 +215,7 @@ describe('Scheduler', () => {
     });
 
     // collapse-disabled
-    // Depends on rows, rowsKeyField and columns
+    // Depends on resources and columns
     it('Scheduler: collapseDisabled = false', () => {
         document.body.appendChild(element);
         element.collapseDisabled = false;
@@ -183,14 +240,13 @@ describe('Scheduler', () => {
         });
     });
 
-    it('Scheduler: collapse and open datatable column', () => {
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
-        element.columns = COLUMNS;
+    it('Scheduler: collapse and open first column', () => {
         document.body.appendChild(element);
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
 
         const datatableCol = element.shadowRoot.querySelector(
-            '.avonni-scheduler__datatable-col'
+            '.avonni-scheduler__first-col'
         );
         const splitterIcons = element.shadowRoot.querySelectorAll(
             '.avonni-scheduler__splitter-icon'
@@ -202,10 +258,10 @@ describe('Scheduler', () => {
             .then(() => {
                 // Initial state
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_hidden'
+                    'avonni-scheduler__first-col_hidden'
                 );
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_open'
+                    'avonni-scheduler__first-col_open'
                 );
 
                 leftIcon.click();
@@ -213,10 +269,10 @@ describe('Scheduler', () => {
             .then(() => {
                 // Collapse
                 expect(datatableCol.classList).toContain(
-                    'avonni-scheduler__datatable-col_hidden'
+                    'avonni-scheduler__first-col_hidden'
                 );
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_open'
+                    'avonni-scheduler__first-col_open'
                 );
 
                 rightIcon.click();
@@ -224,10 +280,10 @@ describe('Scheduler', () => {
             .then(() => {
                 // Reset to initial state
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_hidden'
+                    'avonni-scheduler__first-col_hidden'
                 );
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_open'
+                    'avonni-scheduler__first-col_open'
                 );
 
                 rightIcon.click();
@@ -235,10 +291,20 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open
                 expect(datatableCol.classList).not.toContain(
-                    'avonni-scheduler__datatable-col_hidden'
+                    'avonni-scheduler__first-col_hidden'
                 );
                 expect(datatableCol.classList).toContain(
-                    'avonni-scheduler__datatable-col_open'
+                    'avonni-scheduler__first-col_open'
+                );
+
+                leftIcon.click();
+            }).then(() => {
+                // Reset to initial state
+                expect(datatableCol.classList).not.toContain(
+                    'avonni-scheduler__first-col_hidden'
+                );
+                expect(datatableCol.classList).not.toContain(
+                    'avonni-scheduler__first-col_open'
                 );
             });
     });
@@ -257,13 +323,13 @@ describe('Scheduler', () => {
     });
 
     // context-menu-event-actions
-    // Depends on start, events, columns, rows and rowsKeyField
+    // Depends on start, events, columns, resources
     it('Scheduler: contextMenuEventActions', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         const menu = [
             {
@@ -310,9 +376,9 @@ describe('Scheduler', () => {
     it('Scheduler: contextMenuEventActions, default edit action', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         let title;
@@ -359,9 +425,9 @@ describe('Scheduler', () => {
     it('Scheduler: contextMenuEventActions, default delete action', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         return Promise.resolve()
@@ -403,12 +469,13 @@ describe('Scheduler', () => {
     });
 
     // context-menu-empty-spot-actions
-    // Depends on rows and rowsKeyField
+    // Depends on resources
     it('Scheduler: contextMenuEmptySpotActions', () => {
+        element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         const menu = [
             {
                 name: 'first-action',
@@ -425,7 +492,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const cell = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__cell'
+                    '[data-element-id="div-cell"]'
                 );
                 cell.dispatchEvent(
                     new CustomEvent('contextmenu', {
@@ -448,10 +515,11 @@ describe('Scheduler', () => {
     });
 
     it('Scheduler: contextMenuEmptySpotActions, default add-event action (+ dialogLabels.newEventTitle)', () => {
+        element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.dialogLabels = {
             newEventTitle: 'Title of the new event'
         };
@@ -459,7 +527,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const cell = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__cell'
+                    '[data-element-id="div-cell"]'
                 );
                 cell.dispatchEvent(
                     new CustomEvent('contextmenu', {
@@ -492,14 +560,14 @@ describe('Scheduler', () => {
     });
 
     // custom-events-palette
-    // Depends on rows, rowsKeyField, start and events
+    // Depends on resources, start and events
     it('Scheduler: customEventsPalette', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         const palette = ['#333', '#444', '#555'];
         element.customEventsPalette = palette;
 
@@ -507,46 +575,20 @@ describe('Scheduler', () => {
             const event = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
-            event.rows.forEach((row, index) => {
+            event.resources.forEach((row, index) => {
                 expect(row.color).toBe(palette[index]);
             });
         });
     });
 
-    // custom-headers
-    it('Scheduler: customHeaders', () => {
-        document.body.appendChild(element);
-
-        const headers = [
-            {
-                unit: 'year',
-                label: 'yy',
-                span: '2'
-            },
-            {
-                unit: 'day',
-                label: 'dd',
-                span: '1'
-            }
-        ];
-        element.customHeaders = headers;
-
-        return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-scheduler-header-group"]'
-            );
-            expect(header.headers).toMatchObject(headers);
-        });
-    });
-
     // date-format
-    // Depends on start, events, rows and rowsKeyField
+    // Depends on start, events, resources
     it('Scheduler: dateFormat', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         element.dateFormat = 'hh:mm';
 
@@ -561,9 +603,9 @@ describe('Scheduler', () => {
     it('Scheduler: dateFormat (detail popover)', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         element.dateFormat = 'HH:mm';
 
@@ -601,18 +643,24 @@ describe('Scheduler', () => {
                 const to = element.shadowRoot.querySelector(
                     '.avonni-scheduler__event-detail-popover .slds-grid:last-of-type'
                 );
-                expect(to.textContent).toBe('00:00');
+                expect(to.textContent).toBe('23:59');
             });
     });
 
     // disabled-dates-times
-    // Depends on start, rows and rowsKeyField
+    // Depends on start, resources
     it('Scheduler: disabledDatesTimes', () => {
-        element.start = START;
+        const start = new Date(2021, 0, 1);
+        const timeSpan = {
+            unit: 'year',
+            span: 1
+        };
+        element.start = start;
+        element.selectedTimeSpan = 'Standard.Scheduler.YearTimeSpan';
         document.body.appendChild(element);
+        setVisibleInterval(start, timeSpan);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.disabledDatesTimes = DISABLED_DATES_TIMES;
 
         return Promise.resolve().then(() => {
@@ -620,15 +668,18 @@ describe('Scheduler', () => {
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             DISABLED_DATES_TIMES.forEach((event) => {
-                event.keyFields.forEach((key) => {
+                event.resourceNames.forEach((key) => {
                     const occurrence = Array.from(occurrences).find((occ) => {
-                        return occ.rowKey === key && occ.title === event.title;
+                        return (
+                            occ.resourceKey === key && occ.title === event.title
+                        );
                     });
                     expect(occurrence).toBeTruthy();
                     expect(occurrence.color).toBeUndefined();
-                    expect(occurrence.columns).not.toBeUndefined();
-                    expect(occurrence.columnDuration).not.toBeUndefined();
-                    expect(occurrence.columnWidth).toBe(0);
+                    expect(occurrence.headerCells).not.toBeUndefined();
+                    expect(occurrence.cellDuration).not.toBeUndefined();
+                    expect(occurrence.cellHeight).toBe(0);
+                    expect(occurrence.cellWidth).toBe(0);
                     expect(occurrence.dateFormat).toBe(element.dateFormat);
                     expect(occurrence.disabled).toBeTruthy();
                     expect(occurrence.eventData).toMatchObject(event);
@@ -642,7 +693,7 @@ describe('Scheduler', () => {
                     expect(occurrence.occurrenceKey).not.toBeUndefined();
                     expect(occurrence.readOnly).toBeFalsy();
                     expect(occurrence.referenceLine).toBeFalsy();
-                    expect(occurrence.rowKey).toBe(key);
+                    expect(occurrence.resourceKey).toBe(key);
                     expect(occurrence.scrollLeftOffset).toBe(0);
                     expect(occurrence.title).toBe(event.title);
                     expect(occurrence.theme).toBe('default');
@@ -653,14 +704,20 @@ describe('Scheduler', () => {
     });
 
     it('Scheduler: disabledDatesTimes, recurrence', () => {
-        element.start = START;
+        const start = new Date(2021, 0, 1);
+        const timeSpan = {
+            unit: 'year',
+            span: 1
+        };
+        element.start = start;
+        element.selectedTimeSpan = 'Standard.Scheduler.YearTimeSpan';
         document.body.appendChild(element);
+        setVisibleInterval(start, timeSpan);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.disabledDatesTimes = [
             {
-                keyFields: ['row-3'],
+                resourceNames: ['row-3'],
                 title: 'Event 2',
                 from: new Date(2021, 8, 2),
                 to: new Date(2021, 8, 3),
@@ -682,9 +739,9 @@ describe('Scheduler', () => {
     it('Scheduler: dialogLabels', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         const labels = {
             title: 'Title label',
@@ -758,15 +815,15 @@ describe('Scheduler', () => {
     it('Scheduler: dialogLabels, recurring event, edit dialog buttons', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
-                from: new Date(2021, 8, 2, 14),
+                from: new Date(2021, 8, 1, 14),
                 to: new Date(2021, 8, 5, 16),
                 recurrence: 'daily',
                 recurrenceCount: 5
@@ -830,12 +887,12 @@ describe('Scheduler', () => {
     it('Scheduler: dialogLabels, recurring event edit choice dialog', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2, 14),
@@ -924,9 +981,9 @@ describe('Scheduler', () => {
     it('Scheduler: dialogLabels, delete confirmation dialog', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         const labels = {
             deleteButton: 'This is the delete',
@@ -990,13 +1047,14 @@ describe('Scheduler', () => {
     });
 
     // events
-    // Depends on start, rows, and rowsKeyField
+    // Depends on start, resources
     it('Scheduler: events', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START, MONTH_TIME_SPAN);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
         element.events = EVENTS;
 
         return Promise.resolve().then(() => {
@@ -1004,15 +1062,18 @@ describe('Scheduler', () => {
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             EVENTS.forEach((event) => {
-                event.keyFields.forEach((key) => {
+                event.resourceNames.forEach((key) => {
                     const occurrence = Array.from(occurrences).find((occ) => {
-                        return occ.rowKey === key && occ.title === event.title;
+                        return (
+                            occ.resourceKey === key && occ.title === event.title
+                        );
                     });
                     expect(occurrence).toBeTruthy();
                     expect(occurrence.color).toBe(event.color);
-                    expect(occurrence.columns).not.toBeUndefined();
-                    expect(occurrence.columnDuration).not.toBeUndefined();
-                    expect(occurrence.columnWidth).toBe(0);
+                    expect(occurrence.headerCells).not.toBeUndefined();
+                    expect(occurrence.cellDuration).not.toBeUndefined();
+                    expect(occurrence.cellHeight).toBe(0);
+                    expect(occurrence.cellWidth).toBe(0);
                     expect(occurrence.dateFormat).toBe(element.dateFormat);
                     expect(occurrence.disabled).toBeFalsy();
                     expect(occurrence.eventData).toMatchObject(event);
@@ -1026,7 +1087,7 @@ describe('Scheduler', () => {
                     expect(occurrence.occurrenceKey).not.toBeUndefined();
                     expect(occurrence.readOnly).toBeFalsy();
                     expect(occurrence.referenceLine).toBeFalsy();
-                    expect(occurrence.rowKey).toBe(key);
+                    expect(occurrence.resourceKey).toBe(key);
                     expect(occurrence.scrollLeftOffset).toBe(0);
                     expect(occurrence.title).toBe(event.title);
                     expect(occurrence.theme).toBe('default');
@@ -1038,13 +1099,14 @@ describe('Scheduler', () => {
 
     it('Scheduler: events, recurrence', () => {
         element.start = START;
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
         document.body.appendChild(element);
+        setVisibleInterval(START, MONTH_TIME_SPAN);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-3'],
+                resourceNames: ['row-3'],
                 title: 'Event 2',
                 from: new Date(2021, 8, 2),
                 to: new Date(2021, 8, 3),
@@ -1062,16 +1124,17 @@ describe('Scheduler', () => {
     });
 
     // events-labels
-    // Depends on start, rows, events and rowsKeyField
+    // Depends on start, resources, events
     it('Scheduler: eventsLabels', () => {
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START, MONTH_TIME_SPAN);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         const events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2),
@@ -1083,14 +1146,14 @@ describe('Scheduler', () => {
                 }
             },
             {
-                keyFields: ['row-3'],
+                resourceNames: ['row-3'],
                 name: 'event-2',
                 title: 'Event 2',
                 from: new Date(2021, 8, 2),
                 to: new Date(2021, 8, 3)
             },
             {
-                keyFields: ['row-3'],
+                resourceNames: ['row-3'],
                 name: 'event-3',
                 title: 'Event 3',
                 from: new Date(2021, 8, 3),
@@ -1118,29 +1181,40 @@ describe('Scheduler', () => {
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             events.forEach((event) => {
-                event.keyFields.forEach((key) => {
+                const labelled = [];
+                const nonLabelled = [];
+                event.resourceNames.forEach((key) => {
                     const occurrence = Array.from(occurrences).find((occ) => {
-                        return occ.rowKey === key && occ.title === event.title;
+                        return (
+                            occ.resourceKey === key && occ.title === event.title
+                        );
                     });
                     if (event.labels) {
-                        expect(occurrence.labels).toMatchObject(event.labels);
+                        labelled.push(occurrence);
                     } else {
-                        expect(occurrence.labels).toMatchObject(defaultLabels);
+                        nonLabelled.push(occurrence);
                     }
+                });
+
+                labelled.forEach((occurrence) => {
+                    expect(occurrence.labels).toMatchObject(event.labels);
+                });
+                nonLabelled.forEach((occurrence) => {
+                    expect(occurrence.labels).toMatchObject(defaultLabels);
                 });
             });
         });
     });
 
     // events-palette
-    // Depends on rows, rowsKeyField, start and events
+    // Depends on resources, start and events
     it('Scheduler: eventsPalette', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.eventsPalette = 'lake';
         const lake = [
             '#98c9f5',
@@ -1155,21 +1229,21 @@ describe('Scheduler', () => {
             const event = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
-            event.rows.forEach((row, index) => {
+            event.resources.forEach((row, index) => {
                 expect(row.color).toBe(lake[index]);
             });
         });
     });
 
     // events-theme
-    // Depends on rows, rowsKeyField, start and events
+    // Depends on resources, start and events
     it('Scheduler: eventsTheme', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.eventsTheme = 'line';
 
         return Promise.resolve().then(() => {
@@ -1179,32 +1253,6 @@ describe('Scheduler', () => {
             events.forEach((event) => {
                 expect(event.theme).toBe('line');
             });
-        });
-    });
-
-    // headers
-    it('Scheduler: headers', () => {
-        document.body.appendChild(element);
-
-        const dayLetterAndWeek = [
-            {
-                unit: 'day',
-                span: 1,
-                label: 'ccccc'
-            },
-            {
-                unit: 'week',
-                span: 1,
-                label: "'w.'W 'of' yyyy"
-            }
-        ];
-        element.headers = 'dayLetterAndWeek';
-
-        return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-scheduler-header-group"]'
-            );
-            expect(header.headers).toMatchObject(dayLetterAndWeek);
         });
     });
 
@@ -1219,6 +1267,33 @@ describe('Scheduler', () => {
                 '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
+        });
+    });
+
+    // hide-toolbar
+    it('Scheduler: hideToolbar = false', () => {
+        document.body.appendChild(element);
+
+        element.hideToolbar = false;
+
+        return Promise.resolve().then(() => {
+            const toolbar = element.shadowRoot.querySelector(
+                '[data-element-id="div-toolbar"]'
+            );
+            expect(toolbar).toBeTruthy();
+        });
+    });
+
+    it('Scheduler: hideToolbar = true', () => {
+        document.body.appendChild(element);
+
+        element.hideToolbar = true;
+
+        return Promise.resolve().then(() => {
+            const toolbar = element.shadowRoot.querySelector(
+                '[data-element-id="div-toolbar"]'
+            );
+            expect(toolbar).toBeFalsy();
         });
     });
 
@@ -1239,13 +1314,13 @@ describe('Scheduler', () => {
     });
 
     // read-only
-    // Depends on start, rows, rowsKeyField and events
+    // Depends on start, resources and events
     it('Scheduler: readOnly', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         element.readOnly = true;
 
@@ -1262,9 +1337,9 @@ describe('Scheduler', () => {
     it('Scheduler: readOnly, no default context menu on events', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         element.readOnly = true;
 
@@ -1297,14 +1372,13 @@ describe('Scheduler', () => {
     it('Scheduler: readOnly, no default context menu on empty spots', () => {
         document.body.appendChild(element);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.readOnly = true;
 
         return Promise.resolve()
             .then(() => {
                 const cell = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__cell'
+                    '[data-element-id="div-cell"]'
                 );
                 cell.dispatchEvent(
                     new CustomEvent('contextmenu', {
@@ -1326,9 +1400,9 @@ describe('Scheduler', () => {
     it('Scheduler: readOnly, mouse drag', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
         element.readOnly = true;
 
@@ -1373,16 +1447,16 @@ describe('Scheduler', () => {
     });
 
     // recurrent-edit-modes
-    // Depends on start, rows, rowsKeyField, events and the edit/save flow
+    // Depends on start, resources, events and the edit/save flow
     it('Scheduler: recurrentEditModes, all', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2, 14),
@@ -1452,12 +1526,12 @@ describe('Scheduler', () => {
     it('Scheduler: recurrentEditModes, one', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2, 14),
@@ -1522,12 +1596,18 @@ describe('Scheduler', () => {
                 const events = element.shadowRoot.querySelectorAll(
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
+                let targetEvent;
+                const otherEvents = [];
                 events.forEach((event) => {
                     if (event.from === from && event.to === to) {
-                        expect(event.title).toBe('Some new title');
+                        targetEvent = event;
                     } else {
-                        expect(event.title).toBe('Event 1');
+                        otherEvents.push(event);
                     }
+                });
+                expect(targetEvent.title).toBe('Some new title');
+                otherEvents.forEach((event) => {
+                    expect(event.title).toBe('Event 1');
                 });
             });
     });
@@ -1535,12 +1615,12 @@ describe('Scheduler', () => {
     it('Scheduler: recurrentEditModes, no edit choice dialog when only one option', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2, 14),
@@ -1592,13 +1672,14 @@ describe('Scheduler', () => {
     });
 
     // reference-lines
-    // Depends on start, rows and rowsKeyField
+    // Depends on start, resources
     it('Scheduler: referenceLines', () => {
         element.start = START;
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
         document.body.appendChild(element);
+        setVisibleInterval(START, MONTH_TIME_SPAN);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         const references = [
             {
                 label: 'Reference 1',
@@ -1630,10 +1711,11 @@ describe('Scheduler', () => {
 
     it('Scheduler: referenceLines, recurrent', () => {
         element.start = START;
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
         document.body.appendChild(element);
+        setVisibleInterval(START, MONTH_TIME_SPAN);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         const references = [
             {
                 label: 'Reference 1',
@@ -1654,14 +1736,13 @@ describe('Scheduler', () => {
     });
 
     // resize-column-disabled
-    // Depends on columns, rows and rowsKeyField
+    // Depends on columns, resources
     it('Scheduler: resizeColumnDisabled = false', () => {
         document.body.appendChild(element);
 
         element.resizeColumnDisabled = false;
         element.columns = COLUMNS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-scheduler__wrapper'
@@ -1694,7 +1775,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const datatableCol = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__datatable-col'
+                    '.avonni-scheduler__first-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-datatable"]'
@@ -1703,6 +1784,54 @@ describe('Scheduler', () => {
                 expect(datatableCol.style.width).toBe('-20px');
                 expect(datatable.style.width).toBe('-20px');
             });
+    });
+
+    it('Scheduler: resizeColumnDisabled = false with vertical variant', () => {
+        document.body.appendChild(element);
+
+        element.resizeColumnDisabled = false;
+        element.columns = COLUMNS;
+        element.resources = RESOURCES;
+        element.variant = 'vertical';
+
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        return Promise.resolve().then(() => {
+            // Mouse down
+            const splitter = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter"]'
+            );
+            const firstCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-first-column"]'
+            );
+            const firstResourceHeaderCell = element.shadowRoot.querySelector(
+                '[data-element-id="div-vertical-resource-header-first-cell"]'
+            );
+
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.clientX = 30;
+            mouseDown.button = 0;
+            splitter.dispatchEvent(mouseDown);
+            expect(firstCol.style.width).toBe('');
+            expect(firstCol.style.minWidth).toBe('');
+            expect(firstResourceHeaderCell.style.width).toBe('0px');
+            expect(firstResourceHeaderCell.style.minWidth).toBe('0px');
+
+            // Mouse move
+            const mouseMove = new CustomEvent('mousemove');
+            mouseMove.clientX = 10;
+            wrapper.dispatchEvent(mouseMove);
+            expect(firstCol.style.width).toBe('-20px');
+            expect(firstCol.style.minWidth).toBe('-20px');
+            expect(firstResourceHeaderCell.style.width).toBe('-20px');
+            expect(firstResourceHeaderCell.style.minWidth).toBe('-20px');
+
+            // Mouse up
+            const mouseUp = new CustomEvent('mouseup');
+            mouseUp.button = 0;
+            wrapper.dispatchEvent(mouseUp);
+        });
     });
 
     it('Scheduler: resizeColumnDisabled = true', () => {
@@ -1741,7 +1870,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const datatableCol = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__datatable-col'
+                    '.avonni-scheduler__first-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-datatable"]'
@@ -1751,40 +1880,52 @@ describe('Scheduler', () => {
             });
     });
 
-    // rows
-    // Depends on rowsKeyField
-    it('Scheduler: rows', () => {
+    // resources
+    it('Scheduler: resources', () => {
         document.body.appendChild(element);
-
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         return Promise.resolve().then(() => {
-            const rows = element.shadowRoot.querySelectorAll(
-                '.avonni-scheduler__row'
+            const resources = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-resource"]'
             );
-            expect(rows).toHaveLength(ROWS.length);
+            expect(resources).toHaveLength(RESOURCES.length);
 
             const datatable = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-datatable"]'
             );
-            expect(datatable.records).toMatchObject(ROWS);
+            expect(datatable.records).toMatchObject(RESOURCES);
         });
     });
 
-    // rows-key-field
-    // Depends on rows
-    it('Scheduler: rowsKeyField', () => {
+    // selected-time-span
+    it('Scheduler: selectedTimeSpan', () => {
         document.body.appendChild(element);
-
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.selectedTimeSpan = 'Standard.Scheduler.WeekTimeSpan';
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-datatable"]'
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-button-toolbar-time-span"]'
             );
-            expect(datatable.keyField).toBe(ROWS_KEY_FIELD);
+            expect(buttons[1].variant).toBe('brand');
+
+            const headers = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-scheduler-header-group"]');
+            expect(headers.timeSpan).toMatchObject({
+                unit: 'week',
+                span: 1
+            });
+            expect(headers.headers).toEqual([
+                {
+                    unit: 'hour',
+                    span: 1,
+                    label: 'h a'
+                },
+                {
+                    unit: 'day',
+                    span: 1,
+                    label: 'ccc, LLL d'
+                }
+            ]);
         });
     });
 
@@ -1802,52 +1943,392 @@ describe('Scheduler', () => {
         });
     });
 
-    // time-span
-    it('Scheduler: timeSpan', () => {
+    // time-spans
+    it('Scheduler: timeSpans', () => {
         document.body.appendChild(element);
-
-        const timeSpan = {
-            unit: 'month',
-            span: 3
-        };
-        element.timeSpan = timeSpan;
+        element.timeSpans = TIME_SPANS;
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector(
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-button-toolbar-time-span"]'
+            );
+            expect(buttons).toHaveLength(3);
+
+            buttons.forEach((button, index) => {
+                expect(button.label).toBe(TIME_SPANS[index].label);
+                expect(button.value).toBe(TIME_SPANS[index].name);
+            });
+
+            expect(buttons[0].variant).toBe('brand');
+            [1, 2].forEach((index) => {
+                expect(buttons[index].variant).toBe('neutral');
+            });
+
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-button-menu-toolbar-spans"]'
+            );
+            expect(menu).toBeTruthy();
+
+            const headers = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-scheduler-header-group"]');
+            expect(headers.timeSpan).toEqual(TIME_SPANS[0]);
+            expect(headers.headers).toEqual([
+                {
+                    unit: 'week',
+                    span: 1,
+                    label: "'w.'W 'of' yyyy"
+                },
+                {
+                    unit: 'month',
+                    span: 1,
+                    label: 'LLLL'
+                },
+                {
+                    unit: 'year',
+                    span: 1,
+                    label: 'yyyy'
+                }
+            ]);
+        });
+    });
+    
+    it('Scheduler: timeSpans with customHeaders', () => {
+        document.body.appendChild(element);
+        element.selectedTimeSpan = TIME_SPANS[1].name;
+        element.timeSpans = TIME_SPANS;
+
+        return Promise.resolve().then(() => {
+            const headers = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-scheduler-header-group"]');
+            expect(headers.timeSpan).toEqual(TIME_SPANS[1]);
+            expect(headers.headers).toEqual(TIME_SPANS[1].customHeaders);
+        });
+    });
+
+    // variant
+    it('Scheduler: horizontal variant', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.variant = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            expect(element.style.cssText).toBe('');
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).toContain('slds-col');
+
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
+            expect(datatable).toBeTruthy();
+            expect(datatable.style.marginTop).toBe('-39px');
+
+            const firstCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-first-column"]'
+            );
+            expect(firstCol.classList).toContain(
+                'avonni-scheduler__first-col_horizontal'
+            );
+            expect(firstCol.classList).not.toContain(
+                'avonni-scheduler__first-col_vertical'
+            );
+            expect(firstCol.classList).not.toContain('slds-p-right_x-small');
+            expect(firstCol.classList).not.toContain(
+                'avonni-scheduler__grid_align-end'
+            );
+
+            const verticalHeaders = firstCol.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
-            expect(header.timeSpan).toMatchObject(timeSpan);
+            expect(verticalHeaders).toBeFalsy();
+
+            const resource = element.shadowRoot.querySelector(
+                '[data-element-id="div-resource"]'
+            );
+            expect(resource.classList).not.toContain('slds-col');
+            expect(resource.classList).not.toContain('slds-grid_vertical');
+
+            const scheduleBody = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-body"]'
+            );
+            expect(scheduleBody.classList).not.toContain('slds-grid');
+            expect(scheduleBody.classList).not.toContain(
+                'avonni-scheduler__schedule-body_vertical'
+            );
+            expect(scheduleBody.style.cssText).toBe('');
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).not.toContain(
+                'avonni-scheduler__schedule-col_vertical'
+            );
+
+            const horizontalHeaders = scheduleCol.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            );
+            expect(horizontalHeaders).toBeTruthy();
+
+            const splitter = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter"]'
+            );
+            expect(splitter.classList).not.toContain(
+                'avonni-scheduler__splitter_vertical'
+            );
+
+            const verticalResourceHeaders = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            expect(verticalResourceHeaders).toHaveLength(0);
+        });
+    });
+
+    it('Scheduler: vertical variant', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            expect(element.style.cssText).toBe(
+                '--avonni-scheduler-cell-height: 0px;'
+            );
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).not.toContain('slds-col');
+
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
+            expect(datatable).toBeFalsy();
+
+            const firstCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-first-column"]'
+            );
+            expect(firstCol.classList).not.toContain(
+                'avonni-scheduler__first-col_horizontal'
+            );
+            expect(firstCol.classList).toContain(
+                'avonni-scheduler__first-col_vertical'
+            );
+            expect(firstCol.classList).toContain('slds-p-right_x-small');
+            expect(firstCol.classList).toContain(
+                'avonni-scheduler__grid_align-end'
+            );
+
+            const resource = element.shadowRoot.querySelector(
+                '[data-element-id="div-resource"]'
+            );
+            expect(resource.classList).toContain('slds-col');
+            expect(resource.classList).toContain('slds-grid_vertical');
+
+            const scheduleBody = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-body"]'
+            );
+            expect(scheduleBody.classList).toContain('slds-grid');
+            expect(scheduleBody.classList).toContain(
+                'avonni-scheduler__schedule-body_vertical'
+            );
+            expect(scheduleBody.style.cssText).toBe(
+                '--avonni-primitive-scheduler-event-reference-line-length: 0px;'
+            );
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).toContain(
+                'avonni-scheduler__schedule-col_vertical'
+            );
+
+            const splitter = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter"]'
+            );
+            expect(splitter.classList).toContain(
+                'avonni-scheduler__splitter_vertical'
+            );
+
+            const verticalResourceHeaders = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            expect(verticalResourceHeaders).toHaveLength(RESOURCES.length);
+            const firstAvatar = verticalResourceHeaders[0].querySelector(
+                '[data-element-id="avonni-primitive-avatar"]'
+            );
+            expect(firstAvatar).toBeTruthy();
+            expect(firstAvatar.src).toBe(RESOURCES[0].avatarSrc);
+            expect(firstAvatar.initials).toBe(
+                RESOURCES[0].avatarInitials
+            );
+            expect(firstAvatar.fallbackIconName).toBe(
+                RESOURCES[0].avatarFallbackIconName
+            );
+
+            for (let i = 1; i < RESOURCES.length; i++) {
+                const avatar = verticalResourceHeaders[i].querySelector(
+                    '[data-element-id="avonni-primitive-avatar"]'
+                );
+                expect(avatar).toBeFalsy();
+            }
+
+            verticalResourceHeaders.forEach((res, index) => {
+                const label = res.querySelector(
+                    '[data-element-id="div-vertical-resource-header-label"]'
+                );
+                expect(label).toBeTruthy();
+                expect(label.textContent).toBe(RESOURCES[index].label);
+            });
+        });
+    });
+
+    it('Scheduler: vertical variant, simulate scroll', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const resourceHeaders = element.shadowRoot.querySelector(
+                '[data-element-id="div-resource-header-cells"]'
+            );
+            resourceHeaders.scroll = jest.fn((x, y) => {
+                expect(x).toBe(35);
+                expect(y).toBe(0);
+            });
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-schedule-wrapper"]');
+            wrapper.scrollLeft = 35;
+            wrapper.dispatchEvent(new CustomEvent('scroll'));
+        });
+    });
+
+    // zoom-to-fit
+    it('Scheduler: zoomToFit = false', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.zoomToFit = false;
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).not.toContain(
+                'avonni-scheduler__cell_zoom-to-fit'
+            );
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).not.toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+            const scheduleNestedCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-nested-col"]'
+            );
+            expect(scheduleNestedCol.classList).not.toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+        });
+    });
+
+    it('Scheduler: zoomToFit = true', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.zoomToFit = true;
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).toContain(
+                'avonni-scheduler__cell_zoom-to-fit'
+            );
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+            const scheduleNestedCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-nested-col"]'
+            );
+            expect(scheduleNestedCol.classList).toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+        });
+    });
+
+    it('Scheduler: zoomToFit = true, with vertical variant', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.zoomToFit = true;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const resourceHeader = element.shadowRoot.querySelector(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            expect(resourceHeader.classList).toContain(
+                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit'
+            );
         });
     });
 
     /* ----- METHODS ----- */
 
     // createEvent
-    // Depends on rows, rowsKeyField and start
+    // Depends on resources and start
     it('Scheduler: createEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval(START);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.createEvent(EVENTS[0]);
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
-            expect(events).toHaveLength(EVENTS[0].keyFields.length);
+            expect(events).toHaveLength(EVENTS[0].resourceNames.length);
         });
     });
 
     // deleteEvent
-    // Depends on rows, rowsKeyField, start and events
+    // Depends on resources, start and events
     it('Scheduler: deleteEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         let eventName;
@@ -1869,13 +2350,13 @@ describe('Scheduler', () => {
     });
 
     // focusEvent
-    // Depends on rows, rowsKeyField, start and events
+    // Depends on resources, start and events
     it('Scheduler: focusEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         return Promise.resolve().then(() => {
@@ -1890,14 +2371,29 @@ describe('Scheduler', () => {
         });
     });
 
-    // openNewEventDialog
-    // Depends on rows, rowsKeyField and start
-    it('Scheduler: openNewEventDialog method', () => {
+    // goToDate
+    it('Scheduler: goToDate method', () => {
         element.start = START;
         document.body.appendChild(element);
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.goToDate(new Date(2022, 0, 1));
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            );
+            expect(header.start.ts).toBe(new Date(2022, 0, 1).getTime());
+        });
+    });
+
+    // openNewEventDialog
+    // Depends on resources and start
+    it('Scheduler: openNewEventDialog method', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+
+        element.resources = RESOURCES;
         element.openNewEventDialog();
 
         return Promise.resolve().then(() => {
@@ -1908,16 +2404,20 @@ describe('Scheduler', () => {
         });
     });
 
-    /* ----- EVENTS ----- */
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
 
     // actionclick
-    // Depends on start, rows, rowsKeyField and events
+    // Depends on start, resources and events
     it('Scheduler: actionclick event', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         const handler = jest.fn();
@@ -1965,16 +2465,16 @@ describe('Scheduler', () => {
     });
 
     // eventchange
-    // Depends on start, rows, rowsKeyField and events
+    // Depends on start, resources and events
     it('Scheduler: eventchange event', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2'],
+                resourceNames: ['row-2'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2),
@@ -2039,8 +2539,8 @@ describe('Scheduler', () => {
                     new CustomEvent('change', {
                         detail: {
                             value: [
-                                ROWS[0][ROWS_KEY_FIELD],
-                                ROWS[1][ROWS_KEY_FIELD]
+                                RESOURCES[0].name,
+                                RESOURCES[1].name
                             ]
                         }
                     })
@@ -2069,9 +2569,9 @@ describe('Scheduler', () => {
                 expect(
                     handler.mock.calls[0][0].detail.draftValues
                 ).toMatchObject({
-                    keyFields: [
-                        ROWS[0][ROWS_KEY_FIELD],
-                        ROWS[1][ROWS_KEY_FIELD]
+                    resourceNames: [
+                        RESOURCES[0].name,
+                        RESOURCES[1].name
                     ],
                     title: 'New event title'
                 });
@@ -2082,14 +2582,15 @@ describe('Scheduler', () => {
     });
 
     // eventcreate
-    // Depends on openNewEventDialog(), rows, and rowsKeyField
+    // Depends on openNewEventDialog(), resources
     it('Scheduler: eventcreate event', () => {
+        element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         const from = new Date(2021, 8, 2, 4).toISOString();
         const to = new Date(2021, 8, 2, 13).toISOString();
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         const handler = jest.fn();
         element.addEventListener('eventcreate', handler);
@@ -2109,8 +2610,8 @@ describe('Scheduler', () => {
                 new CustomEvent('change', {
                     detail: {
                         value: [
-                            ROWS[0][ROWS_KEY_FIELD],
-                            ROWS[1][ROWS_KEY_FIELD]
+                            RESOURCES[0].name,
+                            RESOURCES[1].name
                         ]
                     }
                 })
@@ -2135,8 +2636,11 @@ describe('Scheduler', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(
-                handler.mock.calls[0][0].detail.event.keyFields
-            ).toMatchObject([ROWS[0][ROWS_KEY_FIELD], ROWS[1][ROWS_KEY_FIELD]]);
+                handler.mock.calls[0][0].detail.event.resourceNames
+            ).toMatchObject([
+                RESOURCES[0].name,
+                RESOURCES[1].name
+            ]);
             expect(
                 handler.mock.calls[0][0].detail.event.name
             ).not.toBeUndefined();
@@ -2152,13 +2656,13 @@ describe('Scheduler', () => {
     });
 
     // eventdelete
-    // Depends on deleteEvent(), events, start, rows, and rowsKeyField
+    // Depends on deleteEvent(), events, start, resources
     it('Scheduler: eventdelete event', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         const handler = jest.fn();
@@ -2172,16 +2676,47 @@ describe('Scheduler', () => {
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 
+    // privatecellsizechange from the headers
+    it('Scheduler: privatecellsizechange', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+
+        element.resources = RESOURCES;
+        element.events = EVENTS;
+
+        return Promise.resolve().then(() => {
+            const headers = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            );
+            headers.dispatchEvent(
+                new CustomEvent('privatecellsizechange', {
+                    detail: {
+                        cellSize: 56
+                    }
+                })
+            );
+        }).then(() => {
+            const resources = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-resource"]'
+            );
+            resources.forEach((res) => {
+                expect(res.style.cssText).toContain(
+                    '--avonni-scheduler-cell-width: 56px'
+                );
+            });
+        });
+    });
+
     /* ----- USER ACTIONS ----- */
 
-    // datatable resize
-    // Depends on the splitter resize flow, rows, rowsKeyField and columns
-    it('Scheduler: User resizes one of the datatable columns', () => {
+    // Datatable resize
+    // Depends on the splitter resize flow, resources and columns
+    it('Scheduler: User resizes a datatable column', () => {
         document.body.appendChild(element);
 
         element.columns = COLUMNS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-scheduler__wrapper'
@@ -2196,10 +2731,17 @@ describe('Scheduler', () => {
                 mouseDown.clientX = 30;
                 mouseDown.button = 0;
                 splitter.dispatchEvent(mouseDown);
+                const firstCol = element.shadowRoot.querySelector(
+                    '[ data-element-id="div-first-column"]'
+                );
+                expect(firstCol.style.width).toBe('');
+                expect(firstCol.style.minWidth).toBe('');
 
                 const mouseMove = new CustomEvent('mousemove');
                 mouseMove.clientX = 10;
                 wrapper.dispatchEvent(mouseMove);
+                expect(firstCol.style.width).toBe('-20px');
+                expect(firstCol.style.minWidth).toBe('-20px');
 
                 const mouseUp = new CustomEvent('mouseup');
                 mouseUp.button = 0;
@@ -2222,18 +2764,23 @@ describe('Scheduler', () => {
                 );
 
                 expect(datatable.style.width).toBeFalsy();
+                const firstCol = element.shadowRoot.querySelector(
+                    '[ data-element-id="div-first-column"]'
+                );
+                expect(firstCol.style.width).toBe('');
+                expect(firstCol.style.minWidth).toBe('');
             });
     });
 
     // Event delete
-    // Depends on rows, rowsKeyField, events and start
+    // Depends on resources, events and start
     it('Scheduler: User deletes an event', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         let eventName;
         return Promise.resolve()
@@ -2284,14 +2831,14 @@ describe('Scheduler', () => {
     });
 
     // Double click
-    // Depends on start, events, rows and rowsKeyField
+    // Depends on start, events, resources
     it('Scheduler: User double-clicks on an event', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
         element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         let eventTitle;
         return Promise.resolve()
@@ -2325,14 +2872,14 @@ describe('Scheduler', () => {
     it('Scheduler: User double-clicks on an empty spot', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
 
         return Promise.resolve()
             .then(() => {
                 const cell = element.shadowRoot.querySelector(
-                    '.avonni-scheduler__cell'
+                    '[data-element-id="div-cell"]'
                 );
                 const doubleClick = new CustomEvent('dblclick');
                 doubleClick.clientX = 0;
@@ -2349,13 +2896,13 @@ describe('Scheduler', () => {
     });
 
     // Cancel button of the edit dialog
-    // Depends on start, events, rows and rowsKeyField
+    // Depends on start, events, resources
     it('Scheduler: User cancels an event edition', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = EVENTS;
 
         let eventName;
@@ -2402,7 +2949,7 @@ describe('Scheduler', () => {
                 titleInput.dispatchEvent(new CustomEvent('change'));
 
                 const cancelButton = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-dialog"] lightning-button'
+                    '[data-element-id="lightning-button-cancel-edit"]'
                 );
                 cancelButton.click();
             })
@@ -2422,12 +2969,12 @@ describe('Scheduler', () => {
     it('Scheduler: User cancels a recurring event drag and drop', () => {
         element.start = START;
         document.body.appendChild(element);
+        setVisibleInterval();
 
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.resources = RESOURCES;
         element.events = [
             {
-                keyFields: ['row-2', 'row1'],
+                resourceNames: ['row-2', 'row1'],
                 name: 'event-1',
                 title: 'Event 1',
                 from: new Date(2021, 8, 2, 14),
@@ -2483,6 +3030,279 @@ describe('Scheduler', () => {
                     `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${occurrenceKey}"]`
                 );
                 expect(event.from).toBe(eventFrom);
+            });
+    });
+
+    it('Scheduler: privatecellsizechange with vertical variant', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+
+        element.resources = RESOURCES;
+        element.variant = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                const headers = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                headers.dispatchEvent(
+                    new CustomEvent('privatecellsizechange', {
+                        detail: {
+                            cellSize: 56
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                expect(element.style.cssText).toContain(
+                    '--avonni-scheduler-cell-height: 56px'
+                );
+            });
+    });
+
+    // Toolbar
+    it('Scheduler: User clicks on a toolbar time span button', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('timespanselect', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button-toolbar-time-span"]'
+                );
+                buttons[1].click();
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe('Standard.Scheduler.WeekTimeSpan');
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                expect(header.timeSpan).toMatchObject({
+                    unit: 'week',
+                    span: 1
+                });
+                expect(header.headers).toEqual([
+                    {
+                        unit: 'hour',
+                        span: 1,
+                        label: 'h a'
+                    },
+                    {
+                        unit: 'day',
+                        span: 1,
+                        label: 'ccc, LLL d'
+                    }
+                ]);
+            });
+    });
+
+    it('Scheduler: User clicks on the selected time span button', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('timespanselect', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button-toolbar-time-span"]'
+                );
+                buttons[0].click();
+
+                expect(handler).not.toHaveBeenCalled();
+            });
+    });
+
+    it('Scheduler: User selects a date in the toolbar calendar', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-toolbar-calendar"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-toolbar"]'
+                );
+                calendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: new Date(2022, 4, 18).toISOString()
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                expect(header.start.ts).toBe(new Date(2022, 4, 18).getTime());
+            });
+    });
+
+    it('Scheduler: The toolbar calendar closes when it looses focus', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button-toolbar-calendar"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                // Calendar is focused on opening
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-toolbar"]'
+                );
+                const spy = jest.spyOn(calendar, 'focus');
+                jest.runAllTimers();
+                expect(spy).toHaveBeenCalled();
+            })
+            .then(() => {
+                // A focusout followed by a focusin won't close the calendar
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-toolbar"]'
+                );
+                calendar.dispatchEvent(
+                    new CustomEvent('focusout', { bubbles: true })
+                );
+                calendar.dispatchEvent(
+                    new CustomEvent('focusin', { bubbles: true })
+                );
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-toolbar"]'
+                );
+                expect(calendar).toBeTruthy();
+
+                // A focus out alone will close the calendar
+                calendar.dispatchEvent(
+                    new CustomEvent('focusout', { bubbles: true })
+                );
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-toolbar"]'
+                );
+                expect(calendar).toBeFalsy();
+            });
+    });
+
+    it('Scheduler: User clicks on the previous button of the toolbar', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-toolbar-prev"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                expect(header.start.ts).toBe(new Date(2021, 8, 1).getTime());
+            });
+    });
+
+    it('Scheduler: User clicks on the previous button of the toolbar, and the previous time is unavailable', () => {
+        element.start = new Date(2022, 5, 17);
+        element.availableMonths = [3, 5, 6];
+        element.availableTimeFrames = ['08:00-14:00', '16:00-22:00'];
+        element.selectedTimeSpan = 'Standard.Scheduler.MonthTimeSpan';
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                // Go to the previous month
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-toolbar-prev"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                expect(header.start.ts).toBe(new Date(2022, 3, 1).getTime());
+
+                // Change the headers for a smaller one
+                element.timeSpans = [{
+                    unit: 'hour',
+                    name: 'hourSpan',
+                    span: 1,
+                    label: 'Hour',
+                    headers: 'hourDayAndWeek'
+                }];
+                element.start = new Date(2022, 5, 17, 8);
+            }).then(() => {
+                // Go to the previous hour span
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-toolbar-prev"]'
+                );
+                button.click();
+                expect(element.start.ts).toBe(new Date(2022, 5, 16, 21).getTime());
+            });
+    });
+
+    it('Scheduler: User clicks on the today button of the toolbar', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-toolbar-today"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                const today = new Date().setHours(0, 0, 0, 0);
+                expect(header.start.ts).toBe(today);
+            });
+    });
+
+    it('Scheduler: User clicks on the next button of the toolbar', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-toolbar-next"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-header-group"]'
+                );
+                expect(header.start.ts).toBe(new Date(2021, 8, 3).getTime());
             });
     });
 });

@@ -50,17 +50,18 @@ export const Scheduler = ({
     eventsLabels,
     eventsPalette,
     eventsTheme,
-    customHeaders,
-    headers,
+    hideToolbar,
     isLoading,
     readOnly,
     recurrentEditModes,
     referenceLines,
     resizeColumnDisabled,
-    rows,
-    rowsKeyField,
+    resources,
+    selectedTimeSpan,
     start,
-    timeSpan
+    timeSpans,
+    variant,
+    zoomToFit
 }) => {
     const element = document.createElement('ac-base-scheduler');
     element.availableDaysOfTheWeek = availableDaysOfTheWeek;
@@ -78,16 +79,17 @@ export const Scheduler = ({
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
-    element.customHeaders = customHeaders;
-    element.headers = headers;
+    element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
     element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
-    element.rows = rows;
-    element.rowsKeyField = rowsKeyField;
+    element.resources = resources;
+    element.selectedTimeSpan = selectedTimeSpan;
     element.start = start;
-    element.timeSpan = timeSpan;
+    element.timeSpans = timeSpans;
+    element.variant = variant;
+    element.zoomToFit = zoomToFit;
     return element;
 };
