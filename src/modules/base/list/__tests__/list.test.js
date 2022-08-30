@@ -439,6 +439,36 @@ describe('List', () => {
 
     /* ----- METHOD ----- */
 
+    // getItemPosition
+    // Depends on items
+    it('List: getItemPosition method', () => {
+        element.items = ITEMS;
+        const mockPosition = {
+            left: 100,
+            right: 20,
+            bottom: 66,
+            top: 39,
+            x: 100,
+            y: 39,
+            height: 288,
+            width: 503
+        };
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                `[data-element-id="li-main"][data-name="${ITEMS[1].name}"]`
+            );
+            const spy = jest
+                .spyOn(item, 'getBoundingClientRect')
+                .mockImplementation(() => {
+                    return mockPosition;
+                });
+            const position = element.getItemPosition(ITEMS[1].name);
+            expect(spy).toHaveBeenCalled();
+            expect(position).toEqual(mockPosition);
+        });
+    });
+
     // reset
     // Depends on items, sortable and the keyboard reorder
     it('List: Reset method', () => {
