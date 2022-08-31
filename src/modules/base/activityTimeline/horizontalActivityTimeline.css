@@ -49,3 +49,12 @@
     overscroll-behavior-x: contain;
     overscroll-behavior-block: contain;
 }
+
+.avonni-horizontal-activity-timeline__item-popover-date-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    text-align: right;
+    align-items: center;
+    vertical-align: bottom;
+}

@@ -101,12 +101,12 @@
                     <!-- Close button -->
                     <lightning-button-icon
                         icon-name="utility:close"
-                        size="small"
+                        size="medium"
                         variant="bare"
                         onclick={handleTooltipClose}
                         class="
                             slds-popover__close
-                            slds-p-top_xxx-small
+                            slds-p-top_xx-small
                             slds-float_right
                         "
                     ></lightning-button-icon>
@@ -146,12 +146,55 @@
                             </h3>
                         </div>
                     </header>
+                    <!-- Formatted date and actions -->
+                    <div
+                        class="
+                            slds-timeline__actions slds-timeline__actions_inline
+                            avonni-horizontal-activity-timeline__item-popover-date-actions
+                        "
+                    >
+                        <div
+                            if:true={selectedItemFormattedDate}
+                            class="slds-timeline__date slds-p-right_x-small slds-p-top_x-small slds-p-bottom_xx-small"
+                            data-element-id="avonni-formatted-date-time"
+                        >
+                            {selectedItemFormattedDate}
+                        </div>
+                        <div slot="figure-inverse" if:true={actions.length} class=" slds-p-right_xxx-small">
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="right"
+                                variant={buttonMenuVariant}
+                                data-element-id="lightning-button-menu-actions"
+                                onselect={handleActionClick}
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        class="slds-text-color_default"
+                                        disabled={action.disabled}
+                                        label={action.label}
+                                        prefix-icon-name={action.iconName}
+                                        value={action.name}
+                                        data-element-id="lightning-menu-item-action"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
+                    </div>
+                    <p
+                        class="slds-truncate slds-p-left_xx-small slds-p-right_x-small slds-p-top_xx-small slds-p-bottom_xx-small"
+                        if:true={selectedItem.description}
+                    >
+                        {selectedItem.description}
+                    </p>
                     <!-- Table (2 columns) for fields -->
                     <footer
-                        class="slds-grid slds-wrap slds-media__body"
+                        class="slds-grid slds-wrap slds-media__body "
                         if:true={selectedItem.fields}
                     >
-                        <div class="slds-has-flexi-truncate">
+                        <div class="slds-has-flexi-truncate slds-box slds-box_small slds-p-top_none slds-p-bottom_xx-small slds-p-left_small">
                             <lightning-layout
                                 horizontal-align="spread"
                                 multiple-rows="true"
@@ -164,7 +207,7 @@
                                     <lightning-layout-item
                                         class="
                                             slds-size_1-of-2
-                                            slds-p-top_x-small
+                                            slds-p-top_small
                                             slds-p-right_small
                                             slds-line-clamp_x-small
                                         "

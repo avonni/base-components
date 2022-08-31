@@ -650,6 +650,19 @@ export default class ActivityTimeline extends LightningElement {
         return 'small';
     }
 
+    /**
+     * Formatted date with requested format (item-date-format) of popover's item for horizontal activity timeline.
+     * 
+     * @return {string}
+     */
+    get selectedItemFormattedDate(){
+        if(!this.selectedItem || !this.selectedItem.datetimeValue || !this.computedItemDateFormat){
+            return '';
+        }
+        return this.horizontalTimeline.convertDateToFormat(this.selectedItem.datetimeValue, this.computedItemDateFormat);
+    }
+    
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS

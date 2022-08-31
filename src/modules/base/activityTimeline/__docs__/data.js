@@ -742,6 +742,7 @@ export const horizontalItems = [
     {
         name: 'item6',
         title: 'Create another task',
+        description: 'This is the description. This is the description. This is the description. This is the description. This is the description. This is the description. This is the description. This is the description.',
         datetimeValue: '01/21/2022 11:30',
         iconName: 'standard:skill',
         hasCheckbox: true,
@@ -759,6 +760,7 @@ export const horizontalItems = [
     {
         name: 'item8',
         title: 'Another item',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
         iconName: 'standard:solution',
@@ -776,6 +778,7 @@ export const horizontalItems = [
     {
         name: 'item9',
         title: 'This is another item to display',
+        description: 'This is the description.',
         datetimeValue: '01/30/2022 2:00',
         href: '#',
         iconName: 'standard:service_request_detail',
@@ -813,6 +816,7 @@ export const horizontalItems = [
     {
         name: 'item10',
         title: 'Another new item',
+        description: 'This is the description.',
         datetimeValue: '01/04/2022 10:30',
         href: '#',
         iconName: 'utility:frozen',
@@ -851,6 +855,7 @@ export const horizontalItems = [
     {
         name: 'item14',
         title: 'Another item',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
         iconName: 'standard:education',
@@ -861,6 +866,7 @@ export const horizontalItems = [
     {
         name: 'item15',
         title: 'Another item',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
         iconName: 'standard:lead',
@@ -870,6 +876,7 @@ export const horizontalItems = [
     {
         name: 'item16',
         title: 'Magic item',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
         iconName: 'standard:thanks',
@@ -879,6 +886,7 @@ export const horizontalItems = [
     {
         name: 'item17',
         title: 'Item',
+        description: 'This is the description.',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
         iconName: 'custom:custom69',
@@ -908,6 +916,7 @@ export const horizontalItems = [
     {
         name: 'item20',
         title: 'Event 20',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 00:00',
         href: '#',
         iconName: 'utility:education',
@@ -917,6 +926,7 @@ export const horizontalItems = [
     {
         name: 'item21',
         title: 'Event 21',
+        description: 'This is the description of the event.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
         closed: false,
@@ -950,6 +960,7 @@ export const horizontalItems = [
     {
         name: 'item22',
         title: 'Long Title Item With More Than 30 Characters',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
         iconName: 'standard:trailhead',
@@ -980,6 +991,7 @@ export const horizontalItems = [
     {
         name: 'item25',
         title: 'Mysterious item',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
         iconName: 'standard:recipe',
@@ -989,6 +1001,7 @@ export const horizontalItems = [
     {
         name: 'item26',
         title: 'Random event',
+        description: 'This is the description.',
         datetimeValue: '02/02/2022 09:30',
         href: '#',
         iconName: 'standard:story',
@@ -1016,6 +1029,7 @@ export const horizontalItems = [
     {
         name: 'item29',
         title: 'Event',
+        description: 'Description of the event.',
         datetimeValue: '06/09/2022 10:30',
         href: '#',
         iconName: 'doctype:folder',
@@ -1043,6 +1057,7 @@ export const horizontalItems = [
     {
         name: 'item32',
         title: 'Event',
+        description: 'This is the description.',
         datetimeValue: '01/01/2021 11:11',
         href: '#',
         iconName: 'custom:custom74',
