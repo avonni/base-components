@@ -503,37 +503,10 @@ export default class Kanban extends LightningElement {
             (this._draggedGroup || this._draggedTile)
         ) {
             this._scrollingInterval = window.setInterval(() => {
-                // Prevents from scrolling outside of the kanban
-                const overflowY =
-                    fieldContainer.scrollHeight > this._initialScrollHeight;
-
-                const overflowX =
-                    fieldContainer.scrollWidth > this._initialScrollWidth;
-
-                if (!overflowX && (!overflowY || !this._hasSubGroups)) {
-                    this._currentScrollTarget.scrollBy(
-                        scrollStep.x,
-                        scrollStep.y
-                    );
-                    scrollStep.x =
-                        this._currentScrollTarget.scrollLeft === 0 &&
-                        scrollStep.x < 0
-                            ? 0
-                            : scrollStep.x;
-                    scrollStep.y =
-                        this._currentScrollTarget.scrollTop === 0 &&
-                        scrollStep.y < 0
-                            ? 0
-                            : scrollStep.y;
-                    this.translateByDelta(scrollStep);
-                    this.handleDropZone({
-                        currentTarget: this._draggedTile,
-                        clientX: this._currentXScroll
-                    });
-                }
-                this.handleScrollTiles(
-                    groups,
-                    this._currentScrollTarget.scrollTop
+                this.handleAutoScrollInterval(
+                    scrollStep,
+                    fieldContainer,
+                    groups
                 );
             }, 20);
         }
@@ -711,6 +684,65 @@ export default class Kanban extends LightningElement {
             });
         }
         this._droppedTileHeight = 0;
+    }
+
+    /**
+     *
+     * Limits the position of the mouse to the kanban's boundaries
+     * @param {Event} event
+     *
+     */
+    capMousePos(event) {
+        const kanbanContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+
+        this.computeKanbanBoundaries(
+            this._hasSubGroups ? kanbanContainer : fieldContainer
+        );
+
+        const expandableContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__expandable_container"]'
+        );
+
+        const bottom = this._hasSubGroups
+            ? this._initialScrollHeight
+            : this._kanbanPos.bottom;
+
+        if (
+            this._initialScrollWidth === kanbanContainer.offsetWidth &&
+            !this._hasSubGroups
+        ) {
+            kanbanContainer.style.overflowX = 'hidden';
+        } else if (!this._hasSubGroups) {
+            kanbanContainer.style.overflowX = 'scroll';
+        }
+
+        // Calculates the position of the mouse depending on the kanban boundaries
+        let currentY =
+            event.clientY +
+            (this._hasSubGroups ? expandableContainer.scrollTop : 0);
+
+        let currentX = event.clientX + kanbanContainer.scrollLeft;
+        if (currentY < this._kanbanPos.top && !this._draggedGroup) {
+            currentY = this._kanbanPos.top;
+        } else if (currentY > bottom && !this._draggedGroup) {
+            currentY = bottom;
+        }
+        if (currentX < this._kanbanPos.left) {
+            currentX = this._kanbanPos.left;
+        } else if (currentX > this._scrollWidth + this._kanbanOffset.x) {
+            currentX = this._scrollWidth + this._kanbanOffset.x;
+        }
+
+        return {
+            x: currentX,
+            y: currentY
+        };
     }
 
     /**
@@ -1009,6 +1041,39 @@ export default class Kanban extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    /**
+     * Scrolls the right item when autoscroll is needed
+     * @param {object} scrollStep The coordinates to scrollBy
+     * @param {HTMLElement} fieldContainer The field to scroll
+     * @param {HTMLElement[]} groups The groups containing the tiles
+     *
+     */
+    handleAutoScrollInterval(scrollStep, fieldContainer, groups) {
+        // Prevents from scrolling outside of the kanban
+        const overflowY =
+            fieldContainer.scrollHeight > this._initialScrollHeight;
+
+        const overflowX = fieldContainer.scrollWidth > this._initialScrollWidth;
+
+        if (!overflowX && (!overflowY || !this._hasSubGroups)) {
+            this._currentScrollTarget.scrollBy(scrollStep.x, scrollStep.y);
+            scrollStep.x =
+                this._currentScrollTarget.scrollLeft === 0 && scrollStep.x < 0
+                    ? 0
+                    : scrollStep.x;
+            scrollStep.y =
+                this._currentScrollTarget.scrollTop === 0 && scrollStep.y < 0
+                    ? 0
+                    : scrollStep.y;
+            this.translateByDelta(scrollStep);
+            this.handleDropZone({
+                currentTarget: this._draggedTile,
+                clientX: this._currentXScroll
+            });
+        }
+        this.handleScrollTiles(groups, this._currentScrollTarget.scrollTop);
     }
 
     handleMenuClick(event) {
@@ -1406,75 +1471,16 @@ export default class Kanban extends LightningElement {
             return;
         }
 
-        const kanbanContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__container"]'
-        );
+        const mousePos = this.capMousePos(event);
 
-        const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
-        );
-
-        this.computeKanbanBoundaries(
-            this._hasSubGroups ? kanbanContainer : fieldContainer
-        );
-
-        const expandableContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__expandable_container"]'
-        );
-
-        const bottom = this._hasSubGroups
-            ? this._initialScrollHeight
-            : this._kanbanPos.bottom;
-
-        if (
-            this._initialScrollWidth === kanbanContainer.offsetWidth &&
-            !this._hasSubGroups
-        ) {
-            kanbanContainer.style.overflowX = 'hidden';
-        } else if (!this._hasSubGroups) {
-            kanbanContainer.style.overflowX = 'scroll';
-        }
-
-        // Calculates the position of the mouse depending on the kanban boundaries
-        let currentY =
-            event.clientY +
-            (this._hasSubGroups ? expandableContainer.scrollTop : 0);
-
-        let currentX = event.clientX + kanbanContainer.scrollLeft;
-        if (currentY < this._kanbanPos.top && !this._draggedGroup) {
-            currentY = this._kanbanPos.top;
-        } else if (currentY > bottom && !this._draggedGroup) {
-            currentY = bottom;
-        }
-        if (currentX < this._kanbanPos.left) {
-            currentX = this._kanbanPos.left;
-        } else if (currentX > this._scrollWidth + this._kanbanOffset.x) {
-            currentX = this._scrollWidth + this._kanbanOffset.x;
-        }
-
-        if (this._draggedTile) {
-            // Sets the position of the dragged tile
-            this._draggedTile.style.transform = `translate(${
-                currentX - this._initialPos.x - this._clickOffset.x
-            }px, ${
-                currentY -
-                this._initialPos.y -
-                this._clickOffset.y +
-                this._scrollOffset
-            }px) rotate(3deg)`;
-        }
         if (this._draggedGroup) {
-            // Sets the position of the dragged group
             this.handleGroupMouseMove(event);
-            this._draggedGroup.style.transform = `translate(${
-                currentX - this._initialPos.x - this._clickOffset.x
-            }px, ${
-                currentY - this._initialPos.y - this._clickOffset.y
-            }px) rotate(3deg)`;
         }
+
+        this.translateToPos(mousePos);
 
         this.createTileSpace();
-        this.autoScroll(currentX, currentY);
+        this.autoScroll(mousePos.x, mousePos.y);
     }
 
     /**
@@ -1781,6 +1787,33 @@ export default class Kanban extends LightningElement {
         }px) translateY(${
             currentTranslate.translateY + (this._hasSubGroups ? delta.y : 0)
         }px) rotate(3deg)`;
+    }
+
+    /**
+     *
+     * Translates the dragged item to a new pos.
+     * @param {object} delta Amount of pixels to translate the dragged item
+     */
+    translateToPos(pos) {
+        if (this._draggedTile) {
+            // Sets the position of the dragged tile
+            this._draggedTile.style.transform = `translate(${
+                pos.x - this._initialPos.x - this._clickOffset.x
+            }px, ${
+                pos.y -
+                this._initialPos.y -
+                this._clickOffset.y +
+                this._scrollOffset
+            }px) rotate(3deg)`;
+        }
+        if (this._draggedGroup) {
+            // Sets the position of the dragged group
+            this._draggedGroup.style.transform = `translate(${
+                pos.x - this._initialPos.x - this._clickOffset.x
+            }px, ${
+                pos.y - this._initialPos.y - this._clickOffset.y
+            }px) rotate(3deg)`;
+        }
     }
 
     /**
