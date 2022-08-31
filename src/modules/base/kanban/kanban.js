@@ -1076,10 +1076,6 @@ export default class Kanban extends LightningElement {
         this.handleScrollTiles(groups, this._currentScrollTarget.scrollTop);
     }
 
-    handleMenuClick(event) {
-        event.stopPropagation();
-    }
-
     /**
      *
      *  Moves the tiles down when the dragged tile is hovering over
@@ -1295,6 +1291,16 @@ export default class Kanban extends LightningElement {
         );
         groupDropZone.style.height = `0px`;
         groupDropZone.style.width = `0px`;
+    }
+
+    /**
+     *
+     * Prevents dragging from a dropdown menu
+     * @param {Event} event
+     *
+     */
+    handleMenuClick(event) {
+        event.stopPropagation();
     }
 
     /**
