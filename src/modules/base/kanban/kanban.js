@@ -538,22 +538,14 @@ export default class Kanban extends LightningElement {
 
                     // Set the summary value to the old one to animate it gradually
                     if (
-                        summary.value ===
-                            this.truncateNumber(
-                                this._summarizeValues[group.index]
-                            ) &&
+                        this.truncateNumber(summary.value) ===
+                            this._summarizeValues[group.index] &&
                         j !== SUMMARY_UPDATE_SPEED - 1
                     ) {
-                        summary.value = this.truncateNumber(
-                            this._oldSummarizeValues[group.index]
-                        );
+                        summary.value = this._oldSummarizeValues[group.index];
                     }
 
-                    summary.value += this.truncateNumber(
-                        summarizeUpdate / SUMMARY_UPDATE_SPEED
-                    );
-
-                    summary.value = this.truncateNumber(summary.value);
+                    summary.value += summarizeUpdate / SUMMARY_UPDATE_SPEED;
                 }, 0.5 * j);
             }
         }
@@ -1556,7 +1548,7 @@ export default class Kanban extends LightningElement {
 
         this._computedGroups.forEach((group, i) => {
             this._summarizeValues[i] = group.summarize.value
-                ? group.summarize.value
+                ? this.truncateNumber(group.summarize.value)
                 : 0;
             if (!this.hideHeader) this.animateSummary(group);
         });
