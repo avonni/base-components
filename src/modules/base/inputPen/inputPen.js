@@ -579,6 +579,24 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * True if the selected tool is the drawing pencil.
+     *
+     * @type {boolean}
+     */
+    get selectedDraw() {
+        return this.mode === 'draw';
+    }
+
+    /**
+     * True if the selected tool is the paint brush.
+     *
+     * @type {boolean}
+     */
+    get selectedPaint() {
+        return this.mode === 'paint';
+    }
+
+    /**
      * Check if background fill tool is shown.
      * @type {boolean}
      *
