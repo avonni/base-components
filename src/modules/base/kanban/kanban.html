@@ -136,6 +136,7 @@
                     for:item="group"
                     key={group.index}
                     style={group.backgroundStyle}
+                    onmouseenter={clearScrollInterval}
                 >
                     <div
                         if:true={hideHeader}

@@ -70,8 +70,10 @@ export default class Kanban extends LightningElement {
     _clickOffset = { x: 0, y: 0 };
     _computedGroups = [];
     _connected = false;
+    _currentScrollTarget;
     _currentSubGroup = '';
     _currentSubGroupIndex = 0;
+    _currentXScroll = 0;
     _draggedGroup;
     _draggedTile;
     _droppedTileHeight = 0;
@@ -477,6 +479,7 @@ export default class Kanban extends LightningElement {
      * @param {number} currentY Current y position of the dragged tile
      */
     autoScroll(currentX, currentY) {
+        this._currentXScroll = currentX;
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
@@ -493,6 +496,7 @@ export default class Kanban extends LightningElement {
         let toScroll = scrollStep.x ? fieldContainer : group;
 
         toScroll = this._hasSubGroups ? fieldContainer : toScroll;
+        this._currentScrollTarget = toScroll;
 
         if (
             !this._scrollingInterval &&
@@ -507,22 +511,30 @@ export default class Kanban extends LightningElement {
                     fieldContainer.scrollWidth > this._initialScrollWidth;
 
                 if (!overflowX && (!overflowY || !this._hasSubGroups)) {
-                    toScroll.scrollBy(scrollStep.x, scrollStep.y);
+                    this._currentScrollTarget.scrollBy(
+                        scrollStep.x,
+                        scrollStep.y
+                    );
                     scrollStep.x =
-                        toScroll.scrollLeft === 0 && scrollStep.x < 0
+                        this._currentScrollTarget.scrollLeft === 0 &&
+                        scrollStep.x < 0
                             ? 0
                             : scrollStep.x;
                     scrollStep.y =
-                        toScroll.scrollTop === 0 && scrollStep.y < 0
+                        this._currentScrollTarget.scrollTop === 0 &&
+                        scrollStep.y < 0
                             ? 0
                             : scrollStep.y;
                     this.translateByDelta(scrollStep);
                     this.handleDropZone({
                         currentTarget: this._draggedTile,
-                        clientX: currentX
+                        clientX: this._currentXScroll
                     });
                 }
-                this.handleScrollTiles(groups, toScroll.scrollTop);
+                this.handleScrollTiles(
+                    groups,
+                    this._currentScrollTarget.scrollTop
+                );
             }, 20);
         }
 
@@ -1021,8 +1033,10 @@ export default class Kanban extends LightningElement {
             : '[data-element-id="avonni-kanban__group"]';
         const groupElements = this.template.querySelectorAll(groupSelector);
 
-        this.updateReleasedTileIndex(groupElements);
-        this.animateTiles(groupElements);
+        if (this._draggedTile) {
+            this.updateReleasedTileIndex(groupElements);
+            this.animateTiles(groupElements);
+        }
     }
 
     /**
@@ -1798,7 +1812,7 @@ export default class Kanban extends LightningElement {
             (event.clientX + 0.5 * remToPx) / this._groupWidth;
 
         this._releasedGroupIndex = Math.min(
-            Math.floor(mouseHoveringGroup + scrolledGroupsCount),
+            Math.trunc(mouseHoveringGroup + scrolledGroupsCount),
             this.groupValues.length - 1
         );
     }
