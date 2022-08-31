@@ -553,15 +553,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * On single-line variant, do not apply height 100% to list container.
-     */
-    get computedListWrapperClass() {
-        return classSet('slds-grid slds-grid_vertical-align-center').add({
-            'avonni-list__list-full-height': this._variant !== 'single-line'
-        });
-    }
-
-    /**
      * FirstAction is used when only 1 action is present in computedActions.
      *
      * @type {object}
@@ -1404,9 +1395,9 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    spinner.scrollIntoView({ behavior: 'smooth' });
+                    spinner.scrollIntoView({ behavior: 'smooth', block: "end"});
                 }
-            }, 10);
+            }, 20);
         }
     }
 

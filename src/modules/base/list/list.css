@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.avonni-list__full-height {
+    max-height: 100%;
+}
+
 .avonni-list__item-menu {
     --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
     align-self: baseline;
@@ -108,10 +112,6 @@
 
 .avonni-list__item-sortable-icon-cursor {
     cursor: grab;
-}
-
-.avonni-list__list-full-height {
-    height: 100%;
 }
 
 .avonni-list__lower-spinner {

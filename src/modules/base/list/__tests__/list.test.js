@@ -183,7 +183,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('avonni-list__has-card-style');
         });
@@ -193,7 +193,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-has-dividers_top-space');
         });
@@ -203,7 +203,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
@@ -380,7 +380,7 @@ describe('List', () => {
                 '[data-element-id="li-item"]'
             );
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
 
             expect(menu.role).toBe('listbox');
@@ -478,7 +478,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-grid_vertical');
         });
@@ -488,7 +488,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-wrap');
         });
@@ -498,7 +498,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-container"]'
+                '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-wrap');
         });

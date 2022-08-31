@@ -71,7 +71,7 @@ export default class GridWithInfiniteLoading extends LightningElement {
         setTimeout(() => {
             const newItems = this.items.concat(this.loadedItems);
 
-            if (newItems.length >= 20) {
+            if (newItems.length >= 30) {
                 this.isLoading = false;
                 this.enableInfiniteLoading = false;
             } else {
