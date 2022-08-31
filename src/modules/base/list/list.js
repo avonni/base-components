@@ -117,7 +117,12 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _divider;
     _enableInfiniteLoading = false;
-    _imageAttributes = {};
+    _imageAttributes = {
+        size: 'large',
+        cropPositionX: 50,
+        cropPositionY: 50,
+        cropFit: 'cover'
+    };
     _imageSrc = [];
     _isLoading = false;
     _items = [];

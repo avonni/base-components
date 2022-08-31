@@ -34,7 +34,6 @@ import { LightningElement, api } from 'lwc';
 
 export default class InfiniteGrid extends LightningElement {
     @api label;
-    @api items;
     @api alternativeText;
     @api sortable;
     @api actions;
@@ -47,10 +46,11 @@ export default class InfiniteGrid extends LightningElement {
     @api mediumContainerCols;
     @api largeContainerCols;
     @api imageAttributes;
-    @api enableInfiniteLoading;
     @api loadMoreOffset;
 
+    _enableInfiniteLoading = true;
     _isLoading = false;
+    _items;
 
     @api
     get isLoading() {
@@ -61,23 +61,40 @@ export default class InfiniteGrid extends LightningElement {
         this._isLoading = value;
     }
 
+    @api
+    get items() {
+        return this._items;
+    }
+
+    set items(value) {
+        this._items = value;
+    }
+
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = value;
+    }
+
     connectedCallback() {
         this._loadedItems = this.items;
     }
 
-    loadMoreData(event) {
-        const target = event.target;
+    loadMoreData() {
         this._isLoading = true;
 
         setTimeout(() => {
-            const newItems = target.items.concat(this._loadedItems);
+            const newItems = this.items.concat(this._loadedItems);
 
             if (newItems.length >= 20) {
                 this._isLoading = false;
-                target.enableInfiniteLoading = false;
+                this._enableInfiniteLoading = false;
             } else {
                 this._isLoading = false;
-                target.items = newItems;
+                this._items = newItems;
             }
         }, 1000);
     }

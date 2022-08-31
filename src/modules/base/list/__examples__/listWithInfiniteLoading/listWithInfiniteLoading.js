@@ -1,20 +1,9 @@
 import { LightningElement } from 'lwc';
 
 export default class ListWithInfiniteLoading extends LightningElement {
-    _isLoading = false;
 
-    get isLoading() {
-        return this._isLoading;
-    }
-
-    set isLoading(value) {
-        this._isLoading = value;
-    }
-
-    connectedCallback() {
-        this._loadedItems = this.items;
-    }
-
+    isLoading = false;
+    enableInfiniteLoading = true;
     items = [
         {
             label: 'Item 1',
@@ -48,7 +37,6 @@ export default class ListWithInfiniteLoading extends LightningElement {
             name: 'name-item-5'
         }
     ];
-
     actions = [
         {
             label: 'Completed',
@@ -70,19 +58,23 @@ export default class ListWithInfiniteLoading extends LightningElement {
         }
     ];
 
-    loadMoreData(event) {
-        const target = event.target;
-        this._isLoading = true;
+
+    connectedCallback() {
+        this.loadedItems = this.items;
+    }
+
+    loadMoreData() {
+        this.isLoading = true;
 
         setTimeout(() => {
-            const newItems = target.items.concat(this._loadedItems);
+            const newItems = this.items.concat(this.loadedItems);
 
             if (newItems.length >= 20) {
-                this._isLoading = false;
-                target.enableInfiniteLoading = false;
+                this.isLoading = false;
+                this.enableInfiniteLoading = false;
             } else {
-                this._isLoading = false;
-                target.items = newItems;
+                this.isLoading = false;
+                this.items = newItems;
             }
         }, 1000);
     }

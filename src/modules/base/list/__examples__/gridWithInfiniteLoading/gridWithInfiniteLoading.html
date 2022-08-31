@@ -1,17 +1,20 @@
 <template>
-    <avonni-list
-        actions={actions}
-        divider="around"
-        image-attributes={imageAttributes}
-        items={items}
-        label="Grid with infinite loading"
-        load-more-offset="100"
-        variant="grid"
-        cols="1"
-        small-container-cols="3"
-        medium-container-cols="4"
-        large-container-cols="6"
-        enable-infinite-loading
-        onloadmore={loadMoreData}
-    ></avonni-list>
+    <div style="max-height: 500px">
+        <avonni-list
+            actions={actions}
+            divider="around"
+            image-attributes={imageAttributes}
+            items={items}
+            label="Grid with infinite loading"
+            load-more-offset="100"
+            variant="grid"
+            cols="1"
+            small-container-cols="3"
+            medium-container-cols="4"
+            large-container-cols="6"
+            enable-infinite-loading={enableInfiniteLoading}
+            is-loading={isLoading}
+            onloadmore={loadMoreData}
+        ></avonni-list>
+    </div>
 </template>
