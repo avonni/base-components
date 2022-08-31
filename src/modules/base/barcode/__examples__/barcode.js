@@ -38,22 +38,24 @@ export const Barcode = ({
     background,
     color,
     renderAs,
-    size,
     value,
     hideValue,
     checksum,
     textColor,
-    type
+    type,
+    width,
+    height
 }) => {
     const element = document.createElement('ac-base-barcode');
     element.background = background;
     element.color = color;
     element.renderAs = renderAs;
-    element.size = size;
     element.value = value;
     element.hideValue = hideValue;
     element.checksum = checksum;
     element.textColor = textColor;
     element.type = type;
+    element.width = width;
+    element.height = height;
     return element;
 };

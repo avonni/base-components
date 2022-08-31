@@ -233,97 +233,155 @@ export default {
         checksum: false,
         color: '#000000',
         hideValue: false,
-        size: 300,
-        textColor: '#000000',
-        type: 'code39'
+        textColor: '#000000'
     }
 };
 
 const Template = (args) => Barcode(args);
 
-export const Base = Template.bind({});
-Base.args = {
-    value: '12000-311123',
-    type: 'code128',
-    hideValue: false
-};
+// export const Base = Template.bind({});
+// Base.args = {
+//     value: '1',
+//     height: 150,
+//     width: 200
+// };
 
 export const azteccode = Template.bind({});
 azteccode.args = {
     value: '12000-311123',
     type: 'azteccode',
+    height: 150
 };
 
 export const code11 = Template.bind({});
 code11.args = {
     value: '12000-311123',
     type: 'code11',
+    height: 150
 };
 
 export const code39 = Template.bind({});
 code39.args = {
     value: '12000-311123',
     type: 'code39',
+    height: 150
 };
 
 export const databarexpanded = Template.bind({});
 databarexpanded.args = {
-    value: '12000-311123',
+    value: '(01)95012345678903(3103)000123',
     type: 'databarexpanded',
+    height: 150
+};
+
+export const databarstackedcomposite = Template.bind({});
+databarstackedcomposite.args = {
+    value: '(01)03412345678900|(17)010200',
+    type: 'databarstackedcomposite',
+    height: 150
+};
+
+export const datamatrix = Template.bind({});
+datamatrix.args = {
+    value: 'https://www.avonni.app',
+    type: 'datamatrix',
+    height: 150
+};
+
+export const dotcode = Template.bind({});
+dotcode.args = {
+    value: 'Takes any input',
+    type: 'dotcode',
+    height: 150
 };
 
 export const ean13 = Template.bind({});
 ean13.args = {
-    value: '12000-311123',
+    value: '2112345678900',
     type: 'ean13',
+    height: 150
 };
 
-export const gs1128 = Template.bind({});
-gs1128.args = {
-    value: '12000-311123',
+export const gs1_128 = Template.bind({});
+gs1_128.args = {
+    value: '(01)95012345678903(3103)000123',
     type: 'gs1-128',
+    height: 150
+};
+
+export const gs1northamericancoupon = Template.bind({});
+gs1northamericancoupon.args = {
+    value: '(8110)106141416543213500110000310123196000',
+    type: 'gs1northamericancoupon',
+    height: 150
+};
+
+export const gs1qrcode = Template.bind({});
+gs1qrcode.args = {
+    value: '(01)03453120000011(8200)https://www.avonni.app(10)ABCD1234(410)9501101020917',
+    type: 'gs1qrcode',
+    height: 150
 };
 
 export const hanxin = Template.bind({});
 hanxin.args = {
     value: '12000-311123',
     type: 'hanxin',
+    height: 150
 };
 
 export const isbn = Template.bind({});
 isbn.args = {
     value: '978-3-16-148410-0', // add format to doc 
     type: 'isbn',
+    height: 150
 };
 
 export const pdf417 = Template.bind({});
 pdf417.args = {
     value: '12000-311123',
     type: 'pdf417',
+    height: 150
 };
 
 export const plessey = Template.bind({});
 plessey.args = {
-    value: '12000-311123',
+    value: '01234ABCD',
     type: 'plessey',
+    height: 150
 };
 
 export const postnet = Template.bind({});
 postnet.args = {
     value: '12000',
-    type: 'postnet'
+    type: 'postnet',
+    width: 200
 };
 
 export const qrcode = Template.bind({});
 qrcode.args = {
-    value: '12000',
-    type: 'qrcode'
+    value: 'https://www.avonni.app',
+    type: 'qrcode',
+    width: 300
+};
+
+export const ultracode = Template.bind({});
+ultracode.args = {
+    value: 'https://www.avonni.app',
+    type: 'ultracode',
+    height: 150
+};
+
+export const upca = Template.bind({});
+upca.args = {
+    value: '1200034',
+    type: 'upca',
+    height: 150
 };
 
 export const upce = Template.bind({});
 upce.args = {
     value: '1200034',
-    type: 'upce'
+    type: 'upce',
+    height: 150
 };
-
-// Provide examples for: azteccode, code11, code39, databarexpanded, ean13, gs1-128, hanxin, isbn, pdf417, plessey, qrcode, upce

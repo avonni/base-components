@@ -33,15 +33,10 @@
 -->
 
 <template>
-    <template if:false={invalidValue}>
+    <div if:true={validCode} class="slds-text-align_center">
         <canvas style={barcodeStyle} data-element-id="barcode"></canvas>
-    </template>
-    <template if:true={invalidValue}>
-        <div class="slds-text-color_error">
-            <p>Invalid value format for {type} barcode.</p>
-            <p if:true={formatRules}>
-                Follow these format rules: {formatRules}.
-            </p>
-        </div>
-    </template>
+    </div>
+    <p class="slds-text-color_error" if:true={errorMessage}>
+        Error: {errorMessage}
+    </p>
 </template>

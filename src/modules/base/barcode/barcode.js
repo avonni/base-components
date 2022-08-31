@@ -31,24 +31,121 @@
 //  */
 
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeString,
-} from 'c/utilsPrivate';
-import {
-    BARCODE_VALUE_FORMAT,
-    BWIPP_ENCODERS
-} from './barcodeUtils';
+import { normalizeBoolean } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
-
-const SYMBOLOGY = {
-    valid: BWIPP_ENCODERS,
-    default: 'code39'
-};
+import { normalizeString } from '../utilsPrivate/normalize';
 
 const DEFAULT_BACKGROUND = '#ffffff';
 const DEFAULT_COLOR = '#000000';
 const DEFAULT_TEXT_COLOR = '#000000';
+const BWIPP_ENCODERS = [
+    'auspost',
+    'azteccode',
+    'azteccodecompact',
+    'aztecrune',
+    'bc412',
+    'channelcode',
+    'codablockf',
+    'code11',
+    'code128',
+    'code16k',
+    'code2of5',
+    'code32',
+    'code39',
+    'code39ext',
+    'code49',
+    'code93',
+    'code93ext',
+    'codeone',
+    'coop2of5',
+    'daft',
+    'databarexpanded',
+    'databarexpandedcomposite',
+    'databarexpandedstacked',
+    'databarexpandedstackedcomposite',
+    'databarlimited',
+    'databarlimitedcomposite',
+    'databaromni',
+    'databaromnicomposite',
+    'databarstacked',
+    'databarstackedcomposite',
+    'databarstackedomni',
+    'databarstackedomnicomposite',
+    'databartruncated',
+    'databartruncatedcomposite',
+    'datalogic2of5',
+    'datamatrix',
+    'datamatrixrectangular',
+    'datamatrixrectangularextension',
+    'dotcode',
+    'ean13',
+    'ean13composite',
+    'ean14',
+    'ean2',
+    'ean5',
+    'ean8',
+    'ean8composite',
+    'flattermarken',
+    'gs1-128',
+    'gs1-128composite',
+    'gs1-cc',
+    'gs1datamatrix',
+    'gs1datamatrixrectangular',
+    'gs1dotcode',
+    'gs1northamericancoupon',
+    'gs1qrcode',
+    'hanxin',
+    'hibcazteccode',
+    'hibccodablockf',
+    'hibccode128',
+    'hibccode39',
+    'hibcdatamatrix',
+    'hibcdatamatrixrectangular',
+    'hibcmicropdf417',
+    'hibcpdf417',
+    'hibcqrcode',
+    'iata2of5',
+    'identcode',
+    'industrial2of5',
+    'interleaved2of5',
+    'isbn',
+    'ismn',
+    'issn',
+    'itf14',
+    'japanpost',
+    'kix',
+    'leitcode',
+    'mailmark',
+    'matrix2of5',
+    'maxicode',
+    'micropdf417',
+    'microqrcode',
+    'msi',
+    'onecode',
+    'pdf417',
+    'pdf417compact',
+    'pharmacode',
+    'pharmacode2',
+    'planet',
+    'plessey',
+    'posicode',
+    'postnet',
+    'pzn',
+    'qrcode',
+    'rationalizedCodabar',
+    'raw',
+    'rectangularmicroqrcode',
+    'royalmail',
+    'sscc18',
+    'symbol',
+    'telepen',
+    'telepennumeric',
+    'ultracode',
+    'upca',
+    'upcacomposite',
+    'upce',
+    'upcecomposite'
+];
 
 /**
  * @class
@@ -86,15 +183,6 @@ export default class Barcode extends LightningElement {
     @api textColor = DEFAULT_TEXT_COLOR;
 
     /**
-     * The barcode type. The supported barcode types are auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni,  databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, datamatrixrectangularextension, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1dotcode, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, mailmark, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode, pharmacode2, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, rectangularmicroqrcode, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce and upcecomposite.
-     *
-     * @public
-     * @type {string}
-     * @default code39
-     */
-    @api type = SYMBOLOGY.default;
-
-    /**
      * The value of the barcode.
      *
      * @public
@@ -103,19 +191,13 @@ export default class Barcode extends LightningElement {
     @api value;
 
     _checksum = false;
+    _errorMessage;
     _hideValue = false;
-    _type = SYMBOLOGY.default;
-
-    invalidValue = false;
+    _type;
+    validCode = true;
 
     renderedCallback() {
-        try {
-            this.renderBarcode();
-            this.invalidValue = false;
-        } catch (e) {
-            console.log(e, this.type);
-            this.invalidValue = true;
-        }
+        this.renderBarcode();
     }
 
     /*
@@ -123,14 +205,6 @@ export default class Barcode extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * The format that the barcode value should follow.
-     */
-    @api
-    get formatRules() {
-        return BARCODE_VALUE_FORMAT.get(this.type);
-    }
 
     /**
      * Hide the value of the barcode checksum. If true, the barcode will display the checksum digit next to the value in the text area.
@@ -163,6 +237,22 @@ export default class Barcode extends LightningElement {
     }
 
     /**
+     * The barcode type. The supported barcode types are auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni,  databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, datamatrixrectangularextension, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1dotcode, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, mailmark, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode, pharmacode2, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, rectangularmicroqrcode, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce and upcecomposite.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = normalizeString(value, {
+            validValues: BWIPP_ENCODERS
+        });
+    }
+
+    /**
      * The width of the code.
      *
      * @public
@@ -173,7 +263,10 @@ export default class Barcode extends LightningElement {
         return this._width;
     }
     set width(value) {
-        this._width = value;
+        const numValue = parseInt(value, 10);
+        if (numValue != null) {
+            this._width = value;
+        }
     }
 
     /**
@@ -187,7 +280,10 @@ export default class Barcode extends LightningElement {
         return this._height;
     }
     set height(value) {
-        this._height = value;
+        const numValue = parseInt(value, 10);
+        if (numValue != null) {
+            this._height = value;
+        }
     }
 
     /*
@@ -204,45 +300,67 @@ export default class Barcode extends LightningElement {
         return color.substring(1);
     }
 
-    /**
-     * Returns the canvas DOM element.
-     *
-     * @returns {object} canvas
-     */
-    get canvas() {
-        return this.template.querySelector('[data-element-id="barcode"]');
+    widthStyle() {
+        return this.width != null
+            ? `max-width: ${this.width}px;`
+            : 'width: 100%;';
     }
-
-    get widthStyle() {
-        return this.width != null ? `width: ${this.width}px;`: 'width: 100%;';
-    }
-    get heightStyle() {
-        return this.height != null ? `height: ${this.height}px;`: '';
+    heightStyle() {
+        return this.height != null ? `max-height: ${this.height}px;` : '';
     }
 
     /**
      * Sets the width for the canvas.
      */
     get barcodeStyle() {
-        return `${this.widthStyle} ${this.heightStyle} object-fit: contain;`;
+        return `${this.widthStyle()} ${this.heightStyle()} object-fit: contain; object-position: 50% 0`;
+    }
+
+    get errorMessage() {
+        return this._errorMessage;
+    }
+
+    parseErrorMessage(message) {
+        let errorMessage = message;
+        if (message.indexOf('bwipp.') !== -1) {
+            errorMessage = message.substring(message.indexOf('bwipp.') + 6)
+        }
+        if (message.indexOf('bwip-js: ') !== -1) {
+            errorMessage = message.substring(message.indexOf('bwip-js: ') + 9)
+        }
+        errorMessage = errorMessage.replace(' bcid ', ' type ')
+        return errorMessage;
     }
 
     /**
      * Renders barcode with Bwipjs library.
      */
-    // renderWithBwipJs() {
     renderBarcode() {
-        const canvas = this.canvas;
-        bwipjs.toCanvas(canvas, {
-            bcid: this.type,
-            text: this.value,
-            includetext: !this.hideValue,
-            includecheck: this.checksum,
-            includecheckintext: this.checksum,
-            textxalign: 'center',
-            barcolor: this.colorHexCode(this.color),
-            backgroundcolor: this.colorHexCode(this.background),
-            textcolor: this.colorHexCode(this.textColor)
-        });
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        try {
+            bwipjs.toCanvas(canvas, {
+                bcid: this.type,
+                text: this.value,
+                includetext: !this.hideValue,
+                includecheck: this.checksum,
+                includecheckintext: this.checksum,
+                textxalign: 'center',
+                segments: 8,
+                paddingheight: 10,
+                barcolor: this.colorHexCode(this.color),
+                backgroundcolor: this.colorHexCode(this.background),
+                textcolor: this.colorHexCode(this.textColor),
+                scale: 10
+            });
+            this._errorMessage = null;
+            this.validCode = true;
+        } catch (e) {
+            if (e.message) {
+                this._errorMessage = this.parseErrorMessage(e.message);
+            }
+            this.validCode = false;
+        }
     }
 }
