@@ -51,7 +51,7 @@ export default {
                 'If set to true, the Barcode will display the checksum digit next to the value in the text area.',
             table: {
                 type: { summary: 'boolean' },
-                category: 'Layout'
+                category: 'Values'
             }
         },
         color: {
@@ -79,7 +79,7 @@ export default {
             description: 'If present, the barcode value is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                category: 'Layout'
+                category: 'Values'
             }
         },
         textColor: {
@@ -355,14 +355,14 @@ export const postnet = Template.bind({});
 postnet.args = {
     value: '12000',
     type: 'postnet',
-    width: 200
+    height: 150
 };
 
 export const qrcode = Template.bind({});
 qrcode.args = {
     value: 'https://www.avonni.app',
     type: 'qrcode',
-    width: 300
+    height: 150
 };
 
 export const ultracode = Template.bind({});
