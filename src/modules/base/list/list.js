@@ -715,7 +715,7 @@ export default class List extends LightningElement {
      */
     get computedListClass() {
         return classSet(
-            'avonni-list__item-menu slds-grid slds-scrollable_y slds-is-relative slds-col'
+            'avonni-list__item-menu slds-grid slds-is-relative slds-col'
         )
             .add({
                 'slds-grid_vertical': this.variant === 'list',
@@ -1395,7 +1395,7 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    spinner.scrollIntoView({ behavior: 'smooth', block: "end"});
+                    this.listContainer.scrollTo(0, this.listContainer.scrollHeight)
                 }
             }, 20);
         }
