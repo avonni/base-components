@@ -50,11 +50,6 @@
     overscroll-behavior-block: contain;
 }
 
-.avonni-horizontal-activity-timeline__item-popover-date-actions {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    text-align: right;
-    align-items: center;
-    vertical-align: bottom;
+.avonni-horizontal-activity-timeline__popover-header {
+    background: #f3f3f3;
 }

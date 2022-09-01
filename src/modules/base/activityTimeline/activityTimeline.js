@@ -647,7 +647,7 @@ export default class ActivityTimeline extends LightningElement {
         if (this.selectedItem.iconName.includes('action:')) {
             return 'x-small';
         }
-        return 'small';
+        return 'medium';
     }
 
     /**

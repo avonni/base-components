@@ -41,8 +41,6 @@ const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
-const DEFAULT_POPOVER_CLASSES =
-    'slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small';
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
@@ -66,7 +64,7 @@ const TIMELINE_COLORS = {
     scrollAxisItemRect: '#b0adab', // $color-gray-7
     intervalBackground: '#1b96ff', // $color-brand
     intervalBorder: '#0176d3', // $palette-blue-50
-    popoverBackground: '#f3f3f3', //$palette-neutral-95
+    popoverBackground: '#ffffff',
     timelineBorder: '#c9c9c9', // $card-color-border
     axisLabel: '#181818' // $color-text-action-label-active
 };
@@ -81,6 +79,10 @@ const Y_START_POSITION_TIMELINE_ITEM = 10;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
+
+// TODO: Fix popover positions (offset top or bottom)
+// TODO: Fix nubbin on top and color
+// TODO: Add bold to label of fields
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -583,11 +585,7 @@ export class HorizontalActivityTimeline {
      * @return {string}
      */
     computedPopoverClasses(element, direction) {
-        return (
-            this.getPopoverNubbinClass(element, direction) +
-            ' ' +
-            DEFAULT_POPOVER_CLASSES
-        );
+        return this.getPopoverNubbinClass(element, direction);
     }
 
     /**
@@ -1085,9 +1083,8 @@ export class HorizontalActivityTimeline {
             .style('top', popoverPosition.y + 'px')
             .style('left', popoverPosition.x + 'px')
             .style('background', TIMELINE_COLORS.popoverBackground)
-            .attr(
-                'class',
-                this.computedPopoverClasses(element, popoverPosition.direction)
+            .classed(
+                this.computedPopoverClasses(element, popoverPosition.direction), true
             )
             .on('mouseenter', this.handleMouseOverOnPopover.bind(this))
             .on('mouseleave', this.handleMouseOutOfPopover.bind(this));
