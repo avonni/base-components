@@ -38,6 +38,12 @@ import { normalizeString } from '../utilsPrivate/normalize';
 const DEFAULT_BACKGROUND = '#ffffff';
 const DEFAULT_COLOR = '#000000';
 const DEFAULT_TEXT_COLOR = '#000000';
+const TEXT_X_ALIGN = {
+    valid: ['offleft', 'left', 'center', 'right', 'offright', 'justify'],
+    default: 'center'}
+const TEXT_Y_ALIGN = {
+    valid: ['below', 'center', 'above'],
+    default: 'below'}
 const BWIPP_ENCODERS = [
     'auspost',
     'azteccode',
@@ -237,6 +243,21 @@ export default class Barcode extends LightningElement {
     }
 
     /**
+     * Horizontal text alignment.
+     *
+     * @public
+     * @type {boolean}
+     * @default center
+     */
+    @api
+    get horizontalTextAlignment() { // name???
+        return this._hideValue;
+    }
+    set horizontalTextAlignment(value) {
+        this._hideValue = normalizeBoolean(value);
+    }
+
+    /**
      * The barcode type. The supported barcode types are auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni,  databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, datamatrixrectangularextension, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1dotcode, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, mailmark, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode, pharmacode2, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, rectangularmicroqrcode, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce and upcecomposite.
      *
      * @public
@@ -300,20 +321,13 @@ export default class Barcode extends LightningElement {
         return color.substring(1);
     }
 
-    widthStyle() {
-        return this.width != null
-            ? `max-width: ${this.width}px;`
-            : 'width: 100%;';
-    }
-    heightStyle() {
-        return this.height != null ? `max-height: ${this.height}px;` : '';
-    }
-
     /**
      * Sets the width for the canvas.
      */
     get barcodeStyle() {
-        return `${this.widthStyle()} ${this.heightStyle()} object-fit: contain; object-position: 50% 0`;
+        return `${
+            this.width != null ? `max-width: ${this.width}px;` : 'width: 100%;'
+        } ${this.height != null ? `max-height: ${this.height}px;` : ''}`;
     }
 
     get errorMessage() {
@@ -323,12 +337,12 @@ export default class Barcode extends LightningElement {
     parseErrorMessage(message) {
         let errorMessage = message;
         if (message.indexOf('bwipp.') !== -1) {
-            errorMessage = message.substring(message.indexOf('bwipp.') + 6)
+            errorMessage = message.substring(message.indexOf('bwipp.') + 6);
         }
         if (message.indexOf('bwip-js: ') !== -1) {
-            errorMessage = message.substring(message.indexOf('bwip-js: ') + 9)
+            errorMessage = message.substring(message.indexOf('bwip-js: ') + 9);
         }
-        errorMessage = errorMessage.replace(' bcid ', ' type ')
+        errorMessage = errorMessage.replace(' bcid ', ' type ');
         return errorMessage;
     }
 
@@ -346,9 +360,8 @@ export default class Barcode extends LightningElement {
                 includetext: !this.hideValue,
                 includecheck: this.checksum,
                 includecheckintext: this.checksum,
-                textxalign: 'center',
+                textxalign: 'left', // accept: offleft, left, center, right, offright, justify; textyalign, below, center, above
                 segments: 8,
-                paddingheight: 10,
                 barcolor: this.colorHexCode(this.color),
                 backgroundcolor: this.colorHexCode(this.background),
                 textcolor: this.colorHexCode(this.textColor),

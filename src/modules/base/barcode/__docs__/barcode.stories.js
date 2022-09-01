@@ -90,6 +90,15 @@ export default {
                 category: 'Color'
             }
         },
+        textXAlign: {
+            control: 'select',
+            options: ['offleft', 'left', 'center', 'right', 'offright', 'justify'],
+            description: 'Defines the color of the text.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Color'
+            }
+        },
         type: {
             control: {
                 type: 'select'
