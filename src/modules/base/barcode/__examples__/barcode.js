@@ -42,6 +42,7 @@ export const Barcode = ({
     hideValue,
     checksum,
     textColor,
+    textAlignment,
     type,
     width,
     height
@@ -54,6 +55,7 @@ export const Barcode = ({
     element.hideValue = hideValue;
     element.checksum = checksum;
     element.textColor = textColor;
+    element.textAlignment = textAlignment;
     element.type = type;
     element.width = width;
     element.height = height;

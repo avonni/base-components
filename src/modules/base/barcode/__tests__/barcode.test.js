@@ -56,46 +56,104 @@ describe('Barcode', () => {
     it('Barcode: Default attributes', () => {
         expect(element.background).toBe('#ffffff');
         expect(element.color).toBe('#000000');
-        expect(element.renderAs).toBe('svg');
-        expect(element.size).toBe(300);
+        expect(element.height).toBeUndefined();
         expect(element.hideValue).toBe(false);
-        expect(element.checksum).toBe(false);
+        expect(element.checksum).toBe(true);
+        expect(element.textAlignment).toBe('bottom-center');
         expect(element.textColor).toBe('#000000');
-        expect(element.type).toBe('CODE39');
+        expect(element.type).toBeUndefined();
+        expect(element.width).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
 
-    // alternative type
+    // type
     it('Barcode: alternative type', () => {
-        element.type = 'CODE128';
+        element.type = 'code128';
+
         return Promise.resolve().then(() => {
-            expect(element.type).toBe('CODE128');
+            expect(element.type).toBe('code128');
         });
     });
 
-    // non valid alternative type
-    it('Barcode: non valid alternative type', () => {
-        element.type = 'NON VALID';
+    // invalid type
+    it('Barcode: non valid type', () => {
+        element.type = 'non-valid';
+
         return Promise.resolve().then(() => {
-            expect(element.type).toBe('NON VALID');
+            expect(element.type).toBeFalsy();
         });
     });
 
-    // alternative checksum with bwipjs
-    it('Barcode: alternative checksum with jsbarcode', () => {
-        element.checksum = true;
+    // value
+    it('Barcode: value', () => {
+        element.value = '1234';
+
         return Promise.resolve().then(() => {
-            expect(element.checksum).toBe(true);
+            expect(element.value).toBe('1234');
         });
     });
 
-    // alternative checksum with jsbarcode
-    it('Barcode: alternative checksum with bwipjs', () => {
-        element.checksum = true;
-        element.type = 'CODE128';
+    // COLORS
+    // background
+    it('Barcode: background', () => {
+        element.background = '#eee';
+
         return Promise.resolve().then(() => {
-            expect(element.type).toBe('CODE128');
+            expect(element.background).toBe('#eee');
         });
+    });
+
+    // color
+    it('Barcode: color', () => {
+        element.color = '#eee';
+
+        return Promise.resolve().then(() => {
+            expect(element.color).toBe('#eee');
+        });
+    });
+
+    // text color
+    it('Barcode: text-color', () => {
+        element.textColor = '#eee';
+
+        return Promise.resolve().then(() => {
+            expect(element.textColor).toBe('#eee');
+        });
+    });
+
+    // LAYOUT
+    // text color
+    it('Barcode: text-alignment', () => {
+        element.textAlignment = 'top-justify';
+
+        return Promise.resolve().then(() => {
+            expect(element.textAlignment).toBe('top-justify');
+        });
+    });
+
+    // text color
+    it('Barcode: width', () => {
+        element.textAlignment = 'top-justify';
+
+        return Promise.resolve().then(() => {
+            expect(element.textAlignment).toBe('top-justify');
+        });
+    });
+
+    // RENDERED BARCODES
+    it('Barcode: type and value', () => {
+        element.value = '1234';
+
+        return Promise.resolve().then(() => {
+
+        })
+        .then(() => {
+            const barcode = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+
+            expect(barcode).toBeTruthy();
+        })
     });
 });

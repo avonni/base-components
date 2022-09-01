@@ -34,9 +34,17 @@
 
 <template>
     <div if:true={validCode} class="slds-text-align_center">
-        <canvas style={barcodeStyle} class="avonni-barcode_code-position" data-element-id="barcode"></canvas>
+        <canvas
+            style={barcodeStyle}
+            class="avonni-barcode_code-position"
+            data-element-id="avonni-barcode-canvas"
+        ></canvas>
     </div>
-    <p class="slds-text-color_error" if:true={errorMessage}>
+    <p
+        if:true={errorMessage}
+        class="slds-text-color_error"
+        data-element-id="avonni-barcode-error-message"
+    >
         Error: {errorMessage}.
     </p>
 </template>

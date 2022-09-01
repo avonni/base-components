@@ -73,6 +73,7 @@ export default {
             }
         },
         hideValue: {
+            name: 'hide-value',
             control: {
                 type: 'boolean'
             },
@@ -83,6 +84,7 @@ export default {
             }
         },
         textColor: {
+            name: 'text-color',
             control: 'color',
             description: 'Defines the color of the text.',
             table: {
@@ -90,13 +92,27 @@ export default {
                 category: 'Color'
             }
         },
-        textXAlign: {
+        textAlignment: {
+            name: 'text-alignment',
             control: 'select',
-            options: ['offleft', 'left', 'center', 'right', 'offright', 'justify'],
-            description: 'Defines the color of the text.',
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'top-justify',
+                'center-left',
+                'center-center',
+                'center-right',
+                'center-justify',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right',
+                'bottom-justify'
+            ],
+            description: 'Defines the horizontal text alignment.',
             table: {
                 type: { summary: 'string' },
-                category: 'Color'
+                category: 'Layout'
             }
         },
         type: {
@@ -210,7 +226,7 @@ export default {
                 'upcacomposite',
                 'upce',
                 'upcecomposite'],
-            description: 'The type changes the encoding of the barcode value.',
+            description: 'The type of encoding selected to create the barcode.',
             table: {
                 type: { summary: 'string' },
                 category: 'Values'
@@ -239,21 +255,15 @@ export default {
     },
     args: {
         background: '#ffffff',
-        checksum: false,
+        checksum: true,
         color: '#000000',
         hideValue: false,
-        textColor: '#000000'
+        textColor: '#000000',
+        textAlignment: 'bottom-center',
     }
 };
 
 const Template = (args) => Barcode(args);
-
-// export const Base = Template.bind({});
-// Base.args = {
-//     value: '1',
-//     height: 150,
-//     width: 200
-// };
 
 export const azteccode = Template.bind({});
 azteccode.args = {
@@ -358,6 +368,14 @@ plessey.args = {
     value: '01234ABCD',
     type: 'plessey',
     height: 150
+};
+
+export const plesseyTextTopLeft = Template.bind({});
+plesseyTextTopLeft.args = {
+    value: '01234ABCD',
+    type: 'plessey',
+    height: 150,
+    textAlignment: 'top-left',
 };
 
 export const postnet = Template.bind({});
