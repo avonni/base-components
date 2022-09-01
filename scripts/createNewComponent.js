@@ -280,7 +280,7 @@ describe('${spacedName}', () => {
         //     );
         //     expect(title.textContent).toBe('This is a title text');
         // });
-    });à
+    });
 });
 `;
 

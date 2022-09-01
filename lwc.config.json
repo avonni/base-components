@@ -435,6 +435,10 @@
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
         {
+            "name": "c/primitiveSvgIcon",
+            "path": "src/modules/base/primitiveSvgIcon/primitiveSvgIcon.js"
+        },
+        {
             "name": "c/primitiveTreeItem",
             "path": "src/modules/base/primitiveTreeItem/primitiveTreeItem.js"
         },
