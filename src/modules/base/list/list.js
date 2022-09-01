@@ -397,15 +397,15 @@ export default class List extends LightningElement {
     }
     set items(proxy) {
         this._items = normalizeArray(proxy, 'object');
-        this.computedItems = JSON.parse(JSON.stringify(this._items));
-        const listHasImages = this.computedItems.some((item) => item.imageSrc);
+        const listHasImages = this._items.some((item) => item.imageSrc);
 
-        this.computedItems.forEach((item, index) => {
-            this.computedItems[index] = new Item(item);
-            this.computedItems[index].index = index;
-            this.computedItems[index].listHasImages = listHasImages;
-            this.computedItems[index].variant = this._variant;
-        });
+        this.computedItems = this._items.map((item, index) => {
+            const newItem = new Item(item);
+            newItem.index = index;
+            newItem.listHasImages = listHasImages;
+            newItem.variant = this._variant;
+            return newItem;
+        })
     }
 
     /**
@@ -1081,14 +1081,14 @@ export default class List extends LightningElement {
      * @param {HTMLElement} item
      */
     computeItemHeight(itemElement) {
+        const list = this.template.querySelector('[data-element-id="list-element"]')
         let rowGap;
-        if (this.listContainer) {
+        if (list) {
             rowGap = parseInt(
-                getComputedStyle(this.listContainer).rowGap.split('px')[0],
+                getComputedStyle(list).rowGap.split('px')[0],
                 10
             );
         }
-
         return itemElement.offsetHeight + (rowGap || 0);
     }
 
