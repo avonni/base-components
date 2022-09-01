@@ -765,8 +765,8 @@ describe('List', () => {
             upDownEvent.key = 'ArrowUp';
             items[1].dispatchEvent(upDownEvent);
 
-            expect(items[2].classList).toContain(
-                'avonni-list__item-sortable_keyboard-moved'
+            expect(items[2].dataset.moved).toEqual(
+                'keyboard-moved'
             );
 
             // Stop dragging

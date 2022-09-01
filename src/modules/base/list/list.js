@@ -658,14 +658,7 @@ export default class List extends LightningElement {
      */
     get displayedItems() {
         if (this.variant === 'single-line') {
-            // the first index is the first item to display
-            const pageStart = this._currentColumnCount * this._singleLinePage;
-            let pageItems = this.computedItems.slice(
-                pageStart,
-                this._currentColumnCount + pageStart
-            );
-            this._singleLinePageFirstIndex = pageStart;
-            return pageItems;
+            return this.computedSingleLineItems();
         }
         return this.computedItems;
     }
@@ -871,24 +864,22 @@ export default class List extends LightningElement {
 
         // This breaks when the transform is animated with css because the item remains hovered for
         // a few milliseconds, reversing the animation unpredictably.
-        const itemHasMoved = hoveredItem.classList.contains(
-            'avonni-list__item-sortable_moved'
-        );
+        const itemHasMoved = hoveredItem.dataset.moved === 'moved'
         const itemHoveringSmallerItem =
             draggedIndex > hoveredIndex || tempHoveredIndex > hoveredIndex;
         const itemHoveringLargerItem =
             draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
 
         if (itemHasMoved) {
-            hoveredItem.classList.remove('avonni-list__item-sortable_moved');
+            delete hoveredItem.dataset.moved
             hoveredItem.style.transform = 'translateY(0px)';
             hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
         } else if (itemHoveringSmallerItem) {
-            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.dataset.moved = 'moved'
             hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
         } else if (itemHoveringLargerItem) {
-            hoveredItem.classList.add('avonni-list__item-sortable_moved');
+            hoveredItem.dataset.moved = 'moved'
             hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
         }
@@ -899,7 +890,7 @@ export default class List extends LightningElement {
             const itemMovedAndBetweenDraggedAndHovered =
                 ((itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
                     (itemIndex < draggedIndex && itemIndex > hoveredIndex)) &&
-                !item.classList.contains('avonni-list__item-sortable_moved');
+                !item.dataset.moved === 'moved'; 
             if (itemMovedAndBetweenDraggedAndHovered) {
                 return item;
             }
@@ -913,7 +904,7 @@ export default class List extends LightningElement {
                         item.dataset.elementTempIndex,
                         10
                     );
-                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.dataset.moved = 'moved'
                     item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
                     item.dataset.elementTempIndex = tempIndex + 1;
                 });
@@ -923,7 +914,7 @@ export default class List extends LightningElement {
                         item.dataset.elementTempIndex,
                         10
                     );
-                    item.classList.add('avonni-list__item-sortable_moved');
+                    item.dataset.moved = 'moved'
                     item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
                     item.dataset.elementTempIndex = tempIndex - 1;
                 });
@@ -982,18 +973,12 @@ export default class List extends LightningElement {
     }
 
     checkIfKeyboardMoved(targetItem) {
-        const itemHasMoved = targetItem.classList.contains(
-            'avonni-list__item-sortable_keyboard-moved'
-        );
+        const itemHasMoved = targetItem.dataset.moved === 'keyboard-moved'
         if (itemHasMoved) {
-            targetItem.classList.remove(
-                'avonni-list__item-sortable_keyboard-moved'
-            );
+            delete targetItem.dataset.moved
             targetItem.style.transform = `translateY(0px)`;
         } else {
-            targetItem.classList.add(
-                'avonni-list__item-sortable_keyboard-moved'
-            );
+            targetItem.dataset.moved = 'keyboard-moved'
         }
     }
 
@@ -1006,14 +991,7 @@ export default class List extends LightningElement {
             item.style = undefined;
             item.dataset.index = index;
             item.dataset.elementTempIndex = index;
-            item.className = item.className.replace(
-                /avonni-list__item-sortable_moved.*/g,
-                ''
-            );
-            item.className = item.className.replace(
-                /.avonni-list__item-sortable_keyboard-moved.*/g,
-                ''
-            );
+            delete item.dataset.moved;
         });
         if (this._draggedElement) {
             this._draggedElement.classList.remove(
@@ -1043,6 +1021,22 @@ export default class List extends LightningElement {
         delete itemCopy.icons;
 
         return itemCopy;
+    }
+
+    /**
+     * Calculate the height of an item, including the row gap.
+     * @param {HTMLElement} item
+     */
+    computeItemHeight(itemElement) {
+        const list = this.template.querySelector('[data-element-id="list-element"]')
+        let rowGap;
+        if (list) {
+            rowGap = parseInt(
+                getComputedStyle(list).rowGap.split('px')[0],
+                10
+            );
+        }
+        return itemElement.offsetHeight + (rowGap || 0);
     }
 
     /**
@@ -1076,20 +1070,25 @@ export default class List extends LightningElement {
         return scrollStep;
     }
 
-    /**
-     * Calculate the height of an item, including the row gap.
-     * @param {HTMLElement} item
-     */
-    computeItemHeight(itemElement) {
-        const list = this.template.querySelector('[data-element-id="list-element"]')
-        let rowGap;
-        if (list) {
-            rowGap = parseInt(
-                getComputedStyle(list).rowGap.split('px')[0],
-                10
-            );
+    computedSingleLineItems() {
+        // the first index is the first item to display
+        const pageStart = this._currentColumnCount * this._singleLinePage;
+        let pageItems = this.computedItems.slice(
+            pageStart,
+            this._currentColumnCount + pageStart
+        );
+        let nextPageItems = this.computedItems.slice(
+            this._currentColumnCount + pageStart,
+            this._currentColumnCount * 2 + pageStart
+        );
+        if (nextPageItems.length === 0 && !this._isLoading && this.enableInfiniteLoading) {
+            // window.requestAnimationFrame required because handleLoadMore() cannot be called while updating template
+            window.requestAnimationFrame(() => {
+                this.handleLoadMore();
+            })
         }
-        return itemElement.offsetHeight + (rowGap || 0);
+        this._singleLinePageFirstIndex = pageStart;
+        return pageItems;
     }
 
     /**
@@ -1331,8 +1330,8 @@ export default class List extends LightningElement {
      */
     resetItemsAnimations() {
         this._itemElements.forEach((item) => {
-            if (item.classList.contains('avonni-list__item-sortable_moved')) {
-                item.classList.remove('avonni-list__item-sortable_moved');
+            if (item.dataset.moved === 'moved') {
+                delete item.dataset.moved
                 item.style.transform = 'translateY(0px)';
             }
         });
@@ -1370,7 +1369,8 @@ export default class List extends LightningElement {
             itemsBetween.forEach((item) => {
                 draggedItemTransform += this.computeItemHeight(item);
                 item.style.transform = `translateY(${-draggedItemHeight}px)`;
-                item.classList.add('avonni-list__item-sortable_keyboard-moved');
+                // item.classList.add('avonni-list__item-sortable_keyboard-moved');
+                item.dataset.moved = 'keyboard-moved'
                 item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
