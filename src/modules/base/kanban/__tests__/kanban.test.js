@@ -180,7 +180,8 @@ describe('Kanban', () => {
             const summarize = element.shadowRoot.querySelector(
                 '[data-element-id="summarize"]'
             );
-            expect(summarize.value).toBe(46770);
+            // using Math.floor to prevent floating point errors
+            expect(Math.floor(summarize.value)).toBe(46770);
         });
     });
 

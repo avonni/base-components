@@ -1086,6 +1086,10 @@ export default class Kanban extends LightningElement {
             : '[data-element-id="avonni-kanban__group"]';
         const groupElements = this.template.querySelectorAll(groupSelector);
 
+        if (isNaN(this._releasedGroupIndex) || !this._releasedGroupIndex) {
+            this._releasedGroupIndex = 0;
+        }
+
         if (this._draggedTile) {
             this.updateReleasedTileIndex(groupElements);
             this.animateTiles(groupElements);
@@ -1855,6 +1859,7 @@ export default class Kanban extends LightningElement {
      */
     updateReleasedTileIndex(groupElements) {
         let offsetHeight = this._kanbanOffset.y;
+
         const currentGroupTiles = Array.from(
             groupElements[this._releasedGroupIndex].children
         );
