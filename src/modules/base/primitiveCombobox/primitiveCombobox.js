@@ -1811,6 +1811,16 @@ export default class PrimitiveCombobox extends LightningElement {
                     }
                 })
             );
+
+            requestAnimationFrame(() => {
+                // Scroll back to top when opening a child option
+                const scrollableList = this.template.querySelector(
+                    '[data-element-id="ul-listbox"]'
+                );
+                if (scrollableList) {
+                    scrollableList.scrollTop = 0;
+                }
+            });
             return;
         }
 

@@ -40,7 +40,7 @@ import {
 
 let element;
 let activityTimeline;
-describe('Activity Timeline', () => {
+describe('Horizontal Activity Timeline', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -80,12 +80,10 @@ describe('Activity Timeline', () => {
         expect(element._offsetAxis).toBe(16.5);
         expect(element._displayedItems).toMatchObject([]);
         expect(element._maxYPositionOfItem).toBe(0);
-        expect(element._numberOfScrollAxisTicks).toBe(10);
         expect(element._numberOfTimelineAxisTicks).toBe(9);
         expect(element._timelineWidth).toBe(1300);
         expect(element._timelineHeight).toBe(350);
         expect(element._timelineAxisHeight).toBe(30);
-        expect(element._requestHeightChange).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -189,7 +187,7 @@ describe('Activity Timeline', () => {
         ];
         const expectedIconInformation = {
             iconName: 'empty',
-            xLinkHref: '/icons/standard-sprite/svg/symbols.svg#empty',
+            category: 'standard',
             categoryIconClass: 'slds-icon-standard-empty slds-icon_small'
         };
 
@@ -209,5 +207,49 @@ describe('Activity Timeline', () => {
         element.endIntervalResizing();
         expect(element._isResizingInterval).toBeFalsy();
         expect(element._changeIntervalSizeMode).toBeFalsy();
+    });
+
+    // addValidItemsToData
+    it('Horizontal Activity Timeline: addValidItemsToData with invalid dates', () => {
+        element.position = 'horizontal';
+        const invalidDateItems = [
+            {
+                name: 'item1',
+                datetimeValue: '13/01/2022 11:30',  // invalid month
+            },
+            {
+                name: 'item2',
+                datetimeValue: 'Not a date',        // no date
+            },
+            {
+                name: 'item3',
+                datetimeValue: '',                  // empty input
+            },
+            {
+                name: 'item4',
+                datetimeValue: '01/32/2022 11:30',  // invalid day
+            },
+            {
+                name: 'item5',
+                datetimeValue: '01/01/-122',        // invalid  year
+            },
+            {
+                name: 'item6',
+                datetimeValue: '01/01/2000 40:02',  // invalid time
+            },
+            {
+                name: 'item7',
+                datetimeValue: null,                // null
+            },
+            {
+                name: 'item8',                      // no date
+            },
+            {
+                name: 'item9',
+                datetimeValue: undefined,           // undefined
+            },
+        ];
+        element.addValidItemsToData(invalidDateItems);
+        expect(element._sortedItems.length).toBe(0);
     });
 });

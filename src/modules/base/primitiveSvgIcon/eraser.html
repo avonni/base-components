@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,39 +30,28 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import Component from 'avonni/inputPen';
-
-customElements.define('ac-base-input-pen', Component.CustomElementConstructor);
-
-export const InputPen = ({
-    variant,
-    label,
-    fieldLevelHelp,
-    value,
-    color,
-    showSignaturePad,
-    size,
-    mode,
-    disabledButtons,
-    disabled,
-    readOnly,
-    required,
-    hideControls
-}) => {
-    const element = document.createElement('ac-base-input-pen');
-    element.color = color;
-    element.disabledButtons = disabledButtons;
-    element.variant = variant;
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
-    element.value = value;
-    element.mode = mode;
-    element.size = size;
-    element.showSignaturePad = showSignaturePad;
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.hideControls = hideControls;
-    return element;
-};
+<template>
+    <svg
+        class={svgClass}
+        aria-hidden="true"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+        data-element-id="svg-eraser"
+    >
+        <g
+            transform="matrix(.94382 -.045161 -.045659 .93351 -.59946 1.2948)"
+            fill-rule="evenodd"
+        >
+            <path
+                class="si-glyph-fill"
+                d="m8.373 12.062-5.2188-5.2188 6.6729-6.6719c0.322-0.325 0.85625-0.31425 1.1912 0.02175l4.0048 4.0048c0.334 0.336 0.34525 0.86875 0.02125 1.1908z"
+            ></path>
+            <path
+                class="si-glyph-fill"
+                d="m7.5213 13.077c-1.6083 1.6083-3.7477 1.2391-5.1348-0.14802-1.1479-1.1479-1.8018-3.481-0.14803-5.1348z"
+            ></path>
+        </g>
+    </svg>
+</template>

@@ -30,38 +30,60 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/inputPen';
+import { LightningElement, api } from 'lwc';
+import { normalizeString } from 'c/utilsPrivate';
+import eraser from './eraser.html';
+import inkPen from './inkPen.html';
 
-customElements.define('ac-base-input-pen', Component.CustomElementConstructor);
-
-export const InputPen = ({
-    variant,
-    label,
-    fieldLevelHelp,
-    value,
-    color,
-    showSignaturePad,
-    size,
-    mode,
-    disabledButtons,
-    disabled,
-    readOnly,
-    required,
-    hideControls
-}) => {
-    const element = document.createElement('ac-base-input-pen');
-    element.color = color;
-    element.disabledButtons = disabledButtons;
-    element.variant = variant;
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
-    element.value = value;
-    element.mode = mode;
-    element.size = size;
-    element.showSignaturePad = showSignaturePad;
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.hideControls = hideControls;
-    return element;
+const NAMES = {
+    default: 'eraser',
+    valid: ['eraser', 'inkPen']
 };
+
+/**
+ * Primitive component used to display SVG icons. Contains one HTML template per SVG icon.
+ *
+ * @class
+ * @descriptor c-primitive-svg-icon
+ */
+export default class PrimitiveSvgIcon extends LightningElement {
+    /**
+     * CSS classes to apply to the SVG tag.
+     *
+     * @type {string}
+     * @public
+     */
+    @api svgClass;
+
+    _name = NAMES.default;
+
+    render() {
+        switch (this.name) {
+            case 'eraser':
+                return eraser;
+            case 'inkPen':
+                return inkPen;
+            default:
+                return eraser;
+        }
+    }
+
+    /**
+     * Name of the icon. Valid values include eraser and inkPen.
+     *
+     * @type {string}
+     * @default eraser
+     * @public
+     */
+    @api
+    get name() {
+        return this._name;
+    }
+    set name(value) {
+        this._name = normalizeString(value, {
+            fallbackValue: NAMES.default,
+            validValues: NAMES.valid,
+            toLowerCase: false
+        });
+    }
+}
