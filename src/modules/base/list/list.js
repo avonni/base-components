@@ -254,7 +254,10 @@ export default class List extends LightningElement {
         this._isLoading = normalizeBoolean(value);
 
         if (this._isLoading) {
-            this.showLoading();
+            // Wait for the list to render because the showLoading method needs to measure the list's scroll position.
+            window.requestAnimationFrame(() => {
+                this.showLoading();
+            })
         }
     }
 
@@ -405,7 +408,7 @@ export default class List extends LightningElement {
             newItem.listHasImages = listHasImages;
             newItem.variant = this._variant;
             return newItem;
-        })
+        });
     }
 
     /**
@@ -883,22 +886,22 @@ export default class List extends LightningElement {
 
         // This breaks when the transform is animated with css because the item remains hovered for
         // a few milliseconds, reversing the animation unpredictably.
-        const itemHasMoved = hoveredItem.dataset.moved === 'moved'
+        const itemHasMoved = hoveredItem.dataset.moved === 'moved';
         const itemHoveringSmallerItem =
             draggedIndex > hoveredIndex || tempHoveredIndex > hoveredIndex;
         const itemHoveringLargerItem =
             draggedIndex < hoveredIndex || tempHoveredIndex < hoveredIndex;
 
         if (itemHasMoved) {
-            delete hoveredItem.dataset.moved
+            delete hoveredItem.dataset.moved;
             hoveredItem.style.transform = 'translateY(0px)';
             hoveredItem.dataset.elementTempIndex = hoveredElementIndex;
         } else if (itemHoveringSmallerItem) {
-            hoveredItem.dataset.moved = 'moved'
+            hoveredItem.dataset.moved = 'moved';
             hoveredItem.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex + 1;
         } else if (itemHoveringLargerItem) {
-            hoveredItem.dataset.moved = 'moved'
+            hoveredItem.dataset.moved = 'moved';
             hoveredItem.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
             hoveredItem.dataset.elementTempIndex = tempHoveredIndex - 1;
         }
@@ -909,7 +912,7 @@ export default class List extends LightningElement {
             const itemMovedAndBetweenDraggedAndHovered =
                 ((itemIndex > draggedIndex && itemIndex < hoveredIndex) ||
                     (itemIndex < draggedIndex && itemIndex > hoveredIndex)) &&
-                !item.dataset.moved === 'moved'; 
+                !item.dataset.moved === 'moved';
             if (itemMovedAndBetweenDraggedAndHovered) {
                 return item;
             }
@@ -923,7 +926,7 @@ export default class List extends LightningElement {
                         item.dataset.elementTempIndex,
                         10
                     );
-                    item.dataset.moved = 'moved'
+                    item.dataset.moved = 'moved';
                     item.style.transform = `translateY(${this._currentItemDraggedHeight}px)`;
                     item.dataset.elementTempIndex = tempIndex + 1;
                 });
@@ -933,7 +936,7 @@ export default class List extends LightningElement {
                         item.dataset.elementTempIndex,
                         10
                     );
-                    item.dataset.moved = 'moved'
+                    item.dataset.moved = 'moved';
                     item.style.transform = `translateY(-${this._currentItemDraggedHeight}px)`;
                     item.dataset.elementTempIndex = tempIndex - 1;
                 });
@@ -992,12 +995,12 @@ export default class List extends LightningElement {
     }
 
     checkIfKeyboardMoved(targetItem) {
-        const itemHasMoved = targetItem.dataset.moved === 'keyboard-moved'
+        const itemHasMoved = targetItem.dataset.moved === 'keyboard-moved';
         if (itemHasMoved) {
-            delete targetItem.dataset.moved
+            delete targetItem.dataset.moved;
             targetItem.style.transform = `translateY(0px)`;
         } else {
-            targetItem.dataset.moved = 'keyboard-moved'
+            targetItem.dataset.moved = 'keyboard-moved';
         }
     }
 
@@ -1047,13 +1050,12 @@ export default class List extends LightningElement {
      * @param {HTMLElement} item
      */
     computeItemHeight(itemElement) {
-        const list = this.template.querySelector('[data-element-id="list-element"]')
+        const list = this.template.querySelector(
+            '[data-element-id="list-element"]'
+        );
         let rowGap;
         if (list) {
-            rowGap = parseInt(
-                getComputedStyle(list).rowGap.split('px')[0],
-                10
-            );
+            rowGap = parseInt(getComputedStyle(list).rowGap.split('px')[0], 10);
         }
         return itemElement.offsetHeight + (rowGap || 0);
     }
@@ -1100,11 +1102,15 @@ export default class List extends LightningElement {
             this._currentColumnCount + pageStart,
             this._currentColumnCount * 2 + pageStart
         );
-        if (nextPageItems.length === 0 && !this._isLoading && this.enableInfiniteLoading) {
+        if (
+            nextPageItems.length === 0 &&
+            !this._isLoading &&
+            this.enableInfiniteLoading
+        ) {
             // window.requestAnimationFrame required because handleLoadMore() cannot be called while updating template
             window.requestAnimationFrame(() => {
                 this.handleLoadMore();
-            })
+            });
         }
         this._singleLinePageFirstIndex = pageStart;
         return pageItems;
@@ -1350,7 +1356,7 @@ export default class List extends LightningElement {
     resetItemsAnimations() {
         this._itemElements.forEach((item) => {
             if (item.dataset.moved === 'moved') {
-                delete item.dataset.moved
+                delete item.dataset.moved;
                 item.style.transform = 'translateY(0px)';
             }
         });
@@ -1389,7 +1395,7 @@ export default class List extends LightningElement {
                 draggedItemTransform += this.computeItemHeight(item);
                 item.style.transform = `translateY(${-draggedItemHeight}px)`;
                 // item.classList.add('avonni-list__item-sortable_keyboard-moved');
-                item.dataset.moved = 'keyboard-moved'
+                item.dataset.moved = 'keyboard-moved';
                 item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
@@ -1397,10 +1403,13 @@ export default class List extends LightningElement {
     }
 
     /**
-     * When the use has reached the bottom of the list, and the load-more spinner appears,
+     * When the user has reached the bottom of the list, and the load-more spinner appears,
      * scroll to view the spinner.
      */
     showLoading() {
+        if (!this.listContainer) {
+            return;
+        }
         const offsetFromBottom =
             this.listContainer.scrollHeight -
             (this.listContainer.scrollTop + this.listContainer.clientHeight);
@@ -1414,7 +1423,10 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    this.listContainer.scrollTo(0, this.listContainer.scrollHeight)
+                    this.listContainer.scrollTo(
+                        0,
+                        this.listContainer.scrollHeight
+                    );
                 }
             }, 20);
         }
@@ -1784,8 +1796,9 @@ export default class List extends LightningElement {
      */
     handleItemClick(event) {
         if (
-            event.target.tagName.startsWith('LIGHTNING') ||
-            event.target.tagName === 'A'
+            (event.target.tagName.startsWith('LIGHTNING') ||
+                event.target.tagName === 'A') &&
+            event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT'
         ) {
             return;
         }

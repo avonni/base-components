@@ -1,5 +1,5 @@
 import { normalizeArray } from 'c/utilsPrivate';
-import { classSet } from '../utils/classSet';
+import { classSet } from 'c/utils';
 
 export default class Item {
     constructor(value) {
