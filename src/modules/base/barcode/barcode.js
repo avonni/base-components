@@ -54,9 +54,9 @@ const TEXT_ALIGNMENT = {
         'bottom-justify'
     ],
     default: 'bottom-center'
-}
-const TEXT_X_ALIGN = ['left', 'center', 'right', 'justify']
-const TEXT_Y_ALIGN = ['below', 'center', 'above']
+};
+const TEXT_X_ALIGN = ['left', 'center', 'right', 'justify'];
+const TEXT_Y_ALIGN = ['below', 'center', 'above'];
 const BWIPP_ENCODERS = [
     'auspost',
     'azteccode',
@@ -213,9 +213,9 @@ export default class Barcode extends LightningElement {
     _checksum = true;
     _errorMessage;
     _hideValue = false;
-    _textAlignment = TEXT_ALIGNMENT.default
-    textXAlign = 'center'
-    textYAlign = 'below'
+    _textAlignment = TEXT_ALIGNMENT.default;
+    textXAlign = 'center';
+    textYAlign = 'below';
     _type;
     validCode = true;
 
@@ -284,7 +284,7 @@ export default class Barcode extends LightningElement {
      * @default bottom-center
      */
     @api
-    get textAlignment() { 
+    get textAlignment() {
         return this._textAlignment;
     }
     set textAlignment(value) {
@@ -294,8 +294,8 @@ export default class Barcode extends LightningElement {
         });
         if (this._textAlignment) {
             const replace1 = this._textAlignment.replace('bottom', 'below');
-            const replace2 = replace1.replace('top', 'above')
-            const outputAlignment = replace2.split('-')
+            const replace2 = replace1.replace('top', 'above');
+            const outputAlignment = replace2.split('-');
             this.textXAlign = normalizeString(outputAlignment[1], TEXT_X_ALIGN);
             this.textYAlign = normalizeString(outputAlignment[0], TEXT_Y_ALIGN);
         }
@@ -349,17 +349,17 @@ export default class Barcode extends LightningElement {
             this.width != null ? `max-width: ${this.width}px;` : 'width: 100%;'
         } ${this.height != null ? `max-height: ${this.height}px;` : ''}`;
     }
-    
+
     /**
      * Returns the numeric value from a HEX value, ex: #000000 returns 000000.
      *
      * @returns {string} color value
      */
     colorHexCode(color) {
-        if (color.includes("#")) {
+        if (color.includes('#')) {
             return color.substring(1);
         }
-        return color
+        return color;
     }
 
     get errorMessage() {
@@ -367,13 +367,7 @@ export default class Barcode extends LightningElement {
     }
 
     parseErrorMessage(message) {
-        let errorMessage = message;
-        if (message.indexOf('bwipp.') !== -1) {
-            errorMessage = message.substring(message.indexOf('bwipp.') + 6);
-        }
-        if (message.indexOf('bwip-js: ') !== -1) {
-            errorMessage = message.substring(message.indexOf('bwip-js: ') + 9);
-        }
+        let errorMessage = message.replace(/bwipp.|bwip-js: /gi, '');
         errorMessage = errorMessage.replace(' bcid ', ' type ');
         return errorMessage;
     }
@@ -404,9 +398,12 @@ export default class Barcode extends LightningElement {
             this.validCode = true;
         } catch (e) {
             if (e.message) {
-                this._errorMessage = this.parseErrorMessage(e.message);
+                if (e.message.length) {
+                    this._errorMessage = this.parseErrorMessage(e.message);
+                }
             } else {
-                this._errorMessage = 'This barcode type does not support this value'
+                this._errorMessage =
+                    'This barcode type does not support this value.';
             }
             this.validCode = false;
         }
