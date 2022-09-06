@@ -48,6 +48,23 @@ const TOOLBAR_VARIANTS = {
     default: 'bottom-toolbar'
 };
 const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
+const DEFAULT_PEN_COLORS = [
+    '#C0C0C0',
+    '#808080',
+    '#000000',
+    '#FF0000',
+    '#800000',
+    '#FFFF00',
+    '#808000',
+    '#00FF00',
+    '#008000',
+    '#00FFFF',
+    '#008080',
+    '#0000FF',
+    '#000080',
+    '#FF00FF',
+    '#800080'
+];
 
 const DEFAULT_BACKGROUND_COLORS = [
     '#ffffff00',
@@ -553,6 +570,10 @@ export default class InputPen extends LightningElement {
      */
     get defaultBackgroundColors() {
         return DEFAULT_BACKGROUND_COLORS;
+    }
+
+    get defaultPenColors() {
+        return DEFAULT_PEN_COLORS;
     }
 
     /**
