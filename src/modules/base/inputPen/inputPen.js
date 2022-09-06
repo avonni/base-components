@@ -61,7 +61,7 @@ const DEFAULT_BACKGROUND_COLORS = [
 
 const DEFAULT_COLOR = '#000';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
-const DEFAULT_SIZE = 10;
+const DEFAULT_SIZE = 3;
 
 /**
  * @class
@@ -401,7 +401,7 @@ export default class InputPen extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default 10
+     * @default 3
      */
     @api
     get size() {
