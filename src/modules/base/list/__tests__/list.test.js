@@ -744,7 +744,7 @@ describe('List', () => {
     });
 
     // itemmouseup
-    it('List: Itemmouseup event', () => { 
+    it('List: Itemmouseup event', () => {
         const handler = jest.fn();
         element.addEventListener('itemmouseup', handler);
         element.items = ITEMS;
