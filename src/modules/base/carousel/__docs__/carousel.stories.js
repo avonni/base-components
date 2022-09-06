@@ -45,7 +45,8 @@ export default {
                 'The auto scroll duration. The default is 5 seconds, after that the next image is displayed.',
             table: {
                 defaultValue: { summary: 5 },
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Behavior'
             }
         },
         currentPanel: {
@@ -56,7 +57,8 @@ export default {
             description:
                 'Dictates the currently active/visible carousel panel.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Content'
             }
         },
         itemsPerPanel: {
@@ -68,7 +70,44 @@ export default {
                 'Number of items to be displayed at a time in the carousel.',
             table: {
                 defaultValue: { summary: 1 },
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
+        smallItemsPerPanel: {
+            name: 'small-items-per-panel',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of items to be displayed at a time in the carousel.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
+        mediumItemsPerPanel: {
+            name: 'medium-items-per-panel',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of items to be displayed at a time in the carousel.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
+        largeItemsPerPanel: {
+            name: 'large-items-per-panel',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of items to be displayed at a time in the carousel.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
             }
         },
         disableAutoRefresh: {
@@ -80,7 +119,8 @@ export default {
                 "If present, the carousel doesn't loop after the last image is displayed.",
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Behavior'
             }
         },
         disableAutoScroll: {
@@ -92,7 +132,8 @@ export default {
                 'If present, images do not automatically scroll and users must click the indicators to scroll.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Behavior'
             }
         },
         hideIndicator: {
@@ -103,7 +144,8 @@ export default {
             description: 'Boolean for displaying the progress indicators.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Layout'
             }
         },
         hidePreviousNextPanelNavigation: {
@@ -115,7 +157,8 @@ export default {
                 'Boolean for displaying the navigation indicators (left/right arrows) of the carousel.',
             table: {
                 defaultValue: { summary: false },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Layout'
             }
         },
         isInfinite: {
@@ -127,7 +170,8 @@ export default {
                 'Boolean for infinite loop navigation. Note: if not true autoplay will stop automatically at the last panel.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Behavior'
             }
         },
         indicatorVariant: {
@@ -140,7 +184,8 @@ export default {
             options: ['base', 'shaded'],
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'base' }
+                defaultValue: { summary: 'base' },
+                category: 'Layout'
             }
         },
         items: {
@@ -151,7 +196,8 @@ export default {
             description:
                 'Array of item objects used by the default carousel item renderer. ',
             table: {
-                type: { summary: 'object []' }
+                type: { summary: 'object []' },
+                category: 'Content'
             }
         },
         assistiveText: {
@@ -169,7 +215,8 @@ export default {
                         autoplayButton: 'Start / Stop auto-play'
                     }`
                 },
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Content'
             }
         },
         actionsPosition: {
@@ -188,7 +235,8 @@ export default {
             ],
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'bottom-center' }
+                defaultValue: { summary: 'bottom-center' },
+                category: 'Layout'
             }
         },
         actionsVariant: {
@@ -200,7 +248,8 @@ export default {
             options: ['bare', 'border', 'menu'],
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
+                defaultValue: { summary: 'border' },
+                category: 'Layout'
             }
         }
     },

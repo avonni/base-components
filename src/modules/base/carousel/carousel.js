@@ -31,12 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
 import {
+    keyCodes,
     normalizeBoolean,
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { generateUUID } from 'c/utils';
 
 const INDICATOR_ACTION =
@@ -150,6 +151,8 @@ export default class Carousel extends LightningElement {
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
 
+    _currentItemsPerPanel;
+    _resizeObserver;
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
     autoScrollTimeOut;
@@ -166,6 +169,10 @@ export default class Carousel extends LightningElement {
             }
         }
         this._initialRender = true;
+
+        if (!this._resizeObserver) {
+            this.initWrapObserver();
+        }
     }
 
     /*
@@ -329,6 +336,84 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get smallItemsPerPanel() {
+        return this._smallItemsPerPanel;
+    }
+
+    set smallItemsPerPanel(value) {
+        this._smallItemsPerPanel = Number(
+            normalizeString(
+                typeof value === 'number' ? value.toString() : value,
+                {
+                    validValues: ITEMS_PER_PANEL
+                }
+            )
+        );
+
+        if (this._initialRender) {
+            this.initCarousel();
+        }
+    }
+
+    /**
+     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumItemsPerPanel() {
+        return this._mediumItemsPerPanel;
+    }
+
+    set mediumItemsPerPanel(value) {
+        this._mediumItemsPerPanel = Number(
+            normalizeString(
+                typeof value === 'number' ? value.toString() : value,
+                {
+                    validValues: ITEMS_PER_PANEL
+                }
+            )
+        );
+
+        if (this._initialRender) {
+            this.initCarousel();
+        }
+    }
+
+    /**
+     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get largeItemsPerPanel() {
+        return this._largeItemsPerPanel;
+    }
+
+    set largeItemsPerPanel(value) {
+        this._largeItemsPerPanel = Number(
+            normalizeString(
+                typeof value === 'number' ? value.toString() : value,
+                {
+                    validValues: ITEMS_PER_PANEL
+                }
+            )
+        );
+
+        if (this._initialRender) {
+            this.initCarousel();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -417,6 +502,12 @@ export default class Carousel extends LightningElement {
                 });
             }
         }
+    }
+
+    get carouselContainer() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-carousel-container"]'
+        );
     }
 
     /*
@@ -526,6 +617,15 @@ export default class Carousel extends LightningElement {
      */
 
     /**
+     * Calculate the items count depending on the width
+     */
+    currentItemsPerPanel() {
+        //
+        let currentItemsPerPanel = this.itemsPerPanel;
+        return currentItemsPerPanel;
+    }
+
+    /**
      * Initialize current panel method.
      *
      * @param {number} numberOfPanels
@@ -533,6 +633,22 @@ export default class Carousel extends LightningElement {
     initializeCurrentPanel(numberOfPanels) {
         const firstPanel = parseInt(this.currentPanel, 10);
         this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
+    }
+
+    /**
+     * Setup the carousel resize observer. Used to update the number of items per panel when the carousel is resized.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initWrapObserver() {
+        if (!this._resizeObserver) {
+            const resizeObserver = new AvonniResizeObserver(() => {
+                // dont reinitialize the carousel count the columns
+                this.initCarousel();
+            });
+            resizeObserver.observe(this.carouselContainer);
+            this._resizeObserver = resizeObserver;
+        }
     }
 
     /**
@@ -667,6 +783,7 @@ export default class Carousel extends LightningElement {
      */
     initCarousel() {
         const numberOfPanels = Math.ceil(
+            // use currentItemsPerPanel
             this._carouselItems.length / this.itemsPerPanel
         );
         this.initializeCurrentPanel(numberOfPanels);
