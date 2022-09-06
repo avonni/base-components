@@ -53,3 +53,11 @@
 .avonni-horizontal-activity-timeline__popover-header {
     background: #f3f3f3;
 }
+
+.slds-nubbin_right::before {
+    background: #f3f3f3;
+}
+
+.slds-nubbin_left::before {
+    background: #f3f3f3;
+}

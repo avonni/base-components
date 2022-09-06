@@ -81,7 +81,7 @@ const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
 // TODO: Fix popover positions (offset top or bottom)
-// TODO: Fix nubbin on top and color
+// TODO: Fix nubbin side
 // TODO: Add bold to label of fields
 
 export class HorizontalActivityTimeline {
