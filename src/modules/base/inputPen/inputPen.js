@@ -48,23 +48,6 @@ const TOOLBAR_VARIANTS = {
     default: 'bottom-toolbar'
 };
 const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
-const DEFAULT_PEN_COLORS = [
-    '#C0C0C0',
-    '#808080',
-    '#000000',
-    '#FF0000',
-    '#800000',
-    '#FFFF00',
-    '#808000',
-    '#00FF00',
-    '#008000',
-    '#00FFFF',
-    '#008080',
-    '#0000FF',
-    '#000080',
-    '#FF00FF',
-    '#800080'
-];
 
 const DEFAULT_BACKGROUND_COLORS = [
     '#ffffff00',
@@ -141,6 +124,7 @@ export default class InputPen extends LightningElement {
     _backgroundColor = DEFAULT_BACKGROUND_COLOR;
     _backgroundCtx;
     _foregroundValue = undefined;
+    drawingArea;
 
     _resizeObserver;
     _resizeTimeout;
@@ -192,13 +176,15 @@ export default class InputPen extends LightningElement {
             this._backgroundCtx =
                 this._backgroundCanvasElement.getContext('2d');
 
-            const parentElement = this.template.querySelector(
+            this.drawingArea = this.template.querySelector(
                 '[data-element-id="drawing-area"]'
             );
-            this.canvasInfo.canvasElement.width = parentElement.clientWidth;
-            this.canvasInfo.canvasElement.height = parentElement.clientHeight;
-            this._backgroundCanvasElement.width = parentElement.clientWidth;
-            this._backgroundCanvasElement.height = parentElement.clientHeight;
+            this.canvasInfo.canvasElement.width = this.drawingArea.clientWidth;
+            this.canvasInfo.canvasElement.height =
+                this.drawingArea.clientHeight;
+            this._backgroundCanvasElement.width = this.drawingArea.clientWidth;
+            this._backgroundCanvasElement.height =
+                this.drawingArea.clientHeight;
 
             this.initResizeObserver();
             this.setToolManager();
@@ -570,10 +556,6 @@ export default class InputPen extends LightningElement {
      */
     get defaultBackgroundColors() {
         return DEFAULT_BACKGROUND_COLORS;
-    }
-
-    get defaultPenColors() {
-        return DEFAULT_PEN_COLORS;
     }
 
     /**
@@ -1263,6 +1245,23 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Tests if the if the coordinate is in drawing area
+     * @param {Object} position {x: 0, y: 0}
+     * @returns {Boolean} is in drawing area
+     */
+    isInDrawingArea(position) {
+        if (!this.drawingArea) return false;
+        const boundaries = this.drawingArea.getBoundingClientRect();
+        const isInBounds =
+            boundaries.x <= position.x &&
+            position.x <= boundaries.right &&
+            boundaries.y <= position.y &&
+            position.y <= boundaries.bottom;
+        console.log(boundaries, position, isInBounds);
+        return isInBounds;
+    }
+
+    /**
      * Proxy Input Attributes updater.
      *
      * @param {object} attributes
@@ -1316,6 +1315,10 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseMove = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+            console.log('preventedDefault');
+        }
         this.manageMouseEvent('move', event);
     };
 
@@ -1325,6 +1328,10 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+            console.log('preventedDefault');
+        }
         this.manageMouseEvent('down', event);
     };
 
@@ -1334,6 +1341,10 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseUp = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+            console.log('preventedDefault');
+        }
         this.manageMouseEvent('up', event);
     };
 
