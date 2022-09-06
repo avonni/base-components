@@ -57,7 +57,7 @@ const TEXT_ALIGNMENT = {
 };
 const TEXT_X_ALIGN = ['left', 'center', 'right', 'justify'];
 const TEXT_Y_ALIGN = ['below', 'center', 'above'];
-const BWIPP_ENCODERS = [
+const BARCODE_TYPES = [
     'auspost',
     'azteccode',
     'azteccodecompact',
@@ -134,7 +134,6 @@ const BWIPP_ENCODERS = [
     'japanpost',
     'kix',
     'leitcode',
-    'mailmark',
     'matrix2of5',
     'maxicode',
     'micropdf417',
@@ -169,14 +168,14 @@ const BWIPP_ENCODERS = [
 /**
  * @class
  * @name Barcode
- * @description The barcode component provides a builder to create a plethora of different types of barcodes.
+ * @description The barcode component provides a builder to create different types of barcodes.
  * @descriptor avonni-barcode
  * @storyId example-barcode--base
  * @public
  */
 export default class Barcode extends LightningElement {
     /**
-     * The color of the background. Valid formats include color name, HEX and RGB.
+     * The color of the background. Color in hexadecimal format.
      *
      * @public
      * @type {string}
@@ -185,7 +184,7 @@ export default class Barcode extends LightningElement {
     @api background = DEFAULT_BACKGROUND;
 
     /**
-     * The color of the barcode. Valid formats include color name, HEX and RGB.
+     * The color of the barcode. Color in hexadecimal format.
      *
      * @public
      * @type {string}
@@ -194,7 +193,7 @@ export default class Barcode extends LightningElement {
     @api color = DEFAULT_COLOR;
 
     /**
-     * The color of the text.
+     * The color of the text. Color in hexadecimal format.
      *
      * @public
      * @type {string}
@@ -230,7 +229,7 @@ export default class Barcode extends LightningElement {
      */
 
     /**
-     * Hide the value of the barcode checksum. If true, the barcode will display the checksum digit next to the value in the text area.
+     * Show the value of the barcode checksum. If true, the barcode will display the checksum digit next to the value in the text area.
      *
      * @public
      * @type {boolean}
@@ -302,8 +301,7 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The type of barcode, identified by the barcode encoder id. 
-    The supported encoders are: auspost, azteccode, azteccodecompact, aztecrune, bc412, channelcode, codablockf, code11, code128, code16k, code2of5, code32, code39, code39ext, code49, code93, code93ext, codeone, coop2of5, daft, databarexpanded, databarexpandedcomposite, databarexpandedstacked, databarexpandedstackedcomposite, databarlimited, databarlimitedcomposite, databaromni,  databaromnicomposite, databarstacked, databarstackedcomposite, databarstackedomni, databarstackedomnicomposite, databartruncated, databartruncatedcomposite, datalogic2of5, datamatrix, datamatrixrectangular, datamatrixrectangularextension, dotcode, ean13, ean13composite, ean14, ean2, ean5, ean8, ean8composite, flattermarken, gs1-128, gs1-128composite, gs1-cc, gs1datamatrix, gs1datamatrixrectangular, gs1dotcode, gs1northamericancoupon, gs1qrcode, hanxin, hibcazteccode, hibccodablockf, hibccode128, hibccode39, hibcdatamatrix, hibcdatamatrixrectangular, hibcmicropdf417, hibcpdf417, hibcqrcode, iata2of5, identcode, industrial2of5, interleaved2of5, isbn, ismn, issn, itf14, japanpost, kix, leitcode, mailmark, matrix2of5, maxicode, micropdf417, microqrcode, msi, onecode, pdf417, pdf417compact, pharmacode, pharmacode2, planet, plessey, posicode, postnet, pzn, qrcode, rationalizedCodabar, raw, rectangularmicroqrcode, royalmail, sscc18, symbol, telepen, telepennumeric, ultracode, upca, upcacomposite, upce and upcecomposite.
+     * The type of barcode created. The supported types are listed below.
      *
      * @public
      * @type {string}
@@ -314,7 +312,8 @@ export default class Barcode extends LightningElement {
     }
     set type(value) {
         this._type = normalizeString(value, {
-            validValues: BWIPP_ENCODERS
+            validValues: BARCODE_TYPES,
+            toLowerCase: false
         });
     }
 
@@ -342,6 +341,40 @@ export default class Barcode extends LightningElement {
      */
 
     /**
+     * Set the bwip-js parameters depending on the type of barcode.
+     */
+    barcodeParameters() {
+        const params = {
+            bcid: this.type,
+            text: this.value,
+            includetext: !this.hideValue,
+            includecheck: this.checksum,
+            includecheckintext: this.checksum,
+            textxalign: this.textXAlign,
+            textyalign: this.textYAlign,
+            barcolor: this.colorHexCode(this.color),
+            backgroundcolor: this.colorHexCode(this.background),
+            textcolor: this.colorHexCode(this.textColor),
+            scale: 10,
+        }
+
+        if (this.type === 'gs1-cc') {
+            params.ccversion ='b';
+            params.cccolumns =4;
+        }
+
+        if (this.type === 'gs1northamericancoupon') {
+            params.segments = 8;
+        }
+        
+        if (this.type === 'rectangularmicroqrcode') {
+            params.version = 'R17x139';
+        }
+
+        return params;
+    }
+
+    /**
      * Sets the width for the canvas.
      */
     get barcodeStyle() {
@@ -356,14 +389,11 @@ export default class Barcode extends LightningElement {
      * @returns {string} color value
      */
     colorHexCode(color) {
-        if (color.includes('#')) {
-            return color.substring(1);
-        }
-        return color;
+        return color.replace('#', '');
     }
 
     get errorMessage() {
-        return this._errorMessage;
+        return `Error: ${this._errorMessage}`;
     }
 
     parseErrorMessage(message) {
@@ -380,20 +410,7 @@ export default class Barcode extends LightningElement {
             '[data-element-id="avonni-barcode-canvas"]'
         );
         try {
-            bwipjs.toCanvas(canvas, {
-                bcid: this.type,
-                text: this.value,
-                includetext: !this.hideValue,
-                includecheck: this.checksum,
-                includecheckintext: this.checksum,
-                textxalign: this.textXAlign,
-                textyalign: this.textYAlign,
-                segments: 8,
-                barcolor: this.colorHexCode(this.color),
-                backgroundcolor: this.colorHexCode(this.background),
-                textcolor: this.colorHexCode(this.textColor),
-                scale: 10
-            });
+            bwipjs.toCanvas(canvas, this.barcodeParameters());
             this._errorMessage = null;
             this.validCode = true;
         } catch (e) {
@@ -401,7 +418,7 @@ export default class Barcode extends LightningElement {
                 if (e.message.length) {
                     this._errorMessage = this.parseErrorMessage(e.message);
                 }
-            } else {
+            } else if (this._errorMessage == null) {
                 this._errorMessage =
                     'This barcode type does not support this value.';
             }

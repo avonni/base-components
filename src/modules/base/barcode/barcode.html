@@ -41,10 +41,10 @@
         ></canvas>
     </div>
     <p
-        if:true={errorMessage}
+        if:false={validCode}
         class="slds-text-color_error"
         data-element-id="avonni-barcode-error-message"
     >
-        Error: {errorMessage}
+        {errorMessage}
     </p>
 </template>

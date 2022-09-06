@@ -67,7 +67,7 @@ describe('Barcode', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // type
+    // VALUES
     it('Barcode: alternative type', () => {
         element.type = 'code128';
 
@@ -76,7 +76,6 @@ describe('Barcode', () => {
         });
     });
 
-    // invalid type
     it('Barcode: non valid type', () => {
         element.type = 'non-valid';
 
@@ -85,7 +84,6 @@ describe('Barcode', () => {
         });
     });
 
-    // value
     it('Barcode: value', () => {
         element.value = '1234';
 
@@ -94,8 +92,23 @@ describe('Barcode', () => {
         });
     });
 
+    it('Barcode: checksum', () => {
+        element.checksum = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.checksum).toBeFalsy();
+        });
+    });
+
+    it('Barcode: hidevalue', () => {
+        element.hidevalue = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.hidevalue).toBeTruthy();
+        });
+    });
+
     // COLORS
-    // background
     it('Barcode: background', () => {
         element.background = '#eee';
 
@@ -104,7 +117,6 @@ describe('Barcode', () => {
         });
     });
 
-    // color
     it('Barcode: color', () => {
         element.color = '#eee';
 
@@ -113,7 +125,6 @@ describe('Barcode', () => {
         });
     });
 
-    // text color
     it('Barcode: text-color', () => {
         element.textColor = '#eee';
 
@@ -123,7 +134,14 @@ describe('Barcode', () => {
     });
 
     // LAYOUT
-    // text color
+    it('Barcode: height', () => {
+        element.height = '200';
+
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('200');
+        });
+    });
+
     it('Barcode: text-alignment', () => {
         element.textAlignment = 'top-justify';
 
@@ -132,28 +150,11 @@ describe('Barcode', () => {
         });
     });
 
-    // text color
     it('Barcode: width', () => {
-        element.textAlignment = 'top-justify';
+        element.width = '200';
 
         return Promise.resolve().then(() => {
-            expect(element.textAlignment).toBe('top-justify');
+            expect(element.width).toBe('200');
         });
-    });
-
-    // RENDERED BARCODES
-    it('Barcode: type and value', () => {
-        element.value = '1234';
-
-        return Promise.resolve().then(() => {
-
-        })
-        .then(() => {
-            const barcode = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-barcode-canvas"]'
-            );
-
-            expect(barcode).toBeTruthy();
-        })
     });
 });

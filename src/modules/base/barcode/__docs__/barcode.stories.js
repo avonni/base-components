@@ -196,7 +196,6 @@ export default {
                 'japanpost',
                 'kix',
                 'leitcode',
-                'mailmark',
                 'matrix2of5',
                 'maxicode',
                 'micropdf417',
@@ -225,7 +224,8 @@ export default {
                 'upca',
                 'upcacomposite',
                 'upce',
-                'upcecomposite'],
+                'upcecomposite'
+            ],
             description: 'The type of encoding selected to create the barcode.',
             table: {
                 type: { summary: 'string' },
@@ -279,27 +279,6 @@ code11.args = {
     height: 150
 };
 
-export const code39 = Template.bind({});
-code39.args = {
-    value: '12000-311123',
-    type: 'code39',
-    height: 150
-};
-
-export const databarexpanded = Template.bind({});
-databarexpanded.args = {
-    value: '(01)95012345678903(3103)000123',
-    type: 'databarexpanded',
-    height: 150
-};
-
-export const databarstackedcomposite = Template.bind({});
-databarstackedcomposite.args = {
-    value: '(01)03412345678900|(17)010200',
-    type: 'databarstackedcomposite',
-    height: 150
-};
-
 export const datamatrix = Template.bind({});
 datamatrix.args = {
     value: 'https://www.avonni.app',
@@ -307,81 +286,10 @@ datamatrix.args = {
     height: 150
 };
 
-export const dotcode = Template.bind({});
-dotcode.args = {
-    value: 'Takes any input',
-    type: 'dotcode',
-    height: 150
-};
-
-export const ean13 = Template.bind({});
-ean13.args = {
-    value: '2112345678900',
-    type: 'ean13',
-    height: 150
-};
-
-export const gs1_128 = Template.bind({});
-gs1_128.args = {
-    value: '(01)95012345678903(3103)000123',
-    type: 'gs1-128',
-    height: 150
-};
-
-export const gs1northamericancoupon = Template.bind({});
-gs1northamericancoupon.args = {
-    value: '(8110)106141416543213500110000310123196000',
-    type: 'gs1northamericancoupon',
-    height: 150
-};
-
-export const gs1qrcode = Template.bind({});
-gs1qrcode.args = {
-    value: '(01)03453120000011(8200)https://www.avonni.app(10)ABCD1234(410)9501101020917',
-    type: 'gs1qrcode',
-    height: 150
-};
-
-export const hanxin = Template.bind({});
-hanxin.args = {
-    value: '12000-311123',
-    type: 'hanxin',
-    height: 150
-};
-
-export const isbn = Template.bind({});
-isbn.args = {
-    value: '978-3-16-148410-0', // add format to doc 
-    type: 'isbn',
-    height: 150
-};
-
-export const pdf417 = Template.bind({});
-pdf417.args = {
-    value: '12000-311123',
-    type: 'pdf417',
-    height: 150
-};
-
-export const plessey = Template.bind({});
-plessey.args = {
-    value: '01234ABCD',
-    type: 'plessey',
-    height: 150
-};
-
-export const plesseyTextTopLeft = Template.bind({});
-plesseyTextTopLeft.args = {
-    value: '01234ABCD',
-    type: 'plessey',
-    height: 150,
-    textAlignment: 'top-left',
-};
-
-export const postnet = Template.bind({});
-postnet.args = {
-    value: '12000',
-    type: 'postnet',
+export const upcecomposite = Template.bind({});
+upcecomposite.args = {
+    value: '00123457|(15)021231',
+    type: 'upcecomposite',
     height: 150
 };
 
@@ -389,26 +297,5 @@ export const qrcode = Template.bind({});
 qrcode.args = {
     value: 'https://www.avonni.app',
     type: 'qrcode',
-    height: 150
-};
-
-export const ultracode = Template.bind({});
-ultracode.args = {
-    value: 'https://www.avonni.app',
-    type: 'ultracode',
-    height: 150
-};
-
-export const upca = Template.bind({});
-upca.args = {
-    value: '1200034',
-    type: 'upca',
-    height: 150
-};
-
-export const upce = Template.bind({});
-upce.args = {
-    value: '1200034',
-    type: 'upce',
     height: 150
 };
