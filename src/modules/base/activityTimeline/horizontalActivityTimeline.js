@@ -40,19 +40,20 @@ const BORDER_OFFSET = 0.5;
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
+const DEFAULT_NUBBIN_TOP_POSITION_PX = 24;
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
-const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_WIDTH = 1300;
+const DEFAULT_TOOLTIP_CLASSES = 'slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
+const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
 const MIN_INTERVAL_WIDTH = 2;
-const NUBBIN_TOP_POSITION_PX = 36;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_AXIS_RECTANGLES_G_ID = 'avonni-horizontal-activity-timeline__scroll-axis-rectangles';
@@ -363,6 +364,22 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Get tooltip offset if nubbin is at top position (header is present)
+     * 
+     * @return {number}
+     */
+    get tooltipNubbinTopOffset(){
+        let nubbinTopOffset = DEFAULT_NUBBIN_TOP_POSITION_PX;
+        const popoverHeader = this._activityTimeline.template.querySelector('.avonni-horizontal-activity-timeline__popover-header');
+        
+        if(popoverHeader) {
+            nubbinTopOffset = popoverHeader.getBoundingClientRect().height / 2;
+        }
+
+        return nubbinTopOffset;
+    }
+
+    /**
      * Function that calculate the time scale for the horizontal activity timeline's time axis.
      * If we pass a date, it returns the corresponding x value. If we use invert, we can pass an x value to return date.
      */
@@ -577,15 +594,6 @@ export class HorizontalActivityTimeline {
             return item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
         }
         return item.title;
-    }
-
-    /**
-     * Get all specific and common classes of popover.
-     *
-     * @return {string}
-     */
-    computedPopoverClasses(element, direction) {
-        return this.getPopoverNubbinClass(element, direction);
     }
 
     /**
@@ -1029,7 +1037,7 @@ export class HorizontalActivityTimeline {
      * @return {string}
      */
     getPopoverNubbinClass(item, direction) {
-        if (item.fields) {
+        if (this.hasPopoverHeader(item)) {
             return 'slds-nubbin_' + direction + '-top';
         }
         return 'slds-nubbin_' + direction;
@@ -1050,6 +1058,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Check if popover has a header.
+     * 
+     * @return {boolean}
+     */
+    hasPopoverHeader(item){
+        return item.fields || item.description;
+    }
+
+    /**
      * Initialize horizontal scroll (wheel event) for interval on timeline's scroll axis.
      *
      */
@@ -1066,10 +1083,15 @@ export class HorizontalActivityTimeline {
      * Initialize item's popover with correct position and classes.
      */
     initializeItemPopover(element) {
-        let tooltipElement = d3.select(this.itemPopoverSelector);
-        
+        const tooltipElement = d3.select(this.itemPopoverSelector);
+
         if (!tooltipElement._groups[0][0]) {
             return;
+        }
+
+        // Reset tooltip's classes if nubbin is already present
+        if(tooltipElement.attr('class').includes('slds-nubbin')){
+            tooltipElement.attr('class', DEFAULT_TOOLTIP_CLASSES)
         }
 
         // Set popover position
@@ -1083,8 +1105,8 @@ export class HorizontalActivityTimeline {
             .style('top', popoverPosition.y + 'px')
             .style('left', popoverPosition.x + 'px')
             .style('background', TIMELINE_COLORS.popoverBackground)
-            .classed(
-                this.computedPopoverClasses(element, popoverPosition.direction), true
+            .classed( 
+                this.getPopoverNubbinClass(element, popoverPosition.direction), true
             )
             .on('mouseenter', this.handleMouseOverOnPopover.bind(this))
             .on('mouseleave', this.handleMouseOutOfPopover.bind(this));
@@ -1410,8 +1432,9 @@ export class HorizontalActivityTimeline {
         const popoverHeight = this.convertPxSizeToNumber(
             tooltipElement.style('height')
         );
-        if (element.fields) {
-            popoverPosition.y += SVG_ICON_SIZE / 2 - NUBBIN_TOP_POSITION_PX;
+
+        if (this.hasPopoverHeader(element)) {
+            popoverPosition.y += SVG_ICON_SIZE / 2 - this.tooltipNubbinTopOffset;
         } else {
             popoverPosition.y += SVG_ICON_SIZE / 2 - popoverHeight / 2;
         }
