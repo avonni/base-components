@@ -523,7 +523,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const item = element.shadowRoot.querySelector(
-                `[data-element-id="li-main"][data-name="${ITEMS[1].name}"]`
+                `[data-element-id="li-item"][data-name="${ITEMS[1].name}"]`
             );
             const spy = jest
                 .spyOn(item, 'getBoundingClientRect')
@@ -744,7 +744,7 @@ describe('List', () => {
     });
 
     // itemmouseup
-    it('List: Itemmouseup event', () => {
+    it('List: Itemmouseup event', () => { 
         const handler = jest.fn();
         element.addEventListener('itemmouseup', handler);
         element.items = ITEMS;

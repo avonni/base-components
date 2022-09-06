@@ -800,7 +800,7 @@ export default class List extends LightningElement {
     @api
     getItemPosition(name) {
         const item = this.template.querySelector(
-            `[data-element-id="li-main"][data-name="${name}"]`
+            `[data-element-id="li-item"][data-name="${name}"]`
         );
         if (item) {
             return item.getBoundingClientRect();
