@@ -123,7 +123,6 @@ export default class InputPen extends LightningElement {
     _backgroundCanvasElement;
     _backgroundColor = DEFAULT_BACKGROUND_COLOR;
     _backgroundCtx;
-    _foregroundValue = undefined;
     drawingArea;
 
     _resizeObserver;
@@ -145,6 +144,9 @@ export default class InputPen extends LightningElement {
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('keydown', this.handleKeyDown);
+        setInterval(() => {
+            console.log(this._foregroundValue.slice(0, 40) ?? 'undefined');
+        }, 1000);
     }
 
     connectedCallback() {
@@ -340,7 +342,6 @@ export default class InputPen extends LightningElement {
 
     set mode(value) {
         this.setMode(value);
-        this.initCursorStyles();
         this._updatedDOM = true;
     }
 
@@ -446,10 +447,12 @@ export default class InputPen extends LightningElement {
     }
 
     set value(value) {
-        this._value = value;
-        this._foregroundValue = value;
-        if (this._rendered) {
-            this.initSrc();
+        if (value) {
+            this._value = value;
+            this._foregroundValue = value;
+            if (this._rendered) {
+                this.initSrc();
+            }
         }
     }
 
@@ -866,9 +869,10 @@ export default class InputPen extends LightningElement {
             validValues: PEN_MODES.valid
         });
         this.canvasInfo.mode = this._mode;
-        this.computeCursorClass();
         this.computeSelectedToolClass();
         this.setToolManager();
+        this.computeCursorClass();
+        this.initCursorStyles();
     }
 
     /**
@@ -1155,7 +1159,6 @@ export default class InputPen extends LightningElement {
      */
     setDraw() {
         this.setMode('draw');
-        this.initCursorStyles();
     }
 
     /**
@@ -1163,7 +1166,6 @@ export default class InputPen extends LightningElement {
      */
     setErase() {
         this.setMode('erase');
-        this.initCursorStyles();
     }
 
     /**
@@ -1171,7 +1173,6 @@ export default class InputPen extends LightningElement {
      */
     setInk() {
         this.setMode('ink');
-        this.initCursorStyles();
     }
 
     /**
@@ -1179,7 +1180,6 @@ export default class InputPen extends LightningElement {
      */
     setPaint() {
         this.setMode('paint');
-        this.initCursorStyles();
     }
 
     setToolManager() {
@@ -1258,7 +1258,6 @@ export default class InputPen extends LightningElement {
             position.x <= boundaries.right &&
             boundaries.y <= position.y &&
             position.y <= boundaries.bottom;
-        console.log(boundaries, position, isInBounds);
         return isInBounds;
     }
 
@@ -1318,7 +1317,6 @@ export default class InputPen extends LightningElement {
     handleMouseMove = (event) => {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
-            console.log('preventedDefault');
         }
         this.manageMouseEvent('move', event);
     };
@@ -1331,7 +1329,6 @@ export default class InputPen extends LightningElement {
     handleMouseDown = (event) => {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
-            console.log('preventedDefault');
         }
         this.manageMouseEvent('down', event);
     };
@@ -1344,7 +1341,6 @@ export default class InputPen extends LightningElement {
     handleMouseUp = (event) => {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
-            console.log('preventedDefault');
         }
         this.manageMouseEvent('up', event);
     };
