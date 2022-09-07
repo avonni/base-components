@@ -145,8 +145,6 @@ describe('Carousel', () => {
         document.body.appendChild(element);
     });
 
-    // const flushPromises = () => new Promise(setImmediate);
-
     it('Carousel: Default attributes', () => {
         expect(element.assistiveText).toMatchObject({
             autoplayButton: 'Play / Stop auto-play',
@@ -163,6 +161,9 @@ describe('Carousel', () => {
         expect(element.hideIndicator).toBeFalsy();
         expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
         expect(element.itemsPerPanel).toBe(1);
+        expect(element.smallItemsPerPanel).toBeUndefined();
+        expect(element.mediumItemsPerPanel).toBeUndefined();
+        expect(element.largeItemsPerPanel).toBeUndefined();
         expect(element.actionsVariant).toBe('border');
         expect(element.actionsPosition).toBe('bottom-center');
     });
@@ -410,6 +411,33 @@ describe('Carousel', () => {
                 '.avonni-carousel__panel'
             );
             expect(panels).toHaveLength(4);
+        });
+    });
+
+    it('Carousel: small items per panel', () => {
+        element.smallItemsPerPanel = 3;
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            expect(element.smallItemsPerPanel).toBe(3)
+        });
+    });
+
+    it('Carousel: medium items per panel', () => {
+        element.mediumItemsPerPanel = 4;
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            expect(element.mediumItemsPerPanel).toBe(4)
+        });
+    });
+
+    it('Carousel: large items per panel', () => {
+        element.largeItemsPerPanel = 5;
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            expect(element.largeItemsPerPanel).toBe(5)
         });
     });
 

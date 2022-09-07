@@ -354,6 +354,8 @@ WithoutPanelNavigationWithFiveItemsPerPanel.args = {
 export const ResponsiveCarousel = Template.bind({});
 ResponsiveCarousel.args = {
     items: items,
+    disableAutoScroll: true,
+    currentPanel: 2,
     itemsPerPanel: 1,
     smallItemsPerPanel: 3,
     mediumItemsPerPanel: 4,

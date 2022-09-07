@@ -159,6 +159,8 @@ export default class Carousel extends LightningElement {
     _columnsCount = {
         default: 1
     };
+    currentPanelIndex = 0;
+    _carouselIsResponsive = false;
     _currentItemsPerPanel;
     _resizeObserver;
     activeIndexPanel;
@@ -347,7 +349,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
+     * Number of items to be displayed at a time when the component is 480px wide or more. Maximum of 10 items per panel.
      *
      * @type {number}
      * @public
@@ -367,12 +369,13 @@ export default class Carousel extends LightningElement {
             )
         );
 
+        this._carouselIsResponsive = true;
         this._columnsCount.small = this._smallItemsPerPanel;
         this.computeItemsPerPanel();
     }
 
     /**
-     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
+     * Number of items to be displayed at a time when the component is 768px wide or more. Maximum of 10 items per panel.
      *
      * @type {number}
      * @public
@@ -392,6 +395,7 @@ export default class Carousel extends LightningElement {
             )
         );
 
+        this._carouselIsResponsive = true;
         this._columnsCount.medium = this._mediumItemsPerPanel;
         this.computeItemsPerPanel();
     }
@@ -417,6 +421,7 @@ export default class Carousel extends LightningElement {
             )
         );
 
+        this._carouselIsResponsive = true;
         this._columnsCount.large = this._largeItemsPerPanel;
         this.computeItemsPerPanel();
     }
@@ -648,7 +653,7 @@ export default class Carousel extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
-        if (!this._resizeObserver) {
+        if (this._carouselIsResponsive) {
             const resizeObserver = new AvonniResizeObserver(() => {
                 this.computeItemsPerPanel();
             });
@@ -661,7 +666,7 @@ export default class Carousel extends LightningElement {
      * Creates an array of panels, each containing an array of items.
      */
     initializePanels() {
-        console.log('initialize panels', this._currentItemsPerPanel);
+        console.log('🛑');
         const panelItems = [];
         let panelIndex = 0;
         for (
@@ -740,6 +745,29 @@ export default class Carousel extends LightningElement {
         );
     }
 
+    handleSwipeStart(event) {
+        console.log('start', event);
+        this.initialSwipePositionX = event.touches[0].clientX;
+    }
+
+    handleSwipeEnd(event) {
+        console.log('end', event);
+    }
+
+    handleSwipe(event) {
+        // console.log(event);
+
+        // this is wrong, the swipe distance has be be the difference between start of swip and current swipe position.
+        let swipeDistance = this.initialSwipePositionX - event.touches[0].clientX;
+        console.log(swipeDistance);
+
+        this.panelStyle = `transform:translateX(calc(-${this.currentPanelIndex * 100}% - ${swipeDistance}px));`;
+
+        console.log(this.panelStyle);
+
+        this.activeIndexPanel = this.currentPanelIndex;
+    }
+
     /**
      * Key down event handler.
      *
@@ -786,17 +814,12 @@ export default class Carousel extends LightningElement {
     }
 
     computeItemsPerPanel() {
-        // if neither specific items per panel are set, don't compute panels
-        if (
-            !(
-                this.smallItemsPerPanel ||
-                this.mediumItemsPerPanel ||
-                this.largeItemsPerPanel
-            )
-        ) {
+        if (!this.carouselContainer) {
             return;
         }
-        if (!this.carouselContainer) {
+
+        if (!this._carouselIsResponsive) {
+            this._currentItemsPerPanel = this._columnsCount.default;
             return;
         }
 
@@ -824,7 +847,6 @@ export default class Carousel extends LightningElement {
         const calculatedItemsPerPanel = this._columnsCount[setSize];
 
         if (calculatedItemsPerPanel !== previousItemsPerPanel) {
-            console.log('resize', calculatedItemsPerPanel);
             this._currentItemsPerPanel = calculatedItemsPerPanel;
             this.initCarousel();
         }
@@ -837,11 +859,9 @@ export default class Carousel extends LightningElement {
      */
     initCarousel() {
         const numberOfPanels = Math.ceil(
-            // use currentItemsPerPanel
             this._carouselItems.length / this._currentItemsPerPanel
         );
 
-        console.log('init', numberOfPanels, 'panels');
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
@@ -869,6 +889,8 @@ export default class Carousel extends LightningElement {
      * @param {number} panelIndex
      */
     selectNewPanel(panelIndex) {
+        console.log('🔵');
+        this.currentPanelIndex = panelIndex;
         const activePaginationItem = this.paginationItems[panelIndex];
         const activePanelItem = this.panelItems[panelIndex];
 
