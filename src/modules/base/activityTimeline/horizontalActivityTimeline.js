@@ -81,7 +81,6 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
-// TODO: Fix nubbin's side when timeline's width is too small
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -583,6 +582,25 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Check if there is enough space to display popover on left side.
+     *
+     * @return {boolean}
+     */
+     canPopoverBeOnLeft(xPosition, popoverWidth){
+        const maxVisiblePosition = this._timelineWidth - popoverWidth;
+        return xPosition < maxVisiblePosition;
+    }
+
+    /**
+     * Check if there is enough space to display popover on right side.
+     *
+     * @return {boolean}
+     */
+    canPopoverBeOnRight(xPosition){
+        return xPosition > 0
+    }
+
+    /**
      * Formatted item's title to prevent text longer than 30 characters on horizontal timeline
      * @param {Object} item
      * @returns string
@@ -1012,6 +1030,19 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Find the popover's direction by checking which side has more space in timeline.
+     *
+     * @return {string}
+     */
+    findPopoverDirectionWithMoreSpace(leftSpaceForPopover){ 
+        const rightSpaceForPopover = this._timelineWidth - leftSpaceForPopover;
+        if(leftSpaceForPopover > rightSpaceForPopover){
+            return 'right';
+        }
+        return 'left';
+    }
+
+    /**
      * Find the x start position of an item. This position is used to display popover (right).
      *
      * @return {number}
@@ -1399,6 +1430,32 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Set popover's direction and adjust x position if needed.
+     */
+    setPopoverDirection(tooltipElement, popoverPosition, element){
+        const popoverWidth = this.convertPxSizeToNumber(
+            tooltipElement.style('width')
+        );
+        
+        if (this.canPopoverBeOnLeft(popoverPosition.x, popoverWidth)) {
+            return;
+        }
+
+        popoverPosition.x = this.findStartPositionOfItem(element) - popoverWidth;
+        if (this.canPopoverBeOnRight(popoverPosition.x)) {
+            popoverPosition.direction = 'right';
+            return;
+        }
+        
+        // Not enough space on either side. We choose the side with more space. 
+        const leftSpaceForPopover = this._offsetAxis + this.viewTimeScale(new Date(element.datetimeValue)) + SVG_ICON_SIZE; 
+        popoverPosition.direction = this.findPopoverDirectionWithMoreSpace(leftSpaceForPopover);
+        if (popoverPosition.direction === 'left'){
+            popoverPosition.x = leftSpaceForPopover;
+        }
+    }
+
+    /**
      * Set the position (x, y, direction) of item's popover.
      *
      * @return {object}
@@ -1409,31 +1466,16 @@ export class HorizontalActivityTimeline {
             y: element.yPosition,
             direction: 'left'
         };
-        const popoverWidth = this.convertPxSizeToNumber(
-            tooltipElement.style('width')
-        );
-        const maxVisiblePositionOfPopover = this._timelineWidth - popoverWidth;
-
-        // Check if popover should be right or left
-        if (popoverPosition.x > maxVisiblePositionOfPopover) {
-            popoverPosition.direction = 'right';
-            popoverPosition.x =
-                this.findStartPositionOfItem(element) - popoverWidth;
-            if (popoverPosition.x < 0) {
-                popoverPosition.x =
-                    this._offsetAxis +
-                    this.viewTimeScale(new Date(element.datetimeValue));
-            }
-        }
+        
+        this.setPopoverDirection(tooltipElement, popoverPosition, element);
 
         // if element has field, adjust position (nubbin top)
-        const popoverHeight = this.convertPxSizeToNumber(
-            tooltipElement.style('height')
-        );
-
         if (this.hasPopoverHeader(element)) {
             popoverPosition.y += SVG_ICON_SIZE / 2 - this.tooltipNubbinTopOffset;
         } else {
+            const popoverHeight = this.convertPxSizeToNumber(
+                tooltipElement.style('height')
+            );
             popoverPosition.y += SVG_ICON_SIZE / 2 - popoverHeight / 2;
         }
 
