@@ -415,9 +415,7 @@ export default class Barcode extends LightningElement {
             this.validCode = true;
         } catch (e) {
             if (e.message) {
-                if (e.message.length) {
-                    this._errorMessage = this.parseErrorMessage(e.message);
-                }
+                this._errorMessage = this.parseErrorMessage(e.message);
             } else if (this._errorMessage == null) {
                 this._errorMessage =
                     'This barcode type does not support this value.';
