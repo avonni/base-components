@@ -54,19 +54,7 @@
     background: #f3f3f3;
 }
 
-.slds-nubbin_right::before {
-    background: #f3f3f3;
-}
-
-.slds-nubbin_left::before {
-    background: #f3f3f3;
-}
-
-.slds-nubbin_left-top::before{
-    background: #f3f3f3;
-}
-
-.slds-nubbin_right-top::before{
+[class*="slds-nubbin_"]::before{
     background: #f3f3f3;
 }
 
