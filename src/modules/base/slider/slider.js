@@ -685,6 +685,10 @@ export default class Slider extends LightningElement {
         return this.unit === 'custom' ? SLIDER_UNITS.default : this.unit;
     }
 
+    /**
+     * Computed Slider Wrapper class styling.
+     *
+     */
     get computedSliderWrapperClass() {
         return classSet('avonni-slider__wrapper slds-p-vertical_x-small').add({
             'avonni-slider__wrapper_height_full':
