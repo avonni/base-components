@@ -145,6 +145,8 @@ export default class OutputData extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+
+       this.setLabelStylingHook();
     }
 
     /*
@@ -152,14 +154,6 @@ export default class OutputData extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    get computedLabelClass() {
-        return classSet('slds-item_label slds-text-color_weak slds-truncate')
-            .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
-            })
-            .toString();
-    }
 
     /**
      * Computed class of the output wrapper.
@@ -266,6 +260,15 @@ export default class OutputData extends LightningElement {
     }
 
     /**
+     * Check if label should be displayed or not.
+     *
+     * @type {boolean}
+     */
+    get shouldDisplayLabel(){
+        return this.label && this.variant !== 'label-hidden';
+    }
+
+    /**
      * True if the type is boolean and the value is truthy.
      *
      * @type {boolean}
@@ -331,5 +334,17 @@ export default class OutputData extends LightningElement {
         }
 
         this.normalizedTypeAttributes = normalizedTypeAttributes;
+    }
+
+    /**
+     * Set styling hooks of output data's label if variant is label-inline.
+     */
+    setLabelStylingHook(){
+        if(this.variant === 'label-inline') {
+            this.template.host.style = `
+                --avonni-output-data-label-width: 30%;
+                --avonni-output-label-data-padding-right: 0.75rem;
+            `;
+        }
     }
 }
