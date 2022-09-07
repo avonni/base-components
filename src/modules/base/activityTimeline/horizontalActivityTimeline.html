@@ -185,17 +185,15 @@
                      "
                      ></lightning-button-icon>
                     </header>
-                    <p
-                        class="
-                            slds-line-clamp_x-small   
-                            slds-p-right_x-small 
-                            slds-p-vertical_x-small 
-                            slds-p-left_medium
-                            "
+                    <div 
+                        class="slds-has-flexi-truncate slds-p-right_x-small slds-p-vertical_x-small slds-p-left_medium"
                         if:true={selectedItem.description}
                     >
-                        {selectedItem.description}
-                    </p>
+                        <p class="slds-line-clamp_x-small">
+                            {selectedItem.description}
+                        </p>
+                    </div>
+                    
                     <!-- Table (2 columns) for fields -->
                     <footer
                         class="slds-grid slds-wrap slds-media__body "
