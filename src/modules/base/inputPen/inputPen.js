@@ -190,6 +190,7 @@ export default class InputPen extends LightningElement {
             this.setToolManager();
             this.fillBackground();
             this.initCursorStyles();
+            this.computeCursorClass();
             this.computeSelectedToolClass();
             if (this._foregroundValue) {
                 this.initSrc();
