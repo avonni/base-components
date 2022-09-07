@@ -685,6 +685,15 @@ export default class Slider extends LightningElement {
         return this.unit === 'custom' ? SLIDER_UNITS.default : this.unit;
     }
 
+    get computedSliderWrapperClass() {
+        return classSet('avonni-slider__wrapper slds-p-vertical_x-small').add({
+            'avonni-slider__wrapper_height_full':
+                this.isVertical && !this.showLabel,
+            'avonni-slider__wrapper_height_label':
+                this.isVertical && this.showLabel
+        });
+    }
+
     /**
      * Computed right pin class styling.
      *
@@ -692,7 +701,7 @@ export default class Slider extends LightningElement {
      */
     get computedUnitContainerClass() {
         return classSet(
-            'avonni-slider__unit-container slds-grid slds-grid_align-spread slds-p-top_x-small'
+            'avonni-slider__unit-container slds-grid slds-grid_align-spread'
         ).add({
             'avonni-slider__unit-container_ticks-horizontal':
                 !this.isVertical &&
@@ -701,7 +710,8 @@ export default class Slider extends LightningElement {
             'avonni-slider__unit-container_ticks-horizontal-tick':
                 !this.isVertical &&
                 this.showAnyTickMarks &&
-                this.tickMarkStyle === 'tick'
+                this.tickMarkStyle === 'tick',
+            'slds-p-top_x-small': !this.isVertical
         });
     }
 
