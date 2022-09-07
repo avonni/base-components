@@ -2,10 +2,10 @@
  * @typedef {object} TreeAction
  * @name actions
  * @property {boolean} visible If true, the action is always visible. If false, the action will be displayed in a button menu. Defaults to false.
- * @property {string} iconName Required if <code>visible</code> is true. The Lightning Design System name of the action icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
- * @property {string} label Required. Label of the action. If <code>visible</code> is true, the label will be used as alternative text.
+ * @property {string} iconName Required if `visible` is true. The Lightning Design System name of the action icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} label Required. Label of the action. If `visible` is true, the label will be used as alternative text.
  * @property {string} name Required. Unique name of the action.
- * Reserved action names are: <code>edit</code>, <code>add</code>, <code>duplicate</code> and <code>delete</code>. If a reserved action name is used, the standard action will be executed on top of the dispatch of the <code>actionclick</code> event. To prevent the default behavior of a reserved action, <code>preventDefault()</code> can be called on the <code>actionclick</code> event.
+ * Reserved action names are: `Standard.Tree.Edit`, `Standard.Tree.Add`, `Standard.Tree.Duplicate` and `Standard.Tree.Delete`. If a reserved action name is used, the standard action will be executed on top of the dispatch of the `actionclick` event. To prevent the default behavior of a reserved action, `preventDefault()` can be called on the `actionclick` event.
  */
 
 /**
@@ -27,7 +27,7 @@
  * @property {string} label Required. Label of the item.
  * @property {string} metatext Text to provide users with supplemental information and aid with identifiation or diambiguation.
  * @property {object[]} items Nested item objects.
- * @property {string} name Required. The unique name of the item. It will be returned by the <code>onselect</code> event handler.
+ * @property {string} name Required. The unique name of the item. It will be returned by the `onselect` event handler.
  * @property {string} href If the item label should be a link, URL of the link.
  * Links are incompatible with inline edition and multi-select trees.
  * @property {boolean} expanded If true, the item branch is expanded. An expanded branch displays its nested items visually. Defaults to false.
