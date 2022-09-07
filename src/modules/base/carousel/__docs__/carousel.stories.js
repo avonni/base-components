@@ -350,3 +350,13 @@ WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     actionsVariant: 'menu',
     actionsPosition: 'top-right'
 };
+
+export const ResponsiveCarousel = Template.bind({});
+ResponsiveCarousel.args = {
+    items: items,
+    itemsPerPanel: 1,
+    smallItemsPerPanel: 3,
+    mediumItemsPerPanel: 4,
+    largeItemsPerPanel: 5,
+    actionsPosition: 'bottom'
+};
