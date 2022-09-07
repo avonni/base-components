@@ -69,3 +69,7 @@
 .slds-nubbin_right-top::before{
     background: #f3f3f3;
 }
+
+.avonni-horizontal-activity-timeline__popover {
+    --avonni-output-data-label-font-weight: bold;
+}

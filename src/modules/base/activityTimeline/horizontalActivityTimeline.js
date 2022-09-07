@@ -47,7 +47,7 @@ const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_WIDTH = 1300;
-const DEFAULT_TOOLTIP_CLASSES = 'slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
+const DEFAULT_TOOLTIP_CLASSES = 'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none';
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 12;
 const DISTANCE_BETWEEN_POPOVER_AND_ITEM = 15;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
@@ -82,7 +82,6 @@ const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
 // TODO: Fix nubbin's side when timeline's width is too small
-// TODO: Add bold to label of fields
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
