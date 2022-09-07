@@ -1571,7 +1571,7 @@ describe('Activity Timeline', () => {
 
                     expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'slds-nubbin_left slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                        'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_left'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1635,7 +1635,7 @@ describe('Activity Timeline', () => {
 
                 expect(popoverItem.getAttribute('name')).toBe('item13');
                 expect(popoverItem.className).toBe(
-                    'slds-nubbin_right-top slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                    'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_right-top'
                 );
                 expect(convertPxSizeToNumberSpy).toBeCalled();
             });
