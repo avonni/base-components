@@ -168,14 +168,14 @@ const BARCODE_TYPES = [
 /**
  * @class
  * @name Barcode
- * @description The barcode component provides a builder to create different types of barcodes.
  * @descriptor avonni-barcode
- * @storyId example-barcode--base
+ * @description The barcode component provides a builder to create different types of barcodes.
+ * @storyId example-barcode--code-11
  * @public
  */
 export default class Barcode extends LightningElement {
     /**
-     * The color of the background. Color in hexadecimal format.
+     * The background color as a hexadecimal color value. Defaults to #ffffff.
      *
      * @public
      * @type {string}
@@ -184,7 +184,7 @@ export default class Barcode extends LightningElement {
     @api background = DEFAULT_BACKGROUND;
 
     /**
-     * The color of the barcode. Color in hexadecimal format.
+     * The barcode color as a hexadecimal color value. Defaults to #000000.
      *
      * @public
      * @type {string}
@@ -193,7 +193,7 @@ export default class Barcode extends LightningElement {
     @api color = DEFAULT_COLOR;
 
     /**
-     * The color of the text. Color in hexadecimal format.
+     * The text color as a hexadecimal color value. Defaults to #000000.
      *
      * @public
      * @type {string}
@@ -202,10 +202,10 @@ export default class Barcode extends LightningElement {
     @api textColor = DEFAULT_TEXT_COLOR;
 
     /**
-     * The value of the barcode.
+     * The value to encode in the barcode.
      *
      * @public
-     * @type {string}
+     * @type {string | number}
      */
     @api value;
 
@@ -229,7 +229,7 @@ export default class Barcode extends LightningElement {
      */
 
     /**
-     * Show the value of the barcode checksum. If true, the barcode will display the checksum digit next to the value in the text area.
+     * Show the barcode checksum. If set to false, the checksum value will be hidden.
      *
      * @public
      * @type {boolean}
@@ -244,10 +244,10 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The max-height of the barcode.
+     * The max-height of the barcode. By default the height depends on the width and the type of barcode.
      *
      * @public
-     * @type {boolean}
+     * @type {number}
      */
     @api
     get height() {
@@ -261,7 +261,7 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * Hide the value of the barcode.
+     * If present, hide the value of the barcode.
      *
      * @public
      * @type {boolean}
@@ -279,7 +279,7 @@ export default class Barcode extends LightningElement {
      * The position of the displayed value. Accepted values are top-left, top-center, top-right, top-justify, center-left, center-center, center-right, center-justify, bottom-left, bottom-center, bottom-right, bottom-justify. Defaults to bottom-center.
      *
      * @public
-     * @type {boolean}
+     * @type {text}
      * @default bottom-center
      */
     @api
@@ -318,10 +318,10 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The width of the barcode.
+     * The width of the barcode in pixels. The width defaults to 100%.
      *
      * @public
-     * @type {boolean}
+     * @type {number}
      */
     @api
     get width() {

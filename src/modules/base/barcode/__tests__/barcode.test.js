@@ -32,11 +32,6 @@
 
 import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
-jest.mock('bwip-js', () => {
-    const a = require('');
-    a.toCanvas = () => {};
-    return a;
-});
 
 let element;
 describe('Barcode', () => {
@@ -62,6 +57,7 @@ describe('Barcode', () => {
         expect(element.textAlignment).toBe('bottom-center');
         expect(element.textColor).toBe('#000000');
         expect(element.type).toBeUndefined();
+        expect(element.value).toBeUndefined();
         expect(element.width).toBeUndefined();
     });
 
@@ -100,36 +96,36 @@ describe('Barcode', () => {
         });
     });
 
-    it('Barcode: hidevalue', () => {
-        element.hidevalue = true;
+    it('Barcode: hideValue', () => {
+        element.hideValue = true;
 
         return Promise.resolve().then(() => {
-            expect(element.hidevalue).toBeTruthy();
+            expect(element.hideValue).toBeTruthy();
         });
     });
 
     // COLORS
     it('Barcode: background', () => {
-        element.background = '#eee';
+        element.background = '#eeeeee';
 
         return Promise.resolve().then(() => {
-            expect(element.background).toBe('#eee');
+            expect(element.background).toBe('#eeeeee');
         });
     });
 
     it('Barcode: color', () => {
-        element.color = '#eee';
+        element.color = '#eeeeee';
 
         return Promise.resolve().then(() => {
-            expect(element.color).toBe('#eee');
+            expect(element.color).toBe('#eeeeee');
         });
     });
 
     it('Barcode: text-color', () => {
-        element.textColor = '#eee';
+        element.textColor = '#eeeeee';
 
         return Promise.resolve().then(() => {
-            expect(element.textColor).toBe('#eee');
+            expect(element.textColor).toBe('#eeeeee');
         });
     });
 

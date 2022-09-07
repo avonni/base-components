@@ -36,28 +36,26 @@ customElements.define('ac-base-barcode', Component.CustomElementConstructor);
 
 export const Barcode = ({
     background,
-    color,
-    renderAs,
-    value,
-    hideValue,
     checksum,
+    color,
+    height,
+    hideValue,
     textColor,
     textAlignment,
     type,
-    width,
-    height
+    value,
+    width
 }) => {
     const element = document.createElement('ac-base-barcode');
     element.background = background;
-    element.color = color;
-    element.renderAs = renderAs;
-    element.value = value;
-    element.hideValue = hideValue;
     element.checksum = checksum;
-    element.textColor = textColor;
-    element.textAlignment = textAlignment;
-    element.type = type;
-    element.width = width;
+    element.color = color;
     element.height = height;
+    element.hideValue = hideValue;
+    element.textAlignment = textAlignment;
+    element.textColor = textColor;
+    element.type = type;
+    element.value = value;
+    element.width = width;
     return element;
 };
