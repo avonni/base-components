@@ -144,9 +144,6 @@ export default class InputPen extends LightningElement {
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('keydown', this.handleKeyDown);
-        setInterval(() => {
-            console.log(this._foregroundValue.slice(0, 40) ?? 'undefined');
-        }, 1000);
     }
 
     connectedCallback() {
