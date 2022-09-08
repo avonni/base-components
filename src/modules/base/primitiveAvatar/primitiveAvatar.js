@@ -410,7 +410,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get groupedAvatar() {
-        return this.template.host.classList.contains('slds-avatar-grouped');
+        return Array.from(this.classList).includes('slds-avatar-grouped');
     }
 
     get showAvatar() {
