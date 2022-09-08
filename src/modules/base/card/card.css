@@ -33,6 +33,7 @@
 /* outer card */
 
 article.avonni-card {
+    height: 100%;
     background-color: var(--avonni-card-color-background, white);
     color: var(--avonni-card-text-color);
 
@@ -55,6 +56,13 @@ article.avonni-card {
 .avonni-card__media-container {
     flex: 0 1 auto;
 }
+
+.avonni-card__media-border-radius {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
 .avonni-card__media-center .avonni-card__content-container {
     order: -1;
 }
@@ -98,6 +106,10 @@ article.avonni-card {
             rgba(0, 0, 0, 0) 100%
         )
     );
+}
+
+.avonni-height_full {
+    height: 100%;
 }
 
 .avonni-card__media-overlay:hover .avonni-card__content-container,

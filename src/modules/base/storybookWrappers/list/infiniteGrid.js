@@ -30,46 +30,72 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'c/list';
+import { LightningElement, api } from 'lwc';
 
-customElements.define('ac-base-list', Component.CustomElementConstructor);
+export default class InfiniteGrid extends LightningElement {
+    @api label;
+    @api alternativeText;
+    @api sortable;
+    @api actions;
+    @api sortableIconName;
+    @api sortableIconPosition;
+    @api divider;
+    @api variant;
+    @api cols;
+    @api smallContainerCols;
+    @api mediumContainerCols;
+    @api largeContainerCols;
+    @api imageAttributes;
+    @api loadMoreOffset;
 
-export const List = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
-    actions,
-    sortableIconName,
-    sortableIconPosition,
-    divider,
-    variant,
-    cols,
-    smallContainerCols,
-    mediumContainerCols,
-    largeContainerCols,
-    imageAttributes,
-    enableInfiniteLoading,
-    isLoading,
-    loadMoreOffset
-}) => {
-    const element = document.createElement('ac-base-list');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
-    element.actions = actions;
-    element.sortableIconName = sortableIconName;
-    element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.variant = variant;
-    element.cols = cols;
-    element.smallContainerCols = smallContainerCols;
-    element.mediumContainerCols = mediumContainerCols;
-    element.largeContainerCols = largeContainerCols;
-    element.imageAttributes = imageAttributes;
-    element.enableInfiniteLoading = enableInfiniteLoading;
-    element.isLoading = isLoading;
-    element.loadMoreOffset = loadMoreOffset;
-    return element;
-};
+    _enableInfiniteLoading = true;
+    _isLoading = false;
+    _items;
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = value;
+    }
+
+    @api
+    get items() {
+        return this._items;
+    }
+
+    set items(value) {
+        this._items = value;
+    }
+
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = value;
+    }
+
+    connectedCallback() {
+        this._loadedItems = this.items;
+    }
+
+    loadMoreData() {
+        this._isLoading = true;
+
+        setTimeout(() => {
+            const newItems = this.items.concat(this._loadedItems);
+
+            if (newItems.length >= 30) {
+                this._isLoading = false;
+                this._enableInfiniteLoading = false;
+            } else {
+                this._isLoading = false;
+                this._items = newItems;
+            }
+        }, 1000);
+    }
+}
