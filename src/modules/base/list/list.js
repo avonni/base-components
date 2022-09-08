@@ -66,8 +66,8 @@ const IMAGE_CROP_FIT = {
 const CROP_POSITION_DEFAULT = 50;
 
 const VARIANTS = {
-    valid: ['list', 'grid', 'single-line'],
-    default: 'list'
+    valid: ['base', 'grid', 'single-line'],
+    default: 'base'
 };
 
 const MEDIA_QUERY_BREAKPOINTS = {
@@ -157,7 +157,7 @@ export default class List extends LightningElement {
     _dragging = false;
 
     renderedCallback() {
-        if (!this._resizeObserver && this._variant !== 'list') {
+        if (!this._resizeObserver && this._variant !== 'base') {
             this.initWrapObserver();
         }
 
@@ -463,7 +463,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Variant to display the items as a grid, a single-line or a list. The list is the only variant that supports sorting. Default is list.
+     * Variant to display the items as a grid, a single-line or a list. Accepted values are base, grid or single-line. The base variant displays a list and is the only variant that supports sorting. The variant defaults to base.
      *
      * @type {string}
      * @public
@@ -497,13 +497,13 @@ export default class List extends LightningElement {
         return classSet('avonni-list__image_container slds-is-relative').add({
             'avonni-list__list-image-width-small':
                 this._imageAttributes.size === 'small' &&
-                this._variant === 'list',
+                this._variant === 'base',
             'avonni-list__list-image-width-medium':
                 this._imageAttributes.size === 'medium' &&
-                this._variant === 'list',
+                this._variant === 'base',
             'avonni-list__list-image-width-large':
                 this._imageAttributes.size === 'large' &&
-                this._variant === 'list',
+                this._variant === 'base',
             'avonni-list__grid-image-height-small':
                 this._imageAttributes.size === 'small' &&
                 this._variant === 'grid',
@@ -592,7 +592,7 @@ export default class List extends LightningElement {
     get isLoadingBelow() {
         return (
             this.isLoading &&
-            (this.variant === 'list' || this.variant === 'grid')
+            (this.variant === 'base' || this.variant === 'grid')
         );
     }
 
@@ -632,7 +632,7 @@ export default class List extends LightningElement {
      */
     get showSortIconRight() {
         return (
-            this.variant === 'list' &&
+            this.variant === 'base' &&
             this.sortable &&
             this.sortableIconName &&
             this.sortableIconPosition === 'right'
@@ -646,7 +646,7 @@ export default class List extends LightningElement {
      */
     get showSortIconLeft() {
         return (
-            this.variant === 'list' &&
+            this.variant === 'base' &&
             this.sortable &&
             !!this.sortableIconName &&
             this.sortableIconPosition === 'left'
@@ -714,16 +714,12 @@ export default class List extends LightningElement {
             'avonni-list__item-menu slds-grid slds-is-relative slds-col'
         )
             .add({
-                'slds-grid_vertical': this.variant === 'list',
+                'slds-grid_vertical': this.variant === 'base',
                 'slds-wrap':
                     this.variant === 'grid' || this.variant === 'single-line',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'slds-grid_pull-padded-medium':
-                    this.variant === 'grid' ||
-                    (this.variant === 'single-line' &&
-                        this.divider === 'around')
             })
             .toString();
     }
@@ -752,7 +748,7 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable && this.variant === 'list',
+                    this.sortable && this.variant === 'base',
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
@@ -1210,7 +1206,7 @@ export default class List extends LightningElement {
      * Calculate the number of columns depending on the width of the list.
      */
     listResize() {
-        if (this.variant === 'list') {
+        if (this.variant === 'base') {
             return;
         }
         const previousColumnCount = this._currentColumnCount;

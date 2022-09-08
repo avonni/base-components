@@ -82,7 +82,7 @@ describe('List', () => {
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
-        expect(element.variant).toBe('list');
+        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -473,8 +473,8 @@ describe('List', () => {
     });
 
     // variant
-    it('List: Variant = list', () => {
-        element.variant = 'list';
+    it('List: Variant = base', () => {
+        element.variant = 'base';
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector(

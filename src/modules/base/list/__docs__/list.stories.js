@@ -212,11 +212,11 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['list', 'grid', 'single-line'],
+            options: ['base', 'grid', 'single-line'],
             description: 'Variant of the list.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'list' },
+                defaultValue: { summary: 'base' },
                 category: 'Base'
             }
         }
@@ -224,7 +224,7 @@ export default {
     args: {
         sortable: false,
         sortableIconPosition: 'right',
-        variant: 'list'
+        variant: 'base'
     }
 };
 
