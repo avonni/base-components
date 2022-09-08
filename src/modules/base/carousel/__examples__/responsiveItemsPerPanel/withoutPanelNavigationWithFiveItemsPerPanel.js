@@ -18,7 +18,7 @@ const menuActions = [
     }
 ];
 
-export default class AvonniCarouselWithoutPanelNavigation extends LightningElement {
+export default class AvonniCarouselResponsiveItemsPerPanel extends LightningElement {
     menuItems = [
         {
             name: '1',
