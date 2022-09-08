@@ -257,7 +257,7 @@ export default class List extends LightningElement {
             // Wait for the list to render because the showLoading method needs to measure the list's scroll position.
             window.requestAnimationFrame(() => {
                 this.showLoading();
-            })
+            });
         }
     }
 
@@ -430,7 +430,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * If true, it will be possible to reorder the list items.
+     * If true, it is be possible to reorder the list items. Only the base variant supports item sorting.
      *
      * @type {boolean}
      * @public
@@ -463,7 +463,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Variant to display the items as a grid, a single-line or a list. Accepted values are base, grid or single-line. The base variant displays a list and is the only variant that supports sorting. The variant defaults to base.
+     * Variant to display the items as a grid, a single-line or a list. Accepted values are base, grid or single-line. The base variant displays a list. The variant defaults to base.
      *
      * @type {string}
      * @public
@@ -719,7 +719,7 @@ export default class List extends LightningElement {
                     this.variant === 'grid' || this.variant === 'single-line',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
-                'slds-has-dividers_bottom-space': this.divider === 'bottom',
+                'slds-has-dividers_bottom-space': this.divider === 'bottom'
             })
             .toString();
     }
@@ -1483,6 +1483,9 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
+        if (this.variant !== 'base') {
+            return;
+        }
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1724,7 +1727,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (this.variant === 'grid') {
+        if (this.variant !== 'base') {
             return;
         }
         // If space bar is pressed, select or drop the item
