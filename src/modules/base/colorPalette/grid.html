@@ -61,7 +61,10 @@
                         {group.label}
                     </div>
 
-                    <ul class="slds-color-picker__swatches" role="listbox">
+                    <ul
+                        class="slds-grid slds-color-picker__swatches slds-wrap"
+                        role="listbox"
+                    >
                         <template for:each={group.colors} for:item="color">
                             <li
                                 key={generateKey}
