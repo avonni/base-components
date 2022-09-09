@@ -5,13 +5,14 @@ export default class Item {
     constructor(value) {
         this.avatar = value.avatar;
         this.avatarSrc = value.avatarSrc;
-        this.name = value.name;
         this.fallbackIconName = value.fallbackIconName;
-        this.label = value.label;
-        this.description = value.description;
+        this.href = value.href;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
+        this.label = value.label;
+        this.description = value.description;
+        this.name = value.name;
     }
 
     get hasImage() {

@@ -63,7 +63,7 @@ export default {
             description: 'Default number of columns',
             table: {
                 type: { summary: 'number' },
-                category: 'Grid'
+                category: 'Columns'
             }
         },
         smallContainerCols: {
@@ -72,7 +72,7 @@ export default {
             description: 'Number of columns for small containers',
             table: {
                 type: { summary: 'number' },
-                category: 'Grid'
+                category: 'Columns'
             }
         },
         mediumContainerCols: {
@@ -81,7 +81,7 @@ export default {
             description: 'Number of columns for medium containers',
             table: {
                 type: { summary: 'number' },
-                category: 'Grid'
+                category: 'Columns'
             }
         },
         largeContainerCols: {
@@ -90,7 +90,7 @@ export default {
             description: 'Number of columns for large containers',
             table: {
                 type: { summary: 'number' },
-                category: 'Grid'
+                category: 'Columns'
             }
         },
         divider: {
@@ -114,7 +114,7 @@ export default {
                 'Enable infinite loading. When enabled, the list will load more items when the user scrolls to the bottom of the list.',
             table: {
                 type: { summary: 'boolean' },
-                category: 'Inifinite Loading'
+                category: 'Infinite Loading'
             }
         },
         imageAttributes: {
@@ -135,7 +135,7 @@ export default {
             description: 'Set to true to indicate that the list is loading.',
             table: {
                 type: { summary: 'boolean' },
-                category: 'Inifinite Loading'
+                category: 'Infinite Loading'
             }
         },
         items: {
@@ -167,7 +167,7 @@ export default {
                 "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.",
             table: {
                 type: { summary: 'number' },
-                category: 'Inifinite Loading'
+                category: 'Infinite Loading'
             }
         },
         sortable: {
@@ -212,7 +212,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['base', 'grid', 'single-line'],
+            options: ['base', 'single-line'],
             description: 'Variant of the list.',
             table: {
                 type: { summary: 'string' },
@@ -529,7 +529,6 @@ GridCardWithImages.args = {
     imageAttributes: {
         size: 'medium'
     },
-    variant: 'grid',
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,
@@ -551,12 +550,12 @@ SingleLineWithInfiniteLoading.args = {
 export const GridWithInfiniteLoading = InfiniteGridTemplate.bind({});
 GridWithInfiniteLoading.args = {
     label: 'Grid with infinite loading',
-    variant: 'grid',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'medium'
+        size: 'medium',
+        position: 'top'
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,

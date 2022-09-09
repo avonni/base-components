@@ -57,16 +57,18 @@ const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
 };
-
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
 };
-
 const CROP_POSITION_DEFAULT = 50;
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
+    default: 'left'
+};
 
 const VARIANTS = {
-    valid: ['base', 'grid', 'single-line'],
+    valid: ['base', 'single-line'],
     default: 'base'
 };
 
@@ -118,6 +120,7 @@ export default class List extends LightningElement {
     _divider;
     _enableInfiniteLoading = false;
     _imageAttributes = {
+        position: 'left',
         size: 'large',
         cropPositionX: 50,
         cropPositionY: 50,
@@ -134,9 +137,22 @@ export default class List extends LightningElement {
     _columnsSizes = {
         default: 1
     };
+    _imageSizes = {
+        height: {
+            small: 48,
+            medium: 96,
+            large: 192
+        },
+        width: {
+            small: 48,
+            medium: 72,
+            large: 128
+        }
+    }
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
     _hasActions = false;
+    _hasColumns = false;
     _initialY;
     _itemElements;
     _menuTop;
@@ -157,7 +173,7 @@ export default class List extends LightningElement {
     _dragging = false;
 
     renderedCallback() {
-        if (!this._resizeObserver && this._variant !== 'base') {
+        if (!this._resizeObserver) {
             this.initWrapObserver();
         }
 
@@ -176,6 +192,9 @@ export default class List extends LightningElement {
         window.requestAnimationFrame(() => {
             this.handleScroll();
         });
+
+        // check if design has layout
+        console.log('has columns', this._hasColumns, this._imageAttributes);
     }
 
     disconnectedCallback() {
@@ -322,6 +341,14 @@ export default class List extends LightningElement {
                 validValues: IMAGE_CROP_FIT.valid
             }
         );
+
+        this._imageAttributes.position = normalizeString(
+            normalizedImgAttributes.position,
+            {
+                fallbackValue: IMAGE_POSITION.default,
+                validValues: IMAGE_POSITION.valid
+            }
+        );
     }
 
     /**
@@ -354,6 +381,9 @@ export default class List extends LightningElement {
         this._smallContainerCols = this.normalizeColumns(value);
         this._columnsSizes.small = this._smallContainerCols;
         this.listResize();
+        if (this._smallContainerCols > 1) {
+            this._hasColumns = true;
+        }
     }
 
     /**
@@ -370,6 +400,9 @@ export default class List extends LightningElement {
         this._mediumContainerCols = this.normalizeColumns(value);
         this._columnsSizes.medium = this._mediumContainerCols;
         this.listResize();
+        if (this._mediumContainerCols > 1) {
+            this._hasColumns = true;
+        }
     }
 
     /**
@@ -386,6 +419,9 @@ export default class List extends LightningElement {
         this._largeContainerCols = this.normalizeColumns(value);
         this._columnsSizes.large = this._largeContainerCols;
         this.listResize();
+        if (this._largeContainerCols > 1) {
+            this._hasColumns = true;
+        }
     }
 
     /**
@@ -491,41 +527,6 @@ export default class List extends LightningElement {
      */
 
     /**
-     * Apply size classes to images. In list variant, the width is set. In grid and single-line variants, the height is set.
-     */
-    get computedImageClass() {
-        return classSet('avonni-list__image_container slds-is-relative').add({
-            'avonni-list__list-image-width-small':
-                this._imageAttributes.size === 'small' &&
-                this._variant === 'base',
-            'avonni-list__list-image-width-medium':
-                this._imageAttributes.size === 'medium' &&
-                this._variant === 'base',
-            'avonni-list__list-image-width-large':
-                this._imageAttributes.size === 'large' &&
-                this._variant === 'base',
-            'avonni-list__grid-image-height-small':
-                this._imageAttributes.size === 'small' &&
-                this._variant === 'grid',
-            'avonni-list__grid-image-height-medium':
-                this._imageAttributes.size === 'medium' &&
-                this._variant === 'grid',
-            'avonni-list__grid-image-height-large':
-                this._imageAttributes.size === 'large' &&
-                this._variant === 'grid',
-            'avonni-list__single-line-image-height-small':
-                this._imageAttributes.size === 'small' &&
-                this._variant === 'single-line',
-            'avonni-list__single-line-image-height-medium':
-                this._imageAttributes.size === 'medium' &&
-                this._variant === 'single-line',
-            'avonni-list__single-line-image-height-large':
-                this._imageAttributes.size === 'large' &&
-                this._variant === 'single-line'
-        });
-    }
-
-    /**
      * Apply object fit classes to images.
      */
     get computedImageMediaClass() {
@@ -543,7 +544,26 @@ export default class List extends LightningElement {
      * Apply object position style to images.
      */
     get computedImageStyle() {
-        return `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%`;
+        const size = this._imageAttributes.size;
+        const setHeight = this._imageSizes.height[size];
+        const setWidth = this._imageSizes.width[size];
+        const hasWidth = this._imageAttributes.position === 'left' || this._imageAttributes.position === 'right' || this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
+        const isBackground = this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
+        const hasHeight = this.imageAttributes.position === 'top' || this._imageAttributes.position === 'bottom' || this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
+        let widthStyle;
+        let heightStyle;
+        if (hasWidth) {
+            widthStyle = `min-width: ${setWidth}px; width: ${setWidth}px;`;
+        }
+        if (isBackground) {
+            widthStyle = `min-width: 100%; width: 100%`;
+        }
+        if (hasHeight) {
+            heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px`;
+        }
+        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%`;
+        console.log(`${heightStyle} ${widthStyle} ${imageObjectPosition}`);
+        return `${heightStyle} ${widthStyle} ${imageObjectPosition}`;
     }
 
     /**
@@ -590,10 +610,7 @@ export default class List extends LightningElement {
      * Show the loading spinner at the end of the list.
      */
     get isLoadingBelow() {
-        return (
-            this.isLoading &&
-            (this.variant === 'base' || this.variant === 'grid')
-        );
+        return this.isLoading && this.variant !== 'single-line';
     }
 
     /**
@@ -620,9 +637,9 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get mediaPosition() {
-        return this.variant === 'grid' || this.variant === 'single-line'
-            ? 'top'
-            : 'left';
+        // redo this to be control by image position
+        // return this._hasColumns ? 'top' : 'left';
+        return this._imageAttributes.position;
     }
 
     /**
@@ -714,9 +731,8 @@ export default class List extends LightningElement {
             'avonni-list__item-menu slds-grid slds-is-relative slds-col'
         )
             .add({
-                'slds-grid_vertical': this.variant === 'base',
-                'slds-wrap':
-                    this.variant === 'grid' || this.variant === 'single-line',
+                'slds-grid_vertical': !this._hasColumns,
+                'slds-wrap': this._hasColumns,
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom'
@@ -748,34 +764,22 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable && this.variant === 'base',
+                    this.sortable && !this._hasColumns,
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12':
-                    this._currentColumnCount === 1 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line'),
+                    this._currentColumnCount === 1 && this._hasColumns,
                 'slds-col slds-size_6-of-12':
-                    this._currentColumnCount === 2 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line'),
+                    this._currentColumnCount === 2 && this._hasColumns,
                 'slds-col slds-size_4-of-12':
-                    this._currentColumnCount === 3 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line'),
+                    this._currentColumnCount === 3 && this._hasColumns,
                 'slds-col slds-size_3-of-12':
-                    this._currentColumnCount === 4 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line'),
+                    this._currentColumnCount === 4 && this._hasColumns,
                 'slds-col slds-size_2-of-12':
-                    this._currentColumnCount === 6 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line'),
+                    this._currentColumnCount === 6 && this._hasColumns,
                 'slds-col slds-size_1-of-12':
-                    this._currentColumnCount === 12 &&
-                    (this._variant === 'grid' ||
-                        this._variant === 'single-line')
+                    this._currentColumnCount === 12 && this._hasColumns
             })
             .toString();
     }
@@ -1206,7 +1210,7 @@ export default class List extends LightningElement {
      * Calculate the number of columns depending on the width of the list.
      */
     listResize() {
-        if (this.variant === 'base') {
+        if (!this._hasColumns) {
             return;
         }
         const previousColumnCount = this._currentColumnCount;
@@ -1483,7 +1487,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (this.variant !== 'base') {
+        if (this._hasColumns) {
             return;
         }
         if (event.button === 0) {
@@ -1727,7 +1731,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (this.variant !== 'base') {
+        if (this._hasColumns) {
             return;
         }
         // If space bar is pressed, select or drop the item
