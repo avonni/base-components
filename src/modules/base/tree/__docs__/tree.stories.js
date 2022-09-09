@@ -219,7 +219,7 @@ export const CustomEditableFields = Template.bind({});
 CustomEditableFields.args = {
     actions: [
         {
-            name: 'edit',
+            name: 'Standard.Tree.Edit',
             label: 'Edit Item'
         }
     ],
