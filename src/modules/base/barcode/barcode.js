@@ -31,32 +31,9 @@
 //  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
-import { normalizeString } from '../utilsPrivate/normalize';
 
-const DEFAULT_BACKGROUND = '#ffffff';
-const DEFAULT_COLOR = '#000000';
-const DEFAULT_TEXT_COLOR = '#000000';
-const TEXT_ALIGNMENT = {
-    valid: [
-        'top-left',
-        'top-center',
-        'top-right',
-        'top-justify',
-        'center-left',
-        'center-center',
-        'center-right',
-        'center-justify',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right',
-        'bottom-justify'
-    ],
-    default: 'bottom-center'
-};
-const TEXT_X_ALIGN = ['left', 'center', 'right', 'justify'];
-const TEXT_Y_ALIGN = ['below', 'center', 'above'];
 const BARCODE_TYPES = [
     'auspost',
     'azteccode',
@@ -164,6 +141,34 @@ const BARCODE_TYPES = [
     'upce',
     'upcecomposite'
 ];
+const DEFAULT_BACKGROUND = '#ffffff';
+const DEFAULT_COLOR = '#000000';
+const DEFAULT_TEXT_COLOR = '#000000';
+const TEXT_ALIGNMENT = {
+    valid: [
+        'top-left',
+        'top-center',
+        'top-right',
+        'top-justify',
+        'center-left',
+        'center-center',
+        'center-right',
+        'center-justify',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right',
+        'bottom-justify'
+    ],
+    default: 'bottom-center'
+};
+const TEXT_X_ALIGN = {
+    valid: ['left', 'center', 'right', 'justify'],
+    default: 'center'
+};
+const TEXT_Y_ALIGN = {
+    valid: ['below', 'center', 'above'],
+    default: 'below'
+};
 
 /**
  * @class
@@ -175,33 +180,6 @@ const BARCODE_TYPES = [
  */
 export default class Barcode extends LightningElement {
     /**
-     * The background color as a hexadecimal color value. Defaults to #ffffff.
-     *
-     * @public
-     * @type {string}
-     * @default #ffffff
-     */
-    @api background = DEFAULT_BACKGROUND;
-
-    /**
-     * The barcode color as a hexadecimal color value. Defaults to #000000.
-     *
-     * @public
-     * @type {string}
-     * @default #000000
-     */
-    @api color = DEFAULT_COLOR;
-
-    /**
-     * The text color as a hexadecimal color value. Defaults to #000000.
-     *
-     * @public
-     * @type {string}
-     * @default #000000
-     */
-    @api textColor = DEFAULT_TEXT_COLOR;
-
-    /**
      * The value to encode in the barcode.
      *
      * @public
@@ -209,17 +187,23 @@ export default class Barcode extends LightningElement {
      */
     @api value;
 
+    _background = DEFAULT_BACKGROUND;
+    _color = DEFAULT_COLOR;
+    _textColor = DEFAULT_TEXT_COLOR;
     _checksum = true;
     _errorMessage;
     _hideValue = false;
     _textAlignment = TEXT_ALIGNMENT.default;
+    _type;
+
     textXAlign = 'center';
     textYAlign = 'below';
-    _type;
     validCode = true;
+    initialRender = true;
 
     renderedCallback() {
         this.renderBarcode();
+        this.initialRender = false;
     }
 
     /*
@@ -227,6 +211,21 @@ export default class Barcode extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+    /**
+     * The background color as a hexadecimal color value. Defaults to #ffffff.
+     *
+     * @public
+     * @type {string}
+     * @default #ffffff
+     */
+    @api
+    get background() {
+        return this._background;
+    }
+    set background(value) {
+        this._background = normalizeString(value);
+        this.rerenderBarcode();
+    }
 
     /**
      * Show the barcode checksum. If set to false, the checksum value will be hidden.
@@ -241,6 +240,23 @@ export default class Barcode extends LightningElement {
     }
     set checksum(value) {
         this._checksum = normalizeBoolean(value);
+        this.rerenderBarcode();
+    }
+
+    /**
+     * The barcode color as a hexadecimal color value. Defaults to #000000.
+     *
+     * @public
+     * @type {string}
+     * @default #000000
+     */
+    @api
+    get color() {
+        return this._color;
+    }
+    set color(value) {
+        this._color = normalizeString(value);
+        this.rerenderBarcode();
     }
 
     /**
@@ -254,10 +270,8 @@ export default class Barcode extends LightningElement {
         return this._height;
     }
     set height(value) {
-        const numValue = parseInt(value, 10);
-        if (numValue != null) {
-            this._height = value;
-        }
+        this._height = parseInt(value, 10) || null;
+        this.rerenderBarcode();
     }
 
     /**
@@ -273,13 +287,30 @@ export default class Barcode extends LightningElement {
     }
     set hideValue(value) {
         this._hideValue = normalizeBoolean(value);
+        this.rerenderBarcode();
     }
 
     /**
-     * The position of the displayed value. Accepted values are top-left, top-center, top-right, top-justify, center-left, center-center, center-right, center-justify, bottom-left, bottom-center, bottom-right, bottom-justify. Defaults to bottom-center.
+     * The text color as a hexadecimal color value.
      *
      * @public
-     * @type {text}
+     * @type {string}
+     * @default #000000
+     */
+    @api
+    get textColor() {
+        return this._textColor;
+    }
+    set textColor(value) {
+        this._textColor = normalizeString(value);
+        this.rerenderBarcode();
+    }
+
+    /**
+     * The position of the displayed value. Accepted values are top-left, top-center, top-right, top-justify, center-left, center-center, center-right, center-justify, bottom-left, bottom-center, bottom-right, bottom-justify.
+     *
+     * @public
+     * @type {string}
      * @default bottom-center
      */
     @api
@@ -291,13 +322,19 @@ export default class Barcode extends LightningElement {
             fallbackValue: TEXT_ALIGNMENT.default,
             valid: TEXT_ALIGNMENT.valid
         });
-        if (this._textAlignment) {
-            const replace1 = this._textAlignment.replace('bottom', 'below');
-            const replace2 = replace1.replace('top', 'above');
-            const outputAlignment = replace2.split('-');
-            this.textXAlign = normalizeString(outputAlignment[1], TEXT_X_ALIGN);
-            this.textYAlign = normalizeString(outputAlignment[0], TEXT_Y_ALIGN);
-        }
+
+        const replace1 = this._textAlignment.replace('bottom', 'below');
+        const replace2 = replace1.replace('top', 'above');
+        const outputAlignment = replace2.split('-');
+        this.textXAlign = normalizeString(outputAlignment[1], {
+            validValues: TEXT_X_ALIGN.valid,
+            fallbackValue: TEXT_X_ALIGN.default
+        });
+        this.textYAlign = normalizeString(outputAlignment[0], {
+            validValues: TEXT_Y_ALIGN.valid,
+            fallbackValue: TEXT_Y_ALIGN.default
+        });
+        this.rerenderBarcode();
     }
 
     /**
@@ -315,6 +352,7 @@ export default class Barcode extends LightningElement {
             validValues: BARCODE_TYPES,
             toLowerCase: false
         });
+        this.rerenderBarcode();
     }
 
     /**
@@ -322,16 +360,36 @@ export default class Barcode extends LightningElement {
      *
      * @public
      * @type {number}
+     * @default 100%
      */
     @api
     get width() {
         return this._width;
     }
     set width(value) {
-        const numValue = parseInt(value, 10);
-        if (numValue != null) {
-            this._width = value;
-        }
+        this._width = parseInt(value, 10) || null;
+        this.rerenderBarcode();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Sets the width for the canvas.
+     */
+    get barcodeStyle() {
+        const widthStyle = this.width
+            ? `max-width: ${this.width}px;`
+            : 'width: 100%;';
+        const heightStyle = this.height ? `max-height: ${this.height}px;` : '';
+        return `${widthStyle} ${heightStyle}`;
+    }
+
+    get errorMessage() {
+        return `Error: ${this._errorMessage}`;
     }
 
     /*
@@ -355,32 +413,23 @@ export default class Barcode extends LightningElement {
             barcolor: this.colorHexCode(this.color),
             backgroundcolor: this.colorHexCode(this.background),
             textcolor: this.colorHexCode(this.textColor),
-            scale: 10,
-        }
+            scale: 10
+        };
 
         if (this.type === 'gs1-cc') {
-            params.ccversion ='b';
-            params.cccolumns =4;
+            params.ccversion = 'b';
+            params.cccolumns = 4;
         }
 
         if (this.type === 'gs1northamericancoupon') {
             params.segments = 8;
         }
-        
+
         if (this.type === 'rectangularmicroqrcode') {
             params.version = 'R17x139';
         }
 
         return params;
-    }
-
-    /**
-     * Sets the width for the canvas.
-     */
-    get barcodeStyle() {
-        return `${
-            this.width != null ? `max-width: ${this.width}px;` : 'width: 100%;'
-        } ${this.height != null ? `max-height: ${this.height}px;` : ''}`;
     }
 
     /**
@@ -392,10 +441,6 @@ export default class Barcode extends LightningElement {
         return color.replace('#', '');
     }
 
-    get errorMessage() {
-        return `Error: ${this._errorMessage}`;
-    }
-
     parseErrorMessage(message) {
         let errorMessage = message.replace(/bwipp.|bwip-js: /gi, '');
         errorMessage = errorMessage.replace(' bcid ', ' type ');
@@ -403,7 +448,7 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * Renders barcode with Bwipjs library.
+     * Render the barcode.
      */
     renderBarcode() {
         const canvas = this.template.querySelector(
@@ -421,6 +466,12 @@ export default class Barcode extends LightningElement {
                     'This barcode type does not support this value.';
             }
             this.validCode = false;
+        }
+    }
+
+    rerenderBarcode() {
+        if (!this.initialRender) {
+            this.renderBarcode();
         }
     }
 }

@@ -32,6 +32,7 @@
 
 import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
+//import bwipjs from 'bwip-js';
 
 let element;
 describe('Barcode', () => {
@@ -134,7 +135,7 @@ describe('Barcode', () => {
         element.height = '200';
 
         return Promise.resolve().then(() => {
-            expect(element.height).toBe('200');
+            expect(element.height).toBe(200);
         });
     });
 
@@ -150,7 +151,7 @@ describe('Barcode', () => {
         element.width = '200';
 
         return Promise.resolve().then(() => {
-            expect(element.width).toBe('200');
+            expect(element.width).toBe(200);
         });
     });
 });
