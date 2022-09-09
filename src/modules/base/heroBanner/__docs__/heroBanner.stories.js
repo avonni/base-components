@@ -146,25 +146,153 @@ export default {
                 category: 'Layout'
             }
         },
+        primaryButtonIconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonIconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonIconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the primary button icon. Valid values include xx-small, x-small, medium, or large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' },
+                category: 'primary button'
+            }
+        },
         primaryButtonLabel: {
-            name: 'primary-button-label',
+            name: 'label',
             control: {
                 type: 'text'
             },
             description: 'The text to be displayed inside the primary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonVariant: {
+            name: 'variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+            table: {
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        secondaryButtonIconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonIconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonIconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the secondary button icon. Valid values include xx-small, x-small, medium, or large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' },
+                category: 'secondary button'
             }
         },
         secondaryButtonLabel: {
-            name: 'secondary-button-label',
+            name: 'label',
             control: {
                 type: 'text'
             },
             description:
                 'The text to be displayed inside the secondary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonVariant: {
+            name: 'variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+            table: {
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'secondary button'
             }
         }
     },
@@ -173,7 +301,13 @@ export default {
         contentVerticalAlignment: 'center',
         contentWidth: 100,
         height: 400,
-        maxWidth: 960
+        maxWidth: 960,
+        primaryButtonIconPosition: 'left',
+        primaryButtonIconSize: 'medium',
+        primaryButtonVariant: 'neutral',
+        secondaryButtonIconPosition: 'left',
+        secondaryButtonIconSize: 'medium',
+        secondaryButtonVariant: 'neutral'
     }
 };
 
@@ -226,6 +360,7 @@ BaseTopCenterWithButtons.args = {
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
     primaryButtonLabel: 'Primary Button',
+    primaryButtonIconName: 'utility:down',
     secondaryButtonLabel: 'Secondary Button'
 };
 

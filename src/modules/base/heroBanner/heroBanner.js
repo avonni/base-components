@@ -34,13 +34,34 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const horizontal_alignment_options = {
+const HORIZONTAL_ALIGNMENT_OPTIONS = {
     valid: ['left', 'center', 'right'],
     default: 'left'
 };
-const vertical_alignment_options = {
+const VERTICAL_ALIGNMENT_OPTIONS = {
     valid: ['top', 'center', 'bottom'],
     default: 'center'
+};
+
+const BUTTON_VARIANTS = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
+
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+
+const ICON_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'medium'
 };
 
 const DEFAULT_HEIGHT = 400;
@@ -62,12 +83,26 @@ export default class HeroBanner extends LightningElement {
      */
     @api caption;
     /**
+     * The name of the icon to be used in the format 'utility:down'.
+     *
+     * @type {string}
+     * @public
+     */
+    @api primaryButtonIconName;
+    /**
      * The text to be displayed inside the primary button.
      *
      * @type {string}
      * @public
      */
     @api primaryButtonLabel;
+    /**
+     * The name of the icon to be used in the format 'utility:down'.
+     *
+     * @type {string}
+     * @public
+     */
+    @api secondaryButtonIconName;
     /**
      * The text to be displayed inside the secondary button.
      *
@@ -98,10 +133,14 @@ export default class HeroBanner extends LightningElement {
     @api title;
 
     _contentWidth = DEFAULT_CONTENT_WIDTH;
-    _contentHorizontalAlignment = horizontal_alignment_options.default;
-    _contentVerticalAlignment = vertical_alignment_options.default;
+    _contentHorizontalAlignment = HORIZONTAL_ALIGNMENT_OPTIONS.default;
+    _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
     _height = DEFAULT_HEIGHT;
     _maxWidth = DEFAULT_MAX_WIDTH;
+    _primaryButtonIconPosition = ICON_POSITIONS.default;
+    _primaryButtonVariant = BUTTON_VARIANTS.default;
+    _secondaryButtonIconPosition = ICON_POSITIONS.default;
+    _secondaryButtonVariant = BUTTON_VARIANTS.default;
 
     _rendered = false;
     showSlot = true;
@@ -160,8 +199,8 @@ export default class HeroBanner extends LightningElement {
 
     set contentHorizontalAlignment(alignment) {
         this._contentHorizontalAlignment = normalizeString(alignment, {
-            fallbackValue: horizontal_alignment_options.default,
-            validValues: horizontal_alignment_options.valid
+            fallbackValue: HORIZONTAL_ALIGNMENT_OPTIONS.default,
+            validValues: HORIZONTAL_ALIGNMENT_OPTIONS.valid
         });
     }
 
@@ -180,8 +219,8 @@ export default class HeroBanner extends LightningElement {
 
     set contentVerticalAlignment(alignment) {
         this._contentVerticalAlignment = normalizeString(alignment, {
-            fallbackValue: vertical_alignment_options.default,
-            validValues: vertical_alignment_options.valid
+            fallbackValue: VERTICAL_ALIGNMENT_OPTIONS.default,
+            validValues: VERTICAL_ALIGNMENT_OPTIONS.valid
         });
     }
 
@@ -236,6 +275,126 @@ export default class HeroBanner extends LightningElement {
     set maxWidth(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_MAX_WIDTH : value;
         this._maxWidth = number;
+    }
+
+    /**
+     * Describes the position of the icon with respect to body. Options include left and right.
+     *
+     * @public
+     * @type {string}
+     * @default left
+     */
+    @api
+    get primaryButtonIconPosition() {
+        return this._primaryButtonIconPosition;
+    }
+
+    set primaryButtonIconPosition(primaryButtonIconPosition) {
+        this._primaryButtonIconPosition = normalizeString(
+            primaryButtonIconPosition,
+            {
+                fallbackValue: ICON_POSITIONS.default,
+                validValues: ICON_POSITIONS.valid
+            }
+        );
+    }
+
+    /**
+     * The size of the primary button icon. Options include x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default medium
+     */
+    @api
+    get primaryButtonIconSize() {
+        return this._primaryButtonIconSize;
+    }
+
+    set primaryButtonIconSize(size) {
+        this._primaryButtonIconSize = normalizeString(size, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     *
+     * @public
+     * @type {string}
+     * @default neutral
+     */
+    @api
+    get primaryButtonVariant() {
+        return this._primaryButtonVariant;
+    }
+
+    set primaryButtonVariant(primaryButtonVariant) {
+        this._primaryButtonVariant = normalizeString(primaryButtonVariant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
+    /**
+     * Describes the position of the icon with respect to body. Options include left and right.
+     *
+     * @public
+     * @type {string}
+     * @default left
+     */
+    @api
+    get secondaryButtonIconPosition() {
+        return this._secondaryButtonIconPosition;
+    }
+
+    set secondaryButtonIconPosition(secondaryButtonIconPosition) {
+        this._secondaryButtonIconPosition = normalizeString(
+            secondaryButtonIconPosition,
+            {
+                fallbackValue: ICON_POSITIONS.default,
+                validValues: ICON_POSITIONS.valid
+            }
+        );
+    }
+
+    /**
+     * The size of the secondary button icon. Options include x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default medium
+     */
+    @api
+    get secondaryButtonIconSize() {
+        return this._secondaryButtonIconSize;
+    }
+
+    set secondaryButtonIconSize(size) {
+        this._secondaryButtonIconSize = normalizeString(size, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     *
+     * @public
+     * @type {string}
+     * @default neutral
+     */
+    @api
+    get secondaryButtonVariant() {
+        return this._secondaryButtonVariant;
+    }
+
+    set secondaryButtonVariant(secondaryButtonVariant) {
+        this._secondaryButtonVariant = normalizeString(secondaryButtonVariant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
     }
 
     /*
@@ -308,7 +467,7 @@ export default class HeroBanner extends LightningElement {
      *
      * @type {string}
      */
-    get computedButtonClass() {
+    get computedButtonAlignmentClass() {
         return classSet('slds-grid slds-m-top_small')
             .add(
                 `avonni-hero-banner__horizontal-alignment_${this._contentHorizontalAlignment}`
@@ -317,20 +476,140 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * True if there is a label for the primary button or the secondary.
+     * Computed primary button class styling.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get hasButton() {
-        return this.primaryButtonLabel || this.secondaryButtonLabel;
+    get computedPrimaryButtonClass() {
+        return classSet('slds-button')
+            .add({
+                'slds-button_neutral': this.primaryButtonVariant === 'neutral',
+                'slds-button_brand': this.primaryButtonVariant === 'brand',
+                'slds-button_outline-brand':
+                    this.primaryButtonVariant === 'brand-outline',
+                'slds-button_destructive':
+                    this.primaryButtonVariant === 'destructive',
+                'slds-button_text-destructive':
+                    this.primaryButtonVariant === 'destructive-text',
+                'slds-button_inverse': this.primaryButtonVariant === 'inverse',
+                'slds-button_success': this.primaryButtonVariant === 'success'
+            })
+            .toString();
+    }
+
+    get computedPrimaryButtonIconClass() {
+        return classSet('slds-button__icon')
+            .add({
+                'slds-button__icon_left':
+                    this._primaryButtonIconPosition === 'left' &&
+                    this.primaryButtonLabel,
+                'slds-button__icon_right':
+                    this._primaryButtonIconPosition === 'right' &&
+                    this.primaryButtonLabel,
+                'slds-button__icon_x-small':
+                    this._primaryButtonIconSize === 'x-small',
+                'slds-button__icon_small':
+                    this._primaryButtonIconSize === 'small',
+                'slds-button__icon_large':
+                    this._primaryButtonIconSize === 'large'
+            })
+            .toString();
     }
 
     /**
-     * True if there are labels for the primary button and the secondary.
+     * Computed secondary button class styling.
+     *
+     * @type {string}
+     */
+    get computedSecondaryButtonClass() {
+        return classSet('slds-button')
+            .add({
+                'slds-button_neutral':
+                    this.secondaryButtonVariant === 'neutral',
+                'slds-button_brand': this.secondaryButtonVariant === 'brand',
+                'slds-button_outline-brand':
+                    this.secondaryButtonVariant === 'brand-outline',
+                'slds-button_destructive':
+                    this.secondaryButtonVariant === 'destructive',
+                'slds-button_text-destructive':
+                    this.secondaryButtonVariant === 'destructive-text',
+                'slds-button_inverse':
+                    this.secondaryButtonVariant === 'inverse',
+                'slds-button_success': this.secondaryButtonVariant === 'success'
+            })
+            .toString();
+    }
+
+    get computedSecondaryButtonIconClass() {
+        return classSet('slds-button__icon')
+            .add({
+                'slds-button__icon_left':
+                    this._secondaryButtonIconPosition === 'left' &&
+                    this.secondaryButtonLabel,
+                'slds-button__icon_right':
+                    this._secondaryButtonIconPosition === 'right' &&
+                    this.secondaryButtonLabel,
+                'slds-button__icon_x-small':
+                    this._secondaryButtonIconSize === 'x-small',
+                'slds-button__icon_small':
+                    this._secondaryButtonIconSize === 'small',
+                'slds-button__icon_large':
+                    this._secondaryButtonIconSize === 'large'
+            })
+            .toString();
+    }
+
+    /**
+     * True if there is a label or icon name for the primary button.
      *
      * @type {boolean}
      */
-    get hasButtons() {
-        return this.primaryButtonLabel && this.secondaryButtonLabel;
+    get hasPrimaryButton() {
+        return this.primaryButtonLabel || this.primaryButtonIconName;
+    }
+
+    get primaryButtonIconNameLeft() {
+        return (
+            this.primaryButtonIconName &&
+            this.primaryButtonIconPosition === 'left'
+        );
+    }
+
+    get primaryButtonIconNameRight() {
+        return (
+            this.primaryButtonIconName &&
+            this.primaryButtonIconPosition === 'right'
+        );
+    }
+
+    get secondaryButtonIconNameLeft() {
+        return (
+            this.secondaryButtonIconName &&
+            this.secondaryButtonIconPosition === 'left'
+        );
+    }
+
+    get secondaryButtonIconNameRight() {
+        return (
+            this.secondaryButtonIconName &&
+            this.secondaryButtonIconPosition === 'right'
+        );
+    }
+
+    /**
+     * True if there is a label or icon name for the second button.
+     *
+     * @type {boolean}
+     */
+    get hasSecondaryButton() {
+        return this.secondaryButtonLabel || this.secondaryButtonIconName;
+    }
+
+    handlePrimaryButtonClick() {
+        this.dispatchEvent(new CustomEvent('primarybuttonclick'));
+    }
+
+    handleSecondaryButtonClick() {
+        this.dispatchEvent(new CustomEvent('secondarybuttonclick'));
     }
 }

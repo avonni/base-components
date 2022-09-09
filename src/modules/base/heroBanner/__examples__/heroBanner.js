@@ -47,8 +47,16 @@ export const HeroBanner = ({
     contentHorizontalAlignment,
     contentVerticalAlignment,
     contentWidth,
+    primaryButtonIconName,
+    primaryButtonIconPosition,
+    primaryButtonIconSize,
     primaryButtonLabel,
-    secondaryButtonLabel
+    primaryButtonVariant,
+    secondaryButtonIconName,
+    secondaryButtonIconPosition,
+    secondaryButtonIconSize,
+    secondaryButtonLabel,
+    secondaryButtonVariant
 }) => {
     const element = document.createElement('ac-base-hero-banner');
     element.title = title;
@@ -60,7 +68,15 @@ export const HeroBanner = ({
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
     element.contentWidth = contentWidth;
+    element.primaryButtonIconName = primaryButtonIconName;
+    element.primaryButtonIconPosition = primaryButtonIconPosition;
+    element.primaryButtonIconSize = primaryButtonIconSize;
     element.primaryButtonLabel = primaryButtonLabel;
+    element.primaryButtonVariant = primaryButtonVariant;
+    element.secondaryButtonIconName = secondaryButtonIconName;
+    element.secondaryButtonIconPosition = secondaryButtonIconPosition;
+    element.secondaryButtonIconSize = secondaryButtonIconSize;
     element.secondaryButtonLabel = secondaryButtonLabel;
+    element.secondaryButtonVariant = secondaryButtonVariant;
     return element;
 };
