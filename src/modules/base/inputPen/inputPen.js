@@ -142,6 +142,8 @@ export default class InputPen extends LightningElement {
     constructor() {
         super();
         window.addEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('touchend', this.handleMouseUp);
+        window.addEventListener('touchmove', this.handleMouseMove);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('keydown', this.handleKeyDown);
     }
@@ -154,7 +156,9 @@ export default class InputPen extends LightningElement {
 
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.handleMouseUp);
+        window.removeEventListener('touchend', this.handleMouseUp);
         window.removeEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('touchmove', this.handleMouseMove);
         window.removeEventListener('keydown', this.handleKeyDown);
     }
 
