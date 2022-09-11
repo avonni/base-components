@@ -34,9 +34,11 @@
     max-height: 100%;
 }
 
-.avonni-list__item-menu {
-    --avonni-card-shadow: var(--avonni-list-item-menu-shadow, none);
-    align-self: baseline;
+.avonni-list__item-spacing-medium {
+    --item-gap: 0.75rem;
+}
+.avonni-list__item-spacing-large {
+    --item-gap: 1.5rem;
 }
 
 .avonni-list__item {
@@ -48,43 +50,37 @@
     --avonni-card-header-spacing-block-start: 0px;
     --avonni-card-header-spacing-block-end: 0px;
     --avonni-card-media-sizing-border: 0px;
-    --avonni-card-body-spacing-block-start: var(
-        --avonni-list-item-spacing-block-start,
-        0.5rem
-    );
-    --avonni-card-body-spacing-block-end: var(
-        --avonni-list-item-spacing-block-end,
-        0.5rem
-    );
-    --avonni-card-body-spacing-inline-start: var(
-        --avonni-list-item-spacing-inline-start,
-        0.5rem
-    );
-    --avonni-card-body-spacing-inline-end: var(
-        --avonni-list-item-spacing-inline-end,
-        0.5rem
-    );
+    --avonni-card-body-spacing-block-start: 0px;
+    --avonni-card-body-spacing-block-end: 0px;
 }
 
 .avonni-list-item-body {
     padding-left: var(--avonni-list-item-spacing-inline-start, 0.5rem);
     padding-right: var(--avonni-list-item-spacing-inline-end, 0.5rem);
+    padding-top: var(--avonni-list-item-spacing-block-start, 0.5rem);
+    padding-bottom: var(--avonni-list-item-spacing-block-end, 0.5rem);
 }
 
 .avonni-list__has-card-style {
-    row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
+    row-gap: var(
+        --avonni-list-item-spacing-block-between,
+        var(--item-gap, 0.5rem)
+    );
     margin-inline: calc(
-        var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
+        var(--avonni-list-item-spacing-inline-between, var(--item-gap, 0.5rem)) /
+            -2
     );
     --avonni-card-sizing-border: 1px;
 }
 
 .avonni-list__item-gutters {
     padding-left: calc(
-        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+        var(--avonni-list-item-spacing-inline-between, var(--item-gap, 0.5rem)) /
+            2
     );
     padding-right: calc(
-        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+        var(--avonni-list-item-spacing-inline-between, var(--item-gap, 0.5rem)) /
+            2
     );
 }
 
@@ -119,8 +115,15 @@
 }
 
 .avonni-list__page-change-buttons {
+    position: relative;
     min-width: 30px;
     max-width: 30px;
+}
+
+.avonni-list__page-change-buttons > .avonni-list__page-change-button {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
 }
 
 /* Disable the hover on touch */

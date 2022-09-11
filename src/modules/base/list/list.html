@@ -55,11 +55,7 @@
         >
 
         <div
-            class="
-                slds-grid slds-grid_vertical-align-center
-                slds-col
-                slds-scrollable_y
-            "
+            class="slds-grid slds-col slds-scrollable_y"
             data-element-id="list-container"
             onscroll={handleScroll}
         >
@@ -70,6 +66,7 @@
                 <lightning-button-icon
                     alternative-text="Previous Items"
                     disabled={previousPageDisabled}
+                    class="avonni-list__page-change-button"
                     data-element-id="previous-page-button"
                     icon-name="utility:chevronleft"
                     size="large"
@@ -368,10 +365,10 @@
             >
                 <lightning-button-icon
                     alternative-text="Next Items"
+                    class="avonni-list__page-change-button"
                     disabled={nextPageDisabled}
                     data-element-id="next-page-button"
                     icon-name="utility:chevronright"
-                    class="slds-"
                     size="large"
                     variant="bare"
                     onclick={nextPage}

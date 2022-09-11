@@ -180,6 +180,10 @@ article.avonni-card {
     width: 100%;
 }
 
+.avonni-card__body-container {
+    height: 100%;
+}
+
 .avonni-card__media {
     height: 100%;
     width: 100%;

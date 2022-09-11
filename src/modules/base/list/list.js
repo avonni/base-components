@@ -57,6 +57,11 @@ const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
 };
+const ITEM_SPACING = {
+    valid: ['small', 'medium', 'large'],
+    default: 'small'
+};
+
 const IMAGE_CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -148,7 +153,7 @@ export default class List extends LightningElement {
             medium: 72,
             large: 128
         }
-    }
+    };
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
     _hasActions = false;
@@ -192,9 +197,6 @@ export default class List extends LightningElement {
         window.requestAnimationFrame(() => {
             this.handleScroll();
         });
-
-        // check if design has layout
-        console.log('has columns', this._hasColumns, this._imageAttributes);
     }
 
     disconnectedCallback() {
@@ -256,6 +258,17 @@ export default class List extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    @api
+    get itemSpacing() {
+        return this._itemSpacing;
+    }
+    set itemSpacing(value) {
+        this._itemSpacing = normalizeString(value, {
+            fallbackValue: ITEM_SPACING.default,
+            validValues: ITEM_SPACING.valid
+        });
     }
 
     /**
@@ -544,26 +557,37 @@ export default class List extends LightningElement {
      * Apply object position style to images.
      */
     get computedImageStyle() {
+        // HAS ERRORS
+
         const size = this._imageAttributes.size;
         const setHeight = this._imageSizes.height[size];
         const setWidth = this._imageSizes.width[size];
-        const hasWidth = this._imageAttributes.position === 'left' || this._imageAttributes.position === 'right' || this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
-        const isBackground = this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
-        const hasHeight = this.imageAttributes.position === 'top' || this._imageAttributes.position === 'bottom' || this._imageAttributes.position === 'background' || this._imageAttributes.position === 'overlay';
         let widthStyle;
         let heightStyle;
-        if (hasWidth) {
-            widthStyle = `min-width: ${setWidth}px; width: ${setWidth}px;`;
+        if (
+            this._imageAttributes.position === 'left' ||
+            this._imageAttributes.position === 'right'
+        ) {
+            widthStyle = `min-width: ${setWidth}px; width: ${setWidth}px; height: 100%;`;
         }
-        if (isBackground) {
-            widthStyle = `min-width: 100%; width: 100%`;
+        if (
+            this._imageAttributes.position === 'background' ||
+            this._imageAttributes.position === 'overlay'
+        ) {
+            widthStyle = `min-width: 100%; width: 100%; height: 300px;`;
         }
-        if (hasHeight) {
-            heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px`;
+        if (
+            this.imageAttributes.position === 'top' ||
+            this._imageAttributes.position === 'bottom'
+        ) {
+            heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px; width: 100%;`;
         }
         const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%`;
-        console.log(`${heightStyle} ${widthStyle} ${imageObjectPosition}`);
-        return `${heightStyle} ${widthStyle} ${imageObjectPosition}`;
+        return `${
+            heightStyle || 'height: 100%'
+        } ${widthStyle} ${imageObjectPosition} object-fit: ${
+            this._imageAttributes.cropFit
+        };`;
     }
 
     /**
@@ -731,11 +755,15 @@ export default class List extends LightningElement {
             'avonni-list__item-menu slds-grid slds-is-relative slds-col'
         )
             .add({
-                'slds-grid_vertical': !this._hasColumns,
+                'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap': this._hasColumns,
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
-                'slds-has-dividers_bottom-space': this.divider === 'bottom'
+                'slds-has-dividers_bottom-space': this.divider === 'bottom',
+                'avonni-list__item-spacing-large':
+                    this._itemSpacing === 'large',
+                'avonni-list__item-spacing-medium':
+                    this._itemSpacing === 'medium'
             })
             .toString();
     }
@@ -764,22 +792,16 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable && !this._hasColumns,
+                    this.sortable && this._currentColumnCount === 1,
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-gutters': this.divider === 'around',
-                'slds-col slds-size_12-of-12':
-                    this._currentColumnCount === 1 && this._hasColumns,
-                'slds-col slds-size_6-of-12':
-                    this._currentColumnCount === 2 && this._hasColumns,
-                'slds-col slds-size_4-of-12':
-                    this._currentColumnCount === 3 && this._hasColumns,
-                'slds-col slds-size_3-of-12':
-                    this._currentColumnCount === 4 && this._hasColumns,
-                'slds-col slds-size_2-of-12':
-                    this._currentColumnCount === 6 && this._hasColumns,
-                'slds-col slds-size_1-of-12':
-                    this._currentColumnCount === 12 && this._hasColumns
+                'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
+                'slds-col slds-size_6-of-12': this._currentColumnCount === 2,
+                'slds-col slds-size_4-of-12': this._currentColumnCount === 3,
+                'slds-col slds-size_3-of-12': this._currentColumnCount === 4,
+                'slds-col slds-size_2-of-12': this._currentColumnCount === 6,
+                'slds-col slds-size_1-of-12': this._currentColumnCount === 12
             })
             .toString();
     }
@@ -1210,9 +1232,9 @@ export default class List extends LightningElement {
      * Calculate the number of columns depending on the width of the list.
      */
     listResize() {
-        if (!this._hasColumns) {
-            return;
-        }
+        // if (this._currentColumnCount > 1) {
+        //     return;
+        // }
         const previousColumnCount = this._currentColumnCount;
         if (!this.listContainer) {
             return;
@@ -1394,7 +1416,6 @@ export default class List extends LightningElement {
             itemsBetween.forEach((item) => {
                 draggedItemTransform += this.computeItemHeight(item);
                 item.style.transform = `translateY(${-draggedItemHeight}px)`;
-                // item.classList.add('avonni-list__item-sortable_keyboard-moved');
                 item.dataset.moved = 'keyboard-moved';
                 item.dataset.elementTempIndex = Number(item.dataset.index) - 1;
             });
@@ -1487,7 +1508,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (this._hasColumns) {
+        if (this._currentColumnCount > 1) {
             return;
         }
         if (event.button === 0) {
@@ -1731,7 +1752,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (this._hasColumns) {
+        if (this._currentColumnCount > 1) {
             return;
         }
         // If space bar is pressed, select or drop the item
