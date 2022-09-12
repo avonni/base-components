@@ -229,7 +229,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Position of the item divider. Valid values include top, bottom and around.
+     * Position of the item divider. Valid valuees include top, bottom and around.
      *
      * @type {string}
      * @public
@@ -298,6 +298,7 @@ export default class List extends LightningElement {
      *
      * @type {string}
      * @default large
+     * @deprecated
      * @deprecated
      */
     @api
@@ -674,8 +675,9 @@ export default class List extends LightningElement {
      *
      * @type {boolean}
      */
-    get showSortIconRight() {
+    get showSortSortIconRight() {
         return (
+            this.variant === 'base' &&
             this.variant === 'base' &&
             this.sortable &&
             this.sortableIconName &&
@@ -693,6 +695,7 @@ export default class List extends LightningElement {
             this.variant === 'base' &&
             this.sortable &&
             !!this.sortableIconName &&
+            this._imageAttributes.position === 'left' &&
             this.sortableIconPosition === 'left'
         );
     }
@@ -1054,6 +1057,7 @@ export default class List extends LightningElement {
         this._draggedElement =
             this._draggedIndex =
             this._hoveredIndex =
+            this._hoveredIndex =
             this._initialY =
             this._savedComputedItems =
                 null;
@@ -1209,6 +1213,7 @@ export default class List extends LightningElement {
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
         this._initialScrollHeight = this.listContainer.scrollHeight;
+        this._initialScrollHeight = this.listContainer.scrollHeight;
 
         this._initialY =
             event.type === 'touchstart'
@@ -1235,9 +1240,6 @@ export default class List extends LightningElement {
      * Calculate the number of columns depending on the width of the list.
      */
     listResize() {
-        // if (this._currentColumnCount > 1) {
-        //     return;
-        // }
         const previousColumnCount = this._currentColumnCount;
         if (!this.listContainer) {
             return;
@@ -1267,6 +1269,8 @@ export default class List extends LightningElement {
         if (calculatedColumns !== this._currentColumnCount) {
             this._currentColumnCount = calculatedColumns;
         }
+
+        console.log(this._currentColumnCount);
 
         // Go to page on which the page's first item appears.
         if (
@@ -1544,6 +1548,11 @@ export default class List extends LightningElement {
             return;
         }
 
+        if (this._keyboardDragged) {
+            this._keyboardDragged = false;
+            return;
+        }
+
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
@@ -1557,12 +1566,14 @@ export default class List extends LightningElement {
             this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
+
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this.computeItemHeight(
             event.currentTarget
         );
 
         this._draggedIndex = Number(this._draggedElement.dataset.index);
+        this._initialDraggedIndex = this._draggedIndex;
         this._initialDraggedIndex = this._draggedIndex;
 
         if (event.type !== 'keydown') {
@@ -1587,9 +1598,11 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     drag(event) {
-        if (!this._draggedElement || this._keyboardDragged) {
+        if (!this._draggedElement || this._keyboardDragged || this._keyboardDragged) {
             return;
         }
+
+        this._dragging = true;
 
         this._dragging = true;
         this._draggedElement.classList.add(
@@ -1613,11 +1626,13 @@ export default class List extends LightningElement {
             currentY = mouseY;
         }
         this._currentY = currentY;
+        this._currentY = currentY;
 
         if (!this._scrollStep) {
             // Stick the dragged item to the mouse position
             this.animateItems(this._currentY);
         }
+
 
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
@@ -1628,6 +1643,9 @@ export default class List extends LightningElement {
 
         this.stopPropagation(event);
         this.autoScroll(this._currentY);
+
+        this.stopPropagation(event);
+        this.autoScroll(this._currentY);
     }
 
     /**
@@ -1635,7 +1653,19 @@ export default class List extends LightningElement {
      *
      * @param {Event} event
      */
+    /**
+     * When dragging is finished, reorder items or reset the list.
+     *
+     * @param {Event} event
+     */
     dragEnd(event) {
+        window.clearInterval(this._scrollingInterval);
+        this._scrollingInterval = null;
+        this._dragging = false;
+
+        if (this._draggedIndex === null) {
+            return;
+        }
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
         this._dragging = false;
@@ -1766,11 +1796,14 @@ export default class List extends LightningElement {
             event.key === 'Spacebar'
         ) {
             event.preventDefault();
+            event.preventDefault();
             if (this._draggedElement) {
                 this.dragEnd();
                 this._keyboardDragged = false;
+                this._keyboardDragged = false;
             } else {
                 this.dragStart(event);
+                this._keyboardDragged = true;
                 this._keyboardDragged = true;
             }
         } else if (this.sortable && this._draggedElement) {
@@ -1823,8 +1856,9 @@ export default class List extends LightningElement {
      */
     handleItemClick(event) {
         if (
-            (event.target.tagName.startsWith('LIGHTNING') ||
-                event.target.tagName === 'A') &&
+            ((event.target.tagName.startsWith('LIGHTNING') ||
+                    event.target.tagName === 'A') &&
+            event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT') &&
             event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT'
         ) {
             return;

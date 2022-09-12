@@ -50,6 +50,7 @@ export default {
             description: 'Array of actions',
             table: {
                 type: { summary: 'object[]' },
+                category: 'Base',
                 category: 'Base'
             }
         },
@@ -109,6 +110,7 @@ export default {
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
                 type: { summary: 'string' },
+                category: 'Base',
                 category: 'Base'
             }
         },
@@ -196,6 +198,7 @@ export default {
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
+                category: 'Sorting',
                 category: 'Sorting'
             }
         },
@@ -208,6 +211,7 @@ export default {
                 "The Lightning Design System name of the sortable icon. \nNames are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' },
+                category: 'Sorting',
                 category: 'Sorting'
             }
         },
@@ -241,6 +245,7 @@ export default {
     args: {
         sortable: false,
         sortableIconPosition: 'right',
+        variant: 'base',
         variant: 'base'
     }
 };

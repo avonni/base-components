@@ -3,7 +3,7 @@ import { LightningElement } from 'lwc';
 export default class TreeCustomEditableFields extends LightningElement {
     actions = [
         {
-            name: 'edit',
+            name: 'Standard.Tree.Edit',
             label: 'Edit Item'
         }
     ];

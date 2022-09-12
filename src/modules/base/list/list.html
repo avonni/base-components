@@ -34,26 +34,27 @@
 
 <template>
     <div class="slds-grid slds-grid_vertical avonni-list__full-height">
-        <p
-            if:true={label}
-            class="slds-m-bottom_x-small avonni-list__header_font"
-        >
-            {label}
-        </p>
-        <span
-            id="instructions"
-            class="slds-assistive-text"
-            aria-live="assertive"
-            lwc:dom="manual"
-        ></span>
+        <div class="slds-grid slds-grid_vertical avonni-list__full-height">
+            <p
+                if:true={label}
+                class="slds-m-bottom_x-small avonni-list__header_font"
+            >
+                {label}
+            </p>
+            <span
+                id="instructions"
+                class="slds-assistive-text"
+                aria-live="assertive"
+                lwc:dom="manual"
+            ></span>
 
-        <span
-            if:true={alternativeText}
-            class="slds-assistive-text"
-            data-element-id="span-alternative-text"
-            >{alternativeText}</span
-        >
-
+            <span
+                if:true={alternativeText}
+                class="slds-assistive-text"
+                data-element-id="span-alternative-text"
+                >{alternativeText}</span
+            >
+        </div>
         <div
             class="slds-grid slds-col slds-scrollable_y"
             data-element-id="list-container"
@@ -135,6 +136,7 @@
                                         if:true={item.imageSrc}
                                         style={computedImageStyle}
                                         data-element-id="list-img"
+                                        class="slds-is-relative"
                                     >
                                         <img
                                             loading="lazy"
@@ -151,7 +153,7 @@
                             </div>
                             <div
                                 class="
-                                    slds-grid slds-grid_vertical-align-center 
+                                    slds-grid slds-grid_vertical-align-center
                                 "
                             >
                                 <div
@@ -231,7 +233,6 @@
                                                 avonni-list__item-description_font
                                             "
                                         >
-                                        <!-- class="slds-text-color_inverse" -->
                                             <lightning-formatted-rich-text
                                                 value={item.description}
                                             ></lightning-formatted-rich-text>
@@ -265,7 +266,7 @@
 
                                 <!-- Sort icon -->
                                 <lightning-icon
-                                    if:true={showSortIconRight}
+                                    if:true={showSortSortIconRight}
                                     class="
                                         slds-m-right_x-small
                                         icon-right

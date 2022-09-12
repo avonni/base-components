@@ -55,7 +55,8 @@
 
                     <div
                         if:true={showMediaSlot}
-                        class="avonni-height_full"
+                        class={computedMediaClasses}
+                        style="height: 100%;"
                     >
                         <slot name="media" class="avonni-height_full"></slot>
                     </div>
