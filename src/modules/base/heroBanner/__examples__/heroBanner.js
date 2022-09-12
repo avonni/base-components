@@ -38,15 +38,14 @@ customElements.define(
 );
 
 export const HeroBanner = ({
-    title,
     caption,
-    subtitle,
-    src,
-    height,
-    maxWidth,
     contentHorizontalAlignment,
     contentVerticalAlignment,
     contentWidth,
+    height,
+    imageLayout,
+    imagePosition,
+    maxWidth,
     primaryButtonIconName,
     primaryButtonIconPosition,
     primaryButtonIconSize,
@@ -56,18 +55,20 @@ export const HeroBanner = ({
     secondaryButtonIconPosition,
     secondaryButtonIconSize,
     secondaryButtonLabel,
-    secondaryButtonVariant
+    secondaryButtonVariant,
+    src,
+    subtitle,
+    title
 }) => {
     const element = document.createElement('ac-base-hero-banner');
-    element.title = title;
     element.caption = caption;
-    element.subtitle = subtitle;
-    element.src = src;
-    element.height = height;
-    element.maxWidth = maxWidth;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
     element.contentWidth = contentWidth;
+    element.height = height;
+    element.imageLayout = imageLayout;
+    element.imagePosition = imagePosition;
+    element.maxWidth = maxWidth;
     element.primaryButtonIconName = primaryButtonIconName;
     element.primaryButtonIconPosition = primaryButtonIconPosition;
     element.primaryButtonIconSize = primaryButtonIconSize;
@@ -78,5 +79,8 @@ export const HeroBanner = ({
     element.secondaryButtonIconSize = secondaryButtonIconSize;
     element.secondaryButtonLabel = secondaryButtonLabel;
     element.secondaryButtonVariant = secondaryButtonVariant;
+    element.src = src;
+    element.subtitle = subtitle;
+    element.title = title;
     return element;
 };

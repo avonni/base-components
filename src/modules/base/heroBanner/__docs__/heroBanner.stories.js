@@ -75,7 +75,8 @@ export default {
             },
             description: 'URL for the background image.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Background Image'
             }
         },
         height: {
@@ -117,19 +118,6 @@ export default {
                 category: 'Layout'
             }
         },
-        maxWidth: {
-            name: 'max-width',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Defines the width inside of the banner in percentage.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 960 },
-                category: 'Layout'
-            }
-        },
         contentWidth: {
             name: 'content-width',
             control: {
@@ -143,6 +131,63 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 100 },
+                category: 'Layout'
+            }
+        },
+        imageLayout: {
+            name: 'image-layout',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'scale-to-fill',
+                'fit',
+                'tile',
+                'tile-horizontally',
+                'tile-vertically'
+            ],
+            description:
+                'Defines the layout of the background image. Valid layouts include scale-to-fill, fit, tile, tile-horizontally, tile-vertically.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'scale-to-fill' },
+                category: 'Background Image'
+            }
+        },
+        imagePosition: {
+            name: 'image-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'center',
+                'left',
+                'right',
+                'top-center',
+                'top-left',
+                'top-right',
+                'bottom-center',
+                'bottom-left',
+                'bottom-right'
+            ],
+            description:
+                'Defines the position of the background image. Valid positions include center, left, right, top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'center' },
+                category: 'Background Image'
+            }
+        },
+        maxWidth: {
+            name: 'max-width',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Defines the width inside of the banner in percentage.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 960 },
                 category: 'Layout'
             }
         },
@@ -301,6 +346,8 @@ export default {
         contentVerticalAlignment: 'center',
         contentWidth: 100,
         height: 400,
+        imageLayout: 'scale-to-fill',
+        imagePosition: 'center',
         maxWidth: 960,
         primaryButtonIconPosition: 'left',
         primaryButtonIconSize: 'medium',

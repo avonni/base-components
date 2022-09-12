@@ -64,6 +64,32 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
+const IMAGE_LAYOUTS = {
+    valid: [
+        'scale-to-fill',
+        'fit',
+        'tile',
+        'tile-horizontally',
+        'tile-vertically'
+    ],
+    default: 'scale-to-fill'
+};
+
+const IMAGE_POSITIONS = {
+    valid: [
+        'center',
+        'left',
+        'right',
+        'top-left',
+        'top-right',
+        'top-center',
+        'bottom-center',
+        'bottom-left',
+        'bottom-right'
+    ],
+    default: 'center'
+};
+
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
@@ -136,6 +162,8 @@ export default class HeroBanner extends LightningElement {
     _contentHorizontalAlignment = HORIZONTAL_ALIGNMENT_OPTIONS.default;
     _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
     _height = DEFAULT_HEIGHT;
+    _imageLayout = IMAGE_LAYOUTS.default;
+    _imagePosition = IMAGE_POSITIONS.default;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _primaryButtonIconPosition = ICON_POSITIONS.default;
     _primaryButtonVariant = BUTTON_VARIANTS.default;
@@ -258,6 +286,44 @@ export default class HeroBanner extends LightningElement {
     set height(value) {
         const number = isNaN(parseInt(value, 10)) ? DEFAULT_HEIGHT : value;
         this._height = number;
+    }
+
+    /**
+     * Defines the layout of the background image. Valid layouts include scale-to-fill, fit, tile, tile-horizontally, tile-vertically.
+     *
+     * @public
+     * @type {string}
+     * @default scale-to-fill
+     */
+    @api
+    get imageLayout() {
+        return this._imageLayout;
+    }
+
+    set imageLayout(layout) {
+        this._imageLayout = normalizeString(layout, {
+            fallbackValue: IMAGE_LAYOUTS.default,
+            validValues: IMAGE_LAYOUTS.valid
+        });
+    }
+
+    /**
+     * Defines the position of the background image. Valid positions include center, left, right, top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.
+     *
+     * @public
+     * @type {string}
+     * @default center
+     */
+    @api
+    get imagePosition() {
+        return this._imagePosition;
+    }
+
+    set imagePosition(position) {
+        this._imagePosition = normalizeString(position, {
+            fallbackValue: IMAGE_POSITIONS.default,
+            validValues: IMAGE_POSITIONS.valid
+        });
     }
 
     /**

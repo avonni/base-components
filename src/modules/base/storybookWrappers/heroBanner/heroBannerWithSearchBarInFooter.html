@@ -1,14 +1,13 @@
 <template>
     <c-hero-banner
-        title={title}
         caption={caption}
-        subtitle={subtitle}
-        src={src}
-        height={height}
-        max-width={maxWidth}
         content-horizontal-alignment={contentHorizontalAlignment}
         content-vertical-alignment={contentVerticalAlignment}
         content-width={contentWidth}
+        height={height}
+        image-layout={imageLayout}
+        image-position={imagePosition}
+        max-width={maxWidth}
         primary-button-icon-name={primaryButtonIconName}
         primary-button-icon-position={primaryButtonIconPosition}
         primary-button-icon-size={primaryButtonIconSize}
@@ -19,6 +18,9 @@
         secondary-button-icon-size={secondaryButtonIconSize}
         secondary-button-label={secondaryButtonLabel}
         secondary-button-variant={secondaryButtonVariant}
+        src={src}
+        subtitle={subtitle}
+        title={title}
     >
         <div
             slot="footer"
