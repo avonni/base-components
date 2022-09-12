@@ -330,7 +330,26 @@ GridCardWithImages.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        position: 'top'
+        position: 'right',
+        height: 30,
+        width: 70
+    },
+    itemSpacing: 'large',
+    cols: 1,
+    smallContainerCols: 2,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
+};
+
+export const GridCardWithOverlayImages = Template.bind({});
+GridCardWithOverlayImages.args = {
+    label: 'Grid Card with Images',
+    items: itemsWithImages,
+    actions: actions,
+    divider: 'around',
+    imageAttributes: {
+        position: 'background',
+        height: 200
     },
     itemSpacing: 'large',
     cols: 1,

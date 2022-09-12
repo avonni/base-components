@@ -316,7 +316,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Image attributes: cropFit, position and size.
+     * Image attributes: cropFit, position size, width, height and cropPosition.
      *
      * @type {object}
      * @public
@@ -327,6 +327,10 @@ export default class List extends LightningElement {
     }
     set imageAttributes(value) {
         const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.width = !isNaN(normalizedImgAttributes.width) ? normalizedImgAttributes.width : null;
+
+        this._imageAttributes.height = !isNaN(normalizedImgAttributes.height) ? normalizedImgAttributes.height : null;
 
         this._imageAttributes.size = normalizeString(
             normalizedImgAttributes.size,
@@ -560,10 +564,11 @@ export default class List extends LightningElement {
         // HAS ERRORS
 
         const size = this._imageAttributes.size;
-        const setHeight = this._imageSizes.height[size];
-        const setWidth = this._imageSizes.width[size];
-        let widthStyle;
-        let heightStyle;
+        const setHeight = this._imageAttributes.height || this._imageSizes.height[size];
+        const setWidth = this._imageAttributes.width || this._imageSizes.width[size];
+
+        let widthStyle = 'width: 100%;';
+        let heightStyle = 'height: 100%;';
         if (
             this._imageAttributes.position === 'left' ||
             this._imageAttributes.position === 'right'
@@ -574,7 +579,7 @@ export default class List extends LightningElement {
             this._imageAttributes.position === 'background' ||
             this._imageAttributes.position === 'overlay'
         ) {
-            widthStyle = `min-width: 100%; width: 100%; height: 300px;`;
+            widthStyle = `min-width: 100%; width: 100%; height: ${setHeight}px;`;
         }
         if (
             this.imageAttributes.position === 'top' ||
@@ -582,12 +587,10 @@ export default class List extends LightningElement {
         ) {
             heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px; width: 100%;`;
         }
-        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%`;
-        return `${
-            heightStyle || 'height: 100%'
-        } ${widthStyle} ${imageObjectPosition} object-fit: ${
-            this._imageAttributes.cropFit
-        };`;
+        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%;`;
+        const objectFit = `object-fit: ${ this._imageAttributes.cropFit };`
+
+        return `${heightStyle} ${widthStyle} ${imageObjectPosition} ${objectFit}`;
     }
 
     /**
