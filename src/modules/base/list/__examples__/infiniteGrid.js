@@ -42,7 +42,6 @@ export const InfiniteGrid = ({
     alternativeText,
     sortable,
     items,
-    itemSpacing,
     actions,
     sortableIconName,
     sortableIconPosition,
@@ -62,7 +61,6 @@ export const InfiniteGrid = ({
     element.alternativeText = alternativeText;
     element.sortable = sortable;
     element.items = items;
-    element.itemSpacing = itemSpacing;
     element.actions = actions;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;

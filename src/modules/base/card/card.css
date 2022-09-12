@@ -82,8 +82,8 @@ article.avonni-card {
         --avonni-card-background-media-overlay-background,
         linear-gradient(
             0deg,
-            rgba(0, 0, 0, 0.5) 0%,
-            rgba(0, 0, 0, 0.25) 75%,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
             rgba(0, 0, 0, 0) 100%
         )
     );
@@ -101,8 +101,8 @@ article.avonni-card {
         --avonni-card-overlay-media-overlay-background,
         linear-gradient(
             0deg,
-            rgba(0, 0, 0, 0.5) 0%,
-            rgba(0, 0, 0, 0.25) 75%,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
             rgba(0, 0, 0, 0) 100%
         )
     );

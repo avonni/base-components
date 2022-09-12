@@ -34,6 +34,12 @@
     max-height: 100%;
 }
 
+.avonni-list__item-spacing-none {
+    --item-gap: 0rem;
+}
+.avonni-list__item-spacing-small {
+    --item-gap: 0.5rem;
+}
 .avonni-list__item-spacing-medium {
     --item-gap: 0.75rem;
 }
@@ -54,11 +60,18 @@
     --avonni-card-body-spacing-block-end: 0px;
 }
 
+.avonni-list__item-menu {
+    row-gap: var(
+        --avonni-list-item-spacing-block-between,
+        var(--item-gap, 0rem)
+    );
+}
+
 .avonni-list-item-body {
     padding-left: var(--avonni-list-item-spacing-inline-start, 0.5rem);
     padding-right: var(--avonni-list-item-spacing-inline-end, 0.5rem);
-    padding-top: var(--avonni-list-item-spacing-block-start, 0.5rem);
-    padding-bottom: var(--avonni-list-item-spacing-block-end, 0.5rem);
+    padding-top: var(--avonni-list-item-spacing-block-start, 0.25rem);
+    padding-bottom: var(--avonni-list-item-spacing-block-end, 0.25rem);
 }
 
 .avonni-list__has-card-style {
@@ -73,7 +86,7 @@
     --avonni-card-sizing-border: 1px;
 }
 
-.avonni-list__item-gutters {
+.avonni-list__has-card-style .avonni-list__item-gutters {
     padding-left: calc(
         var(--avonni-list-item-spacing-inline-between, var(--item-gap, 0.5rem)) /
             2
@@ -181,10 +194,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    top: 0;
-    left: 0;
     height: 100%;
-    width: 100%;
     width: 100%;
     object-fit: cover;
     pointer-events: none;
@@ -217,8 +227,6 @@
 .avonni-list__item-divider_top {
     --avonni-card-shadow: none;
     --avonni-card-sizing-border: 0px;
-    --avonni-card-shadow: none;
-    --avonni-card-sizing-border: 0px;
     border-top-width: var(--avonni-list-item-sizing-border, 1px);
     border-top-style: var(--avonni-list-item-styling-border, solid);
     border-top-color: var(--avonni-list-item-color-border, #dddbda);
@@ -227,15 +235,12 @@
 .avonni-list__item-divider_bottom {
     --avonni-card-shadow: none;
     --avonni-card-sizing-border: 0px;
-    --avonni-card-shadow: none;
-    --avonni-card-sizing-border: 0px;
     border-bottom-width: var(--avonni-list-item-sizing-border, 1px);
     border-bottom-style: var(--avonni-list-item-styling-border, solid);
     border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
 }
 
 .avonni-list__item-header_font {
-    --avonni-card-sizing-border: 0px;
     --avonni-card-sizing-border: 0px;
     color: var(--avonni-list-item-header-text-color, #080707);
     font-size: var(--avonni-list-item-header-font-size, 0.8125rem);

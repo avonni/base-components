@@ -122,7 +122,7 @@
                                     "
                                 >
                                     <lightning-icon
-                                        if:true={showSortIconLeft}
+                                        if:true={showSortIconInLeftImage}
                                         class="
                                             slds-p-horizontal_xx-small
                                             icon-left
@@ -156,6 +156,17 @@
                                     slds-grid slds-grid_vertical-align-center
                                 "
                             >
+                                <lightning-icon
+                                    if:true={showSortIconLeftOfContent}
+                                    class="
+                                        slds-p-horizontal_xx-small
+                                        icon-left
+                                        avonni-list__item-sortable-icon-cursor
+                                    "
+                                    icon-name={sortableIconName}
+                                    size="x-small"
+                                    data-element-id="lightning-icon-sort-left"
+                                ></lightning-icon>
                                 <div
                                     class="
                                         slds-grid slds-col
@@ -204,7 +215,11 @@
                                                     >
                                                 </template>
                                                 <template if:false={item.href}>
-                                                    {item.label}
+                                                    <span
+                                                        class={computedTextColor}
+                                                    >
+                                                        {item.label}
+                                                    </span>
                                                 </template>
                                             </div>
                                             <template if:true={item.icons}>
@@ -234,6 +249,7 @@
                                             "
                                         >
                                             <lightning-formatted-rich-text
+                                                class={computedTextColor}
                                                 value={item.description}
                                             ></lightning-formatted-rich-text>
                                         </p>
@@ -266,7 +282,7 @@
 
                                 <!-- Sort icon -->
                                 <lightning-icon
-                                    if:true={showSortSortIconRight}
+                                    if:true={showSortIconRight}
                                     class="
                                         slds-m-right_x-small
                                         icon-right
