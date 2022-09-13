@@ -31,10 +31,7 @@
  */
 
 .avonni-hero-banner__background {
-    background-size: cover;
-    background-position: center;
     padding: 20px;
-    background-color: var(--avonni-hero-banner-color-background, #ffffff);
 }
 
 .avonni-hero-banner__text-container-without-slot_height {

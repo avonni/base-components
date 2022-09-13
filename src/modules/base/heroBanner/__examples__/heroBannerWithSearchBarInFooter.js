@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const HeroBannerWithSearchBarInFooter = ({
+    backgroundColor,
     caption,
     contentHorizontalAlignment,
     contentVerticalAlignment,
@@ -63,6 +64,7 @@ export const HeroBannerWithSearchBarInFooter = ({
     const element = document.createElement(
         'ac-hero-banner-with-search-bar-in-footer'
     );
+    element.backgroundColor = backgroundColor;
     element.caption = caption;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;

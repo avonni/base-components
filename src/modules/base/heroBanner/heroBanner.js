@@ -90,6 +90,7 @@ const IMAGE_POSITIONS = {
     default: 'center'
 };
 
+const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
@@ -158,6 +159,7 @@ export default class HeroBanner extends LightningElement {
      */
     @api title;
 
+    _backgroundColor = DEFAULT_BACKGROUND_COLOR;
     _contentWidth = DEFAULT_CONTENT_WIDTH;
     _contentHorizontalAlignment = HORIZONTAL_ALIGNMENT_OPTIONS.default;
     _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
@@ -175,6 +177,7 @@ export default class HeroBanner extends LightningElement {
     showFooterSlot = true;
 
     renderedCallback() {
+        console.log(this.background);
         if (!this._rendered) {
             this._rendered = true;
             if (this.slot) {
@@ -211,6 +214,34 @@ export default class HeroBanner extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Defines the color of the background. Accepts a valid CSS color string, including hex and rgb.
+     *
+     * @type {string}
+     * @public
+     * @default #ffffff
+     */
+    @api
+    get backgroundColor() {
+        return this._backgroundColor;
+    }
+
+    set backgroundColor(color) {
+        if (typeof color === 'string') {
+            let styles = new Option().style;
+            styles.color = color;
+
+            if (
+                styles.color === color ||
+                this.isHexColor(color.replace('#', ''))
+            ) {
+                this._backgroundColor = color;
+            }
+        } else {
+            this._backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        }
+    }
 
     /**
      * Horizontal alignment of the title, caption and description.
@@ -470,12 +501,54 @@ export default class HeroBanner extends LightningElement {
      */
 
     /**
-     * Styling of the image.
+     * Layout of the image.
      *
      * @type {string}
      */
-    get imgSrc() {
-        return `background-image: linear-gradient(var(--avonni-hero-banner-linear-gradient, rgba(0,0,0,0.4), rgba(0,0,0,0.4))), url(${this.src}); height: ${this.height}px;`;
+    get computedLayout() {
+        switch (this.imageLayout) {
+            case 'scale-to-fill':
+                return '/ cover';
+            case 'fit':
+                return '/ contain no-repeat';
+            case 'tile':
+                return 'repeat';
+            case 'tile-horizontally':
+                return 'repeat-x';
+            case 'tile-vertically':
+                return 'repeat-y';
+            default:
+                return 'cover';
+        }
+    }
+
+    get computedPosition() {
+        switch (this.imagePosition) {
+            case 'left':
+                return 'center left';
+            case 'right':
+                return 'center right';
+            case 'center':
+                return 'center center';
+            case 'top-left':
+                return 'top left';
+            case 'top-center':
+                return 'top center';
+            case 'top-right':
+                return 'top right';
+            case 'bottom-left':
+                return 'bottom left';
+            case 'bottom-center':
+                return 'bottom center';
+            case 'bottom-right':
+                return 'bottom right';
+            default:
+                return 'center center';
+        }
+    }
+
+    get background() {
+        return `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px; background-color: ${this.backgroundColor};`;
     }
 
     /**
@@ -683,5 +756,25 @@ export default class HeroBanner extends LightningElement {
 
     handleSecondaryButtonClick() {
         this.dispatchEvent(new CustomEvent('secondarybuttonclick'));
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Verify if color is of hexadecimal type.
+     *
+     * @param {string} hex
+     * @returns {boolean}
+     */
+    isHexColor(hex) {
+        return (
+            typeof hex === 'string' &&
+            hex.length === 6 &&
+            !isNaN(Number('0x' + hex))
+        );
     }
 }

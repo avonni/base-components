@@ -39,6 +39,19 @@ import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 export default {
     title: 'Example/Hero Banner',
     argTypes: {
+        backgroundColor: {
+            name: 'background-color',
+            control: {
+                type: 'color'
+            },
+            description:
+                'Defines the color of the background. Accepts a valid CSS color string, including hex and rgb.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' },
+                category: 'Background'
+            }
+        },
         caption: {
             control: {
                 type: 'text'
@@ -76,7 +89,7 @@ export default {
             description: 'URL for the background image.',
             table: {
                 type: { summary: 'string' },
-                category: 'Background Image'
+                category: 'Background'
             }
         },
         height: {
@@ -151,7 +164,7 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'scale-to-fill' },
-                category: 'Background Image'
+                category: 'Background'
             }
         },
         imagePosition: {
@@ -175,7 +188,7 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'center' },
-                category: 'Background Image'
+                category: 'Background'
             }
         },
         maxWidth: {
@@ -342,6 +355,7 @@ export default {
         }
     },
     args: {
+        backgroundColor: '#ffffff',
         contentHorizontalAlignment: 'left',
         contentVerticalAlignment: 'center',
         contentWidth: 100,

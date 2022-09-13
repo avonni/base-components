@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const HeroBannerWithButton = ({
+    backgroundColor,
     caption,
     contentHorizontalAlignment,
     contentVerticalAlignment,
@@ -61,6 +62,7 @@ export const HeroBannerWithButton = ({
     title
 }) => {
     const element = document.createElement('ac-hero-banner-with-button');
+    element.backgroundColor = backgroundColor;
     element.caption = caption;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
