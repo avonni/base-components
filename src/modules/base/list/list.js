@@ -112,6 +112,8 @@ export default class List extends LightningElement {
 
     _actions = [];
     computedActions = [];
+    _mediaActions = []
+    computedMediaActions = [];
     computedItems = [];
     _cols = 1;
     _smallContainerCols;
@@ -151,7 +153,6 @@ export default class List extends LightningElement {
     };
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
-    _hasActions = false;
     _initialY;
     _itemElements;
     _menuTop;
@@ -220,11 +221,24 @@ export default class List extends LightningElement {
     set actions(proxy) {
         this._actions = normalizeArray(proxy);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
-        this._hasActions = true;
+    }
+    /**
+     * Array of action objects.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get mediaAction() {
+        return this._mediaActions;
+    }
+    set mediaAction(proxy) {
+        this._mediaActions = normalizeArray(proxy);
+        this.computedMediaActions = JSON.parse(JSON.stringify(this._actions));
     }
 
     /**
-     * Position of the item divider. Valid valuees include top, bottom and around.
+     * Position of the item divider. Valid values include top, bottom and around.
      *
      * @type {string}
      * @public
@@ -593,6 +607,15 @@ export default class List extends LightningElement {
         return this.computedActions[0];
     }
 
+    /**
+     * FirstAction is used when only 1 action is present in computedActions.
+     *
+     * @type {object}
+     */
+    get firstMediaAction() {
+        return this.computedMediaActions[0];
+    }
+
     get generateKey() {
         return generateUUID();
     }
@@ -607,12 +630,30 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Check if there are any Media Actions.
+     *
+     * @type {boolean}
+     */
+    get hasMediaActions() {
+        return this._mediaActions.length;
+    }
+
+    /**
      * Check whether Actions has multiple entries.
      *
      * @type {boolean}
      */
     get hasMultipleActions() {
         return this._actions.length > 1;
+    }
+
+    /**
+     * Check whether Actions has multiple entries.
+     *
+     * @type {boolean}
+     */
+    get hasMultipleMediaActions() {
+        return this._mediaActions.length > 1;
     }
 
     /**
@@ -755,10 +796,12 @@ export default class List extends LightningElement {
             .add({
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap': this._currentColumnCount > 1,
-                'avonni-list__has-card-style avonni-list__item-spacing-small':
-                    this.divider === 'around',
-                'slds-has-dividers_top-space': this.divider === 'top',
-                'slds-has-dividers_bottom-space': this.divider === 'bottom'
+                'avonni-list__items-without-divider': this._divider === '',
+                'avonni-list__has-card-style': this.divider === 'around',
+                'slds-has-dividers_top-space avonni-list__items-have-top-divider':
+                    this.divider === 'top',
+                'slds-has-dividers_bottom-space avonni-list__items-have-bottom-divider':
+                    this.divider === 'bottom'
             })
             .toString();
     }
@@ -781,8 +824,7 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet()
             .add({
-                'avonni-list__item-expanded': this._hasActions,
-                'avonni-list__item-borderless': !this._divider,
+                'avonni-list__item-borderless': this._divider !== 'around',
                 'avonni-list__item-card-style': this._divider === 'around'
             })
             .toString();
@@ -800,7 +842,6 @@ export default class List extends LightningElement {
                     this.sortable && this._currentColumnCount === 1,
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
-                'avonni-list__item-gutters': this.divider === 'around',
                 'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
                 'slds-col slds-size_6-of-12': this._currentColumnCount === 2,
                 'slds-col slds-size_4-of-12': this._currentColumnCount === 3,

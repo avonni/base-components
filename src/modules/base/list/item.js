@@ -21,13 +21,4 @@ export default class Item {
         }
         return this.imageSrc.length > 0;
     }
-
-    get actionsClass() {
-        return classSet('slds-m-right_x-small').add({
-            // 'slds-m-top_x-small slds-is-absolute avonni-list__item-action-image-top-right':
-            //     this.hasImage && this.variant !== 'list',
-            'slds-align-top':
-                this.listHasImages && !this.hasImage && this.variant !== 'list'
-        });
-    }
 }

@@ -201,6 +201,16 @@ export default {
                 category: 'Sorting'
             }
         },
+        mediaAction: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of actions',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
         sortableIconPosition: {
             name: 'sortable-icon-position',
             control: {
@@ -327,7 +337,8 @@ GridCardWithImages.args = {
     cols: 1,
     smallContainerCols: 2,
     mediumContainerCols: 4,
-    largeContainerCols: 6
+    largeContainerCols: 6,
+    mediaAction: actions
 };
 
 export const GridCardWithOverlayImages = Template.bind({});
@@ -343,7 +354,8 @@ GridCardWithOverlayImages.args = {
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,
-    largeContainerCols: 6
+    largeContainerCols: 6,
+    mediaAction: actions
 };
 
 export const SingleLineWithInfiniteLoading = InfiniteGridTemplate.bind({});

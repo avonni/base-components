@@ -228,15 +228,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
+            expect(images[0].style['min-width']).toBe('48px');
+            expect(images[1].style['min-width']).toBe('48px');
+            expect(images[2].style['min-width']).toBe('48px');
         });
     });
     it('List: Images width medium', () => {
@@ -247,15 +241,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
+            expect(images[0].style['min-width']).toBe('72px');
+            expect(images[1].style['min-width']).toBe('72px');
+            expect(images[2].style['min-width']).toBe('72px');
         });
     });
     it('List: Images width large', () => {
@@ -266,15 +254,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
+            expect(images[0].style['min-width']).toBe('128px');
+            expect(images[1].style['min-width']).toBe('128px');
+            expect(images[2].style['min-width']).toBe('128px');
         });
     });
 
@@ -483,24 +465,19 @@ describe('List', () => {
             expect(menu.classList).toContain('slds-grid_vertical');
         });
     });
-    it('List: Variant = grid', () => {
-        element.variant = 'grid';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
-            );
-            expect(menu.classList).toContain('slds-wrap');
-        });
-    });
+    
     it('List: Variant = single-line', () => {
         element.variant = 'single-line';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(menu.classList).toContain('slds-wrap');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeTruthy();
+            expect(nextButton).toBeTruthy();
         });
     });
 

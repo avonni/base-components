@@ -61,7 +61,7 @@
             onscroll={handleScroll}
         >
             <div
-                class="slds-col avonni-list__page-change-buttons"
+                class="slds-col avonni-list__page-change-button-container"
                 if:true={showPaginationButtons}
             >
                 <lightning-button-icon
@@ -149,6 +149,63 @@
                                             data-element-id="list-img-media"
                                         />
                                     </div>
+
+                                    <!-- Media Actions WORK IN PROGRESS -->
+                                    <div if:true={hasMediaActions}>
+                                        <lightning-button-menu
+                                            if:true={hasMultipleActions}
+                                            menu-alignment="right"
+                                            icon-size="x-small"
+                                            data-element-id="lightning-button-menu"
+                                            data-item-index={item.index}
+                                            onmousedown={stopPropagation}
+                                            ontouchstart={stopPropagation}
+                                            onselect={handleActionClick}
+                                            variant="border-filled"
+                                        >
+                                            <template
+                                                for:each={computedMediaActions}
+                                                for:item="action"
+                                            >
+                                                <lightning-menu-item
+                                                    key={action.name}
+                                                    value={action.name}
+                                                    label={action.label}
+                                                    disabled={action.disabled}
+                                                    icon-name={action.iconName}
+                                                    data-element-id="lightning-menu-item"
+                                                ></lightning-menu-item>
+                                            </template>
+                                        </lightning-button-menu>
+                                        <template if:false={hasMultipleActions}>
+                                            <lightning-button
+                                                if:true={firstMediaAction.label}
+                                                class="slds-m-right_none"
+                                                key={firstMediaAction.name}
+                                                value={firstMediaAction.name}
+                                                label={firstMediaAction.label}
+                                                disabled={firstMediaAction.disabled}
+                                                icon-name={firstMediaAction.iconName}
+                                                data-item-index={item.index}
+                                                data-element-id="lightning-button"
+                                                onclick={handleActionClick}
+                                                ontouchstart={stopPropagation}
+                                            ></lightning-button>
+                                            <lightning-button-icon
+                                                if:false={firstMediaAction.label}
+                                                class="slds-m-right_none"
+                                                key={firstMediaAction.name}
+                                                value={firstMediaAction.name}
+                                                disabled={firstMediaAction.disabled}
+                                                icon-name={firstMediaAction.iconName}
+                                                variant="bare"
+                                                data-item-index={item.index}
+                                                data-element-id="lightning-button-icon"
+                                                onclick={handleActionClick}
+                                                ontouchstart={stopPropagation}
+                                            ></lightning-button-icon>
+                                        </template>
+                                    </div>
                                 </div>
                             </div>
                             <div
@@ -210,7 +267,11 @@
                                                 data-element-id="div-item-label"
                                             >
                                                 <template if:true={item.href}>
-                                                    <a href={item.href}
+                                                    <a
+                                                        href={item.href}
+                                                        class="
+                                                            avonni-list__item-header-link
+                                                        "
                                                         >{item.label}</a
                                                     >
                                                 </template>
@@ -227,14 +288,18 @@
                                                     for:each={item.icons}
                                                     for:item="icon"
                                                 >
-                                                    <lightning-icon
+                                                    <span
                                                         key={generateKey}
-                                                        icon-name={icon}
-                                                        size="xx-small"
                                                         class="
                                                             slds-p-left_x-small
+                                                            avonni-list__item-icons
                                                         "
-                                                    ></lightning-icon>
+                                                    >
+                                                        <lightning-icon
+                                                            icon-name={icon}
+                                                            size="xx-small"
+                                                        ></lightning-icon>
+                                                    </span>
                                                 </template>
                                             </template>
                                         </div>
@@ -271,7 +336,11 @@
                                                     key={info.label}
                                                     class="slds-item"
                                                 >
-                                                    <a href={info.href}
+                                                    <a
+                                                        href={info.href}
+                                                        class="
+                                                            avonni-list__item-info-link
+                                                        "
                                                         >{info.label}</a
                                                     >
                                                 </li>
@@ -296,7 +365,7 @@
                                 <!-- Actions -->
                                 <div
                                     if:true={hasActions}
-                                    class={item.actionsClass}
+                                    class="slds-m-right_x-small"
                                 >
                                     <lightning-button-menu
                                         if:true={hasMultipleActions}
@@ -377,7 +446,7 @@
             <div
                 class="
                     slds-col slds-is-relative
-                    avonni-list__page-change-buttons
+                    avonni-list__page-change-button-container
                 "
                 if:true={showPaginationButtons}
             >

@@ -52,7 +52,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-size
- * @default 1rem
+ * @default 0.875rem
  * @type font
  */
 /**
@@ -172,13 +172,49 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
- * @default 0.5rem
+ * @default 0px
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-between
  * @type dimension
- * @default 0.5rem
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-top-spacing-block-between
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-top-spacing-inline-between
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-bottom-spacing-block-between
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-bottom-spacing-inline-between
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-around-spacing-block-between
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-around-spacing-inline-between
+ * @type dimension
+ * @default 0px
  */
 /**
  * @memberof stylingHooks
@@ -246,55 +282,61 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-size-small
- * @type dimension
- * @default 48px
+ * @name --avonni-list-header-link-text-color
+ * @type color
+ * @default #0176d3
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-size-medium
- * @type dimension
- * @default 72px
+ * @name --avonni-list-header-link-text-color-hover
+ * @type color
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-image-size-large
- * @type dimension
- * @default 128px
+ * @name --avonni-list-header-link-text-color
+ * @type color
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-grid-item-image-size-small
- * @type dimension
- * @default 48px
+ * @name --avonni-list-infos-link-text-color
+ * @type color
+ * @default #0176d3
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-grid-item-image-size-medium
- * @type dimension
- * @default 96px
+ * @name --avonni-list-infos-link-text-color-hover
+ * @type color
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-grid-item-image-size-large
- * @type dimension
- * @default 192px
+ * @name --avonni-list-infos-link-text-color-active
+ * @type color
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-single-line-item-image-size-small
- * @type dimension
- * @default 48px
+ * @name --avonni-list-item-icon-color-background
+ * @type color
+ * @default transparent
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-single-line-item-image-size-medium
- * @type dimension
- * @default 96px
+ * @name --avonni-list-item-icon-color-foreground
+ * @type color
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-single-line-item-image-size-large
- * @type dimension
- * @default 192px
+ * @name --avonni-list-item-icon-color-foreground-default
+ * @type color
+ * @default #747474
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-radius-border
+ * @type color
+ * @default 0.25rem
  */
