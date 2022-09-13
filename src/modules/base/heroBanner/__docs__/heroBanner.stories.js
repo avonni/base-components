@@ -167,6 +167,18 @@ export default {
                 category: 'Background'
             }
         },
+        imageOverlay: {
+            name: 'image-overlay',
+            control: {
+                type: 'color'
+            },
+            description:
+                'Defines the color of the image overlay. Accepts a valid CSS color string, including hex and rgb.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
         imagePosition: {
             name: 'image-position',
             control: {
@@ -422,7 +434,8 @@ BaseTopCenterWithButtons.args = {
     contentHorizontalAlignment: 'center',
     primaryButtonLabel: 'Primary Button',
     primaryButtonIconName: 'utility:down',
-    secondaryButtonLabel: 'Secondary Button'
+    secondaryButtonLabel: 'Secondary Button',
+    maxWidth: 2000
 };
 
 export const BaseTopRight = Template.bind({});

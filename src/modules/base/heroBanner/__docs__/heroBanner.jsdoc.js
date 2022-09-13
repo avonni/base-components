@@ -113,12 +113,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-hero-banner-linear-gradient
- * @default 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)'
- * @type color
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-color-background
  * @default transparent
  * @type color

@@ -165,6 +165,7 @@ export default class HeroBanner extends LightningElement {
     _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
     _height = DEFAULT_HEIGHT;
     _imageLayout = IMAGE_LAYOUTS.default;
+    _imageOverlay;
     _imagePosition = IMAGE_POSITIONS.default;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _primaryButtonIconPosition = ICON_POSITIONS.default;
@@ -177,7 +178,6 @@ export default class HeroBanner extends LightningElement {
     showFooterSlot = true;
 
     renderedCallback() {
-        console.log(this.background);
         if (!this._rendered) {
             this._rendered = true;
             if (this.slot) {
@@ -336,6 +336,31 @@ export default class HeroBanner extends LightningElement {
             fallbackValue: IMAGE_LAYOUTS.default,
             validValues: IMAGE_LAYOUTS.valid
         });
+    }
+
+    /**
+     * Defines the color of the image overlay. Accepts a valid CSS color string, including hex and rgb.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get imageOverlay() {
+        return this._imageOverlay;
+    }
+
+    set imageOverlay(color) {
+        if (typeof color === 'string') {
+            let styles = new Option().style;
+            styles.color = color;
+
+            if (
+                styles.color === color ||
+                this.isHexColor(color.replace('#', ''))
+            ) {
+                this._imageOverlay = color;
+            }
+        }
     }
 
     /**
@@ -547,8 +572,12 @@ export default class HeroBanner extends LightningElement {
         }
     }
 
-    get background() {
+    get computedBackground() {
         return `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px; background-color: ${this.backgroundColor};`;
+    }
+
+    get computedImageOverlay() {
+        return `background-color: ${this.imageOverlay};`;
     }
 
     /**
@@ -575,7 +604,7 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedContentContainer() {
-        return classSet('')
+        return classSet('avonni-hero-banner__content-container')
             .add({
                 'avonni-hero-banner__text-container-without-slot_height':
                     !this.showFooterSlot,
@@ -665,7 +694,9 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedSecondaryButtonClass() {
-        return classSet('avonni-hero-banner__secondary-button')
+        return classSet(
+            'avonni-hero-banner__secondary-button slds-m-left_x-small'
+        )
             .add({
                 'avonni-hero-banner__secondary-button_variant-neutral':
                     this.secondaryButtonVariant === 'neutral',

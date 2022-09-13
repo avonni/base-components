@@ -45,6 +45,7 @@ export const HeroBanner = ({
     contentWidth,
     height,
     imageLayout,
+    imageOverlay,
     imagePosition,
     maxWidth,
     primaryButtonIconName,
@@ -69,6 +70,7 @@ export const HeroBanner = ({
     element.contentWidth = contentWidth;
     element.height = height;
     element.imageLayout = imageLayout;
+    element.imageOverlay = imageOverlay;
     element.imagePosition = imagePosition;
     element.maxWidth = maxWidth;
     element.primaryButtonIconName = primaryButtonIconName;

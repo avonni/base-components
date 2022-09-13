@@ -20,6 +20,7 @@ export default class HeroBannerWithTwoSlots extends LightningElement {
     @api contentWidth = DEFAULT_CONTENT_WIDTH;
     @api height = DEFAULT_HEIGHT;
     @api imageLayout = DEFAULT_IMAGE_LAYOUT;
+    @api imageOverlay;
     @api imagePosition = DEFAULT_IMAGE_POSITION;
     @api maxWidth = DEFAULT_MAX_WIDTH;
     @api primaryButtonIconName;
