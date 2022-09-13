@@ -547,18 +547,22 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedPrimaryButtonClass() {
-        return classSet('slds-button')
+        return classSet('avonni-hero-banner__primary-button')
             .add({
-                'slds-button_neutral': this.primaryButtonVariant === 'neutral',
-                'slds-button_brand': this.primaryButtonVariant === 'brand',
-                'slds-button_outline-brand':
+                'avonni-hero-banner__primary-button_variant-neutral':
+                    this.primaryButtonVariant === 'neutral',
+                'avonni-hero-banner__primary-button_variant-brand':
+                    this.primaryButtonVariant === 'brand',
+                'avonni-hero-banner__primary-button_variant-outline-brand':
                     this.primaryButtonVariant === 'brand-outline',
-                'slds-button_destructive':
+                'avonni-hero-banner__primary-button_variant-destructive':
                     this.primaryButtonVariant === 'destructive',
-                'slds-button_text-destructive':
+                'avonni-hero-banner__primary-button_variant-text-destructive':
                     this.primaryButtonVariant === 'destructive-text',
-                'slds-button_inverse': this.primaryButtonVariant === 'inverse',
-                'slds-button_success': this.primaryButtonVariant === 'success'
+                'avonni-hero-banner__primary-button_variant-inverse':
+                    this.primaryButtonVariant === 'inverse',
+                'avonni-hero-banner__primary-button_variant-success':
+                    this.primaryButtonVariant === 'success'
             })
             .toString();
     }
@@ -588,20 +592,22 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedSecondaryButtonClass() {
-        return classSet('slds-button')
+        return classSet('avonni-hero-banner__secondary-button')
             .add({
-                'slds-button_neutral':
+                'avonni-hero-banner__secondary-button_variant-neutral':
                     this.secondaryButtonVariant === 'neutral',
-                'slds-button_brand': this.secondaryButtonVariant === 'brand',
-                'slds-button_outline-brand':
+                'avonni-hero-banner__secondary-button_variant-brand':
+                    this.secondaryButtonVariant === 'brand',
+                'avonni-hero-banner__secondary-button_variant-outline-brand':
                     this.secondaryButtonVariant === 'brand-outline',
-                'slds-button_destructive':
+                'avonni-hero-banner__secondary-button_variant-destructive':
                     this.secondaryButtonVariant === 'destructive',
-                'slds-button_text-destructive':
+                'avonni-hero-banner__secondary-button_variant-text-destructive':
                     this.secondaryButtonVariant === 'destructive-text',
-                'slds-button_inverse':
+                'avonni-hero-banner__secondary-button_variant-inverse':
                     this.secondaryButtonVariant === 'inverse',
-                'slds-button_success': this.secondaryButtonVariant === 'success'
+                'avonni-hero-banner__secondary-button_variant-success':
+                    this.secondaryButtonVariant === 'success'
             })
             .toString();
     }
