@@ -235,7 +235,7 @@ export class HorizontalActivityTimeline {
         if (!this._isResizingInterval) {
             this.setIntervalMaxDate();
         }
-        return this.convertDateToFormat(this._intervalMaxDate, this._dateFormat);
+        return this.convertDateToFormat(this._intervalMaxDate);
     }
 
     /**
@@ -244,7 +244,7 @@ export class HorizontalActivityTimeline {
      * @type {Date}
      */
     get intervalMinDate() {
-        return this.convertDateToFormat(this._intervalMinDate, this._dateFormat);
+        return this.convertDateToFormat(this._intervalMinDate);
     }
 
     /**
@@ -619,7 +619,7 @@ export class HorizontalActivityTimeline {
      * @param {string} format
      * @returns string
      */
-    convertDateToFormat(date, format) {
+    convertDateToFormat(date, format = this._dateFormat) {
         if(this.isDateInvalid(date)) {
             return '';
         }
