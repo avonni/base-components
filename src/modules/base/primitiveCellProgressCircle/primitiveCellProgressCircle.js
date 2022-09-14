@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,26 +29,25 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <div class="slds-p-around_x-small slds-show">
-        <c-primitive-cell-progress-bar
-            value={value}
-            label={typeAttributes.label}
-            reference-lines={typeAttributes.referenceLines}
-            show-value={typeAttributes.showValue}
-            textured={typeAttributes.textured}
-            theme={typeAttributes.theme}
-            thickness={typeAttributes.thickness}
-            value-label={typeAttributes.valueLabel}
-            value-position={typeAttributes.valuePosition}
-            variant={typeAttributes.variant}
-        ></c-primitive-cell-progress-bar>
-    </div>
+import { LightningElement, api } from 'lwc';
 
-    <!-- Make the cell artificially higher to avoid useless scroll bar-->
-    <template if:true={typeAttributes.referenceLines}>
-        <div class="slds-m-bottom_large slds-show"></div>
-    </template>
-</template>
+export default class PrimitiveCellProgressCircle extends LightningElement {
+    @api color;
+    @api direction;
+    @api label;
+    @api size;
+    @api thickness;
+    @api variant;
+
+    _value;
+
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value * 100;
+    }
+}
