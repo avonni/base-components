@@ -114,7 +114,7 @@
 .avonni-carousel__progress-indicator_shaded-active:hover {
     --avonni-carousel-active-indicator-shaded-color-background: var(
         --avonni-carousel-active-indicator-shaded-color-background-hover,
-        red
+        #dddbda
     );
     --avonni-carousel-active-indicator-shaded-color-border: var(
         --avonni-carousel-active-indicator-shaded-color-border-hover,
