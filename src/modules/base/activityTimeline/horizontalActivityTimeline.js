@@ -957,6 +957,19 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Extract x scroll position of interval from event. The position corresponds to the beginning of the day.
+     * 
+     * @return {number}
+     */
+    extractScrollXPosition(event){
+        // Horizontal scroll of interval
+        const requestedPosition = Number(this._timeIntervalSelector.attr('x')) + this.normalizeHorizontalScrollDeltaX(event);
+
+        // To set hours at 0,0,0,0 for min date
+        return this.findBeginningOfDayPosition(requestedPosition);
+    }
+
+    /**
      * Find the position of the beginning of the day based on scrollTimeScale. 
      * 
      * @return {number}
@@ -1118,13 +1131,13 @@ export class HorizontalActivityTimeline {
      */
     moveIntervalToPosition(position) {
         this._intervalMinDate = this.convertPositionToScaleDate(this.scrollTimeScale, position);
+        this.setIntervalMaxDate();
 
         this._timeIntervalSelector
             .attr('x',  position)
             .attr('width', this.intervalWidth)
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-        this.setIntervalMaxDate();
         this.moveTimelineDisplay();
     }
 
@@ -1753,13 +1766,8 @@ export class HorizontalActivityTimeline {
         this.handleMouseOutOfPopover();
        
         // Horizontal scroll of interval
-        let requestedPosition =
-            Number(this._timeIntervalSelector.attr('x')) +
-            this.normalizeHorizontalScrollDeltaX(event);
+        const requestedPosition = this.extractScrollXPosition(event);
 
-        // To set hours at 0,0,0,0 for min date
-        requestedPosition = this.findBeginningOfDayPosition(requestedPosition);
-        
         this.moveIntervalToPosition(
             this.validateXMousePosition(requestedPosition)
         );
