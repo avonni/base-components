@@ -60,7 +60,7 @@ const BUTTON_VARIANTS = {
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    valid: ['x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
@@ -426,7 +426,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the icon inside the primary button. Valid values include xx-small, x-small, small medium, or large.
+     * The size of the icon inside the primary button. Valid values include x-small, small, medium, or large.
      *
      * @public
      * @type {string}
@@ -486,7 +486,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the icon inside the secondary button. Valid values include xx-small, x-small, small medium, or large.
+     * The size of the icon inside the secondary button. Valid values include x-small, small, medium, or large.
      *
      * @public
      * @type {string}
@@ -739,7 +739,13 @@ export default class HeroBanner extends LightningElement {
                     this.primaryButtonLabel,
                 'slds-button__icon_right':
                     this._primaryButtonIconPosition === 'right' &&
-                    this.primaryButtonLabel
+                    this.primaryButtonLabel,
+                'slds-button__icon_x-small':
+                    this.primaryButtonIconSize === 'x-small',
+                'slds-button__icon_small':
+                    this.primaryButtonIconSize === 'small',
+                'slds-button__icon_large':
+                    this.primaryButtonIconSize === 'large'
             })
             .toString();
     }
@@ -820,7 +826,13 @@ export default class HeroBanner extends LightningElement {
                     this.secondaryButtonLabel,
                 'slds-button__icon_right':
                     this._secondaryButtonIconPosition === 'right' &&
-                    this.secondaryButtonLabel
+                    this.secondaryButtonLabel,
+                'slds-button__icon_x-small':
+                    this.secondaryButtonIconSize === 'x-small',
+                'slds-button__icon_small':
+                    this.secondaryButtonIconSize === 'small',
+                'slds-button__icon_large':
+                    this.secondaryButtonIconSize === 'large'
             })
             .toString();
     }

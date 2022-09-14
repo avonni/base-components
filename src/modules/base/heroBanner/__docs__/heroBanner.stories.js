@@ -218,9 +218,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: ['x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon inside the primary button. Valid values include xx-small, x-small, small medium, or large.',
+                'The size of the icon inside the primary button. Valid values include x-small, small, medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -292,9 +292,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: ['x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon inside the secondary button. Valid values include xx-small, x-small, small medium, or large.',
+                'The size of the icon inside the secondary button. Valid values include x-small, small, medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -400,6 +400,16 @@ Base.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
+    backgroundColor: 'blue',
+    imageOverlay: 'rgba(0, 0, 0, 0.61)',
+    height: 300
+};
+
+export const BaseWithBackgroundImg = Template.bind({});
+BaseWithBackgroundImg.args = {
+    caption: 'This is a caption',
+    title: 'This is a title',
+    subtitle: 'This is a subtitle',
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300
 };
@@ -412,7 +422,8 @@ BaseAbsoluteCenter.args = {
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentHorizontalAlignment: 'center',
-    contentWidth: 100
+    contentWidth: 100,
+    maxWidth: 2000
 };
 
 export const BaseTopLeftWithMaxWidth = Template.bind({});
@@ -436,8 +447,25 @@ BaseTopCenterWithButtons.args = {
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
     primaryButtonLabel: 'Primary Button',
-    primaryButtonIconName: 'utility:down',
     secondaryButtonLabel: 'Secondary Button',
+    maxWidth: 2000
+};
+
+export const BaseTopCenterWithButtonIcons = Template.bind({});
+BaseTopCenterWithButtonIcons.args = {
+    caption: 'This is a caption',
+    title: 'This is a title',
+    subtitle: 'This is a subtitle',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    contentVerticalAlignment: 'top',
+    contentHorizontalAlignment: 'center',
+    primaryButtonIconName: 'utility:pin',
+    primaryButtonIconSize: 'small',
+    primaryButtonVariant: 'brand',
+    secondaryButtonIconName: 'utility:question',
+    secondaryButtonIconSize: 'small',
+    secondaryButtonVariant: 'brand',
     maxWidth: 2000
 };
 
@@ -490,6 +518,7 @@ withButtonInFooterSlot.args = {
     subtitle: 'Summer camp',
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 350,
+    maxWidth: 2000,
     contentHorizontalAlignment: 'center'
 };
 
@@ -500,6 +529,7 @@ withSearchBarInDefaultSlot.args = {
     title: 'Looking for a vacation?',
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    maxWidth: 2000,
     height: 200,
     contentHorizontalAlignment: 'center'
 };
@@ -510,6 +540,7 @@ withSearchBarInFooterSlot.args = {
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 500,
+    maxWidth: 2000,
     contentHorizontalAlignment: 'center'
 };
 
@@ -519,5 +550,6 @@ withTwoSlots.args = {
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 300,
-    contentHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center',
+    maxWidth: 2000
 };

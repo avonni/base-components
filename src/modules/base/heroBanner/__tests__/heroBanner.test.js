@@ -346,6 +346,14 @@ describe('Hero Banner', () => {
         });
     });
 
+    it('Hero Banner: image overlay - no colors', () => {
+        element.imageOverlay = 0;
+
+        return Promise.resolve().then(() => {
+            expect(element.imageOverlay).toBe(undefined);
+        });
+    });
+
     // Needs an image
     // image position
     it('Hero Banner: image position - center', () => {
@@ -551,12 +559,10 @@ describe('Hero Banner', () => {
             const primaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
-            const primaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-right"]'
-            );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.size).toBe('x-small');
-            expect(primaryIconRight).toBeFalsy();
+            expect(primaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_x-small'
+            );
         });
     });
 
@@ -571,12 +577,10 @@ describe('Hero Banner', () => {
             const primaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
-            const primaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-right"]'
-            );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.size).toBe('small');
-            expect(primaryIconRight).toBeFalsy();
+            expect(primaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_small'
+            );
         });
     });
 
@@ -591,12 +595,8 @@ describe('Hero Banner', () => {
             const primaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
-            const primaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-right"]'
-            );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.size).toBe('medium');
-            expect(primaryIconRight).toBeFalsy();
+            expect(primaryIconLeft.svgClass).toBe('slds-button__icon');
         });
     });
 
@@ -611,12 +611,10 @@ describe('Hero Banner', () => {
             const primaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
-            const primaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-right"]'
-            );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.size).toBe('large');
-            expect(primaryIconRight).toBeFalsy();
+            expect(primaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_large'
+            );
         });
     });
 
@@ -759,12 +757,8 @@ describe('Hero Banner', () => {
             const secondaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
-            const secondaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-right"]'
-            );
             expect(secondaryButton).toBeTruthy();
             expect(secondaryIconLeft.iconName).toBe('utility:down');
-            expect(secondaryIconRight).toBeFalsy();
         });
     });
 
@@ -824,12 +818,10 @@ describe('Hero Banner', () => {
             const secondaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
-            const secondaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-right"]'
-            );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.size).toBe('x-small');
-            expect(secondaryIconRight).toBeFalsy();
+            expect(secondaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_x-small'
+            );
         });
     });
 
@@ -845,12 +837,10 @@ describe('Hero Banner', () => {
             const secondaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
-            const secondaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-right"]'
-            );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.size).toBe('small');
-            expect(secondaryIconRight).toBeFalsy();
+            expect(secondaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_small'
+            );
         });
     });
 
@@ -866,12 +856,8 @@ describe('Hero Banner', () => {
             const secondaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
-            const secondaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-right"]'
-            );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.size).toBe('medium');
-            expect(secondaryIconRight).toBeFalsy();
+            expect(secondaryIconLeft.svgClass).toBe('slds-button__icon');
         });
     });
 
@@ -887,12 +873,10 @@ describe('Hero Banner', () => {
             const secondaryIconLeft = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
-            const secondaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-right"]'
-            );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.size).toBe('large');
-            expect(secondaryIconRight).toBeFalsy();
+            expect(secondaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_large'
+            );
         });
     });
 
