@@ -60,7 +60,7 @@ const BUTTON_VARIANTS = {
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
@@ -169,8 +169,10 @@ export default class HeroBanner extends LightningElement {
     _imagePosition = IMAGE_POSITIONS.default;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _primaryButtonIconPosition = ICON_POSITIONS.default;
+    _primaryButtonIconSize = ICON_SIZES.default;
     _primaryButtonVariant = BUTTON_VARIANTS.default;
     _secondaryButtonIconPosition = ICON_POSITIONS.default;
+    _secondaryButtonIconSize = ICON_SIZES.default;
     _secondaryButtonVariant = BUTTON_VARIANTS.default;
 
     _rendered = false;
@@ -543,7 +545,7 @@ export default class HeroBanner extends LightningElement {
             case 'tile-vertically':
                 return 'repeat-y';
             default:
-                return 'cover';
+                return this.imageLayout;
         }
     }
 
@@ -568,16 +570,20 @@ export default class HeroBanner extends LightningElement {
             case 'bottom-right':
                 return 'bottom right';
             default:
-                return 'center center';
+                return this.imagePosition;
         }
     }
 
     get computedBackground() {
-        return `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px; background-color: ${this.backgroundColor};`;
+        return this.src
+            ? `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px;`
+            : `background-color: ${this.backgroundColor}; height: ${this.height}px;`;
     }
 
     get computedImageOverlay() {
-        return `background-color: ${this.imageOverlay};`;
+        return this.imageOverlay
+            ? `background-color: ${this.imageOverlay};`
+            : '';
     }
 
     /**
@@ -677,13 +683,7 @@ export default class HeroBanner extends LightningElement {
                     this.primaryButtonLabel,
                 'slds-button__icon_right':
                     this._primaryButtonIconPosition === 'right' &&
-                    this.primaryButtonLabel,
-                'slds-button__icon_x-small':
-                    this._primaryButtonIconSize === 'x-small',
-                'slds-button__icon_small':
-                    this._primaryButtonIconSize === 'small',
-                'slds-button__icon_large':
-                    this._primaryButtonIconSize === 'large'
+                    this.primaryButtonLabel
             })
             .toString();
     }
@@ -724,13 +724,7 @@ export default class HeroBanner extends LightningElement {
                     this.secondaryButtonLabel,
                 'slds-button__icon_right':
                     this._secondaryButtonIconPosition === 'right' &&
-                    this.secondaryButtonLabel,
-                'slds-button__icon_x-small':
-                    this._secondaryButtonIconSize === 'x-small',
-                'slds-button__icon_small':
-                    this._secondaryButtonIconSize === 'small',
-                'slds-button__icon_large':
-                    this._secondaryButtonIconSize === 'large'
+                    this.secondaryButtonLabel
             })
             .toString();
     }

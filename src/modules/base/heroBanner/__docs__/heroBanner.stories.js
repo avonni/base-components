@@ -247,7 +247,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
                 'The size of the primary button icon. Valid values include xx-small, x-small, medium, or large.',
             table: {
@@ -321,7 +321,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
                 'The size of the secondary button icon. Valid values include xx-small, x-small, medium, or large.',
             table: {
