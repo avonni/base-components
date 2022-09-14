@@ -742,7 +742,7 @@ export const horizontalItems = [
     {
         name: 'item6',
         title: 'Create another task',
-        description: 'This is the description. This is the description. This is the description. This is the description. This is the description. This is the description. This is the description. This is the description.',
+        description: 'This is the description of the task.',
         datetimeValue: '01/21/2022 11:30',
         iconName: 'standard:skill',
         hasCheckbox: true,
@@ -750,7 +750,7 @@ export const horizontalItems = [
     },
     {
         name: 'item7',
-        title: 'Another item',
+        title: 'Meeting with John Smith',
         datetimeValue: '03/14/2022 8:30',
         iconName: 'custom:custom47',
         hasCheckbox: true,
@@ -759,8 +759,8 @@ export const horizontalItems = [
     },
     {
         name: 'item8',
-        title: 'Another item',
-        description: 'This is the description.',
+        title: 'Meeting with Suzanne Smith',
+        description: 'Important follow up for the company.',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
         iconName: 'standard:solution',
@@ -769,7 +769,7 @@ export const horizontalItems = [
     },
     {
         name: 'item88',
-        title: 'Another item with same date',
+        title: 'Brainstorming with Jasmine',
         datetimeValue: '02/02/2022 5:30',
         iconName: 'standard:procedure_detail',
         hasCheckbox: false,
@@ -777,7 +777,7 @@ export const horizontalItems = [
     },
     {
         name: 'item9',
-        title: 'This is another item to display',
+        title: 'Brunch meeting',
         description: 'This is the description.',
         datetimeValue: '01/30/2022 2:00',
         href: '#',
@@ -788,7 +788,8 @@ export const horizontalItems = [
     },
     {
         name: 'item99',
-        title: 'Item',
+        title: 'EBC Follow up call',
+        description: 'You created an event with Aida Lee and 5 others',
         datetimeValue: '01/31/2022 2:00',
         href: '#',
         iconName: 'action:log_event',
@@ -815,8 +816,8 @@ export const horizontalItems = [
     },
     {
         name: 'item10',
-        title: 'Another new item',
-        description: 'This is the description.',
+        title: 'Conference',
+        description: 'This is the description of the conference.',
         datetimeValue: '01/04/2022 10:30',
         href: '#',
         iconName: 'utility:frozen',
@@ -825,7 +826,7 @@ export const horizontalItems = [
     },
     {
         name: 'item11',
-        title: 'Another new item',
+        title: 'Meeting',
         datetimeValue: '02/03/2022 00:00',
         href: '#',
         iconName: 'standard:bot',
@@ -835,7 +836,7 @@ export const horizontalItems = [
     },
     {
         name: 'item12',
-        title: 'Another new item',
+        title: 'Release date of new technology',
         datetimeValue: '02/16/2022 00:00',
         href: '#',
         iconName: 'action:map',
@@ -845,7 +846,7 @@ export const horizontalItems = [
     },
     {
         name: 'item13',
-        title: 'Another item',
+        title: 'Review business proposal',
         datetimeValue: '02/08/2022 08:00',
         href: '#',
         iconName: 'standard:bot',
@@ -865,7 +866,7 @@ export const horizontalItems = [
     },
     {
         name: 'item15',
-        title: 'Another item',
+        title: 'Meeting with Charles',
         description: 'This is the description.',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
@@ -875,7 +876,7 @@ export const horizontalItems = [
     },
     {
         name: 'item16',
-        title: 'Magic item',
+        title: 'Zoom call with client',
         description: 'This is the description.',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
@@ -885,7 +886,7 @@ export const horizontalItems = [
     },
     {
         name: 'item17',
-        title: 'Item',
+        title: 'Meeting with Tom',
         description: 'This is the description.',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
@@ -896,7 +897,7 @@ export const horizontalItems = [
     },
     {
         name: 'item18',
-        title: 'Surprise!',
+        title: 'Inauguration of new office',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
         iconName: 'standard:announcement',
@@ -906,7 +907,7 @@ export const horizontalItems = [
     },
     {
         name: 'item19',
-        title: 'Another surprise!',
+        title: 'Meeting',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
         iconName: 'action:priority',
@@ -915,8 +916,8 @@ export const horizontalItems = [
     },
     {
         name: 'item20',
-        title: 'Event 20',
-        description: 'This is the description.',
+        title: 'Science class',
+        description: 'Chemistry subject this week.',
         datetimeValue: '02/02/2022 00:00',
         href: '#',
         iconName: 'utility:education',
@@ -925,7 +926,7 @@ export const horizontalItems = [
     },
     {
         name: 'item21',
-        title: 'Event 21',
+        title: 'Family event',
         description: 'This is the description of the event.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
@@ -959,7 +960,7 @@ export const horizontalItems = [
     },
     {
         name: 'item22',
-        title: 'Long Title Item With More Than 30 Characters',
+        title: 'Hiking with Nicole',
         description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
@@ -970,7 +971,7 @@ export const horizontalItems = [
     },
     {
         name: 'item23',
-        title: 'Really long title event with a lot of characters',
+        title: 'Meeting with design team',
         datetimeValue: '02/09/2022 08:30',
         href: '#',
         iconName: 'utility:palette',
@@ -980,7 +981,7 @@ export const horizontalItems = [
     },
     {
         name: 'item24',
-        title: 'Really long title event with a lot of characters',
+        title: 'Meeting with UX team',
         datetimeValue: '02/09/2024 08:30',
         href: '#',
         iconName: 'utility:pin',
@@ -990,7 +991,7 @@ export const horizontalItems = [
     },
     {
         name: 'item25',
-        title: 'Mysterious item',
+        title: 'Cooking class.',
         description: 'This is the description.',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
@@ -1000,7 +1001,7 @@ export const horizontalItems = [
     },
     {
         name: 'item26',
-        title: 'Random event',
+        title: 'Event',
         description: 'This is the description.',
         datetimeValue: '02/02/2022 09:30',
         href: '#',
@@ -1010,7 +1011,7 @@ export const horizontalItems = [
     },
     {
         name: 'item27',
-        title: 'Surprise event!',
+        title: 'Surprise party for Johnny',
         datetimeValue: '02/02/2022 22:30',
         href: '#',
         iconName: 'standard:topic',
@@ -1066,7 +1067,7 @@ export const horizontalItems = [
     },
     {
         name: 'item33',
-        title: 'Magic',
+        title: 'Deadline to sign contract',
         datetimeValue: '01/04/2022 8:27',
         href: '#',
         iconName: 'custom:custom1',
