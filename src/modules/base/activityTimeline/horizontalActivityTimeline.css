@@ -50,10 +50,6 @@
     overscroll-behavior-block: contain;
 }
 
-.avonni-horizontal-activity-timeline__popover-header {
-    background: #f3f3f3;
-}
-
 [class*="slds-nubbin_"]::before{
     background: #f3f3f3;
 }

@@ -367,7 +367,7 @@ export class HorizontalActivityTimeline {
      */
     get tooltipNubbinTopOffset(){
         let nubbinTopOffset = DEFAULT_NUBBIN_TOP_POSITION_PX;
-        const popoverHeader = this._activityTimeline.template.querySelector('.avonni-horizontal-activity-timeline__popover-header');
+        const popoverHeader = this._activityTimeline.template.querySelector('[data-element-id="avonni-horizontal-activity-timeline__popover-header"]');
         
         if(popoverHeader) {
             nubbinTopOffset = popoverHeader.getBoundingClientRect().height / 2;
