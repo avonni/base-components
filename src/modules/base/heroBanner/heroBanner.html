@@ -35,12 +35,12 @@
 <template>
     <div
         class="avonni-hero-banner__background"
-        style={computedBackground}
+        style={computedBackgroundStyle}
         data-element-id="avonni-hero-banner-background"
     >
         <div
             class="avonni-hero-banner__image-overlay"
-            style={computedImageOverlay}
+            style={computedImageOverlayStyle}
             data-element-id="avonni-hero-banner-image-overlay"
         >
             <div
@@ -96,7 +96,7 @@
                                                 if:true={primaryButtonIconNameLeft}
                                                 icon-name={primaryButtonIconName}
                                                 size={primaryButtonIconSize}
-                                                svg-class={computedPrimaryButtonIconClass}
+                                                svg-class={computedPrimaryPrimitiveIconClass}
                                                 variant="bare"
                                                 data-element-id="avonni-primitive-icon-primary-button-left"
                                             ></c-primitive-icon>
@@ -105,7 +105,7 @@
                                                 if:true={primaryButtonIconNameRight}
                                                 icon-name={primaryButtonIconName}
                                                 size={primaryButtonIconSize}
-                                                svg-class={computedPrimaryButtonIconClass}
+                                                svg-class={computedPrimaryPrimitiveIconClass}
                                                 variant="bare"
                                                 data-element-id="avonni-primitive-icon-primary-button-right"
                                             ></c-primitive-icon>
@@ -121,7 +121,7 @@
                                                     if:true={secondaryButtonIconNameLeft}
                                                     icon-name={secondaryButtonIconName}
                                                     size={secondaryButtonIconSize}
-                                                    svg-class={computedSecondaryButtonIconClass}
+                                                    svg-class={computedSecondaryPrimitiveIconClass}
                                                     variant="bare"
                                                     data-element-id="avonni-primitive-icon-secondary-button-left"
                                                 ></c-primitive-icon>
@@ -130,7 +130,7 @@
                                                     if:true={secondaryButtonIconNameRight}
                                                     icon-name={secondaryButtonIconName}
                                                     size={secondaryButtonIconSize}
-                                                    svg-class={computedSecondaryButtonIconClass}
+                                                    svg-class={computedSecondaryPrimitiveIconClass}
                                                     variant="bare"
                                                     data-element-id="avonni-primitive-icon-secondary-button-right"
                                                 ></c-primitive-icon>

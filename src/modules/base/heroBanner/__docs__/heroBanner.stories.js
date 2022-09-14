@@ -59,48 +59,8 @@ export default {
             description:
                 'The caption can include text, and is displayed under the title.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the banner.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        subtitle: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The subtitle can include text, and is displayed under the title.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        src: {
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the background image.',
-            table: {
                 type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
-        height: {
-            control: {
-                type: 'number'
-            },
-            description: 'Defines the height of the banner. ',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 400 },
-                category: 'Layout'
+                category: 'Text'
             }
         },
         contentHorizontalAlignment: {
@@ -144,6 +104,17 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 100 },
+                category: 'Layout'
+            }
+        },
+        height: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the height of the banner. ',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 400 },
                 category: 'Layout'
             }
         },
@@ -235,7 +206,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                'Describes the position of the icon with respect to body. Options include left and right.',
+                'Describes the position of the icon with respect to body of the primary button. Valid values include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
@@ -249,7 +220,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the primary button icon. Valid values include xx-small, x-small, medium, or large.',
+                'The size of the icon inside the primary button. Valid values include xx-small, x-small, small medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -283,7 +254,7 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+                'The variant changes the appearance of the primary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
@@ -309,7 +280,7 @@ export default {
             },
             options: ['left', 'right'],
             description:
-                'Describes the position of the icon with respect to body. Options include left and right.',
+                'Describes the position of the icon with respect to body of the secondary button. Valid values include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
@@ -323,7 +294,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the secondary button icon. Valid values include xx-small, x-small, medium, or large.',
+                'The size of the icon inside the secondary button. Valid values include xx-small, x-small, small medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -358,11 +329,43 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+                'The variant changes the appearance of the secondary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
                 category: 'secondary button'
+            }
+        },
+        src: {
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the background image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        subtitle: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The subtitle can include text, and is displayed under the title.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Text'
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the banner.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Text'
             }
         }
     },

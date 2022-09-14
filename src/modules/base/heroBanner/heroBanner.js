@@ -362,6 +362,8 @@ export default class HeroBanner extends LightningElement {
             ) {
                 this._imageOverlay = color;
             }
+        } else {
+            this._imageOverlay = undefined;
         }
     }
 
@@ -402,7 +404,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Describes the position of the icon with respect to body. Options include left and right.
+     * Describes the position of the icon with respect to body of the primary button. Valid values include left and right.
      *
      * @public
      * @type {string}
@@ -424,7 +426,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the primary button icon. Options include x-small, small, medium or large.
+     * The size of the icon inside the primary button. Valid values include xx-small, x-small, small medium, or large.
      *
      * @public
      * @type {string}
@@ -443,7 +445,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * The variant changes the appearance of the primary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
      *
      * @public
      * @type {string}
@@ -462,7 +464,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Describes the position of the icon with respect to body. Options include left and right.
+     * Describes the position of the icon with respect to body of the secondary button. Valid values include left and right..
      *
      * @public
      * @type {string}
@@ -484,7 +486,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the secondary button icon. Options include x-small, small, medium or large.
+     * The size of the icon inside the secondary button. Valid values include xx-small, x-small, small medium, or large.
      *
      * @public
      * @type {string}
@@ -503,7 +505,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * The variant changes the appearance of the secondary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
      *
      * @public
      * @type {string}
@@ -528,7 +530,38 @@ export default class HeroBanner extends LightningElement {
      */
 
     /**
-     * Layout of the image.
+     * Sets the background of the hero banner depending on the image.
+     *
+     * @type {string}
+     */
+    get computedBackgroundStyle() {
+        return this.src
+            ? `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px;`
+            : `background-color: ${this.backgroundColor}; height: ${this.height}px;`;
+    }
+
+    /**
+     * Computed width for the content container based on the attribute contentWidth.
+     *
+     * @type {string}
+     */
+    get computedContentStyling() {
+        return `width: ${this.contentWidth}%`;
+    }
+
+    /**
+     * Sets the image overlay of the hero banner.
+     *
+     * @type {string}
+     */
+    get computedImageOverlayStyle() {
+        return this.imageOverlay
+            ? `background-color: ${this.imageOverlay};`
+            : '';
+    }
+
+    /**
+     * Computed css string based on the selected layout of the image .
      *
      * @type {string}
      */
@@ -549,6 +582,20 @@ export default class HeroBanner extends LightningElement {
         }
     }
 
+    /**
+     * Computed width for the width container based on the attribute maxWidth.
+     *
+     * @type {string}
+     */
+    get computedMaxWidth() {
+        return `width: ${this._maxWidth}px;`;
+    }
+
+    /**
+     * Computed css string based on the selected position of the image .
+     *
+     * @type {string}
+     */
     get computedPosition() {
         switch (this.imagePosition) {
             case 'left':
@@ -572,36 +619,6 @@ export default class HeroBanner extends LightningElement {
             default:
                 return this.imagePosition;
         }
-    }
-
-    get computedBackground() {
-        return this.src
-            ? `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px;`
-            : `background-color: ${this.backgroundColor}; height: ${this.height}px;`;
-    }
-
-    get computedImageOverlay() {
-        return this.imageOverlay
-            ? `background-color: ${this.imageOverlay};`
-            : '';
-    }
-
-    /**
-     * Computed width for the width container based on the attribute maxWidth.
-     *
-     * @type {string}
-     */
-    get computedMaxWidth() {
-        return `width: ${this._maxWidth}px;`;
-    }
-
-    /**
-     * Computed width for the content container based on the attribute contentWidth.
-     *
-     * @type {string}
-     */
-    get computedContentStyling() {
-        return `width: ${this.contentWidth}%`;
     }
 
     /**
@@ -649,6 +666,40 @@ export default class HeroBanner extends LightningElement {
             .toString();
     }
 
+    /** PRIMARY BUTTON */
+
+    /**
+     * True if there is a label or icon name for the primary button.
+     *
+     * @type {boolean}
+     */
+    get hasPrimaryButton() {
+        return this.primaryButtonLabel || this.primaryButtonIconName;
+    }
+
+    /**
+     * True if there is an icon name for the first button and his position is left.
+     *
+     * @type {boolean}
+     */
+    get primaryButtonIconNameLeft() {
+        return (
+            this.primaryButtonIconName &&
+            this.primaryButtonIconPosition === 'left'
+        );
+    }
+
+    /**
+     * True if there is an icon name for the first button and his position is right.
+     *
+     * @type {boolean}
+     */
+    get primaryButtonIconNameRight() {
+        return (
+            this.primaryButtonIconName &&
+            this.primaryButtonIconPosition === 'right'
+        );
+    }
     /**
      * Computed primary button class styling.
      *
@@ -675,7 +726,12 @@ export default class HeroBanner extends LightningElement {
             .toString();
     }
 
-    get computedPrimaryButtonIconClass() {
+    /**
+     * Computed primary primitive icon class styling.
+     *
+     * @type {string}
+     */
+    get computedPrimaryPrimitiveIconClass() {
         return classSet('slds-button__icon')
             .add({
                 'slds-button__icon_left':
@@ -686,6 +742,41 @@ export default class HeroBanner extends LightningElement {
                     this.primaryButtonLabel
             })
             .toString();
+    }
+
+    /** SECONDARY BUTTON */
+
+    /**
+     * True if there is a label or icon name for the second button.
+     *
+     * @type {boolean}
+     */
+    get hasSecondaryButton() {
+        return this.secondaryButtonLabel || this.secondaryButtonIconName;
+    }
+
+    /**
+     * True if there is an icon name for the second button and his position is left.
+     *
+     * @type {boolean}
+     */
+    get secondaryButtonIconNameLeft() {
+        return (
+            this.secondaryButtonIconName &&
+            this.secondaryButtonIconPosition === 'left'
+        );
+    }
+
+    /**
+     * True if there is an icon name for the second button and his position is right.
+     *
+     * @type {boolean}
+     */
+    get secondaryButtonIconNameRight() {
+        return (
+            this.secondaryButtonIconName &&
+            this.secondaryButtonIconPosition === 'right'
+        );
     }
 
     /**
@@ -716,7 +807,12 @@ export default class HeroBanner extends LightningElement {
             .toString();
     }
 
-    get computedSecondaryButtonIconClass() {
+    /**
+     * Computed secondary button class styling.
+     *
+     * @type {string}
+     */
+    get computedSecondaryPrimitiveIconClass() {
         return classSet('slds-button__icon')
             .add({
                 'slds-button__icon_left':
@@ -729,65 +825,43 @@ export default class HeroBanner extends LightningElement {
             .toString();
     }
 
-    /**
-     * True if there is a label or icon name for the primary button.
-     *
-     * @type {boolean}
-     */
-    get hasPrimaryButton() {
-        return this.primaryButtonLabel || this.primaryButtonIconName;
-    }
-
-    get primaryButtonIconNameLeft() {
-        return (
-            this.primaryButtonIconName &&
-            this.primaryButtonIconPosition === 'left'
-        );
-    }
-
-    get primaryButtonIconNameRight() {
-        return (
-            this.primaryButtonIconName &&
-            this.primaryButtonIconPosition === 'right'
-        );
-    }
-
-    get secondaryButtonIconNameLeft() {
-        return (
-            this.secondaryButtonIconName &&
-            this.secondaryButtonIconPosition === 'left'
-        );
-    }
-
-    get secondaryButtonIconNameRight() {
-        return (
-            this.secondaryButtonIconName &&
-            this.secondaryButtonIconPosition === 'right'
-        );
-    }
-
-    /**
-     * True if there is a label or icon name for the second button.
-     *
-     * @type {boolean}
-     */
-    get hasSecondaryButton() {
-        return this.secondaryButtonLabel || this.secondaryButtonIconName;
-    }
-
-    handlePrimaryButtonClick() {
-        this.dispatchEvent(new CustomEvent('primarybuttonclick'));
-    }
-
-    handleSecondaryButtonClick() {
-        this.dispatchEvent(new CustomEvent('secondarybuttonclick'));
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Handle the click on the primary button. Dispatch the primarybuttonclick event.
+     *
+     * @param {Event} event
+     */
+    handlePrimaryButtonClick() {
+        /**
+         * The event fired when the primary button is clicked.
+         *
+         * @event
+         * @name primarybuttonclick
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('primarybuttonclick'));
+    }
+
+    /**
+     * Handle the click on the secondary button. Dispatch the secondarybuttonclick event.
+     *
+     * @param {Event} event
+     */
+    handleSecondaryButtonClick() {
+        /**
+         * The event fired when the secondary button is clicked.
+         *
+         * @event
+         * @name secondarybuttonclick
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('secondarybuttonclick'));
+    }
 
     /**
      * Verify if color is of hexadecimal type.
