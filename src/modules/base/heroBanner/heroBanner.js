@@ -90,7 +90,6 @@ const IMAGE_POSITIONS = {
     default: 'center'
 };
 
-const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
@@ -159,13 +158,11 @@ export default class HeroBanner extends LightningElement {
      */
     @api title;
 
-    _backgroundColor = DEFAULT_BACKGROUND_COLOR;
     _contentWidth = DEFAULT_CONTENT_WIDTH;
     _contentHorizontalAlignment = HORIZONTAL_ALIGNMENT_OPTIONS.default;
     _contentVerticalAlignment = VERTICAL_ALIGNMENT_OPTIONS.default;
     _height = DEFAULT_HEIGHT;
     _imageLayout = IMAGE_LAYOUTS.default;
-    _imageOverlay;
     _imagePosition = IMAGE_POSITIONS.default;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _primaryButtonIconPosition = ICON_POSITIONS.default;
@@ -216,34 +213,6 @@ export default class HeroBanner extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Defines the color of the background. Accepts a valid CSS color string, including hex and rgb.
-     *
-     * @type {string}
-     * @public
-     * @default #ffffff
-     */
-    @api
-    get backgroundColor() {
-        return this._backgroundColor;
-    }
-
-    set backgroundColor(color) {
-        if (typeof color === 'string') {
-            let styles = new Option().style;
-            styles.color = color;
-
-            if (
-                styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
-            ) {
-                this._backgroundColor = color;
-            }
-        } else {
-            this._backgroundColor = DEFAULT_BACKGROUND_COLOR;
-        }
-    }
 
     /**
      * Horizontal alignment of the title, caption and description.
@@ -338,33 +307,6 @@ export default class HeroBanner extends LightningElement {
             fallbackValue: IMAGE_LAYOUTS.default,
             validValues: IMAGE_LAYOUTS.valid
         });
-    }
-
-    /**
-     * Defines the color of the image overlay. Accepts a valid CSS color string, including hex and rgb.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get imageOverlay() {
-        return this._imageOverlay;
-    }
-
-    set imageOverlay(color) {
-        if (typeof color === 'string') {
-            let styles = new Option().style;
-            styles.color = color;
-
-            if (
-                styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
-            ) {
-                this._imageOverlay = color;
-            }
-        } else {
-            this._imageOverlay = undefined;
-        }
     }
 
     /**
@@ -537,7 +479,7 @@ export default class HeroBanner extends LightningElement {
     get computedBackgroundStyle() {
         return this.src
             ? `background: url(${this.src}) ${this.computedPosition} ${this.computedLayout}; height: ${this.height}px;`
-            : `background-color: ${this.backgroundColor}; height: ${this.height}px;`;
+            : `height: ${this.height}px;`;
     }
 
     /**
@@ -547,17 +489,6 @@ export default class HeroBanner extends LightningElement {
      */
     get computedContentStyling() {
         return `width: ${this.contentWidth}%`;
-    }
-
-    /**
-     * Sets the image overlay of the hero banner.
-     *
-     * @type {string}
-     */
-    get computedImageOverlayStyle() {
-        return this.imageOverlay
-            ? `background-color: ${this.imageOverlay};`
-            : '';
     }
 
     /**
@@ -873,19 +804,5 @@ export default class HeroBanner extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('secondarybuttonclick'));
-    }
-
-    /**
-     * Verify if color is of hexadecimal type.
-     *
-     * @param {string} hex
-     * @returns {boolean}
-     */
-    isHexColor(hex) {
-        return (
-            typeof hex === 'string' &&
-            hex.length === 6 &&
-            !isNaN(Number('0x' + hex))
-        );
     }
 }

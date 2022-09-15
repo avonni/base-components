@@ -39,19 +39,6 @@ import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 export default {
     title: 'Example/Hero Banner',
     argTypes: {
-        backgroundColor: {
-            name: 'background-color',
-            control: {
-                type: 'color'
-            },
-            description:
-                'Defines the color of the background. Accepts a valid CSS color string, including hex and rgb.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' },
-                category: 'Background'
-            }
-        },
         caption: {
             control: {
                 type: 'text'
@@ -135,18 +122,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'scale-to-fill' },
-                category: 'Background'
-            }
-        },
-        imageOverlay: {
-            name: 'image-overlay',
-            control: {
-                type: 'color'
-            },
-            description:
-                'Defines the color of the image overlay. Accepts a valid CSS color string, including hex and rgb.',
-            table: {
-                type: { summary: 'string' },
                 category: 'Background'
             }
         },
@@ -370,7 +345,6 @@ export default {
         }
     },
     args: {
-        backgroundColor: '#ffffff',
         contentHorizontalAlignment: 'left',
         contentVerticalAlignment: 'center',
         contentWidth: 100,
@@ -397,16 +371,6 @@ const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    caption: 'This is a caption',
-    title: 'This is a title',
-    subtitle: 'This is a subtitle',
-    backgroundColor: 'blue',
-    imageOverlay: 'rgba(0, 0, 0, 0.61)',
-    height: 300
-};
-
-export const BaseWithBackgroundImg = Template.bind({});
-BaseWithBackgroundImg.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',

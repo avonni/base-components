@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 const DEFAULT_BUTTON_VARIANT = 'neutral';
 const DEFAULT_CONTENT_HORIZONTAL_ALIGNMENT = 'left';
 const DEFAULT_CONTENT_VERTICAL_ALIGNMENT = 'center';
@@ -13,14 +12,12 @@ const DEFAULT_IMAGE_POSITION = 'center';
 const DEFAULT_MAX_WIDTH = 960;
 
 export default class HeroBannerWithButton extends LightningElement {
-    @api backgroundColor = DEFAULT_BACKGROUND_COLOR;
     @api caption;
     @api contentHorizontalAlignment = DEFAULT_CONTENT_HORIZONTAL_ALIGNMENT;
     @api contentVerticalAlignment = DEFAULT_CONTENT_VERTICAL_ALIGNMENT;
     @api contentWidth = DEFAULT_CONTENT_WIDTH;
     @api height = DEFAULT_HEIGHT;
     @api imageLayout = DEFAULT_IMAGE_LAYOUT;
-    @api imageOverlay;
     @api imagePosition = DEFAULT_IMAGE_POSITION;
     @api maxWidth = DEFAULT_MAX_WIDTH;
     @api primaryButtonIconName;

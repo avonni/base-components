@@ -38,14 +38,12 @@ customElements.define(
 );
 
 export const HeroBannerWithTwoSlots = ({
-    backgroundColor,
     caption,
     contentHorizontalAlignment,
     contentVerticalAlignment,
     contentWidth,
     height,
     imageLayout,
-    imageOverlay,
     imagePosition,
     maxWidth,
     primaryButtonIconName,
@@ -63,14 +61,12 @@ export const HeroBannerWithTwoSlots = ({
     title
 }) => {
     const element = document.createElement('ac-hero-banner-with-two-slots');
-    element.backgroundColor = backgroundColor;
     element.caption = caption;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
     element.contentWidth = contentWidth;
     element.height = height;
     element.imageLayout = imageLayout;
-    element.imageOverlay = imageOverlay;
     element.imagePosition = imagePosition;
     element.maxWidth = maxWidth;
     element.primaryButtonIconName = primaryButtonIconName;
