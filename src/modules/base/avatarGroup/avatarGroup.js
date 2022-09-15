@@ -647,7 +647,7 @@ export default class AvatarGroup extends LightningElement {
             item = this.listHiddenItems[itemId];
         }
 
-        if (item.showMore) {
+        if (item.showMore && !this.showPopover) {
             this.showPopover = true;
             this.template.querySelector('.slds-dropdown-trigger').focus();
             this.allowBlur();
