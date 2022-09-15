@@ -38,31 +38,55 @@ customElements.define(
 );
 
 export const HeroBannerWithSearchBarInFooter = ({
-    title,
+    backgroundColor,
     caption,
-    subtitle,
-    src,
-    height,
-    maxWidth,
     contentHorizontalAlignment,
     contentVerticalAlignment,
     contentWidth,
+    height,
+    imageLayout,
+    imageOverlay,
+    imagePosition,
+    maxWidth,
+    primaryButtonIconName,
+    primaryButtonIconPosition,
+    primaryButtonIconSize,
     primaryButtonLabel,
-    secondaryButtonLabel
+    primaryButtonVariant,
+    secondaryButtonIconName,
+    secondaryButtonIconPosition,
+    secondaryButtonIconSize,
+    secondaryButtonLabel,
+    secondaryButtonVariant,
+    src,
+    subtitle,
+    title
 }) => {
     const element = document.createElement(
         'ac-hero-banner-with-search-bar-in-footer'
     );
-    element.title = title;
+    element.backgroundColor = backgroundColor;
     element.caption = caption;
-    element.subtitle = subtitle;
-    element.src = src;
-    element.height = height;
-    element.maxWidth = maxWidth;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
     element.contentWidth = contentWidth;
+    element.height = height;
+    element.imageLayout = imageLayout;
+    element.imageOverlay = imageOverlay;
+    element.imagePosition = imagePosition;
+    element.maxWidth = maxWidth;
+    element.primaryButtonIconName = primaryButtonIconName;
+    element.primaryButtonIconPosition = primaryButtonIconPosition;
+    element.primaryButtonIconSize = primaryButtonIconSize;
     element.primaryButtonLabel = primaryButtonLabel;
+    element.primaryButtonVariant = primaryButtonVariant;
+    element.secondaryButtonIconName = secondaryButtonIconName;
+    element.secondaryButtonIconPosition = secondaryButtonIconPosition;
+    element.secondaryButtonIconSize = secondaryButtonIconSize;
     element.secondaryButtonLabel = secondaryButtonLabel;
+    element.secondaryButtonVariant = secondaryButtonVariant;
+    element.src = src;
+    element.subtitle = subtitle;
+    element.title = title;
     return element;
 };

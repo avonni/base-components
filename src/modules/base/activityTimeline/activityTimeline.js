@@ -183,12 +183,12 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        if(this.isTimelineHorizontal){
+        if (this.isTimelineHorizontal) {
             this.renderedCallbackHorizontalTimeline();
         }
     }
 
-    renderedCallbackHorizontalTimeline(){
+    renderedCallbackHorizontalTimeline() {
         if (!this._resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
@@ -197,7 +197,7 @@ export default class ActivityTimeline extends LightningElement {
             this.initializeHorizontalTimeline();
         }
 
-        if(this._redrawHorizontalTimeline) {
+        if (this._redrawHorizontalTimeline) {
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
                 this._maxVisibleItems,
@@ -205,10 +205,13 @@ export default class ActivityTimeline extends LightningElement {
             );
             this._redrawHorizontalTimeline = false;
         }
-        
+
         this.updateHorizontalTimelineHeader();
 
-        if (this.showItemPopOver && !this.horizontalTimeline._isTimelineMoving) {
+        if (
+            this.showItemPopOver &&
+            !this.horizontalTimeline._isTimelineMoving
+        ) {
             this.horizontalTimeline.initializeItemPopover(this.selectedItem);
         }
     }
@@ -453,7 +456,7 @@ export default class ActivityTimeline extends LightningElement {
         if (value && value > 0) {
             this._maxVisibleItems = value;
 
-            if(this.isTimelineHorizontal) {
+            if (this.isTimelineHorizontal) {
                 this.requestRedrawTimeline();
             }
         }
@@ -477,7 +480,7 @@ export default class ActivityTimeline extends LightningElement {
             validValues: ORIENTATIONS.valid
         });
 
-        if(this.isTimelineHorizontal) {
+        if (this.isTimelineHorizontal) {
             this.requestRedrawTimeline();
         }
     }
@@ -823,7 +826,7 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * Triggers a redraw of horizontal activity timeline.
      */
-    requestRedrawTimeline(){
+    requestRedrawTimeline() {
         this._redrawHorizontalTimeline = true;
     }
 
@@ -861,6 +864,11 @@ export default class ActivityTimeline extends LightningElement {
         );
     }
 
+    /**
+     * Handle the click on a button. Dispatch the buttonclick event.
+     *
+     * @param {Event} event
+     */
     handleButtonClick(event) {
         event.stopPropagation();
 
@@ -881,6 +889,11 @@ export default class ActivityTimeline extends LightningElement {
         );
     }
 
+    /**
+     * Handle the check and uncheck event on an item. Dispatch the check event.
+     *
+     * @param {Event} event
+     */
     handleCheck(event) {
         event.stopPropagation();
         const { checked, name } = event.detail;
@@ -930,7 +943,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Handle close of item's tooltip for horizontal view timeline.
-     *
      */
     handleTooltipClose(event) {
         // To prevent item click event to be dispatch when closing tooltip
@@ -943,7 +955,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Handle the mouse over on item for horizontal view timeline.
-     *
      */
     handleItemMouseOver(item) {
         this.showItemPopOver = true;
