@@ -31,6 +31,7 @@
  */
 
 .avonni-hero-banner__background {
+    background-color: var(--avonni-hero-banner-color-background, #ffffff);
     width: 100%;
     height: 100%;
     top: 0;
@@ -41,6 +42,10 @@
 }
 
 .avonni-hero-banner__image-overlay {
+    background-color: var(
+        --avonni-hero-banner-color-image-overlay,
+        transparent
+    );
     width: 100%;
     height: 100%;
     top: 0;

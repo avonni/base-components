@@ -38,14 +38,12 @@ customElements.define(
 );
 
 export const HeroBannerWithSearchBarInDefault = ({
-    backgroundColor,
     caption,
     contentHorizontalAlignment,
     contentVerticalAlignment,
     contentWidth,
     height,
     imageLayout,
-    imageOverlay,
     imagePosition,
     maxWidth,
     primaryButtonIconName,
@@ -65,14 +63,12 @@ export const HeroBannerWithSearchBarInDefault = ({
     const element = document.createElement(
         'ac-hero-banner-with-search-bar-in-default'
     );
-    element.backgroundColor = backgroundColor;
     element.caption = caption;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
     element.contentWidth = contentWidth;
     element.height = height;
     element.imageLayout = imageLayout;
-    element.imageOverlay = imageOverlay;
     element.imagePosition = imagePosition;
     element.maxWidth = maxWidth;
     element.primaryButtonIconName = primaryButtonIconName;

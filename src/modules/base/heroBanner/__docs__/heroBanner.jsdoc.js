@@ -17,6 +17,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-hero-banner-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-hero-banner-color-image-overlay
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-hero-banner-title-text-color
  * @default #ffffff
  * @type color

@@ -52,14 +52,12 @@ describe('Hero Banner', () => {
     });
 
     it('Hero Banner: Default attributes', () => {
-        expect(element.backgroundColor).toBe('#ffffff');
         expect(element.caption).toBeUndefined();
         expect(element.contentHorizontalAlignment).toBe('left');
         expect(element.contentVerticalAlignment).toBe('center');
         expect(element.contentWidth).toBe(100);
         expect(element.height).toBe(400);
         expect(element.imageLayout).toBe('scale-to-fill');
-        expect(element.imageOverlay).toBeUndefined();
         expect(element.imagePosition).toBe('center');
         expect(element.maxWidth).toBe(960);
         expect(element.primaryButtonIconName).toBeUndefined();
@@ -78,31 +76,6 @@ describe('Hero Banner', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
-
-    // background color
-    it('Hero Banner: background color', () => {
-        element.backgroundColor = '#000000';
-
-        return Promise.resolve().then(() => {
-            const background = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-hero-banner-background"]'
-            );
-            expect(background.style['background-color']).toBe('rgb(0, 0, 0)');
-        });
-    });
-
-    it('Hero Banner: background color - number', () => {
-        element.backgroundColor = 0;
-
-        return Promise.resolve().then(() => {
-            const background = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-hero-banner-background"]'
-            );
-            expect(background.style['background-color']).toBe(
-                'rgb(255, 255, 255)'
-            );
-        });
-    });
 
     // caption
     it('Hero Banner: caption', () => {
@@ -331,26 +304,6 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-hero-banner-background"]'
             );
             expect(background.getAttribute('style')).toContain('repeat-y');
-        });
-    });
-
-    // image overlay
-    it('Hero Banner: image overlay', () => {
-        element.imageOverlay = '#000000';
-
-        return Promise.resolve().then(() => {
-            const overlay = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-hero-banner-image-overlay"]'
-            );
-            expect(overlay.style.backgroundColor).toBe('rgb(0, 0, 0)');
-        });
-    });
-
-    it('Hero Banner: image overlay - no colors', () => {
-        element.imageOverlay = 0;
-
-        return Promise.resolve().then(() => {
-            expect(element.imageOverlay).toBe(undefined);
         });
     });
 
