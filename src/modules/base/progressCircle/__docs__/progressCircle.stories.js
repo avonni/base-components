@@ -69,17 +69,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        color: {
-            control: {
-                type: 'color'
-            },
-            description:
-                'The color of the Progress Circle. Accepts a valid CSS color string, including hex and rgb.',
-            table: {
-                defaultValue: { summary: '#1589ee' },
-                type: { summary: 'string' }
-            }
-        },
         value: {
             control: {
                 type: 'number',
@@ -152,9 +141,7 @@ export default {
         }
     },
     args: {
-        color: '#1589ee',
         direction: 'fill',
-        round: false,
         isLoading: false,
         size: 'medium',
         thickness: 'medium',
@@ -213,14 +200,6 @@ DrainDirection.args = {
     title: 'Drain direction',
     value: 45,
     direction: 'drain'
-};
-
-export const NoLabelSmallValueHiddenGreen = Template.bind({});
-NoLabelSmallValueHiddenGreen.args = {
-    value: 45,
-    variant: 'value-hidden',
-    color: '#7ED321',
-    size: 'small'
 };
 
 export const BaseLoading = Template.bind({});
