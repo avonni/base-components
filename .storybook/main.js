@@ -5,7 +5,11 @@ module.exports = {
         '../src/**/*.stories.mdx',
         '../src/**/*.stories.@(js|jsx|ts|tsx)'
     ],
-    addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+    addons: [
+        '@storybook/addon-links',
+        '@storybook/addon-essentials',
+        'storycap'
+    ],
     webpackFinal: (config) => {
         config.plugins.push(new LWCWebpackPlugin());
 

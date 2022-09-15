@@ -334,6 +334,29 @@ Base.args = {
     actions: actions,
     maxVisibleItems: 3
 };
+Base.story = {
+    // EXAMPLE of screenshot variations for storycap
+    parameters: {
+        screenshot: {
+            variants: {
+                small: {
+                    viewport: {
+                        width: 200,
+                        height: 500,
+                        deviceScaleFactor: 3
+                    }
+                },
+                big: {
+                    viewport: {
+                        width: 500,
+                        height: 500,
+                        deviceScaleFactor: 2
+                    }
+                }
+            }
+        }
+    }
+};
 
 export const Ascending = Template.bind({});
 Ascending.args = {
