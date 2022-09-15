@@ -7,7 +7,7 @@ export const actions = [
     },
     {
         label: 'Pending',
-        name: 'prending-action',
+        name: 'pending-action',
         iconName: 'utility:spinner',
         disabled: false
     },

@@ -53,17 +53,13 @@
                         data-element-id="avonni-card-media-image"
                     />
 
-                    <div
-                        if:true={showMediaSlot}
-                        class={computedMediaClasses}
-                        style="height: 100%;"
-                    >
+                    <div if:true={showMediaSlot} class="avonni-height_full">
                         <slot name="media" class="avonni-height_full"></slot>
                     </div>
+                </div>
 
-                    <div class="avonni-card__media-action">
-                        <slot name="media-actions"></slot>
-                    </div>
+                <div class="avonni-card__media-action">
+                    <slot name="media-actions"></slot>
                 </div>
             </div>
 

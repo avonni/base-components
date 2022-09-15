@@ -201,7 +201,7 @@ export default {
                 category: 'Sorting'
             }
         },
-        mediaAction: {
+        mediaActions: {
             control: {
                 type: 'object'
             },
@@ -323,39 +323,35 @@ SortableWithImagesAndAvatars.args = {
     }
 };
 
-export const GridCardWithImages = Template.bind({});
-GridCardWithImages.args = {
-    label: 'Grid Card with Images',
+export const ColumnsWithImageBottom = Template.bind({});
+ColumnsWithImageBottom.args = {
+    label: 'Columns with Image Bottom',
     items: itemsWithImages,
-    actions: actions,
+    mediaActions: actions,
     divider: 'around',
     imageAttributes: {
-        position: 'right',
-        height: 30,
-        width: 70
+        position: 'bottom',
+        height: 100
     },
     cols: 1,
     smallContainerCols: 2,
     mediumContainerCols: 4,
-    largeContainerCols: 6,
-    mediaAction: actions
+    largeContainerCols: 6
 };
 
-export const GridCardWithOverlayImages = Template.bind({});
-GridCardWithOverlayImages.args = {
-    label: 'Grid Card with Images',
+export const ColumnsWithImageOverlay = Template.bind({});
+ColumnsWithImageOverlay.args = {
+    label: 'Columns with Image Overlay',
     items: itemsWithImages,
-    actions: actions,
+    mediaActions: actions,
     divider: 'around',
     imageAttributes: {
-        position: 'background',
-        height: 200
+        position: 'overlay'
     },
     cols: 1,
     smallContainerCols: 3,
     mediumContainerCols: 4,
-    largeContainerCols: 6,
-    mediaAction: actions
+    largeContainerCols: 6
 };
 
 export const SingleLineWithInfiniteLoading = InfiniteGridTemplate.bind({});
@@ -373,9 +369,9 @@ SingleLineWithInfiniteLoading.args = {
     mediumContainerCols: 4
 };
 
-export const GridWithInfiniteLoading = InfiniteGridTemplate.bind({});
-GridWithInfiniteLoading.args = {
-    label: 'Grid with infinite loading',
+export const ColumnsWithInfiniteLoading = InfiniteGridTemplate.bind({});
+ColumnsWithInfiniteLoading.args = {
+    label: 'Columns with infinite loading',
     items: itemsWithImages,
     actions: actions,
     divider: 'around',
@@ -391,8 +387,8 @@ GridWithInfiniteLoading.args = {
     largeContainerCols: 6
 };
 
-export const ListWithInfiniteLoading = InfiniteGridTemplate.bind({});
-ListWithInfiniteLoading.args = {
+export const BaseWithInfiniteLoading = InfiniteGridTemplate.bind({});
+BaseWithInfiniteLoading.args = {
     label: 'Sortable list with infinite loading',
     items,
     actions: actions,

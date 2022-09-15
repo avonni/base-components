@@ -46,7 +46,7 @@ export const List = ({
     label,
     largeContainerCols,
     loadMoreOffset,
-    mediaAction,
+    mediaActions,
     mediumContainerCols,
     smallContainerCols,
     sortable,
@@ -66,7 +66,7 @@ export const List = ({
     element.label = label;
     element.largeContainerCols = largeContainerCols;
     element.loadMoreOffset = loadMoreOffset;
-    element.mediaAction = mediaAction;
+    element.mediaActions = mediaActions;
     element.mediumContainerCols = mediumContainerCols;
     element.smallContainerCols = smallContainerCols;
     element.sortable = sortable;

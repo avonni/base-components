@@ -1,6 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class ListWithInfiniteLoading extends LightningElement {
+export default class Base
+WithInfiniteLoading extends LightningElement {
 
     isLoading = false;
     enableInfiniteLoading = true;
@@ -46,7 +47,7 @@ export default class ListWithInfiniteLoading extends LightningElement {
         },
         {
             label: 'Pending',
-            name: 'prending-action',
+            name: 'pending-action',
             iconName: 'utility:spinner',
             disabled: false
         },

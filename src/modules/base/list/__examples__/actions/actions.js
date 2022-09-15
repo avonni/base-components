@@ -10,7 +10,7 @@ export default class ListActions extends LightningElement {
         },
         {
             label: 'Pending',
-            name: 'prending-action',
+            name: 'pending-action',
             iconName: 'utility:spinner',
             disabled: false
         },

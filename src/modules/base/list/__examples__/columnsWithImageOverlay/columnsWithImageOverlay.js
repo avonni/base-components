@@ -1,9 +1,30 @@
 import { LightningElement } from 'lwc';
 
-export default class GridCardWithImages extends LightningElement {
+export default class ColumnsWithImageOverlay extends LightningElement {
     imageAttributes = {
-        size: 'medium'
-    };
+        position: 'overlay'
+    }
+
+    actions = [
+        {
+            label: 'Completed',
+            name: 'completed-action',
+            iconName: 'utility:check',
+            disabled: false
+        },
+        {
+            label: 'Pending',
+            name: 'pending-action',
+            iconName: 'utility:spinner',
+            disabled: false
+        },
+        {
+            label: 'Delete',
+            name: 'delete-action',
+            iconName: 'utility:delete',
+            disabled: true
+        }
+    ];
 
     itemsWithImages = [
         {

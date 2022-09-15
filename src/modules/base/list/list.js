@@ -222,19 +222,20 @@ export default class List extends LightningElement {
         this._actions = normalizeArray(proxy);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
     }
+    
     /**
-     * Array of action objects.
+     * Array of action objects displayed in the image.
      *
      * @type {object}
      * @public
      */
     @api
-    get mediaAction() {
+    get mediaActions() {
         return this._mediaActions;
     }
-    set mediaAction(proxy) {
+    set mediaActions(proxy) {
         this._mediaActions = normalizeArray(proxy);
-        this.computedMediaActions = JSON.parse(JSON.stringify(this._actions));
+        this.computedMediaActions = JSON.parse(JSON.stringify(this._mediaActions));
     }
 
     /**
@@ -562,9 +563,12 @@ export default class List extends LightningElement {
             this._imageAttributes.height || this._imageSizes.height[size];
         const setWidth =
             this._imageAttributes.width || this._imageSizes.width[size];
+        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%;`;
+        const objectFit = `object-fit: ${this._imageAttributes.cropFit};`;
 
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
+
         if (
             this._imageAttributes.position === 'left' ||
             this._imageAttributes.position === 'right'
@@ -583,8 +587,6 @@ export default class List extends LightningElement {
         ) {
             heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px; width: 100%;`;
         }
-        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%;`;
-        const objectFit = `object-fit: ${this._imageAttributes.cropFit};`;
 
         return `${heightStyle} ${widthStyle} ${imageObjectPosition} ${objectFit}`;
     }
@@ -599,7 +601,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * FirstAction is used when only 1 action is present in computedActions.
+     * Get the first Action.
      *
      * @type {object}
      */
@@ -608,7 +610,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * FirstAction is used when only 1 action is present in computedActions.
+     * Get the first Media Action.
      *
      * @type {object}
      */
@@ -639,7 +641,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Check whether Actions has multiple entries.
+     * Check if there is more than one Action.
      *
      * @type {boolean}
      */
@@ -648,7 +650,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Check whether Actions has multiple entries.
+     * Check if there is more than one Media Actions.
      *
      * @type {boolean}
      */

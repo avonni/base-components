@@ -163,7 +163,6 @@ describe('List', () => {
     it('List: Columns, cols', () => {
         element.items = ITEMS;
         element.cols = 3;
-        element.variant = 'grid';
 
         return Promise.resolve()
             .then(() => {
@@ -456,13 +455,15 @@ describe('List', () => {
 
     // variant
     it('List: Variant = base', () => {
-        element.variant = 'base';
-
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(menu.classList).toContain('slds-grid_vertical');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeFalsy();
+            expect(nextButton).toBeFalsy();
         });
     });
     

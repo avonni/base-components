@@ -165,9 +165,9 @@
     }
 }
 
-.avonni-list__item-action-image-top-right {
-    top: 0px;
-    right: 0px;
+.avonni-list__item-media-action-top-right {
+    margin-top: -4px;
+    margin-right: -8px;
 }
 
 .avonni-list__item-sortable.avonni-list__item-sortable_dragged {
@@ -225,42 +225,43 @@
     --slds-c-icon-radius-border: var(--avonni-list-item-icon-radius-border, 0.25rem);
 }
 
+
+/* LINK COLORS */
+
 a {
     --base-link-color: #0176d3;
     --hover-and-active-link-color: #014486;
 }
-
-/* LINK COLORS */
 a.avonni-list__item-header-link {
-    color: var(--avonni-list-header-link-text-color, var(--base-link-color));
+    color: var(--avonni-list-item-header-link-text-color, var(--base-link-color));
 }
 a.avonni-list__item-header-link:hover,
 a.avonni-list__item-header-link:focus {
     color: var(
-        --avonni-list-header-link-text-color-hover,
+        --avonni-list-item-header-link-text-color-hover,
         var(--hover-and-active-link-color)
     );
 }
 a.avonni-list__item-header-link:active {
     color: var(
-        --avonni-list-header-link-text-color,
+        --avonni-list-item-header-link-text-color-active,
         var(--hover-and-active-link-color)
     );
 }
 
 a.avonni-list__item-info-link {
-    color: var(--avonni-list-infos-link-text-color, var(--base-link-color));
+    color: var(--avonni-list-item-infos-link-text-color, var(--base-link-color));
 }
 a.avonni-list__item-info-link:hover,
 a.avonni-list__item-info-link:focus {
     color: var(
-        --avonni-list-infos-link-text-color-hover,
+        --avonni-list-item-infos-link-text-color-hover,
         var(--hover-and-active-link-color)
     );
 }
 a.avonni-list__item-info-link {
     color: var(
-        --avonni-list-infos-link-text-color-active,
+        --avonni-list-item-infos-link-text-color-active,
         var(--hover-and-active-link-color)
     );
 }

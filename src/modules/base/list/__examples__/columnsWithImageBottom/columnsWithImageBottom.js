@@ -1,13 +1,33 @@
 import { LightningElement } from 'lwc';
 
-export default class GridWithInfiniteLoading extends LightningElement {
-
-    isLoading = false;
-    enableInfiniteLoading = true;
+export default class ColumnsWithImageBottom extends LightningElement {
     imageAttributes = {
-        size: 'medium'
-    };
-    items = [
+        position: 'bottom',
+        height: 100
+    }
+
+    actions = [
+        {
+            label: 'Completed',
+            name: 'completed-action',
+            iconName: 'utility:check',
+            disabled: false
+        },
+        {
+            label: 'Pending',
+            name: 'pending-action',
+            iconName: 'utility:spinner',
+            disabled: false
+        },
+        {
+            label: 'Delete',
+            name: 'delete-action',
+            iconName: 'utility:delete',
+            disabled: true
+        }
+    ];
+
+    itemsWithImages = [
         {
             label: 'Item 1',
             description:
@@ -60,24 +80,4 @@ export default class GridWithInfiniteLoading extends LightningElement {
             name: 'name-item-5'
         }
     ];
-
-    connectedCallback() {
-        this.loadedItems = this.items;
-    }
-
-    loadMoreData() {
-        this.isLoading = true;
-
-        setTimeout(() => {
-            const newItems = this.items.concat(this.loadedItems);
-
-            if (newItems.length >= 30) {
-                this.isLoading = false;
-                this.enableInfiniteLoading = false;
-            } else {
-                this.isLoading = false;
-                this.items = newItems;
-            }
-        }, 1000);
-    }
 }

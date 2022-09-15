@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.avonni-height_full {
+    height: 100%;
+}
+
 /* outer card */
 
 article.avonni-card {
@@ -106,10 +110,6 @@ article.avonni-card {
             rgba(0, 0, 0, 0) 100%
         )
     );
-}
-
-.avonni-height_full {
-    height: 100%;
 }
 
 .avonni-card__media-overlay:hover .avonni-card__content-container,
