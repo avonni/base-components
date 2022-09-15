@@ -230,7 +230,6 @@ export default class Datatable extends LightningDatatable {
         'progress-circle': {
             template: progressCircle,
             typeAttributes: [
-                'color',
                 'direction',
                 'label',
                 'size',
