@@ -518,7 +518,9 @@ export default class PrimitiveAvatar extends LightningElement {
         const iconFullName =
             typeof entityIconName === 'string' ? entityIconName.trim() : ':';
         const iconCategory = iconFullName.split(':')[0];
-        const iconName = iconFullName.split(':')[1];
+        const iconName = iconFullName.split(':')[1]
+            ? iconFullName.split(':')[1].replace(/_/g, '-')
+            : '';
 
         this.entityClass = classSet(
             `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
