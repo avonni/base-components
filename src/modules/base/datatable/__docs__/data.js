@@ -377,8 +377,7 @@ const columnsPR = [
         type: 'progress-circle',
         typeAttributes: {
             thickness: 'large',
-            size: 'small',
-            color: { fieldName: 'progressCircleColor' }
+            size: 'small'
         },
         initialWidth: 100
     },
@@ -744,7 +743,6 @@ const recordsPR = [
         progress: 1,
         progressBarTheme: 'success',
         progressRingVariant: 'base-autocomplete',
-        progressCircleColor: '#45c65a',
         qrcode: 'https://www.avonni.app/',
         qrcodeBorderColor: '#45c65a',
         qrcodeBorderWidth: 5,
