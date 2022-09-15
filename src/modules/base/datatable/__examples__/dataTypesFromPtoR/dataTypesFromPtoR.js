@@ -85,7 +85,7 @@ export default class DataTypesFromPtoR extends LightningElement {
             id: 1,
             percent: 0.34,
             phone: '5142223333',
-            progress: 34,
+            progress: 0.34,
             progressBarReferenceLines: [
                 {
                     label: 'IT',
@@ -107,7 +107,7 @@ export default class DataTypesFromPtoR extends LightningElement {
             id: 2,
             percent: 0.45,
             phone: '5144546767',
-            progress: 100,
+            progress: 1,
             progressBarTheme: 'success',
             progressRingVariant: 'base-autocomplete',
             progressCircleColor: '#45c65a',
@@ -121,7 +121,7 @@ export default class DataTypesFromPtoR extends LightningElement {
             id: 3,
             percent: 0.67,
             phone: '6785643214',
-            progress: 43,
+            progress: 0.43,
             qrcode: 'https://www.avonni.app/',
             ratingDisabled: true,
             richText:
@@ -132,7 +132,7 @@ export default class DataTypesFromPtoR extends LightningElement {
             id: 4,
             percent: 4,
             phone: '3547789900',
-            progress: 5,
+            progress: 0.05,
             progressBarTheme: 'info',
             progressRingVariant: 'expired',
             qrcode: 'https://www.avonni.app/',
@@ -143,7 +143,7 @@ export default class DataTypesFromPtoR extends LightningElement {
             id: 5,
             percent: 0.05,
             phone: '5143245564',
-            progress: 66,
+            progress: 0.66,
             progressBarTheme: 'alt-inverse',
             progressBarReferenceLines: [
                 {

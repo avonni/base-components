@@ -33,23 +33,16 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small slds-show">
-        <c-primitive-cell-progress-bar
-            value={value}
-            label={typeAttributes.label}
-            reference-lines={typeAttributes.referenceLines}
-            show-value={typeAttributes.showValue}
-            textured={typeAttributes.textured}
-            theme={typeAttributes.theme}
-            thickness={typeAttributes.thickness}
-            value-label={typeAttributes.valueLabel}
-            value-position={typeAttributes.valuePosition}
-            variant={typeAttributes.variant}
-        ></c-primitive-cell-progress-bar>
-    </div>
-
-    <!-- Make the cell artificially higher to avoid useless scroll bar-->
-    <template if:true={typeAttributes.referenceLines}>
-        <div class="slds-m-bottom_large slds-show"></div>
-    </template>
+    <avonni-progress-bar
+        value={value}
+        label={label}
+        reference-lines={referenceLines}
+        show-value={showValue}
+        textured={textured}
+        theme={theme}
+        thickness={thickness}
+        value-label={valueLabel}
+        value-position={valuePosition}
+        variant={variant}
+    ></avonni-progress-bar>
 </template>
