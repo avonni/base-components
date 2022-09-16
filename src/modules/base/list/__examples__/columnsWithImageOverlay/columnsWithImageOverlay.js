@@ -5,6 +5,11 @@ export default class ColumnsWithImageOverlay extends LightningElement {
         position: 'overlay'
     }
 
+    mediaAction = [{
+        name: 'event-action',
+        iconName: 'utility:bookmark'
+    }]
+
     actions = [
         {
             label: 'Completed',

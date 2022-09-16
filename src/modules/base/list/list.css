@@ -265,6 +265,12 @@ a.avonni-list__item-info-link {
         var(--hover-and-active-link-color)
     );
 }
+.avonni-list__item {
+    --default-text-color: #080707;
+}
+.avonni-list__item-text-color-white {
+    --default-text-color: white;
+}
 
 .avonni-list__item-divider_top,
 .avonni-list__item-divider_bottom {
@@ -274,14 +280,14 @@ a.avonni-list__item-info-link {
 }
 
 .avonni-list__item-header_font {
-    color: var(--avonni-list-item-header-text-color, #080707);
+    color: var(--avonni-list-item-header-text-color, --default-text-color);
     font-size: var(--avonni-list-item-header-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
 .avonni-list__item-description_font {
-    color: var(--avonni-list-item-description-text-color, #080707);
+    color: var(--avonni-list-item-description-text-color, --default-text-color);
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);

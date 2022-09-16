@@ -108,7 +108,7 @@
                     >
                         <c-card
                             class={computedItemClass}
-                            media-position={mediaPosition}
+                            media-position={item.imagePosition}
                         >
                             <!-- Media Actions  -->
                             <div
@@ -116,59 +116,64 @@
                                 slot="media-actions"
                                 class="avonni-list__item-media-action-top-right"
                             >
-                                <lightning-button-menu
-                                    if:true={hasMultipleMediaActions}
-                                    menu-alignment="right"
-                                    icon-size="x-small"
-                                    data-element-id="lightning-button-menu"
-                                    data-item-index={item.index}
-                                    onmousedown={stopPropagation}
-                                    ontouchstart={stopPropagation}
-                                    onselect={handleActionClick}
-                                    variant="border-filled"
-                                >
-                                    <template
-                                        for:each={computedMediaActions}
-                                        for:item="action"
+                                <div if:true={item.hasImage}>
+                                    <lightning-button-menu
+                                        if:true={hasMultipleMediaActions}
+                                        menu-alignment="right"
+                                        icon-size="x-small"
+                                        data-element-id="media-action-menu"
+                                        data-item-index={item.index}
+                                        onmousedown={stopPropagation}
+                                        ontouchstart={stopPropagation}
+                                        onselect={handleActionClick}
+                                        variant="border-filled"
                                     >
-                                        <lightning-menu-item
-                                            key={action.name}
-                                            value={action.name}
-                                            label={action.label}
-                                            disabled={action.disabled}
-                                            icon-name={action.iconName}
-                                            data-element-id="lightning-menu-item"
-                                        ></lightning-menu-item>
+                                        <template
+                                            for:each={computedMediaActions}
+                                            for:item="action"
+                                        >
+                                            <lightning-menu-item
+                                                key={action.name}
+                                                value={action.name}
+                                                label={action.label}
+                                                disabled={action.disabled}
+                                                icon-name={action.iconName}
+                                                data-element-id="media-action-menu-item"
+                                            ></lightning-menu-item>
+                                        </template>
+                                    </lightning-button-menu>
+                                    <template
+                                        if:false={hasMultipleMediaActions}
+                                    >
+                                        <lightning-button
+                                            if:true={firstMediaAction.label}
+                                            class="slds-m-right_none"
+                                            key={firstMediaAction.name}
+                                            value={firstMediaAction.name}
+                                            label={firstMediaAction.label}
+                                            disabled={firstMediaAction.disabled}
+                                            icon-name={firstMediaAction.iconName}
+                                            data-item-index={item.index}
+                                            data-element-id="media-action-button"
+                                            onclick={handleActionClick}
+                                            ontouchstart={stopPropagation}
+                                        ></lightning-button>
+                                        <lightning-button-icon
+                                            if:false={firstMediaAction.label}
+                                            class="slds-m-right_none"
+                                            key={firstMediaAction.name}
+                                            value={firstMediaAction.name}
+                                            disabled={firstMediaAction.disabled}
+                                            icon-name={firstMediaAction.iconName}
+                                            size="small"
+                                            variant="border-filled"
+                                            data-item-index={item.index}
+                                            data-element-id="media-action-button-icon"
+                                            onclick={handleActionClick}
+                                            ontouchstart={stopPropagation}
+                                        ></lightning-button-icon>
                                     </template>
-                                </lightning-button-menu>
-                                <template if:false={hasMultipleMediaActions}>
-                                    <lightning-button
-                                        if:true={firstMediaAction.label}
-                                        class="slds-m-right_none"
-                                        key={firstMediaAction.name}
-                                        value={firstMediaAction.name}
-                                        label={firstMediaAction.label}
-                                        disabled={firstMediaAction.disabled}
-                                        icon-name={firstMediaAction.iconName}
-                                        data-item-index={item.index}
-                                        data-element-id="lightning-button"
-                                        onclick={handleActionClick}
-                                        ontouchstart={stopPropagation}
-                                    ></lightning-button>
-                                    <lightning-button-icon
-                                        if:false={firstMediaAction.label}
-                                        class="slds-m-right_none"
-                                        key={firstMediaAction.name}
-                                        value={firstMediaAction.name}
-                                        disabled={firstMediaAction.disabled}
-                                        icon-name={firstMediaAction.iconName}
-                                        variant="bare"
-                                        data-item-index={item.index}
-                                        data-element-id="lightning-button-icon"
-                                        onclick={handleActionClick}
-                                        ontouchstart={stopPropagation}
-                                    ></lightning-button-icon>
-                                </template>
+                                </div>
                             </div>
                             <div
                                 slot="media"
@@ -252,7 +257,7 @@
                                         data-element-id="avonni-avatar"
                                     ></c-avatar>
                                     <div
-                                        class="slds-col slds-has-flexi-truncate"
+                                        class={item.computedTextColor}
                                     >
                                         <!-- Item label and icons -->
                                         <div
@@ -279,11 +284,7 @@
                                                     >
                                                 </template>
                                                 <template if:false={item.href}>
-                                                    <span
-                                                        class={computedTextColor}
-                                                    >
-                                                        {item.label}
-                                                    </span>
+                                                    {item.label}
                                                 </template>
                                             </div>
                                             <template if:true={item.icons}>
@@ -317,7 +318,6 @@
                                             "
                                         >
                                             <lightning-formatted-rich-text
-                                                class={computedTextColor}
                                                 value={item.description}
                                             ></lightning-formatted-rich-text>
                                         </p>
@@ -416,7 +416,8 @@
                                             value={firstAction.name}
                                             disabled={firstAction.disabled}
                                             icon-name={firstAction.iconName}
-                                            variant="bare"
+                                            variant="border-filled"
+                                            size="small"
                                             data-item-index={item.index}
                                             data-element-id="lightning-button-icon"
                                             onclick={handleActionClick}

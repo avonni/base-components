@@ -79,6 +79,7 @@ describe('List', () => {
         expect(element.imageAttributes).toMatchObject({});
         expect(element.label).toBeUndefined();
         expect(element.loadMoreOffset).toBe(20);
+        expect(element.mediaActions).toMatchObject([]);
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
@@ -95,13 +96,13 @@ describe('List', () => {
         return Promise.resolve()
             .then(() => {
                 const actions = element.shadowRoot.querySelector(
-                    'lightning-button-menu'
+                    '[data-element-id="lightning-button-menu"]'
                 );
                 actions.click();
             })
             .then(() => {
                 const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="lightning-menu-item"]'
+                    '[data-element-id="lightning-menu-item"]'
                 );
                 expect(menuItem[0].label).toBe('Completed');
                 expect(menuItem[0].value).toBe('completed-action');
@@ -144,6 +145,77 @@ describe('List', () => {
             expect(buttonIcon.iconName).toBe('utility:event');
             expect(buttonIcon.disabled).toBeFalsy();
             expect(buttonIcon.value).toBe('event-action');
+        });
+    });
+    // MEDIA-ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
+    it('List: Media-Actions button-menu', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actions = element.shadowRoot.querySelector(
+                    '[data-element-id="media-action-menu"]'
+                );
+                actions.click();
+            })
+            .then(() => {
+                const menuItem = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="media-action-menu-item"]'
+                );
+                expect(menuItem[0].label).toBe('Completed');
+                expect(menuItem[0].value).toBe('completed-action');
+                expect(menuItem[0].iconName).toBe('utility:check');
+                expect(menuItem[0].disabled).toBeFalsy();
+                expect(menuItem[1].label).toBe('Pending');
+                expect(menuItem[1].value).toBe('pending-action');
+                expect(menuItem[1].iconName).toBe('utility:spinner');
+                expect(menuItem[1].disabled).toBeFalsy();
+                expect(menuItem[2].label).toBe('Delete');
+                expect(menuItem[2].value).toBe('delete-action');
+                expect(menuItem[2].iconName).toBe('utility:delete');
+                expect(menuItem[2].disabled).toBeTruthy();
+            });
+    });
+    it('List: Media-Actions media-action-button', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button.label).toBe('Completed');
+            expect(button.iconName).toBe('utility:check');
+            expect(button.disabled).toBeFalsy();
+            expect(button.value).toBe('completed-action');
+        });
+    });
+    it('List: Media-Actions media-action-button-icon', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const buttonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+
+            expect(buttonIcon.iconName).toBe('utility:event');
+            expect(buttonIcon.disabled).toBeFalsy();
+            expect(buttonIcon.value).toBe('event-action');
+        });
+    });
+    it('List: No Media-Actions without images', () => {
+        element.items = ITEMS_WITHOUT_ICONS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button).toBeFalsy();
         });
     });
 

@@ -343,7 +343,11 @@ export const ColumnsWithImageOverlay = Template.bind({});
 ColumnsWithImageOverlay.args = {
     label: 'Columns with Image Overlay',
     items: itemsWithImages,
-    mediaActions: actions,
+    actions: actions,
+    mediaActions: [{
+        name: 'event-action',
+        iconName: 'utility:bookmark'
+    }],
     divider: 'around',
     imageAttributes: {
         position: 'overlay'

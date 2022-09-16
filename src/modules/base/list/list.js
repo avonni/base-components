@@ -112,7 +112,7 @@ export default class List extends LightningElement {
 
     _actions = [];
     computedActions = [];
-    _mediaActions = []
+    _mediaActions = [];
     computedMediaActions = [];
     computedItems = [];
     _cols = 1;
@@ -128,7 +128,6 @@ export default class List extends LightningElement {
         cropPositionY: 50,
         cropFit: 'cover'
     };
-    _imageSrc = [];
     _isLoading = false;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
@@ -195,6 +194,10 @@ export default class List extends LightningElement {
         });
     }
 
+    connectedCallback() {
+        this.setItemProperties();
+    }
+
     disconnectedCallback() {
         if (this._resizeObserver) {
             this._resizeObserver.disconnect();
@@ -222,7 +225,7 @@ export default class List extends LightningElement {
         this._actions = normalizeArray(proxy);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
     }
-    
+
     /**
      * Array of action objects displayed in the image.
      *
@@ -235,7 +238,9 @@ export default class List extends LightningElement {
     }
     set mediaActions(proxy) {
         this._mediaActions = normalizeArray(proxy);
-        this.computedMediaActions = JSON.parse(JSON.stringify(this._mediaActions));
+        this.computedMediaActions = JSON.parse(
+            JSON.stringify(this._mediaActions)
+        );
     }
 
     /**
@@ -316,7 +321,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Image attributes: cropFit, position size, width, height and cropPosition.
+     * Image attributes: cropFit, position, size, width, height and cropPosition.
      *
      * @type {object}
      * @public
@@ -373,7 +378,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Default number of columns in the grid and single-line variants on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Default number of columns on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @default 1
@@ -390,7 +395,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns in the grid and single-line variants on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      * @type {number}
      * @public
      */
@@ -405,7 +410,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns in the grid and single-line variants on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @public
@@ -421,7 +426,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns in the grid and single-line variants on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @public
@@ -448,15 +453,7 @@ export default class List extends LightningElement {
     }
     set items(proxy) {
         this._items = normalizeArray(proxy, 'object');
-        this.listHasImages = this._items.some((item) => item.imageSrc);
-
-        this.computedItems = this._items.map((item, index) => {
-            const newItem = new Item(item);
-            newItem.index = index;
-            newItem.listHasImages = this.listHasImages;
-            newItem.variant = this._variant;
-            return newItem;
-        });
+        this.setItemProperties();
     }
 
     /**
@@ -511,7 +508,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Variant to display the items as a grid, a single-line or a list. Accepted values are base, grid or single-line. The base variant displays a list. The variant defaults to base.
+     * Variant to display the items as list or single line. Accepted values are base or single-line. The base variant displays a list. The variant defaults to base.
      *
      * @type {string}
      * @public
@@ -684,15 +681,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Show media top or left depending on the variant.
-     *
-     * @type {boolean}
-     */
-    get mediaPosition() {
-        return this._imageAttributes.position;
-    }
-
-    /**
      * Check if Icon is to be shown to the right.
      *
      * @type {boolean}
@@ -804,16 +792,6 @@ export default class List extends LightningElement {
                     this.divider === 'top',
                 'slds-has-dividers_bottom-space avonni-list__items-have-bottom-divider':
                     this.divider === 'bottom'
-            })
-            .toString();
-    }
-
-    get computedTextColor() {
-        return classSet()
-            .add({
-                'slds-text-color_inverse':
-                    this._imageAttributes.position === 'background' ||
-                    this._imageAttributes.position === 'overlay'
             })
             .toString();
     }
@@ -1379,6 +1357,32 @@ export default class List extends LightningElement {
         if (this._singleLinePage > 0) {
             this._singleLinePage--;
         }
+    }
+
+    /**
+     * Make sure all used properties are set before they are used in items. 
+     */
+    setItemProperties() {
+        this.listHasImages = this._items.some((item) => item.imageSrc);
+        this.computedItems = this._items.map((item, index) => {
+            // With image position == background or overlay,
+            // if the image is missing fallback to default list layout.
+            let usedImagePosition = this._imageAttributes.position;
+            const layoutRequiresImage = (usedImagePosition === 'background' ||
+            usedImagePosition === 'overlay')
+            if (
+                !item.imageSrc &&
+                layoutRequiresImage
+            ) {
+                usedImagePosition = 'left';
+            }
+            const newItem = new Item(item);
+            newItem.index = index;
+            newItem.imagePosition = usedImagePosition;
+            newItem.listHasImages = this.listHasImages;
+            newItem.variant = this._variant;
+            return newItem;
+        });
     }
 
     scrollItemIntoView(draggedItem) {

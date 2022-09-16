@@ -10,6 +10,7 @@ export default class Item {
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
+        this.imagePosition = value.imagePosition;
         this.label = value.label;
         this.description = value.description;
         this.name = value.name;
@@ -21,4 +22,18 @@ export default class Item {
         }
         return this.imageSrc.length > 0;
     }
+
+    /**
+     * On overlay and background media positions, set default text color to white.
+     */
+    get computedTextColor() {
+        return classSet('slds-col slds-has-flexi-truncate')
+            .add({
+                'avonni-list__item-text-color-white':
+                    this.imagePosition === 'background' ||
+                    this.imagePosition === 'overlay'
+            })
+            .toString();
+    }
+
 }
