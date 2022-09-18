@@ -47,16 +47,10 @@ span {
     display: initial;
 }
 
-
 .avonni-output-data__label {
     font-weight: var(--avonni-output-data-label-font-weight, 'normal');
-    width: var(--avonni-output-data-label-width, '100%');
-    padding-right: var(--avonni-output-label-data-padding-right, 0);
-     /* slds-text-color_weak */
-    color: #444444;
-    /* slds-truncate */
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.avonni-output-data__label_inline {
+    width: 30%;
 }

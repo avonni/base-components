@@ -145,8 +145,6 @@ export default class OutputData extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
-
-       this.setLabelStylingHook();
     }
 
     /*
@@ -154,6 +152,20 @@ export default class OutputData extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed class of label.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet('avonni-output-data__label slds-item_label slds-text-color_weak slds-truncate')
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden',
+                'slds-p-right_small avonni-output-data__label_inline': this.variant === 'label-inline'
+            })
+            .toString();
+    }
 
     /**
      * Computed class of the output wrapper.
@@ -334,17 +346,5 @@ export default class OutputData extends LightningElement {
         }
 
         this.normalizedTypeAttributes = normalizedTypeAttributes;
-    }
-
-    /**
-     * Set styling hooks of output data's label if variant is label-inline.
-     */
-    setLabelStylingHook(){
-        if(this.variant === 'label-inline') {
-            this.template.host.style = `
-                --avonni-output-data-label-width: 30%;
-                --avonni-output-label-data-padding-right: 0.75rem;
-            `;
-        }
     }
 }

@@ -34,7 +34,7 @@
 
 <template>
     <div class={computedWrapperClass}>
-        <div if:true={shouldDisplayLabel} class='avonni-output-data__label' title={label}>
+        <div if:true={shouldDisplayLabel} class={computedLabelClass} title={label}>
             {label}
         </div>
         <div class="slds-truncate slds-item_detail" title={value}>
