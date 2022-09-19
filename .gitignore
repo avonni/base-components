@@ -31,7 +31,7 @@ $RECYCLE.BIN/
 .vscode/settings.json
 
 # Storycap screenshots
-__screenshots__/Example
+__screenshots__
 
 # Github pages storybook
 storybook-static/*
