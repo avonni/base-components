@@ -425,10 +425,8 @@ BaseTopCenterWithButtonIcons.args = {
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
     primaryButtonIconName: 'utility:pin',
-    primaryButtonIconSize: 'small',
     primaryButtonVariant: 'brand',
     secondaryButtonIconName: 'utility:question',
-    secondaryButtonIconSize: 'small',
     secondaryButtonVariant: 'brand',
     maxWidth: 2000
 };

@@ -86,6 +86,21 @@
                                 <div class={computedButtonAlignmentClass}>
                                     <div class="slds-grid">
                                         <button
+                                            if:true={isPrimaryButtonIcon}
+                                            class={computedPrimaryButtonIconClass}
+                                            data-element-id="avonni-hero-banner-primary-button-icon"
+                                            onclick={handlePrimaryButtonClick}
+                                            type="button"
+                                        >
+                                            <c-primitive-icon
+                                                icon-name={primaryButtonIconName}
+                                                svg-class={computedPrimaryPrimitiveIconClass}
+                                                variant="bare"
+                                                data-element-id="avonni-primitive-icon-primary-button"
+                                            ></c-primitive-icon>
+                                        </button>
+                                        <button
+                                            if:false={isPrimaryButtonIcon}
                                             class={computedPrimaryButtonClass}
                                             onclick={handlePrimaryButtonClick}
                                             type="button"
@@ -109,6 +124,21 @@
                                         </button>
                                         <template if:true={hasSecondaryButton}>
                                             <button
+                                                if:true={isSecondaryButtonIcon}
+                                                class={computedSecondaryButtonIconClass}
+                                                data-element-id="avonni-hero-banner-secondary-button-icon"
+                                                onclick={handleSecondaryButtonClick}
+                                                type="button"
+                                            >
+                                                <c-primitive-icon
+                                                    icon-name={secondaryButtonIconName}
+                                                    svg-class={computedSecondaryPrimitiveIconClass}
+                                                    variant="bare"
+                                                    data-element-id="avonni-primitive-icon-secondary-button"
+                                                ></c-primitive-icon>
+                                            </button>
+                                            <button
+                                                if:false={isSecondaryButtonIcon}
                                                 class={computedSecondaryButtonClass}
                                                 onclick={handleSecondaryButtonClick}
                                                 type="button"

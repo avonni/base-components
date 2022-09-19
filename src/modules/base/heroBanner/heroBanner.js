@@ -598,6 +598,14 @@ export default class HeroBanner extends LightningElement {
     }
 
     /** PRIMARY BUTTON */
+    /**
+     * True if the primary button only has an icon.
+     *
+     * @type {boolean}
+     */
+    get isPrimaryButtonIcon() {
+        return this.primaryButtonIconName && !this.primaryButtonLabel;
+    }
 
     /**
      * True if there is a label or icon name for the primary button.
@@ -631,6 +639,47 @@ export default class HeroBanner extends LightningElement {
             this.primaryButtonIconPosition === 'right'
         );
     }
+
+    /**
+     * Computed primary button class styling.
+     *
+     * @type {string}
+     */
+    get computedPrimaryButtonIconClass() {
+        return classSet(
+            'avonni-hero-banner__primary-button avonni-hero-banner__primary-button-icon'
+        )
+            .add({
+                'avonni-hero-banner__primary-button-icon_x-small':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'x-small',
+                'avonni-hero-banner__primary-button-icon_small':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'small',
+                'avonni-hero-banner__primary-button-icon_medium':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'medium',
+                'avonni-hero-banner__primary-button-icon_large':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'large',
+                'avonni-hero-banner__primary-button_variant-neutral':
+                    this.primaryButtonVariant === 'neutral',
+                'avonni-hero-banner__primary-button_variant-brand':
+                    this.primaryButtonVariant === 'brand',
+                'avonni-hero-banner__primary-button_variant-outline-brand':
+                    this.primaryButtonVariant === 'brand-outline',
+                'avonni-hero-banner__primary-button_variant-destructive':
+                    this.primaryButtonVariant === 'destructive',
+                'avonni-hero-banner__primary-button_variant-text-destructive':
+                    this.primaryButtonVariant === 'destructive-text',
+                'avonni-hero-banner__primary-button_variant-inverse':
+                    this.primaryButtonVariant === 'inverse',
+                'avonni-hero-banner__primary-button_variant-success':
+                    this.primaryButtonVariant === 'success'
+            })
+            .toString();
+    }
+
     /**
      * Computed primary button class styling.
      *
@@ -682,6 +731,14 @@ export default class HeroBanner extends LightningElement {
     }
 
     /** SECONDARY BUTTON */
+    /**
+     * True if the secondary button only has an icon.
+     *
+     * @type {boolean}
+     */
+    get isSecondaryButtonIcon() {
+        return this.secondaryButtonIconName && !this.secondaryButtonLabel;
+    }
 
     /**
      * True if there is a label or icon name for the second button.
@@ -714,6 +771,46 @@ export default class HeroBanner extends LightningElement {
             this.secondaryButtonIconName &&
             this.secondaryButtonIconPosition === 'right'
         );
+    }
+
+    /**
+     * Computed primary button class styling.
+     *
+     * @type {string}
+     */
+    get computedSecondaryButtonIconClass() {
+        return classSet(
+            'avonni-hero-banner__secondary-button avonni-hero-banner__secondary-button-icon slds-m-left_x-small'
+        )
+            .add({
+                'avonni-hero-banner__secondary-button-icon_x-small':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'x-small',
+                'avonni-hero-banner__secondary-button-icon_small':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'small',
+                'avonni-hero-banner__secondary-button-icon_medium':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'medium',
+                'avonni-hero-banner__secondary-button-icon_large':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'large',
+                'avonni-hero-banner__secondary-button_variant-neutral':
+                    this.secondaryButtonVariant === 'neutral',
+                'avonni-hero-banner__secondary-button_variant-brand':
+                    this.secondaryButtonVariant === 'brand',
+                'avonni-hero-banner__secondary-button_variant-outline-brand':
+                    this.secondaryButtonVariant === 'brand-outline',
+                'avonni-hero-banner__secondary-button_variant-destructive':
+                    this.secondaryButtonVariant === 'destructive',
+                'avonni-hero-banner__secondary-button_variant-text-destructive':
+                    this.secondaryButtonVariant === 'destructive-text',
+                'avonni-hero-banner__secondary-button_variant-inverse':
+                    this.secondaryButtonVariant === 'inverse',
+                'avonni-hero-banner__secondary-button_variant-success':
+                    this.secondaryButtonVariant === 'success'
+            })
+            .toString();
     }
 
     /**
