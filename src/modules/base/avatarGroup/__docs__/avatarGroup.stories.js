@@ -412,12 +412,32 @@ const itemsWithStatusAndEntity = [
 ];
 
 export const BaseWithTwoAvatars = Template.bind({});
+BaseWithTwoAvatars.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 69,
+                height: 69
+            }
+        }
+    }
+}
 BaseWithTwoAvatars.args = {
     items: items,
     name: 'avatar-group'
 };
 
 export const BaseExtraLargeWithTwoAvatars = Template.bind({});
+BaseExtraLargeWithTwoAvatars.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 109,
+                height: 109
+            }
+        }
+    }
+}
 BaseExtraLargeWithTwoAvatars.args = {
     items: items,
     size: 'x-large',
@@ -426,11 +446,31 @@ BaseExtraLargeWithTwoAvatars.args = {
 };
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
+BaseWithMoreThanTwoAvatars.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 190,
+                height: 64
+            }
+        }
+    }
+}
 BaseWithMoreThanTwoAvatars.args = {
     items: [...itemsWithPresence, ...itemsWithPresence, ...itemsWithPresence]
 };
 
 export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
+BaseLargeWithMoreThanTwoAvatars.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 300,
+                height: 69
+            }
+        }
+    }
+}
 BaseLargeWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items],
     size: 'large',
@@ -441,6 +481,16 @@ BaseLargeWithMoreThanTwoAvatars.args = {
 };
 
 export const Grid = Template.bind({});
+Grid.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 320,
+                height: 64
+            }
+        }
+    }
+}
 Grid.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     layout: 'grid',
@@ -449,6 +499,16 @@ Grid.args = {
 };
 
 export const GridWithPresence = Template.bind({});
+GridWithPresence.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 320,
+                height: 64
+            }
+        }
+    }
+}
 GridWithPresence.args = {
     items: [
         ...itemsWithPresence,
@@ -465,6 +525,16 @@ GridWithPresence.args = {
 };
 
 export const GridSmall = Template.bind({});
+GridSmall.story = {
+    parameters: {
+        screenshot: {
+            viewport: {
+                width: 300,
+                height: 54
+            }
+        }
+    }
+}
 GridSmall.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     size: 'small',

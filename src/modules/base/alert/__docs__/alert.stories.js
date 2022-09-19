@@ -31,6 +31,7 @@
  */
 
 import { Alert } from '../__examples__/alert';
+import { viewports } from 'c/utilsPrivate';
 
 export default {
     title: 'Example/Alert',
@@ -89,13 +90,22 @@ export default {
 };
 
 const Template = (args) => Alert(args);
+const screenshotParams = {
+    parameters: {
+        screenshot: {
+            viewport: viewports.alert
+        }
+    }
+};
 
 export const Base = Template.bind({});
+Base.story = screenshotParams;
 Base.args = {
     iconName: 'utility:user'
 };
 
 export const DismissibleWithCloseAction = Template.bind({});
+DismissibleWithCloseAction.story = screenshotParams;
 DismissibleWithCloseAction.args = {
     iconName: 'utility:user',
     isDismissible: true,
@@ -105,18 +115,21 @@ DismissibleWithCloseAction.args = {
 };
 
 export const Error = Template.bind({});
+Error.story = screenshotParams;
 Error.args = {
     iconName: 'utility:error',
     variant: 'error'
 };
 
 export const Offline = Template.bind({});
+Offline.story = screenshotParams;
 Offline.args = {
     iconName: 'utility:clock',
     variant: 'offline'
 };
 
 export const Warning = Template.bind({});
+Warning.story = screenshotParams;
 Warning.args = {
     iconName: 'utility:warning',
     variant: 'warning'

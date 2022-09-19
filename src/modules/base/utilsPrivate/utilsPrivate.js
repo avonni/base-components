@@ -91,8 +91,9 @@ export {
     previousAllowedTime,
     removeFromDate
 } from './dateTimeUtils';
-import { smartSetAttribute } from './smartSetAttribute';
+export { viewports } from './screenshotViewports'
 
+import { smartSetAttribute } from './smartSetAttribute';
 export function synchronizeAttrs(element, values) {
     if (!element) {
         return;
