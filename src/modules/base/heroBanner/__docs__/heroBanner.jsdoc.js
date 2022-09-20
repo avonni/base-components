@@ -153,7 +153,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-color-border-hover
- * @default transparent
  * @type color
  */
 /**

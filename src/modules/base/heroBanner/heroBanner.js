@@ -688,6 +688,8 @@ export default class HeroBanner extends LightningElement {
     get computedPrimaryButtonClass() {
         return classSet('avonni-hero-banner__primary-button')
             .add({
+                'avonni-hero-banner__primary-button_transition':
+                    this.primaryButtonVariant !== 'base',
                 'avonni-hero-banner__primary-button_variant-neutral':
                     this.primaryButtonVariant === 'neutral',
                 'avonni-hero-banner__primary-button_variant-brand':
@@ -823,6 +825,8 @@ export default class HeroBanner extends LightningElement {
             'avonni-hero-banner__secondary-button slds-m-left_x-small'
         )
             .add({
+                'avonni-hero-banner__secondary-button_transition':
+                    this.secondaryButtonVariant !== 'base',
                 'avonni-hero-banner__secondary-button_variant-neutral':
                     this.secondaryButtonVariant === 'neutral',
                 'avonni-hero-banner__secondary-button_variant-brand':
