@@ -21,14 +21,6 @@
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
  */
 /**
- * @typedef {Object} ListMediaAction
- * @name mediaActions
- * @property {string} label Required. The action label.
- * @property {string} name Required. The name of the action, which identifies the selected action.
- * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
- * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
- */
-/**
  * @typedef {Object} ListAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -43,7 +35,7 @@
  * @typedef {Object} ImageAttributes
  * @name imageAttributes
  * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
- * @property {string} size The size of the images in the base, grid or single-line variants. In the base variant, the size controls the width of the image. On the grid and single-line variants, the size controls the height of the image. Valid values are small, medium, large. The size defaults to large.
+ * @property {string} size The size of the item image. The size controls the width for image positions left and right. Otherwise size controls the image height. Valid values are small, medium, large. The size defaults to large.
  * @property {number} height The image height in pixels. The height is only used for image positions top, bottom, background and overlay. The height overrides the size value.
  * @property {number} width The image width in pixels. The width is only used for image positions left and right. The width overrides the size value.
  * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
@@ -92,6 +84,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-header-text-color-inverse
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-header-font-size
  * @default 0.8125rem
  * @type font
@@ -112,6 +110,12 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-description-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-description-text-color-inverse
+ * @default white
  * @type color
  */
 /**
@@ -183,37 +187,37 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-top-spacing-block-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-top-spacing-inline-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-bottom-spacing-block-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-bottom-spacing-inline-between
  * @type dimension
- * @default 0px
+ * @default 0
  */
 /**
  * @memberof stylingHooks
@@ -287,6 +291,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse
+ * @type color
+ * @default #1b96ff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse-hover
+ * @type color
+ * @default #097fe6
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse-active
+ * @type color
+ * @default #097fe6
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-infos-link-text-color
  * @type color
  * @default #0176d3
@@ -305,6 +327,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse
+ * @type color
+ * @default #1b96ff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse-hover
+ * @type color
+ * @default #097fe6
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse-active
+ * @type color
+ * @default #097fe6
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-background
  * @type color
  * @default transparent
@@ -320,6 +360,24 @@
  * @name --avonni-list-item-icon-color-foreground-default
  * @type color
  * @default #747474
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-background-inverse
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground-inverse
+ * @type color
+ * @default white
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground-default-inverse
+ * @type color
+ * @default white
  */
 /**
  * @memberof stylingHooks

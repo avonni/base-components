@@ -36,38 +36,38 @@
 
 /* VALUE ASSIGNMENTS */
 .avonni-list__items-without-divider {
-    --item-spacing-block-between: var(--avonni-list-item-spacing-block-between, 0px);
-    --item-spacing-inline-between: var(
+    --private-list-item-spacing-block-between: var(--avonni-list-item-spacing-block-between, 0px);
+    --private-list-item-spacing-inline-between: var(
         --avonni-list-item-spacing-inline-between,
         0px
     );
 }
 .avonni-list__items-have-top-divider {
-    --item-spacing-block-between: var(
+    --private-list-item-spacing-block-between: var(
         --avonni-list-item-divider-top-spacing-block-between,
         0px
     );
-    --item-spacing-inline-between: var(
+    --private-list-item-spacing-inline-between: var(
         --avonni-list-item-divider-top-spacing-inline-between,
         0px
     );
 }
 .avonni-list__items-have-bottom-divider {
-    --item-spacing-block-between: var(
+    --private-list-item-spacing-block-between: var(
         --avonni-list-item-divider-bottom-spacing-block-between,
         0px
     );
-    --item-spacing-inline-between: var(
+    --private-list-item-spacing-inline-between: var(
         --avonni-list-item-divider-bottom-spacing-inline-between,
         0px
     );
 }
 .avonni-list__has-card-style {
-    --item-spacing-block-between: var(
+    --private-list-item-spacing-block-between: var(
         --avonni-list-item-divider-around-spacing-block-between,
         0.5rem
     );
-    --item-spacing-inline-between: var(
+    --private-list-item-spacing-inline-between: var(
         --avonni-list-item-divider-around-spacing-inline-between,
         0.5rem
     );
@@ -76,8 +76,8 @@
 }
 
 .avonni-list__item-menu {
-    row-gap: var(--item-spacing-block-between);
-    margin-inline: calc(var(--item-spacing-inline-between) / -2);
+    row-gap: var(--private-list-item-spacing-block-between);
+    margin-inline: calc(var(--private-list-item-spacing-inline-between) / -2);
 }
 
 .avonni-list__item {
@@ -86,8 +86,8 @@
         --avonni-list-item-color-background,
         transparent
     );
-    padding-left: calc(var(--item-spacing-inline-between) / 2);
-    padding-right: calc(var(--item-spacing-inline-between) / 2);
+    padding-left: calc(var(--private-list-item-spacing-inline-between) / 2);
+    padding-right: calc(var(--private-list-item-spacing-inline-between) / 2);
     --avonni-card-header-spacing-block-start: 0px;
     --avonni-card-header-spacing-block-end: 0px;
     --avonni-card-media-sizing-border: 0px;
@@ -225,51 +225,39 @@
     --slds-c-icon-radius-border: var(--avonni-list-item-icon-radius-border, 0.25rem);
 }
 
-
 /* LINK COLORS */
-
-a {
-    --base-link-color: #0176d3;
-    --hover-and-active-link-color: #014486;
-}
 a.avonni-list__item-header-link {
-    color: var(--avonni-list-item-header-link-text-color, var(--base-link-color));
+    color: var(--avonni-list-item-header-link-text-color, #0176d3);
 }
 a.avonni-list__item-header-link:hover,
 a.avonni-list__item-header-link:focus {
     color: var(
         --avonni-list-item-header-link-text-color-hover,
-        var(--hover-and-active-link-color)
+        #014486
     );
 }
 a.avonni-list__item-header-link:active {
     color: var(
         --avonni-list-item-header-link-text-color-active,
-        var(--hover-and-active-link-color)
+        #014486
     );
 }
 
 a.avonni-list__item-info-link {
-    color: var(--avonni-list-item-infos-link-text-color, var(--base-link-color));
+    color: var(--avonni-list-item-infos-link-text-color, #0176d3);
 }
 a.avonni-list__item-info-link:hover,
 a.avonni-list__item-info-link:focus {
     color: var(
         --avonni-list-item-infos-link-text-color-hover,
-        var(--hover-and-active-link-color)
+        #014486
     );
 }
 a.avonni-list__item-info-link {
     color: var(
         --avonni-list-item-infos-link-text-color-active,
-        var(--hover-and-active-link-color)
+        #014486
     );
-}
-.avonni-list__item {
-    --default-text-color: #080707;
-}
-.avonni-list__item-text-color-white {
-    --default-text-color: white;
 }
 
 .avonni-list__item-divider_top,
@@ -280,15 +268,67 @@ a.avonni-list__item-info-link {
 }
 
 .avonni-list__item-header_font {
-    color: var(--avonni-list-item-header-text-color, --default-text-color);
+    color: var(--avonni-list-item-header-text-color, #080707);
     font-size: var(--avonni-list-item-header-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
 .avonni-list__item-description_font {
-    color: var(--avonni-list-item-description-text-color, --default-text-color);
+    color: var(--avonni-list-item-description-text-color, #080707);
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+}
+
+/* LINK INVERSE COLORS */
+.avonni-list__item-text-color_inverse a.avonni-list__item-header-link {
+    color: var(--avonni-list-item-header-link-text-color-inverse, #1b96ff);
+}
+.avonni-list__item-text-color_inverse a.avonni-list__item-header-link:hover,
+.avonni-list__item-text-color_inverse a.avonni-list__item-header-link:focus {
+    color: var(
+        --avonni-list-item-header-link-text-color-inverse-hover,
+        #097fe6
+    );
+}
+.avonni-list__item-text-color_inverse a.avonni-list__item-header-link:active {
+    color: var(
+        --avonni-list-item-header-link-text-color-inverse-active,
+        #097fe6
+    );
+}
+
+.avonni-list__item-text-color_inverse a.avonni-list__item-info-link {
+    color: var(--avonni-list-item-infos-link-text-color-inverse, #1b96ff);
+}
+.avonni-list__item-text-color_inverse a.avonni-list__item-info-link:hover,
+.avonni-list__item-text-color_inverse a.avonni-list__item-info-link:focus {
+    color: var(
+        --avonni-list-item-infos-link-text-color-inverse-hover,
+        #097fe6
+    );
+}
+.avonni-list__item-text-color_inverse a.avonni-list__item-info-link {
+    color: var(
+        --avonni-list-item-infos-link-text-color-inverse-active,
+        #097fe6
+    );
+}
+
+/* TEXT INVERSE COLOR */
+.avonni-list__item-text-color_inverse .avonni-list__item-header_font {
+    color: var(--avonni-list-item-header-text-color-inverse, white)
+}
+
+.avonni-list__item-text-color_inverse .avonni-list__item-description_font {
+    color: var(--avonni-list-item-description-text-color-inverse, white)
+}
+
+/* ICON INVERSE COLOR */
+.avonni-list__item-text-color_inverse .avonni-list__item-icons {
+    --slds-c-icon-color-background: var(--avonni-list-item-icon-color-background-inverse, transparent);
+    --slds-c-icon-color-foreground: var(--avonni-list-item-icon-color-foreground-inverse, white);
+    --slds-c-icon-color-foreground-default: var(--avonni-list-item-icon-color-foreground-default-inverse, white);
+    --slds-c-icon-radius-border: var(--avonni-list-item-icon-radius-border, 0.25rem);
 }

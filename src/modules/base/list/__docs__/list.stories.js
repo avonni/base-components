@@ -271,33 +271,6 @@ Avatars.args = {
     divider: 'around'
 };
 
-export const Actions = Template.bind({});
-Actions.args = {
-    label: 'List with actions menu',
-    items,
-    actions,
-    divider: 'around'
-};
-
-export const Sortable = Template.bind({});
-Sortable.args = {
-    label: 'Sortable list',
-    sortable: true,
-    items,
-    divider: 'around'
-};
-
-export const SortableWithAvatars = Template.bind({});
-SortableWithAvatars.args = {
-    label: 'Sortable list with icons',
-    items: itemsWithAvatars,
-    actions,
-    sortableIconName: 'utility:drag_and_drop',
-    sortableIconPosition: 'left',
-    sortable: true,
-    divider: 'around'
-};
-
 export const SortableWithAvatarsAndSingleAction = Template.bind({});
 SortableWithAvatarsAndSingleAction.args = {
     label: 'Sortable list with Icons and Single Action',
@@ -366,7 +339,7 @@ SingleLineWithInfiniteLoading.args = {
     enableInfiniteLoading: true,
     divider: 'around',
     imageAttributes: {
-        position: 'top'
+        position: 'bottom'
     },
     cols: 1,
     smallContainerCols: 3,
@@ -380,15 +353,13 @@ ColumnsWithInfiniteLoading.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
-        size: 'medium',
         position: 'top'
     },
     loadMoreOffset: 100,
     enableInfiniteLoading: true,
     cols: 1,
     smallContainerCols: 3,
-    mediumContainerCols: 4,
-    largeContainerCols: 6
+    mediumContainerCols: 4
 };
 
 export const BaseWithInfiniteLoading = InfiniteGridTemplate.bind({});

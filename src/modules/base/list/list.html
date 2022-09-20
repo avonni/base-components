@@ -125,7 +125,7 @@
                                         data-item-index={item.index}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
-                                        onselect={handleActionClick}
+                                        onselect={handleMediaActionClick}
                                         variant="border-filled"
                                     >
                                         <template
@@ -155,7 +155,7 @@
                                             icon-name={firstMediaAction.iconName}
                                             data-item-index={item.index}
                                             data-element-id="media-action-button"
-                                            onclick={handleActionClick}
+                                            onclick={handleMediaActionClick}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button>
                                         <lightning-button-icon
@@ -169,7 +169,7 @@
                                             variant="border-filled"
                                             data-item-index={item.index}
                                             data-element-id="media-action-button-icon"
-                                            onclick={handleActionClick}
+                                            onclick={handleMediaActionClick}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button-icon>
                                     </template>
@@ -257,6 +257,7 @@
                                         data-element-id="avonni-avatar"
                                     ></c-avatar>
                                     <div
+                                        data-element-id="avonni-list-item-body-text-color"
                                         class={item.computedTextColor}
                                     >
                                         <!-- Item label and icons -->
@@ -295,13 +296,14 @@
                                                     <span
                                                         key={generateKey}
                                                         class="
-                                                            slds-p-left_x-small
+                                                            slds-p-left_xx-small
                                                             avonni-list__item-icons
                                                         "
                                                     >
                                                         <lightning-icon
                                                             icon-name={icon}
                                                             size="xx-small"
+                                                            class="slds-p-around_xxx-small"
                                                         ></lightning-icon>
                                                     </span>
                                                 </template>

@@ -1,7 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Base
-WithInfiniteLoading extends LightningElement {
+export default class BaseWithInfiniteLoading extends LightningElement {
 
     isLoading = false;
     enableInfiniteLoading = true;

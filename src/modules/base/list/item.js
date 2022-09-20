@@ -29,7 +29,7 @@ export default class Item {
     get computedTextColor() {
         return classSet('slds-col slds-has-flexi-truncate')
             .add({
-                'avonni-list__item-text-color-white':
+                'avonni-list__item-text-color_inverse':
                     this.imagePosition === 'background' ||
                     this.imagePosition === 'overlay'
             })

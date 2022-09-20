@@ -538,7 +538,7 @@ describe('List', () => {
             expect(nextButton).toBeFalsy();
         });
     });
-    
+
     it('List: Variant = single-line', () => {
         element.variant = 'single-line';
 
@@ -553,6 +553,21 @@ describe('List', () => {
             expect(nextButton).toBeTruthy();
         });
     });
+
+    it('List: Image-Attribute, position = overlay, text-color', () => {
+        element.items = ITEMS;
+        element.imageAttributes = {
+            position: 'overlay'
+        };
+
+        return Promise.resolve().then(() => {
+            const bodyColor = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-list-item-body-text-color"]'
+            )
+
+            expect(bodyColor.classList).toContain('avonni-list__item-text-color_inverse')
+        })
+    })
 
     /* ----- METHOD ----- */
 
@@ -718,6 +733,93 @@ describe('List', () => {
         });
     });
 
+    it('List: Media-Action, Actionclick event, multiple actions', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="media-action-menu"]'
+                );
+                actionMenu.dispatchEvent(
+                    new CustomEvent('select', {
+                        detail: {
+                            value: ACTIONS[0].name
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                    ITEMS[0]
+                );
+                expect(handler.mock.calls[0][0].detail.name).toBe(
+                    ACTION[0].name
+                );
+                expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                    ITEMS[0].name
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+    });
+    it('List: Media-Action Actionclick event, one action', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('List: Media-Action, Actionclick event, one icon action', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+            button.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                ACTION_NO_LABEL[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     // itemclick
     // Depends on items
     it('List: Itemclick event', () => {
@@ -845,9 +947,7 @@ describe('List', () => {
             upDownEvent.key = 'ArrowUp';
             items[1].dispatchEvent(upDownEvent);
 
-            expect(items[2].dataset.moved).toEqual(
-                'keyboard-moved'
-            );
+            expect(items[2].dataset.moved).toEqual('keyboard-moved');
 
             // Stop dragging
             items[1].dispatchEvent(spaceEvent);

@@ -5,7 +5,7 @@ export default class ColumnWithInfiniteLoading extends LightningElement {
     isLoading = false;
     enableInfiniteLoading = true;
     imageAttributes = {
-        size: 'medium'
+        position: 'top'
     };
     items = [
         {

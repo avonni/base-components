@@ -194,8 +194,10 @@ export default class List extends LightningElement {
         });
     }
 
+    hasConnected = false;
     connectedCallback() {
         this.setItemProperties();
+        this.hasConnected = true;
     }
 
     disconnectedCallback() {
@@ -229,7 +231,7 @@ export default class List extends LightningElement {
     /**
      * Array of action objects displayed in the image.
      *
-     * @type {object}
+     * @type {object[]}
      * @public
      */
     @api
@@ -303,11 +305,10 @@ export default class List extends LightningElement {
      * @type {string}
      * @default large
      * @deprecated
-     * @deprecated
      */
     @api
     get imageWidth() {
-        return this._imageWidth;
+        return this._imageAttributes.size;
     }
 
     set imageWidth(size) {
@@ -375,6 +376,10 @@ export default class List extends LightningElement {
                 validValues: IMAGE_POSITION.valid
             }
         );
+
+        if (this.hasConnected) {
+            this.setItemProperties();
+        }
     }
 
     /**
@@ -453,7 +458,10 @@ export default class List extends LightningElement {
     }
     set items(proxy) {
         this._items = normalizeArray(proxy, 'object');
-        this.setItemProperties();
+
+        if (this.hasConnected) {
+            this.setItemProperties();
+        }
     }
 
     /**
@@ -527,6 +535,10 @@ export default class List extends LightningElement {
         this.computedItems.forEach((item) => {
             item.variant = this._variant;
         });
+
+        if (this.hasConnected) {
+            this.setItemProperties();
+        }
     }
 
     /*
@@ -541,11 +553,11 @@ export default class List extends LightningElement {
     get computedImageMediaClass() {
         return classSet('avonni-list__item-img').add({
             'avonni-list__item-image_object-fit-contain':
-                this._imageAttributes.cropFit === 'contain',
+                this.imageAttributes.cropFit === 'contain',
             'avonni-list__item-image_object-fit-fill':
-                this._imageAttributes.cropFit === 'fill',
+                this.imageAttributes.cropFit === 'fill',
             'avonni-list__item-image_object-fit-none':
-                this._imageAttributes.cropFit === 'none'
+                this.imageAttributes.cropFit === 'none'
         });
     }
 
@@ -553,34 +565,32 @@ export default class List extends LightningElement {
      * Apply object position style to images.
      */
     get computedImageStyle() {
-        // HAS ERRORS
-
-        const size = this._imageAttributes.size;
+        const size = this.imageAttributes.size;
         const setHeight =
-            this._imageAttributes.height || this._imageSizes.height[size];
+            this.imageAttributes.height || this._imageSizes.height[size];
         const setWidth =
-            this._imageAttributes.width || this._imageSizes.width[size];
-        const imageObjectPosition = `object-position: ${this._imageAttributes.cropPositionX}% ${this._imageAttributes.cropPositionY}%;`;
-        const objectFit = `object-fit: ${this._imageAttributes.cropFit};`;
+            this.imageAttributes.width || this._imageSizes.width[size];
+        const imageObjectPosition = `object-position: ${this.imageAttributes.cropPositionX}% ${this.imageAttributes.cropPositionY}%;`;
+        const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
 
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
 
         if (
-            this._imageAttributes.position === 'left' ||
-            this._imageAttributes.position === 'right'
+            this.imageAttributes.position === 'left' ||
+            this.imageAttributes.position === 'right'
         ) {
             widthStyle = `min-width: ${setWidth}px; width: ${setWidth}px; height: 100%;`;
         }
         if (
-            this._imageAttributes.position === 'background' ||
-            this._imageAttributes.position === 'overlay'
+            this.imageAttributes.position === 'background' ||
+            this.imageAttributes.position === 'overlay'
         ) {
             widthStyle = `min-width: 100%; width: 100%; height: ${setHeight}px;`;
         }
         if (
             this.imageAttributes.position === 'top' ||
-            this._imageAttributes.position === 'bottom'
+            this.imageAttributes.position === 'bottom'
         ) {
             heightStyle = `height: ${setHeight}px; min-height: ${setHeight}px; width: 100%;`;
         }
@@ -634,7 +644,7 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get hasMediaActions() {
-        return this._mediaActions.length;
+        return this.computedMediaActions.length;
     }
 
     /**
@@ -652,7 +662,7 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get hasMultipleMediaActions() {
-        return this._mediaActions.length > 1;
+        return this.computedMediaActions.length > 1;
     }
 
     /**
@@ -707,7 +717,7 @@ export default class List extends LightningElement {
             this.sortable &&
             !!this.sortableIconName &&
             this.listHasImages &&
-            this._imageAttributes.position === 'left' &&
+            this.imageAttributes.position === 'left' &&
             this.sortableIconPosition === 'left'
         );
     }
@@ -786,7 +796,7 @@ export default class List extends LightningElement {
             .add({
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap': this._currentColumnCount > 1,
-                'avonni-list__items-without-divider': this._divider === '',
+                'avonni-list__items-without-divider': this.divider === '',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space avonni-list__items-have-top-divider':
                     this.divider === 'top',
@@ -804,8 +814,8 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet()
             .add({
-                'avonni-list__item-borderless': this._divider !== 'around',
-                'avonni-list__item-card-style': this._divider === 'around'
+                'avonni-list__item-borderless': this.divider !== 'around',
+                'avonni-list__item-card-style': this.divider === 'around'
             })
             .toString();
     }
@@ -820,8 +830,8 @@ export default class List extends LightningElement {
             .add({
                 'avonni-list__item-sortable':
                     this.sortable && this._currentColumnCount === 1,
-                'avonni-list__item-divider_top': this._divider === 'top',
-                'avonni-list__item-divider_bottom': this._divider === 'bottom',
+                'avonni-list__item-divider_top': this.divider === 'top',
+                'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
                 'slds-col slds-size_6-of-12': this._currentColumnCount === 2,
                 'slds-col slds-size_4-of-12': this._currentColumnCount === 3,
@@ -1153,7 +1163,7 @@ export default class List extends LightningElement {
         );
         if (
             nextPageItems.length === 0 &&
-            !this._isLoading &&
+            !this.isLoading &&
             this.enableInfiniteLoading
         ) {
             // window.requestAnimationFrame required because handleLoadMore() cannot be called while updating template
@@ -1269,17 +1279,17 @@ export default class List extends LightningElement {
         let setSize = 'default';
         if (
             listWidth >= MEDIA_QUERY_BREAKPOINTS.large &&
-            this._largeContainerCols > 0
+            this.largeContainerCols > 0
         ) {
             setSize = 'large';
         } else if (
             listWidth >= MEDIA_QUERY_BREAKPOINTS.medium &&
-            this._mediumContainerCols
+            this.mediumContainerCols
         ) {
             setSize = 'medium';
         } else if (
             listWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
-            this._smallContainerCols
+            this.smallContainerCols
         ) {
             setSize = 'small';
         }
@@ -1322,7 +1332,7 @@ export default class List extends LightningElement {
                 this._currentColumnCount + pageStart,
                 this._currentColumnCount * 2 + pageStart
             );
-            if (nextPageItems.length === 0 && !this._isLoading) {
+            if (nextPageItems.length === 0 && !this.isLoading) {
                 this.handleLoadMore();
             }
         });
@@ -1363,24 +1373,24 @@ export default class List extends LightningElement {
      * Make sure all used properties are set before they are used in items. 
      */
     setItemProperties() {
-        this.listHasImages = this._items.some((item) => item.imageSrc);
-        this.computedItems = this._items.map((item, index) => {
+        this.listHasImages = this.items.some((item) => item.imageSrc);
+        this.computedItems = this.items.map((item, index) => {
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
-            let usedImagePosition = this._imageAttributes.position;
+            let usedImagePosition = this.imageAttributes.position;
             const layoutRequiresImage = (usedImagePosition === 'background' ||
             usedImagePosition === 'overlay')
             if (
                 !item.imageSrc &&
                 layoutRequiresImage
             ) {
-                usedImagePosition = 'left';
+                usedImagePosition = 'top';
             }
             const newItem = new Item(item);
             newItem.index = index;
             newItem.imagePosition = usedImagePosition;
             newItem.listHasImages = this.listHasImages;
-            newItem.variant = this._variant;
+            newItem.variant = this.variant;
             return newItem;
         });
     }
@@ -1712,13 +1722,7 @@ export default class List extends LightningElement {
         if (this._draggedIndex === null) {
             return;
         }
-        window.clearInterval(this._scrollingInterval);
-        this._scrollingInterval = null;
-        this._dragging = false;
 
-        if (this._draggedIndex === null) {
-            return;
-        }
         if (event && event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1815,6 +1819,37 @@ export default class List extends LightningElement {
             })
         );
     }
+    /**
+     * Handles a click on an item media-action.
+     *
+     * @param {Event} event
+     */
+    handleMediaActionClick(event) {
+        const actionName = this.hasMultipleMediaActions
+            ? event.detail.value
+            : event.target.value;
+        const itemIndex = event.currentTarget.dataset.itemIndex;
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name  Name of the action clicked.
+         * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    targetName: this.computedItems[itemIndex].name
+                }
+            })
+        );
+    }
 
     /**
      * Prevent ghost image on avatar drag.
@@ -1842,14 +1877,11 @@ export default class List extends LightningElement {
             event.key === 'Spacebar'
         ) {
             event.preventDefault();
-            event.preventDefault();
             if (this._draggedElement) {
                 this.dragEnd();
                 this._keyboardDragged = false;
-                this._keyboardDragged = false;
             } else {
                 this.dragStart(event);
-                this._keyboardDragged = true;
                 this._keyboardDragged = true;
             }
         } else if (this.sortable && this._draggedElement) {
@@ -1904,7 +1936,6 @@ export default class List extends LightningElement {
         if (
             (event.target.tagName.startsWith('LIGHTNING') ||
                 event.target.tagName === 'A') &&
-            event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT' &&
             event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT'
         ) {
             return;
@@ -1971,11 +2002,11 @@ export default class List extends LightningElement {
             this.listContainer.clientHeight;
 
         if (
-            (offsetFromBottom <= this.loadMoreOffset && !this._isLoading) ||
+            (offsetFromBottom <= this.loadMoreOffset && !this.isLoading) ||
             (this.listContainer.scrollTop === 0 &&
                 this.listContainer.scrollHeight ===
                     this.listContainer.clientHeight &&
-                !this._isLoading)
+                !this.isLoading)
         ) {
             this.handleLoadMore();
         }
