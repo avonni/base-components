@@ -30,7 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { addToDate, dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
+import {
+    addToDate,
+    dateTimeObjectFrom,
+    deepCopy,
+    normalizeArray
+} from 'c/utilsPrivate';
 import SchedulerEvent from './event';
 import SchedulerEventDrag from './eventDrag';
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
@@ -39,9 +44,6 @@ import { spansOnMoreThanOneDay } from './dateComputations';
 /**
  * Events data of the scheduler.
  * @class
- * @param {number[]} availableDaysOfTheWeek Array of available weekday numbers.
- * @param {number[]} availableMonths Array of available month numbers.
- * @param {string[]} availableTimeFrames Array of available time frames.
  * @param {object[]} events Array of event objects.
  * @param {object} eventsLabels Labels of the events. Valid keys include top, bottom, left, right and center.
  * @param {string} eventsTheme Theme of the events. Valid values include default, transparent, line, hollow and rounded.
@@ -96,6 +98,7 @@ export default class SchedulerEventData {
         const interval = this.visibleInterval;
         if (!interval) {
             this.events = [];
+            this.refreshEvents();
             return;
         }
 
@@ -111,9 +114,6 @@ export default class SchedulerEventData {
             );
         });
 
-        this.singleDayEvents = [];
-        this.multiDayEvents = [];
-
         this.events = eventsInTimeFrame.reduce((computedEvents, evt) => {
             const event = { ...evt };
             this.updateEventDefaults(event);
@@ -121,10 +121,6 @@ export default class SchedulerEventData {
 
             if (computedEvent.occurrences.length) {
                 computedEvents.push(computedEvent);
-
-                if (this.isCalendar) {
-                    this.addToSingleAndMultiDayEvents(computedEvent);
-                }
             }
             return computedEvents;
         }, []);
@@ -412,9 +408,10 @@ export default class SchedulerEventData {
      */
     refreshEvents() {
         this.events = [...this.events];
+        this.singleDayEvents = [];
+        this.multiDayEvents = [];
+
         if (this.isCalendar) {
-            this.singleDayEvents = [];
-            this.multiDayEvents = [];
             this.events.forEach((event) => {
                 this.addToSingleAndMultiDayEvents(event);
             });
@@ -617,7 +614,7 @@ export default class SchedulerEventData {
      */
     updateAllEventsDefaults() {
         this.events.forEach((event) => {
-            this.updateEventDefaults(event);
+            this.updateEventDefaults(event, false);
             event.initOccurrences();
         });
         this.refreshEvents();
@@ -628,7 +625,7 @@ export default class SchedulerEventData {
      *
      * @param {object} event The event object.
      */
-    updateEventDefaults(event) {
+    updateEventDefaults(event, newEvent = true) {
         // If the event is a calendar multi-day event,
         // do not cut it at the currently visible schedule start/end
         const visibleEnd = this.visibleInterval.e;
@@ -644,17 +641,21 @@ export default class SchedulerEventData {
 
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
-        event.data = { ...event };
-        event.availableMonths = this.availableMonths;
-        event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-        event.availableTimeFrames = this.availableTimeFrames;
+        if (newEvent) {
+            event.data = deepCopy(event);
+        }
+        event.availableMonths = this.schedule.availableMonths;
+        event.availableDaysOfTheWeek = this.schedule.availableDaysOfTheWeek;
+        event.availableTimeFrames = this.schedule.availableTimeFrames;
         event.smallestHeader = this.smallestHeader;
         event.theme = event.disabled
             ? 'disabled'
-            : event.theme || this.eventsTheme;
+            : event.data.theme || this.eventsTheme;
 
         event.labels =
-            typeof event.labels === 'object' ? event.labels : this.eventsLabels;
+            typeof event.data.labels === 'object'
+                ? event.data.labels
+                : this.eventsLabels;
     }
 
     /**

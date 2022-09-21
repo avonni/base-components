@@ -90,8 +90,8 @@ export class ScheduleBase extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
-    navCalendarDisabledWeekdays = [];
     _resizeObserver;
+    navCalendarDisabledWeekdays = [];
     navCalendarDisabledDates = [];
 
     connectedCallback() {
@@ -196,10 +196,6 @@ export class ScheduleBase extends LightningElement {
     }
     set availableTimeSpans(value) {
         this._availableTimeSpans = normalizeArray(value, 'object');
-
-        if (this._connected) {
-            this._eventData.updateAllEventsDefaults();
-        }
     }
 
     /**
@@ -279,6 +275,7 @@ export class ScheduleBase extends LightningElement {
             typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
 
         if (this._connected) {
+            this._eventData.eventsLabels = this._eventsLabels;
             this._eventData.updateAllEventsDefaults();
         }
     }
@@ -301,6 +298,7 @@ export class ScheduleBase extends LightningElement {
         });
 
         if (this._connected) {
+            this._eventData.eventsTheme = this._eventsTheme;
             this._eventData.updateAllEventsDefaults();
         }
     }
@@ -396,6 +394,10 @@ export class ScheduleBase extends LightningElement {
     }
     set resources(value) {
         this._resources = normalizeArray(value, 'object');
+
+        if (this._connected) {
+            this.initResources();
+        }
     }
 
     /**
@@ -650,9 +652,6 @@ export class ScheduleBase extends LightningElement {
      */
     initEvents() {
         this._eventData = new EventData(this, {
-            availableDaysOfTheWeek: this.availableDaysOfTheWeek,
-            availableMonths: this.availableMonths,
-            availableTimeFrames: this.availableTimeFrames,
             events: this.events,
             eventsLabels: this.eventsLabels,
             eventsTheme: this.eventsTheme,
@@ -864,13 +863,15 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     handleEventFocus(event) {
-        const detail = {
-            name: event.detail.eventName
-        };
-        if (event.currentTarget.recurrence) {
+        const { eventName, from, to } = event.detail;
+        const detail = { name: eventName };
+        const computedEvent = this._eventData.events.find(
+            (ev) => ev.name === eventName
+        );
+        if (computedEvent && computedEvent.recurrence) {
             detail.recurrenceDates = {
-                from: event.detail.from.toUTC().toISO(),
-                to: event.detail.to.toUTC().toISO()
+                from: from.toUTC().toISO(),
+                to: to.toUTC().toISO()
             };
         }
 
@@ -890,7 +891,7 @@ export class ScheduleBase extends LightningElement {
                 bubbles: true
             })
         );
-        this.handleEventMouseEnter.call(this, event);
+        this.handleEventMouseEnter(event);
     }
 
     /**

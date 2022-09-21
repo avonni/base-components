@@ -72,6 +72,48 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
 
     /**
+     * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
+     * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, ... , 5, 6]
+     */
+    @api
+    get availableDaysOfTheWeek() {
+        return super.availableDaysOfTheWeek;
+    }
+    set availableDaysOfTheWeek(value) {
+        super.availableDaysOfTheWeek = value;
+
+        if (this._connected) {
+            this.setStartToBeginningOfUnit();
+        }
+    }
+
+    /**
+     * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
+     * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, … , 10, 11]
+     */
+    @api
+    get availableMonths() {
+        return super.availableMonths;
+    }
+    set availableMonths(value) {
+        super.availableMonths = value;
+
+        if (this._connected) {
+            this.setStartToBeginningOfUnit();
+        }
+    }
+
+    /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
@@ -289,13 +331,13 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     formatTime(event, from, to) {
         if (event.referenceLine) {
-            return from.toFormat('HH:mm');
+            return from.toFormat('t');
         } else if (isAllDay(event, from, to)) {
             return 'All Day';
         } else if (spansOnMoreThanOneDay(event, from, to)) {
             return `${from.toFormat('dd LLL')} - ${to.toFormat('dd LLL')}`;
         }
-        return `${from.toFormat('HH:mm')} - ${to.toFormat('HH:mm')}`;
+        return `${from.toFormat('t')} - ${to.toFormat('t')}`;
     }
 
     /**
