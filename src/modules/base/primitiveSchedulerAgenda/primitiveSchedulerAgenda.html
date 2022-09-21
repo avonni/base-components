@@ -41,6 +41,7 @@
                 resizable={allowResizeColumn}
                 scrollable
                 size="310px"
+                data-element-id="avonni-splitter-pane-left"
             >
                 <div
                     class="slds-p-around_medium"
@@ -49,6 +50,7 @@
                     <c-calendar
                         disabled-dates={navCalendarDisabledDates}
                         value={selectedDate}
+                        data-element-id="avonni-calendar-left-panel"
                         onchange={handleCalendarChange}
                         onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
@@ -64,6 +66,7 @@
                                 type="checkbox"
                                 value={resource.value}
                                 style={resource.style}
+                                data-element-id="lightning-input-resource"
                                 onchange={handleResourceToggle}
                             ></lightning-input>
                         </template>
@@ -82,6 +85,7 @@
                     margin: -1px 0;
                     min-height: calc(100% + 2px);
                 "
+                data-element-id="avonni-splitter-pane-right"
             >
                 <div
                     class="avonni-primitive-scheduler-calendar__inherit-height"
@@ -99,6 +103,7 @@
                             class="slds-p-around_medium"
                             variant="no-events"
                             title="No events for the selected date."
+                            data-element-id="avonni-illustration-no-events"
                         ></c-illustration>
                     </div>
                     <template for:each={computedGroups} for:item="group">
@@ -115,6 +120,7 @@
                                 slds-border_bottom
                                 avonni-scheduler__agenda-month-header
                             "
+                            data-element-id="div-month-heading"
                         >
                             {group.fullMonth}
                         </div>
@@ -137,6 +143,7 @@
                                     slds-col
                                     slds-size_1-of-5
                                 "
+                                data-element-id="div-day-heading"
                             >
                                 <div
                                     class="
@@ -144,7 +151,10 @@
                                         slds-grid_vertical-align-center
                                     "
                                 >
-                                    <div class={group.dayClass}>
+                                    <div
+                                        class={group.dayClass}
+                                        title={group.day}
+                                    >
                                         {group.day}
                                     </div>
                                     <div
@@ -153,10 +163,16 @@
                                             slds-truncate
                                         "
                                     >
-                                        <div class="slds-truncate">
+                                        <div
+                                            class="slds-truncate"
+                                            title={group.weekday}
+                                        >
                                             {group.weekday}
                                         </div>
-                                        <div class="slds-truncate">
+                                        <div
+                                            class="slds-truncate"
+                                            title={group.month}
+                                        >
                                             {group.month} {group.year}
                                         </div>
                                     </div>
@@ -177,12 +193,14 @@
                                             slds-has-flexi-truncate
                                             avonni-scheduler__agenda-time
                                         "
+                                        data-element-id="div-event-time"
                                     >
                                         <div
                                             class="
                                                 slds-truncate
                                                 slds-text-color_weak
                                             "
+                                            title={occurrence.time}
                                         >
                                             {occurrence.time}
                                         </div>
@@ -210,6 +228,7 @@
                                         theme={occurrence.event.theme}
                                         to={occurrence.to}
                                         variant="agenda"
+                                        data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         oncontextmenu={stopPropagation}
                                         onprivateblur={handleHideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}
