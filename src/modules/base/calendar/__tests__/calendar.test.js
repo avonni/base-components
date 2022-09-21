@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import Calendar from 'c/calendar';
+import Calendar from '../calendar';
 
 // not tested : mouse over, mouse out events on calendar, keyboard selecting a date ouside current month, trying to select a disabled date, previous month and next month buttons
 
