@@ -103,10 +103,6 @@
     );
 }
 
-.avonni-hero-banner__content-container {
-    padding: 20px;
-}
-
 .avonni-hero-banner__text-container-without-slot_height {
     height: 100%;
 }
@@ -143,7 +139,6 @@
 }
 
 /* PRIMARY BUTTON */
-
 /* Primary button icon variant base */
 .avonni-hero-banner__primary-button-icon {
     vertical-align: middle;
@@ -162,40 +157,9 @@
     ) !important;
 }
 
-.avonni-hero-banner__primary-button-icon_x-small {
-    width: 1.25rem;
-    height: 1.25rem;
-    --avonni-hero-banner-primary-button-line-height: var(
-        --avonni-hero-banner-primary-button-line-height,
-        1rem
-    ) !important;
-}
-
-.avonni-hero-banner__primary-button-icon_small {
-    width: 1.5rem;
-    height: 1.5rem;
-    --avonni-hero-banner-primary-button-line-height: var(
-        --avonni-hero-banner-primary-button-line-height,
-        1.25rem
-    ) !important;
-}
-
 .avonni-hero-banner__primary-button-icon_medium {
     width: 2rem;
     height: 2rem;
-    --avonni-hero-banner-primary-button-line-height: var(
-        --avonni-hero-banner-primary-button-line-height,
-        1.75rem
-    ) !important;
-}
-
-.avonni-hero-banner__primary-button-icon_large {
-    width: 2.25rem;
-    height: 2.25rem;
-    --avonni-hero-banner-primary-button-line-height: var(
-        --avonni-hero-banner-primary-button-line-height,
-        2rem
-    ) !important;
 }
 
 /* Primary button variant base */
@@ -209,6 +173,7 @@
     white-space: normal;
     -webkit-appearance: none;
     -webkit-box-align: center;
+    align-items: center;
     padding-top: var(
         --avonni-hero-banner-primary-button-spacing-block-start,
         0
@@ -238,9 +203,7 @@
         solid
     );
     border-width: var(--avonni-hero-banner-primary-button-sizing-border, 1px);
-
     line-height: var(--avonni-hero-banner-primary-button-line-height, 1.875rem);
-
     border-color: var(
         --avonni-hero-banner-primary-button-color-border,
         transparent
@@ -690,6 +653,7 @@
     justify-content: center;
     -ms-flex-negative: 0;
     flex-shrink: 0;
+    align-items: center;
     --avonni-hero-banner-secondary-button-spacing-inline-start: var(
         --avonni-hero-banner-secondary-button-brand-spacing-inline-start,
         0rem
@@ -700,40 +664,9 @@
     ) !important;
 }
 
-.avonni-hero-banner__secondary-button-icon_x-small {
-    width: 1.25rem;
-    height: 1.25rem;
-    line-height: var(
-        --avonni-hero-banner-secondary-button-line-height,
-        1rem
-    ) !important;
-}
-
-.avonni-hero-banner__secondary-button-icon_small {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: var(
-        --avonni-hero-banner-secondary-button-line-height,
-        1.25rem
-    ) !important;
-}
-
 .avonni-hero-banner__secondary-button-icon_medium {
     width: 2rem;
     height: 2rem;
-    line-height: var(
-        --avonni-hero-banner-secondary-button-line-height,
-        1.75rem
-    ) !important;
-}
-
-.avonni-hero-banner__secondary-button-icon_large {
-    width: 2.25rem;
-    height: 2.25rem;
-    line-height: var(
-        --avonni-hero-banner-secondary-button-line-height,
-        2rem
-    ) !important;
 }
 
 /* Secondary button variant base */
@@ -747,6 +680,7 @@
     white-space: normal;
     -webkit-appearance: none;
     -webkit-box-align: center;
+    align-items: center;
     padding-top: var(
         --avonni-hero-banner-secondary-button-spacing-block-start,
         0

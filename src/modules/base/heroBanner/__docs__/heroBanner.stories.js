@@ -193,9 +193,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon inside the primary button. Valid values include x-small, small, medium, or large.',
+                'The size of the icon inside the primary button. Valid values include xx-small, x-small, small, medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -267,9 +267,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon inside the secondary button. Valid values include x-small, small, medium, or large.',
+                'The size of the icon inside the secondary button. Valid values include xx-small, x-small, small, medium, or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
