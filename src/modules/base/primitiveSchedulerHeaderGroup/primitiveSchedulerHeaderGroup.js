@@ -421,12 +421,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * @type {boolean}
      */
     get endOnTimeSpanUnit() {
-        return this.availableTimeSpans.find((timeSpan) => {
+        const existingTimeSpan = this.availableTimeSpans.find((timeSpan) => {
             return (
                 timeSpan.unit === this.timeSpan.unit &&
                 timeSpan.span === this.timeSpan.span
             );
         });
+        return !this.availableTimeSpans.length || existingTimeSpan;
     }
 
     /**
