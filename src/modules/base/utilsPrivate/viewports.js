@@ -45,10 +45,5 @@ export const viewports = {
         width: 600,
         height: 300,
         deviceScaleFactor: 2
-    },
-    alert: {
-        width: 200,
-        height: 500,
-        deviceScaleFactor: 2
     }
 };

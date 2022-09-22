@@ -449,6 +449,14 @@ ModalLeft.args = {
     finishButtonVariant: 'success'
 };
 
+Modal.story = {
+    parameters: {
+        screenshot: {
+            delay: 2000,
+            click: '[data-element-id="modal-dialog"]'
+        }
+    }
+};
 Modal.args = {
     title: 'Modal Wizard Example',
     variant: 'modal',

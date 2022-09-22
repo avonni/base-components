@@ -162,6 +162,11 @@ export default class Wizard extends LightningElement {
             });
         }
 
+        const button = this.template.querySelector(
+            '[data-element-id="modal-dialog"]'
+        )
+        console.log(button);
+
         if (this.actionSlot)
             this.showAction = this.actionSlot.assignedElements().length !== 0;
 

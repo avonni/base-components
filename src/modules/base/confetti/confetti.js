@@ -76,6 +76,14 @@ export default class Confetti extends LightningElement {
     _variant = CONFETTI_VARIANTS.default;
     _zIndex = DEFAULT_Z_INDEX;
 
+    renderedCallback() {
+        const button = this.template.querySelector(
+            'lightning-button'
+        );
+
+        console.log(button);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES

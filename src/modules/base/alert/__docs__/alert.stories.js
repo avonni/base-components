@@ -31,7 +31,6 @@
  */
 
 import { Alert } from '../__examples__/alert';
-import { viewports } from 'c/utilsPrivate';
 
 export default {
     title: 'Example/Alert',
@@ -92,7 +91,7 @@ export default {
 const Template = (args) => Alert(args);
 const screenshotParams = {
     parameters: {
-        layout: 'padded', // Overrides all screenshot layout. // if you put padded here, they're all padded, but not centered
+        layout: 'padded'
     }
 };
 
