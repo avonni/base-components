@@ -1134,7 +1134,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const wrapper = this.template.querySelector(
             '[data-element-id="div-event-occurrence"]'
         );
-        wrapper.focus();
+        if (wrapper) {
+            wrapper.focus();
+        }
     }
 
     /**

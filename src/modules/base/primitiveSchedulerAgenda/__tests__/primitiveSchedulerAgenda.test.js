@@ -278,6 +278,7 @@ describe('Primitive Scheduler Agenda', () => {
             center: { fieldName: 'title' }
         });
         expect(element.eventsTheme).toBe('default');
+        expect(element.newEventTitle).toBe('New event');
         expect(element.readOnly).toBeFalsy();
         expect(element.resizeColumnDisabled).toBeFalsy();
         expect(element.resources).toEqual([]);
@@ -1120,6 +1121,166 @@ describe('Primitive Scheduler Agenda', () => {
             expect(detail.start.ts).toBe(start.ts);
             expect(detail.visibleInterval.e.ts).toBe(end.ts);
         });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    // createEvent
+    it('Primitive Scheduler Agenda: createEvent()', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+
+        return Promise.resolve()
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(0);
+                element.createEvent(EVENTS[0]);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+                expect(events[0].eventName).toBe(EVENTS[0].name);
+            });
+    });
+
+    // deleteEvent
+    it('Primitive Scheduler Agenda: deleteEvent()', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = [EVENTS[0], EVENTS[1]];
+
+        return Promise.resolve()
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(3);
+                element.deleteEvent(EVENTS[1].name);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+            });
+    });
+
+    // focusEvent
+    it('Primitive Scheduler Agenda: focusEvent()', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = EVENTS;
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${EVENTS[1].name}"]`
+            );
+            const spy = jest.spyOn(event, 'focus');
+            element.focusEvent(EVENTS[1].name);
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    // newEvent, cleanSelection and saveSelection
+    it('Primitive Scheduler Agenda: newEvent() and saveSelection() methods', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = [EVENTS[0]];
+        element.newEventTitle = 'Some new title';
+
+        return Promise.resolve()
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+
+                const dayGroup = element.shadowRoot.querySelector(
+                    '[data-element-id="div-day-group"]'
+                );
+                jest.spyOn(
+                    dayGroup,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 5, bottom: 18 };
+                });
+                element.newEvent(0, 6, true);
+            })
+            .then(() => {
+                // The event has not been saved
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+
+                element.saveSelection();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(3);
+                expect(events[2].title).toBe('Some new title');
+                expect(
+                    events[2].eventName.startsWith('some-new-title')
+                ).toBeTruthy();
+                expect(events[2].from.day).toBe(SELECTED_DATE.getDate());
+                expect(events[2].resourceKey).toBe(ALL_RESOURCES[0]);
+            });
+    });
+
+    it('Primitive Scheduler Agenda: newEvent() and cleanSelection() methods', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = [EVENTS[0]];
+        element.newEventTitle = 'Some new title';
+
+        return Promise.resolve()
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+
+                const dayGroup = element.shadowRoot.querySelector(
+                    '[data-element-id="div-day-group"]'
+                );
+                jest.spyOn(
+                    dayGroup,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 5, bottom: 18 };
+                });
+                element.newEvent(0, 6, true);
+            })
+            .then(() => {
+                // The event has not been saved
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+
+                element.cleanSelection(true);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+            });
     });
 
     /*
