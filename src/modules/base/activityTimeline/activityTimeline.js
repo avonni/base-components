@@ -36,6 +36,7 @@ import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
 import {
+    deepCopy,
     normalizeBoolean,
     normalizeString,
     normalizeArray
@@ -436,7 +437,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set items(value) {
-        this._items = normalizeArray(value);
+        this._items = deepCopy(normalizeArray(value, 'object'));
         if (this._isConnected) {
             this.initActivityTimeline();
         }
@@ -897,6 +898,10 @@ export default class ActivityTimeline extends LightningElement {
     handleCheck(event) {
         event.stopPropagation();
         const { checked, name } = event.detail;
+        const item = this.items.find((it) => it.name === name);
+        if (item) {
+            item.checked = checked;
+        }
 
         /**
          * The event fired when an item is checked or unchecked.

@@ -149,6 +149,7 @@ export const items = [
         iconName: 'standard:dashboard',
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
+        checked: true,
         isLoading: true,
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:world'
@@ -173,6 +174,7 @@ export const itemsWithoutIcons = [
         href: 'salesforce.com',
         icons: ['utility:refresh'],
         hasCheckbox: true,
+        checked: true,
         fields: [
             {
                 label: 'Name',
@@ -563,6 +565,7 @@ export const testItems = [
         iconName: 'standard:dashboard',
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
+        checked: true,
         isLoading: true,
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:world'
