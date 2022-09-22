@@ -31,14 +31,24 @@
  */
 
 export const viewports = {
-    default: {
+    small: {
         width: 300,
         height: 150,
         deviceScaleFactor: 2
     },
+    medium: {
+        width: 450,
+        height: 225,
+        deviceScaleFactor: 2
+    },
+    large: {
+        width: 600,
+        height: 300,
+        deviceScaleFactor: 2
+    },
     alert: {
-        width: 300,
-        height: 72,
+        width: 200,
+        height: 500,
         deviceScaleFactor: 2
     }
 };

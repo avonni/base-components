@@ -33,6 +33,7 @@
 import { Card } from '../__examples__/card';
 import { CardCenterBottom } from '../__examples__/centerBottom';
 import { CardTopMedia } from '../__examples__/cardTopMedia';
+import { viewports } from 'c/utilsPrivate';
 
 export default {
     title: 'Example/Card',
@@ -93,14 +94,21 @@ export default {
 const BaseTemplate = (args) => Card(args);
 const CenterBottomTemplate = (args) => CardCenterBottom(args);
 const TopMediaTemplate = (args) => CardTopMedia(args);
+const screenshotParams = {
+    parameters: {
+            layout: 'padded'
+    }
+};
 
 export const Base = BaseTemplate.bind({});
+Base.story = screenshotParams;
 Base.args = {
     title: 'Card Title',
     iconName: 'custom:custom102'
 };
 
 export const MediaTop = TopMediaTemplate.bind({});
+MediaTop.story = screenshotParams;
 MediaTop.args = {
     title: 'Real-time Collaborative Docs',
     iconName: 'standard:custom_notification',
@@ -109,6 +117,7 @@ MediaTop.args = {
 };
 
 export const MediaLeft = BaseTemplate.bind({});
+MediaLeft.story = screenshotParams;
 MediaLeft.args = {
     title: 'Card Title',
     iconName: 'standard:article',
@@ -118,6 +127,7 @@ MediaLeft.args = {
 };
 
 export const MediaRight = BaseTemplate.bind({});
+MediaRight.story = screenshotParams;
 MediaRight.args = {
     title: 'Card Title',
     iconName: 'standard:article',
@@ -127,6 +137,7 @@ MediaRight.args = {
 };
 
 export const MediaCenter = CenterBottomTemplate.bind({});
+MediaCenter.story = screenshotParams;
 MediaCenter.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
@@ -136,6 +147,7 @@ MediaCenter.args = {
 };
 
 export const MediaBottom = CenterBottomTemplate.bind({});
+MediaBottom.story = screenshotParams;
 MediaBottom.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
@@ -145,6 +157,7 @@ MediaBottom.args = {
 };
 
 export const MediaBackground = BaseTemplate.bind({});
+MediaBackground.story = screenshotParams;
 MediaBackground.args = {
     title: 'Salesforce Tower',
     iconName: 'standard:store_group',
@@ -154,6 +167,7 @@ MediaBackground.args = {
 };
 
 export const MediaOverlay = BaseTemplate.bind({});
+MediaOverlay.story = screenshotParams;
 MediaOverlay.args = {
     title: 'Salesforce Tower',
     iconName: 'standard:store_group',

@@ -92,9 +92,7 @@ export default {
 const Template = (args) => Alert(args);
 const screenshotParams = {
     parameters: {
-        screenshot: {
-            viewport: viewports.alert
-        }
+        layout: 'padded', // Overrides all screenshot layout. // if you put padded here, they're all padded, but not centered
     }
 };
 

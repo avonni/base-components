@@ -462,6 +462,11 @@ Images.args = {
 };
 
 export const Avatars = Template.bind({});
+Avatars.story  = {
+    parameters: {
+        layout: 'padded'
+    }
+};
 Avatars.args = {
     label: 'List with icons',
     items: itemsWithAvatars,
@@ -485,6 +490,11 @@ Sortable.args = {
 };
 
 export const SortableWithAvatars = Template.bind({});
+SortableWithAvatars.story  = {
+    parameters: {
+        layout: 'padded'
+    }
+};
 SortableWithAvatars.args = {
     label: 'Sortable list with icons',
     items: itemsWithAvatars,
@@ -496,6 +506,11 @@ SortableWithAvatars.args = {
 };
 
 export const SortableWithAvatarsAndSingleAction = Template.bind({});
+SortableWithAvatarsAndSingleAction.story  = {
+    parameters: {
+        layout: 'padded'
+    }
+};
 SortableWithAvatarsAndSingleAction.args = {
     label: 'Sortable list with Icons and Single Action',
     items: itemsWithAvatars,
