@@ -288,7 +288,13 @@
                                                     {item.label}
                                                 </template>
                                             </div>
-                                            <template if:true={item.icons}>
+                                            <span
+                                                if:true={item.icons}
+                                                class="
+                                                    slds-p-left_xx-small
+                                                    avonni-list__item-icons
+                                                "
+                                            >
                                                 <template
                                                     for:each={item.icons}
                                                     for:item="icon"
@@ -296,18 +302,19 @@
                                                     <span
                                                         key={generateKey}
                                                         class="
-                                                            slds-p-left_xx-small
-                                                            avonni-list__item-icons
+                                                            avonni-list__item-icon
                                                         "
                                                     >
                                                         <lightning-icon
                                                             icon-name={icon}
                                                             size="xx-small"
-                                                            class="slds-p-around_xxx-small"
+                                                            class="
+                                                                slds-p-around_xxx-small
+                                                            "
                                                         ></lightning-icon>
                                                     </span>
                                                 </template>
-                                            </template>
+                                            </span>
                                         </div>
 
                                         <!-- Description -->

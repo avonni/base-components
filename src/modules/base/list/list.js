@@ -1096,6 +1096,7 @@ export default class List extends LightningElement {
     cleanUpItem(item) {
         const itemCopy = deepCopy(item);
         delete itemCopy.index;
+        delete itemCopy.imagePosition;
         delete itemCopy.variant;
         delete itemCopy.listHasImages;
         delete itemCopy.infos;
@@ -1370,7 +1371,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Make sure all used properties are set before they are used in items. 
+     * Make sure all used properties are set before they are used in items.
      */
     setItemProperties() {
         this.listHasImages = this.items.some((item) => item.imageSrc);
@@ -1378,12 +1379,10 @@ export default class List extends LightningElement {
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
             let usedImagePosition = this.imageAttributes.position;
-            const layoutRequiresImage = (usedImagePosition === 'background' ||
-            usedImagePosition === 'overlay')
-            if (
-                !item.imageSrc &&
-                layoutRequiresImage
-            ) {
+            const layoutRequiresImage =
+                usedImagePosition === 'background' ||
+                usedImagePosition === 'overlay';
+            if (!item.imageSrc && layoutRequiresImage) {
                 usedImagePosition = 'top';
             }
             const newItem = new Item(item);
@@ -1798,27 +1797,9 @@ export default class List extends LightningElement {
             ? event.detail.value
             : event.target.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name  Name of the action clicked.
-         * @param {object} item Item clicked.
-         * @param {string} targetName Name of the item.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: actionName,
-                    item: this.cleanUpItem(this.computedItems[itemIndex]),
-                    targetName: this.computedItems[itemIndex].name
-                }
-            })
-        );
+        this.dispatchActionClickEvent(itemIndex, actionName);
     }
+
     /**
      * Handles a click on an item media-action.
      *
@@ -1829,7 +1810,16 @@ export default class List extends LightningElement {
             ? event.detail.value
             : event.target.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
+        this.dispatchActionClickEvent(itemIndex, actionName);
+    }
 
+    /**
+     * Dispatch the custom event triggered when actions and media-actions are clicked.
+     *
+     * @param {string} itemIndex
+     * @param {string} actionName
+     */
+    dispatchActionClickEvent(itemIndex, actionName) {
         /**
          * The event fired when a user clicks on an action.
          *

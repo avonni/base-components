@@ -293,19 +293,19 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-header-link-text-color-inverse
  * @type color
- * @default #1b96ff
+ * @default white
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-header-link-text-color-inverse-hover
  * @type color
- * @default #097fe6
+ * @default rgba(255, 255, 255, 0.75)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-header-link-text-color-inverse-active
  * @type color
- * @default #097fe6
+ * @default rgba(255, 255, 255, 0.75)
  */
 /**
  * @memberof stylingHooks
@@ -329,49 +329,44 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-infos-link-text-color-inverse
  * @type color
- * @default #1b96ff
+ * @default white
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-infos-link-text-color-inverse-hover
  * @type color
- * @default #097fe6
+ * @default rgba(255, 255, 255, 0.75)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-infos-link-text-color-inverse-active
  * @type color
- * @default #097fe6
+ * @default rgba(255, 255, 255, 0.75)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-background
  * @type color
- * @default transparent
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-foreground
  * @type color
- * @default #747474
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-foreground-default
  * @type color
- * @default #747474
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-background-inverse
  * @type color
- * @default transparent
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-icon-color-foreground-inverse
  * @type color
- * @default white
  */
 /**
  * @memberof stylingHooks
