@@ -43,6 +43,7 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
+    isAllowedDay,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
@@ -172,24 +173,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * Array of resource objects. The resources can be bound to events.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get resources() {
-        return super.resources;
-    }
-    set resources(value) {
-        super.resources = value;
-
-        if (this._connected) {
-            this.initResources();
-        }
-    }
 
     /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -410,7 +393,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @type {boolean}
      */
     get multiDayEventReadOnly() {
-        return this.readOnly || (this.isDay && !this.timeSpan.span > 1);
+        return this.readOnly || (this.isDay && this.timeSpan.span <= 1);
     }
 
     /**
@@ -900,7 +883,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                         const alreadyMarked =
                             dayMap[currentDate.day] &&
                             dayMap[currentDate.day].includes(resourceName);
-                        if (!alreadyMarked) {
+                        const isAllowed = isAllowedDay(
+                            currentDate,
+                            this.availableDaysOfTheWeek
+                        );
+
+                        if (!alreadyMarked && isAllowed) {
                             markedDates.push({
                                 color,
                                 date: currentDate.toUTC().toISO()
@@ -910,8 +898,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                                 dayMap[currentDate.day] = [];
                             }
                             dayMap[currentDate.day].push(resourceName);
-                            currentDate = addToDate(currentDate, 'day', 1);
                         }
+                        currentDate = addToDate(currentDate, 'day', 1);
                     }
                 }
             });
