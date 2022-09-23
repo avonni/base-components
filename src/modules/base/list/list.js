@@ -171,6 +171,7 @@ export default class List extends LightningElement {
     _initialScrollHeight = 0;
     _restrictMotion = false;
     _dragging = false;
+    _hasUsedInfiniteLoading = false;
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -275,6 +276,10 @@ export default class List extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._enableInfiniteLoading) {
+            this._hasUsedInfiniteLoading = true;
+        }
     }
 
     /**
@@ -840,6 +845,14 @@ export default class List extends LightningElement {
                 'slds-col slds-size_1-of-12': this._currentColumnCount === 12
             })
             .toString();
+    }
+
+    /**
+     * Only enable scrolling if enable or has been used
+     */
+    get computedListContainerClass() {
+        return classSet('slds-grid slds-col')
+            .add({'slds-scrollable_y': this._hasUsedInfiniteLoading})
     }
 
     /*
