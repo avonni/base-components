@@ -91,7 +91,7 @@ export default {
 const Template = (args) => Alert(args);
 const screenshotParams = {
     parameters: {
-        layout: 'padded'
+        layout: 'centered'
     }
 };
 

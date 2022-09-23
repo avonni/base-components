@@ -125,15 +125,6 @@ Realistic.args = {
 };
 
 export const Fireworks = Template.bind({});
-// Fireworks.story = {
-//     parameters: {
-//         screenshot: {
-//             // delay: 2000,
-//             click: 'button[type=button]',
-//             // click: 'button.slds-button_neutral',
-//         }
-//     }
-// };
 Fireworks.args = {
     variant: 'fireworks'
 };

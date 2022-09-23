@@ -7,7 +7,8 @@ export const decorators = [withScreenshot];
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
 
-     // Accepts 'fullscreen' and 'centered', default is 'padded', required here for screenshots
+     // Accepts 'fullscreen' and 'centered', default is 'padded', required here for screenshots.
+     // 'centered' is preferred for screenshots but 'padded' is preferred for development.
     layout: 'centered',
 
     screenshot: {
