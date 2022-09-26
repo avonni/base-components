@@ -71,7 +71,7 @@ const ex = [
         title: 'Visit App Exchange',
         name: 'someName',
         description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions

@@ -26,7 +26,7 @@ export default class AvonniCarouselBaseWithFiveItemsPerPanel extends LightningEl
             name: '1',
             title: 'Visit App Exchange',
             description: 'Extend Salesforce with the #1 business marketplace.',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             href: 'https://www.salesforce.com',
             actions: bareActions
@@ -36,7 +36,7 @@ export default class AvonniCarouselBaseWithFiveItemsPerPanel extends LightningEl
             title: 'Click to Customize',
             description:
                 'Use the Object Manager to add fields, build layouts, and more.',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             href: 'https://www.salesforce.com',
             actions: bareActions
@@ -55,7 +55,7 @@ export default class AvonniCarouselBaseWithFiveItemsPerPanel extends LightningEl
             name: '4',
             title: 'Carousel Item 4',
             description: 'Description for carousel item #4',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             href: 'https://www.salesforce.com',
             actions: bareActions
@@ -64,7 +64,7 @@ export default class AvonniCarouselBaseWithFiveItemsPerPanel extends LightningEl
             name: '5',
             title: 'Carousel Item 5',
             description: 'Description for carousel item #5',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             href: 'https://www.salesforce.com',
             actions: bareActions
@@ -82,7 +82,7 @@ export default class AvonniCarouselBaseWithFiveItemsPerPanel extends LightningEl
             name: '7',
             title: 'Carousel Item 7',
             description: 'Description for carousel item #7',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             href: 'https://www.salesforce.com',
             actions: bareActions

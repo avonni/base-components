@@ -56,7 +56,7 @@ const items = [
         name: '1',
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -66,7 +66,7 @@ const items = [
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -84,7 +84,7 @@ const items = [
         name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -93,7 +93,7 @@ const items = [
         name: '5',
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -111,7 +111,7 @@ const items = [
         name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -123,7 +123,7 @@ const ex = [
         title: 'Visit App Exchange',
         name: 'someName',
         description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -370,7 +370,7 @@ describe('Carousel', () => {
                 title: 'Visit App Exchange',
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Apps',
+                imageAssistiveText: 'Appy',
                 src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
                 href: 'https://www.salesforce.com'
             }
@@ -417,7 +417,7 @@ describe('Carousel', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            expect(element.smallItemsPerPanel).toBe(3)
+            expect(element.smallItemsPerPanel).toBe(3);
         });
     });
 
@@ -426,7 +426,7 @@ describe('Carousel', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            expect(element.mediumItemsPerPanel).toBe(4)
+            expect(element.mediumItemsPerPanel).toBe(4);
         });
     });
 
@@ -435,7 +435,7 @@ describe('Carousel', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            expect(element.largeItemsPerPanel).toBe(5)
+            expect(element.largeItemsPerPanel).toBe(5);
         });
     });
 
