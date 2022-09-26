@@ -63,11 +63,3 @@
  * @name --avonni-separator-icon-color-foreground-default
  * @type color
  */
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-separator--base
- */

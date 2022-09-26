@@ -121,7 +121,7 @@ describe('Separator', () => {
 
         return Promise.resolve().then(() => {
             const lineOne = element.shadowRoot.querySelector(
-                '.avonni-separator__line-one'
+                '[data-element-id="line-one"]'
             );
             expect(lineOne.classList).toContain('slds-hide');
         });
@@ -134,7 +134,7 @@ describe('Separator', () => {
 
         return Promise.resolve().then(() => {
             const lineTwo = element.shadowRoot.querySelector(
-                '.avonni-separator__line-two'
+                '[data-element-id="line-two"]'
             );
             expect(lineTwo.classList).toContain('slds-hide');
         });
