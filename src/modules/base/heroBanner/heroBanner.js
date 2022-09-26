@@ -60,7 +60,7 @@ const BUTTON_VARIANTS = {
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
@@ -368,7 +368,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the icon inside the primary button. Valid values include x-small, small, medium, or large.
+     * The size of the icon inside the primary button. Valid values include xx-small, x-small, small, medium, or large.
      *
      * @public
      * @type {string}
@@ -428,7 +428,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * The size of the icon inside the secondary button. Valid values include x-small, small, medium, or large.
+     * The size of the icon inside the secondary button. Valid values include xx-small, x-small, small, medium, or large.
      *
      * @public
      * @type {string}
@@ -558,7 +558,7 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedContentContainer() {
-        return classSet('avonni-hero-banner__content-container')
+        return classSet('slds-var-p-around_medium')
             .add({
                 'avonni-hero-banner__text-container-without-slot_height':
                     !this.showFooterSlot,
@@ -598,6 +598,14 @@ export default class HeroBanner extends LightningElement {
     }
 
     /** PRIMARY BUTTON */
+    /**
+     * True if the primary button only has an icon.
+     *
+     * @type {boolean}
+     */
+    get isPrimaryButtonIcon() {
+        return this.primaryButtonIconName && !this.primaryButtonLabel;
+    }
 
     /**
      * True if there is a label or icon name for the primary button.
@@ -631,6 +639,7 @@ export default class HeroBanner extends LightningElement {
             this.primaryButtonIconPosition === 'right'
         );
     }
+
     /**
      * Computed primary button class styling.
      *
@@ -639,6 +648,25 @@ export default class HeroBanner extends LightningElement {
     get computedPrimaryButtonClass() {
         return classSet('avonni-hero-banner__primary-button')
             .add({
+                'avonni-hero-banner__primary-button-icon':
+                    this.isPrimaryButtonIcon,
+                'slds-button_icon-xx-small':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'xx-small',
+                'slds-button_icon-x-small':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'x-small',
+                'slds-button_icon-small':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'small',
+                'avonni-hero-banner__primary-button-icon_medium':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'medium',
+                'slds-button_icon-large':
+                    this.isPrimaryButtonIcon &&
+                    this.primaryButtonIconSize === 'large',
+                'avonni-hero-banner__primary-button_transition':
+                    this.primaryButtonVariant !== 'base',
                 'avonni-hero-banner__primary-button_variant-neutral':
                     this.primaryButtonVariant === 'neutral',
                 'avonni-hero-banner__primary-button_variant-brand':
@@ -672,7 +700,8 @@ export default class HeroBanner extends LightningElement {
                     this._primaryButtonIconPosition === 'right' &&
                     this.primaryButtonLabel,
                 'slds-button__icon_x-small':
-                    this.primaryButtonIconSize === 'x-small',
+                    this.primaryButtonIconSize === 'x-small' ||
+                    this.primaryButtonIconSize === 'xx-small',
                 'slds-button__icon_small':
                     this.primaryButtonIconSize === 'small',
                 'slds-button__icon_large':
@@ -682,6 +711,14 @@ export default class HeroBanner extends LightningElement {
     }
 
     /** SECONDARY BUTTON */
+    /**
+     * True if the secondary button only has an icon.
+     *
+     * @type {boolean}
+     */
+    get isSecondaryButtonIcon() {
+        return this.secondaryButtonIconName && !this.secondaryButtonLabel;
+    }
 
     /**
      * True if there is a label or icon name for the second button.
@@ -726,6 +763,25 @@ export default class HeroBanner extends LightningElement {
             'avonni-hero-banner__secondary-button slds-m-left_x-small'
         )
             .add({
+                'avonni-hero-banner__secondary-button-icon':
+                    this.isSecondaryButtonIcon,
+                'slds-button_icon-xx-small':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'xx-small',
+                'slds-button_icon-x-small':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'x-small',
+                'slds-button_icon-small':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'small',
+                'avonni-hero-banner__secondary-button-icon_medium':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'medium',
+                'slds-button_icon-large':
+                    this.isSecondaryButtonIcon &&
+                    this.secondaryButtonIconSize === 'large',
+                'avonni-hero-banner__secondary-button_transition':
+                    this.secondaryButtonVariant !== 'base',
                 'avonni-hero-banner__secondary-button_variant-neutral':
                     this.secondaryButtonVariant === 'neutral',
                 'avonni-hero-banner__secondary-button_variant-brand':
@@ -745,7 +801,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Computed secondary button class styling.
+     * Computed secondary primitive icon class styling.
      *
      * @type {string}
      */
@@ -759,7 +815,8 @@ export default class HeroBanner extends LightningElement {
                     this._secondaryButtonIconPosition === 'right' &&
                     this.secondaryButtonLabel,
                 'slds-button__icon_x-small':
-                    this.secondaryButtonIconSize === 'x-small',
+                    this.secondaryButtonIconSize === 'x-small' ||
+                    this.secondaryButtonIconSize === 'xx-small',
                 'slds-button__icon_small':
                     this.secondaryButtonIconSize === 'small',
                 'slds-button__icon_large':
@@ -767,7 +824,6 @@ export default class HeroBanner extends LightningElement {
             })
             .toString();
     }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS

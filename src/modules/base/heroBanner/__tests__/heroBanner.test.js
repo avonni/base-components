@@ -444,24 +444,22 @@ describe('Hero Banner', () => {
         element.primaryButtonIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const primaryButton = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-hero-banner-primary-button"]'
+            const primaryButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-hero-banner-primary-button-icon"]'
             );
-            const primaryIconLeft = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-left"]'
+            const primaryIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-primary-button"]'
             );
-            const primaryIconRight = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-primary-button-right"]'
-            );
-            expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.iconName).toBe('utility:down');
-            expect(primaryIconRight).toBeFalsy();
+
+            expect(primaryButtonIcon).toBeTruthy();
+            expect(primaryIcon.iconName).toBe('utility:down');
         });
     });
 
     // Primary button icon position
     it('Hero Banner: primary button icon position - left', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -482,6 +480,7 @@ describe('Hero Banner', () => {
 
     it('Hero Banner: primary button icon position - right', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -503,6 +502,7 @@ describe('Hero Banner', () => {
     // Primary button icon size
     it('Hero Banner: primary button icon size - x-small', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -513,14 +513,15 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_x-small'
+            expect(primaryIconLeft.svgClass).toContain(
+                'slds-button__icon_x-small'
             );
         });
     });
 
     it('Hero Banner: primary button icon size - small', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -531,14 +532,15 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_small'
+            expect(primaryIconLeft.svgClass).toContain(
+                'slds-button__icon_small'
             );
         });
     });
 
     it('Hero Banner: primary button icon size - medium', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -549,12 +551,15 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.svgClass).toBe('slds-button__icon');
+            expect(primaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_left'
+            );
         });
     });
 
     it('Hero Banner: primary button icon size - large', () => {
         element.primaryButtonIconName = 'utility:down';
+        element.primaryButtonLabel = 'Primary button';
         element.primaryButtonIconSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -565,8 +570,8 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-primary-button-left"]'
             );
             expect(primaryButton).toBeTruthy();
-            expect(primaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_large'
+            expect(primaryIconLeft.svgClass).toContain(
+                'slds-button__icon_large'
             );
         });
     });
@@ -698,20 +703,20 @@ describe('Hero Banner', () => {
     });
 
     // Needs a primary button
-    // Primary button icon name
+    // secondary button icon name
     it('Hero Banner: secondary button icon name', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
             const secondaryButton = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-hero-banner-secondary-button"]'
+                '[data-element-id="avonni-hero-banner-secondary-button-icon"]'
             );
-            const secondaryIconLeft = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
+            const secondaryIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-secondary-button"]'
             );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.iconName).toBe('utility:down');
+            expect(secondaryIcon.iconName).toBe('utility:down');
         });
     });
 
@@ -719,6 +724,7 @@ describe('Hero Banner', () => {
     it('Hero Banner: secondary button icon position - left', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -740,6 +746,7 @@ describe('Hero Banner', () => {
     it('Hero Banner: secondary button icon position - right', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -762,6 +769,7 @@ describe('Hero Banner', () => {
     it('Hero Banner: secondary button icon size - x-small', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -772,8 +780,8 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_x-small'
+            expect(secondaryIconLeft.svgClass).toContain(
+                'slds-button__icon_x-small'
             );
         });
     });
@@ -781,6 +789,7 @@ describe('Hero Banner', () => {
     it('Hero Banner: secondary button icon size - small', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -791,8 +800,8 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_small'
+            expect(secondaryIconLeft.svgClass).toContain(
+                'slds-button__icon_small'
             );
         });
     });
@@ -800,6 +809,7 @@ describe('Hero Banner', () => {
     it('Hero Banner: secondary button icon size - medium', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -810,13 +820,16 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.svgClass).toBe('slds-button__icon');
+            expect(secondaryIconLeft.svgClass).toBe(
+                'slds-button__icon slds-button__icon_left'
+            );
         });
     });
 
     it('Hero Banner: secondary button icon size - large', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonIconName = 'utility:down';
+        element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonIconSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -827,8 +840,8 @@ describe('Hero Banner', () => {
                 '[data-element-id="avonni-primitive-icon-secondary-button-left"]'
             );
             expect(secondaryButton).toBeTruthy();
-            expect(secondaryIconLeft.svgClass).toBe(
-                'slds-button__icon slds-button__icon_large'
+            expect(secondaryIconLeft.svgClass).toContain(
+                'slds-button__icon_large'
             );
         });
     });
