@@ -212,7 +212,6 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.style.width).toBe('auto');
             expect(img.style.height).toBe('225px');
         });
     });
@@ -395,6 +394,8 @@ describe('Image', () => {
     it('Image: Static Image - No Crop - No Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
+        element.width = 400;
+        element.height = 300;
         document.body.appendChild(element);
 
         return Promise.resolve()
@@ -404,10 +405,10 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 expect(img.className).toBe('avonni-image');
-                expect(img.style.minWidth).toBe('0px');
-                expect(img.style.minHeight).toBe('0px');
-                expect(img.style.maxWidth).toBe('0px');
-                expect(img.style.maxHeight).toBe('0px');
+                expect(img.style.minWidth).toBe('400px');
+                expect(img.style.minHeight).toBe('300px');
+                expect(img.style.maxWidth).toBe('400px');
+                expect(img.style.maxHeight).toBe('300px');
             });
     });
 
@@ -442,10 +443,7 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.style.maxWidth).toBe('400px');
-            expect(img.style.maxHeight).toBe('400px');
             expect(img.style.minWidth).toBe('400px');
-            expect(img.style.minHeight).toBe('400px');
-            expect(img.style.maxWidth).toBe('400px');
         });
     });
 
@@ -459,35 +457,6 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.className).toContain('avonni-image_thumbnail');
-        });
-    });
-
-    // width & height
-    it('Image: Width & height numbers', () => {
-        element.src = src;
-        element.width = 120;
-        element.height = 100;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.width).toBe(120);
-            expect(img.height).toBe(100);
-        });
-    });
-
-    it('Image: Width & height strings', () => {
-        element.src = src;
-        element.width = '120';
-        element.height = '100';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.width).toBe(120);
-            expect(img.height).toBe(100);
         });
     });
 
