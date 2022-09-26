@@ -179,14 +179,6 @@ const TEXT_Y_ALIGN = {
  * @public
  */
 export default class Barcode extends LightningElement {
-    /**
-     * The value to encode in the barcode.
-     *
-     * @public
-     * @type {string | number}
-     */
-    @api value;
-
     _background = DEFAULT_BACKGROUND;
     _color = DEFAULT_COLOR;
     _textColor = DEFAULT_TEXT_COLOR;
@@ -271,7 +263,7 @@ export default class Barcode extends LightningElement {
     }
     set height(value) {
         this._height = parseInt(value, 10) || null;
-        this.rerenderBarcode();
+        this.setCanvasStyle();
     }
 
     /**
@@ -356,6 +348,21 @@ export default class Barcode extends LightningElement {
     }
 
     /**
+     * The value to encode in the barcode.
+     *
+     * @public
+     * @type {string | number}
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(codeValue) {
+        this._value = normalizeString(codeValue, { toLowerCase: false });
+        this.rerenderBarcode();
+    }
+
+    /**
      * The width of the barcode in pixels. The width defaults to 100%.
      *
      * @public
@@ -368,7 +375,7 @@ export default class Barcode extends LightningElement {
     }
     set width(value) {
         this._width = parseInt(value, 10) || null;
-        this.rerenderBarcode();
+        this.setCanvasStyle();
     }
 
     /*
@@ -377,15 +384,10 @@ export default class Barcode extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Sets the width for the canvas.
-     */
-    get barcodeStyle() {
-        const widthStyle = this.width
-            ? `max-width: ${this.width}px;`
-            : 'width: 100%;';
-        const heightStyle = this.height ? `max-height: ${this.height}px;` : '';
-        return `${widthStyle} ${heightStyle}`;
+    get canvas() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-barcode-canvas"]'
+        );
     }
 
     get errorMessage() {
@@ -451,11 +453,9 @@ export default class Barcode extends LightningElement {
      * Render the barcode.
      */
     renderBarcode() {
-        const canvas = this.template.querySelector(
-            '[data-element-id="avonni-barcode-canvas"]'
-        );
+        this.setCanvasStyle();
         try {
-            bwipjs.toCanvas(canvas, this.barcodeParameters());
+            bwipjs.toCanvas(this.canvas, this.barcodeParameters());
             this._errorMessage = null;
             this.validCode = true;
         } catch (e) {
@@ -472,6 +472,24 @@ export default class Barcode extends LightningElement {
     rerenderBarcode() {
         if (!this.initialRender) {
             this.renderBarcode();
+        }
+    }
+
+    /**
+     * Set the canvas style
+     */
+    setCanvasStyle() {
+        const canvas = this.canvas;
+
+        if (canvas) {
+            if (this.width) {
+                canvas.style.width = `${this.width}px`;
+            } else {
+                canvas.style.width = '100%';
+            }
+            if (this.height) {
+                canvas.style.maxHeight = `${this.height}px`;
+            }
         }
     }
 }

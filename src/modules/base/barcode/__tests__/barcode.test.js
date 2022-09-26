@@ -32,7 +32,21 @@
 
 import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
-//import bwipjs from 'bwip-js';
+import bwipjs from 'bwip-js';
+
+const handler = jest.fn();
+bwipjs.toCanvas = handler;
+const baseParameters = {
+    backgroundcolor: 'ffffff',
+    barcolor: '000000',
+    includecheck: true,
+    includecheckintext: true,
+    includetext: true,
+    scale: 10,
+    textcolor: '000000',
+    textxalign: 'center',
+    textyalign: 'below'
+};
 
 let element;
 describe('Barcode', () => {
@@ -40,6 +54,7 @@ describe('Barcode', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllMocks();
     });
 
     beforeEach(() => {
@@ -65,19 +80,31 @@ describe('Barcode', () => {
     /* ----- ATTRIBUTES ----- */
 
     // VALUES
-    it('Barcode: alternative type', () => {
+    it('Barcode: type', () => {
         element.type = 'code128';
 
         return Promise.resolve().then(() => {
-            expect(element.type).toBe('code128');
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.bcid = 'code128';
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
-    it('Barcode: non valid type', () => {
-        element.type = 'non-valid';
+    it('Barcode: invalid type', () => {
+        element.type = 'not-a-valid-type';
 
         return Promise.resolve().then(() => {
-            expect(element.type).toBeFalsy();
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.bcid = '';
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
@@ -85,73 +112,95 @@ describe('Barcode', () => {
         element.value = '1234';
 
         return Promise.resolve().then(() => {
-            expect(element.value).toBe('1234');
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.text = '1234';
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
     it('Barcode: checksum', () => {
+        element.value = '12345';
+        element.type = 'code128';
         element.checksum = false;
 
         return Promise.resolve().then(() => {
-            expect(element.checksum).toBeFalsy();
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.text = '12345';
+            barcodeParams.bcid = 'code128';
+            barcodeParams.includecheck = false;
+            barcodeParams.includecheckintext = false;
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
     it('Barcode: hideValue', () => {
+        element.value = '12345';
+        element.type = 'code128';
         element.hideValue = true;
 
         return Promise.resolve().then(() => {
-            expect(element.hideValue).toBeTruthy();
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.text = '12345';
+            barcodeParams.bcid = 'code128';
+            barcodeParams.includetext = false;
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
     // COLORS
-    it('Barcode: background', () => {
+    it('Barcode: background, color and text-color', () => {
         element.background = '#eeeeee';
+        element.color = '#333333';
+        element.textColor = '#444444';
 
         return Promise.resolve().then(() => {
-            expect(element.background).toBe('#eeeeee');
-        });
-    });
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
 
-    it('Barcode: color', () => {
-        element.color = '#eeeeee';
-
-        return Promise.resolve().then(() => {
-            expect(element.color).toBe('#eeeeee');
-        });
-    });
-
-    it('Barcode: text-color', () => {
-        element.textColor = '#eeeeee';
-
-        return Promise.resolve().then(() => {
-            expect(element.textColor).toBe('#eeeeee');
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.text = undefined;
+            barcodeParams.bcid = undefined;
+            barcodeParams.backgroundcolor = 'eeeeee';
+            barcodeParams.barcolor = '333333';
+            barcodeParams.textcolor = '444444';
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
         });
     });
 
     // LAYOUT
-    it('Barcode: height', () => {
+    it('Barcode: text-alignment, height and width', () => {
+        element.value = '1234';
+        element.type = 'code11';
         element.height = '200';
-
-        return Promise.resolve().then(() => {
-            expect(element.height).toBe(200);
-        });
-    });
-
-    it('Barcode: text-alignment', () => {
+        element.width = '200';
         element.textAlignment = 'top-justify';
 
         return Promise.resolve().then(() => {
-            expect(element.textAlignment).toBe('top-justify');
-        });
-    });
+            const canvas = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-barcode-canvas"]'
+            );
 
-    it('Barcode: width', () => {
-        element.width = '200';
+            const barcodeParams = { ...baseParameters };
+            barcodeParams.text = '1234';
+            barcodeParams.bcid = 'code11';
+            barcodeParams.textxalign = 'justify';
+            barcodeParams.textyalign = 'above';
 
-        return Promise.resolve().then(() => {
-            expect(element.width).toBe(200);
+            expect(handler).toHaveBeenCalledWith(canvas, barcodeParams);
+            expect(canvas.style.width).toEqual('200px');
+            expect(canvas.style.maxHeight).toEqual('200px');
         });
     });
 });

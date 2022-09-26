@@ -35,15 +35,9 @@
 <template>
     <div if:true={validCode} class="slds-text-align_center">
         <canvas
-            style={barcodeStyle}
             class="avonni-barcode_code-position"
             data-element-id="avonni-barcode-canvas"
         ></canvas>
     </div>
-    <p
-        if:false={validCode}
-        class="slds-text-color_error"
-    >
-        {errorMessage}
-    </p>
+    <p if:false={validCode} class="slds-text-color_error">{errorMessage}</p>
 </template>
