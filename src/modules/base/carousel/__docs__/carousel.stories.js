@@ -51,10 +51,10 @@ export default {
         currentPanel: {
             name: 'current-panel',
             control: {
-                type: 'number'
+                type: 'text'
             },
             description:
-                'Dictates the currently active/visible carousel panel.',
+                'Dictates the currently active/visible carousel panel. Use item’s name to select current panel.',
             table: {
                 type: { summary: 'number' }
             }

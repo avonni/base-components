@@ -155,7 +155,7 @@ describe('Input pen', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.showSignaturePad).toBeFalsy();
-        expect(element.size).toBe(10);
+        expect(element.size).toBe(3);
         expect(element.validity).toBe(true);
         expect(element.value).toBeUndefined();
         expect(element.variant).toBe('bottom-toolbar');
@@ -483,8 +483,8 @@ describe('Input pen', () => {
             const cursor = element.shadowRoot.querySelector(
                 '[data-element-id="cursor"]'
             );
-            expect(element.size).toEqual(10);
-            expect(cursor.style.getPropertyValue('--size')).toEqual('10');
+            expect(element.size).toEqual(3);
+            expect(cursor.style.getPropertyValue('--size')).toEqual('3');
         });
     });
 

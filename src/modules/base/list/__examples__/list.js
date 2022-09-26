@@ -43,7 +43,15 @@ export const List = ({
     sortableIconName,
     sortableIconPosition,
     divider,
-    imageWidth
+    variant,
+    cols,
+    smallContainerCols,
+    mediumContainerCols,
+    largeContainerCols,
+    imageAttributes,
+    enableInfiniteLoading,
+    isLoading,
+    loadMoreOffset
 }) => {
     const element = document.createElement('ac-base-list');
     element.label = label;
@@ -54,6 +62,14 @@ export const List = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.divider = divider;
-    element.imageWidth = imageWidth;
+    element.variant = variant;
+    element.cols = cols;
+    element.smallContainerCols = smallContainerCols;
+    element.mediumContainerCols = mediumContainerCols;
+    element.largeContainerCols = largeContainerCols;
+    element.imageAttributes = imageAttributes;
+    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.isLoading = isLoading;
+    element.loadMoreOffset = loadMoreOffset;
     return element;
 };

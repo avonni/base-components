@@ -31,6 +31,7 @@
  */
 
 import { List } from '../__examples__/list';
+import { InfiniteGrid } from '../__examples__/infiniteGrid';
 
 export default {
     title: 'Example/List',
@@ -41,7 +42,8 @@ export default {
             },
             description: 'Array of actions',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Base'
             }
         },
         alternativeText: {
@@ -52,11 +54,46 @@ export default {
             description:
                 'Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: “Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel.”',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
+            }
+        },
+        cols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description: 'Default number of columns',
+            table: {
+                type: { summary: 'number' },
+                category: 'Grid'
+            }
+        },
+        smallContainerCols: {
+            name: 'small-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description: 'Number of columns for small containers',
+            table: {
+                type: { summary: 'number' },
+                category: 'Grid'
+            }
+        },
+        mediumContainerCols: {
+            name: 'medium-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description: 'Number of columns for medium containers',
+            table: {
+                type: { summary: 'number' },
+                category: 'Grid'
+            }
+        },
+        largeContainerCols: {
+            name: 'large-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description: 'Number of columns for large containers',
+            table: {
+                type: { summary: 'number' },
+                category: 'Grid'
             }
         },
         divider: {
-            name: 'divider',
             control: {
                 type: 'select'
             },
@@ -64,20 +101,41 @@ export default {
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
             }
         },
-        imageWidth: {
-            name: 'image-width',
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
             control: {
-                type: 'select'
+                type: 'boolean'
             },
-            options: ['small', 'medium', 'large'],
             description:
-                'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
+                'Enable infinite loading. When enabled, the list will load more items when the user scrolls to the bottom of the list.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'large' }
+                type: { summary: 'boolean' },
+                category: 'Inifinite Loading'
+            }
+        },
+        imageAttributes: {
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item images.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Set to true to indicate that the list is loading.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Inifinite Loading'
             }
         },
         items: {
@@ -86,7 +144,8 @@ export default {
             },
             description: 'Array of item objects.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Base'
             }
         },
         label: {
@@ -95,7 +154,20 @@ export default {
             },
             description: 'Label of the list.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Base'
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table. The default is 20.",
+            table: {
+                type: { summary: 'number' },
+                category: 'Inifinite Loading'
             }
         },
         sortable: {
@@ -106,7 +178,8 @@ export default {
                 'If true, it will be possible to reorder the list items.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Sorting'
             }
         },
         sortableIconName: {
@@ -117,7 +190,8 @@ export default {
             description:
                 "The Lightning Design System name of the sortable icon. \nNames are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Sorting'
             }
         },
         sortableIconPosition: {
@@ -130,18 +204,32 @@ export default {
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'right' }
+                defaultValue: { summary: 'right' },
+                category: 'Sorting'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['base', 'grid', 'single-line'],
+            description: 'Variant of the list.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' },
+                category: 'Base'
             }
         }
     },
     args: {
-        imageWidth: 'large',
         sortable: false,
-        sortableIconPosition: 'right'
+        sortableIconPosition: 'right',
+        variant: 'base'
     }
 };
 
 const Template = (args) => List(args);
+const InfiniteGridTemplate = (args) => InfiniteGrid(args);
 
 const items = [
     {
@@ -427,5 +515,63 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
-    imageWidth: 'medium'
+    imageAttributes: {
+        size: 'medium'
+    }
+};
+
+export const GridCardWithImages = Template.bind({});
+GridCardWithImages.args = {
+    label: 'Grid Card with Images',
+    items: itemsWithImages,
+    actions: actions,
+    divider: 'around',
+    imageAttributes: {
+        size: 'medium'
+    },
+    variant: 'grid',
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
+};
+
+export const SingleLineWithInfiniteLoading = InfiniteGridTemplate.bind({});
+SingleLineWithInfiniteLoading.args = {
+    label: 'Single Line with infinite loading',
+    variant: 'single-line',
+    items: itemsWithImages,
+    enableInfiniteLoading: true,
+    divider: 'around',
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4
+};
+
+export const GridWithInfiniteLoading = InfiniteGridTemplate.bind({});
+GridWithInfiniteLoading.args = {
+    label: 'Grid with infinite loading',
+    variant: 'grid',
+    items: itemsWithImages,
+    actions: actions,
+    divider: 'around',
+    imageAttributes: {
+        size: 'medium'
+    },
+    loadMoreOffset: 100,
+    enableInfiniteLoading: true,
+    cols: 1,
+    smallContainerCols: 3,
+    mediumContainerCols: 4,
+    largeContainerCols: 6
+};
+
+export const ListWithInfiniteLoading = InfiniteGridTemplate.bind({});
+ListWithInfiniteLoading.args = {
+    label: 'Sortable list with infinite loading',
+    items,
+    actions: actions,
+    sortable: true,
+    divider: 'around',
+    enableInfiniteLoading: true
 };

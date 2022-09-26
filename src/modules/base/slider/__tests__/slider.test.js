@@ -977,7 +977,7 @@ describe('Slider', () => {
             const label = element.shadowRoot.querySelector(
                 '[data-element-id="span-label"]'
             );
-            expect(label.classList).toContain('slds-assistive-text');
+            expect(label).toEqual(null);
         });
     });
 

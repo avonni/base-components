@@ -1,22 +1,22 @@
 export const ACTIONS = [
     {
-        name: 'edit',
+        name: 'Standard.Tree.Edit',
         label: 'Edit',
         iconName: 'utility:edit',
         visible: true
     },
     {
-        name: 'add',
+        name: 'Standard.Tree.Add',
         label: 'Add',
         visible: true,
         iconName: 'utility:add'
     },
     {
-        name: 'duplicate',
+        name: 'Standard.Tree.Duplicate',
         label: 'Duplicate'
     },
     {
-        name: 'delete',
+        name: 'Standard.Tree.Delete',
         label: 'Delete'
     },
     {
@@ -27,13 +27,13 @@ export const ACTIONS = [
 
 export const ACTIONS_WHEN_DISABLED = [
     {
-        name: 'edit',
+        name: 'Standard.Tree.Edit',
         label: 'Edit',
         iconName: 'utility:edit',
         visible: true
     },
     {
-        name: 'delete',
+        name: 'Standard.Tree.Delete',
         label: 'Delete',
         iconName: 'utility:delete',
         visible: true

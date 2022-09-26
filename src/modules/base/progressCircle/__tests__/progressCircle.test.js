@@ -51,7 +51,6 @@ describe('ProgressCircle', () => {
     });
 
     it('Progress Circle: Default attributes', () => {
-        expect(element.color).toBe('#1589ee');
         expect(element.direction).toBe('fill');
         expect(element.label).toBeUndefined();
         expect(element.size).toBe('medium');
@@ -60,31 +59,10 @@ describe('ProgressCircle', () => {
         expect(element.titlePosition).toBe('bottom');
         expect(element.value).toBe(0);
         expect(element.variant).toBe('standard');
-        expect(element.isLoading).toBe(false)
+        expect(element.isLoading).toBe(false);
     });
 
     /* ----- ATTRIBUTES ----- */
-
-    // color
-    it('Progress Circle: color', () => {
-        element.color = 'tomato';
-
-        return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span"]');
-            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
-            expect(span.style.color).toBe('tomato');
-            expect(path.getAttribute('fill')).toBe('tomato');
-        });
-    });
-
-    it('Progress Circle: color number', () => {
-        element.color = 3;
-
-        return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
-            expect(span.style.color).toBe('rgb(21, 137, 238)');
-        });
-    });
 
     // direction and value
     it('Progress Circle: direction = fill and value = 65', () => {
@@ -92,7 +70,9 @@ describe('ProgressCircle', () => {
         element.value = 65;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
+            const path = element.shadowRoot.querySelector(
+                '[data-element-id="path"]'
+            );
             const arcX = Math.cos(2 * Math.PI * ((100 - 65) / 100));
             const arcY = Math.sin(2 * Math.PI * ((100 - 65) / 100));
             expect(path.getAttribute('d')).toBe(
@@ -106,7 +86,9 @@ describe('ProgressCircle', () => {
         element.value = 43;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
+            const path = element.shadowRoot.querySelector(
+                '[data-element-id="path"]'
+            );
             const arcX = Math.cos(2 * Math.PI * (43 / 100));
             const arcY = Math.sin(2 * Math.PI * (43 / 100));
             expect(path.getAttribute('d')).toBe(
@@ -194,7 +176,9 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'medium') {
-                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
                     expect(content.classList).toContain(
                         `avonni-progress-circle__content_size-${size}`
                     );
@@ -243,7 +227,9 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'x-small') {
-                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
                     expect(content.classList).toContain(
                         `avonni-progress-circle__content_size-${size}`
                     );
@@ -292,7 +278,9 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'small') {
-                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
                     expect(content.classList).toContain(
                         `avonni-progress-circle__content_size-${size}`
                     );
@@ -341,7 +329,9 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'large') {
-                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
                     expect(content.classList).toContain(
                         `avonni-progress-circle__content_size-${size}`
                     );
@@ -390,7 +380,9 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'x-large') {
-                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
                     expect(content.classList).toContain(
                         `avonni-progress-circle__content_size-${size}`
                     );
@@ -1026,7 +1018,9 @@ describe('ProgressCircle', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
-            const value = element.shadowRoot.querySelector('[data-element-id="span"]');
+            const value = element.shadowRoot.querySelector(
+                '[data-element-id="span"]'
+            );
             expect(value.textContent).toBeTruthy();
         });
     });
@@ -1035,7 +1029,9 @@ describe('ProgressCircle', () => {
         element.variant = 'value-hidden';
 
         return Promise.resolve().then(() => {
-            const value = element.shadowRoot.querySelector('[data-element-id="span"]');
+            const value = element.shadowRoot.querySelector(
+                '[data-element-id="span"]'
+            );
             expect(value).toBeFalsy();
         });
     });

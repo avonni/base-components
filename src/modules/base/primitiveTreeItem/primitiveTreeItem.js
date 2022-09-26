@@ -1012,7 +1012,10 @@ export default class PrimitiveTreeItem extends LightningElement {
         });
         this.dispatchEvent(actionClickEvent);
 
-        if (name === 'edit' && !actionClickEvent.defaultPrevented) {
+        if (
+            name === 'Standard.Tree.Edit' &&
+            !actionClickEvent.defaultPrevented
+        ) {
             this.togglePopoverVisibility();
         }
     }

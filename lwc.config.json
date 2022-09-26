@@ -295,6 +295,10 @@
             "path": "src/modules/base/primitiveCarouselItem/primitiveCarouselItem.js"
         },
         {
+            "name": "c/primitiveCellAvatar",
+            "path": "src/modules/base/primitiveCellAvatar/primitiveCellAvatar.js"
+        },
+        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
@@ -315,16 +319,24 @@
             "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
-            "name": "c/primitiveCellEditableButton",
-            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
-        },
-        {
             "name": "c/primitiveCellCounter",
             "path": "src/modules/base/primitiveCellCounter/primitiveCellCounter.js"
         },
         {
             "name": "c/primitiveCellDateRange",
             "path": "src/modules/base/primitiveCellDateRange/primitiveCellDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellEditableButton",
+            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
+        },
+        {
+            "name": "c/primitiveCellProgressBar",
+            "path": "src/modules/base/primitiveCellProgressBar/primitiveCellProgressBar.js"
+        },
+        {
+            "name": "c/primitiveCellProgressCircle",
+            "path": "src/modules/base/primitiveCellProgressCircle/primitiveCellProgressCircle.js"
         },
         {
             "name": "c/primitiveCellRichText",

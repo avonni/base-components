@@ -134,8 +134,8 @@ let iconCreator;
 
 /**
  * Create specific svg icon to append in a foreign object.
- * @param iconInformation valid information to create specific icon. {iconName: String, category: String, categoryIconClass: string}
- * @param foreignObjectForIcon foreign object that will contain icon's svg
+ * @param {object} iconInformation Information to create specific icon. Valid keys include iconName, category and categoryIconClass.
+ * @param {object} foreignObjectForIcon Foreign object that will contain icon's svg.
  * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay, 
  * it will allow to refresh the icons when the libraries are ready. 
  * @returns {object} icon's svg created
