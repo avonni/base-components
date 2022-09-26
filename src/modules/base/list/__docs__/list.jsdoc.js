@@ -31,6 +31,14 @@
  * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
+/**
+ * @typedef {Object} ImageAttributes
+ * @name imageAttributes
+ * @property {string} size The size of the images in the base, grid or single-line variants. In the base variant, the size controls the width of the image. On the grid and single-line variants, the size controls the height of the image. Valid values are small, medium, large. The size defaults to large.
+ * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
+ * @property {number} cropPositionX The image object-position horizontal percentage property. The value defaults to 50.
+ * @property {number} cropPositionY The image object-position vertical percentage property. The value defaults to 50.
+ */
 
 /**
  * @namespace stylingHooks
@@ -164,26 +172,37 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
+ * @default 0.5rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-spacing-inline-between
+ * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
@@ -195,4 +214,87 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor
  * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-block-start
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-block-end
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-inline-start
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-spacing-inline-end
+ * @type dimension
+ * @default 0px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-size-small
+ * @type dimension
+ * @default 48px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-size-medium
+ * @type dimension
+ * @default 72px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-size-large
+ * @type dimension
+ * @default 128px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-grid-item-image-size-small
+ * @type dimension
+ * @default 48px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-grid-item-image-size-medium
+ * @type dimension
+ * @default 96px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-grid-item-image-size-large
+ * @type dimension
+ * @default 192px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-small
+ * @type dimension
+ * @default 48px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-medium
+ * @type dimension
+ * @default 96px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-single-line-item-image-size-large
+ * @type dimension
+ * @default 192px
  */

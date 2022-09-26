@@ -384,6 +384,8 @@ describe('Activity Timeline', () => {
                 href: '#',
                 datetimeValue: 1653141600000,
                 iconName: 'standard:log_a_call',
+                hasCheckbox: true,
+                checked: true,
                 fields: [
                     {
                         label: 'Name',
@@ -454,6 +456,7 @@ describe('Activity Timeline', () => {
 
             timelineItems.forEach((item, index) => {
                 expect(item.title).toBe(ITEM[index].title);
+                expect(item.checked).toBe(ITEM[index].checked || false);
                 expect(item.description).toBe(ITEM[index].description);
                 expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
                 expect(item.href).toBe(ITEM[index].href);
@@ -675,6 +678,7 @@ describe('Activity Timeline', () => {
                     bubbles: true
                 })
             );
+            expect(element.items[0].checked).toBeTruthy();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
             expect(handler.mock.calls[0][0].detail.targetName).toBe(
@@ -1617,7 +1621,7 @@ describe('Activity Timeline', () => {
 
                     expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'slds-nubbin_left slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                        'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_left'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1681,7 +1685,7 @@ describe('Activity Timeline', () => {
 
                 expect(popoverItem.getAttribute('name')).toBe('item13');
                 expect(popoverItem.className).toBe(
-                    'slds-nubbin_right-top slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                    'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_right-top'
                 );
                 expect(convertPxSizeToNumberSpy).toBeCalled();
             });

@@ -3,23 +3,23 @@ import { LightningElement } from 'lwc';
 export default class TreeActions extends LightningElement {
     actions = [
         {
-            name: 'edit',
+            name: 'Standard.Tree.Edit',
             label: 'Edit',
             iconName: 'utility:edit',
             visible: true
         },
         {
-            name: 'add',
+            name: 'Standard.Tree.Add',
             label: 'Add',
             visible: true,
             iconName: 'utility:add'
         },
         {
-            name: 'duplicate',
+            name: 'Standard.Tree.Duplicate',
             label: 'Duplicate'
         },
         {
-            name: 'delete',
+            name: 'Standard.Tree.Delete',
             label: 'Delete'
         },
         {
@@ -30,13 +30,13 @@ export default class TreeActions extends LightningElement {
 
     actionswhenDisabled = [
         {
-            name: 'edit',
+            name: 'Standard.Tree.Edit',
             label: 'Edit',
             iconName: 'utility:edit',
             visible: true
         },
         {
-            name: 'delete',
+            name: 'Standard.Tree.Delete',
             label: 'Delete',
             iconName: 'utility:delete',
             visible: true

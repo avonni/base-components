@@ -206,7 +206,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, the slider is disabled and users cannot interact with it.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -222,7 +222,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, the slider thumbs can swap order.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -302,7 +302,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, min and max value indicators are removed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -318,7 +318,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, track is removed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -334,7 +334,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, a pin containing the value is shown when the thumb is pressed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -350,7 +350,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, minor tick marks are displayed at every step.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -686,13 +686,26 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Computed Slider Wrapper class styling.
+     *
+     */
+    get computedSliderWrapperClass() {
+        return classSet('avonni-slider__wrapper slds-p-vertical_x-small').add({
+            'avonni-slider__wrapper_height_full':
+                this.isVertical && !this.showLabel,
+            'avonni-slider__wrapper_height_label':
+                this.isVertical && this.showLabel
+        });
+    }
+
+    /**
      * Computed right pin class styling.
      *
      * @type {string}
      */
     get computedUnitContainerClass() {
         return classSet(
-            'avonni-slider__unit-container slds-grid slds-grid_align-spread slds-p-top_x-small'
+            'avonni-slider__unit-container slds-grid slds-grid_align-spread'
         ).add({
             'avonni-slider__unit-container_ticks-horizontal':
                 !this.isVertical &&
@@ -701,7 +714,8 @@ export default class Slider extends LightningElement {
             'avonni-slider__unit-container_ticks-horizontal-tick':
                 !this.isVertical &&
                 this.showAnyTickMarks &&
-                this.tickMarkStyle === 'tick'
+                this.tickMarkStyle === 'tick',
+            'slds-p-top_x-small': !this.isVertical
         });
     }
 
@@ -716,7 +730,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if the slider has custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get hasCustomLabels() {
@@ -736,7 +750,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isVertical() {
@@ -745,7 +759,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and responsive
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isVerticalResponsive() {
@@ -754,7 +768,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and does not have custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isNormalVertical() {
@@ -767,7 +781,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and does not have custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isNormalHorizontal() {
@@ -779,8 +793,21 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * To show or not the label
+     * @type {Boolean}
+     *
+     */
+    get showLabel() {
+        return !(
+            this._variant === 'label-hidden' ||
+            !this.label ||
+            (this.label && this.label.length === 0)
+        );
+    }
+
+    /**
      * To show or not the track.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showTrack() {
@@ -789,7 +816,7 @@ export default class Slider extends LightningElement {
 
     /**
      * To show or not the tick marks.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showAnyTickMarks() {
@@ -798,7 +825,7 @@ export default class Slider extends LightningElement {
 
     /**
      * To show or not the major tick marks.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showOnlyMajorTicks() {
@@ -924,7 +951,7 @@ export default class Slider extends LightningElement {
     /**
      * Checks if the input is valid.
      *
-     * @returns {boolean} True if the element meets all constraint validations.
+     * @returns {Boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -960,7 +987,7 @@ export default class Slider extends LightningElement {
     /**
      * Displays the error messages. If the input is valid, reportValidity() clears displayed error messages.
      *
-     * @returns {boolean} False if invalid, true if valid.
+     * @returns {Boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -1486,7 +1513,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Test if thumb is hovered.
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     thumbIsHovered(event) {
         const obj = this.getHitbox(

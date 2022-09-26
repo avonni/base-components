@@ -200,3 +200,21 @@
  * @default 0.25rem
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-styling-border
+ * @default solid
+ * @type styling
+ */

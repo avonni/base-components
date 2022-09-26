@@ -96,9 +96,9 @@ const i18n = {
  */
 export default class Carousel extends LightningElement {
     /**
-     * Dictates the currently active/visible carousel panel.
+     * Dictates the currently active/visible carousel panel. Use item’s name to select current panel.
      *
-     * @type {number}
+     * @type {string}
      * @public
      */
     @api currentPanel;
@@ -631,7 +631,10 @@ export default class Carousel extends LightningElement {
      * @param {number} numberOfPanels
      */
     initializeCurrentPanel(numberOfPanels) {
-        const firstPanel = parseInt(this.currentPanel, 10);
+        const currentPanelIndex = this.currentPanel
+            ? this.items.findIndex((item) => item.name === this.currentPanel)
+            : 0;
+        const firstPanel = parseInt(currentPanelIndex, 10);
         this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
     }
 

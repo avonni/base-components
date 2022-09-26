@@ -1,0 +1,14 @@
+<template>
+    <div style="max-height: 500px; height: 500px;">
+        <avonni-list
+            label="Sortable list with infinite loading"
+            items={items}
+            actions={actions}
+            divider="around"
+            sortable
+            enable-infinite-loading={enableInfiniteLoading}
+            is-loading={isLoading}
+            onloadmore={loadMoreData}
+        ></avonni-list>
+    </div>
+</template>

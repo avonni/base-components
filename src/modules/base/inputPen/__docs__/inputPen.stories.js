@@ -194,7 +194,7 @@ export default {
         readOnly: false,
         required: false,
         showSignaturePad: false,
-        size: 10,
+        size: 3,
         variant: 'bottom-toolbar'
     }
 };

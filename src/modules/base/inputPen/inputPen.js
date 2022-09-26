@@ -61,7 +61,7 @@ const DEFAULT_BACKGROUND_COLORS = [
 
 const DEFAULT_COLOR = '#000';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
-const DEFAULT_SIZE = 10;
+const DEFAULT_SIZE = 3;
 
 /**
  * @class
@@ -123,7 +123,7 @@ export default class InputPen extends LightningElement {
     _backgroundCanvasElement;
     _backgroundColor = DEFAULT_BACKGROUND_COLOR;
     _backgroundCtx;
-    _foregroundValue = undefined;
+    drawingArea;
 
     _resizeObserver;
     _resizeTimeout;
@@ -142,6 +142,8 @@ export default class InputPen extends LightningElement {
     constructor() {
         super();
         window.addEventListener('mouseup', this.handleMouseUp);
+        window.addEventListener('touchend', this.handleMouseUp);
+        window.addEventListener('touchmove', this.handleMouseMove);
         window.addEventListener('mousemove', this.handleMouseMove);
         window.addEventListener('keydown', this.handleKeyDown);
     }
@@ -154,7 +156,9 @@ export default class InputPen extends LightningElement {
 
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.handleMouseUp);
+        window.removeEventListener('touchend', this.handleMouseUp);
         window.removeEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('touchmove', this.handleMouseMove);
         window.removeEventListener('keydown', this.handleKeyDown);
     }
 
@@ -175,18 +179,21 @@ export default class InputPen extends LightningElement {
             this._backgroundCtx =
                 this._backgroundCanvasElement.getContext('2d');
 
-            const parentElement = this.template.querySelector(
+            this.drawingArea = this.template.querySelector(
                 '[data-element-id="drawing-area"]'
             );
-            this.canvasInfo.canvasElement.width = parentElement.clientWidth;
-            this.canvasInfo.canvasElement.height = parentElement.clientHeight;
-            this._backgroundCanvasElement.width = parentElement.clientWidth;
-            this._backgroundCanvasElement.height = parentElement.clientHeight;
+            this.canvasInfo.canvasElement.width = this.drawingArea.clientWidth;
+            this.canvasInfo.canvasElement.height =
+                this.drawingArea.clientHeight;
+            this._backgroundCanvasElement.width = this.drawingArea.clientWidth;
+            this._backgroundCanvasElement.height =
+                this.drawingArea.clientHeight;
 
             this.initResizeObserver();
             this.setToolManager();
             this.fillBackground();
             this.initCursorStyles();
+            this.computeCursorClass();
             this.computeSelectedToolClass();
             if (this._foregroundValue) {
                 this.initSrc();
@@ -336,7 +343,6 @@ export default class InputPen extends LightningElement {
 
     set mode(value) {
         this.setMode(value);
-        this.initCursorStyles();
         this._updatedDOM = true;
     }
 
@@ -401,7 +407,7 @@ export default class InputPen extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default 10
+     * @default 3
      */
     @api
     get size() {
@@ -442,10 +448,12 @@ export default class InputPen extends LightningElement {
     }
 
     set value(value) {
-        this._value = value;
-        this._foregroundValue = value;
-        if (this._rendered) {
-            this.initSrc();
+        if (value) {
+            this._value = value;
+            this._foregroundValue = value;
+            if (this._rendered) {
+                this.initSrc();
+            }
         }
     }
 
@@ -539,7 +547,12 @@ export default class InputPen extends LightningElement {
         let mergedCanvas = document.createElement('canvas');
         mergedCanvas.width = this.canvasInfo.canvasElement.width;
         mergedCanvas.height = this.canvasInfo.canvasElement.height;
-        if (mergedCanvas.width > 0 || mergedCanvas.width > 0) {
+        if (
+            mergedCanvas.width > 0 &&
+            mergedCanvas.height > 0 &&
+            this._backgroundCanvasElement.width > 0 &&
+            this._backgroundCanvasElement.height > 0
+        ) {
             const mergedCtx = mergedCanvas.getContext('2d');
             mergedCtx.drawImage(this._backgroundCanvasElement, 0, 0);
             mergedCtx.drawImage(this.canvasInfo.canvasElement, 0, 0);
@@ -862,9 +875,10 @@ export default class InputPen extends LightningElement {
             validValues: PEN_MODES.valid
         });
         this.canvasInfo.mode = this._mode;
-        this.computeCursorClass();
         this.computeSelectedToolClass();
         this.setToolManager();
+        this.computeCursorClass();
+        this.initCursorStyles();
     }
 
     /**
@@ -1151,7 +1165,6 @@ export default class InputPen extends LightningElement {
      */
     setDraw() {
         this.setMode('draw');
-        this.initCursorStyles();
     }
 
     /**
@@ -1159,7 +1172,6 @@ export default class InputPen extends LightningElement {
      */
     setErase() {
         this.setMode('erase');
-        this.initCursorStyles();
     }
 
     /**
@@ -1167,7 +1179,6 @@ export default class InputPen extends LightningElement {
      */
     setInk() {
         this.setMode('ink');
-        this.initCursorStyles();
     }
 
     /**
@@ -1175,7 +1186,6 @@ export default class InputPen extends LightningElement {
      */
     setPaint() {
         this.setMode('paint');
-        this.initCursorStyles();
     }
 
     setToolManager() {
@@ -1242,6 +1252,22 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Tests if the if the coordinate is in drawing area
+     * @param {Object} position {x: 0, y: 0}
+     * @returns {Boolean} is in drawing area
+     */
+    isInDrawingArea(position) {
+        if (!this.drawingArea) return false;
+        const boundaries = this.drawingArea.getBoundingClientRect();
+        const isInBounds =
+            boundaries.x <= position.x &&
+            position.x <= boundaries.right &&
+            boundaries.y <= position.y &&
+            position.y <= boundaries.bottom;
+        return isInBounds;
+    }
+
+    /**
      * Proxy Input Attributes updater.
      *
      * @param {object} attributes
@@ -1295,6 +1321,9 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseMove = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+        }
         this.manageMouseEvent('move', event);
     };
 
@@ -1304,6 +1333,9 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+        }
         this.manageMouseEvent('down', event);
     };
 
@@ -1313,6 +1345,9 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseUp = (event) => {
+        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
+            event.preventDefault();
+        }
         this.manageMouseEvent('up', event);
     };
 

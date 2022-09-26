@@ -1,10 +1,10 @@
 export const ACTIONS = [
     {
-        name: 'edit',
+        name: 'Standard.Tree.Edit',
         label: 'Edit'
     },
     {
-        name: 'add',
+        name: 'Standard.Tree.Add',
         label: 'Add',
         iconName: 'utility:add',
         visible: true

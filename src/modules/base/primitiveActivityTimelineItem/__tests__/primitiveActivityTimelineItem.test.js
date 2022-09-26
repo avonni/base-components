@@ -97,6 +97,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonLabel).toBeUndefined();
         expect(element.buttonVariant).toBe('neutral');
+        expect(element.checked).toBeFalsy();
         expect(element.closed).toBeFalsy();
         expect(element.dateFormat).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
@@ -381,6 +382,33 @@ describe('Primitive Activity Timeline Item', () => {
                 element.shadowRoot.querySelector('lightning-spinner');
             expect(spinner).toBeTruthy();
             expect(spinner.alternativeText).toBe('This is a loading text');
+        });
+    });
+
+    // checked
+    it('Activity timeline item: checked = false', () => {
+        element.fields = FIELDS;
+        element.hasCheckbox = true;
+        element.checked = false;
+
+        return Promise.resolve().then(() => {
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-checkbox"]'
+            );
+            expect(checkbox.checked).toBeFalsy();
+        });
+    });
+
+    it('Activity timeline item: checked = true', () => {
+        element.fields = FIELDS;
+        element.hasCheckbox = true;
+        element.checked = true;
+
+        return Promise.resolve().then(() => {
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-checkbox"]'
+            );
+            expect(checkbox.checked).toBeTruthy();
         });
     });
 
