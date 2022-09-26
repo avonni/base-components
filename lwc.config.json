@@ -291,6 +291,10 @@
             "path": "src/modules/base/primitiveCarouselItem/primitiveCarouselItem.js"
         },
         {
+            "name": "c/primitiveCellAvatar",
+            "path": "src/modules/base/primitiveCellAvatar/primitiveCellAvatar.js"
+        },
+        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
