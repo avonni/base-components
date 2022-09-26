@@ -12,6 +12,7 @@
  * @name items
  * @property {string} name Required. Unique name of the item.
  * @property {string} title Title of the item, displayed in the item header.
+ * @property {boolean} checked If true and `hasCheckbox` is true, the checkbox will be checked. Defaults to false.
  * @property {string} description Description of the item, displayed under the title.
  * @property {(Date|number|string)} datetimeValue Date/time value of the item. It can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} href URL to use as a link for the title.
