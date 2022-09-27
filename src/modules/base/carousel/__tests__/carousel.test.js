@@ -416,9 +416,25 @@ describe('Carousel', () => {
         element.smallItemsPerPanel = 3;
         element.items = items;
 
-        return Promise.resolve().then(() => {
-            expect(element.smallItemsPerPanel).toBe(3);
-        });
+        return Promise.resolve()
+            .then(() => {
+                const carousel = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-carousel-container"]'
+                );
+                jest.spyOn(carousel, 'offsetWidth', 'get').mockImplementation(
+                    () => 500
+                );
+            })
+            .then(() => {
+                const item = element.shadowRoot.querySelector(
+                    'div.slds-carousel__panel'
+                );
+                expect(item.style).toEqual(
+                    'flex-basis: 33.333333333333336%; width: 33.333333333333336%'
+                );
+
+                expect(element.smallItemsPerPanel).toBe(3);
+            });
     });
 
     it('Carousel: medium items per panel', () => {
