@@ -74,6 +74,7 @@
                                 type="checkbox"
                                 value={resource.value}
                                 style={resource.style}
+                                data-element-id="lightning-input-resource"
                                 onchange={handleResourceToggle}
                             ></lightning-input>
                         </template>
@@ -220,7 +221,6 @@
                                 class="avonni-scheduler__calendar-header"
                                 available-time-frames={availableTimeFrames}
                                 headers={hourHeaders}
-                                scroll-left-offset={firstColWidth}
                                 start={start}
                                 time-span={hourHeadersTimeSpan}
                                 variant="vertical"
@@ -275,6 +275,7 @@
                                                             avonni-scheduler__calendar-cell-month
                                                             slds-text-align_center
                                                         "
+                                                        data-element-id="div-month-cell-content"
                                                     >
                                                         <div
                                                             class="
@@ -432,6 +433,7 @@
                             <lightning-spinner
                                 alternative-text={loadingStateAlternativeText}
                                 size="large"
+                                data-element-id="lightning-spinner-loader"
                             ></lightning-spinner>
                         </div>
                     </template>
@@ -520,7 +522,7 @@
                         <c-primitive-scheduler-event-occurrence
                             key={occurrence.key}
                             class="slds-m-bottom_xx-small"
-                            color={occurrence.color}
+                            color={occurrence.event.color}
                             date-format={dateFormat}
                             disabled={occurrence.event.disabled}
                             event-data={occurrence.event.data}
@@ -538,6 +540,7 @@
                             theme={occurrence.event.theme}
                             to={occurrence.to}
                             variant="calendar-month"
+                            data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"
                             data-key={occurrence.key}
                             onprivatecontextmenu={handleShowMorePopoverEventContextMenu}
                             onprivatedblclick={handleEventDoubleClick}

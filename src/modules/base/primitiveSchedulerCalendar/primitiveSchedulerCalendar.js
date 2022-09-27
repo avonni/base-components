@@ -516,6 +516,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     @api
     newEvent(x, y, saveEvent) {
+        if (!this.firstSelectedResource) {
+            return;
+        }
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
         const cell = getElementOnYAxis(column, y, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
@@ -1447,7 +1450,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence.
      */
     handleEmptySpotContextMenu(event) {
-        if (this.isDisabledCell(event.currentTarget)) {
+        if (
+            !this.firstSelectedResource ||
+            this.isDisabledCell(event.currentTarget)
+        ) {
             return;
         }
         super.handleEmptySpotContextMenu(event);
@@ -1739,7 +1745,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle the closing of a "Show more" popover, in the month view.
+     * Handle the closing of a "Show more" popover, in the month or year view.
      */
     handleShowMorePopoverClose() {
         const date = this.showMorePopover && this.showMorePopover.date;
