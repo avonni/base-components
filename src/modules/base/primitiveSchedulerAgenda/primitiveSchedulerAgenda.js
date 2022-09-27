@@ -213,6 +213,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     @api
     newEvent(x, y, saveEvent) {
+        if (!this.firstSelectedResource) {
+            return;
+        }
         const dayGroupElement = getElementOnYAxis(
             this.template,
             y,
@@ -370,5 +373,19 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    handleEmptySpotContextMenu(event) {
+        if (!this.firstSelectedResource) {
+            return;
+        }
+
+        super.handleEmptySpotContextMenu(event);
     }
 }
