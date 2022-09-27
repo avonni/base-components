@@ -260,16 +260,6 @@ export default class Slider extends LightningElement {
         }
     }
 
-    initMaxDefaultValue() {
-        const normalizedMax = !isNaN(this._initMax)
-            ? this._initMax
-            : this.unit === 'percent'
-            ? DEFAULT_MAX_PERCENTAGE
-            : DEFAULT_MAX;
-        this.computedMax = normalizedMax;
-        this._max = normalizedMax;
-    }
-
     /**
      * The minimum value of the input slider.
      *
@@ -1056,6 +1046,19 @@ export default class Slider extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Initialization of the max attribute.
+     */
+    initMaxDefaultValue() {
+        const normalizedMax = !isNaN(this._initMax)
+            ? this._initMax
+            : this.unit === 'percent'
+            ? DEFAULT_MAX_PERCENTAGE
+            : DEFAULT_MAX;
+        this.computedMax = normalizedMax;
+        this._max = normalizedMax;
+    }
 
     /**
      * Caps the value if it overflows min or max.
