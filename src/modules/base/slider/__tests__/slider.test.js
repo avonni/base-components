@@ -77,15 +77,15 @@ describe('Slider', () => {
     it('Default attributes', () => {
         expect(element.disabled).toEqual(false);
         expect(element.disableSwap).toEqual(false);
-        expect(element.max).toEqual(100);
+        expect(element.hideMinMaxValues).toEqual(false);
+        expect(element.hideTrack).toEqual(false);
+        expect(element.label).toBeUndefined();
+        expect(element.max).toBe(100);
         expect(element.messageWhenRangeOverflow).toBeUndefined();
         expect(element.messageWhenRangeUnderflow).toBeUndefined();
         expect(element.messageWhenStepMismatch).toBeUndefined();
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
-        expect(element.label).toBeUndefined();
-        expect(element.hideMinMaxValues).toEqual(false);
-        expect(element.hideTrack).toEqual(false);
         expect(element.showPin).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
         expect(element.size).toEqual('responsive');
@@ -650,12 +650,15 @@ describe('Slider', () => {
     it('unit = percent', () => {
         element.unit = 'percent';
         element.min = 0;
-        element.max = 0;
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="lightning-formatted-number"]'
             );
+            const max = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number-max"]'
+            );
+            expect(max.value).toEqual(1);
             formattedNumbers.forEach((formattedNumber) => {
                 expect(formattedNumber.formatStyle).toBe('percent');
             });
