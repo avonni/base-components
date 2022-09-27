@@ -150,7 +150,7 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
-    initialRender = false;
+    initialRender = true;
     _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
     _actionsPosition = ACTIONS_POSITIONS.default;
@@ -171,21 +171,27 @@ export default class Carousel extends LightningElement {
     resizeObserver;
 
     renderedCallback() {
-        if (!this.initialRender) {
+        if (this.initialRender) {
             this.initCarousel();
             if (!this.disableAutoScroll) {
                 this.play();
             }
         }
+
         if (!this.resizeObserver) {
             this.initWrapObserver();
         }
 
         this.computeItemsPerPanel();
-        this.initialRender = true;
+        this.initialRender = false;
+    }
+
+    connectedCallback() {
+        this._connected = true;
     }
 
     disconnectedCallback() {
+        this._connected = false;
         if (this.resizeObserver) {
             this.resizeObserver.disconnect();
             this.resizeObserver = undefined;
@@ -321,7 +327,9 @@ export default class Carousel extends LightningElement {
                 actions: item.actions || []
             });
         });
-        this.initCarousel();
+        if (this._connected) {
+            this.initCarousel();
+        }
     }
 
     /**
@@ -627,7 +635,6 @@ export default class Carousel extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
-        console.log('init observer');
         if (this.carouselIsResponsive) {
             const resizeObserver = new AvonniResizeObserver(() => {
                 this.computeItemsPerPanel();
@@ -792,7 +799,6 @@ export default class Carousel extends LightningElement {
 
         const previousItemsPerPanel = this.currentItemsPerPanel;
         const carouselWidth = this.carouselContainer.offsetWidth;
-        console.log('compute items per panel', carouselWidth);
         let setSize = 'default';
 
         if (
@@ -814,7 +820,10 @@ export default class Carousel extends LightningElement {
 
         const calculatedItemsPerPanel = this.columnsCount[setSize];
 
-        if (calculatedItemsPerPanel !== previousItemsPerPanel) {
+        if (
+            calculatedItemsPerPanel !== previousItemsPerPanel &&
+            this._connected
+        ) {
             this.currentItemsPerPanel = calculatedItemsPerPanel;
             this.initCarousel();
         }
