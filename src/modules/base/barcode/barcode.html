@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div if:true={validCode} class="slds-text-align_center">
+    <div class={computedCanvasClass}>
         <canvas
             class="avonni-barcode_code-position"
             data-element-id="avonni-barcode-canvas"

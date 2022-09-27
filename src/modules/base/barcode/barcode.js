@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
+import { classSet } from '../utils/classSet';
 
 const BARCODE_TYPES = [
     'auspost',
@@ -182,11 +183,13 @@ export default class Barcode extends LightningElement {
     _background = DEFAULT_BACKGROUND;
     _color = DEFAULT_COLOR;
     _textColor = DEFAULT_TEXT_COLOR;
-    _checksum = true;
+    _checksum = false;
     _errorMessage;
     _hideValue = false;
     _textAlignment = TEXT_ALIGNMENT.default;
     _type;
+    _width = '100%';
+    _height;
 
     textXAlign = 'center';
     textYAlign = 'below';
@@ -220,11 +223,11 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * Show the barcode checksum. If set to false, the checksum value will be hidden.
+     * Set to true to show the checksum value.
      *
      * @public
      * @type {boolean}
-     * @default true
+     * @default false
      */
     @api
     get checksum() {
@@ -252,17 +255,18 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The max-height of the barcode. By default the height depends on the width and the type of barcode.
+     * The maximum height of the barcode. The value accepts length values of any units. Unitless numbers are converted to pixels. By default the height depends on the width.
      *
      * @public
-     * @type {number}
+     * @type {string|number}
      */
     @api
     get height() {
         return this._height;
     }
     set height(value) {
-        this._height = parseInt(value, 10) || null;
+        value = value !== '' ? value : undefined;
+        this._height = !isNaN(value) ? `${value}px` : value;
         this.setCanvasStyle();
     }
 
@@ -363,10 +367,10 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The width of the barcode in pixels. The width defaults to 100%.
+     * The maximum width of the barcode. The value accepts length values of any units. Unitless numbers are converted to pixels. Defaults to 100%.
      *
      * @public
-     * @type {number}
+     * @type {string|number}
      * @default 100%
      */
     @api
@@ -374,7 +378,8 @@ export default class Barcode extends LightningElement {
         return this._width;
     }
     set width(value) {
-        this._width = parseInt(value, 10) || null;
+        value = value !== '' ? value : '100%';
+        this._width = !isNaN(value) ? `${value}px` : value;
         this.setCanvasStyle();
     }
 
@@ -388,6 +393,12 @@ export default class Barcode extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="avonni-barcode-canvas"]'
         );
+    }
+
+    get computedCanvasClass() {
+        return classSet('slds-text-align_center').add({
+            'slds-hide': !this.validCode
+        });
     }
 
     get errorMessage() {
@@ -482,14 +493,8 @@ export default class Barcode extends LightningElement {
         const canvas = this.canvas;
 
         if (canvas) {
-            if (this.width) {
-                canvas.style.width = `${this.width}px`;
-            } else {
-                canvas.style.width = '100%';
-            }
-            if (this.height) {
-                canvas.style.maxHeight = `${this.height}px`;
-            }
+            canvas.style.width = this.width;
+            canvas.style.maxHeight = this.height;
         }
     }
 }

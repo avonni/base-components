@@ -64,11 +64,11 @@ export default {
         },
         height: {
             control: {
-                type: 'number'
+                type: 'text'
             },
             description: 'Defines the max-height of the barcode.',
             table: {
-                type: { summary: 'number' },
+                type: { summary: 'string' },
                 category: 'Layout'
             }
         },
@@ -244,22 +244,22 @@ export default {
         },
         width: {
             control: {
-                type: 'number'
+                type: 'text'
             },
             description: 'Defines the width of the barcode.',
             table: {
-                type: { summary: 'number' },
+                type: { summary: 'string' },
                 category: 'Layout'
             }
         }
     },
     args: {
         background: '#ffffff',
-        checksum: true,
+        checksum: false,
         color: '#000000',
         hideValue: false,
         textColor: '#000000',
-        textAlignment: 'bottom-center',
+        textAlignment: 'bottom-center'
     }
 };
 
@@ -269,33 +269,33 @@ export const azteccode = Template.bind({});
 azteccode.args = {
     value: '12000-311123',
     type: 'azteccode',
-    height: 150
+    height: '150'
 };
 
 export const code11 = Template.bind({});
 code11.args = {
     value: '12000-311123',
     type: 'code11',
-    height: 150
+    height: '150'
 };
 
 export const datamatrix = Template.bind({});
 datamatrix.args = {
     value: 'https://www.avonni.app',
     type: 'datamatrix',
-    height: 150
+    height: '150'
 };
 
 export const upcecomposite = Template.bind({});
 upcecomposite.args = {
     value: '00123457|(15)021231',
     type: 'upcecomposite',
-    height: 150
+    height: '150'
 };
 
 export const qrcode = Template.bind({});
 qrcode.args = {
     value: 'https://www.avonni.app',
     type: 'qrcode',
-    height: 150
+    height: '150'
 };
