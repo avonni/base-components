@@ -219,6 +219,7 @@ export function updateOccurrencesOffset({
     // Compute the level of the occurrences in the resource
     const previousOccurrences = [];
     occurrenceElements.forEach((occElement) => {
+        occElement.updatePosition();
         const isPlaceholder = occElement.dataset.isPlaceholder;
         const occurrence = occElement.occurrence;
         const isVisiblePlaceholder = occElement.dataset.columnIndex === '0';
