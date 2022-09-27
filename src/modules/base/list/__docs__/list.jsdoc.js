@@ -180,7 +180,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-color-background-sortable-hover
- * @default --avonni-list-item-color-background-hover, rgba(207, 207, 207, 0.133)
+ * @default --avonni-list-item-color-background-hover, rgba(207, 207, 207, 0.25)
  * @type color
  */
 /**
