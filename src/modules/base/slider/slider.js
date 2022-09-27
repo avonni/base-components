@@ -1051,11 +1051,14 @@ export default class Slider extends LightningElement {
      * Initialization of the max attribute.
      */
     initMaxDefaultValue() {
-        const normalizedMax = !isNaN(this._initMax)
-            ? this._initMax
-            : this.unit === 'percent'
-            ? DEFAULT_MAX_PERCENTAGE
-            : DEFAULT_MAX;
+        let normalizedMax;
+        if (!isNaN(this._initMax)) {
+            normalizedMax = this._initMax;
+        } else {
+            normalizedMax =
+                this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
+        }
+
         this.computedMax = normalizedMax;
         this._max = normalizedMax;
     }
