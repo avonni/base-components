@@ -310,15 +310,6 @@ BaseWithThreeItemsPerPanelAndVariantShaded.args = {
     actionsPosition: 'bottom-left'
 };
 
-export const BaseWithFiveItemsPerPanel = Template.bind({});
-BaseWithFiveItemsPerPanel.args = {
-    items: items,
-    itemsPerPanel: 5,
-    assistiveText: assistiveText,
-    actionsVariant: 'bare',
-    actionsPosition: 'bottom-left'
-};
-
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
     items: menuItems,
