@@ -131,6 +131,8 @@ const ex = [
 ];
 
 let element;
+const spy = jest.fn();
+
 describe('Carousel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -139,6 +141,7 @@ describe('Carousel', () => {
     });
 
     beforeEach(() => {
+        window.addEventListener('resize', spy);
         element = createElement('base-carousel', {
             is: Carousel
         });
@@ -412,7 +415,7 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel: small items per panel', () => {
+    it.only('Carousel: small items per panel', () => {
         element.smallItemsPerPanel = 3;
         element.items = items;
 
@@ -422,16 +425,25 @@ describe('Carousel', () => {
                     '[data-element-id="avonni-carousel-container"]'
                 );
                 jest.spyOn(carousel, 'offsetWidth', 'get').mockImplementation(
-                    () => 500
+                    () => 1000
                 );
+                console.log('set width to 1000');
+                element.dispatchEvent(new CustomEvent('resize'));
+            })
+            .then(() => {
+
+                const carousel = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-carousel-container"]'
+                );
+                console.log(carousel.offsetWidth)
+                expect(spy).not.toHaveBeenCalled();
             })
             .then(() => {
                 const item = element.shadowRoot.querySelector(
                     'div.slds-carousel__panel'
                 );
-                expect(item.style).toEqual(
-                    'flex-basis: 33.333333333333336%; width: 33.333333333333336%'
-                );
+                expect(item.style.flexBasis).toEqual('33.333333333333336%');
+                expect(item.style.width).toEqual('33.333333333333336%');
 
                 expect(element.smallItemsPerPanel).toBe(3);
             });

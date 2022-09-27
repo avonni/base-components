@@ -627,6 +627,7 @@ export default class Carousel extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
+        console.log('init observer');
         if (this.carouselIsResponsive) {
             const resizeObserver = new AvonniResizeObserver(() => {
                 this.computeItemsPerPanel();
@@ -791,6 +792,7 @@ export default class Carousel extends LightningElement {
 
         const previousItemsPerPanel = this.currentItemsPerPanel;
         const carouselWidth = this.carouselContainer.offsetWidth;
+        console.log('compute items per panel', carouselWidth);
         let setSize = 'default';
 
         if (
