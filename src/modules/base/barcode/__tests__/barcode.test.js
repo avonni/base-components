@@ -34,8 +34,6 @@ import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
 import bwipjs from 'bwip-js';
 
-const handler = jest.fn();
-bwipjs.toCanvas = handler;
 const baseParameters = {
     backgroundcolor: 'ffffff',
     barcolor: '000000',
@@ -48,20 +46,22 @@ const baseParameters = {
     textyalign: 'below'
 };
 
+const handler = jest.fn();
+bwipjs.toCanvas = handler;
 let element;
 describe('Barcode', () => {
-    afterEach(() => {
-        while (document.body.firstChild) {
-            document.body.removeChild(document.body.firstChild);
-        }
-        jest.clearAllMocks();
-    });
-
     beforeEach(() => {
         element = createElement('avonni-barcode', {
             is: Barcode
         });
         document.body.appendChild(element);
+    });
+
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+        jest.clearAllMocks();
     });
 
     it('Barcode: Default attributes', () => {
@@ -141,7 +141,7 @@ describe('Barcode', () => {
         });
     });
 
-    it('Barcode: hideValue', () => {
+    it('Barcode: hide-value', () => {
         element.value = '12345';
         element.type = 'code128';
         element.hideValue = true;
@@ -181,7 +181,7 @@ describe('Barcode', () => {
     });
 
     // LAYOUT
-    it('Barcode: text-alignment, height and width as numbers', () => {
+    it('Barcode: height and width as numbers and text-alignment', () => {
         element.value = '1234';
         element.type = 'code11';
         element.height = 200;

@@ -33,7 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
-import { classSet } from '../utils/classSet';
+import { classSet } from 'c/utils';
 
 const BARCODE_TYPES = [
     'auspost',
@@ -265,8 +265,7 @@ export default class Barcode extends LightningElement {
         return this._height;
     }
     set height(value) {
-        value = value !== '' ? value : undefined;
-        this._height = !isNaN(value) ? `${value}px` : value;
+        this._height = this.normalizeDimension(value, '');
         this.setCanvasStyle();
     }
 
@@ -378,8 +377,7 @@ export default class Barcode extends LightningElement {
         return this._width;
     }
     set width(value) {
-        value = value !== '' ? value : '100%';
-        this._width = !isNaN(value) ? `${value}px` : value;
+        this._width = this.normalizeDimension(value, '100%');
         this.setCanvasStyle();
     }
 
@@ -454,6 +452,21 @@ export default class Barcode extends LightningElement {
         return color.replace('#', '');
     }
 
+    /**
+     * Normalize values for height and width.
+     */
+    normalizeDimension(value, defaultValue) {
+        let normalizedValue;
+        if (value === undefined || value === null || value === '') {
+            normalizedValue = defaultValue;
+        } else if (!isNaN(value)) {
+            normalizedValue = `${value}px`;
+        } else {
+            normalizedValue = value;
+        }
+        return normalizedValue;
+    }
+
     parseErrorMessage(message) {
         let errorMessage = message.replace(/bwipp.|bwip-js: /gi, '');
         errorMessage = errorMessage.replace(' bcid ', ' type ');
@@ -487,14 +500,12 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * Set the canvas style
+     * Set the canvas style.
      */
     setCanvasStyle() {
-        const canvas = this.canvas;
-
-        if (canvas) {
-            canvas.style.width = this.width;
-            canvas.style.maxHeight = this.height;
+        if (this.canvas) {
+            this.canvas.style.width = this.width;
+            this.canvas.style.maxHeight = this.height;
         }
     }
 }
