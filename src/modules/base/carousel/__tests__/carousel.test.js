@@ -34,7 +34,8 @@ import { createElement } from 'lwc';
 import Carousel from 'c/carousel';
 
 // not tested
-// scroll duration
+// scroll duration,
+// smallItemsPerPanel, mediumItemsPerPanel, largeItemsPerPanel as they depend on the resize observer
 
 const bareActions = [
     {
@@ -66,7 +67,7 @@ const items = [
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -84,7 +85,7 @@ const items = [
         name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -111,7 +112,7 @@ const items = [
         name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -131,6 +132,7 @@ const ex = [
 ];
 
 let element;
+
 describe('Carousel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -145,8 +147,6 @@ describe('Carousel', () => {
         document.body.appendChild(element);
     });
 
-    // const flushPromises = () => new Promise(setImmediate);
-
     it('Carousel: Default attributes', () => {
         expect(element.assistiveText).toMatchObject({
             autoplayButton: 'Play / Stop auto-play',
@@ -158,11 +158,14 @@ describe('Carousel', () => {
         expect(element.disableAutoScroll).toBeFalsy();
         expect(element.scrollDuration).toBe(5);
         expect(element.indicatorVariant).toBe('base');
-        expect(element.isIfinite).toBeFalsy();
+        expect(element.isInfinite).toBeFalsy();
         expect(element.currentPanel).toBeUndefined();
         expect(element.hideIndicator).toBeFalsy();
         expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
         expect(element.itemsPerPanel).toBe(1);
+        expect(element.smallItemsPerPanel).toBeUndefined();
+        expect(element.mediumItemsPerPanel).toBeUndefined();
+        expect(element.largeItemsPerPanel).toBeUndefined();
         expect(element.actionsVariant).toBe('border');
         expect(element.actionsPosition).toBe('bottom-center');
     });
@@ -415,7 +418,7 @@ describe('Carousel', () => {
     it('Carousel: infinite last goes back to first', () => {
         element.items = items;
         element.hideIndicator = false;
-        element.isIfinite = true;
+        element.isInfinite = true;
         const lastItem = items.length - 1;
 
         return Promise.resolve()
@@ -438,7 +441,7 @@ describe('Carousel', () => {
     it('Carousel: infinite first goes back to last', () => {
         element.items = items;
         element.hideIndicator = false;
-        element.isIfinite = true;
+        element.isInfinite = true;
         const lastItem = items.length - 1;
 
         return Promise.resolve()
