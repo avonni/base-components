@@ -1,7 +1,9 @@
 import { LightningElement } from 'lwc';
 
 export default class SingleLineWithInfiniteLoading extends LightningElement {
-
+    imageAttributes = {
+        position: 'bottom'
+    }
     isLoading = false;
     enableInfiniteLoading = true;
     items = [
