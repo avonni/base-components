@@ -563,11 +563,13 @@ describe('List', () => {
         return Promise.resolve().then(() => {
             const bodyColor = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-list-item-body-text-color"]'
-            )
+            );
 
-            expect(bodyColor.classList).toContain('avonni-list__item-text-color_inverse')
-        })
-    })
+            expect(bodyColor.classList).toContain(
+                'avonni-list__item-text-color_inverse'
+            );
+        });
+    });
 
     /* ----- METHOD ----- */
 
@@ -735,40 +737,37 @@ describe('List', () => {
 
     it('List: Media-Action, Actionclick event, multiple actions', () => {
         const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
+        element.addEventListener('mediaactionclick', handler);
         element.items = ITEMS;
         element.mediaActions = ACTIONS;
 
-        return Promise.resolve()
-            .then(() => {
-                const actionMenu = element.shadowRoot.querySelector(
-                    '[data-element-id="media-action-menu"]'
-                );
-                actionMenu.dispatchEvent(
-                    new CustomEvent('select', {
-                        detail: {
-                            value: ACTIONS[0].name
-                        }
-                    })
-                );
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                    ITEMS[0]
-                );
-                expect(handler.mock.calls[0][0].detail.name).toBe(
-                    ACTION[0].name
-                );
-                expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                    ITEMS[0].name
-                );
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            });
+        return Promise.resolve().then(() => {
+            const actionMenu = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-menu"]'
+            );
+            actionMenu.dispatchEvent(
+                new CustomEvent('select', {
+                    detail: {
+                        value: ACTIONS[0].name
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
     });
     it('List: Media-Action Actionclick event, one action', () => {
         const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
+        element.addEventListener('mediaactionclick', handler);
         element.items = ITEMS;
         element.mediaActions = ACTION;
 
@@ -794,7 +793,7 @@ describe('List', () => {
 
     it('List: Media-Action, Actionclick event, one icon action', () => {
         const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
+        element.addEventListener('mediaactionclick', handler);
         element.items = ITEMS;
         element.mediaActions = ACTION_NO_LABEL;
 

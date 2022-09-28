@@ -1792,7 +1792,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Handles a click on an item action.
+     * Handles a click on an item's action.
      *
      * @param {Event} event
      */
@@ -1801,29 +1801,6 @@ export default class List extends LightningElement {
             ? event.detail.value
             : event.target.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-        this.dispatchActionClickEvent(itemIndex, actionName);
-    }
-
-    /**
-     * Handles a click on an item media-action.
-     *
-     * @param {Event} event
-     */
-    handleMediaActionClick(event) {
-        const actionName = this.hasMultipleMediaActions
-            ? event.detail.value
-            : event.target.value;
-        const itemIndex = event.currentTarget.dataset.itemIndex;
-        this.dispatchActionClickEvent(itemIndex, actionName);
-    }
-
-    /**
-     * Dispatch the custom event triggered when actions and media-actions are clicked.
-     *
-     * @param {string} itemIndex
-     * @param {string} actionName
-     */
-    dispatchActionClickEvent(itemIndex, actionName) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -1836,6 +1813,38 @@ export default class List extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    targetName: this.computedItems[itemIndex].name
+                }
+            })
+        );
+    }
+
+    /**
+     * Handles a click on an item's media action.
+     *
+     * @param {Event} event
+     */
+    handleMediaActionClick(event) {
+        const actionName = this.hasMultipleMediaActions
+            ? event.detail.value
+            : event.target.value;
+        const itemIndex = event.currentTarget.dataset.itemIndex;
+
+        /**
+         * The event fired when a user clicks on a media action.
+         *
+         * @event
+         * @name mediaactionclick
+         * @param {string} name  Name of the media action clicked.
+         * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('mediaactionclick', {
                 detail: {
                     name: actionName,
                     item: this.cleanUpItem(this.computedItems[itemIndex]),
