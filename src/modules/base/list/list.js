@@ -800,7 +800,8 @@ export default class List extends LightningElement {
         )
             .add({
                 'slds-grid_vertical': this._currentColumnCount === 1,
-                'slds-wrap': this._currentColumnCount > 1,
+                'slds-wrap':
+                    this._currentColumnCount > 1 && this.variant === 'base',
                 'avonni-list__items-without-divider': this.divider === '',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space avonni-list__items-have-top-divider':
@@ -834,7 +835,9 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable && this._currentColumnCount === 1,
+                    this.sortable &&
+                    this._currentColumnCount === 1 &&
+                    this.variant === 'base',
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
@@ -851,8 +854,10 @@ export default class List extends LightningElement {
      * Only enable scrolling if enable or has been used
      */
     get computedListContainerClass() {
-        return classSet('slds-grid slds-col')
-            .add({'slds-scrollable_y': this._hasUsedInfiniteLoading})
+        return classSet('slds-grid slds-col').add({
+            'slds-scrollable_y':
+                this._hasUsedInfiniteLoading && this.variant === 'base'
+        });
     }
 
     /*
@@ -1581,9 +1586,6 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (this._currentColumnCount > 1) {
-            return;
-        }
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1614,13 +1616,9 @@ export default class List extends LightningElement {
             return;
         }
 
-        if (this._keyboardDragged) {
-            this._keyboardDragged = false;
-            return;
-        }
-
         // Stop dragging if the click was on a button menu
         if (
+            (this._currentColumnCount > 1 && this.variant !== 'base') ||
             !this.sortable ||
             event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
             event.target.tagName.startsWith('A')
@@ -1663,11 +1661,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     drag(event) {
-        if (
-            !this._draggedElement ||
-            this._keyboardDragged ||
-            this._keyboardDragged
-        ) {
+        if (!this._draggedElement || this._keyboardDragged) {
             return;
         }
 
@@ -1695,7 +1689,6 @@ export default class List extends LightningElement {
             currentY = mouseY;
         }
         this._currentY = currentY;
-        this._currentY = currentY;
 
         if (!this._scrollStep) {
             // Stick the dragged item to the mouse position
@@ -1708,9 +1701,6 @@ export default class List extends LightningElement {
         if (buttonMenu) {
             buttonMenu.classList.remove('slds-is-open');
         }
-
-        this.stopPropagation(event);
-        this.autoScroll(this._currentY);
 
         this.stopPropagation(event);
         this.autoScroll(this._currentY);
@@ -1869,9 +1859,6 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (this._currentColumnCount > 1) {
-            return;
-        }
         // If space bar is pressed, select or drop the item
         if (event.key === 'Enter') {
             this.handleItemClick(event);
@@ -1897,11 +1884,17 @@ export default class List extends LightningElement {
             let targetIndex;
 
             if (
+                this._currentColumnCount === 1 &&
+                this.variant === 'base' &&
                 event.key === 'ArrowDown' &&
                 index + 1 < this.computedItems.length
             ) {
                 targetIndex = index + 1;
-            } else if (event.key === 'ArrowUp') {
+            } else if (
+                this._currentColumnCount === 1 &&
+                this.variant === 'base' &&
+                event.key === 'ArrowUp'
+            ) {
                 targetIndex = index - 1;
             }
 
