@@ -854,9 +854,7 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable &&
-                    this._currentColumnCount === 1 &&
-                    this.variant === 'base',
+                    this.sortable && this._currentColumnCount === 1,
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
@@ -873,9 +871,8 @@ export default class List extends LightningElement {
      * Only enable scrolling if enable or has been used
      */
     get computedListContainerClass() {
-        return classSet('slds-grid slds-col').add({
-            'slds-scrollable_y': this._hasUsedInfiniteLoading
-        });
+        return classSet('slds-grid slds-col')
+            .add({'slds-scrollable_y': this._hasUsedInfiniteLoading})
     }
 
     /*
@@ -1604,7 +1601,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (this._currentColumnCount > 1 || this.variant !== 'base') {
+        if (this._currentColumnCount > 1) {
             return;
         }
         if (event.button === 0) {
