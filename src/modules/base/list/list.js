@@ -553,6 +553,26 @@ export default class List extends LightningElement {
      */
 
     /**
+     * Size of the button icon visible when only one action is set.
+     *
+     * @type {string}
+     */
+    get actionButtonIconSize() {
+        return this.imageAttributes.position === 'overlay' ? 'small' : 'medium';
+    }
+
+    /**
+     * Variant of the button icon visible when only one action is set.
+     *
+     * @type {string}
+     */
+    get actionButtonIconVariant() {
+        return this.imageAttributes.position === 'overlay'
+            ? 'border-filled'
+            : 'bare';
+    }
+
+    /**
      * Apply object fit classes to images.
      */
     get computedImageMediaClass() {
