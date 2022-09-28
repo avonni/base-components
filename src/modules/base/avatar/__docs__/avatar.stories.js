@@ -409,16 +409,6 @@ const actions = [
 const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
-Base.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 64,
-                height: 64
-            }
-        }
-    }
-}
 Base.args = {
     alternativeText: 'JD',
     hideAvatarDetails: true,
@@ -428,16 +418,6 @@ Base.args = {
 };
 
 export const BaseWithStatusBottomLeft = Template.bind({});
-BaseWithStatusBottomLeft.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 88,
-                height: 88
-            }
-        }
-    }
-}
 BaseWithStatusBottomLeft.args = {
     alternativeText: 'Invitation Declined',
     hideAvatarDetails: true,
@@ -451,16 +431,6 @@ BaseWithStatusBottomLeft.args = {
 };
 
 export const BaseWithPresenceTopRight = Template.bind({});
-BaseWithPresenceTopRight.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 80,
-                height: 80
-            }
-        }
-    }
-}
 BaseWithPresenceTopRight.args = {
     alternativeText: 'Invitation Declined',
     hideAvatarDetails: true,
@@ -474,16 +444,6 @@ BaseWithPresenceTopRight.args = {
 };
 
 export const BaseWithPresenceAndStatus = Template.bind({});
-BaseWithPresenceAndStatus.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 80,
-                height: 80
-            }
-        }
-    }
-}
 BaseWithPresenceAndStatus.args = {
     alternativeText: 'Invitation Declined',
     hideAvatarDetails: true,
@@ -500,16 +460,6 @@ BaseWithPresenceAndStatus.args = {
 };
 
 export const BaseWithDetails = Template.bind({});
-BaseWithDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 BaseWithDetails.args = {
     alternativeText: 'Invitation Declined',
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -527,16 +477,6 @@ BaseWithDetails.args = {
 };
 
 export const BaseWithCenteredDetails = Template.bind({});
-BaseWithCenteredDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 104,
-                height: 180
-            }
-        }
-    }
-}
 BaseWithCenteredDetails.args = {
     alternativeText: 'Invitation Declined',
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -555,16 +495,6 @@ BaseWithCenteredDetails.args = {
 };
 
 export const BaseWithLeftDetails = Template.bind({});
-BaseWithLeftDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 BaseWithLeftDetails.args = {
     alternativeText: 'Invitation Declined',
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -583,16 +513,6 @@ BaseWithLeftDetails.args = {
 };
 
 export const Circle = Template.bind({});
-Circle.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 64,
-                height: 64
-            }
-        }
-    }
-}
 Circle.args = {
     alternativeText: 'JS',
     hideAvatarDetails: true,
@@ -603,16 +523,6 @@ Circle.args = {
 };
 
 export const CircleLargeWithEntity = Template.bind({});
-CircleLargeWithEntity.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 80,
-                height: 80
-            }
-        }
-    }
-}
 CircleLargeWithEntity.args = {
     alternativeText: 'John Smith',
     hideAvatarDetails: true,
@@ -626,16 +536,6 @@ CircleLargeWithEntity.args = {
 };
 
 export const CircleWithEntityIcon = Template.bind({});
-CircleWithEntityIcon.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 80,
-                height: 80
-            }
-        }
-    }
-}
 CircleWithEntityIcon.args = {
     alternativeText: 'John Smith',
     hideAvatarDetails: true,
@@ -648,16 +548,6 @@ CircleWithEntityIcon.args = {
 };
 
 export const CircleWithPresence = Template.bind({});
-CircleWithPresence.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 80,
-                height: 80
-            }
-        }
-    }
-}
 CircleWithPresence.args = {
     alternativeText: 'John Smith',
     hideAvatarDetails: true,
@@ -670,16 +560,6 @@ CircleWithPresence.args = {
 };
 
 export const CircleWithDetails = Template.bind({});
-CircleWithDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 CircleWithDetails.args = {
     alternativeText: 'John Smith',
     variant: 'circle',
@@ -695,16 +575,6 @@ CircleWithDetails.args = {
 };
 
 export const CircleWithCenteredDetails = Template.bind({});
-CircleWithCenteredDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 164,
-                height: 172
-            }
-        }
-    }
-}
 CircleWithCenteredDetails.args = {
     alternativeText: 'John Smith',
     variant: 'circle',
@@ -721,16 +591,6 @@ CircleWithCenteredDetails.args = {
 };
 
 export const CircleWithLeftDetails = Template.bind({});
-CircleWithLeftDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 CircleWithLeftDetails.args = {
     alternativeText: 'John Smith',
     variant: 'circle',
@@ -747,16 +607,6 @@ CircleWithLeftDetails.args = {
 };
 
 export const CircleWithPresenceAndDetails = Template.bind({});
-CircleWithPresenceAndDetails.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 CircleWithPresenceAndDetails.args = {
     alternativeText: 'John Smith',
     variant: 'circle',
@@ -771,16 +621,6 @@ CircleWithPresenceAndDetails.args = {
 };
 
 export const BaseWithTags = Template.bind({});
-BaseWithTags.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 300,
-                height: 150
-            }
-        }
-    }
-}
 BaseWithTags.args = {
     alternativeText: 'John Smith',
     size: 'xx-large',
@@ -795,16 +635,6 @@ BaseWithTags.args = {
 };
 
 export const BaseWithAction = Template.bind({});
-BaseWithAction.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 BaseWithAction.args = {
     alternativeText: 'John Smith',
     size: 'xx-large',
@@ -826,16 +656,6 @@ BaseWithAction.args = {
 };
 
 export const BaseWithActions = Template.bind({});
-BaseWithActions.story = {
-    parameters: {
-        screenshot: {
-            viewport: {
-                width: 200,
-                height: 104
-            }
-        }
-    }
-}
 BaseWithActions.args = {
     alternativeText: 'John Smith',
     size: 'xx-large',

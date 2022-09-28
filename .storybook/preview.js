@@ -5,13 +5,9 @@ import { viewports as viewportList } from 'c/utilsPrivate';
 export const decorators = [withScreenshot];
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
-    layout: 'centered',
+    // layout: 'centered', // uncomment before running storycap
     screenshot: {
         fullPage: false,
-        viewports: {
-            smaller: viewportList.small,
-            medium: viewportList.medium,
-            large: viewportList.large
-        }
+        viewports: { ...viewportList }
     }
 };
