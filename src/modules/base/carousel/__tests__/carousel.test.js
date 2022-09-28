@@ -132,7 +132,6 @@ const ex = [
 ];
 
 let element;
-const spy = jest.fn();
 
 describe('Carousel', () => {
     afterEach(() => {
@@ -142,7 +141,6 @@ describe('Carousel', () => {
     });
 
     beforeEach(() => {
-        window.addEventListener('resize', spy);
         element = createElement('base-carousel', {
             is: Carousel
         });
