@@ -70,7 +70,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-sizing-border
- * @default 1px;
+ * @default 1px
  * @type dimension
  */
 /**
@@ -88,97 +88,97 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-spacing-block-start
- * @default 0px;
+ * @default 0px
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-spacing-block-end
- * @default 0px;
+ * @default 0px
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-spacing-inline-start
- * @default 0px;
+ * @default 0px
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-spacing-inline-end
- * @default 0px;
+ * @default 0px
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-block-start
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-block-end
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-inline-start
- * @default 1rem;
+ * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-inline-end
- * @default 1rem;
+ * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-body-spacing-block-start
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-body-spacing-block-end
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-block-start
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-block-end
- * @default 0.75rem;
+ * @default 0.75rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-inline-start
- * @default 1rem;
+ * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-inline-end
- * @default 1rem;
+ * @default 1rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-text-align
- * @default center;
+ * @default center
  * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-sizing-border
- * @default 1px;
+ * @default 1px
  * @type dimension
  */
 /**
@@ -230,6 +230,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-media-sizing-border
- * @default 1px;
+ * @default 1px
  * @type dimension
  */

@@ -5,13 +5,15 @@ export default class Item {
     constructor(value) {
         this.avatar = value.avatar;
         this.avatarSrc = value.avatarSrc;
-        this.name = value.name;
         this.fallbackIconName = value.fallbackIconName;
-        this.label = value.label;
-        this.description = value.description;
+        this.href = value.href;
         this.infos = normalizeArray(value.infos);
         this.icons = normalizeArray(value.icons);
         this.imageSrc = value.imageSrc;
+        this.imagePosition = value.imagePosition;
+        this.label = value.label;
+        this.description = value.description;
+        this.name = value.name;
     }
 
     get hasImage() {
@@ -21,13 +23,17 @@ export default class Item {
         return this.imageSrc.length > 0;
     }
 
-    get actionsClass() {
-        return classSet('slds-m-right_x-small').add({
-            'slds-m-top_x-small slds-is-absolute avonni-list__item-action-image-top-right':
-                this.hasImage && this.variant !== 'list'
-        }).add({
-            'slds-align-top':
-                this.listHasImages && !this.hasImage && this.variant !== 'list'
-        });
+    /**
+     * On overlay and background media positions, set default text color to white.
+     */
+    get computedTextColor() {
+        return classSet('slds-col slds-has-flexi-truncate')
+            .add({
+                'avonni-list__item-text-color_inverse':
+                    this.imagePosition === 'background' ||
+                    this.imagePosition === 'overlay'
+            })
+            .toString();
     }
+
 }

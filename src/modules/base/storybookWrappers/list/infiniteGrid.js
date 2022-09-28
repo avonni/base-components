@@ -37,6 +37,7 @@ export default class InfiniteGrid extends LightningElement {
     @api alternativeText;
     @api sortable;
     @api actions;
+    @api mediaActions;
     @api sortableIconName;
     @api sortableIconPosition;
     @api divider;

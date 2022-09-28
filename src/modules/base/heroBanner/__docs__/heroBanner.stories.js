@@ -46,47 +46,8 @@ export default {
             description:
                 'The caption can include text, and is displayed under the title.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the banner.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        subtitle: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The subtitle can include text, and is displayed under the title.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        src: {
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the background image.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        height: {
-            control: {
-                type: 'number'
-            },
-            description: 'Defines the height of the banner. ',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 400 },
-                category: 'Layout'
+                type: { summary: 'string' },
+                category: 'Text'
             }
         },
         contentHorizontalAlignment: {
@@ -117,19 +78,6 @@ export default {
                 category: 'Layout'
             }
         },
-        maxWidth: {
-            name: 'max-width',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Defines the width inside of the banner in percentage.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 960 },
-                category: 'Layout'
-            }
-        },
         contentWidth: {
             name: 'content-width',
             control: {
@@ -146,25 +94,253 @@ export default {
                 category: 'Layout'
             }
         },
+        height: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the height of the banner. ',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 400 },
+                category: 'Layout'
+            }
+        },
+        imageLayout: {
+            name: 'image-layout',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'scale-to-fill',
+                'fit',
+                'tile',
+                'tile-horizontally',
+                'tile-vertically'
+            ],
+            description:
+                'Defines the layout of the background image. Valid layouts include scale-to-fill, fit, tile, tile-horizontally, tile-vertically.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'scale-to-fill' },
+                category: 'Background'
+            }
+        },
+        imagePosition: {
+            name: 'image-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'center',
+                'left',
+                'right',
+                'top-center',
+                'top-left',
+                'top-right',
+                'bottom-center',
+                'bottom-left',
+                'bottom-right'
+            ],
+            description:
+                'Defines the position of the background image. Valid positions include center, left, right, top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'center' },
+                category: 'Background'
+            }
+        },
+        maxWidth: {
+            name: 'max-width',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Defines the width inside of the banner in percentage.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 960 },
+                category: 'Layout'
+            }
+        },
+        primaryButtonIconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonIconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the icon with respect to body of the primary button. Valid values include left and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonIconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the icon inside the primary button. Valid values include xx-small, x-small, small, medium, or large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' },
+                category: 'primary button'
+            }
+        },
         primaryButtonLabel: {
-            name: 'primary-button-label',
+            name: 'label',
             control: {
                 type: 'text'
             },
             description: 'The text to be displayed inside the primary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        primaryButtonVariant: {
+            name: 'variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'The variant changes the appearance of the primary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+            table: {
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'primary button'
+            }
+        },
+        secondaryButtonIconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonIconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the icon with respect to body of the secondary button. Valid values include left and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonIconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the icon inside the secondary button. Valid values include xx-small, x-small, small, medium, or large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' },
+                category: 'secondary button'
             }
         },
         secondaryButtonLabel: {
-            name: 'secondary-button-label',
+            name: 'label',
             control: {
                 type: 'text'
             },
             description:
                 'The text to be displayed inside the secondary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        secondaryButtonVariant: {
+            name: 'variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'The variant changes the appearance of the secondary button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+            table: {
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'secondary button'
+            }
+        },
+        src: {
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the background image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        subtitle: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The subtitle can include text, and is displayed under the title.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Text'
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the banner.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Text'
             }
         }
     },
@@ -173,7 +349,15 @@ export default {
         contentVerticalAlignment: 'center',
         contentWidth: 100,
         height: 400,
-        maxWidth: 960
+        imageLayout: 'scale-to-fill',
+        imagePosition: 'center',
+        maxWidth: 960,
+        primaryButtonIconPosition: 'left',
+        primaryButtonIconSize: 'medium',
+        primaryButtonVariant: 'neutral',
+        secondaryButtonIconPosition: 'left',
+        secondaryButtonIconSize: 'medium',
+        secondaryButtonVariant: 'neutral'
     }
 };
 
@@ -202,7 +386,8 @@ BaseAbsoluteCenter.args = {
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentHorizontalAlignment: 'center',
-    contentWidth: 100
+    contentWidth: 100,
+    maxWidth: 2000
 };
 
 export const BaseTopLeftWithMaxWidth = Template.bind({});
@@ -226,7 +411,24 @@ BaseTopCenterWithButtons.args = {
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
     primaryButtonLabel: 'Primary Button',
-    secondaryButtonLabel: 'Secondary Button'
+    secondaryButtonLabel: 'Secondary Button',
+    maxWidth: 2000
+};
+
+export const BaseTopCenterWithButtonIcons = Template.bind({});
+BaseTopCenterWithButtonIcons.args = {
+    caption: 'This is a caption',
+    title: 'This is a title',
+    subtitle: 'This is a subtitle',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    contentVerticalAlignment: 'top',
+    contentHorizontalAlignment: 'center',
+    primaryButtonIconName: 'utility:pin',
+    primaryButtonVariant: 'brand',
+    secondaryButtonIconName: 'utility:question',
+    secondaryButtonVariant: 'brand',
+    maxWidth: 2000
 };
 
 export const BaseTopRight = Template.bind({});
@@ -278,6 +480,7 @@ withButtonInFooterSlot.args = {
     subtitle: 'Summer camp',
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 350,
+    maxWidth: 2000,
     contentHorizontalAlignment: 'center'
 };
 
@@ -288,6 +491,7 @@ withSearchBarInDefaultSlot.args = {
     title: 'Looking for a vacation?',
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    maxWidth: 2000,
     height: 200,
     contentHorizontalAlignment: 'center'
 };
@@ -298,6 +502,7 @@ withSearchBarInFooterSlot.args = {
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 500,
+    maxWidth: 2000,
     contentHorizontalAlignment: 'center'
 };
 
@@ -307,5 +512,6 @@ withTwoSlots.args = {
     subtitle: 'Find the right one',
     src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 300,
-    contentHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center',
+    maxWidth: 2000
 };

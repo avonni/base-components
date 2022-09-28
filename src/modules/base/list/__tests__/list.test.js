@@ -79,6 +79,7 @@ describe('List', () => {
         expect(element.imageAttributes).toMatchObject({});
         expect(element.label).toBeUndefined();
         expect(element.loadMoreOffset).toBe(20);
+        expect(element.mediaActions).toMatchObject([]);
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
@@ -95,13 +96,13 @@ describe('List', () => {
         return Promise.resolve()
             .then(() => {
                 const actions = element.shadowRoot.querySelector(
-                    'lightning-button-menu'
+                    '[data-element-id="lightning-button-menu"]'
                 );
                 actions.click();
             })
             .then(() => {
                 const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="lightning-menu-item"]'
+                    '[data-element-id="lightning-menu-item"]'
                 );
                 expect(menuItem[0].label).toBe('Completed');
                 expect(menuItem[0].value).toBe('completed-action');
@@ -146,6 +147,77 @@ describe('List', () => {
             expect(buttonIcon.value).toBe('event-action');
         });
     });
+    // MEDIA-ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
+    it('List: Media-Actions button-menu', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actions = element.shadowRoot.querySelector(
+                    '[data-element-id="media-action-menu"]'
+                );
+                actions.click();
+            })
+            .then(() => {
+                const menuItem = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="media-action-menu-item"]'
+                );
+                expect(menuItem[0].label).toBe('Completed');
+                expect(menuItem[0].value).toBe('completed-action');
+                expect(menuItem[0].iconName).toBe('utility:check');
+                expect(menuItem[0].disabled).toBeFalsy();
+                expect(menuItem[1].label).toBe('Pending');
+                expect(menuItem[1].value).toBe('pending-action');
+                expect(menuItem[1].iconName).toBe('utility:spinner');
+                expect(menuItem[1].disabled).toBeFalsy();
+                expect(menuItem[2].label).toBe('Delete');
+                expect(menuItem[2].value).toBe('delete-action');
+                expect(menuItem[2].iconName).toBe('utility:delete');
+                expect(menuItem[2].disabled).toBeTruthy();
+            });
+    });
+    it('List: Media-Actions media-action-button', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button.label).toBe('Completed');
+            expect(button.iconName).toBe('utility:check');
+            expect(button.disabled).toBeFalsy();
+            expect(button.value).toBe('completed-action');
+        });
+    });
+    it('List: Media-Actions media-action-button-icon', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const buttonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+
+            expect(buttonIcon.iconName).toBe('utility:event');
+            expect(buttonIcon.disabled).toBeFalsy();
+            expect(buttonIcon.value).toBe('event-action');
+        });
+    });
+    it('List: No Media-Actions without images', () => {
+        element.items = ITEMS_WITHOUT_ICONS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button).toBeFalsy();
+        });
+    });
 
     // alternative-text
     it('List: AlternativeText', () => {
@@ -163,7 +235,6 @@ describe('List', () => {
     it('List: Columns, cols', () => {
         element.items = ITEMS;
         element.cols = 3;
-        element.variant = 'grid';
 
         return Promise.resolve()
             .then(() => {
@@ -228,15 +299,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-small'
-            );
+            expect(images[0].style['min-width']).toBe('48px');
+            expect(images[1].style['min-width']).toBe('48px');
+            expect(images[2].style['min-width']).toBe('48px');
         });
     });
     it('List: Images width medium', () => {
@@ -247,15 +312,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-medium'
-            );
+            expect(images[0].style['min-width']).toBe('72px');
+            expect(images[1].style['min-width']).toBe('72px');
+            expect(images[2].style['min-width']).toBe('72px');
         });
     });
     it('List: Images width large', () => {
@@ -266,15 +325,9 @@ describe('List', () => {
             const images = element.shadowRoot.querySelectorAll(
                 '[data-element-id="list-img"]'
             );
-            expect(images[0].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__list-image-width-large'
-            );
+            expect(images[0].style['min-width']).toBe('128px');
+            expect(images[1].style['min-width']).toBe('128px');
+            expect(images[2].style['min-width']).toBe('128px');
         });
     });
 
@@ -474,35 +527,47 @@ describe('List', () => {
 
     // variant
     it('List: Variant = base', () => {
-        element.variant = 'base';
-
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(menu.classList).toContain('slds-grid_vertical');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeFalsy();
+            expect(nextButton).toBeFalsy();
         });
     });
-    it('List: Variant = grid', () => {
-        element.variant = 'grid';
 
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
-            );
-            expect(menu.classList).toContain('slds-wrap');
-        });
-    });
     it('List: Variant = single-line', () => {
         element.variant = 'single-line';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(menu.classList).toContain('slds-wrap');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeTruthy();
+            expect(nextButton).toBeTruthy();
         });
     });
+
+    it('List: Image-Attribute, position = overlay, text-color', () => {
+        element.items = ITEMS;
+        element.imageAttributes = {
+            position: 'overlay'
+        };
+
+        return Promise.resolve().then(() => {
+            const bodyColor = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-list-item-body-text-color"]'
+            )
+
+            expect(bodyColor.classList).toContain('avonni-list__item-text-color_inverse')
+        })
+    })
 
     /* ----- METHOD ----- */
 
@@ -668,6 +733,93 @@ describe('List', () => {
         });
     });
 
+    it('List: Media-Action, Actionclick event, multiple actions', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="media-action-menu"]'
+                );
+                actionMenu.dispatchEvent(
+                    new CustomEvent('select', {
+                        detail: {
+                            value: ACTIONS[0].name
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                    ITEMS[0]
+                );
+                expect(handler.mock.calls[0][0].detail.name).toBe(
+                    ACTION[0].name
+                );
+                expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                    ITEMS[0].name
+                );
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            });
+    });
+    it('List: Media-Action Actionclick event, one action', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('List: Media-Action, Actionclick event, one icon action', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+            button.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                ACTION_NO_LABEL[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     // itemclick
     // Depends on items
     it('List: Itemclick event', () => {
@@ -795,9 +947,7 @@ describe('List', () => {
             upDownEvent.key = 'ArrowUp';
             items[1].dispatchEvent(upDownEvent);
 
-            expect(items[2].dataset.moved).toEqual(
-                'keyboard-moved'
-            );
+            expect(items[2].dataset.moved).toEqual('keyboard-moved');
 
             // Stop dragging
             items[1].dispatchEvent(spaceEvent);

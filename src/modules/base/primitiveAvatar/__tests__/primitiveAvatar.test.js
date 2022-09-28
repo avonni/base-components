@@ -134,6 +134,24 @@ describe('PrimitiveAvatar', () => {
         });
     });
 
+    it('Primitive Avatar: Avatar with one action and no icon name', () => {
+        element.initials = 'LG';
+        element.actions = [
+            {
+                label: 'Edit item',
+                name: 'edit-item'
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-icon-action"]'
+            );
+
+            expect(actionButton.iconName).toBe('utility:down');
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // actionclick event

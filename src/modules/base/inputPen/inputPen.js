@@ -547,7 +547,12 @@ export default class InputPen extends LightningElement {
         let mergedCanvas = document.createElement('canvas');
         mergedCanvas.width = this.canvasInfo.canvasElement.width;
         mergedCanvas.height = this.canvasInfo.canvasElement.height;
-        if (mergedCanvas.width > 0 || mergedCanvas.height > 0) {
+        if (
+            mergedCanvas.width > 0 &&
+            mergedCanvas.height > 0 &&
+            this._backgroundCanvasElement.width > 0 &&
+            this._backgroundCanvasElement.height > 0
+        ) {
             const mergedCtx = mergedCanvas.getContext('2d');
             mergedCtx.drawImage(this._backgroundCanvasElement, 0, 0);
             mergedCtx.drawImage(this.canvasInfo.canvasElement, 0, 0);
@@ -1319,6 +1324,10 @@ export default class InputPen extends LightningElement {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
         }
+        if (event.touches && event.touches.length >= 1) {
+            event.clientX = event.touches[0].clientX;
+            event.clientY = event.touches[0].clientY;
+        }
         this.manageMouseEvent('move', event);
     };
 
@@ -1331,6 +1340,10 @@ export default class InputPen extends LightningElement {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
         }
+        if (event.touches && event.touches.length >= 1) {
+            event.clientX = event.touches[0].clientX;
+            event.clientY = event.touches[0].clientY;
+        }
         this.manageMouseEvent('down', event);
     };
 
@@ -1342,6 +1355,10 @@ export default class InputPen extends LightningElement {
     handleMouseUp = (event) => {
         if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
             event.preventDefault();
+        }
+        if (event.touches && event.touches.length >= 1) {
+            event.clientX = event.touches[0].clientX;
+            event.clientY = event.touches[0].clientY;
         }
         this.manageMouseEvent('up', event);
     };

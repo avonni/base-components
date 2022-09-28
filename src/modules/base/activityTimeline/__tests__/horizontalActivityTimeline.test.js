@@ -105,16 +105,18 @@ describe('Horizontal Activity Timeline', () => {
 
     // minDate and maxDate : first and last elements of sortedItems
     it('Horizontal Activity Timeline: minDate and maxDate', () => {
-        expect(element.convertDateToFormat(element.minDate)).toBe('01/01/2022');
-        expect(element.convertDateToFormat(element.maxDate)).toBe('14/03/2022');
+        const defaultFormat = 'dd/MM/yyyy';
+        expect(element.convertDateToFormat(element.minDate, defaultFormat)).toBe('01/01/2022');
+        expect(element.convertDateToFormat(element.maxDate, defaultFormat)).toBe('14/03/2022');
     });
 
     // scrollAxisMaxDate (15 days after maxDate) and scrollAxisMinDate (15 days before minDate)
     it('Horizontal Activity Timeline: scrollAxisMaxDate and scrollAxisMinDate', () => {
-        expect(element.convertDateToFormat(element.scrollAxisMinDate)).toBe(
+        const defaultFormat = 'dd/MM/yyyy';
+        expect(element.convertDateToFormat(element.scrollAxisMinDate, defaultFormat)).toBe(
             '17/12/2021'
         );
-        expect(element.convertDateToFormat(element.scrollAxisMaxDate)).toBe(
+        expect(element.convertDateToFormat(element.scrollAxisMaxDate, defaultFormat)).toBe(
             '29/03/2022'
         );
     });

@@ -336,18 +336,16 @@ describe('Carousel', () => {
 
     // current panel
     it('Carousel: current panel', () => {
-        element.currentPanel = 2;
+        element.currentPanel = '3';
         element.items = items;
 
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const thirdPanel = panels[2];
-                expect(thirdPanel.ariaHidden).toBe('false');
-            });
+        return Promise.resolve().then(() => {
+            const panels = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__panel'
+            );
+            const thirdPanel = panels[2];
+            expect(thirdPanel.ariaHidden).toBe('false');
+        });
     });
 
     // hide indicator
