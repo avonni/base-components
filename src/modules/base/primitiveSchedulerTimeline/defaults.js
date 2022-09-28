@@ -191,9 +191,9 @@ const PRESET_HEADERS = {
     ]
 };
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-const VARIANTS = {
+const ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
 
-export { DEFAULT_START_DATE, HEADERS, PRESET_HEADERS, UNITS, VARIANTS };
+export { DEFAULT_START_DATE, HEADERS, PRESET_HEADERS, UNITS, ORIENTATIONS };

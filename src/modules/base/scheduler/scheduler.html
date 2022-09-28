@@ -92,7 +92,9 @@
                 data-element-id="button-toolbar-calendar"
                 onclick={handleToggleToolbarCalendar}
             >
-                <span class="slds-truncate avonni-scheduler__"
+                <span
+                    class="slds-truncate avonni-scheduler__"
+                    title={visibleIntervalLabel}
                     >{visibleIntervalLabel}</span
                 >
                 <span>
@@ -199,7 +201,7 @@
             selected-resources={selectedResources}
             start={start}
             time-span={currentTimeSpan}
-            variant={variant}
+            orientation={variant}
             zoom-to-fit={zoomToFit}
             data-element-id="avonni-primitive-scheduler-timeline"
             onemptyspotcontextmenu={handleEmptySpotContextMenu}

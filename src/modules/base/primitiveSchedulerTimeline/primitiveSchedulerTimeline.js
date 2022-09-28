@@ -44,7 +44,7 @@ import {
     HEADERS,
     PRESET_HEADERS,
     UNITS,
-    VARIANTS
+    ORIENTATIONS
 } from './defaults';
 import SchedulerResource from './resource';
 import {
@@ -68,7 +68,7 @@ const CELL_SELECTOR = '[data-element-id="div-cell"]';
 export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     _columns = [];
     _start = DEFAULT_START_DATE;
-    _variant = VARIANTS.default;
+    _orientation = ORIENTATIONS.default;
 
     _eventData;
     _initialState = {};
@@ -127,7 +127,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
 
     /**
-     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the timeline and visible only for the horizontal variant.
+     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the timeline and visible only for the horizontal orientation.
      *
      * @type {object[]}
      * @public
@@ -245,13 +245,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @public
      */
     @api
-    get variant() {
-        return this._variant;
+    get orientation() {
+        return this._orientation;
     }
-    set variant(value) {
-        this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+    set orientation(value) {
+        this._orientation = normalizeString(value, {
+            fallbackValue: ORIENTATIONS.default,
+            validValues: ORIENTATIONS.valid
         });
 
         if (this._connected) {
@@ -358,12 +358,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * True if the variant is vertical.
+     * True if the orientation is vertical.
      *
      * @type {boolean}
      */
     get isVertical() {
-        return this.variant === 'vertical';
+        return this.orientation === 'vertical';
     }
 
     /**
