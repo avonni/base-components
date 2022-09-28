@@ -332,7 +332,8 @@ a.avonni-list__item-info-link:active {
 }
 
 /* ICON INVERSE COLOR */
-.avonni-list__item-text-color_inverse .avonni-list__item-icons {
+.avonni-list__item-text-color_inverse .avonni-list__item-icon,
+.avonni-list__item-action-button-icon_inverse {
     --slds-c-icon-color-background: var(
         --avonni-list-item-icon-color-background-inverse
     );
