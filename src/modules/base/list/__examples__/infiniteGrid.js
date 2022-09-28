@@ -38,41 +38,43 @@ customElements.define(
 );
 
 export const InfiniteGrid = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
     actions,
-    sortableIconName,
-    sortableIconPosition,
-    divider,
-    variant,
+    alternativeText,
     cols,
-    smallContainerCols,
-    mediumContainerCols,
-    largeContainerCols,
+    divider,
+    enableInfiniteLoading,
     imageAttributes,
     isLoading,
-    enableInfiniteLoading,
-    loadMoreOffset
+    items,
+    label,
+    largeContainerCols,
+    loadMoreOffset,
+    mediaActions,
+    mediumContainerCols,
+    smallContainerCols,
+    sortable,
+    sortableIconName,
+    sortableIconPosition,
+    variant,
 }) => {
     const element = document.createElement('ac-base-infinite-grid');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
     element.actions = actions;
-    element.sortableIconName = sortableIconName;
-    element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.variant = variant;
+    element.alternativeText = alternativeText;
     element.cols = cols;
-    element.smallContainerCols = smallContainerCols;
-    element.mediumContainerCols = mediumContainerCols;
-    element.largeContainerCols = largeContainerCols;
+    element.divider = divider;
+    element.enableInfiniteLoading = enableInfiniteLoading;
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
-    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.items = items;
+    element.label = label;
+    element.largeContainerCols = largeContainerCols;
     element.loadMoreOffset = loadMoreOffset;
+    element.mediaActions = mediaActions;
+    element.mediumContainerCols = mediumContainerCols;
+    element.smallContainerCols = smallContainerCols;
+    element.sortable = sortable;
+    element.sortableIconName = sortableIconName;
+    element.sortableIconPosition = sortableIconPosition;
+    element.variant = variant;
     return element;
 };

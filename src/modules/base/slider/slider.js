@@ -44,6 +44,7 @@ import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 const DEFAULT_MIN = 0;
 const DEFAULT_MINIMUM_DISTANCE = 0;
 const DEFAULT_MAX = 100;
+const DEFAULT_MAX_PERCENTAGE = 1;
 const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
 const DEFAULT_VALUE = 50;
@@ -124,17 +125,19 @@ export default class Slider extends LightningElement {
     _variant = LABEL_VARIANTS.default;
     _value = [DEFAULT_VALUE];
 
-    computedMax = DEFAULT_MAX;
+    computedMax;
     computedMin = DEFAULT_MIN;
-    _computedValues = [DEFAULT_VALUE];
     customLabels = [];
+
+    _computedValues = [DEFAULT_VALUE];
+    _focusedInputIndex;
     _helpMessage;
+    _initMax;
     _moveEventWait = false;
     _pinLocked = false;
     _previousScalingFactor = 1;
     _trackInterval = [DEFAULT_MIN, DEFAULT_VALUE];
     _resizeObserver;
-    _focusedInputIndex;
     _scalingFactor = 1;
     _constraintApis = [];
     _constraintApiProxyInputUpdaters = [];
@@ -247,10 +250,9 @@ export default class Slider extends LightningElement {
     }
 
     set max(value) {
-        const intValue = parseInt(value, 10);
-        const normalizedMax = isNaN(intValue) ? DEFAULT_MAX : intValue;
-        this.computedMax = normalizedMax;
-        this._max = normalizedMax;
+        const intValue = !isNaN(value) ? parseInt(value, 10) : null;
+        this._initMax = intValue;
+        this.initMaxDefaultValue();
 
         if (this._connected) {
             this.scaleValues();
@@ -460,6 +462,9 @@ export default class Slider extends LightningElement {
             fallbackValue: SLIDER_UNITS.default,
             validValues: SLIDER_UNITS.valid
         });
+
+        this.initMaxDefaultValue();
+
         if (this._unit === 'percent') {
             this._scalingFactor = PERCENT_SCALING_FACTOR;
             if (this._connected) {
@@ -1041,6 +1046,22 @@ export default class Slider extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Initialization of the max attribute.
+     */
+    initMaxDefaultValue() {
+        let normalizedMax;
+        if (!isNaN(this._initMax)) {
+            normalizedMax = this._initMax;
+        } else {
+            normalizedMax =
+                this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
+        }
+
+        this.computedMax = normalizedMax;
+        this._max = normalizedMax;
+    }
 
     /**
      * Caps the value if it overflows min or max.
