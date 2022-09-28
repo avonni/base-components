@@ -103,6 +103,13 @@
                                             title={item.title}
                                             onactionclick={handleActionClick}
                                             onitemclick={handleItemClick}
+                                            draggable
+                                            ondragstart={itemDragStart}
+                                            ondrag={itemDrag}
+                                            ondragend={itemDragEnd}
+                                            ontouchstart={itemTouchStart}
+                                            ontouchmove={itemTouchMove}
+                                            ontouchend={itemTouchEnd}
                                         >
                                         </c-primitive-carousel-item>
                                     </div>

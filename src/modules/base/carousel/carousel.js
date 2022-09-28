@@ -572,6 +572,30 @@ export default class Carousel extends LightningElement {
         this.play();
     }
 
+    itemDragStart() {
+        console.log('item drag start');
+    }
+
+    itemDrag(event) {
+        console.log(event);
+    }
+
+    itemDragEnd() {
+        console.log('item drag end');
+    }
+
+    itemTouchStart() {
+        console.log('touch start');
+    }
+
+    itemTouchMove(event) {
+        console.log(event);
+    }
+
+    itemTouchEnd() {
+        console.log('touch end');
+    }
+
     /**
      * Item clicked event handler.
      *
