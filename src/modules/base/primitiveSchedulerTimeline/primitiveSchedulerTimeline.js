@@ -159,25 +159,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * Array of resource objects. The resources can be bound to events.
-     *
-     * @type {object[]}
-     * @public
-     * @required
-     */
-    @api
-    get resources() {
-        return super.resources;
-    }
-    set resources(value) {
-        super.resources = value;
-
-        if (this._connected) {
-            this.initResources();
-        }
-    }
-
-    /**
      * Array of selected resources names. Only the events of the selected resources will be visible.
      *
      * @type {string[]}
@@ -472,15 +453,6 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 'avonni-scheduler__wrapper_vertical': this.isVertical
             })
             .toString();
-    }
-
-    /**
-     * Width of the first column, used by the events to make the labels sticky.
-     *
-     * @type {number}
-     */
-    get scrollOffset() {
-        return this.isVertical ? 0 : this.firstColWidth;
     }
 
     /**
@@ -1145,11 +1117,19 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.dispatchHidePopovers(['context']);
 
         if (this.isVertical) {
+            const { scrollLeft, scrollTop } = event.currentTarget;
+
             // Create an artificial scroll for the vertical headers
             const verticalHeaders = this.template.querySelector(
                 '[data-element-id="div-vertical-header-wrapper"]'
             );
-            verticalHeaders.scroll(0, event.currentTarget.scrollTop);
+            verticalHeaders.scroll(0, scrollTop);
+
+            // Create an artificial scroll for the resource headers
+            const resourceHeaders = this.template.querySelector(
+                '[data-element-id="div-resource-header-cells"]'
+            );
+            resourceHeaders.scroll(scrollLeft, 0);
         }
     }
 }
