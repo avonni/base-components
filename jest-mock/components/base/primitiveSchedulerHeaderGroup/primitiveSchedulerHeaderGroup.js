@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { dateTimeObjectFrom, addToDate } from 'c/utilsPrivate';
+import { Interval, DateTime } from 'c/luxon';
 
 export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api availableDaysOfTheWeek;
@@ -8,19 +9,71 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api availableTimeSpans;
     @api headers;
     @api scrollLeftOffset;
-    @api timeSpan;
-    @api visibleInterval;
     @api variant;
     @api visibleWidth;
     @api zoomToFit;
 
     _start;
 
+    _connected = false;
+
     connectedCallback() {
         if (!this.start) {
             throw new Error('Please set a valid start date');
         }
 
+        this.dispatchHeaderChange();
+        this._connected = true;
+    }
+
+    @api
+    get start() {
+        return this._start;
+    }
+    set start(value) {
+        const start = dateTimeObjectFrom(value);
+        if (this._start && this._start.ts === start.ts) {
+            // Prevent an infinite loop
+            return;
+        }
+        this._start = start;
+
+        if (this._connected) {
+            this.dispatchHeaderChange();
+        }
+    }
+
+    @api
+    get timeSpan() {
+        return this._timeSpan;
+    }
+    set timeSpan(value) {
+        if (
+            this._timeSpan &&
+            JSON.stringify(value) === JSON.stringify(this._timeSpan)
+        ) {
+            // Prevent an infinite loop
+            return;
+        }
+        this._timeSpan = value;
+
+        if (this._connected) {
+            this.dispatchHeaderChange();
+        }
+    }
+
+    @api
+    get visibleInterval() {
+        return Interval.fromDateTimes(this.start, this.end);
+    }
+
+    get end() {
+        const { unit, span } = this.timeSpan;
+        let end = this.start.plus({ [unit]: span });
+        return DateTime.fromMillis(end.ts - 1);
+    }
+
+    dispatchHeaderChange() {
         // Create the smallestHeader
         const cells = [];
         let start = this.start;
@@ -39,18 +92,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                     smallestHeader: {
                         cells,
                         start: this.start,
-                        end: cells[cells.length - 1].end
-                    }
+                        end: this.end
+                    },
+                    visibleInterval: this.visibleInterval
                 }
             })
         );
-    }
-
-    @api
-    get start() {
-        return this._start;
-    }
-    set start(value) {
-        this._start = dateTimeObjectFrom(value);
     }
 }

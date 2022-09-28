@@ -38,6 +38,7 @@
             collapsible={allowCollapse}
             resizable={allowResizeColumn}
             size={firstColInitialWidth}
+            data-element-id="avonni-splitter-pane-left"
         >
             <!-- Datatable or vertical headers -->
             <div class={firstColClass} data-element-id="div-first-column">
@@ -88,6 +89,7 @@
             collapsible={allowCollapse}
             resizable={allowResizeColumn}
             style="flex: 1 1 0"
+            data-element-id="avonni-splitter-pane-right"
             onscroll={handleScroll}
         >
             <!-- Resource headers as columns -->
@@ -159,7 +161,6 @@
                             available-time-frames={availableTimeFrames}
                             available-time-spans={availableTimeSpans}
                             headers={computedHeaders}
-                            scroll-left-offset={firstColWidth}
                             start={start}
                             time-span={timeSpan}
                             visible-width={scheduleColWidth}
@@ -181,7 +182,7 @@
                             ></lightning-spinner>
                         </div>
 
-                        <!-- Rows (horizontal variant) or columns (vertical variant) -->
+                        <!-- Rows (horizontal) or columns (vertical) -->
                         <div
                             if:false={headersAreLoading}
                             class={scheduleBodyClass}

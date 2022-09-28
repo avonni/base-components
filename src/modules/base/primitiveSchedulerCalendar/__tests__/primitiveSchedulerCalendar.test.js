@@ -245,6 +245,7 @@ describe('Primitive Scheduler Calendar', () => {
         expect(element.loadingStateAlternativeText).toBeUndefined();
         expect(element.newEventTitle).toBe('New event');
         expect(element.readOnly).toBeFalsy();
+        expect(element.recurrentEditModes).toEqual(['all', 'one']);
         expect(element.resizeColumnDisabled).toBeFalsy();
         expect(element.resources).toEqual([]);
 
