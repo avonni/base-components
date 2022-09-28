@@ -33,7 +33,7 @@ export default class AvonniCarouselWithoutPanelNavigationWithFiveItemsPerPanel e
             title: 'Click to Customize',
             description:
                 'Use the Object Manager to add fields, build layouts, and more.',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             actions: menuActions
         },
@@ -50,7 +50,7 @@ export default class AvonniCarouselWithoutPanelNavigationWithFiveItemsPerPanel e
             name: '4',
             title: 'Carousel Item 4',
             description: 'Description for carousel item #4',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             actions: menuActions
         },
@@ -74,7 +74,7 @@ export default class AvonniCarouselWithoutPanelNavigationWithFiveItemsPerPanel e
             name: '7',
             title: 'Carousel Item 7',
             description: 'Description for carousel item #7',
-            imageAssistiveText: 'Apps',
+            imageAssistiveText: 'Appy',
             src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
             actions: menuActions
         }
