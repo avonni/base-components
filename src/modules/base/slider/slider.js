@@ -1052,7 +1052,7 @@ export default class Slider extends LightningElement {
      */
     initMaxDefaultValue() {
         let normalizedMax;
-        if (!isNaN(this._initMax)) {
+        if (this._initMax && !isNaN(this._initMax)) {
             normalizedMax = this._initMax;
         } else {
             normalizedMax =
