@@ -38,7 +38,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { generateUUID } from 'c/utils';
+import { generateUUID, classSet } from 'c/utils';
 
 const INDICATOR_ACTION =
     'slds-carousel__indicator-action avonni-carousel__progress-indicator_inactive';
@@ -446,6 +446,17 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Panel classes. Turn off animation when swiping to move panel smoothly.
+     * 
+     * @type {string}
+     */
+    get computedPanelClass() {
+        return classSet('slds-carousel__panels').add({
+            'avonni-carousel__swiping': this.swiping
+        });
+    }
+
+    /**
      * Verify if actions are present.
      */
     get hasActions() {
@@ -699,28 +710,74 @@ export default class Carousel extends LightningElement {
         this.play();
     }
 
-    itemDragStart() {
-        console.log('item drag start');
-    }
-
-    itemDrag(event) {
-        console.log(event);
-    }
-
-    itemDragEnd() {
-        console.log('item drag end');
-    }
-
-    itemTouchStart() {
-        console.log('touch start');
+    itemTouchStart(event) {
+        this.swipeStartX = event.touches[0].screenX;
+        this.swipedDistance = 0;
+        this.lastDistance = 0;
+        this.swiping = true;
+        this.swipePoints = [];
     }
 
     itemTouchMove(event) {
-        console.log(event);
+        if (!this.swiping) {
+            this.swiping = false;
+            return;
+        }
+
+        this.swipedDistance = event.touches[0].screenX - this.swipeStartX;
+        this.swipePoints.push(
+            Math.abs(this.swipedDistance - this.lastDistance)
+        );
+        this.lastDistance = this.swipedDistance;
+        this.lastTouchTime = event.timeStamp;
+
+        this.panelStyle = `transform: translateX(calc(-${
+            this.activeIndexPanel * 100
+        }% + ${this.swipedDistance}px));`;
+
+        if (this.swipePoints.length > 5) {
+            this.swipePoints.shift();
+        }
+        this.swipeVelocity = Math.round(
+            this.swipePoints.reduce((a, b) => a + b, 0) /
+                this.swipePoints.length
+        );
     }
 
-    itemTouchEnd() {
-        console.log('touch end');
+    itemTouchEnd(event) {
+        const delaySinceMove = Math.round(event.timeStamp - this.lastTouchTime);
+        const percentageMoved = Math.round(
+            (this.swipedDistance / this.carouselContainer.clientWidth) * 100
+        );
+        const swipingLeft = percentageMoved < 0;
+        const swipingRight = percentageMoved > 0;
+        const mediumSpeed = this.swipeVelocity > 4 && delaySinceMove < 150;
+        const fastSpeed = this.swipeVelocity > 10 && delaySinceMove < 150;
+        const slowMoveThreshold = 35;
+        const mediumMoveThreshold = 10;
+        const fastMoveThreshold = 5;
+        const absoluteDisplacement = Math.abs(percentageMoved);
+
+        // console.log(this.swipeVelocity, percentageMoved, '%', delaySinceMove);
+
+        this.swiping = false;
+        this.swipedDistance = 0;
+        if (
+            absoluteDisplacement > slowMoveThreshold ||
+            (absoluteDisplacement > mediumMoveThreshold && mediumSpeed) ||
+            (absoluteDisplacement > fastMoveThreshold && fastSpeed)
+        ) {
+            if (swipingLeft) {
+                this.next();
+            }
+            if (swipingRight) {
+                this.previous();
+            }
+        } else {
+            this.panelStyle = `transform: translateX(-${
+                this.activeIndexPanel * 100
+            }%);`;
+        }
     }
 
     /**

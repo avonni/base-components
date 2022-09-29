@@ -40,6 +40,10 @@
     max-width: 100%;
 }
 
+.avonni-carousel__swiping {
+    transition: none;
+}
+
 .avonni-carousel__nav-button {
     display: block;
 }

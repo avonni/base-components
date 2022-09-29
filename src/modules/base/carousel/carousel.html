@@ -65,7 +65,7 @@
                 <div class="slds-carousel__stage">
                     <!-- Carousel panels -->
                     <div
-                        class="slds-carousel__panels"
+                        class={computedPanelClass}
                         style={panelStyle}
                     >
                         <template
@@ -109,10 +109,6 @@
                                             title={item.title}
                                             onactionclick={handleActionClick}
                                             onitemclick={handleItemClick}
-                                            draggable
-                                            ondragstart={itemDragStart}
-                                            ondrag={itemDrag}
-                                            ondragend={itemDragEnd}
                                             ontouchstart={itemTouchStart}
                                             ontouchmove={itemTouchMove}
                                             ontouchend={itemTouchEnd}
