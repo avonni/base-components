@@ -510,6 +510,9 @@ export default class Carousel extends LightningElement {
      */
     @api
     play() {
+        if (this.swiping) {
+            return;
+        }
         const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
         const carouselPanelsLength = this.panelItems.length;
 
@@ -538,6 +541,7 @@ export default class Carousel extends LightningElement {
      */
     @api
     first() {
+        this.unselectCurrentPanel();
         this.selectNewPanel(0);
     }
 
@@ -548,6 +552,7 @@ export default class Carousel extends LightningElement {
      */
     @api
     last() {
+        this.unselectCurrentPanel();
         this.selectNewPanel(this.paginationItems.length - 1);
     }
 
@@ -567,7 +572,7 @@ export default class Carousel extends LightningElement {
         this.unselectCurrentPanel();
         if (this.activeIndexPanel > 0) {
             this.activeIndexPanel -= 1;
-        } else {
+        } else if (this.isInfinite) {
             this.activeIndexPanel = this.paginationItems.length - 1;
         }
         this.selectNewPanel(this.activeIndexPanel);
@@ -590,7 +595,7 @@ export default class Carousel extends LightningElement {
         this.unselectCurrentPanel();
         if (this.activeIndexPanel < this.paginationItems.length - 1) {
             this.activeIndexPanel += 1;
-        } else {
+        } else if (this.isInfinite) {
             this.activeIndexPanel = 0;
         }
         this.selectNewPanel(this.activeIndexPanel);
@@ -621,7 +626,6 @@ export default class Carousel extends LightningElement {
      * @param {number} numberOfPanels
      */
     initializePaginationItems(numberOfPanels) {
-        console.log('initialize');
         this.paginationItems = [];
         for (let i = 0; i < numberOfPanels; i++) {
             const id = generateUUID();
@@ -719,11 +723,6 @@ export default class Carousel extends LightningElement {
             event.touches[0].screenX - this.swipeStartPosition;
         this.lastTouchTime = event.timeStamp;
 
-        // moving panel
-        this.panelStyle = `transform: translateX(calc(-${
-            this.activeIndexPanel * 100
-        }% + ${this.swipedDistance}px));`;
-
         // determining swipe direction and velocity
         this.swipePositions.push(this.swipedDistance - this.lastDistance);
         if (this.swipePositions.length > 5) {
@@ -733,7 +732,30 @@ export default class Carousel extends LightningElement {
             this.swipePositions.reduce((a, b) => a + b, 0) /
             this.swipePositions.length;
 
-        // support swiping across more than one item
+        this.swipeLimitsReached();
+
+        // moving panel
+        this.panelStyle = `transform: translateX(calc(-${
+            this.activeIndexPanel * 100
+        }% + ${this.swipedDistance}px));`;
+    }
+
+    swipeLimitsReached() {
+        const panelContainer = this.template.querySelector('[data-element-id="lightning-layout-panel-container"]');
+        const panels = Array.from(this.template.querySelectorAll('div.avonni-carousel__panel')) 
+
+        if (panels && panelContainer) {
+            // check if left is reached. 
+            const panelContainerPosition = panelContainer.getBoundingClientRect();
+            const firstPanelPosition = panels[0].getBoundingClientRect();
+            const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
+            // allow end panels to move by 20% of panel width
+            const maxElasticity = panelContainerPosition.width * 0.2; 
+
+            // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
+
+        }
+
     }
 
     /**
@@ -767,15 +789,19 @@ export default class Carousel extends LightningElement {
 
         // find the new selected panel in case more than one is crossed
 
-        console.log(this.swipeVelocity, mediumSpeed, fastSpeed);
-
         this.swiping = false;
         // more than one panel crossed
-        if (absoluteDisplacement > 0.5) {
+        if (absoluteDisplacement > 1) {
             this.unselectCurrentPanel();
             const targetPanel = (this.activeIndexPanel -=
                 Math.round(swipeDisplacement));
-            this.selectNewPanel(targetPanel);
+            let selectedPanel = targetPanel;
+            if (targetPanel < 0) {
+                selectedPanel = 0;
+            } else if (targetPanel > this.paginationItems.length - 1) {
+                selectedPanel = this.paginationItems.length - 1;
+            }
+            this.selectNewPanel(selectedPanel);
             this.swipedDistance = 0;
             return;
         }
@@ -786,7 +812,6 @@ export default class Carousel extends LightningElement {
                 (absoluteDisplacement > mediumSwipeThreshold && mediumSpeed) ||
                 (absoluteDisplacement > fastSwipeThreshold && fastSpeed))
         ) {
-            this.unselectCurrentPanel();
             if (swipingRight) {
                 this.next();
             }
@@ -992,7 +1017,6 @@ export default class Carousel extends LightningElement {
      * @param {number} panelIndex
      */
     selectNewPanel(panelIndex) {
-        console.log('selectNewPanel', panelIndex);
         const activePaginationItem = this.paginationItems[panelIndex];
         const activePanelItem = this.panelItems[panelIndex];
 
@@ -1037,7 +1061,10 @@ export default class Carousel extends LightningElement {
      * Auto Scroll toggler method.
      */
     toggleAutoScroll() {
-        /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
-        this.autoScrollOn ? this.pause() : this.play();
+        if (this.autoScrollOn) {
+            this.pause();
+        } else {
+            this.play();
+        }
     }
 }
