@@ -1492,7 +1492,7 @@ export default class List extends LightningElement {
 
         if (scrollTop != null) {
             window.requestAnimationFrame(() => {
-                this.listContainer.scrollTo(0, scrollTop);
+                this.listContainer.scrollTop = scrollTop;
             });
         }
     }
@@ -1542,10 +1542,8 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    this.listContainer.scrollTo(
-                        0,
-                        this.listContainer.scrollHeight
-                    );
+                    this.listContainer.scrollTop =
+                        this.listContainer.scrollHeight;
                 }
             }, 20);
         }
