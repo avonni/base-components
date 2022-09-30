@@ -447,7 +447,7 @@ export default class Carousel extends LightningElement {
 
     /**
      * Panel classes. Turn off animation when swiping to move panel smoothly.
-     * 
+     *
      * @type {string}
      */
     get computedPanelClass() {
@@ -557,8 +557,13 @@ export default class Carousel extends LightningElement {
      * @public
      */
     @api
-    previous() {
-        this.pause();
+    previous(event) {
+        const buttonPress = event;
+        if (buttonPress) {
+            this.pause();
+        } else if (this.autoScrollOn) {
+            this.play();
+        }
         this.unselectCurrentPanel();
         if (this.activeIndexPanel > 0) {
             this.activeIndexPanel -= 1;
@@ -574,8 +579,14 @@ export default class Carousel extends LightningElement {
      * @public
      */
     @api
-    next() {
-        this.pause();
+    next(event) {
+        const buttonPress = event;
+        if (buttonPress) {
+            this.pause();
+        } else if (this.autoScrollOn) {
+            // press play to restart auto scroll timer
+            this.play();
+        }
         this.unselectCurrentPanel();
         if (this.activeIndexPanel < this.paginationItems.length - 1) {
             this.activeIndexPanel += 1;
@@ -610,6 +621,7 @@ export default class Carousel extends LightningElement {
      * @param {number} numberOfPanels
      */
     initializePaginationItems(numberOfPanels) {
+        console.log('initialize');
         this.paginationItems = [];
         for (let i = 0; i < numberOfPanels; i++) {
             const id = generateUUID();
@@ -685,6 +697,111 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Initiate carousel panel swiping.
+     */
+    itemTouchStart(event) {
+        this.swipeStartPosition = event.touches[0].screenX;
+        this.swipedDistance = 0;
+        this.lastDistance = 0;
+        this.swipePositions = [];
+        this.swiping = true;
+    }
+
+    /**
+     * Track swiping direction and speed.
+     */
+    itemTouchMove(event) {
+        if (!this.swiping) {
+            return;
+        }
+        this.lastDistance = this.swipedDistance;
+        this.swipedDistance =
+            event.touches[0].screenX - this.swipeStartPosition;
+        this.lastTouchTime = event.timeStamp;
+
+        // moving panel
+        this.panelStyle = `transform: translateX(calc(-${
+            this.activeIndexPanel * 100
+        }% + ${this.swipedDistance}px));`;
+
+        // determining swipe direction and velocity
+        this.swipePositions.push(this.swipedDistance - this.lastDistance);
+        if (this.swipePositions.length > 5) {
+            this.swipePositions.shift();
+        }
+        this.swipeVelocity =
+            this.swipePositions.reduce((a, b) => a + b, 0) /
+            this.swipePositions.length;
+
+        // support swiping across more than one item
+    }
+
+    /**
+     * Resolve swiping intention by going to the next or the previous panel or canceling motion.
+     */
+    itemTouchEnd(event) {
+        if (!this.swiping) {
+            // reset motion
+            this.panelStyle = `transform: translateX(-${
+                this.activeIndexPanel * 100
+            }%);`;
+            return;
+        }
+
+        const delaySinceMove = event.timeStamp - this.lastTouchTime < 150;
+        const swipingRight = this.swipeVelocity < 0;
+        const swipingLeft = this.swipeVelocity > 0;
+        const mediumSpeed =
+            Math.abs(this.swipeVelocity) > 4 && delaySinceMove < 150;
+        const fastSpeed =
+            Math.abs(this.swipeVelocity) > 10 && delaySinceMove < 150;
+        const slowSwipeThreshold = 0.35;
+        const mediumSwipeThreshold = 0.10;
+        const fastSwipeThreshold = 0.5;
+        const swipeDisplacement =
+            this.swipedDistance / this.carouselContainer.clientWidth;
+        const absoluteDisplacement = Math.abs(swipeDisplacement);
+        // check that swipe has not reversed direction
+        const coherentSwipeDirection =
+            swipeDisplacement * this.swipeVelocity > 0;
+
+        // find the new selected panel in case more than one is crossed
+
+        console.log(this.swipeVelocity, mediumSpeed, fastSpeed);
+
+        this.swiping = false;
+        // more than one panel crossed
+        if (absoluteDisplacement > 0.5) {
+            this.unselectCurrentPanel();
+            const targetPanel = (this.activeIndexPanel -=
+                Math.round(swipeDisplacement));
+            this.selectNewPanel(targetPanel);
+            this.swipedDistance = 0;
+            return;
+        }
+
+        if (
+            coherentSwipeDirection &&
+            (absoluteDisplacement > slowSwipeThreshold ||
+                (absoluteDisplacement > mediumSwipeThreshold && mediumSpeed) ||
+                (absoluteDisplacement > fastSwipeThreshold && fastSpeed))
+        ) {
+            this.unselectCurrentPanel();
+            if (swipingRight) {
+                this.next();
+            }
+            if (swipingLeft) {
+                this.previous();
+            }
+        } else {
+            this.panelStyle = `transform: translateX(-${
+                this.activeIndexPanel * 100
+            }%);`;
+        }
+        this.swipedDistance = 0;
+    }
+
+    /**
      * Ensure items per panel is an accepted value, otherwise unset it.
      */
     normalizeItemsPerPanel(value, size) {
@@ -708,76 +825,6 @@ export default class Carousel extends LightningElement {
     startAutoScroll() {
         this.next();
         this.play();
-    }
-
-    itemTouchStart(event) {
-        this.swipeStartX = event.touches[0].screenX;
-        this.swipedDistance = 0;
-        this.lastDistance = 0;
-        this.swiping = true;
-        this.swipePoints = [];
-    }
-
-    itemTouchMove(event) {
-        if (!this.swiping) {
-            this.swiping = false;
-            return;
-        }
-
-        this.swipedDistance = event.touches[0].screenX - this.swipeStartX;
-        this.swipePoints.push(
-            Math.abs(this.swipedDistance - this.lastDistance)
-        );
-        this.lastDistance = this.swipedDistance;
-        this.lastTouchTime = event.timeStamp;
-
-        this.panelStyle = `transform: translateX(calc(-${
-            this.activeIndexPanel * 100
-        }% + ${this.swipedDistance}px));`;
-
-        if (this.swipePoints.length > 5) {
-            this.swipePoints.shift();
-        }
-        this.swipeVelocity = Math.round(
-            this.swipePoints.reduce((a, b) => a + b, 0) /
-                this.swipePoints.length
-        );
-    }
-
-    itemTouchEnd(event) {
-        const delaySinceMove = Math.round(event.timeStamp - this.lastTouchTime);
-        const percentageMoved = Math.round(
-            (this.swipedDistance / this.carouselContainer.clientWidth) * 100
-        );
-        const swipingLeft = percentageMoved < 0;
-        const swipingRight = percentageMoved > 0;
-        const mediumSpeed = this.swipeVelocity > 4 && delaySinceMove < 150;
-        const fastSpeed = this.swipeVelocity > 10 && delaySinceMove < 150;
-        const slowMoveThreshold = 35;
-        const mediumMoveThreshold = 10;
-        const fastMoveThreshold = 5;
-        const absoluteDisplacement = Math.abs(percentageMoved);
-
-        // console.log(this.swipeVelocity, percentageMoved, '%', delaySinceMove);
-
-        this.swiping = false;
-        this.swipedDistance = 0;
-        if (
-            absoluteDisplacement > slowMoveThreshold ||
-            (absoluteDisplacement > mediumMoveThreshold && mediumSpeed) ||
-            (absoluteDisplacement > fastMoveThreshold && fastSpeed)
-        ) {
-            if (swipingLeft) {
-                this.next();
-            }
-            if (swipingRight) {
-                this.previous();
-            }
-        } else {
-            this.panelStyle = `transform: translateX(-${
-                this.activeIndexPanel * 100
-            }%);`;
-        }
     }
 
     /**
@@ -945,6 +992,7 @@ export default class Carousel extends LightningElement {
      * @param {number} panelIndex
      */
     selectNewPanel(panelIndex) {
+        console.log('selectNewPanel', panelIndex);
         const activePaginationItem = this.paginationItems[panelIndex];
         const activePanelItem = this.panelItems[panelIndex];
 

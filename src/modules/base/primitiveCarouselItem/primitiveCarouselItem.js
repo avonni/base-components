@@ -149,7 +149,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedCarouselImageClass() {
-        return classSet('slds-carousel__image')
+        return classSet('slds-carousel__image avonni-carousel__image-radius')
             .add({
                 'slds-is-relative': !this.isBottomPosition
             })

@@ -18,6 +18,12 @@
     object-position: var(
         --avonni-carousel-item-image-positioning-object-position
     );
+    border-top-left-radius: calc(0.25rem - 1px)
+}
+
+.avonni-carousel__image-radius {
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
 }
 
 .avonni-carousel__actions {
