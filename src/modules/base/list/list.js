@@ -1492,7 +1492,7 @@ export default class List extends LightningElement {
 
         if (scrollTop != null) {
             window.requestAnimationFrame(() => {
-                this.listContainer.scrollTo(0, scrollTop);
+                this.listContainer.scrollTop = scrollTop;
             });
         }
     }
@@ -1542,10 +1542,8 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    this.listContainer.scrollTo(
-                        0,
-                        this.listContainer.scrollHeight
-                    );
+                    this.listContainer.scrollTop =
+                        this.listContainer.scrollHeight;
                 }
             }, 20);
         }
@@ -1640,9 +1638,7 @@ export default class List extends LightningElement {
         if (
             this._currentColumnCount > 1 ||
             this.variant !== 'base' ||
-            !this.sortable ||
-            event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
-            event.target.tagName.startsWith('A')
+            !this.sortable
         ) {
             return;
         }
@@ -1817,9 +1813,10 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        event.stopPropagation();
         const actionName = this.hasMultipleActions
             ? event.detail.value
-            : event.target.value;
+            : event.currentTarget.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
         /**
          * The event fired when a user clicks on an action.
@@ -1848,9 +1845,10 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleMediaActionClick(event) {
+        event.stopPropagation();
         const actionName = this.hasMultipleMediaActions
             ? event.detail.value
-            : event.target.value;
+            : event.currentTarget.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
 
         /**
@@ -1959,14 +1957,8 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleItemClick(event) {
-        if (
-            (event.target.tagName.startsWith('LIGHTNING') ||
-                event.target.tagName === 'A') &&
-            event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT'
-        ) {
-            return;
-        }
-        const itemIndex = event.currentTarget.dataset.index;
+        const itemIndex = Number(event.currentTarget.dataset.index);
+        const item = this.computedItems[itemIndex];
 
         /**
          * The event fired when a user clicks on an item.
@@ -1981,10 +1973,9 @@ export default class List extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    item: this.cleanUpItem(item),
                     bounds: event.currentTarget.getBoundingClientRect(),
-                    name: this.computedItems[event.currentTarget.dataset.index]
-                        .name
+                    name: item.name
                 }
             })
         );

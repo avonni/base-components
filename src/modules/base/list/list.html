@@ -123,6 +123,7 @@
                                         icon-size="x-small"
                                         data-element-id="media-action-menu"
                                         data-item-index={item.index}
+                                        onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
                                         onselect={handleMediaActionClick}
@@ -156,6 +157,7 @@
                                             data-item-index={item.index}
                                             data-element-id="media-action-button"
                                             onclick={handleMediaActionClick}
+                                            onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button>
                                         <lightning-button-icon
@@ -170,6 +172,7 @@
                                             data-item-index={item.index}
                                             data-element-id="media-action-button-icon"
                                             onclick={handleMediaActionClick}
+                                            onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button-icon>
                                     </template>
@@ -196,6 +199,7 @@
                                         icon-name={sortableIconName}
                                         size="x-small"
                                         data-element-id="lightning-icon-sort-left"
+                                        onclick={stopPropagation}
                                     ></lightning-icon>
                                     <div
                                         if:true={item.imageSrc}
@@ -281,6 +285,8 @@
                                                         class="
                                                             avonni-list__item-header-link
                                                         "
+                                                        onclick={stopPropagation}
+                                                        onmousedown={stopPropagation}
                                                         >{item.label}</a
                                                     >
                                                 </template>
@@ -353,6 +359,8 @@
                                                         class="
                                                             avonni-list__item-info-link
                                                         "
+                                                        onclick={stopPropagation}
+                                                        onmousedown={stopPropagation}
                                                         >{info.label}</a
                                                     >
                                                 </li>
@@ -372,6 +380,7 @@
                                     icon-name={sortableIconName}
                                     size="x-small"
                                     data-element-id="lightning-icon-sort-right"
+                                    onclick={stopPropagation}
                                 ></lightning-icon>
 
                                 <!-- Actions -->
@@ -385,6 +394,7 @@
                                         icon-size="x-small"
                                         data-element-id="lightning-button-menu"
                                         data-item-index={item.index}
+                                        onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
                                         onselect={handleActionClick}
@@ -416,6 +426,7 @@
                                             data-item-index={item.index}
                                             data-element-id="lightning-button"
                                             onclick={handleActionClick}
+                                            onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button>
                                         <lightning-button-icon
@@ -430,6 +441,7 @@
                                             data-item-index={item.index}
                                             data-element-id="lightning-button-icon"
                                             onclick={handleActionClick}
+                                            onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
                                         ></lightning-button-icon>
                                     </template>
