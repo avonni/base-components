@@ -545,7 +545,7 @@ export default class InputPen extends LightningElement {
      */
     get computedTextAreaClasses() {
         return classSet(
-            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
+            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area avonni-input-pen__text-area_no-touch-scroll'
         ).add({
             'avonni-input-pen__rich-text_border-radius-top':
                 this.variant === 'bottom-toolbar',
@@ -1280,22 +1280,6 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Tests if the if the coordinate is in drawing area
-     * @param {Object} position {x: 0, y: 0}
-     * @returns {Boolean} is in drawing area
-     */
-    isInDrawingArea(position) {
-        if (!this.drawingArea) return false;
-        const boundaries = this.drawingArea.getBoundingClientRect();
-        const isInBounds =
-            boundaries.x <= position.x &&
-            position.x <= boundaries.right &&
-            boundaries.y <= position.y &&
-            position.y <= boundaries.bottom;
-        return isInBounds;
-    }
-
-    /**
      * Proxy Input Attributes updater.
      *
      * @param {object} attributes
@@ -1349,9 +1333,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseMove = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
@@ -1365,9 +1346,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
@@ -1381,9 +1359,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseUp = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
