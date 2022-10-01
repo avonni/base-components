@@ -50,13 +50,41 @@ const TOOLBAR_VARIANTS = {
 const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
 
 const DEFAULT_BACKGROUND_COLORS = [
-    '#ffffff00',
-    '#000000',
+    '#e3abec',
+    '#c2dbf7',
     '#9fd6ff',
     '#9de7da',
     '#9df0bf',
     '#fff099',
-    '#ffca7f'
+    '#fed49a',
+    '#d073df',
+    '#86b9f3',
+    '#5ebbff',
+    '#44d8be',
+    '#3be281',
+    '#ffe654',
+    '#ffb758',
+    '#bd35bd',
+    '#5778c1',
+    '#5ebbff',
+    '#00aea9',
+    '#3bba4c',
+    '#f4bc25',
+    '#f99120',
+    '#580d8c',
+    '#001870',
+    '#0a2399',
+    '#097476',
+    '#096a50',
+    '#b67d11',
+    '#b85d0d',
+    '#ffffff00',
+    '#D3D3D3',
+    '#A9A9A9',
+    '#808080',
+    '#696969',
+    '#3a3a3a',
+    '#000000'
 ];
 
 const DEFAULT_COLOR = '#000';
