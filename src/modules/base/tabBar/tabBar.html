@@ -91,7 +91,7 @@
                         </button>
 
                         <!-- Hidden tabs dropdown -->
-                        <lightning-focus-trap
+                        <div
                             if:true={showHiddenTabsDropdown}
                             onfocusin={handleDropDownFocusIn}
                             onfocusout={handleDropDownFocusOut}
@@ -132,7 +132,7 @@
                                     </template>
                                 </ul>
                             </div>
-                        </lightning-focus-trap>
+                        </div>
                     </div>
                 </li>
             </template>
