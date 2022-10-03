@@ -39,6 +39,7 @@ describe('IconPicker', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
@@ -46,6 +47,10 @@ describe('IconPicker', () => {
             is: IconPicker
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -705,8 +710,6 @@ describe('IconPicker', () => {
     });
 
     it('Tab change', () => {
-        jest.useFakeTimers();
-
         return Promise.resolve()
             .then(() => {
                 element.shadowRoot
@@ -1117,30 +1120,23 @@ describe('IconPicker', () => {
                 element.shadowRoot
                     .querySelector('[data-element-id="button-toggle-menu"]')
                     .click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('mouseenter'));
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('mouseleave'));
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                const popoverElement = element.shadowRoot.querySelector(
+                const searchInput = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-input"]'
                 );
-                expect(popoverElement).toBeNull();
+                expect(searchInput).toBeTruthy();
+                searchInput.dispatchEvent(
+                    new CustomEvent('focusout', { bubbles: true })
+                );
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(searchInput).toBeFalsy();
             });
     });
 
@@ -1150,24 +1146,29 @@ describe('IconPicker', () => {
                 element.shadowRoot
                     .querySelector('[data-element-id="button-toggle-menu"]')
                     .click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('mouseenter'));
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                const popoverElement = element.shadowRoot.querySelector(
+                const searchInput = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-input"]'
                 );
-                expect(popoverElement).not.toBeNull();
+                const tabBar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-builder-tab-bar"]'
+                );
+                searchInput.dispatchEvent(
+                    new CustomEvent('focusout', { bubbles: true })
+                );
+                tabBar.dispatchEvent(
+                    new CustomEvent('focusin', { bubbles: true })
+                );
+
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(searchInput).toBeTruthy();
             });
     });
 
@@ -1272,43 +1273,6 @@ describe('IconPicker', () => {
                     '[data-element-id="lightning-input"]'
                 );
                 expect(popoverElement).not.toBeNull();
-            });
-    });
-
-    it('Invalid keypress', () => {
-        return Promise.resolve()
-            .then(() => {
-                element.shadowRoot
-                    .querySelector('[data-element-id="button-toggle-menu"]')
-                    .click();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 1 })
-                );
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(
-                    new KeyboardEvent('keyup', { keyCode: 1 })
-                );
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                const popoverElement = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                );
-                expect(popoverElement).toBeNull();
             });
     });
 
