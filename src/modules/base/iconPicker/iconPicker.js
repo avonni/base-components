@@ -880,13 +880,12 @@ export default class IconPicker extends LightningElement {
     handleMenuFocusOut() {
         this._menuIsFocused = false;
 
-        setTimeout(() => {
-            // Wait to see if another element is focused inside the menu.
-            // We check after a 100ms to give time to the click event to go through
+        requestAnimationFrame(() => {
+            // Wait to see if another element is focused inside the menu
             if (!this._menuIsFocused && this.iconMenuOpened) {
                 this.toggleMenuVisibility();
             }
-        }, 100);
+        });
     }
 
     /**
