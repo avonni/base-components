@@ -1412,6 +1412,7 @@ describe('Color Picker', () => {
     it('Color Picker: change event in the dropdown', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
+        jest.useFakeTimers();
 
         const color = {
             hex: '#014486',
@@ -1429,9 +1430,18 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
+                // The palette is loading when we open the popover
                 const palette = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-color-palette"]'
                 );
+                expect(palette.isLoading).toBeTruthy();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeFalsy();
                 palette.dispatchEvent(
                     new CustomEvent('change', {
                         detail: color,
