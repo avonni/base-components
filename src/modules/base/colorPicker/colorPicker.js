@@ -1203,7 +1203,7 @@ export default class ColorPicker extends LightningElement {
         this.paletteIsLoading = true;
         setTimeout(() => {
             this.paletteIsLoading = false;
-        }, 200);
+        }, 0);
     }
 
     /**
