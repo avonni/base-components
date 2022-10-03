@@ -35,8 +35,7 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    generateColors,
-    deepCopy
+    generateColors
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import grid from './grid.html';
@@ -136,7 +135,7 @@ export default class ColorPalette extends LightningElement {
         return this._colors;
     }
     set colors(value) {
-        const colors = deepCopy(normalizeArray(value));
+        const colors = normalizeArray(value);
         this._colors = colors.length ? colors : DEFAULT_COLORS;
 
         if (this._isConnected) this.initGroups();
