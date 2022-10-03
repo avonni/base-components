@@ -381,15 +381,13 @@ export default class ColorPalette extends LightningElement {
             colors: []
         };
 
-        // Create an object with one key per group name used by a color
-        for (let i = 0; i < this.colors.length; i++) {
-            let color = this.colors[i];
+        this.colors.forEach((color) => {
+            let hasBeenAddedToAGroup = false;
 
             if (color instanceof Object) {
                 const colorGroups = normalizeArray(color.groups);
 
                 if (this.groups.length && colorGroups.length) {
-                    let hasBeenAddedToAGroup = false;
                     colorGroups.forEach((groupName) => {
                         // Make sure the group exists
                         const groupDefinition = this.groups.find(
@@ -409,16 +407,16 @@ export default class ColorPalette extends LightningElement {
                             hasBeenAddedToAGroup = true;
                         }
                     });
-                    if (hasBeenAddedToAGroup) continue;
                 }
             } else {
                 color = {
                     color: color
                 };
             }
-
-            undefinedGroup.colors.push(color);
-        }
+            if (!hasBeenAddedToAGroup) {
+                undefinedGroup.colors.push(color);
+            }
+        });
 
         // Create the computed groups, in the order of the groups array
         const computedGroups = [];
