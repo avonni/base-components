@@ -732,30 +732,34 @@ export default class Carousel extends LightningElement {
             this.swipePositions.reduce((a, b) => a + b, 0) /
             this.swipePositions.length;
 
-        this.swipeLimitsReached();
+        // pass swipe distance, get transform distance
+        const motionDistance = this.swipeLimitsReached(this.swipedDistance);
 
-        // moving panel
+        // motion transmission to item.
         this.panelStyle = `transform: translateX(calc(-${
             this.activeIndexPanel * 100
-        }% + ${this.swipedDistance}px));`;
+        }% + ${motionDistance}px));`;
     }
 
-    swipeLimitsReached() {
-        const panelContainer = this.template.querySelector('[data-element-id="lightning-layout-panel-container"]');
-        const panels = Array.from(this.template.querySelectorAll('div.avonni-carousel__panel')) 
+    swipeLimitsReached(swipedDistance) {
+        // const panelContainer = this.template.querySelector('[data-element-id="lightning-layout-panel-container"]');
+        // const panels = Array.from(this.template.querySelectorAll('div.avonni-carousel__panel'))
 
-        if (panels && panelContainer) {
-            // check if left is reached. 
-            const panelContainerPosition = panelContainer.getBoundingClientRect();
-            const firstPanelPosition = panels[0].getBoundingClientRect();
-            const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
-            // allow end panels to move by 20% of panel width
-            const maxElasticity = panelContainerPosition.width * 0.2; 
+        // if (panels && panelContainer) {
+        //     // check if left is reached.
+        //     const panelContainerPosition = panelContainer.getBoundingClientRect();
+        //     const firstPanelPosition = panels[0].getBoundingClientRect();
+        //     const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
+        //     // allow end panels to move by 20% of panel width
+        //     const maxElasticity = panelContainerPosition.width * 0.2;
 
-            // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
+        //     // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
 
-        }
+        //     console.log(1/this.swipedDistance, this.swipedDistance);
 
+        // }
+
+        return swipedDistance;
     }
 
     /**
@@ -778,7 +782,7 @@ export default class Carousel extends LightningElement {
         const fastSpeed =
             Math.abs(this.swipeVelocity) > 10 && delaySinceMove < 150;
         const slowSwipeThreshold = 0.35;
-        const mediumSwipeThreshold = 0.10;
+        const mediumSwipeThreshold = 0.1;
         const fastSwipeThreshold = 0.5;
         const swipeDisplacement =
             this.swipedDistance / this.carouselContainer.clientWidth;
