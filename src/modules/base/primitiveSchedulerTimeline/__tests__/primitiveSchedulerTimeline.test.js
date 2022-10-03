@@ -109,6 +109,15 @@ const EVENTS = [
     }
 ];
 
+const RECURRING_EVENT = {
+    name: 'simple-event',
+    recurrence: 'daily',
+    from: new Date(2022, 8, 19, 12),
+    to: new Date(2022, 8, 19, 14),
+    recurrenceEndDate: new Date(2022, 10, 1),
+    resourceNames: ['resource-1']
+};
+
 const RESOURCES = [
     {
         name: 'resource-1',
@@ -1335,6 +1344,1068 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(resourceHeader.classList).toContain(
                     'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit'
                 );
+            });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    // createEvent
+    it('Primitive Scheduler Timeline: createEvent() method', () => {
+        element.start = START;
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                element.createEvent(EVENTS[1]);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(1);
+                expect(events[0].eventName).toBe(EVENTS[1].name);
+            });
+    });
+
+    // deleteEvent
+    it('Primitive Scheduler Timeline: deleteEvent() method', () => {
+        element.start = START;
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.events = EVENTS;
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(2);
+                element.deleteEvent(events[0].eventName);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(1);
+            });
+    });
+
+    // newEvent and saveSelection
+    it('Primitive Scheduler Timeline: newEvent() and saveSelection() methods', () => {
+        element.start = START;
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        let from, to;
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const resourceRow = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"]'
+                );
+                const cell = resourceRow.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                from = Number(cell.dataset.start);
+                to = Number(cell.dataset.end);
+                jest.spyOn(
+                    resourceRow,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 100, bottom: 300 };
+                });
+                jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 0, right: 130 };
+                    }
+                );
+                element.newEvent(102, 53);
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(0);
+                element.saveSelection();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(1);
+                expect(events[0].resourceKey).toBe(RESOURCES[0].name);
+                expect(events[0].from.ts).toBe(from);
+                expect(events[0].to.ts).toBe(to);
+            });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
+
+    // emptyspotcontextmenu
+    it('Primitive Scheduler Timeline: emptyspotcontextmenu', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        const handler = jest.fn();
+        element.addEventListener('emptyspotcontextmenu', handler);
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            const contextMenuEvent = new CustomEvent('contextmenu');
+            contextMenuEvent.clientY = 100;
+            contextMenuEvent.clientX = 120;
+            cell.dispatchEvent(contextMenuEvent);
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.selection.y).toBe(100);
+            expect(call.detail.selection.x).toBe(120);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+        });
+    });
+
+    it('Primitive Scheduler Timeline: emptyspotcontextmenu dispatched by a disabled event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.events = [EVENTS[2]];
+        element.start = START;
+
+        const handler = jest.fn();
+        element.addEventListener('emptyspotcontextmenu', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const contextMenuEvent = new CustomEvent(
+                    'privatedisabledcontextmenu'
+                );
+                contextMenuEvent.clientY = 12;
+                contextMenuEvent.clientX = 5;
+                event.dispatchEvent(contextMenuEvent);
+                expect(handler).toHaveBeenCalled();
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.selection.y).toBe(12);
+                expect(detail.selection.x).toBe(5);
+            });
+    });
+
+    // eventchange
+    it('Primitive Scheduler Timeline: eventchange event when resizing the end of an event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = [
+            {
+                name: 'simple-event',
+                from: new Date(2022, 8, 19, 10),
+                to: new Date(2022, 8, 19, 11),
+                resourceNames: ['resource-1']
+            }
+        ];
+
+        const handler = jest.fn();
+        const hidePopoversHandler = jest.fn();
+        element.addEventListener('hidepopovers', hidePopoversHandler);
+        element.addEventListener('eventchange', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const resourceRow = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"][data-name="resource-1"]'
+                );
+                const cells = resourceRow.querySelectorAll(
+                    '[data-element-id="div-cell"]'
+                );
+                jest.spyOn(event, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { right: 31, width: 10 };
+                    }
+                );
+                jest.spyOn(
+                    resourceRow,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 100 };
+                });
+                jest.spyOn(
+                    cells[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 0, right: 150 };
+                });
+                jest.spyOn(
+                    cells[1],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 151, right: 260 };
+                });
+
+                // mousedown on the event
+                event.dispatchEvent(
+                    new CustomEvent('privatemousedown', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            key: event.occurrenceKey,
+                            side: 'end',
+                            x: 30,
+                            y: 50
+                        }
+                    })
+                );
+                expect(hidePopoversHandler).toHaveBeenCalledTimes(1);
+                expect(
+                    hidePopoversHandler.mock.calls[0][0].detail.list
+                ).toBeUndefined();
+
+                // mousemove to the second cell
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 203;
+                mousemove.clientY = 51;
+                wrapper.dispatchEvent(mousemove);
+                expect(event.style.width).toBe('183px');
+
+                // mouseup
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 205;
+                mouseup.clientY = 50;
+                wrapper.dispatchEvent(mouseup);
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                const to = new Date(Number(cells[1].dataset.end) + 1);
+                expect(call.detail.name).toBe(event.eventName);
+                expect(call.detail.draftValues).toEqual({
+                    allDay: undefined,
+                    to: to.toISOString()
+                });
+                expect(call.bubbles).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
+    it('Primitive Scheduler Timeline: eventchange event when resizing the start of an event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = [
+            {
+                name: 'simple-event',
+                from: new Date(2022, 8, 19, 10),
+                to: new Date(2022, 8, 19, 11),
+                resourceNames: ['resource-1']
+            }
+        ];
+
+        const handler = jest.fn();
+        const hidePopoversHandler = jest.fn();
+        element.addEventListener('hidepopovers', hidePopoversHandler);
+        element.addEventListener('eventchange', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const resourceRow = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"][data-name="resource-1"]'
+                );
+                const cells = resourceRow.querySelectorAll(
+                    '[data-element-id="div-cell"]'
+                );
+                jest.spyOn(event, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 31, width: 10 };
+                    }
+                );
+                jest.spyOn(
+                    resourceRow,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 100 };
+                });
+                jest.spyOn(
+                    cells[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 0, right: 150 };
+                });
+                jest.spyOn(
+                    cells[1],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 151, right: 260 };
+                });
+
+                // mousedown on the event
+                event.dispatchEvent(
+                    new CustomEvent('privatemousedown', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            key: event.occurrenceKey,
+                            side: 'start',
+                            x: 130,
+                            y: 50
+                        }
+                    })
+                );
+                expect(hidePopoversHandler).toHaveBeenCalledTimes(1);
+                expect(
+                    hidePopoversHandler.mock.calls[0][0].detail.list
+                ).toBeUndefined();
+
+                // mousemove to the second cell
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 38;
+                mousemove.clientY = 51;
+                wrapper.dispatchEvent(mousemove);
+                expect(event.style.width).toBe('41px');
+
+                // mouseup
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 38;
+                mouseup.clientY = 50;
+                wrapper.dispatchEvent(mouseup);
+
+                expect(handler).toHaveBeenCalled();
+                const from = new Date(Number(cells[0].dataset.start));
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe(event.eventName);
+                expect(call.detail.draftValues).toEqual({
+                    allDay: undefined,
+                    from: from.toISOString()
+                });
+            });
+    });
+
+    it('Primitive Scheduler Timeline: eventchange event when drag and dropping', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = [
+            {
+                name: 'simple-event',
+                from: new Date(2022, 8, 19, 10),
+                to: new Date(2022, 8, 19, 11),
+                resourceNames: ['resource-1']
+            }
+        ];
+
+        const handler = jest.fn();
+        const hidePopoversHandler = jest.fn();
+        element.addEventListener('hidepopovers', hidePopoversHandler);
+        element.addEventListener('eventchange', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const resourceOne = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"][data-name="resource-1"]'
+                );
+                const resourceTwo = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"][data-name="resource-2"]'
+                );
+                const resourceTwoCell = resourceTwo.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                jest.spyOn(event, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 2, width: 60 };
+                    }
+                );
+                jest.spyOn(
+                    resourceOne,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 100 };
+                });
+                jest.spyOn(
+                    resourceTwo,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 101, bottom: 200 };
+                });
+                jest.spyOn(
+                    resourceTwoCell,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 0, right: 150 };
+                });
+
+                // mousedown on the event
+                event.dispatchEvent(
+                    new CustomEvent('privatemousedown', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            key: event.occurrenceKey,
+                            x: 130,
+                            y: 50
+                        }
+                    })
+                );
+                expect(hidePopoversHandler).toHaveBeenCalledTimes(1);
+                expect(
+                    hidePopoversHandler.mock.calls[0][0].detail.list
+                ).toBeUndefined();
+
+                // mousemove to the second resource
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 38;
+                mousemove.clientY = 151;
+                wrapper.dispatchEvent(mousemove);
+
+                // mouseup
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 38;
+                mouseup.clientY = 150;
+                wrapper.dispatchEvent(mouseup);
+
+                expect(handler).toHaveBeenCalled();
+                const from = new Date(Number(resourceTwoCell.dataset.start));
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe(event.eventName);
+                expect(call.detail.draftValues).toMatchObject({
+                    from: from.toISOString(),
+                    resourceNames: ['resource-2']
+                });
+            });
+    });
+
+    it('Primitive Scheduler Timeline: eventchange event when drag and dropping a recurrent event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = [RECURRING_EVENT];
+        const eventDuration = 7200000;
+        element.timeSpan = { unit: 'day', span: 3 };
+        element.recurrentEditModes = ['one'];
+
+        const handler = jest.fn();
+        element.addEventListener('eventchange', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        let from, to;
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const resourceRow = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"][data-name="resource-1"]'
+                );
+                const cells = resourceRow.querySelectorAll(
+                    '[data-element-id="div-cell"]'
+                );
+                jest.spyOn(event, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 80, width: 150 };
+                    }
+                );
+                jest.spyOn(
+                    resourceRow,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 100 };
+                });
+                jest.spyOn(
+                    cells[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 0, right: 150 };
+                });
+
+                jest.spyOn(
+                    cells[1],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 151, right: 250 };
+                });
+
+                // mousedown on the event
+                event.x = 80;
+                event.y = 15;
+                event.dispatchEvent(
+                    new CustomEvent('privatemousedown', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            key: event.occurrenceKey,
+                            x: 90,
+                            y: 18
+                        }
+                    })
+                );
+
+                // mousemove to the second cell
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 200;
+                mousemove.clientY = 13;
+                wrapper.dispatchEvent(mousemove);
+                expect(event.x).toBe(200 - 90 + 80);
+                expect(event.y).toBe(13 - 18 + 15);
+
+                // mouseup
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 189;
+                mouseup.clientY = 10;
+                wrapper.dispatchEvent(mouseup);
+
+                expect(handler).toHaveBeenCalled();
+                from = Number(cells[1].dataset.start);
+                to = from + eventDuration;
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe(event.eventName);
+                expect(call.detail.draftValues).toEqual({
+                    from: new Date(from).toISOString(),
+                    to: new Date(to).toISOString()
+                });
+                expect(call.detail.recurrenceDates).toEqual({
+                    from: new Date(from).toISOString(),
+                    to: new Date(to).toISOString()
+                });
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(event.from.ts).toBe(from);
+                expect(event.to.ts).toBe(to);
+            });
+    });
+
+    // eventcontextmenu
+    it('Primitive Scheduler Timeline: eventcontextmenu event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('eventcontextmenu', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const detail = {
+                    eventName: event.eventName,
+                    key: event.occurrenceKey,
+                    x: 32,
+                    y: 12
+                };
+                event.dispatchEvent(
+                    new CustomEvent('privatecontextmenu', {
+                        detail
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail).toEqual(detail);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
+    // eventmouseenter
+    it('Primitive Scheduler Timeline: eventmouseenter event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('eventmouseenter', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const detail = {
+                    eventName: event.eventName,
+                    key: event.occurrenceKey,
+                    x: 23,
+                    y: 67
+                };
+                event.dispatchEvent(
+                    new CustomEvent('privatemouseenter', {
+                        detail
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail).toEqual(detail);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
+    // eventselect
+    it('Primitive Scheduler Timeline: eventselect', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = [RECURRING_EVENT];
+
+        const handler = jest.fn();
+        const mouseEnterHandler = jest.fn();
+        element.addEventListener('eventselect', handler);
+        element.addEventListener('eventmouseenter', mouseEnterHandler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const from = DateTime.fromJSDate(RECURRING_EVENT.from);
+                const to = DateTime.fromJSDate(RECURRING_EVENT.to);
+                event.dispatchEvent(
+                    new CustomEvent('privatefocus', {
+                        detail: {
+                            eventName: RECURRING_EVENT.name,
+                            from,
+                            to
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                expect(mouseEnterHandler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe(RECURRING_EVENT.name);
+                expect(call.detail.recurrenceDates.from).toBe(
+                    from.toUTC().toISO()
+                );
+                expect(call.detail.recurrenceDates.to).toBe(to.toUTC().toISO());
+                expect(call.bubbles).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
+    // hidepopovers
+    it('Primitive Scheduler Timeline: hidepopovers on event mouse leave and blur', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('hidepopovers', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                event.dispatchEvent(new CustomEvent('privatemouseleave'));
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.list).toEqual(['detail']);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+
+                event.dispatchEvent(new CustomEvent('privateblur'));
+                expect(handler).toHaveBeenCalledTimes(2);
+                expect(handler.mock.calls[1][0].detail.list).toEqual([
+                    'detail'
+                ]);
+            });
+    });
+
+    it('Primitive Scheduler Timeline: hidepopovers on event double click', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('hidepopovers', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                event.dispatchEvent(
+                    new CustomEvent('privatedblclick', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            x: 3,
+                            y: 120,
+                            key: event.occurrenceKey
+                        }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.list).toBeUndefined();
+            });
+    });
+
+    it('Primitive Scheduler Timeline: hidepopovers on scroll', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+        element.orientation = 'vertical';
+
+        const handler = jest.fn();
+        element.addEventListener('hidepopovers', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const verticalHeaders = element.shadowRoot.querySelector(
+                    '[data-element-id="div-vertical-header-wrapper"]'
+                );
+                const resourceHeaders = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource-header-cells"]'
+                );
+                const verticalHeadersSpy = jest.spyOn(
+                    verticalHeaders,
+                    'scrollTop',
+                    'set'
+                );
+                const resourceHeadersSpy = jest.spyOn(
+                    resourceHeaders,
+                    'scrollLeft',
+                    'set'
+                );
+                const rightPanel = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-splitter-pane-right"]'
+                );
+                jest.spyOn(event, 'getBoundingClientRect').mockReturnValue({
+                    right: -10
+                });
+                jest.spyOn(rightPanel, 'scrollLeft', 'get').mockReturnValue(38);
+                jest.spyOn(rightPanel, 'scrollTop', 'get').mockReturnValue(59);
+                element.selectEvent({
+                    eventName: event.eventName,
+                    from: event.from,
+                    x: 12,
+                    y: 40,
+                    key: event.occurrenceKey
+                });
+                rightPanel.dispatchEvent(new CustomEvent('scroll'));
+
+                expect(handler).toHaveBeenCalledTimes(2);
+                const firstCall = handler.mock.calls[0][0].detail;
+                const secondCall = handler.mock.calls[1][0].detail;
+                expect(firstCall.list).toEqual(['detail']);
+                expect(secondCall.list).toEqual(['context']);
+
+                expect(verticalHeadersSpy).toHaveBeenCalledWith(59);
+                expect(resourceHeadersSpy).toHaveBeenCalledWith(38);
+            });
+    });
+
+    // openeditdialog
+    it('Primitive Scheduler Timeline: openeditdialog on event double click', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('openeditdialog', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                event.dispatchEvent(
+                    new CustomEvent('privatedblclick', {
+                        detail: {
+                            eventName: event.eventName,
+                            from: event.from,
+                            x: 3,
+                            y: 120,
+                            key: event.occurrenceKey
+                        }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.selection.event.name).toBe(event.eventName);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+    });
+
+    it('Primitive Scheduler Timeline: openeditdialog on empty spot double click', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.newEventTitle = 'some new event title';
+
+        const handler = jest.fn();
+        element.addEventListener('openeditdialog', handler);
+
+        return Promise.resolve().then(() => {
+            const resource = element.shadowRoot.querySelector(
+                '[data-element-id="div-resource"]'
+            );
+            const cell = resource.querySelector('[data-element-id="div-cell"]');
+            jest.spyOn(resource, 'getBoundingClientRect').mockImplementation(
+                () => {
+                    return { left: 260, right: 476 };
+                }
+            );
+            jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(() => {
+                return { top: 0, bottom: 50 };
+            });
+            const dblclick = new CustomEvent('dblclick');
+            dblclick.clientY = 45;
+            dblclick.clientX = 300;
+            cell.dispatchEvent(dblclick);
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            const selection = handler.mock.calls[0][0].detail.selection;
+            expect(selection.event.name).toBe('new-event');
+            expect(selection.event.title).toBe('some new event title');
+            expect(selection.x).toBe(300);
+            expect(selection.y).toBe(45);
+        });
+    });
+
+    it('Primitive Scheduler Timeline: openeditdialog on disabled event double click', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('openeditdialog', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-disabled="true"]'
+                );
+                const dblclick = new CustomEvent('privatedisableddblclick');
+                dblclick.clientY = 45;
+                dblclick.clientX = 130;
+                event.dispatchEvent(dblclick);
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const selection = handler.mock.calls[0][0].detail.selection;
+                expect(selection.event.name).toBe('new-event');
+                expect(selection.x).toBe(130);
+                expect(selection.y).toBe(45);
+            });
+    });
+
+    it('Primitive Scheduler Timeline: openeditdialog on dragging of a new event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+
+        const handler = jest.fn();
+        const hidePopoversHandler = jest.fn();
+        element.addEventListener('hidepopovers', hidePopoversHandler);
+        element.addEventListener('openeditdialog', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        let from, to;
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(event).toBeFalsy();
+
+                // mousedown
+                const resource = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"]'
+                );
+                const cell = resource.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                from = new Date(Number(cell.dataset.start));
+                to = new Date(Number(cell.dataset.end) + 1);
+                jest.spyOn(
+                    resource,
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 50 };
+                });
+                jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(
+                    () => {
+                        return { left: 100, right: 150 };
+                    }
+                );
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.clientX = 112;
+                mousedown.clientY = 34;
+                cell.dispatchEvent(mousedown);
+                expect(hidePopoversHandler).toHaveBeenCalledTimes(1);
+                expect(
+                    hidePopoversHandler.mock.calls[0][0].detail.list
+                ).toBeUndefined();
+
+                // First mousemove, the event will be created and appear on the calendar
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                wrapper.dispatchEvent(new CustomEvent('mousemove'));
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(event).toBeTruthy();
+                expect(event.eventName).toBe('new-event');
+                expect(event.style.height).toBeFalsy();
+
+                // Second mousemove, the event is resized
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-schedule-wrapper"]'
+                );
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 115;
+                mousemove.clientY = 35;
+                wrapper.dispatchEvent(mousemove);
+                expect(event.style.width).toBe('3px');
+
+                // mouseup
+                const mouseup = new CustomEvent('mouseup', { bubbles: true });
+                mouseup.clientX = 118;
+                mouseup.clientY = 35;
+                wrapper.dispatchEvent(mouseup);
+
+                expect(handler).toHaveBeenCalled();
+                const selection = handler.mock.calls[0][0].detail.selection;
+                expect(selection.event.from.ts).toBe(from.getTime());
+                expect(selection.event.to.ts).toBe(to.getTime());
             });
     });
 });

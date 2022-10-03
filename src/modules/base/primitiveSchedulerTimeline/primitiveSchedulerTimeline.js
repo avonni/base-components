@@ -1123,13 +1123,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             const verticalHeaders = this.template.querySelector(
                 '[data-element-id="div-vertical-header-wrapper"]'
             );
-            verticalHeaders.scroll(0, scrollTop);
+            verticalHeaders.scrollTop = scrollTop;
 
             // Create an artificial scroll for the resource headers
             const resourceHeaders = this.template.querySelector(
                 '[data-element-id="div-resource-header-cells"]'
             );
-            resourceHeaders.scroll(scrollLeft, 0);
+            resourceHeaders.scrollLeft = scrollLeft;
         }
     }
 }

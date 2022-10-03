@@ -2038,14 +2038,6 @@ describe('Primitive Scheduler Calendar', () => {
                 '[data-element-id="div-column"]'
             );
             const cell = column.querySelector('[data-element-id="div-cell"]');
-            jest.spyOn(column, 'getBoundingClientRect').mockImplementation(
-                () => {
-                    return { left: 260, right: 476 };
-                }
-            );
-            jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(() => {
-                return { top: 0, bottom: 50 };
-            });
             const event = new CustomEvent('contextmenu');
             event.clientX = 283;
             event.clientY = 38;
@@ -2075,14 +2067,6 @@ describe('Primitive Scheduler Calendar', () => {
                 '[data-element-id="div-column"]'
             );
             const cell = column.querySelector('[data-element-id="div-cell"]');
-            jest.spyOn(column, 'getBoundingClientRect').mockImplementation(
-                () => {
-                    return { left: 260, right: 476 };
-                }
-            );
-            jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(() => {
-                return { top: 0, bottom: 50 };
-            });
             const event = new CustomEvent('contextmenu');
             event.clientX = 283;
             event.clientY = 38;
@@ -2103,14 +2087,6 @@ describe('Primitive Scheduler Calendar', () => {
                 '[data-element-id="div-column"]'
             );
             const cell = column.querySelector('[data-element-id="div-cell"]');
-            jest.spyOn(column, 'getBoundingClientRect').mockImplementation(
-                () => {
-                    return { left: 260, right: 476 };
-                }
-            );
-            jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(() => {
-                return { top: 0, bottom: 50 };
-            });
             const event = new CustomEvent('contextmenu');
             event.clientX = 283;
             event.clientY = 38;
@@ -2156,7 +2132,7 @@ describe('Primitive Scheduler Calendar', () => {
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
                 );
 
-                // mousedown in the first cell
+                // mousedown on the event
                 const cells = column.querySelectorAll(
                     '[data-element-id="div-cell"]'
                 );
@@ -2190,7 +2166,7 @@ describe('Primitive Scheduler Calendar', () => {
                     hidePopoversHandler.mock.calls[0][0].detail.list
                 ).toBeUndefined();
 
-                // mousemove to the second cell
+                // mousemove to another cell
                 const wrapper = element.shadowRoot.querySelector(
                     '[data-element-id="div-wrapper"]'
                 );
@@ -2317,9 +2293,6 @@ describe('Primitive Scheduler Calendar', () => {
                     allDay: false,
                     from: from.toISOString()
                 });
-                expect(call.bubbles).toBeTruthy();
-                expect(call.cancelable).toBeFalsy();
-                expect(call.composed).toBeFalsy();
             });
     });
 
@@ -2424,6 +2397,7 @@ describe('Primitive Scheduler Calendar', () => {
                 resourceNames: [ALL_RESOURCES[0]]
             }
         ];
+        const eventDuration = 7200000;
 
         const handler = jest.fn();
         const hidePopoversHandler = jest.fn();
@@ -2504,7 +2478,7 @@ describe('Primitive Scheduler Calendar', () => {
 
                 expect(handler).toHaveBeenCalled();
                 const from = Number(cells[1].dataset.start);
-                const to = from + 7200000;
+                const to = from + eventDuration;
                 const call = handler.mock.calls[0][0];
                 expect(call.detail.name).toBe(event.eventName);
                 expect(call.detail.draftValues).toEqual({
@@ -2528,6 +2502,7 @@ describe('Primitive Scheduler Calendar', () => {
                 resourceNames: [ALL_RESOURCES[1]]
             }
         ];
+        const eventDuration = 7200000;
         element.recurrentEditModes = ['one'];
         element.timeSpan = {
             unit: 'week',
@@ -2546,6 +2521,7 @@ describe('Primitive Scheduler Calendar', () => {
             return { left: 0, right: 1000, top: 0, bottom: 1000 };
         });
 
+        let from, to;
         return Promise.resolve()
             .then(() => {
                 // Wait for the visible interval to be set
@@ -2612,8 +2588,8 @@ describe('Primitive Scheduler Calendar', () => {
                 wrapper.dispatchEvent(mouseup);
 
                 expect(handler).toHaveBeenCalled();
-                const from = Number(cells[1].dataset.start);
-                const to = from + 7200000;
+                from = Number(cells[1].dataset.start);
+                to = from + eventDuration;
                 const call = handler.mock.calls[0][0];
                 expect(call.detail.name).toBe(event.eventName);
                 expect(call.detail.draftValues).toEqual({
@@ -2624,6 +2600,13 @@ describe('Primitive Scheduler Calendar', () => {
                     from: new Date(from).toISOString(),
                     to: new Date(to).toISOString()
                 });
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                );
+                expect(event.from.ts).toBe(from);
+                expect(event.to.ts).toBe(to);
             });
     });
 
