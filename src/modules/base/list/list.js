@@ -553,6 +553,26 @@ export default class List extends LightningElement {
      */
 
     /**
+     * Size of the button icon visible when only one action is set.
+     *
+     * @type {string}
+     */
+    get actionButtonIconSize() {
+        return this.imageAttributes.position === 'overlay' ? 'small' : 'medium';
+    }
+
+    /**
+     * Variant of the button icon visible when only one action is set.
+     *
+     * @type {string}
+     */
+    get actionButtonIconVariant() {
+        return this.imageAttributes.position === 'overlay'
+            ? 'border-filled'
+            : 'bare';
+    }
+
+    /**
      * Apply object fit classes to images.
      */
     get computedImageMediaClass() {
@@ -800,7 +820,8 @@ export default class List extends LightningElement {
         )
             .add({
                 'slds-grid_vertical': this._currentColumnCount === 1,
-                'slds-wrap': this._currentColumnCount > 1,
+                'slds-wrap':
+                    this._currentColumnCount > 1 && this.variant === 'base',
                 'avonni-list__items-without-divider': this.divider === '',
                 'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space avonni-list__items-have-top-divider':
@@ -834,7 +855,9 @@ export default class List extends LightningElement {
         return classSet('avonni-list__item-wrapper avonni-list__item')
             .add({
                 'avonni-list__item-sortable':
-                    this.sortable && this._currentColumnCount === 1,
+                    this.sortable &&
+                    this._currentColumnCount === 1 &&
+                    this.variant === 'base',
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
@@ -851,8 +874,10 @@ export default class List extends LightningElement {
      * Only enable scrolling if enable or has been used
      */
     get computedListContainerClass() {
-        return classSet('slds-grid slds-col')
-            .add({'slds-scrollable_y': this._hasUsedInfiniteLoading})
+        return classSet('slds-grid slds-col').add({
+            'slds-scrollable_y':
+                this._hasUsedInfiniteLoading && this.variant === 'base'
+        });
     }
 
     /*
@@ -1467,7 +1492,7 @@ export default class List extends LightningElement {
 
         if (scrollTop != null) {
             window.requestAnimationFrame(() => {
-                this.listContainer.scrollTo(0, scrollTop);
+                this.listContainer.scrollTop = scrollTop;
             });
         }
     }
@@ -1517,10 +1542,8 @@ export default class List extends LightningElement {
                     '[data-element-id="loading-spinner-below"]'
                 );
                 if (spinner) {
-                    this.listContainer.scrollTo(
-                        0,
-                        this.listContainer.scrollHeight
-                    );
+                    this.listContainer.scrollTop =
+                        this.listContainer.scrollHeight;
                 }
             }, 20);
         }
@@ -1581,9 +1604,6 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     dragStart(event) {
-        if (this._currentColumnCount > 1) {
-            return;
-        }
         if (event.button === 0) {
             const index = Number(event.currentTarget.dataset.index);
             const item = this.computedItems[index];
@@ -1614,16 +1634,11 @@ export default class List extends LightningElement {
             return;
         }
 
-        if (this._keyboardDragged) {
-            this._keyboardDragged = false;
-            return;
-        }
-
         // Stop dragging if the click was on a button menu
         if (
-            !this.sortable ||
-            event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
-            event.target.tagName.startsWith('A')
+            this._currentColumnCount > 1 ||
+            this.variant !== 'base' ||
+            !this.sortable
         ) {
             return;
         }
@@ -1663,11 +1678,7 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     drag(event) {
-        if (
-            !this._draggedElement ||
-            this._keyboardDragged ||
-            this._keyboardDragged
-        ) {
+        if (!this._draggedElement || this._keyboardDragged) {
             return;
         }
 
@@ -1695,7 +1706,6 @@ export default class List extends LightningElement {
             currentY = mouseY;
         }
         this._currentY = currentY;
-        this._currentY = currentY;
 
         if (!this._scrollStep) {
             // Stick the dragged item to the mouse position
@@ -1708,9 +1718,6 @@ export default class List extends LightningElement {
         if (buttonMenu) {
             buttonMenu.classList.remove('slds-is-open');
         }
-
-        this.stopPropagation(event);
-        this.autoScroll(this._currentY);
 
         this.stopPropagation(event);
         this.autoScroll(this._currentY);
@@ -1801,38 +1808,16 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Handles a click on an item action.
+     * Handles a click on an item's action.
      *
      * @param {Event} event
      */
     handleActionClick(event) {
+        event.stopPropagation();
         const actionName = this.hasMultipleActions
             ? event.detail.value
-            : event.target.value;
+            : event.currentTarget.value;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-        this.dispatchActionClickEvent(itemIndex, actionName);
-    }
-
-    /**
-     * Handles a click on an item media-action.
-     *
-     * @param {Event} event
-     */
-    handleMediaActionClick(event) {
-        const actionName = this.hasMultipleMediaActions
-            ? event.detail.value
-            : event.target.value;
-        const itemIndex = event.currentTarget.dataset.itemIndex;
-        this.dispatchActionClickEvent(itemIndex, actionName);
-    }
-
-    /**
-     * Dispatch the custom event triggered when actions and media-actions are clicked.
-     *
-     * @param {string} itemIndex
-     * @param {string} actionName
-     */
-    dispatchActionClickEvent(itemIndex, actionName) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -1845,6 +1830,39 @@ export default class List extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    targetName: this.computedItems[itemIndex].name
+                }
+            })
+        );
+    }
+
+    /**
+     * Handles a click on an item's media action.
+     *
+     * @param {Event} event
+     */
+    handleMediaActionClick(event) {
+        event.stopPropagation();
+        const actionName = this.hasMultipleMediaActions
+            ? event.detail.value
+            : event.currentTarget.value;
+        const itemIndex = event.currentTarget.dataset.itemIndex;
+
+        /**
+         * The event fired when a user clicks on a media action.
+         *
+         * @event
+         * @name mediaactionclick
+         * @param {string} name  Name of the media action clicked.
+         * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('mediaactionclick', {
                 detail: {
                     name: actionName,
                     item: this.cleanUpItem(this.computedItems[itemIndex]),
@@ -1869,9 +1887,6 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (this._currentColumnCount > 1) {
-            return;
-        }
         // If space bar is pressed, select or drop the item
         if (event.key === 'Enter') {
             this.handleItemClick(event);
@@ -1897,11 +1912,17 @@ export default class List extends LightningElement {
             let targetIndex;
 
             if (
+                this._currentColumnCount === 1 &&
+                this.variant === 'base' &&
                 event.key === 'ArrowDown' &&
                 index + 1 < this.computedItems.length
             ) {
                 targetIndex = index + 1;
-            } else if (event.key === 'ArrowUp') {
+            } else if (
+                this._currentColumnCount === 1 &&
+                this.variant === 'base' &&
+                event.key === 'ArrowUp'
+            ) {
                 targetIndex = index - 1;
             }
 
@@ -1936,14 +1957,8 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleItemClick(event) {
-        if (
-            (event.target.tagName.startsWith('LIGHTNING') ||
-                event.target.tagName === 'A') &&
-            event.target.tagName !== 'LIGHTNING-FORMATTED-RICH-TEXT'
-        ) {
-            return;
-        }
-        const itemIndex = event.currentTarget.dataset.index;
+        const itemIndex = Number(event.currentTarget.dataset.index);
+        const item = this.computedItems[itemIndex];
 
         /**
          * The event fired when a user clicks on an item.
@@ -1958,10 +1973,9 @@ export default class List extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: this.cleanUpItem(this.computedItems[itemIndex]),
+                    item: this.cleanUpItem(item),
                     bounds: event.currentTarget.getBoundingClientRect(),
-                    name: this.computedItems[event.currentTarget.dataset.index]
-                        .name
+                    name: item.name
                 }
             })
         );

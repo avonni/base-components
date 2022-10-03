@@ -50,13 +50,41 @@ const TOOLBAR_VARIANTS = {
 const PEN_MODES = { valid: ['draw', 'paint', 'ink', 'erase'], default: 'draw' };
 
 const DEFAULT_BACKGROUND_COLORS = [
-    '#ffffff00',
-    '#000000',
+    '#e3abec',
+    '#c2dbf7',
     '#9fd6ff',
     '#9de7da',
     '#9df0bf',
     '#fff099',
-    '#ffca7f'
+    '#fed49a',
+    '#d073df',
+    '#86b9f3',
+    '#5ebbff',
+    '#44d8be',
+    '#3be281',
+    '#ffe654',
+    '#ffb758',
+    '#bd35bd',
+    '#5778c1',
+    '#5ebbff',
+    '#00aea9',
+    '#3bba4c',
+    '#f4bc25',
+    '#f99120',
+    '#580d8c',
+    '#001870',
+    '#0a2399',
+    '#097476',
+    '#096a50',
+    '#b67d11',
+    '#b85d0d',
+    '#ffffff00',
+    '#D3D3D3',
+    '#A9A9A9',
+    '#808080',
+    '#696969',
+    '#3a3a3a',
+    '#000000'
 ];
 
 const DEFAULT_COLOR = '#000';
@@ -517,7 +545,7 @@ export default class InputPen extends LightningElement {
      */
     get computedTextAreaClasses() {
         return classSet(
-            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
+            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area avonni-input-pen__text-area_no-touch-scroll'
         ).add({
             'avonni-input-pen__rich-text_border-radius-top':
                 this.variant === 'bottom-toolbar',
@@ -1252,22 +1280,6 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Tests if the if the coordinate is in drawing area
-     * @param {Object} position {x: 0, y: 0}
-     * @returns {Boolean} is in drawing area
-     */
-    isInDrawingArea(position) {
-        if (!this.drawingArea) return false;
-        const boundaries = this.drawingArea.getBoundingClientRect();
-        const isInBounds =
-            boundaries.x <= position.x &&
-            position.x <= boundaries.right &&
-            boundaries.y <= position.y &&
-            position.y <= boundaries.bottom;
-        return isInBounds;
-    }
-
-    /**
      * Proxy Input Attributes updater.
      *
      * @param {object} attributes
@@ -1321,9 +1333,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseMove = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
@@ -1337,9 +1346,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
@@ -1353,9 +1359,6 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseUp = (event) => {
-        if (this.isInDrawingArea({ x: event.clientX, y: event.clientY })) {
-            event.preventDefault();
-        }
         if (event.touches && event.touches.length >= 1) {
             event.clientX = event.touches[0].clientX;
             event.clientY = event.touches[0].clientY;
