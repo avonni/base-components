@@ -8,6 +8,6 @@ export const parameters = {
     // layout: 'centered', // uncomment before running storycap
     screenshot: {
         fullPage: false,
-        viewports: { ...viewportList }
+        // viewports: { ...viewportList }
     }
 };
