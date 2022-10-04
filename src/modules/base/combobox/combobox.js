@@ -580,6 +580,7 @@ export default class Combobox extends LightningElement {
     set value(value) {
         this._value =
             typeof value === 'string' ? [value] : [...normalizeArray(value)];
+        console.log('🌟 combobox value', this._value);
     }
 
     /**
@@ -902,6 +903,7 @@ export default class Combobox extends LightningElement {
      * Dispatches blur event.
      */
     handleBlur() {
+        console.log('blur combobox');
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -1053,6 +1055,8 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemovePill(event) {
+        // handle blur input
+        console.log('remove option pill');
         const index = event.detail.index;
         const value = this.selectedOptions[index].value;
         this.mainCombobox.removeSelectedOption(value);

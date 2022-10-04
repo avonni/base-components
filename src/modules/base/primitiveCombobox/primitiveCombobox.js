@@ -191,6 +191,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     renderedCallback() {
+        console.log('👾 rendered', this.value);
         if (this.dropdownVisible) {
             this.updateDropdownHeight();
             this.highlightOption(0);
@@ -558,6 +559,7 @@ export default class PrimitiveCombobox extends LightningElement {
     set value(value) {
         this._value =
             typeof value === 'string' ? [value] : normalizeArray(value);
+        console.log('received value', value, this._value.length);
         if (this._connected) this.initValue();
     }
 
@@ -910,6 +912,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     close() {
+        console.log('closing');
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
             this.stopDropdownPositioning();
@@ -981,6 +984,14 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     reportValidity() {
+        console.log(
+            'report validity',
+            this.value,
+            this._constraint,
+            this._constraint.reportValidity((message) => {
+                this.helpMessage = this.messageWhenValueMissing || message;
+            })
+        );
         return this._constraint.reportValidity((message) => {
             this.helpMessage = this.messageWhenValueMissing || message;
         });
@@ -1018,6 +1029,9 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     showHelpMessageIfInvalid() {
+        console.log('show message is invalid');
+        // when the item is deleted, the value.length is still one
+        console.log(this.value);
         this.reportValidity();
     }
 
@@ -1538,6 +1552,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Dispatches blur event.
      */
     handleBlur() {
+        console.log('💔 blur', this._cancelBlur, this.selectedOption);
         if (this._cancelBlur) {
             return;
         }
@@ -1546,6 +1561,7 @@ export default class PrimitiveCombobox extends LightningElement {
         } else {
             this.inputValue = '';
         }
+        console.log('???');
         this.close();
 
         this.interactingState.leave();
@@ -1557,6 +1573,8 @@ export default class PrimitiveCombobox extends LightningElement {
      * Dispatches focus event.
      */
     handleFocus() {
+        //
+        this.interactingState.leave();
         this.interactingState.enter();
 
         this.dispatchEvent(new CustomEvent('focus'));

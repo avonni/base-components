@@ -127,6 +127,7 @@ function newValidityState(constraintsProvider) {
         }
 
         get valid() {
+            console.log('💚', this.valueMissing);
             return !(
                 this.valueMissing ||
                 this.typeMismatch ||
