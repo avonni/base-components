@@ -587,7 +587,7 @@ export class ScheduleBase extends LightningElement {
     @api
     focusEvent(name) {
         const event = this.template.querySelector(
-            `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${name}"]`
+            `[data-element-id^="avonni-primitive-scheduler-event-occurrence"][data-event-name="${name}"]`
         );
         if (event) {
             event.focus();
