@@ -406,14 +406,6 @@ export default class PrimitiveAvatar extends LightningElement {
         return Array.from(this.classList).includes('slds-avatar-grouped');
     }
 
-    get iconSize() {
-        let iconSize = this.size;
-        if (this.size === 'x-large' || this.size === 'xx-large') {
-            iconSize = 'large'
-        }
-        return iconSize
-    }
-    
     get showActions() {
         const { size, actions } = this;
         let _showAction = true;

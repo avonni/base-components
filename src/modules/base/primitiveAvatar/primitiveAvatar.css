@@ -67,11 +67,12 @@
     width: 56px;
     height: 56px;
 }
+/* Lightning-icon does not support x-large and xx-large */
 .avonni-avatar_x-large .avonni-avatar__icon {
-    scale: 1.1;
+    scale: 1.8;
 }
 .avonni-avatar_xx-large .avonni-avatar__icon  {
-    scale: 1.2;
+    scale: 2.2;
 }
 .avonni-avatar_xx-large .slds-avatar {
     font-size: 1.5rem;
@@ -94,7 +95,7 @@
     height: 100%;
 }
 /**
-* Positionning
+* Positioning
 */
 .avonni-avatar_square .avonni-avatar_top-right {
     top: -4px;
