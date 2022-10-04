@@ -189,6 +189,10 @@ export default class Scheduler extends LightningElement {
         const days = normalizeArray(value);
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+
+        if (this._connected) {
+            this.initToolbarCalendarDisabledDates();
+        }
     }
 
     /**
@@ -539,9 +543,9 @@ export default class Scheduler extends LightningElement {
 
     /**
      * Array of display names that should not appear in the toolbar options. Valid values include agenda, calendar and timeline.
+     * If one or zero display is visible, the toolbar button will be hidden.
      *
-     * @type {string}
-     * @default timeline
+     * @type {string[]}
      * @public
      */
     @api
@@ -984,7 +988,7 @@ export default class Scheduler extends LightningElement {
      * @type {object[]}
      */
     get displayOptions() {
-        const allOptions = [...DISPLAYS.options];
+        const allOptions = deepCopy(DISPLAYS.options);
         return allOptions.filter((display) => {
             display.checked = display.value === this.selectedDisplay;
             return !this.hiddenDisplays.includes(display.value);
@@ -1080,19 +1084,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * True if editing a recurring event only updates the occurrence, never the complete event.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get onlyOccurrenceEditAllowed() {
-        return (
-            this.recurrentEditModes.length === 1 &&
-            this.recurrentEditModes[0] === 'one'
-        );
-    }
-
-    /**
      * Array of color strings.
      *
      * @type {string[]}
@@ -1108,21 +1099,7 @@ export default class Scheduler extends LightningElement {
      *
      * @type {object[]}
      */
-    get resourcesComboboxOptions() {
-        return this.computedResources.map((resource) => {
-            return {
-                label: resource.label,
-                value: resource.name
-            };
-        });
-    }
-
-    /**
-     * Array of resources options to display in the toolbar filter menu.
-     *
-     * @type {object[]}
-     */
-    get resourceToolbarMenuItems() {
+    get resourceOptions() {
         return this.resources.map((res) => {
             return {
                 label: res.label || res.name,
@@ -1346,6 +1323,11 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openEditEventDialog(eventName) {
+        if (!this.schedule) {
+            console.warn(`The ${this.selectedDisplay} is not available. Failed to open the edit event dialog.`);
+            return;
+        }
+        
         this.focusEvent(eventName);
         this.hideAllPopovers();
         this.showEditDialog = true;
@@ -1406,7 +1388,7 @@ export default class Scheduler extends LightningElement {
 
         events.sort((first, second) => {
             return (
-                dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from)
+                dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from) ? -1 : 1
             );
         });
         this.computedEvents = events;

@@ -95,6 +95,7 @@
                 <span
                     class="slds-truncate avonni-scheduler__"
                     title={visibleIntervalLabel}
+                    data-element-id="span-visible-interval-label"
                     >{visibleIntervalLabel}</span
                 >
                 <span>
@@ -149,6 +150,7 @@
             class="slds-m-left_small avonni-scheduler__display-menu"
             label={computedSelectedDisplay.label}
             menu-alignment="right"
+            data-element-id="avonni-button-menu-toolbar-display"
             onselect={handleDisplaySelect}
         >
             <template for:each={displayOptions} for:item="displayOption">
@@ -158,6 +160,7 @@
                     icon-name={displayOption.iconName}
                     label={displayOption.label}
                     value={displayOption.value}
+                    data-element-id="lightning-menu-item-display"
                 ></lightning-menu-item>
             </template>
         </c-button-menu>
@@ -171,10 +174,11 @@
             hide-selected-items
             is-multi-select
             icon-name="utility:filterList"
-            items={resourceToolbarMenuItems}
+            items={resourceOptions}
             show-search-box
             title="Select resources"
             value={selectedResources}
+            data-element-id="avonni-filter-menu-resources"
             onselect={handleToolbarResourceSelect}
         ></c-filter-menu>
     </div>
@@ -219,6 +223,7 @@
             icon-name="utility:filterList"
             icon-size="small"
             title="Select a resource to show the timeline."
+            data-element-id="avonni-scoped-notification-empty-timeline"
         ></c-scoped-notification>
 
         <c-primitive-scheduler-calendar
@@ -305,7 +310,7 @@
             <div class="slds-m-bottom_x-small">
                 <strong>{selection.occurrence.title}</strong>
             </div>
-            <div class="slds-grid">
+            <div class="slds-grid" data-element-id="div-event-detail-from">
                 <lightning-icon
                     class="
                         avonni-scheduler__event-detail-icon
@@ -316,7 +321,7 @@
                 ></lightning-icon>
                 {selectionFrom}
             </div>
-            <div class="slds-grid">
+            <div class="slds-grid" data-element-id="div-event-detail-to">
                 <lightning-icon
                     class="
                         avonni-scheduler__event-detail-icon
@@ -449,12 +454,12 @@
         </div>
         <div class="slds-m-bottom_small">
             <c-combobox
-                if:true={resourcesComboboxOptions.length}
+                if:true={resourceOptions.length}
                 allow-search
                 is-multi-select
                 label={dialogLabels.resources}
                 value={selection.occurrence.resourceNames}
-                options={resourcesComboboxOptions}
+                options={resourceOptions}
                 remove-selected-options
                 dropdown-length="5-items"
                 required
