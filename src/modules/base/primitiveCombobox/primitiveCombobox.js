@@ -167,7 +167,6 @@ export default class PrimitiveCombobox extends LightningElement {
     backLink;
     computedGroups = [];
     dropdownVisible = false;
-    hasInteracted = false;
     helpMessage;
     inputValue = '';
     parentOptionsValues = [];
@@ -561,9 +560,6 @@ export default class PrimitiveCombobox extends LightningElement {
             typeof value === 'string' ? [value] : normalizeArray(value);
         if (this._connected) {
             this.initValue();
-        }
-        if (this.hasInteracted) {
-            this.showHelpMessageIfInvalid();
         }
     }
 
@@ -1564,7 +1560,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleFocus() {
         this.interactingState.enter();
-        this.hasInteracted = true;
 
         this.dispatchEvent(new CustomEvent('focus'));
     }
@@ -1889,6 +1884,8 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {number[]} levelPath Array of level indexes to get to the option.
      */
     dispatchChange(action, levelPath) {
+        this.reportValidity();
+
         /**
          * The event fired when an option is selected or unselected.
          *
