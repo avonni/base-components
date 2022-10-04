@@ -49,6 +49,8 @@ describe('DualListbox', () => {
         element = createElement('base-dual-listbox', {
             is: DualListbox
         });
+        // The options are added to all tests to prevent a console.warn
+        element.options = Options;
         document.body.appendChild(element);
     });
 
@@ -72,7 +74,6 @@ describe('DualListbox', () => {
         expect(element.messageWhenRangerUnderflow).toBeUndefined();
         expect(element.messageWhenValueIsMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
-        expect(element.options).toMatchObject([]);
         expect(element.required).toBeFalsy();
         expect(element.requiredOptions).toMatchObject([]);
         expect(element.allowSearch).toBeFalsy();
@@ -106,8 +107,6 @@ describe('DualListbox', () => {
 
     // hide bottom divider
     it('Dual Listbox: hide bottom divider', () => {
-        element.options = Options;
-
         element.hideBottomDivider = true;
 
         return Promise.resolve().then(() => {
@@ -341,7 +340,6 @@ describe('DualListbox', () => {
 
     // draggagble
     it('Dual Listbox: draggable without disabled', () => {
-        element.options = Options;
         element.draggable = true;
 
         return Promise.resolve().then(() => {
@@ -355,7 +353,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox: draggable with disabled', () => {
-        element.options = Options;
         element.draggable = true;
         element.disabled = true;
 
@@ -409,7 +406,6 @@ describe('DualListbox', () => {
     it('Dual Listbox: message when range overflow', () => {
         element.max = 2;
         element.messageWhenRangeOverflow = 'Maximum Capacity!';
-        element.options = Options;
         element.value = ['1', '2', '3'];
         element.addButtonLabel = 'add';
 
@@ -438,7 +434,6 @@ describe('DualListbox', () => {
     it('Dual Listbox: message when range underflow', () => {
         element.messageWhenRangeUnderflow = 'Minimum Capacity!';
         element.min = 5;
-        element.options = Options;
         element.value = ['1', '2', '3', '4', '5'];
         element.removeButtonLabel = 'remove';
 
@@ -466,7 +461,6 @@ describe('DualListbox', () => {
     // message-when-value-missing
     it('Dual Listbox: message when value is missing', () => {
         element.required = true;
-        element.options = Options;
         element.messageWhenValueMissing = 'Missing value!';
         element.value = ['1'];
         element.removeButtonLabel = 'remove';
@@ -588,7 +582,6 @@ describe('DualListbox', () => {
     // required
     it('Dual Listbox: required', () => {
         element.required = true;
-        element.options = Options;
 
         return Promise.resolve().then(() => {
             const asterisk = element.shadowRoot.querySelector('.slds-required');
@@ -598,8 +591,6 @@ describe('DualListbox', () => {
 
     // required options
     it('Dual Listbox: required options', () => {
-        element.options = Options;
-
         return Promise.resolve()
             .then(() => {
                 element.requiredOptions = ['1'];
@@ -615,7 +606,6 @@ describe('DualListbox', () => {
     // allow search
     it('Dual Listbox: allow search', () => {
         element.allowSearch = true;
-        element.options = Options;
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(
@@ -671,7 +661,6 @@ describe('DualListbox', () => {
 
     // value
     it('Dual Listbox: value array', () => {
-        element.options = Options;
         element.value = ['1', '2', '3'];
 
         return Promise.resolve().then(() => {
@@ -691,7 +680,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox: value string', () => {
-        element.options = Options;
         element.value = '1';
 
         return Promise.resolve().then(() => {
@@ -872,8 +860,6 @@ describe('DualListbox', () => {
 
     // testing selection
     it('Dual Listbox: selection', () => {
-        element.options = Options;
-
         return Promise.resolve().then(() => {
             const option = element.shadowRoot.querySelectorAll(
                 '.slds-listbox__option'
@@ -925,7 +911,6 @@ describe('DualListbox', () => {
 
     // change
     it('Dual Listbox change event add', () => {
-        element.options = Options;
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
 
@@ -954,7 +939,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox change event remove', () => {
-        element.options = Options;
         element.value = ['1', '2'];
         element.removeButtonLabel = 'remove';
 
@@ -982,7 +966,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox change event down', () => {
-        element.options = Options;
         element.value = ['1', '2', '3'];
         element.downButtonLabel = 'down';
 
@@ -1014,7 +997,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox change event up', () => {
-        element.options = Options;
         element.value = ['1', '2', '3'];
         element.upButtonLabel = 'up';
 
@@ -1074,7 +1056,6 @@ describe('DualListbox', () => {
     it('Dual Listbox optionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
-        element.options = Options;
         element.value = [Options[0].value, Options[1].value];
 
         return Promise.resolve().then(() => {
@@ -1099,7 +1080,6 @@ describe('DualListbox', () => {
     it('Dual Listbox optionclick event using the keyboard', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
-        element.options = Options;
 
         return Promise.resolve().then(() => {
             const options = element.shadowRoot.querySelectorAll(
