@@ -38,7 +38,7 @@
     border-style: var(--avonni-avatar-styling-border, solid);
     border-color: var(--avonni-avatar-color-border, transparent);
     border-width: var(--avonni-avatar-sizing-border, 0);
-    --sds-c-avatar-radius-border: var(--avonni-avatar-sizing-border-radius);
+    --sds-c-avatar-radius-border: var(--avonni-avatar-radius-border, 0.25rem);
 }
 /* If the avatar is in a group, the cursor changes for a pointer */
 :host(.avonni-avatar-group__avatar) .slds-avatar,
@@ -66,6 +66,12 @@
     font-size: 1.25rem;
     width: 56px;
     height: 56px;
+}
+.avonni-avatar_x-large .avonni-avatar__icon {
+    scale: 1.1;
+}
+.avonni-avatar_xx-large .avonni-avatar__icon  {
+    scale: 1.2;
 }
 .avonni-avatar_xx-large .slds-avatar {
     font-size: 1.5rem;

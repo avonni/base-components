@@ -359,6 +359,19 @@ export default class PrimitiveAvatar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get actionMenuSize() {
+        switch (this.size) {
+            case 'x-large':
+                return 'x-small';
+            case 'large':
+                return 'xx-small';
+            case 'medium':
+                return 'xx-small';
+            default:
+                return 'small';
+        }
+    }
+
     get computedInitialsClass() {
         return classSet(
             'slds-avatar__initials avonni-avatar__initials_text-color'
@@ -376,6 +389,31 @@ export default class PrimitiveAvatar extends LightningElement {
         );
     }
 
+    get computedEntityInitialsClass() {
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.entityIconName))
+            .toString();
+    }
+
+    get computedActionMenuIcon() {
+        if (this.actions.length === 1 && this.actions[0].iconName) {
+            return this.actions[0].iconName;
+        }
+        return this.actionMenuIcon;
+    }
+
+    get groupedAvatar() {
+        return Array.from(this.classList).includes('slds-avatar-grouped');
+    }
+
+    get iconSize() {
+        let iconSize = this.size;
+        if (this.size === 'x-large' || this.size === 'xx-large') {
+            iconSize = 'large'
+        }
+        return iconSize
+    }
+    
     get showActions() {
         const { size, actions } = this;
         let _showAction = true;
@@ -388,23 +426,6 @@ export default class PrimitiveAvatar extends LightningElement {
             _showAction = false;
         }
         return _showAction;
-    }
-
-    get actionMenuSize() {
-        switch (this.size) {
-            case 'x-large':
-                return 'x-small';
-            case 'large':
-                return 'xx-small';
-            case 'medium':
-                return 'xx-small';
-            default:
-                return 'small';
-        }
-    }
-
-    get groupedAvatar() {
-        return Array.from(this.classList).includes('slds-avatar-grouped');
     }
 
     get showAvatar() {
@@ -425,19 +446,6 @@ export default class PrimitiveAvatar extends LightningElement {
 
     get showEntity() {
         return this.entitySrc || this.entityInitials || this.entityIconName;
-    }
-
-    get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add(computeSldsClass(this.entityIconName))
-            .toString();
-    }
-
-    get computedActionMenuIcon() {
-        if (this.actions.length === 1 && this.actions[0].iconName) {
-            return this.actions[0].iconName;
-        }
-        return this.actionMenuIcon;
     }
 
     _updateClassList() {
