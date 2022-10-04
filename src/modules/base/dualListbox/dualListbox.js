@@ -35,7 +35,6 @@ import {
     normalizeBoolean,
     normalizeString,
     normalizeArray,
-    assert,
     getRealDOMId,
     getListHeight
 } from 'c/utilsPrivate';
@@ -249,7 +248,11 @@ export default class DualListbox extends LightningElement {
     }
 
     renderedCallback() {
-        this.assertRequiredAttributes();
+        if (!this.options.length) {
+            console.warn(
+                '<avonni-dual-listbox> Missing required "options" attribute.'
+            );
+        }
 
         if (this.disabled) {
             this._upButtonDisabled = true;
@@ -1638,16 +1641,6 @@ export default class DualListbox extends LightningElement {
                 bubbles: true,
                 detail: { value: values }
             })
-        );
-    }
-
-    /**
-     * Assert Required Attributes.
-     */
-    assertRequiredAttributes() {
-        assert(
-            !!this.options,
-            `<avonni-dual-listbox> Missing required "options" attribute.`
         );
     }
 
