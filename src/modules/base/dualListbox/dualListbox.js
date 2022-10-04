@@ -1246,7 +1246,7 @@ export default class DualListbox extends LightningElement {
 
         // select the focused option if entering a listbox
         const element = event.target;
-        if (element.role === 'option') {
+        if (element.dataset.role === 'option') {
             if (!this.isFocusOnList) {
                 this.isFocusOnList = true;
                 this.updateSelectedOptions(element, true, false);
@@ -1263,7 +1263,7 @@ export default class DualListbox extends LightningElement {
         this.interactingState.leave();
 
         const element = event.target;
-        if (element.role !== 'option') {
+        if (element.dataset.role !== 'option') {
             this.isFocusOnList = false;
         }
     }
