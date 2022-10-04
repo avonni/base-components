@@ -15,7 +15,13 @@ module.exports = {
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveCombobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitivePill)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerAgenda)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerCalendar)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveSchedulerHeaderGroup)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerTimeline)$':
             '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveTreeItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(splitter)$': '<rootDir>/jest-mock/components/base/$1/$1',
