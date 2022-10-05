@@ -212,10 +212,13 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * @public
      */
     @api
-    newEvent(x, y, saveEvent) {
+    newEvent(detail = {}) {
         if (!this.firstSelectedResource) {
-            return;
+            return null;
         }
+        const boundaries = this._eventData.getDraggingBoundaries();
+        const x = isNaN(detail.x) ? boundaries.x : detail.x;
+        const y = isNaN(detail.y) ? boundaries.y : detail.y;
         const dayGroupElement = getElementOnYAxis(
             this.template,
             y,
@@ -225,7 +228,11 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const from = date.startOf('day');
         const to = from.endOf('day');
         const resourceNames = [this.firstSelectedResource.name];
-        this._eventData.newEvent({ from, resourceNames, to, x, y }, saveEvent);
+        this._eventData.newEvent(
+            { from, resourceNames, to, x, y },
+            detail.saveEvent
+        );
+        return this._eventData.selection;
     }
 
     /*

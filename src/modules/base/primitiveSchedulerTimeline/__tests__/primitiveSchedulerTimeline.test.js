@@ -1413,16 +1413,22 @@ describe('Primitive Scheduler Timeline', () => {
                 // Wait for the visible interval to be set
             })
             .then(() => {
-                const resourceRow = element.shadowRoot.querySelector(
+                const resourceRows = element.shadowRoot.querySelectorAll(
                     '[data-element-id="div-resource"]'
                 );
-                const cell = resourceRow.querySelector(
+                const cell = resourceRows[1].querySelector(
                     '[data-element-id="div-cell"]'
                 );
                 from = Number(cell.dataset.start);
                 to = Number(cell.dataset.end);
                 jest.spyOn(
-                    resourceRow,
+                    resourceRows[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { top: 0, bottom: 99 };
+                });
+                jest.spyOn(
+                    resourceRows[1],
                     'getBoundingClientRect'
                 ).mockImplementation(() => {
                     return { top: 100, bottom: 300 };
@@ -1432,7 +1438,7 @@ describe('Primitive Scheduler Timeline', () => {
                         return { left: 0, right: 130 };
                     }
                 );
-                element.newEvent(102, 53);
+                element.newEvent({ x: 102, y: 150 });
             })
             .then(() => {
                 const events = element.shadowRoot.querySelectorAll(
@@ -1445,6 +1451,44 @@ describe('Primitive Scheduler Timeline', () => {
                 const events = element.shadowRoot.querySelectorAll(
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
+                expect(events).toHaveLength(1);
+                expect(events[0].resourceKey).toBe(RESOURCES[1].name);
+                expect(events[0].from.ts).toBe(from);
+                expect(events[0].to.ts).toBe(to);
+            });
+    });
+
+    it('Primitive Scheduler Timeline: newEvent() and saveSelection() methods, with no given position', () => {
+        element.start = START;
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                element.newEvent();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                expect(events).toHaveLength(0);
+                element.saveSelection();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const resourceRow = element.shadowRoot.querySelector(
+                    '[data-element-id="div-resource"]'
+                );
+                const cell = resourceRow.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                const from = Number(cell.dataset.start);
+                const to = Number(cell.dataset.end);
                 expect(events).toHaveLength(1);
                 expect(events[0].resourceKey).toBe(RESOURCES[0].name);
                 expect(events[0].from.ts).toBe(from);

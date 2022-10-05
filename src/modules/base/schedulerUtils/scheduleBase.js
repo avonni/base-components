@@ -785,7 +785,7 @@ export class ScheduleBase extends LightningElement {
         }
         const x = event.clientX;
         const y = event.clientY;
-        this.newEvent(x, y, true);
+        this.newEvent({ x, y, saveEvent: true });
         this.dispatchOpenEditDialog(this._eventData.selection);
     }
 
@@ -799,7 +799,7 @@ export class ScheduleBase extends LightningElement {
 
         const x = event.clientX;
         const y = event.clientY;
-        this.newEvent(x, y);
+        this.newEvent({ x, y });
 
         /**
          * The event fired when the context menu is opened on an empty spot of the schedule.

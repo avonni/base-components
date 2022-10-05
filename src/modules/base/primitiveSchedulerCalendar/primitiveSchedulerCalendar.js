@@ -515,16 +515,23 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @public
      */
     @api
-    newEvent(x, y, saveEvent) {
+    newEvent(detail = {}) {
         if (!this.firstSelectedResource) {
-            return;
+            return null;
         }
+        const boundaries = this._eventData.getDraggingBoundaries(true);
+        const x = isNaN(detail.x) ? boundaries.x : detail.x;
+        const normalizedY = isNaN(detail.y) ? boundaries.y : detail.y;
         const column = getElementOnXAxis(this.template, x, COLUMN_SELECTOR);
-        const cell = getElementOnYAxis(column, y, CELL_SELECTOR);
+        const cell = getElementOnYAxis(column, normalizedY, CELL_SELECTOR);
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end);
         const resourceNames = [this.firstSelectedResource.name];
-        this._eventData.newEvent({ from, resourceNames, to, x, y }, saveEvent);
+        this._eventData.newEvent(
+            { from, resourceNames, to, x, y: normalizedY },
+            detail.saveEvent
+        );
+        return this._eventData.selection;
     }
 
     /**

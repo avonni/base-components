@@ -838,6 +838,10 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
         this.selectedDate = dateTimeObjectFrom(this._start);
+
+        if (this._connected) {
+            this.computeVisibleIntervalLabel(this.start, this.start);
+        }
     }
 
     /**
@@ -1251,9 +1255,13 @@ export default class Scheduler extends LightningElement {
      */
     @api
     createEvent(eventObject) {
-        if (this.schedule) {
-            this.schedule.createEvent(eventObject);
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to create the event.`
+            );
+            return;
         }
+        this.schedule.createEvent(eventObject);
     }
 
     /**
@@ -1264,9 +1272,13 @@ export default class Scheduler extends LightningElement {
      */
     @api
     deleteEvent(eventName) {
-        if (this.schedule) {
-            this.schedule.deleteEvent(eventName);
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to delete the event ${eventName}.`
+            );
+            return;
         }
+        this.schedule.deleteEvent(eventName);
     }
 
     /**
@@ -1277,10 +1289,14 @@ export default class Scheduler extends LightningElement {
      */
     @api
     focusEvent(eventName) {
-        if (this.schedule) {
-            this._programmaticFocus = true;
-            this.schedule.focusEvent(eventName);
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to set the focus on ${eventName}.`
+            );
+            return;
         }
+        this._programmaticFocus = true;
+        this.schedule.focusEvent(eventName);
     }
 
     /**
@@ -1324,10 +1340,12 @@ export default class Scheduler extends LightningElement {
     @api
     openEditEventDialog(eventName) {
         if (!this.schedule) {
-            console.warn(`The ${this.selectedDisplay} is not available. Failed to open the edit event dialog.`);
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to open the edit event dialog.`
+            );
             return;
         }
-        
+
         this.focusEvent(eventName);
         this.hideAllPopovers();
         this.showEditDialog = true;
@@ -1340,7 +1358,17 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openNewEventDialog() {
-        this.eventCrud.newEvent();
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to open the new event dialog.`
+            );
+            return;
+        }
+        this.selection = this.schedule.newEvent();
+        if (this.selection) {
+            this.hideAllPopovers();
+            this.showEditDialog = true;
+        }
     }
 
     /*
@@ -1387,9 +1415,10 @@ export default class Scheduler extends LightningElement {
         }
 
         events.sort((first, second) => {
-            return (
-                dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from) ? -1 : 1
-            );
+            return dateTimeObjectFrom(first.from) <
+                dateTimeObjectFrom(second.from)
+                ? -1
+                : 1;
         });
         this.computedEvents = events;
     }

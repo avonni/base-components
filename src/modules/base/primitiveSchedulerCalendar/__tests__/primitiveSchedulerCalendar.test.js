@@ -1927,30 +1927,32 @@ describe('Primitive Scheduler Calendar', () => {
         element.resources = RESOURCES;
         element.selectedResources = ALL_RESOURCES;
         element.selectedDate = SELECTED_DATE;
+        element.timeSpan = { unit: 'week', span: 1 };
         let from, to;
 
         return Promise.resolve()
             .then(() => {
-                const column = element.shadowRoot.querySelector(
+                const columns = element.shadowRoot.querySelectorAll(
                     '[data-element-id="div-column"]'
                 );
-                const cell = column.querySelector(
+                const cell = columns[1].querySelector(
                     '[data-element-id="div-cell"]'
                 );
                 from = new Date(Number(cell.dataset.start));
                 to = new Date(Number(cell.dataset.end));
-                jest.spyOn(column, 'getBoundingClientRect').mockImplementation(
-                    () => {
-                        return { left: 5, right: 50 };
-                    }
-                );
+                jest.spyOn(
+                    columns[1],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 5, right: 50 };
+                });
                 jest.spyOn(cell, 'getBoundingClientRect').mockImplementation(
                     () => {
                         return { top: 100, bottom: 150 };
                     }
                 );
 
-                element.newEvent(25, 125);
+                element.newEvent({ x: 25, y: 125 });
             })
             .then(() => {
                 const events = element.shadowRoot.querySelectorAll(
@@ -1963,6 +1965,42 @@ describe('Primitive Scheduler Calendar', () => {
                 const events = element.shadowRoot.querySelectorAll(
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
                 );
+                expect(events).toHaveLength(1);
+                expect(events[0].resourceKey).toBe(RESOURCES[0].name);
+                expect(events[0].from.ts).toBe(from.getTime());
+                expect(events[0].to.ts).toBe(to.getTime());
+            });
+    });
+
+    it('Primitive Scheduler Calendar: newEvent() and saveSelection() methods with no given position', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.timeSpan = { unit: 'week', span: 1 };
+
+        return Promise.resolve()
+            .then(() => {
+                element.newEvent();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                );
+                expect(events).toHaveLength(0);
+                element.saveSelection();
+            })
+            .then(() => {
+                const events = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                );
+                const column = element.shadowRoot.querySelector(
+                    '[data-element-id="div-column"]'
+                );
+                const cell = column.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                const from = new Date(Number(cell.dataset.start));
+                const to = new Date(Number(cell.dataset.end));
                 expect(events).toHaveLength(1);
                 expect(events[0].resourceKey).toBe(RESOURCES[0].name);
                 expect(events[0].from.ts).toBe(from.getTime());

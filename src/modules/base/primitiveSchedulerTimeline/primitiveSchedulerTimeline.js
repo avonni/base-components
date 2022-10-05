@@ -577,7 +577,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @public
      */
     @api
-    newEvent(x, y, saveEvent) {
+    newEvent(detail = {}) {
+        const boundaries = this._eventData.getDraggingBoundaries();
+        const x = isNaN(detail.x) ? boundaries.x : detail.x;
+        const y = isNaN(detail.y) ? boundaries.y : detail.y;
         const resourceElement = this.getResourceElementFromPosition(x, y);
         const cell = this.isVertical
             ? getElementOnYAxis(resourceElement, y, CELL_SELECTOR)
@@ -585,7 +588,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         const resourceNames = [resourceElement.dataset.name];
         const from = Number(cell.dataset.start);
         const to = Number(cell.dataset.end) + 1;
-        this._eventData.newEvent({ resourceNames, from, to, x, y }, saveEvent);
+        this._eventData.newEvent(
+            { resourceNames, from, to, x, y },
+            detail.saveEvent
+        );
+        return this._eventData.selection;
     }
 
     /**
