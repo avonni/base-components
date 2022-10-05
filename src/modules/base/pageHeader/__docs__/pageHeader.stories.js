@@ -39,6 +39,7 @@ export default {
             control: {
                 type: 'text'
             },
+            name: 'icon-name',
             description:
                 "The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.",
             table: {

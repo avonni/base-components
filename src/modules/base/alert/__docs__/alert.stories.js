@@ -46,6 +46,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select',
+                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+            },
+            description:
+                'The size of the icon. Valid values include xx-small, x-small, small, medium, and large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -83,6 +96,7 @@ export default {
     },
     args: {
         closeAction: false,
+        iconSize: 'small',
         isDismissible: false,
         variant: 'base'
     }

@@ -50,6 +50,7 @@ describe('Alert', () => {
 
     it('Alert: Default attributes', () => {
         expect(element.iconName).toBeUndefined();
+        expect(element.iconSize).toBe('small');
         expect(element.variant).toBe('base');
         expect(element.isDismissible).toBe(false);
     });
@@ -107,6 +108,7 @@ describe('Alert', () => {
         });
     });
 
+    // is Dismissible
     it('Alert: isDismissible = false', () => {
         element.isDismissible = false;
 
@@ -129,6 +131,7 @@ describe('Alert', () => {
         });
     });
 
+    // iconName
     it('Alert: iconName', () => {
         let lightningIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-icon"]'
@@ -148,6 +151,88 @@ describe('Alert', () => {
         });
     });
 
+    // iconSize
+    it('Alert: iconSize = xx-small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('xx-small');
+        });
+    });
+
+    it('Alert: iconSize = x-small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('x-small');
+        });
+    });
+
+    it('Alert: iconSize = small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('small');
+        });
+    });
+
+    it('Alert: iconSize = medium', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('medium');
+        });
+    });
+
+    it('Alert: iconSize = large', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('large');
+        });
+    });
+
+    // closeAction
     it('Alert: closeAction', () => {
         element.isDismissible = true;
         const mockCallBack = jest.fn();
