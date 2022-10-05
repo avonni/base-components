@@ -68,8 +68,6 @@
             aria-orientation="horizontal"
             tabindex={listboxTabIndex}
             data-element-id="ul"
-            onactionclick={handleActionClick}
-            onclick={handlePillClick}
             onfocusin={handlePillFocus}
             onfocusout={handlePillBlur}
             onkeydown={handleKeyDown}
@@ -81,6 +79,7 @@
                     role="presentation"
                     data-element-id="li"
                     data-index={index}
+                    onclick={handlePillClick}
                     onmousemove={handlePillMouseMove}
                     onmousedown={handlePillMouseDown}
                 >
@@ -95,6 +94,7 @@
                         tabindex="-1"
                         data-element-id="avonni-primitive-pill"
                         data-index={index}
+                        onactionclick={handleActionClick}
                     ></c-primitive-pill>
                 </li>
             </template>
