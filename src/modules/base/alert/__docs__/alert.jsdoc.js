@@ -190,9 +190,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-alert-image-background
+ * @name --avonni-alert-background-media-overlay-background
  * @default linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.025) 50%, rgba(0, 0, 0, 0.025) 75%, transparent 75%, transparent)
- * @type image
+ * @type string
  */
 /**
  * @memberof stylingHooks
@@ -217,4 +217,10 @@
  * @name --avonni-alert-styling-border
  * @default solid
  * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-text-icon-horizontal-alignment
+ * @default center
+ * @type spacing
  */

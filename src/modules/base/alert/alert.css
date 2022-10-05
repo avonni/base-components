@@ -176,3 +176,13 @@
         #ffffff
     );
 }
+
+.avonni-alert__icon-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: var(--avonni-alert-text-icon-horizontal-alignment, center);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+}
