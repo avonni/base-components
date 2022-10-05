@@ -99,25 +99,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-input-radius-border-bottom-left
- * @default 0.25rem
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-radius-border-bottom-right
- * @default 0.25rem
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-radius-border-top-left
- * @default 0.25rem
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-radius-border-top-right
+ * @name --avonni-combobox-input-radius-border
  * @default 0.25rem
  * @type dimension
  */
@@ -125,29 +107,11 @@
  * @memberof stylingHooks
  * @name --avonni-combobox-input-styling-border
  * @default solid
- * @type styling
+ * @type string
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-input-sizing-border-bottom
+ * @name --avonni-combobox-input-sizing-border
  * @default 1px
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-sizing-border-left
- * @default 1px
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-sizing-border-right
- * @default 1px
- * @type sizing
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-combobox-input-sizing-border-top
- * @default 1px
- * @type sizing
+ * @type dimension
  */
