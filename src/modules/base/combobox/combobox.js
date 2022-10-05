@@ -1047,7 +1047,8 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemoveListItem(event) {
-        const value = event.detail.item.name;
+        // this needs a better fix
+        const value = event.detail.item.name || event.detail.item.value;
         this.mainCombobox.removeSelectedOption(value);
     }
 
@@ -1068,8 +1069,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleReorderSelectedOptions(event) {
-        // this._value = event.detail.items.map((item) => item.value);
-        this._value = event.detail.items.map((item) => item.name);
+        this._value = event.detail.items.map((item) => item.value || item.name);
         this.dispatchChange('reorder');
     }
 
