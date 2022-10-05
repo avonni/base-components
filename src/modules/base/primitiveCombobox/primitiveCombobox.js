@@ -556,8 +556,16 @@ export default class PrimitiveCombobox extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value =
-            typeof value === 'string' ? [value] : normalizeArray(value);
+        if (typeof value === 'string') {
+            if (value.length > 0) {
+                this._value = [value];
+            } else if (value.length === 0) {
+                this._value = [];
+            }
+        } else {
+            this._value = normalizeArray(value);
+        }
+
         if (this._connected) {
             this.initValue();
         }

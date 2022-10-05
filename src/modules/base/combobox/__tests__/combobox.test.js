@@ -251,8 +251,12 @@ describe('Combobox', () => {
                 const pillContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-pill-container"]'
                 );
+                const modifiedOptions = JSON.parse(JSON.stringify(options));
+                modifiedOptions.forEach((option) => {
+                    option.name = option.value;
+                });
                 expect(pillContainer).toBeTruthy();
-                expect(pillContainer.items).toEqual(options);
+                expect(pillContainer.items).toEqual(modifiedOptions);
             });
     });
 
@@ -1193,7 +1197,9 @@ describe('Combobox', () => {
                 list.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            item: options[2]
+                            name: options[2].value,
+                            item: options[2],
+                            targetName: options[2].value
                         }
                     })
                 );
