@@ -556,6 +556,8 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        event.stopPropagation();
+
         /**
          * The event fired when a user clicks on an action.
          *
