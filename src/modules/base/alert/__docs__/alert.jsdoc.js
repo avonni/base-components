@@ -172,6 +172,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-alert-content-horizontal-alignment
+ * @default center
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-alert-font-weight
  * @default 400
  * @type font
@@ -190,9 +196,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-alert-background-media-overlay-background
+ * @name --avonni-alert-image-background
  * @default linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.025) 50%, rgba(0, 0, 0, 0.025) 75%, transparent 75%, transparent)
- * @type string
+ * @type image
  */
 /**
  * @memberof stylingHooks
@@ -217,10 +223,4 @@
  * @name --avonni-alert-styling-border
  * @default solid
  * @type styling
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-alert-text-icon-horizontal-alignment
- * @default center
- * @type spacing
  */
