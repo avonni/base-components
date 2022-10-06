@@ -20,6 +20,7 @@ export const IconPicker = ({
     menuIconSize,
     menuLabel,
     messageWhenBadInput,
+    hideClearIcon,
     hideInputText,
     hideFooter,
     placeholder
@@ -35,6 +36,7 @@ export const IconPicker = ({
     element.required = required;
     element.variant = variant;
     element.hiddenCategories = hiddenCategories;
+    element.hideClearIcon = hideClearIcon;
     element.menuVariant = menuVariant;
     element.menuIconSize = menuIconSize;
     element.menuLabel = menuLabel;

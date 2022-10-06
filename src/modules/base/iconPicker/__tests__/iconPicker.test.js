@@ -63,6 +63,7 @@ describe('IconPicker', () => {
         expect(element.name).toBeUndefined();
         expect(element.variant).toBe('standard');
         expect(element.hiddenCategories).toEqual([]);
+        expect(element.hideClearIcon).toBeFalsy();
         expect(element.menuVariant).toBe('border');
         expect(element.menuIconSize).toBe('medium');
         expect(element.menuLabel).toBeUndefined();
@@ -164,6 +165,30 @@ describe('IconPicker', () => {
             );
             expect(button.disabled).toBeTruthy();
             expect(input.disabled).toBeTruthy();
+        });
+    });
+
+    it('Hide clear icon = false', () => {
+        element.hideClearIcon = false;
+        element.value = 'standard:apps';
+
+        return Promise.resolve().then(() => {
+            const clearButton = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(clearButton).toBeTruthy();
+        });
+    });
+
+    it('Hide clear icon = true', () => {
+        element.hideClearIcon = true;
+        element.value = 'standard:apps';
+
+        return Promise.resolve().then(() => {
+            const clearButton = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(clearButton).toBeFalsy();
         });
     });
 

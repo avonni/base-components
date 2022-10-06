@@ -207,10 +207,23 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        hideClearIcon: {
+            name: 'hide-clear-icon',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, it is not possible to clear a selected option using the input clear icon.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
         disabled: false,
+        hideClearIcon: false,
         hideFooter: false,
         hideInputText: false,
         menuIconSize: 'medium',
