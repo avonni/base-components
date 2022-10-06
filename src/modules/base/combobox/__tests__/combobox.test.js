@@ -1197,9 +1197,9 @@ describe('Combobox', () => {
                 list.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            name: options[2].value,
+                            name: 'remove',
                             item: options[2],
-                            targetName: options[2].value
+                            targetName: 'edge'
                         }
                     })
                 );
