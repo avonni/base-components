@@ -125,67 +125,67 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-background
+ * @name --avonni-vertical-visual-picker-figure-color-background
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-background-hover
+ * @name --avonni-vertical-visual-picker-figure-color-background-hover
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-background-selected
+ * @name --avonni-vertical-visual-picker-figure-color-background-selected
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-border
+ * @name --avonni-vertical-visual-picker-figure-color-border
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-border-hover
+ * @name --avonni-vertical-visual-picker-figure-color-border-hover
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-color-border-selected
+ * @name --avonni-vertical-visual-picker-figure-color-border-selected
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-sizing-border
+ * @name --avonni-vertical-visual-picker-figure-sizing-border
  * @default 1px
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-styling-border
+ * @name --avonni-vertical-visual-picker-figure-styling-border
  * @default solid
  * @type styling
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-radius-border
+ * @name --avonni-vertical-visual-picker-figure-radius-border
  * @default 0.25rem
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-shadow
+ * @name --avonni-vertical-visual-picker-figure-shadow-box
  * @default 0 2px 2px rgb(0 0 0 / 5%)
  * @type shadow
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-vertical-visual-picker-tags-alignment
+ * @name --avonni-vertical-visual-picker-figure-tags-alignment
  * @default left
  * @type alignment
  */
