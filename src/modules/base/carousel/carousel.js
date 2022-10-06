@@ -742,22 +742,30 @@ export default class Carousel extends LightningElement {
     }
 
     swipeLimitsReached(swipedDistance) {
-        // const panelContainer = this.template.querySelector('[data-element-id="lightning-layout-panel-container"]');
-        // const panels = Array.from(this.template.querySelectorAll('div.avonni-carousel__panel'))
+        const panelContainer = this.template.querySelector('[data-element-id="lightning-layout-panel-container"]');
+        const panels = Array.from(this.template.querySelectorAll('div.avonni-carousel__panel'))
 
-        // if (panels && panelContainer) {
-        //     // check if left is reached.
-        //     const panelContainerPosition = panelContainer.getBoundingClientRect();
-        //     const firstPanelPosition = panels[0].getBoundingClientRect();
-        //     const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
-        //     // allow end panels to move by 20% of panel width
-        //     const maxElasticity = panelContainerPosition.width * 0.2;
+        if (panels && panelContainer) {
 
-        //     // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
+            // stop dragging at 20% of container width
+            panelContainer.style.cssText += 'border: 1px solid red';
+            panels.forEach(panel => {
+                panel.style.cssText += 'border: 1px solid green'
+            });
+            // check if left is reached.
+            const panelContainerPosition = panelContainer.getBoundingClientRect();
+            const firstPanelPosition = panels[0].getBoundingClientRect();
+            const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
+            // allow end panels to move by 20% of panel width
+            const maxElasticity = panelContainerPosition.width * 0.2;
 
-        //     console.log(1/this.swipedDistance, this.swipedDistance);
+            // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
 
-        // }
+            console.log(firstPanelPosition.left > maxElasticity, maxElasticity, firstPanelPosition.left);
+            // 
+            // console.log(10/(this.swipedDistance), this.swipedDistance);
+
+        }
 
         return swipedDistance;
     }
