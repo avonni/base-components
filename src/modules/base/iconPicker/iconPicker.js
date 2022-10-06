@@ -526,9 +526,9 @@ export default class IconPicker extends LightningElement {
             case MENU_ICON_SIZES.valid[2]:
                 return '16px';
             case MENU_ICON_SIZES.valid[3]:
-                return '18px';
+                return '24px';
             case MENU_ICON_SIZES.valid[4]:
-                return '18px';
+                return '24px';
             default:
                 return null;
         }
@@ -628,7 +628,9 @@ export default class IconPicker extends LightningElement {
      * @type {string}
      */
     get computedIconContainerClass() {
-        const classes = classSet('slds-icon_container');
+        const classes = classSet(
+            'slds-icon_container avonni-icon-picker__icon'
+        );
         if (this.value && this.value.split(':')[0] === 'action') {
             classes.add({
                 'avonni-icon-picker__action-icon_small-scaling':
