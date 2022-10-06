@@ -820,6 +820,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
+            this.computeVisibleIntervalLabel(this.start, this.start);
         }
     }
 
@@ -1837,16 +1838,45 @@ export default class Scheduler extends LightningElement {
         event.stopPropagation();
 
         /**
-         * The event fired when a user creates an event.
+         * The event fired when a user edits an event.
          *
          * @event
-         * @name eventcreate
-         * @param {object} event The event changed or created.
+         * @name eventchange
+         * @param {string} name Unique name of the event.
+         * @param {object} draftValues Object containing one key-value pair per changed attribute.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys:
+         * * from
+         * * to
          * @public
          * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('eventchange', {
+                detail: event.detail,
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the creation of an event.
+     *
+     * @param {Event} event
+     */
+    handleEventCreate(event) {
+        event.stopPropagation();
+
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event The event created.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventcreate', {
                 detail: event.detail,
                 bubbles: true
             })
