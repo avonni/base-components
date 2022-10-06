@@ -1198,13 +1198,18 @@ describe('Combobox', () => {
                     new CustomEvent('actionclick', {
                         detail: {
                             name: 'remove',
-                            item: options[2],
+                            item: {
+                                label: 'Dickenson plc',
+                                name: 'dickenson',
+                                secondaryText: 'Account - Lawrence, KS',
+                                groups: ['accounts']
+                            },
                             targetName: 'edge'
                         }
                     })
                 );
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mock.calls[0][0]).toBe(options[2].value);
+                expect(spy.mock.calls[0][0]).toBe('dickenson');
             });
     });
 });
