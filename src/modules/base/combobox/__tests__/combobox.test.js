@@ -251,8 +251,12 @@ describe('Combobox', () => {
                 const pillContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-pill-container"]'
                 );
+                const modifiedOptions = JSON.parse(JSON.stringify(options));
+                modifiedOptions.forEach((option) => {
+                    option.name = option.value;
+                });
                 expect(pillContainer).toBeTruthy();
-                expect(pillContainer.items).toEqual(options);
+                expect(pillContainer.items).toEqual(modifiedOptions);
             });
     });
 
@@ -1113,10 +1117,10 @@ describe('Combobox', () => {
                     new CustomEvent('reorder', {
                         detail: {
                             items: [
-                                options[0],
-                                options[4],
-                                options[1],
-                                options[3]
+                                { name: options[0].value },
+                                { name: options[4].value },
+                                { name: options[1].value },
+                                { name: options[3].value }
                             ]
                         }
                     })
@@ -1193,12 +1197,17 @@ describe('Combobox', () => {
                 list.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            item: options[2]
+                            name: 'remove',
+                            item: {
+                                label: 'Edge Communication',
+                                name: 'edge'
+                            },
+                            targetName: 'edge'
                         }
                     })
                 );
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mock.calls[0][0]).toBe(options[2].value);
+                expect(spy.mock.calls[0][0]).toBe('edge');
             });
     });
 });

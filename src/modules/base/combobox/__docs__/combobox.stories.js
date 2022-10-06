@@ -51,7 +51,8 @@ export default {
             description:
                 'Array of action objects. The actions are displayed at the end of the combobox options.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         allowSearch: {
@@ -62,7 +63,8 @@ export default {
             description: 'If present, the combobox options are searchable.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         backAction: {
@@ -79,7 +81,8 @@ export default {
                         iconName: 'utility:chevronright',
                         label: Label of the parent option
                     }`
-                }
+                },
+                category: 'Data'
             }
         },
         disabled: {
@@ -90,7 +93,8 @@ export default {
                 'If present, the combobox is disabled and users cannot interact with it.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         dropdownAlignment: {
@@ -111,7 +115,8 @@ export default {
                 'Specifies where the drop-down list is aligned with or anchored to the selection field. Valid values include auto, left, center, right, bottom-left, bottom-center and bottom-right.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'Appearance'
             }
         },
         dropdownLength: {
@@ -124,7 +129,8 @@ export default {
                 'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '7-items' }
+                defaultValue: { summary: '7-items' },
+                category: 'Appearance'
             }
         },
         fieldLevelHelp: {
@@ -135,7 +141,8 @@ export default {
             description:
                 'Help text detailing the purpose and function of the combobox.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Parameters'
             }
         },
         groups: {
@@ -145,7 +152,8 @@ export default {
             description:
                 'Array of group objects. The groups are used to separate the options inside the drop-down.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         hideClearIcon: {
@@ -157,7 +165,8 @@ export default {
                 'If present, it is not possible to clear a selected option.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Appearance'
             }
         },
         hideSelectedOptions: {
@@ -169,7 +178,8 @@ export default {
                 'If present, the selected options pills will be hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Appearance'
             }
         },
         isLoading: {
@@ -181,7 +191,8 @@ export default {
                 'If true, the drop-down menu is in a loading state and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         isMultiSelect: {
@@ -192,7 +203,8 @@ export default {
             description: 'If present, multiple options can be selected.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         label: {
@@ -201,7 +213,8 @@ export default {
             },
             description: 'Text label for the combobox.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         loadingStateAlternativeText: {
@@ -213,7 +226,8 @@ export default {
                 'Message displayed while the combobox is in the loading state.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Loading' }
+                defaultValue: { summary: 'Loading' },
+                category: 'Parameters'
             }
         },
         messageWhenBadInput: {
@@ -224,7 +238,8 @@ export default {
             description:
                 'Error message to be displayed when a bad input is detected.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Parameters'
             }
         },
         messageWhenValueMissing: {
@@ -235,7 +250,8 @@ export default {
             description:
                 'Error message to be displayed when the value is missing and input is required.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Parameters'
             }
         },
         multiLevelGroups: {
@@ -247,7 +263,8 @@ export default {
                 'If present, groups can contain other groups. Each group added to an option will create a level of depth. \nIf false, there will be only one level of groups. If an option belongs to several groups, the option will be repeated in each group.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         name: {
@@ -256,7 +273,8 @@ export default {
             },
             description: 'Specifies the name of the combobox.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         options: {
@@ -265,7 +283,8 @@ export default {
             },
             description: 'Array of option objects.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         placeholder: {
@@ -276,7 +295,8 @@ export default {
                 'Text that is displayed before an option is selected, to prompt the user to select an option. The default value varies depending on the value of allow-search.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '"Select an Option" or "Search…"' }
+                defaultValue: { summary: '"Select an Option" or "Search…"' },
+                category: 'Data'
             }
         },
         readOnly: {
@@ -288,7 +308,8 @@ export default {
                 'If present, the combobox is read-only. A read-only combobox is also disabled.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         removeSelectedOptions: {
@@ -300,7 +321,8 @@ export default {
                 'If present, the selected options will be removed from the options.\nIf false, a checkmark will be displayed next to the selected options.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         required: {
@@ -311,7 +333,8 @@ export default {
                 'If present, a value must be selected before the form can be submitted.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         scopes: {
@@ -321,7 +344,8 @@ export default {
             description:
                 'Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         scopesGroups: {
@@ -332,14 +356,16 @@ export default {
             description:
                 'Array of group objects. The groups are used to separate the scopes inside the drop-down.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         search: {
             description:
                 'Custom search function to execute instead of the default search. It has to: 1- Take an object with two keys as an argument: options and searchTerm. 2- Return the new options.',
             table: {
-                type: { summary: 'function' }
+                type: { summary: 'function' },
+                category: 'Parameters'
             }
         },
         selectedOptionsAriaLabel: {
@@ -351,7 +377,8 @@ export default {
                 'Describes the selected options section to assistive technologies.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Selected Options' }
+                defaultValue: { summary: 'Selected Options' },
+                category: 'Parameters'
             }
         },
         selectedOptionsDirection: {
@@ -363,7 +390,8 @@ export default {
                 'Direction of the selected options. Horizontally, the selected options will be displayed as pills. Vertically, the selected options will be displayed as a list.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'horizontal' }
+                defaultValue: { summary: 'horizontal' },
+                category: 'Appearance'
             }
         },
         sortableSelectedOptions: {
@@ -374,7 +402,8 @@ export default {
             description: 'If present, the selected options are sortable.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         sortableSelectedOptionsIconName: {
@@ -385,14 +414,16 @@ export default {
             description:
                 "The Lightning Design System name of the icon indicating that the selected options are sortable. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed. The icon is visible only if sortable-selected-options is present, and selected-options-direction is vertical.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Parameters'
             }
         },
         validity: {
             description:
                 'Represents the validity states that an element can be in, with respect to constraint validation.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Parameters'
             }
         },
         value: {
@@ -401,7 +432,8 @@ export default {
             },
             description: 'Array of selected options value.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string[]' },
+                category: 'Data'
             }
         },
         variant: {
@@ -418,7 +450,8 @@ export default {
                 'The variant changes the appearance of the combobox. Accepted variants include standard, label-hidden, label-inline, and label-stacked. This value defaults to standard. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and combobox. Use label-stacked to place the label above the combobox.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'standard' }
+                defaultValue: { summary: 'standard' },
+                category: 'Appearance'
             }
         }
     },
