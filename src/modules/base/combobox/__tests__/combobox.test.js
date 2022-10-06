@@ -1117,10 +1117,10 @@ describe('Combobox', () => {
                     new CustomEvent('reorder', {
                         detail: {
                             items: [
-                                options[0],
-                                options[4],
-                                options[1],
-                                options[3]
+                                { name: options[0].value },
+                                { name: options[4].value },
+                                { name: options[1].value },
+                                { name: options[3].value }
                             ]
                         }
                     })
@@ -1199,17 +1199,15 @@ describe('Combobox', () => {
                         detail: {
                             name: 'remove',
                             item: {
-                                label: 'Dickenson plc',
-                                name: 'dickenson',
-                                secondaryText: 'Account - Lawrence, KS',
-                                groups: ['accounts']
+                                label: 'Edge Communication',
+                                name: 'edge'
                             },
                             targetName: 'edge'
                         }
                     })
                 );
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mock.calls[0][0]).toBe('dickenson');
+                expect(spy.mock.calls[0][0]).toBe('edge');
             });
     });
 });
