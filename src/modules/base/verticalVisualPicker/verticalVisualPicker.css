@@ -175,7 +175,10 @@
 /*-- tag --*/
 .avonni-vertical-visual-picker__tags-container {
     margin-top: 0.25rem;
-    text-align: var(--avonni-vertical-visual-picker-tags-alignment, left);
+    text-align: var(
+        --avonni-vertical-visual-picker-figure-tags-alignment,
+        left
+    );
 }
 
 .avonni-vertical-visual-picker__tag:not(:first-child) {
