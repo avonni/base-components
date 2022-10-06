@@ -119,6 +119,7 @@ export default class IconPicker extends LightningElement {
 
     _disabled = false;
     _hiddenCategories = [];
+    _hideClearIcon = false;
     _hideFooter = false;
     _hideInputText = false;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -192,6 +193,22 @@ export default class IconPicker extends LightningElement {
                 this._hiddenCategories.splice(index, 1);
             }
         }
+    }
+
+    /**
+     * If present, it is not possible to clear a selected option using the input clear icon.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideClearIcon() {
+        return this._hideClearIcon;
+    }
+
+    set hideClearIcon(value) {
+        this._hideClearIcon = normalizeBoolean(value);
     }
 
     /**
@@ -451,12 +468,26 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
+     * Computed CSS class for the input wrapper.
+     *
+     * @type {string}
+     */
+    get computedInputClass() {
+        return classSet('slds-form-element__control')
+            .add({
+                'slds-input-has-icon slds-input-has-icon_right':
+                    !this.hideClearIcon && !this.disabled
+            })
+            .toString();
+    }
+
+    /**
      * Whether the clear button in the input is visible.
      *
      * @type {boolean}
      */
     get allowClearInput() {
-        return this.value && !this.disabled;
+        return this.value && !this.disabled && !this.hideClearIcon;
     }
 
     /**
