@@ -755,16 +755,9 @@ export default class Carousel extends LightningElement {
             // check if left is reached.
             const panelContainerPosition = panelContainer.getBoundingClientRect();
             const firstPanelPosition = panels[0].getBoundingClientRect();
-            const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
-            // allow end panels to move by 20% of panel width
+            // const lastPanelPosition = panels[panels.length - 1].getBoundingClientRect();
             const maxElasticity = panelContainerPosition.width * 0.2;
-
-            // console.log(maxElasticity, firstPanelPosition.left > panelContainerPosition.left);
-
             console.log(firstPanelPosition.left > maxElasticity, maxElasticity, firstPanelPosition.left);
-            // 
-            // console.log(10/(this.swipedDistance), this.swipedDistance);
-
         }
 
         return swipedDistance;
