@@ -67,13 +67,6 @@
     width: 56px;
     height: 56px;
 }
-/* Lightning-icon does not support x-large and xx-large */
-.avonni-avatar_x-large .avonni-avatar__icon {
-    scale: 1.8;
-}
-.avonni-avatar_xx-large .avonni-avatar__icon  {
-    scale: 2.2;
-}
 .avonni-avatar_xx-large .slds-avatar {
     font-size: 1.5rem;
     width: 72px;
@@ -93,6 +86,17 @@
 :host(.slds-avatar-grouped) .slds-avatar {
     width: 100%;
     height: 100%;
+}
+/* Fix icon size for x-large and xx-large icons */
+:host(.slds-avatar-grouped) .avonni-avatar_x-large .avonni-avatar__icon, 
+:host(.slds-avatar-grouped) .avonni-avatar_xx-large .avonni-avatar__icon {
+    scale: 1;
+}
+.avonni-avatar_x-large .avonni-avatar__icon {
+    scale: 1.8;
+}
+.avonni-avatar_xx-large .avonni-avatar__icon  {
+    scale: 2.2;
 }
 /**
 * Positioning
