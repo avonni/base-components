@@ -40,7 +40,12 @@ import {
     normalizeBoolean
 } from 'c/utilsPrivate';
 
-const DEFAULT_ACTION_NAMES = ['add', 'edit', 'delete', 'duplicate'];
+const DEFAULT_ACTION_NAMES = [
+    'Standard.Tree.Add',
+    'Standard.Tree.Edit',
+    'Standard.Tree.Delete',
+    'Standard.Tree.Duplicate'
+];
 const DEFAULT_EDITABLE_FIELDS = [
     'label',
     'metatext',
@@ -87,7 +92,7 @@ export default class Tree extends LightningElement {
     _dragState;
     _editedItemKey;
     _focusedItem;
-    _isConnected = false;
+    _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
     _selectTimeout;
@@ -98,7 +103,7 @@ export default class Tree extends LightningElement {
 
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -229,7 +234,7 @@ export default class Tree extends LightningElement {
 
     set isMultiSelect(value) {
         this._isMultiSelect = value;
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -249,7 +254,7 @@ export default class Tree extends LightningElement {
             return this.treedata.cloneItems(item);
         });
 
-        if (this._isConnected) this.initItems();
+        if (this._connected) this.initItems();
     }
 
     /**
@@ -290,7 +295,7 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? [value]
                 : deepCopy(normalizeArray(value));
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -323,7 +328,7 @@ export default class Tree extends LightningElement {
     get addAction() {
         return (
             !this.isLoading &&
-            this.actions.find((action) => action.name === 'add')
+            this.actions.find((action) => action.name === 'Standard.Tree.Add')
         );
     }
 
@@ -485,7 +490,7 @@ export default class Tree extends LightningElement {
             this.treedata.updateVisibleTreeItemsOnCollapse(node.key);
             this.dispatchChange({
                 name: node.name,
-                action: 'collapse',
+                action: 'Standard.Tree.Collapse',
                 key: node.key
             });
         }
@@ -586,15 +591,15 @@ export default class Tree extends LightningElement {
         }
 
         switch (action) {
-            case 'add': {
+            case 'Standard.Tree.Add': {
                 this.addItem(key);
                 break;
             }
-            case 'edit': {
+            case 'Standard.Tree.Edit': {
                 this._editedItemKey = key;
                 return;
             }
-            case 'delete': {
+            case 'Standard.Tree.Delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
                 if (prevItem && !this.isMultiSelect) {
                     this.singleSelect(prevItem.treeNode.name);
@@ -603,7 +608,7 @@ export default class Tree extends LightningElement {
                 items.splice(index, 1);
                 break;
             }
-            case 'duplicate': {
+            case 'Standard.Tree.Duplicate': {
                 previousName = item.treeNode.name;
                 const duplicatedItem = this.duplicateItem(key);
                 name = duplicatedItem.name;
@@ -629,7 +634,7 @@ export default class Tree extends LightningElement {
             node.nodeRef.expanded = true;
             this.dispatchChange({
                 name: node.name,
-                action: 'expand',
+                action: 'Standard.Tree.Expand',
                 key: node.key
             });
         }
@@ -908,6 +913,11 @@ export default class Tree extends LightningElement {
             if (selectedItem) {
                 this.treedata.expandTo(selectedItem);
                 this.setFocusToItem(selectedItem);
+            } else if (this._focusedItem) {
+                const callbacks = this.callbackMap[this._focusedItem.key];
+                callbacks.setSelected(false);
+                callbacks.unfocus();
+                this._focusedItem = null;
             }
             this.forceChildrenSelectionUpdate();
         }
@@ -956,7 +966,7 @@ export default class Tree extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-        const action = event.detail.name || 'add';
+        const action = event.detail.name || 'Standard.Tree.Add';
         const key = event.detail.key;
         const levelPath = this.treedata.getLevelPath(
             key || this.items.length.toString()
@@ -1022,7 +1032,7 @@ export default class Tree extends LightningElement {
         this.initItems();
         this.dispatchChange({
             name: item.name,
-            action: 'edit',
+            action: 'Standard.Tree.Edit',
             previousName,
             key
         });
@@ -1272,7 +1282,7 @@ export default class Tree extends LightningElement {
             this.initItems();
             this.dispatchChange({
                 name: initialItem.name,
-                action: 'move',
+                action: 'Standard.Tree.Move',
                 key
             });
         }
@@ -1331,7 +1341,7 @@ export default class Tree extends LightningElement {
         );
 
         const previousLevelPath = levelPath;
-        if (action === 'move') {
+        if (action === 'Standard.Tree.Move') {
             const newItem = this.treedata.getItemFromName(name);
             levelPath = this.treedata.getLevelPath(newItem.key);
         }

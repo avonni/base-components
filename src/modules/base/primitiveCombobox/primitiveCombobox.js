@@ -421,7 +421,6 @@ export default class PrimitiveCombobox extends LightningElement {
         const options = normalizeArray(value);
         const optionObjects = this.initOptionObjects(options);
         this._options = optionObjects;
-        this.visibleOptions = optionObjects;
 
         if (this._connected) {
             this.initValue();
@@ -431,6 +430,8 @@ export default class PrimitiveCombobox extends LightningElement {
             this.showLoader = this.currentParent
                 ? this.currentParent.isLoading
                 : this.isLoading;
+        } else {
+            this.visibleOptions = optionObjects;
         }
     }
 
@@ -555,9 +556,19 @@ export default class PrimitiveCombobox extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value =
-            typeof value === 'string' ? [value] : normalizeArray(value);
-        if (this._connected) this.initValue();
+        if (typeof value === 'string') {
+            if (value.length > 0) {
+                this._value = [value];
+            } else if (value.length === 0) {
+                this._value = [];
+            }
+        } else {
+            this._value = normalizeArray(value);
+        }
+
+        if (this._connected) {
+            this.initValue();
+        }
     }
 
     /**
@@ -949,7 +960,9 @@ export default class PrimitiveCombobox extends LightningElement {
             (hasItems || this.isLoading)
         ) {
             this.dropdownVisible = true;
-            this.startDropdownAutoPositioning();
+            requestAnimationFrame(() => {
+                this.startDropdownAutoPositioning();
+            });
         }
     }
 
@@ -1808,6 +1821,16 @@ export default class PrimitiveCombobox extends LightningElement {
                     }
                 })
             );
+
+            requestAnimationFrame(() => {
+                // Scroll back to top when opening a child option
+                const scrollableList = this.template.querySelector(
+                    '[data-element-id="ul-listbox"]'
+                );
+                if (scrollableList) {
+                    scrollableList.scrollTop = 0;
+                }
+            });
             return;
         }
 
@@ -1869,6 +1892,8 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {number[]} levelPath Array of level indexes to get to the option.
      */
     dispatchChange(action, levelPath) {
+        this.reportValidity();
+
         /**
          * The event fired when an option is selected or unselected.
          *

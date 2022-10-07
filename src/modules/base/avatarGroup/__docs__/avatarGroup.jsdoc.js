@@ -50,3 +50,9 @@
  * @default #ffffff
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-group-avatar-stack-styling-border
+ * @default #ffffff
+ * @type color
+ */

@@ -8,6 +8,7 @@ module.exports = {
         '^lightning/(.+)$': '<rootDir>/jest-mock/components/lightning/$1/$1',
         '^c/(buttonMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(calendar)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(card)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(colorGradient)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',

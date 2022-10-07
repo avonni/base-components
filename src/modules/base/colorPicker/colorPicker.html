@@ -213,6 +213,7 @@
                                             colors={computedColors}
                                             columns={columns}
                                             groups={groups}
+                                            is-loading={paletteIsLoading}
                                             read-only={readOnly}
                                             variant={colorPaletteVariant}
                                             data-element-id="avonni-color-palette"
@@ -272,11 +273,7 @@
 
             <!-- Input -->
             <div
-                class="
-                    slds-form-element
-                    slds-p-left_xx-small
-                    avonni-builder-icon-picker-input-container
-                "
+                class="slds-form-element slds-p-left_xx-small"
                 if:false={hideColorInput}
             >
                 <div

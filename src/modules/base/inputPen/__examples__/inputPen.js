@@ -40,38 +40,28 @@ export const InputPen = ({
     fieldLevelHelp,
     value,
     color,
+    showSignaturePad,
     size,
     mode,
     disabledButtons,
     disabled,
     readOnly,
     required,
-    hideControls,
-    invalid
+    hideControls
 }) => {
     const element = document.createElement('ac-base-input-pen');
+    element.color = color;
+    element.disabledButtons = disabledButtons;
     element.variant = variant;
     element.label = label;
     element.fieldLevelHelp = fieldLevelHelp;
     element.value = value;
     element.mode = mode;
+    element.size = size;
+    element.showSignaturePad = showSignaturePad;
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.required = required;
     element.hideControls = hideControls;
-    element.invalid = invalid;
-
-    if (disabledButtons) {
-        element.disabledButtons = disabledButtons;
-    }
-
-    if (color) {
-        element.color = color;
-    }
-
-    if (size) {
-        element.size = size;
-    }
-
     return element;
 };

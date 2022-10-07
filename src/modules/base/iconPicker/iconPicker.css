@@ -66,8 +66,8 @@ button:disabled {
     background-color: #ecebea;
 }
 
-.avonni-builder-icon-picker-input-container {
-    width: 17rem;
+.avonni-icon-picker__icon {
+    margin-right: 0.25rem;
 }
 
 .avonni-builder-icon-picker-icon-container {
@@ -113,4 +113,11 @@ button:disabled {
 
 .avonni-icon-picker__toggle-button_size-limit {
     max-height: 2rem;
+}
+
+.avonni-icon-picker__label {
+    color: var(--avonni-icon-picker-label-text-color, #444444);
+    font-size: var(--avonni-icon-picker-label-font-size, 0.75rem);
+    font-weight: var(--avonni-icon-picker-label-font-weight, 400);
+    font-style: var(--avonni-icon-picker-label-font-style, normal);
 }

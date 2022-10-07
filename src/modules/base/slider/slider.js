@@ -42,9 +42,12 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 const DEFAULT_MIN = 0;
+const DEFAULT_MINIMUM_DISTANCE = 0;
 const DEFAULT_MAX = 100;
+const DEFAULT_MAX_PERCENTAGE = 1;
 const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
+const DEFAULT_VALUE = 50;
 
 const SLIDER_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'responsive'],
@@ -108,7 +111,7 @@ export default class Slider extends LightningElement {
     _disableSwap = false;
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
-    _minimumDistance = DEFAULT_MIN;
+    _minimumDistance = DEFAULT_MINIMUM_DISTANCE;
     _pin = false;
     _hideTrack = false;
     _hideMinMaxValues = false;
@@ -120,19 +123,21 @@ export default class Slider extends LightningElement {
     _unit = SLIDER_UNITS.default;
     _unitAttributes = {};
     _variant = LABEL_VARIANTS.default;
-    _value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
+    _value = [DEFAULT_VALUE];
 
-    computedMax = DEFAULT_MAX;
+    computedMax;
     computedMin = DEFAULT_MIN;
-    _computedValues = [(DEFAULT_MAX - DEFAULT_MIN) / 2];
     customLabels = [];
+
+    _computedValues = [DEFAULT_VALUE];
+    _focusedInputIndex;
     _helpMessage;
+    _initMax;
     _moveEventWait = false;
     _pinLocked = false;
     _previousScalingFactor = 1;
-    _trackInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
+    _trackInterval = [DEFAULT_MIN, DEFAULT_VALUE];
     _resizeObserver;
-    _focusedInputIndex;
     _scalingFactor = 1;
     _constraintApis = [];
     _constraintApiProxyInputUpdaters = [];
@@ -204,7 +209,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, the slider is disabled and users cannot interact with it.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -220,7 +225,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, the slider thumbs can swap order.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -229,7 +234,7 @@ export default class Slider extends LightningElement {
         return this._disableSwap;
     }
     set disableSwap(value) {
-        this._disableSwap = value;
+        this._disableSwap = normalizeBoolean(value);
     }
 
     /**
@@ -245,14 +250,13 @@ export default class Slider extends LightningElement {
     }
 
     set max(value) {
-        const intValue = parseInt(value, 10);
-        if (!isNaN(intValue)) {
-            this.computedMax = intValue;
-            this._max = intValue;
-            if (this._connected) {
-                this.scaleValues();
-                this.capValues();
-            }
+        const intValue = !isNaN(value) ? parseInt(value, 10) : null;
+        this._initMax = intValue;
+        this.initMaxDefaultValue();
+
+        if (this._connected) {
+            this.scaleValues();
+            this.capValues();
         }
     }
 
@@ -269,13 +273,13 @@ export default class Slider extends LightningElement {
     }
     set min(value) {
         const intValue = parseInt(value, 10);
-        if (!isNaN(intValue)) {
-            this.computedMin = intValue;
-            this._min = intValue;
-            if (this._connected) {
-                this.scaleValues();
-                this.capValues();
-            }
+        const normalizedMin = isNaN(intValue) ? DEFAULT_MIN : intValue;
+        this.computedMin = normalizedMin;
+        this._min = normalizedMin;
+
+        if (this._connected) {
+            this.scaleValues();
+            this.capValues();
         }
     }
 
@@ -292,15 +296,15 @@ export default class Slider extends LightningElement {
     }
     set minimumDistance(value) {
         const intValue = parseInt(value, 10);
-        if (!isNaN(intValue)) {
-            this._minimumDistance = intValue;
-        }
+        this._minimumDistance = isNaN(intValue)
+            ? DEFAULT_MINIMUM_DISTANCE
+            : intValue;
     }
 
     /**
      * If present, min and max value indicators are removed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -316,7 +320,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, track is removed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -332,7 +336,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, a pin containing the value is shown when the thumb is pressed.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -348,7 +352,7 @@ export default class Slider extends LightningElement {
     /**
      * If present, minor tick marks are displayed at every step.
      *
-     * @type {boolean}
+     * @type {Boolean}
      * @public
      * @default false
      */
@@ -395,7 +399,7 @@ export default class Slider extends LightningElement {
     set step(value) {
         this._step = Number(value);
         this._scalingFactor =
-            0 < this._step && this._step < 1 ? 1 / this.step : 1;
+            0 < this._step && this._step < 1 ? 1 / this.step : DEFAULT_STEP;
         if (this._connected) {
             this.scaleValues();
             this.capValues();
@@ -451,13 +455,16 @@ export default class Slider extends LightningElement {
      */
     @api
     get unit() {
-        return this._unit === 'custom' ? SLIDER_UNITS.default : this._unit;
+        return this._unit;
     }
     set unit(unit) {
         this._unit = normalizeString(unit, {
             fallbackValue: SLIDER_UNITS.default,
             validValues: SLIDER_UNITS.valid
         });
+
+        this.initMaxDefaultValue();
+
         if (this._unit === 'percent') {
             this._scalingFactor = PERCENT_SCALING_FACTOR;
             if (this._connected) {
@@ -466,12 +473,12 @@ export default class Slider extends LightningElement {
             }
         }
     }
+
     /**
      * Attributes specific to the selected unit. See Units and Unit Attributes table for more details.
      *
      * @type {object}
      * @public
-     * @default
      */
     @api
     get unitAttributes() {
@@ -512,16 +519,16 @@ export default class Slider extends LightningElement {
         return this._value;
     }
     set value(value) {
-        if (value !== 0 && !value) {
-            this._value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
-            return;
-        }
         if (!isNaN(Number(value))) {
             this._value = [Number(value)];
         } else {
-            this._value = normalizeArray(value, 'number');
+            const normalizedValue = normalizeArray(value, 'number');
+            this._value = normalizedValue.length
+                ? normalizedValue
+                : [DEFAULT_VALUE];
+            this._value.sort((a, b) => a - b);
         }
-        this._value = this._value.sort((a, b) => a - b);
+
         this._computedValues = [...this._value];
         if (this._connected) {
             this.scaleValues();
@@ -675,13 +682,35 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Unit normalized to a valid lightning-formatted-number unit.
+     *
+     * @type {string}
+     */
+    get computedUnit() {
+        return this.unit === 'custom' ? SLIDER_UNITS.default : this.unit;
+    }
+
+    /**
+     * Computed Slider Wrapper class styling.
+     *
+     */
+    get computedSliderWrapperClass() {
+        return classSet('avonni-slider__wrapper slds-p-vertical_x-small').add({
+            'avonni-slider__wrapper_height_full':
+                this.isVertical && !this.showLabel,
+            'avonni-slider__wrapper_height_label':
+                this.isVertical && this.showLabel
+        });
+    }
+
+    /**
      * Computed right pin class styling.
      *
      * @type {string}
      */
     get computedUnitContainerClass() {
         return classSet(
-            'avonni-slider__unit-container slds-grid slds-grid_align-spread slds-p-top_x-small'
+            'avonni-slider__unit-container slds-grid slds-grid_align-spread'
         ).add({
             'avonni-slider__unit-container_ticks-horizontal':
                 !this.isVertical &&
@@ -690,7 +719,8 @@ export default class Slider extends LightningElement {
             'avonni-slider__unit-container_ticks-horizontal-tick':
                 !this.isVertical &&
                 this.showAnyTickMarks &&
-                this.tickMarkStyle === 'tick'
+                this.tickMarkStyle === 'tick',
+            'slds-p-top_x-small': !this.isVertical
         });
     }
 
@@ -705,7 +735,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if the slider has custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get hasCustomLabels() {
@@ -725,7 +755,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isVertical() {
@@ -734,7 +764,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and responsive
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isVerticalResponsive() {
@@ -743,7 +773,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and does not have custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isNormalVertical() {
@@ -756,7 +786,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Verify if slider is vertical and does not have custom labels.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get isNormalHorizontal() {
@@ -768,8 +798,21 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * To show or not the label
+     * @type {Boolean}
+     *
+     */
+    get showLabel() {
+        return !(
+            this._variant === 'label-hidden' ||
+            !this.label ||
+            (this.label && this.label.length === 0)
+        );
+    }
+
+    /**
      * To show or not the track.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showTrack() {
@@ -778,7 +821,7 @@ export default class Slider extends LightningElement {
 
     /**
      * To show or not the tick marks.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showAnyTickMarks() {
@@ -787,7 +830,7 @@ export default class Slider extends LightningElement {
 
     /**
      * To show or not the major tick marks.
-     * @type {boolean}
+     * @type {Boolean}
      *
      */
     get showOnlyMajorTicks() {
@@ -822,7 +865,7 @@ export default class Slider extends LightningElement {
                         max: () => this.max,
                         min: () => this.min,
                         step: () => this.step,
-                        formatter: () => this.unit,
+                        formatter: () => this.computedUnit,
                         disabled: () => this.disabled
                     });
 
@@ -913,7 +956,7 @@ export default class Slider extends LightningElement {
     /**
      * Checks if the input is valid.
      *
-     * @returns {boolean} True if the element meets all constraint validations.
+     * @returns {Boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -949,7 +992,7 @@ export default class Slider extends LightningElement {
     /**
      * Displays the error messages. If the input is valid, reportValidity() clears displayed error messages.
      *
-     * @returns {boolean} False if invalid, true if valid.
+     * @returns {Boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -1003,6 +1046,22 @@ export default class Slider extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Initialization of the max attribute.
+     */
+    initMaxDefaultValue() {
+        let normalizedMax;
+        if (this._initMax && !isNaN(this._initMax)) {
+            normalizedMax = this._initMax;
+        } else {
+            normalizedMax =
+                this.unit === 'percent' ? DEFAULT_MAX_PERCENTAGE : DEFAULT_MAX;
+        }
+
+        this.computedMax = normalizedMax;
+        this._max = normalizedMax;
+    }
 
     /**
      * Caps the value if it overflows min or max.
@@ -1475,7 +1534,7 @@ export default class Slider extends LightningElement {
 
     /**
      * Test if thumb is hovered.
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     thumbIsHovered(event) {
         const obj = this.getHitbox(

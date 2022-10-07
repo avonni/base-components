@@ -643,12 +643,10 @@ export default class Combobox extends LightningElement {
      * @type {string}
      */
     get computedMainComboboxClass() {
-        return classSet('avonni-combobox__main-combobox')
-            .add({
-                'slds-combobox-addon_end slds-col': this.showScopes,
-                'avonni-combobox__main-combobox_no-scopes': !this.showScopes
-            })
-            .toString();
+        return classSet({
+            'slds-combobox-addon_end slds-col avonni-combobox__main-combobox_scopes':
+                this.showScopes
+        }).toString();
     }
 
     /**
@@ -672,12 +670,16 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Selected options copied and converted to regular objects.
+     * Selected options copied and converted to regular objects. To be compatible with list reordering, options values need to be converted to names.
      *
      * @type {object[]}
      */
     get normalizedSelectedOptions() {
-        return deepCopy(this.selectedOptions);
+        const selectedOptions = deepCopy(this.selectedOptions);
+        selectedOptions.forEach((option) => {
+            option.name = option.value;
+        });
+        return selectedOptions;
     }
 
     /**
@@ -1043,7 +1045,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemoveListItem(event) {
-        const value = event.detail.item.value;
+        const value = event.detail.targetName;
         this.mainCombobox.removeSelectedOption(value);
     }
 
@@ -1064,7 +1066,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleReorderSelectedOptions(event) {
-        this._value = event.detail.items.map((item) => item.value);
+        this._value = event.detail.items.map((item) => item.name);
         this.dispatchChange('reorder');
     }
 

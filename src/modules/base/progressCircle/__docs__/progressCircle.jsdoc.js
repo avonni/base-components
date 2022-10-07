@@ -9,6 +9,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-circle-bar-color
+ * @default #1589ee
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-value-text-color
+ * @default #1589ee
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-value-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-circle-value-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-circle-title-text-color
  * @default #080707
  * @type color

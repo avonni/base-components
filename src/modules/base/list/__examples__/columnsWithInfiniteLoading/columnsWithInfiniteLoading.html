@@ -1,0 +1,18 @@
+<template>
+    <div style="max-height: 500px; height: 500px;">
+        <avonni-list
+            actions={actions}
+            divider="around"
+            image-attributes={imageAttributes}
+            items={items}
+            label="Columns with infinite loading"
+            load-more-offset="100"
+            cols="1"
+            small-container-cols="3"
+            medium-container-cols="4"
+            enable-infinite-loading={enableInfiniteLoading}
+            is-loading={isLoading}
+            onloadmore={loadMoreData}
+        ></avonni-list>
+    </div>
+</template>

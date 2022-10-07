@@ -33,11 +33,14 @@
 import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
 
-// not tested
-// timezone
-
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
+
+const timeZoneMock = (timezone) => {
+    jest.spyOn(Date.prototype, 'toLocaleString').mockImplementation(() => {
+        return timezone || 'GMT';
+    });
+};
 
 let element;
 describe('Input Date Range', () => {
@@ -45,6 +48,7 @@ describe('Input Date Range', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
@@ -59,10 +63,8 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range: Default attributes', () => {
-        expect(element.type).toBe('date');
         expect(element.dateStyle).toBe('medium');
-        expect(element.timeStyle).toBe('short');
-        expect(element.timezone).toBeUndefined();
+        expect(element.endDate).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.label).toBeUndefined();
@@ -70,11 +72,13 @@ describe('Input Date Range', () => {
         expect(element.labelStartTime).toBeUndefined();
         expect(element.labelEndDate).toBeUndefined();
         expect(element.labelEndTime).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
-        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
-        expect(element.endDate).toBeUndefined();
+        expect(element.timeStyle).toBe('short');
+        expect(element.timezone).toBeUndefined();
+        expect(element.type).toBe('date');
         expect(element.value).toMatchObject({
             endDate: undefined,
             startDate: undefined
@@ -874,6 +878,84 @@ describe('Input Date Range', () => {
                 );
                 expect(message.textContent).toBe('Missing value!');
             });
+    });
+
+    // timezone
+    it('Input Date Range: timezone', () => {
+        element.timezone = 'Asia/Shanghai';
+        element.type = 'datetime';
+        element.dateStyle = 'short';
+        element.startDate = '2022-08-16T04:00+08:00';
+        element.endDate = '2022-08-20T15:00+08:00';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const startDateInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                expect(startDateInput.value).toBe('8/16/2022');
+
+                const startTimeInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input-start-time"]'
+                );
+                expect(startTimeInput.value).toBe('04:00');
+
+                const endDateInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-end-date"]'
+                );
+                expect(endDateInput.value).toBe('8/20/2022');
+                const endTimeInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input-end-time"]'
+                );
+                expect(endTimeInput.value).toBe('15:00');
+
+                startDateInput.click();
+            })
+            .then(() => {
+                timeZoneMock('GMT+08:00');
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                calendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: ['2022-08-16T04:00:00.000Z']
+                        }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalled();
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.startDate).toBe('2022-08-16T04:00+08:00');
+                expect(detail.endDate).toBe('2022-08-20T15:00+08:00');
+            });
+    });
+
+    it('Input Date Range: no timezone with value that has a time zone', () => {
+        element.type = 'datetime';
+        element.dateStyle = 'short';
+        element.startDate = '2022-08-16T04:00:00.000+08:00';
+        const start = new Date('2022-08-16T04:00:00.000+08:00');
+        const date = start.getDate();
+        const year = start.getFullYear();
+        const month = start.getMonth() + 1;
+        const time = start.toTimeString().substring(0, 5);
+        const formattedDate = `${month}/${date}/${year}`;
+
+        return Promise.resolve().then(() => {
+            const dateInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-start-date"]'
+            );
+            expect(dateInput.value).toBe(formattedDate);
+
+            const timeInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-start-time"]'
+            );
+            expect(timeInput.value).toBe(time);
+        });
     });
 
     // variant

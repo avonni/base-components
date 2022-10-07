@@ -1035,7 +1035,7 @@ describe('Avatar Group', () => {
             })
             .then(() => {
                 const avatarHidden = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="avonni-primitive-avatar"]'
+                    '[data-element-id="avonni-avatar-show-more-propover"]'
                 );
                 expect(avatarHidden).toHaveLength(9);
             });

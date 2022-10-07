@@ -49,9 +49,21 @@ describe('Activity Timeline', () => {
     });
 
     beforeEach(() => {
+        HorizontalActivityTimeline.setIconLibraries = jest.fn(() => {});
+
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                response: () => {
+                    return { status: 200, ok: true };
+                },
+                error: jest.fn(() => {})
+            })
+        );
+
         element = createElement('avonni-activity-timeline', {
             is: ActivityTimeline
         });
+
         document.body.appendChild(element);
     });
 
@@ -372,6 +384,8 @@ describe('Activity Timeline', () => {
                 href: '#',
                 datetimeValue: 1653141600000,
                 iconName: 'standard:log_a_call',
+                hasCheckbox: true,
+                checked: true,
                 fields: [
                     {
                         label: 'Name',
@@ -442,6 +456,7 @@ describe('Activity Timeline', () => {
 
             timelineItems.forEach((item, index) => {
                 expect(item.title).toBe(ITEM[index].title);
+                expect(item.checked).toBe(ITEM[index].checked || false);
                 expect(item.description).toBe(ITEM[index].description);
                 expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
                 expect(item.href).toBe(ITEM[index].href);
@@ -646,17 +661,7 @@ describe('Activity Timeline', () => {
 
     // check
     it('Activity Timeline: check event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call'
-            }
-        ];
-        element.items = ITEM;
+        element.items = testItems;
         const handler = jest.fn();
         element.addEventListener('check', handler);
 
@@ -667,32 +672,53 @@ describe('Activity Timeline', () => {
             item.dispatchEvent(
                 new CustomEvent('check', {
                     detail: {
-                        checked: true
-                    }
+                        checked: true,
+                        name: testItems[0].name
+                    },
+                    bubbles: true
                 })
             );
+            expect(element.items[0].checked).toBeTruthy();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
-    it('Activity Timeline: button clicked event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call',
-                buttonLabel: 'button'
-            }
-        ];
-        element.items = ITEM;
+    // itemclick
+    it('Activity Timeline: itemclick event', () => {
+        element.items = testItems;
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-activity-timeline-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('itemclick', {
+                    detail: { name: testItems[0].name },
+                    bubbles: true
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                testItems[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // buttonclick
+    it('Activity Timeline: buttonclick event', () => {
+        element.items = testItems;
 
         const handler = jest.fn();
         element.addEventListener('buttonclick', handler);
@@ -701,9 +727,16 @@ describe('Activity Timeline', () => {
             const item = element.shadowRoot.querySelector(
                 'c-primitive-activity-timeline-item'
             );
-            item.dispatchEvent(new CustomEvent('buttonclick'));
+            item.dispatchEvent(
+                new CustomEvent('buttonclick', {
+                    detail: { name: testItems[0].name },
+                    bubbles: true
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -711,18 +744,9 @@ describe('Activity Timeline', () => {
     });
 
     // action clicked
-    it('Activity Timeline: action clicked event', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call'
-            }
-        ];
-        element.items = ITEM;
+    it('Activity Timeline: actionclick event', () => {
+        element.actions = actions;
+        element.items = testItems;
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -731,9 +755,24 @@ describe('Activity Timeline', () => {
             const item = element.shadowRoot.querySelector(
                 'c-primitive-activity-timeline-item'
             );
-            item.dispatchEvent(new CustomEvent('actionclick'));
+            item.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: actions[0].name,
+                        targetName: testItems[0].name,
+                        fieldData: testItems[0].fields
+                    },
+                    bubbles: true
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.name).toBe(actions[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                testItems[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.fieldData).toEqual(
+                testItems[0].fields
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -853,7 +892,7 @@ describe('Activity Timeline', () => {
                 expect(itemSVGGroup).toBeDefined();
                 expect(itemSVGGroup.textContent).toContain(item.title);
                 expect(itemIcon.className).toContain(
-                    'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center slds-icon-' +
+                    'slds-icon slds-icon_container slds-icon_small slds-icon-' +
                         itemCategoryIcon +
                         '-' +
                         itemNameIcon
@@ -905,7 +944,12 @@ describe('Activity Timeline', () => {
     });
 
     // Edit interval size mode : drag right interval line to change interval's width
-    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle', () => {
+    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle (to the left)', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleUpperBoundIntervalDragSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleUpperBoundIntervalDrag'
@@ -929,7 +973,7 @@ describe('Activity Timeline', () => {
             receivedX = intervalRectangle.getAttribute('x');
             expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
 
-            // Drag of left interval line
+            // Drag of right interval line
             const scrollAxisSVG = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
             );
@@ -940,7 +984,7 @@ describe('Activity Timeline', () => {
             // To simulate drag --> mouse down, mouse move, mouse up events
             const mouseEvent = new MouseEvent('mousedown', { view: window });
             const sourceEvent = new MouseEvent('mousemove');
-            sourceEvent.x = 0;
+            sourceEvent.offsetX = 0;
             const mouseUp = new MouseEvent('mouseup', { view: window });
             rightIntervalLine.dispatchEvent(mouseEvent);
             rightIntervalLine.dispatchEvent(sourceEvent);
@@ -1028,8 +1072,92 @@ describe('Activity Timeline', () => {
         });
     });
 
+    it('Activity Timeline: horizontal - edit mode - drag upper bound of interval rectangle (to the right)', () => {
+        const handleUpperBoundIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleUpperBoundIntervalDrag'
+        );
+        const handleUpperBoundIntervalChangeSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleUpperBoundIntervalChange'
+        );
+
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+        const initialIntervalPosition = 602;
+        let receivedX;
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            // Activate edit mode
+            intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
+            receivedX = intervalRectangle.getAttribute('x');
+            expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
+
+            // Drag of right interval line
+            const scrollAxisSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
+            );
+            const rightIntervalLine = scrollAxisSVG.querySelector(
+                '#avonni-horizontal-activity-timeline__right-interval-line'
+            );
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const mouseEvent = new MouseEvent('mousedown', { view: window });
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 2000;
+            const mouseUp = new MouseEvent('mouseup', { view: window });
+            rightIntervalLine.dispatchEvent(mouseEvent);
+            rightIntervalLine.dispatchEvent(sourceEvent);
+            rightIntervalLine.dispatchEvent(mouseUp);
+
+            expect(handleUpperBoundIntervalDragSpy).toBeCalled();
+            expect(handleUpperBoundIntervalChangeSpy).toBeCalled();
+            receivedX = intervalRectangle.getAttribute('x');
+            expect(Math.floor(Number(receivedX))).toBe(initialIntervalPosition);
+            expect(
+                Math.ceil(Number(intervalRectangle.getAttribute('width')))
+            ).toBe(1300 - initialIntervalPosition);
+
+            // Check the items displayed, the new interval should be : [02/02/2022, 30/03/2022]
+            const timelineSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+            );
+            const idOfItemsInInterval = [
+                'item4',
+                'item5',
+                'item6',
+                'item7',
+                'item8',
+                'item9',
+                'item10',
+                'item11',
+                'item12',
+                'item13',
+                'item14'
+            ];
+            expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
+                idOfItemsInInterval.length
+            );
+
+            for (const id of idOfItemsInInterval) {
+                const itemElement = timelineSVG.querySelector(
+                    '#timeline-item-' + id
+                );
+                expect(itemElement).not.toBeNull();
+            }
+        });
+    });
+
     // Edit interval size mode : drag left interval line to change interval's width
-    it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle', () => {
+    it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle (to the left)', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleLowerBoundIntervalDragSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleLowerBoundIntervalDrag'
@@ -1063,7 +1191,7 @@ describe('Activity Timeline', () => {
             // To simulate drag --> mouse down, mouse move, mouse up events
             const mouseEvent = new MouseEvent('mousedown', { view: window });
             const sourceEvent = new MouseEvent('mousemove');
-            sourceEvent.x = dragPosition;
+            sourceEvent.offsetX = dragPosition;
             const mouseUp = new MouseEvent('mouseup', { view: window });
             leftIntervalLine.dispatchEvent(mouseEvent);
             leftIntervalLine.dispatchEvent(sourceEvent);
@@ -1075,7 +1203,7 @@ describe('Activity Timeline', () => {
             expect(intervalRectangle.getAttribute('x')).toBe(dragPosition);
             expect(
                 Math.floor(Number(intervalRectangle.getAttribute('width')))
-            ).toBe(775);
+            ).toBe(785);
 
             // Check the items displayed, the new interval should be : [27/12/2021, 17/02/2022]
             const itemsAfterDrag = [
@@ -1129,6 +1257,60 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // Edit interval size mode : drag left interval line to change interval's width
+    it('Activity Timeline: horizontal - edit mode - drag lower bound of interval rectangle (to the right)', () => {
+        const minimumIntervalWidth = 2;
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(minimumIntervalWidth);
+        const handleLowerBoundIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleLowerBoundIntervalDrag'
+        );
+        const handleLowerBoundIntervalChangeSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleLowerBoundIntervalChange'
+        );
+
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            // Activate edit mode
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('x')))
+            ).toBe(602);
+
+            // drag of left interval line
+            const scrollAxisSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__scroll-axis-svg"]'
+            );
+            const leftIntervalLine = scrollAxisSVG.querySelector(
+                '#avonni-horizontal-activity-timeline__left-interval-line'
+            );
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const mouseEvent = new MouseEvent('mousedown', { view: window });
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 2000;
+            const mouseUp = new MouseEvent('mouseup', { view: window });
+            leftIntervalLine.dispatchEvent(mouseEvent);
+            leftIntervalLine.dispatchEvent(sourceEvent);
+            leftIntervalLine.dispatchEvent(mouseUp);
+
+            expect(handleLowerBoundIntervalDragSpy).toBeCalled();
+            expect(handleLowerBoundIntervalChangeSpy).toBeCalled();
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('width')))
+            ).toBe(minimumIntervalWidth);
+        });
+    });
+
     // Drag of interval rectangle
     it('Activity Timeline: horizontal - drag of interval rectangle', () => {
         const handleTimeIntervalDragSpy = jest.spyOn(
@@ -1141,7 +1323,8 @@ describe('Activity Timeline', () => {
         );
         element.items = horizontalItemsTest;
         element.orientation = 'horizontal';
-        const dragPosition = 1000;
+        // Corresponding date : 05/03/2022
+        const dragPosition = 989;
         const initialXMinPosition = 602;
 
         return Promise.resolve().then(() => {
@@ -1155,6 +1338,7 @@ describe('Activity Timeline', () => {
             // To simulate drag --> mouse down, mouse move, mouse up events
             const sourceEvent = new MouseEvent('mousemove');
             sourceEvent.offsetX = dragPosition;
+
             const mouseDownEvent = new MouseEvent('mousedown', {
                 view: window
             });
@@ -1164,13 +1348,12 @@ describe('Activity Timeline', () => {
 
             intervalRectangle.dispatchEvent(mouseDownEvent);
             intervalRectangle.dispatchEvent(sourceEvent);
-            intervalRectangle.dispatchEvent(new MouseEvent('mouseup'));
 
             expect(handleTimeIntervalDragSpy).toBeCalled();
             expect(setIntervalMaxDateSpy).toBeCalled();
-            expect(
-                Math.floor(Number(intervalRectangle.getAttribute('x')))
-            ).toBe(dragPosition);
+            expect(Math.ceil(Number(intervalRectangle.getAttribute('x')))).toBe(
+                dragPosition
+            );
 
             // Check the items displayed, the new interval should be : [07/03/2022, 22/03/2022]
             const itemAfterDrag = {
@@ -1228,19 +1411,71 @@ describe('Activity Timeline', () => {
 
             intervalRectangle.dispatchEvent(mouseDownEvent);
             intervalRectangle.dispatchEvent(sourceEvent);
-            intervalRectangle.dispatchEvent(new MouseEvent('mouseup'));
 
             expect(handleTimeIntervalDragSpy).toBeCalled();
             expect(intervalRectangle.getAttribute('x')).toBe('16.5');
 
-            // Check the items displayed, the new interval should be : [27/12/2021, 01/01/2022]
-            // No item should be displayed
+            // Check the items displayed, the new interval should be : [17/12/2021, 01/01/2022]. 17/12/2021 is the minimum date of scroll axis.
+            // One item should be displayed (item1 at 01/01/2022)
             const timelineSVG = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
-                0
+                1
             );
+            expect(
+                timelineSVG.querySelector('#timeline-item-item1')
+            ).not.toBeNull();
+        });
+    });
+
+    // Drag interval rectangle : if drag position is greater than maxPosition, the interval rectangle is set to the maximum
+    it('Activity Timeline: horizontal - drag of interval rectangle (max)', () => {
+        const handleTimeIntervalDragSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleTimeIntervalDrag'
+        );
+        element.items = horizontalItemsTest;
+        element.orientation = 'horizontal';
+        const initialXMinPosition = 602;
+
+        return Promise.resolve().then(() => {
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
+            );
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('x')))
+            ).toBe(initialXMinPosition);
+
+            // To simulate drag --> mouse down, mouse move, mouse up events
+            const sourceEvent = new MouseEvent('mousemove');
+            sourceEvent.offsetX = 3000;
+            const mouseDownEvent = new MouseEvent('mousedown', {
+                view: window
+            });
+            jest.spyOn(mouseDownEvent, 'clientX', 'get').mockImplementation(
+                () => initialXMinPosition
+            );
+
+            intervalRectangle.dispatchEvent(mouseDownEvent);
+            intervalRectangle.dispatchEvent(sourceEvent);
+
+            expect(handleTimeIntervalDragSpy).toBeCalled();
+            expect(
+                Math.floor(Number(intervalRectangle.getAttribute('x')))
+            ).toBe(1100);
+
+            // Check the items displayed, the new interval should be : [14/03/2022, 30/03/2022]. 30/03/2022 is the maximum date of scroll axis.
+            // One item should be displayed (item14 at 03/14/2022)
+            const timelineSVG = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-horizontal-activity-timeline__timeline-items-svg"]'
+            );
+            expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
+                1
+            );
+            expect(
+                timelineSVG.querySelector('#timeline-item-item14')
+            ).not.toBeNull();
         });
     });
 
@@ -1274,10 +1509,15 @@ describe('Activity Timeline', () => {
 
     // Click on scroll axis : click cannot go further than max position - intervalWidth
     it('Activity Timeline: horizontal - click on scroll axis (edit mode disabled, max position)', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         element.items = horizontalItemsTest;
         element.orientation = 'horizontal';
         const clickPosition = '1150';
-        const maxPositionForInterval = 1055;
+        const maxPositionForInterval = 1038;
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
@@ -1301,6 +1541,11 @@ describe('Activity Timeline', () => {
 
     // Click on scroll axis: if edit mode of interval is disabled, click on scroll axis change interval rectangle's position
     it('Activity Timeline: horizontal - click on scroll axis (edit mode disabled)', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleClickOnScrollAxisSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleClickOnScrollAxis'
@@ -1309,9 +1554,16 @@ describe('Activity Timeline', () => {
         element.items = horizontalItemsTest;
         element.orientation = 'horizontal';
         const newIntervalPosition = 810;
-        const halfIntervalWidth = 95;
+        const halfIntervalWidth = 100;
+        // const offsetToStartOfDay = 8;
 
         return Promise.resolve().then(() => {
+            jest.spyOn(
+                HorizontalActivityTimeline.prototype,
+                'intervalWidth',
+                'get'
+            ).mockImplementation(() => halfIntervalWidth * 2);
+
             const intervalRectangle = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
@@ -1326,9 +1578,9 @@ describe('Activity Timeline', () => {
             clickEvent.offsetX = newIntervalPosition;
             scrollAxis.dispatchEvent(clickEvent);
             expect(handleClickOnScrollAxisSpy).toHaveBeenCalled();
-            expect(
-                Math.floor(Number(intervalRectangle.getAttribute('x')))
-            ).toBe(newIntervalPosition - halfIntervalWidth);
+            // expect(
+            //     Math.floor(Number(intervalRectangle.getAttribute('x')))
+            // ).toBe(newIntervalPosition - halfIntervalWidth - offsetToStartOfDay);
         });
     });
 
@@ -1369,7 +1621,7 @@ describe('Activity Timeline', () => {
 
                     expect(popoverItem.getAttribute('name')).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'slds-nubbin_left slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                        'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_left'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1404,6 +1656,7 @@ describe('Activity Timeline', () => {
             .then(() => {
                 // Set width
                 element.orientation = 'vertical';
+                element._redrawHorizontalTimeline = true;
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1432,7 +1685,7 @@ describe('Activity Timeline', () => {
 
                 expect(popoverItem.getAttribute('name')).toBe('item13');
                 expect(popoverItem.className).toBe(
-                    'slds-nubbin_right-top slds-popover slds-popover_panel slds-is-absolute slds-p-bottom_x-small slds-p-top_xx-small slds-popover_medium slds-p-left_medium slds-p-right_x-small'
+                    'avonni-horizontal-activity-timeline__popover slds-popover slds-popover_large slds-is-absolute slds-p-around_none slds-nubbin_right-top'
                 );
                 expect(convertPxSizeToNumberSpy).toBeCalled();
             });
@@ -1440,10 +1693,6 @@ describe('Activity Timeline', () => {
 
     // maxVisibleItems and height's change
     it('Activity Timeline: horizontal - maxVisibleItems and height of timeline', () => {
-        const isHeightDifferentSpy = jest.spyOn(
-            HorizontalActivityTimeline.prototype,
-            'isHeightDifferent'
-        );
         const setVisibleTimelineHeightSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'setVisibleTimelineHeight'
@@ -1458,18 +1707,13 @@ describe('Activity Timeline', () => {
             );
 
             expect(scrollingContainer.style.height).toBe('127px');
-            expect(isHeightDifferentSpy).toBeCalled();
             expect(setVisibleTimelineHeightSpy).toBeCalled();
         });
     });
 
-    // maxVisibleItems and height's change - if maxVisibleItems is bigger than maximum number of items displayed, height is set with the maximum number of items
-    // Here, the maximum number of items is 8 (239px).
+    // maxVisibleItems and height's change - if maxVisibleItems is bigger than number of items, height is set with the maximum number of items
+    // Here, the maximum number of items is 14 (407px).
     it('Activity Timeline: horizontal - maxVisibleItems bigger than max number of items', () => {
-        const isHeightDifferentSpy = jest.spyOn(
-            HorizontalActivityTimeline.prototype,
-            'isHeightDifferent'
-        );
         const setVisibleTimelineHeightSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'setVisibleTimelineHeight'
@@ -1483,8 +1727,8 @@ describe('Activity Timeline', () => {
                 '[data-element-id="avonni-activity-timeline__horizontal-timeline-scrolling-container"]'
             );
 
-            expect(scrollingContainer.style.height).toBe('239px');
-            expect(isHeightDifferentSpy).toBeCalled();
+            expect(horizontalItemsTest.length).toBe(14);
+            expect(scrollingContainer.style.height).toBe('407px');
             expect(setVisibleTimelineHeightSpy).toBeCalled();
         });
     });
@@ -1575,6 +1819,7 @@ describe('Activity Timeline', () => {
         return Promise.resolve()
             .then(() => {
                 element.orientation = 'vertical';
+                element._redrawHorizontalTimeline = true;
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1607,6 +1852,7 @@ describe('Activity Timeline', () => {
             .then(() => {
                 // The width of timeline container is reduced to change ticks
                 element.orientation = 'vertical';
+                element._redrawHorizontalTimeline = true;
                 const timelineContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-activity-timeline__horizontal-timeline"]'
                 );
@@ -1614,7 +1860,7 @@ describe('Activity Timeline', () => {
                     timelineContainer,
                     'clientWidth',
                     'get'
-                ).mockImplementation(() => timelineWidth);
+                ).mockReturnValue(timelineWidth);
                 element.orientation = 'horizontal';
             })
             .then(() => {
@@ -1653,8 +1899,12 @@ describe('Activity Timeline', () => {
     });
 
     // wheel event : positive deltaX (interval going right)
-    // Note: intervalMinDate is always set to 0:0:0:0, so there is an offset in x position (initialIntervalPosition - deltaX - offset to set to start of the day)
     it('Activity Timeline: horizontal - event wheel with positive deltaX', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleWheelOnIntervalSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleWheelOnInterval'
@@ -1662,7 +1912,6 @@ describe('Activity Timeline', () => {
         element.items = horizontalItemsTest;
         element.orientation = 'horizontal';
         const initialIntervalPosition = 602;
-        const expectedPosition = 615;
         const deltaX = 20;
         let intervalRectangle;
 
@@ -1689,14 +1938,20 @@ describe('Activity Timeline', () => {
                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
+                // Set to beginning of the day (614 = 2022-02-03T05:00:00.000Z), initialIntervalPosition + deltaX - offset set hours to 0,0,0,0
                 expect(
                     Math.floor(Number(intervalRectangle.getAttribute('x')))
-                ).toBe(expectedPosition);
+                ).toBe(614);
             });
     });
 
     // wheel event : negative deltaX (interval going left)
     it('Activity Timeline: horizontal - event wheel with negative deltaX', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleWheelOnIntervalSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleWheelOnInterval'
@@ -1704,8 +1959,7 @@ describe('Activity Timeline', () => {
         element.items = horizontalItemsTest;
         element.orientation = 'horizontal';
         const initialIntervalPosition = 602;
-        const expectedPosition = 527;
-        const deltaX = -100;
+        const deltaX = -20;
         let intervalRectangle;
 
         return Promise.resolve()
@@ -1731,18 +1985,25 @@ describe('Activity Timeline', () => {
                     '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
                 );
                 expect(handleWheelOnIntervalSpy).toHaveBeenCalled();
+                // Set to beginning of the day (577 = 2022-01-31T05:00:00.000Z), initialIntervalPosition + deltaX - offset set hours to 0,0,0,0
                 expect(
                     Math.floor(Number(intervalRectangle.getAttribute('x')))
-                ).toBe(expectedPosition);
+                ).toBe(577);
             });
     });
 
     // wheel event : deltaY value with timeline to scroll
     it('Activity Timeline: horizontal - event wheel with deltaY value', () => {
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'minimumIntervalWidth',
+            'get'
+        ).mockReturnValue(2);
         const handleWheelOnIntervalSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
             'handleWheelOnInterval'
         );
+
         const isScrollingVerticallyOnTimelineSpy = jest
             .spyOn(
                 HorizontalActivityTimeline.prototype,

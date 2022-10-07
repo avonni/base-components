@@ -34,7 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    assert,
+    normalizeArray,
     getRealDOMId,
     getListHeight
 } from 'c/utilsPrivate';
@@ -248,7 +248,11 @@ export default class DualListbox extends LightningElement {
     }
 
     renderedCallback() {
-        this.assertRequiredAttributes();
+        if (!this.options.length) {
+            console.warn(
+                '<avonni-dual-listbox> Missing required "options" attribute.'
+            );
+        }
 
         if (this.disabled) {
             this._upButtonDisabled = true;
@@ -662,7 +666,10 @@ export default class DualListbox extends LightningElement {
 
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
-        this._selectedValues = newValue || [];
+        this._selectedValues =
+            typeof newValue === 'string'
+                ? [newValue]
+                : [...normalizeArray(newValue)];
         if (this._connected) {
             this.addRequiredOptionsToValue();
         }
@@ -1239,7 +1246,7 @@ export default class DualListbox extends LightningElement {
 
         // select the focused option if entering a listbox
         const element = event.target;
-        if (element.role === 'option') {
+        if (element.dataset.role === 'option') {
             if (!this.isFocusOnList) {
                 this.isFocusOnList = true;
                 this.updateSelectedOptions(element, true, false);
@@ -1256,7 +1263,7 @@ export default class DualListbox extends LightningElement {
         this.interactingState.leave();
 
         const element = event.target;
-        if (element.role !== 'option') {
+        if (element.dataset.role !== 'option') {
             this.isFocusOnList = false;
         }
     }
@@ -1330,6 +1337,7 @@ export default class DualListbox extends LightningElement {
      * @param {Event} event
      */
     handleSearch(event) {
+        event.stopPropagation();
         this._searchTerm = event.detail.value;
     }
 
@@ -1633,16 +1641,6 @@ export default class DualListbox extends LightningElement {
                 bubbles: true,
                 detail: { value: values }
             })
-        );
-    }
-
-    /**
-     * Assert Required Attributes.
-     */
-    assertRequiredAttributes() {
-        assert(
-            !!this.options,
-            `<avonni-dual-listbox> Missing required "options" attribute.`
         );
     }
 

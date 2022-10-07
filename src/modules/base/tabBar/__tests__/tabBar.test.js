@@ -9,6 +9,14 @@ describe('Tab Bar', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+    });
+
+    beforeEach(() => {
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -120,7 +128,6 @@ describe('Tab Bar', () => {
         element.tabsHidden = 2;
 
         document.body.appendChild(element);
-        jest.useFakeTimers();
 
         return Promise.resolve()
             .then(() => {
@@ -177,28 +184,18 @@ describe('Tab Bar', () => {
         element.tabsHidden = 2;
 
         document.body.appendChild(element);
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
-        return Promise.resolve()
-            .then(() => {
-                const hiddenTabsMenuButton =
-                    element.shadowRoot.querySelector('button');
-                hiddenTabsMenuButton.click();
-            })
-            .then(() => {
-                jest.runAllTimers();
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                jest.runAllTimers();
-            })
-            .then(() => {
-                expect(handler).toHaveBeenCalled();
-            });
+        return Promise.resolve().then(() => {
+            const tab = element.shadowRoot.querySelector(
+                '[data-element-id="a-tab-link"]'
+            );
+            tab.dispatchEvent(new CustomEvent('blur'));
+            jest.runAllTimers();
+            expect(handler).toHaveBeenCalled();
+        });
     });
 
     it('Tab bar: Dropdown button focus and blur', () => {
@@ -335,21 +332,25 @@ describe('Tab Bar', () => {
                 const hiddenTabsMenuButton =
                     element.shadowRoot.querySelector('button');
                 hiddenTabsMenuButton.click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].parentElement.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 27 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
+                expect(tabs).toHaveLength(2);
+                const event = new CustomEvent('keydown', {
+                    bubbles: true
+                });
+                event.keyCode = 27;
+                tabs[0].dispatchEvent(event);
+                jest.runAllTimers();
             })
             .then(() => {
-                element.shadowRoot.dispatchEvent(
-                    new KeyboardEvent('keyup', { keyCode: 27 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
-            })
-            .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                expect(tabs.length).toBe(3);
+                expect(tabs).toHaveLength(0);
             });
     });
 
@@ -368,21 +369,25 @@ describe('Tab Bar', () => {
                 const hiddenTabsMenuButton =
                     element.shadowRoot.querySelector('button');
                 hiddenTabsMenuButton.click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].parentElement.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 9 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
+                expect(tabs).toHaveLength(2);
+                const event = new CustomEvent('keydown', {
+                    bubbles: true
+                });
+                event.keyCode = 9;
+                tabs[1].dispatchEvent(event);
+                jest.runAllTimers();
             })
             .then(() => {
-                element.shadowRoot.dispatchEvent(
-                    new KeyboardEvent('keyup', { keyCode: 9 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
-            })
-            .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                expect(tabs.length).toBe(3);
+                expect(tabs).toHaveLength(0);
             });
     });
 

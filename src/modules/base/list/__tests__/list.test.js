@@ -44,33 +44,180 @@ import List from 'c/list';
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
 // Touch events (we can't artificially give a touch position to save in _initialY)
 
-let element;
-describe('List', () => {
-    afterEach(() => {
-        while (document.body.firstChild) {
-            document.body.removeChild(document.body.firstChild);
-        }
-    });
+let element = Element.prototype;
+element.scrollTo = jest.fn();
+element.scrollBy = jest.fn();
 
+describe('List', () => {
     beforeEach(() => {
         element = createElement('base-list', {
             is: List
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
+    });
+
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+        jest.clearAllTimers();
     });
 
     it('List: Default attributes', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.alternativeText).toBeUndefined();
-        expect(element.imageWidth).toBe('large');
+        expect(element.cols).toBe(1);
+        expect(element.smallContainerCols).toBeUndefined();
+        expect(element.mediumContainerCols).toBeUndefined();
+        expect(element.largeContainerCols).toBeUndefined();
+        expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
+        expect(element.imageAttributes).toMatchObject({});
         expect(element.label).toBeUndefined();
+        expect(element.loadMoreOffset).toBe(20);
+        expect(element.mediaActions).toMatchObject([]);
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
+        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
+    it('List: Actions button-menu', () => {
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actions = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-menu"]'
+                );
+                actions.click();
+            })
+            .then(() => {
+                const menuItem = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-menu-item"]'
+                );
+                expect(menuItem[0].label).toBe('Completed');
+                expect(menuItem[0].value).toBe('completed-action');
+                expect(menuItem[0].iconName).toBe('utility:check');
+                expect(menuItem[0].disabled).toBeFalsy();
+                expect(menuItem[1].label).toBe('Pending');
+                expect(menuItem[1].value).toBe('pending-action');
+                expect(menuItem[1].iconName).toBe('utility:spinner');
+                expect(menuItem[1].disabled).toBeFalsy();
+                expect(menuItem[2].label).toBe('Delete');
+                expect(menuItem[2].value).toBe('delete-action');
+                expect(menuItem[2].iconName).toBe('utility:delete');
+                expect(menuItem[2].disabled).toBeTruthy();
+            });
+    });
+    it('List: Action lightning-button', () => {
+        element.items = ITEMS;
+        element.actions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+
+            expect(button.label).toBe('Completed');
+            expect(button.iconName).toBe('utility:check');
+            expect(button.disabled).toBeFalsy();
+            expect(button.value).toBe('completed-action');
+        });
+    });
+    it('List: Action lightning-button-icon', () => {
+        element.items = ITEMS;
+        element.actions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const buttonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+
+            expect(buttonIcon.iconName).toBe('utility:event');
+            expect(buttonIcon.disabled).toBeFalsy();
+            expect(buttonIcon.value).toBe('event-action');
+        });
+    });
+    // MEDIA-ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
+    it('List: Media-Actions button-menu', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actions = element.shadowRoot.querySelector(
+                    '[data-element-id="media-action-menu"]'
+                );
+                actions.click();
+            })
+            .then(() => {
+                const menuItem = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="media-action-menu-item"]'
+                );
+                expect(menuItem[0].label).toBe('Completed');
+                expect(menuItem[0].value).toBe('completed-action');
+                expect(menuItem[0].iconName).toBe('utility:check');
+                expect(menuItem[0].disabled).toBeFalsy();
+                expect(menuItem[1].label).toBe('Pending');
+                expect(menuItem[1].value).toBe('pending-action');
+                expect(menuItem[1].iconName).toBe('utility:spinner');
+                expect(menuItem[1].disabled).toBeFalsy();
+                expect(menuItem[2].label).toBe('Delete');
+                expect(menuItem[2].value).toBe('delete-action');
+                expect(menuItem[2].iconName).toBe('utility:delete');
+                expect(menuItem[2].disabled).toBeTruthy();
+            });
+    });
+    it('List: Media-Actions media-action-button', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button.label).toBe('Completed');
+            expect(button.iconName).toBe('utility:check');
+            expect(button.disabled).toBeFalsy();
+            expect(button.value).toBe('completed-action');
+        });
+    });
+    it('List: Media-Actions media-action-button-icon', () => {
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const buttonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+
+            expect(buttonIcon.iconName).toBe('utility:event');
+            expect(buttonIcon.disabled).toBeFalsy();
+            expect(buttonIcon.value).toBe('event-action');
+        });
+    });
+    it('List: No Media-Actions without images', () => {
+        element.items = ITEMS_WITHOUT_ICONS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+
+            expect(button).toBeFalsy();
+        });
+    });
 
     // alternative-text
     it('List: AlternativeText', () => {
@@ -84,21 +231,130 @@ describe('List', () => {
         });
     });
 
+    // cols
+    it('List: Columns, cols', () => {
+        element.items = ITEMS;
+        element.cols = 3;
+
+        return Promise.resolve()
+            .then(() => {
+                expect(element.cols).toBe(3);
+            })
+            .then(() => {
+                const item = element.shadowRoot.querySelector(
+                    '[data-element-id="li-item"]'
+                );
+                expect(item.classList).toContain('slds-size_4-of-12');
+            });
+    });
+
+    // divider
+    it('List: Divider = around', () => {
+        element.divider = 'around';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(menu.classList).toContain('avonni-list__has-card-style');
+        });
+    });
+    it('List: Divider = top', () => {
+        element.divider = 'top';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(menu.classList).toContain('slds-has-dividers_top-space');
+        });
+    });
+    it('List: Divider = bottom', () => {
+        element.divider = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
+        });
+    });
+
+    /* images */
+    it('List: Images presence', () => {
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img-media"]'
+            );
+            expect(images).toHaveLength(3);
+        });
+    });
+    it('List: Images size small', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'small' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].style['min-width']).toBe('48px');
+            expect(images[1].style['min-width']).toBe('48px');
+            expect(images[2].style['min-width']).toBe('48px');
+        });
+    });
+    it('List: Images width medium', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'medium' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].style['min-width']).toBe('72px');
+            expect(images[1].style['min-width']).toBe('72px');
+            expect(images[2].style['min-width']).toBe('72px');
+        });
+    });
+    it('List: Images width large', () => {
+        element.items = ITEMS;
+        element.imageAttributes = { size: 'large' };
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="list-img"]'
+            );
+            expect(images[0].style['min-width']).toBe('128px');
+            expect(images[1].style['min-width']).toBe('128px');
+            expect(images[2].style['min-width']).toBe('128px');
+        });
+    });
+
     // items
     it('List: Items', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="li-main"'
+                '[data-element-id^="li-item"]'
+            );
+            const itemsLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-item-label"]'
             );
             expect(items).toHaveLength(5);
+            expect(itemsLabels).toHaveLength(5);
 
             items.forEach((item, index) => {
                 const originalItem = ITEMS[index];
 
                 expect(item.dataset.index).toBe(index.toString());
                 expect(item.ariaLabel).toBe(originalItem.label);
+            });
+
+            itemsLabels.forEach((item, index) => {
+                const originalItem = ITEMS[index];
+
                 expect(item.textContent).toBe(originalItem.label);
             });
 
@@ -140,100 +396,6 @@ describe('List', () => {
         });
     });
 
-    // divider
-    it('List: Divider = around', () => {
-        element.divider = 'around';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('slds-has-dividers_around');
-        });
-    });
-    it('List: Divider = top', () => {
-        element.divider = 'top';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('slds-has-dividers_top-space');
-        });
-    });
-    it('List: Divider = bottom', () => {
-        element.divider = 'bottom';
-
-        return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
-            );
-            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
-        });
-    });
-
-    // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('List: Actions button-menu', () => {
-        element.items = ITEMS;
-        element.actions = ACTIONS;
-
-        return Promise.resolve()
-            .then(() => {
-                const actions = element.shadowRoot.querySelector(
-                    'lightning-button-menu'
-                );
-                actions.click();
-            })
-            .then(() => {
-                const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="lightning-menu-item"]'
-                );
-                expect(menuItem[0].label).toBe('Completed');
-                expect(menuItem[0].value).toBe('completed-action');
-                expect(menuItem[0].iconName).toBe('utility:check');
-                expect(menuItem[0].disabled).toBeFalsy();
-                expect(menuItem[1].label).toBe('Pending');
-                expect(menuItem[1].value).toBe('pending-action');
-                expect(menuItem[1].iconName).toBe('utility:spinner');
-                expect(menuItem[1].disabled).toBeFalsy();
-                expect(menuItem[2].label).toBe('Delete');
-                expect(menuItem[2].value).toBe('delete-action');
-                expect(menuItem[2].iconName).toBe('utility:delete');
-                expect(menuItem[2].disabled).toBeTruthy();
-            });
-    });
-
-    it('List: Action lightning-button', () => {
-        element.items = ITEMS;
-        element.actions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-
-            expect(button.label).toBe('Completed');
-            expect(button.iconName).toBe('utility:check');
-            expect(button.disabled).toBeFalsy();
-            expect(button.value).toBe('completed-action');
-        });
-    });
-
-    it('List: Action lightning-button-icon', () => {
-        element.items = ITEMS;
-        element.actions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-
-            expect(buttonIcon.iconName).toBe('utility:event');
-            expect(buttonIcon.disabled).toBeFalsy();
-            expect(buttonIcon.value).toBe('event-action');
-        });
-    });
-
     // sortable
     // Depends on items
     it('List: Sortable = false', () => {
@@ -242,7 +404,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
             const menu = element.shadowRoot.querySelector(
                 '.avonni-list__item-menu'
@@ -268,10 +430,10 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-element"]'
             );
 
             expect(menu.role).toBe('listbox');
@@ -305,12 +467,11 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const icons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-icon-sort"]'
+                '[data-element-id="lightning-icon-sort-right"]'
             );
             expect(icons).toHaveLength(0);
         });
     });
-
     it('List: SortableIconName, with sortable = true', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
@@ -318,13 +479,12 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const icons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-icon-sort"]'
+                '[data-element-id="lightning-icon-sort-right"]'
             );
-            expect(icons).toHaveLength(4);
-
             icons.forEach((icon) => {
                 expect(icon.iconName).toBe('utility:apps');
             });
+            expect(icons).toHaveLength(4);
         });
     });
 
@@ -337,14 +497,16 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const iconsRight =
-                element.shadowRoot.querySelectorAll('.icon-right');
-            const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
-            expect(iconsRight).toHaveLength(4);
+            const iconsRight = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-right"]'
+            );
+            const iconsLeft = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-left"]'
+            );
             expect(iconsLeft).toHaveLength(0);
+            expect(iconsRight).toHaveLength(4);
         });
     });
-
     it('List: SortableIconPosition = left', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
@@ -352,92 +514,94 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const iconsRight =
-                element.shadowRoot.querySelectorAll('.icon-right');
-            const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
+            const iconsRight = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-right"]'
+            );
+            const iconsLeft = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-icon-sort-left"]'
+            );
             expect(iconsRight).toHaveLength(0);
             expect(iconsLeft).toHaveLength(4);
         });
     });
-    /* images */
-    it('List: Images presence', () => {
-        element.items = ITEMS;
 
+    // variant
+    it('List: Variant = base', () => {
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="img"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(images).toHaveLength(3);
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeFalsy();
+            expect(nextButton).toBeFalsy();
         });
     });
 
-    it('List: Images width small', () => {
-        element.items = ITEMS;
-        element.imageWidth = 'small';
+    it('List: Variant = single-line', () => {
+        element.variant = 'single-line';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="img"]'
+            const backButton = element.shadowRoot.querySelector(
+                '[data-element-id="previous-page-button"]'
             );
-            expect(images[0].width).toBe(48);
-            expect(images[1].width).toBe(48);
-            expect(images[2].width).toBe(48);
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="next-page-button"]'
+            );
+            expect(backButton).toBeTruthy();
+            expect(nextButton).toBeTruthy();
         });
     });
 
-    it('List: Images width medium', () => {
+    it('List: Image-Attribute, position = overlay, text-color', () => {
         element.items = ITEMS;
-        element.imageWidth = 'medium';
+        element.imageAttributes = {
+            position: 'overlay'
+        };
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="img"]'
+            const bodyColor = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-list-item-body-text-color"]'
             );
-            expect(images[0].width).toBe(72);
-            expect(images[1].width).toBe(72);
-            expect(images[2].width).toBe(72);
-        });
-    });
 
-    it('List: Images width large', () => {
-        element.items = ITEMS;
-        element.imageWidth = 'large';
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="img"]'
-            );
-            expect(images[0].width).toBe(128);
-            expect(images[1].width).toBe(128);
-            expect(images[2].width).toBe(128);
-        });
-    });
-
-    it('List: Images rounded on sortable icon right', () => {
-        element.items = ITEMS;
-        element.imageWidth = 'large';
-        element.divider = 'around';
-        element.sortable = true;
-        element.sortableIconName = 'utility:add';
-        element.sortableIconPosition = 'right';
-
-        return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll(
-                '.avonni-list__item-image-container'
-            );
-            expect(images[0].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
-            );
-            expect(images[1].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
-            );
-            expect(images[2].classList).toContain(
-                'avonni-list__item-image-container_rounded-corners'
+            expect(bodyColor.classList).toContain(
+                'avonni-list__item-text-color_inverse'
             );
         });
     });
 
     /* ----- METHOD ----- */
+
+    // getItemPosition
+    // Depends on items
+    it('List: getItemPosition method', () => {
+        element.items = ITEMS;
+        const mockPosition = {
+            left: 100,
+            right: 20,
+            bottom: 66,
+            top: 39,
+            x: 100,
+            y: 39,
+            height: 288,
+            width: 503
+        };
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                `[data-element-id="li-item"][data-name="${ITEMS[1].name}"]`
+            );
+            const spy = jest
+                .spyOn(item, 'getBoundingClientRect')
+                .mockImplementation(() => {
+                    return mockPosition;
+                });
+            const position = element.getItemPosition(ITEMS[1].name);
+            expect(spy).toHaveBeenCalled();
+            expect(position).toEqual(mockPosition);
+        });
+    });
 
     // reset
     // Depends on items, sortable and the keyboard reorder
@@ -448,7 +612,7 @@ describe('List', () => {
         return Promise.resolve()
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-main"]'
+                    '[data-element-id="li-item"]'
                 );
 
                 // Reorder
@@ -462,7 +626,7 @@ describe('List', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-main"]'
+                    '[data-element-id="li-item"]'
                 );
                 const label = items[1].querySelector(
                     '[data-element-id="div-item-label"]'
@@ -472,7 +636,7 @@ describe('List', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-main"]'
+                    '[data-element-id="li-item"]'
                 );
                 const label = items[1].querySelector(
                     '[data-element-id="div-item-label"]'
@@ -571,6 +735,90 @@ describe('List', () => {
         });
     });
 
+    it('List: Media-Action, Actionclick event, multiple actions', () => {
+        const handler = jest.fn();
+        element.addEventListener('mediaactionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            const actionMenu = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-menu"]'
+            );
+            actionMenu.dispatchEvent(
+                new CustomEvent('select', {
+                    detail: {
+                        value: ACTIONS[0].name
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+    it('List: Media-Action Actionclick event, one action', () => {
+        const handler = jest.fn();
+        element.addEventListener('mediaactionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button"]'
+            );
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('List: Media-Action, Actionclick event, one icon action', () => {
+        const handler = jest.fn();
+        element.addEventListener('mediaactionclick', handler);
+        element.items = ITEMS;
+        element.mediaActions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="media-action-button-icon"]'
+            );
+            button.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                ACTION_NO_LABEL[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     // itemclick
     // Depends on items
     it('List: Itemclick event', () => {
@@ -580,7 +828,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             items[2].dispatchEvent(new CustomEvent('click'));
@@ -603,7 +851,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             const event = new CustomEvent('keydown');
@@ -629,7 +877,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             const event = new CustomEvent('mousedown');
@@ -654,7 +902,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             const event = new CustomEvent('mouseup');
@@ -682,7 +930,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             // Start dragging
@@ -698,9 +946,7 @@ describe('List', () => {
             upDownEvent.key = 'ArrowUp';
             items[1].dispatchEvent(upDownEvent);
 
-            expect(items[2].classList).toContain(
-                'avonni-list__item-sortable_moved'
-            );
+            expect(items[2].dataset.moved).toEqual('keyboard-moved');
 
             // Stop dragging
             items[1].dispatchEvent(spaceEvent);
@@ -723,7 +969,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li-main"]'
+                '[data-element-id="li-item"]'
             );
 
             // Start dragging

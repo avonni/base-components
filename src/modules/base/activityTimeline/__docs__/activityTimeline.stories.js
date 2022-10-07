@@ -52,6 +52,107 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        buttonShowLessIconName: {
+            name: 'button-show-less-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowLessIconPosition: {
+            name: 'button-show-less-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                "Position of the show less button's icon. Valid values include left and right. This attribute is supported only for the vertical orientation.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowLessLabel: {
+            name: 'button-show-less-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is supported only for the vertical orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show less' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowMoreIconName: {
+            name: 'button-show-more-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowMoreIconPosition: {
+            name: 'button-show-more-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the showMore button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowMoreLabel: {
+            name: 'button-show-more-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' },
+                category: 'Buttons'
+            }
+        },
+        buttonVariant: {
+            name: 'button-variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'neutral',
+                'base',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'neutral' },
+                category: 'Buttons'
+            }
+        },
         closed: {
             control: {
                 type: 'boolean'
@@ -199,107 +300,6 @@ export default {
                 'The title can include text, and is displayed in the header.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        buttonShowMoreLabel: {
-            name: 'button-show-more-label',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Label of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Show more' },
-                category: 'Buttons'
-            }
-        },
-        buttonVariant: {
-            name: 'button-variant',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'neutral',
-                'base',
-                'brand',
-                'brand-outline',
-                'destructive',
-                'destructive-text',
-                'inverse',
-                'success'
-            ],
-            description:
-                'Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'neutral' },
-                category: 'Buttons'
-            }
-        },
-        buttonShowMoreIconName: {
-            name: 'button-show-more-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Buttons'
-            }
-        },
-        buttonShowMoreIconPosition: {
-            name: 'button-show-more-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description:
-                'Position of the showMore button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Buttons'
-            }
-        },
-        buttonShowLessLabel: {
-            name: 'button-show-less-label',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is supported only for the vertical orientation.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Show less' },
-                category: 'Buttons'
-            }
-        },
-        buttonShowLessIconName: {
-            name: 'button-show-less-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Buttons'
-            }
-        },
-        buttonShowLessIconPosition: {
-            name: 'button-show-less-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description:
-                "Position of the show less button's icon. Valid values include left and right. This attribute is supported only for the vertical orientation.",
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Buttons'
             }
         }
     },

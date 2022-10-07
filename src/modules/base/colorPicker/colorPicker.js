@@ -203,6 +203,7 @@ export default class ColorPicker extends LightningElement {
     dropdownVisible = false;
     helpMessage;
     newValue;
+    paletteIsLoading = false;
     showError = false;
     tabPressed = false;
     shiftPressed = false;
@@ -712,7 +713,9 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('slds-form-element__label slds-no-flex')
+        return classSet(
+            'slds-form-element__label avonni-color-picker__label slds-no-flex'
+        )
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
@@ -1175,6 +1178,7 @@ export default class ColorPicker extends LightningElement {
             if (this.dropdownVisible) {
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
+                this.loadPalette();
             }
 
             this.template
@@ -1190,6 +1194,16 @@ export default class ColorPicker extends LightningElement {
      */
     isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
+    }
+
+    /**
+     * Show a loading spinner while the palette is generated.
+     */
+    loadPalette() {
+        this.paletteIsLoading = true;
+        setTimeout(() => {
+            this.paletteIsLoading = false;
+        }, 0);
     }
 
     /**
@@ -1235,7 +1249,10 @@ export default class ColorPicker extends LightningElement {
         const palette = this.template.querySelector(
             '[data-element-id="avonni-color-palette-default"]'
         );
-        if (palette) palette.colors = [...this.computedColors];
+        if (palette) {
+            palette.colors = [...this.computedColors];
+        }
+        this.loadPalette();
     }
 
     /**
