@@ -65,7 +65,7 @@
  * @property {string} label Label displayed on the reference badge.
  * @property {(Date|number|string)} date Date of the badge. It can be a Date object, timestamp, or an ISO8601 formatted string.
  * Defaults to the current date and time.
- * @property {string} recurrence Recurrence of the reference line (see Recurrence table).
+ * @property {string} recurrence Recurrence of the reference line (see **Recurrence** table).
  * @property {object} recurrenceAttributes Attributes specific to the recurrence type (see **Recurrence** table).
  * @property {number} recurrenceCount Number of times the reference line will be repeated before the recurrence stops. If a `recurrenceEndDate` is also given, the earliest ending date will be used.
  * @property {(Date|number|string)} recurrenceEndDate End of the recurrence. It can be a Date object, timestamp, or an ISO8601 formatted string. If a `recurrenceCount` is also given, the earliest ending date will be used.

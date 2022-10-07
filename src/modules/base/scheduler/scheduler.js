@@ -253,6 +253,19 @@ export default class Scheduler extends LightningElement {
      * The columns will be bound to the resources. If needed, extra keys can be added to the resource objects.
      *
      * @type {object[]}
+     * @default [
+     *   {
+     *      label: 'Resource',
+     *      fieldName: 'avatarSrc',
+     *      type: 'avatar',
+     *      typeAttributes: {
+     *          alternativeText: { fieldName: 'name' },
+     *          fallbackIconName: { fieldName: 'avatarFallbackIconName' },
+     *          initials: { fieldName: 'avatarInitials' },
+     *          primaryText: { fieldName: 'label' }
+     *      }
+     *   }
+     * ]
      * @public
      */
     @api
@@ -269,7 +282,7 @@ export default class Scheduler extends LightningElement {
      *
      * @type {object[]}
      * @public
-     * @default [Standard.Scheduler.AddEvent]
+     * @default ['Standard.Scheduler.AddEvent']
      */
     @api
     get contextMenuEmptySpotActions() {
