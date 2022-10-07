@@ -247,7 +247,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-status-unknwon-color-background
+ * @name --avonni-avatar-status-unknown-color-background
  * @default #706e6b
  * @type color
  */
