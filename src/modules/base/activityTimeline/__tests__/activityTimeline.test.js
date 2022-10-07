@@ -1555,15 +1555,15 @@ describe('Activity Timeline', () => {
         element.orientation = 'horizontal';
         const newIntervalPosition = 810;
         const halfIntervalWidth = 100;
-        // const offsetToStartOfDay = 8;
+        const offsetToStartOfDay = 8;
+
+        jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'intervalWidth',
+            'get'
+        ).mockImplementation(() => halfIntervalWidth * 2);
 
         return Promise.resolve().then(() => {
-            jest.spyOn(
-                HorizontalActivityTimeline.prototype,
-                'intervalWidth',
-                'get'
-            ).mockImplementation(() => halfIntervalWidth * 2);
-
             const intervalRectangle = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-horizontal-activity-timeline__time-interval-rectangle"]'
             );
@@ -1578,9 +1578,10 @@ describe('Activity Timeline', () => {
             clickEvent.offsetX = newIntervalPosition;
             scrollAxis.dispatchEvent(clickEvent);
             expect(handleClickOnScrollAxisSpy).toHaveBeenCalled();
-            // expect(
-            //     Math.floor(Number(intervalRectangle.getAttribute('x')))
-            // ).toBe(newIntervalPosition - halfIntervalWidth - offsetToStartOfDay);
+
+            // +/- 1 of difference with expected output's value is accepted      
+            const differenceBetweenOutputAndExpected = Math.floor(Number(intervalRectangle.getAttribute('x'))) - (newIntervalPosition - halfIntervalWidth - offsetToStartOfDay);
+            expect(Math.abs(differenceBetweenOutputAndExpected)).toBeLessThanOrEqual(1);
         });
     });
 
