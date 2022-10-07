@@ -36,7 +36,8 @@ import {
     addToDate,
     dateTimeObjectFrom,
     deepCopy,
-    getWeekNumber
+    getWeekNumber,
+    normalizeArray
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
@@ -94,6 +95,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hourHeadersLoading = true;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
+    _splitterPanes = [];
     _resizeObserver;
     _showMorePopoverContextMenuIsOpened = false;
     _showMorePopoverIsFocused = false;
@@ -1380,17 +1382,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const hourHeader = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
         );
-        const splitter = this.template.querySelector(
-            '[data-element-id="avonni-splitter"]'
-        );
 
-        if (wrapper && splitter) {
-            const leftPanel = splitter.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
-            );
-            const rightPanel = splitter.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
+        if (wrapper && this._splitterPanes.length === 2) {
+            const leftPanel = this._splitterPanes[0];
+            const rightPanel = this._splitterPanes[1];
             const scrollBarWidth =
                 rightPanel.offsetWidth - rightPanel.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
@@ -1752,6 +1747,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Handle a change in the splitter slots. Save the pane elements in a property, to be able to get their width in the future.
+     *
+     * @param {Event} event `privateslotchange` event fired by the splitter.
+     */
+    handleSplitterSlotChange(event) {
+        this._splitterPanes = normalizeArray(event.detail.paneElements);
+    }
+
+    /**
      * Handle the closing of a "Show more" popover, in the month or year view.
      */
     handleShowMorePopoverClose() {
@@ -1920,10 +1924,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleYearDateClick(event) {
         const date = dateTimeObjectFrom(event.detail.clickedDate);
         this._selectedDate = date;
-        const dayElement = event.currentTarget.shadowRoot.querySelector(
-            `[data-element-id="span-day-label"][data-day="${date.ts}"]`
-        );
-        const { x, y, width, height } = dayElement.getBoundingClientRect();
+        const { x, y, width, height } = event.detail.bounds;
         const position = {
             x: x + width / 2,
             y: y + height / 2
