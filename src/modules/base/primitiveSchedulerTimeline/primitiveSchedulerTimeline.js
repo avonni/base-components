@@ -659,13 +659,16 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.scheduleBody) {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        if (!wrapper) {
             return null;
         }
         const resizeObserver = new AvonniResizeObserver(() => {
             this.updateCellWidth();
         });
-        resizeObserver.observe(this.scheduleBody);
+        resizeObserver.observe(wrapper);
         return resizeObserver;
     }
 
