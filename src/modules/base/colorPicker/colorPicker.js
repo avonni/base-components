@@ -181,6 +181,7 @@ export default class ColorPicker extends LightningElement {
     _disabled = false;
     _groups = [];
     _hideColorInput = false;
+    _hideClearIcon = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuNubbin = false;
@@ -312,6 +313,21 @@ export default class ColorPicker extends LightningElement {
 
     set groups(value) {
         this._groups = normalizeArray(value);
+    }
+
+    /**
+     * If present, it is not possible to clear a selected color using the input clear icon.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideClearIcon() {
+        return this._hideClearIcon;
+    }
+    set hideClearIcon(value) {
+        this._hideClearIcon = value;
     }
 
     /**
@@ -635,19 +651,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * True if the input field contains a value.
-     *
-     * @type {string}
-     */
-    get isInputFilled() {
-        let input = this.template.querySelector('[data-element-id="input"]');
-        if (input == null) {
-            return this.inputValue;
-        }
-        return !!this.inputValue;
-    }
-
-    /**
      * True if the input value is color type.
      *
      * @type {boolean}
@@ -838,6 +841,15 @@ export default class ColorPicker extends LightningElement {
                 'slds-tabs_default__content': this.isBase
             })
             .toString();
+    }
+
+    /**
+     * True if the clear icon should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearIcon() {
+        return !this.hideClearIcon && this.inputValue;
     }
 
     get showColorGradient() {

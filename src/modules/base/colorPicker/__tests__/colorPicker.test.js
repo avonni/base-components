@@ -119,6 +119,7 @@ describe('Color Picker', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([]);
+        expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideColorInput).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -1060,6 +1061,31 @@ describe('Color Picker', () => {
                 );
                 expect(palette.colors).toMatchObject(colors);
             });
+    });
+
+    // Hide clear icon
+    it('Color Picker: hideClearIcon = false', () => {
+        element.hideClearIcon = false;
+        element.value = '#333';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(button).toBeTruthy();
+        });
+    });
+
+    it('Color Picker: hideClearIcon = true', () => {
+        element.hideClearIcon = true;
+        element.value = '#333';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(button).toBeFalsy();
+        });
     });
 
     // Hide color input
