@@ -136,9 +136,7 @@ describe('Alert', () => {
         let lightningIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-icon"]'
         );
-
-        expect(element.iconName).toBeUndefined();
-        expect(lightningIcon.iconName).toBeUndefined();
+        expect(lightningIcon).toBeFalsy();
 
         element.iconName = 'utility:user';
 
@@ -146,7 +144,7 @@ describe('Alert', () => {
             lightningIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon"]'
             );
-            expect(element.iconName).toBe('utility:user');
+            expect(lightningIcon).toBeTruthy();
             expect(lightningIcon.iconName).toBe('utility:user');
         });
     });
