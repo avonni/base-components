@@ -46,7 +46,6 @@ const STEPS = [
         buttonIconName: 'utility:apps',
         buttonIconPosition: 'right',
         buttonDisabled: true,
-        buttonTitle: 'Some title',
         buttonVariant: 'brand',
         popoverVariant: 'button',
         popoverIconName: 'standard:user',
@@ -220,7 +219,6 @@ describe('Progress Indicator', () => {
                 expect(primitive.buttonDisabled).toBe(
                     STEPS[index].buttonDisabled || false
                 );
-                expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
                 expect(primitive.buttonVariant).toBe(
                     STEPS[index].buttonVariant || 'neutral'
                 );
@@ -291,7 +289,6 @@ describe('Progress Indicator', () => {
                 expect(primitive.buttonDisabled).toBe(
                     STEPS[index].buttonDisabled || false
                 );
-                expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
                 expect(primitive.buttonVariant).toBe(
                     STEPS[index].buttonVariant || 'neutral'
                 );

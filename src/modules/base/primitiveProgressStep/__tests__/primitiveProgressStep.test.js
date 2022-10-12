@@ -55,7 +55,6 @@ describe('PrimitiveProgressStep', () => {
         expect(element.buttonIconName).toBeUndefined();
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonDisabled).toBeFalsy();
-        expect(element.buttonTitle).toBeUndefined();
         expect(element.buttonVariant).toBe('neutral');
         expect(element.completedSteps).toMatchObject([]);
         expect(element.description).toBeUndefined();
@@ -154,20 +153,6 @@ describe('PrimitiveProgressStep', () => {
                 '[data-element-id="lightning-button"]'
             );
             expect(button.disabled).toBeTruthy();
-        });
-    });
-
-    // button-title
-    // Depends on buttonLabel
-    it('Primitive progress step: buttonTitle', () => {
-        element.buttonTitle = 'A string title';
-        element.buttonLabel = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-            expect(button.title).toBe('A string title');
         });
     });
 
