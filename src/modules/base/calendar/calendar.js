@@ -611,7 +611,7 @@ export default class Calendar extends LightningElement {
         return this.dateLabels.find((label) => {
             const labelAsNumber = Number(label.date);
             let labelAsTime;
-            if (!this.isInvalidDate(label.date)) {
+            if (label.date && !this.isInvalidDate(label.date)) {
                 const labelAsDate = this.formattedWithTimezoneOffset(
                     new Date(label.date)
                 );
