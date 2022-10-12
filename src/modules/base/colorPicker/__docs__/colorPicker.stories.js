@@ -97,6 +97,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        hideClearIcon: {
+            name: 'hide-clear-icon',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, it is not possible to clear a selected color using the input clear icon.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hideColorInput: {
             name: 'hide-color-input',
             control: {
@@ -338,6 +350,7 @@ export default {
         readOnly: false,
         isLoading: false,
         menuNubbin: false,
+        hideClearIcon: false,
         hideColorInput: false,
         opacity: false
     }

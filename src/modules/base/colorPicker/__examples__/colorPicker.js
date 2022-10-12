@@ -46,6 +46,7 @@ export const ColorPicker = ({
     label,
     name,
     fieldLevelHelp,
+    hideClearIcon,
     value,
     variant,
     type,
@@ -66,6 +67,7 @@ export const ColorPicker = ({
     const element = document.createElement('ac-base-color-picker');
     element.columns = columns;
     element.disabled = disabled;
+    element.hideClearIcon = hideClearIcon;
     element.readOnly = readOnly;
     element.required = required;
     element.isLoading = isLoading;
