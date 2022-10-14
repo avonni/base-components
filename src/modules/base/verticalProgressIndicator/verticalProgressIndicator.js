@@ -51,8 +51,9 @@ export default class VerticalProgressIndicator extends LightningElement {
      */
     @api currentStep;
 
-    _hasError = false;
     _contentInLine = false;
+    _hasError = false;
+    _markAsComplete = false;
     _variant = INDICATOR_VARIANTS.default;
 
     renderedCallback() {
@@ -81,13 +82,16 @@ export default class VerticalProgressIndicator extends LightningElement {
             if (indexCompleted > index) {
                 element.classList.add('slds-is-completed');
                 element.setIcon('utility:success');
-            } else if (indexCompleted === index) {
+            } else if (indexCompleted === index && !this.markAsComplete) {
                 if (this.hasError && this.variant === 'base') {
                     element.setIcon('utility:error');
                     element.classList.add('slds-has-error');
                 } else {
                     element.classList.add('slds-is-active');
                 }
+            } else if (this.markAsComplete) {
+                element.classList.add('slds-is-completed');
+                element.setIcon('utility:success');
             }
         });
     }
@@ -128,6 +132,22 @@ export default class VerticalProgressIndicator extends LightningElement {
 
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, all steps are completed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get markAsComplete() {
+        return this._markAsComplete;
+    }
+
+    set markAsComplete(value) {
+        this._markAsComplete = normalizeBoolean(value);
     }
 
     /**
