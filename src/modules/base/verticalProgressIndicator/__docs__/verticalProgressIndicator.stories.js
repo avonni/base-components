@@ -81,11 +81,23 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        markAsComplete: {
+            name: 'mark-as-complete',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, all steps are completed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
         hasError: false,
         contentInLine: false,
+        markAsComplete: false,
         variant: 'base'
     }
 };
@@ -113,4 +125,9 @@ export const contentInLine = Template.bind({});
 contentInLine.args = {
     currentStep: '2',
     contentInLine: true
+};
+
+export const complete = Template.bind({});
+complete.args = {
+    markAsComplete: true
 };
