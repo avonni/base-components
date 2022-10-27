@@ -36,6 +36,7 @@ import VerticalProgressIndicator from '../verticalProgressIndicator';
 // Not tested because depends on slot content
 // currentStep
 // markAsComplete
+// format
 
 let element;
 describe('VerticalProgressIndicator', () => {
@@ -55,6 +56,7 @@ describe('VerticalProgressIndicator', () => {
     it('Vertical progress indicator: Default attributes', () => {
         expect(element.contentInLine).toBeFalsy();
         expect(element.currentStep).toBeUndefined();
+        expect(element.format).toBe('linear');
         expect(element.hasError).toBeFalsy();
         expect(element.markAsComplete).toBeFalsy();
         expect(element.variant).toBe('base');

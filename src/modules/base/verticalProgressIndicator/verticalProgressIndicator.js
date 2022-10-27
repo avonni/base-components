@@ -85,7 +85,7 @@ export default class VerticalProgressIndicator extends LightningElement {
             element.classList.remove('slds-is-completed');
             element.setIcon(undefined);
 
-            if (indexCompleted > index) {
+            if (indexCompleted > index && this.format === 'linear') {
                 element.classList.add('slds-is-completed');
                 element.setIcon('utility:success');
             } else if (indexCompleted === index && !this.markAsComplete) {

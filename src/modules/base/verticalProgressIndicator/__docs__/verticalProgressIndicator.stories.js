@@ -108,7 +108,7 @@ export default {
     },
     args: {
         contentInLine: false,
-        formart: 'linear',
+        format: 'linear',
         hasError: false,
         markAsComplete: false,
         variant: 'base'
