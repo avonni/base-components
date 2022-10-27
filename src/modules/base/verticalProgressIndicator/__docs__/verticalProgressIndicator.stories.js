@@ -35,6 +35,16 @@ import { VerticalProgressIndicator } from '../__examples__/verticalProgressIndic
 export default {
     title: 'Example/Vertical Progress Indicator',
     argTypes: {
+        completedSteps: {
+            name: 'completed-steps',
+            control: {
+                type: 'object'
+            },
+            description: 'All completed steps values.',
+            table: {
+                type: { summary: 'String[]' }
+            }
+        },
         currentStep: {
             name: 'current-step',
             control: {
@@ -122,14 +132,14 @@ Base.args = {
     currentStep: '2'
 };
 
-export const Shaded = Template.bind({});
-Shaded.args = {
+export const shaded = Template.bind({});
+shaded.args = {
     currentStep: '2',
     variant: 'shaded'
 };
 
-export const HasError = Template.bind({});
-HasError.args = {
+export const hasError = Template.bind({});
+hasError.args = {
     currentStep: '2',
     hasError: true
 };
@@ -143,4 +153,11 @@ contentInLine.args = {
 export const complete = Template.bind({});
 complete.args = {
     markAsComplete: true
+};
+
+export const nonLinear = Template.bind({});
+nonLinear.args = {
+    format: 'non-linear',
+    completedSteps: ['1', '3'],
+    currentStep: '2'
 };

@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const VerticalProgressIndicator = ({
+    completedSteps,
     contentInLine,
     currentStep,
     format,
@@ -48,6 +49,7 @@ export const VerticalProgressIndicator = ({
     const element = document.createElement(
         'ac-base-vertical-progress-indicator'
     );
+    element.completedSteps = completedSteps;
     element.contentInLine = contentInLine;
     element.currentStep = currentStep;
     element.format = format;

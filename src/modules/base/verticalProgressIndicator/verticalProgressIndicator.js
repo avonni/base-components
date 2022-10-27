@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -56,6 +60,7 @@ export default class VerticalProgressIndicator extends LightningElement {
      */
     @api currentStep;
 
+    _completedSteps = [];
     _contentInLine = false;
     _format = VERTICAL_PROGRESS_INDICATOR_FORMATS.default;
     _hasError = false;
@@ -88,6 +93,9 @@ export default class VerticalProgressIndicator extends LightningElement {
             if (indexCompleted > index && this.format === 'linear') {
                 element.classList.add('slds-is-completed');
                 element.setIcon('utility:success');
+            } else if (this.completedSteps.includes(element.value)) {
+                element.classList.add('slds-is-completed');
+                element.setIcon('utility:success');
             } else if (indexCompleted === index && !this.markAsComplete) {
                 if (this.hasError && this.variant === 'base') {
                     element.setIcon('utility:error');
@@ -107,6 +115,20 @@ export default class VerticalProgressIndicator extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Array of completed steps values.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get completedSteps() {
+        return this._completedSteps;
+    }
+    set completedSteps(value) {
+        this._completedSteps = normalizeArray(value);
+    }
 
     /**
      * If present, the steps are separated by lines.
