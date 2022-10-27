@@ -41,7 +41,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Set current-step to match the value attribute of one of progress-step components. If current-step is not provided, the value of the first progress-step component is used.',
+                'Sets current-step to match the value attribute of one of progress-step components. If current-step is not provided, the value of the first progress-step component is used.',
             table: {
                 type: { summary: 'string' }
             }
@@ -52,9 +52,21 @@ export default {
             },
             options: ['base', 'shade'],
             description:
-                'Changes the appearance of the progress indicator for the base type only. Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators. The default is base.',
+                'Changes the appearance of the progress indicator for the base type only. Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators.',
             table: {
                 defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
+            }
+        },
+        format: {
+            control: {
+                type: 'select'
+            },
+            options: ['linear', 'non-linear'],
+            description:
+                'Sets the progression format of the vertical progress indicator. Valid values include linear and non-linear.',
+            table: {
+                defaultValue: { summary: 'linear' },
                 type: { summary: 'string' }
             }
         },
@@ -95,8 +107,9 @@ export default {
         }
     },
     args: {
-        hasError: false,
         contentInLine: false,
+        formart: 'linear',
+        hasError: false,
         markAsComplete: false,
         variant: 'base'
     }

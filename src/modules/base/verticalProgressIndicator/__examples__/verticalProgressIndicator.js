@@ -40,6 +40,7 @@ customElements.define(
 export const VerticalProgressIndicator = ({
     contentInLine,
     currentStep,
+    format,
     hasError,
     markAsComplete,
     variant
@@ -49,6 +50,7 @@ export const VerticalProgressIndicator = ({
     );
     element.contentInLine = contentInLine;
     element.currentStep = currentStep;
+    element.format = format;
     element.hasError = hasError;
     element.markAsComplete = markAsComplete;
     element.variant = variant;

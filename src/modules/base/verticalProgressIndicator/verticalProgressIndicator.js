@@ -35,6 +35,11 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
+const VERTICAL_PROGRESS_INDICATOR_FORMATS = {
+    valid: ['linear', 'non-linear'],
+    default: 'linear'
+};
+
 /**
  * @class
  * @descriptor avonni-vertical-progress-indicator
@@ -43,7 +48,7 @@ const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
  */
 export default class VerticalProgressIndicator extends LightningElement {
     /**
-     * Set current-step to match the value attribute of one of progress-step components.
+     * Sets current-step to match the value attribute of one of progress-step components.
      * If current-step is not provided, the value of the first progress-step component is used.
      *
      * @type {string}
@@ -52,6 +57,7 @@ export default class VerticalProgressIndicator extends LightningElement {
     @api currentStep;
 
     _contentInLine = false;
+    _format = VERTICAL_PROGRESS_INDICATOR_FORMATS.default;
     _hasError = false;
     _markAsComplete = false;
     _variant = INDICATOR_VARIANTS.default;
@@ -116,6 +122,25 @@ export default class VerticalProgressIndicator extends LightningElement {
 
     set contentInLine(value) {
         this._contentInLine = normalizeBoolean(value);
+    }
+
+    /**
+     * Sets the progression format of the vertical progress indicator. Valid values include linear and non-linear.
+     *
+     * @type {string}
+     * @public
+     * @default linear
+     */
+    @api
+    get format() {
+        return this._format;
+    }
+
+    set format(format) {
+        this._format = normalizeString(format, {
+            fallbackValue: VERTICAL_PROGRESS_INDICATOR_FORMATS.default,
+            validValues: VERTICAL_PROGRESS_INDICATOR_FORMATS.valid
+        });
     }
 
     /**

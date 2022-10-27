@@ -114,7 +114,8 @@ export default {
                 type: 'radio'
             },
             options: ['linear', 'non-linear'],
-            description: 'Valid values include linear and non-linear.',
+            description:
+                'Sets the progression format of the path. Valid values include linear and non-linear.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'linear' },
@@ -136,7 +137,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If true, hide the path buttons.',
+            description: 'If true, hides the path buttons.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
