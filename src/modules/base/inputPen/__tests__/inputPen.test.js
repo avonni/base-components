@@ -148,6 +148,7 @@ describe('Input pen', () => {
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
+        expect(element.backgroundColor).toBe('#ffffff00');
         expect(element.color).toBe('#000');
         expect(element.disabled).toBeFalsy();
         expect(element.hideControls).toBeFalsy();
@@ -162,6 +163,17 @@ describe('Input pen', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // backgroundColor
+    it('Input pen backgroundColor', () => {
+        element.backgroundColor = '#00aa00';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.fillStyle).toBe('#00aa00');
+        });
+    });
 
     // color
     it('color = valid', () => {

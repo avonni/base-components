@@ -257,10 +257,11 @@ export default class InputPen extends LightningElement {
             fallbackValue: this._backgroundColor
         });
         let style = new Option().style;
-        style.color = normalizedValue;
+        style.backgroundColor = normalizedValue;
+        console.log(normalizedValue);
         if (
             ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
-            style.color === ''
+            style.backgroundColor === ''
         ) {
             return;
         }
@@ -1020,14 +1021,19 @@ export default class InputPen extends LightningElement {
         if (!this._backgroundCtx) {
             return;
         }
+
         this._backgroundCtx.clearRect(
             0,
             0,
             this.canvasInfo.canvasElement.width,
             this.canvasInfo.canvasElement.height
         );
-        this._backgroundCtx.globalAlpha =
-            parseInt(this._backgroundColor.slice(7), 16) / 255;
+        if (this.backgroundColor.length > 7) {
+            this._backgroundCtx.globalAlpha =
+                parseInt(this._backgroundColor.slice(7), 16) / 255;
+        } else {
+            this._backgroundCtx.globalAlpha = 1;
+        }
         this._backgroundCtx.fillStyle = this._backgroundColor;
         this._backgroundCtx.rect(
             0,
