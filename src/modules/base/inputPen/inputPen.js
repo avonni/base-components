@@ -242,6 +242,34 @@ export default class InputPen extends LightningElement {
      */
 
     /**
+     * Background color of the canvas.
+     *
+     * @type {string}
+     * @public
+     * @default #ffffff00
+     */
+    @api
+    get backgroundColor() {
+        return this._backgroundColor;
+    }
+    set backgroundColor(value) {
+        const normalizedValue = normalizeString(value, {
+            fallbackValue: this._backgroundColor
+        });
+        let style = new Option().style;
+        style.color = normalizedValue;
+        if (
+            ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
+            style.color === ''
+        ) {
+            return;
+        }
+        this._backgroundColor = normalizedValue;
+        this.fillBackground();
+        this.handleChangeEvent();
+    }
+
+    /**
      * Color of the pen.
      *
      * @type {string}
@@ -989,6 +1017,9 @@ export default class InputPen extends LightningElement {
      * Fill background color to backgroundColor value.
      */
     fillBackground() {
+        if (!this._backgroundCtx) {
+            return;
+        }
         this._backgroundCtx.clearRect(
             0,
             0,
