@@ -846,6 +846,19 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Scroll Datatable back to top.
+     *
+     * @public
+     */
+    @api
+    scrollToTop() {
+        const scrollable_y = this.template.querySelector('.slds-scrollable_y');
+        if (scrollable_y) {
+            scrollable_y.scrollTop = 0;
+        }
+    }
+
+    /**
      * Returns data in each selected row.
      *
      * @name getSelectedRows
