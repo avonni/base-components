@@ -643,6 +643,22 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Reserved for internal use.
+     * Allows developer to opt-in to a role-based table.
+     * Allowed options - "role-based" or "default"
+     * `role-based` -> Renders <div>
+     * `default`    -> Renders <table>
+     */
+    @api
+    get renderMode() {
+        return super.renderMode;
+    }
+
+    set renderMode(value) {
+        super.renderMode = value;
+    }
+
+    /**
      * If present, column resizing is disabled.
      * @public
      * @type {boolean}
@@ -826,6 +842,19 @@ export default class Datatable extends LightningDatatable {
 
         if (row) {
             row.style.height = height ? `${height}px` : undefined;
+        }
+    }
+
+    /**
+     * Scroll the inner table back to the top.
+     *
+     * @public
+     */
+    @api
+    scrollToTop() {
+        const scrollable_y = this.template.querySelector('.slds-scrollable_y');
+        if (scrollable_y) {
+            scrollable_y.scrollTop = 0;
         }
     }
 
