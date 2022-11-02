@@ -846,7 +846,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Scroll Datatable back to top.
+     * Scroll the inner table back to the top.
      *
      * @public
      */
