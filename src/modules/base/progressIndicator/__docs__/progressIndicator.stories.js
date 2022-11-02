@@ -36,6 +36,7 @@ export default {
     title: 'Example/Progress Indicator',
     argTypes: {
         completedSteps: {
+            name: 'completed-steps',
             control: {
                 type: 'object'
             },
@@ -45,6 +46,7 @@ export default {
             }
         },
         disabledSteps: {
+            name: 'disabled-steps',
             control: {
                 type: 'object'
             },
@@ -54,6 +56,7 @@ export default {
             }
         },
         errorSteps: {
+            name: 'error-steps',
             control: {
                 type: 'object'
             },
@@ -63,6 +66,7 @@ export default {
             }
         },
         warningSteps: {
+            name: 'warning-steps',
             control: {
                 type: 'object'
             },
@@ -72,6 +76,7 @@ export default {
             }
         },
         currentStep: {
+            name: 'current-step',
             control: {
                 type: 'text'
             },
