@@ -242,7 +242,7 @@ export default class InputPen extends LightningElement {
      */
 
     /**
-     * Background color of the canvas.
+     * Defines the color of the background
      *
      * @type {string}
      * @public
