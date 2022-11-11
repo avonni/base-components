@@ -9,7 +9,9 @@ export default class ComboboxScopes extends LightningElement {
                 {
                     label: 'Nakatomi Investments',
                     value: 'nakatomi',
-                    avatarFallbackIconName: 'standard:account',
+                    avatar: {
+                        fallbackIconName: 'standard:account'
+                    },
                     secondaryText: 'Account - Chicago, IL'
                 }
             ]

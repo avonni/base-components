@@ -37,9 +37,7 @@ import { classSet } from 'c/utils';
  * Option
  *
  * @class
- * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
- * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
- * @property {string} avatarSrc Image URL for the option avatar.
+ * @property {object} avatar An object with item fields to be rendered as an avatar.
  * @property {string[]} groups Array of group names this option belongs to.
  * @property {string} label Label of the option.
  * @property {object[]} options Array of option objects. If present:
@@ -51,8 +49,16 @@ import { classSet } from 'c/utils';
  */
 export default class Option {
     constructor(option, levelPath) {
-        this.avatarFallbackIconName = option.avatarFallbackIconName;
-        this.avatarSrc = option.avatarSrc;
+        this.avatarFallbackIconName = option.avatarFallbackIconName
+            ? option.avatarFallbackIconName
+            : option.avatar && option.avatar.fallbackIconName
+            ? option.avatar.fallbackIconName
+            : undefined;
+        this.avatarSrc = option.avatarSrc
+            ? option.avatarSrc
+            : option.avatar && option.avatar.src
+            ? option.avatar.src
+            : undefined;
         this.iconName = option.iconName;
         this.isLoading = normalizeBoolean(option.isLoading);
         this.levelPath = levelPath;

@@ -1,9 +1,7 @@
 /**
  * @typedef {Object} ComboboxOption
  * @name options
- * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
- * @property {string} avatarSrc Image URL for the option avatar.
- * @property {string[]} groups Array of group names this option belongs to.
+ * @property {object} avatar An object with item fields to be rendered as an avatar.
  * @property {boolean} isLoading If true, the option will be considered having nested options. On click, the back action and a spinner will appear.
  * @property {string} label Label of the option.
  * @property {object[]} options Array of option objects. If present:
@@ -11,6 +9,13 @@
  * * The option is not selectable. On click on it, the children options will replace the current options in the drop-down, and the `levelchange`event will be dispatched.
  * @property {string} secondaryText Secondary text to display below the label.
  * @property {string} value Required. A unique value for the option.
+ */
+
+/**
+ * @typedef {Object} ComboboxAvatar
+ * @name avatar
+ * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
+ * @property {string} src Image URL for the option avatar.
  */
 
 /**
