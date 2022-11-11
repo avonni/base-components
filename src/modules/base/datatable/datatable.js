@@ -783,6 +783,17 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Makes table inline style accessible
+     * @public
+     * @type {CSSStyleDeclaration}
+     */
+    @api
+    get tableStyle() {
+        const table = this.template.querySelector('table.slds-table');
+        return table && table.style ? table.style : '';
+    }
+
+    /**
      * This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more.
      * The text in the last line is truncated and shown with an ellipsis.
      * @public
