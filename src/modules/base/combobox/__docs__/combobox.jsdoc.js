@@ -15,7 +15,11 @@
  * @typedef {Object} ComboboxAvatar
  * @name avatar
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
+ * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
+ * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
+ * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right. Default value is bottom-right.
  * @property {string} src Image URL for the option avatar.
+ * @property {string} variant The variant changes the shape of the avatar. Accepted variants include circle, square, and empty. This value defaults to square.
  */
 
 /**

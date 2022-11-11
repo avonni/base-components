@@ -49,16 +49,6 @@ import { classSet } from 'c/utils';
  */
 export default class Option {
     constructor(option, levelPath) {
-        this.avatarFallbackIconName = option.avatarFallbackIconName
-            ? option.avatarFallbackIconName
-            : option.avatar && option.avatar.fallbackIconName
-            ? option.avatar.fallbackIconName
-            : undefined;
-        this.avatarSrc = option.avatarSrc
-            ? option.avatarSrc
-            : option.avatar && option.avatar.src
-            ? option.avatar.src
-            : undefined;
         this.iconName = option.iconName;
         this.isLoading = normalizeBoolean(option.isLoading);
         this.levelPath = levelPath;
@@ -67,11 +57,39 @@ export default class Option {
         this.options = normalizeArray(option.options);
         this.secondaryText = option.secondaryText;
         this.value = option.value;
+        this.avatar = option.avatar || {};
+        this.avatarFallbackIconName = option.avatarFallbackIconName
+            ? option.avatarFallbackIconName
+            : this.avatar && this.avatar.fallbackIconName
+            ? this.avatar.fallbackIconName
+            : undefined;
+        this.avatarSrc = option.avatarSrc
+            ? option.avatarSrc
+            : this.avatar && this.avatar.src
+            ? this.avatar.src
+            : undefined;
+        this.avatarInitials = this.avatar.avatarInitials;
 
         if (this.hasAvatar) {
             this.avatar = {
+                fallbackIconName: this.avatarFallbackIconName,
+                initials:
+                    this.avatar && this.avatar.initials
+                        ? this.avatar.initials
+                        : undefined,
+                presence:
+                    this.avatar && this.avatar.presence
+                        ? this.avatar.presence
+                        : undefined,
+                presencePosition:
+                    this.avatar && this.avatar.presencePosition
+                        ? this.avatar.presencePosition
+                        : 'bottom-right',
                 src: this.avatarSrc,
-                fallbackIconName: this.avatarFallbackIconName
+                variant:
+                    this.avatar && this.avatar.variant
+                        ? this.avatar.variant
+                        : 'square'
             };
         }
     }
@@ -112,7 +130,9 @@ export default class Option {
     }
 
     get hasAvatar() {
-        return this.avatarFallbackIconName || this.avatarSrc;
+        return (
+            this.avatarFallbackIconName || this.avatarSrc || this.avatarInitials
+        );
     }
 
     get hasChildren() {
