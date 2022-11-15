@@ -226,26 +226,6 @@ export default {
                 category: 'Search'
             }
         },
-        isMultiSelect: {
-            name: 'is-multi-select',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, multiple items can be selected.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        items: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of item objects',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
         label: {
             control: {
                 type: 'text'
@@ -274,31 +254,6 @@ export default {
             description: 'Specifies the name of the filter menu.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        searchInputPlaceholder: {
-            name: 'search-input-placeholder',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Text displayed when the search input is empty, to prompt the user for a valid entry.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Search...' },
-                category: 'Search'
-            }
-        },
-        showSearchBox: {
-            name: 'show-search-box',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the search box is visible.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Search'
             }
         },
         resetButtonLabel: {
@@ -331,6 +286,27 @@ export default {
                 'The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        type: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Type of the filter menu. Valid values include list, range and date-range.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'list' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes specific to the type.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         value: {
@@ -367,10 +343,8 @@ export default {
         hideSelectedItems: false,
         iconSize: 'medium',
         isLoading: false,
-        isMultiSelect: false,
         resetButtonLabel: 'Reset',
-        searchInputPlaceholder: 'Search...',
-        showSearchBox: false,
+        type: 'list',
         variant: 'horizontal'
     }
 };
@@ -416,37 +390,40 @@ const Template = (args) => FilterMenu(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    typeAttributes: { items }
 };
 
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
-    items: items,
-    isMultiSelect: true
+    typeAttributes: {
+        isMultiSelect: true,
+        items
+    }
 };
 
 export const Search = Template.bind({});
 Search.args = {
-    items: items,
-    showSearchBox: true
+    typeAttributes: {
+        allowSearch: true,
+        items
+    }
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    items: items,
-    disabled: true
+    disabled: true,
+    typeAttributes: { items }
 };
 
 export const Loading = Template.bind({});
 Loading.args = {
-    items: items,
     isLoading: true,
     tooltip: 'is-loading is set to true'
 };
 
 export const XSmallIcon = Template.bind({});
 XSmallIcon.args = {
-    items: items,
+    typeAttributes: { items },
     iconSize: 'x-small',
     iconName: 'utility:apps',
     value: ['item-5', 'meeting', 'wrong-value']
@@ -454,54 +431,43 @@ XSmallIcon.args = {
 
 export const ContainerVariantWithCustomButtonLabels = Template.bind({});
 ContainerVariantWithCustomButtonLabels.args = {
-    items: items,
+    typeAttributes: { items },
     buttonVariant: 'container',
     label: 'Open menu',
     resetButtonLabel: 'Erase',
     applyButtonLabel: 'Save'
 };
 
-export const LargeWidthAndNubbin = Template.bind({});
-LargeWidthAndNubbin.args = {
-    items: items,
+export const DropdownCustomization = Template.bind({});
+DropdownCustomization.args = {
+    typeAttributes: { items },
     dropdownWidth: 'large',
-    dropdownNubbin: true
-};
-
-export const FiveItemsLength = Template.bind({});
-FiveItemsLength.args = {
-    items: items,
+    dropdownNubbin: true,
     dropdownLength: '5-items'
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    items: items,
+    typeAttributes: { items },
     variant: 'vertical',
     label: 'Contact'
 };
 
-export const VerticalMultiSelect = Template.bind({});
-VerticalMultiSelect.args = {
-    items: items,
-    variant: 'vertical',
-    label: 'Contact',
-    isMultiSelect: true
-};
-
 export const VerticalWithSearchAndIcon = Template.bind({});
 VerticalWithSearchAndIcon.args = {
-    items: items,
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        items
+    },
     variant: 'vertical',
     label: 'Contact',
-    showSearchBox: true,
     iconName: 'custom:custom22',
     iconSize: 'small'
 };
 
 export const VerticalLoading = Template.bind({});
 VerticalLoading.args = {
-    items: items,
     label: 'Contact',
     isLoading: true,
     tooltip: 'is-loading is set to true',

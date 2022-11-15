@@ -88,10 +88,10 @@
                 <template if:false={isLoading}>
                     <div class="slds-dropdown__list" role="menu">
                         <lightning-input
-                            if:true={showSearchBox}
+                            if:true={computedTypeAttributes.allowSearch}
                             class="slds-p-around_small"
-                            label={searchInputPlaceholder}
-                            placeholder={searchInputPlaceholder}
+                            label={computedTypeAttributes.searchInputPlaceholder}
+                            placeholder={computedTypeAttributes.searchInputPlaceholder}
                             variant="label-hidden"
                             type="search"
                             disabled={disabled}

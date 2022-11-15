@@ -32,7 +32,9 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    deepCopy,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     normalizeArray,
     observePosition,
@@ -93,6 +95,25 @@ const MENU_WIDTHS = {
 const MENU_LENGTHS = {
     valid: ['5-items', '7-items', '10-items'],
     default: '7-items'
+};
+
+const TYPE_ATTRIBUTES = {
+    'date-range': [
+        'labelEndDate',
+        'labelEndTime',
+        'labelStartDate',
+        'labelStartTime',
+        'max',
+        'min',
+        'type'
+    ],
+    list: ['allowSearch', 'isMultiSelect', 'items', 'searchInputPlaceholder'],
+    range: ['max', 'min', 'showTickMarks', 'step', 'tickMarkStyle', 'unit']
+};
+
+const TYPES = {
+    default: 'list',
+    valid: ['date-range', 'list', 'range']
 };
 
 const i18n = {
@@ -161,6 +182,8 @@ export default class FilterMenu extends LightningElement {
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _showSearchBox = false;
     _tooltip;
+    _type = TYPES.default;
+    _typeAttributes = {};
     _value = [];
     _variant = MENU_VARIANTS.default;
 
@@ -170,6 +193,7 @@ export default class FilterMenu extends LightningElement {
 
     @track computedItems = [];
     @track selectedItems = [];
+    computedTypeAttributes = {};
     dropdownOpened = false;
     fieldLevelHelp;
 
@@ -200,6 +224,8 @@ export default class FilterMenu extends LightningElement {
         });
 
         this.dispatchEvent(privatebuttonregister);
+        this.normalizeTypeAttributes();
+        this.initItems();
         this._connected = true;
     }
 
@@ -225,11 +251,6 @@ export default class FilterMenu extends LightningElement {
         this.initTooltip();
     }
 
-    /**
-     * Render html template based on variant vertical or not.
-     *
-     * @returns {File} filterMenu.html | filterMenuVertical.html
-     */
     render() {
         if (this.variant === 'vertical') {
             return filterMenuVertical;
@@ -472,10 +493,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * If present, multiple items can be selected.
+     * Deprecated. Allow multi-selection in the type attributes.
      *
      * @type {boolean}
-     * @public
      * @default false
      */
     @api
@@ -484,25 +504,35 @@ export default class FilterMenu extends LightningElement {
     }
     set isMultiSelect(bool) {
         this._isMultiSelect = normalizeBoolean(bool);
+
+        console.warn(
+            'The "is-multi-select" attribute is deprecated. Add an "isMultiSelect" key to the type attributes instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
     }
 
     /**
-     * Array of item objects.
+     * Deprecated. Set the items in the type attributes.
      *
      * @type {object[]}
-     * @public
      */
     @api
     get items() {
         return this._items;
     }
-    set items(proxy) {
-        this._items = normalizeArray(proxy);
-        this.computedItems = JSON.parse(JSON.stringify(this._items));
+    set items(value) {
+        this._items = normalizeArray(value, 'object');
+        console.warn(
+            'The "items" attribute is deprecated. Add an "items" key to the type attributes instead.'
+        );
 
-        this.computeValue();
-        this.computeSelectedItems();
-        this.computeTabindex();
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+            this.initItems();
+        }
     }
 
     /**
@@ -540,7 +570,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Text displayed when the search input is empty, to prompt the user for a valid entry.
+     * Deprecated. Set the search input placeholder in the type attributes.
      *
      * @type {string}
      * @public
@@ -552,16 +582,23 @@ export default class FilterMenu extends LightningElement {
     }
     set searchInputPlaceholder(value) {
         this._searchInputPlaceholder =
-            value && typeof value === 'string'
+            typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+
+        console.warn(
+            'The "search-input-placeholder" attribute is deprecated. Add a "searchInputPlaceholder" key to the type attributes instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
     }
 
     /**
-     * If present, the search box is visible.
+     * Deprecated. Show the search box in the type attributes.
      *
      * @type {boolean}
-     * @public
      * @default false
      */
     @api
@@ -570,6 +607,14 @@ export default class FilterMenu extends LightningElement {
     }
     set showSearchBox(bool) {
         this._showSearchBox = normalizeBoolean(bool);
+
+        console.warn(
+            'The "show-search-box" attribute is deprecated. Add an "allowSearch" key to the type attributes instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
     }
 
     /**
@@ -602,9 +647,52 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Array of selected item's values.
+     * Type of the filter menu. Valid values include list, range and date-range.
      *
-     * @type {String[]}
+     * @type {string}
+     * @default list
+     * @public
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = normalizeString(value, {
+            fallbackValue: TYPES.default,
+            validValues: TYPES.valid
+        });
+
+        if (this._connected) {
+            this.normalizeTypeAttributes();
+            this.initItems();
+        }
+    }
+
+    /**
+     * Attributes specific to the type (see **Types and Type Attributes**).
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get typeAttributes() {
+        return this._typeAttributes;
+    }
+    set typeAttributes(value) {
+        this._typeAttributes = normalizeObject(value);
+
+        if (this._connected) {
+            this.normalizeTypeAttributes();
+            this.initItems();
+        }
+    }
+
+    /**
+     * Value of the filter menu.
+     * If the type is `list`, array of selected items values. If the type is `range`, array of selected numbers. If the type is `date-range`, array of ISO 8601 dates.
+     *
+     * @type {String[] | Number[] | Date[]}
      * @public
      */
     @api
@@ -788,6 +876,10 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    get isList() {
+        return this.type === 'list';
+    }
+
     /**
      * Display selected items.
      *
@@ -847,6 +939,30 @@ export default class FilterMenu extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initItems() {
+        if (!this.isList) {
+            return;
+        }
+        const items = normalizeArray(
+            this.computedTypeAttributes.items,
+            'object'
+        );
+        this.computedItems = deepCopy(items);
+
+        this.computeValue();
+        this.computeSelectedItems();
+        this.computeTabindex();
+    }
+
+    /**
+     * Initialize tooltip.
+     */
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
+        }
+    }
 
     /**
      * Compute Tab index.
@@ -916,12 +1032,27 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Initialize tooltip.
+     * Checks if dropdown is auto Aligned.
+     *
+     * @returns boolean
      */
-    initTooltip() {
-        if (this._tooltip && !this._tooltip.initialized) {
-            this._tooltip.initialize();
-        }
+    isAutoAlignment() {
+        return this.dropdownAlignment.startsWith('auto');
+    }
+
+    normalizeTypeAttributes() {
+        const typeAttributes = {};
+        Object.entries(this.typeAttributes).forEach(([key, value]) => {
+            const allowedAttribute =
+                TYPE_ATTRIBUTES[this.type] &&
+                TYPE_ATTRIBUTES[this.type].includes(key);
+            if (allowedAttribute) {
+                typeAttributes[key] = value;
+            }
+        });
+        this.computedTypeAttributes = typeAttributes;
+
+        this.supportDeprecatedAttributes();
     }
 
     /**
@@ -931,15 +1062,6 @@ export default class FilterMenu extends LightningElement {
      */
     setOrder(order) {
         this._order = order;
-    }
-
-    /**
-     * Checks if dropdown is auto Aligned.
-     *
-     * @returns boolean
-     */
-    isAutoAlignment() {
-        return this.dropdownAlignment.startsWith('auto');
     }
 
     /**
@@ -1012,6 +1134,29 @@ export default class FilterMenu extends LightningElement {
             this._autoPosition = null;
         }
         this._positioning = false;
+    }
+
+    supportDeprecatedAttributes() {
+        if (!this.isList) {
+            return;
+        }
+
+        const { isMultiSelect, searchInputPlaceholder, allowSearch, items } =
+            this.computedTypeAttributes;
+
+        if (allowSearch === undefined) {
+            this.computedTypeAttributes.allowSearch = this.showSearchBox;
+        }
+        if (isMultiSelect === undefined) {
+            this.computedTypeAttributes.isMultiSelect = this.isMultiSelect;
+        }
+        if (!searchInputPlaceholder) {
+            this.computedTypeAttributes.searchInputPlaceholder =
+                this.searchInputPlaceholder;
+        }
+        if (!Array.isArray(items) || !items.length) {
+            this.computedTypeAttributes.items = deepCopy(this.items);
+        }
     }
 
     /**
@@ -1163,7 +1308,9 @@ export default class FilterMenu extends LightningElement {
             this.value.splice(index, 1);
         } else {
             // Select a new item
-            if (!this.isMultiSelect) this._value = [];
+            if (!this.computedTypeAttributes.isMultiSelect) {
+                this._value = [];
+            }
             this.value.push(event.detail.value);
         }
 
@@ -1331,7 +1478,7 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
-                    value: this.isMultiSelect
+                    value: this.computedTypeAttributes.isMultiSelect
                         ? this.value
                         : this.value[0] || null
                 }
@@ -1357,7 +1504,7 @@ export default class FilterMenu extends LightningElement {
             new CustomEvent('select', {
                 cancelable: true,
                 detail: {
-                    value: this.isMultiSelect
+                    value: this.computedTypeAttributes.isMultiSelect
                         ? this.value
                         : this.value[0] || null
                 }

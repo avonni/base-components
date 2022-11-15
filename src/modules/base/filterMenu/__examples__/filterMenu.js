@@ -52,16 +52,14 @@ export const FilterMenu = ({
     iconName,
     iconSize,
     isLoading,
-    isMultiSelect,
-    items,
     label,
     loadingStateAlternativeText,
     name,
-    searchInputPlaceholder,
-    showSearchBox,
     resetButtonLabel,
     title,
     tooltip,
+    type,
+    typeAttributes,
     value,
     variant
 }) => {
@@ -80,16 +78,14 @@ export const FilterMenu = ({
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.isLoading = isLoading;
-    element.isMultiSelect = isMultiSelect;
-    element.items = items;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.name = name;
-    element.searchInputPlaceholder = searchInputPlaceholder;
-    element.showSearchBox = showSearchBox;
     element.resetButtonLabel = resetButtonLabel;
     element.title = title;
     element.tooltip = tooltip;
+    element.type = type;
+    element.typeAttributes = typeAttributes;
     element.value = value;
     element.variant = variant;
     return element;
