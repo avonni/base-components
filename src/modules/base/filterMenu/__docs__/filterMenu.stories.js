@@ -121,20 +121,6 @@ export default {
                 category: 'Dropdown menu'
             }
         },
-        dropdownLength: {
-            name: 'dropdown-length',
-            control: {
-                type: 'select'
-            },
-            options: ['5-items', '7-items', '10-items'],
-            description:
-                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '7-items' },
-                category: 'Dropdown menu'
-            }
-        },
         dropdownNubbin: {
             name: 'dropdown-nubbin',
             control: {
@@ -145,20 +131,6 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Dropdown menu'
-            }
-        },
-        dropdownWidth: {
-            name: 'dropdown-width',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            description:
-                'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'small' },
                 category: 'Dropdown menu'
             }
         },
@@ -336,9 +308,7 @@ export default {
         buttonVariant: 'border',
         disabled: false,
         dropdownAlignment: 'left',
-        dropdownLength: '7-items',
         dropdownNubbin: false,
-        dropdownWidth: 'small',
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         iconSize: 'medium',
@@ -393,68 +363,61 @@ Base.args = {
     typeAttributes: { items }
 };
 
-export const MultiSelect = Template.bind({});
-MultiSelect.args = {
+export const MultiSelectList = Template.bind({});
+MultiSelectList.args = {
     typeAttributes: {
+        allowSearch: true,
         isMultiSelect: true,
         items
     }
 };
 
-export const Search = Template.bind({});
-Search.args = {
+export const CustomMenu = Template.bind({});
+CustomMenu.args = {
     typeAttributes: {
-        allowSearch: true,
+        dropdownLength: '5-items',
+        dropdownWidth: 'xx-small',
         items
-    }
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-    disabled: true,
-    typeAttributes: { items }
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-    isLoading: true,
-    tooltip: 'is-loading is set to true'
-};
-
-export const XSmallIcon = Template.bind({});
-XSmallIcon.args = {
-    typeAttributes: { items },
+    },
     iconSize: 'x-small',
     iconName: 'utility:apps',
-    value: ['item-5', 'meeting', 'wrong-value']
+    value: ['item-5', 'meeting', 'wrong-value'],
+    dropdownNubbin: true
 };
 
-export const ContainerVariantWithCustomButtonLabels = Template.bind({});
-ContainerVariantWithCustomButtonLabels.args = {
-    typeAttributes: { items },
+export const DateRange = Template.bind({});
+DateRange.args = {
+    typeAttributes: {
+        labelStartDate: 'Start',
+        labelEndDate: 'End'
+    },
     buttonVariant: 'container',
-    label: 'Open menu',
-    resetButtonLabel: 'Erase',
-    applyButtonLabel: 'Save'
+    resetButtonLabel: 'Clear',
+    applyButtonLabel: 'Save',
+    label: 'Dates',
+    type: 'date-range',
+    value: [new Date(2022, 10, 16, 11), new Date(2022, 10, 20, 15, 30)]
 };
 
-export const DropdownCustomization = Template.bind({});
-DropdownCustomization.args = {
-    typeAttributes: { items },
-    dropdownWidth: 'large',
-    dropdownNubbin: true,
-    dropdownLength: '5-items'
+export const Range = Template.bind({});
+Range.args = {
+    typeAttributes: {
+        max: 30,
+        min: 6,
+        step: 2,
+        tickMarkStyle: 'dot',
+        showTickMarks: true,
+        unit: 'currency',
+        unitAttributes: {
+            currencyCode: 'EUR'
+        }
+    },
+    iconName: 'utility:money',
+    type: 'range'
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    typeAttributes: { items },
-    variant: 'vertical',
-    label: 'Contact'
-};
-
-export const VerticalWithSearchAndIcon = Template.bind({});
-VerticalWithSearchAndIcon.args = {
     typeAttributes: {
         allowSearch: true,
         isMultiSelect: true,

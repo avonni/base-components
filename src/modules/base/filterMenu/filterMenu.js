@@ -32,6 +32,7 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    dateTimeObjectFrom,
     deepCopy,
     normalizeBoolean,
     normalizeObject,
@@ -99,16 +100,31 @@ const MENU_LENGTHS = {
 
 const TYPE_ATTRIBUTES = {
     'date-range': [
+        'dateStyle',
         'labelEndDate',
         'labelEndTime',
         'labelStartDate',
         'labelStartTime',
-        'max',
-        'min',
+        'timeStyle',
         'type'
     ],
-    list: ['allowSearch', 'isMultiSelect', 'items', 'searchInputPlaceholder'],
-    range: ['max', 'min', 'showTickMarks', 'step', 'tickMarkStyle', 'unit']
+    list: [
+        'allowSearch',
+        'dropdownLength',
+        'dropdownWidth',
+        'isMultiSelect',
+        'items',
+        'searchInputPlaceholder'
+    ],
+    range: [
+        'max',
+        'min',
+        'showTickMarks',
+        'step',
+        'tickMarkStyle',
+        'unit',
+        'unitAttributes'
+    ]
 };
 
 const TYPES = {
@@ -188,13 +204,13 @@ export default class FilterMenu extends LightningElement {
     _variant = MENU_VARIANTS.default;
 
     _cancelBlur = false;
-    _dropdownVisible = false;
     _order;
 
     @track computedItems = [];
     @track selectedItems = [];
     computedTypeAttributes = {};
-    dropdownOpened = false;
+    @track currentValue = [];
+    dropdownVisible = false;
     fieldLevelHelp;
 
     connectedCallback() {
@@ -225,7 +241,9 @@ export default class FilterMenu extends LightningElement {
 
         this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
-        this.initItems();
+        this.computeValue();
+        this.computeSelectedItems();
+        this.computeTabindex();
         this._connected = true;
     }
 
@@ -236,18 +254,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     renderedCallback() {
-        if (this._variant === 'horizontal') {
-            this.classList.add(
-                'slds-dropdown-trigger',
-                'slds-dropdown-trigger_click'
-            );
-        } else {
-            this.classList.remove(
-                'slds-dropdown-trigger',
-                'slds-dropdown-trigger_click'
-            );
-        }
-
         this.initTooltip();
     }
 
@@ -350,10 +356,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.
+     * Deprecated. Set the dropdown length in the type attributes.
      *
      * @type {string}
-     * @public
      * @default 7-items
      */
     @api
@@ -365,6 +370,14 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: MENU_LENGTHS.default,
             validValues: MENU_LENGTHS.valid
         });
+
+        console.warn(
+            'The "dropdown-length" attribute is deprecated. Add a "dropdownLength" key to the type attributes instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
     }
 
     /**
@@ -383,10 +396,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.
+     * Deprecated. Set the dropdown width in the type attributes.
      *
      * @type {string}
-     * @public
      * @default small
      */
     @api
@@ -398,6 +410,14 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: MENU_WIDTHS.default,
             validValues: MENU_WIDTHS.valid
         });
+
+        console.warn(
+            'The "dropdown-width" attribute is deprecated. Add a "dropdownWidth" key to the type attributes instead.'
+        );
+
+        if (this._connected) {
+            this.supportDeprecatedAttributes();
+        }
     }
 
     /**
@@ -531,7 +551,11 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
-            this.initItems();
+            const items = normalizeArray(
+                this.computedTypeAttributes.items,
+                'object'
+            );
+            this.computedItems = deepCopy(items);
         }
     }
 
@@ -665,7 +689,6 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.normalizeTypeAttributes();
-            this.initItems();
         }
     }
 
@@ -684,7 +707,6 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.normalizeTypeAttributes();
-            this.initItems();
         }
     }
 
@@ -701,7 +723,7 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
-        this._value = JSON.parse(JSON.stringify(array));
+        this._value = deepCopy(array);
 
         this.computeValue();
         this.computeSelectedItems();
@@ -758,7 +780,7 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedAriaExpanded() {
-        return String(this._dropdownVisible); // default value must be a string for the attribute to always be present with a string value
+        return String(this.dropdownVisible); // default value must be a string for the attribute to always be present with a string value
     }
 
     /**
@@ -854,9 +876,11 @@ export default class FilterMenu extends LightningElement {
                 'slds-nubbin_bottom':
                     this.dropdownNubbin &&
                     this.dropdownAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
+                'slds-p-vertical_large': this.isLoading,
+                'avonni-filter-menu__dropdown_range':
+                    this.isRange || this.isDateRange
             })
-            .add(`slds-dropdown_${this._dropdownWidth}`)
+            .add(`slds-dropdown_${this.computedTypeAttributes.dropdownWidth}`)
             .toString();
     }
 
@@ -865,19 +889,52 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {string}
      */
-    get computedItemListClass() {
+    get computedDropdownContentClass() {
+        const length = this.computedTypeAttributes.dropdownLength;
         return classSet('slds-dropdown__list').add({
             'slds-dropdown_length-with-icon-5':
-                this.dropdownLength === '5-items',
+                this.isList && length === '5-items',
             'slds-dropdown_length-with-icon-7':
-                this.dropdownLength === '7-items',
+                this.isList && length === '7-items',
             'slds-dropdown_length-with-icon-10':
-                this.dropdownLength === '10-items'
+                this.isList && length === '10-items'
         });
+    }
+
+    get dateRangeEndDate() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[1];
+    }
+
+    get dateRangeStartDate() {
+        if (!Array.isArray(this.currentValue)) {
+            return null;
+        }
+        return this.currentValue[0];
+    }
+
+    get isDateRange() {
+        return this.type === 'date-range';
     }
 
     get isList() {
         return this.type === 'list';
+    }
+
+    get isRange() {
+        return this.type === 'range';
+    }
+
+    get pillActions() {
+        return [
+            {
+                label: 'Remove',
+                name: 'remove',
+                iconName: 'utility:close'
+            }
+        ];
     }
 
     /**
@@ -912,26 +969,31 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Simulate a click on the apply button.
+     * Save the currently selected values.
      *
      * @public
      */
     @api
     apply() {
+        this._value = [...this.currentValue];
         this.computeSelectedItems();
         this.close();
     }
 
     /**
-     * Clear the selected items.
+     * Clear the currently selected values.
      *
      * @public
      */
     @api
     clear() {
-        this._value = [];
-        this.computeValue();
-        this.computeSelectedItems();
+        this.currentValue = [];
+        if (this.isList) {
+            this.computedItems = this.computedItems.map((item) => {
+                item.checked = false;
+                return item;
+            });
+        }
     }
 
     /*
@@ -940,21 +1002,6 @@ export default class FilterMenu extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    initItems() {
-        if (!this.isList) {
-            return;
-        }
-        const items = normalizeArray(
-            this.computedTypeAttributes.items,
-            'object'
-        );
-        this.computedItems = deepCopy(items);
-
-        this.computeValue();
-        this.computeSelectedItems();
-        this.computeTabindex();
-    }
-
     /**
      * Initialize tooltip.
      */
@@ -962,6 +1009,52 @@ export default class FilterMenu extends LightningElement {
         if (this._tooltip && !this._tooltip.initialized) {
             this._tooltip.initialize();
         }
+    }
+
+    computeSelectedDateRange() {
+        const selection = this.value.reduce((string, value) => {
+            const date = new Date(value);
+            if (value && !isNaN(date)) {
+                const dateString = this.formatDate(date);
+                return string.length ? `${string} - ${dateString}` : dateString;
+            }
+            return string;
+        }, '');
+
+        if (selection.length) {
+            this.selectedItems = [
+                {
+                    label: selection,
+                    name: selection
+                }
+            ];
+        } else {
+            this.selectedItems = [];
+        }
+    }
+
+    /**
+     * Compute Selected Items List by checked items.
+     */
+    computeSelectedItems() {
+        if (this.isDateRange) {
+            this.computeSelectedDateRange();
+        } else {
+            this.computeSelectedListItems();
+        }
+    }
+
+    computeSelectedListItems() {
+        const selectedItems = this.computedItems.filter((item) => {
+            return this.value.includes(item.value);
+        });
+
+        this.selectedItems = selectedItems.map((item) => {
+            return {
+                label: item.label,
+                name: item.value
+            };
+        });
     }
 
     /**
@@ -983,29 +1076,16 @@ export default class FilterMenu extends LightningElement {
      * Compute Value of items by 'checked' state.
      */
     computeValue() {
-        this.computedItems.forEach((item) => {
-            if (this.value.indexOf(item.value) > -1) {
-                item.checked = true;
-            } else {
-                item.checked = false;
-            }
-        });
-    }
-
-    /**
-     * Compute Selected Items List by checked items.
-     */
-    computeSelectedItems() {
-        const selectedItems = [];
-        this.computedItems.forEach((item) => {
-            if (item.checked) {
-                selectedItems.push({
-                    label: item.label,
-                    name: item.value
-                });
-            }
-        });
-        this.selectedItems = selectedItems;
+        if (this.isList) {
+            this.computedItems.forEach((item) => {
+                if (this.value.indexOf(item.value) > -1) {
+                    item.checked = true;
+                } else {
+                    item.checked = false;
+                }
+            });
+        }
+        this.currentValue = [...this.value];
     }
 
     /**
@@ -1026,9 +1106,43 @@ export default class FilterMenu extends LightningElement {
      * Close dropdown menu.
      */
     close() {
-        if (this._dropdownVisible) {
+        if (this.dropdownVisible) {
             this.toggleMenuVisibility();
         }
+    }
+
+    formatDate(date) {
+        const dateTime = dateTimeObjectFrom(date);
+        const showTime = this.computedTypeAttributes.type === 'datetime';
+        const { dateStyle, timeStyle } = this.computedTypeAttributes;
+
+        let formattedDate,
+            formattedTime = '';
+        switch (dateStyle) {
+            case 'long':
+                formattedDate = dateTime.toFormat('DDD');
+                break;
+            case 'short':
+                formattedDate = dateTime.toFormat('D');
+                break;
+            default:
+                formattedDate = dateTime.toFormat('DD');
+                break;
+        }
+        if (showTime) {
+            switch (timeStyle) {
+                case 'long':
+                    formattedTime += dateTime.toFormat('ttt');
+                    break;
+                case 'short':
+                    formattedTime = dateTime.toFormat('t');
+                    break;
+                default:
+                    formattedTime = dateTime.toFormat('tt');
+                    break;
+            }
+        }
+        return `${formattedDate} ${formattedTime}`.trim();
     }
 
     /**
@@ -1053,6 +1167,13 @@ export default class FilterMenu extends LightningElement {
         this.computedTypeAttributes = typeAttributes;
 
         this.supportDeprecatedAttributes();
+        if (this.isList) {
+            const items = normalizeArray(
+                this.computedTypeAttributes.items,
+                'object'
+            );
+            this.computedItems = deepCopy(items);
+        }
     }
 
     /**
@@ -1141,11 +1262,23 @@ export default class FilterMenu extends LightningElement {
             return;
         }
 
-        const { isMultiSelect, searchInputPlaceholder, allowSearch, items } =
-            this.computedTypeAttributes;
+        const {
+            isMultiSelect,
+            searchInputPlaceholder,
+            allowSearch,
+            dropdownLength,
+            dropdownWidth,
+            items
+        } = this.computedTypeAttributes;
 
         if (allowSearch === undefined) {
             this.computedTypeAttributes.allowSearch = this.showSearchBox;
+        }
+        if (dropdownLength === undefined) {
+            this.computedTypeAttributes.dropdownLength = this.dropdownLength;
+        }
+        if (dropdownWidth === undefined) {
+            this.computedTypeAttributes.dropdownWidth = this.dropdownWidth;
         }
         if (isMultiSelect === undefined) {
             this.computedTypeAttributes.isMultiSelect = this.isMultiSelect;
@@ -1164,11 +1297,8 @@ export default class FilterMenu extends LightningElement {
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
-            this._dropdownVisible = !this._dropdownVisible;
-            if (!this.dropdownOpened && this._dropdownVisible) {
-                this.dropdownOpened = true;
-            }
-            if (this._dropdownVisible) {
+            this.dropdownVisible = !this.dropdownVisible;
+            if (this.dropdownVisible) {
                 this.startPositioning();
 
                 /**
@@ -1184,6 +1314,7 @@ export default class FilterMenu extends LightningElement {
                 this._boundingRect = this.getBoundingClientRect();
 
                 this.pollBoundingRect();
+                this.currentValue = [...this.value];
             } else {
                 this.stopPositioning();
 
@@ -1196,8 +1327,6 @@ export default class FilterMenu extends LightningElement {
                  */
                 this.dispatchEvent(new CustomEvent('close'));
             }
-
-            this.classList.toggle('slds-is-open');
         }
     }
 
@@ -1206,7 +1335,7 @@ export default class FilterMenu extends LightningElement {
      */
     pollBoundingRect() {
         // only poll if the dropdown is auto aligned
-        if (this.isAutoAlignment() && this._dropdownVisible) {
+        if (this.isAutoAlignment() && this.dropdownVisible) {
             setTimeout(
                 () => {
                     if (this._connected) {
@@ -1289,8 +1418,16 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event
      */
     handleCheckboxChange(event) {
-        this._value = event.detail.value;
-        this.computeValue();
+        this.currentValue = event.detail.value;
+        this.computedItems.forEach((item) => {
+            item.checked = this.currentValue.includes(item.value);
+        });
+        this.dispatchSelect();
+    }
+
+    handleDateRangeChange(event) {
+        const { startDate, endDate } = event.detail;
+        this.currentValue = [startDate, endDate];
         this.dispatchSelect();
     }
 
@@ -1300,23 +1437,22 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event
      */
     handlePrivateSelect(event) {
-        const index = this.value.findIndex(
-            (itemValue) => itemValue === event.detail.value
-        );
-        if (index > -1) {
-            // Unselect the current item
-            this.value.splice(index, 1);
-        } else {
-            // Select a new item
-            if (!this.computedTypeAttributes.isMultiSelect) {
-                this._value = [];
-            }
-            this.value.push(event.detail.value);
-        }
-
-        this.computeValue();
-
         event.stopPropagation();
+
+        const selectedValue = event.detail.value;
+        this.currentValue = [];
+        this.computedItems = this.computedItems.map((item) => {
+            if (item.value === selectedValue) {
+                item.checked = !item.checked;
+            } else if (!this.computedTypeAttributes.isMultiSelect) {
+                item.checked = false;
+            }
+            if (item.checked) {
+                this.currentValue.push(item.value);
+            }
+            return item;
+        });
+
         this.dispatchSelect();
     }
 
@@ -1332,7 +1468,7 @@ export default class FilterMenu extends LightningElement {
             return;
         }
 
-        if (this._dropdownVisible) {
+        if (this.dropdownVisible) {
             this.toggleMenuVisibility();
         }
     }
@@ -1395,13 +1531,18 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event
      */
     handleSelectedItemRemove(event) {
-        const selectedItemIndex = event.detail.index;
-        this.selectedItems.splice(selectedItemIndex, 1);
+        const { targetName, index } = event.detail;
+        this.selectedItems.splice(index, 1);
 
-        const valueIndex = this.value.findIndex(
-            (name) => name === event.detail.item.name
-        );
-        this.value.splice(valueIndex, 1);
+        if (this.isList) {
+            const valueIndex = this.value.findIndex((name) => {
+                return name === targetName;
+            });
+            this.value.splice(valueIndex, 1);
+        } else {
+            this._value = [];
+        }
+
         this.computeValue();
         this.dispatchApply();
     }
@@ -1410,9 +1551,8 @@ export default class FilterMenu extends LightningElement {
      * Apply click handler.
      */
     handleApplyClick() {
-        this.computeSelectedItems();
+        this.apply();
         this.dispatchApply();
-        this.close();
     }
 
     /**
@@ -1490,23 +1630,18 @@ export default class FilterMenu extends LightningElement {
      * Dispatch Select event.
      */
     dispatchSelect() {
-        // Dispatch the event with the same properties as LWC button-menu
         this.dispatchEvent(
             /**
-             * The event fired when a user clicks on a menu item.
+             * TThe event fired when a user selects or unselects a value.
              *
              * @event
              * @name select
-             * @param {string[]} value Value of the selected item.
+             * @param {string[]} value Currently selected value. The value is not saved, as long as the user does not click on the “apply” button.
              * @public
-             * @cancelable
              */
             new CustomEvent('select', {
-                cancelable: true,
                 detail: {
-                    value: this.computedTypeAttributes.isMultiSelect
-                        ? this.value
-                        : this.value[0] || null
+                    value: deepCopy(this.currentValue)
                 }
             })
         );

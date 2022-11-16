@@ -44,9 +44,7 @@ export const FilterMenu = ({
     buttonVariant,
     disabled,
     dropdownAlignment,
-    dropdownLength,
     dropdownNubbin,
-    dropdownWidth,
     hideApplyResetButtons,
     hideSelectedItems,
     iconName,
@@ -70,9 +68,7 @@ export const FilterMenu = ({
     element.buttonVariant = buttonVariant;
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
-    element.dropdownLength = dropdownLength;
     element.dropdownNubbin = dropdownNubbin;
-    element.dropdownWidth = dropdownWidth;
     element.hideApplyResetButtons = hideApplyResetButtons;
     element.hideSelectedItems = hideSelectedItems;
     element.iconName = iconName;

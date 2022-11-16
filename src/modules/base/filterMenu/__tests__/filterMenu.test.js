@@ -888,7 +888,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-pill-container"]'
+                '[data-element-id="avonni-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -902,7 +902,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-pill-container"]'
+                '[data-element-id="avonni-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -920,7 +920,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-pill-container"]'
+                '[data-element-id="avonni-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -934,7 +934,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-pill-container"]'
+                '[data-element-id="avonni-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -1443,7 +1443,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-pill-container"]'
+                    '[data-element-id="avonni-pill-container"]'
                 );
                 expect(pills).toBeTruthy();
             });
