@@ -144,6 +144,26 @@
                         variant="label-hidden"
                         onchange={handleDateRangeChange}
                     ></c-input-date-range>
+
+                    <!-- Range -->
+                    <c-slider
+                        if:true={isRange}
+                        class="slds-show slds-m-around_small"
+                        disable-swap
+                        hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                        label={label}
+                        max={computedTypeAttributes.max}
+                        min={computedTypeAttributes.min}
+                        show-pin={computedTypeAttributes.showPin}
+                        show-tick-marks={computedTypeAttributes.showTickMarks}
+                        step={computedTypeAttributes.step}
+                        tick-mark-style={computedTypeAttributes.tickMarkStyle}
+                        unit={computedTypeAttributes.unit}
+                        unit-attributes={computedTypeAttributes.unitAttributes}
+                        value={rangeValue}
+                        variant="label-hidden"
+                        onchange={handleRangeChange}
+                    ></c-slider>
                 </div>
 
                 <!-- Reset and apply buttons -->

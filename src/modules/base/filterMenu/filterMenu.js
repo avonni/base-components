@@ -42,6 +42,7 @@ import {
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
+import { numberFormat } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 import {
@@ -117,8 +118,10 @@ const TYPE_ATTRIBUTES = {
         'searchInputPlaceholder'
     ],
     range: [
+        'hideMinMaxValues',
         'max',
         'min',
+        'showPin',
         'showTickMarks',
         'step',
         'tickMarkStyle',
@@ -140,6 +143,7 @@ const i18n = {
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
+const DEFAULT_RANGE_VALUE = [0, 100];
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 /**
@@ -937,6 +941,16 @@ export default class FilterMenu extends LightningElement {
         ];
     }
 
+    get rangeValue() {
+        if (this.currentValue.length) {
+            return this.currentValue;
+        }
+        const { min, max } = this.computedTypeAttributes;
+        const start = isNaN(min) ? DEFAULT_RANGE_VALUE[0] : Number(min);
+        const end = isNaN(max) ? DEFAULT_RANGE_VALUE[1] : Number(max);
+        return [start, end];
+    }
+
     /**
      * Display selected items.
      *
@@ -1011,14 +1025,29 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
-    computeSelectedDateRange() {
+    computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
-            const date = new Date(value);
-            if (value && !isNaN(date)) {
-                const dateString = this.formatDate(date);
-                return string.length ? `${string} - ${dateString}` : dateString;
+            let normalizedValue = '';
+            if (this.isDateRange && value && !isNaN(new Date(value))) {
+                // Date range
+                const date = new Date(value);
+                normalizedValue = this.formatDate(date);
+            } else if (this.isRange && !isNaN(value)) {
+                // Range
+                const style = this.computedTypeAttributes.unit;
+                const attributes = normalizeObject(
+                    this.computedTypeAttributes.unitAttributes
+                );
+                const options = {
+                    style,
+                    ...attributes
+                };
+                normalizedValue = value.toString();
+                normalizedValue = numberFormat(options).format(normalizedValue);
             }
-            return string;
+            return string.length
+                ? `${string} - ${normalizedValue}`
+                : normalizedValue;
         }, '');
 
         if (selection.length) {
@@ -1037,10 +1066,10 @@ export default class FilterMenu extends LightningElement {
      * Compute Selected Items List by checked items.
      */
     computeSelectedItems() {
-        if (this.isDateRange) {
-            this.computeSelectedDateRange();
-        } else {
+        if (this.isList) {
             this.computeSelectedListItems();
+        } else {
+            this.computeSelectedRange();
         }
     }
 
@@ -1314,7 +1343,7 @@ export default class FilterMenu extends LightningElement {
                 this._boundingRect = this.getBoundingClientRect();
 
                 this.pollBoundingRect();
-                this.currentValue = [...this.value];
+                this.computeValue();
             } else {
                 this.stopPositioning();
 
@@ -1525,6 +1554,11 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    handleRangeChange(event) {
+        this.currentValue = event.detail.value;
+        this.dispatchSelect();
+    }
+
     /**
      * Selected Item removal handler.
      *
@@ -1533,6 +1567,7 @@ export default class FilterMenu extends LightningElement {
     handleSelectedItemRemove(event) {
         const { targetName, index } = event.detail;
         this.selectedItems.splice(index, 1);
+        this.selectedItems = [...this.selectedItems];
 
         if (this.isList) {
             const valueIndex = this.value.findIndex((name) => {
@@ -1608,19 +1643,17 @@ export default class FilterMenu extends LightningElement {
      */
     dispatchApply() {
         /**
-         * The event fired when a user clicks on the “Apply” button or removes a pill from the selected items.
+         * The event fired when the “Apply” button is clicked, or a pill removed from the selected items.
          *
          * @event
          * @name apply
-         * @param {string[]} value Array of selected items' values.
+         * @param {string[]|number[]} value New value of the filter menu.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
-                    value: this.computedTypeAttributes.isMultiSelect
-                        ? this.value
-                        : this.value[0] || null
+                    value: this.value
                 }
             })
         );

@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    equal,
     normalizeBoolean,
     normalizeString,
     normalizeArray,
@@ -223,7 +224,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, the slider thumbs can swap order.
+     * If present, the slider thumbs can't swap order.
      *
      * @type {Boolean}
      * @public
@@ -519,6 +520,12 @@ export default class Slider extends LightningElement {
         return this._value;
     }
     set value(value) {
+        if (equal(value, this._value)) {
+            // Prevent the dragged thumb from being dropped
+            // if the given value is the same as the current value.
+            return;
+        }
+
         if (!isNaN(Number(value))) {
             this._value = [Number(value)];
         } else {

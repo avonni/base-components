@@ -369,7 +369,8 @@ MultiSelectList.args = {
         allowSearch: true,
         isMultiSelect: true,
         items
-    }
+    },
+    value: ['item-5', 'meeting', 'wrong-value']
 };
 
 export const CustomMenu = Template.bind({});
@@ -381,7 +382,6 @@ CustomMenu.args = {
     },
     iconSize: 'x-small',
     iconName: 'utility:apps',
-    value: ['item-5', 'meeting', 'wrong-value'],
     dropdownNubbin: true
 };
 
@@ -404,6 +404,7 @@ Range.args = {
     typeAttributes: {
         max: 30,
         min: 6,
+        showPin: true,
         step: 2,
         tickMarkStyle: 'dot',
         showTickMarks: true,
