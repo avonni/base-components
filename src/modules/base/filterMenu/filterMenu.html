@@ -53,6 +53,8 @@
         >
             {label}
             <c-primitive-icon
+                if:true={iconName}
+                class="slds-m-horizontal_xx-small"
                 icon-name={iconName}
                 svg-class="slds-button__icon"
                 variant="bare"
@@ -77,13 +79,7 @@
             onclick={handleDropdownClick}
             onmouseout={allowBlur}
         >
-            <lightning-spinner
-                if:true={isLoading}
-                size="small"
-                alternative-text={loadingStateAlternativeText}
-                data-element-id="lightning-spinner"
-            ></lightning-spinner>
-            <div if:false={isLoading} role="menu">
+            <div role="menu">
                 <!-- Search box -->
                 <lightning-input
                     if:true={computedTypeAttributes.allowSearch}
@@ -92,17 +88,22 @@
                     placeholder={computedTypeAttributes.searchInputPlaceholder}
                     variant="label-hidden"
                     type="search"
-                    disabled={disabled}
-                    is-loading={isLoading}
                     value={searchTerm}
                     autocomplete="off"
                     data-element-id="lightning-input"
                     onchange={handleSearch}
-                    onblur={handlePrivateBlur}
-                    onfocus={handlePrivateFocus}
                     onkeydown={handleKeyDown}
                 ></lightning-input>
-                <div class={computedDropdownContentClass}>
+
+                <p if:true={showNoResultMessage} class="slds-p-around_small">
+                    No matches found
+                </p>
+
+                <div
+                    class={computedDropdownContentClass}
+                    data-element-id="div-dropdown-content"
+                    onscroll={handleScroll}
+                >
                     <!-- List -->
                     <template
                         if:true={isList}
@@ -127,43 +128,56 @@
                         </lightning-menu-item>
                     </template>
 
-                    <!-- Date Range -->
-                    <c-input-date-range
-                        if:true={isDateRange}
-                        class="slds-show slds-p-around_small"
-                        date-style={computedTypeAttributes.dateStyle}
-                        label={label}
-                        label-end-date={computedTypeAttributes.labelEndDate}
-                        label-end-time={computedTypeAttributes.labelEndTime}
-                        label-start-date={computedTypeAttributes.labelStartDate}
-                        label-start-time={computedTypeAttributes.labelStartTime}
-                        start-date={dateRangeStartDate}
-                        end-date={dateRangeEndDate}
-                        time-style={computedTypeAttributes.timeStyle}
-                        type={computedTypeAttributes.type}
-                        variant="label-hidden"
-                        onchange={handleDateRangeChange}
-                    ></c-input-date-range>
+                    <!-- Loading spinner -->
+                    <div
+                        if:true={isLoading}
+                        class="slds-is-relative slds-p-vertical_large"
+                    >
+                        <lightning-spinner
+                            size="small"
+                            alternative-text={loadingStateAlternativeText}
+                            data-element-id="lightning-spinner"
+                        ></lightning-spinner>
+                    </div>
 
-                    <!-- Range -->
-                    <c-slider
-                        if:true={isRange}
-                        class="slds-show slds-m-around_small"
-                        disable-swap
-                        hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
-                        label={label}
-                        max={computedTypeAttributes.max}
-                        min={computedTypeAttributes.min}
-                        show-pin={computedTypeAttributes.showPin}
-                        show-tick-marks={computedTypeAttributes.showTickMarks}
-                        step={computedTypeAttributes.step}
-                        tick-mark-style={computedTypeAttributes.tickMarkStyle}
-                        unit={computedTypeAttributes.unit}
-                        unit-attributes={computedTypeAttributes.unitAttributes}
-                        value={rangeValue}
-                        variant="label-hidden"
-                        onchange={handleRangeChange}
-                    ></c-slider>
+                    <template if:false={isLoading}>
+                        <!-- Date Range -->
+                        <c-input-date-range
+                            if:true={isDateRange}
+                            class="slds-show slds-p-around_small"
+                            date-style={computedTypeAttributes.dateStyle}
+                            label={label}
+                            label-end-date={computedTypeAttributes.labelEndDate}
+                            label-end-time={computedTypeAttributes.labelEndTime}
+                            label-start-date={computedTypeAttributes.labelStartDate}
+                            label-start-time={computedTypeAttributes.labelStartTime}
+                            start-date={dateRangeStartDate}
+                            end-date={dateRangeEndDate}
+                            time-style={computedTypeAttributes.timeStyle}
+                            type={computedTypeAttributes.type}
+                            variant="label-hidden"
+                            onchange={handleDateRangeChange}
+                        ></c-input-date-range>
+                        <!-- Range -->
+                        <c-slider
+                            if:true={isRange}
+                            class="slds-show slds-m-around_small"
+                            disable-swap
+                            hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                            label={label}
+                            max={computedTypeAttributes.max}
+                            min={computedTypeAttributes.min}
+                            show-pin={computedTypeAttributes.showPin}
+                            show-tick-marks={computedTypeAttributes.showTickMarks}
+                            step={computedTypeAttributes.step}
+                            tick-mark-style={computedTypeAttributes.tickMarkStyle}
+                            unit={computedTypeAttributes.unit}
+                            unit-attributes={computedTypeAttributes.unitAttributes}
+                            value={rangeValue}
+                            variant="label-hidden"
+                            onchange={handleRangeChange}
+                        ></c-slider>
+                    </template>
                 </div>
 
                 <!-- Reset and apply buttons -->
@@ -180,6 +194,7 @@
                 >
                     <lightning-button
                         class="slds-m-right_x-small"
+                        disabled={isLoading}
                         variant="base"
                         label={resetButtonLabel}
                         title={resetButtonLabel}
@@ -190,9 +205,10 @@
                         onkeydown={handleKeyDown}
                     ></lightning-button>
                     <lightning-button
-                        variant="brand"
+                        disabled={isLoading}
                         label={applyButtonLabel}
                         title={applyButtonLabel}
+                        variant="brand"
                         data-element-id="lightning-button-apply"
                         onfocus={handlePrivateFocus}
                         onblur={handlePrivateBlur}

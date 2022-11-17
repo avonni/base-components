@@ -31,6 +31,7 @@
  */
 
 import { FilterMenu } from '../__examples__/filterMenu';
+import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
 
 export default {
     title: 'Example/Filter Menu',
@@ -357,6 +358,7 @@ const items = [
 ];
 
 const Template = (args) => FilterMenu(args);
+const InfiniteLoadingTemplate = (args) => FilterMenuInfiniteLoading(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -430,10 +432,12 @@ Vertical.args = {
     iconSize: 'small'
 };
 
-export const VerticalLoading = Template.bind({});
-VerticalLoading.args = {
-    label: 'Contact',
-    isLoading: true,
-    tooltip: 'is-loading is set to true',
-    variant: 'vertical'
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite loading',
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        enableInfiniteLoading: true
+    }
 };

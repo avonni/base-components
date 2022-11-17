@@ -84,6 +84,8 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
+const LOAD_MORE_OFFSET = 20;
+
 const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -113,6 +115,7 @@ const TYPE_ATTRIBUTES = {
         'allowSearch',
         'dropdownLength',
         'dropdownWidth',
+        'enableInfiniteLoading',
         'isMultiSelect',
         'items',
         'searchInputPlaceholder'
@@ -209,6 +212,8 @@ export default class FilterMenu extends LightningElement {
 
     _cancelBlur = false;
     _order;
+    _previousScroll;
+    _searchTimeOut;
 
     @track computedItems = [];
     @track selectedItems = [];
@@ -216,6 +221,7 @@ export default class FilterMenu extends LightningElement {
     @track currentValue = [];
     dropdownVisible = false;
     fieldLevelHelp;
+    searchTerm;
 
     connectedCallback() {
         // button-group necessities
@@ -245,10 +251,21 @@ export default class FilterMenu extends LightningElement {
 
         this.dispatchEvent(privatebuttonregister);
         this.normalizeTypeAttributes();
-        this.computeValue();
+        this.computeListItems();
         this.computeSelectedItems();
         this.computeTabindex();
         this._connected = true;
+
+        if (
+            this.isVertical &&
+            this.infiniteLoad &&
+            !this.isLoading &&
+            !this.computedItems.length
+        ) {
+            // Fire the loadmore event without waiting for the user
+            // to click on the load more button
+            this.dispatchLoadMore();
+        }
     }
 
     disconnectedCallback() {
@@ -259,10 +276,18 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
+
+        if (
+            this.infiniteLoad &&
+            this.dropdownElement &&
+            this.dropdownElement.scrollTop === 0
+        ) {
+            this.handleScroll();
+        }
     }
 
     render() {
-        if (this.variant === 'vertical') {
+        if (this.isVertical) {
             return filterMenuVertical;
         }
         return filterMenu;
@@ -727,10 +752,13 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
-        this._value = deepCopy(array);
+        this._value = array;
+        this.currentValue = deepCopy(array);
 
-        this.computeValue();
-        this.computeSelectedItems();
+        if (this._connected) {
+            this.computeListItems();
+            this.computeSelectedItems();
+        }
     }
 
     /**
@@ -749,6 +777,22 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: MENU_VARIANTS.default,
             validValues: MENU_VARIANTS.valid
         });
+
+        if (
+            this._connected &&
+            this.isVertical &&
+            this.infiniteLoad &&
+            !this.isLoading
+        ) {
+            const visibleItems = this.template.querySelectorAll(
+                '[data-element-id="lightning-menu-item"]'
+            );
+            if (!visibleItems.length) {
+                // Fire the loadmore event without waiting for the user
+                // to click on the load more button
+                this.dispatchLoadMore();
+            }
+        }
     }
 
     /*
@@ -880,7 +924,6 @@ export default class FilterMenu extends LightningElement {
                 'slds-nubbin_bottom':
                     this.dropdownNubbin &&
                     this.dropdownAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading,
                 'avonni-filter-menu__dropdown_range':
                     this.isRange || this.isDateRange
             })
@@ -919,6 +962,20 @@ export default class FilterMenu extends LightningElement {
         return this.currentValue[0];
     }
 
+    get disabledOrLoading() {
+        return this.isLoading || this.disabled;
+    }
+
+    get dropdownElement() {
+        return this.template.querySelector(
+            '[data-element-id="div-dropdown-content"]'
+        );
+    }
+
+    get infiniteLoad() {
+        return this.computedTypeAttributes.enableInfiniteLoading;
+    }
+
     get isDateRange() {
         return this.type === 'date-range';
     }
@@ -931,6 +988,22 @@ export default class FilterMenu extends LightningElement {
         return this.type === 'range';
     }
 
+    get isVertical() {
+        return this.variant === 'vertical';
+    }
+
+    get noVisibleListItem() {
+        let i = 0;
+        let noVisibleListItem = true;
+        while (i < this.computedItems.length && noVisibleListItem) {
+            if (!this.computedItems[i].hidden) {
+                noVisibleListItem = false;
+            }
+            i += 1;
+        }
+        return noVisibleListItem;
+    }
+
     get pillActions() {
         return [
             {
@@ -939,6 +1012,23 @@ export default class FilterMenu extends LightningElement {
                 iconName: 'utility:close'
             }
         ];
+    }
+
+    get scrolledToEnd() {
+        const fullHeight = this.dropdownElement.scrollHeight;
+        const scrolledDistance = this.dropdownElement.scrollTop;
+        const visibleHeight = this.dropdownElement.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + LOAD_MORE_OFFSET >= fullHeight
+        );
+    }
+
+    get showLoadMoreButton() {
+        return this.infiniteLoad && !this.isLoading;
+    }
+
+    get showNoResultMessage() {
+        return !this.isLoading && this.searchTerm && this.noVisibleListItem;
     }
 
     get rangeValue() {
@@ -973,7 +1063,7 @@ export default class FilterMenu extends LightningElement {
      */
     @api
     focus() {
-        if (this.variant === 'vertical') {
+        if (this.isVertical) {
             this.template
                 .querySelector('[data-element-id="avonni-input-choice-set"]')
                 .focus();
@@ -1023,6 +1113,21 @@ export default class FilterMenu extends LightningElement {
         if (this._tooltip && !this._tooltip.initialized) {
             this._tooltip.initialize();
         }
+    }
+
+    computeListItems() {
+        if (!this.isList) {
+            return;
+        }
+        const items = normalizeArray(
+            this.computedTypeAttributes.items,
+            'object'
+        );
+        this.computedItems = deepCopy(items).map((item) => {
+            item.checked = this.currentValue.includes(item.value);
+            item.hidden = this.isOutOfSearchScope(item.label);
+            return item;
+        });
     }
 
     computeSelectedRange() {
@@ -1102,22 +1207,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Compute Value of items by 'checked' state.
-     */
-    computeValue() {
-        if (this.isList) {
-            this.computedItems.forEach((item) => {
-                if (this.value.indexOf(item.value) > -1) {
-                    item.checked = true;
-                } else {
-                    item.checked = false;
-                }
-            });
-        }
-        this.currentValue = [...this.value];
-    }
-
-    /**
      * Allow blur.
      */
     allowBlur() {
@@ -1183,6 +1272,15 @@ export default class FilterMenu extends LightningElement {
         return this.dropdownAlignment.startsWith('auto');
     }
 
+    isOutOfSearchScope(label) {
+        if (!this.searchTerm || typeof this.searchTerm !== 'string') {
+            return false;
+        }
+        const normalizedLabel = label.toLowerCase();
+        const searchTerm = this.searchTerm.toLowerCase();
+        return !normalizedLabel.includes(searchTerm);
+    }
+
     normalizeTypeAttributes() {
         const typeAttributes = {};
         Object.entries(this.typeAttributes).forEach(([key, value]) => {
@@ -1194,15 +1292,8 @@ export default class FilterMenu extends LightningElement {
             }
         });
         this.computedTypeAttributes = typeAttributes;
-
         this.supportDeprecatedAttributes();
-        if (this.isList) {
-            const items = normalizeArray(
-                this.computedTypeAttributes.items,
-                'object'
-            );
-            this.computedItems = deepCopy(items);
-        }
+        this.computeListItems();
     }
 
     /**
@@ -1343,7 +1434,8 @@ export default class FilterMenu extends LightningElement {
                 this._boundingRect = this.getBoundingClientRect();
 
                 this.pollBoundingRect();
-                this.computeValue();
+                this.currentValue = [...this.value];
+                this.computeListItems();
             } else {
                 this.stopPositioning();
 
@@ -1355,6 +1447,7 @@ export default class FilterMenu extends LightningElement {
                  * @public
                  */
                 this.dispatchEvent(new CustomEvent('close'));
+                this._previousScroll = undefined;
             }
         }
     }
@@ -1447,7 +1540,9 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event
      */
     handleCheckboxChange(event) {
-        this.currentValue = event.detail.value;
+        const value = event.detail.value;
+        this.currentValue =
+            value && !Array.isArray(value) ? [value] : value || [];
         this.computedItems.forEach((item) => {
             item.checked = this.currentValue.includes(item.value);
         });
@@ -1559,6 +1654,25 @@ export default class FilterMenu extends LightningElement {
         this.dispatchSelect();
     }
 
+    handleScroll() {
+        if (!this.infiniteLoad || this.isLoading) {
+            return;
+        }
+
+        const fullHeight = this.dropdownElement.scrollHeight;
+        const visibleHeight = this.dropdownElement.offsetHeight;
+        const loadLimit = fullHeight - visibleHeight - LOAD_MORE_OFFSET;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            this.dispatchLoadMore();
+        }
+        this._previousScroll = this.dropdownElement.scrollTop;
+    }
+
     /**
      * Selected Item removal handler.
      *
@@ -1578,7 +1692,8 @@ export default class FilterMenu extends LightningElement {
             this._value = [];
         }
 
-        this.computeValue();
+        this.currentValue = [...this.value];
+        this.computeListItems();
         this.dispatchApply();
     }
 
@@ -1612,30 +1727,40 @@ export default class FilterMenu extends LightningElement {
      */
     handleSearch(event) {
         event.stopPropagation();
-        const searchTerm = event.currentTarget.value;
+        this.searchTerm = event.detail.value;
 
-        this.computedItems.forEach((item) => {
-            const label = item.label.toLowerCase();
-            item.hidden = searchTerm
-                ? !label.includes(searchTerm.toLowerCase())
-                : false;
-        });
+        clearTimeout(this._searchTimeOut);
+        this._searchTimeOut = setTimeout(() => {
+            this.computedItems.forEach((item) => {
+                item.hidden = this.isOutOfSearchScope(item.label);
+            });
+            this.computedItems = [...this.computedItems];
 
-        /**
-         * The event fired when the search input value is changed.
-         *
-         * @event
-         * @name search
-         * @param {string} value The value of the search input.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('search', {
-                detail: {
-                    value: searchTerm
-                }
-            })
-        );
+            /**
+             * The event fired when the search input value is changed.
+             *
+             * @event
+             * @name search
+             * @param {string} value The value of the search input.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('search', {
+                    detail: {
+                        value: this.searchTerm
+                    }
+                })
+            );
+
+            if (
+                this.isVertical &&
+                this.infiniteLoad &&
+                !this.isLoading &&
+                this.noVisibleListItem
+            ) {
+                this.dispatchLoadMore();
+            }
+        }, 300);
     }
 
     /**
@@ -1657,6 +1782,17 @@ export default class FilterMenu extends LightningElement {
                 }
             })
         );
+    }
+
+    dispatchLoadMore() {
+        /**
+         * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 
     /**
