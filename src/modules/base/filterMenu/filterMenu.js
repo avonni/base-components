@@ -450,7 +450,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * If present, the apply and reset buttons are hidden.
+     * If present, the apply and reset buttons are hidden and the value is immediately saved every time the selection changes.
      *
      * @type {boolean}
      * @public
@@ -1711,7 +1711,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Apply click handler.
      */
-    handleApplyClick() {
+    handleApply() {
         this.apply();
         this.dispatchApply();
     }
@@ -1779,7 +1779,7 @@ export default class FilterMenu extends LightningElement {
      */
     dispatchApply() {
         /**
-         * The event fired when the “Apply” button is clicked, or a pill removed from the selected items.
+         * The event fired when the “Apply” button is clicked, or a pill removed from the selected items. If `hide-apply-reset-buttons` is `true`, the `apply` event is also fired when the user selects or unselects a value.
          *
          * @event
          * @name apply
@@ -1825,5 +1825,16 @@ export default class FilterMenu extends LightningElement {
                 }
             })
         );
+
+        if (this.hideApplyResetButtons) {
+            // Save the selection immediately
+            this._value = [...this.currentValue];
+            this.computeSelectedItems();
+            this.dispatchApply();
+
+            if (this.isList && !this.computedTypeAttributes.isMultiSelect) {
+                this.close();
+            }
+        }
     }
 }

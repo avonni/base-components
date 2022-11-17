@@ -384,7 +384,8 @@ CustomMenu.args = {
     },
     iconSize: 'x-small',
     iconName: 'utility:apps',
-    dropdownNubbin: true
+    dropdownNubbin: true,
+    hideApplyResetButtons: true
 };
 
 export const DateRange = Template.bind({});
