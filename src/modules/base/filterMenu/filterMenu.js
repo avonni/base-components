@@ -1085,12 +1085,23 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Clear the currently selected values.
+     * Clear the value.
+     */
+    @api
+    clear() {
+        this._value = [];
+        this.currentValue = [];
+        this.computeListItems();
+        this.computeSelectedItems();
+    }
+
+    /**
+     * Unselect all values, without saving the change.
      *
      * @public
      */
     @api
-    clear() {
+    reset() {
         this.currentValue = [];
         if (this.isList) {
             this.computedItems = this.computedItems.map((item) => {
@@ -1717,7 +1728,7 @@ export default class FilterMenu extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('reset'));
-        this.clear();
+        this.reset();
     }
 
     /**
