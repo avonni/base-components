@@ -33,7 +33,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { ICON_TYPES } from './icons/salesforceIcons.js';
+import { ICON_TYPES } from './icons/salesforceIcons';
 
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],

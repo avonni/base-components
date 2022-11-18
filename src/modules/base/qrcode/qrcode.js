@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-import qrcodeGeneration from './qrcodeGeneration.js';
+import qrcodeGeneration from './qrcodeGeneration';
 
 const QR_ENCODINGS = { valid: ['ISO_8859_1', 'UTF_8'], default: 'ISO_8859_1' };
 const QR_ERROR_CORRECTIONS = { valid: ['L', 'M', 'Q', 'H'], default: 'L' };

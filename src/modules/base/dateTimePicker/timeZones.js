@@ -33,7 +33,7 @@
 // Time zones taken from tzdb package on March, 8th 2021
 // For a constant updated version, the package would need to be added
 // https://github.com/vvo/tzdb
-export default [
+const TIME_ZONES = [
     {
         label: '-11:00 Niue Time - Alofi',
         value: 'Pacific/Niue'
@@ -55,8 +55,7 @@ export default [
         value: 'America/Adak'
     },
     {
-        label:
-            '-10:00 Hawaii-Aleutian Time - Honolulu, East Honolulu, Pearl City, Hilo',
+        label: '-10:00 Hawaii-Aleutian Time - Honolulu, East Honolulu, Pearl City, Hilo',
         value: 'Pacific/Honolulu'
     },
     {
@@ -76,8 +75,7 @@ export default [
         value: 'Pacific/Gambier'
     },
     {
-        label:
-            '-08:00 Pacific Time - Los Angeles, San Diego, San Jose, San Francisco',
+        label: '-08:00 Pacific Time - Los Angeles, San Diego, San Jose, San Francisco',
         value: 'America/Los_Angeles'
     },
     {
@@ -93,23 +91,19 @@ export default [
         value: 'Pacific/Pitcairn'
     },
     {
-        label:
-            '-07:00 Mexican Pacific Time - Hermosillo, Ciudad Obregón, Nogales, San Luis Río Colorado',
+        label: '-07:00 Mexican Pacific Time - Hermosillo, Ciudad Obregón, Nogales, San Luis Río Colorado',
         value: 'America/Hermosillo'
     },
     {
-        label:
-            '-07:00 Mountain Time - Calgary, Edmonton, Fort McMurray, Red Deer',
+        label: '-07:00 Mountain Time - Calgary, Edmonton, Fort McMurray, Red Deer',
         value: 'America/Edmonton'
     },
     {
-        label:
-            '-07:00 Mountain Time - Ciudad Juárez, Chihuahua, Culiacán, Mazatlán',
+        label: '-07:00 Mountain Time - Ciudad Juárez, Chihuahua, Culiacán, Mazatlán',
         value: 'America/Ojinaga'
     },
     {
-        label:
-            '-07:00 Mountain Time - Denver, El Paso, Albuquerque, Colorado Springs',
+        label: '-07:00 Mountain Time - Denver, El Paso, Albuquerque, Colorado Springs',
         value: 'America/Denver'
     },
     {
@@ -125,8 +119,7 @@ export default [
         value: 'America/Whitehorse'
     },
     {
-        label:
-            '-06:00 Central Time - Belize City, San Ignacio, Orange Walk, Belmopan',
+        label: '-06:00 Central Time - Belize City, San Ignacio, Orange Walk, Belmopan',
         value: 'America/Belize'
     },
     {
@@ -134,8 +127,7 @@ export default [
         value: 'America/Chicago'
     },
     {
-        label:
-            '-06:00 Central Time - Guatemala City, Mixco, Villa Nueva, Petapa',
+        label: '-06:00 Central Time - Guatemala City, Mixco, Villa Nueva, Petapa',
         value: 'America/Guatemala'
     },
     {
@@ -143,8 +135,7 @@ export default [
         value: 'America/Managua'
     },
     {
-        label:
-            '-06:00 Central Time - Mexico City, Iztapalapa, Ecatepec de Morelos, Guadalajara',
+        label: '-06:00 Central Time - Mexico City, Iztapalapa, Ecatepec de Morelos, Guadalajara',
         value: 'America/Mexico_City'
     },
     {
@@ -152,18 +143,15 @@ export default [
         value: 'America/Costa_Rica'
     },
     {
-        label:
-            '-06:00 Central Time - San Salvador, Soyapango, Santa Ana, San Miguel',
+        label: '-06:00 Central Time - San Salvador, Soyapango, Santa Ana, San Miguel',
         value: 'America/El_Salvador'
     },
     {
-        label:
-            '-06:00 Central Time - Saskatoon, Regina, Prince Albert, Moose Jaw',
+        label: '-06:00 Central Time - Saskatoon, Regina, Prince Albert, Moose Jaw',
         value: 'America/Regina'
     },
     {
-        label:
-            '-06:00 Central Time - Tegucigalpa, San Pedro Sula, Choloma, La Ceiba',
+        label: '-06:00 Central Time - Tegucigalpa, San Pedro Sula, Choloma, La Ceiba',
         value: 'America/Tegucigalpa'
     },
     {
@@ -175,8 +163,7 @@ export default [
         value: 'Pacific/Galapagos'
     },
     {
-        label:
-            '-05:00 Acre Time - Rio Branco, Cruzeiro do Sul, Sena Madureira, Eirunepé',
+        label: '-05:00 Acre Time - Rio Branco, Cruzeiro do Sul, Sena Madureira, Eirunepé',
         value: 'America/Rio_Branco'
     },
     {
@@ -196,8 +183,7 @@ export default [
         value: 'America/Atikokan'
     },
     {
-        label:
-            '-05:00 Eastern Time - Cancún, Chetumal, Playa del Carmen, Cozumel',
+        label: '-05:00 Eastern Time - Cancún, Chetumal, Playa del Carmen, Cozumel',
         value: 'America/Cancun'
     },
     {
@@ -209,8 +195,7 @@ export default [
         value: 'America/Cayman'
     },
     {
-        label:
-            '-05:00 Eastern Time - Kingston, New Kingston, Spanish Town, Portmore',
+        label: '-05:00 Eastern Time - Kingston, New Kingston, Spanish Town, Portmore',
         value: 'America/Jamaica'
     },
     {
@@ -218,8 +203,7 @@ export default [
         value: 'America/Nassau'
     },
     {
-        label:
-            '-05:00 Eastern Time - New York City, Brooklyn, Queens, Philadelphia',
+        label: '-05:00 Eastern Time - New York City, Brooklyn, Queens, Philadelphia',
         value: 'America/New_York'
     },
     {
@@ -227,8 +211,7 @@ export default [
         value: 'America/Panama'
     },
     {
-        label:
-            '-05:00 Eastern Time - Port-au-Prince, Carrefour, Delmas 73, Pétionville',
+        label: '-05:00 Eastern Time - Port-au-Prince, Carrefour, Delmas 73, Pétionville',
         value: 'America/Port-au-Prince'
     },
     {
@@ -236,8 +219,7 @@ export default [
         value: 'America/Toronto'
     },
     {
-        label:
-            '-05:00 Ecuador Time - Guayaquil, Quito, Cuenca, Santo Domingo de los Colorados',
+        label: '-05:00 Ecuador Time - Guayaquil, Quito, Cuenca, Santo Domingo de los Colorados',
         value: 'America/Guayaquil'
     },
     {
@@ -265,13 +247,11 @@ export default [
         value: 'America/St_Lucia'
     },
     {
-        label:
-            '-04:00 Atlantic Time - Chaguanas, Mon Repos, San Fernando, Port of Spain',
+        label: '-04:00 Atlantic Time - Chaguanas, Mon Repos, San Fernando, Port of Spain',
         value: 'America/Port_of_Spain'
     },
     {
-        label:
-            '-04:00 Atlantic Time - Fort-de-France, Le Lamentin, Le Robert, Sainte-Marie',
+        label: '-04:00 Atlantic Time - Fort-de-France, Le Lamentin, Le Robert, Sainte-Marie',
         value: 'America/Martinique'
     },
     {
@@ -295,8 +275,7 @@ export default [
         value: 'America/Kralendijk'
     },
     {
-        label:
-            '-04:00 Atlantic Time - Les Abymes, Baie-Mahault, Le Gosier, Petit-Bourg',
+        label: '-04:00 Atlantic Time - Les Abymes, Baie-Mahault, Le Gosier, Petit-Bourg',
         value: 'America/Guadeloupe'
     },
     {
@@ -340,8 +319,7 @@ export default [
         value: 'America/Puerto_Rico'
     },
     {
-        label:
-            '-04:00 Atlantic Time - Santo Domingo, Santiago de los Caballeros, Santo Domingo Oeste, Santo Domingo Este',
+        label: '-04:00 Atlantic Time - Santo Domingo, Santiago de los Caballeros, Santo Domingo Oeste, Santo Domingo Este',
         value: 'America/Santo_Domingo'
     },
     {
@@ -357,8 +335,7 @@ export default [
         value: 'America/Curacao'
     },
     {
-        label:
-            '-04:00 Bolivia Time - Santa Cruz de la Sierra, Cochabamba, La Paz, Sucre',
+        label: '-04:00 Bolivia Time - Santa Cruz de la Sierra, Cochabamba, La Paz, Sucre',
         value: 'America/La_Paz'
     },
     {
@@ -370,23 +347,19 @@ export default [
         value: 'America/Caracas'
     },
     {
-        label:
-            "-03:30 Newfoundland Time - St. John's, Mount Pearl, Corner Brook, Conception Bay South",
+        label: "-03:30 Newfoundland Time - St. John's, Mount Pearl, Corner Brook, Conception Bay South",
         value: 'America/St_Johns'
     },
     {
-        label:
-            '-03:00 Argentina Time - Buenos Aires, Córdoba, Rosario, Mendoza',
+        label: '-03:00 Argentina Time - Buenos Aires, Córdoba, Rosario, Mendoza',
         value: 'America/Argentina/Buenos_Aires'
     },
     {
-        label:
-            '-03:00 Brasilia Time - São Paulo, Rio de Janeiro, Salvador, Fortaleza',
+        label: '-03:00 Brasilia Time - São Paulo, Rio de Janeiro, Salvador, Fortaleza',
         value: 'America/Sao_Paulo'
     },
     {
-        label:
-            '-04:00 Chile Time - Santiago, Puente Alto, Antofagasta, Viña del Mar',
+        label: '-04:00 Chile Time - Santiago, Puente Alto, Antofagasta, Viña del Mar',
         value: 'America/Santiago'
     },
     {
@@ -402,13 +375,11 @@ export default [
         value: 'Atlantic/Stanley'
     },
     {
-        label:
-            '-03:00 French Guiana Time - Cayenne, Matoury, Saint-Laurent-du-Maroni, Kourou',
+        label: '-03:00 French Guiana Time - Cayenne, Matoury, Saint-Laurent-du-Maroni, Kourou',
         value: 'America/Cayenne'
     },
     {
-        label:
-            '-04:00 Paraguay Time - Asunción, Ciudad del Este, San Lorenzo, Capiatá',
+        label: '-04:00 Paraguay Time - Asunción, Ciudad del Este, San Lorenzo, Capiatá',
         value: 'America/Asuncion'
     },
     {
@@ -440,8 +411,7 @@ export default [
         value: 'Atlantic/Azores'
     },
     {
-        label:
-            '-01:00 Cape Verde Time - Praia, Mindelo, Santa Maria, Cova Figueira',
+        label: '-01:00 Cape Verde Time - Praia, Mindelo, Santa Maria, Cova Figueira',
         value: 'Atlantic/Cape_Verde'
     },
     {
@@ -465,8 +435,7 @@ export default [
         value: 'Africa/Bissau'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - Camayenne, Conakry, Nzérékoré, Kindia',
+        label: '+00:00 Greenwich Mean Time - Camayenne, Conakry, Nzérékoré, Kindia',
         value: 'Africa/Conakry'
     },
     {
@@ -498,28 +467,23 @@ export default [
         value: 'Africa/Lome'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - London, Birmingham, Liverpool, Nottingham',
+        label: '+00:00 Greenwich Mean Time - London, Birmingham, Liverpool, Nottingham',
         value: 'Europe/London'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - Monrovia, Gbarnga, Kakata, Bensonville',
+        label: '+00:00 Greenwich Mean Time - Monrovia, Gbarnga, Kakata, Bensonville',
         value: 'Africa/Monrovia'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - Nouakchott, Nouadhibou, Néma, Kaédi',
+        label: '+00:00 Greenwich Mean Time - Nouakchott, Nouadhibou, Néma, Kaédi',
         value: 'Africa/Nouakchott'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - Ouagadougou, Bobo-Dioulasso, Koudougou, Ouahigouya',
+        label: '+00:00 Greenwich Mean Time - Ouagadougou, Bobo-Dioulasso, Koudougou, Ouahigouya',
         value: 'Africa/Ouagadougou'
     },
     {
-        label:
-            '+00:00 Greenwich Mean Time - Reykjavík, Kópavogur, Hafnarfjörður, Akureyri',
+        label: '+00:00 Greenwich Mean Time - Reykjavík, Kópavogur, Hafnarfjörður, Akureyri',
         value: 'Atlantic/Reykjavik'
     },
     {
@@ -543,8 +507,7 @@ export default [
         value: 'Antarctica/Troll'
     },
     {
-        label:
-            '+00:00 Western European Time - Las Palmas de Gran Canaria, Santa Cruz de Tenerife, La Laguna, Telde',
+        label: '+00:00 Western European Time - Las Palmas de Gran Canaria, Santa Cruz de Tenerife, La Laguna, Telde',
         value: 'Atlantic/Canary'
     },
     {
@@ -556,13 +519,11 @@ export default [
         value: 'Atlantic/Faroe'
     },
     {
-        label:
-            '+01:00 Central European Time - Algiers, Boumerdas, Oran, Tébessa',
+        label: '+01:00 Central European Time - Algiers, Boumerdas, Oran, Tébessa',
         value: 'Africa/Algiers'
     },
     {
-        label:
-            '+01:00 Central European Time - Amsterdam, Rotterdam, The Hague, Utrecht',
+        label: '+01:00 Central European Time - Amsterdam, Rotterdam, The Hague, Utrecht',
         value: 'Europe/Amsterdam'
     },
     {
@@ -578,28 +539,23 @@ export default [
         value: 'Europe/Berlin'
     },
     {
-        label:
-            '+01:00 Central European Time - Birkirkara, Qormi, Mosta, Żabbar',
+        label: '+01:00 Central European Time - Birkirkara, Qormi, Mosta, Żabbar',
         value: 'Europe/Malta'
     },
     {
-        label:
-            '+01:00 Central European Time - Bratislava, Košice, Prešov, Nitra',
+        label: '+01:00 Central European Time - Bratislava, Košice, Prešov, Nitra',
         value: 'Europe/Bratislava'
     },
     {
-        label:
-            '+01:00 Central European Time - Brussels, Antwerpen, Gent, Charleroi',
+        label: '+01:00 Central European Time - Brussels, Antwerpen, Gent, Charleroi',
         value: 'Europe/Brussels'
     },
     {
-        label:
-            '+01:00 Central European Time - Budapest, Debrecen, Miskolc, Szeged',
+        label: '+01:00 Central European Time - Budapest, Debrecen, Miskolc, Szeged',
         value: 'Europe/Budapest'
     },
     {
-        label:
-            '+01:00 Central European Time - Copenhagen, Århus, Odense, Aalborg',
+        label: '+01:00 Central European Time - Copenhagen, Århus, Odense, Aalborg',
         value: 'Europe/Copenhagen'
     },
     {
@@ -607,8 +563,7 @@ export default [
         value: 'Europe/Gibraltar'
     },
     {
-        label:
-            '+01:00 Central European Time - Ljubljana, Maribor, Celje, Kranj',
+        label: '+01:00 Central European Time - Ljubljana, Maribor, Celje, Kranj',
         value: 'Europe/Ljubljana'
     },
     {
@@ -616,13 +571,11 @@ export default [
         value: 'Arctic/Longyearbyen'
     },
     {
-        label:
-            '+01:00 Central European Time - Luxembourg, Esch-sur-Alzette, Dudelange',
+        label: '+01:00 Central European Time - Luxembourg, Esch-sur-Alzette, Dudelange',
         value: 'Europe/Luxembourg'
     },
     {
-        label:
-            '+01:00 Central European Time - Madrid, Barcelona, Valencia, Sevilla',
+        label: '+01:00 Central European Time - Madrid, Barcelona, Valencia, Sevilla',
         value: 'Europe/Madrid'
     },
     {
@@ -630,18 +583,15 @@ export default [
         value: 'Europe/Monaco'
     },
     {
-        label:
-            '+01:00 Central European Time - Oslo, Bergen, Trondheim, Stavanger',
+        label: '+01:00 Central European Time - Oslo, Bergen, Trondheim, Stavanger',
         value: 'Europe/Oslo'
     },
     {
-        label:
-            '+01:00 Central European Time - Paris, Marseille, Lyon, Toulouse',
+        label: '+01:00 Central European Time - Paris, Marseille, Lyon, Toulouse',
         value: 'Europe/Paris'
     },
     {
-        label:
-            '+01:00 Central European Time - Podgorica, Nikšić, Herceg Novi, Pljevlja',
+        label: '+01:00 Central European Time - Podgorica, Nikšić, Herceg Novi, Pljevlja',
         value: 'Europe/Podgorica'
     },
     {
@@ -657,18 +607,15 @@ export default [
         value: 'Europe/San_Marino'
     },
     {
-        label:
-            '+01:00 Central European Time - Sarajevo, Banja Luka, Zenica, Tuzla',
+        label: '+01:00 Central European Time - Sarajevo, Banja Luka, Zenica, Tuzla',
         value: 'Europe/Sarajevo'
     },
     {
-        label:
-            '+01:00 Central European Time - Skopje, Bitola, Kumanovo, Prilep',
+        label: '+01:00 Central European Time - Skopje, Bitola, Kumanovo, Prilep',
         value: 'Europe/Skopje'
     },
     {
-        label:
-            '+01:00 Central European Time - Stockholm, Göteborg, Malmö, Uppsala',
+        label: '+01:00 Central European Time - Stockholm, Göteborg, Malmö, Uppsala',
         value: 'Europe/Stockholm'
     },
     {
@@ -712,13 +659,11 @@ export default [
         value: 'Africa/Malabo'
     },
     {
-        label:
-            '+01:00 West Africa Time - Brazzaville, Pointe-Noire, Dolisie, Kayes',
+        label: '+01:00 West Africa Time - Brazzaville, Pointe-Noire, Dolisie, Kayes',
         value: 'Africa/Brazzaville'
     },
     {
-        label:
-            '+01:00 West Africa Time - Cotonou, Abomey-Calavi, Djougou, Porto-Novo',
+        label: '+01:00 West Africa Time - Cotonou, Abomey-Calavi, Djougou, Porto-Novo',
         value: 'Africa/Porto-Novo'
     },
     {
@@ -734,8 +679,7 @@ export default [
         value: 'Africa/Lagos'
     },
     {
-        label:
-            '+01:00 West Africa Time - Libreville, Port-Gentil, Franceville, Oyem',
+        label: '+01:00 West Africa Time - Libreville, Port-Gentil, Franceville, Oyem',
         value: 'Africa/Libreville'
     },
     {
@@ -759,28 +703,23 @@ export default [
         value: 'Africa/El_Aaiun'
     },
     {
-        label:
-            '+01:00 Central Africa Time - Windhoek, Rundu, Walvis Bay, Oshakati',
+        label: '+01:00 Central Africa Time - Windhoek, Rundu, Walvis Bay, Oshakati',
         value: 'Africa/Windhoek'
     },
     {
-        label:
-            '+02:00 Central Africa Time - Bujumbura, Muyinga, Gitega, Ruyigi',
+        label: '+02:00 Central Africa Time - Bujumbura, Muyinga, Gitega, Ruyigi',
         value: 'Africa/Bujumbura'
     },
     {
-        label:
-            '+02:00 Central Africa Time - Gaborone, Francistown, Molepolole, Selebi-Phikwe',
+        label: '+02:00 Central Africa Time - Gaborone, Francistown, Molepolole, Selebi-Phikwe',
         value: 'Africa/Gaborone'
     },
     {
-        label:
-            '+02:00 Central Africa Time - Harare, Bulawayo, Chitungwiza, Mutare',
+        label: '+02:00 Central Africa Time - Harare, Bulawayo, Chitungwiza, Mutare',
         value: 'Africa/Harare'
     },
     {
-        label:
-            '+02:00 Central Africa Time - Khartoum, Omdurman, Nyala, Port Sudan',
+        label: '+02:00 Central Africa Time - Khartoum, Omdurman, Nyala, Port Sudan',
         value: 'Africa/Khartoum'
     },
     {
@@ -792,8 +731,7 @@ export default [
         value: 'Africa/Blantyre'
     },
     {
-        label:
-            '+02:00 Central Africa Time - Lubumbashi, Mbuji-Mayi, Kisangani, Kananga',
+        label: '+02:00 Central Africa Time - Lubumbashi, Mbuji-Mayi, Kisangani, Kananga',
         value: 'Africa/Lubumbashi'
     },
     {
@@ -817,43 +755,35 @@ export default [
         value: 'Asia/Amman'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Athens, Thessaloníki, Pátra, Piraeus',
+        label: '+02:00 Eastern European Time - Athens, Thessaloníki, Pátra, Piraeus',
         value: 'Europe/Athens'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Beirut, Ra’s Bayrūt, Tripoli, Sidon',
+        label: '+02:00 Eastern European Time - Beirut, Ra’s Bayrūt, Tripoli, Sidon',
         value: 'Asia/Beirut'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Bucharest, Sector 3, Sector 6, Sector 2',
+        label: '+02:00 Eastern European Time - Bucharest, Sector 3, Sector 6, Sector 2',
         value: 'Europe/Bucharest'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Cairo, Alexandria, Giza, Port Said',
+        label: '+02:00 Eastern European Time - Cairo, Alexandria, Giza, Port Said',
         value: 'Africa/Cairo'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Chisinau, Tiraspol, Bălţi, Bender',
+        label: '+02:00 Eastern European Time - Chisinau, Tiraspol, Bălţi, Bender',
         value: 'Europe/Chisinau'
     },
     {
-        label:
-            '+02:00 Eastern European Time - East Jerusalem, Gaza, Khān Yūnis, Jabālyā',
+        label: '+02:00 Eastern European Time - East Jerusalem, Gaza, Khān Yūnis, Jabālyā',
         value: 'Asia/Hebron'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Helsinki, Espoo, Tampere, Vantaa',
+        label: '+02:00 Eastern European Time - Helsinki, Espoo, Tampere, Vantaa',
         value: 'Europe/Helsinki'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Kaliningrad, Chernyakhovsk, Sovetsk, Baltiysk',
+        label: '+02:00 Eastern European Time - Kaliningrad, Chernyakhovsk, Sovetsk, Baltiysk',
         value: 'Europe/Kaliningrad'
     },
     {
@@ -865,13 +795,11 @@ export default [
         value: 'Europe/Mariehamn'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Nicosia, Limassol, Larnaca, Stróvolos',
+        label: '+02:00 Eastern European Time - Nicosia, Limassol, Larnaca, Stróvolos',
         value: 'Asia/Nicosia'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Riga, Daugavpils, Liepāja, Jelgava',
+        label: '+02:00 Eastern European Time - Riga, Daugavpils, Liepāja, Jelgava',
         value: 'Europe/Riga'
     },
     {
@@ -879,28 +807,23 @@ export default [
         value: 'Europe/Sofia'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Tallinn, Tartu, Narva, Kohtla-Järve',
+        label: '+02:00 Eastern European Time - Tallinn, Tartu, Narva, Kohtla-Järve',
         value: 'Europe/Tallinn'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Tripoli, Benghazi, Mişrātah, Tarhuna',
+        label: '+02:00 Eastern European Time - Tripoli, Benghazi, Mişrātah, Tarhuna',
         value: 'Africa/Tripoli'
     },
     {
-        label:
-            '+02:00 Eastern European Time - Vilnius, Kaunas, Klaipėda, Šiauliai',
+        label: '+02:00 Eastern European Time - Vilnius, Kaunas, Klaipėda, Šiauliai',
         value: 'Europe/Vilnius'
     },
     {
-        label:
-            '+02:00 Israel Time - Jerusalem, Tel Aviv, West Jerusalem, Haifa',
+        label: '+02:00 Israel Time - Jerusalem, Tel Aviv, West Jerusalem, Haifa',
         value: 'Asia/Jerusalem'
     },
     {
-        label:
-            '+02:00 South Africa Time - Cape Town, Durban, Johannesburg, Soweto',
+        label: '+02:00 South Africa Time - Cape Town, Durban, Johannesburg, Soweto',
         value: 'Africa/Johannesburg'
     },
     {
@@ -912,23 +835,19 @@ export default [
         value: 'Africa/Maseru'
     },
     {
-        label:
-            '+03:00 Arabian Time - Al Aḩmadī, Ḩawallī, As Sālimīyah, Şabāḩ as Sālim',
+        label: '+03:00 Arabian Time - Al Aḩmadī, Ḩawallī, As Sālimīyah, Şabāḩ as Sālim',
         value: 'Asia/Kuwait'
     },
     {
-        label:
-            '+03:00 Arabian Time - Baghdad, Basrah, Al Mawşil al Jadīdah, Al Başrah al Qadīmah',
+        label: '+03:00 Arabian Time - Baghdad, Basrah, Al Mawşil al Jadīdah, Al Başrah al Qadīmah',
         value: 'Asia/Baghdad'
     },
     {
-        label:
-            '+03:00 Arabian Time - Doha, Ar Rayyān, Umm Şalāl Muḩammad, Al Wakrah',
+        label: '+03:00 Arabian Time - Doha, Ar Rayyān, Umm Şalāl Muḩammad, Al Wakrah',
         value: 'Asia/Qatar'
     },
     {
-        label:
-            '+03:00 Arabian Time - Manama, Al Muharraq, Ar Rifā‘, Dār Kulayb',
+        label: '+03:00 Arabian Time - Manama, Al Muharraq, Ar Rifā‘, Dār Kulayb',
         value: 'Asia/Bahrain'
     },
     {
@@ -940,13 +859,11 @@ export default [
         value: 'Asia/Aden'
     },
     {
-        label:
-            "+03:00 East Africa Time - Addis Ababa, Dire Dawa, Mek'ele, Nazrēt",
+        label: "+03:00 East Africa Time - Addis Ababa, Dire Dawa, Mek'ele, Nazrēt",
         value: 'Africa/Addis_Ababa'
     },
     {
-        label:
-            '+03:00 East Africa Time - Antananarivo, Toamasina, Antsirabe, Fianarantsoa',
+        label: '+03:00 East Africa Time - Antananarivo, Toamasina, Antsirabe, Fianarantsoa',
         value: 'Indian/Antananarivo'
     },
     {
@@ -954,13 +871,11 @@ export default [
         value: 'Africa/Asmara'
     },
     {
-        label:
-            '+03:00 East Africa Time - Dar es Salaam, Mwanza, Zanzibar, Arusha',
+        label: '+03:00 East Africa Time - Dar es Salaam, Mwanza, Zanzibar, Arusha',
         value: 'Africa/Dar_es_Salaam'
     },
     {
-        label:
-            "+03:00 East Africa Time - Djibouti, 'Ali Sabieh, Tadjourah, Obock",
+        label: "+03:00 East Africa Time - Djibouti, 'Ali Sabieh, Tadjourah, Obock",
         value: 'Africa/Djibouti'
     },
     {
@@ -972,8 +887,7 @@ export default [
         value: 'Indian/Mayotte'
     },
     {
-        label:
-            '+03:00 East Africa Time - Mogadishu, Hargeysa, Berbera, Kismayo',
+        label: '+03:00 East Africa Time - Mogadishu, Hargeysa, Berbera, Kismayo',
         value: 'Africa/Mogadishu'
     },
     {
@@ -989,8 +903,7 @@ export default [
         value: 'Europe/Minsk'
     },
     {
-        label:
-            '+03:00 Moscow Time - Moscow, Saint Petersburg, Nizhniy Novgorod, Kazan',
+        label: '+03:00 Moscow Time - Moscow, Saint Petersburg, Nizhniy Novgorod, Kazan',
         value: 'Europe/Moscow'
     },
     {
@@ -1026,18 +939,15 @@ export default [
         value: 'Asia/Muscat'
     },
     {
-        label:
-            '+04:00 Mauritius Time - Port Louis, Beau Bassin-Rose Hill, Vacoas, Curepipe',
+        label: '+04:00 Mauritius Time - Port Louis, Beau Bassin-Rose Hill, Vacoas, Curepipe',
         value: 'Indian/Mauritius'
     },
     {
-        label:
-            '+04:00 Réunion Time - Saint-Denis, Saint-Paul, Saint-Pierre, Le Tampon',
+        label: '+04:00 Réunion Time - Saint-Denis, Saint-Paul, Saint-Pierre, Le Tampon',
         value: 'Indian/Reunion'
     },
     {
-        label:
-            '+04:00 Samara Time - Samara, Volgograd, Saratov, Togliatti-on-the-Volga',
+        label: '+04:00 Samara Time - Samara, Volgograd, Saratov, Togliatti-on-the-Volga',
         value: 'Europe/Samara'
     },
     {
@@ -1045,8 +955,7 @@ export default [
         value: 'Indian/Mahe'
     },
     {
-        label:
-            '+04:30 Afghanistan Time - Kabul, Kandahār, Mazār-e Sharīf, Herāt',
+        label: '+04:30 Afghanistan Time - Kabul, Kandahār, Mazār-e Sharīf, Herāt',
         value: 'Asia/Kabul'
     },
     {
@@ -1070,13 +979,11 @@ export default [
         value: 'Asia/Dushanbe'
     },
     {
-        label:
-            '+05:00 Turkmenistan Time - Ashgabat, Türkmenabat, Daşoguz, Mary',
+        label: '+05:00 Turkmenistan Time - Ashgabat, Türkmenabat, Daşoguz, Mary',
         value: 'Asia/Ashgabat'
     },
     {
-        label:
-            '+05:00 Uzbekistan Time - Tashkent, Namangan, Samarkand, Andijon',
+        label: '+05:00 Uzbekistan Time - Tashkent, Namangan, Samarkand, Andijon',
         value: 'Asia/Tashkent'
     },
     {
@@ -1084,13 +991,11 @@ export default [
         value: 'Asia/Qyzylorda'
     },
     {
-        label:
-            '+05:00 Yekaterinburg Time - Yekaterinburg, Chelyabinsk, Ufa, Perm',
+        label: '+05:00 Yekaterinburg Time - Yekaterinburg, Chelyabinsk, Ufa, Perm',
         value: 'Asia/Yekaterinburg'
     },
     {
-        label:
-            '+05:30 India Time - Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna',
+        label: '+05:30 India Time - Colombo, Dehiwala-Mount Lavinia, Moratuwa, Jaffna',
         value: 'Asia/Colombo'
     },
     {
@@ -1114,8 +1019,7 @@ export default [
         value: 'Asia/Urumqi'
     },
     {
-        label:
-            '+06:00 East Kazakhstan Time - Almaty, Karagandy, Shymkent, Taraz',
+        label: '+06:00 East Kazakhstan Time - Almaty, Karagandy, Shymkent, Taraz',
         value: 'Asia/Almaty'
     },
     {
@@ -1139,8 +1043,7 @@ export default [
         value: 'Indian/Cocos'
     },
     {
-        label:
-            '+06:30 Myanmar Time - Yangon, Mandalay, Nay Pyi Taw, Mawlamyine',
+        label: '+06:30 Myanmar Time - Yangon, Mandalay, Nay Pyi Taw, Mawlamyine',
         value: 'Asia/Yangon'
     },
     {
@@ -1156,18 +1059,15 @@ export default [
         value: 'Asia/Hovd'
     },
     {
-        label:
-            '+07:00 Indochina Time - Bangkok, Samut Prakan, Mueang Nonthaburi, Udon Thani',
+        label: '+07:00 Indochina Time - Bangkok, Samut Prakan, Mueang Nonthaburi, Udon Thani',
         value: 'Asia/Bangkok'
     },
     {
-        label:
-            '+07:00 Indochina Time - Ho Chi Minh City, Da Nang, Biên Hòa, Nha Trang',
+        label: '+07:00 Indochina Time - Ho Chi Minh City, Da Nang, Biên Hòa, Nha Trang',
         value: 'Asia/Ho_Chi_Minh'
     },
     {
-        label:
-            '+07:00 Indochina Time - Phnom Penh, Takeo, Sihanoukville, Battambang',
+        label: '+07:00 Indochina Time - Phnom Penh, Takeo, Sihanoukville, Battambang',
         value: 'Asia/Phnom_Penh'
     },
     {
@@ -1175,28 +1075,23 @@ export default [
         value: 'Asia/Vientiane'
     },
     {
-        label:
-            '+07:00 Novosibirsk Time - Novosibirsk, Krasnoyarsk, Barnaul, Novokuznetsk',
+        label: '+07:00 Novosibirsk Time - Novosibirsk, Krasnoyarsk, Barnaul, Novokuznetsk',
         value: 'Asia/Novosibirsk'
     },
     {
-        label:
-            '+07:00 Western Indonesia Time - Jakarta, Surabaya, Medan, Bandung',
+        label: '+07:00 Western Indonesia Time - Jakarta, Surabaya, Medan, Bandung',
         value: 'Asia/Jakarta'
     },
     {
-        label:
-            '+08:00 Australian Western Time - Perth, Rockingham, Mandurah, Bunbury',
+        label: '+08:00 Australian Western Time - Perth, Rockingham, Mandurah, Bunbury',
         value: 'Australia/Perth'
     },
     {
-        label:
-            '+08:00 Brunei Darussalam Time - Bandar Seri Begawan, Kuala Belait, Seria, Tutong',
+        label: '+08:00 Brunei Darussalam Time - Bandar Seri Begawan, Kuala Belait, Seria, Tutong',
         value: 'Asia/Brunei'
     },
     {
-        label:
-            '+08:00 Central Indonesia Time - Makassar, Denpasar, City of Balikpapan, Banjarmasin',
+        label: '+08:00 Central Indonesia Time - Makassar, Denpasar, City of Balikpapan, Banjarmasin',
         value: 'Asia/Makassar'
     },
     {
@@ -1208,8 +1103,7 @@ export default [
         value: 'Asia/Shanghai'
     },
     {
-        label:
-            '+08:00 Hong Kong Time - Hong Kong, Kowloon, Tsuen Wan, Yuen Long Kau Hui',
+        label: '+08:00 Hong Kong Time - Hong Kong, Kowloon, Tsuen Wan, Yuen Long Kau Hui',
         value: 'Asia/Hong_Kong'
     },
     {
@@ -1217,13 +1111,11 @@ export default [
         value: 'Asia/Irkutsk'
     },
     {
-        label:
-            '+08:00 Malaysia Time - Kota Bharu, Kuala Lumpur, Klang, Kampung Baru Subang',
+        label: '+08:00 Malaysia Time - Kota Bharu, Kuala Lumpur, Klang, Kampung Baru Subang',
         value: 'Asia/Kuala_Lumpur'
     },
     {
-        label:
-            '+08:00 Philippine Time - Quezon City, Manila, Caloocan City, Budta',
+        label: '+08:00 Philippine Time - Quezon City, Manila, Caloocan City, Budta',
         value: 'Asia/Manila'
     },
     {
@@ -1247,8 +1139,7 @@ export default [
         value: 'Asia/Dili'
     },
     {
-        label:
-            '+09:00 Eastern Indonesia Time - Ambon, Jayapura, Sorong, Ternate',
+        label: '+09:00 Eastern Indonesia Time - Ambon, Jayapura, Sorong, Ternate',
         value: 'Asia/Jayapura'
     },
     {
@@ -1268,23 +1159,19 @@ export default [
         value: 'Pacific/Palau'
     },
     {
-        label:
-            '+09:00 Yakutsk Time - Chita, Yakutsk, Blagoveshchensk, Belogorsk',
+        label: '+09:00 Yakutsk Time - Chita, Yakutsk, Blagoveshchensk, Belogorsk',
         value: 'Asia/Chita'
     },
     {
-        label:
-            '+09:30 Australian Central Time - Darwin, Alice Springs, Palmerston',
+        label: '+09:30 Australian Central Time - Darwin, Alice Springs, Palmerston',
         value: 'Australia/Darwin'
     },
     {
-        label:
-            '+10:00 Australian Eastern Time - Brisbane, Gold Coast, Logan City, Townsville',
+        label: '+10:00 Australian Eastern Time - Brisbane, Gold Coast, Logan City, Townsville',
         value: 'Australia/Brisbane'
     },
     {
-        label:
-            '+10:00 Chamorro Time - Dededo Village, Yigo Village, Tamuning-Tumon-Harmon Village, Tamuning',
+        label: '+10:00 Chamorro Time - Dededo Village, Yigo Village, Tamuning-Tumon-Harmon Village, Tamuning',
         value: 'Pacific/Guam'
     },
     {
@@ -1300,23 +1187,19 @@ export default [
         value: 'Antarctica/DumontDUrville'
     },
     {
-        label:
-            '+10:00 Papua New Guinea Time - Port Moresby, Lae, Mount Hagen, Popondetta',
+        label: '+10:00 Papua New Guinea Time - Port Moresby, Lae, Mount Hagen, Popondetta',
         value: 'Pacific/Port_Moresby'
     },
     {
-        label:
-            '+10:00 Vladivostok Time - Vladivostok, Khabarovsk, Khabarovsk Vtoroy, Komsomolsk-on-Amur',
+        label: '+10:00 Vladivostok Time - Vladivostok, Khabarovsk, Khabarovsk Vtoroy, Komsomolsk-on-Amur',
         value: 'Asia/Vladivostok'
     },
     {
-        label:
-            '+09:30 Australian Central Time - Adelaide, Adelaide Hills, Mount Gambier, Morphett Vale',
+        label: '+09:30 Australian Central Time - Adelaide, Adelaide Hills, Mount Gambier, Morphett Vale',
         value: 'Australia/Adelaide'
     },
     {
-        label:
-            '+10:00 Australian Eastern Time - Sydney, Melbourne, Canberra, Newcastle',
+        label: '+10:00 Australian Eastern Time - Sydney, Melbourne, Canberra, Newcastle',
         value: 'Australia/Sydney'
     },
     {
@@ -1328,8 +1211,7 @@ export default [
         value: 'Antarctica/Casey'
     },
     {
-        label:
-            '+11:00 Kosrae Time - Kosrae, Palikir - National Government Center',
+        label: '+11:00 Kosrae Time - Kosrae, Palikir - National Government Center',
         value: 'Pacific/Kosrae'
     },
     {
@@ -1341,8 +1223,7 @@ export default [
         value: 'Pacific/Noumea'
     },
     {
-        label:
-            '+11:00 Sakhalin Time - Yuzhno-Sakhalinsk, Magadan, Korsakov, Kholmsk',
+        label: '+11:00 Sakhalin Time - Yuzhno-Sakhalinsk, Magadan, Korsakov, Kholmsk',
         value: 'Asia/Sakhalin'
     },
     {
@@ -1374,8 +1255,7 @@ export default [
         value: 'Pacific/Norfolk'
     },
     {
-        label:
-            '+12:00 Petropavlovsk-Kamchatski Time - Petropavlovsk-Kamchatsky, Yelizovo, Vilyuchinsk, Anadyr',
+        label: '+12:00 Petropavlovsk-Kamchatski Time - Petropavlovsk-Kamchatsky, Yelizovo, Vilyuchinsk, Anadyr',
         value: 'Asia/Kamchatka'
     },
     {
@@ -1391,8 +1271,7 @@ export default [
         value: 'Pacific/Wallis'
     },
     {
-        label:
-            '+12:00 New Zealand Time - Auckland, Wellington, Christchurch, Manukau City',
+        label: '+12:00 New Zealand Time - Auckland, Wellington, Christchurch, Manukau City',
         value: 'Pacific/Auckland'
     },
     {
@@ -1424,3 +1303,5 @@ export default [
         value: 'Pacific/Kiritimati'
     }
 ];
+
+export { TIME_ZONES };
