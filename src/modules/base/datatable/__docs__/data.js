@@ -500,7 +500,7 @@ const recordsAB = [
             avatarGroupItems[3]
         ],
         avatarGroupName: 'avatar-group-1',
-        badge: 'approved',
+        badge: null,
         badgeVariant: 'success',
         boolean: true
     },
@@ -519,7 +519,7 @@ const recordsAB = [
             avatarGroupItems[2]
         ],
         avatarGroupName: 'avatar-group-2',
-        badge: 'declined',
+
         badgeVariant: 'error',
         boolean: false
     },
