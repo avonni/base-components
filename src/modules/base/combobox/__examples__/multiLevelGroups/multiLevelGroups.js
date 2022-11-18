@@ -5,30 +5,36 @@ export default class ComboboxMultiLevelGroups extends LightningElement {
         {
             label: 'Burlington Textiles Corp of America',
             value: 'burlington',
-            avatarFallbackIconName: 'standard:account',
+            avatar: {
+                fallbackIconName: 'standard:account'
+            },
             secondaryText: 'Account - Burlington, NC',
             groups: ['accounts']
         },
         {
             label: 'Dickenson plc',
             value: 'dickenson',
-            avatarSrc:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-            avatarFallbackIconName: 'standard:account',
+            avatar: {
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+                fallbackIconName: 'standard:account'
+            },
             secondaryText: 'Account - Lawrence, KS',
             groups: ['accounts']
         },
         {
             label: 'Edge Communication',
             value: 'edge',
-            avatarFallbackIconName: 'standard:account',
+            avatar: {
+                fallbackIconName: 'standard:account'
+            },
             secondaryText: 'Account - Singapore',
             groups: ['accounts']
         },
         {
             label: 'Tyrell Corp',
-            value: 'tyrell',
-            avatarFallbackIconName: 'standard:opportunity',
+            avatar: {
+                fallbackIconName: 'standard:opportunity'
+            },
             secondaryText: 'Opportunity',
             groups: ['opportunities'],
             options: [
@@ -39,7 +45,9 @@ export default class ComboboxMultiLevelGroups extends LightningElement {
                         {
                             label: 'Nakatomi Investments',
                             value: 'nakatomi',
-                            avatarFallbackIconName: 'standard:account',
+                            avatar: {
+                                fallbackIconName: 'standard:account'
+                            },
                             secondaryText: 'Account - Chicago, IL'
                         }
                     ]
@@ -66,14 +74,18 @@ export default class ComboboxMultiLevelGroups extends LightningElement {
         {
             label: 'United Oil SLA',
             value: 'oil-sla',
-            avatarFallbackIconName: 'standard:opportunity',
+            avatar: {
+                fallbackIconName: 'standard:opportunity'
+            },
             secondaryText: 'Opportunity - Closed',
             groups: ['opportunities', 'closed']
         },
         {
             label: 'United Oil Standby Generators',
             value: 'united-oil',
-            avatarFallbackIconName: 'standard:opportunity',
+            avatar: {
+                fallbackIconName: 'standard:opportunity'
+            },
             secondaryText: 'Opportunity - Closed Won',
             groups: ['opportunities', 'closed', 'won']
         }
