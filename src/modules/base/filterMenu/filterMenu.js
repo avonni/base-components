@@ -210,7 +210,8 @@ export default class FilterMenu extends LightningElement {
     _value = [];
     _variant = MENU_VARIANTS.default;
 
-    _cancelBlur = false;
+    _allowBlur = true;
+    _dropdownIsFocused = false;
     _order;
     _previousScroll;
     _searchTimeOut;
@@ -253,7 +254,6 @@ export default class FilterMenu extends LightningElement {
         this.normalizeTypeAttributes();
         this.computeListItems();
         this.computeSelectedItems();
-        this.computeTabindex();
         this._connected = true;
 
         if (
@@ -580,11 +580,7 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.supportDeprecatedAttributes();
-            const items = normalizeArray(
-                this.computedTypeAttributes.items,
-                'object'
-            );
-            this.computedItems = deepCopy(items);
+            this.computeListItems();
         }
     }
 
@@ -784,10 +780,7 @@ export default class FilterMenu extends LightningElement {
             this.infiniteLoad &&
             !this.isLoading
         ) {
-            const visibleItems = this.template.querySelectorAll(
-                '[data-element-id="lightning-menu-item"]'
-            );
-            if (!visibleItems.length) {
+            if (!this.visibleListItems.length) {
                 // Fire the loadmore event without waiting for the user
                 // to click on the load more button
                 this.dispatchLoadMore();
@@ -897,7 +890,7 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown')
+        return classSet('slds-dropdown slds-p-around_none')
             .add({
                 'slds-dropdown_left':
                     this.dropdownAlignment === 'left' || this.isAutoAlignment(),
@@ -1050,6 +1043,10 @@ export default class FilterMenu extends LightningElement {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
     }
 
+    get visibleListItems() {
+        return this.computedItems.filter((it) => !it.hidden);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1064,11 +1061,19 @@ export default class FilterMenu extends LightningElement {
     @api
     focus() {
         if (this.isVertical) {
-            this.template
-                .querySelector('[data-element-id="avonni-input-choice-set"]')
-                .focus();
+            const choiceSet = this.template.querySelector(
+                '[data-element-id="avonni-input-choice-set"]'
+            );
+            if (choiceSet) {
+                choiceSet.focus();
+            }
         } else {
-            this.template.querySelector('[data-element-id="button"]').focus();
+            const button = this.template.querySelector(
+                '[data-element-id="button"]'
+            );
+            if (button) {
+                button.focus();
+            }
         }
     }
 
@@ -1130,13 +1135,22 @@ export default class FilterMenu extends LightningElement {
         if (!this.isList) {
             return;
         }
+        let firstFocusableItem;
         const items = normalizeArray(
             this.computedTypeAttributes.items,
             'object'
         );
+
         this.computedItems = deepCopy(items).map((item) => {
             item.checked = this.currentValue.includes(item.value);
             item.hidden = this.isOutOfSearchScope(item.label);
+
+            if (!firstFocusableItem && !item.disabled && !item.hidden) {
+                firstFocusableItem = true;
+                item.tabindex = '0';
+            } else {
+                item.tabindex = '-1';
+            }
             return item;
         });
     }
@@ -1203,35 +1217,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Compute Tab index.
-     */
-    computeTabindex() {
-        let firstFocusableItem;
-        this.computedItems.forEach((item) => {
-            if (!firstFocusableItem && !item.disabled) {
-                firstFocusableItem = true;
-                item.tabindex = '0';
-            } else {
-                item.tabindex = '-1';
-            }
-        });
-    }
-
-    /**
-     * Allow blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancel blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
      * Close dropdown menu.
      */
     close() {
@@ -1272,6 +1257,40 @@ export default class FilterMenu extends LightningElement {
             }
         }
         return `${formattedDate} ${formattedTime}`.trim();
+    }
+
+    focusDropdown() {
+        this._allowBlur = false;
+        requestAnimationFrame(() => {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="lightning-focus-trap"]'
+            );
+            if (focusTrap) {
+                this._dropdownIsFocused = true;
+                focusTrap.focus();
+            }
+        });
+    }
+
+    focusListItem(currentIndex, addedIndex = 1) {
+        const items = this.visibleListItems;
+        items[currentIndex].tabIndex = '-1';
+        const index = currentIndex + addedIndex;
+
+        let item = items[index];
+        if (index < 0) {
+            item = items[items.length - 1];
+        } else if (index >= items.length) {
+            item = items[0];
+        } else if (item && item.disabled) {
+            this.focusListItem(index, addedIndex);
+            return;
+        }
+
+        if (item) {
+            item.focus();
+            item.tabIndex = '0';
+        }
     }
 
     /**
@@ -1447,6 +1466,7 @@ export default class FilterMenu extends LightningElement {
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
                 this.computeListItems();
+                this.focusDropdown();
             } else {
                 this.stopPositioning();
 
@@ -1459,6 +1479,10 @@ export default class FilterMenu extends LightningElement {
                  */
                 this.dispatchEvent(new CustomEvent('close'));
                 this._previousScroll = undefined;
+
+                requestAnimationFrame(() => {
+                    this.focus();
+                });
             }
         }
     }
@@ -1485,63 +1509,38 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
-    /**
-     * Dropdown mouse down event handler.
-     *
-     * @param {Event} event
-     */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
-    }
-
-    /**
-     * Button Mouse Down handler.
-     *
-     * @param {Event} event
-     */
-    handleButtonMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
-    }
-
-    /**
-     * Dropdown click handler.
-     */
-    handleDropdownClick() {
-        // On click outside of a focusable element, the focus will go to the button
-        if (!this.template.activeElement) {
-            this.focus();
-        }
-    }
-
-    /**
-     * Button Click handler.
-     */
-    handleButtonClick() {
-        this.allowBlur();
-
-        this.toggleMenuVisibility();
-    }
-
-    /**
-     * Button Focus handler.
-     */
-    handleButtonFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Button Blur handler.
-     */
     handleButtonBlur() {
-        if (!this._cancelBlur) {
-            this.close();
+        if (this._allowBlur) {
             this.dispatchEvent(new CustomEvent('blur'));
+        }
+    }
+
+    handleButtonFocus() {
+        if (this._allowBlur) {
+            this.dispatchEvent(new CustomEvent('focus'));
+        } else {
+            this._allowBlur = true;
+        }
+    }
+
+    handleDropdownFocusIn() {
+        this._dropdownIsFocused = true;
+    }
+
+    handleDropdownFocusOut() {
+        this._dropdownIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (!this._dropdownIsFocused) {
+                this.close();
+            }
+        });
+    }
+
+    handleDropdownKeyUp(event) {
+        const key = event.key;
+        if (key === 'Escape') {
+            this.close();
         }
     }
 
@@ -1592,71 +1591,25 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Private Blur handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateBlur(event) {
-        event.stopPropagation();
-
-        if (this._cancelBlur) {
-            return;
-        }
-
-        if (this.dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Private focus handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateFocus(event) {
-        event.stopPropagation();
-        this.allowBlur();
-    }
-
-    /**
      * Key down event handler.
      *
      * @param {Event} event
      */
-    handleKeyDown(event) {
-        if (event.code === 'Tab') {
-            this.cancelBlur();
+    handleListItemKeyDown(event) {
+        const key = event.key;
+        const index = Number(event.currentTarget.dataset.index);
 
-            if (event.target.label === this.applyButtonLabel) {
-                this.allowBlur();
-                this.close();
-                this.dispatchEvent(new CustomEvent('blur'));
+        switch (key) {
+            case 'ArrowUp': {
+                this.focusListItem(index, -1);
+                break;
             }
-        }
-
-        const isMenuItem = event.target.tagName === 'LIGHTNING-MENU-ITEM';
-
-        // To follow LWC convention, menu items are navigable with up and down arrows
-        if (isMenuItem) {
-            const index = Number(event.target.dataset.index);
-
-            if (event.code === 'ArrowUp') {
-                const previousItem = this.template.querySelector(
-                    `[data-index="${index - 1}"]`
-                );
-                if (previousItem) {
-                    this.cancelBlur();
-                    previousItem.focus();
-                }
-            } else if (event.code === 'ArrowDown') {
-                const nextItem = this.template.querySelector(
-                    `[data-index="${index + 1}"]`
-                );
-                if (nextItem) {
-                    this.cancelBlur();
-                    nextItem.focus();
-                }
+            case 'ArrowDown': {
+                this.focusListItem(index);
+                break;
             }
+            default:
+                break;
         }
     }
 

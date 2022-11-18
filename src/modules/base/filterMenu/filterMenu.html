@@ -45,11 +45,9 @@
             type="button"
             name={name}
             data-element-id="button"
-            onclick={handleButtonClick}
             onblur={handleButtonBlur}
             onfocus={handleButtonFocus}
-            onmousedown={handleButtonMouseDown}
-            onkeydown={handleKeyDown}
+            onclick={toggleMenuVisibility}
         >
             {label}
             <c-primitive-icon
@@ -72,151 +70,143 @@
         <div
             if:true={dropdownVisible}
             class={computedDropdownClass}
-            onprivateselect={handlePrivateSelect}
-            onprivateblur={handlePrivateBlur}
-            onprivatefocus={handlePrivateFocus}
-            onmousedown={handleDropdownMouseDown}
-            onclick={handleDropdownClick}
-            onmouseout={allowBlur}
+            tabindex="0"
+            onfocusin={handleDropdownFocusIn}
+            onfocusout={handleDropdownFocusOut}
+            onkeyup={handleDropdownKeyUp}
+            onfocus={focusDropdown}
         >
-            <div role="menu">
-                <!-- Search box -->
-                <lightning-input
-                    if:true={computedTypeAttributes.allowSearch}
-                    class="slds-p-around_small"
-                    label={computedTypeAttributes.searchInputPlaceholder}
-                    placeholder={computedTypeAttributes.searchInputPlaceholder}
-                    variant="label-hidden"
-                    type="search"
-                    value={searchTerm}
-                    autocomplete="off"
-                    data-element-id="lightning-input"
-                    onchange={handleSearch}
-                    onkeydown={handleKeyDown}
-                ></lightning-input>
-
-                <p if:true={showNoResultMessage} class="slds-p-around_small">
-                    No matches found
-                </p>
-
-                <div
-                    class={computedDropdownContentClass}
-                    data-element-id="div-dropdown-content"
-                    onscroll={handleScroll}
-                >
-                    <!-- List -->
-                    <template
-                        if:true={isList}
-                        for:each={computedItems}
-                        for:item="item"
-                        for:index="index"
+            <lightning-focus-trap data-element-id="lightning-focus-trap">
+                <div class="slds-p-vertical_xx-small" role="menu">
+                    <!-- Search box -->
+                    <lightning-input
+                        if:true={computedTypeAttributes.allowSearch}
+                        class="slds-p-around_small"
+                        label={computedTypeAttributes.searchInputPlaceholder}
+                        placeholder={computedTypeAttributes.searchInputPlaceholder}
+                        variant="label-hidden"
+                        type="search"
+                        value={searchTerm}
+                        autocomplete="off"
+                        data-element-id="lightning-input"
+                        onchange={handleSearch}
+                    ></lightning-input>
+                    <p
+                        if:true={showNoResultMessage}
+                        class="slds-p-around_small"
                     >
-                        <lightning-menu-item
-                            if:false={item.hidden}
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            icon-name={item.iconName}
-                            prefix-icon-name={item.prefixIconName}
-                            checked={item.checked}
-                            disabled={item.disabled}
-                            tab-index={item.tabindex}
-                            data-element-id="lightning-menu-item"
-                            data-index={index}
-                            onkeydown={handleKeyDown}
-                        >
-                        </lightning-menu-item>
-                    </template>
-
-                    <!-- Loading spinner -->
+                        No matches found
+                    </p>
                     <div
-                        if:true={isLoading}
-                        class="slds-is-relative slds-p-vertical_large"
+                        class={computedDropdownContentClass}
+                        data-element-id="div-dropdown-content"
+                        onprivateselect={handlePrivateSelect}
+                        onscroll={handleScroll}
                     >
-                        <lightning-spinner
-                            size="small"
-                            alternative-text={loadingStateAlternativeText}
-                            data-element-id="lightning-spinner"
-                        ></lightning-spinner>
+                        <!-- List -->
+                        <template
+                            if:true={isList}
+                            for:each={visibleListItems}
+                            for:item="item"
+                            for:index="index"
+                        >
+                            <lightning-menu-item
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                                icon-name={item.iconName}
+                                prefix-icon-name={item.prefixIconName}
+                                checked={item.checked}
+                                disabled={item.disabled}
+                                tab-index={item.tabindex}
+                                data-element-id="lightning-menu-item"
+                                data-index={index}
+                                onkeydown={handleListItemKeyDown}
+                            >
+                            </lightning-menu-item>
+                        </template>
+                        <!-- Loading spinner -->
+                        <div
+                            if:true={isLoading}
+                            class="slds-is-relative slds-p-vertical_large"
+                        >
+                            <lightning-spinner
+                                size="small"
+                                alternative-text={loadingStateAlternativeText}
+                                data-element-id="lightning-spinner"
+                            ></lightning-spinner>
+                        </div>
+                        <template if:false={isLoading}>
+                            <!-- Date Range -->
+                            <c-input-date-range
+                                if:true={isDateRange}
+                                class="slds-show slds-p-around_small"
+                                date-style={computedTypeAttributes.dateStyle}
+                                label={label}
+                                label-end-date={computedTypeAttributes.labelEndDate}
+                                label-end-time={computedTypeAttributes.labelEndTime}
+                                label-start-date={computedTypeAttributes.labelStartDate}
+                                label-start-time={computedTypeAttributes.labelStartTime}
+                                start-date={dateRangeStartDate}
+                                end-date={dateRangeEndDate}
+                                time-style={computedTypeAttributes.timeStyle}
+                                type={computedTypeAttributes.type}
+                                variant="label-hidden"
+                                onchange={handleDateRangeChange}
+                            ></c-input-date-range>
+                            <!-- Range -->
+                            <c-slider
+                                if:true={isRange}
+                                class="slds-show slds-m-around_small"
+                                disable-swap
+                                hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
+                                label={label}
+                                max={computedTypeAttributes.max}
+                                min={computedTypeAttributes.min}
+                                show-pin={computedTypeAttributes.showPin}
+                                show-tick-marks={computedTypeAttributes.showTickMarks}
+                                step={computedTypeAttributes.step}
+                                tick-mark-style={computedTypeAttributes.tickMarkStyle}
+                                unit={computedTypeAttributes.unit}
+                                unit-attributes={computedTypeAttributes.unitAttributes}
+                                value={rangeValue}
+                                variant="label-hidden"
+                                onchange={handleRangeChange}
+                            ></c-slider>
+                        </template>
                     </div>
-
-                    <template if:false={isLoading}>
-                        <!-- Date Range -->
-                        <c-input-date-range
-                            if:true={isDateRange}
-                            class="slds-show slds-p-around_small"
-                            date-style={computedTypeAttributes.dateStyle}
-                            label={label}
-                            label-end-date={computedTypeAttributes.labelEndDate}
-                            label-end-time={computedTypeAttributes.labelEndTime}
-                            label-start-date={computedTypeAttributes.labelStartDate}
-                            label-start-time={computedTypeAttributes.labelStartTime}
-                            start-date={dateRangeStartDate}
-                            end-date={dateRangeEndDate}
-                            time-style={computedTypeAttributes.timeStyle}
-                            type={computedTypeAttributes.type}
-                            variant="label-hidden"
-                            onchange={handleDateRangeChange}
-                        ></c-input-date-range>
-                        <!-- Range -->
-                        <c-slider
-                            if:true={isRange}
-                            class="slds-show slds-m-around_small"
-                            disable-swap
-                            hide-min-max-values={computedTypeAttributes.hideMinMaxValues}
-                            label={label}
-                            max={computedTypeAttributes.max}
-                            min={computedTypeAttributes.min}
-                            show-pin={computedTypeAttributes.showPin}
-                            show-tick-marks={computedTypeAttributes.showTickMarks}
-                            step={computedTypeAttributes.step}
-                            tick-mark-style={computedTypeAttributes.tickMarkStyle}
-                            unit={computedTypeAttributes.unit}
-                            unit-attributes={computedTypeAttributes.unitAttributes}
-                            value={rangeValue}
-                            variant="label-hidden"
-                            onchange={handleRangeChange}
-                        ></c-slider>
-                    </template>
+                    <!-- Reset and apply buttons -->
+                    <lightning-menu-divider
+                        if:false={hideApplyResetButtons}
+                    ></lightning-menu-divider>
+                    <div
+                        if:false={hideApplyResetButtons}
+                        class="
+                            slds-p-horizontal_small
+                            slds-p-bottom_x-small
+                            slds-text-align_right
+                        "
+                    >
+                        <lightning-button
+                            class="slds-m-right_x-small"
+                            disabled={isLoading}
+                            variant="base"
+                            label={resetButtonLabel}
+                            title={resetButtonLabel}
+                            data-element-id="lightning-button-reset"
+                            onclick={handleResetClick}
+                        ></lightning-button>
+                        <lightning-button
+                            disabled={isLoading}
+                            label={applyButtonLabel}
+                            title={applyButtonLabel}
+                            variant="brand"
+                            data-element-id="lightning-button-apply"
+                            onclick={handleApply}
+                        ></lightning-button>
+                    </div>
                 </div>
-
-                <!-- Reset and apply buttons -->
-                <lightning-menu-divider
-                    if:false={hideApplyResetButtons}
-                ></lightning-menu-divider>
-                <div
-                    if:false={hideApplyResetButtons}
-                    class="
-                        slds-p-horizontal_small
-                        slds-p-bottom_x-small
-                        slds-text-align_right
-                    "
-                >
-                    <lightning-button
-                        class="slds-m-right_x-small"
-                        disabled={isLoading}
-                        variant="base"
-                        label={resetButtonLabel}
-                        title={resetButtonLabel}
-                        data-element-id="lightning-button-reset"
-                        onfocus={handlePrivateFocus}
-                        onblur={handlePrivateBlur}
-                        onclick={handleResetClick}
-                        onkeydown={handleKeyDown}
-                    ></lightning-button>
-                    <lightning-button
-                        disabled={isLoading}
-                        label={applyButtonLabel}
-                        title={applyButtonLabel}
-                        variant="brand"
-                        data-element-id="lightning-button-apply"
-                        onfocus={handlePrivateFocus}
-                        onblur={handlePrivateBlur}
-                        onclick={handleApply}
-                        onkeydown={handleKeyDown}
-                    ></lightning-button>
-                </div>
-            </div>
+            </lightning-focus-trap>
         </div>
     </div>
     <div if:true={showSelectedItems} class="slds-m-top_x-small">
