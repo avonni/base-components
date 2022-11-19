@@ -1028,12 +1028,9 @@ export default class InputPen extends LightningElement {
             this.canvasInfo.canvasElement.width,
             this.canvasInfo.canvasElement.height
         );
-        if (this.backgroundColor.length > 7) {
-            this._backgroundCtx.globalAlpha =
-                parseInt(this._backgroundColor.slice(7), 16) / 255;
-        } else {
-            this._backgroundCtx.globalAlpha = 1;
-        }
+        this._backgroundCtx.globalAlpha = this.parseAlpha(
+            this._backgroundColor
+        );
         this._backgroundCtx.fillStyle = this._backgroundColor;
         this._backgroundCtx.rect(
             0,
@@ -1080,6 +1077,21 @@ export default class InputPen extends LightningElement {
             default:
                 break;
         }
+    }
+
+    parseAlpha(color) {
+        let alpha = 1;
+        if (/^(?:#(?:[0-9a-fA-F]{8}))$/gm.test(color)) {
+            // Hexadecimal with alpha (Example: #fff00f80)
+            alpha = parseInt(color.slice(7), 16) / 255;
+        } else if (/^(?:rgba.*\))$/gm.test(color)) {
+            // rgba (Example: rgba(255, 0, 15, 0.5))
+            alpha = parseFloat(color.split(',').pop().split(')')[0].trim(), 10);
+        } else if (/^(?:hsla.*\))$/gm.test(color)) {
+            // hsla (Example: hsla(10, 40%, 13%, 0.6))
+            alpha = parseFloat(color.split(',').pop().split(')')[0].trim(), 10);
+        }
+        return alpha;
     }
 
     /**

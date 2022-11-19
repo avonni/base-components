@@ -762,6 +762,66 @@ describe('Input pen', () => {
 
     /* ------ SCENARIOS & EVENTS  ------ */
 
+    it('background alpha is correct when value is hexa', () => {
+        element.backgroundColor = '#00aa0080';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(Math.round(backgroundCtx.globalAlpha * 100)).toBe(50);
+        });
+    });
+
+    it('background alpha is correct when value is rgba', () => {
+        element.backgroundColor = 'rgba(0, 170, 0, 0.5)';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.globalAlpha).toBe(0.5);
+        });
+    });
+
+    it('background alpha is correct when value is hsla', () => {
+        element.backgroundColor = 'hsla(120, 100%, 25%, 0.5)';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.globalAlpha).toBe(0.5);
+        });
+    });
+
+    it('background alpha is correct when value is hex', () => {
+        element.backgroundColor = '#00aa00';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.globalAlpha).toBe(1);
+        });
+    });
+
+    it('background alpha is correct when value is rgb', () => {
+        element.backgroundColor = 'rgb(0, 170, 0)';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.globalAlpha).toBe(1);
+        });
+    });
+
+    it('background alpha is correct when value is hsl', () => {
+        element.backgroundColor = 'hsl(120, 100%, 25%)';
+        return Promise.resolve().then(() => {
+            const backgroundCtx = element.shadowRoot
+                .querySelector('[data-element-id="background-canvas"]')
+                .getContext('2d');
+            expect(backgroundCtx.globalAlpha).toBe(1);
+        });
+    });
+
     it('drawing on canvas should clear message if invalid', () => {
         element.required = true;
         const drawArea = element.shadowRoot.querySelector(
