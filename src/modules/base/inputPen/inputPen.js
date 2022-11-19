@@ -253,19 +253,19 @@ export default class InputPen extends LightningElement {
         return this._backgroundColor;
     }
     set backgroundColor(value) {
-        const normalizedValue = normalizeString(value, {
-            fallbackValue: this._backgroundColor
-        });
+        const colorValue =
+            typeof value === 'string' || value instanceof String
+                ? value
+                : DEFAULT_BACKGROUND_COLOR;
         let style = new Option().style;
-        style.backgroundColor = normalizedValue;
-        console.log(normalizedValue);
+        style.backgroundColor = colorValue;
         if (
-            ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
+            ['inherit', 'initial', 'unset'].includes(colorValue) ||
             style.backgroundColor === ''
         ) {
             return;
         }
-        this._backgroundColor = normalizedValue;
+        this._backgroundColor = colorValue;
         this.fillBackground();
         this.handleChangeEvent();
     }
@@ -281,20 +281,20 @@ export default class InputPen extends LightningElement {
     get color() {
         return this.canvasInfo.color;
     }
-
     set color(value) {
-        const normalizedValue = normalizeString(value, {
-            fallbackValue: this._color
-        });
-        let style = new Option().style;
-        style.color = normalizedValue;
+        const colorValue =
+            typeof value === 'string' || value instanceof String
+                ? value
+                : DEFAULT_BACKGROUND_COLOR;
+        const style = new Option().style;
+        style.color = colorValue;
         if (
-            ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
+            ['inherit', 'initial', 'unset'].includes(colorValue) ||
             style.color === ''
         ) {
             return;
         }
-        this._color = normalizedValue;
+        this._color = colorValue;
         this.canvasInfo.color = this._color;
         this.initCursorStyles();
     }
@@ -1485,6 +1485,9 @@ export default class InputPen extends LightningElement {
      * Change event handler.
      */
     handleChangeEvent() {
+        if (!this.canvasInfo.canvasElement) {
+            return;
+        }
         this._value = this.dataURL;
         this._foregroundValue = this.canvasInfo.canvasElement.toDataURL();
         this.testEmptyCanvas();

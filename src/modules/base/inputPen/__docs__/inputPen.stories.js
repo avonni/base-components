@@ -133,7 +133,7 @@ export default {
             description: 'Defines the color of the background.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#000' },
+                defaultValue: { summary: '#ffffff00' },
                 category: 'Pen'
             }
         },
