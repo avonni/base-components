@@ -34,6 +34,11 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import {
+    formatNumber,
+    hasValidNumberSymbol,
+    increaseNumberByStep
+} from './numberFormat';
 
 const validVariants = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -169,23 +174,12 @@ export default class InputCounter extends LightningElement {
     _fractionDigits;
     _previousValue;
     helpMessage;
-    init = false;
 
     renderedCallback() {
-        if (!this.init) {
-            let srcElement = this.template.querySelector(
-                '.avonni-input-counter'
-            );
-
-            if (srcElement) {
-                const style = document.createElement('style');
-                style.innerText =
-                    '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
-                srcElement.appendChild(style);
-            }
+        if (this.value || this.value === 0) {
             this.showHelpMessageIfInvalid();
-            this.init = true;
         }
+        this.updateDisplayedValue();
     }
 
     /*
@@ -387,9 +381,7 @@ export default class InputCounter extends LightningElement {
      * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
      */
     get inputStep() {
-        return this._fractionDigits
-            ? 1 / Math.pow(10, this._fractionDigits)
-            : 1;
+        return this.fractionDigits ? 1 / Math.pow(10, this.fractionDigits) : 1;
     }
 
     /**
@@ -403,15 +395,6 @@ export default class InputCounter extends LightningElement {
                 'slds-has-error': this.showError
             })
             .toString();
-    }
-
-    /**
-     * Input class if readOnly.
-     *
-     * @type {string}
-     */
-    get inputClass() {
-        return this._readOnly ? '' : 'avonni-input-counter';
     }
 
     /**
@@ -450,6 +433,14 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
+    get inputClass() {
+        return classSet('slds-input slds-input_counter')
+            .add({
+                'slds-text-align_left slds-p-around_none': this.readOnly
+            })
+            .toString();
+    }
+
     /**
      * Compute constraintApi with fieldConstraintApiWithProxyInput.
      */
@@ -486,9 +477,10 @@ export default class InputCounter extends LightningElement {
      */
     @api
     focus() {
-        this.template
-            .querySelector('[data-element-id="lightning-input"]')
-            .focus();
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) {
+            input.focus();
+        }
     }
 
     /**
@@ -498,9 +490,10 @@ export default class InputCounter extends LightningElement {
      */
     @api
     blur() {
-        this.template
-            .querySelector('[data-element-id="lightning-input"]')
-            .blur();
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) {
+            input.blur();
+        }
     }
 
     /**
@@ -556,126 +549,81 @@ export default class InputCounter extends LightningElement {
      */
 
     /**
-     * Decrements the current value based on the step.
-     */
-    decrementValue() {
-        this.normalizeInputParameters();
-
-        if (!isNaN(this.value)) {
-            this._value = Number(this.value) - Number(this.step);
-        } else {
-            this.emptyInputField();
-        }
-        this.minMaxConditionsHandler();
-
-        this.handleNumberOutput();
-    }
-
-    /**
      * Increments the current value based on the step.
      */
-    incrementValue() {
-        this.normalizeInputParameters();
-
-        if (!isNaN(this.value)) {
-            this._value = Number(this.value) + Number(this.step);
-        } else {
-            this.emptyInputField();
-        }
-        this.minMaxConditionsHandler();
-
-        this.handleNumberOutput();
+    incrementValue(increment) {
+        this._value = increaseNumberByStep({
+            value: this.value,
+            increment,
+            step: this.step,
+            fractionDigits: this.fractionDigits
+        });
+        this.normalizeValue();
+        this.dispatchChange();
     }
 
-    /**
-     * Normalizes the values for min, max and step to the current fractionDigits and stores the current value of this.value for condition handlers.
-     */
-    normalizeInputParameters() {
-        if (this._max) this.handlePrecision(this._max);
-        if (this._min) this.handlePrecision(this._min);
-        if (this._step) this.handlePrecision(this._step);
-
-        this._previousValue = this.value;
-    }
-
-    /**
-     * Sets the value to this.value if the input field is empty and the user fires either increment or decrement methods.
-     */
-    emptyInputField() {
-        this._value =
-            this.step && this.min === 0
-                ? 0
-                : this.step !== 1 && !this.min
-                ? this.step
-                : this.min
-                ? this.min
-                : null;
-    }
-
-    /**
-     * Logic handler for min and max constraints to set this.value.
-     */
-    minMaxConditionsHandler() {
-        if (
-            (this.min || this.min === 0) &&
-            (this.value < this.min || this._previousValue < this.min)
-        ) {
+    normalizeValue() {
+        if ((this.min || this.min === 0) && this.value < this.min) {
             this._value = this.min;
         }
-        if (
-            this.max &&
-            (this.value > this.max || this._previousValue > this.max)
-        ) {
+        if ((this.max || this.max === 0) && this.value > this.max) {
             this._value = this.max;
         }
     }
 
-    /**
-     * Normalize loss of precision after value change and send the updated value to the input.
-     */
-    handleNumberOutput() {
-        this._value = this.handlePrecision(this._value);
-        this.updateValue();
+    updateDisplayedValue() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        const isSymbol =
+            input.value.length === 1 && hasValidNumberSymbol(input.value);
+
+        if (isSymbol) {
+            // The input contains only a symbol (+-)
+            return;
+        } else if (!this.validity.valid) {
+            // The value is invalid
+            input.value = this.value;
+            return;
+        } else if (isNaN(this.value) || this.value === null) {
+            // The value is empty
+            input.value = '';
+            return;
+        }
+
+        input.value = formatNumber(
+            this.value,
+            this.type,
+            this.fractionDigits,
+            this.step
+        );
     }
 
-    /**
-     * Sets the input values to a specified decimal length based on fractionDigits.
-     *
-     * @param input
-     * @type {number}
-     */
-    handlePrecision(input) {
-        if (!isNaN(input)) {
-            input = (+input).toFixed(this._fractionDigits);
-        }
-        return +input;
+    handleDecrement() {
+        this.incrementValue(-1);
+        this.updateDisplayedValue();
+    }
+
+    handleIncrement() {
+        this.incrementValue(1);
+        this.updateDisplayedValue();
     }
 
     /**
      * Updates the value in lightning-input, updates proxy for validation and dispatches change event.
      */
-    updateValue() {
-        [
-            ...this.template.querySelectorAll(
-                '[data-element-id="lightning-input"]'
-            )
-        ].forEach((element) => {
-            element.value = this._value;
-        });
-
+    dispatchChange() {
         this._updateProxyInputAttributes('value');
 
         /**
          * @event
          * @name change
          * @description The event fired when the value changes.
-         * @param {number} value
+         * @param {number} value New value of the input.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this._value
+                    value: this.value
                 }
             })
         );
@@ -683,28 +631,31 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
+     * Blur handler.
+     */
+    handleBlur() {
+        this.updateDisplayedValue();
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
      * Once a user finishes the input field entry the handler normalizes the value and sends it to update.
      *
      * @param {Event} event
      */
-    handlerCommit(event) {
-        this._value = +event.target.value;
-        this.handlePrecision(this._value);
-        this.updateValue();
+    handleChange(event) {
+        event.stopPropagation();
+        const value = event.currentTarget.value;
+        this._value = value === '' ? null : Number(value);
+        this.dispatchChange();
     }
 
     /**
      * Focus handler.
      */
-    handlerFocus() {
+    handleFocus(event) {
+        event.currentTarget.value = this.value || '';
         this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Blur handler.
-     */
-    handlerBlur() {
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -712,19 +663,20 @@ export default class InputCounter extends LightningElement {
      *
      * @param {Event} event
      */
-    handlerKeyDown(event) {
-        let key = event.key;
+    handleKeyDown(event) {
+        const key = event.key;
         switch (key) {
             case 'ArrowUp':
-                this._value = this.value - this.inputStep;
-                this.incrementValue();
+                event.preventDefault();
+                this.incrementValue(1);
+                event.currentTarget.value = this.value;
                 break;
             case 'ArrowDown':
-                this._value = this.value + this.inputStep;
-                this.decrementValue();
+                event.preventDefault();
+                this.incrementValue(-1);
+                event.currentTarget.value = this.value;
                 break;
             default:
-                key = undefined;
                 break;
         }
     }
