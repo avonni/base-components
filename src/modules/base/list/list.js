@@ -1619,15 +1619,18 @@ export default class List extends LightningElement {
              * @public
              * @bubbles
              */
-            this.dispatchEvent(
-                new CustomEvent('itemmousedown', {
-                    detail: {
-                        item: this.cleanUpItem(item),
-                        name: item.name
-                    },
-                    bubbles: true
-                })
-            );
+            const itemMouseDownEvent = new CustomEvent('itemmousedown', {
+                detail: {
+                    item: this.cleanUpItem(item),
+                    name: item.name
+                },
+                bubbles: true
+            });
+            itemMouseDownEvent.clientX = event.clientX;
+            itemMouseDownEvent.clientY = event.clientY;
+            itemMouseDownEvent.pageX = event.pageX;
+            itemMouseDownEvent.pageY = event.pageY;
+            this.dispatchEvent(itemMouseDownEvent);
         }
 
         if (this._keyboardDragged) {
@@ -1757,15 +1760,18 @@ export default class List extends LightningElement {
              * @public
              * @bubbles
              */
-            this.dispatchEvent(
-                new CustomEvent('itemmouseup', {
-                    detail: {
-                        item: this.cleanUpItem(item),
-                        name: item.name
-                    },
-                    bubbles: true
-                })
-            );
+            const itemMouseUpEvent = new CustomEvent('itemmouseup', {
+                detail: {
+                    item: this.cleanUpItem(item),
+                    name: item.name
+                },
+                bubbles: true
+            });
+            itemMouseUpEvent.clientX = event.clientX;
+            itemMouseUpEvent.clientY = event.clientY;
+            itemMouseUpEvent.pageX = event.pageX;
+            itemMouseUpEvent.pageY = event.pageY;
+            this.dispatchEvent(itemMouseUpEvent);
         }
 
         if (!this._draggedElement) {
