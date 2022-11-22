@@ -39,6 +39,7 @@ export const InputPen = ({
     label,
     fieldLevelHelp,
     value,
+    backgroundColor,
     color,
     showSignaturePad,
     size,
@@ -50,6 +51,7 @@ export const InputPen = ({
     hideControls
 }) => {
     const element = document.createElement('ac-base-input-pen');
+    element.backgroundColor = backgroundColor;
     element.color = color;
     element.disabledButtons = disabledButtons;
     element.variant = variant;

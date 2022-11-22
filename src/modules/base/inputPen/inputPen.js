@@ -242,6 +242,35 @@ export default class InputPen extends LightningElement {
      */
 
     /**
+     * Defines the color of the background
+     *
+     * @type {string}
+     * @public
+     * @default #ffffff00
+     */
+    @api
+    get backgroundColor() {
+        return this._backgroundColor;
+    }
+    set backgroundColor(value) {
+        const colorValue =
+            typeof value === 'string' || value instanceof String
+                ? value
+                : DEFAULT_BACKGROUND_COLOR;
+        let style = new Option().style;
+        style.backgroundColor = colorValue;
+        if (
+            ['inherit', 'initial', 'unset'].includes(colorValue) ||
+            style.backgroundColor === ''
+        ) {
+            return;
+        }
+        this._backgroundColor = colorValue;
+        this.fillBackground();
+        this.handleChangeEvent();
+    }
+
+    /**
      * Color of the pen.
      *
      * @type {string}
@@ -252,20 +281,20 @@ export default class InputPen extends LightningElement {
     get color() {
         return this.canvasInfo.color;
     }
-
     set color(value) {
-        const normalizedValue = normalizeString(value, {
-            fallbackValue: this._color
-        });
-        let style = new Option().style;
-        style.color = normalizedValue;
+        const colorValue =
+            typeof value === 'string' || value instanceof String
+                ? value
+                : DEFAULT_BACKGROUND_COLOR;
+        const style = new Option().style;
+        style.color = colorValue;
         if (
-            ['inherit', 'initial', 'unset'].indexOf(normalizedValue) !== -1 ||
+            ['inherit', 'initial', 'unset'].includes(colorValue) ||
             style.color === ''
         ) {
             return;
         }
-        this._color = normalizedValue;
+        this._color = colorValue;
         this.canvasInfo.color = this._color;
         this.initCursorStyles();
     }
@@ -989,14 +1018,19 @@ export default class InputPen extends LightningElement {
      * Fill background color to backgroundColor value.
      */
     fillBackground() {
+        if (!this._backgroundCtx) {
+            return;
+        }
+
         this._backgroundCtx.clearRect(
             0,
             0,
             this.canvasInfo.canvasElement.width,
             this.canvasInfo.canvasElement.height
         );
-        this._backgroundCtx.globalAlpha =
-            parseInt(this._backgroundColor.slice(7), 16) / 255;
+        this._backgroundCtx.globalAlpha = this.parseAlpha(
+            this._backgroundColor
+        );
         this._backgroundCtx.fillStyle = this._backgroundColor;
         this._backgroundCtx.rect(
             0,
@@ -1043,6 +1077,21 @@ export default class InputPen extends LightningElement {
             default:
                 break;
         }
+    }
+
+    parseAlpha(color) {
+        let alpha = 1;
+        if (/^(?:#(?:[0-9a-fA-F]{8}))$/gm.test(color)) {
+            // Hexadecimal with alpha (Example: #fff00f80)
+            alpha = parseInt(color.slice(7), 16) / 255;
+        } else if (/^(?:rgba.*\))$/gm.test(color)) {
+            // rgba (Example: rgba(255, 0, 15, 0.5))
+            alpha = parseFloat(color.split(',').pop().split(')')[0].trim(), 10);
+        } else if (/^(?:hsla.*\))$/gm.test(color)) {
+            // hsla (Example: hsla(10, 40%, 13%, 0.6))
+            alpha = parseFloat(color.split(',').pop().split(')')[0].trim(), 10);
+        }
+        return alpha;
     }
 
     /**
@@ -1448,6 +1497,9 @@ export default class InputPen extends LightningElement {
      * Change event handler.
      */
     handleChangeEvent() {
+        if (!this.canvasInfo.canvasElement) {
+            return;
+        }
         this._value = this.dataURL;
         this._foregroundValue = this.canvasInfo.canvasElement.toDataURL();
         this.testEmptyCanvas();
