@@ -358,11 +358,11 @@ export default class Rating extends LightningElement {
      * @type {string}
      */
     get computedContainerClass() {
-        return classSet('slds-grid slds-grid_vertical-align-center slds-wrap')
-            .add({
-                'slds-form-element_stacked': this.variant === 'label-stacked'
-            })
-            .toString();
+        return classSet({
+            'slds-grid slds-grid_vertical-align-center slds-wrap':
+                this.variant === 'label-inline',
+            'slds-form-element_stacked': this.variant === 'label-stacked'
+        }).toString();
     }
 
     /**
