@@ -89,17 +89,21 @@ describe('Input Counter', () => {
         expect(element.fractionDigits).toBeUndefined();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
-    // name
-    it('Input Counter: name', () => {
-        element.name = 'This is a name text';
+    // aria-label
+    it('Input Counter: aria-label', () => {
+        element.ariaLabel = 'Aria-label';
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.name).toBe('This is a name text');
+            expect(input.ariaLabel).toBe('Aria-label');
         });
     });
 
@@ -127,15 +131,16 @@ describe('Input Counter', () => {
         });
     });
 
-    // aria-label
-    it('Input Counter: aria-label', () => {
-        element.ariaLabel = 'Aria-label';
+    // fraction-digits
+    it('Input Counter: fractionDigits', () => {
+        element.value = 3;
+        element.fractionDigits = 2;
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.ariaLabel).toBe('Aria-label');
+            expect(input.value).toBe('3.00');
         });
     });
 
@@ -157,18 +162,29 @@ describe('Input Counter', () => {
         });
     });
 
+    // name
+    it('Input Counter: name', () => {
+        element.name = 'This is a name text';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            expect(input.name).toBe('This is a name text');
+        });
+    });
+
     // step
-    it('Input Counter: step // no input-step given - defaults to 1', () => {
-        element.step = 5;
+    it('Input Counter: step', () => {
         element.value = 0;
-        element.fractionDigits = null;
+        element.step = 2;
         const input = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-input"]'
+            '[data-element-id="input"]'
         );
 
         return Promise.resolve()
             .then(() => {
-                expect(input.step).toBe(1);
+                expect(input.step).toBe('2');
                 expect(element.value).toBe(0);
             })
             .then(() => {
@@ -176,87 +192,21 @@ describe('Input Counter', () => {
                     '[data-element-id="lightning-button-icon-increment"]'
                 );
                 addButton.click();
-                expect(element.value).toBe(5);
-            });
-    });
-
-    it('Input Counter: step no decimal // input-step 0.01', () => {
-        element.step = 5;
-        element.value = 0;
-        element.fractionDigits = 2;
-        const input = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
-
-        return Promise.resolve()
-            .then(() => {
-                expect(input.step).toBe(0.01);
-                expect(element.value).toBe(0);
-            })
-            .then(() => {
-                const addButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-increment"]'
-                );
-                addButton.click();
-                expect(element.value).toBe(5);
-            });
-    });
-
-    it('Input Counter: step decimal // input-step 0.01', () => {
-        element.step = 5.55;
-        element.value = 0;
-        element.fractionDigits = 2;
-        const input = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
-
-        return Promise.resolve()
-            .then(() => {
-                expect(input.step).toBe(0.01);
-                expect(element.value).toBe(0);
-            })
-            .then(() => {
-                const addButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-increment"]'
-                );
-                addButton.click();
-                expect(element.value).toBe(5.55);
-            });
-    });
-
-    // Precision Handler
-    it('Input Counter: Precision step decimal // input-step', () => {
-        element.step = 55.3658;
-        element.value = 1256.789;
-        element.fractionDigits = 3;
-        const input = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
-
-        return Promise.resolve()
-            .then(() => {
-                expect(input.step).toBe(0.001);
-                expect(element.value).toBe(1256.789);
-            })
-            .then(() => {
-                const addButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon-increment"]'
-                );
-                addButton.click();
-                expect(element.value).toBe(1312.155);
+                expect(input.value).toBe('2');
+                expect(element.value).toBe(2);
             });
     });
 
     // value
     it('Input Counter: value', () => {
         element.value = 5;
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                );
-                expect(input.value).toBe(5);
+                expect(input.value).toBe('5');
             })
             .then(() => {
                 const minus = element.shadowRoot.querySelector(
@@ -264,40 +214,44 @@ describe('Input Counter', () => {
                 );
                 minus.click();
                 expect(element.value).toBe(4);
+                expect(input.value).toBe('4');
             });
     });
 
     // type
-    it('Input Counter: number', () => {
+    it('Input Counter: type number', () => {
         element.type = 'number';
+        element.value = 3;
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.formatter).toBe('number');
+            expect(input.value).toBe('3');
         });
     });
 
-    it('Input Counter: percent', () => {
+    it('Input Counter: type percent', () => {
         element.type = 'percent';
+        element.value = 3;
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.formatter).toBe('percent');
+            expect(input.value).toBe('300%');
         });
     });
 
-    it('Input Counter: currency', () => {
+    it('Input Counter: type currency', () => {
         element.type = 'currency';
+        element.value = 3;
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.formatter).toBe('currency');
+            expect(input.value).toBe('$3');
         });
     });
 
@@ -307,7 +261,7 @@ describe('Input Counter', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
             expect(input.disabled).toBeTruthy();
         });
@@ -323,9 +277,9 @@ describe('Input Counter', () => {
             );
             expect(buttonIcon).toHaveLength(0);
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.className).toBe('');
+            expect(input.readOnly).toBeTruthy();
         });
     });
 
@@ -399,7 +353,7 @@ describe('Input Counter', () => {
 
     it('Input counter: change event // decrement to Max ceiling', () => {
         element.max = 20;
-        element.value = 25;
+        element.value = 65;
         element.step = 6;
 
         const handler = jest.fn();
@@ -458,7 +412,7 @@ describe('Input Counter', () => {
 
     it('Input counter: test under Min floor on increment', () => {
         element.min = 5;
-        element.value = 0;
+        element.value = -19;
         element.step = 6;
 
         const handler = jest.fn();
@@ -492,9 +446,9 @@ describe('Input Counter', () => {
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
+                    '[data-element-id="input"]'
                 );
-                expect(input.value).toBe(5);
+                expect(input.value).toBe('5');
             });
     });
 
@@ -513,9 +467,9 @@ describe('Input Counter', () => {
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
+                    '[data-element-id="input"]'
                 );
-                expect(input.value).toBe(5);
+                expect(input.value).toBe('5');
             });
     });
 });

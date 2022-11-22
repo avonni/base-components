@@ -160,6 +160,7 @@ export default class InputCounter extends LightningElement {
     @api name;
 
     _disabled;
+    _fractionDigits;
     _max;
     _min;
     _step = DEFAULT_STEP;
@@ -169,11 +170,15 @@ export default class InputCounter extends LightningElement {
     _value = null;
     _variant = validVariants.default;
 
+    _connected = false;
     _constraintApi;
     _constraintApiProxyInputUpdater;
-    _fractionDigits;
     _previousValue;
     helpMessage;
+
+    connectedCallback() {
+        this._connected = true;
+    }
 
     renderedCallback() {
         if (this.value || this.value === 0) {
@@ -201,6 +206,11 @@ export default class InputCounter extends LightningElement {
 
     set min(value) {
         this._min = !isNaN(value) && value !== null ? Number(value) : undefined;
+
+        if (this._connected) {
+            this.normalizeValue();
+            this.updateDisplayedValue();
+        }
     }
 
     /**
@@ -216,6 +226,11 @@ export default class InputCounter extends LightningElement {
 
     set max(value) {
         this._max = !isNaN(value) && value !== null ? Number(value) : undefined;
+
+        if (this._connected) {
+            this.normalizeValue();
+            this.updateDisplayedValue();
+        }
     }
 
     /**
@@ -235,6 +250,10 @@ export default class InputCounter extends LightningElement {
         this._fractionDigits = !isNaN(digits)
             ? Math.round(Math.abs(digits))
             : null;
+
+        if (this._connected) {
+            this.updateDisplayedValue();
+        }
     }
 
     /**
@@ -318,6 +337,10 @@ export default class InputCounter extends LightningElement {
             fallbackValue: validTypes.default,
             validValues: validTypes.valid
         });
+
+        if (this._connected) {
+            this.updateDisplayedValue();
+        }
     }
 
     /**
@@ -346,6 +369,13 @@ export default class InputCounter extends LightningElement {
     set value(val) {
         const value = Number(val);
         this._value = !isNaN(value) ? value : null;
+
+        if (this._connected) {
+            if (this._value || this._value === 0) {
+                this.showHelpMessageIfInvalid();
+            }
+            this.updateDisplayedValue();
+        }
     }
 
     /**

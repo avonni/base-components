@@ -118,6 +118,10 @@ export function formatNumber(number, type, fractionDigits, step) {
     } catch (ignore) {
         // ignore any errors
     }
+    if (type === 'number' && fractionDigits) {
+        // Add the missing 0s after the decimal point
+        formattedValue = parseFloat(formattedValue).toFixed(fractionDigits);
+    }
     return formattedValue;
 }
 
@@ -143,5 +147,5 @@ export function increaseNumberByStep({
         const increaseBy = increment * stepAsFloat;
         result = parseFloat(startingValue) + increaseBy;
     }
-    return result.toFixed(fractionDigits);
+    return Number(result.toFixed(fractionDigits));
 }
