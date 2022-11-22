@@ -114,7 +114,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+                '[data-element-id="button"]'
             );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
@@ -142,27 +142,78 @@ describe('Rating', () => {
         element.iconName = 'utility:location';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-icon"]'
             );
-            buttons.forEach((button) => {
-                expect(button.iconName).toBe('utility:location');
+            expect(icons).toHaveLength(5);
+            icons.forEach((icon) => {
+                expect(icon.iconName).toBe('utility:location');
             });
         });
     });
 
     // icon-size
     // Depends on iconName
-    it('Rating: IconSize', () => {
+    it('Rating: IconSize = x-small', () => {
+        element.iconName = 'utility:location';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
+            icons.forEach((icon) => {
+                expect(icon.svgClass).toBe(
+                    'slds-button__icon slds-button__icon_x-small'
+                );
+            });
+        });
+    });
+
+    it('Rating: IconSize = small', () => {
         element.iconName = 'utility:location';
         element.iconSize = 'small';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-icon"]'
             );
-            buttons.forEach((button) => {
-                expect(button.size).toBe('small');
+            icons.forEach((icon) => {
+                expect(icon.svgClass).toBe(
+                    'slds-button__icon slds-button__icon_small'
+                );
+            });
+        });
+    });
+
+    it('Rating: IconSize = medium', () => {
+        element.iconName = 'utility:location';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
+            icons.forEach((icon) => {
+                expect(icon.svgClass).toBe(
+                    'slds-button__icon avonni-rating__icon_medium'
+                );
+            });
+        });
+    });
+
+    it('Rating: IconSize = large', () => {
+        element.iconName = 'utility:location';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
+            icons.forEach((icon) => {
+                expect(icon.svgClass).toBe(
+                    'slds-button__icon slds-button__icon_large'
+                );
             });
         });
     });
@@ -258,7 +309,7 @@ describe('Rating', () => {
                 '[data-element-id="button"]'
             );
             buttons.forEach((button) => {
-                expect(button.classList).toContain('avonni-continuous');
+                expect(button.classList).toContain('avonni-rating__continuous');
             });
         });
     });
@@ -269,10 +320,12 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+                '[data-element-id="button"]'
             );
             buttons.forEach((button) => {
-                expect(button.classList).toContain('avonni-continuous-star');
+                expect(button.classList).toContain(
+                    'avonni-rating__continuous-icon'
+                );
             });
         });
     });
@@ -285,7 +338,9 @@ describe('Rating', () => {
                 '[data-element-id="button"]'
             );
             buttons.forEach((button) => {
-                expect(button.classList).not.toContain('avonni-continuous');
+                expect(button.classList).not.toContain(
+                    'avonni-rating__continuous'
+                );
             });
         });
     });
@@ -295,11 +350,11 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+                '[data-element-id="button"]'
             );
             buttons.forEach((button) => {
                 expect(button.classList).not.toContain(
-                    'avonni-continuous-star'
+                    'avonni-rating__continuous-icon'
                 );
             });
         });
@@ -342,22 +397,15 @@ describe('Rating', () => {
             const buttons = element.shadowRoot.querySelectorAll(
                 '[data-element-id="button"]'
             );
-            buttons.forEach((button, index) => {
-                if (index < 1) {
-                    // eslint-disable-next-line jest/no-conditional-expect
-                    expect(button.classList).toContain(
-                        'slds-button_outline-brand'
-                    );
-                    // eslint-disable-next-line jest/no-conditional-expect
-                    expect(button.classList).not.toContain('slds-button_brand');
-                } else {
-                    // eslint-disable-next-line jest/no-conditional-expect
-                    expect(button.classList).not.toContain(
-                        'slds-button_outline-brand'
-                    );
-                    // eslint-disable-next-line jest/no-conditional-expect
-                    expect(button.classList).toContain('slds-button_brand');
-                }
+            [0, 1].forEach((i) => {
+                expect(buttons[i].classList).toContain(
+                    'avonni-rating__icon_selected'
+                );
+            });
+            [2, 3, 4].forEach((i) => {
+                expect(buttons[i].classList).not.toContain(
+                    'avonni-rating__icon_selected'
+                );
             });
         });
     });
@@ -404,9 +452,6 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-rating__label_inline'
-            );
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -426,7 +471,6 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).toContain('avonni-rating__label_inline');
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -446,9 +490,6 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-rating__label_inline'
-            );
             expect(label.classList).toContain('slds-assistive-text');
         });
     });
@@ -466,9 +507,6 @@ describe('Rating', () => {
             );
 
             expect(wrapper.classList).toContain('slds-form-element_stacked');
-            expect(wrapper.classList).not.toContain(
-                'avonni-rating__label_inline'
-            );
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -502,7 +540,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-icon"]'
+                '[data-element-id="button"]'
             );
             buttons[2].click();
 
