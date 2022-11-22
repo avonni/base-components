@@ -463,6 +463,11 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
+    /**
+     * Computed CSS classes for the input element.
+     *
+     * @type {string}
+     */
     get inputClass() {
         return classSet('slds-input slds-input_counter')
             .add({
@@ -579,7 +584,9 @@ export default class InputCounter extends LightningElement {
      */
 
     /**
-     * Increments the current value based on the step.
+     * Increment or decrement the value of one step.
+     *
+     * @param {number} increment Direction of the increment. Valid values are 1 or -1.
      */
     incrementValue(increment) {
         this._value = increaseNumberByStep({
@@ -592,6 +599,9 @@ export default class InputCounter extends LightningElement {
         this.dispatchChange();
     }
 
+    /**
+     * Normalize the value so it doesn't go above the max or below the min.
+     */
     normalizeValue() {
         if ((this.min || this.min === 0) && this.value < this.min) {
             this._value = this.min;
@@ -601,6 +611,9 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    /**
+     * Update the displayed value to reflect the number of fraction digits and the type.
+     */
     updateDisplayedValue() {
         const input = this.template.querySelector('[data-element-id="input"]');
         const isSymbol =
@@ -627,41 +640,25 @@ export default class InputCounter extends LightningElement {
         );
     }
 
-    handleDecrement() {
-        this.incrementValue(-1);
-        this.updateDisplayedValue();
-    }
-
-    handleIncrement() {
-        this.incrementValue(1);
-        this.updateDisplayedValue();
-    }
-
     /**
-     * Updates the value in lightning-input, updates proxy for validation and dispatches change event.
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
      */
-    dispatchChange() {
-        this._updateProxyInputAttributes('value');
-
-        /**
-         * @event
-         * @name change
-         * @description The event fired when the value changes.
-         * @param {number} value New value of the input.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value
-                }
-            })
-        );
-        this.showHelpMessageIfInvalid();
+    updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
+        }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
-     * Blur handler.
+     * Handle a blur of the input.
      */
     handleBlur() {
         this.updateDisplayedValue();
@@ -669,7 +666,7 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Once a user finishes the input field entry the handler normalizes the value and sends it to update.
+     * Handle a change of the input.
      *
      * @param {Event} event
      */
@@ -681,7 +678,15 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Focus handler.
+     * Handle a click on the decrement button.
+     */
+    handleDecrement() {
+        this.incrementValue(-1);
+        this.updateDisplayedValue();
+    }
+
+    /**
+     * Handle a focus on the input.
      */
     handleFocus(event) {
         event.currentTarget.value = this.value || '';
@@ -689,7 +694,15 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Method for handling user Up and Down arrows inside input field to increment or decrement the value.
+     * Handle a click on the increment button.
+     */
+    handleIncrement() {
+        this.incrementValue(1);
+        this.updateDisplayedValue();
+    }
+
+    /**
+     * Handle a keydown on the input.
      *
      * @param {Event} event
      */
@@ -712,13 +725,25 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Proxy Input Attributes updater.
-     *
-     * @param {object} attributes
+     * Update the validity state and dispatch the change event.
      */
-    _updateProxyInputAttributes(attributes) {
-        if (this._constraintApiProxyInputUpdater) {
-            this._constraintApiProxyInputUpdater(attributes);
-        }
+    dispatchChange() {
+        this.updateProxyInputAttributes('value');
+
+        /**
+         * @event
+         * @name change
+         * @description The event fired when the value changes.
+         * @param {number} value New value of the input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this.value
+                }
+            })
+        );
+        this.showHelpMessageIfInvalid();
     }
 }

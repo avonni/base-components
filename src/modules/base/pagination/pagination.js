@@ -254,10 +254,17 @@ export default class Pagination extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Computed CSS classes of the main pagination buttons.
+     *
+     * @type {string}
+     */
     get computedButtonClass() {
-        return classSet('slds-button slds-button_neutral').add({
-            'slds-button_stretch': this.align === 'fill'
-        }).toString();
+        return classSet('slds-button slds-button_neutral')
+            .add({
+                'slds-button_stretch': this.align === 'fill'
+            })
+            .toString();
     }
 
     /**
@@ -349,11 +356,10 @@ export default class Pagination extends LightningElement {
      */
     get computedContainerClass() {
         return classSet({
-                'slds-grid slds-grid_align-center': this.align === 'center',
-                'slds-grid slds-grid_align-end': this.align === 'right',
-                'avonni-pagination__container_fill': this.align === 'fill'
-            })
-            .toString();
+            'slds-grid slds-grid_align-center': this.align === 'center',
+            'slds-grid slds-grid_align-end': this.align === 'right',
+            'avonni-pagination__container_fill': this.align === 'fill'
+        }).toString();
     }
 
     /**
@@ -524,7 +530,9 @@ export default class Pagination extends LightningElement {
      * Function to set the currently selected button as "avonni-button-active".
      */
     setActiveButton() {
-        const buttons = this.template.querySelectorAll('[data-element-id="button"]');
+        const buttons = this.template.querySelectorAll(
+            '[data-element-id="button"]'
+        );
         buttons.forEach((button) => {
             if (Number(button.value) === this.value) {
                 button.classList.add('slds-button_brand');

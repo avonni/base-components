@@ -365,6 +365,11 @@ export default class Rating extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed CSS classes for the button icon SVG.
+     *
+     * @type {string}
+     */
     get computedIconClass() {
         return classSet('slds-button__icon')
             .add({
@@ -464,6 +469,9 @@ export default class Rating extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the rating items array.
+     */
     initItems() {
         const items = [];
         for (let i = this.min; i <= this.max; i++) {
@@ -486,7 +494,7 @@ export default class Rating extends LightningElement {
     }
 
     /**
-     * Get rating value and dispatch the change as the selected event.
+     * Handle a click on a rating item. Update the value and dispatch the change event.
      *
      * @param {Event} event
      */
