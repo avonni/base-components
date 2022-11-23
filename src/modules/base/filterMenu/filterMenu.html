@@ -71,6 +71,7 @@
             if:true={dropdownVisible}
             class={computedDropdownClass}
             tabindex="0"
+            data-element-id="div-dropdown"
             onfocusin={handleDropdownFocusIn}
             onfocusout={handleDropdownFocusOut}
             onkeyup={handleDropdownKeyUp}
@@ -142,16 +143,17 @@
                                 if:true={isDateRange}
                                 class="slds-show slds-p-around_small"
                                 date-style={computedTypeAttributes.dateStyle}
+                                end-date={dateRangeEndDate}
                                 label={label}
                                 label-end-date={computedTypeAttributes.labelEndDate}
                                 label-end-time={computedTypeAttributes.labelEndTime}
                                 label-start-date={computedTypeAttributes.labelStartDate}
                                 label-start-time={computedTypeAttributes.labelStartTime}
                                 start-date={dateRangeStartDate}
-                                end-date={dateRangeEndDate}
                                 time-style={computedTypeAttributes.timeStyle}
                                 type={computedTypeAttributes.type}
                                 variant="label-hidden"
+                                data-element-id="avonni-input-date-range"
                                 onchange={handleDateRangeChange}
                             ></c-input-date-range>
                             <!-- Range -->
@@ -171,6 +173,7 @@
                                 unit-attributes={computedTypeAttributes.unitAttributes}
                                 value={rangeValue}
                                 variant="label-hidden"
+                                data-element-id="avonni-slider"
                                 onchange={handleRangeChange}
                             ></c-slider>
                         </template>

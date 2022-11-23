@@ -713,6 +713,7 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.normalizeTypeAttributes();
+            this.computeSelectedItems();
         }
     }
 
@@ -731,6 +732,18 @@ export default class FilterMenu extends LightningElement {
 
         if (this._connected) {
             this.normalizeTypeAttributes();
+            this.computeSelectedItems();
+
+            if (
+                this.isVertical &&
+                this.infiniteLoad &&
+                !this.isLoading &&
+                !this.visibleListItems.length
+            ) {
+                // Fire the loadmore event without waiting for the user
+                // to click on the load more button
+                this.dispatchLoadMore();
+            }
         }
     }
 
@@ -747,7 +760,7 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
-        this._value = array;
+        this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
 
         if (this._connected) {
@@ -777,13 +790,12 @@ export default class FilterMenu extends LightningElement {
             this._connected &&
             this.isVertical &&
             this.infiniteLoad &&
-            !this.isLoading
+            !this.isLoading &&
+            !this.visibleListItems.length
         ) {
-            if (!this.visibleListItems.length) {
-                // Fire the loadmore event without waiting for the user
-                // to click on the load more button
-                this.dispatchLoadMore();
-            }
+            // Fire the loadmore event without waiting for the user
+            // to click on the load more button
+            this.dispatchLoadMore();
         }
     }
 
@@ -1345,7 +1357,9 @@ export default class FilterMenu extends LightningElement {
      * @param {number} addedIndex Index to add to the current index. Valid values include 1 and -1. Defaults to 1.
      */
     focusListItem(currentIndex, addedIndex = 1) {
-        const items = this.visibleListItems;
+        const items = this.template.querySelectorAll(
+            '[data-element-id="lightning-menu-item"]'
+        );
         items[currentIndex].tabIndex = '-1';
         const index = currentIndex + addedIndex;
 

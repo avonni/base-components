@@ -82,6 +82,7 @@
         if:true={showLoadMoreButton}
         label="Load more"
         variant="base"
+        data-element-id="lightning-button-load-more"
         onclick={dispatchLoadMore}
     ></lightning-button>
 
@@ -91,16 +92,17 @@
             if:true={isDateRange}
             class="slds-show slds-m-bottom_small"
             date-style={computedTypeAttributes.dateStyle}
+            end-date={dateRangeEndDate}
             label={label}
             label-end-date={computedTypeAttributes.labelEndDate}
             label-end-time={computedTypeAttributes.labelEndTime}
             label-start-date={computedTypeAttributes.labelStartDate}
             label-start-time={computedTypeAttributes.labelStartTime}
             start-date={dateRangeStartDate}
-            end-date={dateRangeEndDate}
             time-style={computedTypeAttributes.timeStyle}
             type={computedTypeAttributes.type}
             variant="label-hidden"
+            data-element-id="avonni-input-date-range"
             onchange={handleDateRangeChange}
         ></c-input-date-range>
 
@@ -120,6 +122,7 @@
             unit-attributes={computedTypeAttributes.unitAttributes}
             value={rangeValue}
             variant="label-hidden"
+            data-element-id="avonni-slider"
             onchange={handleRangeChange}
         ></c-slider>
     </template>
