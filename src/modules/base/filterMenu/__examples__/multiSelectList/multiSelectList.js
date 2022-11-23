@@ -1,7 +1,9 @@
 import { LightningElement } from 'lwc';
 
-export default class FilterMenuBase extends LightningElement {
+export default class FilterMenuMultiSelectList extends LightningElement {
     typeAttributes = {
+        allowSearch: true,
+        isMultiSelect: true,
         items: [
             {
                 label: 'Call',
@@ -39,4 +41,6 @@ export default class FilterMenuBase extends LightningElement {
             }
         ]
     };
+
+    value = ['item-5', 'meeting', 'wrong-value'];
 }

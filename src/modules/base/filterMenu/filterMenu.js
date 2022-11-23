@@ -528,7 +528,7 @@ export default class FilterMenu extends LightningElement {
     }
     set isLoading(bool) {
         const normalizedValue = normalizeBoolean(bool);
-        if (this.isAutoAlignment()) {
+        if (this.isAutoAlignment) {
             // stop previous positioning if any as it maintains old position relationship
             this.stopPositioning();
 
@@ -622,7 +622,6 @@ export default class FilterMenu extends LightningElement {
      * Deprecated. Set the search input placeholder in the type attributes.
      *
      * @type {string}
-     * @public
      * @default Search...
      */
     @api
@@ -645,7 +644,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Deprecated. Show the search box in the type attributes.
+     * Deprecated. Set the search box visibility in the type attributes.
      *
      * @type {boolean}
      * @default false
@@ -893,7 +892,7 @@ export default class FilterMenu extends LightningElement {
         return classSet('slds-dropdown slds-p-around_none')
             .add({
                 'slds-dropdown_left':
-                    this.dropdownAlignment === 'left' || this.isAutoAlignment(),
+                    this.dropdownAlignment === 'left' || this.isAutoAlignment,
                 'slds-dropdown_center': this.dropdownAlignment === 'center',
                 'slds-dropdown_right': this.dropdownAlignment === 'right',
                 'slds-dropdown_bottom':
@@ -941,6 +940,11 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    /**
+     * Selected end date, when the type is date-range.
+     *
+     * @type {string|null}
+     */
     get dateRangeEndDate() {
         if (!Array.isArray(this.currentValue)) {
             return null;
@@ -948,6 +952,11 @@ export default class FilterMenu extends LightningElement {
         return this.currentValue[1];
     }
 
+    /**
+     * Selected start date, when the type is date-range.
+     *
+     * @type {string|null}
+     */
     get dateRangeStartDate() {
         if (!Array.isArray(this.currentValue)) {
             return null;
@@ -955,36 +964,85 @@ export default class FilterMenu extends LightningElement {
         return this.currentValue[0];
     }
 
+    /**
+     * True if the filter menu is disabled or loading.
+     *
+     * @type {boolean}
+     */
     get disabledOrLoading() {
         return this.isLoading || this.disabled;
     }
 
+    /**
+     * HTML element of the dropdown.
+     *
+     * @type {HTMLElement}
+     */
     get dropdownElement() {
         return this.template.querySelector(
             '[data-element-id="div-dropdown-content"]'
         );
     }
 
+    /**
+     * True if inifinite loading is enabled.
+     *
+     * @type {boolean}
+     */
     get infiniteLoad() {
         return this.computedTypeAttributes.enableInfiniteLoading;
     }
 
+    /**
+     * True if the dropdown menu is automatically positionned.
+     *
+     * @type {boolean}
+     */
+    get isAutoAlignment() {
+        return this.dropdownAlignment.startsWith('auto');
+    }
+
+    /**
+     * True if the type is date-range.
+     *
+     * @type {boolean}
+     */
     get isDateRange() {
         return this.type === 'date-range';
     }
 
+    /**
+     * True if the type is list.
+     *
+     * @type {boolean}
+     */
     get isList() {
         return this.type === 'list';
     }
 
+    /**
+     * True if the type is range.
+     *
+     * @type {boolean}
+     */
     get isRange() {
         return this.type === 'range';
     }
 
+    /**
+     * True if the variant is vertical.
+     *
+     * @type {boolean}
+     */
     get isVertical() {
         return this.variant === 'vertical';
     }
 
+    /**
+     * True if no list items are visible.
+     *
+     * @type {boolean}
+     */
     get noVisibleListItem() {
         let i = 0;
         let noVisibleListItem = true;
@@ -997,6 +1055,11 @@ export default class FilterMenu extends LightningElement {
         return noVisibleListItem;
     }
 
+    /**
+     * Array of one action: remove. The action is shown on the selected items pills.
+     *
+     * @type {object[]}
+     */
     get pillActions() {
         return [
             {
@@ -1007,6 +1070,11 @@ export default class FilterMenu extends LightningElement {
         ];
     }
 
+    /**
+     * True if the end of the list is reached.
+     *
+     * @type {boolean}
+     */
     get scrolledToEnd() {
         const fullHeight = this.dropdownElement.scrollHeight;
         const scrolledDistance = this.dropdownElement.scrollTop;
@@ -1016,14 +1084,29 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    /**
+     * True if the load more button should be visible.
+     *
+     * @type {boolean}
+     */
     get showLoadMoreButton() {
         return this.infiniteLoad && !this.isLoading;
     }
 
+    /**
+     * True if the no search result message should be visible.
+     *
+     * @type {boolean}
+     */
     get showNoResultMessage() {
         return !this.isLoading && this.searchTerm && this.noVisibleListItem;
     }
 
+    /**
+     * Value of the slider, when the type is range.
+     *
+     * @type {number[]}
+     */
     get rangeValue() {
         if (this.currentValue.length) {
             return this.currentValue;
@@ -1035,7 +1118,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Display selected items.
+     * True if the selected items should be visible.
      *
      * @type {boolean}
      */
@@ -1043,6 +1126,11 @@ export default class FilterMenu extends LightningElement {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
     }
 
+    /**
+     * Array of currently visible list items.
+     *
+     * @type {object[]}
+     */
     get visibleListItems() {
         return this.computedItems.filter((it) => !it.hidden);
     }
@@ -1052,30 +1140,6 @@ export default class FilterMenu extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Set the focus on the menu.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        if (this.isVertical) {
-            const choiceSet = this.template.querySelector(
-                '[data-element-id="avonni-input-choice-set"]'
-            );
-            if (choiceSet) {
-                choiceSet.focus();
-            }
-        } else {
-            const button = this.template.querySelector(
-                '[data-element-id="button"]'
-            );
-            if (button) {
-                button.focus();
-            }
-        }
-    }
 
     /**
      * Save the currently selected values.
@@ -1098,6 +1162,30 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = [];
         this.computeListItems();
         this.computeSelectedItems();
+    }
+
+    /**
+     * Set the focus on the filter menu.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (this.isVertical) {
+            const choiceSet = this.template.querySelector(
+                '[data-element-id="avonni-input-choice-set"]'
+            );
+            if (choiceSet) {
+                choiceSet.focus();
+            }
+        } else {
+            const button = this.template.querySelector(
+                '[data-element-id="button"]'
+            );
+            if (button) {
+                button.focus();
+            }
+        }
     }
 
     /**
@@ -1131,6 +1219,9 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    /**
+     * Create the computed list items, based on the given items.
+     */
     computeListItems() {
         if (!this.isList) {
             return;
@@ -1155,6 +1246,36 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    /**
+     * Compute the selected items, that will be displayed as pills.
+     */
+    computeSelectedItems() {
+        if (this.isList) {
+            this.computeSelectedListItems();
+        } else {
+            this.computeSelectedRange();
+        }
+    }
+
+    /**
+     * Use the value to compute the selected list items that will be displayed as pills.
+     */
+    computeSelectedListItems() {
+        const selectedItems = this.computedItems.filter((item) => {
+            return this.value.includes(item.value);
+        });
+
+        this.selectedItems = selectedItems.map((item) => {
+            return {
+                label: item.label,
+                name: item.value
+            };
+        });
+    }
+
+    /**
+     * Use the value to compute the selected range that will be displayed as a pill.
+     */
     computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
@@ -1193,31 +1314,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Compute Selected Items List by checked items.
-     */
-    computeSelectedItems() {
-        if (this.isList) {
-            this.computeSelectedListItems();
-        } else {
-            this.computeSelectedRange();
-        }
-    }
-
-    computeSelectedListItems() {
-        const selectedItems = this.computedItems.filter((item) => {
-            return this.value.includes(item.value);
-        });
-
-        this.selectedItems = selectedItems.map((item) => {
-            return {
-                label: item.label,
-                name: item.value
-            };
-        });
-    }
-
-    /**
-     * Close dropdown menu.
+     * Close the dropdown menu.
      */
     close() {
         if (this.dropdownVisible) {
@@ -1225,6 +1322,55 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    /**
+     * Set the focus on the dropdown menu of the horizontal variant.
+     */
+    focusDropdown() {
+        this._allowBlur = false;
+        requestAnimationFrame(() => {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="lightning-focus-trap"]'
+            );
+            if (focusTrap) {
+                this._dropdownIsFocused = true;
+                focusTrap.focus();
+            }
+        });
+    }
+
+    /**
+     * Set the focus on a list item of the dropdown menu.
+     *
+     * @param {number} currentIndex Index of the currently focused item.
+     * @param {number} addedIndex Index to add to the current index. Valid values include 1 and -1. Defaults to 1.
+     */
+    focusListItem(currentIndex, addedIndex = 1) {
+        const items = this.visibleListItems;
+        items[currentIndex].tabIndex = '-1';
+        const index = currentIndex + addedIndex;
+
+        let item = items[index];
+        if (index < 0) {
+            item = items[items.length - 1];
+        } else if (index >= items.length) {
+            item = items[0];
+        } else if (item && item.disabled) {
+            this.focusListItem(index, addedIndex);
+            return;
+        }
+
+        if (item) {
+            item.focus();
+            item.tabIndex = '0';
+        }
+    }
+
+    /**
+     * Format a date into a string, depending on the selected type attributes.
+     *
+     * @param {Date|string|number} date Date to format, given as a number, an ISO 8601 string, or a Date object.
+     * @returns {string} Formatted string date.
+     */
     formatDate(date) {
         const dateTime = dateTimeObjectFrom(date);
         const showTime = this.computedTypeAttributes.type === 'datetime';
@@ -1259,49 +1405,12 @@ export default class FilterMenu extends LightningElement {
         return `${formattedDate} ${formattedTime}`.trim();
     }
 
-    focusDropdown() {
-        this._allowBlur = false;
-        requestAnimationFrame(() => {
-            const focusTrap = this.template.querySelector(
-                '[data-element-id="lightning-focus-trap"]'
-            );
-            if (focusTrap) {
-                this._dropdownIsFocused = true;
-                focusTrap.focus();
-            }
-        });
-    }
-
-    focusListItem(currentIndex, addedIndex = 1) {
-        const items = this.visibleListItems;
-        items[currentIndex].tabIndex = '-1';
-        const index = currentIndex + addedIndex;
-
-        let item = items[index];
-        if (index < 0) {
-            item = items[items.length - 1];
-        } else if (index >= items.length) {
-            item = items[0];
-        } else if (item && item.disabled) {
-            this.focusListItem(index, addedIndex);
-            return;
-        }
-
-        if (item) {
-            item.focus();
-            item.tabIndex = '0';
-        }
-    }
-
     /**
-     * Checks if dropdown is auto Aligned.
+     * Check if the given list item label is out of the search scope.
      *
-     * @returns boolean
+     * @param {string} label Label of the list item to check.
+     * @returns {boolean} True if the search term is not included in the label, false otherwise.
      */
-    isAutoAlignment() {
-        return this.dropdownAlignment.startsWith('auto');
-    }
-
     isOutOfSearchScope(label) {
         if (!this.searchTerm || typeof this.searchTerm !== 'string') {
             return false;
@@ -1311,6 +1420,9 @@ export default class FilterMenu extends LightningElement {
         return !normalizedLabel.includes(searchTerm);
     }
 
+    /**
+     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
+     */
     normalizeTypeAttributes() {
         const typeAttributes = {};
         Object.entries(this.typeAttributes).forEach(([key, value]) => {
@@ -1327,9 +1439,31 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Set order of items.
+     * Observe the dropdown position if its position is automatically set.
+     */
+    pollBoundingRect() {
+        // only poll if the dropdown is auto aligned
+        if (this.isAutoAlignment && this.dropdownVisible) {
+            setTimeout(
+                () => {
+                    if (this._connected) {
+                        observePosition(this, 300, this._boundingRect, () => {
+                            this.close();
+                        });
+
+                        // continue polling
+                        this.pollBoundingRect();
+                    }
+                },
+                250 // check every 0.25 second
+            );
+        }
+    }
+
+    /**
+     * Set the order of the button menu. This method is used as a callback by a potential button group parent.
      *
-     * @param {object} order
+     * @param {number} order Order of the button menu in its siblings.
      */
     setOrder(order) {
         this._order = order;
@@ -1341,7 +1475,7 @@ export default class FilterMenu extends LightningElement {
      * @returns object dropdown menu positioning.
      */
     startPositioning() {
-        if (!this.isAutoAlignment()) {
+        if (!this.isAutoAlignment) {
             return Promise.resolve();
         }
 
@@ -1407,6 +1541,9 @@ export default class FilterMenu extends LightningElement {
         this._positioning = false;
     }
 
+    /**
+     * Make sure the deprecated attributes used for the list type are still supported through the type attributes.
+     */
     supportDeprecatedAttributes() {
         if (!this.isList) {
             return;
@@ -1443,7 +1580,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dropdown menu visibility toggle.
+     * Toggle the visibility of the dropdown menu.
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
@@ -1487,34 +1624,32 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
-    /**
-     * Get bounding rect coordinates for dropdown menu.
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HNALDERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    pollBoundingRect() {
-        // only poll if the dropdown is auto aligned
-        if (this.isAutoAlignment() && this.dropdownVisible) {
-            setTimeout(
-                () => {
-                    if (this._connected) {
-                        observePosition(this, 300, this._boundingRect, () => {
-                            this.close();
-                        });
 
-                        // continue polling
-                        this.pollBoundingRect();
-                    }
-                },
-                250 // check every 0.25 second
-            );
-        }
+    /**
+     * Handle a click on the apply button.
+     */
+    handleApply() {
+        this.apply();
+        this.dispatchApply();
     }
 
+    /**
+     * Handle the blur of the button menu.
+     */
     handleButtonBlur() {
         if (this._allowBlur) {
             this.dispatchEvent(new CustomEvent('blur'));
         }
     }
 
+    /**
+     * Handle a focus on the button menu.
+     */
     handleButtonFocus() {
         if (this._allowBlur) {
             this.dispatchEvent(new CustomEvent('focus'));
@@ -1523,10 +1658,42 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    /**
+     * Handle a change in the value of the input choice set that is visible when the variant is vertical.
+     *
+     * @param {Event} event change event.
+     */
+    handleChoiceSetChange(event) {
+        const value = event.detail.value;
+        this.currentValue =
+            value && !Array.isArray(value) ? [value] : value || [];
+        this.computedItems.forEach((item) => {
+            item.checked = this.currentValue.includes(item.value);
+        });
+        this.dispatchSelect();
+    }
+
+    /**
+     * Handle a change of the input date range, when the type is date-range.
+     *
+     * @param {Event} event change event.
+     */
+    handleDateRangeChange(event) {
+        const { startDate, endDate } = event.detail;
+        this.currentValue = [startDate, endDate];
+        this.dispatchSelect();
+    }
+
+    /**
+     * Handle a focus set inside the dropdown menu.
+     */
     handleDropdownFocusIn() {
         this._dropdownIsFocused = true;
     }
 
+    /**
+     * Handle a focus lost inside the dropdown menu.
+     */
     handleDropdownFocusOut() {
         this._dropdownIsFocused = false;
 
@@ -1537,6 +1704,11 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    /**
+     * Handle a key up in the dropdown menu.
+     *
+     * @param {Event} event keyup event.
+     */
     handleDropdownKeyUp(event) {
         const key = event.key;
         if (key === 'Escape') {
@@ -1545,30 +1717,32 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Checkbox value change event handler.
+     * Handle a key down on a list item.
      *
-     * @param {Event} event
+     * @param {Event} event keydown event.
      */
-    handleCheckboxChange(event) {
-        const value = event.detail.value;
-        this.currentValue =
-            value && !Array.isArray(value) ? [value] : value || [];
-        this.computedItems.forEach((item) => {
-            item.checked = this.currentValue.includes(item.value);
-        });
-        this.dispatchSelect();
-    }
+    handleListItemKeyDown(event) {
+        const key = event.key;
+        const index = Number(event.currentTarget.dataset.index);
 
-    handleDateRangeChange(event) {
-        const { startDate, endDate } = event.detail;
-        this.currentValue = [startDate, endDate];
-        this.dispatchSelect();
+        switch (key) {
+            case 'ArrowUp': {
+                this.focusListItem(index, -1);
+                break;
+            }
+            case 'ArrowDown': {
+                this.focusListItem(index);
+                break;
+            }
+            default:
+                break;
+        }
     }
 
     /**
-     * Private select handler.
+     * Handle the selection of a list item.
      *
-     * @param {Event} event
+     * @param {Event} event privateselect event.
      */
     handlePrivateSelect(event) {
         event.stopPropagation();
@@ -1591,33 +1765,33 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Key down event handler.
+     * Handle a change of the slider value, when the type is range.
      *
-     * @param {Event} event
+     * @param {Event} event change event.
      */
-    handleListItemKeyDown(event) {
-        const key = event.key;
-        const index = Number(event.currentTarget.dataset.index);
-
-        switch (key) {
-            case 'ArrowUp': {
-                this.focusListItem(index, -1);
-                break;
-            }
-            case 'ArrowDown': {
-                this.focusListItem(index);
-                break;
-            }
-            default:
-                break;
-        }
-    }
-
     handleRangeChange(event) {
         this.currentValue = event.detail.value;
         this.dispatchSelect();
     }
 
+    /**
+     * Handle a click on the reset button.
+     */
+    handleResetClick() {
+        /**
+         * The event fired when the selection is resetted.
+         *
+         * @event
+         * @name reset
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('reset'));
+        this.reset();
+    }
+
+    /**
+     * Handle a scroll movement in the dropdown menu.
+     */
     handleScroll() {
         if (!this.infiniteLoad || this.isLoading) {
             return;
@@ -1638,56 +1812,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Selected Item removal handler.
+     * Handle an input in the search box.
      *
-     * @param {Event} event
-     */
-    handleSelectedItemRemove(event) {
-        const { targetName, index } = event.detail;
-        this.selectedItems.splice(index, 1);
-        this.selectedItems = [...this.selectedItems];
-
-        if (this.isList) {
-            const valueIndex = this.value.findIndex((name) => {
-                return name === targetName;
-            });
-            this.value.splice(valueIndex, 1);
-        } else {
-            this._value = [];
-        }
-
-        this.currentValue = [...this.value];
-        this.computeListItems();
-        this.dispatchApply();
-    }
-
-    /**
-     * Apply click handler.
-     */
-    handleApply() {
-        this.apply();
-        this.dispatchApply();
-    }
-
-    /**
-     * Reset Click handler.
-     */
-    handleResetClick() {
-        /**
-         * The event fired when the selection is resetted.
-         *
-         * @event
-         * @name reset
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('reset'));
-        this.reset();
-    }
-
-    /**
-     * Search handler.
-     *
-     * @param {Event} event
+     * @param {Event} event change event.
      */
     handleSearch(event) {
         event.stopPropagation();
@@ -1728,7 +1855,31 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch Apply event.
+     * Handle the removal of a selected item.
+     *
+     * @param {Event} event actionclick event.
+     */
+    handleSelectedItemRemove(event) {
+        const { targetName, index } = event.detail;
+        this.selectedItems.splice(index, 1);
+        this.selectedItems = [...this.selectedItems];
+
+        if (this.isList) {
+            const valueIndex = this.value.findIndex((name) => {
+                return name === targetName;
+            });
+            this.value.splice(valueIndex, 1);
+        } else {
+            this._value = [];
+        }
+
+        this.currentValue = [...this.value];
+        this.computeListItems();
+        this.dispatchApply();
+    }
+
+    /**
+     * Dispatch the apply event.
      */
     dispatchApply() {
         /**
@@ -1760,7 +1911,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Dispatch Select event.
+     * Dispatch the select event.
      */
     dispatchSelect() {
         this.dispatchEvent(

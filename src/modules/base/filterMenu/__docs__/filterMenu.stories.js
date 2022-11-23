@@ -263,8 +263,9 @@ export default {
         },
         type: {
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['date-range', 'list', 'range'],
             description:
                 'Type of the filter menu. Valid values include list, range and date-range.',
             table: {
@@ -435,10 +436,21 @@ Vertical.args = {
 
 export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
-    label: 'Infinite loading',
+    label: 'Infinite Loading',
     typeAttributes: {
         allowSearch: true,
         isMultiSelect: true,
         enableInfiniteLoading: true
     }
+};
+
+export const VerticalInfiniteLoading = InfiniteLoadingTemplate.bind({});
+VerticalInfiniteLoading.args = {
+    label: 'Vertical Infinite Loading',
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        enableInfiniteLoading: true
+    },
+    variant: 'vertical'
 };

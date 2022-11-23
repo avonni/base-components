@@ -1,7 +1,9 @@
 import { LightningElement } from 'lwc';
 
-export default class FilterMenuBase extends LightningElement {
+export default class FilterMenuCustomMenu extends LightningElement {
     typeAttributes = {
+        dropdownLength: '5-items',
+        dropdownWidth: 'xx-small',
         items: [
             {
                 label: 'Call',
