@@ -25,7 +25,11 @@ describe('Tab Bar', () => {
         document.body.appendChild(element);
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     it('Tab bar: Default attributes', () => {
         expect(element.labels).toEqual([]);
@@ -120,7 +124,32 @@ describe('Tab Bar', () => {
             });
     });
 
-    /* ----- EVENTS ----- */
+    /*
+     * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    it('Tab bar: focus method', () => {
+        element.labels = labels;
+        element.defaultTab = 'Tab 2';
+
+        return Promise.resolve().then(() => {
+            const tabs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="a-tab-link"]'
+            );
+            const spy = jest.spyOn(tabs[1], 'focus');
+
+            element.focus();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
 
     it('Tab bar: Select event', () => {
         element.labels = labels;
