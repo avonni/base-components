@@ -1338,16 +1338,24 @@ export default class FilterMenu extends LightningElement {
      * Set the focus on the dropdown menu of the horizontal variant.
      */
     focusDropdown() {
-        this._allowBlur = false;
-        requestAnimationFrame(() => {
-            const focusTrap = this.template.querySelector(
-                '[data-element-id="lightning-focus-trap"]'
-            );
-            if (focusTrap) {
-                this._dropdownIsFocused = true;
-                focusTrap.focus();
-            }
-        });
+        const isFocusableList =
+            (this.isList && this.visibleListItems.length) ||
+            this.computedTypeAttributes.allowSearch;
+        const isFocusable =
+            isFocusableList || (!this.isList && !this.isLoading);
+
+        if (isFocusable) {
+            this._allowBlur = false;
+            requestAnimationFrame(() => {
+                const focusTrap = this.template.querySelector(
+                    '[data-element-id="lightning-focus-trap"]'
+                );
+                if (focusTrap) {
+                    this._dropdownIsFocused = true;
+                    focusTrap.focus();
+                }
+            });
+        }
     }
 
     /**
@@ -1630,10 +1638,6 @@ export default class FilterMenu extends LightningElement {
                  */
                 this.dispatchEvent(new CustomEvent('close'));
                 this._previousScroll = undefined;
-
-                requestAnimationFrame(() => {
-                    this.focus();
-                });
             }
         }
     }
@@ -1658,6 +1662,7 @@ export default class FilterMenu extends LightningElement {
     handleButtonBlur() {
         if (this._allowBlur) {
             this.dispatchEvent(new CustomEvent('blur'));
+            this.close();
         }
     }
 
@@ -1727,6 +1732,11 @@ export default class FilterMenu extends LightningElement {
         const key = event.key;
         if (key === 'Escape') {
             this.close();
+
+            requestAnimationFrame(() => {
+                // Set the focus on the button after render
+                this.focus();
+            });
         }
     }
 
