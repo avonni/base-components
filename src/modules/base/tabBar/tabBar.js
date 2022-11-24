@@ -150,6 +150,21 @@ export default class TabBar extends LightningElement {
     }
 
     /**
+     * Set the focus on the selected tab.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const defaultTab = this.template.querySelector(
+            '.slds-is-active [data-element-id="a-tab-link"]'
+        );
+        if (defaultTab) {
+            defaultTab.focus();
+        }
+    }
+
+    /**
      * Returns the computed CSS classes of a given tab during initialization.
      * @param {string} tabName - The name of the tab.
      * @return {string}
