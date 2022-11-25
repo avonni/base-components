@@ -130,6 +130,7 @@ export default class Slider extends LightningElement {
     computedMin = DEFAULT_MIN;
     customLabels = [];
 
+    _changeTimeout;
     _computedValues = [DEFAULT_VALUE];
     _focusedInputIndex;
     _helpMessage;
@@ -1090,29 +1091,6 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Update slider values and dispatch change event.
-     */
-    changeSlider() {
-        this._updateProxyInputAttributes('value');
-
-        /**
-         * The event fired when the slider value changed.
-         *
-         * @event
-         * @name change
-         * @param {number | number[]} value The value of the slider.
-         * @public
-         */
-        const selectedEvent = new CustomEvent('change', {
-            detail: {
-                value: this._value
-            }
-        });
-
-        this.dispatchEvent(selectedEvent);
-    }
-
-    /**
      * Displays and positions the custom labels for the slider
      */
     displayCustomLabels() {
@@ -1428,7 +1406,28 @@ export default class Slider extends LightningElement {
         }
         this.setHitboxPosition(parseInt(event.target.dataset.index, 10));
         this.updatePublicValue();
-        this.changeSlider();
+        this._updateProxyInputAttributes('value');
+
+        // Make sure the change event is not fired many times,
+        // when the thumb is dragged
+        clearTimeout(this._changeTimeout);
+        this._changeTimeout = setTimeout(() => {
+            /**
+             * The event fired when the slider value changed.
+             *
+             * @event
+             * @name change
+             * @param {number | number[]} value The value of the slider.
+             * @public
+             */
+            const selectedEvent = new CustomEvent('change', {
+                detail: {
+                    value: this._value
+                }
+            });
+
+            this.dispatchEvent(selectedEvent);
+        }, 100);
     }
 
     /**
