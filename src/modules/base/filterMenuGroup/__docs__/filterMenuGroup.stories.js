@@ -113,19 +113,20 @@ const Template = (args) => FilterMenuGroup(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    menus: MENUS,
+    menus: MENUS
+};
+
+export const ButtonIcons = Template.bind({});
+ButtonIcons.args = {
+    menus: ICONS_MENUS,
+    applyButtonLabel: 'Save',
+    resetButtonLabel: 'Clear',
     value: {
         contact: 'email',
         languages: ['dutch', 'english'],
         price: [45, 67],
         publication: [new Date(2022, 11, 4, 13, 45)]
     }
-};
-
-export const ButtonIcons = Template.bind({});
-ButtonIcons.args = {
-    menus: ICONS_MENUS,
-    hideApplyResetButtons: true
 };
 
 export const Vertical = Template.bind({});

@@ -1,3 +1,9 @@
 <template>
-    <avonni-filter-menu-group menus={iconsMenus}></avonni-filter-menu-group>
+    <avonni-filter-menu-group
+        apply-button-label="Save"
+        menus={menus}
+        reset-button-label="Clear"
+        value={value}
+        onloadmore={handleLoadMore}
+    ></avonni-filter-menu-group>
 </template>

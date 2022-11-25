@@ -30,6 +30,49 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+const languages = [
+    {
+        label: 'Dutch',
+        value: 'dutch'
+    },
+    {
+        label: 'English',
+        value: 'english'
+    },
+    {
+        label: 'Finnish',
+        value: 'finnish'
+    },
+    {
+        label: 'French',
+        value: 'french'
+    },
+    {
+        label: 'German',
+        value: 'german'
+    },
+    {
+        label: 'Danish',
+        value: 'danish'
+    },
+    {
+        label: 'Italian',
+        value: 'italian'
+    },
+    {
+        label: 'Japanese',
+        value: 'japanese'
+    },
+    {
+        label: 'Korean',
+        value: 'korean'
+    },
+    {
+        label: 'Portuguese',
+        value: 'portuguese'
+    }
+];
+
 const contact = [
     {
         label: 'Call',
@@ -97,8 +140,7 @@ const MENUS = [
             dropdownWidth: 'large',
             droddownNubbin: true
         },
-        tooltip: 'Type of contact',
-        buttonVariant: 'brand'
+        tooltip: 'Type of contact'
     },
     {
         name: 'price',
@@ -112,27 +154,13 @@ const MENUS = [
             }
         }
     },
-    {
-        name: 'editions',
-        label: 'Editions',
-        typeAttributes: {
-            items: editions,
-            allowSearch: true,
-            isMultiSelect: true
-        }
-    },
-    {
-        name: 'ratings',
-        label: 'Ratings',
-        isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...'
-    },
+
     {
         name: 'languages',
         label: 'Languages',
         typeAttributes: {
             isMultiSelect: true,
-            enableInfiniteLoading: true,
+            items: languages,
             dropdownLength: '5-items'
         }
     },
@@ -142,6 +170,15 @@ const MENUS = [
         type: 'date-range',
         typeAttributes: {
             type: 'datetime'
+        }
+    },
+    {
+        name: 'editions',
+        label: 'Editions',
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
         }
     }
 ];
@@ -157,8 +194,7 @@ const ICONS_MENUS = [
             dropdownWidth: 'large',
             droddownNubbin: true
         },
-        tooltip: 'Type of contact',
-        buttonVariant: 'brand'
+        tooltip: 'Type of contact'
     },
     {
         name: 'price',
@@ -183,13 +219,6 @@ const ICONS_MENUS = [
             allowSearch: true,
             isMultiSelect: true
         }
-    },
-    {
-        name: 'ratings',
-        label: 'Ratings',
-        isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...',
-        iconName: 'utility:favorite'
     },
     {
         name: 'languages',
