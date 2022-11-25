@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import FilterMenu from 'c/filterMenu';
+import FilterMenu from '../filterMenu';
 
 // Not tested:
 // tooltip with horizontal variant (is injected outside of shadow dom)
@@ -118,7 +118,11 @@ describe('FilterMenu', () => {
         expect(element.variant).toBe('horizontal');
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     // access-key
     it('Filter menu: accessKey', () => {
@@ -1101,9 +1105,7 @@ describe('FilterMenu', () => {
             const dropdown = element.shadowRoot.querySelector(
                 '[data-element-id="div-dropdown"]'
             );
-            expect(dropdown.classList).toContain(
-                'avonni-filter-menu__dropdown_range'
-            );
+            expect(dropdown.classList).toContain('slds-dropdown_large');
 
             const dateRange = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-input-date-range"]'
@@ -1136,9 +1138,7 @@ describe('FilterMenu', () => {
             const dropdown = element.shadowRoot.querySelector(
                 '[data-element-id="div-dropdown"]'
             );
-            expect(dropdown.classList).toContain(
-                'avonni-filter-menu__dropdown_range'
-            );
+            expect(dropdown.classList).toContain('slds-dropdown_small');
 
             const range = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-slider"]'
@@ -1665,19 +1665,11 @@ describe('FilterMenu', () => {
         });
     });
 
-    /* ----- METHODS ----- */
-
-    // clear
-    // Depends on value and items
-    it('Filter menu: clear method', () => {
-        element.value = VALUE;
-        element.typeAttributes = { items: ITEMS };
-
-        return Promise.resolve().then(() => {
-            element.clear();
-            expect(element.value).toMatchObject([]);
-        });
-    });
+    /*
+     * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
 
     // apply
     // Depends on value and items
@@ -1750,7 +1742,7 @@ describe('FilterMenu', () => {
                 // Dispatch loadmore when there are no items on opening
                 expect(handler).toHaveBeenCalledTimes(1);
                 const call = handler.mock.calls[0][0];
-                expect(call.bubbles).toBeFalsy();
+                expect(call.bubbles).toBeTruthy();
                 expect(call.cancelable).toBeFalsy();
                 expect(call.composed).toBeFalsy();
             })
@@ -1856,11 +1848,13 @@ describe('FilterMenu', () => {
                     })
                 );
 
-                expect(handler).toHaveBeenCalled();
                 expect(applyHandler).not.toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.value).toEqual([
-                    'item-3'
-                ]);
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.detail.value).toEqual(['item-3']);
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
@@ -2008,7 +2002,7 @@ describe('FilterMenu', () => {
                     'item-4'
                 ]);
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(element.value).toEqual(['item-4']);
             })
@@ -2120,9 +2114,6 @@ describe('FilterMenu', () => {
                 ...VALUE,
                 'item-4'
             ]);
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
     });
 
@@ -2150,7 +2141,7 @@ describe('FilterMenu', () => {
 
                 expect(handler).toHaveBeenCalled();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
             })
             .then(() => {
@@ -2313,6 +2304,11 @@ describe('FilterMenu', () => {
 
                 jest.runAllTimers();
                 expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.value).toBe('Searchable');
+                expect(call.bubbles).toBeTruthy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(

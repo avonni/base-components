@@ -221,8 +221,8 @@ export default class FilterMenuGroup extends LightningElement {
      * @type {string}
      */
     get filtersWrapperClass() {
-        return classSet().add({
-            'slds-button-group-row': !this.isVertical
+        return classSet({
+            'slds-grid': !this.isVertical
         });
     }
 
@@ -232,21 +232,10 @@ export default class FilterMenuGroup extends LightningElement {
      * @type {string}
      */
     get filtersClass() {
-        return classSet().add({
-            'slds-button-group-item': !this.isVertical,
+        return classSet({
+            'slds-m-right_xx-small': !this.isVertical,
             'slds-m-bottom_medium': this.isVertical
         });
-    }
-
-    /**
-     * Get Node list of all filter menu elements.
-     *
-     * @type {NodeListof<Element>}
-     */
-    get menuComponents() {
-        return this.template.querySelectorAll(
-            '[data-element-id^="avonni-filter-menu"]'
-        );
     }
 
     get pillActions() {
@@ -266,6 +255,17 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Save the currently selected values.
+     *
+     * @public
+     */
+    @api
+    apply() {
+        this._value = deepCopy(this._selectedValue);
+        this.computeValue();
+    }
+
+    /**
      * Clear the value.
      *
      * @deprecated
@@ -274,6 +274,10 @@ export default class FilterMenuGroup extends LightningElement {
     clear() {
         this._value = {};
         this.computeValue();
+
+        console.warn(
+            'The clear() method is deprecated. To unselect the value, use reset(). To remove the current value, use the value attribute.'
+        );
     }
 
     /**
@@ -289,17 +293,6 @@ export default class FilterMenuGroup extends LightningElement {
         if (element) {
             element.focus();
         }
-    }
-
-    /**
-     * Save the currently selected values.
-     *
-     * @public
-     */
-    @api
-    apply() {
-        this._value = deepCopy(this._selectedValue);
-        this.computeValue();
     }
 
     /**

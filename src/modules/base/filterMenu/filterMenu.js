@@ -907,39 +907,28 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
+        const alignment = this.dropdownAlignment;
+        const nubbin = this.dropdownNubbin;
+        const isDateTime = this.computedTypeAttributes.type === 'datetime';
+        const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
+
         const classes = classSet('slds-dropdown slds-p-around_none').add({
-            'slds-dropdown_left':
-                this.dropdownAlignment === 'left' || this.isAutoAlignment,
-            'slds-dropdown_center': this.dropdownAlignment === 'center',
-            'slds-dropdown_right': this.dropdownAlignment === 'right',
-            'slds-dropdown_bottom': this.dropdownAlignment === 'bottom-center',
+            'slds-dropdown_left': alignment === 'left' || this.isAutoAlignment,
+            'slds-dropdown_center': alignment === 'center',
+            'slds-dropdown_right': alignment === 'right',
+            'slds-dropdown_bottom': alignment === 'bottom-center',
             'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                this.dropdownAlignment === 'bottom-right',
+                alignment === 'bottom-right',
             'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                this.dropdownAlignment === 'bottom-left',
-            'slds-nubbin_top-left':
-                this.dropdownNubbin && this.dropdownAlignment === 'left',
-            'slds-nubbin_top-right':
-                this.dropdownNubbin && this.dropdownAlignment === 'right',
-            'slds-nubbin_top':
-                this.dropdownNubbin && this.dropdownAlignment === 'center',
-            'slds-nubbin_bottom-left':
-                this.dropdownNubbin && this.dropdownAlignment === 'bottom-left',
-            'slds-nubbin_bottom-right':
-                this.dropdownNubbin &&
-                this.dropdownAlignment === 'bottom-right',
-            'slds-nubbin_bottom':
-                this.dropdownNubbin &&
-                this.dropdownAlignment === 'bottom-center',
-            'slds-dropdown_small':
-                !this.isVertical &&
-                (this.isRange ||
-                    (this.isDateRange &&
-                        this.computedTypeAttributes.type === 'datetime')),
-            'slds-dropdown_large':
-                !this.isVertical &&
-                this.isDateRange &&
-                this.computedTypeAttributes.type !== 'datetime'
+                alignment === 'bottom-left',
+            'slds-nubbin_top-left': nubbin && alignment === 'left',
+            'slds-nubbin_top-right': nubbin && alignment === 'right',
+            'slds-nubbin_top': nubbin && alignment === 'center',
+            'slds-nubbin_bottom-left': nubbin && alignment === 'bottom-left',
+            'slds-nubbin_bottom-right': nubbin && alignment === 'bottom-right',
+            'slds-nubbin_bottom': nubbin && alignment === 'bottom-center',
+            'slds-dropdown_small': isSmallRange,
+            'slds-dropdown_large': this.isDateRange && !isDateTime
         });
 
         if (this.computedTypeAttributes.dropdownWidth) {
@@ -1181,7 +1170,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Clear the value.
+     * Deprecated. To unselect the value, use `reset()`. To remove the current value, use the `value` attribute.
+     *
+     * @deprecated
      */
     @api
     clear() {
@@ -1189,6 +1180,10 @@ export default class FilterMenu extends LightningElement {
         this.currentValue = [];
         this.computeListItems();
         this.computeSelectedItems();
+
+        console.warn(
+            'The clear() method is deprecated. To unselect the value, use reset(). To remove the current value, use the value attribute.'
+        );
     }
 
     /**
