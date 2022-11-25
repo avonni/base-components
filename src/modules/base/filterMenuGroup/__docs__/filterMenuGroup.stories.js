@@ -78,6 +78,16 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        value: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Value of the menus. The object follows the structure { menuName: menuValue }.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -103,16 +113,29 @@ const Template = (args) => FilterMenuGroup(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    menus: MENUS
+    menus: MENUS,
+    value: {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    }
 };
 
 export const ButtonIcons = Template.bind({});
 ButtonIcons.args = {
-    menus: ICONS_MENUS
+    menus: ICONS_MENUS,
+    hideApplyResetButtons: true
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
     menus: MENUS,
-    variant: 'vertical'
+    variant: 'vertical',
+    value: {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    }
 };

@@ -55,17 +55,6 @@ const contact = [
     }
 ];
 
-const prices = [
-    {
-        label: 'Free',
-        value: 'free'
-    },
-    {
-        label: 'Paid',
-        value: 'paid'
-    }
-];
-
 const editions = [
     {
         label: 'Essentials',
@@ -97,75 +86,40 @@ const editions = [
     }
 ];
 
-const languages = [
-    {
-        label: 'Dutch',
-        value: 'dutch'
-    },
-    {
-        label: 'English',
-        value: 'english'
-    },
-    {
-        label: 'Finnish',
-        value: 'finnish'
-    },
-    {
-        label: 'French',
-        value: 'french'
-    },
-    {
-        label: 'German',
-        value: 'german'
-    },
-    {
-        label: 'Danish',
-        value: 'danish'
-    },
-    {
-        label: 'Italian',
-        value: 'italian'
-    },
-    {
-        label: 'Japanese',
-        value: 'japanese'
-    },
-    {
-        label: 'Korean',
-        value: 'korean'
-    },
-    {
-        label: 'Portuguese',
-        value: 'portuguese'
-    }
-];
-
 const MENUS = [
     {
         name: 'contact',
         label: 'Type',
         accessKey: 'k',
         alternativeText: 'Open contact type filter',
-        items: contact,
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
         tooltip: 'Type of contact',
-        value: 'email'
+        buttonVariant: 'brand'
     },
     {
-        name: 'prices',
-        disabled: true,
-        label: 'Prices',
-        items: prices,
-        dropdownWidth: 'large',
-        droddownNubbin: true,
-        hideSelectedItems: true
+        name: 'price',
+        label: 'Price',
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
     },
     {
         name: 'editions',
-        items: editions,
         label: 'Editions',
-        showSearchBox: true,
-        dropdownLength: '5-items',
-        isMultiSelect: true
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     },
     {
         name: 'ratings',
@@ -175,78 +129,87 @@ const MENUS = [
     },
     {
         name: 'languages',
-        items: languages,
-        label: 'Laguages',
-        dropdownLength: '10-items',
-        isMultiSelect: true,
-        value: ['dutch', 'english']
+        label: 'Languages',
+        typeAttributes: {
+            isMultiSelect: true,
+            enableInfiniteLoading: true,
+            dropdownLength: '5-items'
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
     }
 ];
 
 const ICONS_MENUS = [
     {
         name: 'contact',
+        iconName: 'utility:call',
         accessKey: 'k',
         alternativeText: 'Open contact type filter',
-        items: contact,
-        iconName: 'utility:call',
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
         tooltip: 'Type of contact',
-        value: 'email'
+        buttonVariant: 'brand'
     },
     {
-        name: 'prices',
+        name: 'price',
         disabled: true,
-        items: prices,
+        label: 'Price',
         iconName: 'utility:currency',
-        dropdownWidth: 'large',
-        droddownNubbin: true,
-        hideSelectedItems: true
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
     },
     {
         name: 'editions',
-        items: editions,
+        label: 'Editions',
         iconName: 'utility:knowledge_base',
-        buttonVariant: 'bare',
-        showSearchBox: true,
-        dropdownLength: '5-items'
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     },
     {
         name: 'ratings',
-        iconName: 'utility:favorite',
+        label: 'Ratings',
         isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...'
+        loadingStateAlternativeText: 'Waiting for the items to load...',
+        iconName: 'utility:favorite'
     },
     {
         name: 'languages',
+        label: 'Languages',
         iconName: 'utility:world',
-        items: languages,
-        dropdownLength: '10-items',
-        isMultiSelect: true,
-        value: ['dutch', 'english']
-    }
-];
-
-const NO_VALUE_MENU = [
+        typeAttributes: {
+            enableInfiniteLoading: true,
+            dropdownLength: '5-items',
+            isMultiSelect: true
+        }
+    },
     {
-        name: 'contact',
-        label: 'Type',
-        accessKey: 'k',
-        alternativeText: 'Open contact type filter',
-        items: [
-            {
-                label: 'Call',
-                value: 'call',
-                prefixIconName: 'standard:call',
-                iconName: 'utility:voicemail_drop'
-            },
-            {
-                label: 'Email',
-                value: 'email',
-                prefixIconName: 'standard:email'
-            }
-        ],
-        tooltip: 'Type of contact'
+        name: 'publication',
+        label: 'Publication',
+        iconName: 'utility:date_input',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
     }
 ];
 
-export { MENUS, ICONS_MENUS, NO_VALUE_MENU };
+export { MENUS, ICONS_MENUS };

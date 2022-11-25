@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/filterMenuGroup';
+import Component from '../../storybookWrappers/filterMenuGroup/filterMenuGroup';
 
 customElements.define(
     'ac-base-filter-menu-group',
@@ -42,6 +42,7 @@ export const FilterMenuGroup = ({
     applyButtonLabel,
     resetButtonLabel,
     hideSelectedItems,
+    value,
     variant
 }) => {
     const element = document.createElement('ac-base-filter-menu-group');
@@ -49,6 +50,7 @@ export const FilterMenuGroup = ({
     element.applyButtonLabel = applyButtonLabel;
     element.resetButtonLabel = resetButtonLabel;
     element.hideSelectedItems = hideSelectedItems;
+    element.value = value;
     element.variant = variant;
     return element;
 };
