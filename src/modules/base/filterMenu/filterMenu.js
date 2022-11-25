@@ -389,6 +389,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {string}
      * @default 7-items
+     * @deprecated
      */
     @api
     get dropdownLength() {
@@ -429,6 +430,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {string}
      * @default small
+     * @deprecated
      */
     @api
     get dropdownWidth() {
@@ -546,6 +548,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @deprecated
      */
     @api
     get isMultiSelect() {
@@ -567,6 +570,7 @@ export default class FilterMenu extends LightningElement {
      * Deprecated. Set the items in the type attributes.
      *
      * @type {object[]}
+     * @deprecated
      */
     @api
     get items() {
@@ -623,6 +627,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {string}
      * @default Search...
+     * @deprecated
      */
     @api
     get searchInputPlaceholder() {
@@ -648,6 +653,7 @@ export default class FilterMenu extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @deprecated
      */
     @api
     get showSearchBox() {
@@ -929,7 +935,7 @@ export default class FilterMenu extends LightningElement {
                     this.dropdownNubbin &&
                     this.dropdownAlignment === 'bottom-center',
                 'avonni-filter-menu__dropdown_range':
-                    this.isRange || this.isDateRange
+                    !this.isVertical && (this.isRange || this.isDateRange)
             })
             .add(`slds-dropdown_${this.computedTypeAttributes.dropdownWidth}`)
             .toString();
@@ -1773,8 +1779,9 @@ export default class FilterMenu extends LightningElement {
          * @event
          * @name reset
          * @public
+         * @bubbles
          */
-        this.dispatchEvent(new CustomEvent('reset'));
+        this.dispatchEvent(new CustomEvent('reset', { bubbles: true }));
         this.reset();
     }
 
@@ -1823,12 +1830,14 @@ export default class FilterMenu extends LightningElement {
              * @name search
              * @param {string} value The value of the search input.
              * @public
+             * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('search', {
                     detail: {
                         value: this.searchTerm
-                    }
+                    },
+                    bubbles: true
                 })
             );
 
@@ -1878,12 +1887,14 @@ export default class FilterMenu extends LightningElement {
          * @name apply
          * @param {string[]|number[]} value New value of the filter menu.
          * @public
+         * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
                     value: this.value
-                }
+                },
+                bubbles: true
             })
         );
     }
@@ -1895,8 +1906,9 @@ export default class FilterMenu extends LightningElement {
          * @event
          * @name loadmore
          * @public
+         * @bubbles
          */
-        this.dispatchEvent(new CustomEvent('loadmore'));
+        this.dispatchEvent(new CustomEvent('loadmore', { bubbles: true }));
     }
 
     /**
@@ -1911,11 +1923,13 @@ export default class FilterMenu extends LightningElement {
              * @name select
              * @param {string[]} value Currently selected value. The value is not saved, as long as the user does not click on the “apply” button.
              * @public
+             * @bubbles
              */
             new CustomEvent('select', {
                 detail: {
                     value: deepCopy(this.currentValue)
-                }
+                },
+                bubbles: true
             })
         );
 
