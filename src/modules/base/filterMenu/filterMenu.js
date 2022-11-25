@@ -32,8 +32,8 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
-    dateTimeObjectFrom,
     deepCopy,
+    formatDateFromStyle,
     normalizeBoolean,
     normalizeObject,
     normalizeString,
@@ -1293,8 +1293,13 @@ export default class FilterMenu extends LightningElement {
             let normalizedValue = '';
             if (this.isDateRange && value && !isNaN(new Date(value))) {
                 // Date range
-                const date = new Date(value);
-                normalizedValue = this.formatDate(date);
+                const { dateStyle, timeStyle, type } =
+                    this.computedTypeAttributes;
+                normalizedValue = formatDateFromStyle(value, {
+                    dateStyle,
+                    showTime: type === 'datetime',
+                    timeStyle
+                });
             } else if (this.isRange && !isNaN(value)) {
                 // Range
                 const style = this.computedTypeAttributes.unit;
@@ -1385,46 +1390,6 @@ export default class FilterMenu extends LightningElement {
             item.focus();
             item.tabIndex = '0';
         }
-    }
-
-    /**
-     * Format a date into a string, depending on the selected type attributes.
-     *
-     * @param {Date|string|number} date Date to format, given as a number, an ISO 8601 string, or a Date object.
-     * @returns {string} Formatted string date.
-     */
-    formatDate(date) {
-        const dateTime = dateTimeObjectFrom(date);
-        const showTime = this.computedTypeAttributes.type === 'datetime';
-        const { dateStyle, timeStyle } = this.computedTypeAttributes;
-
-        let formattedDate,
-            formattedTime = '';
-        switch (dateStyle) {
-            case 'long':
-                formattedDate = dateTime.toFormat('DDD');
-                break;
-            case 'short':
-                formattedDate = dateTime.toFormat('D');
-                break;
-            default:
-                formattedDate = dateTime.toFormat('DD');
-                break;
-        }
-        if (showTime) {
-            switch (timeStyle) {
-                case 'long':
-                    formattedTime += dateTime.toFormat('ttt');
-                    break;
-                case 'short':
-                    formattedTime = dateTime.toFormat('t');
-                    break;
-                default:
-                    formattedTime = dateTime.toFormat('tt');
-                    break;
-            }
-        }
-        return `${formattedDate} ${formattedTime}`.trim();
     }
 
     /**
