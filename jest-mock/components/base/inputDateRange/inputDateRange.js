@@ -4,7 +4,9 @@ export default class InputDateRange extends LightningElement {
     @api fieldLevelHelp;
     @api label;
     @api labelStartDate;
+    @api labelStartTime;
     @api labelEndDate;
+    @api labelEndTime;
     @api messageWhenValueMissing;
     @api startDate;
     @api endDate;

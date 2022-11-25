@@ -1156,7 +1156,7 @@ export default class InputDateRange extends LightningElement {
     handleStartCalendarFocusOut() {
         this.keepFocus = true;
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             if (this.keepFocus) {
                 this.showStartDate = false;
 
@@ -1164,7 +1164,7 @@ export default class InputDateRange extends LightningElement {
                     this.startDateInput.focus();
                 }
             }
-        }, 1);
+        });
     }
 
     /**

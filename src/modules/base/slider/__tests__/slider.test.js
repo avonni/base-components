@@ -64,10 +64,14 @@ describe('Slider', () => {
             document.body.removeChild(document.body.firstChild);
         }
         jest.restoreAllMocks();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
         jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         element = createElement('avonni-slider', {
             is: Slider
         });
@@ -1166,6 +1170,7 @@ describe('Slider', () => {
                 '[data-group-name="input"]'
             );
             input.dispatchEvent(new CustomEvent('input'));
+            jest.runAllTimers();
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual(34);
@@ -1186,6 +1191,7 @@ describe('Slider', () => {
                 '[data-group-name="input"]'
             );
             input.dispatchEvent(new CustomEvent('input'));
+            jest.runAllTimers();
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual([1, 2, 3]);
