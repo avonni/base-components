@@ -907,38 +907,47 @@ export default class FilterMenu extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown slds-p-around_none')
-            .add({
-                'slds-dropdown_left':
-                    this.dropdownAlignment === 'left' || this.isAutoAlignment,
-                'slds-dropdown_center': this.dropdownAlignment === 'center',
-                'slds-dropdown_right': this.dropdownAlignment === 'right',
-                'slds-dropdown_bottom':
-                    this.dropdownAlignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this.dropdownAlignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this.dropdownAlignment === 'bottom-left',
-                'slds-nubbin_top-left':
-                    this.dropdownNubbin && this.dropdownAlignment === 'left',
-                'slds-nubbin_top-right':
-                    this.dropdownNubbin && this.dropdownAlignment === 'right',
-                'slds-nubbin_top':
-                    this.dropdownNubbin && this.dropdownAlignment === 'center',
-                'slds-nubbin_bottom-left':
-                    this.dropdownNubbin &&
-                    this.dropdownAlignment === 'bottom-left',
-                'slds-nubbin_bottom-right':
-                    this.dropdownNubbin &&
-                    this.dropdownAlignment === 'bottom-right',
-                'slds-nubbin_bottom':
-                    this.dropdownNubbin &&
-                    this.dropdownAlignment === 'bottom-center',
-                'avonni-filter-menu__dropdown_range':
-                    !this.isVertical && (this.isRange || this.isDateRange)
-            })
-            .add(`slds-dropdown_${this.computedTypeAttributes.dropdownWidth}`)
-            .toString();
+        const classes = classSet('slds-dropdown slds-p-around_none').add({
+            'slds-dropdown_left':
+                this.dropdownAlignment === 'left' || this.isAutoAlignment,
+            'slds-dropdown_center': this.dropdownAlignment === 'center',
+            'slds-dropdown_right': this.dropdownAlignment === 'right',
+            'slds-dropdown_bottom': this.dropdownAlignment === 'bottom-center',
+            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                this.dropdownAlignment === 'bottom-right',
+            'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                this.dropdownAlignment === 'bottom-left',
+            'slds-nubbin_top-left':
+                this.dropdownNubbin && this.dropdownAlignment === 'left',
+            'slds-nubbin_top-right':
+                this.dropdownNubbin && this.dropdownAlignment === 'right',
+            'slds-nubbin_top':
+                this.dropdownNubbin && this.dropdownAlignment === 'center',
+            'slds-nubbin_bottom-left':
+                this.dropdownNubbin && this.dropdownAlignment === 'bottom-left',
+            'slds-nubbin_bottom-right':
+                this.dropdownNubbin &&
+                this.dropdownAlignment === 'bottom-right',
+            'slds-nubbin_bottom':
+                this.dropdownNubbin &&
+                this.dropdownAlignment === 'bottom-center',
+            'slds-dropdown_small':
+                !this.isVertical &&
+                (this.isRange ||
+                    (this.isDateRange &&
+                        this.computedTypeAttributes.type === 'datetime')),
+            'slds-dropdown_large':
+                !this.isVertical &&
+                this.isDateRange &&
+                this.computedTypeAttributes.type !== 'datetime'
+        });
+
+        if (this.computedTypeAttributes.dropdownWidth) {
+            classes.add(
+                `slds-dropdown_${this.computedTypeAttributes.dropdownWidth}`
+            );
+        }
+        return classes.toString();
     }
 
     /**
