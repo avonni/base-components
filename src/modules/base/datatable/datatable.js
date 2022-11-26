@@ -614,6 +614,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make widthsData accessible
+     * @public
+     * @type {object}
+     */
+    @api
+    get primitiveWidthsData() {
+        return super.widthsData;
+    }
+
+    /**
      * The array of data to be displayed. The objects keys depend on the columns fieldNames.
      * @public
      * @type {array}
@@ -780,17 +790,6 @@ export default class Datatable extends LightningDatatable {
 
     set suppressBottomBar(value) {
         super.suppressBottomBar = normalizeBoolean(value);
-    }
-
-    /**
-     * Makes table inline style accessible
-     * @public
-     * @type {CSSStyleDeclaration}
-     */
-    @api
-    get tableStyle() {
-        const table = this.template.querySelector('table.slds-table');
-        return table && table.style ? table.style : '';
     }
 
     /**
