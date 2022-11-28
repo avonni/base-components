@@ -41,6 +41,8 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet, generateUUID } from 'c/utils';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
+const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
+const SHOW_MORE_BUTTON_WIDTH = 70;
 
 /**
  * @class
@@ -62,20 +64,27 @@ export default class PillContainer extends LightningElement {
     _focusedIndex = 0;
     _focusedTabIndex = 0;
     _hasFocus = false;
-    _pillsNotFittingCount;
+    _itemsWidths = [];
     _pillContainerElementId;
     _resizeObserver;
+    _visibleItemsCount = 0;
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
+        this.initVisibleItemsCount();
     }
 
     renderedCallback() {
-        if (this._resizeObserver && !this.computedIsCollapsible) {
+        if (this._resizeObserver && !this.isCollapsible) {
             this._resizeObserver.disconnect();
             this._resizeObserver = undefined;
-        } else if (!this._resizeObserver && this.computedIsCollapsible) {
+        } else if (!this._resizeObserver && this.isCollapsible) {
             this._resizeObserver = this.initResizeObserver();
+        }
+
+        if (this.isCollapsible) {
+            this.saveItemsWidths();
+            this.updateVisibleItems();
         }
     }
 
@@ -138,6 +147,10 @@ export default class PillContainer extends LightningElement {
     set isCollapsible(value) {
         this._isCollapsible = normalizeBoolean(value);
         this.clearDrag();
+
+        if (this._connected) {
+            this.initVisibleItemsCount();
+        }
     }
 
     /**
@@ -154,6 +167,10 @@ export default class PillContainer extends LightningElement {
     set isExpanded(value) {
         this._isExpanded = normalizeBoolean(value);
         this.clearDrag();
+
+        if (this._connected) {
+            this.initVisibleItemsCount();
+        }
     }
 
     /**
@@ -168,8 +185,12 @@ export default class PillContainer extends LightningElement {
     }
     set items(value) {
         this._items = deepCopy(normalizeArray(value));
-
+        this._itemsWidths = [];
         this.clearDrag();
+
+        if (this._connected) {
+            this.initVisibleItemsCount();
+        }
     }
 
     /**
@@ -211,21 +232,12 @@ export default class PillContainer extends LightningElement {
      */
 
     /**
-     * True if the pill container is considered collapsible.
-     *
-     * @type {boolean}
-     */
-    get computedIsCollapsible() {
-        return (!this.isCollapsible && !this.isExpanded) || this.isCollapsible;
-    }
-
-    /**
-     * True of the pill container is considered expanded.
+     * True if the pill container is considered expanded.
      *
      * @type {boolean}
      */
     get computedIsExpanded() {
-        return (!this.isCollapsible && !this.isExpanded) || this.isExpanded;
+        return this.isExpanded || !this.isCollapsible;
     }
 
     /**
@@ -273,14 +285,8 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedPillCountMoreLabel() {
-        if (
-            this.computedIsExpanded ||
-            isNaN(this._pillsNotFittingCount) ||
-            this._pillsNotFittingCount <= 0
-        ) {
-            return undefined;
-        }
-        return `+${this._pillsNotFittingCount} more`;
+        const hiddenCount = this.items.length - this._visibleItemsCount;
+        return `+${hiddenCount} more`;
     }
 
     /**
@@ -352,8 +358,8 @@ export default class PillContainer extends LightningElement {
      * @type {boolean}
      * @default false
      */
-    get showMore() {
-        return this.computedIsCollapsible && !this.computedIsExpanded;
+    get isCollapsed() {
+        return this.items.length > this._visibleItemsCount;
     }
 
     /**
@@ -363,6 +369,10 @@ export default class PillContainer extends LightningElement {
      */
     get uniqueKey() {
         return generateUUID();
+    }
+
+    get visibleItems() {
+        return this.items.slice(0, this._visibleItemsCount);
     }
 
     /*
@@ -418,23 +428,26 @@ export default class PillContainer extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.listElement) return null;
-
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper) {
+            return null;
+        }
         const resizeObserver = new AvonniResizeObserver(() => {
-            let notFittingCount = 0;
-            const items = this.template.querySelectorAll(
-                '[data-element-id="li"]'
-            );
-            for (let i = 0; i < items.length; i++) {
-                const node = items[i];
-                if (node.offsetTop > 0) {
-                    notFittingCount += 1;
-                }
-            }
-            this._pillsNotFittingCount = notFittingCount;
+            this.updateVisibleItems();
         });
-        resizeObserver.observe(this.listElement);
+        resizeObserver.observe(wrapper);
         return resizeObserver;
+    }
+
+    initVisibleItemsCount() {
+        const maxCount = this.items.length;
+        const count =
+            DEFAULT_NUMBER_OF_VISIBLE_ITEMS > maxCount
+                ? maxCount
+                : DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
+        this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
     }
 
     /**
@@ -506,6 +519,12 @@ export default class PillContainer extends LightningElement {
         this.updateAssistiveText(position);
     }
 
+    saveItemsWidths() {
+        this.itemElements.forEach((item, i) => {
+            this._itemsWidths[i] = item.offsetWidth;
+        });
+    }
+
     /**
      * Update the focused index.
      *
@@ -542,6 +561,52 @@ export default class PillContainer extends LightningElement {
         const label = this.items[initialIndex].label;
         const total = this.items.length;
         this.altTextElement.textContent = `${label}. ${position} / ${total}`;
+    }
+
+    updateVisibleItems() {
+        const maxCount = this.items.length;
+        if (this.computedIsExpanded) {
+            this._visibleItemsCount = maxCount;
+            return;
+        }
+
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper || !this.listElement) {
+            return;
+        }
+
+        const totalWidth = wrapper.offsetWidth - SHOW_MORE_BUTTON_WIDTH;
+        const availableSpace = totalWidth - this.listElement.offsetWidth;
+        const hasHiddenItems = this._visibleItemsCount < maxCount;
+
+        if (hasHiddenItems && availableSpace > 0) {
+            const nextItemWidth = this._itemsWidths[this._visibleItemsCount];
+            const nextItemFits =
+                !nextItemWidth || availableSpace > nextItemWidth;
+
+            if (nextItemFits) {
+                // Show more items
+                const newCount =
+                    this._visibleItemsCount + DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
+                this._visibleItemsCount =
+                    newCount > maxCount ? maxCount : newCount;
+            }
+            return;
+        }
+
+        // Show less items
+        let fittingCount = 0;
+        let width = 0;
+        while (fittingCount < this.itemElements.length) {
+            width += this._itemsWidths[fittingCount];
+            if (width > totalWidth) {
+                break;
+            }
+            fittingCount += 1;
+        }
+        this._visibleItemsCount = fittingCount;
     }
 
     /*

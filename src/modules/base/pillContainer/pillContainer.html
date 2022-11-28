@@ -52,7 +52,7 @@
 
         <!-- Show more -->
         <lightning-button
-            if:true={showMore}
+            if:true={isCollapsed}
             aria-hidden="true"
             class="slds-listbox-toggle"
             label={computedPillCountMoreLabel}
@@ -72,7 +72,7 @@
             onfocusout={handlePillBlur}
             onkeydown={handleKeyDown}
         >
-            <template for:each={items} for:item="pill" for:index="index">
+            <template for:each={visibleItems} for:item="pill" for:index="index">
                 <li
                     key={uniqueKey}
                     class={computedListItemClass}
