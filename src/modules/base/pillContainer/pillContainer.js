@@ -38,7 +38,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
@@ -65,9 +65,11 @@ export default class PillContainer extends LightningElement {
     _focusedTabIndex = 0;
     _hasFocus = false;
     _itemsWidths = [];
-    _pillContainerElementId;
+    _popoverHasFocus = false;
     _resizeObserver;
     _visibleItemsCount = 0;
+
+    showPopover = false;
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
@@ -259,8 +261,9 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedListItemClass() {
-        return classSet('slds-listbox-item').add({
+        return classSet('slds-listbox-item avonni-pill-container__item').add({
             'slds-is-relative': this.sortable,
+            'slds-p-top_xxx-small slds-p-right_xxx-small': !this.singleLine,
             'avonni-pill-container__item_sortable-single-line':
                 this.sortable && this.singleLine
         });
@@ -272,21 +275,11 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedPillClass() {
-        return classSet('slds-pill')
+        return classSet()
             .add({
                 'avonni-pill-container__pill-sortable': this.sortable
             })
             .toString();
-    }
-
-    /**
-     * Label of the "show more" button.
-     *
-     * @type {string}
-     */
-    get computedPillCountMoreLabel() {
-        const hiddenCount = this.items.length - this._visibleItemsCount;
-        return `+${hiddenCount} more`;
     }
 
     /**
@@ -296,9 +289,8 @@ export default class PillContainer extends LightningElement {
      */
     get computedWrapperClass() {
         return classSet('avonni-pill-container__wrapper').add({
-            'slds-is-expanded': this.computedIsExpanded && !this.singleLine,
-            'slds-pill_container': this.singleLine,
-            'slds-listbox_selection-group': !this.singleLine
+            'slds-pill_container slds-p-top_none slds-p-bottom_none':
+                this.singleLine
         });
     }
 
@@ -323,6 +315,20 @@ export default class PillContainer extends LightningElement {
             '[data-element-id="avonni-primitive-pill"]'
         );
         return pillElements[this._focusedIndex];
+    }
+
+    get hiddenItems() {
+        return this.items.slice(this._visibleItemsCount);
+    }
+
+    /**
+     * True if the "show more" button should be visible.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get isCollapsed() {
+        return this.items.length > this._visibleItemsCount;
     }
 
     /**
@@ -353,22 +359,13 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
-     * True if the "show more" button should be visible.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get isCollapsed() {
-        return this.items.length > this._visibleItemsCount;
-    }
-
-    /**
-     * Automatically generated unique key.
+     * Label of the "show more" button.
      *
      * @type {string}
      */
-    get uniqueKey() {
-        return generateUUID();
+    get buttonLabel() {
+        const hiddenCount = this.items.length - this._visibleItemsCount;
+        return `+${hiddenCount} more`;
     }
 
     get visibleItems() {
@@ -388,7 +385,15 @@ export default class PillContainer extends LightningElement {
      */
     @api
     focus() {
-        if (this.focusedPillElement && this.items[this._focusedIndex].href) {
+        if (this.showPopover) {
+            const focusTrap = this.template.querySelector(
+                '[data-element-id="ligthning-focus-trap"]'
+            );
+            focusTrap.focus();
+        } else if (
+            this.focusedPillElement &&
+            this.items[this._focusedIndex].href
+        ) {
             this.focusedPillElement.focusLink();
         } else if (this.focusedPillElement) {
             this.focusedPillElement.focus();
@@ -551,6 +556,21 @@ export default class PillContainer extends LightningElement {
         this.focus();
     }
 
+    togglePopover() {
+        this.showPopover = !this.showPopover;
+
+        if (!this.showPopover) {
+            requestAnimationFrame(() => {
+                const button = this.template.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                if (button) {
+                    button.focus();
+                }
+            });
+        }
+    }
+
     /**
      * Update the assistive text with the current position of the reordered pill.
      *
@@ -711,8 +731,16 @@ export default class PillContainer extends LightningElement {
      * Handle a click on the "show more" button.
      */
     handleMoreClick() {
-        this._isExpanded = true;
-        this.focus();
+        if (this.singleLine) {
+            this.togglePopover();
+        } else {
+            this._isExpanded = true;
+            this.updateVisibleItems();
+        }
+
+        requestAnimationFrame(() => {
+            this.focus();
+        });
     }
 
     /**
@@ -851,6 +879,27 @@ export default class PillContainer extends LightningElement {
         } else {
             // The cursor is on the right side of the pill
             this.moveRight(index);
+        }
+    }
+
+    handlePopoverFocusIn() {
+        this._popoverHasFocus = true;
+    }
+
+    handlePopoverFocusOut() {
+        this._popoverHasFocus = false;
+
+        requestAnimationFrame(() => {
+            if (!this._popoverHasFocus && this.showPopover) {
+                this.togglePopover();
+            }
+        });
+    }
+
+    handlePopoverKeyUp(event) {
+        if (event.key === 'Escape') {
+            this._popoverHasFocus = false;
+            this.togglePopover();
         }
     }
 }

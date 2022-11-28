@@ -31,7 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, keyCodes, classListMutation } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString, keyCodes } from 'c/utilsPrivate';
+import { classSet } from '../utils/classSet';
+
+const VARIANTS = {
+    valid: ['base', 'list'],
+    default: 'base'
+};
 
 /**
  * @class
@@ -56,6 +62,7 @@ export default class PrimitivePill extends LightningElement {
     _actions = [];
     _avatar;
     _href;
+    _variant = VARIANTS.default;
 
     _focusedActions = false;
 
@@ -114,9 +121,16 @@ export default class PrimitivePill extends LightningElement {
     }
     set href(value) {
         this._href = value;
+    }
 
-        classListMutation(this.classList, {
-            'avonni-primitive-pill__action': !!this._href
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -142,6 +156,15 @@ export default class PrimitivePill extends LightningElement {
      */
     get severalActions() {
         return this.actions.length > 1;
+    }
+
+    get wrapperClass() {
+        return classSet('slds-pill avonni-primitive-pill')
+            .add({
+                'avonni-primitive-pill__action': !!this._href,
+                'avonni-primitive-pill_list': this.variant === 'list'
+            })
+            .toString();
     }
 
     /*
