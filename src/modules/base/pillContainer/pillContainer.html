@@ -101,18 +101,30 @@
             ></lightning-button>
             <div
                 if:true={showPopover}
-                class="slds-dropdown slds-dropdown_left slds-dropdown_length-7"
+                class="
+                    slds-dropdown slds-dropdown_left slds-dropdown_length-7
+                    slds-p-vertical_none
+                    slds-p-horizontal_xx-small
+                "
+                data-element-id="div-popover"
                 onfocusin={handlePopoverFocusIn}
                 onfocusout={handlePopoverFocusOut}
                 onkeyup={handlePopoverKeyUp}
+                onscroll={handlePopoverScroll}
             >
                 <lightning-focus-trap data-element-id="ligthning-focus-trap">
                     <ul>
-                        <template for:each={hiddenItems} for:item="pill">
+                        <template
+                            for:each={hiddenItems}
+                            for:item="pill"
+                            for:index="index"
+                        >
                             <li
                                 key={pill.name}
                                 role="presentation"
+                                data-element-id="li-hidden"
                                 data-index={index}
+                                data-name={pill.name}
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
                             >

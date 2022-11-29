@@ -62,6 +62,10 @@
     padding-left: 0.125rem;
 }
 
+.avonni-pill-container__item_multi-line {
+    height: 1.875rem;
+}
+
 .avonni-pill-container__pill-sortable {
     user-select: none;
     -webkit-user-select: none;
