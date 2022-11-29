@@ -716,6 +716,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make scrollable x container accessible.
+     * @public
+     * @type {Element}
+     */
+    @api
+    get scrollerX() {
+        return this.template.querySelector('.slds-scrollable_x');
+    }
+
+    /**
      * Enables programmatic row selection with a list of key-field values.
      * @public
      * @type {string[]}
