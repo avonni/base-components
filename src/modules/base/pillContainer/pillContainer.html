@@ -97,7 +97,8 @@
                 label={buttonLabel}
                 variant="base"
                 data-element-id="lightning-button-show-more"
-                onclick={handleMoreClick}
+                onclick={handleExpand}
+                onmousemove={handleMoreButtonMouseMove}
             ></lightning-button>
             <div
                 if:true={showPopover}
@@ -109,36 +110,38 @@
                 data-element-id="div-popover"
                 onfocusin={handlePopoverFocusIn}
                 onfocusout={handlePopoverFocusOut}
-                onkeyup={handlePopoverKeyUp}
                 onscroll={handlePopoverScroll}
             >
                 <lightning-focus-trap data-element-id="ligthning-focus-trap">
-                    <ul>
-                        <template
-                            for:each={hiddenItems}
-                            for:item="pill"
-                            for:index="index"
-                        >
+                    <ul
+                        aria-describedby="instructions"
+                        aria-labelledby="label"
+                        aria-orientation="vertical"
+                        onkeydown={handleKeyDown}
+                    >
+                        <template for:each={hiddenItems} for:item="pill">
                             <li
                                 key={pill.name}
+                                class={computedHiddenListItemClass}
                                 role="presentation"
                                 data-element-id="li-hidden"
-                                data-index={index}
+                                data-index={pill.index}
                                 data-name={pill.name}
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
                             >
                                 <c-primitive-pill
+                                    class={computedPillClass}
                                     actions={actions}
                                     avatar={pill.avatar}
                                     href={pill.href}
                                     label={pill.label}
                                     name={pill.name}
                                     role="option"
-                                    tabindex="0"
+                                    tabindex="-1"
                                     variant="list"
                                     data-element-id="avonni-primitive-pill-hidden"
-                                    data-index={index}
+                                    data-index={pill.index}
                                     onactionclick={handleActionClick}
                                     onclick={handlePillClick}
                                 ></c-primitive-pill>

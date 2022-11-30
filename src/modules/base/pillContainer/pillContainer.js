@@ -63,6 +63,7 @@ export default class PillContainer extends LightningElement {
 
     _dragState;
     _dragTimeOut;
+    _expandTimeOut;
     _focusedIndex = 0;
     _focusedTabIndex = 0;
     _focusOnRender = false;
@@ -243,6 +244,14 @@ export default class PillContainer extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get computedHiddenListItemClass() {
+        return classSet('avonni-pill-container__hidden-pill')
+            .add({
+                'slds-is-relative': this.sortable
+            })
+            .toString();
+    }
+
     /**
      * True if the pill container is considered expanded.
      *
@@ -316,23 +325,21 @@ export default class PillContainer extends LightningElement {
         );
     }
 
-    /**
-     * HTML element of the currently focused pill.
-     *
-     * @type {HTMLElement}
-     */
-    get focusedPillElement() {
-        const pillElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-pill"]'
-        );
-        return pillElements[this._focusedIndex];
-    }
-
     get hiddenItems() {
-        return this.items.slice(
-            this._hiddenItemsStartIndex,
-            this._hiddenItemsStartIndex + MAX_LOADED_ITEMS
-        );
+        let endIndex = this._hiddenItemsStartIndex + MAX_LOADED_ITEMS;
+        const lastIndex = this.items.length;
+        if (endIndex + 10 >= lastIndex) {
+            // If only 10 items are left, load them all
+            endIndex = lastIndex;
+        }
+
+        const items = this.items.slice(this._hiddenItemsStartIndex, endIndex);
+        return items.map((it, index) => {
+            return {
+                ...it,
+                index: index + this._hiddenItemsStartIndex
+            };
+        });
     }
 
     /**
@@ -351,7 +358,7 @@ export default class PillContainer extends LightningElement {
      * @type {NodeList}
      */
     get itemElements() {
-        return this.template.querySelectorAll('[data-element-id="li"]');
+        return this.template.querySelectorAll('[data-element-id^="li"]');
     }
 
     /**
@@ -399,18 +406,13 @@ export default class PillContainer extends LightningElement {
      */
     @api
     focus() {
-        if (this.showPopover) {
-            const pill = this.template.querySelector(
-                '[data-element-id="avonni-primitive-pill-hidden"]'
-            );
-            pill.focus();
-        } else if (
-            this.focusedPillElement &&
-            this.items[this._focusedIndex].href
-        ) {
-            this.focusedPillElement.focusLink();
-        } else if (this.focusedPillElement) {
-            this.focusedPillElement.focus();
+        const focusedPill = this.template.querySelector(
+            `[data-element-id^="avonni-primitive-pill"][data-index="${this._focusedIndex}"]`
+        );
+        if (focusedPill && focusedPill.href) {
+            focusedPill.focusLink();
+        } else if (focusedPill) {
+            focusedPill.focus();
         } else if (this.listElement) {
             this.listElement.focus();
         }
@@ -476,11 +478,7 @@ export default class PillContainer extends LightningElement {
         clearTimeout(this._dragTimeOut);
         if (!this._dragState) return;
 
-        const index = this._dragState.lastHoveredIndex;
-        this.itemElements[index].classList.remove(
-            'avonni-pill-container__pill_left-border',
-            'avonni-pill-container__pill_right-border'
-        );
+        this.clearDragBorder();
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
@@ -494,9 +492,12 @@ export default class PillContainer extends LightningElement {
      */
     clearDragBorder() {
         const lastIndex = this._dragState.lastHoveredIndex;
-        this.itemElements[lastIndex].classList.remove(
-            'avonni-pill-container__pill_left-border',
-            'avonni-pill-container__pill_right-border'
+        const item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${lastIndex}"]`
+        );
+        item.classList.remove(
+            'avonni-pill-container__pill_before-border',
+            'avonni-pill-container__pill_after-border'
         );
     }
 
@@ -510,47 +511,109 @@ export default class PillContainer extends LightningElement {
         });
         const position = firstVisibleElement.getBoundingClientRect();
         const offset = target - position.top;
-        const index = Number(firstVisibleElement.dataset.index);
-        const name = this.hiddenItems[index].name;
+        const name = firstVisibleElement.dataset.name;
         return { name, offset };
     }
 
     /**
-     * Move the reordered pill to the left.
+     * Move the reordered pill before another pill.
      *
-     * @param {number} index Index of the pill the reordered pill is moving to the left of.
+     * @param {number} index Index of the pill the reordered pill is moving before.
      */
-    moveLeft(index) {
+    moveBefore(index) {
         if (index < 0) return;
 
         this.clearDragBorder();
         this._dragState.lastHoveredIndex = index;
-        this.itemElements[index].classList.add(
-            'avonni-pill-container__pill_left-border'
+        const item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${index}"]`
         );
-        this._dragState.position = 'left';
+        item.classList.add('avonni-pill-container__pill_before-border');
+        this._dragState.position = 'before';
         const position =
             index > this._dragState.initialIndex ? index : index + 1;
         this.updateAssistiveText(position);
     }
 
     /**
-     * Move the reordered pill to the right.
+     * Move the reordered pill after another pill.
      *
-     * @param {number} index Index of the pill the reordered pill is moving to the right of.
+     * @param {number} index Index of the pill the reordered pill is moving after.
      */
-    moveRight(index) {
+    moveAfter(index) {
         if (index > this.items.length - 1) return;
 
         this.clearDragBorder();
         this._dragState.lastHoveredIndex = index;
-        this.itemElements[index].classList.add(
-            'avonni-pill-container__pill_right-border'
+
+        const isCollapsed =
+            (!this.singleLine && this.isCollapsed) ||
+            (this.singleLine && !this.showPopover);
+        if (index >= this._visibleItemsCount && isCollapsed) {
+            // Expand the pills
+            this.handleExpand();
+        }
+
+        let item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${index}"]`
         );
-        this._dragState.position = 'right';
+        if (item) {
+            item.classList.add('avonni-pill-container__pill_after-border');
+        } else {
+            // Wait for the items to be expanded
+            requestAnimationFrame(() => {
+                item = this.template.querySelector(
+                    `[data-element-id^="li"][data-index="${index}"]`
+                );
+                item.classList.add('avonni-pill-container__pill_after-border');
+            });
+        }
+        this._dragState.position = 'after';
         const position =
             index >= this._dragState.initialIndex ? index + 1 : index + 2;
         this.updateAssistiveText(position);
+    }
+
+    normalizeFocusedIndex(index) {
+        if (!this.isCollapsed) {
+            const moveToFirst = index > this.items.length - 1;
+            const moveToLast = index < 0;
+            if (moveToFirst) {
+                return 0;
+            } else if (moveToLast) {
+                return this.items.length - 1;
+            }
+            return index;
+        }
+
+        // Collapsed mode
+        let position = 'INDEX';
+        if (index < 0) {
+            position = 'FIRST';
+        } else if (
+            this._focusedIndex < this._visibleItemsCount &&
+            index >= this._visibleItemsCount
+        ) {
+            position = 'LAST_VISIBLE_ITEM';
+        } else if (
+            this._focusedIndex >= this._visibleItemsCount &&
+            index < this._visibleItemsCount
+        ) {
+            position = 'FIRST_HIDDEN_ITEM';
+        } else if (index >= this.items.length) {
+            position = 'LAST';
+        }
+
+        switch (position) {
+            case 'FIRST':
+            case 'LAST_VISIBLE_ITEM':
+            case 'FIRST_HIDDEN_ITEM':
+            case 'LAST':
+                // Keep the focus on the current pill
+                return this._focusedIndex;
+            default:
+                return index;
+        }
     }
 
     saveItemsWidths() {
@@ -565,23 +628,24 @@ export default class PillContainer extends LightningElement {
      * @param {number} index Index of the new focused pill.
      */
     switchFocus(index) {
-        let normalizedIndex = index;
-        if (index > this.items.length - 1) {
-            normalizedIndex = 0;
-        } else if (index < 0) {
-            normalizedIndex = this.items.length - 1;
-        }
+        const normalizedIndex = this.normalizeFocusedIndex(index);
 
         // remove focus from current pill
-        if (this.focusedPillElement) {
-            this.focusedPillElement.tabIndex = '-1';
+        const previousPill = this.template.querySelector(
+            `[data-element-id^="avonni-primitive-pill"][data-index="${this._focusedIndex}"]`
+        );
+        if (previousPill) {
+            previousPill.tabIndex = '-1';
         }
 
         // move to next
         this._focusedIndex = normalizedIndex;
 
         // set focus
-        this.focusedPillElement.tabIndex = '0';
+        const pill = this.template.querySelector(
+            `[data-element-id^="avonni-primitive-pill"][data-index="${normalizedIndex}"]`
+        );
+        pill.tabIndex = '0';
         this.focus();
     }
 
@@ -590,15 +654,14 @@ export default class PillContainer extends LightningElement {
 
         if (this.showPopover) {
             this._hiddenItemsStartIndex = this._visibleItemsCount;
+
+            if (!this._dragState) {
+                this._focusedIndex = this._hiddenItemsStartIndex;
+                this._focusOnRender = true;
+            }
         } else {
-            requestAnimationFrame(() => {
-                const button = this.template.querySelector(
-                    '[data-element-id="lightning-button-show-more"]'
-                );
-                if (button) {
-                    button.focus();
-                }
-            });
+            this._focusOnRender = true;
+            this._focusedIndex = this._visibleItemsCount - 1;
         }
     }
 
@@ -650,7 +713,10 @@ export default class PillContainer extends LightningElement {
         // Show less items
         let fittingCount = 0;
         let width = 0;
-        while (fittingCount < this.itemElements.length) {
+        const visibleItems = this.template.querySelectorAll(
+            '[data-element-id="li"]'
+        );
+        while (fittingCount < visibleItems.length) {
             width += this._itemsWidths[fittingCount];
             if (width > totalWidth) {
                 break;
@@ -696,6 +762,18 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
+     * Handle the expansion of a collapsed pill container.
+     */
+    handleExpand() {
+        if (this.singleLine) {
+            this.togglePopover();
+        } else {
+            this._isExpanded = true;
+            this.updateVisibleItems();
+        }
+    }
+
+    /**
      * Handle a key pressed on the list.
      *
      * @param {Event} event
@@ -711,39 +789,48 @@ export default class PillContainer extends LightningElement {
         switch (event.keyCode) {
             case keyCodes.left:
             case keyCodes.up: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+
                 const previousIndex = index - 1;
 
                 if (!this._dragState) {
                     this.switchFocus(previousIndex);
                 } else if (
-                    this._dragState.position === 'left' ||
+                    this._dragState.position === 'before' ||
                     previousIndex === this._dragState.initialIndex ||
                     index === this._dragState.initialIndex
                 ) {
-                    this.moveLeft(previousIndex);
+                    this.moveBefore(previousIndex);
                 } else {
-                    this.moveLeft(index);
+                    this.moveBefore(index);
                 }
                 break;
             }
             case keyCodes.right:
             case keyCodes.down: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+
                 const nextIndex = index + 1;
 
                 if (!this._dragState) {
                     this.switchFocus(nextIndex);
                 } else if (
-                    this._dragState.position === 'right' ||
+                    this._dragState.position === 'after' ||
                     nextIndex === this._dragState.initialIndex ||
                     index === this._dragState.initialIndex
                 ) {
-                    this.moveRight(nextIndex);
+                    this.moveAfter(nextIndex);
                 } else {
-                    this.moveRight(index);
+                    this.moveAfter(index);
                 }
                 break;
             }
             case keyCodes.space:
+                // Prevent the page from scrolling
+                event.preventDefault();
+
                 if (this._dragState) {
                     this.handleMouseUp();
                 } else if (this.sortable) {
@@ -752,24 +839,25 @@ export default class PillContainer extends LightningElement {
                 break;
             case keyCodes.escape:
                 this.clearDrag();
+                if (this.showPopover) {
+                    this._popoverHasFocus = false;
+                    this.togglePopover();
+                }
                 break;
             default:
                 this.focus();
         }
     }
 
-    /**
-     * Handle a click on the "show more" button.
-     */
-    handleMoreClick() {
-        if (this.singleLine) {
-            this.togglePopover();
-        } else {
-            this._isExpanded = true;
-            this.updateVisibleItems();
+    handleMoreButtonMouseMove() {
+        if (!this._dragState || this.showPopover) {
+            return;
         }
 
-        this._focusOnRender = true;
+        clearTimeout(this._expandTimeOut);
+        this._expandTimeOut = setTimeout(() => {
+            this.handleExpand();
+        }, 300);
     }
 
     /**
@@ -786,7 +874,7 @@ export default class PillContainer extends LightningElement {
 
         const { initialIndex, lastHoveredIndex, position } = this._dragState;
         const index =
-            position === 'left' ? lastHoveredIndex : lastHoveredIndex + 1;
+            position === 'before' ? lastHoveredIndex : lastHoveredIndex + 1;
 
         if (lastHoveredIndex > initialIndex) {
             this._items.splice(index, 0, this._items[initialIndex]);
@@ -815,6 +903,11 @@ export default class PillContainer extends LightningElement {
         this.clearDrag();
         this._focusedIndex = lastHoveredIndex;
         this._focusOnRender = true;
+
+        if (lastHoveredIndex < this._visibleItemsCount && this.showPopover) {
+            // If the pill was not released in the popover, close it
+            this.togglePopover();
+        }
     };
 
     /**
@@ -895,16 +988,21 @@ export default class PillContainer extends LightningElement {
     handlePillMouseMove(event) {
         if (!this._dragState) return;
 
-        const index = Number(event.currentTarget.dataset.index);
-        const coordinates = event.currentTarget.getBoundingClientRect();
+        const pill = event.currentTarget;
+        const index = Number(pill.dataset.index);
+        const coordinates = pill.getBoundingClientRect();
+        const isHidden = pill.dataset.elementId === 'li-hidden';
         const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
+        const onTop = event.clientY < coordinates.top + coordinates.height / 2;
 
-        if (onLeft) {
-            // The cursor is on the left side of the pill
-            this.moveLeft(index);
+        if ((!isHidden && onLeft) || (isHidden && onTop)) {
+            // The cursor is on the left side of a visible pill
+            // or on the top side of a hidden pill
+            this.moveBefore(index);
         } else {
-            // The cursor is on the right side of the pill
-            this.moveRight(index);
+            // The cursor is on the right side of a visible pill
+            // or on the bottom side of a hidden pill
+            this.moveAfter(index);
         }
     }
 
@@ -927,13 +1025,6 @@ export default class PillContainer extends LightningElement {
         });
     }
 
-    handlePopoverKeyUp(event) {
-        if (event.key === 'Escape') {
-            this._popoverHasFocus = false;
-            this.togglePopover();
-        }
-    }
-
     handlePopoverScroll(event) {
         const popover = event.currentTarget;
         const popoverTop = popover.getBoundingClientRect().top;
@@ -943,46 +1034,31 @@ export default class PillContainer extends LightningElement {
         const loadDown = scrolledDistance >= bottomLimit;
         const loadUp = scrolledDistance <= LOADING_OFFSET;
 
+        let newIndex;
         if (loadUp) {
             const previousIndex = this._hiddenItemsStartIndex - 10;
-            const newIndex = Math.max(previousIndex, this._visibleItemsCount);
-            if (this._hiddenItemsStartIndex !== newIndex) {
-                const topItem = this.getFirstVisibleItemInPopover(popoverTop);
-                this._hiddenItemsStartIndex = newIndex;
-                this._popoverIsLoading = true;
-                this._focusOnRender = true;
-
-                requestAnimationFrame(() => {
-                    // Move the scroll bar back to the previous top item
-                    const previousTopItem = this.template.querySelector(
-                        `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
-                    );
-
-                    popover.scrollTop =
-                        previousTopItem.offsetTop + topItem.offset;
-                });
-            }
+            newIndex = Math.max(previousIndex, this._visibleItemsCount);
         } else if (loadDown) {
             const nextIndex = this._hiddenItemsStartIndex + 10;
             const maxIndex = this.items.length - MAX_LOADED_ITEMS - 10;
-            const newIndex = Math.min(nextIndex, maxIndex);
+            newIndex = Math.min(nextIndex, maxIndex);
+        }
 
-            if (this._hiddenItemsStartIndex !== newIndex) {
-                const topItem = this.getFirstVisibleItemInPopover(popoverTop);
-                this._hiddenItemsStartIndex = newIndex;
-                this._popoverIsLoading = true;
-                this._focusOnRender = true;
+        if (!isNaN(newIndex) && this._hiddenItemsStartIndex !== newIndex) {
+            const topItem = this.getFirstVisibleItemInPopover(popoverTop);
+            this._hiddenItemsStartIndex = newIndex;
+            this._popoverIsLoading = true;
+            this._focusOnRender = true;
 
-                requestAnimationFrame(() => {
-                    // Move the scroll bar back to the previous top item
-                    const previousTopItem = this.template.querySelector(
-                        `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
-                    );
-
-                    popover.scrollTop =
-                        previousTopItem.offsetTop + topItem.offset;
-                });
-            }
+            requestAnimationFrame(() => {
+                // Move the scroll bar back to the previous top item
+                const previousTopItem = this.template.querySelector(
+                    `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
+                );
+                const index = Number(previousTopItem.dataset.index);
+                this.switchFocus(index);
+                popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
+            });
         }
     }
 }
