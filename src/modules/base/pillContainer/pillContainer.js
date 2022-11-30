@@ -40,10 +40,12 @@ import {
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
 
+const AUTO_SCROLL_INCREMENT = 5;
+const AUTO_SCROLL_THRESHOLD = 50;
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
 const SHOW_MORE_BUTTON_WIDTH = 80;
-const LOADING_OFFSET = 60;
+const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
 
 /**
@@ -73,6 +75,7 @@ export default class PillContainer extends LightningElement {
     _popoverHasFocus = false;
     _popoverIsLoading = false;
     _resizeObserver;
+    _scrollingInterval;
     _visibleItemsCount = 0;
 
     showPopover = false;
@@ -471,11 +474,35 @@ export default class PillContainer extends LightningElement {
         this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
     }
 
+    autoScrollPopover(y) {
+        clearInterval(this._scrollingInterval);
+        this._scrollingInterval = setInterval(() => {
+            const popover = this.template.querySelector(
+                '[data-element-id="div-popover"]'
+            );
+            const top = popover.getBoundingClientRect().top;
+            const bottom = popover.getBoundingClientRect().bottom;
+            const isCloseToTop = y - top <= AUTO_SCROLL_THRESHOLD;
+            const isCloseToBottom = bottom - y <= AUTO_SCROLL_THRESHOLD;
+
+            if (isCloseToTop) {
+                popover.scrollTop -= AUTO_SCROLL_INCREMENT;
+                const topItem = this.getHiddenItemFromPosition(top);
+                this.moveAfter(topItem.index);
+            } else if (isCloseToBottom) {
+                popover.scrollTop += AUTO_SCROLL_INCREMENT;
+                const bottomItem = this.getHiddenItemFromPosition(bottom);
+                this.moveBefore(bottomItem.index);
+            }
+        }, 20);
+    }
+
     /**
      * Clear the reorder state.
      */
     clearDrag() {
         clearTimeout(this._dragTimeOut);
+        clearInterval(this._scrollingInterval);
         if (!this._dragState) return;
 
         this.clearDragBorder();
@@ -501,18 +528,23 @@ export default class PillContainer extends LightningElement {
         );
     }
 
-    getFirstVisibleItemInPopover(target) {
+    getHiddenItemFromPosition(y) {
         const elements = this.template.querySelectorAll(
             '[data-element-id="li-hidden"]'
         );
-        const firstVisibleElement = Array.from(elements).find((el) => {
+        for (let i = 0; i < elements.length; i++) {
+            const el = elements[i];
             const position = el.getBoundingClientRect();
-            return target + 1 >= position.top && target <= position.bottom;
-        });
-        const position = firstVisibleElement.getBoundingClientRect();
-        const offset = target - position.top;
-        const name = firstVisibleElement.dataset.name;
-        return { name, offset };
+
+            if (y + 1 >= position.top && y - 1 <= position.bottom) {
+                return {
+                    index: Number(el.dataset.index),
+                    name: el.dataset.name,
+                    offset: y - position.top
+                };
+            }
+        }
+        return null;
     }
 
     /**
@@ -613,6 +645,32 @@ export default class PillContainer extends LightningElement {
                 return this._focusedIndex;
             default:
                 return index;
+        }
+    }
+
+    /**
+     * Make sure the focused item is visible in the hidden items popover, to prevent a jump of the scroll bar next time it is focused.
+     */
+    scrollToFocusedItem() {
+        const focusedItem = this.template.querySelector(
+            `[data-element-id="li-hidden"][data-index="${this._focusedIndex}"]`
+        );
+        const popover = this.template.querySelector(
+            '[data-element-id="div-popover"]'
+        );
+        if (!focusedItem || !popover) {
+            return;
+        }
+        const popoverPosition = popover.getBoundingClientRect();
+        const itemPosition = focusedItem.getBoundingClientRect();
+        const isAbove = itemPosition.top < popoverPosition.top;
+        const isBelow = itemPosition.bottom > popoverPosition.bottom;
+
+        if (isAbove) {
+            popover.scrollTop -= popoverPosition.top - itemPosition.top - 5;
+        } else if (isBelow) {
+            popover.scrollTop +=
+                itemPosition.bottom - popoverPosition.bottom + 5;
         }
     }
 
@@ -904,9 +962,11 @@ export default class PillContainer extends LightningElement {
         this._focusedIndex = lastHoveredIndex;
         this._focusOnRender = true;
 
-        if (lastHoveredIndex < this._visibleItemsCount && this.showPopover) {
+        if (this.showPopover && lastHoveredIndex < this._visibleItemsCount) {
             // If the pill was not released in the popover, close it
             this.togglePopover();
+        } else if (this.showPopover) {
+            this.scrollToFocusedItem();
         }
     };
 
@@ -1004,6 +1064,10 @@ export default class PillContainer extends LightningElement {
             // or on the bottom side of a hidden pill
             this.moveAfter(index);
         }
+
+        if (isHidden) {
+            this.autoScrollPopover(event.clientY, index);
+        }
     }
 
     handlePopoverFocusIn() {
@@ -1030,9 +1094,9 @@ export default class PillContainer extends LightningElement {
         const popoverTop = popover.getBoundingClientRect().top;
         const height = popover.scrollHeight;
         const scrolledDistance = popover.scrollTop;
-        const bottomLimit = height - popover.clientHeight - LOADING_OFFSET;
+        const bottomLimit = height - popover.clientHeight - LOADING_THRESHOLD;
         const loadDown = scrolledDistance >= bottomLimit;
-        const loadUp = scrolledDistance <= LOADING_OFFSET;
+        const loadUp = scrolledDistance <= LOADING_THRESHOLD;
 
         let newIndex;
         if (loadUp) {
@@ -1045,7 +1109,7 @@ export default class PillContainer extends LightningElement {
         }
 
         if (!isNaN(newIndex) && this._hiddenItemsStartIndex !== newIndex) {
-            const topItem = this.getFirstVisibleItemInPopover(popoverTop);
+            const topItem = this.getHiddenItemFromPosition(popoverTop);
             this._hiddenItemsStartIndex = newIndex;
             this._popoverIsLoading = true;
             this._focusOnRender = true;
@@ -1055,9 +1119,12 @@ export default class PillContainer extends LightningElement {
                 const previousTopItem = this.template.querySelector(
                     `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
                 );
-                const index = Number(previousTopItem.dataset.index);
-                this.switchFocus(index);
                 popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
+                this.switchFocus(topItem.index);
+
+                if (this._dragState) {
+                    this._popoverIsLoading = false;
+                }
             });
         }
     }
