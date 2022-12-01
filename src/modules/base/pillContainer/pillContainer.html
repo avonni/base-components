@@ -99,7 +99,8 @@
                 variant="base"
                 data-element-id="lightning-button-show-more"
                 onclick={handleExpand}
-                onmousemove={handleMoreButtonMouseMove}
+                onmouseenter={handleMoreButtonMouseEnter}
+                onmouseleave={handleMoreButtonMouseLeave}
             ></lightning-button>
             <div
                 if:true={showPopover}
@@ -119,6 +120,7 @@
                         aria-labelledby="label"
                         aria-orientation="vertical"
                         onkeydown={handleKeyDown}
+                        onopenactionmenu={handleOpenHiddenActionMenu}
                     >
                         <template for:each={hiddenItems} for:item="pill">
                             <li
@@ -130,7 +132,6 @@
                                 data-name={pill.name}
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
-                                onopenactionmenu={handleOpenHiddenActionMenu}
                             >
                                 <c-primitive-pill
                                     class={computedPillClass}

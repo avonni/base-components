@@ -123,6 +123,13 @@ export default class PrimitivePill extends LightningElement {
         this._href = value;
     }
 
+    /**
+     * Variant of the pill. Valid values include base and list.
+     *
+     * @type {string}
+     * @default base
+     * @public
+     */
     @api
     get variant() {
         return this._variant;

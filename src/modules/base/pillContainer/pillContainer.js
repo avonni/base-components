@@ -249,6 +249,11 @@ export default class PillContainer extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * CSS classes of the items hidden in the single-line collapsed popover.
+     *
+     * @type {string}
+     */
     get computedHiddenListItemClass() {
         return classSet('avonni-pill-container__hidden-pill')
             .add({
@@ -331,6 +336,11 @@ export default class PillContainer extends LightningElement {
         );
     }
 
+    /**
+     * Filtered items that will be displayed in the single-line collapsed popover.
+     *
+     * @type {object[]}
+     */
     get hiddenItems() {
         let endIndex = this._hiddenItemsStartIndex + MAX_LOADED_ITEMS;
         const lastIndex = this.items.length;
@@ -352,7 +362,6 @@ export default class PillContainer extends LightningElement {
      * True if the "show more" button should be visible.
      *
      * @type {boolean}
-     * @default false
      */
     get isCollapsed() {
         return this.items.length > this._visibleItemsCount;
@@ -386,6 +395,11 @@ export default class PillContainer extends LightningElement {
         return `+${hiddenCount} more`;
     }
 
+    /**
+     * Array of items that are always visible, even when the pill container is collapsed.
+     *
+     * @type {object[]}
+     */
     get visibleItems() {
         return this.items.slice(0, this._visibleItemsCount);
     }
@@ -459,6 +473,9 @@ export default class PillContainer extends LightningElement {
         return resizeObserver;
     }
 
+    /**
+     * Initialize the number visible items.
+     */
     initVisibleItemsCount() {
         const maxCount = this.items.length;
         const count =
@@ -468,6 +485,10 @@ export default class PillContainer extends LightningElement {
         this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
     }
 
+    /**
+     * If the given position is close to the top or the bottom of the single-line collapsed popover, scroll the popover in this direction. Used to scroll automatically the popover when sorting an item.
+     * @param {number} y Position of the mouse cursor, on the Y axis.
+     */
     autoScrollPopover(y) {
         clearInterval(this._scrollingInterval);
         this._scrollingInterval = setInterval(() => {
@@ -522,9 +543,14 @@ export default class PillContainer extends LightningElement {
         );
     }
 
+    /**
+     * Get an item in the single-line collapsed popover, based on its position.
+     *
+     * @param {number} y Position of the item on the Y axis.
+     */
     getHiddenItemFromPosition(y) {
         const elements = this.template.querySelectorAll(
-            '[data-element-id="li-hidden"]'
+            '[data-element-id="li-item-hidden"]'
         );
         for (let i = 0; i < elements.length; i++) {
             const el = elements[i];
@@ -600,6 +626,12 @@ export default class PillContainer extends LightningElement {
         this.updateAssistiveText(position);
     }
 
+    /**
+     * Make sure the given item index is focusable. Otherwise, normalize it to the right focusable item index.
+     *
+     * @param {number} index Index of the item to focus.
+     * @returns {number} Normalized index of the item to focus.
+     */
     normalizeFocusedIndex(index) {
         if (!this.isCollapsed) {
             const moveToFirst = index > this.items.length - 1;
@@ -642,6 +674,11 @@ export default class PillContainer extends LightningElement {
         }
     }
 
+    /**
+     * Set the position of the action menu, based on the given pill position.
+     *
+     * @param {object} position Position of the pill the action menu was opened on.
+     */
     positionActionMenu({ x, y }) {
         // Make sure the menu is not outside of the screen
         const menu = this.template.querySelector(
@@ -668,7 +705,7 @@ export default class PillContainer extends LightningElement {
      */
     scrollToFocusedItem() {
         const focusedItem = this.template.querySelector(
-            `[data-element-id="li-hidden"][data-index="${this._focusedIndex}"]`
+            `[data-element-id="li-item-hidden"][data-index="${this._focusedIndex}"]`
         );
         const popover = this.template.querySelector(
             '[data-element-id="div-popover"]'
@@ -689,6 +726,9 @@ export default class PillContainer extends LightningElement {
         }
     }
 
+    /**
+     * Save the visible items widths, to compute their visibility later.
+     */
     saveItemsWidths() {
         const items = this.template.querySelectorAll(
             '[data-element-id^="li-item"]'
@@ -725,6 +765,9 @@ export default class PillContainer extends LightningElement {
         this.focus();
     }
 
+    /**
+     * Toggle the visibility of the single-line collapsed popover.
+     */
     togglePopover() {
         this.showPopover = !this.showPopover;
 
@@ -753,6 +796,9 @@ export default class PillContainer extends LightningElement {
         this.altTextElement.textContent = `${label}. ${position} / ${total}`;
     }
 
+    /**
+     * Update the number of visible and collapsed items, depending on the available space.
+     */
     updateVisibleItems() {
         const maxCount = this.items.length;
         if (this.computedIsExpanded) {
@@ -805,7 +851,7 @@ export default class PillContainer extends LightningElement {
     /**
      * Handle the click on a pill action.
      *
-     * @param {Event} event
+     * @param {Event} event `actionclick` event fired by a pill.
      */
     handleActionClick(event) {
         event.stopPropagation();
@@ -814,30 +860,24 @@ export default class PillContainer extends LightningElement {
         this.dispatchActionClick({ name, targetName, index });
     }
 
+    /**
+     * Handle the click on an action, in the action menu.
+     *
+     * @param {Event} event `privateselect` event fired by the action menu.
+     */
     handleActionSelect(event) {
         const name = event.detail.name;
         const { targetName, index } = this._selectedAction;
         this.dispatchActionClick({ name, targetName, index });
     }
 
+    /**
+     * Handle the closing of the action menu.
+     */
     handleCloseActionMenu() {
         this.showActionMenu = false;
         this._focusedIndex = this._selectedAction.index;
         this._focusOnRender = true;
-    }
-
-    dispatchActionClick(detail) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {number} index Index of the item clicked.
-         * @param {string} name Name of the action.
-         * @param {string} targetName Name of the item the action belongs to.
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('actionclick', { detail }));
     }
 
     /**
@@ -928,7 +968,10 @@ export default class PillContainer extends LightningElement {
         }
     }
 
-    handleMoreButtonMouseMove() {
+    /**
+     * Handle a mouse entering on the "Show more" button. Triggers the expansion of the pills if a pill is being dragged, and the mouse stays on the button for a while.
+     */
+    handleMoreButtonMouseEnter() {
         if (!this._dragState || this.showPopover) {
             return;
         }
@@ -937,6 +980,13 @@ export default class PillContainer extends LightningElement {
         this._expandTimeOut = setTimeout(() => {
             this.handleExpand();
         }, 300);
+    }
+
+    /**
+     * Handle a mouse leaving the "Show more" button. Clears the timeout that triggers the expansion of the pills.
+     */
+    handleMoreButtonMouseLeave() {
+        clearTimeout(this._expandTimeOut);
     }
 
     /**
@@ -991,6 +1041,11 @@ export default class PillContainer extends LightningElement {
         }
     };
 
+    /**
+     * Handle the opening of the action menu.
+     *
+     * @param {Event} event `openactionmenu` event fired by a pill.
+     */
     handleOpenActionMenu(event) {
         event.stopPropagation();
 
@@ -1004,6 +1059,11 @@ export default class PillContainer extends LightningElement {
         });
     }
 
+    /**
+     * Handle the opening of the action menu from a pill, inside the single-line collapsed popover.
+     *
+     * @param {Event} event `openactionmenu` event fired by a pill.
+     */
     handleOpenHiddenActionMenu(event) {
         this._preventPopoverClosing = true;
         this.handleOpenActionMenu(event);
@@ -1093,7 +1153,7 @@ export default class PillContainer extends LightningElement {
         const pill = event.currentTarget;
         const index = Number(pill.dataset.index);
         const coordinates = pill.getBoundingClientRect();
-        const isHidden = pill.dataset.elementId === 'li-hidden';
+        const isHidden = pill.dataset.elementId === 'li-item-hidden';
         const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
         const onTop = event.clientY < coordinates.top + coordinates.height / 2;
 
@@ -1112,10 +1172,16 @@ export default class PillContainer extends LightningElement {
         }
     }
 
+    /**
+     * Handle a focus set inside the single-line collapsed popover.
+     */
     handlePopoverFocusIn() {
         this._popoverHasFocus = true;
     }
 
+    /**
+     * Handle a focus lost inside the single-line collapsed popover.
+     */
     handlePopoverFocusOut() {
         this._popoverHasFocus = false;
 
@@ -1131,6 +1197,11 @@ export default class PillContainer extends LightningElement {
         });
     }
 
+    /**
+     * Handle a scroll movement inside the single-line collapsed popover.
+     *
+     * @param {Event} event `scroll` event fired by the popover.
+     */
     handlePopoverScroll(event) {
         const popover = event.currentTarget;
         const popoverTop = popover.getBoundingClientRect().top;
@@ -1159,7 +1230,7 @@ export default class PillContainer extends LightningElement {
             requestAnimationFrame(() => {
                 // Move the scroll bar back to the previous top item
                 const previousTopItem = this.template.querySelector(
-                    `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
+                    `[data-element-id="li-item-hidden"][data-name="${topItem.name}"]`
                 );
                 popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
 
@@ -1174,5 +1245,24 @@ export default class PillContainer extends LightningElement {
                 }
             });
         }
+    }
+
+    /**
+     * Dispatch the `actionclick` event.
+     *
+     * @param {object} detail Detail of the event.
+     */
+    dispatchActionClick(detail) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {number} index Index of the item clicked.
+         * @param {string} name Name of the action.
+         * @param {string} targetName Name of the item the action belongs to.
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('actionclick', { detail }));
     }
 }
