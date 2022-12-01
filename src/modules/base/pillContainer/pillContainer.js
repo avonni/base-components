@@ -359,15 +359,6 @@ export default class PillContainer extends LightningElement {
     }
 
     /**
-     * List items' HTML elements.
-     *
-     * @type {NodeList}
-     */
-    get itemElements() {
-        return this.template.querySelectorAll('[data-element-id^="li"]');
-    }
-
-    /**
      * Value of the listbox element tabindex.
      *
      * @type {number}
@@ -699,7 +690,10 @@ export default class PillContainer extends LightningElement {
     }
 
     saveItemsWidths() {
-        this.itemElements.forEach((item, i) => {
+        const items = this.template.querySelectorAll(
+            '[data-element-id^="li-item"]'
+        );
+        items.forEach((item, i) => {
             this._itemsWidths[i] = item.offsetWidth;
         });
     }
@@ -769,41 +763,35 @@ export default class PillContainer extends LightningElement {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        if (!wrapper || !this.listElement) {
+        if (!wrapper) {
             return;
         }
 
         const totalWidth = wrapper.offsetWidth - SHOW_MORE_BUTTON_WIDTH;
-        const availableSpace = totalWidth - this.listElement.offsetWidth;
-        const hasHiddenItems = this._visibleItemsCount < maxCount;
 
-        if (hasHiddenItems && availableSpace > 0) {
-            const nextItemWidth = this._itemsWidths[this._visibleItemsCount];
-            const nextItemFits =
-                !nextItemWidth || availableSpace > nextItemWidth;
-
-            if (nextItemFits) {
-                // Show more items
-                const newCount =
-                    this._visibleItemsCount + DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
-                this._visibleItemsCount =
-                    newCount > maxCount ? maxCount : newCount;
-            }
-            return;
-        }
-
-        // Show less items
         let fittingCount = 0;
         let width = 0;
         const visibleItems = this.template.querySelectorAll(
-            '[data-element-id="li"]'
+            '[data-element-id="li-item"]'
         );
         while (fittingCount < visibleItems.length) {
+            // Count the number of visible items that fit
             width += this._itemsWidths[fittingCount];
             if (width > totalWidth) {
                 break;
             }
             fittingCount += 1;
+        }
+
+        if (fittingCount === visibleItems.length && width < totalWidth) {
+            // Add more visible items if needed
+            const nextItemWidth = this._itemsWidths[fittingCount];
+            const availableSpace = totalWidth - width;
+            const nextItemFits =
+                !nextItemWidth || availableSpace > nextItemWidth;
+            if (nextItemFits) {
+                fittingCount += MAX_LOADED_ITEMS;
+            }
         }
         this._visibleItemsCount = fittingCount;
     }
