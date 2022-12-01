@@ -231,15 +231,6 @@ export default class PrimitivePill extends LightningElement {
     }
 
     /**
-     * Block the propagation of the click on the action menu. Necessary for sortable pill containers.
-     *
-     * @param {Event} event
-     */
-    handleButtonMenuClick(event) {
-        event.stopPropagation();
-    }
-
-    /**
      * Handle a key pressed on the pill.
      *
      * @param {Event} event

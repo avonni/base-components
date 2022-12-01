@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class={wrapperClass}>
+    <div class={wrapperClass} data-element-id="div-wrapper">
         <!-- Avatar -->
         <c-avatar
             if:true={avatar}
@@ -75,26 +75,5 @@
             data-element-id="lightning-button-icon"
             onclick={handleActionClick}
         ></lightning-button-icon>
-        <!-- <lightning-button-menu
-            if:true={severalActions}
-            alternative-text="Show menu"
-            icon-size="x-small"
-            tabindex="-1"
-            variant="bare"
-            data-group-name="action"
-            onclick={handleButtonMenuClick}
-            onselect={handleActionClick}
-        >
-            <template for:each={actions} for:item="action">
-                <lightning-menu-item
-                    key={action.name}
-                    disabled={action.disabled}
-                    label={action.label}
-                    prefix-icon-name={action.iconName}
-                    value={action.name}
-                    data-element-id="lightning-menu-item"
-                ></lightning-menu-item>
-            </template>
-        </lightning-button-menu> -->
     </div>
 </template>
