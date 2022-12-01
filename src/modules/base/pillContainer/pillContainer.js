@@ -63,6 +63,7 @@ export default class PillContainer extends LightningElement {
     _singleLine = false;
     _sortable = false;
 
+    _selectedAction;
     _dragState;
     _dragTimeOut;
     _expandTimeOut;
@@ -73,11 +74,12 @@ export default class PillContainer extends LightningElement {
     _hiddenItemsStartIndex = 0;
     _itemsWidths = [];
     _popoverHasFocus = false;
-    _popoverIsLoading = false;
+    _preventPopoverClosing = false;
     _resizeObserver;
     _scrollingInterval;
     _visibleItemsCount = 0;
 
+    showActionMenu = false;
     showPopover = false;
 
     connectedCallback() {
@@ -283,10 +285,11 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedListItemClass() {
-        return classSet('slds-listbox-item avonni-pill-container__item').add({
+        return classSet(
+            'slds-listbox-item avonni-pill-container__item slds-p-top_xxx-small'
+        ).add({
             'slds-is-relative': this.sortable,
-            'slds-p-top_xxx-small slds-p-right_xxx-small avonni-pill-container__item_multi-line':
-                !this.singleLine,
+            'slds-p-right_xxx-small': !this.singleLine,
             'avonni-pill-container__item_sortable-single-line':
                 this.sortable && this.singleLine
         });
@@ -648,6 +651,27 @@ export default class PillContainer extends LightningElement {
         }
     }
 
+    positionActionMenu({ x, y }) {
+        // Make sure the menu is not outside of the screen
+        const menu = this.template.querySelector(
+            '[data-element-id="avonni-primitive-dropdown-menu"]'
+        );
+        const height = menu.offsetHeight;
+        const width = menu.offsetWidth;
+        const menuBottom = y + height;
+        const menuRight = x + width;
+
+        const bottomView = window.innerHeight;
+        const rightView = window.innerWidth;
+
+        const yTransform = menuBottom > bottomView ? height * -1 : 0;
+        const xTransform = menuRight > rightView ? width * -1 : 0;
+
+        menu.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
+        menu.style.top = `${y + 10}px`;
+        menu.style.left = `${x + 10}px`;
+    }
+
     /**
      * Make sure the focused item is visible in the hidden items popover, to prevent a jump of the scroll bar next time it is focused.
      */
@@ -797,7 +821,24 @@ export default class PillContainer extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
+        const { name, targetName } = event.detail;
+        const index = Number(event.currentTarget.dataset.index);
+        this.dispatchActionClick({ name, targetName, index });
+    }
 
+    handleActionSelect(event) {
+        const name = event.detail.name;
+        const { targetName, index } = this._selectedAction;
+        this.dispatchActionClick({ name, targetName, index });
+    }
+
+    handleCloseActionMenu() {
+        this.showActionMenu = false;
+        this._focusedIndex = this._selectedAction.index;
+        this._focusOnRender = true;
+    }
+
+    dispatchActionClick(detail) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -808,15 +849,7 @@ export default class PillContainer extends LightningElement {
          * @param {string} targetName Name of the item the action belongs to.
          * @public
          */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: event.detail.name,
-                    index: Number(event.currentTarget.dataset.index),
-                    targetName: event.detail.targetName
-                }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('actionclick', { detail }));
     }
 
     /**
@@ -970,6 +1003,24 @@ export default class PillContainer extends LightningElement {
         }
     };
 
+    handleOpenActionMenu(event) {
+        event.stopPropagation();
+
+        this.showActionMenu = true;
+        this._selectedAction = {
+            targetName: event.detail.targetName,
+            index: Number(event.target.dataset.index)
+        };
+        requestAnimationFrame(() => {
+            this.positionActionMenu(event.detail.bounds);
+        });
+    }
+
+    handleOpenHiddenActionMenu(event) {
+        this._preventPopoverClosing = true;
+        this.handleOpenActionMenu(event);
+    }
+
     /**
      * Handle a focus blur on a pill.
      *
@@ -998,6 +1049,9 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handlePillClick(event) {
+        if (this.showActionMenu) {
+            return;
+        }
         const index = Number(event.currentTarget.dataset.index);
 
         if (index >= 0 && this._focusedIndex !== index) {
@@ -1081,11 +1135,11 @@ export default class PillContainer extends LightningElement {
             if (
                 !this._popoverHasFocus &&
                 this.showPopover &&
-                !this._popoverIsLoading
+                !this._preventPopoverClosing
             ) {
                 this.togglePopover();
             }
-            this._popoverIsLoading = false;
+            this._preventPopoverClosing = false;
         });
     }
 
@@ -1111,7 +1165,7 @@ export default class PillContainer extends LightningElement {
         if (!isNaN(newIndex) && this._hiddenItemsStartIndex !== newIndex) {
             const topItem = this.getHiddenItemFromPosition(popoverTop);
             this._hiddenItemsStartIndex = newIndex;
-            this._popoverIsLoading = true;
+            this._preventPopoverClosing = true;
             this._focusOnRender = true;
 
             requestAnimationFrame(() => {
@@ -1120,10 +1174,15 @@ export default class PillContainer extends LightningElement {
                     `[data-element-id="li-hidden"][data-name="${topItem.name}"]`
                 );
                 popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
-                this.switchFocus(topItem.index);
+
+                if (this._focusedIndex < topItem.index) {
+                    // If the scroll was triggered using the mouse,
+                    // keep an item focused
+                    this.switchFocus(topItem.index);
+                }
 
                 if (this._dragState) {
-                    this._popoverIsLoading = false;
+                    this._preventPopoverClosing = false;
                 }
             });
         }

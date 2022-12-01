@@ -59,6 +59,7 @@
             data-element-id="ul"
             onfocusin={handlePillFocus}
             onfocusout={handlePillBlur}
+            onopenactionmenu={handleOpenActionMenu}
             onkeydown={handleKeyDown}
         >
             <template for:each={visibleItems} for:item="pill" for:index="index">
@@ -129,6 +130,7 @@
                                 data-name={pill.name}
                                 onmousemove={handlePillMouseMove}
                                 onmousedown={handlePillMouseDown}
+                                onopenactionmenu={handleOpenHiddenActionMenu}
                             >
                                 <c-primitive-pill
                                     class={computedPillClass}
@@ -151,5 +153,15 @@
                 </lightning-focus-trap>
             </div>
         </div>
+
+        <c-primitive-dropdown-menu
+            if:true={actions.length}
+            class="slds-is-fixed avonni-pill-container__action-menu"
+            show={showActionMenu}
+            items={actions}
+            data-element-id="avonni-primitive-dropdown-menu"
+            onclose={handleCloseActionMenu}
+            onprivateselect={handleActionSelect}
+        ></c-primitive-dropdown-menu>
     </div>
 </template>

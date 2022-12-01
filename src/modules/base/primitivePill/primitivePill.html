@@ -65,19 +65,17 @@
         >
         <!-- Actions -->
         <lightning-button-icon
-            if:true={oneAction}
+            if:true={actions.length}
             class="slds-pill__remove"
-            alternative-text={oneAction.label}
-            disabled={oneAction.disabled}
-            icon-name={oneAction.iconName}
+            alternative-text={actionButtonAltText}
+            disabled={actionButtonDisabled}
+            icon-name={actionButtonIconName}
             tabindex="-1"
-            value={oneAction.name}
             variant="bare"
             data-element-id="lightning-button-icon"
-            data-group-name="action"
             onclick={handleActionClick}
         ></lightning-button-icon>
-        <lightning-button-menu
+        <!-- <lightning-button-menu
             if:true={severalActions}
             alternative-text="Show menu"
             icon-size="x-small"
@@ -97,6 +95,6 @@
                     data-element-id="lightning-menu-item"
                 ></lightning-menu-item>
             </template>
-        </lightning-button-menu>
+        </lightning-button-menu> -->
     </div>
 </template>
