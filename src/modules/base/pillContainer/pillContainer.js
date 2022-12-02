@@ -81,10 +81,12 @@ export default class PillContainer extends LightningElement {
 
     showActionMenu = false;
     showPopover = false;
+    _connected = false;
 
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initVisibleItemsCount();
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -168,6 +170,8 @@ export default class PillContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
+            this.saveItemsWidths();
+            this.updateVisibleItems();
         }
     }
 
@@ -188,6 +192,8 @@ export default class PillContainer extends LightningElement {
 
         if (this._connected) {
             this.initVisibleItemsCount();
+            this.saveItemsWidths();
+            this.updateVisibleItems();
         }
     }
 
@@ -535,7 +541,7 @@ export default class PillContainer extends LightningElement {
     clearDragBorder() {
         const lastIndex = this._dragState.lastHoveredIndex;
         const item = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${lastIndex}"]`
+            `[data-element-id^="li-item"][data-index="${lastIndex}"]`
         );
         item.classList.remove(
             'avonni-pill-container__pill_before-border',
@@ -578,7 +584,7 @@ export default class PillContainer extends LightningElement {
         this.clearDragBorder();
         this._dragState.lastHoveredIndex = index;
         const item = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${index}"]`
+            `[data-element-id^="li-item"][data-index="${index}"]`
         );
         item.classList.add('avonni-pill-container__pill_before-border');
         this._dragState.position = 'before';
@@ -602,12 +608,12 @@ export default class PillContainer extends LightningElement {
             (!this.singleLine && this.isCollapsed) ||
             (this.singleLine && !this.showPopover);
         if (index >= this._visibleItemsCount && isCollapsed) {
-            // Expand the pills
+            // Expand the pills (used when sorting using the keyboard)
             this.handleExpand();
         }
 
         let item = this.template.querySelector(
-            `[data-element-id^="li"][data-index="${index}"]`
+            `[data-element-id^="li-item"][data-index="${index}"]`
         );
         if (item) {
             item.classList.add('avonni-pill-container__pill_after-border');
@@ -615,7 +621,7 @@ export default class PillContainer extends LightningElement {
             // Wait for the items to be expanded
             requestAnimationFrame(() => {
                 item = this.template.querySelector(
-                    `[data-element-id^="li"][data-index="${index}"]`
+                    `[data-element-id^="li-item"][data-index="${index}"]`
                 );
                 item.classList.add('avonni-pill-container__pill_after-border');
             });
@@ -888,6 +894,8 @@ export default class PillContainer extends LightningElement {
             this.togglePopover();
         } else {
             this._isExpanded = true;
+            this._focusedIndex = this._visibleItemsCount - 1;
+            this._focusOnRender = true;
             this.updateVisibleItems();
         }
     }
