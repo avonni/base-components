@@ -32,7 +32,7 @@
 
 import { PillContainer } from '../__examples__/pillContainer';
 import { MaxWidthPillContainer } from '../__examples__/maxWidthPillContainer';
-import { ITEMS, ACTIONS } from './data';
+import { ITEMS, ACTIONS, generateItems } from './data';
 
 export default {
     title: 'Example/Pill Container',
@@ -141,12 +141,12 @@ Actions.args = {
 export const Collapsible = TemplateWithMaxWidth.bind({});
 Collapsible.args = {
     isCollapsible: true,
-    items: ITEMS
+    items: ITEMS,
+    actions: [ACTIONS[0]]
 };
 
 export const SingleLine = Template.bind({});
 SingleLine.args = {
-    actions: [ACTIONS[0]],
     items: ITEMS,
     singleLine: true
 };
@@ -156,5 +156,16 @@ Sortable.args = {
     items: ITEMS,
     alternativeText:
         'Sortable pills. Press spacebar to grab or drop an item. Press right and left arrow keys to change position. Press escape to cancel.',
+    sortable: true
+};
+
+export const SortableSingleLine = Template.bind({});
+SortableSingleLine.args = {
+    alternativeText:
+        'Sortable pills. Press spacebar to grab or drop an item. Press right and left arrow keys to change position. Press escape to cancel.',
+    actions: ACTIONS,
+    items: generateItems(200),
+    singleLine: true,
+    isCollapsible: true,
     sortable: true
 };

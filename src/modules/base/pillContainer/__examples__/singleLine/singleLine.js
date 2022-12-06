@@ -1,14 +1,6 @@
 import { LightningElement } from 'lwc';
 
 export default class PillContainerSingleLine extends LightningElement {
-    actions = [
-        {
-            label: 'Delete',
-            name: 'delete',
-            iconName: 'utility:close'
-        }
-    ];
-
     items = [
         {
             label: 'First pill',
