@@ -214,6 +214,7 @@ export default class FilterMenu extends LightningElement {
     _dropdownIsFocused = false;
     _order;
     _previousScroll;
+    _preventDropdownToggle = false;
     _searchTimeOut;
 
     @track computedItems = [];
@@ -1642,6 +1643,16 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Handle a click on the button menu.
+     */
+    handleButtonClick() {
+        if (!this._preventDropdownToggle) {
+            this.toggleMenuVisibility();
+        }
+        this._preventDropdownToggle = false;
+    }
+
+    /**
      * Handle a focus on the button menu.
      */
     handleButtonFocus() {
@@ -1649,6 +1660,12 @@ export default class FilterMenu extends LightningElement {
             this.dispatchEvent(new CustomEvent('focus'));
         } else {
             this._allowBlur = true;
+
+            if (this.dropdownVisible) {
+                // Prevent toggling the menu twice,
+                // if we click on the button when it is open
+                this._preventDropdownToggle = true;
+            }
         }
     }
 
