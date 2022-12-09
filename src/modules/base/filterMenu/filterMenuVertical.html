@@ -53,38 +53,43 @@
     </p>
 
     <!-- List -->
-    <c-input-choice-set
-        if:true={isList}
-        class="slds-p-bottom_xx-small"
-        accesskey={accessKey}
-        disabled={disabled}
-        is-multi-select={computedTypeAttributes.isMultiSelect}
-        label={label}
-        variant="label-hidden"
-        options={checkboxComputedItems}
-        value={currentValue}
-        name={name}
-        data-element-id="avonni-input-choice-set"
-        onchange={handleChoiceSetChange}
-    ></c-input-choice-set>
-    <template if:true={isLoading}>
-        <div
-            class="slds-is-relative slds-p-around_medium slds-show_inline-block"
-        >
-            <lightning-spinner
-                size="small"
-                alternative-text={loadingStateAlternativeText}
-                data-element-id="lightning-spinner"
-            ></lightning-spinner>
-        </div>
-    </template>
-    <lightning-button
-        if:true={showLoadMoreButton}
-        label="Load more"
-        variant="base"
-        data-element-id="lightning-button-load-more"
-        onclick={dispatchLoadMore}
-    ></lightning-button>
+    <div if:true={isList} class={computedVerticalListClass}>
+        <c-input-choice-set
+            class="slds-p-bottom_xx-small"
+            accesskey={accessKey}
+            disabled={disabled}
+            is-multi-select={computedTypeAttributes.isMultiSelect}
+            label={label}
+            variant="label-hidden"
+            options={checkboxComputedItems}
+            value={currentValue}
+            name={name}
+            data-element-id="avonni-input-choice-set"
+            onchange={handleChoiceSetChange}
+        ></c-input-choice-set>
+        <template if:true={isLoading}>
+            <div
+                class="
+                    slds-is-relative
+                    slds-p-around_medium
+                    slds-show_inline-block
+                "
+            >
+                <lightning-spinner
+                    size="small"
+                    alternative-text={loadingStateAlternativeText}
+                    data-element-id="lightning-spinner"
+                ></lightning-spinner>
+            </div>
+        </template>
+        <lightning-button
+            if:true={showLoadMoreButton}
+            label="Load more"
+            variant="base"
+            data-element-id="lightning-button-load-more"
+            onclick={dispatchLoadMore}
+        ></lightning-button>
+    </div>
 
     <template if:false={isLoading}>
         <!-- Date Range -->

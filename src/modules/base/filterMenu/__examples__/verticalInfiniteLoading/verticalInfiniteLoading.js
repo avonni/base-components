@@ -9,7 +9,8 @@ export default class FilterMenuVerticalInfiniteLoading extends LightningElement 
     typeAttributes = {
         allowSearch: true,
         isMultiSelect: true,
-        enableInfiniteLoading: true
+        enableInfiniteLoading: true,
+        dropdownLength: '7-items'
     };
 
     generateNewItems() {

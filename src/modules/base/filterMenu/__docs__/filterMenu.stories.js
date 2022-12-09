@@ -450,7 +450,8 @@ VerticalInfiniteLoading.args = {
     typeAttributes: {
         allowSearch: true,
         isMultiSelect: true,
-        enableInfiniteLoading: true
+        enableInfiniteLoading: true,
+        dropdownLength: '7-items'
     },
     variant: 'vertical'
 };

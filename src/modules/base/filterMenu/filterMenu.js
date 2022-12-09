@@ -96,11 +96,6 @@ const MENU_WIDTHS = {
     default: 'small'
 };
 
-const MENU_LENGTHS = {
-    valid: ['5-items', '7-items', '10-items'],
-    default: '7-items'
-};
-
 const TYPE_ATTRIBUTES = {
     'date-range': [
         'dateStyle',
@@ -190,7 +185,7 @@ export default class FilterMenu extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _disabled = false;
     _dropdownAlignment = MENU_ALIGNMENTS.default;
-    _dropdownLength = MENU_LENGTHS.default;
+    _dropdownLength;
     _dropdownNubbin = false;
     _dropdownWidth = MENU_WIDTHS.default;
     _hideApplyResetButtons = false;
@@ -397,10 +392,7 @@ export default class FilterMenu extends LightningElement {
         return this._dropdownLength;
     }
     set dropdownLength(value) {
-        this._dropdownLength = normalizeString(value, {
-            fallbackValue: MENU_LENGTHS.default,
-            validValues: MENU_LENGTHS.valid
-        });
+        this._dropdownLength = value;
 
         console.warn(
             'The "dropdown-length" attribute is deprecated. Add a "dropdownLength" key to the type attributes instead.'
@@ -947,14 +939,33 @@ export default class FilterMenu extends LightningElement {
      */
     get computedDropdownContentClass() {
         const length = this.computedTypeAttributes.dropdownLength;
-        return classSet('slds-dropdown__list').add({
+        return classSet('slds-dropdown__list')
+            .add({
+                'slds-dropdown_length-with-icon-5':
+                    this.isList && length === '5-items',
+                'slds-dropdown_length-with-icon-7':
+                    this.isList && (!length || length === '7-items'),
+                'slds-dropdown_length-with-icon-10':
+                    this.isList && length === '10-items'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed vertical list CSS classes.
+     *
+     * @type {string}
+     */
+    get computedVerticalListClass() {
+        const length = this.computedTypeAttributes.dropdownLength;
+        return classSet({
             'slds-dropdown_length-with-icon-5':
                 this.isList && length === '5-items',
             'slds-dropdown_length-with-icon-7':
                 this.isList && length === '7-items',
             'slds-dropdown_length-with-icon-10':
                 this.isList && length === '10-items'
-        });
+        }).toString();
     }
 
     /**
