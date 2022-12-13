@@ -67,6 +67,17 @@ export default {
                 defaultValue: { summary: 'Reset' }
             }
         },
+        hideApplyResetButtons: {
+            name: 'hide-apply-reset-buttons',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideSelectedItems: {
             name: 'hide-selected-items',
             control: {
@@ -103,6 +114,7 @@ export default {
     },
     args: {
         applyButtonLabel: 'Apply',
+        hideApplyResetButtons: false,
         hideSelectedItems: false,
         resetButtonLabel: 'Reset',
         variant: 'horizontal'

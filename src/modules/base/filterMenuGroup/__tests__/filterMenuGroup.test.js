@@ -51,6 +51,7 @@ describe('FilterMenuGroup', () => {
 
     it('Filter menu group: Default attributes', () => {
         expect(element.applyButtonLabel).toBe('Apply');
+        expect(element.hideApplyResetButtons).toBeFalsy();
         expect(element.hideSelectedItems).toBeFalsy();
         expect(element.menus).toMatchObject([]);
         expect(element.resetButtonLabel).toBe('Reset');
@@ -89,6 +90,53 @@ describe('FilterMenuGroup', () => {
                 '[data-element-id="lightning-button-apply"]'
             );
             expect(button.label).toBe('Save');
+        });
+    });
+
+    // hide-apply-reset-buttons
+    // Depends on menus
+    it('Filter menu group: hideApplyResetButtons = false', () => {
+        element.menus = MENUS;
+        element.hideApplyResetButtons = false;
+
+        return Promise.resolve().then(() => {
+            const menus = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menus.forEach((menu) => {
+                expect(menu.hideApplyResetButtons).toBeFalsy();
+            });
+        });
+    });
+
+    it('Filter menu group: hideApplyResetButtons = true', () => {
+        element.menus = MENUS;
+        element.hideApplyResetButtons = true;
+
+        return Promise.resolve().then(() => {
+            const menus = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menus.forEach((menu) => {
+                expect(menu.hideApplyResetButtons).toBeTruthy();
+            });
+        });
+    });
+
+    it('Filter menu group: hideApplyResetButtons, vertical variant', () => {
+        element.menus = MENUS;
+        element.hideApplyResetButtons = true;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const apply = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-apply"]'
+            );
+            const reset = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-reset"]'
+            );
+            expect(apply).toBeFalsy();
+            expect(reset).toBeFalsy();
         });
     });
 
@@ -457,6 +505,97 @@ describe('FilterMenuGroup', () => {
                     '[data-element-id="avonni-pill-container-vertical"]'
                 );
                 expect(pills.items).toHaveLength(5);
+                expect(pills.items[0].name).toBe('contact.call');
+            });
+    });
+
+    it('Filter menu group: apply event, hideApplyResetButtons', () => {
+        element.menus = MENUS;
+        element.hideApplyResetButtons = true;
+
+        const handler = jest.fn();
+        element.addEventListener('apply', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const menus = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-filter-menu"]'
+                );
+                menus[0].dispatchEvent(
+                    new CustomEvent('select', {
+                        detail: {
+                            value: ['call']
+                        },
+                        bubbles: true
+                    })
+                );
+                menus[0].dispatchEvent(
+                    new CustomEvent('apply', {
+                        detail: {
+                            value: ['call']
+                        },
+                        bubbles: true
+                    })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.value).toEqual({
+                    contact: ['call']
+                });
+                expect(detail.name).toBe('contact');
+            })
+            .then(() => {
+                const pills = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container-horizontal"]'
+                );
+                expect(pills.items).toHaveLength(1);
+                expect(pills.items[0].name).toBe('contact.call');
+            });
+    });
+
+    it('Filter menu group: apply event, hideApplyResetButtons with vertical variant', () => {
+        element.menus = MENUS;
+        element.hideApplyResetButtons = true;
+        element.variant = 'vertical';
+
+        const handler = jest.fn();
+        element.addEventListener('apply', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const menus = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-filter-menu"]'
+                );
+                menus[0].dispatchEvent(
+                    new CustomEvent('select', {
+                        detail: {
+                            value: ['call']
+                        },
+                        bubbles: true
+                    })
+                );
+                menus[0].dispatchEvent(
+                    new CustomEvent('apply', {
+                        detail: {
+                            value: ['call']
+                        },
+                        bubbles: true
+                    })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.value).toEqual({
+                    contact: ['call']
+                });
+                expect(detail.name).toBe('contact');
+            })
+            .then(() => {
+                const pills = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container-vertical"]'
+                );
+                expect(pills.items).toHaveLength(1);
                 expect(pills.items[0].name).toBe('contact.call');
             });
     });

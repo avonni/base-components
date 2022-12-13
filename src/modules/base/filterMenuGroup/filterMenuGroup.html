@@ -63,7 +63,7 @@
                     disabled={menu.disabled}
                     dropdown-alignment={menu.dropdownAlignment}
                     dropdown-nubbin={menu.dropdownNubbin}
-                    hide-apply-reset-buttons={isVertical}
+                    hide-apply-reset-buttons={hideMenuApplyResetButtons}
                     hide-selected-items
                     icon-name={menu.iconName}
                     icon-size={menu.iconSize}
@@ -97,7 +97,7 @@
             ></avonni-pill-container>
         </div>
     </template>
-    <template if:true={isVertical}>
+    <template if:true={showApplyResetButtons}>
         <lightning-button
             class="slds-m-right_x-small"
             variant="base"

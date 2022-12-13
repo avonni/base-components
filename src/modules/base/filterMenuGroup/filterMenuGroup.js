@@ -57,6 +57,7 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
  */
 export default class FilterMenuGroup extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
+    _hideApplyResetButtons = false;
     _hideSelectedItems = false;
     _menus = [];
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
@@ -95,6 +96,21 @@ export default class FilterMenuGroup extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_APPLY_BUTTON_LABEL;
+    }
+
+    /**
+     * If present, the apply and reset buttons are hidden and the value is immediately saved every time the selection changes.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideApplyResetButtons() {
+        return this._hideApplyResetButtons;
+    }
+    set hideApplyResetButtons(value) {
+        this._hideApplyResetButtons = normalizeBoolean(value);
     }
 
     /**
@@ -198,6 +214,15 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * True if the apply and reset buttons should be hidden for each menu.
+     *
+     * @type {boolean}
+     */
+    get hideMenuApplyResetButtons() {
+        return this.isVertical || this.hideApplyResetButtons;
+    }
+
+    /**
      * Check if Vertical variant.
      *
      * @type {boolean}
@@ -246,6 +271,15 @@ export default class FilterMenuGroup extends LightningElement {
                 iconName: 'utility:close'
             }
         ];
+    }
+
+    /**
+     * True if the apply and reset buttons should be displayed at the end of the menus.
+     *
+     * @type {boolean}
+     */
+    get showApplyResetButtons() {
+        return this.isVertical && !this.hideApplyResetButtons;
     }
 
     /*
@@ -341,7 +375,7 @@ export default class FilterMenuGroup extends LightningElement {
      */
     handleApply(event) {
         event.stopPropagation();
-        if (this.isVertical) {
+        if (this.hideMenuApplyResetButtons) {
             // The apply and select events are fired at the same time
             return;
         }
@@ -484,6 +518,12 @@ export default class FilterMenuGroup extends LightningElement {
                 }
             })
         );
+
+        if (this.hideApplyResetButtons) {
+            // Save the selection immediately
+            this.apply();
+            this.dispatchApply(menuName);
+        }
     }
 
     /**

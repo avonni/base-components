@@ -102,6 +102,7 @@ const LANGUAGES = [
 
 export default class FilterMenuGroup extends LightningElement {
     @api applyButtonLabel;
+    @api hideApplyResetButtons;
     @api hideSelectedItems;
     @api resetButtonLabel;
     @api variant;

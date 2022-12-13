@@ -40,6 +40,7 @@ customElements.define(
 export const FilterMenuGroup = ({
     menus,
     applyButtonLabel,
+    hideApplyResetButtons,
     resetButtonLabel,
     hideSelectedItems,
     value,
@@ -48,6 +49,7 @@ export const FilterMenuGroup = ({
     const element = document.createElement('ac-base-filter-menu-group');
     element.menus = menus;
     element.applyButtonLabel = applyButtonLabel;
+    element.hideApplyResetButtons = hideApplyResetButtons;
     element.resetButtonLabel = resetButtonLabel;
     element.hideSelectedItems = hideSelectedItems;
     element.value = value;
