@@ -1278,6 +1278,11 @@ export default class FilterMenu extends LightningElement {
             }
             return item;
         });
+
+        if (this.dropdownVisible) {
+            // If the items are set while the popover is open, prevent losing focus
+            this.focusDropdown();
+        }
     }
 
     /**
@@ -1612,7 +1617,6 @@ export default class FilterMenu extends LightningElement {
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
                 this.computeListItems();
-                this.focusDropdown();
             } else {
                 this.stopPositioning();
 
