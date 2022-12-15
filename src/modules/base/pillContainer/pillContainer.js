@@ -898,6 +898,15 @@ export default class PillContainer extends LightningElement {
             this._focusOnRender = true;
             this.updateVisibleItems();
         }
+
+        /**
+         * The event fired when the pills are collapsed, and the expand button is clicked.
+         *
+         * @event
+         * @name expand
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('expand'));
     }
 
     /**

@@ -780,6 +780,43 @@ describe('Pill Container', () => {
         });
     });
 
+    // expand
+    it('Pill container: expand event', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+
+        const handler = jest.fn();
+        element.addEventListener('expand', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
     // focus
     it('Pill container: focus event', () => {
         element.items = ITEMS;
