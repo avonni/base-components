@@ -1,5 +1,6 @@
 import { timeout, animationFrame } from 'c/utilsPrivate';
 import { ResizeSensor } from './resizeSensor';
+import { debounce } from 'c/inputUtils';
 
 const DELAY_TIMEOUT = 200;
 export class AvonniResizeObserver {
@@ -31,7 +32,10 @@ export class AvonniResizeObserver {
             this.observe(element);
         } else {
             // IE11 and Lightning Locker Service do not support ResizeObserver
-            this._resizeSensor = new ResizeSensor(element, resizeCallback);
+            this._resizeSensor = new ResizeSensor(
+                element,
+                debounce(resizeCallback, 200)
+            );
         }
     }
 
@@ -43,7 +47,10 @@ export class AvonniResizeObserver {
                 if (this._resizeObserverAvailable) {
                     this._resizeObserver.observe(element);
                 } else if (!this._hasWindowResizeHandler) {
-                    window.addEventListener('resize', this._delayedResizeCallback);
+                    window.addEventListener(
+                        'resize',
+                        this._delayedResizeCallback
+                    );
                     this._hasWindowResizeHandler = true;
                 }
             });
