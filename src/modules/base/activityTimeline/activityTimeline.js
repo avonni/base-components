@@ -656,16 +656,22 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Formatted date with requested format (item-date-format) of popover's item for horizontal activity timeline.
-     * 
+     *
      * @return {string}
      */
-    get selectedItemFormattedDate(){
-        if(!this.selectedItem || !this.selectedItem.datetimeValue || !this.computedItemDateFormat){
+    get selectedItemFormattedDate() {
+        if (
+            !this.selectedItem ||
+            !this.selectedItem.datetimeValue ||
+            !this.computedItemDateFormat
+        ) {
             return '';
         }
-        return this.horizontalTimeline.convertDateToFormat(this.selectedItem.datetimeValue, this.computedItemDateFormat);
+        return this.horizontalTimeline.convertDateToFormat(
+            this.selectedItem.datetimeValue,
+            this.computedItemDateFormat
+        );
     }
-    
 
     /*
      * ------------------------------------------------------------
@@ -759,13 +765,13 @@ export default class ActivityTimeline extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
+        if (!this.divHorizontalTimeline) {
+            return null;
+        }
+        return new AvonniResizeObserver(this.divHorizontalTimeline, () => {
             this.requestRedrawTimeline();
             this.renderedCallback();
         });
-
-        resizeObserver.observe(this.divHorizontalTimeline);
-        return resizeObserver;
     }
 
     /**
