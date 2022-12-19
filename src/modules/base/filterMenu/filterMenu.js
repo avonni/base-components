@@ -1617,6 +1617,7 @@ export default class FilterMenu extends LightningElement {
                 this.pollBoundingRect();
                 this.currentValue = [...this.value];
                 this.computeListItems();
+                this.focusDropdown();
             } else {
                 this.stopPositioning();
 
