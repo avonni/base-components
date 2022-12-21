@@ -1103,7 +1103,7 @@ describe('PrimitiveCombobox', () => {
     // removeSelectedOption and change event
     // Depends on value, isMultiSelect and options
     it('Primitive combobox: removeSelectedOption method and change event', () => {
-        element.value = ['no-avatar-oil-sla', 'dickenson'];
+        element.value = ['no-avatar-oil-sla', 152];
         element.options = options;
         element.isMultiSelect = true;
 
@@ -1117,18 +1117,16 @@ describe('PrimitiveCombobox', () => {
 
             expect(changeHandler).toHaveBeenCalled();
             const changeDetail = changeHandler.mock.calls[0][0].detail;
-            expect(changeDetail.value).toEqual(['dickenson']);
+            expect(changeDetail.value).toEqual([152]);
             expect(changeDetail.action).toBe('unselect');
             expect(changeDetail.levelPath).toEqual([3, 1]);
-            expect(element.value).toMatchObject(['dickenson']);
+            expect(element.value).toMatchObject([152]);
 
             expect(privateSelectHandler).toHaveBeenCalled();
             const privateSelectDetail =
                 privateSelectHandler.mock.calls[0][0].detail;
             expect(privateSelectDetail.selectedOptions).toHaveLength(1);
-            expect(privateSelectDetail.selectedOptions[0].value).toBe(
-                'dickenson'
-            );
+            expect(privateSelectDetail.selectedOptions[0].value).toBe(152);
         });
     });
 

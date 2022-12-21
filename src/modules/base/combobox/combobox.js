@@ -986,7 +986,7 @@ export default class Combobox extends LightningElement {
      */
     handleChange(event) {
         const { action, levelPath, value } = event.detail;
-        this._value = this.isMultiSelect ? value : value.toString();
+        this._value = this.isMultiSelect ? value[0] : value;
         this.dispatchChange(action, levelPath);
     }
 
