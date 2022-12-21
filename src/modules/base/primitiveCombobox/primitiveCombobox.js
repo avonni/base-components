@@ -1449,7 +1449,9 @@ export default class PrimitiveCombobox extends LightningElement {
      * @returns {object} option
      */
     getOption(value, options = this.options) {
-        let option = options.find((opt) => opt.value === value);
+        let option = options.find((opt) => {
+            return value && opt.value.toString() === value.toString();
+        });
 
         // Search deeper levels
         let i = 0;
@@ -1793,7 +1795,10 @@ export default class PrimitiveCombobox extends LightningElement {
         event.stopPropagation();
 
         const selectedOption = this.visibleOptions.find((option) => {
-            return option.value === this._highlightedOption.dataset.value;
+            return (
+                option.value.toString() ===
+                this._highlightedOption.dataset.value
+            );
         });
 
         // If the option has children options, change the visible options

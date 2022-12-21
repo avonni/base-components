@@ -5,7 +5,7 @@ const suboptions = [
         options: [
             {
                 label: 'Nakatomi Investments',
-                value: 'nakatomi',
+                value: 14,
                 avatar: {
                     fallbackIconName: 'standard:account'
                 },
@@ -39,7 +39,7 @@ export const options = [
     },
     {
         label: 'Dickenson plc',
-        value: 'dickenson',
+        value: 152,
         secondaryText: 'Account - Lawrence, KS',
         groups: ['accounts']
     },

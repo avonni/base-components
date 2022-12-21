@@ -5,7 +5,7 @@ export const options = [
         options: [
             {
                 label: 'Nakatomi Investments',
-                value: 'nakatomi',
+                value: 123,
                 avatar: {
                     fallbackIconName: 'standard:account'
                 },
@@ -15,7 +15,7 @@ export const options = [
     },
     {
         label: 'Dickenson plc',
-        value: 'no-avatar-dickenson'
+        value: 45
     },
     {
         label: 'United Oil SLA',
