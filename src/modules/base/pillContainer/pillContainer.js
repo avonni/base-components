@@ -472,11 +472,10 @@ export default class PillContainer extends LightningElement {
         if (!wrapper) {
             return null;
         }
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateVisibleItems();
-        });
-        resizeObserver.observe(wrapper);
-        return resizeObserver;
+        return new AvonniResizeObserver(
+            wrapper,
+            this.updateVisibleItems.bind(this)
+        );
     }
 
     /**

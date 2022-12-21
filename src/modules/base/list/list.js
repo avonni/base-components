@@ -1297,13 +1297,13 @@ export default class List extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
-        if (!this._resizeObserver) {
-            const resizeObserver = new AvonniResizeObserver(() => {
-                this.listResize();
-            });
-            resizeObserver.observe(this.listContainer);
-            this._resizeObserver = resizeObserver;
+        if (!this.listContainer) {
+            return;
         }
+        this._resizeObserver = new AvonniResizeObserver(
+            this.listContainer,
+            this.listResize.bind(this)
+        );
     }
 
     /**

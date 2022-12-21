@@ -1139,20 +1139,22 @@ export default class InputPen extends LightningElement {
      */
     initResizeObserver() {
         if (!this.canvasInfo.canvasElement) return;
-        this._resizeObserver = new AvonniResizeObserver(() => {
-            const savedValue = this._foregroundValue;
-            clearTimeout(this._resizeTimeout);
-            this._resizeTimeout = setTimeout(() => {
-                this.canvasInfo.canvasElement.width =
-                    this.canvasInfo.canvasElement.parentElement.offsetWidth;
-                this.canvasInfo.canvasElement.height =
-                    this.canvasInfo.canvasElement.parentElement.offsetHeight;
-                this._value = savedValue;
-                this.initSrc();
-                this.fillBackground();
-            }, 100);
-        });
-        this._resizeObserver.observe(this.canvasInfo.canvasElement);
+        this._resizeObserver = new AvonniResizeObserver(
+            this.canvasInfo.canvasElement,
+            () => {
+                const savedValue = this._foregroundValue;
+                clearTimeout(this._resizeTimeout);
+                this._resizeTimeout = setTimeout(() => {
+                    this.canvasInfo.canvasElement.width =
+                        this.canvasInfo.canvasElement.parentElement.offsetWidth;
+                    this.canvasInfo.canvasElement.height =
+                        this.canvasInfo.canvasElement.parentElement.offsetHeight;
+                    this._value = savedValue;
+                    this.initSrc();
+                    this.fillBackground();
+                }, 100);
+            }
+        );
     }
 
     /**
