@@ -1297,13 +1297,13 @@ export default class List extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
-        if (!this._resizeObserver) {
-            const resizeObserver = new AvonniResizeObserver(() => {
-                this.listResize();
-            });
-            resizeObserver.observe(this.listContainer);
-            this._resizeObserver = resizeObserver;
+        if (!this.listContainer) {
+            return;
         }
+        this._resizeObserver = new AvonniResizeObserver(
+            this.listContainer,
+            this.listResize.bind(this)
+        );
     }
 
     /**
@@ -1898,8 +1898,8 @@ export default class List extends LightningElement {
         if (event.key === 'Enter') {
             this.handleItemClick(event);
         } else if (
-            (this.sortable && event.key === ' ') ||
-            event.key === 'Spacebar'
+            this.sortable &&
+            (event.key === ' ' || event.key === 'Spacebar')
         ) {
             event.preventDefault();
             if (this._draggedElement) {
@@ -2033,6 +2033,21 @@ export default class List extends LightningElement {
                 !this.isLoading)
         ) {
             this.handleLoadMore();
+        }
+    }
+
+    /**
+     * Handle a keydown event on an action button. If the button is actioned, prevent the `itemclick` event from being dispatched.
+     *
+     * @param {Event} event `keydown` event.
+     */
+    handleStopKeyDown(event) {
+        if (
+            event.key === 'Enter' ||
+            event.key === ' ' ||
+            event.key === 'Spacebar'
+        ) {
+            event.stopPropagation();
         }
     }
 }

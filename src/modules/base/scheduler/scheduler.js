@@ -1641,14 +1641,16 @@ export default class Scheduler extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateCellWidth();
-        });
         const schedule = this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
         );
-        resizeObserver.observe(schedule);
-        return resizeObserver;
+        if (!schedule) {
+            return null;
+        }
+        return new AvonniResizeObserver(
+            schedule,
+            this.updateCellWidth.bind(this)
+        );
     }
 
     /**

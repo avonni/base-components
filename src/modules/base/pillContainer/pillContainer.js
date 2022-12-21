@@ -472,11 +472,10 @@ export default class PillContainer extends LightningElement {
         if (!wrapper) {
             return null;
         }
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.updateVisibleItems();
-        });
-        resizeObserver.observe(wrapper);
-        return resizeObserver;
+        return new AvonniResizeObserver(
+            wrapper,
+            this.updateVisibleItems.bind(this)
+        );
     }
 
     /**
@@ -898,6 +897,15 @@ export default class PillContainer extends LightningElement {
             this._focusOnRender = true;
             this.updateVisibleItems();
         }
+
+        /**
+         * The event fired when the pills are collapsed, and the expand button is clicked.
+         *
+         * @event
+         * @name expand
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('expand'));
     }
 
     /**

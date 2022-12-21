@@ -1343,8 +1343,13 @@ export default class Slider extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!(this.showAnyTickMarks || this.isVerticalResponsive)) return null;
-        const resizeObserver = new AvonniResizeObserver(() => {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper || !(this.showAnyTickMarks || this.isVerticalResponsive)) {
+            return null;
+        }
+        return new AvonniResizeObserver(wrapper, () => {
             if (this.isVerticalResponsive) {
                 this.setVerticalResponsiveHeight();
             }
@@ -1355,10 +1360,6 @@ export default class Slider extends LightningElement {
                 this.displayCustomLabels();
             }
         });
-        resizeObserver.observe(
-            this.template.querySelector('[data-element-id="div-wrapper"]')
-        );
-        return resizeObserver;
     }
 
     /**
