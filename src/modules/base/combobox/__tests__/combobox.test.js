@@ -1073,7 +1073,7 @@ describe('Combobox', () => {
         combobox.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: 'value-1'
+                    value: ['value-1']
                 }
             })
         );
