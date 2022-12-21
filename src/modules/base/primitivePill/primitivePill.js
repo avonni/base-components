@@ -106,7 +106,8 @@ export default class PrimitivePill extends LightningElement {
         return this._avatar;
     }
     set avatar(value) {
-        this._avatar = value instanceof Object ? value : null;
+        this._avatar =
+            value instanceof Object && Object.keys(value).length ? value : null;
     }
 
     /**
