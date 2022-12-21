@@ -1898,8 +1898,8 @@ export default class List extends LightningElement {
         if (event.key === 'Enter') {
             this.handleItemClick(event);
         } else if (
-            (this.sortable && event.key === ' ') ||
-            event.key === 'Spacebar'
+            this.sortable &&
+            (event.key === ' ' || event.key === 'Spacebar')
         ) {
             event.preventDefault();
             if (this._draggedElement) {
@@ -2033,6 +2033,21 @@ export default class List extends LightningElement {
                 !this.isLoading)
         ) {
             this.handleLoadMore();
+        }
+    }
+
+    /**
+     * Handle a keydown event on an action button. If the button is actioned, prevent the `itemclick` event from being dispatched.
+     *
+     * @param {Event} event `keydown` event.
+     */
+    handleStopKeyDown(event) {
+        if (
+            event.key === 'Enter' ||
+            event.key === ' ' ||
+            event.key === 'Spacebar'
+        ) {
+            event.stopPropagation();
         }
     }
 }

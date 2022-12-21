@@ -116,7 +116,10 @@
                                 slot="media-actions"
                                 class="avonni-list__item-media-action-top-right"
                             >
-                                <div if:true={item.hasImage}>
+                                <div
+                                    if:true={item.hasImage}
+                                    onkeydown={handleStopKeyDown}
+                                >
                                     <lightning-button-menu
                                         if:true={hasMultipleMediaActions}
                                         menu-alignment="right"
@@ -387,6 +390,7 @@
                                 <div
                                     if:true={hasActions}
                                     class="slds-m-right_x-small"
+                                    onkeydown={handleStopKeyDown}
                                 >
                                     <lightning-button-menu
                                         if:true={hasMultipleActions}
