@@ -74,6 +74,7 @@ describe('Metric', () => {
         expect(element.secondaryMinimumFractionDigits).toBeUndefined();
         expect(element.secondaryMinimumIntegerDigits).toBeUndefined();
         expect(element.secondaryMinimumSignificantDigits).toBeUndefined();
+        expect(element.secondaryPosition).toBe('right');
         expect(element.secondaryPrefix).toBeUndefined();
         expect(element.secondarySuffix).toBeUndefined();
         expect(element.secondaryShowTrendColor).toBeFalsy();
@@ -402,6 +403,119 @@ describe('Metric', () => {
         });
     });
 
+    // secondary-position
+    it('Metric: secondaryPosition = right', () => {
+        element.secondaryPosition = 'right';
+        element.value = 13.6;
+        element.secondaryValue = 16;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-metrics"]'
+            );
+            expect(wrapper.className).toBe(
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-align-end'
+            );
+
+            const primary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-primary"]'
+            );
+            expect(primary.className).toBe('avonni-metric__primary slds-show');
+
+            const secondary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-secondary"]'
+            );
+            expect(secondary.className).toBe(
+                'avonni-metric__secondary slds-m-left_x-small slds-show'
+            );
+        });
+    });
+
+    it('Metric: secondaryPosition = left', () => {
+        element.secondaryPosition = 'left';
+        element.value = 13.6;
+        element.secondaryValue = 16;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-metrics"]'
+            );
+            expect(wrapper.className).toBe(
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-align-end slds-grid_reverse'
+            );
+
+            const primary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-primary"]'
+            );
+            expect(primary.className).toBe('avonni-metric__primary slds-show');
+
+            const secondary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-secondary"]'
+            );
+            expect(secondary.className).toBe(
+                'avonni-metric__secondary slds-m-right_x-small slds-show'
+            );
+        });
+    });
+
+    it('Metric: secondaryPosition = bottom', () => {
+        element.secondaryPosition = 'bottom';
+        element.value = 13.6;
+        element.secondaryValue = 16;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-metrics"]'
+            );
+            expect(wrapper.className).toBe(
+                'avonni-metric__primary-and-secondary-wrapper'
+            );
+
+            const primary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-primary"]'
+            );
+            expect(primary.className).toBe(
+                'avonni-metric__primary slds-show_inline-block'
+            );
+
+            const secondary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-secondary"]'
+            );
+            expect(secondary.className).toBe(
+                'avonni-metric__secondary slds-show_inline-block'
+            );
+        });
+    });
+
+    it('Metric: secondaryPosition = top', () => {
+        element.secondaryPosition = 'top';
+        element.value = 13.6;
+        element.secondaryValue = 16;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-metrics"]'
+            );
+            expect(wrapper.className).toBe(
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-reverse'
+            );
+
+            const primary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-primary"]'
+            );
+            expect(primary.className).toBe(
+                'avonni-metric__primary slds-show_inline-block'
+            );
+
+            const secondary = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-metric-secondary"]'
+            );
+            expect(secondary.className).toBe(
+                'avonni-metric__secondary slds-show_inline-block'
+            );
+        });
+    });
+
     // secondary-prefix
     it('Metric: secondaryPrefix', () => {
         element.secondaryPrefix = 'prefix';
@@ -438,7 +552,7 @@ describe('Metric', () => {
             const metric = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-secondary"]'
             );
-            expect(metric.className).toBe('avonni-metric__secondary');
+            expect(metric.className).toBe('avonni-metric__secondary slds-show');
         });
     });
 
@@ -454,7 +568,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__secondary avonni-metric__secondary_positive-trend'
+                    'avonni-metric__secondary slds-show avonni-metric__secondary_positive-trend'
                 );
 
                 element.secondaryValue = 8;
@@ -465,7 +579,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__secondary avonni-metric__secondary_negative-trend'
+                    'avonni-metric__secondary slds-show avonni-metric__secondary_negative-trend'
                 );
 
                 element.secondaryValue = 10;
@@ -476,7 +590,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-secondary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__secondary avonni-metric__secondary_neutral-trend'
+                    'avonni-metric__secondary slds-show avonni-metric__secondary_neutral-trend'
                 );
             });
     });
@@ -529,7 +643,7 @@ describe('Metric', () => {
             const metric = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-primary"]'
             );
-            expect(metric.className).toBe('avonni-metric__primary');
+            expect(metric.className).toBe('avonni-metric__primary slds-show');
         });
     });
 
@@ -545,7 +659,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__primary avonni-metric__primary_positive-trend'
+                    'avonni-metric__primary slds-show avonni-metric__primary_positive-trend'
                 );
 
                 element.value = 8;
@@ -556,7 +670,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__primary avonni-metric__primary_negative-trend'
+                    'avonni-metric__primary slds-show avonni-metric__primary_negative-trend'
                 );
 
                 element.value = 10;
@@ -567,7 +681,7 @@ describe('Metric', () => {
                     '[data-element-id="avonni-primitive-metric-primary"]'
                 );
                 expect(metric.className).toBe(
-                    'avonni-metric__primary avonni-metric__primary_neutral-trend'
+                    'avonni-metric__primary slds-show avonni-metric__primary_neutral-trend'
                 );
             });
     });
