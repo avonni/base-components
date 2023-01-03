@@ -259,6 +259,7 @@ export default class Slider extends LightningElement {
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this._domModified = true;
         }
     }
 
@@ -282,6 +283,7 @@ export default class Slider extends LightningElement {
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this._domModified = true;
         }
     }
 
