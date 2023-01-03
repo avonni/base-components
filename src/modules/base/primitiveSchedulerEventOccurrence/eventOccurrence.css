@@ -32,17 +32,20 @@
 
 @import './shared.css';
 
-:host.avonni-scheduler__primitive-event {
+:host {
     z-index: 1;
     display: block;
 }
 
 .avonni-scheduler__event {
     width: 100%;
-    opacity: 0.8;
     cursor: pointer;
     position: relative;
     z-index: 2;
+}
+
+.avonni-scheduler__event:not(.avonni-scheduler__event_display-as-dot) {
+    opacity: 0.8;
 }
 
 .avonni-scheduler__event-wrapper:focus {

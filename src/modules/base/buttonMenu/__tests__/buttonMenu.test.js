@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import ButtonMenu from 'c/buttonMenu';
+import ButtonMenu from '../buttonMenu';
 
 // not tested
 // tooltip

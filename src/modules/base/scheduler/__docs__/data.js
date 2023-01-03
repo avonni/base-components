@@ -41,7 +41,7 @@ const columns = [
             alternativeText: 'Avatar',
             fallbackIconName: { fieldName: 'avatarFallbackIconName' },
             initials: { fieldName: 'avatarInitials' },
-            primaryText: { fieldName: 'name' }
+            primaryText: { fieldName: 'label' }
         }
     },
     {
@@ -65,6 +65,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'NG',
         name: 'Nina',
+        label: 'Nina G.',
         role: 'Lead developer',
         sharedField: `This shouldn't show up`
     },
@@ -74,6 +75,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
         name: 'Dave',
+        label: 'Dave M.',
         role: 'UX Specialist',
         customRowField: 'Label coming from a custom field in the row'
     },
@@ -81,12 +83,14 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'JP',
         name: 'Jung',
+        label: 'Jung P.',
         role: 'Product Owner'
     },
     {
         avatarFallbackIconName: 'standard:article',
         avatarInitials: 'LM',
         name: 'Lily',
+        label: 'Lily M.',
         role: 'Graphic Designer',
         customField: "This comes from the row's custom field"
     },
@@ -96,6 +100,7 @@ const resources = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'RM',
         name: 'Reginald',
+        label: 'Reginald M.',
         role: 'Developer'
     }
 ];
@@ -256,49 +261,49 @@ const longEvents = [
         name: 'event-2',
         title: 'Event 2',
         from: new Date(2021, 1, 15),
-        to: new Date(2021, 3, 30)
+        to: new Date(2021, 4, 1)
     },
     {
         resourceNames: ['Jung', 'Lily', 'Dave'],
         name: 'event-3',
         title: 'Event 3',
         from: new Date(2020, 11, 26),
-        to: new Date(2021, 0, 31)
+        to: new Date(2021, 1, 1)
     },
     {
         resourceNames: ['Nina', 'Lily'],
         name: 'event-4',
         title: 'Event 4',
         from: new Date(2021, 3, 12),
-        to: new Date(2021, 4, 31)
+        to: new Date(2021, 5, 1)
     },
     {
         resourceNames: ['Dave', 'Nina'],
         name: 'event-5',
         title: 'Event 5',
         from: new Date(2021, 7, 1),
-        to: new Date(2021, 8, 31)
+        to: new Date(2021, 9, 1)
     },
     {
         resourceNames: ['Nina', 'Dave', 'Jung'],
         name: 'event-6',
         title: 'Event 6',
         from: new Date(2021, 5, 20),
-        to: new Date(2021, 6, 31)
+        to: new Date(2021, 7, 1)
     },
     {
         resourceNames: ['Nina'],
         name: 'event-7',
         title: 'Event 7',
         from: new Date(2021, 6, 1),
-        to: new Date(2021, 7, 31)
+        to: new Date(2021, 8, 1)
     },
     {
         resourceNames: ['Jung'],
         name: 'event-8',
         title: 'Event 8',
         from: new Date(2021, 9, 10),
-        to: new Date(2021, 10, 31)
+        to: new Date(2021, 11, 1)
     },
     {
         resourceNames: ['Nina'],
@@ -312,7 +317,7 @@ const longEvents = [
         name: 'event-10',
         title: 'Event 10',
         from: new Date(2021, 10, 1),
-        to: new Date(2021, 11, 31)
+        to: new Date(2022, 0, 1)
     }
 ];
 
@@ -333,7 +338,7 @@ const events = [
         recurrence: 'daily'
     },
     {
-        resourceNames: ['Jung', 'Dave'],
+        resourceNames: ['Jung'],
         name: 'seminar',
         title: 'Online seminar',
         from: new Date(2021, 11, 14, 8),
@@ -554,9 +559,8 @@ const eventsThemed = [
 
 const disabledDatesTimes = [
     {
-        resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
+        resourceNames: ['Nina', 'Dave'],
         title: 'Lunch',
-        iconName: 'custom:custom51',
         from: new Date(2021, 0, 1, 12),
         to: new Date(2021, 0, 1, 14),
         recurrence: 'weekly',
@@ -569,6 +573,12 @@ const disabledDatesTimes = [
         title: 'Vacation',
         from: new Date(2021, 11, 6),
         to: new Date(2021, 11, 20)
+    },
+    {
+        resourceNames: ['Dave'],
+        title: 'Day off',
+        from: new Date(2021, 11, 18),
+        allDay: true
     },
     {
         resourceNames: ['Jung'],
@@ -590,8 +600,9 @@ const referenceLines = [
     },
     {
         label: 'Coffee break',
-        date: new Date(2021, 1, 1, 10),
-        recurrence: 'daily'
+        date: new Date(2022, 1, 1, 10),
+        recurrence: 'daily',
+        recurrenceEndDate: new Date(2022, 1, 5)
     }
 ];
 

@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/scheduler';
+import Component from '../../storybookWrappers/scheduler/scheduler';
 
 customElements.define('ac-base-scheduler', Component.CustomElementConstructor);
 
@@ -50,6 +50,7 @@ export const Scheduler = ({
     eventsLabels,
     eventsPalette,
     eventsTheme,
+    hiddenDisplays,
     hideToolbar,
     isLoading,
     readOnly,
@@ -57,6 +58,8 @@ export const Scheduler = ({
     referenceLines,
     resizeColumnDisabled,
     resources,
+    selectedDisplay,
+    selectedResources,
     selectedTimeSpan,
     start,
     timeSpans,
@@ -79,6 +82,7 @@ export const Scheduler = ({
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
+    element.hiddenDisplays = hiddenDisplays;
     element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
@@ -86,6 +90,8 @@ export const Scheduler = ({
     element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
     element.resources = resources;
+    element.selectedDisplay = selectedDisplay;
+    element.selectedResources = selectedResources;
     element.selectedTimeSpan = selectedTimeSpan;
     element.start = start;
     element.timeSpans = timeSpans;

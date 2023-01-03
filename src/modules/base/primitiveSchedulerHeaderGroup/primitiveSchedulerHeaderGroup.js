@@ -421,16 +421,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * @type {boolean}
      */
     get endOnTimeSpanUnit() {
-        return this.availableTimeSpans.find((timeSpan) => {
+        const existingTimeSpan = this.availableTimeSpans.find((timeSpan) => {
             return (
                 timeSpan.unit === this.timeSpan.unit &&
                 timeSpan.span === this.timeSpan.span
             );
         });
+        return !this.availableTimeSpans.length || existingTimeSpan;
     }
 
     /**
-     * Computed CSS class of each header cell.
+     * Computed CSS classes of each header cell.
      *
      * @type {string}
      */
@@ -438,7 +439,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return classSet('slds-grid slds-is-relative')
             .add({
                 'slds-grid_vertical avonni-scheduler-header-group__header_vertical':
-                    this.isVertical
+                    this.isVertical,
+                'avonni-scheduler-header-group__header_multiple-vertical':
+                    this.isVertical && this.computedHeaders.length > 1
             })
             .toString();
     }
@@ -598,7 +601,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             this.dispatchEvent(
                 new CustomEvent('privateheaderchange', {
                     detail: {
-                        smallestHeader: this.smallestHeader
+                        smallestHeader: this.smallestHeader,
+                        visibleInterval: this.visibleInterval
                     }
                 })
             );
@@ -613,9 +617,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (!this.smallestHeader) {
             return;
         }
-        const totalWidth =
-            this.visibleWidth ||
-            this.template.host.getBoundingClientRect().width;
+        const hostWidth = this.template.host.getBoundingClientRect().width;
+        // Remove 1 for the border
+        const totalWidth = (this.visibleWidth || hostWidth) - 1;
         const totalNumberOfCells = this.smallestHeader.numberOfCells;
         let cellSize = 0;
 
@@ -649,7 +653,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             header.computeCellWidths(cellSize, this.smallestHeader.cells);
         });
         this.dispatchCellSizeChange(cellSize);
-        this.updateCellsSize();
+        requestAnimationFrame(() => {
+            this.updateCellsSize();
+        });
     }
 
     /**
@@ -706,7 +712,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('privatecellsizechange', {
                 detail: {
-                    cellSize: size
+                    cellSize: size,
+                    orientation: this.variant
                 }
             })
         );

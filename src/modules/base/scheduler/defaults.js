@@ -33,21 +33,34 @@
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const DEFAULT_COLUMNS = [
+    {
+        label: 'Resource',
+        fieldName: 'avatarSrc',
+        type: 'avatar',
+        typeAttributes: {
+            alternativeText: { fieldName: 'name' },
+            fallbackIconName: { fieldName: 'avatarFallbackIconName' },
+            initials: { fieldName: 'avatarInitials' },
+            primaryText: { fieldName: 'label' }
+        }
+    }
+];
 const DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS = [
     {
-        name: 'add-event',
+        name: 'Standard.Scheduler.AddEvent',
         label: 'Add event',
         iconName: 'utility:add'
     }
 ];
 const DEFAULT_CONTEXT_MENU_EVENT_ACTIONS = [
     {
-        name: 'edit',
+        name: 'Standard.Scheduler.EditEvent',
         label: 'Edit',
         iconName: 'utility:edit'
     },
     {
-        name: 'delete',
+        name: 'Standard.Scheduler.DeleteEvent',
         label: 'Delete',
         iconName: 'utility:delete'
     }
@@ -112,18 +125,22 @@ const TIME_SPANS = {
 };
 
 const DISPLAYS = {
-    default: [
+    default: 'timeline',
+    options: [
         {
-            label: 'Agenda',
-            name: 'agenda'
+            label: 'Agenda ',
+            value: 'agenda',
+            iconName: 'utility:list'
         },
         {
-            label: 'Calendar',
-            name: 'calendar'
+            label: 'Calendar ',
+            value: 'calendar',
+            iconName: 'utility:event'
         },
         {
-            label: 'Timeline',
-            name: 'timeline'
+            label: 'Timeline ',
+            value: 'timeline',
+            iconName: 'utility:breadcrumbs'
         }
     ],
     valid: ['agenda', 'calendar', 'timeline']
@@ -156,198 +173,6 @@ const EVENTS_PALETTES = {
         'wildflowers'
     ],
     default: 'aurora'
-};
-
-const HEADERS = {
-    valid: [
-        'minuteAndHour',
-        'minuteHourAndDay',
-        'hourAndDay',
-        'hourDayAndWeek',
-        'dayAndWeek',
-        'dayAndMonth',
-        'dayLetterAndWeek',
-        'dayWeekAndMonth',
-        'weekAndMonth',
-        'weekMonthAndYear',
-        'monthAndYear',
-        'quartersAndYear',
-        'fiveYears'
-    ],
-    default: 'hourAndDay'
-};
-const PRESET_HEADERS = {
-    minuteAndHour: [
-        {
-            unit: 'minute',
-            span: 30,
-            label: 'mm'
-        },
-        {
-            unit: 'hour',
-            span: 1,
-            label: 'h a'
-        }
-    ],
-    minuteHourAndDay: [
-        {
-            unit: 'minute',
-            span: 30,
-            label: 'mm'
-        },
-        {
-            unit: 'hour',
-            span: 1,
-            label: 'h a'
-        },
-        {
-            unit: 'day',
-            span: 1,
-            label: 'ccc, LLL d'
-        }
-    ],
-    hourAndDay: [
-        {
-            unit: 'hour',
-            span: 1,
-            label: 'h a'
-        },
-        {
-            unit: 'day',
-            span: 1,
-            label: 'ccc, LLL d'
-        }
-    ],
-    hourDayAndWeek: [
-        {
-            unit: 'hour',
-            span: 1,
-            label: 'h a'
-        },
-        {
-            unit: 'day',
-            span: 1,
-            label: 'ccc, LLL d'
-        },
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        }
-    ],
-    dayAndMonth: [
-        {
-            unit: 'day',
-            span: 1,
-            label: 'dd'
-        },
-        {
-            unit: 'month',
-            span: 1,
-            label: 'LLLL'
-        }
-    ],
-    dayAndWeek: [
-        {
-            unit: 'day',
-            span: 1,
-            label: 'ccc, LLL d'
-        },
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        }
-    ],
-    dayLetterAndWeek: [
-        {
-            unit: 'day',
-            span: 1,
-            label: 'ccccc'
-        },
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        }
-    ],
-    dayWeekAndMonth: [
-        {
-            unit: 'day',
-            span: 1,
-            label: 'dd'
-        },
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        },
-        {
-            unit: 'month',
-            span: 1,
-            label: 'LLLL yyyy'
-        }
-    ],
-    weekAndMonth: [
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        },
-        {
-            unit: 'month',
-            span: 1,
-            label: 'LLLL yyyy'
-        }
-    ],
-    weekMonthAndYear: [
-        {
-            unit: 'week',
-            span: 1,
-            label: "'w.'W 'of' yyyy"
-        },
-        {
-            unit: 'month',
-            span: 1,
-            label: 'LLLL'
-        },
-        {
-            unit: 'year',
-            span: 1,
-            label: 'yyyy'
-        }
-    ],
-    monthAndYear: [
-        {
-            unit: 'month',
-            span: 1,
-            label: 'LLLL'
-        },
-        {
-            unit: 'year',
-            span: 1,
-            label: 'yyyy'
-        }
-    ],
-    quartersAndYear: [
-        {
-            unit: 'month',
-            span: 4,
-            label: 'LLL'
-        },
-        {
-            unit: 'year',
-            span: 1,
-            label: 'yyyy'
-        }
-    ],
-    fiveYears: [
-        {
-            unit: 'year',
-            span: 5,
-            label: 'yyyy'
-        }
-    ]
 };
 
 const PALETTES = {
@@ -419,8 +244,6 @@ const REFERENCE_LINE_VARIANTS = {
     default: 'default'
 };
 
-const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -430,6 +253,7 @@ export {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_COLUMNS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_DATE_FORMAT,
@@ -442,12 +266,9 @@ export {
     EDIT_MODES,
     EVENTS_THEMES,
     EVENTS_PALETTES,
-    HEADERS,
     PALETTES,
-    PRESET_HEADERS,
     RECURRENCES,
     REFERENCE_LINE_VARIANTS,
     TIME_SPANS,
-    UNITS,
     VARIANTS
 };

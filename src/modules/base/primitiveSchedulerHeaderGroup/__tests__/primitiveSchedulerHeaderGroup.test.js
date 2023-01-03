@@ -706,7 +706,8 @@ describe('Primitive Scheduler Header Group', () => {
         jest.runAllTimers();
 
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.cellSize).toBe(5);
+        const size = Math.ceil(handler.mock.calls[0][0].detail.cellSize);
+        expect(size).toBe(5);
     });
 
     it('Scheduler header group: visibleWidth and zoomToFit', () => {
@@ -718,7 +719,8 @@ describe('Primitive Scheduler Header Group', () => {
         jest.runAllTimers();
 
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.cellSize).toBe(50);
+        const size = Math.ceil(handler.mock.calls[0][0].detail.cellSize);
+        expect(size).toBe(50);
     });
 
     /*

@@ -125,7 +125,7 @@ export default {
                 type: { summary: 'object[]' },
                 defaultValue: {
                     summary: 'edit and delete actions',
-                    detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
+                    detail: `[{ name: 'Standard.Scheduler.EditEvent', label: 'Edit', iconName: 'utility:edit' }, { name: 'Standard.Scheduler.DeleteEvent', label: 'Delete', iconName: 'utility:delete' }]`
                 },
                 category: 'Events'
             }
@@ -140,8 +140,8 @@ export default {
             table: {
                 type: { summary: 'object[]' },
                 defaultValue: {
-                    summary: 'add-event actions',
-                    detail: `[{ name: 'add-event', label: 'Add event', iconName: 'utility:add' }]`
+                    summary: 'Standard.Scheduler.AddEvent actions',
+                    detail: `[{ name: 'Standard.Scheduler.AddEvent', label: 'Add event', iconName: 'utility:add' }]`
                 }
             }
         },
@@ -276,6 +276,18 @@ export default {
                 category: 'Events'
             }
         },
+        hiddenDisplays: {
+            name: 'hidden-displays',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of display names that should not appear in the toolbar options. Valid values include calendar, agenda and timeline.',
+            table: {
+                type: { summary: 'string[]' },
+                category: 'Panels and Toolbar'
+            }
+        },
         hideToolbar: {
             name: 'hide-toolbar',
             control: {
@@ -367,6 +379,30 @@ export default {
                 type: { summary: 'object' }
             }
         },
+        selectedDisplay: {
+            name: 'selected-display',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Selected display of the scheduler. Valid values include agenda, calendar and timeline.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'timeline' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        selectedResources: {
+            name: 'selected-resources',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of selected resources names. Only the events of the selected resources will be visible.',
+            table: {
+                type: { summary: 'string[]' }
+            }
+        },
         selectedTimeSpan: {
             name: 'selected-time-span',
             control: {
@@ -442,11 +478,23 @@ export default {
         availableTimeFrames: ['00:00-23:59'],
         collapseDisabled: false,
         contextMenuEmptySpotActions: [
-            { name: 'add-event', label: 'Add event', iconName: 'utility:add' }
+            {
+                name: 'Standard.Scheduler.AddEvent',
+                label: 'Add event',
+                iconName: 'utility:add'
+            }
         ],
         contextMenuEventActions: [
-            { name: 'edit', label: 'Edit', iconName: 'utility:edit' },
-            { name: 'delete', label: 'Delete', iconName: 'utility:delete' }
+            {
+                name: 'Standard.Scheduler.EditEvent',
+                label: 'Edit',
+                iconName: 'utility:edit'
+            },
+            {
+                name: 'Standard.Scheduler.DeleteEvent',
+                label: 'Delete',
+                iconName: 'utility:delete'
+            }
         ],
         dateFormat: 'ff',
         dialogLabels: {
@@ -475,6 +523,7 @@ export default {
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
+        selectedDisplay: 'timeline',
         selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
         start: new Date(),
         timeSpans: [
@@ -519,11 +568,36 @@ Base.args = {
     columns,
     resources,
     start,
-    events: basicEvents
+    events: basicEvents,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
+export const Calendar = Template.bind({});
+Calendar.args = {
+    resources,
+    start,
+    events,
+    selectedDisplay: 'calendar',
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    disabledDatesTimes,
+    referenceLines
+};
+
+export const Agenda = Template.bind({});
+Agenda.args = {
+    resources,
+    start,
+    events,
+    selectedDisplay: 'agenda',
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    disabledDatesTimes,
+    referenceLines
+};
+
+export const VerticalTimeline = Template.bind({});
+VerticalTimeline.args = {
     resources,
     start,
     availableTimeFrames: ['08:00-17:00'],
@@ -531,7 +605,8 @@ Vertical.args = {
     events,
     disabledDatesTimes,
     referenceLines,
-    variant: 'vertical'
+    variant: 'vertical',
+    selectedResources: ['Dave', 'Reginald', 'Nina']
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});
@@ -567,7 +642,8 @@ AvailableAndDisabledTimes.args = {
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
     disabledDatesTimes,
-    referenceLines
+    referenceLines,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const ReadOnly = Template.bind({});
@@ -606,7 +682,8 @@ ReadOnly.args = {
             label: 'See details'
         }
     ],
-    contextMenuEmptySpotActions: []
+    contextMenuEmptySpotActions: [],
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const ZoomToFit = Template.bind({});
@@ -640,7 +717,8 @@ ZoomToFit.args = {
     ],
     start: new Date(2021, 0, 1),
     events: longEvents,
-    eventsPalette: 'pond'
+    eventsPalette: 'pond',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const Labels = Template.bind({});
@@ -665,11 +743,13 @@ Labels.args = {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'resourceName',
+            fieldName: 'name',
             iconName: 'utility:user'
         }
     },
-    dateFormat: 'hh:mm'
+    dateFormat: 'hh:mm',
+    hideToolbar: true,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const ThemesAndColors = Template.bind({});
@@ -679,5 +759,5 @@ ThemesAndColors.args = {
     start,
     events: eventsThemed,
     eventsPalette: 'wildflowers',
-    hideToolbar: true
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };

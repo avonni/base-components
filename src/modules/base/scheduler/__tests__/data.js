@@ -30,7 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const START = new Date(2021, 8, 2);
+export const ACTIONS = [
+    {
+        label: 'Action 1',
+        name: 'action1'
+    },
+    {
+        label: 'Action 2',
+        name: 'action2'
+    }
+];
 
 export const COLUMNS = [
     {
@@ -79,92 +88,31 @@ export const EVENTS = [
         resourceNames: ['resource-2', 'resource-1'],
         name: 'event-1',
         title: 'Event 1',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3),
+        from: new Date(2022, 9, 4, 10),
+        to: new Date(2022, 9, 5, 11, 50),
         color: '#333'
     },
     {
         resourceNames: ['resource-3'],
         name: 'event-2',
         title: 'Event 2',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3)
+        from: new Date(2022, 9, 2),
+        to: new Date(2022, 9, 4)
     },
     {
         resourceNames: ['resource-3'],
         name: 'event-3',
         title: 'Event 3',
-        from: new Date(2021, 8, 3),
-        to: new Date(2021, 8, 5)
+        from: new Date(2022, 9, 3),
+        to: new Date(2022, 9, 5)
     }
 ];
 
-export const DISABLED_DATES_TIMES = [
-    {
-        resourceNames: ['resource-2', 'resource-1'],
-        title: 'Disabled date 1',
-        iconName: 'utility:apps',
-        from: new Date(2021, 8, 2, 10),
-        to: new Date(2021, 8, 3)
-    },
-    {
-        resourceNames: ['resource-3'],
-        title: 'Disabled date 2',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3)
-    },
-    {
-        resourceNames: ['resource-3'],
-        title: 'Disabled date 3',
-        from: new Date(2021, 7, 31),
-        to: new Date(2021, 8, 5)
-    }
-];
-
-export const MONTH_TIME_SPAN = {
-    unit: 'month',
-    span: 1
+export const RECURRING_EVENT = {
+    name: 'Recurrent event',
+    from: new Date(2022, 9, 4, 10),
+    to: new Date(2022, 9, 4, 11),
+    recurrence: 'daily',
+    recurrenceEndDate: new Date(2022, 9, 6, 10),
+    resourceNames: [RESOURCES[0].name]
 };
-
-export const TIME_SPANS = [
-    {
-        name: 'monthSpan',
-        unit: 'month',
-        span: 3,
-        label: '3 months',
-        headers: 'weekMonthAndYear'
-    },
-    {
-        unit: 'day',
-        name: 'daySpan',
-        span: 1,
-        label: '1 day',
-        headers: 'dayAndWeek',
-        customHeaders: [
-            {
-                unit: 'day',
-                span: 3,
-                label: 'dd'
-            },
-            {
-                unit: 'month',
-                span: 1,
-                label: 'mmmm'
-            }
-        ]
-    },
-    {
-        unit: 'hour',
-        name: 'hourSpan',
-        span: 6,
-        label: '6 hours',
-        headers: 'hourDayAndWeek'
-    },
-    {
-        unit: 'year',
-        name: 'yearSpan',
-        span: 2,
-        label: '2 years',
-        headers: 'quartersAndYear'
-    }
-];

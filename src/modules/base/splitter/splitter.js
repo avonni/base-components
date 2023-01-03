@@ -59,6 +59,7 @@ export default class Splitter extends LightningElement {
             '[data-element-id="slot-default"]'
         );
         let slotElements = slot.assignedElements();
+        const paneElements = [];
 
         if (slotElements.length > 0) {
             let amount = 1;
@@ -77,6 +78,7 @@ export default class Splitter extends LightningElement {
                 const nextElement = element.nextSibling;
 
                 if (element.localName.indexOf('-splitter-pane') > -1) {
+                    paneElements.push(element);
                     element.classList.add('container');
                     element.classList.add('slot-' + amount);
                     element.setAttribute('slot-id', amount);
@@ -300,13 +302,20 @@ export default class Splitter extends LightningElement {
                     isStatic = false;
                 }
             });
+
+            // Used by the scheduler to be able to get the width of the two panes
+            this.dispatchEvent(
+                new CustomEvent('privateslotchange', {
+                    detail: { paneElements }
+                })
+            );
         }
         // slot.remove();
 
         this.template
             .querySelectorAll('.splitter-orientation-horizontal')
             .forEach((element) => {
-                element.style.height = `${element.offsetHeight}px`;
+                element.style.height = '100%';
             });
 
         this.listenerOnMouseUp = this.onMouseUp.bind(this);
@@ -386,6 +395,10 @@ export default class Splitter extends LightningElement {
      * @param {Event} event
      */
     onMouseDown(event) {
+        if (event.button) {
+            return;
+        }
+
         let selectedSeparator = event.target;
 
         if (selectedSeparator.className.indexOf('icon') > -1) {

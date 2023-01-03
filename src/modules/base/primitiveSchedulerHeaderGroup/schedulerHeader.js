@@ -34,12 +34,14 @@ import { generateUUID } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
     dateTimeObjectFrom,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
     addToDate,
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
+import {
+    nextAllowedDay,
+    nextAllowedMonth,
+    nextAllowedTime
+} from 'c/schedulerUtils';
 
 /**
  * Represent one row of the scheduler header group.
@@ -336,9 +338,7 @@ export default class SchedulerHeader {
                 const end = addToDate(start, unit, span);
 
                 while (cellIndex < smallestCells.length) {
-                    start = DateTime.fromMillis(
-                        smallestCells[cellIndex].start
-                    );
+                    start = DateTime.fromMillis(smallestCells[cellIndex].start);
 
                     // Normalize the beginning of the week, because Luxon's week start on Monday
                     const normalizedStart =

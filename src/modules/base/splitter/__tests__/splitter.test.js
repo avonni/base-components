@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import Splitter from 'c/splitter';
+import Splitter from '../splitter';
 
 let element;
 describe('Splitter', () => {

@@ -435,12 +435,24 @@
             "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
+            "name": "c/primitiveSchedulerAgenda",
+            "path": "src/modules/base/primitiveSchedulerAgenda/primitiveSchedulerAgenda.js"
+        },
+        {
+            "name": "c/primitiveSchedulerCalendar",
+            "path": "src/modules/base/primitiveSchedulerCalendar/primitiveSchedulerCalendar.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
         {
             "name": "c/primitiveSchedulerHeaderGroup",
             "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
+        },
+        {
+            "name": "c/primitiveSchedulerTimeline",
+            "path": "src/modules/base/primitiveSchedulerTimeline/primitiveSchedulerTimeline.js"
         },
         {
             "name": "c/primitiveSelect",
@@ -509,6 +521,10 @@
         {
             "name": "c/scheduler",
             "path": "src/modules/base/scheduler/scheduler.js"
+        },
+        {
+            "name": "c/schedulerUtils",
+            "path": "src/modules/base/schedulerUtils/schedulerUtils.js"
         },
         {
             "name": "c/scopedNotification",

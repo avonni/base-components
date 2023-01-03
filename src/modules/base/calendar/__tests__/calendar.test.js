@@ -41,8 +41,8 @@ describe('Calendar', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        window.requestAnimationFrame.mockRestore();
         jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
@@ -160,7 +160,7 @@ describe('Calendar', () => {
             const day8 = element.shadowRoot.querySelector('td[data-date="8"]');
             const spy8 = jest.spyOn(day8, 'focus');
 
-            element.focusDate('05/08/2022');
+            element.focusDate(new Date(2022, 7, 8));
             jest.runAllTimers();
 
             expect(spy8).toHaveBeenCalled();

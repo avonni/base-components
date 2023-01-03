@@ -1093,35 +1093,32 @@ export default class Calendar extends LightningElement {
             this.displayDate = new Date(date);
 
             this.updateDateParameters();
-            this.dispatchChange();
+
+            /**
+             * The event fired when the selected date is changed.
+             *
+             * @event
+             * @public
+             * @name change
+             * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
+             * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
+             * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
+             */
+            this.dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        bounds: event.currentTarget.getBoundingClientRect(),
+                        value: this.normalizedValue,
+                        clickedDate: this._clickedDate
+                    }
+                })
+            );
+
             this.computeFocus(true);
         }
     }
 
     // EVENT HANDLERS //
-
-    /**
-     * Change event dispatcher.
-     */
-    dispatchChange() {
-        /**
-         * The event fired when the selected date is changed.
-         *
-         * @event
-         * @public
-         * @name change
-         * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
-         * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.normalizedValue,
-                    clickedDate: this._clickedDate
-                }
-            })
-        );
-    }
 
     /**
      * The event fired when the month is changed.

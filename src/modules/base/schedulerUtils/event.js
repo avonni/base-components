@@ -31,15 +31,17 @@
  */
 
 import {
+    deepCopy,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
     addToDate,
-    containsAllowedDateTimes,
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 import { DateTime, Interval } from 'c/luxon';
+import { SchedulerEventOccurrence } from './eventOccurrence';
+import { containsAllowedDateTimes } from './dateComputations';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -92,6 +94,8 @@ import {
  *
  * @param {DateTime} schedulerStart Starting date of the scheduler.
  *
+ * @param {string[]} selectedResources Array of selected resources name. If present, only the occurrences belonging to these resources will be created.
+ *
  * @param {SchedulerHeader} smallestHeader Required. Scheduler header with the smallest unit.
  *
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
@@ -114,6 +118,7 @@ export default class SchedulerEvent {
         this.disabled = props.disabled;
         this.schedulerEnd = props.schedulerEnd;
         this.schedulerStart = props.schedulerStart;
+        this.selectedResources = normalizeArray(props.selectedResources);
         this.smallestHeader = props.smallestHeader;
         this.from = props.from;
         this.to = props.to;
@@ -130,7 +135,6 @@ export default class SchedulerEvent {
         this.title = props.title;
 
         this.initOccurrences();
-        this._isCreated = true;
     }
 
     get allDay() {
@@ -138,8 +142,6 @@ export default class SchedulerEvent {
     }
     set allDay(value) {
         this._allDay = normalizeBoolean(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableDaysOfTheWeek() {
@@ -149,8 +151,6 @@ export default class SchedulerEvent {
         this._availableDaysOfTheWeek = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableMonths() {
@@ -160,8 +160,6 @@ export default class SchedulerEvent {
         this._availableMonths = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_MONTHS;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get availableTimeFrames() {
@@ -171,8 +169,6 @@ export default class SchedulerEvent {
         this._availableTimeFrames = normalizeArray(value).length
             ? normalizeArray(value)
             : DEFAULT_AVAILABLE_TIME_FRAMES;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get disabled() {
@@ -188,8 +184,6 @@ export default class SchedulerEvent {
     set from(value) {
         this._from =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get resourceNames() {
@@ -197,8 +191,6 @@ export default class SchedulerEvent {
     }
     set resourceNames(value) {
         this._resourceNames = JSON.parse(JSON.stringify(normalizeArray(value)));
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get name() {
@@ -209,8 +201,6 @@ export default class SchedulerEvent {
             value ||
             (!this.referenceLine && !this.disabled && 'new-event') ||
             'disabled';
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrence() {
@@ -221,8 +211,6 @@ export default class SchedulerEvent {
             (recurrenceObject) => recurrenceObject.name === value
         );
         this._recurrence = recurrence || undefined;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceAttributes() {
@@ -231,8 +219,6 @@ export default class SchedulerEvent {
     set recurrenceAttributes(value) {
         this._recurrenceAttributes =
             typeof value === 'object' ? value : undefined;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceCount() {
@@ -240,8 +226,6 @@ export default class SchedulerEvent {
     }
     set recurrenceCount(value) {
         this._recurrenceCount = Number.isInteger(value) ? value : Infinity;
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get recurrenceEndDate() {
@@ -249,8 +233,6 @@ export default class SchedulerEvent {
     }
     set recurrenceEndDate(value) {
         this._recurrenceEndDate = dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get referenceLine() {
@@ -258,8 +240,6 @@ export default class SchedulerEvent {
     }
     set referenceLine(value) {
         this._referenceLine = normalizeBoolean(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerEnd() {
@@ -268,8 +248,6 @@ export default class SchedulerEvent {
     set schedulerEnd(value) {
         this._schedulerEnd =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerStart() {
@@ -278,8 +256,6 @@ export default class SchedulerEvent {
     set schedulerStart(value) {
         this._schedulerStart =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     get theme() {
@@ -302,8 +278,6 @@ export default class SchedulerEvent {
     set to(value) {
         this._to =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-
-        if (this._isCreated) this.initOccurrences();
     }
 
     /**
@@ -330,10 +304,7 @@ export default class SchedulerEvent {
 
         if (this.allDay && to) {
             to = to.endOf('day');
-        } else if (
-            (this.allDay && this.from) ||
-            (this.from && to < this.from)
-        ) {
+        } else if (this.from && (this.allDay || to < this.from)) {
             to = this.from.endOf('day');
         }
 
@@ -396,25 +367,37 @@ export default class SchedulerEvent {
 
         if (containsAllowedTimes) {
             if (this.referenceLine) {
-                const occurrence = {
-                    from,
-                    to,
-                    key: `${this.title}-${this.occurrences.length}`,
-                    title: this.title
-                };
-                this.occurrences.push(occurrence);
+                const key = `${this.title}-${this.occurrences.length}`;
+                this.occurrences.push(
+                    new SchedulerEventOccurrence({
+                        eventKey: this.key,
+                        from,
+                        to,
+                        key,
+                        title: this.title
+                    })
+                );
             } else {
                 resourceNames.forEach((name) => {
-                    const occurrence = {
-                        from,
-                        key: `${this.name}-${name}-${from.ts}`,
-                        resourceNames: resourceNames,
-                        offsetTop: 0,
-                        resourceName: name,
-                        title: this.title,
-                        to: computedTo
-                    };
-                    this.occurrences.push(occurrence);
+                    if (
+                        !this.selectedResources.length ||
+                        this.selectedResources.includes(name)
+                    ) {
+                        this.occurrences.push(
+                            new SchedulerEventOccurrence({
+                                availableDaysOfTheWeek:
+                                    this.availableDaysOfTheWeek,
+                                availableMonths: this.availableMonths,
+                                eventKey: this.key,
+                                from,
+                                key: `${this.name}-${name}-${from.ts}`,
+                                resourceName: name,
+                                resourceNames,
+                                title: this.title,
+                                to: computedTo
+                            })
+                        );
+                    }
                 });
             }
         }
@@ -499,6 +482,9 @@ export default class SchedulerEvent {
                 end = start.set({ hours, minutes, seconds });
                 break;
         }
+        if (this.referenceLine && end.ts === start.ts) {
+            end = addToDate(end, 'minute', 1);
+        }
         return end;
     }
 
@@ -533,14 +519,10 @@ export default class SchedulerEvent {
                 break;
             }
             case 'weekly': {
-                const weekdays =
+                const normalizedWeekdays = normalizeArray(
                     attributes && attributes.weekdays
-                        ? JSON.parse(
-                              JSON.stringify(
-                                  normalizeArray(attributes.weekdays)
-                              )
-                          )
-                        : [];
+                );
+                const weekdays = deepCopy(normalizedWeekdays);
 
                 let weekdayIndex;
                 if (weekdays.length) {
@@ -552,7 +534,7 @@ export default class SchedulerEvent {
                     weekdays.sort();
 
                     // Set the starting week day
-                    let startingDate = dateTimeObjectFrom(from.ts);
+                    let startingDate = dateTimeObjectFrom(from);
                     while (weekdayIndex === undefined) {
                         for (let i = 0; i < weekdays.length; i++) {
                             date = startingDate.set({ weekday: weekdays[i] });
