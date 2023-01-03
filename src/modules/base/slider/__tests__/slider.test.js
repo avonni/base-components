@@ -198,8 +198,10 @@ describe('Slider', () => {
         element.value = 15;
 
         return Promise.resolve().then(() => {
-            expect(element.max).toEqual(10);
-            expect(element.value).toEqual(10);
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            expect(input.value).toBe('10');
         });
     });
 
@@ -210,8 +212,10 @@ describe('Slider', () => {
         element.value = 0;
 
         return Promise.resolve().then(() => {
-            expect(element.min).toEqual(10);
-            expect(element.value).toEqual(10);
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            expect(input.value).toBe('10');
         });
     });
 
@@ -940,24 +944,6 @@ describe('Slider', () => {
             expect(
                 element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeFalsy();
-        });
-    });
-
-    it('value = 0 && 0 < min', () => {
-        element.min = 10;
-        element.value = 0;
-
-        return Promise.resolve().then(() => {
-            expect(element.value).toEqual(10);
-        });
-    });
-
-    it('value = 20 && 20 > max', () => {
-        element.max = 10;
-        element.value = 20;
-
-        return Promise.resolve().then(() => {
-            expect(element.value).toEqual(10);
         });
     });
 

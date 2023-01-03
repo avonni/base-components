@@ -124,7 +124,7 @@ export default class Slider extends LightningElement {
     _unit = SLIDER_UNITS.default;
     _unitAttributes = {};
     _variant = LABEL_VARIANTS.default;
-    _value = [DEFAULT_VALUE];
+    _value = DEFAULT_VALUE;
 
     computedMax;
     computedMin = DEFAULT_MIN;
@@ -533,16 +533,20 @@ export default class Slider extends LightningElement {
         }
 
         if (!isNaN(Number(value))) {
-            this._value = [Number(value)];
+            this._value = Number(value);
+            this._computedValues = [this._value];
+        } else if (!value) {
+            this._value = DEFAULT_VALUE;
+            this._computedValues = [this._value];
         } else {
             const normalizedValue = normalizeArray(value, 'number');
             this._value = normalizedValue.length
                 ? normalizedValue
                 : [DEFAULT_VALUE];
             this._value.sort((a, b) => a - b);
+            this._computedValues = [...this._value];
         }
 
-        this._computedValues = [...this._value];
         if (this._connected) {
             this.scaleValues();
             this.capValues();
@@ -1089,7 +1093,6 @@ export default class Slider extends LightningElement {
                 Math.round(this._computedValues[index] / this._step) *
                 this._step;
         });
-        this.updatePublicValue();
     }
 
     /**
