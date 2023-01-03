@@ -288,6 +288,19 @@ export default {
                 category: 'Panels and Toolbar'
             }
         },
+        hideSidePanel: {
+            name: 'hide-side-panel',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
         hideToolbar: {
             name: 'hide-toolbar',
             control: {
@@ -517,6 +530,7 @@ export default {
         },
         eventsPalette: 'aurora',
         eventsTheme: 'default',
+        hideSidePanel: false,
         hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',

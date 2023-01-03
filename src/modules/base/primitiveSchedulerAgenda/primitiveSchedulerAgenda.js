@@ -31,7 +31,11 @@
  */
 
 import { api } from 'lwc';
-import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
+import {
+    addToDate,
+    dateTimeObjectFrom,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -43,6 +47,7 @@ import {
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
+import { classSet } from 'c/utils';
 
 const DEFAULT_SELECTED_DATE = new Date();
 
@@ -54,6 +59,7 @@ const DEFAULT_SELECTED_DATE = new Date();
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
+    _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
 
     _computedEvents = [];
@@ -111,6 +117,21 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
         }
+    }
+
+    /**
+     * If present, the side panel will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
     }
 
     /**
@@ -195,6 +216,19 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 value: res.name
             };
         });
+    }
+
+    /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get rightPanelClass() {
+        return classSet('slds-border_top slds-border_bottom slds-border_right')
+            .add({
+                'slds-border_left': this.hideSidePanel
+            })
+            .toString();
     }
 
     /*

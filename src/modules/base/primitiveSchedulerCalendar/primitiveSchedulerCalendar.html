@@ -45,6 +45,7 @@
         >
             <!-- Left panel -->
             <c-splitter-pane
+                if:false={hideSidePanel}
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable
@@ -84,7 +85,7 @@
             </c-splitter-pane>
 
             <c-splitter-pane
-                class="slds-border_top slds-border_bottom"
+                class={rightPanelClass}
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable

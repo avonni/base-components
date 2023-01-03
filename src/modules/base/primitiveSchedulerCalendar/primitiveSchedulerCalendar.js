@@ -37,7 +37,8 @@ import {
     dateTimeObjectFrom,
     deepCopy,
     getWeekNumber,
-    normalizeArray
+    normalizeArray,
+    normalizeBoolean
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
@@ -86,6 +87,7 @@ const SPLITTER_BAR_WIDTH = 12;
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
+    _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
     _selectedResources = [];
 
@@ -175,6 +177,21 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, the side panel will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
+    }
 
     /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -432,6 +449,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get rightPanelClass() {
+        return classSet('slds-border_top slds-border_bottom')
+            .add({
+                'slds-border_left': this.hideSidePanel
+            })
+            .toString();
+    }
+
+    /**
      * Computed CSS classes for the schedule wrapper.
      *
      * @type {string}
@@ -678,7 +708,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const grid = this.template.querySelector(
             '[data-element-id="div-cells-grid"]'
         );
-        if (!grid || !this.leftPanelContent) {
+        if (!grid) {
             return null;
         }
         const resizeObserver = new AvonniResizeObserver(grid, () => {
@@ -688,7 +718,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.updateCellWidth();
             this.updateVisibleWidth();
         });
-        resizeObserver.observe(this.leftPanelContent);
+        if (this.leftPanelContent) {
+            resizeObserver.observe(this.leftPanelContent);
+        }
         return resizeObserver;
     }
 
@@ -1131,7 +1163,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const loader = this.template.querySelector(
             '[data-element-id="div-loading-spinner"]'
         );
-        if (loader) {
+        if (loader && this.leftPanelContent) {
             loader.style.height = `${this.leftPanelContent.offsetWidth}px`;
         }
     }
@@ -1385,19 +1417,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
         );
 
-        if (wrapper && this._splitterPanes.length === 2) {
-            const leftPanel = this._splitterPanes[0];
-            const rightPanel = this._splitterPanes[1];
+        if (wrapper && this._splitterPanes.length) {
+            const leftPanelWidth = this.hideSidePanel
+                ? 0
+                : this._splitterPanes[0].offsetWidth;
+            const rightPanel = this.hideSidePanel
+                ? this._splitterPanes[0]
+                : this._splitterPanes[1];
             const scrollBarWidth =
                 rightPanel.offsetWidth - rightPanel.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
-                this.collapseDisabled && this.resizeColumnDisabled
+                (this.collapseDisabled && this.resizeColumnDisabled) ||
+                this.hideSidePanel
                     ? 0
                     : SPLITTER_BAR_WIDTH;
             const width =
                 wrapper.offsetWidth -
-                leftPanel.offsetWidth -
+                leftPanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
                 scrollBarWidth -

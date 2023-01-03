@@ -51,6 +51,7 @@ export const Scheduler = ({
     eventsPalette,
     eventsTheme,
     hiddenDisplays,
+    hideSidePanel,
     hideToolbar,
     isLoading,
     readOnly,
@@ -83,6 +84,7 @@ export const Scheduler = ({
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
     element.hiddenDisplays = hiddenDisplays;
+    element.hideSidePanel = hideSidePanel;
     element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;

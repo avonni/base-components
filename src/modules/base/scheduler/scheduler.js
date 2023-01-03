@@ -93,6 +93,7 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _hiddenDisplays = [];
+    _hideSidePanel = false;
     _hideToolbar = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -570,6 +571,21 @@ export default class Scheduler extends LightningElement {
         this._hiddenDisplays = displays.filter((display) => {
             return DISPLAYS.valid.includes(display);
         });
+    }
+
+    /**
+     * If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
     }
 
     /**

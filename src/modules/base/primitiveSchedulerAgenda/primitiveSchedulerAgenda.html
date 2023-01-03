@@ -37,6 +37,7 @@
         <c-splitter class="avonni-primitive-scheduler-calendar__inherit-height">
             <!-- Left panel -->
             <c-splitter-pane
+                if:false={hideSidePanel}
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable
@@ -76,7 +77,7 @@
 
             <!-- Agenda panel -->
             <c-splitter-pane
-                class="slds-border_top slds-border_bottom slds-border_right"
+                class={rightPanelClass}
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable
