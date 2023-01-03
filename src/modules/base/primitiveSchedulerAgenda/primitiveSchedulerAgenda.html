@@ -35,9 +35,9 @@
 <template>
     <div class="avonni-scheduler__wrapper">
         <c-splitter class="avonni-primitive-scheduler-calendar__inherit-height">
-            <!-- Left panel -->
+            <!-- Side panel: left position -->
             <c-splitter-pane
-                if:false={hideSidePanel}
+                if:true={showLeftPanel}
                 collapsible={allowCollapse}
                 resizable={allowResizeColumn}
                 scrollable
@@ -246,6 +246,46 @@
                             </div>
                         </div>
                     </template>
+                </div>
+            </c-splitter-pane>
+
+            <!-- Side panel: right position -->
+            <c-splitter-pane
+                if:true={showRightPanel}
+                collapsible={allowCollapse}
+                resizable={allowResizeColumn}
+                scrollable
+                size="310px"
+                data-element-id="avonni-splitter-pane-left"
+            >
+                <div
+                    class="slds-p-around_medium"
+                    data-element-id="div-panel-content"
+                >
+                    <c-calendar
+                        disabled-dates={navCalendarDisabledDates}
+                        value={selectedDate}
+                        data-element-id="avonni-calendar-left-panel"
+                        onchange={handleCalendarChange}
+                        onnavigate={handleLeftPanelCalendarNavigate}
+                    ></c-calendar>
+                    <div class="slds-m-top_medium">
+                        <template
+                            for:each={resourceOptions}
+                            for:item="resource"
+                        >
+                            <lightning-input
+                                key={resource.value}
+                                label={resource.label}
+                                checked={resource.selected}
+                                type="checkbox"
+                                value={resource.value}
+                                style={resource.style}
+                                data-element-id="lightning-input-resource"
+                                onchange={handleResourceToggle}
+                            ></lightning-input>
+                        </template>
+                    </div>
                 </div>
             </c-splitter-pane>
         </c-splitter>

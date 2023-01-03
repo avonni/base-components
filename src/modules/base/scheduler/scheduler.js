@@ -66,6 +66,7 @@ import {
     DEFAULT_SELECTED_TIME_SPAN,
     DISPLAYS,
     PALETTES,
+    SIDE_PANEL_POSITIONS,
     TIME_SPANS,
     VARIANTS
 } from './defaults';
@@ -105,6 +106,7 @@ export default class Scheduler extends LightningElement {
     _selectedDisplay = DISPLAYS.default;
     _selectedResources = [];
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpans = TIME_SPANS.default;
     _variant = VARIANTS.default;
@@ -851,6 +853,24 @@ export default class Scheduler extends LightningElement {
             this.initCurrentTimeSpan();
             this.computeVisibleIntervalLabel(this.start, this.start);
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**

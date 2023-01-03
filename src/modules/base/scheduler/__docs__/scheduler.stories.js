@@ -428,6 +428,18 @@ export default {
                 defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' }
             }
         },
+        sidePanelPosition: {
+            name: 'side-panel-position',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
         start: {
             control: {
                 type: 'date'
@@ -539,6 +551,7 @@ export default {
         resizeColumnDisabled: false,
         selectedDisplay: 'timeline',
         selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
+        sidePanelPosition: 'left',
         start: new Date(),
         timeSpans: [
             {

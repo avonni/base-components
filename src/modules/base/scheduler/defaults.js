@@ -244,6 +244,11 @@ const REFERENCE_LINE_VARIANTS = {
     default: 'default'
 };
 
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -269,6 +274,7 @@ export {
     PALETTES,
     RECURRENCES,
     REFERENCE_LINE_VARIANTS,
+    SIDE_PANEL_POSITIONS,
     TIME_SPANS,
     VARIANTS
 };

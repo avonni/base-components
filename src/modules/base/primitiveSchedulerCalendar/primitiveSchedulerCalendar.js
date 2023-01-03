@@ -38,7 +38,8 @@ import {
     deepCopy,
     getWeekNumber,
     normalizeArray,
-    normalizeBoolean
+    normalizeBoolean,
+    normalizeString
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
@@ -77,6 +78,10 @@ const MONTHS = {
     10: 'November',
     11: 'December'
 };
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
 const SPLITTER_BAR_WIDTH = 12;
 
 /**
@@ -89,7 +94,7 @@ const SPLITTER_BAR_WIDTH = 12;
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
-    _selectedResources = [];
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _centerDraggedEvent = false;
     _dayHeadersLoading = true;
@@ -218,6 +223,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.initLeftPanelCalendarDisabledDates();
             }
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**
@@ -484,6 +507,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get showHourHeaders() {
         return this.isDay || this.isWeek;
+    }
+
+    /**
+     * True if the left side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLeftPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the right side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showRightPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'right';
     }
 
     /**
@@ -1418,14 +1459,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         );
 
         if (wrapper && this._splitterPanes.length) {
-            const leftPanelWidth = this.hideSidePanel
+            const sidePanel =
+                this._sidePanelPosition === 'left'
+                    ? this._splitterPanes[0]
+                    : this._splitterPanes[1];
+            const sidePanelWidth = this.hideSidePanel
                 ? 0
-                : this._splitterPanes[0].offsetWidth;
-            const rightPanel = this.hideSidePanel
-                ? this._splitterPanes[0]
-                : this._splitterPanes[1];
-            const scrollBarWidth =
-                rightPanel.offsetWidth - rightPanel.clientWidth;
+                : sidePanel.offsetWidth;
+            const schedule =
+                this._sidePanelPosition === 'left'
+                    ? this._splitterPanes[1]
+                    : this._splitterPanes[0];
+            const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
                 (this.collapseDisabled && this.resizeColumnDisabled) ||
@@ -1434,7 +1479,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     : SPLITTER_BAR_WIDTH;
             const width =
                 wrapper.offsetWidth -
-                leftPanelWidth -
+                sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
                 scrollBarWidth -

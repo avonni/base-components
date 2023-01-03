@@ -34,7 +34,8 @@ import { api } from 'lwc';
 import {
     addToDate,
     dateTimeObjectFrom,
-    normalizeBoolean
+    normalizeBoolean,
+    normalizeString
 } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
@@ -50,6 +51,10 @@ import DayGroup from './dayGroup';
 import { classSet } from 'c/utils';
 
 const DEFAULT_SELECTED_DATE = new Date();
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
 
 /**
  * Main part of the scheduler, when the selected display is "agenda".
@@ -61,6 +66,7 @@ const DEFAULT_SELECTED_DATE = new Date();
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _computedEvents = [];
     computedGroups = [];
@@ -157,6 +163,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * Position of the side panel, relative to the schedule.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
+    }
+
+    /**
      * Object used to set the duration of the timeline. It should have two keys:
      * * unit (minute, hour, day, week, month or year)
      * * span (number).
@@ -229,6 +253,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 'slds-border_left': this.hideSidePanel
             })
             .toString();
+    }
+
+    /**
+     * True if the left side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLeftPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the right side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showRightPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'right';
     }
 
     /*
