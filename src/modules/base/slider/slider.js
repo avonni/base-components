@@ -1534,7 +1534,7 @@ export default class Slider extends LightningElement {
             spacer.offsetHeight - this._thumbRadius
         );
         const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
+            '[data-element-id="div-range"]'
         );
         wrapper.style.transformOrigin = `${
             (parentHeight + this._thumbRadius) / 2

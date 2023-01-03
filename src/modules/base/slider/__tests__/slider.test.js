@@ -401,7 +401,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.className).toBe(
                 'avonni-slider__container-horizontal-size_responsive'
@@ -424,7 +424,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-vertical-origin_responsive'
@@ -443,7 +443,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-vertical-origin_responsive'
@@ -456,7 +456,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_x-small'
@@ -469,7 +469,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_small'
@@ -482,7 +482,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_medium'
@@ -495,7 +495,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_large'
