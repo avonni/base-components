@@ -143,9 +143,47 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
     return interval.count(unit);
 };
 
+const formatDateFromStyle = (
+    date,
+    { showTime = false, dateStyle = 'medium', timeStyle = 'short' }
+) => {
+    const dateTime = dateTimeObjectFrom(date);
+    let formattedDate;
+
+    switch (dateStyle) {
+        case 'long':
+            formattedDate = dateTime.toFormat('DDD');
+            break;
+        case 'short':
+            formattedDate = dateTime.toFormat('D');
+            break;
+        default:
+            formattedDate = dateTime.toFormat('DD');
+            break;
+    }
+
+    if (showTime) {
+        formattedDate += ' ';
+        switch (timeStyle) {
+            case 'long':
+                formattedDate += dateTime.toFormat('ttt');
+                break;
+            case 'short':
+                formattedDate += dateTime.toFormat('t');
+                break;
+            default:
+                formattedDate += dateTime.toFormat('tt');
+                break;
+        }
+    }
+
+    return formattedDate;
+};
+
 export {
     addToDate,
     dateTimeObjectFrom,
+    formatDateFromStyle,
     getStartOfWeek,
     getWeekday,
     getWeekNumber,

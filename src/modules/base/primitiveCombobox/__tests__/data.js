@@ -5,8 +5,10 @@ const suboptions = [
         options: [
             {
                 label: 'Nakatomi Investments',
-                value: 'nakatomi',
-                avatarFallbackIconName: 'standard:account',
+                value: 14,
+                avatar: {
+                    fallbackIconName: 'standard:account'
+                },
                 secondaryText: 'Account - Chicago, IL'
             }
         ]
@@ -29,42 +31,45 @@ export const options = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
-        avatarFallbackIconName: 'standard:account',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        avatar: {
+            fallbackIconName: 'standard:account',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        },
         secondaryText: 'Account - Burlington, NC'
     },
     {
         label: 'Dickenson plc',
-        value: 'dickenson',
+        value: 152,
         secondaryText: 'Account - Lawrence, KS',
         groups: ['accounts']
     },
     {
         label: 'Edge Communication',
         value: 'edge',
-        avatarFallbackIconName: 'standard:account',
+        avatar: {
+            fallbackIconName: 'standard:account'
+        },
         secondaryText: 'Account - Singapore',
         groups: ['accounts']
     },
     {
         label: 'Tyrell Corp',
         value: 'tyrell',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: { fallbackIconName: 'standard:opportunity' },
         groups: ['opportunities'],
         options: suboptions
     },
     {
         label: 'United Oil SLA',
         value: 'oil-sla',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: { fallbackIconName: 'standard:opportunity' },
         secondaryText: 'Opportunity - Closed',
         groups: ['opportunities', 'closed']
     },
     {
         label: 'United Oil Standby Generators',
         value: 'united-oil',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: { fallbackIconName: 'standard:opportunity' },
         secondaryText: 'Opportunity - Closed Won',
         groups: ['opportunities', 'closed', 'won']
     }

@@ -1,6 +1,14 @@
 import { LightningElement } from 'lwc';
 
 export default class PillContainerCollapsible extends LightningElement {
+    actions = [
+        {
+            label: 'Delete',
+            name: 'delete',
+            iconName: 'utility:close'
+        }
+    ];
+
     items = [
         {
             label: 'First pill',

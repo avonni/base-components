@@ -266,14 +266,6 @@ SingleSelectionLabelHidden.args = {
     selection: 'single'
 };
 
-export const SingleSelectionLabelStacked = Template.bind({});
-SingleSelectionLabelStacked.args = {
-    label: 'Single selection rating',
-    value: 3,
-    variant: 'label-stacked',
-    selection: 'single'
-};
-
 export const MinMax = Template.bind({});
 MinMax.args = {
     label: 'Min of 3, max of 10',

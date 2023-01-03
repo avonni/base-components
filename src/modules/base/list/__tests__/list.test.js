@@ -869,6 +869,23 @@ describe('List', () => {
         });
     });
 
+    it('List: Itemclick event, keyboard actionclick do not dispatch itemclick', () => {
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+        element.items = ITEMS;
+        element.actions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            const keydown = new CustomEvent('keydown', { bubbles: true });
+            keydown.key = 'Enter';
+            button.dispatchEvent(keydown);
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
+
     // itemmousedown
     it('List: Itemmousedown event', () => {
         const handler = jest.fn();

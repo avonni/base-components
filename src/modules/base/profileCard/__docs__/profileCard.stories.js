@@ -36,48 +36,6 @@ import { NoActionsProfileCard } from '../__examples__/noActions';
 export default {
     title: 'Example/Profile Card',
     argTypes: {
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the header.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        subtitle: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The subtitle can include text, and is displayed under the title.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        backgroundSrc: {
-            name: 'background-src',
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the optional image.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
-        backgroundAlternativeText: {
-            name: 'background-alternative-text',
-            control: {
-                type: 'text'
-            },
-            description: "Value to set the image attribute 'alt'",
-            table: {
-                type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
         avatarAlternativeText: {
             name: 'avatar-alternative-text',
             control: {
@@ -144,6 +102,7 @@ export default {
             }
         },
         avatarSize: {
+            name: 'avatar-size',
             control: {
                 type: 'select'
             },
@@ -179,6 +138,48 @@ export default {
                 defaultValue: { summary: 'circle' },
                 type: { summary: 'string' },
                 category: 'Avatar'
+            }
+        },
+        backgroundAlternativeText: {
+            name: 'background-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: "Value to set the image attribute 'alt'",
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        backgroundSrc: {
+            name: 'background-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the optional image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        subtitle: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The subtitle can include text, and is displayed under the title.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header.',
+            table: {
+                type: { summary: 'string' }
             }
         }
     },

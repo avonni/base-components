@@ -1,6 +1,105 @@
 import { LightningElement } from 'lwc';
 
-const contact = [
+const LANGUAGES = [
+    {
+        label: 'Arabic',
+        value: 'arabic'
+    },
+    {
+        label: 'Bengali',
+        value: 'bengali'
+    },
+    {
+        label: 'Danish',
+        value: 'danish'
+    },
+    {
+        label: 'Dutch',
+        value: 'dutch'
+    },
+    {
+        label: 'English',
+        value: 'english'
+    },
+    {
+        label: 'Finnish',
+        value: 'finnish'
+    },
+    {
+        label: 'French',
+        value: 'french'
+    },
+    {
+        label: 'German',
+        value: 'german'
+    },
+    {
+        label: 'Hindi',
+        value: 'hindi'
+    },
+    {
+        label: 'Italian',
+        value: 'italian'
+    },
+    {
+        label: 'Japanese',
+        value: 'japanese'
+    },
+    {
+        label: 'Korean',
+        value: 'korean'
+    },
+    {
+        label: 'Mandarin',
+        value: 'mandarin'
+    },
+    {
+        label: 'Marathi',
+        value: 'marathi'
+    },
+    {
+        label: 'Portuguese',
+        value: 'portuguese'
+    },
+    {
+        label: 'Russian',
+        value: 'russian'
+    },
+    {
+        label: 'Spanish',
+        value: 'spanish'
+    },
+    {
+        label: 'Tamil',
+        value: 'tamil'
+    },
+    {
+        label: 'Telugu',
+        value: 'telugu'
+    },
+    {
+        label: 'Turkish',
+        value: 'turkish'
+    },
+    {
+        label: 'Ukrainian',
+        value: 'ukrainian'
+    },
+    {
+        label: 'Vietnamese',
+        value: 'vietnamese'
+    },
+    {
+        label: 'Wu Chinese',
+        value: 'wuChinese'
+    },
+    {
+        label: 'Yue Chinese',
+        value: 'yueChinese'
+    }
+];
+
+const CONTACT = [
     {
         label: 'Call',
         value: 'call',
@@ -24,18 +123,8 @@ const contact = [
         prefixIconName: 'standard:all'
     }
 ];
-const prices = [
-    {
-        label: 'Free',
-        value: 'free'
-    },
-    {
-        label: 'Paid',
-        value: 'paid'
-    }
-];
 
-const editions = [
+const EDITIONS = [
     {
         label: 'Essentials',
         value: 'essentials'
@@ -66,90 +155,102 @@ const editions = [
     }
 ];
 
-const languages = [
+const MENUS = [
     {
-        label: 'Dutch',
-        value: 'dutch'
+        name: 'contact',
+        iconName: 'utility:call',
+        accessKey: 'k',
+        alternativeText: 'Open contact type filter',
+        typeAttributes: {
+            items: CONTACT,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
+        tooltip: 'Type of contact',
+        buttonVariant: 'brand'
     },
     {
-        label: 'English',
-        value: 'english'
+        name: 'price',
+        disabled: true,
+        label: 'Price',
+        iconName: 'utility:currency',
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
     },
     {
-        label: 'Finnish',
-        value: 'finnish'
+        name: 'editions',
+        label: 'Editions',
+        iconName: 'utility:knowledge_base',
+        typeAttributes: {
+            items: EDITIONS,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     },
     {
-        label: 'French',
-        value: 'french'
+        name: 'languages',
+        label: 'Languages',
+        iconName: 'utility:world',
+        typeAttributes: {
+            enableInfiniteLoading: true,
+            dropdownLength: '5-items',
+            isMultiSelect: true
+        }
     },
     {
-        label: 'German',
-        value: 'german'
-    },
-    {
-        label: 'Danish',
-        value: 'danish'
-    },
-    {
-        label: 'Italian',
-        value: 'italian'
-    },
-    {
-        label: 'Japanese',
-        value: 'japanese'
-    },
-    {
-        label: 'Korean',
-        value: 'korean'
-    },
-    {
-        label: 'Portuguese',
-        value: 'portuguese'
+        name: 'publication',
+        label: 'Publication',
+        iconName: 'utility:date_input',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
     }
 ];
 
 export default class FilterMenuGroupButtonIcons extends LightningElement {
-    iconsMenus = [
-        {
-            name: 'contact',
-            accessKey: 'k',
-            alternativeText: 'Open contact type filter',
-            items: contact,
-            iconName: 'utility:call',
-            tooltip: 'Type of contact',
-            value: 'email'
-        },
-        {
-            name: 'prices',
-            disabled: true,
-            items: prices,
-            iconName: 'utility:currency',
-            dropdownWidth: 'large',
-            droddownNubbin: true,
-            hideSelectedItems: true
-        },
-        {
-            name: 'editions',
-            items: editions,
-            iconName: 'utility:knowledge_base',
-            buttonVariant: 'bare',
-            showSearchBox: true,
-            dropdownLength: '5-items'
-        },
-        {
-            name: 'ratings',
-            iconName: 'utility:favorite',
-            isLoading: true,
-            loadingStateAlternativeText: 'Waiting for the items to load...'
-        },
-        {
-            name: 'languages',
-            iconName: 'utility:world',
-            items: languages,
-            dropdownLength: '10-items',
-            isMultiSelect: true,
-            value: ['dutch', 'english']
-        }
-    ];
+    menus = MENUS;
+
+    value = {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    };
+
+    _loadMoreTimeout;
+
+    handleLoadMore(event) {
+        // Set the menu to loading state
+        const name = event.detail.name;
+        const menu = this.menus.find((m) => m.name === name);
+        menu.isLoading = true;
+        this.menus = [...this.menus];
+
+        clearTimeout(this._loadMoreTimeout);
+        this._loadMoreTimeout = setTimeout(() => {
+            // Add more items to the menu and remove the loading state
+            const previousItems = Array.isArray(menu.typeAttributes.items)
+                ? menu.typeAttributes.items
+                : [];
+            const newItems = LANGUAGES.slice(
+                previousItems.length,
+                previousItems.length + 10
+            );
+            menu.typeAttributes.items = [...previousItems, ...newItems];
+            menu.isLoading = false;
+
+            if (menu.typeAttributes.items.length === LANGUAGES.length) {
+                // If all the items have been loaded, remove the infinite load
+                menu.typeAttributes.enableInfiniteLoading = false;
+            }
+            this.menus = [...this.menus];
+        }, 1000);
+    }
 }

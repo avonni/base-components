@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    equal,
     normalizeBoolean,
     normalizeString,
     normalizeArray,
@@ -129,6 +130,7 @@ export default class Slider extends LightningElement {
     computedMin = DEFAULT_MIN;
     customLabels = [];
 
+    _changeTimeout;
     _computedValues = [DEFAULT_VALUE];
     _focusedInputIndex;
     _helpMessage;
@@ -223,7 +225,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, the slider thumbs can swap order.
+     * If present, the slider thumbs can't swap order.
      *
      * @type {Boolean}
      * @public
@@ -397,6 +399,9 @@ export default class Slider extends LightningElement {
     }
 
     set step(value) {
+        if (isNaN(Number(value))) {
+            return;
+        }
         this._step = Number(value);
         this._scalingFactor =
             0 < this._step && this._step < 1 ? 1 / this.step : DEFAULT_STEP;
@@ -519,6 +524,12 @@ export default class Slider extends LightningElement {
         return this._value;
     }
     set value(value) {
+        if (equal(value, this._value)) {
+            // Prevent the dragged thumb from being dropped
+            // if the given value is the same as the current value.
+            return;
+        }
+
         if (!isNaN(Number(value))) {
             this._value = [Number(value)];
         } else {
@@ -1080,29 +1091,6 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Update slider values and dispatch change event.
-     */
-    changeSlider() {
-        this._updateProxyInputAttributes('value');
-
-        /**
-         * The event fired when the slider value changed.
-         *
-         * @event
-         * @name change
-         * @param {number | number[]} value The value of the slider.
-         * @public
-         */
-        const selectedEvent = new CustomEvent('change', {
-            detail: {
-                value: this._value
-            }
-        });
-
-        this.dispatchEvent(selectedEvent);
-    }
-
-    /**
      * Displays and positions the custom labels for the slider
      */
     displayCustomLabels() {
@@ -1355,8 +1343,13 @@ export default class Slider extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!(this.showAnyTickMarks || this.isVerticalResponsive)) return null;
-        const resizeObserver = new AvonniResizeObserver(() => {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper || !(this.showAnyTickMarks || this.isVerticalResponsive)) {
+            return null;
+        }
+        return new AvonniResizeObserver(wrapper, () => {
             if (this.isVerticalResponsive) {
                 this.setVerticalResponsiveHeight();
             }
@@ -1367,10 +1360,6 @@ export default class Slider extends LightningElement {
                 this.displayCustomLabels();
             }
         });
-        resizeObserver.observe(
-            this.template.querySelector('[data-element-id="div-wrapper"]')
-        );
-        return resizeObserver;
     }
 
     /**
@@ -1418,7 +1407,28 @@ export default class Slider extends LightningElement {
         }
         this.setHitboxPosition(parseInt(event.target.dataset.index, 10));
         this.updatePublicValue();
-        this.changeSlider();
+        this._updateProxyInputAttributes('value');
+
+        // Make sure the change event is not fired many times,
+        // when the thumb is dragged
+        clearTimeout(this._changeTimeout);
+        this._changeTimeout = setTimeout(() => {
+            /**
+             * The event fired when the slider value changed.
+             *
+             * @event
+             * @name change
+             * @param {number | number[]} value The value of the slider.
+             * @public
+             */
+            const selectedEvent = new CustomEvent('change', {
+                detail: {
+                    value: this._value
+                }
+            });
+
+            this.dispatchEvent(selectedEvent);
+        }, 100);
     }
 
     /**

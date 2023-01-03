@@ -59,6 +59,10 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
+            "name": "c/barcode",
+            "path": "src/modules/base/barcode/barcode.js"
+        },
+        {
             "name": "c/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -619,6 +623,10 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
+            "name": "avonni/barcode",
+            "path": "src/modules/base/barcode/barcode.js"
+        },
+        {
             "name": "avonni/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -936,6 +944,7 @@
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
+        "avonni/barcode",
         "avonni/blockquote",
         "avonni/buttonDialog",
         "avonni/buttonIconDialog",

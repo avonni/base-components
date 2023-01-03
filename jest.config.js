@@ -12,6 +12,7 @@ module.exports = {
         '^c/(colorGradient)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(filterMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
@@ -26,6 +27,8 @@ module.exports = {
         '^c/(primitiveSchedulerTimeline)$':
             '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveTreeItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(resizeObserver)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(slider)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(splitter)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(splitterPane)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(verticalProgressIndicator)$':

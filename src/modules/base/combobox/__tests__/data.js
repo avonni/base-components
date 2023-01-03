@@ -6,7 +6,9 @@ const suboptions = [
             {
                 label: 'Nakatomi Investments',
                 value: 'nakatomi',
-                avatarFallbackIconName: 'standard:account',
+                avatar: {
+                    fallbackIconName: 'standard:account'
+                },
                 secondaryText: 'Account - Chicago, IL'
             }
         ]
@@ -29,7 +31,9 @@ export const options = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
-        avatarFallbackIconName: 'standard:account',
+        avatar: {
+            fallbackIconName: 'standard:account'
+        },
         secondaryText: 'Account - Burlington, NC',
         groups: ['accounts']
     },
@@ -42,28 +46,36 @@ export const options = [
     {
         label: 'Edge Communication',
         value: 'edge',
-        avatarFallbackIconName: 'standard:account',
+        avatar: {
+            fallbackIconName: 'standard:account'
+        },
         secondaryText: 'Account - Singapore',
         groups: ['accounts']
     },
     {
         label: 'Tyrell Corp',
         value: 'tyrell',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: {
+            fallbackIconName: 'standard:opportunity'
+        },
         groups: ['opportunities'],
         options: suboptions
     },
     {
         label: 'United Oil SLA',
         value: 'oil-sla',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: {
+            fallbackIconName: 'standard:opportunity'
+        },
         secondaryText: 'Opportunity - Closed',
         groups: ['opportunities', 'closed']
     },
     {
         label: 'United Oil Standby Generators',
         value: 'united-oil',
-        avatarFallbackIconName: 'standard:opportunity',
+        avatar: {
+            fallbackIconName: 'standard:opportunity'
+        },
         secondaryText: 'Opportunity - Closed Won',
         groups: ['opportunities', 'closed', 'won']
     }

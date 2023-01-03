@@ -126,6 +126,17 @@ export default {
                 category: 'Pen'
             }
         },
+        backgroundColor: {
+            control: {
+                type: 'color'
+            },
+            description: 'Defines the color of the background.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff00' },
+                category: 'Pen'
+            }
+        },
         color: {
             control: {
                 type: 'color'

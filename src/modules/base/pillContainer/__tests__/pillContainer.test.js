@@ -34,22 +34,41 @@ import { createElement } from 'lwc';
 import PillContainer from '../pillContainer';
 
 // Not tested:
-// Resize observer and auto count of hidden collapsed pills
+// Resize observer
+// Infinite scroll in the single-line collapsed popover
+// Auto scroll on drag in the single-line collapsed popover
+// Positioning of the action menu
+
+const ACTIONS = [
+    {
+        label: 'action 1',
+        name: 'action-1',
+        iconName: 'utility:user',
+        disabled: true
+    },
+    {
+        label: 'action 2',
+        name: 'action-2'
+    }
+];
 
 const ITEMS = [
     {
         href: '#first-pill',
         label: 'First pill',
+        name: 'first',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle'
         }
     },
     {
-        label: 'Second pill'
+        label: 'Second pill',
+        name: 'second'
     },
     {
         label: 'Third pill',
+        name: 'third',
         avatar: {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             initials: 'FP'
@@ -82,6 +101,8 @@ describe('Pill Container', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllMocks();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
@@ -89,6 +110,10 @@ describe('Pill Container', () => {
             is: PillContainer
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     it('Pill container: Default attributes', () => {
@@ -144,27 +169,188 @@ describe('Pill Container', () => {
 
     // is-collapsible and is-expanded
     it('Pill container: isCollapsible and isExpanded', () => {
-        let button = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-show-more"]'
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
         );
-        expect(button).toBeFalsy();
-        element.isCollapsible = true;
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
 
         return Promise.resolve()
             .then(() => {
-                button = element.shadowRoot.querySelector(
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                expect(button).toBeFalsy();
+
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-show-more"]'
                 );
                 expect(button).toBeTruthy();
 
-                button.click();
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(1);
+
+                element.isExpanded = true;
             })
             .then(() => {
-                expect(element.isExpanded).toBeTruthy();
-                button = element.shadowRoot.querySelector(
+                const button = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-show-more"]'
                 );
                 expect(button).toBeFalsy();
+
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(ITEMS.length);
+            });
+    });
+
+    it('Pill container: expand collapsed pills on button click', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(1);
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(ITEMS.length);
+            });
+    });
+
+    it('Pill container: open collapsed popover on single-line button click', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+        element.singleLine = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(1);
+
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
+                expect(popover).toBeFalsy();
+
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                expect(items).toHaveLength(1);
+
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
+                expect(popover).toBeTruthy();
+
+                const hiddenItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item-hidden"]'
+                );
+                expect(hiddenItems).toHaveLength(ITEMS.length - 1);
+            });
+    });
+
+    it('Pill container: close single-line collapsed popover on focusout', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+        element.singleLine = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
+                expect(popover).toBeTruthy();
+
+                popover.dispatchEvent(new CustomEvent('focusout'));
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
+                expect(popover).toBeFalsy();
             });
     });
 
@@ -195,9 +381,7 @@ describe('Pill Container', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).not.toContain('slds-pill_container');
-            expect(wrapper.classList).toContain('slds-listbox_selection-group');
-            expect(wrapper.classList).toContain('slds-is-expanded');
+            expect(wrapper.className).toBe('avonni-pill-container__wrapper');
 
             const ul = element.shadowRoot.querySelector(
                 '[data-element-id="ul"]'
@@ -205,7 +389,7 @@ describe('Pill Container', () => {
             expect(ul.classList).not.toContain('slds-listbox_inline');
 
             const li = element.shadowRoot.querySelector(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             expect(li.classList).not.toContain(
                 'avonni-pill-container__item_sortable-single-line'
@@ -222,11 +406,9 @@ describe('Pill Container', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).toContain('slds-pill_container');
-            expect(wrapper.classList).not.toContain(
-                'slds-listbox_selection-group'
+            expect(wrapper.className).toBe(
+                'avonni-pill-container__wrapper slds-pill_container slds-p-top_none slds-p-bottom_none'
             );
-            expect(wrapper.classList).not.toContain('slds-is-expanded');
 
             const ul = element.shadowRoot.querySelector(
                 '[data-element-id="ul"]'
@@ -234,7 +416,7 @@ describe('Pill Container', () => {
             expect(ul.classList).toContain('slds-listbox_inline');
 
             const li = element.shadowRoot.querySelector(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             expect(li.classList).toContain(
                 'avonni-pill-container__item_sortable-single-line'
@@ -256,7 +438,7 @@ describe('Pill Container', () => {
             );
 
             const li = element.shadowRoot.querySelector(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             expect(li.classList).not.toContain('slds-is-relative');
             expect(li.classList).not.toContain(
@@ -278,7 +460,7 @@ describe('Pill Container', () => {
             );
 
             const li = element.shadowRoot.querySelector(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             expect(li.classList).toContain('slds-is-relative');
             expect(li.classList).not.toContain(
@@ -349,24 +531,6 @@ describe('Pill Container', () => {
         });
     });
 
-    it('Pill container: focus() method is called on "show more" click', () => {
-        element.items = ITEMS;
-        element.isCollapsible = true;
-
-        return Promise.resolve().then(() => {
-            const showMore = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-show-more"]'
-            );
-            const pills = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-primitive-pill"]'
-            );
-            const focusSpy = jest.spyOn(pills[0], 'focusLink');
-
-            showMore.click();
-            expect(focusSpy).toHaveBeenCalled();
-        });
-    });
-
     it('Pill container: focused item changes on keyboard navigation', () => {
         element.items = ITEMS;
         const keyDown = new CustomEvent('keydown');
@@ -417,13 +581,7 @@ describe('Pill Container', () => {
     // actionclick
     it('Pill container: actionclick event', () => {
         element.items = ITEMS;
-        element.actions = [
-            {
-                label: 'action 1',
-                name: 'action-1',
-                iconName: 'utility:user'
-            }
-        ];
+        element.actions = [ACTIONS[0]];
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -451,6 +609,153 @@ describe('Pill Container', () => {
         });
     });
 
+    it('Pill container: actionclick event through action menu', () => {
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Open action menu
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(actionMenu).toBeFalsy();
+
+                const pills = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-pill"]'
+                );
+                pills[2].dispatchEvent(
+                    new CustomEvent('openactionmenu', {
+                        detail: {
+                            targetName: ITEMS[2].name,
+                            bounds: { x: 12, y: 44 }
+                        },
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                // Select an action
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                actionMenu.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: { name: ACTIONS[1].name }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalled();
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.index).toBe(2);
+                expect(detail.targetName).toBe(ITEMS[2].name);
+                expect(detail.name).toBe(ACTIONS[1].name);
+            });
+    });
+
+    it('Pill container: focus pill on action menu close', () => {
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        let spy;
+
+        return Promise.resolve()
+            .then(() => {
+                // Open action menu
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(actionMenu).toBeFalsy();
+
+                const pills = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-pill"]'
+                );
+                pills[2].dispatchEvent(
+                    new CustomEvent('openactionmenu', {
+                        detail: {
+                            targetName: ITEMS[2].name,
+                            bounds: { x: 12, y: 44 }
+                        },
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                // Close action menu, pill should be focused
+                jest.runAllTimers();
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(actionMenu).toBeTruthy();
+                expect(actionMenu.items).toEqual(ACTIONS);
+
+                const pills = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-pill"]'
+                );
+                spy = jest.spyOn(pills[2], 'focus');
+                actionMenu.dispatchEvent(new CustomEvent('close'));
+            })
+            .then(() => {
+                expect(spy).toHaveBeenCalled();
+            });
+    });
+
+    it('Pill container: open action menu from single-line collapsed popover', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+        element.singleLine = true;
+        element.actions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const hiddenPills = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-pill-hidden"]'
+                );
+                hiddenPills[1].dispatchEvent(
+                    new CustomEvent('openactionmenu', {
+                        detail: {
+                            targetName: ITEMS[2].name,
+                            bounds: { x: 12, y: 44 }
+                        },
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                jest.runAllTimers();
+                const actionMenu = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
+                );
+                expect(actionMenu).toBeTruthy();
+                expect(actionMenu.items).toEqual(ACTIONS);
+            });
+    });
+
     // blur
     it('Pill container: blur event', () => {
         element.items = ITEMS;
@@ -473,6 +778,43 @@ describe('Pill Container', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
+    });
+
+    // expand
+    it('Pill container: expand event', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        element.items = ITEMS;
+
+        const handler = jest.fn();
+        element.addEventListener('expand', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
     });
 
     // focus
@@ -503,14 +845,13 @@ describe('Pill Container', () => {
     it('Pill container: reorder event, to the right', () => {
         element.items = ITEMS;
         element.sortable = true;
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             items[0].dispatchEvent(new MouseEvent('mousedown'));
             jest.runAllTimers();
@@ -537,7 +878,7 @@ describe('Pill Container', () => {
 
             expect(0).toHavePosition(2);
             expect(items[1].classList).toContain(
-                'avonni-pill-container__pill_right-border'
+                'avonni-pill-container__pill_after-border'
             );
 
             element.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
@@ -552,7 +893,7 @@ describe('Pill Container', () => {
                 'avonni-pill-container__list_dragging'
             );
             expect(items[1].classList).not.toContain(
-                'avonni-pill-container__pill_right-border'
+                'avonni-pill-container__pill_after-border'
             );
         });
     });
@@ -560,14 +901,13 @@ describe('Pill Container', () => {
     it('Pill container: reorder event, to the left', () => {
         element.items = ITEMS;
         element.sortable = true;
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="li"]'
+                '[data-element-id="li-item"]'
             );
             items[2].dispatchEvent(new MouseEvent('mousedown'));
             jest.runAllTimers();
@@ -594,7 +934,7 @@ describe('Pill Container', () => {
 
             expect(2).toHavePosition(2);
             expect(items[1].classList).toContain(
-                'avonni-pill-container__pill_left-border'
+                'avonni-pill-container__pill_before-border'
             );
 
             element.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
@@ -610,7 +950,6 @@ describe('Pill Container', () => {
     it('Pill container: reorder event, using keyboard', () => {
         element.items = ITEMS;
         element.sortable = true;
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
@@ -619,7 +958,7 @@ describe('Pill Container', () => {
         return Promise.resolve()
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li"]'
+                    '[data-element-id="li-item"]'
                 );
                 const ul = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
@@ -640,15 +979,15 @@ describe('Pill Container', () => {
                 keyDown.keyCode = 39;
                 ul.dispatchEvent(keyDown);
                 expect(items[1].classList).toContain(
-                    'avonni-pill-container__pill_right-border'
+                    'avonni-pill-container__pill_after-border'
                 );
                 ul.dispatchEvent(keyDown);
                 expect(items[2].classList).toContain(
-                    'avonni-pill-container__pill_right-border'
+                    'avonni-pill-container__pill_after-border'
                 );
                 ul.dispatchEvent(keyDown);
                 expect(items[2].classList).toContain(
-                    'avonni-pill-container__pill_right-border'
+                    'avonni-pill-container__pill_after-border'
                 );
                 expect(0).toHavePosition(3);
 
@@ -664,7 +1003,7 @@ describe('Pill Container', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li"]'
+                    '[data-element-id="li-item"]'
                 );
                 const ul = element.shadowRoot.querySelector(
                     '[data-element-id="ul"]'
@@ -678,15 +1017,15 @@ describe('Pill Container', () => {
                 keyDown.keyCode = 37;
                 ul.dispatchEvent(keyDown);
                 expect(items[1].classList).toContain(
-                    'avonni-pill-container__pill_left-border'
+                    'avonni-pill-container__pill_before-border'
                 );
                 ul.dispatchEvent(keyDown);
                 expect(items[0].classList).toContain(
-                    'avonni-pill-container__pill_left-border'
+                    'avonni-pill-container__pill_before-border'
                 );
                 ul.dispatchEvent(keyDown);
                 expect(items[0].classList).toContain(
-                    'avonni-pill-container__pill_left-border'
+                    'avonni-pill-container__pill_before-border'
                 );
                 expect(2).toHavePosition(1);
 
@@ -705,7 +1044,6 @@ describe('Pill Container', () => {
     it('Pill container: reorder event, cancel movement using keyboard', () => {
         element.items = ITEMS;
         element.sortable = true;
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
@@ -729,5 +1067,151 @@ describe('Pill Container', () => {
             ul.dispatchEvent(keyDown);
             expect(handler).not.toHaveBeenCalled();
         });
+    });
+
+    it('Pill container: reorder event, from single-line collapsed popover to visible pill', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+
+        element.items = ITEMS;
+        element.sortable = true;
+        element.singleLine = true;
+
+        const handler = jest.fn();
+        element.addEventListener('reorder', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Collapse the items
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                // Open the popover
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                // Start dragging
+                const hiddenItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item-hidden"]'
+                );
+                hiddenItems[0].dispatchEvent(new CustomEvent('mousedown'));
+                jest.runAllTimers();
+
+                // Move at the beginning of the list
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                jest.spyOn(
+                    items[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 3, width: 50, top: 120, height: 20 };
+                });
+                const mouseMove = new CustomEvent('mousemove');
+                mouseMove.clientX = 12;
+                items[0].dispatchEvent(mouseMove);
+
+                expect(items[0].classList).toContain(
+                    'avonni-pill-container__pill_before-border'
+                );
+                items[0].dispatchEvent(
+                    new CustomEvent('mouseup', { bubbles: true })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.items).toEqual([ITEMS[1], ITEMS[0], ITEMS[2]]);
+            });
+    });
+
+    it('Pill container: reorder event, from visible pill to single-line collapsed popover', () => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+
+        element.items = ITEMS;
+        element.sortable = true;
+        element.singleLine = true;
+
+        const handler = jest.fn();
+        element.addEventListener('reorder', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Collapse the items
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                element.isCollapsible = true;
+            })
+            .then(() => {
+                // Start dragging
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
+                items.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 50
+                    );
+                });
+                items[0].dispatchEvent(new CustomEvent('mousedown'));
+                jest.runAllTimers();
+
+                // Hover the button to open the popover
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-show-more"]'
+                );
+                button.dispatchEvent(new CustomEvent('mouseenter'));
+                jest.runAllTimers();
+            })
+            .then(() => {
+                // Move at the bottom of the first hidden item
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-popover"]'
+                );
+                expect(popover).toBeTruthy();
+
+                const hiddenItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item-hidden"]'
+                );
+                jest.spyOn(
+                    hiddenItems[0],
+                    'getBoundingClientRect'
+                ).mockImplementation(() => {
+                    return { left: 3, width: 50, top: 120, height: 20 };
+                });
+                const mouseMove = new CustomEvent('mousemove');
+                mouseMove.clientY = 135;
+                hiddenItems[0].dispatchEvent(mouseMove);
+                expect(hiddenItems[0].classList).toContain(
+                    'avonni-pill-container__pill_after-border'
+                );
+
+                hiddenItems[0].dispatchEvent(
+                    new CustomEvent('mouseup', { bubbles: true })
+                );
+                expect(handler).toHaveBeenCalledTimes(1);
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.items).toEqual([ITEMS[1], ITEMS[0], ITEMS[2]]);
+            });
     });
 });

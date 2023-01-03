@@ -12,6 +12,21 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-blockquote-sizing-height
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-sizing-width
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-sizing-overflow
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-blockquote-color-border
  * @default #f2f2f2
  * @type color

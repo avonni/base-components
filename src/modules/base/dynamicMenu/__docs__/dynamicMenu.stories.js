@@ -97,7 +97,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, hide the check mark.',
+            description: 'If present, hide the check mark when selected.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

@@ -81,6 +81,7 @@ export {
     dateTimeObjectFrom,
     getStartOfWeek,
     getWeekday,
+    formatDateFromStyle,
     getWeekNumber,
     numberOfUnitsBetweenDates,
     removeFromDate

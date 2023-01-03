@@ -38,7 +38,7 @@ import {
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
-import TIME_ZONES from './timeZones.js';
+import { TIME_ZONES } from './timeZones';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 

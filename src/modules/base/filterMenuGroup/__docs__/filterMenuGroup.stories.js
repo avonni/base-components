@@ -67,6 +67,17 @@ export default {
                 defaultValue: { summary: 'Reset' }
             }
         },
+        hideApplyResetButtons: {
+            name: 'hide-apply-reset-buttons',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideSelectedItems: {
             name: 'hide-selected-items',
             control: {
@@ -76,6 +87,16 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
+            }
+        },
+        value: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Value of the menus. The object follows the structure { menuName: menuValue }.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         variant: {
@@ -93,6 +114,7 @@ export default {
     },
     args: {
         applyButtonLabel: 'Apply',
+        hideApplyResetButtons: false,
         hideSelectedItems: false,
         resetButtonLabel: 'Reset',
         variant: 'horizontal'
@@ -108,11 +130,25 @@ Base.args = {
 
 export const ButtonIcons = Template.bind({});
 ButtonIcons.args = {
-    menus: ICONS_MENUS
+    menus: ICONS_MENUS,
+    applyButtonLabel: 'Save',
+    resetButtonLabel: 'Clear',
+    value: {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    }
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
     menus: MENUS,
-    variant: 'vertical'
+    variant: 'vertical',
+    value: {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    }
 };

@@ -172,6 +172,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-alert-content-horizontal-alignment
+ * @default center
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-alert-font-weight
  * @default 400
  * @type font

@@ -16,6 +16,17 @@ const ACTIONS = [
     }
 ];
 
+const generateItems = (total) => {
+    const items = [];
+    for (let i = 0; i < total; i++) {
+        items.push({
+            label: `Item ${i}`,
+            name: `item-${i}`
+        });
+    }
+    return items;
+};
+
 const ITEMS = [
     {
         label: 'First pill',
@@ -72,4 +83,4 @@ const ITEMS = [
     }
 ];
 
-export { ACTIONS, ITEMS };
+export { ACTIONS, ITEMS, generateItems };

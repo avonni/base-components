@@ -61,6 +61,33 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-spacing-block-start
+ * @default 0rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-spacing-block-end
+ * @default 0rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default-focus
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-color-background
  * @default #f3f2f2
  * @type color
@@ -109,18 +136,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-expandable-section-base-header-spacing-block-start
- * @default 0rem
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-base-header-spacing-block-end
- * @default 0rem
- * @type dimension
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-spacing-block-start
  * @default 0.75rem
  * @type dimension
@@ -130,21 +145,6 @@
  * @name --avonni-expandable-section-shaded-header-spacing-block-end
  * @default 0.75rem
  * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-base-header-icon-color-foreground-default
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-base-header-icon-color-foreground-default-hover
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-expandable-section-base-header-icon-color-foreground-default-focus
- * @type color
  */
 /**
  * @memberof stylingHooks
