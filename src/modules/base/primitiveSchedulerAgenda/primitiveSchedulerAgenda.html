@@ -55,7 +55,10 @@
                         onchange={handleCalendarChange}
                         onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
-                    <div class="slds-m-top_medium">
+                    <div
+                        if:false={selectedResourcesReadOnly}
+                        class="slds-m-top_medium"
+                    >
                         <template
                             for:each={resourceOptions}
                             for:item="resource"
@@ -269,7 +272,10 @@
                         onchange={handleCalendarChange}
                         onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
-                    <div class="slds-m-top_medium">
+                    <div
+                        if:false={selectedResourcesReadOnly}
+                        class="slds-m-top_medium"
+                    >
                         <template
                             for:each={resourceOptions}
                             for:item="resource"

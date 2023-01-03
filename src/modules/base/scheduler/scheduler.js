@@ -105,6 +105,7 @@ export default class Scheduler extends LightningElement {
     _resources = [];
     _selectedDisplay = DISPLAYS.default;
     _selectedResources = [];
+    _selectedResourcesReadOnly = false;
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
@@ -835,6 +836,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * If present, it is not possible for the user to select or unselect resources.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get selectedResourcesReadOnly() {
+        return this._selectedResourcesReadOnly;
+    }
+    set selectedResourcesReadOnly(value) {
+        this._selectedResourcesReadOnly = normalizeBoolean(value);
+    }
+
+    /**
      * Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.
      *
      * @type {string}
@@ -1199,6 +1215,15 @@ export default class Scheduler extends LightningElement {
             this.recurrentEditModes.length > 1 &&
             this.selection.event.recurrence
         );
+    }
+
+    /**
+     * True if the resource filter should be shown in the toolbar.
+     *
+     * @type {boolean}
+     */
+    get showResourceFilter() {
+        return this.isTimeline && !this.selectedResourcesReadOnly;
     }
 
     /**

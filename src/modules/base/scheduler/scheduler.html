@@ -166,7 +166,7 @@
         </c-button-menu>
 
         <c-filter-menu
-            if:true={isTimeline}
+            if:true={showResourceFilter}
             class="slds-m-left_small"
             alternative-text="Select resources"
             dropdown-alignment="right"
@@ -247,6 +247,7 @@
             resources={computedResources}
             selected-date={selectedDate}
             selected-resources={selectedResources}
+            selected-resources-read-only={selectedResourcesReadOnly}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
             zoom-to-fit={zoomToFit}
@@ -280,6 +281,7 @@
             resources={computedResources}
             selected-date={selectedDate}
             selected-resources={selectedResources}
+            selected-resources-read-only={selectedResourcesReadOnly}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
             data-element-id="avonni-primitive-scheduler-agenda"

@@ -416,6 +416,18 @@ export default {
                 type: { summary: 'string[]' }
             }
         },
+        selectedResourcesReadOnly: {
+            name: 'selected-resources-read-only',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, it is not possible for the user to select or unselect resources.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         selectedTimeSpan: {
             name: 'selected-time-span',
             control: {
@@ -550,6 +562,7 @@ export default {
         readOnly: false,
         resizeColumnDisabled: false,
         selectedDisplay: 'timeline',
+        selectedResourcesReadOnly: false,
         selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
         sidePanelPosition: 'left',
         start: new Date(),

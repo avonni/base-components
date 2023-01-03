@@ -61,6 +61,7 @@ export const Scheduler = ({
     resources,
     selectedDisplay,
     selectedResources,
+    selectedResourcesReadOnly,
     selectedTimeSpan,
     sidePanelPosition,
     start,
@@ -95,6 +96,7 @@ export const Scheduler = ({
     element.resources = resources;
     element.selectedDisplay = selectedDisplay;
     element.selectedResources = selectedResources;
+    element.selectedResourcesReadOnly = selectedResourcesReadOnly;
     element.selectedTimeSpan = selectedTimeSpan;
     element.sidePanelPosition = sidePanelPosition;
     element.start = start;
