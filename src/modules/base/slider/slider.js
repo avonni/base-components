@@ -180,9 +180,7 @@ export default class Slider extends LightningElement {
             this._resizeObserver = this.initResizeObserver();
         }
         if (!this._rendered || this._domModified) {
-            if (this.isVerticalResponsive) {
-                this.setVerticalResponsiveHeight();
-            }
+            this.setVerticalResponsiveHeight();
             if (this.showTrack) {
                 this.updateTrack(this._computedValues);
             } else {
@@ -1355,9 +1353,7 @@ export default class Slider extends LightningElement {
             return null;
         }
         return new AvonniResizeObserver(wrapper, () => {
-            if (this.isVerticalResponsive) {
-                this.setVerticalResponsiveHeight();
-            }
+            this.setVerticalResponsiveHeight();
             if (this.showAnyTickMarks) {
                 this.drawRuler(true);
             }
@@ -1529,6 +1525,14 @@ export default class Slider extends LightningElement {
      * @param {Event} event
      */
     setVerticalResponsiveHeight() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-range"]'
+        );
+        if (!this.isVerticalResponsive) {
+            wrapper.style.transformOrigin = '';
+            wrapper.style.width = '';
+            return;
+        }
         this.template.host.style.height = '100%';
         this.template.host.style.display = 'block';
         const spacer = this.template.querySelector(
@@ -1537,9 +1541,6 @@ export default class Slider extends LightningElement {
         const parentHeight = Math.max(
             -this._thumbRadius,
             spacer.offsetHeight - this._thumbRadius
-        );
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-range"]'
         );
         wrapper.style.transformOrigin = `${
             (parentHeight + this._thumbRadius) / 2
