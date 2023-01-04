@@ -96,6 +96,7 @@ export default class Scheduler extends LightningElement {
     _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsTheme = EVENTS_THEMES.default;
     _hiddenDisplays = [];
+    _hideResourcesFilter = false;
     _hideSidePanel = false;
     _hideToolbar = false;
     _isLoading = false;
@@ -107,7 +108,6 @@ export default class Scheduler extends LightningElement {
     _resources = [];
     _selectedDisplay = DISPLAYS.default;
     _selectedResources = [];
-    _selectedResourcesReadOnly = false;
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
@@ -609,6 +609,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.
      *
      * @type {boolean}
@@ -865,21 +880,6 @@ export default class Scheduler extends LightningElement {
     }
     set selectedResources(value) {
         this._selectedResources = normalizeArray(value, 'string');
-    }
-
-    /**
-     * If present, it is not possible for the user to select or unselect resources.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get selectedResourcesReadOnly() {
-        return this._selectedResourcesReadOnly;
-    }
-    set selectedResourcesReadOnly(value) {
-        this._selectedResourcesReadOnly = normalizeBoolean(value);
     }
 
     /**
@@ -1255,7 +1255,7 @@ export default class Scheduler extends LightningElement {
      * @type {boolean}
      */
     get showResourceFilter() {
-        return this.isTimeline && !this.selectedResourcesReadOnly;
+        return this.isTimeline && !this.hideResourcesFilter;
     }
 
     /**

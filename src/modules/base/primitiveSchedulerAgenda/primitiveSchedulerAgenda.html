@@ -56,7 +56,7 @@
                         onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
                     <div
-                        if:false={selectedResourcesReadOnly}
+                        if:false={hideResourcesFilter}
                         class="slds-m-top_medium"
                     >
                         <template
@@ -272,7 +272,7 @@
                         onnavigate={handleLeftPanelCalendarNavigate}
                     ></c-calendar>
                     <div
-                        if:false={selectedResourcesReadOnly}
+                        if:false={hideResourcesFilter}
                         class="slds-m-top_medium"
                     >
                         <template

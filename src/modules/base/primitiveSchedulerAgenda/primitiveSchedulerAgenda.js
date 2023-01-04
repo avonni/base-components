@@ -64,9 +64,9 @@ const SIDE_PANEL_POSITIONS = {
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
+    _hideResourcesFilter = false;
     _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
-    _selectedResourcesReadOnly = false;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _computedEvents = [];
@@ -127,6 +127,21 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the side panel will be hidden.
      *
      * @type {boolean}
@@ -161,21 +176,6 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.setStartToBeginningOfUnit();
             this.initLeftPanelCalendarDisabledDates();
         }
-    }
-
-    /**
-     * If present, it is not possible for the user to select or unselect resources.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get selectedResourcesReadOnly() {
-        return this._selectedResourcesReadOnly;
-    }
-    set selectedResourcesReadOnly(value) {
-        this._selectedResourcesReadOnly = normalizeBoolean(value);
     }
 
     /**

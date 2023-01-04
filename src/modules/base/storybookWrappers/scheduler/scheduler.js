@@ -18,6 +18,7 @@ export default class Scheduler extends LightningElement {
     @api eventsDisplayFields;
     @api eventsTheme;
     @api hiddenDisplays;
+    @api hideResourcesFilter;
     @api hideSidePanel;
     @api hideToolbar;
     @api isLoading;
@@ -29,7 +30,6 @@ export default class Scheduler extends LightningElement {
     @api resources;
     @api selectedDisplay;
     @api selectedResources;
-    @api selectedResourcesReadOnly;
     @api selectedTimeSpan;
     @api sidePanelPosition;
     @api start;
