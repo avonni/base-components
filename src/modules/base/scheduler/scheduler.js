@@ -1729,10 +1729,11 @@ export default class Scheduler extends LightningElement {
                 break;
             case 'Standard.Scheduler.AddEvent':
                 this.showEditDialog = true;
+                this.selection = this.schedule.newEvent(this.selection);
                 this.computedEvents.push(this.selection.event);
                 break;
             default:
-                this.schedule.cleanSelection();
+                this.schedule.cleanSelection(true);
                 break;
         }
     }
@@ -1891,13 +1892,12 @@ export default class Scheduler extends LightningElement {
      */
     handleEmptySpotContextMenu(event) {
         if (!this.computedContextMenuEmptySpot.length) {
-            this.schedule.cleanSelection(true);
             return;
         }
         this.hideAllPopovers();
         this.contextMenuActions = [...this.computedContextMenuEmptySpot];
         this.showContextMenu = true;
-        this.selection = event.detail.selection;
+        this.selection = event.detail;
     }
 
     /**

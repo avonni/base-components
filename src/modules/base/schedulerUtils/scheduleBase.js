@@ -797,21 +797,21 @@ export class ScheduleBase extends LightningElement {
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
 
-        const x = event.clientX;
-        const y = event.clientY;
-        this.newEvent({ x, y });
-
         /**
          * The event fired when the context menu is opened on an empty spot of the schedule.
          *
          * @event
          * @name emptyspotcontextmenu
-         * @param {object} selection Information on the newly created event.
+         * @param {number} x Position of the cursor on the X axis.
+         * @param {number} y Position of the cursor on the Y axis.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('emptyspotcontextmenu', {
-                detail: { selection: this._eventData.selection }
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY
+                }
             })
         );
     }
