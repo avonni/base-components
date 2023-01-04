@@ -1215,6 +1215,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Type attributes of the toolbar resource filter, visible in the timeline display.
+     *
+     * @type {object}
+     */
+    get resourceFilterTypeAttributes() {
+        return {
+            allowSearch: true,
+            isMultiSelect: true,
+            items: this.resourceOptions
+        };
+    }
+
+    /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
      * @type {object[]}

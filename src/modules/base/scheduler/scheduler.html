@@ -172,11 +172,9 @@
             dropdown-alignment="right"
             hide-apply-reset-buttons
             hide-selected-items
-            is-multi-select
             icon-name="utility:filterList"
-            items={resourceOptions}
-            show-search-box
             title="Select resources"
+            type-attributes={resourceFilterTypeAttributes}
             value={selectedResources}
             data-element-id="avonni-filter-menu-resources"
             onselect={handleToolbarResourceSelect}
