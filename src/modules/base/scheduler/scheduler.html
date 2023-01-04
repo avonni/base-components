@@ -311,41 +311,76 @@
     <!-- Event detail popover -->
     <div
         if:true={showDetailPopover}
-        class="
-            avonni-scheduler__event-detail-popover
-            slds-is-fixed slds-popover slds-dropdown slds-dropdown_left
-        "
+        class="slds-is-fixed slds-popover slds-popover_medium"
         role="tooltip"
         aria-live="polite"
         data-element-id="div-detail-popover"
     >
-        <div class="slds-popover__body">
-            <div class="slds-m-bottom_x-small">
-                <strong>{selection.occurrence.title}</strong>
+        <lightning-focus-trap>
+            <lightning-button-icon
+                class="
+                    slds-is-absolute
+                    avonni-scheduler__detail-popover-close-button
+                "
+                alternative-text="Close popover"
+                icon-name="utility:close"
+                size="small"
+                variant="bare"
+            ></lightning-button-icon>
+
+            <div class="slds-popover__body">
+                <div class="slds-m-bottom_small slds-text-heading_small">
+                    {selection.occurrence.title}
+                </div>
+                <div class="slds-grid slds-wrap slds-gutters_x-small">
+                    <template for:each={detailPopoverFields} for:item="field">
+                        <div
+                            key={field.key}
+                            class="
+                                slds-col
+                                slds-size_1-of-2
+                                slds-p-vertical_xx-small
+                            "
+                        >
+                            <c-output-data
+                                label={field.label}
+                                type={field.type}
+                                type-attributes={field.typeAttributes}
+                                value={field.value}
+                                variant={field.variant}
+                            ></c-output-data>
+                        </div>
+                    </template>
+                </div>
             </div>
-            <div class="slds-grid" data-element-id="div-event-detail-from">
-                <lightning-icon
-                    class="
-                        avonni-scheduler__event-detail-icon
-                        slds-m-right_xx-small
-                    "
-                    icon-name="utility:clock"
-                    size="x-small"
-                ></lightning-icon>
-                {selectionFrom}
+
+            <div class="slds-popover__footer slds-text-align_right">
+                <lightning-button-group>
+                    <template for:each={firstEventActions} for:item="action">
+                        <lightning-button
+                            key={action.name}
+                            name={action.name}
+                            label={action.label}
+                            icon-name={action.iconName}
+                        ></lightning-button>
+                    </template>
+                    <lightning-button-menu
+                        if:true={lastEventActions.length}
+                        alternative-text="More actions"
+                        variant="border-filled"
+                    >
+                        <template for:each={lastEventActions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                label={action.label}
+                                prefix-icon-name={action.iconName}
+                                value={action.name}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                </lightning-button-group>
             </div>
-            <div class="slds-grid" data-element-id="div-event-detail-to">
-                <lightning-icon
-                    class="
-                        avonni-scheduler__event-detail-icon
-                        slds-m-right_xx-small
-                    "
-                    icon-name="utility:clock"
-                    size="x-small"
-                ></lightning-icon>
-                {selectionTo}
-            </div>
-        </div>
+        </lightning-focus-trap>
     </div>
 
     <!-- Event context menu -->

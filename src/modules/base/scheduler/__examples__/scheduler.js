@@ -49,6 +49,7 @@ export const Scheduler = ({
     events,
     eventsLabels,
     eventsPalette,
+    eventsDisplayFields,
     eventsTheme,
     hiddenDisplays,
     hideSidePanel,
@@ -84,6 +85,7 @@ export const Scheduler = ({
     element.events = events;
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
+    element.eventsDisplayFields = eventsDisplayFields;
     element.eventsTheme = eventsTheme;
     element.hiddenDisplays = hiddenDisplays;
     element.hideSidePanel = hideSidePanel;

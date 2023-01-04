@@ -36,6 +36,7 @@ import {
     resources,
     headers,
     events,
+    eventsWithExtraKeys,
     eventsThemed,
     eventsWithLabels,
     disabledDatesTimes,
@@ -260,6 +261,17 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'aurora' },
                 category: 'Events'
+            }
+        },
+        eventsDisplayFields: {
+            name: 'events-display-fields',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of data objects, displayed in the popover visible on hover on an event. See Output Data for valid keys. The value of each field should be a key of the selected event object.',
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         eventsTheme: {
@@ -616,12 +628,38 @@ export const Calendar = Template.bind({});
 Calendar.args = {
     resources,
     start,
-    events,
+    events: eventsWithExtraKeys,
     selectedDisplay: 'calendar',
     selectedResources: ['Dave', 'Jung', 'Reginald'],
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
     disabledDatesTimes,
-    referenceLines
+    referenceLines,
+    eventsDisplayFields: [
+        {
+            label: 'Start',
+            value: 'from',
+            type: 'date'
+        },
+        {
+            label: 'End',
+            value: 'to',
+            type: 'date'
+        },
+        {
+            label: 'Office',
+            value: 'office'
+        },
+        {
+            label: 'Cost',
+            value: 'cost',
+            type: 'currency',
+            typeAttributes: {
+                currencyCode: 'CAD',
+                currencyDisplayAs: 'name',
+                minimumFractionDigits: 2
+            }
+        }
+    ]
 };
 
 export const Agenda = Template.bind({});

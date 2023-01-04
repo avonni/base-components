@@ -85,6 +85,16 @@ const DEFAULT_EVENTS_LABELS = {
         fieldName: 'title'
     }
 };
+const DEFAULT_EVENTS_DISPLAY_FIELDS = [
+    {
+        type: 'date',
+        value: 'from'
+    },
+    {
+        type: 'date',
+        value: 'to'
+    }
+];
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_SELECTED_TIME_SPAN = 'Standard.Scheduler.DayTimeSpan';
 const DEFAULT_START_DATE = new Date();
@@ -264,6 +274,7 @@ export {
     DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_SELECTED_TIME_SPAN,
     DEFAULT_START_DATE,

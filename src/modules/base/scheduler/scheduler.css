@@ -34,8 +34,9 @@
     --avonni-splitter-horizontal-color-border-around: transparent;
 }
 
-.avonni-scheduler__event-detail-popover {
-    width: auto;
+.avonni-scheduler__detail-popover-close-button {
+    top: 0;
+    right: 2px;
 }
 
 .avonni-scheduler__calendar {

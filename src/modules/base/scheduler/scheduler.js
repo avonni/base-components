@@ -47,7 +47,7 @@ import {
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     EDIT_MODES,
     EVENTS_THEMES,
@@ -59,6 +59,7 @@ import {
     DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
@@ -92,6 +93,7 @@ export default class Scheduler extends LightningElement {
     _events = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
+    _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsTheme = EVENTS_THEMES.default;
     _hiddenDisplays = [];
     _hideSidePanel = false;
@@ -518,6 +520,34 @@ export default class Scheduler extends LightningElement {
         if (this._connected) {
             this.initResources();
         }
+    }
+
+    /**
+     * Array of data objects, displayed in the popover visible on hover on an event. See [Output Data](/components/output-data) for valid keys.
+     * The value of each field should be a key of the selected event object.
+     *
+     * @type {object[]}
+     * @default [
+     *  {
+     *     type: 'date',
+     *     value: 'from'
+     *  },
+     *  {
+     *     type: 'date',
+     *     value: 'to'
+     *  }
+     * ]
+     * @public
+     */
+    @api
+    get eventsDisplayFields() {
+        return this._eventsDisplayFields;
+    }
+    set eventsDisplayFields(value) {
+        const fields = normalizeArray(value, 'object');
+        this._eventsDisplayFields = fields.length
+            ? fields
+            : DEFAULT_EVENTS_DISPLAY_FIELDS;
     }
 
     /**
@@ -1118,6 +1148,15 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of action objects, to be displayed as buttons in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get firstEventActions() {
+        return this.computedContextMenuEvent.slice(0, 2);
+    }
+
+    /**
      * True if the selected display is agenda.
      *
      * @type {boolean}
@@ -1142,6 +1181,15 @@ export default class Scheduler extends LightningElement {
      */
     get isTimeline() {
         return this.selectedDisplay === 'timeline';
+    }
+
+    /**
+     * Array of action objects, to be displayed in a button menu, in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get lastEventActions() {
+        return this.computedContextMenuEvent.slice(2);
     }
 
     /**
@@ -1176,24 +1224,6 @@ export default class Scheduler extends LightningElement {
                 value: res.name
             };
         });
-    }
-
-    /**
-     * Formated starting date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionFrom() {
-        return this.selection.occurrence.from.toFormat(this.dateFormat);
-    }
-
-    /**
-     * Formated ending date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionTo() {
-        return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
     /**
@@ -1968,6 +1998,27 @@ export default class Scheduler extends LightningElement {
         }
         this.showDetailPopover = true;
         this.selection = event.currentTarget.selectEvent(event.detail);
+
+        this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
+            const { type, label, variant } = field;
+            const eventData = this.selection.event.data;
+            const occurrenceData = this.selection.occurrence;
+            let value = occurrenceData[field.value] || eventData[field.value];
+
+            const isDate = type === 'date' && dateTimeObjectFrom(value);
+            if (isDate) {
+                value = dateTimeObjectFrom(value);
+                value = value.toFormat(this.dateFormat);
+            }
+
+            return {
+                key: generateUUID(),
+                label,
+                type: isDate ? 'text' : type,
+                value,
+                variant
+            };
+        });
     }
 
     /**

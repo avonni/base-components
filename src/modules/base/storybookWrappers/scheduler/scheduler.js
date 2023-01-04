@@ -15,6 +15,7 @@ export default class Scheduler extends LightningElement {
     @api events;
     @api eventsLabels;
     @api eventsPalette;
+    @api eventsDisplayFields;
     @api eventsTheme;
     @api hiddenDisplays;
     @api hideSidePanel;
