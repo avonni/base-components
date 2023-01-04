@@ -35,6 +35,7 @@
 }
 
 .avonni-scheduler__detail-popover-close-button {
+    z-index: 1;
     top: 0;
     right: 2px;
 }

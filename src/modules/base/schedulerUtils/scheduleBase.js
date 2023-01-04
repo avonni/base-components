@@ -895,9 +895,9 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the `privatemouseenter` event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     * Handle the cursor entering an event.
      *
-     * @param {Event} event
+     * @param {Event} event `privatemouseenter` event fired by a primitive event occurrence.
      */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown) {
@@ -923,10 +923,27 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Dispatch the `hidepopovers` event only for the detail popover.
+     * Handle the cursor leaving an event.
+     *
+     * @param {Event} event `privatemouseleave` event fired by a primitive event occurrence.
      */
-    handleHideDetailPopover() {
-        this.dispatchHidePopovers(['detail']);
+    handleEventMouseLeave(event) {
+        /**
+         * The event fired when the mouse leaves an event.
+         *
+         * @event
+         * @name eventmouseleave
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseleave', {
+                detail: event.detail
+            })
+        );
     }
 
     /**

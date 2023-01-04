@@ -202,11 +202,10 @@
                                             data-event-name={event.name}
                                             data-key={occurrence.key}
                                             onprivatefocus={handleEventFocus}
-                                            onprivateblur={handleHideDetailPopover}
                                             onprivatecontextmenu={handleEventContextMenu}
                                             onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                             onprivatemouseenter={handleEventMouseEnter}
-                                            onprivatemouseleave={handleHideDetailPopover}
+                                            onprivatemouseleave={handleEventMouseLeave}
                                             onprivatedblclick={handleEventDoubleClick}
                                             onprivatedisableddblclick={handleDoubleClick}
                                             onprivatemousedown={handleMultiDayEventMouseDown}
@@ -334,13 +333,12 @@
                                                                     data-month={cell.month}
                                                                     data-week-number={cell.weekNumber}
                                                                     oncontextmenu={stopPropagation}
-                                                                    onprivateblur={handleHideDetailPopover}
                                                                     onprivatecontextmenu={handleEventContextMenu}
                                                                     onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                                                     onprivatedblclick={handleEventDoubleClick}
                                                                     onprivatefocus={handleEventFocus}
                                                                     onprivatemouseenter={handleEventMouseEnter}
-                                                                    onprivatemouseleave={handleHideDetailPopover}
+                                                                    onprivatemouseleave={handleEventMouseLeave}
                                                                     onprivatemousedown={handlePlaceholderMouseDown}
                                                                 ></c-primitive-scheduler-event-occurrence>
                                                             </template>
@@ -412,12 +410,11 @@
                                                     data-day={occurrence.firstAllowedDate.day}
                                                     data-month={occurrence.firstAllowedDate.month}
                                                     data-weekday={occurrence.firstAllowedWeekday}
-                                                    onprivateblur={handleHideDetailPopover}
                                                     onprivatefocus={handleEventFocus}
                                                     onprivatecontextmenu={handleEventContextMenu}
                                                     onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                                     onprivatemouseenter={handleEventMouseEnter}
-                                                    onprivatemouseleave={handleHideDetailPopover}
+                                                    onprivatemouseleave={handleEventMouseLeave}
                                                     onprivatedblclick={handleEventDoubleClick}
                                                     onprivatedisableddblclick={handleDoubleClick}
                                                     onprivatemousedown={handleEventMouseDown}

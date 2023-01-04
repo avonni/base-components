@@ -213,6 +213,7 @@
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
             oneventmouseenter={handleEventMouseEnter}
+            oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
             oneventselect={handleEventSelect}
             onopeneditdialog={handleOpenEditDialog}
@@ -259,6 +260,7 @@
             oneventcreate={handleEventCreate}
             oneventselect={handleEventSelect}
             oneventmouseenter={handleEventMouseEnter}
+            oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
@@ -292,6 +294,7 @@
             oneventcontextmenu={handleEventContextMenu}
             oneventcreate={handleEventCreate}
             oneventmouseenter={handleEventMouseEnter}
+            oneventmouseleave={handleEventMouseLeave}
             onhidepopovers={handleHidePopovers}
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
@@ -315,6 +318,9 @@
         role="tooltip"
         aria-live="polite"
         data-element-id="div-detail-popover"
+        onkeyup={handleDetailPopoverKeyUp}
+        onmouseenter={handleDetailPopoverMouseEnter}
+        onmouseleave={handleDetailPopoverMouseLeave}
     >
         <lightning-focus-trap>
             <lightning-button-icon
@@ -326,6 +332,8 @@
                 icon-name="utility:close"
                 size="small"
                 variant="bare"
+                data-element-id="lightning-button-icon-detail-popover-close-button"
+                onclick={hideDetailPopover}
             ></lightning-button-icon>
 
             <div class="slds-popover__body">
@@ -359,15 +367,18 @@
                     <template for:each={firstEventActions} for:item="action">
                         <lightning-button
                             key={action.name}
-                            name={action.name}
                             label={action.label}
                             icon-name={action.iconName}
+                            name={action.name}
+                            onclick={handleActionSelect}
                         ></lightning-button>
                     </template>
                     <lightning-button-menu
                         if:true={lastEventActions.length}
                         alternative-text="More actions"
+                        menu-alignment="right"
                         variant="border-filled"
+                        onselect={handleActionSelect}
                     >
                         <template for:each={lastEventActions} for:item="action">
                             <lightning-menu-item

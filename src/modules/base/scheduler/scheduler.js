@@ -115,6 +115,7 @@ export default class Scheduler extends LightningElement {
     _variant = VARIANTS.default;
     _zoomToFit = false;
 
+    _closeDetailPopoverTimeout;
     _connected = false;
     _focusCalendarPopover;
     _toolbarCalendarDisabledWeekdays = [];
@@ -127,6 +128,7 @@ export default class Scheduler extends LightningElement {
     computedSelectedDisplay = {};
     contextMenuActions = [];
     currentTimeSpan = {};
+    detailPopoverFields = [];
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
     showContextMenu = false;
     showEditDialog = false;
@@ -299,7 +301,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.
+     * Array of action objects. These actions will be displayed in the events context menu and detail popover.
      *
      * @type {object[]}
      * @public
@@ -1635,6 +1637,7 @@ export default class Scheduler extends LightningElement {
      * Hide the detail popover.
      */
     hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
         this.showDetailPopover = false;
     }
 
@@ -1687,6 +1690,54 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Handle the click on an action.
+     *
+     * @param {Event} event `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
+     */
+    handleActionSelect(event) {
+        const name =
+            event.detail.name || event.detail.value || event.currentTarget.name;
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName If the action came from an existing event, name of the event.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name,
+                    targetName: this.selection.event
+                        ? this.selection.event.name
+                        : undefined
+                },
+                bubbles: true
+            })
+        );
+
+        switch (name) {
+            case 'Standard.Scheduler.EditEvent':
+                this.showEditDialog = true;
+                break;
+            case 'Standard.Scheduler.DeleteEvent':
+                this.showDeleteConfirmationDialog = true;
+                break;
+            case 'Standard.Scheduler.AddEvent':
+                this.showEditDialog = true;
+                this.computedEvents.push(this.selection.event);
+                break;
+            default:
+                this.schedule.cleanSelection();
+                break;
+        }
+    }
+
+    /**
      * Handle a change of the selected date.
      *
      * @param {Event} event
@@ -1701,6 +1752,36 @@ export default class Scheduler extends LightningElement {
     handleCloseDeleteConfirmationDialog() {
         this.schedule.cleanSelection();
         this.hideDeleteConfirmationDialog();
+    }
+
+    /**
+     * Handle a key up on the event detail popover.
+     *
+     * @param {Event} event `keyup` event.
+     */
+    handleDetailPopoverKeyUp(event) {
+        if (event.key === 'Escape') {
+            this.hideDetailPopover();
+        }
+    }
+
+    /**
+     * Handle the cursor entering the event detail popover.
+     */
+    handleDetailPopoverMouseEnter() {
+        this._mouseInDetailPopover = true;
+        clearTimeout(this._closeDetailPopoverTimeout);
+    }
+
+    /**
+     * Handle the cursor leaving the event detail popover.
+     */
+    handleDetailPopoverMouseLeave() {
+        this._mouseInDetailPopover = false;
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this._closeDetailPopoverTimeout = setTimeout(() => {
+            this.hideDetailPopover();
+        }, 200);
     }
 
     /**
@@ -1817,51 +1898,6 @@ export default class Scheduler extends LightningElement {
         this.contextMenuActions = [...this.computedContextMenuEmptySpot];
         this.showContextMenu = true;
         this.selection = event.detail.selection;
-    }
-
-    /**
-     * Handle the privateselect event fired by the context menu. Dispatch the action click event and process the selected action.
-     */
-    handleActionSelect(event) {
-        const name = event.detail.name;
-
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName If the action came from the context menu of an event, name of the event.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    targetName: this.selection.event
-                        ? this.selection.event.name
-                        : undefined
-                },
-                bubbles: true
-            })
-        );
-
-        switch (name) {
-            case 'Standard.Scheduler.EditEvent':
-                this.showEditDialog = true;
-                break;
-            case 'Standard.Scheduler.DeleteEvent':
-                this.showDeleteConfirmationDialog = true;
-                break;
-            case 'Standard.Scheduler.AddEvent':
-                this.showEditDialog = true;
-                this.computedEvents.push(this.selection.event);
-                break;
-            default:
-                this.schedule.cleanSelection();
-                break;
-        }
     }
 
     /**
@@ -1996,6 +2032,15 @@ export default class Scheduler extends LightningElement {
         if (this.showContextMenu) {
             return;
         }
+        clearTimeout(this._closeDetailPopoverTimeout);
+
+        if (
+            this.showDetailPopover &&
+            this.selection &&
+            this.selection.occurrence.key === event.detail.key
+        ) {
+            return;
+        }
         this.showDetailPopover = true;
         this.selection = event.currentTarget.selectEvent(event.detail);
 
@@ -2019,6 +2064,22 @@ export default class Scheduler extends LightningElement {
                 variant
             };
         });
+
+        requestAnimationFrame(() => {
+            const closeButton = this.template.querySelector(
+                '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
+            );
+            if (closeButton) {
+                closeButton.focus();
+            }
+        });
+    }
+
+    handleEventMouseLeave(event) {
+        const key = event.detail.key;
+        if (this.showDetailPopover && key === this.selection.occurrence.key) {
+            this.handleDetailPopoverMouseLeave();
+        }
     }
 
     /**

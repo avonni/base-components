@@ -236,14 +236,13 @@
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={occurrence.event.name}
                                         oncontextmenu={stopPropagation}
-                                        onprivateblur={handleHideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}
                                         onprivatedblclick={handleEventDoubleClick}
                                         onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                         onprivatedisableddblclick={handleDoubleClick}
                                         onprivatefocus={handleEventFocus}
                                         onprivatemouseenter={handleEventMouseEnter}
-                                        onprivatemouseleave={handleHideDetailPopover}
+                                        onprivatemouseleave={handleEventMouseLeave}
                                     ></c-primitive-scheduler-event-occurrence>
                                 </div>
                             </div>
