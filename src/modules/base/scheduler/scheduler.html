@@ -360,7 +360,10 @@
                 </div>
             </div>
 
-            <div class="slds-popover__footer slds-text-align_right">
+            <div
+                if:true={computedContextMenuEvent.length}
+                class="slds-popover__footer slds-text-align_right"
+            >
                 <lightning-button-group>
                     <template for:each={firstEventActions} for:item="action">
                         <lightning-button
