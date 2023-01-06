@@ -1445,7 +1445,10 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     getOption(value, options = this.options) {
         let option = options.find((opt) => {
-            return value && opt.value.toString() === value.toString();
+            return (
+                (value || value === 0) &&
+                opt.value.toString() === value.toString()
+            );
         });
 
         // Search deeper levels
