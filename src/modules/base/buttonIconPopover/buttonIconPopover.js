@@ -59,12 +59,12 @@ const POPOVER_PLACEMENTS = {
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
-        'container',
-        'brand',
+        'bare-inverse',
         'border',
         'border-filled',
-        'bare-inverse',
-        'border-inverse'
+        'border-inverse',
+        'brand',
+        'container'
     ],
     default: 'border'
 };
