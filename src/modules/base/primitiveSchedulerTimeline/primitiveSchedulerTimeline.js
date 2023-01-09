@@ -296,37 +296,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * First column HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-    }
-
-    /**
      * Computed CSS classes for the first column.
      *
      * @type {string}
      */
     get firstColClass() {
-        return classSet('avonni-scheduler__first-col slds-grid')
+        return classSet('avonni-scheduler__first-col slds-grid slds-scrollable')
             .add({
-                'avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-                    this.isVertical
+                'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
+                    this.isVertical,
+                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded
             })
             .toString();
-    }
-
-    /**
-     * Initial valid string CSS width of the first column. It is used to set the left panel width, before resize.
-     *
-     * @type {string}
-     */
-    get firstColInitialWidth() {
-        return this.isVertical ? '110px' : '300px';
     }
 
     /**
@@ -335,7 +318,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {number}
      */
     get firstColWidth() {
-        return this.firstCol ? this.firstCol.getBoundingClientRect().width : 0;
+        return this.panelElement
+            ? this.panelElement.getBoundingClientRect().width
+            : 0;
     }
 
     /**
@@ -448,9 +433,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get scheduleWrapperClass() {
-        return classSet('slds-grid slds-is-relative avonni-scheduler__wrapper')
+        return classSet(
+            'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
+        )
             .add({
-                'avonni-scheduler__wrapper_vertical': this.isVertical
+                'avonni-scheduler__schedule-wrapper_vertical': this.isVertical
             })
             .toString();
     }
@@ -780,7 +767,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             );
             const height = this.isVertical
                 ? 80
-                : this.firstCol.offsetHeight - headers.offsetHeight;
+                : this.panelElement.offsetHeight - headers.offsetHeight;
             loader.style.height = `${height}px`;
         }
     }
@@ -951,13 +938,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
-            this.datatable.style.width = null;
             this._rowsHeight = [];
             this.computedResources.forEach((resource) => {
                 resource.minHeight = undefined;
             });
-            this.firstCol.style.width = null;
-            this.firstCol.style.minWidth = null;
             this.computedResources = [...this.computedResources];
         } else {
             this.updateRowsHeight();

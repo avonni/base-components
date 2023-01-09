@@ -39,7 +39,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -90,6 +90,8 @@ export class ScheduleBase extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
+    _isCollapsed = false;
+    _isExpanded = false;
     _resizeObserver;
     navCalendarDisabledWeekdays = [];
     navCalendarDisabledDates = [];
@@ -458,21 +460,12 @@ export class ScheduleBase extends LightningElement {
      */
 
     /**
-     * True if the panels can be collapsed.
+     * First column HTML Element.
      *
-     * @type {boolean}
+     * @type {HTMLElement}
      */
-    get allowCollapse() {
-        return !this.collapseDisabled;
-    }
-
-    /**
-     * True if the panels can be resized.
-     *
-     * @type {boolean}
-     */
-    get allowResizeColumn() {
-        return !this.resizeColumnDisabled;
+    get panelElement() {
+        return this.template.querySelector('[data-element-id="div-panel"]');
     }
 
     /**
@@ -527,6 +520,52 @@ export class ScheduleBase extends LightningElement {
     get isYear() {
         const { span, unit } = this.timeSpan;
         return unit === 'year' || (unit === 'month' && span > 1);
+    }
+
+    /**
+     * True if the splitter collapse button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterCollapse() {
+        return !this.collapseDisabled && !this._isCollapsed;
+    }
+
+    /**
+     * True if the splitter expand button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterExpand() {
+        return !this.collapseDisabled && !this._isExpanded;
+    }
+
+    /**
+     * True if the splitter resize handle should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterResize() {
+        return (
+            !this.resizeColumnDisabled &&
+            !this._isCollapsed &&
+            !this._isExpanded
+        );
+    }
+
+    /**
+     * Computed CSS classes for the splitter.
+     *
+     * @type {boolean}
+     */
+    get splitterClass() {
+        return classSet(
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center slds-border_top slds-border_bottom slds-border_left slds-border_right'
+        )
+            .add({
+                'avonni-scheduler__splitter_resizable': this.showSplitterResize
+            })
+            .toString();
     }
 
     /**
@@ -996,6 +1035,64 @@ export class ScheduleBase extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Handle a click on the splitter collapse button.
+     */
+    handleSplitterCollapse() {
+        if (this._isExpanded) {
+            this._isExpanded = false;
+        } else {
+            this._isCollapsed = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
+    }
+
+    /**
+     * Handle a click on the splitter expand button.
+     */
+    handleSplitterExpand() {
+        if (this._isCollapsed) {
+            this._isCollapsed = false;
+        } else {
+            this._isExpanded = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
+    }
+
+    /**
+     * Handle a mouse down on the splitter.
+     */
+    handleSplitterResizeMouseDown(event) {
+        if (!this.showSplitterResize || event.button !== 0) {
+            return;
+        }
+        const startX = event.clientX;
+        const startWidth = this.panelElement.offsetWidth;
+
+        const mouseMove = (moveEvent) => {
+            const diff = moveEvent.clientX - startX;
+            if (this.panelElement) {
+                const direction = this.sidePanelPosition === 'right' ? -1 : 1;
+                const width = startWidth + diff * direction;
+                this.panelElement.style.flexBasis = `${width}px`;
+            }
+        };
+
+        const mouseUp = () => {
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mouseup', mouseUp);
+        };
+
+        window.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mouseup', mouseUp);
     }
 
     /**

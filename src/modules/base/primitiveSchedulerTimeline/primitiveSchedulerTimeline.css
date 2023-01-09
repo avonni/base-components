@@ -30,22 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import 'c/schedulerSharedStyle';
+
 :host {
     --toolbar-height: 70px;
     --vertical-resources-row-height: 3rem;
 }
 
 .avonni-scheduler__wrapper {
+    max-height: calc(100vh - var(--toolbar-height));
+}
+
+.avonni-scheduler__schedule-wrapper {
     min-height: 5rem;
     max-height: calc(100vh - var(--toolbar-height));
     overflow: auto;
 }
 
-.avonni-scheduler__splitter {
-    max-height: calc(100vh - var(--toolbar-height));
-}
-
-.avonni-scheduler__wrapper.avonni-scheduler__wrapper_vertical {
+.avonni-scheduler__schedule-wrapper.avonni-scheduler__schedule-wrapper_vertical {
     max-height: calc(
         100vh - var(--toolbar-height) - var(--vertical-resources-row-height)
     );
@@ -54,6 +56,12 @@
 .avonni-scheduler__first-col {
     background-color: #f3f3f3;
     max-height: calc(100vh - var(--toolbar-height));
+}
+.avonni-scheduler__first-col_vertical {
+    width: 110px;
+}
+.avonni-scheduler__first-col_horizontal {
+    width: 300px;
 }
 
 .avonni-scheduler__grid_align-end {

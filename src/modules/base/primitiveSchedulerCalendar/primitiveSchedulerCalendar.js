@@ -37,7 +37,6 @@ import {
     dateTimeObjectFrom,
     deepCopy,
     getWeekNumber,
-    normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
@@ -103,7 +102,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hourHeadersLoading = true;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
-    _splitterPanes = [];
     _resizeObserver;
     _showMorePopoverContextMenuIsOpened = false;
     _showMorePopoverIsFocused = false;
@@ -492,8 +490,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      *
      * @type {string}
      */
-    get rightPanelClass() {
-        return classSet('slds-border_top slds-border_bottom')
+    get mainPanelClass() {
+        return classSet(
+            'slds-border_top slds-border_bottom avonni-scheduler__main-section slds-scrollable'
+        )
             .add({
                 'slds-border_left': this.hideSidePanel
             })
@@ -554,6 +554,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.multiDayEvents.length &&
             this.multiDayEventsCellGroup.cells
         );
+    }
+
+    get sidePanelClass() {
+        return classSet('slds-scrollable avonni-scheduler__panel')
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded
+            })
+            .toString();
     }
 
     /**
@@ -1266,15 +1275,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     updateCellHeight() {
         const numberOfRows = this.columns[0].referenceCells.length;
-        const splitter = this.template.querySelector(
-            '[data-element-id="avonni-splitter"]'
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-main-wrapper"]'
         );
-        const splitterHeight = splitter.getBoundingClientRect().height - 2;
+        const wrapperHeight = wrapper.getBoundingClientRect().height - 2;
         const dayHeaders = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
         );
         const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
-        const availableHeight = splitterHeight - dayHeadersHeight;
+        const availableHeight = wrapperHeight - dayHeadersHeight;
         this.cellHeight = availableHeight / numberOfRows;
         this.template.host.style = `
             --avonni-scheduler-cell-height: ${this.cellHeight}px;
@@ -1470,22 +1479,19 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        const hourHeader = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+        const sidePanel = this.template.querySelector(
+            '[data-element-id="div-panel"]'
         );
-
-        if (wrapper && this._splitterPanes.length) {
-            const sidePanel =
-                this._sidePanelPosition === 'left'
-                    ? this._splitterPanes[0]
-                    : this._splitterPanes[1];
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-main-panel"]'
+        );
+        if (wrapper && sidePanel && schedule) {
+            const hourHeader = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+            );
             const sidePanelWidth = this.hideSidePanel
                 ? 0
                 : sidePanel.offsetWidth;
-            const schedule =
-                this._sidePanelPosition === 'left'
-                    ? this._splitterPanes[1]
-                    : this._splitterPanes[0];
             const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
@@ -1844,15 +1850,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this._showPlaceholderOccurrence = true;
         this.handleHiddenEventMouseDown(event);
-    }
-
-    /**
-     * Handle a change in the splitter slots. Save the pane elements in a property, to be able to get their width in the future.
-     *
-     * @param {Event} event `privateslotchange` event fired by the splitter.
-     */
-    handleSplitterSlotChange(event) {
-        this._splitterPanes = normalizeArray(event.detail.paneElements);
     }
 
     /**

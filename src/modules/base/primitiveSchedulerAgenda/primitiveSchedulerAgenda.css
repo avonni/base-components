@@ -30,16 +30,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import 'c/schedulerSharedStyle';
+
 .avonni-scheduler__wrapper {
     max-height: 100%;
     height: calc(100vh - 70px);
     max-width: 100%;
 }
 
+.avonni-scheduler__panel {
+    width: 310px;
+}
+
 .avonni-primitive-scheduler-calendar__inherit-height {
     height: inherit;
     min-height: inherit;
     max-height: inherit;
+}
+
+.avonni-scheduler__main-section {
+    flex: 1 1 0;
 }
 
 .avonni-scheduler__agenda-month-header {

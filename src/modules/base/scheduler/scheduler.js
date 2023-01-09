@@ -1889,6 +1889,7 @@ export default class Scheduler extends LightningElement {
         if (!this.computedContextMenuEvent.length) {
             return;
         }
+        clearTimeout(this._openDetailPopoverTimeout);
         this.hideDetailPopover();
         this.contextMenuActions = [...this.computedContextMenuEvent];
         this.selection = event.currentTarget.selectEvent(event.detail);

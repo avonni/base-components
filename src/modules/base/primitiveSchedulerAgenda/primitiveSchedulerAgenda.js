@@ -237,6 +237,21 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get mainSectionClass() {
+        return classSet(
+            'slds-border_top slds-border_bottom slds-border_right avonni-scheduler__main-section slds-scrollable'
+        )
+            .add({
+                'slds-border_left': this.hideSidePanel
+            })
+            .toString();
+    }
+
+    /**
      * Computed resource options, displayed in the left panel as checkboxes.
      *
      * @type {object[]}
@@ -258,15 +273,11 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         });
     }
 
-    /**
-     * Computed CSS classes for the right panel.
-     *
-     * @type {string}
-     */
-    get rightPanelClass() {
-        return classSet('slds-border_top slds-border_bottom slds-border_right')
+    get sidePanelClass() {
+        return classSet('avonni-scheduler__panel slds-scrollable')
             .add({
-                'slds-border_left': this.hideSidePanel
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded
             })
             .toString();
     }

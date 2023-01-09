@@ -1,0 +1,31 @@
+.avonni-scheduler__splitter {
+    min-height: 100%;
+}
+
+.avonni-scheduler__second-col {
+    flex: 1 1 0;
+    margin-top: -1px;
+}
+
+.avonni-scheduler__splitter_resizable,
+.avonni-scheduler__splitter-resize-handle {
+    cursor: col-resize;
+}
+
+.avonni-scheduler__splitter-resize-handle {
+    height: 25px;
+    width: 2px;
+    background-color: #747474;
+}
+
+.avonni-scheduler__splitter-expand-left-button {
+    margin-top: -6px;
+}
+
+.avonni-scheduler__panel_collapsed {
+    max-width: 0;
+}
+
+.avonni-scheduler__panel_expanded {
+    min-width: calc(100% - 12px);
+}

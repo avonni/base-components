@@ -271,7 +271,8 @@ export default {
             description:
                 'Array of data objects, displayed in the popover visible on hover on an event. See Output Data for valid keys. The value of each field should be a key of the selected event object.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Events'
             }
         },
         eventsTheme: {
@@ -308,7 +309,8 @@ export default {
             description: 'If present, the resources filter is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
             }
         },
         hideSidePanel: {
@@ -448,19 +450,22 @@ export default {
                 'Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' }
+                defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' },
+                category: 'Panels and Toolbar'
             }
         },
         sidePanelPosition: {
             name: 'side-panel-position',
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['left', 'right'],
             description:
                 'Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'Panels and Toolbar'
             }
         },
         start: {
