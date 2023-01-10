@@ -978,6 +978,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         } else {
             this.cellWidth = cellSize;
         }
+        this.updateResourcesStyle();
     }
 
     /**
