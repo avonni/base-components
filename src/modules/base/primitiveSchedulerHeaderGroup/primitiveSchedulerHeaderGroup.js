@@ -617,9 +617,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (!this.smallestHeader) {
             return;
         }
-        const hostWidth = this.template.host.getBoundingClientRect().width;
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        const wrapperWidth = wrapper.getBoundingClientRect().width;
+
         // Remove 1 for the border
-        const totalWidth = (this.visibleWidth || hostWidth) - 1;
+        const totalWidth = (this.visibleWidth || wrapperWidth) - 1;
         const totalNumberOfCells = this.smallestHeader.numberOfCells;
         let cellSize = 0;
 
