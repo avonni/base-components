@@ -51,6 +51,7 @@
     max-height: calc(
         100vh - var(--toolbar-height) - var(--vertical-resources-row-height)
     );
+    height: calc(100% - var(--vertical-resources-row-height) - 1px);
 }
 
 .avonni-scheduler__first-col {
@@ -131,6 +132,7 @@
 
 .avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {
     min-width: 75px;
+    width: 100%;
 }
 
 .avonni-scheduler__schedule-body_vertical .avonni-scheduler__cell {
