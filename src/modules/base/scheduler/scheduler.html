@@ -312,7 +312,7 @@
     <!-- Event detail popover -->
     <div
         if:true={showDetailPopover}
-        class="slds-is-fixed slds-popover slds-popover_medium"
+        class="slds-is-absolute slds-popover slds-popover_medium"
         role="tooltip"
         aria-live="polite"
         data-element-id="div-detail-popover"
@@ -398,7 +398,7 @@
     <!-- Event context menu -->
     <c-primitive-dropdown-menu
         if:true={contextMenuActions.length}
-        class="slds-is-fixed avonni-scheduler__context-menu"
+        class="slds-is-absolute avonni-scheduler__context-menu"
         show={showContextMenu}
         items={contextMenuActions}
         data-element-id="avonni-primitive-dropdown-menu"

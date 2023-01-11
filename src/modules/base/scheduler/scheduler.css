@@ -42,6 +42,10 @@
 
 .avonni-scheduler__context-menu {
     z-index: 1;
+
+    /* Needed to prevent a scroll jump when the menu appears */
+    top: 0;
+    left: 0;
 }
 
 .avonni-scheduler__display-menu {

@@ -148,6 +148,8 @@ export default class Scheduler extends LightningElement {
         this.initToolbarCalendarDisabledDates();
         this.computeVisibleIntervalLabel(this.start, this.start);
         this._connected = true;
+
+        this.classList.add('slds-is-relative');
     }
 
     renderedCallback() {
@@ -156,7 +158,7 @@ export default class Scheduler extends LightningElement {
             const popover = this.template.querySelector(
                 '[data-element-id="div-detail-popover"]'
             );
-            positionPopover(popover, this.selection);
+            positionPopover(this.bounds, popover, this.selection);
         }
 
         // Position the context menu
@@ -164,7 +166,7 @@ export default class Scheduler extends LightningElement {
             const contextMenu = this.template.querySelector(
                 '[data-element-id="avonni-primitive-dropdown-menu"]'
             );
-            positionPopover(contextMenu, this.selection);
+            positionPopover(this.bounds, contextMenu, this.selection);
         }
 
         // If the edit dialog is opened, focus on the first input
@@ -1084,6 +1086,15 @@ export default class Scheduler extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Coordinates of the schedule's bounding box.
+     *
+     * @type {DOMRect}
+     */
+    get bounds() {
+        return this.template.host.getBoundingClientRect();
+    }
 
     /**
      * Display options visible in the toolbar.

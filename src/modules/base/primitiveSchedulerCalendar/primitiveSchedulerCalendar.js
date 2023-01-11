@@ -162,7 +162,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const popover = this.template.querySelector(
                 '[data-element-id="div-popover"]'
             );
-            positionPopover(popover, this.showMorePopover.position, true);
+            const wrapper = this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            positionPopover(
+                wrapper.getBoundingClientRect(),
+                popover,
+                this.showMorePopover.position,
+                true
+            );
             this.focusPopoverClose();
         }
 
