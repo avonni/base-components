@@ -873,16 +873,17 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 const computedResource = this.getResourceFromName(name);
                 const rowHeight = computedResource.height;
 
-                const dataRow = this._rowsHeight.find((row) => {
-                    return row.resourceName === name;
-                });
-                const dataRowHeight = dataRow.height;
-
-                const style = `
-                    min-height: ${dataRowHeight}px;
+                let style = `
                     height: ${rowHeight}px;
                     --avonni-scheduler-cell-width: ${this.cellWidth}px;
                 `;
+                const dataRow = this._rowsHeight.find((row) => {
+                    return row.resourceName === name;
+                });
+                if (dataRow) {
+                    const dataRowHeight = dataRow.height;
+                    style += `min-height: ${dataRowHeight}px;`;
+                }
 
                 // Patch inconsistency in the datatable row heights
                 const normalizedHeight =
