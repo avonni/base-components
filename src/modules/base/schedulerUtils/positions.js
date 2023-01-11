@@ -176,20 +176,23 @@ function computeEventLevelInCellGroup(
  */
 export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
     // Make sure the popover is not outside of the screen
-    const { left, right, bottom, top } = bounds;
     const height = popover.offsetHeight;
     const width = popover.offsetWidth;
     const popoverBottom = y + height;
     const popoverRight = x + width;
 
-    const yTransform = popoverBottom > bottom ? (height + 10) * -1 : 10;
+    const bottomView = window.innerHeight;
+    const rightView = window.innerWidth;
+
+    const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
     let xTransform = 10;
-    if (popoverRight > right) {
+    if (popoverRight > rightView) {
         xTransform = (width + 10) * -1;
     } else if (horizontalCenter) {
         xTransform = (width / 2) * -1;
     }
 
+    const { left, top } = bounds;
     popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
     popover.style.top = `${y - top}px`;
     popover.style.left = `${x - left}px`;
