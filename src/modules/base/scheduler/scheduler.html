@@ -124,26 +124,29 @@
         </div>
 
         <!-- Toolbar next/today/previous navigation -->
-        <lightning-button-group>
+        <div class="slds-grid">
             <lightning-button-icon
+                class="avonni-scheduler__toolbar-nav-button_first"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronleft"
                 data-element-id="lightning-button-icon-toolbar-prev"
                 onclick={handleToolbarPrevClick}
             ></lightning-button-icon>
             <lightning-button
+                class="avonni-scheduler__toolbar-nav-button_middle"
                 disabled={showEmptyTimelineMessage}
                 label="Today"
                 data-element-id="lightning-button-icon-toolbar-today"
                 onclick={handleToolbarTodayClick}
             ></lightning-button>
             <lightning-button-icon
+                class="avonni-scheduler__toolbar-nav-button_last"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronright"
                 data-element-id="lightning-button-icon-toolbar-next"
                 onclick={handleToolbarNextClick}
             ></lightning-button-icon>
-        </lightning-button-group>
+        </div>
 
         <c-button-menu
             if:true={moreThanOneDisplay}

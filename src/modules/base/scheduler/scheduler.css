@@ -55,3 +55,16 @@
 .avonni-scheduler__toolbar-date-range {
     --slds-c-button-text-color: #444444;
 }
+
+.avonni-scheduler__toolbar-nav-button_first {
+    --slds-c-button-radius-border: 0.25rem 0 0 0.25rem;
+}
+
+.avonni-scheduler__toolbar-nav-button_middle {
+    --slds-c-button-radius-border: 0;
+    --slds-c-button-sizing-border: 1px 0 1px 0;
+}
+
+.avonni-scheduler__toolbar-nav-button_last {
+    --slds-c-button-radius-border: 0 0.25rem 0.25rem 0;
+}
