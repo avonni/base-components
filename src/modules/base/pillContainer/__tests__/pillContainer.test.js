@@ -381,7 +381,9 @@ describe('Pill Container', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('avonni-pill-container__wrapper');
+            expect(wrapper.className).toBe(
+                'avonni-pill-container__wrapper slds-is-relative'
+            );
 
             const ul = element.shadowRoot.querySelector(
                 '[data-element-id="ul"]'
@@ -407,7 +409,7 @@ describe('Pill Container', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-pill-container__wrapper slds-pill_container slds-p-top_none slds-p-bottom_none'
+                'avonni-pill-container__wrapper slds-is-relative slds-pill_container slds-p-top_none slds-p-bottom_none'
             );
 
             const ul = element.shadowRoot.querySelector(
