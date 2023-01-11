@@ -180,19 +180,18 @@ export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
     const width = popover.offsetWidth;
     const popoverBottom = y + height;
     const popoverRight = x + width;
+    const { left, top, right } = bounds;
 
     const bottomView = window.innerHeight;
-    const rightView = window.innerWidth;
-
     const yTransform = popoverBottom > bottomView ? (height + 10) * -1 : 10;
+
     let xTransform = 10;
-    if (popoverRight > rightView) {
+    if (popoverRight > right) {
         xTransform = (width + 10) * -1;
     } else if (horizontalCenter) {
         xTransform = (width / 2) * -1;
     }
 
-    const { left, top } = bounds;
     popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
     popover.style.top = `${y - top}px`;
     popover.style.left = `${x - left}px`;
