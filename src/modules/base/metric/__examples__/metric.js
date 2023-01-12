@@ -56,6 +56,7 @@ export const Metric = ({
     secondaryMinimumFractionDigits,
     secondaryMinimumIntegerDigits,
     secondaryMinimumSignificantDigits,
+    secondaryPosition,
     secondaryPrefix,
     secondaryShowTrendColor,
     secondarySuffix,
@@ -95,6 +96,7 @@ export const Metric = ({
     element.secondaryMinimumIntegerDigits = secondaryMinimumIntegerDigits;
     element.secondaryMinimumSignificantDigits =
         secondaryMinimumSignificantDigits;
+    element.secondaryPosition = secondaryPosition;
     element.secondaryPrefix = secondaryPrefix;
     element.secondaryShowTrendColor = secondaryShowTrendColor;
     element.secondarySuffix = secondarySuffix;

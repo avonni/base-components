@@ -257,6 +257,18 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        secondaryPosition: {
+            name: 'secondary-position',
+            control: {
+                type: 'select'
+            },
+            options: ['right', 'left', 'top', 'bottom'],
+            description:
+                'Position of the secondary value, relative to the value.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         secondaryPrefix: {
             name: 'secondary-prefix',
             control: {
@@ -420,6 +432,7 @@ export default {
         formatStyle: 'decimal',
         secondaryCurrencyDisplayAs: 'symbol',
         secondaryFormatStyle: 'decimal',
+        secondaryPosition: 'right',
         secondaryShowTrendColor: false,
         secondaryTrendBreakpointValue: 0,
         secondaryValueSign: 'negative',
@@ -471,7 +484,8 @@ TrendDown.args = {
     showTrendColor: true,
     suffix: 'overall',
     trendIcon: 'caret',
-    value: -14
+    value: -14,
+    secondaryPosition: 'bottom'
 };
 
 export const SecondaryTrendUp = Template.bind({});
