@@ -256,7 +256,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
         )
             .add({
-                'slds-col': !this.isVertical,
+                'avonni-scheduler__flex-col': !this.isVertical,
                 'avonni-scheduler__cell_vertical': this.isVertical,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
@@ -353,7 +353,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     get resourceClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
-                'slds-grid_vertical slds-col': this.isVertical
+                'slds-grid_vertical avonni-scheduler__flex-col': this.isVertical
             })
             .toString();
     }
@@ -390,7 +390,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get scheduleColClass() {
         return classSet(
-            'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+            'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
         )
             .add({
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
@@ -420,7 +420,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get scheduleNestedColClass() {
-        return classSet('slds-col')
+        return classSet('avonni-scheduler__flex-col')
             .add({
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })

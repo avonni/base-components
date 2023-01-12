@@ -44,6 +44,7 @@
 }
 
 .avonni-scheduler-header-group__header-cell {
+    flex: 1 1 auto;
     width: var(--avonni-scheduler-cell-size);
     min-width: var(--avonni-scheduler-cell-size);
     color: #514f4d;

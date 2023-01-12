@@ -172,7 +172,7 @@
                                         <div
                                             key={cell.start}
                                             class="
-                                                slds-col
+                                                avonni-scheduler__flex-col
                                                 slds-border_right
                                                 avonni-primitive-scheduler-calendar__inherit-height
                                             "
@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         <div
-                            class="slds-grid slds-col"
+                            class="slds-grid avonni-scheduler__flex-col"
                             data-element-id="div-cells-grid"
                         >
                             <!-- Hours -->
@@ -255,7 +255,7 @@
                                 onprivatecellsizechange={handleHeaderCellSizeChange}
                                 onprivateheaderchange={handleVerticalHeaderChange}
                             ></c-primitive-scheduler-header-group>
-                            <div class="slds-col">
+                            <div class="avonni-scheduler__flex-col">
                                 <div
                                     class="
                                         slds-is-relative slds-grid
@@ -311,7 +311,11 @@
                                                             {cell.day}
                                                         </div>
                                                         <!-- Placeholders used to take space in cells the multi-day events go through -->
-                                                        <div class="slds-col">
+                                                        <div
+                                                            class="
+                                                                avonni-scheduler__flex-col
+                                                            "
+                                                        >
                                                             <template
                                                                 for:each={cell.placeholders}
                                                                 for:item="placeholder"

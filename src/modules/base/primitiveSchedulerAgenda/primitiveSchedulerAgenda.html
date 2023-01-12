@@ -156,7 +156,7 @@
                     >
                         <!-- Day heading -->
                         <div
-                            class="slds-m-right_large slds-col slds-size_1-of-5"
+                            class="slds-m-right_large slds-size_1-of-5"
                             data-element-id="div-day-heading"
                         >
                             <div
@@ -184,7 +184,7 @@
                             </div>
                         </div>
                         <!-- Day events -->
-                        <div class="slds-col">
+                        <div class="avonni-scheduler__flex-col">
                             <div
                                 for:each={group.events}
                                 for:item="occurrence"
@@ -193,7 +193,7 @@
                             >
                                 <div
                                     class="
-                                        slds-col
+                                        avonni-scheduler__flex-col
                                         slds-size_1-of-5
                                         slds-has-flexi-truncate
                                         avonni-scheduler__agenda-time
@@ -214,7 +214,8 @@
                                     class="
                                         slds-m-bottom_xx-small
                                         avonni-scheduler__agenda-event
-                                        slds-show slds-col
+                                        slds-show
+                                        avonni-scheduler__flex-col
                                     "
                                     color={occurrence.event.color}
                                     date-format={dateFormat}

@@ -1185,7 +1185,7 @@ describe('Primitive Scheduler Timeline', () => {
                     'slds-grid slds-is-relative avonni-scheduler__wrapper'
                 );
                 expect(scheduleBody.className).toBe('slds-is-relative');
-                expect(cell.classList).toContain('slds-col');
+                expect(cell.classList).toContain('avonni-scheduler__flex-col');
                 expect(cell.classList).not.toContain(
                     'avonni-scheduler__cell_vertical'
                 );
@@ -1243,7 +1243,7 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(verticalHeaders).toBeTruthy();
                 expect(resourceHeaders).toBeTruthy();
                 expect(resourceRow.className).toBe(
-                    'slds-grid slds-is-relative slds-grid_vertical slds-col'
+                    'slds-grid slds-is-relative slds-grid_vertical avonni-scheduler__flex-col'
                 );
                 expect(leftPanel.size).toBe('110px');
                 expect(firstCol.className).toBe(
@@ -1255,7 +1255,9 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(scheduleBody.className).toBe(
                     'slds-is-relative slds-grid avonni-scheduler__schedule-body_vertical'
                 );
-                expect(cell.classList).not.toContain('slds-col');
+                expect(cell.classList).not.toContain(
+                    'avonni-scheduler__flex-col'
+                );
                 expect(cell.classList).toContain(
                     'avonni-scheduler__cell_vertical'
                 );
@@ -1291,9 +1293,9 @@ describe('Primitive Scheduler Timeline', () => {
                     'avonni-scheduler__cell_zoom-to-fit'
                 );
                 expect(col.className).toBe(
-                    'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+                    'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
                 );
-                expect(nestedCol.className).toBe('slds-col');
+                expect(nestedCol.className).toBe('avonni-scheduler__flex-col');
 
                 element.orientation = 'vertical';
             })
@@ -1329,10 +1331,10 @@ describe('Primitive Scheduler Timeline', () => {
                     'avonni-scheduler__cell_zoom-to-fit'
                 );
                 expect(col.className).toBe(
-                    'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default avonni-scheduler__schedule-col_zoom-to-fit'
+                    'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default avonni-scheduler__schedule-col_zoom-to-fit'
                 );
                 expect(nestedCol.className).toBe(
-                    'slds-col avonni-scheduler__schedule-col_zoom-to-fit'
+                    'avonni-scheduler__flex-col avonni-scheduler__schedule-col_zoom-to-fit'
                 );
 
                 element.orientation = 'vertical';

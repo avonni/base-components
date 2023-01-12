@@ -1333,7 +1333,7 @@ export default class Scheduler extends LightningElement {
      * @type {string}
      */
     get toolbarCalendarWrapperClass() {
-        return classSet('slds-col slds-has-flexi-truncate')
+        return classSet('avonni-scheduler__flex-col slds-has-flexi-truncate')
             .add({
                 'slds-text-align_center slds-p-horizontal_small':
                     this.showToolbarTimeSpans

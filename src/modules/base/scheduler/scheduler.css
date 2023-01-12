@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.avonni-scheduler__flex-col {
+    flex: 1 1 auto;
+}
+
 .avonni-scheduler__detail-popover-close-button {
     z-index: 1;
     top: 0;

@@ -723,7 +723,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const theme = this.theme;
         const centerLabel = normalizeObject(this.labels.center);
         let classes = classSet(
-            'avonni-scheduler__event slds-grid slds-has-flexi-truncate slds-col'
+            'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col'
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
