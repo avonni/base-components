@@ -1493,13 +1493,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const schedule = this.template.querySelector(
             '[data-element-id="div-main-panel"]'
         );
-        if (wrapper && sidePanel && schedule) {
+        if (wrapper && schedule) {
             const hourHeader = this.template.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
             );
-            const sidePanelWidth = this.hideSidePanel
-                ? 0
-                : sidePanel.offsetWidth;
+            const sidePanelWidth =
+                this.hideSidePanel || !sidePanel ? 0 : sidePanel.offsetWidth;
             const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
