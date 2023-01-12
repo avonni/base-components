@@ -192,6 +192,11 @@ export function positionPopover(bounds, popover, { x, y }, horizontalCenter) {
         xTransform = (width / 2) * -1;
     }
 
+    // The context menu is in fixed position by default,
+    // to prevent a scroll jump when appearing
+    popover.classList.remove('slds-is-fixed');
+    popover.classList.add('slds-is-absolute');
+
     popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
     popover.style.top = `${y - top}px`;
     popover.style.left = `${x - left}px`;
