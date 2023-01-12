@@ -285,7 +285,7 @@ export default class InputPen extends LightningElement {
         const colorValue =
             typeof value === 'string' || value instanceof String
                 ? value
-                : DEFAULT_BACKGROUND_COLOR;
+                : DEFAULT_COLOR;
         const style = new Option().style;
         style.color = colorValue;
         if (
