@@ -836,6 +836,18 @@ export class ScheduleBase extends LightningElement {
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
 
+        let from, to;
+        const agendaDate = event.currentTarget.dataset.date;
+        if (agendaDate) {
+            from = dateTimeObjectFrom(Number(agendaDate));
+            to = from.endOf('day');
+        } else {
+            from = dateTimeObjectFrom(
+                Number(event.currentTarget.dataset.start)
+            );
+            to = dateTimeObjectFrom(Number(event.currentTarget.dataset.end));
+        }
+
         /**
          * The event fired when the context menu is opened on an empty spot of the schedule.
          *
@@ -843,13 +855,17 @@ export class ScheduleBase extends LightningElement {
          * @name emptyspotcontextmenu
          * @param {number} x Position of the cursor on the X axis.
          * @param {number} y Position of the cursor on the Y axis.
+         * @param {DateTime} from Start date of the cell clicked.
+         * @param {DateTime} to End date of the cell clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('emptyspotcontextmenu', {
                 detail: {
                     x: event.clientX,
-                    y: event.clientY
+                    y: event.clientY,
+                    from: from.toISO(),
+                    to: to.toISO()
                 }
             })
         );

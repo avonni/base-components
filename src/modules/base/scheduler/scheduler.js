@@ -1717,11 +1717,14 @@ export default class Scheduler extends LightningElement {
     /**
      * Handle the click on an action.
      *
-     * @param {Event} event `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
+     * @param {Event} selectEvent `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
      */
-    handleActionSelect(event) {
+    handleActionSelect(selectEvent) {
         const name =
-            event.detail.name || event.detail.value || event.currentTarget.name;
+            selectEvent.detail.name ||
+            selectEvent.detail.value ||
+            selectEvent.currentTarget.name;
+        const { event, from, to } = this.selection;
 
         /**
          * The event fired when a user clicks on an action.
@@ -1736,10 +1739,10 @@ export default class Scheduler extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
+                    from,
                     name,
-                    targetName: this.selection.event
-                        ? this.selection.event.name
-                        : undefined
+                    targetName: event ? event.name : undefined,
+                    to
                 },
                 bubbles: true
             })
@@ -1755,7 +1758,7 @@ export default class Scheduler extends LightningElement {
             case 'Standard.Scheduler.AddEvent':
                 this.showEditDialog = true;
                 this.selection = this.schedule.newEvent(this.selection);
-                this.computedEvents.push(this.selection.event);
+                this.computedEvents.push(event);
                 break;
             default:
                 this.schedule.cleanSelection(true);
