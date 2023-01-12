@@ -325,7 +325,7 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        return classSet('avonni-pill-container__wrapper').add({
+        return classSet('avonni-pill-container__wrapper slds-is-relative').add({
             'slds-pill_container slds-p-top_none slds-p-bottom_none':
                 this.singleLine
         });
@@ -410,6 +410,10 @@ export default class PillContainer extends LightningElement {
         return this.items.slice(0, this._visibleItemsCount);
     }
 
+    get wrapperElement() {
+        return this.template.querySelector('[data-element-id="div-wrapper"]');
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -453,10 +457,9 @@ export default class PillContainer extends LightningElement {
             initialIndex: index,
             lastHoveredIndex: index
         };
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
+        this.wrapperElement.classList.add(
+            'avonni-pill-container__list_dragging'
         );
-        wrapper.classList.add('avonni-pill-container__list_dragging');
         this.updateAssistiveText(index + 1);
     }
 
@@ -466,14 +469,11 @@ export default class PillContainer extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper) {
+        if (!this.wrapperElement) {
             return null;
         }
         return new AvonniResizeObserver(
-            wrapper,
+            this.wrapperElement,
             this.updateVisibleItems.bind(this)
         );
     }
@@ -526,10 +526,9 @@ export default class PillContainer extends LightningElement {
         if (!this._dragState) return;
 
         this.clearDragBorder();
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
+        this.wrapperElement.classList.remove(
+            'avonni-pill-container__list_dragging'
         );
-        wrapper.classList.remove('avonni-pill-container__list_dragging');
         this._dragState = null;
         this.altTextElement.textContent = '';
     }
@@ -700,9 +699,10 @@ export default class PillContainer extends LightningElement {
         const yTransform = menuBottom > bottomView ? height * -1 : 0;
         const xTransform = menuRight > rightView ? width * -1 : 0;
 
+        const { top, left } = this.wrapperElement.getBoundingClientRect();
         menu.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
-        menu.style.top = `${y + 10}px`;
-        menu.style.left = `${x + 10}px`;
+        menu.style.top = `${y - top + 10}px`;
+        menu.style.left = `${x - left + 10}px`;
     }
 
     /**
@@ -811,14 +811,12 @@ export default class PillContainer extends LightningElement {
             return;
         }
 
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper) {
+        if (!this.wrapperElement) {
             return;
         }
 
-        const totalWidth = wrapper.offsetWidth - SHOW_MORE_BUTTON_WIDTH;
+        const totalWidth =
+            this.wrapperElement.offsetWidth - SHOW_MORE_BUTTON_WIDTH;
 
         let fittingCount = 0;
         let width = 0;

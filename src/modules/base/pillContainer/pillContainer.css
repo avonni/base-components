@@ -69,6 +69,10 @@
 
 .avonni-pill-container__action-menu {
     z-index: 7001;
+
+    /* Needed to prevent a potential scroll jump when the menu appears */
+    top: 0;
+    left: 0;
 }
 
 /*
