@@ -61,7 +61,10 @@
             onscroll={handleScroll}
         >
             <div
-                class="slds-col avonni-list__page-change-button-container"
+                class="
+                    avonni-list__flex-col
+                    avonni-list__page-change-button-container
+                "
                 if:true={showPaginationButtons}
             >
                 <lightning-button-icon
@@ -241,7 +244,8 @@
                                 ></lightning-icon>
                                 <div
                                     class="
-                                        slds-grid slds-col
+                                        slds-grid
+                                        avonni-list__flex-col
                                         slds-grid_vertical-align-center
                                         slds-has-flexi-truncate
                                         avonni-list-item-body
@@ -456,7 +460,7 @@
                 </template>
                 <li
                     class="
-                        slds-col
+                        avonni-list__flex-col
                         slds-size_12-of-12
                         slds-is-relative
                         avonni-list__lower-spinner
@@ -474,7 +478,8 @@
             </ul>
             <div
                 class="
-                    slds-col slds-is-relative
+                    avonni-list__flex-col
+                    slds-is-relative
                     avonni-list__page-change-button-container
                 "
                 if:true={showPaginationButtons}

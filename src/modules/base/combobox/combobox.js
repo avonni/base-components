@@ -646,7 +646,7 @@ export default class Combobox extends LightningElement {
      */
     get computedMainComboboxClass() {
         return classSet({
-            'slds-combobox-addon_end slds-col avonni-combobox__main-combobox_scopes':
+            'slds-combobox-addon_end avonni-combobox__main-combobox_scopes':
                 this.showScopes
         }).toString();
     }

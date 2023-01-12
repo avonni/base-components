@@ -142,8 +142,12 @@ describe('SummaryDetail', () => {
                 '[data-element-id="div-body"]'
             );
 
-            expect(title.classList).not.toContain('slds-col');
-            expect(body.classList).not.toContain('slds-col');
+            expect(title.classList).not.toContain(
+                'avonni-summary-detail__flex-col'
+            );
+            expect(body.classList).not.toContain(
+                'avonni-summary-detail__flex-col'
+            );
         });
     });
 
@@ -158,8 +162,10 @@ describe('SummaryDetail', () => {
                 '[data-element-id="div-body"]'
             );
 
-            expect(title.classList).toContain('slds-col');
-            expect(body.classList).toContain('slds-col');
+            expect(title.classList).toContain(
+                'avonni-summary-detail__flex-col'
+            );
+            expect(body.classList).toContain('avonni-summary-detail__flex-col');
         });
     });
 
