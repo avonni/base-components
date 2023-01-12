@@ -58,6 +58,10 @@
     border-color: var(--avonni-pill-container-color-border, #e5e5e5);
 }
 
+.avonni-pill-container__wrapper.avonni-pill-container__no-items {
+    border-color: transparent;
+}
+
 .avonni-pill-container__wrapper .avonni-pill-container__item:first-of-type {
     padding-left: 0.125rem;
 }

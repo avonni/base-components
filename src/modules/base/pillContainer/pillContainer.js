@@ -327,7 +327,8 @@ export default class PillContainer extends LightningElement {
     get computedWrapperClass() {
         return classSet('avonni-pill-container__wrapper slds-is-relative').add({
             'slds-pill_container slds-p-top_none slds-p-bottom_none':
-                this.singleLine
+                this.singleLine,
+            'avonni-pill-container__no-items': !this._visibleItemsCount
         });
     }
 
