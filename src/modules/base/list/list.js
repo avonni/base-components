@@ -816,7 +816,7 @@ export default class List extends LightningElement {
      */
     get computedListClass() {
         return classSet(
-            'avonni-list__item-menu slds-grid slds-is-relative slds-col'
+            'avonni-list__item-menu slds-grid slds-is-relative avonni-list__flex-col'
         )
             .add({
                 'slds-grid_vertical': this._currentColumnCount === 1,
@@ -860,12 +860,18 @@ export default class List extends LightningElement {
                     this.variant === 'base',
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
-                'slds-col slds-size_12-of-12': this._currentColumnCount === 1,
-                'slds-col slds-size_6-of-12': this._currentColumnCount === 2,
-                'slds-col slds-size_4-of-12': this._currentColumnCount === 3,
-                'slds-col slds-size_3-of-12': this._currentColumnCount === 4,
-                'slds-col slds-size_2-of-12': this._currentColumnCount === 6,
-                'slds-col slds-size_1-of-12': this._currentColumnCount === 12
+                'avonni-list__flex-col slds-size_12-of-12':
+                    this._currentColumnCount === 1,
+                'avonni-list__flex-col slds-size_6-of-12':
+                    this._currentColumnCount === 2,
+                'avonni-list__flex-col slds-size_4-of-12':
+                    this._currentColumnCount === 3,
+                'avonni-list__flex-col slds-size_3-of-12':
+                    this._currentColumnCount === 4,
+                'avonni-list__flex-col slds-size_2-of-12':
+                    this._currentColumnCount === 6,
+                'avonni-list__flex-col slds-size_1-of-12':
+                    this._currentColumnCount === 12
             })
             .toString();
     }
@@ -875,7 +881,7 @@ export default class List extends LightningElement {
      */
     get computedListContainerClass() {
         return classSet({
-            'slds-grid slds-col': this.variant === 'single-line',
+            'slds-grid avonni-list__flex-col': this.variant === 'single-line',
             'slds-scrollable_y':
                 this._hasUsedInfiniteLoading && this.variant === 'base'
         }).toString();
