@@ -124,7 +124,7 @@ export default class Slider extends LightningElement {
     _unit = SLIDER_UNITS.default;
     _unitAttributes = {};
     _variant = LABEL_VARIANTS.default;
-    _value = [DEFAULT_VALUE];
+    _value = DEFAULT_VALUE;
 
     computedMax;
     computedMin = DEFAULT_MIN;
@@ -180,9 +180,7 @@ export default class Slider extends LightningElement {
             this._resizeObserver = this.initResizeObserver();
         }
         if (!this._rendered || this._domModified) {
-            if (this.isVerticalResponsive) {
-                this.setVerticalResponsiveHeight();
-            }
+            this.setVerticalResponsiveHeight();
             if (this.showTrack) {
                 this.updateTrack(this._computedValues);
             } else {
@@ -259,6 +257,7 @@ export default class Slider extends LightningElement {
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this._domModified = true;
         }
     }
 
@@ -282,6 +281,7 @@ export default class Slider extends LightningElement {
         if (this._connected) {
             this.scaleValues();
             this.capValues();
+            this._domModified = true;
         }
     }
 
@@ -531,16 +531,20 @@ export default class Slider extends LightningElement {
         }
 
         if (!isNaN(Number(value))) {
-            this._value = [Number(value)];
+            this._value = Number(value);
+            this._computedValues = [this._value];
+        } else if (!value) {
+            this._value = DEFAULT_VALUE;
+            this._computedValues = [this._value];
         } else {
             const normalizedValue = normalizeArray(value, 'number');
             this._value = normalizedValue.length
                 ? normalizedValue
                 : [DEFAULT_VALUE];
             this._value.sort((a, b) => a - b);
+            this._computedValues = [...this._value];
         }
 
-        this._computedValues = [...this._value];
         if (this._connected) {
             this.scaleValues();
             this.capValues();
@@ -1087,7 +1091,6 @@ export default class Slider extends LightningElement {
                 Math.round(this._computedValues[index] / this._step) *
                 this._step;
         });
-        this.updatePublicValue();
     }
 
     /**
@@ -1350,9 +1353,7 @@ export default class Slider extends LightningElement {
             return null;
         }
         return new AvonniResizeObserver(wrapper, () => {
-            if (this.isVerticalResponsive) {
-                this.setVerticalResponsiveHeight();
-            }
+            this.setVerticalResponsiveHeight();
             if (this.showAnyTickMarks) {
                 this.drawRuler(true);
             }
@@ -1524,6 +1525,14 @@ export default class Slider extends LightningElement {
      * @param {Event} event
      */
     setVerticalResponsiveHeight() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-range"]'
+        );
+        if (!this.isVerticalResponsive) {
+            wrapper.style.transformOrigin = '';
+            wrapper.style.width = '';
+            return;
+        }
         this.template.host.style.height = '100%';
         this.template.host.style.display = 'block';
         const spacer = this.template.querySelector(
@@ -1532,9 +1541,6 @@ export default class Slider extends LightningElement {
         const parentHeight = Math.max(
             -this._thumbRadius,
             spacer.offsetHeight - this._thumbRadius
-        );
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
         );
         wrapper.style.transformOrigin = `${
             (parentHeight + this._thumbRadius) / 2

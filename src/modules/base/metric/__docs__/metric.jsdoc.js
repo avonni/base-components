@@ -106,6 +106,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-secondary-alignment
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-secondary-negative-trend-color-background
  * @default #feded8
  * @type color
