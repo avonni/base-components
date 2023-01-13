@@ -134,6 +134,7 @@ export default class Scheduler extends LightningElement {
     currentTimeSpan = {};
     detailPopoverFields = [];
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
+    sidePanelIsExpanded = true;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
@@ -587,22 +588,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Deprecated. Set the headers in each time span instead.
-     *
-     * @type {string}
-     * @deprecated
-     */
-    @api
-    get headers() {
-        return null;
-    }
-    set headers(value) {
-        console.warn(
-            'The "headers" attribute is deprecated. Set the headers in each time span instead.'
-        );
-    }
-
-    /**
      * Array of action objects. If present, the actions will be shown in the toolbar.
      *
      * @type {object[]}
@@ -618,6 +603,22 @@ export default class Scheduler extends LightningElement {
             return;
         }
         this._headerActions = actions;
+    }
+
+    /**
+     * Deprecated. Set the headers in each time span instead.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get headers() {
+        return null;
+    }
+    set headers(value) {
+        console.warn(
+            'The "headers" attribute is deprecated. Set the headers in each time span instead.'
+        );
     }
 
     /**
@@ -1345,6 +1346,15 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * True if the side panel toggle button should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showSidePanelToggle() {
+        return !this.collapseDisabled && !this.hideSidePanel;
+    }
+
+    /**
      * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
      * @type {boolean}
@@ -1849,31 +1859,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle a click on a header action.
-     *
-     * @param {Event} event click or select event.
-     */
-    handleHeaderActionSelect(event) {
-        const name = event.detail.value || event.currentTarget.value;
-
-        /**
-         * The event fired when a user clicks on a header action.
-         *
-         * @event
-         * @name headeractionclick
-         * @param {string} name Name of the action clicked.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('headeractionclick', {
-                detail: { name },
-                bubbles: true
-            })
-        );
-    }
-
-    /**
      * Handle a change of the selected date.
      *
      * @param {Event} event
@@ -2223,6 +2208,31 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle a click on a header action.
+     *
+     * @param {Event} event click or select event.
+     */
+    handleHeaderActionSelect(event) {
+        const name = event.detail.value || event.currentTarget.value;
+
+        /**
+         * The event fired when a user clicks on a header action.
+         *
+         * @event
+         * @name headeractionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('headeractionclick', {
+                detail: { name },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
      * Handle the `hidepopovers` event dispatched by a primitive schedule. Hide the appropriate popovers.
      *
      * @param {Event} event
@@ -2278,6 +2288,15 @@ export default class Scheduler extends LightningElement {
         const { selectedResources, name } = event.detail;
         this._selectedResources = selectedResources;
         this.dispatchResourceSelectEvent(name);
+    }
+
+    /**
+     * Handle the toggle of the side panel from the schedule.
+     *
+     * @param {Event} event togglesidepanel event.
+     */
+    handleToggleSidePanel(event) {
+        this.sidePanelIsExpanded = event.detail.isExpanded;
     }
 
     /**
@@ -2421,6 +2440,13 @@ export default class Scheduler extends LightningElement {
         }
         this._selectedResources = selectedResources;
         this.dispatchResourceSelectEvent(name);
+    }
+
+    /**
+     * Handle the toggle of the side panel from the toolbar button.
+     */
+    handleToolbarSidePanelToggle() {
+        this.sidePanelIsExpanded = !this.sidePanelIsExpanded;
     }
 
     /**
