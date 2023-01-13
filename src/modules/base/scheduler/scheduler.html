@@ -185,6 +185,7 @@
                 icon-name={oneHeaderActionButton.iconName}
                 label={oneHeaderActionButton.label}
                 value={oneHeaderActionButton.name}
+                onclick={handleHeaderActionSelect}
             ></lightning-button>
             <lightning-button-icon
                 if:true={oneHeaderActionButtonIcon}
@@ -193,6 +194,7 @@
                 icon-name={oneHeaderActionButtonIcon.iconName}
                 value={oneHeaderActionButtonIcon.name}
                 variant="border-filled"
+                onclick={handleHeaderActionSelect}
             ></lightning-button-icon>
             <c-button-menu
                 if:true={moreThanOneHeaderAction}

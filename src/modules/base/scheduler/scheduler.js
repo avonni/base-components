@@ -1849,6 +1849,31 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Handle a click on a header action.
+     *
+     * @param {Event} event click or select event.
+     */
+    handleHeaderActionSelect(event) {
+        const name = event.detail.value || event.currentTarget.value;
+
+        /**
+         * The event fired when a user clicks on a header action.
+         *
+         * @event
+         * @name headeractionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('headeractionclick', {
+                detail: { name },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
      * Handle a change of the selected date.
      *
      * @param {Event} event
