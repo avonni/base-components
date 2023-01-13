@@ -42,6 +42,7 @@ import {
 } from 'c/utilsPrivate';
 import {
     getDisabledWeekdaysLabels,
+    parseTimeFrame,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
@@ -240,9 +241,14 @@ export default class Scheduler extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
-        const timeFrames = normalizeArray(value);
+        const timeFrames = normalizeArray(value, 'string');
+        const validTimeFrames = timeFrames.filter((timeFrame) => {
+            return parseTimeFrame(timeFrame).valid;
+        });
         this._availableTimeFrames =
-            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
+            validTimeFrames.length > 0
+                ? validTimeFrames
+                : DEFAULT_AVAILABLE_TIME_FRAMES;
     }
 
     /**
