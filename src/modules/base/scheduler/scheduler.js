@@ -150,6 +150,7 @@ export default class Scheduler extends LightningElement {
         this._connected = true;
 
         this.classList.add('slds-is-relative');
+        this.classList.add('slds-show');
     }
 
     renderedCallback() {
