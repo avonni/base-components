@@ -78,6 +78,7 @@
                 icon-name="utility:left"
                 size="x-small"
                 variant="bare"
+                data-element-id="lightning-button-icon-splitter-collapse"
                 onclick={handleSplitterCollapse}
                 onmousedown={stopPropagation}
             ></lightning-button-icon>
@@ -87,6 +88,7 @@
                     avonni-scheduler__splitter-resize-handle
                     slds-m-vertical_x-small
                 "
+                data-element-id="div-splitter-resize-handle"
             >
                 <span class="slds-assistive-text">Resize</span>
             </div>
@@ -97,6 +99,7 @@
                 icon-name="utility:right"
                 size="x-small"
                 variant="bare"
+                data-element-id="lightning-button-icon-splitter-expand"
                 onclick={handleSplitterExpand}
                 onmousedown={stopPropagation}
             ></lightning-button-icon>
@@ -236,6 +239,8 @@
                                     variant="agenda"
                                     data-element-id="avonni-primitive-scheduler-event-occurrence"
                                     data-event-name={occurrence.event.name}
+                                    data-start={occurrence.from.ts}
+                                    data-end={occurrence.to.ts}
                                     oncontextmenu={stopPropagation}
                                     onprivatecontextmenu={handleEventContextMenu}
                                     onprivatedblclick={handleEventDoubleClick}

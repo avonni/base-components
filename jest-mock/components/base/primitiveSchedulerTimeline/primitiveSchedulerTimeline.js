@@ -11,6 +11,8 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api events;
     @api eventsLabels;
     @api eventsTheme;
+    @api hideResourcesFilter;
+    @api hideSidePanel;
     @api loadingStateAlternativeText;
     @api newEventTitle;
     @api orientation;
@@ -19,6 +21,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api resizeColumnDisabled;
     @api resources;
     @api selectedResources;
+    @api sidePanelPosition;
     @api start;
     @api timeSpan;
     @api zoomToFit;
