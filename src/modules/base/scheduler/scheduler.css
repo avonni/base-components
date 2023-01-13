@@ -38,6 +38,10 @@
     height: calc(100% - 70px);
 }
 
+.avonni-scheduler__toolbar {
+    background-color: var(--avonni-scheduler-toolbar-color-background, #ffffff);
+}
+
 .avonni-scheduler__detail-popover-close-button {
     z-index: 1;
     top: 0;

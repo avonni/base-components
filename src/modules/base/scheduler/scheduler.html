@@ -36,7 +36,12 @@
     <!-- Toolbar -->
     <div
         if:false={hideToolbar}
-        class="slds-grid slds-m-bottom_medium slds-grid_vertical-align-center"
+        class="
+            slds-grid
+            slds-p-bottom_medium
+            slds-grid_vertical-align-center
+            avonni-scheduler__toolbar
+        "
         data-element-id="div-toolbar"
     >
         <!-- Toolbar time spans -->
@@ -58,6 +63,7 @@
                 if:true={toolbarTimeSpanMenuItems.length}
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:down"
+                variant="border-filled"
                 data-element-id="avonni-button-menu-toolbar-spans"
             >
                 <template
@@ -129,6 +135,7 @@
                 class="avonni-scheduler__toolbar-button-group_first"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronleft"
+                variant="border-filled"
                 data-element-id="lightning-button-icon-toolbar-prev"
                 onclick={handleToolbarPrevClick}
             ></lightning-button-icon>
@@ -143,6 +150,7 @@
                 class="avonni-scheduler__toolbar-button-group_last"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronright"
+                variant="border-filled"
                 data-element-id="lightning-button-icon-toolbar-next"
                 onclick={handleToolbarNextClick}
             ></lightning-button-icon>
