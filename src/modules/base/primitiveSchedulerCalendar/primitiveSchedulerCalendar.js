@@ -191,6 +191,69 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
 
     /**
+     * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
+     * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, ... , 5, 6]
+     */
+    @api
+    get availableDaysOfTheWeek() {
+        return super.availableDaysOfTheWeek;
+    }
+    set availableDaysOfTheWeek(value) {
+        super.availableDaysOfTheWeek = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
+     * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, … , 10, 11]
+     */
+    @api
+    get availableMonths() {
+        return super.availableMonths;
+    }
+    set availableMonths(value) {
+        super.availableMonths = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
+     * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: `['10:00-11:59', '14:30-18:44']`
+     *
+     * @type {string[]}
+     * @public
+     * @default ['00:00-23:59']
+     */
+    @api
+    get availableTimeFrames() {
+        return super.availableTimeFrames;
+    }
+    set availableTimeFrames(value) {
+        super.availableTimeFrames = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
      * If present, the resources filter is hidden.
      *
      * @type {boolean}
