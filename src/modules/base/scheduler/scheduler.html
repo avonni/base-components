@@ -126,21 +126,21 @@
         <!-- Toolbar next/today/previous navigation -->
         <div class="slds-grid">
             <lightning-button-icon
-                class="avonni-scheduler__toolbar-nav-button_first"
+                class="avonni-scheduler__toolbar-button-group_first"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronleft"
                 data-element-id="lightning-button-icon-toolbar-prev"
                 onclick={handleToolbarPrevClick}
             ></lightning-button-icon>
             <lightning-button
-                class="avonni-scheduler__toolbar-nav-button_middle"
+                class="avonni-scheduler__toolbar-button-group_middle"
                 disabled={showEmptyTimelineMessage}
                 label="Today"
                 data-element-id="lightning-button-icon-toolbar-today"
                 onclick={handleToolbarTodayClick}
             ></lightning-button>
             <lightning-button-icon
-                class="avonni-scheduler__toolbar-nav-button_last"
+                class="avonni-scheduler__toolbar-button-group_last"
                 disabled={showEmptyTimelineMessage}
                 icon-name="utility:chevronright"
                 data-element-id="lightning-button-icon-toolbar-next"
@@ -148,26 +148,63 @@
             ></lightning-button-icon>
         </div>
 
-        <c-button-menu
-            if:true={moreThanOneDisplay}
-            class="slds-m-left_small avonni-scheduler__display-menu"
-            label={computedSelectedDisplay.label}
-            menu-alignment="right"
-            data-element-id="avonni-button-menu-toolbar-display"
-            onselect={handleDisplaySelect}
-        >
-            <template for:each={displayOptions} for:item="displayOption">
-                <lightning-menu-item
-                    key={displayOption.value}
-                    checked={displayOption.checked}
-                    icon-name={displayOption.iconName}
-                    label={displayOption.label}
-                    value={displayOption.value}
-                    data-element-id="lightning-menu-item-display"
-                ></lightning-menu-item>
-            </template>
-        </c-button-menu>
+        <div class="slds-m-left_small slds-grid">
+            <!-- Displays -->
+            <c-button-menu
+                if:true={moreThanOneDisplay}
+                class={displayButtonClass}
+                label={computedSelectedDisplay.label}
+                menu-alignment="right"
+                data-element-id="avonni-button-menu-toolbar-display"
+                onselect={handleDisplaySelect}
+            >
+                <template for:each={displayOptions} for:item="displayOption">
+                    <lightning-menu-item
+                        key={displayOption.value}
+                        checked={displayOption.checked}
+                        icon-name={displayOption.iconName}
+                        label={displayOption.label}
+                        value={displayOption.value}
+                        data-element-id="lightning-menu-item-display"
+                    ></lightning-menu-item>
+                </template>
+            </c-button-menu>
 
+            <!-- Actions -->
+            <lightning-button
+                if:true={oneHeaderActionButton}
+                class={headerActionButtonClass}
+                icon-name={oneHeaderActionButton.iconName}
+                label={oneHeaderActionButton.label}
+                value={oneHeaderActionButton.name}
+            ></lightning-button>
+            <lightning-button-icon
+                if:true={oneHeaderActionButtonIcon}
+                class={headerActionButtonClass}
+                alternative-text={oneHeaderActionButtonIcon.name}
+                icon-name={oneHeaderActionButtonIcon.iconName}
+                value={oneHeaderActionButtonIcon.name}
+                variant="border-filled"
+            ></lightning-button-icon>
+            <c-button-menu
+                if:true={moreThanOneHeaderAction}
+                class={headerActionButtonClass}
+                alternative-text="Actions"
+                menu-alignment="right"
+                onselect={handleHeaderActionSelect}
+            >
+                <template for:each={headerActions} for:item="action">
+                    <lightning-menu-item
+                        key={action.name}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        value={action.name}
+                    ></lightning-menu-item>
+                </template>
+            </c-button-menu>
+        </div>
+
+        <!-- Resources filter -->
         <c-filter-menu
             if:true={showResourceFilter}
             class="slds-m-left_small"

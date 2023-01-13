@@ -32,6 +32,7 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    equal,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
@@ -96,6 +97,7 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsTheme = EVENTS_THEMES.default;
+    _headerActions = [];
     _hiddenDisplays = [];
     _hideResourcesFilter = false;
     _hideSidePanel = false;
@@ -598,6 +600,24 @@ export default class Scheduler extends LightningElement {
         console.warn(
             'The "headers" attribute is deprecated. Set the headers in each time span instead.'
         );
+    }
+
+    /**
+     * Array of action objects. If present, the actions will be shown in the toolbar.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get headerActions() {
+        return this._headerActions;
+    }
+    set headerActions(value) {
+        const actions = normalizeArray(value, 'object');
+        if (equal(this._headerActions, actions)) {
+            return;
+        }
+        this._headerActions = actions;
     }
 
     /**
@@ -1156,6 +1176,15 @@ export default class Scheduler extends LightningElement {
             : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
     }
 
+    get displayButtonClass() {
+        return classSet('avonni-scheduler__display-menu')
+            .add({
+                'avonni-scheduler__toolbar-button-group_first':
+                    this.headerActions.length
+            })
+            .toString();
+    }
+
     /**
      * Computed title of the edit dialog.
      *
@@ -1175,6 +1204,13 @@ export default class Scheduler extends LightningElement {
      */
     get firstEventActions() {
         return this.computedContextMenuEvent.slice(0, 2);
+    }
+
+    get headerActionButtonClass() {
+        return classSet({
+            'avonni-scheduler__toolbar-button-group_last':
+                this.moreThanOneDisplay
+        }).toString();
     }
 
     /**
@@ -1220,6 +1256,45 @@ export default class Scheduler extends LightningElement {
      */
     get moreThanOneDisplay() {
         return this.displayOptions.length > 1;
+    }
+
+    /**
+     * True if there is more than one header action.
+     *
+     * @type {boolean}
+     */
+    get moreThanOneHeaderAction() {
+        return this.headerActions.length > 1;
+    }
+
+    /**
+     * If only one header action is present, and it has a label, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneHeaderActionButton() {
+        if (this.headerActions.length === 1 && this.headerActions[0].label) {
+            return this.headerActions[0];
+        }
+        return false;
+    }
+
+    /**
+     * If only one header action is present, and it doesn't have a label but it has an icon, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneHeaderActionButtonIcon() {
+        if (
+            this.headerActions.length === 1 &&
+            this.headerActions[0].iconName &&
+            !this.headerActions[0].label
+        ) {
+            return this.headerActions[0];
+        }
+        return false;
     }
 
     /**
