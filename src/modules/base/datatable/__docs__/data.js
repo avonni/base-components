@@ -336,6 +336,15 @@ const columnsDO = [
         editable: true
     },
     {
+        label: 'Lookup',
+        type: 'lookup',
+        fieldName: 'lookup',
+        editable: true,
+        typeAttributes: {
+            label: { fieldName: 'email' }
+        }
+    },
+    {
         label: 'Number',
         type: 'number',
         fieldName: 'number',
@@ -367,7 +376,8 @@ const columnsPR = [
             referenceLines: { fieldName: 'progressBarReferenceLines' },
             theme: { fieldName: 'progressBarTheme' },
             variant: 'circular',
-            thickness: 'large'
+            thickness: 'large',
+            label: { fieldName: 'percent' }
         },
         initialWidth: 150
     },
@@ -639,6 +649,7 @@ const recordsDO = [
             latitude: '45.53',
             longitude: '-73.61'
         },
+        lookup: 'www.salesforce.com',
         number: '1789'
     },
     {

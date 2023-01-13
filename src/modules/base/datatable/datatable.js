@@ -54,6 +54,7 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
+import lookup from './lookup.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -94,6 +95,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
+    'lookup',
     'rating',
     'rich-text',
     'slider',
@@ -208,6 +210,10 @@ export default class Datatable extends LightningDatatable {
                 'thumbnail',
                 'width'
             ]
+        },
+        lookup: {
+            template: lookup,
+            typeAttributes: ['label']
         },
         'progress-bar': {
             template: progressBar,
