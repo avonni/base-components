@@ -627,11 +627,20 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         );
     }
 
+    /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
     get sidePanelClass() {
-        return classSet('slds-scrollable avonni-scheduler__panel')
+        return classSet(
+            'slds-scrollable avonni-scheduler__panel slds-border_top slds-border_bottom'
+        )
             .add({
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
-                'avonni-scheduler__panel_expanded': this._isExpanded
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'slds-border_left': this.sidePanelPosition === 'left',
+                'slds-border_right': this.sidePanelPosition === 'right'
             })
             .toString();
     }

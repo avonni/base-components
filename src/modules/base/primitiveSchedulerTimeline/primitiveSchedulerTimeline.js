@@ -301,7 +301,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get firstColClass() {
-        return classSet('avonni-scheduler__first-col slds-grid slds-scrollable')
+        return classSet(
+            'avonni-scheduler__first-col slds-grid slds-scrollable slds-border_left slds-border_top'
+        )
             .add({
                 'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
                     this.isVertical,
