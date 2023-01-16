@@ -732,7 +732,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     (theme === 'default' ||
                         theme === 'rounded' ||
                         (this._focused && theme === 'transparent')),
-                'avonni-scheduler__event-wrapper_focused': this._focused,
+                'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
                 'avonni-scheduler__event_vertical':
                     theme !== 'line' && this.isVertical,
@@ -854,14 +854,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
                     !this.displayAsDot,
-                'slds-p-vertical_xx-small':
-                    !this.isVerticalTimeline &&
-                    !this.isVerticalCalendar &&
-                    !this.isMonthCalendar &&
-                    !this.isAgenda,
-                'slds-p-bottom_xx-small':
-                    this.isStandalone && this.spansOnMoreThanOneDay,
-                'avonni-scheduler__event-wrapper_vertical': this.isVertical
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical,
+                'avonni-scheduler__event-wrapper': !this.isVertical
             })
             .toString();
     }
