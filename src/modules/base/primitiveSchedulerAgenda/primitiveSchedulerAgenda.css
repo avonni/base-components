@@ -71,9 +71,20 @@
 }
 
 .avonni-scheduler__agenda-day_today {
+    color: var(--lwc-colorTextInverse, #fff);
+    position: relative;
+    z-index: 0;
+}
+.avonni-scheduler__agenda-day_today::before {
+    content: '';
     background-color: var(--lwc-brandAccessible, #0176d3);
     border-radius: 50%;
-    color: var(--lwc-colorTextInverse, #fff);
+    position: absolute;
+    z-index: -1;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
 }
 
 .avonni-scheduler__agenda-time {
