@@ -197,6 +197,7 @@
                                                 class="
                                                     avonni-scheduler__flex-col
                                                     avonni-scheduler__border_right
+                                                    avonni-scheduler__calendar-cell-multi-day
                                                     avonni-primitive-scheduler-calendar__inherit-height
                                                 "
                                                 data-element-id="div-cell"
@@ -297,9 +298,7 @@
                                     >
                                         <div
                                             key={column.start.ts}
-                                            class="
-                                                avonni-scheduler__calendar-column
-                                            "
+                                            class={columnClass}
                                             data-element-id="div-column"
                                             data-index={index}
                                         >

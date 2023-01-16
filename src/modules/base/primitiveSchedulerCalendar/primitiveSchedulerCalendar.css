@@ -67,6 +67,10 @@
     background-color: var(--lwc-colorBackground, #f3f3f3);
 }
 
+.avonni-scheduler__calendar-cell-multi-day:last-of-type {
+    border-right: none;
+}
+
 .avonni-primitive-scheduler-calendar__inherit-height {
     height: inherit;
     min-height: inherit;
@@ -124,6 +128,7 @@
 }
 
 .avonni-scheduler__calendar-column:nth-child(7)
-    .avonni-scheduler__calendar-cell {
+    .avonni-scheduler__calendar-cell,
+.avonni-scheduler__calendar-column_day .avonni-scheduler__calendar-cell {
     border-right: none;
 }

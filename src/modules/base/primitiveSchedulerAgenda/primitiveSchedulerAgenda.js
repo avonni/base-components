@@ -243,10 +243,13 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     get mainSectionClass() {
         return classSet(
-            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__border_right avonni-scheduler__main-section slds-scrollable'
+            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable'
         )
             .add({
-                'avonni-scheduler__border_left': this.hideSidePanel
+                'avonni-scheduler__border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
             })
             .toString();
     }

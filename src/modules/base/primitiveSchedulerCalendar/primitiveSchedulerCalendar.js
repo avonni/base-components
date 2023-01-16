@@ -370,6 +370,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             .toString();
     }
 
+    get columnClass() {
+        return classSet('avonni-scheduler__calendar-column')
+            .add({
+                'avonni-scheduler__calendar-column_day': this.isDay
+            })
+            .toString();
+    }
+
     /**
      * Formatted available months, used to generate the calendars in the year view.
      *
@@ -571,10 +579,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get mainPanelClass() {
         return classSet(
-            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable avonni-scheduler__border_right'
+            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable'
         )
             .add({
-                'avonni-scheduler__border_left': this.hideSidePanel
+                'avonni-scheduler__border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
             })
             .toString();
     }
