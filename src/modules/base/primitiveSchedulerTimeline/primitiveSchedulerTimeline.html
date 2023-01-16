@@ -56,11 +56,16 @@
                 <div
                     class="
                         avonni-scheduler__vertical-resource-header-first-cell
-                        slds-border_bottom
+                        avonni-scheduler__border_bottom
+                        avonni-scheduler__border_right
+                        slds-m-bottom_medium
                     "
                 ></div>
                 <c-primitive-scheduler-header-group
-                    class="avonni-scheduler__header_vertical"
+                    class="
+                        avonni-scheduler__header_vertical
+                        avonni-scheduler__border_top
+                    "
                     available-days-of-the-week={availableDaysOfTheWeek}
                     available-months={availableMonths}
                     available-time-frames={availableTimeFrames}
@@ -114,7 +119,11 @@
 
         <!-- Resource headers as columns -->
         <div
-            class="avonni-scheduler__second-col slds-scrollable"
+            class="
+                avonni-scheduler__second-col
+                slds-scrollable
+                avonni-scheduler__border_top
+            "
             onscroll={handleScroll}
         >
             <div
@@ -122,8 +131,9 @@
                 class="
                     slds-grid
                     slds-theme_shade
-                    slds-border_bottom
+                    avonni-scheduler__border_bottom
                     slds-scrollable_none
+                    slds-m-bottom_medium
                 "
                 data-element-id="div-vertical-resource-headers"
             >

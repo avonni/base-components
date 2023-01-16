@@ -63,6 +63,7 @@
 }
 .avonni-scheduler__first-col_horizontal {
     width: 300px;
+    margin-right: -3px;
 }
 
 .avonni-scheduler__grid_align-end {
@@ -88,6 +89,10 @@
 .avonni-scheduler__vertical-header-wrapper {
     width: 100%;
     overflow: hidden;
+}
+
+.avonni-scheduler__vertical-splitter {
+    border-left: none;
 }
 
 .avonni-scheduler__vertical-resource-header-cell {
@@ -128,6 +133,10 @@
 .avonni-scheduler__cell {
     width: var(--avonni-scheduler-cell-width);
     min-width: var(--avonni-scheduler-cell-width);
+}
+
+.avonni-scheduler__cell:last-of-type {
+    border-right: 1px solid #c9c9c9;
 }
 
 .avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {

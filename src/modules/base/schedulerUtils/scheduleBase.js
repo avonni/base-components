@@ -583,10 +583,12 @@ export class ScheduleBase extends LightningElement {
      */
     get splitterClass() {
         return classSet(
-            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center slds-border_top slds-border_bottom slds-border_left slds-border_right'
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__border_top avonni-scheduler__border_bottom'
         )
             .add({
-                'avonni-scheduler__splitter_resizable': this.showSplitterResize
+                'avonni-scheduler__splitter_resizable': this.showSplitterResize,
+                'avonni-scheduler__border_left': !this._isCollapsed,
+                'avonni-scheduler__border_right': !this._isExpanded
             })
             .toString();
     }

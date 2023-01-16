@@ -34,13 +34,32 @@
     flex: 1 1 auto;
 }
 
+.avonni-scheduler__border_bottom {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_right {
+    border-right: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_left {
+    border-left: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_top {
+    border-top: 1px solid #c9c9c9;
+}
+
+/* Splitter */
+
 .avonni-scheduler__splitter {
+    position: relative;
+    background-color: #fff;
     min-height: 100%;
 }
 
 .avonni-scheduler__second-col {
     flex: 1 1 0;
-    margin-top: -1px;
 }
 
 .avonni-scheduler__splitter_resizable,

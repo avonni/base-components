@@ -243,10 +243,10 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     get mainSectionClass() {
         return classSet(
-            'slds-border_top slds-border_bottom slds-border_right avonni-scheduler__main-section slds-scrollable'
+            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__border_right avonni-scheduler__main-section slds-scrollable'
         )
             .add({
-                'slds-border_left': this.hideSidePanel
+                'avonni-scheduler__border_left': this.hideSidePanel
             })
             .toString();
     }
@@ -280,13 +280,15 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      */
     get sidePanelClass() {
         return classSet(
-            'avonni-scheduler__panel slds-scrollable slds-border_top slds-border_bottom'
+            'avonni-scheduler__panel slds-scrollable avonni-scheduler__border_top avonni-scheduler__border_bottom'
         )
             .add({
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
-                'slds-border_left': this.sidePanelPosition === 'left',
-                'slds-border_right': this.sidePanelPosition === 'right'
+                'avonni-scheduler__border_left':
+                    this.sidePanelPosition === 'left',
+                'avonni-scheduler__border_right':
+                    this.sidePanelPosition === 'right'
             })
             .toString();
     }

@@ -64,7 +64,7 @@
 }
 
 .avonni-scheduler__calendar-cell_outside-of-current-month {
-    color: #adadad;
+    background-color: var(--lwc-colorBackground, #f3f3f3);
 }
 
 .avonni-primitive-scheduler-calendar__inherit-height {
@@ -75,9 +75,8 @@
 
 .avonni-scheduler__calendar-header {
     --avonni-primitive-scheduler-header-group-cell-color-background: #fff;
-    --avonni-primitive-scheduler-header-group-cell-spacing-block-start: 0.5rem;
-    --avonni-primitive-scheduler-header-group-cell-spacing-block-end: 0.5rem;
-    --avonni-primitive-scheduler-header-group-cell-color-border: transparent;
+    --avonni-primitive-scheduler-header-group-cell-height: 2.5rem;
+    --avonni-primitive-scheduler-header-group-cell-border-right-width: 0;
 }
 
 .avonni-scheduler__calendar-day-header-wrapper {
@@ -85,24 +84,16 @@
     top: 0;
     z-index: 2;
 }
-.avonni-scheduler__calendar-day-header-wrapper::before {
-    content: '';
-    background-image: linear-gradient(to right, white, rgba(255, 255, 255, 0));
-    height: 2px;
-    left: 0;
-    bottom: -1px;
-    position: absolute;
-    width: 80px;
-    z-index: 3;
+
+.avonni-scheduler__calendar-day-header-wrapper:not(.avonni-scheduler__calendar-day-header-wrapper_month) {
+    border-bottom: 2px solid #c9c9c9;
 }
-.avonni-scheduler__calendar-day-header-wrapper::after {
-    box-shadow: inset 0 1px 1px 0 rgb(0 0 0 / 14%),
-        inset 0 2px 1px -1px rgb(0 0 0 / 12%);
-    content: '';
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 4px;
+
+.avonni-scheduler__calendar-time-zone {
+    color: var(--lwc-colorTextPlaceholder, #747474);
+    font-size: 11px;
+    height: 2.5rem;
+    text-transform: uppercase;
 }
 
 .avonni-scheduler__calendar-show-more-popover {
@@ -117,4 +108,22 @@
 .avonni-scheduler__calendar-show-more-popover-close-button {
     top: 0;
     right: 0;
+}
+
+.avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell {
+    border-right-color: var(--lwc-colorBorder, #e5e5e5);
+    border-bottom-color: #c9c9c9;
+}
+
+.avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell_today {
+    border: 1px solid var(--lwc-colorBorderRowSelected, #0176d3);
+}
+
+.avonni-scheduler__calendar-cell:last-of-type {
+    border-bottom: none;
+}
+
+.avonni-scheduler__calendar-column:nth-child(7)
+    .avonni-scheduler__calendar-cell {
+    border-right: none;
 }

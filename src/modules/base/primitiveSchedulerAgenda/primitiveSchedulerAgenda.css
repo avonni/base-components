@@ -60,6 +60,10 @@
     --avonni-primitive-scheduler-event-occurrence-standalone-chip-size: 0.75rem;
 }
 
+.avonni-scheduler__agenda-day-group:last-of-type {
+    border-bottom: none;
+}
+
 .avonni-scheduler__agenda-day {
     font-size: 2.625rem;
     min-width: 3rem;

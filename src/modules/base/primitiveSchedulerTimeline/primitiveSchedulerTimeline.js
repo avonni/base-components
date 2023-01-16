@@ -252,12 +252,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get cellClass() {
-        return classSet(
-            'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
-        )
+        return classSet('slds-p-around_none slds-wrap avonni-scheduler__cell')
             .add({
-                'avonni-scheduler__flex-col': !this.isVertical,
-                'avonni-scheduler__cell_vertical': this.isVertical,
+                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__border_bottom':
+                    !this.isVertical,
+                'avonni-scheduler__cell_vertical avonni-scheduler__border_right slds-border_bottom':
+                    this.isVertical,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
@@ -302,7 +302,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get firstColClass() {
         return classSet(
-            'avonni-scheduler__first-col slds-grid slds-scrollable slds-border_left slds-border_top'
+            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__border_left avonni-scheduler__border_top avonni-scheduler__border_bottom'
         )
             .add({
                 'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
@@ -439,7 +439,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
         )
             .add({
-                'avonni-scheduler__schedule-wrapper_vertical': this.isVertical
+                'avonni-scheduler__schedule-wrapper_vertical slds-border_top':
+                    this.isVertical
             })
             .toString();
     }
@@ -473,6 +474,14 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .milliseconds;
     }
 
+    get splitterClass() {
+        return classSet(super.splitterClass)
+            .add({
+                'avonni-scheduler__vertical-splitter': this.isVertical
+            })
+            .toString();
+    }
+
     /**
      * Computed CSS classes for the vertical resource header cells.
      *
@@ -480,7 +489,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get verticalResourceHeaderCellClass() {
         return classSet(
-            'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
+            'avonni-scheduler__border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
         )
             .add({
                 'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':

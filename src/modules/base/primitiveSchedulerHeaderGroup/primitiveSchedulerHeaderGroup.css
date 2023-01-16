@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import 'c/schedulerSharedStyle';
+
 :host {
     display: block;
 }
@@ -52,18 +54,9 @@
         --avonni-primitive-scheduler-header-group-cell-color-background,
         #f3f3f3
     );
-    font-weight: 700;
-    padding-top: var(
-        --avonni-primitive-scheduler-header-group-cell-spacing-block-start
-    );
-    padding-bottom: var(
-        --avonni-primitive-scheduler-header-group-cell-spacing-block-end
-    );
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: var(
-        --avonni-primitive-scheduler-header-group-cell-color-border,
-        #e5e5e5
+    height: var(--avonni-primitive-scheduler-header-group-cell-height);
+    border-right-width: var(
+        --avonni-primitive-scheduler-header-group-cell-border-right-width
     );
 }
 
@@ -90,11 +83,23 @@
     padding: 0 0.75rem;
 }
 
+.avonni-scheduler-header-group__header-label_horizontal {
+    text-transform: uppercase;
+}
+
 .avonni-scheduler-header-group__header-label_sticky {
     position: sticky;
     left: 0;
     top: var(
         --avonni-primitive-scheduler-header-group-label-position-top,
         10px
+    );
+}
+
+.avonni-scheduler-header-group__header-label_vertical-non-sticky {
+    top: calc(var(--avonni-scheduler-cell-height) / -2);
+    background-color: var(
+        --avonni-primitive-scheduler-header-group-cell-color-background,
+        #f3f3f3
     );
 }

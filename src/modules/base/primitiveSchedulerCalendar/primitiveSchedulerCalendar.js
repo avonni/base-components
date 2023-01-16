@@ -361,6 +361,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    get cellsGridClass() {
+        return classSet('slds-grid avonni-scheduler__flex-col')
+            .add({
+                'slds-border_top': !this.isMonth,
+                'avonni-scheduler__calendar-month-grid': this.isMonth
+            })
+            .toString();
+    }
+
     /**
      * Formatted available months, used to generate the calendars in the year view.
      *
@@ -403,19 +412,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Computed CSS classes for the horizontal primitive headers visible in the day, week and month view.
-     *
-     * @type {string}
-     */
-    get dayHeadersClass() {
-        return classSet('avonni-scheduler__calendar-header')
-            .add({
-                'slds-border_left': !this.isMonth
-            })
-            .toString();
-    }
-
-    /**
      * Computed visible time span, used by the horizontal primitive headers visible in the day, week and month view.
      *
      * @type {object}
@@ -445,6 +441,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this.isMonth
             ? this._dayHeadersLoading
             : this._dayHeadersLoading || this._hourHeadersLoading;
+    }
+
+    get horizontalHeaderWrapperClass() {
+        return classSet(
+            'avonni-scheduler__calendar-day-header-wrapper slds-theme_default slds-is-relative slds-grid'
+        )
+            .add({
+                'avonni-scheduler__calendar-day-header-wrapper_month':
+                    this.isMonth,
+                'slds-m-bottom_medium': !this.isMonth
+            })
+            .toString();
     }
 
     /**
@@ -563,10 +571,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get mainPanelClass() {
         return classSet(
-            'slds-border_top slds-border_bottom avonni-scheduler__main-section slds-scrollable'
+            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable avonni-scheduler__border_right'
         )
             .add({
-                'slds-border_left': this.hideSidePanel
+                'avonni-scheduler__border_left': this.hideSidePanel
             })
             .toString();
     }
@@ -634,13 +642,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get sidePanelClass() {
         return classSet(
-            'slds-scrollable avonni-scheduler__panel slds-border_top slds-border_bottom'
+            'slds-scrollable avonni-scheduler__panel avonni-scheduler__border_top avonni-scheduler__border_bottom'
         )
             .add({
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
-                'slds-border_left': this.sidePanelPosition === 'left',
-                'slds-border_right': this.sidePanelPosition === 'right'
+                'avonni-scheduler__border_left':
+                    this.sidePanelPosition === 'left',
+                'avonni-scheduler__border_right':
+                    this.sidePanelPosition === 'right'
             })
             .toString();
     }
@@ -1283,10 +1293,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * Align the horizontal headers with the end of the vertical headers.
      */
     setHorizontalHeadersSideSpacing() {
-        const horizontalHeaders = this.template.querySelector(
-            '[data-element-id="div-horizontal-header-wrapper"]'
+        const firstColumn = this.template.querySelector(
+            '[data-element-id="div-horizontal-header-first-column"]'
         );
-        if (!horizontalHeaders) {
+        if (!firstColumn) {
             return;
         }
 
@@ -1296,9 +1306,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (verticalHeaders) {
             // Align the horizontal headers with the vertical headers
             const width = verticalHeaders.getBoundingClientRect().width;
-            horizontalHeaders.style.paddingLeft = `${width - 1}px`;
+            firstColumn.style.width = `${width - 1}px`;
         } else {
-            horizontalHeaders.style.paddingLeft = null;
+            firstColumn.style.width = null;
         }
     }
 
@@ -1511,7 +1521,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"]`;
             this.updateOccurrencesOffset(column, selector, true);
 
-            if (this.multiDayEvents.length && this.multiDayWrapper) {
+            if (this.multiDayEvents.length) {
                 // Update the multi-day occurrences offset
                 const multiDaySelector =
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]';
@@ -1522,6 +1532,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const height = rowHeight || this.cellHeight;
                 this.multiDayCellHeight = height;
                 this.multiDayWrapper.style.height = `${height}px`;
+            } else {
+                this.multiDayWrapper.style.height = `15px`;
             }
         });
     }
