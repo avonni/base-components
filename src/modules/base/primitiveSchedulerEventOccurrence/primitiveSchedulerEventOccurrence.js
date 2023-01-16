@@ -743,7 +743,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell':
                     !this.displayAsDot && this.occurrence.startsInPreviousCell,
                 'avonni-scheduler__event_standalone-multi-day-ends-in-later-cell':
-                    !this.displayAsDot && this.occurrence.endsInLaterCell
+                    !this.displayAsDot && this.occurrence.endsInLaterCell,
+                'avonni-scheduler__event_past': this.from < Date.now()
             })
             .toString();
 
