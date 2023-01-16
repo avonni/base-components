@@ -734,8 +734,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                         (this._focused && theme === 'transparent')),
                 'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
-                'avonni-scheduler__event_vertical':
-                    theme !== 'line' && this.isVertical,
+                'avonni-scheduler__event_vertical-animated':
+                    theme !== 'line' && this.isVertical && !this.readOnly,
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':

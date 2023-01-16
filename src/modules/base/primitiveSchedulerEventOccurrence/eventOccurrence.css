@@ -163,7 +163,8 @@
 .avonni-scheduler__event:hover .avonni-scheduler__event-resize-icon {
     visibility: visible;
 }
-.avonni-scheduler__event_vertical:hover .avonni-scheduler__event-label_center {
+.avonni-scheduler__event_vertical-animated:hover
+    .avonni-scheduler__event-label_center {
     transform: translateY(0.75rem);
 }
 
