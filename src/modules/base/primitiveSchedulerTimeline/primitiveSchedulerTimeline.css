@@ -51,7 +51,7 @@
     max-height: calc(
         100vh - var(--toolbar-height) - var(--vertical-resources-row-height)
     );
-    height: calc(100% - var(--vertical-resources-row-height) - 1px);
+    height: calc(100% - var(--vertical-resources-row-height) - 1rem - 1px);
 }
 
 .avonni-scheduler__first-col {
