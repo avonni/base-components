@@ -947,6 +947,9 @@ export default class Scheduler extends LightningElement {
     }
     set start(value) {
         const computedDate = dateTimeObjectFrom(value);
+        if (computedDate.ts === this._start.ts) {
+            return;
+        }
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
         this.selectedDate = dateTimeObjectFrom(this._start);
 
@@ -1551,6 +1554,22 @@ export default class Scheduler extends LightningElement {
                 // Start is not on a Sunday and the unit is week
                 start = removeFromDate(start, 'day', 1);
             }
+        }
+
+        if (start !== this.start) {
+            /**
+             * The event fired when the start date changes.
+             *
+             * @event
+             * @name startchange
+             * @param {string} value New start date, as an ISO 8601 formatted string.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('startchange', {
+                    detail: { value: start.toISO() }
+                })
+            );
         }
         this._start = start;
     }
