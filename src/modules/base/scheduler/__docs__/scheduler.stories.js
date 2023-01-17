@@ -289,18 +289,6 @@ export default {
                 category: 'Events'
             }
         },
-        headerActions: {
-            name: 'header-actions',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of action objects. If present, the actions will be shown in the toolbar.',
-            table: {
-                type: { summary: 'object[]' },
-                category: 'Panels and Toolbar'
-            }
-        },
         hiddenDisplays: {
             name: 'hidden-displays',
             control: {
@@ -490,6 +478,18 @@ export default {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date()' },
                 category: 'Available dates'
+            }
+        },
+        toolbarActions: {
+            name: 'toolbar-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. If present, the actions will be shown in the toolbar.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Panels and Toolbar'
             }
         },
         timeSpans: {
@@ -854,7 +854,7 @@ ThemesAndColors.args = {
     events: eventsThemed,
     eventsPalette: 'wildflowers',
     selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'],
-    headerActions: [
+    toolbarActions: [
         {
             label: 'Action 1',
             name: 'actionOne'

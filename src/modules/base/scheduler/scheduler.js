@@ -97,7 +97,6 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsTheme = EVENTS_THEMES.default;
-    _headerActions = [];
     _hiddenDisplays = [];
     _hideResourcesFilter = false;
     _hideSidePanel = false;
@@ -115,6 +114,7 @@ export default class Scheduler extends LightningElement {
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpans = TIME_SPANS.default;
+    _toolbarActions = [];
     _variant = VARIANTS.default;
     _zoomToFit = false;
 
@@ -588,24 +588,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of action objects. If present, the actions will be shown in the toolbar.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get headerActions() {
-        return this._headerActions;
-    }
-    set headerActions(value) {
-        const actions = normalizeArray(value, 'object');
-        if (equal(this._headerActions, actions)) {
-            return;
-        }
-        this._headerActions = actions;
-    }
-
-    /**
      * Deprecated. Set the headers in each time span instead.
      *
      * @type {string}
@@ -1058,6 +1040,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of action objects. If present, the actions will be shown in the toolbar.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get toolbarActions() {
+        return this._toolbarActions;
+    }
+    set toolbarActions(value) {
+        const actions = normalizeArray(value, 'object');
+        if (equal(this._toolbarActions, actions)) {
+            return;
+        }
+        this._toolbarActions = actions;
+    }
+
+    /**
      * Deprecated. Use the `time-spans` instead.
      *
      * @type {object[]}
@@ -1181,7 +1181,7 @@ export default class Scheduler extends LightningElement {
         return classSet('avonni-scheduler__display-menu')
             .add({
                 'avonni-scheduler__toolbar-button-group_first':
-                    this.headerActions.length
+                    this.toolbarActions.length
             })
             .toString();
     }
@@ -1207,7 +1207,7 @@ export default class Scheduler extends LightningElement {
         return this.computedContextMenuEvent.slice(0, 2);
     }
 
-    get headerActionButtonClass() {
+    get toolbarActionButtonClass() {
         return classSet({
             'avonni-scheduler__toolbar-button-group_last':
                 this.moreThanOneDisplay
@@ -1260,40 +1260,40 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * True if there is more than one header action.
+     * True if there is more than one toolbar action.
      *
      * @type {boolean}
      */
-    get moreThanOneHeaderAction() {
-        return this.headerActions.length > 1;
+    get moreThanOneToolbarAction() {
+        return this.toolbarActions.length > 1;
     }
 
     /**
-     * If only one header action is present, and it has a label, returns the action object.
+     * If only one toolbar action is present, and it has a label, returns the action object.
      * Otherwise, returns false.
      *
      * @type {object|boolean}
      */
-    get oneHeaderActionButton() {
-        if (this.headerActions.length === 1 && this.headerActions[0].label) {
-            return this.headerActions[0];
+    get oneToolbarActionButton() {
+        if (this.toolbarActions.length === 1 && this.toolbarActions[0].label) {
+            return this.toolbarActions[0];
         }
         return false;
     }
 
     /**
-     * If only one header action is present, and it doesn't have a label but it has an icon, returns the action object.
+     * If only one toolbar action is present, and it doesn't have a label but it has an icon, returns the action object.
      * Otherwise, returns false.
      *
      * @type {object|boolean}
      */
-    get oneHeaderActionButtonIcon() {
+    get oneToolbarActionButtonIcon() {
         if (
-            this.headerActions.length === 1 &&
-            this.headerActions[0].iconName &&
-            !this.headerActions[0].label
+            this.toolbarActions.length === 1 &&
+            this.toolbarActions[0].iconName &&
+            !this.toolbarActions[0].label
         ) {
-            return this.headerActions[0];
+            return this.toolbarActions[0];
         }
         return false;
     }
@@ -2208,24 +2208,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle a click on a header action.
+     * Handle a click on a toolbar action.
      *
      * @param {Event} event click or select event.
      */
-    handleHeaderActionSelect(event) {
+    handleToolbarActionSelect(event) {
         const name = event.detail.value || event.currentTarget.value;
 
         /**
-         * The event fired when a user clicks on a header action.
+         * The event fired when a user clicks on a toolbar action.
          *
          * @event
-         * @name headeractionclick
+         * @name toolbaractionclick
          * @param {string} name Name of the action clicked.
          * @public
          * @bubbles
          */
         this.dispatchEvent(
-            new CustomEvent('headeractionclick', {
+            new CustomEvent('toolbaractionclick', {
                 detail: { name },
                 bubbles: true
             })

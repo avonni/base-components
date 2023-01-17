@@ -180,30 +180,30 @@
 
             <!-- Actions -->
             <lightning-button
-                if:true={oneHeaderActionButton}
-                class={headerActionButtonClass}
-                icon-name={oneHeaderActionButton.iconName}
-                label={oneHeaderActionButton.label}
-                value={oneHeaderActionButton.name}
-                onclick={handleHeaderActionSelect}
+                if:true={oneToolbarActionButton}
+                class={toolbarActionButtonClass}
+                icon-name={oneToolbarActionButton.iconName}
+                label={oneToolbarActionButton.label}
+                value={oneToolbarActionButton.name}
+                onclick={handleToolbarActionSelect}
             ></lightning-button>
             <lightning-button-icon
-                if:true={oneHeaderActionButtonIcon}
-                class={headerActionButtonClass}
-                alternative-text={oneHeaderActionButtonIcon.name}
-                icon-name={oneHeaderActionButtonIcon.iconName}
-                value={oneHeaderActionButtonIcon.name}
+                if:true={oneToolbarActionButtonIcon}
+                class={toolbarActionButtonClass}
+                alternative-text={oneToolbarActionButtonIcon.name}
+                icon-name={oneToolbarActionButtonIcon.iconName}
+                value={oneToolbarActionButtonIcon.name}
                 variant="border-filled"
-                onclick={handleHeaderActionSelect}
+                onclick={handleToolbarActionSelect}
             ></lightning-button-icon>
             <c-button-menu
-                if:true={moreThanOneHeaderAction}
-                class={headerActionButtonClass}
+                if:true={moreThanOneToolbarAction}
+                class={toolbarActionButtonClass}
                 alternative-text="Actions"
                 menu-alignment="right"
-                onselect={handleHeaderActionSelect}
+                onselect={handleToolbarActionSelect}
             >
-                <template for:each={headerActions} for:item="action">
+                <template for:each={toolbarActions} for:item="action">
                     <lightning-menu-item
                         key={action.name}
                         icon-name={action.iconName}
