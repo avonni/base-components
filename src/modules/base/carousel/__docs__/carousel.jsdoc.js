@@ -30,6 +30,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-radius-border
+ * @default 0.25rem
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-title-text-color
  * @default #080707
  * @type color

@@ -25,6 +25,13 @@
     width: 100%;
 }
 
+.avonni-carousel__panel-action {
+    border-color: var(--avonni-carousel-item-color-border, #e5e5e5);
+    border-width: var(--avonni-carousel-item-sizing-border, 1px);
+    border-style: var(--avonni-carousel-item-styling-border, solid);
+    border-radius: var(--avonni-carousel-item-radius-border, 0.25rem);
+}
+
 .avonni-carousel__actions-bottom-center {
     justify-content: center;
 }
