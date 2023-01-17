@@ -422,29 +422,6 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * If present, the side panel is expanded. Otherwise, it is collapsed.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get sidePanelIsExpanded() {
-        return this._sidePanelIsExpanded;
-    }
-    set sidePanelIsExpanded(value) {
-        this._sidePanelIsExpanded = normalizeBoolean(value);
-
-        if (this._sidePanelIsExpanded) {
-            this._isExpanded = false;
-            this._isCollapsed = false;
-        } else {
-            this._isCollapsed = true;
-            this._isExpanded = false;
-        }
-    }
-
-    /**
      * Object used to set the duration of the schedule. It should have two keys:
      * * unit (minute, hour, day, week, month or year)
      * * span (number).
@@ -620,6 +597,19 @@ export class ScheduleBase extends LightningElement {
         this._eventData.refreshEvents();
     }
 
+    @api
+    collapseSidePanel() {
+        if (this._isExpanded) {
+            this._isExpanded = false;
+        } else {
+            this._isCollapsed = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
+    }
+
     /**
      * Create a new event.
      *
@@ -640,6 +630,19 @@ export class ScheduleBase extends LightningElement {
     @api
     deleteEvent(name) {
         this._eventData.deleteEvent(name);
+    }
+
+    @api
+    expandSidePanel() {
+        if (this._isCollapsed) {
+            this._isCollapsed = false;
+        } else {
+            this._isExpanded = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
     }
 
     /**
@@ -1082,36 +1085,14 @@ export class ScheduleBase extends LightningElement {
      * Handle a click on the splitter collapse button.
      */
     handleSplitterCollapse() {
-        if (this._isExpanded) {
-            this._isExpanded = false;
-        } else {
-            this._isCollapsed = true;
-        }
-
-        if (this.panelElement) {
-            this.panelElement.style.flexBasis = null;
-        }
-
-        this._sidePanelIsExpanded = !this._isCollapsed;
-        this.dispatchToggleSidePanel();
+        this.collapseSidePanel();
     }
 
     /**
      * Handle a click on the splitter expand button.
      */
     handleSplitterExpand() {
-        if (this._isCollapsed) {
-            this._isCollapsed = false;
-        } else {
-            this._isExpanded = true;
-        }
-
-        if (this.panelElement) {
-            this.panelElement.style.flexBasis = null;
-        }
-
-        this._sidePanelIsExpanded = !this._isCollapsed;
-        this.dispatchToggleSidePanel();
+        this.expandSidePanel();
     }
 
     /**
@@ -1262,27 +1243,6 @@ export class ScheduleBase extends LightningElement {
             new CustomEvent('openrecurrencedialog', {
                 detail: {
                     selection
-                }
-            })
-        );
-    }
-
-    /**
-     * Dispatch the `togglesidepanel` event.
-     */
-    dispatchToggleSidePanel() {
-        /**
-         * The event fired when the side panel is toggled.
-         *
-         * @event
-         * @name togglesidepanel
-         * @param {boolean} isExpanded
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('togglesidepanel', {
-                detail: {
-                    isExpanded: this.sidePanelIsExpanded
                 }
             })
         );

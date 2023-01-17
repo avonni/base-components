@@ -229,15 +229,6 @@
             data-element-id="avonni-filter-menu-resources"
             onselect={handleToolbarResourceSelect}
         ></c-filter-menu>
-
-        <lightning-button-icon-stateful
-            if:true={showSidePanelToggle}
-            class="slds-m-left_x-small"
-            icon-name="utility:rows"
-            selected={sidePanelIsExpanded}
-            variant="border-filled"
-            onclick={handleToolbarSidePanelToggle}
-        ></lightning-button-icon-stateful>
     </div>
 
     <template if:false={isLoading}>
@@ -261,7 +252,6 @@
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}
             selected-resources={selectedResources}
-            side-panel-is-expanded={sidePanelIsExpanded}
             start={start}
             time-span={currentTimeSpan}
             orientation={variant}
@@ -277,7 +267,6 @@
             oneventselect={handleEventSelect}
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
-            ontogglesidepanel={handleToggleSidePanel}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-timeline>
 
@@ -312,7 +301,6 @@
             resources={computedResources}
             selected-date={selectedDate}
             selected-resources={selectedResources}
-            side-panel-is-expanded={sidePanelIsExpanded}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
             zoom-to-fit={zoomToFit}
@@ -329,7 +317,6 @@
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onresourceselect={handleResourceSelect}
-            ontogglesidepanel={handleToggleSidePanel}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-calendar>
 
@@ -350,7 +337,6 @@
             resources={computedResources}
             selected-date={selectedDate}
             selected-resources={selectedResources}
-            side-panel-is-expanded={sidePanelIsExpanded}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
             data-element-id="avonni-primitive-scheduler-agenda"
@@ -366,7 +352,6 @@
             onopeneditdialog={handleOpenEditDialog}
             onopenrecurrencedialog={handleOpenRecurrenceDialog}
             onresourceselect={handleResourceSelect}
-            ontogglesidepanel={handleToggleSidePanel}
             onvisibleintervalchange={handleVisibleIntervalChange}
         ></c-primitive-scheduler-agenda>
     </template>

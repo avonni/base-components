@@ -134,7 +134,6 @@ export default class Scheduler extends LightningElement {
     currentTimeSpan = {};
     detailPopoverFields = [];
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
-    sidePanelIsExpanded = true;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
@@ -1349,15 +1348,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * True if the side panel toggle button should be displayed.
-     *
-     * @type {boolean}
-     */
-    get showSidePanelToggle() {
-        return !this.collapseDisabled && !this.hideSidePanel;
-    }
-
-    /**
      * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
      * @type {boolean}
@@ -1475,6 +1465,19 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Collapse the side panel. If the panel was fully expanded, collapse it to its original position. Otherwise, hide it.
+     *
+     * @public
+     */
+    @api
+    collapseSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.collapseSidePanel();
+    }
+
+    /**
      * Create a new event.
      *
      * @param {object} event Event object of the new event.
@@ -1506,6 +1509,19 @@ export default class Scheduler extends LightningElement {
             return;
         }
         this.schedule.deleteEvent(eventName);
+    }
+
+    /**
+     * Expand the side panel. If the panel was already opened, expand it fully. Otherwise, open it.
+     *
+     * @public
+     */
+    @api
+    expandSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.expandSidePanel();
     }
 
     /**
@@ -2310,15 +2326,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the toggle of the side panel from the schedule.
-     *
-     * @param {Event} event togglesidepanel event.
-     */
-    handleToggleSidePanel(event) {
-        this.sidePanelIsExpanded = event.detail.isExpanded;
-    }
-
-    /**
      * Handle the toggling of the toolbar calendar.
      *
      * @param {Event} event
@@ -2459,13 +2466,6 @@ export default class Scheduler extends LightningElement {
         }
         this._selectedResources = selectedResources;
         this.dispatchResourceSelectEvent(name);
-    }
-
-    /**
-     * Handle the toggle of the side panel from the toolbar button.
-     */
-    handleToolbarSidePanelToggle() {
-        this.sidePanelIsExpanded = !this.sidePanelIsExpanded;
     }
 
     /**
