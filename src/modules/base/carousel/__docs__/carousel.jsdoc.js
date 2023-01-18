@@ -223,3 +223,63 @@
  * @default #dddbda
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-background
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-border
+ * @default #C9C9C9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-icon-color
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-background-hover
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-sizing-border-hover
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-styling-border-hover
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-border-hover
+ * @default #C9C9C9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-icon-color-hover
+ * @default #014486
+ * @type color
+ */
