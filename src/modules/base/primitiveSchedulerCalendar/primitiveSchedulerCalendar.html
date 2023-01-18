@@ -145,7 +145,7 @@
                                         avonni-scheduler__border_bottom
                                         slds-truncate
                                         slds-text-color_weak
-                                        avonni-scheduler__calendar-time-zone
+                                        avonni-scheduler__time-zone
                                         slds-grid
                                         slds-grid_vertical-align-center
                                     "
@@ -155,7 +155,8 @@
                                             avonni-scheduler__flex-col
                                             slds-text-align_center
                                         "
-                                    ></span>
+                                        >{timezoneLabel}</span
+                                    >
                                 </div>
                             </div>
                             <div class="avonni-scheduler__flex-col">
@@ -183,6 +184,7 @@
                                     data-element-id="div-multi-day-events-wrapper"
                                 >
                                     <div
+                                        if:true={multiDayEventsCellGroup.cells}
                                         class="
                                             slds-grid
                                             avonni-primitive-scheduler-calendar__inherit-height

@@ -50,6 +50,14 @@
     border-top: 1px solid #c9c9c9;
 }
 
+.avonni-scheduler__time-zone {
+    color: var(--lwc-colorTextPlaceholder, #747474);
+    font-size: 11px;
+    font-weight: 400;
+    height: 2.5rem;
+    text-transform: uppercase;
+}
+
 /* Splitter */
 
 .avonni-scheduler__splitter {

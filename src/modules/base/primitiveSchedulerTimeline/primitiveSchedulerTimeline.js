@@ -483,6 +483,16 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
+     * Timezone label, in the format GMT+0.
+     *
+     * @type {string}
+     */
+    get timezoneLabel() {
+        const timezone = this.start.toFormat('Z');
+        return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
+    }
+
+    /**
      * Computed CSS classes for the vertical resource header cells.
      *
      * @type {string}

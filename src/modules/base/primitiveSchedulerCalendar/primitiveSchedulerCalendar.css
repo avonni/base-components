@@ -93,13 +93,6 @@
     border-bottom: 2px solid #c9c9c9;
 }
 
-.avonni-scheduler__calendar-time-zone {
-    color: var(--lwc-colorTextPlaceholder, #747474);
-    font-size: 11px;
-    height: 2.5rem;
-    text-transform: uppercase;
-}
-
 .avonni-scheduler__calendar-show-more-popover {
     --slds-c-popover-position-zindex: 5;
     min-width: var(--lwc-sizeXSmall, 12rem);

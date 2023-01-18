@@ -675,6 +675,16 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this.isMonth ? 'calendar-month' : 'calendar-vertical';
     }
 
+    /**
+     * Timezone label, in the format GMT+0.
+     *
+     * @type {string}
+     */
+    get timezoneLabel() {
+        const timezone = this.selectedDate.toFormat('Z');
+        return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS

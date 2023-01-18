@@ -107,13 +107,16 @@
 .avonni-scheduler__vertical-resource-header-cell,
 .avonni-scheduler__vertical-resource-header-first-cell {
     background-color: #f3f3f3;
-    color: #514f4d;
-    font-weight: 700;
     min-height: var(--vertical-resources-row-height);
     height: var(--vertical-resources-row-height);
     position: sticky;
     top: 0;
     z-index: 4;
+}
+
+.avonni-scheduler__vertical-resource-header-cell {
+    color: #514f4d;
+    font-weight: 700;
 }
 
 .avonni-scheduler__schedule-col {
