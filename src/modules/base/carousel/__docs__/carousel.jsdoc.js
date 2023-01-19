@@ -54,6 +54,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-carousel-item-content-radius-border
+ * @default 0.25rem
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-carousel-item-title-text-color
  * @default #080707
  * @type color
@@ -120,6 +126,12 @@
  * @memberof stylingHooks
  * @name --avonni-carousel-item-image-positioning-object-position
  * @type length-percentage
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-image-radius-border
+ * @type radius
+ * @default 0.25rem
  */
 /**
  * @memberof stylingHooks
@@ -244,7 +256,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border
- * @default #C9C9C9
+ * @default #c9c9c9
  * @type color
  */
 /**
@@ -274,12 +286,30 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border-hover
- * @default #C9C9C9
+ * @default #c9c9c9
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-icon-color-hover
  * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-border-disabled
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-button-color-background-disabled
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-navigation-icon-color-disabled
+ * @default #c9c9c9
  * @type color
  */

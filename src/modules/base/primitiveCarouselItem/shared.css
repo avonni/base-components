@@ -18,6 +18,7 @@
     object-position: var(
         --avonni-carousel-item-image-positioning-object-position
     );
+    border-radius: var(--avonni-carousel-item-image-radius-border, 0.25rem);
 }
 
 .avonni-carousel__actions {
@@ -52,6 +53,7 @@
 
 .avonni-primitive-carousel-item__content_background {
     background-color: var(--avonni-carousel-item-color-background, #ffffff);
+    border-radius: var(--avonni-carousel-item-content-radius-border, 0.25rem);
 }
 
 .avonni-carousel-item__content-description {
