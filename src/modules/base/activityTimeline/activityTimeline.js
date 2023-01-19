@@ -440,6 +440,11 @@ export default class ActivityTimeline extends LightningElement {
         this._items = deepCopy(normalizeArray(value, 'object'));
         if (this._isConnected) {
             this.initActivityTimeline();
+
+            if (this.isTimelineHorizontal) {
+                this.requestRedrawTimeline();
+                this.renderedCallback();
+            }
         }
     }
 
