@@ -87,6 +87,10 @@
     position: sticky;
     top: 0;
     z-index: 2;
+    --avonni-primitive-scheduler-header-group-cell-text-color-today: var(
+        --lwc-brandAccessible,
+        #0176d3
+    );
 }
 
 .avonni-scheduler__calendar-day-header-wrapper:not(.avonni-scheduler__calendar-day-header-wrapper_month) {

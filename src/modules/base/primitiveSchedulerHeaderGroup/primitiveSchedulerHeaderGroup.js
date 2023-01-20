@@ -463,7 +463,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     get nonStickyCellLabelClass() {
-        return classSet('slds-truncate slds-text-color_weak')
+        return classSet(
+            'slds-truncate slds-text-color_weak avonni-scheduler-header-group__header-label'
+        )
             .add({
                 'avonni-scheduler-header-group__header-label_horizontal':
                     !this.isVertical,
@@ -489,7 +491,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
     get stickyCellLabelClass() {
         return classSet(
-            'slds-truncate slds-p-horizontal_x-small avonni-scheduler-header-group__header-label_sticky'
+            'slds-truncate slds-p-horizontal_x-small avonni-scheduler-header-group__header-label avonni-scheduler-header-group__header-label_sticky'
         )
             .add({
                 'avonni-scheduler-header-group__header-label_horizontal':
