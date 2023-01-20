@@ -34,7 +34,7 @@
 
 .avonni-scheduler__wrapper {
     max-height: 100%;
-    height: calc(100vh - 70px);
+    height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
     max-width: 100%;
 }
 
