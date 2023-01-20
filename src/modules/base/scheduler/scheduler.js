@@ -517,7 +517,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Default palette used for the event colors. Valid values include aurora, bluegrass, dusk, fire, heat, lake, mineral, nightfall, ocean, pond, sunrise, water, watermelon and wildflowers (see Palette table for more information).
      *
-     * @type {string[]}
+     * @type {string}
      * @public
      * @default aurora
      */
