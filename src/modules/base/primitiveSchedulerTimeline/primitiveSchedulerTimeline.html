@@ -89,7 +89,11 @@
         </div>
 
         <!-- Splitter -->
-        <div class={splitterClass} onmousedown={handleSplitterResizeMouseDown}>
+        <div
+            if:true={showSplitter}
+            class={splitterClass}
+            onmousedown={handleSplitterResizeMouseDown}
+        >
             <lightning-button-icon
                 if:true={showSplitterCollapse}
                 alternative-text="Expand the right side"

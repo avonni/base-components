@@ -309,7 +309,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                     this.isVertical,
                 'avonni-scheduler__first-col_horizontal': !this.isVertical,
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
-                'avonni-scheduler__panel_expanded': this._isExpanded
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__border_right':
+                    !this.showSplitter && !this.isVertical
             })
             .toString();
     }
