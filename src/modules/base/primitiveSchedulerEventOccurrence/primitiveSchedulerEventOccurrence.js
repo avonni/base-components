@@ -723,7 +723,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const theme = this.theme;
         const centerLabel = normalizeObject(this.labels.center);
         let classes = classSet(
-            'avonni-scheduler__event slds-grid slds-has-flexi-truncate slds-col'
+            'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col'
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
@@ -732,10 +732,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     (theme === 'default' ||
                         theme === 'rounded' ||
                         (this._focused && theme === 'transparent')),
-                'avonni-scheduler__event-wrapper_focused': this._focused,
+                'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
-                'avonni-scheduler__event_vertical':
-                    theme !== 'line' && this.isVertical,
+                'avonni-scheduler__event_vertical-animated':
+                    theme !== 'line' && this.isVertical && !this.readOnly,
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
@@ -743,7 +743,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell':
                     !this.displayAsDot && this.occurrence.startsInPreviousCell,
                 'avonni-scheduler__event_standalone-multi-day-ends-in-later-cell':
-                    !this.displayAsDot && this.occurrence.endsInLaterCell
+                    !this.displayAsDot && this.occurrence.endsInLaterCell,
+                'avonni-scheduler__event_past': this.from < Date.now()
             })
             .toString();
 
@@ -853,14 +854,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
                     !this.displayAsDot,
-                'slds-p-vertical_xx-small':
-                    !this.isVerticalTimeline &&
-                    !this.isVerticalCalendar &&
-                    !this.isMonthCalendar &&
-                    !this.isAgenda,
-                'slds-p-bottom_xx-small':
-                    this.isStandalone && this.spansOnMoreThanOneDay,
-                'avonni-scheduler__event-wrapper_vertical': this.isVertical
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical,
+                'avonni-scheduler__event-wrapper': !this.isVertical
             })
             .toString();
     }

@@ -39,7 +39,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -90,6 +90,8 @@ export class ScheduleBase extends LightningElement {
     _zoomToFit = false;
 
     _connected = false;
+    _isCollapsed = false;
+    _isExpanded = false;
     _resizeObserver;
     navCalendarDisabledWeekdays = [];
     navCalendarDisabledDates = [];
@@ -458,21 +460,12 @@ export class ScheduleBase extends LightningElement {
      */
 
     /**
-     * True if the panels can be collapsed.
+     * First column HTML Element.
      *
-     * @type {boolean}
+     * @type {HTMLElement}
      */
-    get allowCollapse() {
-        return !this.collapseDisabled;
-    }
-
-    /**
-     * True if the panels can be resized.
-     *
-     * @type {boolean}
-     */
-    get allowResizeColumn() {
-        return !this.resizeColumnDisabled;
+    get panelElement() {
+        return this.template.querySelector('[data-element-id="div-panel"]');
     }
 
     /**
@@ -530,6 +523,54 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * True if the splitter collapse button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterCollapse() {
+        return !this.collapseDisabled && !this._isCollapsed;
+    }
+
+    /**
+     * True if the splitter expand button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterExpand() {
+        return !this.collapseDisabled && !this._isExpanded;
+    }
+
+    /**
+     * True if the splitter resize handle should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterResize() {
+        return (
+            !this.resizeColumnDisabled &&
+            !this._isCollapsed &&
+            !this._isExpanded
+        );
+    }
+
+    /**
+     * Computed CSS classes for the splitter.
+     *
+     * @type {boolean}
+     */
+    get splitterClass() {
+        return classSet(
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__border_top avonni-scheduler__border_bottom'
+        )
+            .add({
+                'avonni-scheduler__splitter_resizable': this.showSplitterResize,
+                'avonni-scheduler__border_left': !this._isCollapsed,
+                'avonni-scheduler__border_right': !this._isExpanded
+            })
+            .toString();
+    }
+
+    /**
      * Automatically generated unique key.
      *
      * @type {string}
@@ -556,6 +597,19 @@ export class ScheduleBase extends LightningElement {
         this._eventData.refreshEvents();
     }
 
+    @api
+    collapseSidePanel() {
+        if (this._isExpanded) {
+            this._isExpanded = false;
+        } else {
+            this._isCollapsed = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
+    }
+
     /**
      * Create a new event.
      *
@@ -576,6 +630,19 @@ export class ScheduleBase extends LightningElement {
     @api
     deleteEvent(name) {
         this._eventData.deleteEvent(name);
+    }
+
+    @api
+    expandSidePanel() {
+        if (this._isCollapsed) {
+            this._isCollapsed = false;
+        } else {
+            this._isExpanded = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
     }
 
     /**
@@ -797,21 +864,37 @@ export class ScheduleBase extends LightningElement {
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
 
-        const x = event.clientX;
-        const y = event.clientY;
-        this.newEvent({ x, y });
+        let from, to;
+        const agendaDate = event.currentTarget.dataset.date;
+        if (agendaDate) {
+            from = dateTimeObjectFrom(Number(agendaDate));
+            to = from.endOf('day');
+        } else {
+            from = dateTimeObjectFrom(
+                Number(event.currentTarget.dataset.start)
+            );
+            to = dateTimeObjectFrom(Number(event.currentTarget.dataset.end));
+        }
 
         /**
          * The event fired when the context menu is opened on an empty spot of the schedule.
          *
          * @event
          * @name emptyspotcontextmenu
-         * @param {object} selection Information on the newly created event.
+         * @param {number} x Position of the cursor on the X axis.
+         * @param {number} y Position of the cursor on the Y axis.
+         * @param {DateTime} from Start date of the cell clicked.
+         * @param {DateTime} to End date of the cell clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('emptyspotcontextmenu', {
-                detail: { selection: this._eventData.selection }
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY,
+                    from: from.toISO(),
+                    to: to.toISO()
+                }
             })
         );
     }
@@ -895,9 +978,9 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the `privatemouseenter` event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     * Handle the cursor entering an event.
      *
-     * @param {Event} event
+     * @param {Event} event `privatemouseenter` event fired by a primitive event occurrence.
      */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown) {
@@ -923,10 +1006,27 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Dispatch the `hidepopovers` event only for the detail popover.
+     * Handle the cursor leaving an event.
+     *
+     * @param {Event} event `privatemouseleave` event fired by a primitive event occurrence.
      */
-    handleHideDetailPopover() {
-        this.dispatchHidePopovers(['detail']);
+    handleEventMouseLeave(event) {
+        /**
+         * The event fired when the mouse leaves an event.
+         *
+         * @event
+         * @name eventmouseleave
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseleave', {
+                detail: event.detail
+            })
+        );
     }
 
     /**
@@ -979,6 +1079,48 @@ export class ScheduleBase extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Handle a click on the splitter collapse button.
+     */
+    handleSplitterCollapse() {
+        this.collapseSidePanel();
+    }
+
+    /**
+     * Handle a click on the splitter expand button.
+     */
+    handleSplitterExpand() {
+        this.expandSidePanel();
+    }
+
+    /**
+     * Handle a mouse down on the splitter.
+     */
+    handleSplitterResizeMouseDown(event) {
+        if (!this.showSplitterResize || event.button !== 0) {
+            return;
+        }
+        const startX = event.clientX;
+        const startWidth = this.panelElement.offsetWidth;
+
+        const mouseMove = (moveEvent) => {
+            const diff = moveEvent.clientX - startX;
+            if (this.panelElement) {
+                const direction = this.sidePanelPosition === 'right' ? -1 : 1;
+                const width = startWidth + diff * direction;
+                this.panelElement.style.flexBasis = `${width}px`;
+            }
+        };
+
+        const mouseUp = () => {
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mouseup', mouseUp);
+        };
+
+        window.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mouseup', mouseUp);
     }
 
     /**

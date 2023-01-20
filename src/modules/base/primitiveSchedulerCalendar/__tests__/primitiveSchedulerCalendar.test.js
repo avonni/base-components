@@ -671,14 +671,15 @@ describe('Primitive Scheduler Calendar', () => {
         element.collapseDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
             );
-            expect(leftPanel.collapsible).toBeTruthy();
-            expect(rightPanel.collapsible).toBeTruthy();
+
+            expect(collapseButton).toBeTruthy();
+            expect(expandButton).toBeTruthy();
         });
     });
 
@@ -686,14 +687,15 @@ describe('Primitive Scheduler Calendar', () => {
         element.collapseDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
             );
-            expect(leftPanel.collapsible).toBeFalsy();
-            expect(rightPanel.collapsible).toBeFalsy();
+
+            expect(collapseButton).toBeFalsy();
+            expect(expandButton).toBeFalsy();
         });
     });
 
@@ -1335,14 +1337,10 @@ describe('Primitive Scheduler Calendar', () => {
         element.resizeColumnDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeTruthy();
-            expect(rightPanel.resizable).toBeTruthy();
+            expect(resizeHandle).toBeTruthy();
         });
     });
 
@@ -1350,14 +1348,10 @@ describe('Primitive Scheduler Calendar', () => {
         element.resizeColumnDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeFalsy();
-            expect(rightPanel.resizable).toBeFalsy();
+            expect(resizeHandle).toBeFalsy();
         });
     });
 
@@ -2076,14 +2070,19 @@ describe('Primitive Scheduler Calendar', () => {
                 '[data-element-id="div-column"]'
             );
             const cell = column.querySelector('[data-element-id="div-cell"]');
+            const from = Number(cell.dataset.start);
+            const to = Number(cell.dataset.end);
             const event = new CustomEvent('contextmenu');
             event.clientX = 283;
             event.clientY = 38;
             cell.dispatchEvent(event);
+
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.selection.y).toBe(38);
-            expect(call.detail.selection.x).toBe(283);
+            expect(new Date(call.detail.from).getTime()).toBe(from);
+            expect(new Date(call.detail.to).getTime()).toBe(to);
+            expect(call.detail.y).toBe(38);
+            expect(call.detail.x).toBe(283);
             expect(call.bubbles).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
             expect(call.composed).toBeFalsy();
@@ -2753,6 +2752,44 @@ describe('Primitive Scheduler Calendar', () => {
             });
     });
 
+    it('Primitive Scheduler Calendar: eventmouseleave', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = SELECTED_DATE_EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('eventmouseleave', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
+                );
+                const detail = {
+                    eventName: 'some name',
+                    key: 'some key',
+                    x: 34,
+                    y: 56
+                };
+                event.dispatchEvent(
+                    new CustomEvent('privatemouseleave', {
+                        detail
+                    })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail).toEqual(detail);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+    });
+
     // eventselect
     it('Primitive Scheduler Calendar: eventselect', () => {
         element.resources = RESOURCES;
@@ -2799,40 +2836,6 @@ describe('Primitive Scheduler Calendar', () => {
     });
 
     // hidepopovers
-    it('Primitive Scheduler Calendar: hidepopovers on event mouse leave and blur', () => {
-        element.resources = RESOURCES;
-        element.selectedResources = ALL_RESOURCES;
-        element.selectedDate = SELECTED_DATE;
-        element.events = SELECTED_DATE_EVENTS;
-
-        const handler = jest.fn();
-        element.addEventListener('hidepopovers', handler);
-
-        return Promise.resolve()
-            .then(() => {
-                // Wait for the visible interval to be set
-            })
-            .then(() => {
-                const event = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"]'
-                );
-                event.dispatchEvent(new CustomEvent('privatemouseleave'));
-
-                expect(handler).toHaveBeenCalledTimes(1);
-                const call = handler.mock.calls[0][0];
-                expect(call.detail.list).toEqual(['detail']);
-                expect(call.bubbles).toBeFalsy();
-                expect(call.composed).toBeFalsy();
-                expect(call.cancelable).toBeFalsy();
-
-                event.dispatchEvent(new CustomEvent('privateblur'));
-                expect(handler).toHaveBeenCalledTimes(2);
-                expect(handler.mock.calls[1][0].detail.list).toEqual([
-                    'detail'
-                ]);
-            });
-    });
-
     it('Primitive Scheduler Calendar: hidepopovers on event double click', () => {
         element.resources = RESOURCES;
         element.selectedResources = ALL_RESOURCES;

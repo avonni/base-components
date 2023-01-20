@@ -456,35 +456,35 @@ describe('Primitive Scheduler Agenda', () => {
     });
 
     // collapse-disabled
-    it('Primitive Scheduler Agenda: collapseDisabled = false', () => {
+    it('Primitive Scheduler Calendar: collapseDisabled = false', () => {
         element.collapseDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            expect(leftPanel.collapsible).toBeTruthy();
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
+            );
 
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(rightPanel.collapsible).toBeTruthy();
+            expect(collapseButton).toBeTruthy();
+            expect(expandButton).toBeTruthy();
         });
     });
 
-    it('Primitive Scheduler Agenda: collapseDisabled = true', () => {
+    it('Primitive Scheduler Calendar: collapseDisabled = true', () => {
         element.collapseDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            expect(leftPanel.collapsible).toBeFalsy();
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
+            );
 
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(rightPanel.collapsible).toBeFalsy();
+            expect(collapseButton).toBeFalsy();
+            expect(expandButton).toBeFalsy();
         });
     });
 
@@ -877,33 +877,25 @@ describe('Primitive Scheduler Agenda', () => {
     });
 
     // resize-column-disabled
-    it('Primitive Scheduler Agenda: resizeColumnDisabled = false', () => {
+    it('Primitive Scheduler Calendar: resizeColumnDisabled = false', () => {
         element.resizeColumnDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeTruthy();
-            expect(rightPanel.resizable).toBeTruthy();
+            expect(resizeHandle).toBeTruthy();
         });
     });
 
-    it('Primitive Scheduler Agenda: resizeColumnDisabled = true', () => {
+    it('Primitive Scheduler Calendar: resizeColumnDisabled = true', () => {
         element.resizeColumnDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeFalsy();
-            expect(rightPanel.resizable).toBeFalsy();
+            expect(resizeHandle).toBeFalsy();
         });
     });
 
@@ -1473,10 +1465,15 @@ describe('Primitive Scheduler Agenda', () => {
             );
             const event = new CustomEvent('contextmenu');
             event.clientY = 35;
+            const from = Number(dayGroup.dataset.date);
+            const to = from + 24 * 60 * 60 * 1000 - 1;
             dayGroup.dispatchEvent(event);
+
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.selection.y).toBe(35);
+            expect(call.detail.y).toBe(35);
+            expect(new Date(call.detail.from).getTime()).toBe(from);
+            expect(new Date(call.detail.to).getTime()).toBe(to);
             expect(call.bubbles).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
             expect(call.composed).toBeFalsy();
@@ -1500,10 +1497,15 @@ describe('Primitive Scheduler Agenda', () => {
                 'privatedisabledcontextmenu'
             );
             contextMenuEvent.clientY = 35;
+            const from = Number(event.dataset.start);
+            const to = Number(event.dataset.end);
             event.dispatchEvent(contextMenuEvent);
+
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.selection.y).toBe(35);
+            expect(call.detail.y).toBe(35);
+            expect(new Date(call.detail.from).getTime()).toBe(from);
+            expect(new Date(call.detail.to).getTime()).toBe(to);
         });
     });
 
@@ -1599,6 +1601,39 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
+    // eventmouseleave
+    it('Primitive Scheduler Agenda: eventmouseleave', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('eventmouseleave', handler);
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+            );
+            const detail = {
+                eventName: 'some name',
+                key: 'some key',
+                x: 34,
+                y: 56
+            };
+            event.dispatchEvent(
+                new CustomEvent('privatemouseleave', { detail })
+            );
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            const call = handler.mock.calls[0][0];
+            expect(call.detail).toEqual(detail);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
     // eventselect
     it('Primitive Scheduler Agenda: eventselect', () => {
         element.resources = RESOURCES;
@@ -1635,35 +1670,6 @@ describe('Primitive Scheduler Agenda', () => {
             expect(call.bubbles).toBeTruthy();
             expect(call.cancelable).toBeFalsy();
             expect(call.composed).toBeFalsy();
-        });
-    });
-
-    // hidepopovers
-    it('Primitive Scheduler Agenda: hidepopovers on event mouse leave and blur', () => {
-        element.resources = RESOURCES;
-        element.selectedResources = ALL_RESOURCES;
-        element.selectedDate = SELECTED_DATE;
-        element.events = EVENTS;
-
-        const handler = jest.fn();
-        element.addEventListener('hidepopovers', handler);
-
-        return Promise.resolve().then(() => {
-            const event = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-            );
-            event.dispatchEvent(new CustomEvent('privatemouseleave'));
-
-            expect(handler).toHaveBeenCalledTimes(1);
-            const call = handler.mock.calls[0][0];
-            expect(call.detail.list).toEqual(['detail']);
-            expect(call.bubbles).toBeFalsy();
-            expect(call.composed).toBeFalsy();
-            expect(call.cancelable).toBeFalsy();
-
-            event.dispatchEvent(new CustomEvent('privateblur'));
-            expect(handler).toHaveBeenCalledTimes(2);
-            expect(handler.mock.calls[1][0].detail.list).toEqual(['detail']);
         });
     });
 

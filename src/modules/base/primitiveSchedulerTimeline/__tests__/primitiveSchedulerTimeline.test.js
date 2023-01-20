@@ -354,33 +354,35 @@ describe('Primitive Scheduler Timeline', () => {
     });
 
     // collapse-disabled
-    it('Primitive Scheduler Timeline: collapseDisabled = false', () => {
+    it('Primitive Scheduler Calendar: collapseDisabled = false', () => {
         element.collapseDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
             );
-            expect(leftPanel.collapsible).toBeTruthy();
-            expect(rightPanel.collapsible).toBeTruthy();
+
+            expect(collapseButton).toBeTruthy();
+            expect(expandButton).toBeTruthy();
         });
     });
 
-    it('Primitive Scheduler Timeline: collapseDisabled = true', () => {
+    it('Primitive Scheduler Calendar: collapseDisabled = true', () => {
         element.collapseDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
             );
-            expect(leftPanel.collapsible).toBeFalsy();
-            expect(rightPanel.collapsible).toBeFalsy();
+
+            expect(collapseButton).toBeFalsy();
+            expect(expandButton).toBeFalsy();
         });
     });
 
@@ -806,33 +808,25 @@ describe('Primitive Scheduler Timeline', () => {
     });
 
     // resize-column-disabled
-    it('Primitive Scheduler Timeline: resizeColumnDisabled = false', () => {
+    it('Primitive Scheduler Calendar: resizeColumnDisabled = false', () => {
         element.resizeColumnDisabled = false;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeTruthy();
-            expect(rightPanel.resizable).toBeTruthy();
+            expect(resizeHandle).toBeTruthy();
         });
     });
 
-    it('Primitive Scheduler Timeline: resizeColumnDisabled = true', () => {
+    it('Primitive Scheduler Calendar: resizeColumnDisabled = true', () => {
         element.resizeColumnDisabled = true;
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-left"]'
+            const resizeHandle = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
             );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-splitter-pane-right"]'
-            );
-            expect(leftPanel.resizable).toBeFalsy();
-            expect(rightPanel.resizable).toBeFalsy();
+            expect(resizeHandle).toBeFalsy();
         });
     });
 
@@ -1158,11 +1152,8 @@ describe('Primitive Scheduler Timeline', () => {
                 const resourceRow = element.shadowRoot.querySelector(
                     '[data-element-id="div-resource"]'
                 );
-                const leftPanel = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-splitter-pane-left"]'
-                );
                 const firstCol = element.shadowRoot.querySelector(
-                    '[data-element-id="div-first-column"]'
+                    '[data-element-id="div-panel"]'
                 );
                 const scheduleBody = element.shadowRoot.querySelector(
                     '[data-element-id="div-schedule-body"]'
@@ -1177,15 +1168,14 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(resourceRow.className).toBe(
                     'slds-grid slds-is-relative'
                 );
-                expect(leftPanel.size).toBe('300px');
                 expect(firstCol.className).toBe(
-                    'avonni-scheduler__first-col slds-grid'
+                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__first-col_horizontal'
                 );
                 expect(scheduleWrapper.className).toBe(
-                    'slds-grid slds-is-relative avonni-scheduler__wrapper'
+                    'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
                 );
                 expect(scheduleBody.className).toBe('slds-is-relative');
-                expect(cell.classList).toContain('slds-col');
+                expect(cell.classList).toContain('avonni-scheduler__flex-col');
                 expect(cell.classList).not.toContain(
                     'avonni-scheduler__cell_vertical'
                 );
@@ -1226,11 +1216,8 @@ describe('Primitive Scheduler Timeline', () => {
                 const resourceRow = element.shadowRoot.querySelector(
                     '[data-element-id="div-resource"]'
                 );
-                const leftPanel = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-splitter-pane-left"]'
-                );
                 const firstCol = element.shadowRoot.querySelector(
-                    '[data-element-id="div-first-column"]'
+                    '[data-element-id="div-panel"]'
                 );
                 const scheduleBody = element.shadowRoot.querySelector(
                     '[data-element-id="div-schedule-body"]'
@@ -1243,19 +1230,20 @@ describe('Primitive Scheduler Timeline', () => {
                 expect(verticalHeaders).toBeTruthy();
                 expect(resourceHeaders).toBeTruthy();
                 expect(resourceRow.className).toBe(
-                    'slds-grid slds-is-relative slds-grid_vertical slds-col'
+                    'slds-grid slds-is-relative slds-grid_vertical avonni-scheduler__flex-col'
                 );
-                expect(leftPanel.size).toBe('110px');
                 expect(firstCol.className).toBe(
-                    'avonni-scheduler__first-col slds-grid avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end'
+                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical'
                 );
                 expect(scheduleWrapper.className).toBe(
-                    'slds-grid slds-is-relative avonni-scheduler__wrapper avonni-scheduler__wrapper_vertical'
+                    'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper avonni-scheduler__schedule-wrapper_vertical'
                 );
                 expect(scheduleBody.className).toBe(
                     'slds-is-relative slds-grid avonni-scheduler__schedule-body_vertical'
                 );
-                expect(cell.classList).not.toContain('slds-col');
+                expect(cell.classList).not.toContain(
+                    'avonni-scheduler__flex-col'
+                );
                 expect(cell.classList).toContain(
                     'avonni-scheduler__cell_vertical'
                 );
@@ -1291,9 +1279,9 @@ describe('Primitive Scheduler Timeline', () => {
                     'avonni-scheduler__cell_zoom-to-fit'
                 );
                 expect(col.className).toBe(
-                    'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+                    'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
                 );
-                expect(nestedCol.className).toBe('slds-col');
+                expect(nestedCol.className).toBe('avonni-scheduler__flex-col');
 
                 element.orientation = 'vertical';
             })
@@ -1329,10 +1317,10 @@ describe('Primitive Scheduler Timeline', () => {
                     'avonni-scheduler__cell_zoom-to-fit'
                 );
                 expect(col.className).toBe(
-                    'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default avonni-scheduler__schedule-col_zoom-to-fit'
+                    'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default avonni-scheduler__schedule-col_zoom-to-fit'
                 );
                 expect(nestedCol.className).toBe(
-                    'slds-col avonni-scheduler__schedule-col_zoom-to-fit'
+                    'avonni-scheduler__flex-col avonni-scheduler__schedule-col_zoom-to-fit'
                 );
 
                 element.orientation = 'vertical';
@@ -1517,11 +1505,16 @@ describe('Primitive Scheduler Timeline', () => {
             const contextMenuEvent = new CustomEvent('contextmenu');
             contextMenuEvent.clientY = 100;
             contextMenuEvent.clientX = 120;
+            const from = Number(cell.dataset.start);
+            const to = Number(cell.dataset.end);
             cell.dispatchEvent(contextMenuEvent);
+
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.selection.y).toBe(100);
-            expect(call.detail.selection.x).toBe(120);
+            expect(call.detail.y).toBe(100);
+            expect(call.detail.x).toBe(120);
+            expect(new Date(call.detail.from).getTime()).toBe(from);
+            expect(new Date(call.detail.to).getTime()).toBe(to);
             expect(call.bubbles).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
             expect(call.composed).toBeFalsy();
@@ -1550,11 +1543,16 @@ describe('Primitive Scheduler Timeline', () => {
                 );
                 contextMenuEvent.clientY = 12;
                 contextMenuEvent.clientX = 5;
+                const from = Number(event.dataset.start);
+                const to = Number(event.dataset.end);
                 event.dispatchEvent(contextMenuEvent);
+
                 expect(handler).toHaveBeenCalled();
                 const detail = handler.mock.calls[0][0].detail;
-                expect(detail.selection.y).toBe(12);
-                expect(detail.selection.x).toBe(5);
+                expect(detail.y).toBe(12);
+                expect(detail.x).toBe(5);
+                expect(new Date(detail.from).getTime()).toBe(from);
+                expect(new Date(detail.to).getTime()).toBe(to);
             });
     });
 
@@ -2077,6 +2075,42 @@ describe('Primitive Scheduler Timeline', () => {
             });
     });
 
+    it('Primitive Scheduler Timeline: eventmouseleave on event mouse leave and blur', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+        element.events = EVENTS;
+
+        const handler = jest.fn();
+        element.addEventListener('eventmouseleave', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
+                );
+                const detail = {
+                    eventName: 'some name',
+                    key: 'some key',
+                    x: 34,
+                    y: 56
+                };
+                event.dispatchEvent(
+                    new CustomEvent('privatemouseleave', { detail })
+                );
+
+                expect(handler).toHaveBeenCalledTimes(1);
+                const call = handler.mock.calls[0][0];
+                expect(call.detail).toEqual(detail);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
+    });
+
     // eventselect
     it('Primitive Scheduler Timeline: eventselect', () => {
         element.resources = RESOURCES;
@@ -2123,40 +2157,6 @@ describe('Primitive Scheduler Timeline', () => {
     });
 
     // hidepopovers
-    it('Primitive Scheduler Timeline: hidepopovers on event mouse leave and blur', () => {
-        element.resources = RESOURCES;
-        element.selectedResources = ALL_RESOURCES;
-        element.start = START;
-        element.events = EVENTS;
-
-        const handler = jest.fn();
-        element.addEventListener('hidepopovers', handler);
-
-        return Promise.resolve()
-            .then(() => {
-                // Wait for the visible interval to be set
-            })
-            .then(() => {
-                const event = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-                );
-                event.dispatchEvent(new CustomEvent('privatemouseleave'));
-
-                expect(handler).toHaveBeenCalledTimes(1);
-                const call = handler.mock.calls[0][0];
-                expect(call.detail.list).toEqual(['detail']);
-                expect(call.bubbles).toBeFalsy();
-                expect(call.composed).toBeFalsy();
-                expect(call.cancelable).toBeFalsy();
-
-                event.dispatchEvent(new CustomEvent('privateblur'));
-                expect(handler).toHaveBeenCalledTimes(2);
-                expect(handler.mock.calls[1][0].detail.list).toEqual([
-                    'detail'
-                ]);
-            });
-    });
-
     it('Primitive Scheduler Timeline: hidepopovers on event double click', () => {
         element.resources = RESOURCES;
         element.selectedResources = ALL_RESOURCES;
@@ -2227,7 +2227,7 @@ describe('Primitive Scheduler Timeline', () => {
                     'set'
                 );
                 const rightPanel = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-splitter-pane-right"]'
+                    '[data-element-id="div-schedule-wrapper"]'
                 );
                 jest.spyOn(event, 'getBoundingClientRect').mockReturnValue({
                     right: -10

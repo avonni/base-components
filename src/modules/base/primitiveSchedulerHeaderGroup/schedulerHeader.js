@@ -185,7 +185,13 @@ export default class SchedulerHeader {
                 break;
             }
 
+            // Used to color the text of the current day in the calendar display
+            const isToday =
+                new Date().getTime() >= date.ts &&
+                new Date().getTime() <= cellEnd.ts;
+
             this.cells.push({
+                isToday,
                 label: date.startOf(unit).toFormat(label),
                 start: date.ts,
                 end: cellEnd.ts

@@ -30,29 +30,65 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export {
-    containsAllowedDateTimes,
-    getDisabledWeekdaysLabels,
-    getFirstAvailableWeek,
-    isAllDay,
-    isAllowedDay,
-    isAllowedTime,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
-    parseTimeFrame,
-    previousAllowedDay,
-    previousAllowedMonth,
-    previousAllowedTime,
-    spansOnMoreThanOneDay
-} from './dateComputations';
-export { ScheduleBase } from './scheduleBase';
-export {
-    getElementOnXAxis,
-    getElementOnYAxis,
-    positionPopover,
-    updateOccurrencesOffset,
-    updateOccurrencesPosition
-} from './positions';
-export { SchedulerCellGroup } from './cellGroup';
-export { SchedulerEventOccurrence } from './eventOccurrence';
+.avonni-scheduler__flex-col {
+    flex: 1 1 auto;
+}
+
+.avonni-scheduler__border_bottom {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_right {
+    border-right: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_left {
+    border-left: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__border_top {
+    border-top: 1px solid #c9c9c9;
+}
+
+.avonni-scheduler__time-zone {
+    color: var(--lwc-colorTextPlaceholder, #747474);
+    font-size: 11px;
+    font-weight: 400;
+    height: 2.5rem;
+    text-transform: uppercase;
+}
+
+/* Splitter */
+
+.avonni-scheduler__splitter {
+    position: relative;
+    background-color: #fff;
+    min-height: 100%;
+}
+
+.avonni-scheduler__second-col {
+    flex: 1 1 0;
+}
+
+.avonni-scheduler__splitter_resizable,
+.avonni-scheduler__splitter-resize-handle {
+    cursor: col-resize;
+}
+
+.avonni-scheduler__splitter-resize-handle {
+    height: 25px;
+    width: 2px;
+    background-color: #747474;
+}
+
+.avonni-scheduler__splitter-expand-left-button {
+    margin-top: -6px;
+}
+
+.avonni-scheduler__panel_collapsed {
+    max-width: 0;
+}
+
+.avonni-scheduler__panel_expanded {
+    min-width: calc(100% - 12px);
+}

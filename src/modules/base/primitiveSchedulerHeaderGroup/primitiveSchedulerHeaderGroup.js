@@ -383,6 +383,18 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get cellClass() {
+        return classSet(
+            'avonni-scheduler__border_right slds-grid slds-grid_vertical-align-center slds-grid_align-center slds-grow avonni-scheduler-header-group__header-cell'
+        )
+            .add({
+                'avonni-scheduler-header-group__header-cell_vertical slds-border_bottom':
+                    this.isVertical,
+                'avonni-scheduler__border_bottom': !this.isVertical
+            })
+            .toString();
+    }
+
     /**
      * Computed end date of the headers.
      *
@@ -450,6 +462,19 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this.variant === 'vertical';
     }
 
+    get nonStickyCellLabelClass() {
+        return classSet(
+            'slds-truncate slds-text-color_weak avonni-scheduler-header-group__header-label'
+        )
+            .add({
+                'avonni-scheduler-header-group__header-label_horizontal':
+                    !this.isVertical,
+                'slds-is-relative avonni-scheduler-header-group__header-label_vertical-non-sticky slds-p-around_xx-small':
+                    this.isVertical
+            })
+            .toString();
+    }
+
     /**
      * Header with the smallest unit.
      *
@@ -462,6 +487,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
         const lastIndex = this.computedHeaders.length - 1;
         return this.computedHeaders[lastIndex];
+    }
+
+    get stickyCellLabelClass() {
+        return classSet(
+            'slds-truncate slds-p-horizontal_x-small avonni-scheduler-header-group__header-label avonni-scheduler-header-group__header-label_sticky'
+        )
+            .add({
+                'avonni-scheduler-header-group__header-label_horizontal':
+                    !this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -617,9 +653,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (!this.smallestHeader) {
             return;
         }
-        const hostWidth = this.template.host.getBoundingClientRect().width;
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        const wrapperWidth = wrapper.getBoundingClientRect().width;
+
         // Remove 1 for the border
-        const totalWidth = (this.visibleWidth || hostWidth) - 1;
+        const totalWidth = (this.visibleWidth || wrapperWidth) - 1;
         const totalNumberOfCells = this.smallestHeader.numberOfCells;
         let cellSize = 0;
 

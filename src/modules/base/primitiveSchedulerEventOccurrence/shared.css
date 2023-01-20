@@ -36,9 +36,19 @@
     user-select: none;
 }
 
+.avonni-primitive-scheduler-event-occurrence__flex-col {
+    flex: 1 1 auto;
+}
+
 .avonni-scheduler__event-dot-chip {
-    min-height: var(--avonni-primitive-scheduler-event-occurrence-standalone-chip-size, 8px);
-    min-width: var(--avonni-primitive-scheduler-event-occurrence-standalone-chip-size, 8px);
+    min-height: var(
+        --avonni-primitive-scheduler-event-occurrence-standalone-chip-size,
+        8px
+    );
+    min-width: var(
+        --avonni-primitive-scheduler-event-occurrence-standalone-chip-size,
+        8px
+    );
     border-radius: 50%;
 }
 

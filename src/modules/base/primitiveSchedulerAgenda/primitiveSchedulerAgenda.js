@@ -31,7 +31,12 @@
  */
 
 import { api } from 'lwc';
-import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
+import {
+    addToDate,
+    dateTimeObjectFrom,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -43,8 +48,13 @@ import {
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
+import { classSet } from 'c/utils';
 
 const DEFAULT_SELECTED_DATE = new Date();
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
 
 /**
  * Main part of the scheduler, when the selected display is "agenda".
@@ -54,7 +64,10 @@ const DEFAULT_SELECTED_DATE = new Date();
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
+    _hideResourcesFilter = false;
+    _hideSidePanel = false;
     _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _computedEvents = [];
     computedGroups = [];
@@ -114,6 +127,36 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the side panel will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
@@ -133,6 +176,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.setStartToBeginningOfUnit();
             this.initLeftPanelCalendarDisabledDates();
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**
@@ -176,6 +237,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get mainSectionClass() {
+        return classSet(
+            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable'
+        )
+            .add({
+                'avonni-scheduler__border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
+            })
+            .toString();
+    }
+
+    /**
      * Computed resource options, displayed in the left panel as checkboxes.
      *
      * @type {object[]}
@@ -195,6 +274,44 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 value: res.name
             };
         });
+    }
+
+    /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
+    get sidePanelClass() {
+        return classSet(
+            'avonni-scheduler__panel slds-scrollable avonni-scheduler__border_top avonni-scheduler__border_bottom'
+        )
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__border_left':
+                    this.sidePanelPosition === 'left',
+                'avonni-scheduler__border_right':
+                    this.sidePanelPosition === 'right'
+            })
+            .toString();
+    }
+
+    /**
+     * True if the left side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLeftPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the right side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showRightPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'right';
     }
 
     /*

@@ -252,12 +252,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get cellClass() {
-        return classSet(
-            'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
-        )
+        return classSet('slds-p-around_none slds-wrap avonni-scheduler__cell')
             .add({
-                'slds-col': !this.isVertical,
-                'avonni-scheduler__cell_vertical': this.isVertical,
+                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__border_bottom':
+                    !this.isVertical,
+                'avonni-scheduler__cell_vertical avonni-scheduler__border_right slds-border_bottom':
+                    this.isVertical,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
@@ -296,37 +296,22 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
 
     /**
-     * First column HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get firstCol() {
-        return this.template.querySelector(
-            '[data-element-id="div-first-column"]'
-        );
-    }
-
-    /**
      * Computed CSS classes for the first column.
      *
      * @type {string}
      */
     get firstColClass() {
-        return classSet('avonni-scheduler__first-col slds-grid')
+        return classSet(
+            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__border_left avonni-scheduler__border_top avonni-scheduler__border_bottom'
+        )
             .add({
-                'avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
-                    this.isVertical
+                'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
+                    this.isVertical,
+                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded
             })
             .toString();
-    }
-
-    /**
-     * Initial valid string CSS width of the first column. It is used to set the left panel width, before resize.
-     *
-     * @type {string}
-     */
-    get firstColInitialWidth() {
-        return this.isVertical ? '110px' : '300px';
     }
 
     /**
@@ -335,7 +320,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {number}
      */
     get firstColWidth() {
-        return this.firstCol ? this.firstCol.getBoundingClientRect().width : 0;
+        return this.panelElement
+            ? this.panelElement.getBoundingClientRect().width
+            : 0;
     }
 
     /**
@@ -368,7 +355,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     get resourceClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
-                'slds-grid_vertical slds-col': this.isVertical
+                'slds-grid_vertical avonni-scheduler__flex-col': this.isVertical
             })
             .toString();
     }
@@ -405,7 +392,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get scheduleColClass() {
         return classSet(
-            'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+            'avonni-scheduler__flex-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
         )
             .add({
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
@@ -435,7 +422,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get scheduleNestedColClass() {
-        return classSet('slds-col')
+        return classSet('avonni-scheduler__flex-col')
             .add({
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
@@ -448,9 +435,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get scheduleWrapperClass() {
-        return classSet('slds-grid slds-is-relative avonni-scheduler__wrapper')
+        return classSet(
+            'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
+        )
             .add({
-                'avonni-scheduler__wrapper_vertical': this.isVertical
+                'avonni-scheduler__schedule-wrapper_vertical slds-border_top':
+                    this.isVertical
             })
             .toString();
     }
@@ -484,6 +474,24 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             .milliseconds;
     }
 
+    get splitterClass() {
+        return classSet(super.splitterClass)
+            .add({
+                'avonni-scheduler__vertical-splitter': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Timezone label, in the format GMT+0.
+     *
+     * @type {string}
+     */
+    get timezoneLabel() {
+        const timezone = this.start.toFormat('Z');
+        return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
+    }
+
     /**
      * Computed CSS classes for the vertical resource header cells.
      *
@@ -491,7 +499,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get verticalResourceHeaderCellClass() {
         return classSet(
-            'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
+            'avonni-scheduler__border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
         )
             .add({
                 'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
@@ -780,7 +788,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             );
             const height = this.isVertical
                 ? 80
-                : this.firstCol.offsetHeight - headers.offsetHeight;
+                : this.panelElement.offsetHeight - headers.offsetHeight;
             loader.style.height = `${height}px`;
         }
     }
@@ -886,16 +894,17 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 const computedResource = this.getResourceFromName(name);
                 const rowHeight = computedResource.height;
 
-                const dataRow = this._rowsHeight.find((row) => {
-                    return row.resourceName === name;
-                });
-                const dataRowHeight = dataRow.height;
-
-                const style = `
-                    min-height: ${dataRowHeight}px;
+                let style = `
                     height: ${rowHeight}px;
                     --avonni-scheduler-cell-width: ${this.cellWidth}px;
                 `;
+                const dataRow = this._rowsHeight.find((row) => {
+                    return row.resourceName === name;
+                });
+                if (dataRow) {
+                    const dataRowHeight = dataRow.height;
+                    style += `min-height: ${dataRowHeight}px;`;
+                }
 
                 // Patch inconsistency in the datatable row heights
                 const normalizedHeight =
@@ -951,13 +960,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
-            this.datatable.style.width = null;
             this._rowsHeight = [];
             this.computedResources.forEach((resource) => {
                 resource.minHeight = undefined;
             });
-            this.firstCol.style.width = null;
-            this.firstCol.style.minWidth = null;
             this.computedResources = [...this.computedResources];
         } else {
             this.updateRowsHeight();
@@ -994,6 +1000,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         } else {
             this.cellWidth = cellSize;
         }
+        this.updateResourcesStyle();
     }
 
     /**

@@ -49,8 +49,12 @@ export const Scheduler = ({
     events,
     eventsLabels,
     eventsPalette,
+    eventsDisplayFields,
     eventsTheme,
+    toolbarActions,
     hiddenDisplays,
+    hideResourcesFilter,
+    hideSidePanel,
     hideToolbar,
     isLoading,
     readOnly,
@@ -61,6 +65,7 @@ export const Scheduler = ({
     selectedDisplay,
     selectedResources,
     selectedTimeSpan,
+    sidePanelPosition,
     start,
     timeSpans,
     variant,
@@ -81,8 +86,12 @@ export const Scheduler = ({
     element.events = events;
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
+    element.eventsDisplayFields = eventsDisplayFields;
     element.eventsTheme = eventsTheme;
+    element.toolbarActions = toolbarActions;
     element.hiddenDisplays = hiddenDisplays;
+    element.hideResourcesFilter = hideResourcesFilter;
+    element.hideSidePanel = hideSidePanel;
     element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
@@ -93,6 +102,7 @@ export const Scheduler = ({
     element.selectedDisplay = selectedDisplay;
     element.selectedResources = selectedResources;
     element.selectedTimeSpan = selectedTimeSpan;
+    element.sidePanelPosition = sidePanelPosition;
     element.start = start;
     element.timeSpans = timeSpans;
     element.variant = variant;
