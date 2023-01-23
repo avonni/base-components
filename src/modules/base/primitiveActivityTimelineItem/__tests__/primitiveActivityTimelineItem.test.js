@@ -111,6 +111,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.isActive).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
         expect(element.loadingStateAlternativeText).toBe('Loading');
+        expect(element.timezone).toBeUndefined();
         expect(element.title).toBeUndefined();
     });
 
@@ -145,6 +146,20 @@ describe('Primitive Activity Timeline Item', () => {
                 '[data-element-id="lightning-button-menu-actions"]'
             );
             expect(actionMenu).toBeFalsy();
+        });
+    });
+
+    // timezone
+    it('Activity timeline item: timezone', () => {
+        element.timezone = 'Pacific/Honolulu';
+        element.dateFormat = 'dd/LL/yyyy T Z';
+        element.datetimeValue = '2020-12-01T00:00:00.000Z';
+
+        return Promise.resolve().then(() => {
+            const formattedDate = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
+            );
+            expect(formattedDate.textContent).toBe('30/11/2020 14:00 -10');
         });
     });
 

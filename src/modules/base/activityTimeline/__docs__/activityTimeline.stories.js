@@ -292,6 +292,16 @@ export default {
                 defaultValue: { summary: 'desc' }
             }
         },
+        timezone: {
+            control: {
+                type: 'text'
+            },
+            description:
+                "Time zone used, in a valid IANA format. If empty, the browser's time zone is used.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         title: {
             control: {
                 type: 'text'

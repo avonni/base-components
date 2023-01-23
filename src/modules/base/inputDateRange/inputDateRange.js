@@ -290,8 +290,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Specifies the time zone used when the type is <code>datetime</code> only.
-     * This value defaults to the user's Salesforce time zone setting.
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
      *
      * @type {string}
      * @public

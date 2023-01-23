@@ -38,7 +38,7 @@ import { DateTime, Interval } from 'c/luxon';
  * @param {(number | Date)} date Timestamp or date object to convert.
  * @returns {(DateTime | false)} DateTime object or false.
  */
-const dateTimeObjectFrom = (date) => {
+const dateTimeObjectFrom = (date, options) => {
     let time;
     if (date instanceof Date) {
         time = date.getTime();
@@ -48,7 +48,15 @@ const dateTimeObjectFrom = (date) => {
         return new DateTime(date);
     }
 
-    if (time) return DateTime.fromMillis(time);
+    if (time) {
+        const dateTime = DateTime.fromMillis(time, options);
+        if (dateTime.invalidExplanation) {
+            // Ignore invalid options but log the error
+            console.error(dateTime.invalidExplanation);
+            return DateTime.fromMillis(time);
+        }
+        return dateTime;
+    }
     return false;
 };
 
