@@ -309,7 +309,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._headerCells;
     }
     set headerCells(value) {
-        this._headerCells = normalizeObject(value);
+        const normalized =
+            typeof value === 'string'
+                ? JSON.parse(value)
+                : normalizeObject(value);
+        this._headerCells = normalized;
 
         if (this._connected) {
             this.updatePosition();

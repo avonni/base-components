@@ -81,6 +81,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     computedHeaders = [];
     computedResources = [];
     headersAreLoading = true;
+    simplifiedResources = [];
     smallestHeader;
 
     connectedCallback() {
@@ -194,6 +195,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     }
     set start(value) {
         const computedDate = dateTimeObjectFrom(value);
+        if (computedDate.ts === this._start.ts) {
+            return;
+        }
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
     }
 
@@ -284,6 +288,15 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             return { yAxis: this.smallestHeader.cells };
         }
         return { xAxis: this.smallestHeader.cells };
+    }
+
+    /**
+     * Serialized version of the `eventHeaderCells`. Needed to speed up the scheduler when used in Salesforce with Lightning Locker Service.
+     *
+     * @type {string}
+     */
+    get eventHeaderCellsSerialized() {
+        return JSON.stringify(this.eventHeaderCells);
     }
 
     /**
@@ -536,6 +549,17 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return null;
     }
 
+    /**
+     * Array of visible simplified resources.
+     *
+     * @type {object[]}
+     */
+    get visibleSimplifiedResources() {
+        return this.simplifiedResources.filter((res) => {
+            return this.selectedResources.includes(res.name);
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -707,6 +731,16 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
         this._rowsHeight = [];
 
+        // We need a lighter version of the resources to pass to the events,
+        // to prevent slowness in Salesforce with Lighting Locker Service
+        this.simplifiedResources = this.computedResources.map((res) => {
+            const resource = new SchedulerResource(res);
+            delete resource.events;
+            delete resource.cells;
+            delete resource.referenceCells;
+            return resource;
+        });
+
         if (this.isVertical) {
             requestAnimationFrame(() => {
                 this.updateCellWidth();
@@ -819,7 +853,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     updateOccurrencesOffset() {
         // For each resource
-        this.computedResources.forEach((resource) => {
+        this.simplifiedResources.forEach((resource) => {
             // Get all the event occurrences of the resource
             const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
@@ -893,8 +927,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
             resourceElements.forEach((resourceElement, index) => {
                 const name = resourceElement.dataset.name;
-                const computedResource = this.getResourceFromName(name);
-                const rowHeight = computedResource.height;
+                const resource = this.simplifiedResources.find(
+                    (res) => res.name === name
+                );
+                const rowHeight = resource.height;
 
                 let style = `
                     height: ${rowHeight}px;
@@ -928,7 +964,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
 
         this._rowsHeight = [];
-        this.computedResources.forEach((resource) => {
+        this.simplifiedResources.forEach((resource) => {
             const resourceName = resource.name;
             const height = this.datatable.getRowHeight(resourceName);
             resource.minHeight = height;
@@ -963,10 +999,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
             this._rowsHeight = [];
-            this.computedResources.forEach((resource) => {
+            this.simplifiedResources.forEach((resource) => {
                 resource.minHeight = undefined;
             });
-            this.computedResources = [...this.computedResources];
+            this.simplifiedResources = [...this.simplifiedResources];
         } else {
             this.updateRowsHeight();
             this.updateResourcesStyle();
