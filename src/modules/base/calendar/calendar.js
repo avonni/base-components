@@ -32,6 +32,8 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    dateTimeObjectFrom,
+    getStartOfWeek,
     normalizeBoolean,
     normalizeString,
     normalizeArray,
@@ -86,12 +88,13 @@ export default class Calendar extends LightningElement {
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
+    _timezone;
     _value = [];
     _weekNumber = false;
 
     _focusDate;
     _connected = false;
-    displayDate = DEFAULT_DATE; // The calendar displays this date's month
+    displayDate; // The calendar displays this date's month
     year;
     month;
     months = MONTHS;
@@ -99,22 +102,12 @@ export default class Calendar extends LightningElement {
     calendarData;
 
     connectedCallback() {
-        let setDate = new Date(DEFAULT_DATE);
-        if (this._value[0]) {
-            setDate = new Date(this._value[0]);
-        }
-        if (setDate < this.min) {
-            setDate = new Date(this.min);
-        }
-        if (setDate > this.max) {
-            setDate = new Date(this.max);
-        }
-
-        this.displayDate = new Date(setDate);
-        this._connected = true;
+        this.initDates();
+        this.initDisplayDate();
         this.validateCurrentDayValue();
         this.updateDateParameters();
         this.computeFocus(false);
+        this._connected = true;
     }
 
     /*
@@ -135,17 +128,12 @@ export default class Calendar extends LightningElement {
     }
 
     set dateLabels(value) {
-        const _value = normalizeArray(value);
+        this._dateLabels = deepCopy(normalizeArray(value, 'object'));
 
-        this._dateLabels = _value.map((x) => {
-            const labelDate =
-                new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
-                !isNaN(Date.parse(x.date))
-                    ? this.formattedWithTimezoneOffset(new Date(x.date))
-                    : x.date;
-            return { date: labelDate, ...x };
-        });
-        this.updateDateParameters();
+        if (this._connected) {
+            this.initDateLabels();
+            this.generateViewData();
+        }
     }
 
     /**
@@ -162,7 +150,10 @@ export default class Calendar extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        this.updateDateParameters();
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
 
     /**
@@ -177,20 +168,13 @@ export default class Calendar extends LightningElement {
     }
 
     set disabledDates(value) {
-        const valueArray =
-            typeof value === 'string' || !Array.isArray(value)
-                ? [value]
-                : value;
-        this._disabledDates = valueArray.map((x) => {
-            const isDate =
-                new Date(x).setHours(0, 0, 0, 0) !== NULL_DATE &&
-                !isNaN(Date.parse(x))
-                    ? this.formattedWithTimezoneOffset(new Date(x))
-                    : x;
-            return isDate;
-        });
+        this._disabledDates =
+            value && !Array.isArray(value) ? [value] : normalizeArray(value);
 
-        this.updateDateParameters();
+        if (this._connected) {
+            this.initDisabledDates();
+            this.generateViewData();
+        }
     }
 
     /**
@@ -220,15 +204,12 @@ export default class Calendar extends LightningElement {
     }
 
     set markedDates(value) {
-        this._markedDates = normalizeArray(value).map((x) => {
-            const isDate =
-                new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
-                !isNaN(Date.parse(x.date))
-                    ? this.formattedWithTimezoneOffset(new Date(x.date))
-                    : x.date;
-            return { date: isDate, color: x.color };
-        });
-        this.updateDateParameters();
+        this._markedDates = normalizeArray(value, 'object');
+
+        if (this._connected) {
+            this.initMarkedDates();
+            this.generateViewData();
+        }
     }
 
     /**
@@ -243,16 +224,16 @@ export default class Calendar extends LightningElement {
         return this._max;
     }
 
-    set max(max) {
-        const date = new Date(max);
-        const normalizedMax = this.isInvalidDate(date) ? DEFAULT_MAX : date;
-        this._max = this.formattedWithTimezoneOffset(normalizedMax);
-        this._max.setHours(0, 0, 0, 0);
+    set max(value) {
+        this._max = this.isInvalidDate(value) ? DEFAULT_MAX : value;
+
         if (this._connected) {
+            this._max = this.getDateWithTimezone(this.max);
             this.validateCurrentDayValue();
-        }
-        if (this.displayDate > this.max) {
-            this.displayDate = new Date(this.max);
+
+            if (this.displayDate > this.max) {
+                this.displayDate = this.getDateWithTimezone(this.max);
+            }
             this.updateDateParameters();
         }
     }
@@ -269,16 +250,16 @@ export default class Calendar extends LightningElement {
         return this._min;
     }
 
-    set min(min) {
-        const date = new Date(min);
-        const normalizedMin = this.isInvalidDate(date) ? DEFAULT_MIN : date;
-        this._min = this.formattedWithTimezoneOffset(normalizedMin);
-        this._min.setHours(0, 0, 0, 0);
+    set min(value) {
+        this._min = this.isInvalidDate(value) ? DEFAULT_MIN : value;
+
         if (this._connected) {
+            this._min = this.getDateWithTimezone(this.min);
             this.validateCurrentDayValue();
-        }
-        if (this.displayDate < this.min) {
-            this.displayDate = new Date(this.min);
+
+            if (this.displayDate < this.min) {
+                this.displayDate = this.getDateWithTimezone(this.min);
+            }
             this.updateDateParameters();
         }
     }
@@ -302,7 +283,29 @@ export default class Calendar extends LightningElement {
             validValues: SELECTION_MODES.valid,
             fallbackValue: SELECTION_MODES.default
         });
-        this.updateDateParameters();
+        if (this._connected) {
+            this.validateCurrentDayValue();
+            this.updateDateParameters();
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.initDates();
+            this.updateDateParameters();
+        }
     }
 
     /**
@@ -317,20 +320,17 @@ export default class Calendar extends LightningElement {
     }
 
     set value(value) {
-        const dates = Array.isArray(value) ? value : [value];
-        this._value = dates.map((date) => {
-            const normalizedDate = this.formattedWithTimezoneOffset(
-                new Date(date)
-            );
-            normalizedDate.setHours(0, 0, 0, 0);
-            return normalizedDate;
-        });
-        this._value.sort((a, b) => a - b);
+        this._value =
+            value && !Array.isArray(value) ? [value] : normalizeArray(value);
 
         if (this._connected) {
+            this.initValue();
+            if (this.value[0]) {
+                this.displayDate = this.getDateWithTimezone(this.value[0]);
+            }
             this.validateCurrentDayValue();
+            this.updateDateParameters();
         }
-        this.updateDate();
     }
 
     /**
@@ -347,7 +347,10 @@ export default class Calendar extends LightningElement {
 
     set weekNumber(value) {
         this._weekNumber = normalizeBoolean(value);
-        this.updateDateParameters();
+
+        if (this._connected) {
+            this.generateViewData();
+        }
     }
     /*
      * ------------------------------------------------------------
@@ -361,7 +364,7 @@ export default class Calendar extends LightningElement {
      * @return {boolean}
      */
     get allValuesOutsideMinAndMax() {
-        return this._value.every(
+        return this.value.every(
             (value) => this.isBeforeMin(value) || this.isAfterMax(value)
         );
     }
@@ -381,8 +384,8 @@ export default class Calendar extends LightningElement {
      * Compute year list spread from min and max.
      */
     get yearsList() {
-        let startYear = this.min.getFullYear();
-        let endYear = this.max.getFullYear();
+        let startYear = this.min.year;
+        let endYear = this.max.year;
 
         return [...Array(endYear - startYear + 1).keys()].map((x) => {
             let year = x + startYear;
@@ -394,13 +397,10 @@ export default class Calendar extends LightningElement {
      * Disable interaction on previous date layout.
      */
     get disabledPrevious() {
-        let disabled = deepCopy(this.disabled);
-        let previousDate = new Date(this.displayDate);
-        previousDate.setMonth(this.displayDate.getMonth() - 1);
-        previousDate.setDate(1);
-
-        let minDate = new Date(this.min);
-        minDate.setDate(1);
+        let disabled = this.disabled;
+        const month = this.displayDate.month - 1;
+        const previousDate = this.displayDate.set({ month, day: 1 });
+        const minDate = this.min.set({ day: 1 });
 
         if (previousDate < minDate) {
             disabled = true;
@@ -414,12 +414,9 @@ export default class Calendar extends LightningElement {
      */
     get disabledNext() {
         let disabled = this.disabled;
-        let nextDate = new Date(this.displayDate);
-        nextDate.setMonth(this.displayDate.getMonth() + 1);
-        nextDate.setDate(1);
-
-        let maxDate = new Date(this.max);
-        maxDate.setDate(1);
+        const month = this.displayDate.month + 1;
+        const nextDate = this.displayDate.set({ month, day: 1 });
+        const maxDate = this.max.set({ day: 1 });
 
         if (nextDate > maxDate) {
             disabled = true;
@@ -440,8 +437,8 @@ export default class Calendar extends LightningElement {
      */
     get isCurrentDateBetweenMinAndMax() {
         return (
-            this.min.getTime() <= new Date().getTime() &&
-            new Date().getTime() <= this.max.getTime()
+            this.min.ts <= new Date().getTime() &&
+            new Date().getTime() <= this.max.ts
         );
     }
 
@@ -458,7 +455,7 @@ export default class Calendar extends LightningElement {
         }
 
         const stringDates = this.value.map((date) => {
-            return date.toISOString();
+            return date.toISO();
         });
         return this.selectionMode === 'single' ? stringDates[0] : stringDates;
     }
@@ -488,13 +485,12 @@ export default class Calendar extends LightningElement {
      */
     @api
     focusDate(dateValue) {
-        const value = new Date(dateValue);
-        if (value && !value.getTime()) {
+        if (this.isInvalidDate(dateValue)) {
             return;
         }
 
-        this.displayDate = new Date(value);
-        this._focusDate = new Date(value);
+        this.displayDate = this.getDateWithTimezone(dateValue);
+        this._focusDate = this.getDateWithTimezone(dateValue);
         this.computeFocus(true);
     }
 
@@ -521,7 +517,7 @@ export default class Calendar extends LightningElement {
      */
     @api
     goToDate(date) {
-        const selectedDate = this.formattedWithTimezoneOffset(new Date(date));
+        const selectedDate = this.getDateWithTimezone(date);
         if (this.isInvalidDate(selectedDate)) {
             console.warn(`The date ${date} is not valid.`);
             return;
@@ -555,34 +551,111 @@ export default class Calendar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initDateLabels() {
+        this.dateLabels.forEach((label) => {
+            label.date = this.getDateWithTimezone(label.date);
+        });
+    }
+
+    initDates() {
+        this._max = this.getDateWithTimezone(this.max).startOf('day');
+        this._min = this.getDateWithTimezone(this.min).startOf('day');
+        this.initDateLabels();
+        this.initDisabledDates();
+        this.initMarkedDates();
+        this.initValue();
+
+        if (this.displayDate) {
+            this.displayDate = this.getDateWithTimezone(
+                this.displayDate
+            ).startOf('day');
+        }
+    }
+
+    initDisabledDates() {
+        this._disabledDates = this.disabledDates.map((date) => {
+            if (this.isInvalidDate(date)) {
+                return date;
+            }
+            const fullDate = this.getDateWithTimezone(date);
+            return fullDate.startOf('day');
+        });
+    }
+
+    initDisplayDate() {
+        let setDate = this.getDateWithTimezone(DEFAULT_DATE);
+        if (this._value[0]) {
+            setDate = this._value[0];
+        } else if (setDate < this.min) {
+            setDate = this.min;
+        } else if (setDate > this.max) {
+            setDate = this.max;
+        }
+        this.displayDate = this.getDateWithTimezone(setDate);
+    }
+
+    initMarkedDates() {
+        this._markedDates = this.markedDates.map((marker) => {
+            return {
+                color: marker.color,
+                date: this.isInvalidDate(marker.date)
+                    ? marker.date
+                    : this.getDateWithTimezone(marker.date).startOf('day')
+            };
+        });
+    }
+
+    initValue() {
+        const normalizedValues = [];
+        this.value.forEach((date) => {
+            if (!this.isInvalidDate(date)) {
+                const normalizedDate =
+                    this.getDateWithTimezone(date).startOf('day');
+                normalizedValues.push(normalizedDate);
+            }
+        });
+        normalizedValues.sort((a, b) => a.ts - b.ts);
+        this._value = normalizedValues;
+    }
+
     /**
-     * Returns the first day of the current month.
+     * Transforms a date to include the current timezone.
+     *
+     * @param {string | Date} date Date to format
+     * @returns Formatted date
      */
-    getFirstDayOfMonth(date) {
-        const dateValue = new Date(date);
-        dateValue.setDate(1);
-        return dateValue.toISOString();
+    getDateWithTimezone(value) {
+        const date = dateTimeObjectFrom(value, {
+            zone: this.timezone,
+            locale: 'en-US'
+        });
+        if (!date || date.startOf('day').ts === NULL_DATE) {
+            return value;
+        }
+        return date;
     }
 
     /**
      * Check if value is after max date.
      */
     isAfterMax(value) {
-        return value.getTime() > this.max.getTime();
+        return value.ts > this.max.ts;
     }
 
     /**
      * Check if value is before min date.
      */
     isBeforeMin(value) {
-        return value.getTime() < this.min.getTime();
+        return value.ts < this.min.ts;
     }
 
     /**
      * Check if value is an invalid date.
      */
     isInvalidDate(value) {
-        return value.toString() === 'Invalid Date';
+        const date = dateTimeObjectFrom(value);
+        return !date || date.startOf('day').ts === NULL_DATE;
     }
 
     /**
@@ -596,10 +669,8 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'object') {
-                const newDate = this.formattedWithTimezoneOffset(
-                    new Date(date)
-                );
-                dates.push(newDate.setHours(0, 0, 0, 0));
+                const newDate = this.getDateWithTimezone(date);
+                dates.push(newDate.startOf('day').ts);
             }
         });
 
@@ -607,35 +678,22 @@ export default class Calendar extends LightningElement {
     }
 
     getLabel(date) {
-        const weekday = DAYS[date.getDay()];
+        const dayIndex = date.weekday === 7 ? 0 : date.weekday;
+        const weekday = DAYS[dayIndex];
         return this.dateLabels.find((label) => {
             const labelAsNumber = Number(label.date);
             let labelAsTime;
-            if (label.date && !this.isInvalidDate(label.date)) {
-                const labelAsDate = this.formattedWithTimezoneOffset(
-                    new Date(label.date)
-                );
-                labelAsDate.setHours(0, 0, 0, 0);
-                labelAsTime = labelAsDate.getTime();
+            if (!this.isInvalidDate(label.date)) {
+                const labelAsDate = this.getDateWithTimezone(label.date);
+                labelAsTime = labelAsDate.startOf('day').ts;
             }
 
             return (
-                labelAsTime === date.getTime() ||
-                labelAsNumber === date.getDate() ||
+                labelAsTime === date.ts ||
+                labelAsNumber === date.day ||
                 weekday === label.date
             );
         });
-    }
-
-    /**
-     * Check if both dates have the same month.
-     *
-     * @param {Date} dateA A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @param {Date} dateB A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @returns {boolean}
-     */
-    haveSameMonth(dateA, dateB) {
-        return new Date(dateA).getMonth() === new Date(dateB).getMonth();
     }
 
     /**
@@ -649,7 +707,7 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'string') {
-                dates.push(DAYS.indexOf(date));
+                dates.push(date);
             }
         });
 
@@ -675,25 +733,13 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Update value, date and refresh calendar.
-     */
-    updateDate() {
-        this._value = this._value.filter((date) => {
-            return date.getTime() !== NULL_DATE;
-        });
-        if (this._value[0]) {
-            this.displayDate = new Date(this._value[0]);
-        }
-        this.updateDateParameters();
-    }
-
-    /**
      * Update date : year, month, day.
      */
     updateDateParameters() {
-        this.year = this.displayDate.getFullYear();
-        this.month = MONTHS[this.displayDate.getMonth()];
-        this.day = this.displayDate.getDay();
+        this.year = this.displayDate.year;
+        this.month = MONTHS[this.displayDate.month - 1];
+        this.day =
+            this.displayDate.weekday === 7 ? 0 : this.displayDate.weekday;
         this.generateViewData();
     }
 
@@ -702,14 +748,9 @@ export default class Calendar extends LightningElement {
      */
     generateViewData() {
         const calendarData = [];
-        const today = new Date().setHours(0, 0, 0, 0);
-        const currentMonth = this.displayDate.getMonth();
-        const date = new Date(this.displayDate);
-        date.setDate(1);
-
-        if (date.getDay() > 0) {
-            date.setDate(-date.getDay() + 1);
-        }
+        const today = this.getDateWithTimezone(new Date()).startOf('day');
+        const currentMonth = this.displayDate.month;
+        let date = getStartOfWeek(this.displayDate.set({ day: 1 }));
 
         const mode = this.selectionMode;
         const firstValue = this.value[0];
@@ -724,7 +765,7 @@ export default class Calendar extends LightningElement {
                 // Week number
                 weekData.push(
                     new CalendarDate({
-                        date: date.getTime(),
+                        date: date.ts,
                         isWeekNumber: true
                     })
                 );
@@ -732,37 +773,37 @@ export default class Calendar extends LightningElement {
 
             // Add 7 days to each week array
             for (let a = 0; a < 7; a++) {
-                const time = date.getTime();
-                const disabledDate = this.isInArray(date, this.disabledDates);
+                const time = date.ts;
+                const disabledDate = this.isDisabled(date, this.disabledDates);
                 const outsideOfMinMax = time < this.min || time > this.max;
                 const markers = this.getMarkers(date);
                 const label = this.getLabel(date);
                 const isPartOfInterval =
-                    isInterval && firstValue <= time && lastValue >= time;
+                    isInterval && firstValue.ts <= time && lastValue.ts >= time;
 
                 let selected;
                 if (this.isMultiSelect) {
                     selected = this.value.find((value) => {
-                        return value.getTime() === time;
+                        return value.startOf('day').ts === time;
                     });
                 } else if (firstValue) {
-                    selected = time === firstValue.getTime();
+                    selected = time === firstValue.startOf('day').ts;
                 }
 
                 weekData.push(
                     new CalendarDate({
-                        adjacentMonth: date.getMonth() !== currentMonth,
-                        date: time,
+                        adjacentMonth: date.month !== currentMonth,
+                        date: this.getDateWithTimezone(time),
                         disabled:
                             this.disabled || disabledDate || outsideOfMinMax,
                         isPartOfInterval,
-                        isToday: today === time,
+                        isToday: today.ts === time,
                         chip: label,
                         markers,
                         selected
                     })
                 );
-                date.setDate(date.getDate() + 1);
+                date = date.plus({ day: 1 });
             }
             calendarData.push(weekData);
         }
@@ -777,21 +818,17 @@ export default class Calendar extends LightningElement {
      * @param {object[]} array
      * @returns disabled
      */
-    isInArray(date, array) {
-        let disabled = false;
-        let time = new Date(date).setHours(0, 0, 0, 0);
-        let weekDay = date.getDay();
-        let monthDay = date.getDate();
+    isDisabled(date) {
+        const dates = this.disabledDates;
+        const time = date.startOf('day').ts;
+        const weekday = date.weekdayShort;
+        const monthDay = date.day;
 
-        if (
-            this.fullDatesFromArray(array).indexOf(time) > -1 ||
-            this.weekDaysFromArray(array).indexOf(weekDay) > -1 ||
-            this.monthDaysFromArray(array).indexOf(monthDay) > -1
-        ) {
-            disabled = true;
-        }
-
-        return disabled;
+        return (
+            this.fullDatesFromArray(dates).indexOf(time) > -1 ||
+            this.weekDaysFromArray(dates).indexOf(weekday) > -1 ||
+            this.monthDaysFromArray(dates).indexOf(monthDay) > -1
+        );
     }
 
     /**
@@ -802,15 +839,15 @@ export default class Calendar extends LightningElement {
      */
     getMarkers(date) {
         const markers = [];
-        const time = new Date(date).setHours(0, 0, 0, 0);
-        const weekDay = date.getDay();
-        const monthDay = date.getDate();
+        const time = date.startOf('day').ts;
+        const weekday = date.weekdayShort;
+        const monthDay = date.day;
 
         this.markedDates.forEach((marker) => {
             const dateArray = [marker.date];
             if (
                 this.fullDatesFromArray(dateArray).indexOf(time) > -1 ||
-                this.weekDaysFromArray(dateArray).indexOf(weekDay) > -1 ||
+                this.weekDaysFromArray(dateArray).indexOf(weekday) > -1 ||
                 this.monthDaysFromArray(dateArray).indexOf(monthDay) > -1
             ) {
                 markers.push(`background-color: ${marker.color}`);
@@ -825,7 +862,7 @@ export default class Calendar extends LightningElement {
      */
     removeValuesOutsideRange() {
         // Remove all out of range values
-        this._value = this._value.filter((date) => {
+        this._value = this.value.filter((date) => {
             return (
                 !this.isInvalidDate(date) &&
                 !this.isAfterMax(date) &&
@@ -838,17 +875,14 @@ export default class Calendar extends LightningElement {
      * Set interval when only one value is valid (in min-max range) and the other one is outside range.
      */
     setIntervalWithOneValidValue(minValue, maxValue) {
-        if (
-            this.isBeforeMin(minValue) &&
-            minValue.getTime() < this._value[0].getTime()
-        ) {
-            this._value[1] = this._value[0];
-            this._value[0] = this.min;
+        if (this.isBeforeMin(minValue) && minValue.ts < this.value[0].ts) {
+            this.value[1] = this.value[0];
+            this.value[0] = this.min;
         } else if (
             this.isAfterMax(maxValue) &&
-            maxValue.getTime() > this._value[0].getTime()
+            maxValue.ts > this.value[0].ts
         ) {
-            this._value[1] = this.max;
+            this.value[1] = this.max;
         }
     }
 
@@ -858,20 +892,20 @@ export default class Calendar extends LightningElement {
      */
     setValueToCurrentDayOrMin() {
         if (this.isCurrentDateBetweenMinAndMax) {
-            return new Date();
+            return this.getDateWithTimezone(new Date());
         }
-        return new Date(this.min);
+        return this.getDateWithTimezone(this.min);
     }
 
     /**
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
-        if (!this._value[0]) {
+        if (!this.value.length) {
             return;
         }
 
-        switch (this._selectionMode) {
+        switch (this.selectionMode) {
             case 'interval':
                 this.validateValueIntervalMode();
                 break;
@@ -889,26 +923,29 @@ export default class Calendar extends LightningElement {
      * Validate values for interval selection mode.
      */
     validateValueIntervalMode() {
-        const minValue = this._value[0];
-        const maxValue = this._value[this._value.length - 1];
+        const minValue = this.value[0];
+        const maxValue = this.value[this.value.length - 1];
 
         if (this.allValuesOutsideMinAndMax) {
             if (this.isBeforeMin(minValue) && this.isAfterMax(maxValue)) {
-                this._value[0] = this.min;
-                this._value[1] = this.max;
+                this.value[0] = this.getDateWithTimezone(this.min);
+                this.value[1] = this.getDateWithTimezone(this.max);
+                this.displayDate = this.getDateWithTimezone(this.min);
             } else {
                 this._value = [];
                 this.displayDate = this.setValueToCurrentDayOrMin();
             }
-            this.updateDate();
+            this.updateDateParameters();
         } else {
             this.removeValuesOutsideRange();
-            if (this._value.length) {
+
+            if (this.value.length) {
                 // Check if previous min-max values saved were outside of range to create interval
-                if (this._value.length === 1) {
+                if (this.value.length === 1) {
                     this.setIntervalWithOneValidValue(minValue, maxValue);
                 }
-                this.updateDate();
+                this.displayDate = this.getDateWithTimezone(this.value[0]);
+                this.updateDateParameters();
             }
         }
     }
@@ -918,16 +955,10 @@ export default class Calendar extends LightningElement {
      */
     validateValueMultipleMode() {
         this.removeValuesOutsideRange();
-        // Find valid date to re-center calendar
-        if (this.value.length && !this.allValuesOutsideMinAndMax) {
-            this.displayDate = this.value.find((date) => {
-                return (
-                    !this.isInvalidDate(date) &&
-                    !this.isAfterMax(date) &&
-                    !this.isBeforeMin(date)
-                );
-            });
-            this.updateDate();
+
+        if (this.value.length) {
+            this.displayDate = this.value[0];
+            this.updateDateParameters();
         }
     }
 
@@ -936,20 +967,20 @@ export default class Calendar extends LightningElement {
      */
     validateValueSingleMode() {
         // If multiple values are selected, we remove those outside range
-        if (this._value && this._value.length > 1) {
+        if (this.value && this.value.length > 1) {
             this.removeValuesOutsideRange();
         }
         // If one single value, we check if it's in interval and set to closest value if not
         else {
-            if (this.isInvalidDate(this._value[0])) {
+            if (this.isInvalidDate(this.value[0])) {
                 this._value = [];
                 this.displayDate = this.setValueToCurrentDayOrMin();
-            } else if (this.isAfterMax(this._value[0])) {
+            } else if (this.isAfterMax(this.value[0])) {
                 this._value = [];
-                this.displayDate = new Date(this.max);
-            } else if (this.isBeforeMin(this._value[0])) {
+                this.displayDate = this.getDateWithTimezone(this.max);
+            } else if (this.isBeforeMin(this.value[0])) {
                 this._value = [];
-                this.displayDate = new Date(this.min);
+                this.displayDate = this.getDateWithTimezone(this.min);
             }
             this.updateDateParameters();
         }
@@ -961,17 +992,17 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handleYearChange(event) {
-        this.displayDate.setFullYear(event.detail.value);
+        this.displayDate = this.displayDate.set({ year: event.detail.value });
 
-        if (this.displayDate.getTime() < this.min.getTime()) {
-            this.displayDate.setMonth(this.min.getMonth());
+        if (this.displayDate.ts < this.min.ts) {
+            this.displayDate = this.displayDate.set({ month: this.min.month });
         }
 
-        if (this.displayDate.getTime() > this.max.getTime()) {
-            this.displayDate.setMonth(this.max.getMonth());
+        if (this.displayDate.ts > this.max.ts) {
+            this.displayDate = this.displayDate.set({ month: this.max.month });
         }
 
-        this.dispatchNavigateEvent(new Date(this.displayDate).toISOString());
+        this.dispatchNavigateEvent(this.displayDate);
         this.updateDateParameters();
         event.stopPropagation();
         this.computeFocus(true);
@@ -981,7 +1012,8 @@ export default class Calendar extends LightningElement {
      * Previous month handler.
      */
     handlerPreviousMonth() {
-        this.displayDate.setMonth(this.displayDate.getMonth() - 1);
+        const month = this.displayDate.month - 1;
+        this.displayDate = this.displayDate.set({ month });
         this.updateDateParameters();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
@@ -991,7 +1023,8 @@ export default class Calendar extends LightningElement {
      * Next month handler.
      */
     handlerNextMonth() {
-        this.displayDate.setMonth(this.displayDate.getMonth() + 1);
+        const month = this.displayDate.month + 1;
+        this.displayDate = this.displayDate.set({ month });
         this.updateDateParameters();
         this.computeFocus(false);
         this.dispatchNavigateEvent(this.displayDate);
@@ -1005,15 +1038,15 @@ export default class Calendar extends LightningElement {
      * @returns array of dates
      */
     isSelectedMultiple(array, newDate) {
-        const timestamp = newDate.getTime();
-        let timestamps = array.map((x) => x.getTime());
+        const timestamp = newDate.ts;
+        const timestamps = array.map((x) => x.ts);
 
         if (!timestamps.includes(timestamp)) {
             timestamps.push(timestamp);
         } else {
             timestamps.splice(timestamps.indexOf(timestamp), 1);
         }
-        return timestamps.map((x) => new Date(x));
+        return timestamps.map((x) => this.getDateWithTimezone(x));
     }
 
     /**
@@ -1024,8 +1057,8 @@ export default class Calendar extends LightningElement {
      * @returns array of dates
      */
     isSelectedInterval(array, newDate) {
-        const timestamp = newDate.getTime();
-        let timestamps = array.map((x) => x.getTime()).sort((a, b) => a - b);
+        const timestamp = newDate.ts;
+        const timestamps = array.map((x) => x.ts).sort((a, b) => a - b);
 
         if (timestamps.includes(timestamp)) {
             timestamps.splice(timestamps.indexOf(timestamp), 1);
@@ -1047,17 +1080,7 @@ export default class Calendar extends LightningElement {
             }
         }
 
-        return timestamps.map((x) => new Date(x));
-    }
-
-    /**
-     * Returns a date formatted depending on the timezone offset.
-     *
-     * @param {string | Date} newDate - new date
-     * @returns array of dates
-     */
-    formattedWithTimezoneOffset(date) {
-        return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+        return timestamps.map((x) => this.getDateWithTimezone(x));
     }
 
     /**
@@ -1067,55 +1090,52 @@ export default class Calendar extends LightningElement {
      */
     handleSelectDate(event) {
         this.handleDateFocus(event);
-        if (!event.currentTarget.dataset.fullDate) {
+
+        const { fullDate, disabled } = event.currentTarget.dataset;
+        const date = this.getDateWithTimezone(Number(fullDate));
+        if (this.isInvalidDate(date) || disabled === 'true') {
             return;
         }
 
-        this._selectionMethod = event.pointerType === '' ? 'keyboard' : 'mouse';
-        let date = new Date(Number(event.target.dataset.fullDate));
-        const disabledDate = event.target.classList.contains(
-            'avonni-calendar__disabled-cell'
+        switch (this.selectionMode) {
+            case 'interval':
+                this._value = this.isSelectedInterval(this.value, date);
+                break;
+            case 'multiple':
+                this._value = this.isSelectedMultiple(this.value, date);
+                break;
+            default: {
+                const unselect =
+                    this.value.length && this.value[0].ts === date.ts;
+                this._value = unselect ? [] : [date];
+                break;
+            }
+        }
+        const clickedDate = date.toISO();
+        this.displayDate = this.getDateWithTimezone(date);
+        this.updateDateParameters();
+
+        /**
+         * The event fired when the selected date is changed.
+         *
+         * @event
+         * @public
+         * @name change
+         * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
+         * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
+         * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    bounds: event.currentTarget.getBoundingClientRect(),
+                    value: this.normalizedValue,
+                    clickedDate
+                }
+            })
         );
 
-        if (date && !disabledDate) {
-            if (this._selectionMode === 'single') {
-                this._value =
-                    this._value.length > 0 &&
-                    this._value[0].getTime() === date.getTime()
-                        ? []
-                        : [new Date(date)];
-            } else if (this._selectionMode === 'multiple') {
-                this._value = this.isSelectedMultiple(this._value, date);
-            } else if (this._selectionMode === 'interval') {
-                this._value = this.isSelectedInterval(this._value, date);
-            }
-            this._clickedDate = date.toISOString();
-            this.displayDate = new Date(date);
-
-            this.updateDateParameters();
-
-            /**
-             * The event fired when the selected date is changed.
-             *
-             * @event
-             * @public
-             * @name change
-             * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
-             * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
-             * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
-             */
-            this.dispatchEvent(
-                new CustomEvent('change', {
-                    detail: {
-                        bounds: event.currentTarget.getBoundingClientRect(),
-                        value: this.normalizedValue,
-                        clickedDate: this._clickedDate
-                    }
-                })
-            );
-
-            this.computeFocus(true);
-        }
+        this.computeFocus(true);
     }
 
     // EVENT HANDLERS //
@@ -1129,11 +1149,12 @@ export default class Calendar extends LightningElement {
      * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
      */
     dispatchNavigateEvent(date) {
-        const firstDayOfMonth = this.getFirstDayOfMonth(date);
+        const firstDayOfMonth = date.set({ day: 1 });
+
         this.dispatchEvent(
             new CustomEvent('navigate', {
                 detail: {
-                    date: firstDayOfMonth
+                    date: firstDayOfMonth.toISO()
                 }
             })
         );
@@ -1187,7 +1208,9 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        let focusDate = new Date(Number(event.currentTarget.dataset.fullDate));
+        const focusDate = this.getDateWithTimezone(
+            Number(event.currentTarget.dataset.fullDate)
+        );
         if (focusDate) {
             this._focusDate = focusDate;
         }
@@ -1203,10 +1226,8 @@ export default class Calendar extends LightningElement {
         const dayCell = this.template.querySelector(
             `[data-full-date="${day}"]`
         );
-        const timeArray = this._value
-            .map((x) => x.getTime())
-            .sort((a, b) => a - b);
-        if (this._selectionMode === 'interval' && !!day) {
+        const timeArray = this.value.map((x) => x.ts).sort((a, b) => a - b);
+        if (this.selectionMode === 'interval' && !!day) {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell.classList.add(
@@ -1292,113 +1313,54 @@ export default class Calendar extends LightningElement {
      * @param {Event} event
      */
     handleKeyDown(event) {
-        const initialFocusDate = new Date(
-            parseInt(event.target.dataset.fullDate, 10)
-        );
-        const initialFocusDateCopy = new Date(initialFocusDate);
+        const fullDate = Number(event.target.dataset.fullDate);
+        if (!fullDate) {
+            return;
+        }
+
+        const initialDate = this.getDateWithTimezone(fullDate);
+        const { year, day, month } = initialDate;
         let nextDate;
 
         if (event.altKey) {
             if (event.keyCode === keyCodes.pageup) {
-                event.preventDefault();
-                nextDate = new Date(
-                    initialFocusDate.setFullYear(
-                        initialFocusDate.getFullYear() - 1
-                    )
-                );
-                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
+                nextDate = initialDate.set({ year: year - 1 });
             }
             if (event.keyCode === keyCodes.pagedown) {
-                event.preventDefault();
-                nextDate = initialFocusDate.setFullYear(
-                    initialFocusDate.getFullYear() + 1
-                );
-                this.dispatchNavigateEvent(new Date(nextDate).toISOString());
+                nextDate = initialDate.set({ year: year + 1 });
             }
         } else {
             switch (event.keyCode) {
                 case keyCodes.left:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() - 1
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    nextDate = initialDate.set({ day: day - 1 });
                     break;
                 case keyCodes.right:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() + 1
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    nextDate = initialDate.set({ day: day + 1 });
                     break;
                 case keyCodes.up:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() - 7
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    nextDate = initialDate.set({ day: day - 7 });
                     break;
                 case keyCodes.down:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() + 7
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    nextDate = initialDate.set({ day: day + 7 });
                     break;
                 case keyCodes.home:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() - initialFocusDate.getDay()
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    nextDate = getStartOfWeek(initialDate);
                     break;
                 case keyCodes.end:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setDate(
-                        initialFocusDate.getDate() +
-                            (6 - initialFocusDate.getDay())
-                    );
-                    if (!this.haveSameMonth(initialFocusDateCopy, nextDate))
-                        this.dispatchNavigateEvent(
-                            new Date(nextDate).toISOString()
-                        );
+                    if (initialDate.weekday === 7) {
+                        nextDate = initialDate.plus({ days: 6 });
+                    } else {
+                        nextDate = initialDate.set({ weekday: 6 });
+                    }
                     break;
                 case keyCodes.pagedown:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setMonth(
-                        initialFocusDate.getMonth() - 1
-                    );
-                    this.dispatchNavigateEvent(
-                        new Date(nextDate).toISOString()
-                    );
+                    nextDate = initialDate.set({ month: month - 1 });
                     break;
                 case keyCodes.pageup:
-                    event.preventDefault();
-                    nextDate = initialFocusDate.setMonth(
-                        initialFocusDate.getMonth() + 1
-                    );
-                    this.dispatchNavigateEvent(
-                        new Date(nextDate).toISOString()
-                    );
+                    nextDate = initialDate.set({ month: month + 1 });
                     break;
                 case keyCodes.space:
                 case keyCodes.enter:
-                    event.preventDefault();
                     {
                         const selectedDay = event.target.querySelector(
                             '[data-element-id="span-day-label"]'
@@ -1416,12 +1378,18 @@ export default class Calendar extends LightningElement {
             return;
         }
 
+        event.preventDefault();
+
+        if (nextDate && (month !== nextDate.month || year !== nextDate.year)) {
+            this.dispatchNavigateEvent(nextDate);
+        }
+
         if (nextDate < this.min) {
             this._focusDate = this.min;
         } else if (nextDate > this.max) {
             this._focusDate = this.max;
         } else {
-            this._focusDate = new Date(nextDate);
+            this._focusDate = this.getDateWithTimezone(nextDate);
         }
         this.displayDate = this._focusDate;
         this.updateDateParameters();
@@ -1435,73 +1403,62 @@ export default class Calendar extends LightningElement {
      */
     computeFocus(applyFocus) {
         // if a date was previously selected or focused, focus the same date in this month.
-        let selectedMonthDate;
+        let selectedMonthDate, rovingDate;
         if (this._focusDate) {
-            selectedMonthDate = new Date(this.displayDate);
-            selectedMonthDate.setDate(this._focusDate.getDate());
-            selectedMonthDate = selectedMonthDate.getTime();
+            rovingDate = this._focusDate.day;
+            selectedMonthDate = this.displayDate.set({
+                day: this._focusDate.day
+            }).ts;
         }
-        const monthFirst = new Date(this.displayDate);
-        monthFirst.setDate(1);
-        monthFirst.setHours(0, 0, 0, 0);
-        const firstOfMonthDate = monthFirst.getTime();
-        const rovingDate = this._focusDate && this._focusDate.getDate();
+        const firstOfMonthDate = this.displayDate
+            .set({ day: 1 })
+            .startOf('day').ts;
 
         requestAnimationFrame(() => {
             const rovingFocusDate = this.template.querySelector(
-                `td[data-date="${rovingDate}"]`
+                `[data-element-id="td"][data-date="${rovingDate}"]`
             );
-            let selectedDate = this.template.querySelectorAll(
-                'td.slds-is-selected'
+            const selectedDates = this.template.querySelectorAll(
+                '[data-selected="true"]'
             );
-            selectedDate = selectedDate.length === 0 ? null : selectedDate;
             const todaysDate = this.template.querySelector(
-                `td[data-full-date="${new Date().setHours(0, 0, 0, 0)}"]`
+                '[data-today="true"]'
             );
             const firstOfMonth = this.template.querySelector(
-                `span[data-full-date="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
+                `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
             );
-            let firstOfMonthCell;
-            if (firstOfMonth) {
-                firstOfMonthCell = firstOfMonth.parentElement;
-            }
             const rovingMonthDate = this.template.querySelector(
-                `td[data-full-date="${selectedMonthDate}"]`
+                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
             );
             const firstValidDate = this.template.querySelector(
-                'span.slds-day:not(.avonni-calendar__disabled-cell)'
+                '[data-element-id="td"]:not([data-disabled="true"])'
             );
-            let firstValidDateCell;
-            if (firstValidDate) {
-                firstValidDateCell = firstValidDate.parentElement;
-            }
 
             const focusTarget =
                 rovingFocusDate ||
-                selectedDate ||
+                selectedDates[0] ||
                 rovingMonthDate ||
                 todaysDate ||
-                firstOfMonthCell ||
-                firstValidDateCell;
+                firstOfMonth ||
+                firstValidDate;
 
-            const existingFocusPoints =
-                this.template.querySelectorAll('td[tabindex="0"]');
-            if (existingFocusPoints) {
-                existingFocusPoints.forEach((focusPoint) => {
-                    focusPoint.setAttribute('tabindex', '-1');
-                });
-            }
+            const existingFocusPoints = this.template.querySelectorAll(
+                '[data-element-id="td"][tabindex="0"]'
+            );
+            existingFocusPoints.forEach((focusPoint) => {
+                focusPoint.setAttribute('tabindex', '-1');
+            });
 
-            if (selectedDate) {
+            if (selectedDates.length) {
                 if (this.selectionMode === 'single') {
-                    selectedDate[0].setAttribute('tabindex', '0');
+                    selectedDates[0].setAttribute('tabindex', '0');
                 } else if (this.selectionMode === 'multiple') {
-                    selectedDate.forEach((target) => {
+                    selectedDates.forEach((target) => {
                         target.setAttribute('tabindex', '0');
                     });
                 } else if (this.selectionMode === 'interval') {
-                    selectedDate[0].setAttribute('tabindex', '0');
-                    selectedDate[selectedDate.length - 1].setAttribute(
+                    selectedDates[0].setAttribute('tabindex', '0');
+                    selectedDates[selectedDates.length - 1].setAttribute(
                         'tabindex',
                         '0'
                     );
