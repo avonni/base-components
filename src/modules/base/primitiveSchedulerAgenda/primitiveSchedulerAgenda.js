@@ -289,9 +289,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
                 'avonni-scheduler__border_left':
-                    this.sidePanelPosition === 'left',
+                    this.sidePanelPosition === 'left' || !this.showSplitter,
                 'avonni-scheduler__border_right':
-                    this.sidePanelPosition === 'right'
+                    this.sidePanelPosition === 'right' || !this.showSplitter
             })
             .toString();
     }

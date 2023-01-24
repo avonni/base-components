@@ -89,7 +89,11 @@
         </div>
 
         <!-- Splitter -->
-        <div class={splitterClass} onmousedown={handleSplitterResizeMouseDown}>
+        <div
+            if:true={showSplitter}
+            class={splitterClass}
+            onmousedown={handleSplitterResizeMouseDown}
+        >
             <lightning-button-icon
                 if:true={showSplitterCollapse}
                 alternative-text="Expand the right side"
@@ -124,7 +128,6 @@
             ></lightning-button-icon>
         </div>
 
-        <!-- Resource headers as columns -->
         <div
             class="
                 avonni-scheduler__second-col
@@ -133,6 +136,7 @@
             "
             onscroll={handleScroll}
         >
+            <!-- Resource headers as columns -->
             <div
                 if:true={isVertical}
                 class="
@@ -284,7 +288,7 @@
                                                 key={occurrence.key}
                                                 class="slds-is-absolute"
                                                 color={event.color}
-                                                header-cells={eventHeaderCells}
+                                                header-cells={eventHeaderCellsSerialized}
                                                 cell-duration={smallestCellDuration}
                                                 cell-height={cellHeight}
                                                 cell-width={cellWidth}
@@ -300,7 +304,7 @@
                                                 read-only={readOnly}
                                                 reference-line={event.referenceLine}
                                                 resource-key={occurrence.resourceName}
-                                                resources={visibleComputedResources}
+                                                resources={visibleSimplifiedResources}
                                                 title={occurrence.title}
                                                 theme={event.theme}
                                                 to={occurrence.to}

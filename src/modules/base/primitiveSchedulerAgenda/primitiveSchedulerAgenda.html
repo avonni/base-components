@@ -35,76 +35,80 @@
 <template>
     <div class="avonni-scheduler__wrapper slds-grid">
         <!-- Side panel: left position -->
-        <div
-            if:true={showLeftPanel}
-            class={sidePanelClass}
-            data-element-id="div-panel"
-        >
-            <div
-                class="slds-p-around_medium"
-                data-element-id="div-panel-content"
-            >
-                <c-calendar
-                    disabled-dates={navCalendarDisabledDates}
-                    value={selectedDate}
-                    data-element-id="avonni-calendar-left-panel"
-                    onchange={handleCalendarChange}
-                    onnavigate={handleLeftPanelCalendarNavigate}
-                ></c-calendar>
-                <div if:false={hideResourcesFilter} class="slds-m-top_medium">
-                    <template for:each={resourceOptions} for:item="resource">
-                        <lightning-input
-                            key={resource.value}
-                            label={resource.label}
-                            checked={resource.selected}
-                            type="checkbox"
-                            value={resource.value}
-                            style={resource.style}
-                            data-element-id="lightning-input-resource"
-                            onchange={handleResourceToggle}
-                        ></lightning-input>
-                    </template>
+        <template if:true={showLeftPanel}>
+            <div class={sidePanelClass} data-element-id="div-panel">
+                <div
+                    class="slds-p-around_medium"
+                    data-element-id="div-panel-content"
+                >
+                    <c-calendar
+                        disabled-dates={navCalendarDisabledDates}
+                        value={selectedDate}
+                        data-element-id="avonni-calendar-left-panel"
+                        onchange={handleCalendarChange}
+                        onnavigate={handleLeftPanelCalendarNavigate}
+                    ></c-calendar>
+                    <div
+                        if:false={hideResourcesFilter}
+                        class="slds-m-top_medium"
+                    >
+                        <template
+                            for:each={resourceOptions}
+                            for:item="resource"
+                        >
+                            <lightning-input
+                                key={resource.value}
+                                label={resource.label}
+                                checked={resource.selected}
+                                type="checkbox"
+                                value={resource.value}
+                                style={resource.style}
+                                data-element-id="lightning-input-resource"
+                                onchange={handleResourceToggle}
+                            ></lightning-input>
+                        </template>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div
-            if:true={showLeftPanel}
-            class={splitterClass}
-            onmousedown={handleSplitterResizeMouseDown}
-        >
-            <lightning-button-icon
-                if:true={showSplitterCollapse}
-                alternative-text="Expand the right side"
-                icon-name="utility:left"
-                size="x-small"
-                variant="bare"
-                data-element-id="lightning-button-icon-splitter-collapse"
-                onclick={handleSplitterCollapse}
-                onmousedown={stopPropagation}
-            ></lightning-button-icon>
             <div
-                if:true={showSplitterResize}
-                class="
-                    avonni-scheduler__splitter-resize-handle
-                    slds-m-vertical_x-small
-                    slds-m-horizontal_xx-small
-                "
-                data-element-id="div-splitter-resize-handle"
+                if:true={showSplitter}
+                class={splitterClass}
+                onmousedown={handleSplitterResizeMouseDown}
             >
-                <span class="slds-assistive-text">Resize</span>
+                <lightning-button-icon
+                    if:true={showSplitterCollapse}
+                    alternative-text="Expand the right side"
+                    icon-name="utility:left"
+                    size="x-small"
+                    variant="bare"
+                    data-element-id="lightning-button-icon-splitter-collapse"
+                    onclick={handleSplitterCollapse}
+                    onmousedown={stopPropagation}
+                ></lightning-button-icon>
+                <div
+                    if:true={showSplitterResize}
+                    class="
+                        avonni-scheduler__splitter-resize-handle
+                        slds-m-vertical_x-small
+                        slds-m-horizontal_xx-small
+                    "
+                    data-element-id="div-splitter-resize-handle"
+                >
+                    <span class="slds-assistive-text">Resize</span>
+                </div>
+                <lightning-button-icon
+                    if:true={showSplitterExpand}
+                    class="avonni-scheduler__splitter-expand-left-button"
+                    alternative-text="Expand the left side"
+                    icon-name="utility:right"
+                    size="x-small"
+                    variant="bare"
+                    data-element-id="lightning-button-icon-splitter-expand"
+                    onclick={handleSplitterExpand}
+                    onmousedown={stopPropagation}
+                ></lightning-button-icon>
             </div>
-            <lightning-button-icon
-                if:true={showSplitterExpand}
-                class="avonni-scheduler__splitter-expand-left-button"
-                alternative-text="Expand the left side"
-                icon-name="utility:right"
-                size="x-small"
-                variant="bare"
-                data-element-id="lightning-button-icon-splitter-expand"
-                onclick={handleSplitterExpand}
-                onmousedown={stopPropagation}
-            ></lightning-button-icon>
-        </div>
+        </template>
 
         <!-- Agenda panel -->
         <div class={mainSectionClass}>
@@ -260,72 +264,76 @@
         </div>
 
         <!-- Side panel: right position -->
-        <div
-            if:true={showRightPanel}
-            class={splitterClass}
-            onmousedown={handleSplitterResizeMouseDown}
-        >
-            <lightning-button-icon
-                if:true={showSplitterCollapse}
-                alternative-text="Expand the right side"
-                icon-name="utility:left"
-                size="x-small"
-                variant="bare"
-                onclick={handleSplitterCollapse}
-                onmousedown={stopPropagation}
-            ></lightning-button-icon>
+        <template if:true={showRightPanel}>
             <div
-                if:true={showSplitterResize}
-                class="
-                    avonni-scheduler__splitter-resize-handle
-                    slds-m-vertical_x-small
-                    slds-m-horizontal_xx-small
-                "
+                if:true={showSplitter}
+                class={splitterClass}
+                onmousedown={handleSplitterResizeMouseDown}
             >
-                <span class="slds-assistive-text">Resize</span>
+                <lightning-button-icon
+                    if:true={showSplitterCollapse}
+                    alternative-text="Expand the right side"
+                    icon-name="utility:left"
+                    size="x-small"
+                    variant="bare"
+                    onclick={handleSplitterCollapse}
+                    onmousedown={stopPropagation}
+                ></lightning-button-icon>
+                <div
+                    if:true={showSplitterResize}
+                    class="
+                        avonni-scheduler__splitter-resize-handle
+                        slds-m-vertical_x-small
+                        slds-m-horizontal_xx-small
+                    "
+                >
+                    <span class="slds-assistive-text">Resize</span>
+                </div>
+                <lightning-button-icon
+                    if:true={showSplitterExpand}
+                    class="avonni-scheduler__splitter-expand-left-button"
+                    alternative-text="Expand the left side"
+                    icon-name="utility:right"
+                    size="x-small"
+                    variant="bare"
+                    onclick={handleSplitterExpand}
+                    onmousedown={stopPropagation}
+                ></lightning-button-icon>
             </div>
-            <lightning-button-icon
-                if:true={showSplitterExpand}
-                class="avonni-scheduler__splitter-expand-left-button"
-                alternative-text="Expand the left side"
-                icon-name="utility:right"
-                size="x-small"
-                variant="bare"
-                onclick={handleSplitterExpand}
-                onmousedown={stopPropagation}
-            ></lightning-button-icon>
-        </div>
-        <div
-            if:true={showRightPanel}
-            class={sidePanelClass}
-            data-element-id="div-panel"
-        >
-            <div
-                class="slds-p-around_medium"
-                data-element-id="div-panel-content"
-            >
-                <c-calendar
-                    disabled-dates={navCalendarDisabledDates}
-                    value={selectedDate}
-                    data-element-id="avonni-calendar-left-panel"
-                    onchange={handleCalendarChange}
-                    onnavigate={handleLeftPanelCalendarNavigate}
-                ></c-calendar>
-                <div if:false={hideResourcesFilter} class="slds-m-top_medium">
-                    <template for:each={resourceOptions} for:item="resource">
-                        <lightning-input
-                            key={resource.value}
-                            label={resource.label}
-                            checked={resource.selected}
-                            type="checkbox"
-                            value={resource.value}
-                            style={resource.style}
-                            data-element-id="lightning-input-resource"
-                            onchange={handleResourceToggle}
-                        ></lightning-input>
-                    </template>
+            <div class={sidePanelClass} data-element-id="div-panel">
+                <div
+                    class="slds-p-around_medium"
+                    data-element-id="div-panel-content"
+                >
+                    <c-calendar
+                        disabled-dates={navCalendarDisabledDates}
+                        value={selectedDate}
+                        data-element-id="avonni-calendar-left-panel"
+                        onchange={handleCalendarChange}
+                        onnavigate={handleLeftPanelCalendarNavigate}
+                    ></c-calendar>
+                    <div
+                        if:false={hideResourcesFilter}
+                        class="slds-m-top_medium"
+                    >
+                        <template
+                            for:each={resourceOptions}
+                            for:item="resource"
+                        >
+                            <lightning-input
+                                key={resource.value}
+                                label={resource.label}
+                                checked={resource.selected}
+                                type="checkbox"
+                                value={resource.value}
+                                style={resource.style}
+                                data-element-id="lightning-input-resource"
+                                onchange={handleResourceToggle}
+                            ></lightning-input>
+                        </template>
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
