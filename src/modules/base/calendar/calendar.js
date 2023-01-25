@@ -89,15 +89,16 @@ export default class Calendar extends LightningElement {
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
     _timezone;
-    _value = [];
+    _value;
     _weekNumber = false;
 
     _focusDate;
+    _computedDateLabels = [];
     _computedDisabledDates = [];
     _computedMarkedDates = [];
     _computedMax;
     _computedMin;
-    _computedValue;
+    _computedValue = [];
     _connected = false;
     displayDate; // The calendar displays this date's month
     year;
@@ -387,16 +388,19 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Compute year list spread from min and max.
+     * Disable interaction on next date layout.
      */
-    get yearsList() {
-        let startYear = this._computedMin.year;
-        let endYear = this._computedMax.year;
+    get disabledNext() {
+        let disabled = this.disabled;
+        const month = this.displayDate.month + 1;
+        const nextDate = this.displayDate.set({ month, day: 1 });
+        const maxDate = this._computedMax.set({ day: 1 });
 
-        return [...Array(endYear - startYear + 1).keys()].map((x) => {
-            let year = x + startYear;
-            return { label: year, value: year };
-        });
+        if (nextDate > maxDate) {
+            disabled = true;
+        }
+
+        return disabled;
     }
 
     /**
@@ -409,22 +413,6 @@ export default class Calendar extends LightningElement {
         const minDate = this._computedMin.set({ day: 1 });
 
         if (previousDate < minDate) {
-            disabled = true;
-        }
-
-        return disabled;
-    }
-
-    /**
-     * Disable interaction on next date layout.
-     */
-    get disabledNext() {
-        let disabled = this.disabled;
-        const month = this.displayDate.month + 1;
-        const nextDate = this.displayDate.set({ month, day: 1 });
-        const maxDate = this._computedMax.set({ day: 1 });
-
-        if (nextDate > maxDate) {
             disabled = true;
         }
 
@@ -466,11 +454,39 @@ export default class Calendar extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute year list spread from min and max.
+     */
+    get yearsList() {
+        let startYear = this._computedMin.year;
+        let endYear = this._computedMax.year;
+
+        return [...Array(endYear - startYear + 1).keys()].map((x) => {
+            let year = x + startYear;
+            return { label: year, value: year };
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Set the focus on the first focusable element of the calendar.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="previous-lightning-button-icon"]'
+        );
+        if (button) {
+            button.focus();
+        }
+    }
 
     /**
      * Set the focus on a given date.
@@ -487,21 +503,6 @@ export default class Calendar extends LightningElement {
         this.displayDate = this.getDateWithTimezone(dateValue);
         this._focusDate = this.getDateWithTimezone(dateValue);
         this.computeFocus(true);
-    }
-
-    /**
-     * Set the focus on the first focusable element of the calendar.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        const button = this.template.querySelector(
-            '[data-element-id="previous-lightning-button-icon"]'
-        );
-        if (button) {
-            button.focus();
-        }
     }
 
     /**
@@ -547,12 +548,21 @@ export default class Calendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the date labels to include the timezone.
+     */
     initDateLabels() {
-        this.dateLabels.forEach((label) => {
-            label.date = this.getDateWithTimezone(label.date);
+        this._computedDateLabels = this.dateLabels.map((label) => {
+            return {
+                ...label,
+                date: this.getDateWithTimezone(label.date)
+            };
         });
     }
 
+    /**
+     * Initialize all the properties depending on dates, to include the timezone and set them to the beginning of the day.
+     */
     initDates() {
         this._computedMax = this.getDateWithTimezone(this.max).startOf('day');
         this._computedMin = this.getDateWithTimezone(this.min).startOf('day');
@@ -568,6 +578,9 @@ export default class Calendar extends LightningElement {
         }
     }
 
+    /**
+     * Initialize the disabled dates to include the timezone and set them to the beginning of the day.
+     */
     initDisabledDates() {
         this._computedDisabledDates = this.disabledDates.map((date) => {
             if (this.isInvalidDate(date)) {
@@ -578,6 +591,9 @@ export default class Calendar extends LightningElement {
         });
     }
 
+    /**
+     * Initialize the displayed date to center the calendar on the appropriate month.
+     */
     initDisplayDate() {
         let setDate = this.getDateWithTimezone(DEFAULT_DATE);
         if (this._computedValue[0]) {
@@ -590,6 +606,9 @@ export default class Calendar extends LightningElement {
         this.displayDate = this.getDateWithTimezone(setDate);
     }
 
+    /**
+     * Initialize the marked dates to include the timezone and set them to the beginning of the day.
+     */
     initMarkedDates() {
         this._computedMarkedDates = this.markedDates.map((marker) => {
             return {
@@ -601,6 +620,9 @@ export default class Calendar extends LightningElement {
         });
     }
 
+    /**
+     * Initialize the value to include the timezone, sort them and set them to the beginning of the day.
+     */
     initValue() {
         const normalizedValue =
             this.value && !Array.isArray(this.value)
@@ -619,49 +641,93 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Transforms a date to include the current timezone.
+     * Place focus according to keyboard selection
      *
-     * @param {string | Date} date Date to format
-     * @returns Formatted date
+     * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
      */
-    getDateWithTimezone(value) {
-        const date = dateTimeObjectFrom(value, {
-            zone: this.timezone,
-            locale: 'en-US'
-        });
-        if (!date || date.startOf('day').ts === NULL_DATE) {
-            return value;
+    computeFocus(applyFocus) {
+        // if a date was previously selected or focused, focus the same date in this month.
+        let selectedMonthDate, rovingDate;
+        if (this._focusDate) {
+            rovingDate = this._focusDate.day;
+            selectedMonthDate = this.displayDate.set({
+                day: this._focusDate.day
+            }).ts;
         }
-        return date;
+        const firstOfMonthDate = this.displayDate
+            .set({ day: 1 })
+            .startOf('day').ts;
+
+        requestAnimationFrame(() => {
+            const rovingFocusDate = this.template.querySelector(
+                `[data-element-id="td"][data-date="${rovingDate}"]`
+            );
+            const selectedDates = this.template.querySelectorAll(
+                '[data-selected="true"]'
+            );
+            const todaysDate = this.template.querySelector(
+                '[data-today="true"]'
+            );
+            const firstOfMonth = this.template.querySelector(
+                `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
+            );
+            const rovingMonthDate = this.template.querySelector(
+                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
+            );
+            const firstValidDate = this.template.querySelector(
+                '[data-element-id="td"]:not([data-disabled="true"])'
+            );
+
+            const focusTarget =
+                rovingFocusDate ||
+                selectedDates[0] ||
+                rovingMonthDate ||
+                todaysDate ||
+                firstOfMonth ||
+                firstValidDate;
+
+            const existingFocusPoints = this.template.querySelectorAll(
+                '[data-element-id="td"][tabindex="0"]'
+            );
+            existingFocusPoints.forEach((focusPoint) => {
+                focusPoint.setAttribute('tabindex', '-1');
+            });
+
+            if (selectedDates.length) {
+                if (this.selectionMode === 'single') {
+                    selectedDates[0].setAttribute('tabindex', '0');
+                } else if (this.selectionMode === 'multiple') {
+                    selectedDates.forEach((target) => {
+                        target.setAttribute('tabindex', '0');
+                    });
+                } else if (this.selectionMode === 'interval') {
+                    selectedDates[0].setAttribute('tabindex', '0');
+                    selectedDates[selectedDates.length - 1].setAttribute(
+                        'tabindex',
+                        '0'
+                    );
+                }
+            }
+
+            if (focusTarget) {
+                if (focusTarget.length > 0) {
+                    focusTarget[0].setAttribute('tabindex', '0');
+                    if (applyFocus) focusTarget[0].focus();
+                } else {
+                    focusTarget.setAttribute('tabindex', '0');
+                    if (applyFocus) {
+                        focusTarget.focus();
+                    }
+                }
+            }
+        });
     }
 
     /**
-     * Check if value is after max date.
-     */
-    isAfterMax(value) {
-        return value.ts > this._computedMax.ts;
-    }
-
-    /**
-     * Check if value is before min date.
-     */
-    isBeforeMin(value) {
-        return value.ts < this._computedMin.ts;
-    }
-
-    /**
-     * Check if value is an invalid date.
-     */
-    isInvalidDate(value) {
-        const date = dateTimeObjectFrom(value);
-        return !date || date.startOf('day').ts === NULL_DATE;
-    }
-
-    /**
-     * Create Dates array.
+     * Filter the valid dates from the given array.
      *
-     * @param {object[]} array
-     * @returns dates
+     * @param {object[]} array Array to filter.
+     * @returns Array of DateTime objects, set to the beginning of the day.
      */
     fullDatesFromArray(array) {
         const dates = [];
@@ -676,87 +742,8 @@ export default class Calendar extends LightningElement {
         return dates;
     }
 
-    getLabel(date) {
-        const dayIndex = date.weekday === 7 ? 0 : date.weekday;
-        const weekday = DAYS[dayIndex];
-        return this.dateLabels.find((label) => {
-            const labelAsNumber = Number(label.date);
-            let labelAsTime;
-            if (!this.isInvalidDate(label.date)) {
-                const labelAsDate = this.getDateWithTimezone(label.date);
-                labelAsTime = labelAsDate.startOf('day').ts;
-            }
-
-            return (
-                labelAsTime === date.ts ||
-                labelAsNumber === date.day ||
-                weekday === label.date
-            );
-        });
-    }
-
-    updateValue() {
-        if (!this._computedValue.length) {
-            this._value = this.selectionMode === 'single' ? null : [];
-            return;
-        }
-
-        const stringDates = this._computedValue.map((date) => {
-            return date.toISO();
-        });
-        this._value =
-            this.selectionMode === 'single' ? stringDates[0] : stringDates;
-    }
-
     /**
-     * Create weekdays from dates array.
-     *
-     * @param {object[]} array
-     * @returns dates
-     */
-    weekDaysFromArray(array) {
-        let dates = [];
-
-        array.forEach((date) => {
-            if (typeof date === 'string') {
-                dates.push(date);
-            }
-        });
-
-        return dates;
-    }
-
-    /**
-     * Create days + months from dates array.
-     *
-     * @param {object[]} array
-     * @returns dates
-     */
-    monthDaysFromArray(array) {
-        let dates = [];
-
-        array.forEach((date) => {
-            if (typeof date === 'number') {
-                dates.push(date);
-            }
-        });
-
-        return dates;
-    }
-
-    /**
-     * Update date : year, month, day.
-     */
-    updateDateParameters() {
-        this.year = this.displayDate.year;
-        this.month = MONTHS[this.displayDate.month - 1];
-        this.day =
-            this.displayDate.weekday === 7 ? 0 : this.displayDate.weekday;
-        this.generateViewData();
-    }
-
-    /**
-     * Compute view data for Calendar.
+     * Generate the calendar data.
      */
     generateViewData() {
         const calendarData = [];
@@ -826,30 +813,64 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Find if date entry is in the date array.
+     * Returns current date if it is between the min-max interval. If not, returns the min.
      *
-     * @param {object | Date} date
-     * @param {object[]} array
-     * @returns disabled
+     * @return {DateTime}
      */
-    isDisabled(date) {
-        const dates = this._computedDisabledDates;
-        const time = date.startOf('day').ts;
-        const weekday = date.weekdayShort;
-        const monthDay = date.day;
-
-        return (
-            this.fullDatesFromArray(dates).indexOf(time) > -1 ||
-            this.weekDaysFromArray(dates).indexOf(weekday) > -1 ||
-            this.monthDaysFromArray(dates).indexOf(monthDay) > -1
-        );
+    getCurrentDateOrMin() {
+        if (this.isCurrentDateBetweenMinAndMax) {
+            return this.getDateWithTimezone(new Date());
+        }
+        return this.getDateWithTimezone(this._computedMin);
     }
 
     /**
-     * Find if date entry is in the markedDate array.
+     * If possible, transform the given value into a DateTime including the timezone.
      *
-     * @param {object | Date} date
-     * @returns marked
+     * @param {any} value Value to be transformed. If it is an invalid date, it will be returned as is.
+     * @returns DateTime object, or value as is.
+     */
+    getDateWithTimezone(value) {
+        const date = dateTimeObjectFrom(value, {
+            zone: this.timezone,
+            locale: 'en-US'
+        });
+        if (!date || date.startOf('day').ts === NULL_DATE) {
+            return value;
+        }
+        return date;
+    }
+
+    /**
+     * Get the label object for the given date.
+     *
+     * @param {DateTime} date Date to get the label for.
+     * @returns {object} Label object.
+     */
+    getLabel(date) {
+        const dayIndex = date.weekday === 7 ? 0 : date.weekday;
+        const weekday = DAYS[dayIndex];
+        return this._computedDateLabels.find((label) => {
+            const labelAsNumber = Number(label.date);
+            let labelAsTime;
+            if (!this.isInvalidDate(label.date)) {
+                const labelAsDate = this.getDateWithTimezone(label.date);
+                labelAsTime = labelAsDate.startOf('day').ts;
+            }
+
+            return (
+                labelAsTime === date.ts ||
+                labelAsNumber === date.day ||
+                weekday === label.date
+            );
+        });
+    }
+
+    /**
+     * Get the markers for the given date.
+     *
+     * @param {DateTime} date Date to get the markers for.
+     * @returns {string[]} Array of marker styles.
      */
     getMarkers(date) {
         const markers = [];
@@ -872,10 +893,121 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Remove all values outside of min-max interval. If the array of values is empty, set the display date to current day or min.
+     * Check if the given date is disabled.
+     *
+     * @param {DateTime} date Date to check.
+     * @returns {boolean} True if the date is disabled.
+     */
+    isDisabled(date) {
+        const dates = this._computedDisabledDates;
+        const time = date.startOf('day').ts;
+        const weekday = date.weekdayShort;
+        const monthDay = date.day;
+
+        return (
+            this.fullDatesFromArray(dates).indexOf(time) > -1 ||
+            this.weekDaysFromArray(dates).indexOf(weekday) > -1 ||
+            this.monthDaysFromArray(dates).indexOf(monthDay) > -1
+        );
+    }
+
+    /**
+     * Check if value is after max date.
+     */
+    isAfterMax(value) {
+        return value.ts > this._computedMax.ts;
+    }
+
+    /**
+     * Check if value is before min date.
+     */
+    isBeforeMin(value) {
+        return value.ts < this._computedMin.ts;
+    }
+
+    /**
+     * Check if value is an invalid date.
+     */
+    isInvalidDate(value) {
+        const date = dateTimeObjectFrom(value);
+        return !date || date.startOf('day').ts === NULL_DATE;
+    }
+
+    /**
+     * Returns an array of dates based on the selection mode interval.
+     *
+     * @param {object[]} array - array of dates
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    isSelectedInterval(array, newDate) {
+        const timestamp = newDate.ts;
+        const timestamps = array.map((x) => x.ts).sort((a, b) => a - b);
+
+        if (timestamps.includes(timestamp)) {
+            timestamps.splice(timestamps.indexOf(timestamp), 1);
+        } else {
+            if (timestamps.length === 0) {
+                timestamps.push(timestamp);
+            } else if (timestamps.length === 1) {
+                if (timestamp > timestamps[0]) {
+                    timestamps.push(timestamp);
+                } else {
+                    timestamps.splice(0, 0, timestamp);
+                }
+            } else {
+                if (timestamp > timestamps[0]) {
+                    timestamps.splice(1, 1, timestamp);
+                } else {
+                    timestamps.splice(0, 1, timestamp);
+                }
+            }
+        }
+
+        return timestamps.map((x) => this.getDateWithTimezone(x));
+    }
+
+    /**
+     * Returns an array of dates base on the selection mode multiple.
+     *
+     * @param {object[]} array - array of dates
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    isSelectedMultiple(array, newDate) {
+        const timestamp = newDate.ts;
+        const timestamps = array.map((x) => x.ts);
+
+        if (!timestamps.includes(timestamp)) {
+            timestamps.push(timestamp);
+        } else {
+            timestamps.splice(timestamps.indexOf(timestamp), 1);
+        }
+        return timestamps.map((x) => this.getDateWithTimezone(x));
+    }
+
+    /**
+     * Filter the numbers from the given array.
+     *
+     * @param {object[]} array Array to filter.
+     * @returns Array of numbers.
+     */
+    monthDaysFromArray(array) {
+        let dates = [];
+
+        array.forEach((date) => {
+            if (typeof date === 'number') {
+                dates.push(date);
+            }
+        });
+
+        return dates;
+    }
+
+    /**
+     * Remove invalid values, or values outside of min-max interval, from the computed value.
      */
     removeValuesOutsideRange() {
-        // Remove all out of range values
         this._computedValue = this._computedValue.filter((date) => {
             return (
                 !this.isInvalidDate(date) &&
@@ -887,6 +1019,9 @@ export default class Calendar extends LightningElement {
 
     /**
      * Set interval when only one value is valid (in min-max range) and the other one is outside range.
+     *
+     * @param {DateTime} minValue Minimum valid value.
+     * @param {DateTime} maxValue Maximum valid value.
      */
     setIntervalWithOneValidValue(minValue, maxValue) {
         if (
@@ -904,14 +1039,48 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Returns current date if it is between the min-max interval. If not, returns the min.
-     * @return {Date}
+     * Update the dates displayed and generate the view data.
      */
-    setValueToCurrentDayOrMin() {
-        if (this.isCurrentDateBetweenMinAndMax) {
-            return this.getDateWithTimezone(new Date());
+    updateDateParameters() {
+        this.year = this.displayDate.year;
+        this.month = MONTHS[this.displayDate.month - 1];
+        this.day =
+            this.displayDate.weekday === 7 ? 0 : this.displayDate.weekday;
+        this.generateViewData();
+    }
+
+    /**
+     * Update the value with the current computed value.
+     */
+    updateValue() {
+        if (!this._computedValue.length) {
+            this._value = this.selectionMode === 'single' ? null : [];
+            return;
         }
-        return this.getDateWithTimezone(this._computedMin);
+
+        const stringDates = this._computedValue.map((date) => {
+            return date.toISO();
+        });
+        this._value =
+            this.selectionMode === 'single' ? stringDates[0] : stringDates;
+    }
+
+    /**
+     * Filter the strings from the given array.
+     *
+     * @param {object[]} array Array to filter.
+     * @returns Array of strings.
+     */
+    weekDaysFromArray(array) {
+        let dates = [];
+
+        array.forEach((date) => {
+            if (typeof date === 'string') {
+                dates.push(date);
+            }
+        });
+
+        return dates;
     }
 
     /**
@@ -954,7 +1123,7 @@ export default class Calendar extends LightningElement {
                 this.displayDate = this.getDateWithTimezone(this._computedMin);
             } else {
                 this._computedValue = [];
-                this.displayDate = this.setValueToCurrentDayOrMin();
+                this.displayDate = this.getCurrentDateOrMin();
             }
             this.updateDateParameters();
         } else {
@@ -997,7 +1166,7 @@ export default class Calendar extends LightningElement {
         else {
             if (this.isInvalidDate(this._computedValue[0])) {
                 this._computedValue = [];
-                this.displayDate = this.setValueToCurrentDayOrMin();
+                this.displayDate = this.getCurrentDateOrMin();
             } else if (this.isAfterMax(this._computedValue[0])) {
                 this._computedValue = [];
                 this.displayDate = this.getDateWithTimezone(this._computedMax);
@@ -1009,210 +1178,11 @@ export default class Calendar extends LightningElement {
         }
     }
 
-    /**
-     * Year change handler.
-     *
-     * @param {object} event
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    handleYearChange(event) {
-        this.displayDate = this.displayDate.set({ year: event.detail.value });
-
-        if (this.displayDate.ts < this._computedMin.ts) {
-            this.displayDate = this.displayDate.set({
-                month: this._computedMin.month
-            });
-        }
-
-        if (this.displayDate.ts > this._computedMax.ts) {
-            this.displayDate = this.displayDate.set({
-                month: this._computedMax.month
-            });
-        }
-
-        this.dispatchNavigateEvent(this.displayDate);
-        this.updateDateParameters();
-        event.stopPropagation();
-        this.computeFocus(true);
-    }
-
-    /**
-     * Previous month handler.
-     */
-    handlerPreviousMonth() {
-        const month = this.displayDate.month - 1;
-        this.displayDate = this.displayDate.set({ month });
-        this.updateDateParameters();
-        this.computeFocus(false);
-        this.dispatchNavigateEvent(this.displayDate);
-    }
-
-    /**
-     * Next month handler.
-     */
-    handlerNextMonth() {
-        const month = this.displayDate.month + 1;
-        this.displayDate = this.displayDate.set({ month });
-        this.updateDateParameters();
-        this.computeFocus(false);
-        this.dispatchNavigateEvent(this.displayDate);
-    }
-
-    /**
-     * Returns an array of dates base on the selection mode multiple.
-     *
-     * @param {object[]} array - array of dates
-     * @param {string | Date} newDate - new date
-     * @returns array of dates
-     */
-    isSelectedMultiple(array, newDate) {
-        const timestamp = newDate.ts;
-        const timestamps = array.map((x) => x.ts);
-
-        if (!timestamps.includes(timestamp)) {
-            timestamps.push(timestamp);
-        } else {
-            timestamps.splice(timestamps.indexOf(timestamp), 1);
-        }
-        return timestamps.map((x) => this.getDateWithTimezone(x));
-    }
-
-    /**
-     * Returns an array of dates base on the selection mode interval.
-     *
-     * @param {object[]} array - array of dates
-     * @param {string | Date} newDate - new date
-     * @returns array of dates
-     */
-    isSelectedInterval(array, newDate) {
-        const timestamp = newDate.ts;
-        const timestamps = array.map((x) => x.ts).sort((a, b) => a - b);
-
-        if (timestamps.includes(timestamp)) {
-            timestamps.splice(timestamps.indexOf(timestamp), 1);
-        } else {
-            if (timestamps.length === 0) {
-                timestamps.push(timestamp);
-            } else if (timestamps.length === 1) {
-                if (timestamp > timestamps[0]) {
-                    timestamps.push(timestamp);
-                } else {
-                    timestamps.splice(0, 0, timestamp);
-                }
-            } else {
-                if (timestamp > timestamps[0]) {
-                    timestamps.splice(1, 1, timestamp);
-                } else {
-                    timestamps.splice(0, 1, timestamp);
-                }
-            }
-        }
-
-        return timestamps.map((x) => this.getDateWithTimezone(x));
-    }
-
-    /**
-     * Date selection handler.
-     *
-     * @param {object} event
-     */
-    handleSelectDate(event) {
-        this.handleDateFocus(event);
-
-        const { fullDate, disabled } = event.currentTarget.dataset;
-        const date = this.getDateWithTimezone(Number(fullDate));
-        if (this.isInvalidDate(date) || disabled === 'true') {
-            return;
-        }
-
-        switch (this.selectionMode) {
-            case 'interval':
-                this._computedValue = this.isSelectedInterval(
-                    this._computedValue,
-                    date
-                );
-                break;
-            case 'multiple':
-                this._computedValue = this.isSelectedMultiple(
-                    this._computedValue,
-                    date
-                );
-                break;
-            default: {
-                const unselect =
-                    this._computedValue.length &&
-                    this._computedValue[0].ts === date.ts;
-                this._computedValue = unselect ? [] : [date];
-                break;
-            }
-        }
-        const clickedDate = date.toISO();
-        this.displayDate = this.getDateWithTimezone(date);
-        this.updateDateParameters();
-        this.updateValue();
-
-        /**
-         * The event fired when the selected date is changed.
-         *
-         * @event
-         * @public
-         * @name change
-         * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
-         * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
-         * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    bounds: event.currentTarget.getBoundingClientRect(),
-                    value: this.value,
-                    clickedDate
-                }
-            })
-        );
-
-        this.computeFocus(true);
-    }
-
-    // EVENT HANDLERS //
-
-    /**
-     * The event fired when the month is changed.
-     *
-     * @event
-     * @public
-     * @name navigate
-     * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
-     */
-    dispatchNavigateEvent(date) {
-        const firstDayOfMonth = date.set({ day: 1 });
-
-        this.dispatchEvent(
-            new CustomEvent('navigate', {
-                detail: {
-                    date: firstDayOfMonth.toISO()
-                }
-            })
-        );
-    }
-
-    /**
-     * Private focus handler.
-     */
-    handleFocus() {
-        /**
-         * @event
-         * @private
-         * @name privatefocus
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatefocus', {
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
 
     /**
      * Private blur handler.
@@ -1251,98 +1221,24 @@ export default class Calendar extends LightningElement {
         }
     }
 
-    // HOVERED DATES AND RANGES APPEARANCE
-
     /**
-     * Mouse over handler.
+     * Private focus handler.
      */
-    handleMouseOver(event) {
-        const day = event.target.getAttribute('data-full-date');
-        const dayCell = this.template.querySelector(
-            `[data-full-date="${day}"]`
+    handleFocus() {
+        /**
+         * @event
+         * @private
+         * @name privatefocus
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatefocus', {
+                bubbles: true,
+                cancelable: true
+            })
         );
-        const timeArray = this._computedValue
-            .map((x) => x.ts)
-            .sort((a, b) => a - b);
-        if (this.selectionMode === 'interval' && !!day) {
-            if (timeArray.length === 1) {
-                if (day > timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[0] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            } else if (timeArray.length === 2) {
-                if (day > timeArray[1]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-right'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') >= timeArray[1] &&
-                            x.getAttribute('data-full-date') <= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-                if (day < timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar__cell_bordered-left'
-                    );
-                    this.template.querySelectorAll('td').forEach((x) => {
-                        if (
-                            x.getAttribute('data-full-date') <= timeArray[0] &&
-                            x.getAttribute('data-full-date') >= day
-                        ) {
-                            x.classList.add(
-                                'avonni-calendar__cell_bordered-top_bottom'
-                            );
-                        }
-                    });
-                }
-            }
-        }
     }
-
-    /**
-     * Mouse out handler.
-     */
-    handleMouseOut() {
-        this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
-            x.classList.remove('avonni-calendar__cell_bordered-right');
-            x.classList.remove('avonni-calendar__cell_bordered-left');
-        });
-    }
-
-    // KEYBOARD NAVIGATION
 
     /**
      * Keyboard navigation handler.
@@ -1434,85 +1330,222 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Place focus according to keyboard selection
-     *
-     * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
+     * Mouse over handler.
      */
-    computeFocus(applyFocus) {
-        // if a date was previously selected or focused, focus the same date in this month.
-        let selectedMonthDate, rovingDate;
-        if (this._focusDate) {
-            rovingDate = this._focusDate.day;
-            selectedMonthDate = this.displayDate.set({
-                day: this._focusDate.day
-            }).ts;
-        }
-        const firstOfMonthDate = this.displayDate
-            .set({ day: 1 })
-            .startOf('day').ts;
-
-        requestAnimationFrame(() => {
-            const rovingFocusDate = this.template.querySelector(
-                `[data-element-id="td"][data-date="${rovingDate}"]`
-            );
-            const selectedDates = this.template.querySelectorAll(
-                '[data-selected="true"]'
-            );
-            const todaysDate = this.template.querySelector(
-                '[data-today="true"]'
-            );
-            const firstOfMonth = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${firstOfMonthDate}"]:not([data-disabled="true"])`
-            );
-            const rovingMonthDate = this.template.querySelector(
-                `[data-element-id="td"][data-full-date="${selectedMonthDate}"]`
-            );
-            const firstValidDate = this.template.querySelector(
-                '[data-element-id="td"]:not([data-disabled="true"])'
-            );
-
-            const focusTarget =
-                rovingFocusDate ||
-                selectedDates[0] ||
-                rovingMonthDate ||
-                todaysDate ||
-                firstOfMonth ||
-                firstValidDate;
-
-            const existingFocusPoints = this.template.querySelectorAll(
-                '[data-element-id="td"][tabindex="0"]'
-            );
-            existingFocusPoints.forEach((focusPoint) => {
-                focusPoint.setAttribute('tabindex', '-1');
-            });
-
-            if (selectedDates.length) {
-                if (this.selectionMode === 'single') {
-                    selectedDates[0].setAttribute('tabindex', '0');
-                } else if (this.selectionMode === 'multiple') {
-                    selectedDates.forEach((target) => {
-                        target.setAttribute('tabindex', '0');
-                    });
-                } else if (this.selectionMode === 'interval') {
-                    selectedDates[0].setAttribute('tabindex', '0');
-                    selectedDates[selectedDates.length - 1].setAttribute(
-                        'tabindex',
-                        '0'
+    handleMouseOver(event) {
+        const day = event.target.getAttribute('data-full-date');
+        const dayCell = this.template.querySelector(
+            `[data-full-date="${day}"]`
+        );
+        const timeArray = this._computedValue
+            .map((x) => x.ts)
+            .sort((a, b) => a - b);
+        if (this.selectionMode === 'interval' && !!day) {
+            if (timeArray.length === 1) {
+                if (day > timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar__cell_bordered-right'
                     );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-full-date') >= timeArray[0] &&
+                            x.getAttribute('data-full-date') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar__cell_bordered-top_bottom'
+                            );
+                        }
+                    });
+                }
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar__cell_bordered-left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-full-date') <= timeArray[0] &&
+                            x.getAttribute('data-full-date') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar__cell_bordered-top_bottom'
+                            );
+                        }
+                    });
+                }
+            } else if (timeArray.length === 2) {
+                if (day > timeArray[1]) {
+                    dayCell.classList.add(
+                        'avonni-calendar__cell_bordered-right'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-full-date') >= timeArray[1] &&
+                            x.getAttribute('data-full-date') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar__cell_bordered-top_bottom'
+                            );
+                        }
+                    });
+                }
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar__cell_bordered-left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-full-date') <= timeArray[0] &&
+                            x.getAttribute('data-full-date') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar__cell_bordered-top_bottom'
+                            );
+                        }
+                    });
                 }
             }
+        }
+    }
 
-            if (focusTarget) {
-                if (focusTarget.length > 0) {
-                    focusTarget[0].setAttribute('tabindex', '0');
-                    if (applyFocus) focusTarget[0].focus();
-                } else {
-                    focusTarget.setAttribute('tabindex', '0');
-                    if (applyFocus) {
-                        focusTarget.focus();
-                    }
-                }
-            }
+    /**
+     * Mouse out handler.
+     */
+    handleMouseOut() {
+        this.template.querySelectorAll('td').forEach((x) => {
+            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
+            x.classList.remove('avonni-calendar__cell_bordered-right');
+            x.classList.remove('avonni-calendar__cell_bordered-left');
         });
+    }
+
+    /**
+     * Next month handler.
+     */
+    handlerNextMonth() {
+        const month = this.displayDate.month + 1;
+        this.displayDate = this.displayDate.set({ month });
+        this.updateDateParameters();
+        this.computeFocus(false);
+        this.dispatchNavigateEvent(this.displayDate);
+    }
+
+    /**
+     * Previous month handler.
+     */
+    handlerPreviousMonth() {
+        const month = this.displayDate.month - 1;
+        this.displayDate = this.displayDate.set({ month });
+        this.updateDateParameters();
+        this.computeFocus(false);
+        this.dispatchNavigateEvent(this.displayDate);
+    }
+
+    /**
+     * Date selection handler.
+     *
+     * @param {object} event
+     */
+    handleSelectDate(event) {
+        this.handleDateFocus(event);
+
+        const { fullDate, disabled } = event.currentTarget.dataset;
+        const date = this.getDateWithTimezone(Number(fullDate));
+        if (this.isInvalidDate(date) || disabled === 'true') {
+            return;
+        }
+
+        switch (this.selectionMode) {
+            case 'interval':
+                this._computedValue = this.isSelectedInterval(
+                    this._computedValue,
+                    date
+                );
+                break;
+            case 'multiple':
+                this._computedValue = this.isSelectedMultiple(
+                    this._computedValue,
+                    date
+                );
+                break;
+            default: {
+                const unselect =
+                    this._computedValue.length &&
+                    this._computedValue[0].ts === date.ts;
+                this._computedValue = unselect ? [] : [date];
+                break;
+            }
+        }
+        const clickedDate = date.toISO();
+        this.displayDate = this.getDateWithTimezone(date);
+        this.updateDateParameters();
+        this.updateValue();
+
+        /**
+         * The event fired when the selected date is changed.
+         *
+         * @event
+         * @public
+         * @name change
+         * @param {DOMRect} bounds The size and position of the clicked date in the viewport.
+         * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
+         * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    bounds: event.currentTarget.getBoundingClientRect(),
+                    value: this.value,
+                    clickedDate
+                }
+            })
+        );
+
+        this.computeFocus(true);
+    }
+
+    /**
+     * Year change handler.
+     *
+     * @param {object} event
+     */
+    handleYearChange(event) {
+        this.displayDate = this.displayDate.set({ year: event.detail.value });
+
+        if (this.displayDate.ts < this._computedMin.ts) {
+            this.displayDate = this.displayDate.set({
+                month: this._computedMin.month
+            });
+        }
+
+        if (this.displayDate.ts > this._computedMax.ts) {
+            this.displayDate = this.displayDate.set({
+                month: this._computedMax.month
+            });
+        }
+
+        this.dispatchNavigateEvent(this.displayDate);
+        this.updateDateParameters();
+        event.stopPropagation();
+        this.computeFocus(true);
+    }
+
+    /**
+     * The event fired when the month is changed.
+     *
+     * @event
+     * @public
+     * @name navigate
+     * @param {string} date First day of the new visible month, as an ISO8601 formatted string.
+     */
+    dispatchNavigateEvent(date) {
+        const firstDayOfMonth = date.set({ day: 1 });
+
+        this.dispatchEvent(
+            new CustomEvent('navigate', {
+                detail: {
+                    date: firstDayOfMonth.toISO()
+                }
+            })
+        );
     }
 }

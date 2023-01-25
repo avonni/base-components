@@ -69,7 +69,7 @@ describe('Calendar', () => {
         expect(element.min).toMatchObject(new Date(1900, 0, 1));
         expect(element.selectionMode).toBe('single');
         expect(element.timezone).toBeUndefined();
-        expect(element.value).toMatchObject([]);
+        expect(element.value).toBeUndefined();
         expect(element.weekNumber).toBeFalsy();
     });
 
