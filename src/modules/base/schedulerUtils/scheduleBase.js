@@ -523,6 +523,16 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * True if the splitter bar should be visible.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showSplitter() {
+        return !this.collapseDisabled || !this.resizeColumnDisabled;
+    }
+
+    /**
      * True if the splitter collapse button should be visible.
      *
      * @type {boolean}

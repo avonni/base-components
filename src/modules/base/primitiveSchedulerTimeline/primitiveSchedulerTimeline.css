@@ -65,6 +65,9 @@
     width: 300px;
     margin-right: -3px;
 }
+.avonni-scheduler__first-col_horizontal.avonni-scheduler__border_right {
+    margin-right: 0;
+}
 
 .avonni-scheduler__grid_align-end {
     /* We can't use slds-grid_align-end because it will prevent the smallest header cells from growing */
