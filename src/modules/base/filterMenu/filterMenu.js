@@ -1320,7 +1320,7 @@ export default class FilterMenu extends LightningElement {
     computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
-            if (this.isDateRange && value && !isNaN(new Date(value))) {
+            if (this.isDateRange && value && dateTimeObjectFrom(value)) {
                 // Date range
                 const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;

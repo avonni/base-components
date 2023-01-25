@@ -42,10 +42,21 @@ const dateTimeObjectFrom = (date, options) => {
     let time;
     if (date instanceof Date) {
         time = date.getTime();
+    } else if (date instanceof DateTime) {
+        time = date.ts;
     } else if (!isNaN(new Date(date).getTime())) {
         time = new Date(date).getTime();
-    } else if (date instanceof DateTime) {
-        return new DateTime(date);
+    } else if (typeof date === 'string') {
+        // Add support for Salesforce format 2023-01-25, 12:00 p.m.
+        let normalizedDate = date.replace('p.m.', 'PM');
+        normalizedDate = normalizedDate.replace('a.m.', 'AM');
+
+        const dateTime = DateTime.fromFormat(normalizedDate, 'yyyy-MM-dd, t', {
+            locale: 'default'
+        });
+        if (dateTime.isValid) {
+            time = dateTime.ts;
+        }
     }
 
     if (time) {
