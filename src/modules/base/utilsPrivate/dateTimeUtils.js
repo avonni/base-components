@@ -152,10 +152,9 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
 };
 
 const formatDateFromStyle = (
-    date,
+    dateTime,
     { showTime = false, dateStyle = 'medium', timeStyle = 'short' }
 ) => {
-    const dateTime = dateTimeObjectFrom(date);
     let formattedDate;
 
     switch (dateStyle) {
