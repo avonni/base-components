@@ -42,6 +42,7 @@ import {
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import { TIME_ZONES } from './timezones.js';
+import { DateTime } from 'c/luxon';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -1273,7 +1274,11 @@ export default class DateTimePicker extends LightningElement {
             event.currentTarget.value = this.firstWeekDayToString;
             return;
         }
-        const date = this._processDate(value);
+        const isInput =
+            event.currentTarget.dataset.elementId === 'lightning-input';
+        const date = isInput
+            ? DateTime.fromFormat(value, 'yyyy-MM-dd', { zone: this.timezone })
+            : this._processDate(value);
         this._setFirstWeekDay(date);
         this._generateTable();
         this.datePickerValue = date.toISO();
