@@ -9,7 +9,6 @@
     "homepage": "https://storybook.avonnicomponents.com/",
     "license": "MIT",
     "dependencies": {
-        "@vvo/tzdb": "^6.91.0",
         "bwip-js": "^3.0.4",
         "d3": "^7.4.4",
         "dompurify": "^2.2.6",

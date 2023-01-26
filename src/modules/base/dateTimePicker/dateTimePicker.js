@@ -41,7 +41,7 @@ import {
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
-import { rawTimeZones } from '@vvo/tzdb';
+import { TIME_ZONES } from './timezones.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -152,7 +152,7 @@ export default class DateTimePicker extends LightningElement {
     lastWeekDay;
     helpMessage;
     datePickerValue;
-    timezones = [];
+    timezones = TIME_ZONES;
 
     _computedEndTime;
     _computedStartTime;
@@ -163,7 +163,6 @@ export default class DateTimePicker extends LightningElement {
     _valid = true;
 
     connectedCallback() {
-        this._initTimeZones();
         this._initDates();
         this._initTimeSlots();
 
@@ -1072,18 +1071,6 @@ export default class DateTimePicker extends LightningElement {
             this._timeFormatHour = DATE_TIME_FORMATS.hourDefault;
             this._timeFormatMinute = DATE_TIME_FORMATS.minuteDefault;
         }
-    }
-
-    /**
-     * Initialize the available time zones list.
-     */
-    _initTimeZones() {
-        this.timezones = rawTimeZones.map((timezone) => {
-            return {
-                label: timezone.rawFormat,
-                value: timezone.name
-            };
-        });
     }
 
     /**
