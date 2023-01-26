@@ -31,7 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString, keyCodes } from 'c/utilsPrivate';
+import {
+    dateTimeObjectFrom,
+    normalizeBoolean,
+    normalizeString,
+    keyCodes
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
@@ -206,8 +211,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     set endDate(value) {
-        const date = new Date(value);
-        this._endDate = isNaN(date) || value === null ? null : date;
+        const date = dateTimeObjectFrom(value);
+        this._endDate = !date || value === null ? null : new Date(date.ts);
 
         if (this._connected) {
             this.initEndDate();
@@ -258,10 +263,10 @@ export default class InputDateRange extends LightningElement {
     }
 
     set startDate(value) {
-        const date =
-            isNaN(new Date(value)) || value === null ? null : new Date(value);
-        this._startDate = date;
-        this._initialStartDate = date ? new Date(date) : null;
+        const date = dateTimeObjectFrom(value);
+        this._startDate = !date || value === null ? null : new Date(date.ts);
+        this._initialStartDate =
+            !date || value === null ? null : new Date(date.ts);
 
         if (this._connected) {
             this.initStartDate();
