@@ -39,7 +39,7 @@ import {
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
-import { DateTime, Interval } from 'c/luxon';
+import { Interval } from 'c/luxon';
 import { SchedulerEventOccurrence } from './eventOccurrence';
 import { containsAllowedDateTimes } from './dateComputations';
 import {
@@ -100,6 +100,8 @@ import {
  *
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
  *
+ * @param {string} timezone Time zone of the event, in a valid IANA format.
+ *
  * @param {string} title Title of the event.
  *
  * @param {(Date|number|string)} to Required if allDay is not true. End of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -108,6 +110,7 @@ import {
 
 export default class SchedulerEvent {
     constructor(props) {
+        this.timezone = props.timezone;
         this.key = generateUUID();
         this.allDay = props.allDay;
         this.availableMonths = props.availableMonths;
@@ -182,8 +185,7 @@ export default class SchedulerEvent {
         return this._from;
     }
     set from(value) {
-        this._from =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._from = this.createDate(value);
     }
 
     get resourceNames() {
@@ -232,7 +234,7 @@ export default class SchedulerEvent {
         return this._recurrenceEndDate;
     }
     set recurrenceEndDate(value) {
-        this._recurrenceEndDate = dateTimeObjectFrom(value);
+        this._recurrenceEndDate = this.createDate(value);
     }
 
     get referenceLine() {
@@ -246,16 +248,14 @@ export default class SchedulerEvent {
         return this._schedulerEnd;
     }
     set schedulerEnd(value) {
-        this._schedulerEnd =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._schedulerEnd = this.createDate(value);
     }
 
     get schedulerStart() {
         return this._schedulerStart;
     }
     set schedulerStart(value) {
-        this._schedulerStart =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._schedulerStart = this.createDate(value);
     }
 
     get theme() {
@@ -276,8 +276,7 @@ export default class SchedulerEvent {
         return this._to;
     }
     set to(value) {
-        this._to =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._to = this.createDate(value);
     }
 
     /**
@@ -401,6 +400,16 @@ export default class SchedulerEvent {
                 });
             }
         }
+    }
+
+    /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
     }
 
     /**
@@ -534,7 +543,7 @@ export default class SchedulerEvent {
                     weekdays.sort();
 
                     // Set the starting week day
-                    let startingDate = dateTimeObjectFrom(from);
+                    let startingDate = this.createDate(from);
                     while (weekdayIndex === undefined) {
                         for (let i = 0; i < weekdays.length; i++) {
                             date = startingDate.set({ weekday: weekdays[i] });
@@ -607,7 +616,7 @@ export default class SchedulerEvent {
                         weekCount += 1;
                     }
 
-                    let to = dateTimeObjectFrom(this.to.ts);
+                    let to = this.createDate(this.to.ts);
                     const daysDuration = Math.floor(
                         Interval.fromDateTimes(date, to).length('days')
                     );

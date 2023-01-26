@@ -33,7 +33,6 @@
 import { api, track } from 'lwc';
 import {
     addToDate,
-    dateTimeObjectFrom,
     deepCopy,
     normalizeArray,
     normalizeString
@@ -194,11 +193,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateTimeObjectFrom(value);
-        if (computedDate.ts === this._start.ts) {
+        const computedDate = this.createDate(value);
+        if (computedDate && computedDate.ts === this.computedStart.ts) {
             return;
         }
-        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
+        this._start = computedDate ? value : DEFAULT_START_DATE;
     }
 
     /**
@@ -265,6 +264,15 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
+    }
+
+    /**
+     * Start date as a Luxon DateTime object, including the timezone.
+     *
+     * @type {DateTime}
+     */
+    get computedStart() {
+        return this.createDate(this.start);
     }
 
     /**
@@ -485,8 +493,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
         const headerCellEnd =
             addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerCellEnd).diff(header.start)
-            .milliseconds;
+        return this.createDate(headerCellEnd).diff(header.start).milliseconds;
     }
 
     get splitterClass() {
@@ -503,7 +510,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get timezoneLabel() {
-        const timezone = this.start.toFormat('Z');
+        const timezone = this.computedStart.toFormat('Z');
         return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
     }
 
@@ -720,6 +727,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 name,
                 referenceCells: cells,
                 events: this.getOccurrencesFromResourceName(name),
+                timezone: this.timezone,
                 // We store the initial resource object in a variable,
                 // in case one of its fields is used by an event's label
                 data: { ...res }
@@ -1050,9 +1058,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.smallestHeader = event.detail.smallestHeader;
 
         // Update the start date in case it was not available
-        this._start = this.smallestHeader.start;
+        this._start = this.smallestHeader.start.ts;
 
-        this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
+        this.dispatchVisibleIntervalChange(
+            this.computedStart,
+            this.visibleInterval
+        );
         this.initEvents();
         this.updateVisibleResources();
         this._rowsHeight = [];

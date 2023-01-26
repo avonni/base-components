@@ -112,8 +112,9 @@ export default class Scheduler extends LightningElement {
     _selectedResources = [];
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
-    _start = dateTimeObjectFrom(DEFAULT_START_DATE);
+    _start = DEFAULT_START_DATE;
     _timeSpans = TIME_SPANS.default;
+    _timezone;
     _toolbarActions = [];
     _variant = VARIANTS.default;
     _zoomToFit = false;
@@ -133,7 +134,7 @@ export default class Scheduler extends LightningElement {
     contextMenuActions = [];
     currentTimeSpan = {};
     detailPopoverFields = [];
-    selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
+    selectedDate;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
@@ -144,12 +145,17 @@ export default class Scheduler extends LightningElement {
     visibleIntervalLabel;
 
     connectedCallback() {
+        this.selectedDate = this.createDate(this.start);
+        this.initReferenceLines();
         this.initCurrentTimeSpan();
         this.updateSelectedDisplay();
         this.initEvents();
         this.initResources();
         this.initToolbarCalendarDisabledDates();
-        this.computeVisibleIntervalLabel(this.start, this.start);
+        this.computeVisibleIntervalLabel(
+            this.computedStart,
+            this.computedStart
+        );
         this._connected = true;
 
         this.classList.add('slds-is-relative');
@@ -750,26 +756,8 @@ export default class Scheduler extends LightningElement {
     set referenceLines(value) {
         this._referenceLines = normalizeArray(value);
 
-        this.computedReferenceLines = this._referenceLines.map((line) => {
-            const from = line.date
-                ? dateTimeObjectFrom(line.date)
-                : dateTimeObjectFrom(Date.now());
-            const to = addToDate(from, 'millisecond', 1);
-
-            return {
-                title: line.label,
-                theme: line.variant,
-                from,
-                to,
-                recurrence: line.recurrence,
-                recurrenceEndDate: line.recurrenceEndDate,
-                recurrenceCount: line.recurrenceCount,
-                recurrenceAttributes: line.recurrenceAttributes,
-                referenceLine: true
-            };
-        });
-
         if (this._connected) {
+            this.initReferenceLines();
             this.initEvents();
         }
     }
@@ -911,7 +899,10 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
-            this.computeVisibleIntervalLabel(this.start, this.start);
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
         }
     }
 
@@ -945,15 +936,14 @@ export default class Scheduler extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateTimeObjectFrom(value);
-        if (computedDate.ts === this._start.ts) {
-            return;
-        }
-        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
-        this.selectedDate = dateTimeObjectFrom(this._start);
+        this._start = this.createDate(value) ? value : DEFAULT_START_DATE;
 
         if (this._connected) {
-            this.computeVisibleIntervalLabel(this.start, this.start);
+            this.selectedDate = this.createDate(this.start);
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
         }
     }
 
@@ -1038,6 +1028,26 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.selectedDate = this.createDate(this.start);
+            this.initReferenceLines();
+            this.initEvents();
         }
     }
 
@@ -1177,6 +1187,15 @@ export default class Scheduler extends LightningElement {
         return this.readOnly
             ? actions
             : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
+    }
+
+    /**
+     * Start date as a Luxon DateTime object, including the timezone.
+     *
+     * @type {DateTime}
+     */
+    get computedStart() {
+        return this.createDate(this.start);
     }
 
     get displayButtonClass() {
@@ -1550,7 +1569,7 @@ export default class Scheduler extends LightningElement {
      */
     @api
     goToDate(date) {
-        const selectedDate = dateTimeObjectFrom(date);
+        const selectedDate = this.createDate(date);
         if (!selectedDate) {
             console.warn(`The date ${date} is not valid.`);
             return;
@@ -1587,7 +1606,7 @@ export default class Scheduler extends LightningElement {
                 })
             );
         }
-        this._start = start;
+        this._start = start.ts;
     }
 
     /**
@@ -1674,12 +1693,35 @@ export default class Scheduler extends LightningElement {
         }
 
         events.sort((first, second) => {
-            return dateTimeObjectFrom(first.from) <
-                dateTimeObjectFrom(second.from)
+            return this.createDate(first.from) < this.createDate(second.from)
                 ? -1
                 : 1;
         });
         this.computedEvents = events;
+    }
+
+    /**
+     * Create the computed reference lines, taking the timezone into account.
+     */
+    initReferenceLines() {
+        this.computedReferenceLines = this._referenceLines.map((line) => {
+            const from = line.date
+                ? this.createDate(line.date)
+                : this.createDate(Date.now());
+            const to = addToDate(from, 'millisecond', 1);
+
+            return {
+                title: line.label,
+                theme: line.variant,
+                from,
+                to,
+                recurrence: line.recurrence,
+                recurrenceEndDate: line.recurrenceEndDate,
+                recurrenceCount: line.recurrenceCount,
+                recurrenceAttributes: line.recurrenceAttributes,
+                referenceLine: true
+            };
+        });
     }
 
     /**
@@ -1759,6 +1801,16 @@ export default class Scheduler extends LightningElement {
                     ? formattedStart
                     : `${formattedStart} - ${formattedEnd}`;
         }
+    }
+
+    /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
     }
 
     /**
@@ -2208,9 +2260,9 @@ export default class Scheduler extends LightningElement {
                 let value =
                     occurrenceData[field.value] || eventData[field.value];
 
-                const isDate = type === 'date' && dateTimeObjectFrom(value);
+                const isDate = type === 'date' && this.createDate(value);
                 if (isDate) {
-                    value = dateTimeObjectFrom(value);
+                    value = this.createDate(value);
                     value = value.toFormat(this.dateFormat);
                 }
 
@@ -2402,7 +2454,7 @@ export default class Scheduler extends LightningElement {
      */
     handleToolbarNextClick() {
         const { unit, span } = this.currentTimeSpan;
-        let date = dateTimeObjectFrom(this.start);
+        let date = this.createDate(this.computedStart);
 
         if (this.isCalendar && unit === 'month') {
             // Make sure the start is on the first day of the month
@@ -2421,7 +2473,7 @@ export default class Scheduler extends LightningElement {
         // If the date is set to one that is not available,
         // the headers will automatically go to the next available date,
         // preventing the schedule from going in the past
-        let date = removeFromDate(this.start, unit, span);
+        let date = removeFromDate(this.computedStart, unit, span);
         if (unit === 'year' || unit === 'month') {
             if (this.isCalendar) {
                 // Make sure the start is on the first day of the month
@@ -2515,8 +2567,8 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleVisibleIntervalChange(event) {
-        if (event.detail.start.ts !== this.start.ts) {
-            this._start = event.detail.start;
+        if (event.detail.start.ts !== this.computedStart.ts) {
+            this._start = event.detail.start.ts;
         }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);

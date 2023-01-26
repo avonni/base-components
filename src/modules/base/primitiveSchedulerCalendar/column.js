@@ -57,7 +57,9 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
      * @type {DateTime}
      */
     get start() {
-        const start = dateTimeObjectFrom(this.cells[0].start);
+        const start = dateTimeObjectFrom(this.cells[0].start, {
+            zone: this.timezone
+        });
         return start.startOf('day');
     }
 
@@ -67,7 +69,9 @@ export default class SchedulerCalendarColumn extends SchedulerCellGroup {
      * @type {DateTime}
      */
     get end() {
-        const end = dateTimeObjectFrom(this.cells[0].end);
+        const end = dateTimeObjectFrom(this.cells[0].end, {
+            zone: this.timezone
+        });
         return end.endOf('day');
     }
 

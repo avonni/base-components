@@ -70,7 +70,7 @@ const isAllowedMonth = (date, allowedMonths) => {
  * @param {string} timeFrame Time frame to validate and parse.
  * @returns {object} Object with three possible keys: valid, start and end.
  */
-const parseTimeFrame = (timeFrame) => {
+const parseTimeFrame = (timeFrame, options) => {
     const startMatch = timeFrame.match(/^([0-9:]+)-/);
     const endMatch = timeFrame.match(/-([0-9:]+)$/);
 
@@ -80,8 +80,8 @@ const parseTimeFrame = (timeFrame) => {
         );
         return { valid: false };
     }
-    const start = DateTime.fromISO(startMatch[1]);
-    const end = DateTime.fromISO(endMatch[1]);
+    const start = DateTime.fromISO(startMatch[1], options);
+    const end = DateTime.fromISO(endMatch[1], options);
 
     if (end < start) {
         console.error(
@@ -101,7 +101,9 @@ const parseTimeFrame = (timeFrame) => {
  * @returns {boolean} true or false.
  */
 const isInTimeFrame = (date, timeFrame) => {
-    const { start, end, valid } = parseTimeFrame(timeFrame);
+    const { start, end, valid } = parseTimeFrame(timeFrame, {
+        zone: date.zoneName
+    });
     if (!valid) {
         return true;
     }

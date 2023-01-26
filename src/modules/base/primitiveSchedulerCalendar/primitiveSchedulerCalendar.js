@@ -34,7 +34,6 @@ import { api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {
     addToDate,
-    dateTimeObjectFrom,
     deepCopy,
     getWeekNumber,
     normalizeBoolean,
@@ -93,7 +92,7 @@ const SPLITTER_BAR_WIDTH = 12;
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
-    _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _selectedDate = DEFAULT_SELECTED_DATE;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _centerDraggedEvent = false;
@@ -120,7 +119,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     multiDayEventsCellGroup = {};
     showMorePopover;
     singleDayEvents = [];
-    start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    start = DEFAULT_SELECTED_DATE;
     visibleInterval;
 
     connectedCallback() {
@@ -295,12 +294,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this._selectedDate;
     }
     set selectedDate(value) {
-        this._selectedDate =
-            dateTimeObjectFrom(value) ||
-            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+        this._selectedDate = this.createDate(value)
+            ? value
+            : DEFAULT_SELECTED_DATE;
 
         if (this._connected) {
-            const previousStart = this.start.ts;
+            const previousStart = this.start && this.start.ts;
             this.setStartToBeginningOfUnit();
 
             if (previousStart !== this.start.ts) {
@@ -347,11 +346,36 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
+            this.initEvents();
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
                 this.updateVisibleWidth();
             });
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return super.timezone;
+    }
+    set timezone(value) {
+        super.timezone = value;
+
+        if (this._connected) {
+            const previousStart = this.start && this.start.ts;
+            this.setStartToBeginningOfUnit();
+
+            if (!this.start || previousStart !== this.start.ts) {
+                this.initHeaders();
+                this.initLeftPanelCalendarDisabledDates();
+            }
         }
     }
 
@@ -389,8 +413,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const luxonMonth = month + 1;
             const markedDates = this.getMonthMarkedDates(luxonMonth);
             const value =
-                this.selectedDate.month === luxonMonth
-                    ? this.selectedDate
+                this.computedSelectedDate.month === luxonMonth
+                    ? this.computedSelectedDate
                     : null;
             return {
                 key: month,
@@ -523,8 +547,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         // Normalize the end and start of the first and last cells
         const cells = [...this.eventHeaderCells.xAxis];
-        const start = dateTimeObjectFrom(cells[0].start);
-        const end = dateTimeObjectFrom(cells[cells.length - 1].end);
+        const start = this.createDate(cells[0].start);
+        const end = this.createDate(cells[cells.length - 1].end);
         cells[0].start = start.startOf('day').ts;
         cells[cells.length - 1].end = end.endOf('day').ts;
         return { xAxis: cells };
@@ -681,7 +705,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @type {string}
      */
     get timezoneLabel() {
-        const timezone = this.selectedDate.toFormat('Z');
+        const timezone = this.computedSelectedDate.toFormat('Z');
         return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
     }
 
@@ -779,7 +803,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     end: col.end.ts - 1
                 };
             });
-            this.multiDayEventsCellGroup = new Column({ referenceCells });
+            this.multiDayEventsCellGroup = new Column({
+                referenceCells,
+                timezone: this.timezone
+            });
             this._eventData.multiDayEventsCellGroup =
                 this.multiDayEventsCellGroup;
         }
@@ -793,7 +820,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this.isYear) {
             this._dayHeadersLoading = false;
             this._hourHeadersLoading = false;
-            this.initEvents();
             return;
         }
 
@@ -804,9 +830,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.eventHeaderCells = {};
 
         // Start at the begining of the first day
-        let startDate = new Date(this.start.ts);
-        startDate.setHours(0, 0, 0, 0);
-        startDate = dateTimeObjectFrom(startDate);
+        let startDate = this.createDate(this.start).startOf('day');
 
         // Create a column for each available day
         const columns = [];
@@ -838,7 +862,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             } else {
                 this.computeHourCells(column, startDate);
             }
-            columns.push(new Column(column));
+            columns.push(new Column({ ...column, timezone: this.timezone }));
         }
         this.columns = columns;
 
@@ -872,7 +896,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         // Set the visible interval
         const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
-        const end = dateTimeObjectFrom(lastCell.end);
+        const end = this.createDate(lastCell.end);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
     }
 
@@ -918,7 +942,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             '[data-element-id="avonni-calendar-year-month"]'
         );
         const visibleMonths = this.getVisibleMonths();
-        let date = dateTimeObjectFrom(this.start);
+        let date = this.createDate(this.start);
         let monthIndex = visibleMonths.findIndex((month) => {
             return month + 1 === date.month;
         });
@@ -1018,7 +1042,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 duplicate[key] = event[key];
             });
 
-            duplicate.weekStart = dateTimeObjectFrom(cells[i].start);
+            duplicate.weekStart = this.createDate(cells[i].start);
             placeholders.push(duplicate);
         }
         return placeholders;
@@ -1044,7 +1068,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {number[]} Available hours.
      */
     getAvailableHours() {
-        let time = dateTimeObjectFrom(new Date());
+        let time = this.createDate(new Date());
         const availableHours = [];
 
         for (let i = 0; i < 24; i++) {
@@ -1199,7 +1223,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const placeholders = [];
 
         if (cell.events.length || cell.placeholders.length) {
-            const cellStart = dateTimeObjectFrom(cell.start);
+            const cellStart = this.createDate(cell.start);
             const day = cellStart.day;
             const month = cellStart.month;
             const placeholderElements = this.template.querySelectorAll(
@@ -1302,7 +1326,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     isDisabledCell(cell) {
         const start = Number(cell.dataset.start);
         if (this.isMonth && start) {
-            const cellMonth = new Date(start).getMonth();
+            const cellMonth = this.createDate(start).month - 1;
             if (!this.availableMonths.includes(cellMonth)) {
                 return true;
             }
@@ -1350,15 +1374,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     setSelectedDateToAvailableDate() {
         this._selectedDate = nextAllowedMonth(
-            this.selectedDate,
+            this.computedSelectedDate,
             this.availableMonths
-        );
+        ).ts;
         if (this.isDay || this.isWeek) {
             this._selectedDate = nextAllowedDay(
-                this.selectedDate,
+                this.computedSelectedDate,
                 this.availableMonths,
                 this.availableDaysOfTheWeek
-            );
+            ).ts;
         }
     }
 
@@ -1372,7 +1396,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this.isYear) {
             // Compute the visible interval, since there is no primitive headers
             const endOfSpan = addToDate(this.start, unit, span) - 1;
-            const end = dateTimeObjectFrom(endOfSpan);
+            const end = this.createDate(endOfSpan);
             this.visibleInterval = Interval.fromDateTimes(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,
@@ -1730,7 +1754,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this.dispatchVisibleIntervalChange(start, this.visibleInterval);
         const end = addToDate(start, unit, span) - 1;
-        this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
+        this.dayCellDuration = this.createDate(end).diff(start).milliseconds;
 
         this.initEvents();
         if (this.isMonth) {
@@ -1746,7 +1770,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleMonthCellShowMoreClick(event) {
         const columnIndex = Number(event.currentTarget.dataset.columnIndex);
         const start = Number(event.currentTarget.dataset.start);
-        const startDate = dateTimeObjectFrom(start);
+        const startDate = this.createDate(start);
         const cell = this.columns[columnIndex].cells.find((c) => {
             return c.start === start;
         });
@@ -1780,7 +1804,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             y: event.clientY
         };
 
-        const date = dateTimeObjectFrom(start);
+        const date = this.createDate(start);
         this.showMorePopover = {
             events,
             position,
@@ -2108,8 +2132,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         this.eventHeaderCells.yAxis = cells;
         const end = addToDate(start, unit, span) - 1;
-        this.hourCellDuration =
-            dateTimeObjectFrom(end).diff(start).milliseconds;
+        this.hourCellDuration = this.createDate(end).diff(start).milliseconds;
     }
 
     /**
@@ -2131,8 +2154,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event
      */
     handleYearDateClick(event) {
-        const date = dateTimeObjectFrom(event.detail.clickedDate);
-        this._selectedDate = date;
+        const date = this.createDate(event.detail.clickedDate);
+        this._selectedDate = date.ts;
         const { x, y, width, height } = event.detail.bounds;
         const position = {
             x: x + width / 2,

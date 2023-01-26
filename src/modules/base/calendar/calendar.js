@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import {
     dateTimeObjectFrom,
+    equal,
     getStartOfWeek,
     normalizeBoolean,
     normalizeString,
@@ -326,6 +327,9 @@ export default class Calendar extends LightningElement {
     }
 
     set value(value) {
+        if (equal(value, this._value)) {
+            return;
+        }
         this._value = value;
 
         if (this._connected) {

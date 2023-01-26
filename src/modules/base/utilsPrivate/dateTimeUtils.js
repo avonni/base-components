@@ -44,6 +44,9 @@ const dateTimeObjectFrom = (date, options) => {
         time = date.getTime();
     } else if (date instanceof DateTime) {
         time = date.ts;
+        if (!options) {
+            options = { zone: date.zoneName };
+        }
     } else if (!isNaN(new Date(date).getTime())) {
         time = new Date(date).getTime();
     } else if (typeof date === 'string') {
