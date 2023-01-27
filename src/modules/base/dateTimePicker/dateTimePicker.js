@@ -149,6 +149,7 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
 
     _connected = false;
+    _goToDate;
     _selectedDayTime;
     _valid = true;
 
@@ -160,18 +161,27 @@ export default class DateTimePicker extends LightningElement {
         const now = new Date();
         this.today = now;
         this.datePickerValue = now.toISOString();
-
-        const firstDay = this.today < this.min ? this.min : this.today;
-        this._setFirstWeekDay(firstDay);
+        this._setFirstWeekDay();
 
         // If no time format is provided, defaults to hour:minutes (0:00)
         // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
         this._initTimeFormat();
 
-        this._generateTable();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
+    }
+
+    renderedCallback() {
+        if (this._goToDate) {
+            const monthlyCalendar = this.template.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
+            if (monthlyCalendar) {
+                monthlyCalendar.goToDate(this._goToDate);
+            }
+            this._goToDate = undefined;
+        }
     }
 
     /*
@@ -377,12 +387,12 @@ export default class DateTimePicker extends LightningElement {
 
     set max(value) {
         const date = this._processDate(value);
-        if (date) {
-            this._max = new Date(date.setHours(0, 0, 0, 0));
-        }
+        this._max = date
+            ? new Date(date.setHours(0, 0, 0, 0))
+            : new Date(DEFAULT_MAX);
 
         if (this._connected) {
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -400,14 +410,12 @@ export default class DateTimePicker extends LightningElement {
 
     set min(value) {
         const date = this._processDate(value);
-        if (date) {
-            this._min = new Date(date.setHours(0, 0, 0, 0));
-        }
+        this._min = date
+            ? new Date(date.setHours(0, 0, 0, 0))
+            : new Date(DEFAULT_MIN);
 
         if (this._connected) {
-            const firstDay = this.today < this.min ? this.min : this.today;
-            this._setFirstWeekDay(firstDay);
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -682,7 +690,7 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._processValue();
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -711,9 +719,7 @@ export default class DateTimePicker extends LightningElement {
         });
 
         if (this._connected) {
-            const firstDay = this.today < this.min ? this.min : this.today;
-            this._setFirstWeekDay(firstDay);
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -904,6 +910,33 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Move the position of the picker so the specified date is visible.
+     *
+     * @param {(string | number | Date)} date Date the picker should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const normalizedDate = new Date(date);
+        if (isNaN(normalizedDate)) {
+            console.error(
+                `Invalid date passed to the goToDate() method: ${date} \nThe date must be a valid date string, timestamp, or Date object.`
+            );
+            return;
+        }
+        if (this.variant === 'weekly') {
+            const dateDay = normalizedDate.getDate() - normalizedDate.getDay();
+            const dateTime = new Date(date).setDate(dateDay);
+            this.firstWeekDay = new Date(dateTime);
+        } else {
+            this.firstWeekDay = normalizedDate;
+        }
+        this._generateTable();
+        this.datePickerValue = this.firstWeekDayToString;
+        this._goToDate = normalizedDate;
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -1028,16 +1061,19 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * If variant is weekly, sets the first weekday.
+     * Center the picker on the right date.
      */
-    _setFirstWeekDay(date) {
-        if (this.variant === 'weekly') {
-            const dateDay = date.getDate() - date.getDay();
-            const dateTime = new Date(date).setDate(dateDay);
-            this.firstWeekDay = new Date(dateTime);
-        } else {
-            this.firstWeekDay = date;
+    _setFirstWeekDay() {
+        let date = this.value.length
+            ? this._processDate(this.value[0])
+            : this.today;
+
+        if (date < this.min) {
+            date = new Date(this.min);
+        } else if (date > this.max) {
+            date = new Date(this.max);
         }
+        this.goToDate(date);
     }
 
     /**
@@ -1195,7 +1231,7 @@ export default class DateTimePicker extends LightningElement {
      */
     handleTodayClick() {
         this.datePickerValue = this.today.toISOString();
-        this._setFirstWeekDay(this.today);
+        this.goToDate(this.today);
         this._generateTable();
     }
 
@@ -1234,7 +1270,7 @@ export default class DateTimePicker extends LightningElement {
             const day = dateString[3];
             const date = new Date(year, month, day);
 
-            this._setFirstWeekDay(date);
+            this.goToDate(date);
             this._generateTable();
             this.datePickerValue = date.toISOString();
         }

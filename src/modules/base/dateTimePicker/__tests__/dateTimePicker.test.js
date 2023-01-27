@@ -747,6 +747,52 @@ describe('DateTimePicker', () => {
         });
     });
 
+    // Date Picker centering on the right date
+    it('Date time picker: center the picker on the right date', () => {
+        const today = new Date();
+        const min = new Date(2040, 11, 1);
+        const max = new Date(1994, 0, 28);
+        const date = new Date(1993, 4, 5);
+
+        // By default, the picker is centered on the current date
+        let input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        const value = new Date(input.value);
+        expect(value.getDate()).toBe(today.getDate());
+        expect(value.getMonth()).toBe(today.getMonth());
+        expect(value.getYear()).toBe(today.getYear());
+
+        // Center the picker on the min
+        element.min = min;
+        return Promise.resolve()
+            .then(() => {
+                input = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(new Date(input.value)).toEqual(min);
+
+                // Center the picker on the max
+                element.min = undefined;
+                element.max = max;
+            })
+            .then(() => {
+                input = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(new Date(input.value)).toEqual(max);
+
+                // Center the picker on the value
+                element.value = date;
+            })
+            .then(() => {
+                input = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(new Date(input.value)).toEqual(date);
+            });
+    });
+
     /* ----- JS --------- */
     // checkValidity
     it('Date time picker: checkValidity method', () => {
@@ -754,6 +800,29 @@ describe('DateTimePicker', () => {
 
         element.checkValidity();
         expect(spy).toHaveBeenCalled();
+    });
+
+    // goToDate
+    it('Date time picker: goToDate method', () => {
+        const date = new Date(2021, 12, 1);
+        element.variant = 'monthly';
+
+        let spy;
+        return Promise.resolve()
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-calendar"]'
+                );
+                spy = jest.spyOn(calendar, 'goToDate');
+                element.goToDate(date);
+            })
+            .then(() => {
+                expect(spy).toHaveBeenCalled();
+                const datePicker = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(datePicker.value).toBe(date.toISOString());
+            });
     });
 
     // reportValidity
