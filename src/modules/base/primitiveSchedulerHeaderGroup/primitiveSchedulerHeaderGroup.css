@@ -60,6 +60,10 @@
     );
 }
 
+.avonni-scheduler-header-group__header-cell:last-of-type {
+    border-right-width: 0;
+}
+
 .avonni-scheduler-header-group__header-label[data-today='true'] {
     color: var(--avonni-primitive-scheduler-header-group-cell-text-color-today);
 }
