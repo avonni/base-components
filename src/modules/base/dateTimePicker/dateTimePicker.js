@@ -301,6 +301,10 @@ export default class DateTimePicker extends LightningElement {
 
     set disabledDateTimes(value) {
         this._disabledDateTimes = normalizeArray(value);
+
+        if (this._connected) {
+            this._generateTable();
+        }
     }
 
     /**
