@@ -102,6 +102,11 @@
     overflow: hidden;
     flex: 1 1 0;
     min-width: 75px;
+    color: #514f4d;
+    font-weight: 700;
+}
+.avonni-scheduler__vertical-resource-header-cell:last-of-type {
+    border-right-width: 0;
 }
 .avonni-scheduler__vertical-resource-header-cell_zoom-to-fit {
     min-width: auto;
@@ -115,11 +120,6 @@
     position: sticky;
     top: 0;
     z-index: 4;
-}
-
-.avonni-scheduler__vertical-resource-header-cell {
-    color: #514f4d;
-    font-weight: 700;
 }
 
 .avonni-scheduler__schedule-col {
@@ -141,8 +141,8 @@
     min-width: var(--avonni-scheduler-cell-width);
 }
 
-.avonni-scheduler__cell:last-of-type {
-    border-right: 1px solid #c9c9c9;
+.avonni-scheduler__cell-horizontal:last-of-type {
+    border-right: none;
 }
 
 .avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {
