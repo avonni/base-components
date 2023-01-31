@@ -159,6 +159,7 @@ export default class DateTimePicker extends LightningElement {
     _computedStartTime;
     _computedValue = [];
     _connected = false;
+    _goToDate;
     _selectedDayTime;
     _today;
     _valid = true;
@@ -175,10 +176,21 @@ export default class DateTimePicker extends LightningElement {
         // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
         this._initTimeFormat();
 
-        this._generateTable();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._connected = true;
+    }
+
+    renderedCallback() {
+        if (this._goToDate) {
+            const monthlyCalendar = this.template.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
+            if (monthlyCalendar) {
+                monthlyCalendar.goToDate(this._goToDate);
+            }
+            this._goToDate = undefined;
+        }
     }
 
     /*
@@ -298,6 +310,10 @@ export default class DateTimePicker extends LightningElement {
 
     set disabledDateTimes(value) {
         this._disabledDateTimes = normalizeArray(value);
+
+        if (this._connected) {
+            this._generateTable();
+        }
     }
 
     /**
@@ -710,7 +726,7 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this._processValue();
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -734,7 +750,7 @@ export default class DateTimePicker extends LightningElement {
         });
 
         if (this._connected) {
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -937,6 +953,30 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Move the position of the picker so the specified date is visible.
+     *
+     * @param {(string | number | Date)} date Date the picker should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const normalizedDate = this._processDate(date);
+        if (!normalizedDate) {
+            console.error(
+                `Invalid date passed to the goToDate() method: ${date} \nThe date must be a valid date string, timestamp, or Date object.`
+            );
+            return;
+        }
+        this.firstWeekDay =
+            this.variant === 'weekly'
+                ? getStartOfWeek(normalizedDate)
+                : normalizedDate;
+        this._generateTable();
+        this.datePickerValue = this.firstWeekDayToString;
+        this._goToDate = normalizedDate;
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -1075,11 +1115,19 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * If variant is weekly, sets the first weekday.
+     * Center the picker on the right date.
      */
-    _setFirstWeekDay(date) {
-        this.firstWeekDay =
-            this.variant === 'weekly' ? getStartOfWeek(date) : date;
+    _setFirstWeekDay() {
+        let date = this.value.length
+            ? this._processDate(this.value[0])
+            : this._today;
+
+        if (date < this.min) {
+            date = this._processDate(this.min);
+        } else if (date > this.max) {
+            date = this._processDate(this.max);
+        }
+        this.goToDate(date);
     }
 
     /**
@@ -1248,8 +1296,7 @@ export default class DateTimePicker extends LightningElement {
      */
     handleTodayClick() {
         this.datePickerValue = this._today.toISO();
-        this._setFirstWeekDay(this._today);
-        this._generateTable();
+        this.goToDate(this._today);
     }
 
     /**
@@ -1279,8 +1326,7 @@ export default class DateTimePicker extends LightningElement {
         const date = isInput
             ? DateTime.fromFormat(value, 'yyyy-MM-dd', { zone: this.timezone })
             : this._processDate(value);
-        this._setFirstWeekDay(date);
-        this._generateTable();
+        this.goToDate(date);
         this.datePickerValue = date.toISO();
     }
 

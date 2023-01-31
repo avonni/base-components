@@ -113,6 +113,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             this.updateVisibleResources();
             this._eventData.setDraggedEvent();
         }
+
+        if (!this.isVertical) {
+            // Remove the last row bottom border
+            const resources = this.template.querySelectorAll(
+                '[data-element-id="div-resource"]'
+            );
+            if (resources.length) {
+                const lastResource = resources[resources.length - 1];
+                const cells = lastResource.querySelectorAll(CELL_SELECTOR);
+                cells.forEach((cell) => {
+                    cell.classList.remove('avonni-scheduler__border_bottom');
+                });
+            }
+        }
     }
 
     disconnectedCallback() {
@@ -257,7 +271,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     get cellClass() {
         return classSet('slds-p-around_none slds-wrap avonni-scheduler__cell')
             .add({
-                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__border_bottom':
+                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__cell-horizontal avonni-scheduler__border_bottom':
                     !this.isVertical,
                 'avonni-scheduler__cell_vertical avonni-scheduler__border_right slds-border_bottom':
                     this.isVertical,
@@ -323,12 +337,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get firstColClass() {
         return classSet(
-            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__border_left avonni-scheduler__border_top avonni-scheduler__border_bottom'
+            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
         )
             .add({
                 'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
                     this.isVertical,
-                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'avonni-scheduler__first-col_horizontal':
+                    !this.isVertical && !this._isCollapsed,
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
                 'avonni-scheduler__border_right':

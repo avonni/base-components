@@ -472,6 +472,9 @@ export default class ActivityTimeline extends LightningElement {
 
             if (this.isTimelineHorizontal) {
                 this.requestRedrawTimeline();
+                setTimeout(() => {
+                    this.renderedCallback();
+                }, 0);
             }
         }
     }
@@ -496,6 +499,9 @@ export default class ActivityTimeline extends LightningElement {
 
         if (this.isTimelineHorizontal) {
             this.requestRedrawTimeline();
+            setTimeout(() => {
+                this.renderedCallback();
+            }, 0);
         }
     }
 

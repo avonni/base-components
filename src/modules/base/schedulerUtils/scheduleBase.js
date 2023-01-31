@@ -598,7 +598,7 @@ export class ScheduleBase extends LightningElement {
      */
     get splitterClass() {
         return classSet(
-            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__border_top avonni-scheduler__border_bottom'
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
         )
             .add({
                 'avonni-scheduler__splitter_resizable': this.showSplitterResize,

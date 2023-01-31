@@ -603,12 +603,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get mainPanelClass() {
         return classSet(
-            'avonni-scheduler__border_top avonni-scheduler__border_bottom avonni-scheduler__main-section slds-scrollable'
+            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
         )
             .add({
-                'avonni-scheduler__border_left':
+                'avonni-scheduler__main-border_left':
                     this.hideSidePanel || this.sidePanelPosition === 'right',
-                'avonni-scheduler__border_right':
+                'avonni-scheduler__main-border_right':
                     this.hideSidePanel || this.sidePanelPosition === 'left'
             })
             .toString();
@@ -677,14 +677,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     get sidePanelClass() {
         return classSet(
-            'slds-scrollable avonni-scheduler__panel avonni-scheduler__border_top avonni-scheduler__border_bottom'
+            'slds-scrollable avonni-scheduler__panel avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
         )
             .add({
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
-                'avonni-scheduler__border_left':
+                'avonni-scheduler__main-border_left':
                     this.sidePanelPosition === 'left' || !this.showSplitter,
-                'avonni-scheduler__border_right':
+                'avonni-scheduler__main-border_right':
                     this.sidePanelPosition === 'right' || !this.showSplitter
             })
             .toString();
