@@ -167,10 +167,7 @@ export default class DateTimePicker extends LightningElement {
     connectedCallback() {
         this._initDates();
         this._initTimeSlots();
-
-        const firstDay =
-            this._today < this.computedMin ? this.computedMin : this._today;
-        this._setFirstWeekDay(firstDay);
+        this._setFirstWeekDay();
 
         // If no time format is provided, defaults to hour:minutes (0:00)
         // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
@@ -406,7 +403,7 @@ export default class DateTimePicker extends LightningElement {
 
         if (this._connected) {
             this.computedMax = this._processDate(this.max).endOf('day');
-            this._generateTable();
+            this._setFirstWeekDay();
         }
     }
 
@@ -1118,8 +1115,8 @@ export default class DateTimePicker extends LightningElement {
      * Center the picker on the right date.
      */
     _setFirstWeekDay() {
-        let date = this.value.length
-            ? this._processDate(this.value[0])
+        let date = this._computedValue.length
+            ? this._processDate(this._computedValue[0])
             : this._today;
 
         if (date < this.min) {

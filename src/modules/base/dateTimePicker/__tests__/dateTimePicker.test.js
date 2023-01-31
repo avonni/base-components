@@ -864,7 +864,7 @@ describe('DateTimePicker', () => {
                 const datePicker = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-input"]'
                 );
-                expect(datePicker.value).toBe(date.toISOString());
+                expect(new Date(datePicker.value)).toEqual(date);
             });
     });
 
