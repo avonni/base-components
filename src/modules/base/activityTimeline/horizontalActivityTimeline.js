@@ -32,7 +32,7 @@
 
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
-import { createSVGIcon } from 'c/iconUtils'
+import { createSVGIcon } from 'c/iconUtils';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
@@ -437,20 +437,22 @@ export class HorizontalActivityTimeline {
      * Add all items in activity timeline.
      */
     addItemsToTimeline(dataToDisplay) {
-        dataToDisplay.forEach((item) => {
-            const itemGroup = this._timelineSVG
-                .append('g')
-                .attr('id', 'timeline-item-' + item.name)
-                .attr('data-name', item.name);
+        if (dataToDisplay) {
+            dataToDisplay.forEach((item) => {
+                const itemGroup = this._timelineSVG
+                    .append('g')
+                    .attr('id', 'timeline-item-' + item.name)
+                    .attr('data-name', item.name);
 
-            this.createItem(itemGroup, item);
+                this.createItem(itemGroup, item);
 
-            itemGroup
-                .style('cursor', 'default')
-                .on('mouseenter', this.handleMouseOverOnItem.bind(this, item))
-                .on('mouseleave', this.handleMouseOutOnItem.bind(this))
-                .on('click', this._activityTimeline.handleItemClick);
-        });
+                itemGroup
+                    .style('cursor', 'default')
+                    .on('mouseenter', this.handleMouseOverOnItem.bind(this, item))
+                    .on('mouseleave', this.handleMouseOutOnItem.bind(this))
+                    .on('click', this._activityTimeline.handleItemClick);
+            });
+        }
     }
 
     /**
