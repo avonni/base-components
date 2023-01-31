@@ -1168,26 +1168,37 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    setInitialFocus() {
+        // Focus on an element inside the popover.
+        requestAnimationFrame(() => {
+            const tab = this.template.querySelector(
+                '[data-element-id="default"]'
+            );
+            const tabBody = this.template.querySelector(
+                '[data-element-id="tab-body"]'
+            );
+
+            if (tab) {
+                tab.focus();
+            } else if (tabBody) {
+                tabBody.focus();
+            }
+        });
+    }
+
     /**
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
             this.dropdownVisible = !this.dropdownVisible;
-            requestAnimationFrame(() => {
-                const tab = this.template.querySelector(
-                    '[data-element-id="default"]'
-                );
 
-                if (tab) {
-                    tab.focus();
-                }
-            });
             if (!this.dropdownOpened && this.dropdownVisible) {
                 this.dropdownOpened = true;
             }
 
             if (this.dropdownVisible) {
+                this.setInitialFocus();
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
                 this.loadPalette();

@@ -201,7 +201,12 @@
                                         </li>
                                     </ul>
 
-                                    <div class={computedTabBodyClass}>
+                                    <div
+                                        class={computedTabBodyClass}
+                                        data-element-id="tab-body"
+                                        tabindex="-1"
+                                        onblur={handleMenuBlur}
+                                    >
                                         <!-- Color palette -->
                                         <c-color-palette
                                             if:false={showColorGradient}
