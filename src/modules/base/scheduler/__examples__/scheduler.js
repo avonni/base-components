@@ -68,6 +68,7 @@ export const Scheduler = ({
     sidePanelPosition,
     start,
     timeSpans,
+    timezone,
     variant,
     zoomToFit
 }) => {
@@ -105,6 +106,7 @@ export const Scheduler = ({
     element.sidePanelPosition = sidePanelPosition;
     element.start = start;
     element.timeSpans = timeSpans;
+    element.timezone = timezone;
     element.variant = variant;
     element.zoomToFit = zoomToFit;
     return element;

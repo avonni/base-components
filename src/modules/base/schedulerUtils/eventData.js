@@ -103,8 +103,8 @@ export default class SchedulerEventData {
         }
 
         const eventsInTimeFrame = this.events.filter((event) => {
-            const from = dateTimeObjectFrom(event.from);
-            const to = dateTimeObjectFrom(event.to);
+            const from = this.createDate(event.from);
+            const to = this.createDate(event.to);
             return (
                 this.belongsToSelectedResources(event) &&
                 (interval.contains(from) ||
@@ -191,6 +191,16 @@ export default class SchedulerEventData {
     }
 
     /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
      * Create an event.
      *
      * @param {object} event The object describing the event to create.
@@ -231,7 +241,7 @@ export default class SchedulerEventData {
 
         // Update the start and end date
         const duration = occurrence.to - occurrence.from;
-        let start = dateTimeObjectFrom(Number(cell.dataset.start));
+        let start = this.createDate(Number(cell.dataset.start));
         if (this.isCalendar && this.schedule.isMonth) {
             // Keep the original time
             // when dragging an event to a calendar month cell
@@ -392,8 +402,8 @@ export default class SchedulerEventData {
      * @returns {DateTime} Normalized event end date.
      */
     normalizedEventTo(event) {
-        let to = dateTimeObjectFrom(event.to);
-        const from = dateTimeObjectFrom(event.from);
+        let to = this.createDate(event.to);
+        const from = this.createDate(event.from);
 
         if (event.allDay && to) {
             to = to.endOf('day');
@@ -437,10 +447,10 @@ export default class SchedulerEventData {
 
         if (side === 'end') {
             // Update the end date if the event was resized from the right
-            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
+            occurrence.to = this.createDate(Number(cell.dataset.end) + 1);
         } else if (side === 'start') {
             // Update the start date if the event was resized from the left
-            occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
+            occurrence.from = this.createDate(Number(cell.dataset.start));
         }
 
         // Add the occurrence to the cell group (resource or day column)
@@ -509,7 +519,7 @@ export default class SchedulerEventData {
                     if (key === 'allDay' || value.length) {
                         if (key === 'from' || key === 'to') {
                             // Convert the ISO dates into DateTime objects
-                            occ[key] = dateTimeObjectFrom(value);
+                            occ[key] = this.createDate(value);
                         } else {
                             occ[key] = value;
                         }
@@ -630,7 +640,7 @@ export default class SchedulerEventData {
         // do not cut it at the currently visible schedule start/end
         const visibleEnd = this.visibleInterval.e;
         const visibleStart = this.visibleInterval.s;
-        const from = dateTimeObjectFrom(event.from);
+        const from = this.createDate(event.from);
         const to = this.normalizedEventTo(event);
         const isMultiDay = spansOnMoreThanOneDay(event, from, to);
         const isCalendarMultiDay =
@@ -651,6 +661,7 @@ export default class SchedulerEventData {
         event.theme = event.disabled
             ? 'disabled'
             : event.data.theme || this.eventsTheme;
+        event.timezone = this.schedule.timezone;
 
         event.labels =
             typeof event.data.labels === 'object'
@@ -753,8 +764,8 @@ export default class SchedulerEventData {
             this.getGridElementsAtPosition(normalizedX, y);
 
         // Update the draft values
-        const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
-        const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
+        const to = this.createDate(Number(cellElement.dataset.end) + 1);
+        const from = this.createDate(Number(cellElement.dataset.start));
 
         switch (side) {
             case 'end':

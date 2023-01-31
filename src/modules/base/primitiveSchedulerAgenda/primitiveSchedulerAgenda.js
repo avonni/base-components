@@ -31,12 +31,7 @@
  */
 
 import { api } from 'lwc';
-import {
-    addToDate,
-    dateTimeObjectFrom,
-    normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
+import { addToDate, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -66,7 +61,7 @@ const SIDE_PANEL_POSITIONS = {
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     _hideResourcesFilter = false;
     _hideSidePanel = false;
-    _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _selectedDate = DEFAULT_SELECTED_DATE;
     _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _computedEvents = [];
@@ -168,9 +163,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         return this._selectedDate;
     }
     set selectedDate(value) {
-        this._selectedDate =
-            dateTimeObjectFrom(value) ||
-            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+        this._selectedDate = this.createDate(value)
+            ? value
+            : DEFAULT_SELECTED_DATE;
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
@@ -214,6 +209,26 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return super.timezone;
+    }
+    set timezone(value) {
+        super.timezone = value;
+
+        if (this._connected) {
+            this.setStartToBeginningOfUnit();
+            this.initLeftPanelCalendarDisabledDates();
+            this.initEvents();
         }
     }
 
@@ -341,7 +356,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             y,
             '[data-element-id="div-day-group"]'
         );
-        const date = dateTimeObjectFrom(Number(dayGroupElement.dataset.date));
+        const date = this.createDate(Number(dayGroupElement.dataset.date));
         const from = date.startOf('day');
         const to = from.endOf('day');
         const resourceNames = [this.firstSelectedResource.name];
@@ -413,8 +428,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const groups = [];
         let currentMonth;
         days.forEach(([ISODay, events]) => {
-            const date = dateTimeObjectFrom(ISODay);
-            const today = dateTimeObjectFrom(new Date()).startOf('day');
+            const date = this.createDate(ISODay);
+            const today = this.createDate(new Date()).startOf('day');
             groups.push(
                 new DayGroup({
                     date,
@@ -493,7 +508,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.start = this.selectedDate.startOf('month');
         }
 
-        const end = dateTimeObjectFrom(addToDate(this.start, unit, span) - 1);
+        const end = this.createDate(addToDate(this.start, unit, span) - 1);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();

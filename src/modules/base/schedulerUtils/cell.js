@@ -54,7 +54,10 @@ export default class SchedulerCell {
         this.end = props.end;
         this.events = normalizeArray(props.events);
         this.placeholders = normalizeArray(props.placeholders);
-        this._startDate = dateTimeObjectFrom(this.start);
+        this.timezone = props.timezone;
+        this._startDate = dateTimeObjectFrom(this.start, {
+            zone: this.timezone
+        });
     }
 
     /**
@@ -91,7 +94,9 @@ export default class SchedulerCell {
     }
 
     get isToday() {
-        const today = dateTimeObjectFrom(Date.now());
+        const today = dateTimeObjectFrom(Date.now(), {
+            zone: this.timezone
+        });
         return (
             this._startDate.year === today.year &&
             this._startDate.month === today.month &&

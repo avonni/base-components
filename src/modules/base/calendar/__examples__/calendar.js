@@ -43,6 +43,7 @@ export const Calendar = ({
     min,
     max,
     selectionMode,
+    timezone,
     value,
     weekNumber
 }) => {
@@ -55,6 +56,7 @@ export const Calendar = ({
     element.max = max;
     element.min = min;
     element.selectionMode = selectionMode;
+    element.timezone = timezone;
     element.value = value;
     element.weekNumber = weekNumber;
     return element;

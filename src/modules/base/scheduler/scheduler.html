@@ -115,6 +115,7 @@
                 <lightning-focus-trap>
                     <c-calendar
                         disabled-dates={toolbarCalendarDisabledDates}
+                        timezone={timezone}
                         value={selectedDate}
                         data-element-id="calendar-toolbar"
                         onchange={handleToolbarCalendarChange}
@@ -247,8 +248,9 @@
             resize-column-disabled={resizeColumnDisabled}
             resources={computedResources}
             selected-resources={selectedResources}
-            start={start}
+            start={computedStart}
             time-span={currentTimeSpan}
+            timezone={timezone}
             orientation={variant}
             zoom-to-fit={zoomToFit}
             data-element-id="avonni-primitive-scheduler-timeline"
@@ -298,6 +300,7 @@
             selected-resources={selectedResources}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
+            timezone={timezone}
             zoom-to-fit={zoomToFit}
             data-element-id="avonni-primitive-scheduler-calendar"
             ondatechange={handleSelectedDateChange}
@@ -334,6 +337,7 @@
             selected-resources={selectedResources}
             side-panel-position={sidePanelPosition}
             time-span={currentTimeSpan}
+            timezone={timezone}
             data-element-id="avonni-primitive-scheduler-agenda"
             ondatechange={handleSelectedDateChange}
             oneventselect={handleEventSelect}
@@ -555,6 +559,7 @@
                 start-date={selection.occurrence.from}
                 end-date={selection.occurrence.to}
                 label-end-date={dialogLabels.to}
+                timezone={timezone}
                 type="datetime"
                 required
                 variant="label-hidden"

@@ -9,6 +9,7 @@ export default class Calendar extends LightningElement {
     @api max;
     @api min;
     @api selectionMode;
+    @api timezone;
     @api value;
     @api weekNumber;
 

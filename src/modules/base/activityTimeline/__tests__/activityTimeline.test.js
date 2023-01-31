@@ -86,6 +86,7 @@ describe('Activity Timeline', () => {
         expect(element.buttonShowMoreLabel).toBe('Show more');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.orientation).toBe('vertical');
+        expect(element.timezone).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -158,7 +159,7 @@ describe('Activity Timeline', () => {
             const timelineItems = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
-            expect(timelineItems.dateFormat).toBeUndefined();
+            expect(timelineItems.dateFormat).toBeFalsy();
         });
     });
 
@@ -642,6 +643,21 @@ describe('Activity Timeline', () => {
             expect(secondDate.datetimeValue).toContain(secondDateContent);
             expect(thirdDate.datetimeValue).toContain(thirdDateContent);
             expect(fourthDate.datetimeValue).toContain(fourthDateContent);
+        });
+    });
+
+    // timezone
+    it('Activity Timeline: timezone', () => {
+        element.timezone = 'Pacific/Honolulu';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            items.forEach((it) => {
+                expect(it.timezone).toBe('Pacific/Honolulu');
+            });
         });
     });
 
@@ -1579,9 +1595,13 @@ describe('Activity Timeline', () => {
             scrollAxis.dispatchEvent(clickEvent);
             expect(handleClickOnScrollAxisSpy).toHaveBeenCalled();
 
-            // +/- 1 of difference with expected output's value is accepted      
-            const differenceBetweenOutputAndExpected = Math.floor(Number(intervalRectangle.getAttribute('x'))) - (newIntervalPosition - halfIntervalWidth - offsetToStartOfDay);
-            expect(Math.abs(differenceBetweenOutputAndExpected)).toBeLessThanOrEqual(1);
+            // +/- 1 of difference with expected output's value is accepted
+            const differenceBetweenOutputAndExpected =
+                Math.floor(Number(intervalRectangle.getAttribute('x'))) -
+                (newIntervalPosition - halfIntervalWidth - offsetToStartOfDay);
+            expect(
+                Math.abs(differenceBetweenOutputAndExpected)
+            ).toBeLessThanOrEqual(1);
         });
     });
 

@@ -54,7 +54,8 @@
                     >
                         <c-calendar
                             disabled-dates={navCalendarDisabledDates}
-                            value={selectedDate}
+                            timezone={timezone}
+                            value={computedSelectedDate}
                             data-element-id="avonni-calendar-left-panel"
                             onchange={handleCalendarChange}
                             onnavigate={handleLeftPanelCalendarNavigate}
@@ -164,6 +165,7 @@
                                     headers={dayHeaders}
                                     start={start}
                                     time-span={dayHeadersTimeSpan}
+                                    timezone={timezone}
                                     visible-width={dayHeadersVisibleWidth}
                                     zoom-to-fit
                                     data-element-id="avonni-primitive-scheduler-header-group-horizontal"
@@ -238,6 +240,7 @@
                                                 read-only={multiDayEventReadOnly}
                                                 resource-key={occurrence.resourceName}
                                                 resources={computedResources}
+                                                timezone={timezone}
                                                 title={occurrence.title}
                                                 theme={event.theme}
                                                 to={occurrence.endOfTo}
@@ -277,6 +280,7 @@
                                 headers={hourHeaders}
                                 start={start}
                                 time-span={hourHeadersTimeSpan}
+                                timezone={timezone}
                                 variant="vertical"
                                 zoom-to-fit={zoomToFit}
                                 data-element-id="avonni-primitive-scheduler-header-group-vertical"
@@ -369,6 +373,7 @@
                                                                     read-only={readOnly}
                                                                     resource-key={placeholder.resourceName}
                                                                     resources={computedResources}
+                                                                    timezone={timezone}
                                                                     title={placeholder.title}
                                                                     theme={placeholder.theme}
                                                                     to={placeholder.to}
@@ -450,6 +455,7 @@
                                                     reference-line={event.referenceLine}
                                                     resource-key={occurrence.resourceName}
                                                     resources={computedResources}
+                                                    timezone={timezone}
                                                     title={occurrence.title}
                                                     theme={event.theme}
                                                     to={occurrence.to}
@@ -514,6 +520,7 @@
                                 disabled-dates={navCalendarDisabledWeekdays}
                                 hide-navigation
                                 marked-dates={month.markedDates}
+                                timezone={timezone}
                                 value={month.value}
                                 data-element-id="avonni-calendar-year-month"
                                 data-month={month.key}
@@ -569,7 +576,8 @@
                     >
                         <c-calendar
                             disabled-dates={navCalendarDisabledDates}
-                            value={selectedDate}
+                            timezone={timezone}
+                            value={computedSelectedDate}
                             data-element-id="avonni-calendar-left-panel"
                             onchange={handleCalendarChange}
                             onnavigate={handleLeftPanelCalendarNavigate}
@@ -664,6 +672,7 @@
                             reference-line={occurrence.event.referenceLine}
                             resource-key={occurrence.resourceName}
                             resources={computedResources}
+                            timezone={timezone}
                             title={occurrence.title}
                             theme={occurrence.event.theme}
                             to={occurrence.to}
