@@ -77,8 +77,9 @@
                     available-time-frames={availableTimeFrames}
                     available-time-spans={availableTimeSpans}
                     headers={computedHeaders}
-                    start={start}
+                    start={computedStart}
                     time-span={timeSpan}
+                    timezone={timezone}
                     variant="vertical"
                     zoom-to-fit={zoomToFit}
                     data-element-id="avonni-primitive-scheduler-header-group"
@@ -132,7 +133,9 @@
             class="
                 avonni-scheduler__second-col
                 slds-scrollable
-                avonni-scheduler__border_top
+                avonni-scheduler__main-border_top
+                avonni-scheduler__main-border_bottom
+                avonni-scheduler__main-border_right
             "
             onscroll={handleScroll}
         >
@@ -210,8 +213,9 @@
                             available-time-frames={availableTimeFrames}
                             available-time-spans={availableTimeSpans}
                             headers={computedHeaders}
-                            start={start}
+                            start={computedStart}
                             time-span={timeSpan}
+                            timezone={timezone}
                             visible-width={scheduleColWidth}
                             zoom-to-fit={zoomToFit}
                             data-element-id="avonni-primitive-scheduler-header-group"
@@ -305,6 +309,7 @@
                                                 reference-line={event.referenceLine}
                                                 resource-key={occurrence.resourceName}
                                                 resources={visibleSimplifiedResources}
+                                                timezone={timezone}
                                                 title={occurrence.title}
                                                 theme={event.theme}
                                                 to={occurrence.to}

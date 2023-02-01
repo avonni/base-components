@@ -38,17 +38,39 @@ import { DateTime, Interval } from 'c/luxon';
  * @param {(number | Date)} date Timestamp or date object to convert.
  * @returns {(DateTime | false)} DateTime object or false.
  */
-const dateTimeObjectFrom = (date) => {
+const dateTimeObjectFrom = (date, options) => {
     let time;
     if (date instanceof Date) {
         time = date.getTime();
+    } else if (date instanceof DateTime) {
+        time = date.ts;
+        if (!options) {
+            options = { zone: date.zoneName };
+        }
     } else if (!isNaN(new Date(date).getTime())) {
         time = new Date(date).getTime();
-    } else if (date instanceof DateTime) {
-        return new DateTime(date);
+    } else if (typeof date === 'string') {
+        // Add support for Salesforce format 2023-01-25, 12:00 p.m.
+        let normalizedDate = date.replace('p.m.', 'PM');
+        normalizedDate = normalizedDate.replace('a.m.', 'AM');
+
+        const dateTime = DateTime.fromFormat(normalizedDate, 'yyyy-MM-dd, t', {
+            locale: 'default'
+        });
+        if (dateTime.isValid) {
+            time = dateTime.ts;
+        }
     }
 
-    if (time) return DateTime.fromMillis(time);
+    if (time) {
+        const dateTime = DateTime.fromMillis(time, options);
+        if (dateTime.invalidExplanation) {
+            // Ignore invalid options but log the error
+            console.error(dateTime.invalidExplanation);
+            return DateTime.fromMillis(time);
+        }
+        return dateTime;
+    }
     return false;
 };
 
@@ -144,10 +166,9 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
 };
 
 const formatDateFromStyle = (
-    date,
+    dateTime,
     { showTime = false, dateStyle = 'medium', timeStyle = 'short' }
 ) => {
-    const dateTime = dateTimeObjectFrom(date);
     let formattedDate;
 
     switch (dateStyle) {

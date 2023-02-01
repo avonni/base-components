@@ -32,6 +32,7 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    dateTimeObjectFrom,
     deepCopy,
     formatDateFromStyle,
     normalizeBoolean,
@@ -104,6 +105,7 @@ const TYPE_ATTRIBUTES = {
         'labelStartDate',
         'labelStartTime',
         'timeStyle',
+        'timezone',
         'type'
     ],
     list: [
@@ -1318,11 +1320,12 @@ export default class FilterMenu extends LightningElement {
     computeSelectedRange() {
         const selection = this.value.reduce((string, value) => {
             let normalizedValue = '';
-            if (this.isDateRange && value && !isNaN(new Date(value))) {
+            if (this.isDateRange && value && dateTimeObjectFrom(value)) {
                 // Date range
-                const { dateStyle, timeStyle, type } =
+                const { dateStyle, timeStyle, timezone, type } =
                     this.computedTypeAttributes;
-                normalizedValue = formatDateFromStyle(value, {
+                const date = dateTimeObjectFrom(value, { zone: timezone });
+                normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle

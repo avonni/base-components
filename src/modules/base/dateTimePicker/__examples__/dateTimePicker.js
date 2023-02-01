@@ -67,7 +67,8 @@ export const DateTimePicker = ({
     type,
     showTimeZone,
     hideNavigation,
-    hideDatePicker
+    hideDatePicker,
+    timezone
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
     element.disabled = disabled;
@@ -100,5 +101,6 @@ export const DateTimePicker = ({
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;
     element.hideDatePicker = hideDatePicker;
+    element.timezone = timezone;
     return element;
 };

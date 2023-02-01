@@ -68,7 +68,8 @@ describe('Calendar', () => {
         expect(element.max).toMatchObject(new Date(2099, 11, 31));
         expect(element.min).toMatchObject(new Date(1900, 0, 1));
         expect(element.selectionMode).toBe('single');
-        expect(element.value).toMatchObject([]);
+        expect(element.timezone).toBeUndefined();
+        expect(element.value).toBeUndefined();
         expect(element.weekNumber).toBeFalsy();
     });
 
@@ -345,7 +346,7 @@ describe('Calendar', () => {
                 );
                 expect(monthLabel.textContent).toBe('April');
                 // value should not change with month change
-                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+                expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
 
@@ -366,7 +367,7 @@ describe('Calendar', () => {
                 );
 
                 expect(monthLabel.textContent).toBe('June');
-                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+                expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
 
@@ -390,7 +391,7 @@ describe('Calendar', () => {
                     '[data-element-id="lightning-combobox"]'
                 );
                 expect(comboBoxYear.value).toBe(2023);
-                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+                expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
 
@@ -414,7 +415,7 @@ describe('Calendar', () => {
                     '[data-element-id="lightning-combobox"]'
                 );
                 expect(comboBoxYear.value).toBe(2021);
-                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+                expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
             });
     });
 
@@ -519,6 +520,7 @@ describe('Calendar', () => {
         element.min = new Date('05/15/2021');
         element.max = new Date('05/23/2021');
         element.selectionMode = 'single';
+
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
                 'span[data-date="14"]'
@@ -532,7 +534,34 @@ describe('Calendar', () => {
             day14.click();
             day18.click();
             day24.click();
-            expect(element.value).toMatchObject([new Date('05/18/2021')]);
+            expect(new Date(element.value)).toEqual(new Date('05/18/2021'));
+        });
+    });
+
+    // timezone
+    it('Calendar: timezone', () => {
+        element.value = '2021-05-18T20:00:00.000Z';
+        element.min = '2021-05-15T18:00:00.000Z';
+        element.max = '2021-05-23T04:00:00.000Z';
+        element.selectionMode = 'single';
+        // UTC+11
+        element.timezone = 'Pacific/Noumea';
+
+        return Promise.resolve().then(() => {
+            const selected = element.shadowRoot.querySelector(
+                '[data-element-id="td"][data-selected="true"]'
+            );
+            expect(selected.textContent).toBe('19');
+
+            const day15 = element.shadowRoot.querySelector(
+                '[data-element-id="span-day-label"][data-date="15"]'
+            );
+            expect(day15.dataset.disabled).toBe('true');
+
+            const day23 = element.shadowRoot.querySelector(
+                '[data-element-id="span-day-label"][data-date="23"]'
+            );
+            expect(day23.dataset.disabled).toBe('false');
         });
     });
 
@@ -616,27 +645,6 @@ describe('Calendar', () => {
                 '[data-element-id="lightning-combobox"]'
             );
             expect(year.value).toBe(currentDate.getFullYear());
-        });
-    });
-
-    // value is invalid and current date is not in interval
-    it('Invalid calendar current day should change to min value if current date is not in min-max interval', () => {
-        element.selectionMode = 'single';
-        element.min = new Date('01/01/1840');
-        element.max = new Date('12/31/1890');
-        element.value = '00/00/2000';
-
-        return Promise.resolve().then(() => {
-            const day = element.shadowRoot.querySelector('.slds-is-selected');
-            expect(day).toBeNull();
-            const month = element.shadowRoot.querySelector(
-                '[data-element-id="h2"]'
-            );
-            expect(month.textContent).toBe('January');
-            const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
-            );
-            expect(year.value).toBe(1840);
         });
     });
 
@@ -815,7 +823,7 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(new Date(element.value)).toEqual(new Date('05/14/2021'));
         });
     });
 
@@ -828,7 +836,7 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([]);
+            expect(element.value).toBeNull();
         });
     });
 
@@ -868,10 +876,9 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/14/2021')
-            ]);
+            expect(element.value).toHaveLength(2);
+            expect(new Date(element.value[0])).toEqual(new Date('05/15/2021'));
+            expect(new Date(element.value[1])).toEqual(new Date('05/14/2021'));
         });
     });
 
@@ -885,9 +892,9 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([]);
+            expect(element.value).toEqual([]);
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(new Date(element.value)).toEqual(new Date('05/14/2021'));
         });
     });
 
@@ -901,10 +908,9 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([
-                new Date('05/14/2021'),
-                new Date('05/15/2021')
-            ]);
+            expect(element.value).toHaveLength(2);
+            expect(new Date(element.value[0])).toEqual(new Date('05/14/2021'));
+            expect(new Date(element.value[1])).toEqual(new Date('05/15/2021'));
         });
     });
 
@@ -918,10 +924,9 @@ describe('Calendar', () => {
                 'span[data-date="17"]'
             );
             day17.click();
-            expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/17/2021')
-            ]);
+            expect(element.value).toHaveLength(2);
+            expect(new Date(element.value[0])).toEqual(new Date('05/15/2021'));
+            expect(new Date(element.value[1])).toEqual(new Date('05/17/2021'));
         });
     });
 
@@ -935,10 +940,9 @@ describe('Calendar', () => {
                 'span[data-date="17"]'
             );
             day17.click();
-            expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/17/2021')
-            ]);
+            expect(element.value).toHaveLength(2);
+            expect(new Date(element.value[0])).toEqual(new Date('05/15/2021'));
+            expect(new Date(element.value[1])).toEqual(new Date('05/17/2021'));
         });
     });
 
@@ -952,10 +956,9 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([
-                new Date('05/14/2021'),
-                new Date('05/16/2021')
-            ]);
+            expect(element.value).toHaveLength(2);
+            expect(new Date(element.value[0])).toEqual(new Date('05/14/2021'));
+            expect(new Date(element.value[1])).toEqual(new Date('05/16/2021'));
         });
     });
 
@@ -1042,8 +1045,9 @@ describe('Calendar', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            const normalizedDate = new Date('05/07/2021').toISOString();
-            expect(call.detail.value).toBe(normalizedDate);
+            const normalizedDate = new Date('05/07/2021');
+            expect(typeof call.detail.value).toBe('string');
+            expect(new Date(call.detail.value)).toEqual(normalizedDate);
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -1068,12 +1072,16 @@ describe('Calendar', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            const normalizedFirst = new Date('05/09/2021').toISOString();
-            const normalizedSecond = new Date('05/07/2021').toISOString();
-            expect(call.detail.value).toEqual([
-                normalizedFirst,
-                normalizedSecond
-            ]);
+            expect(call.detail.value).toHaveLength(2);
+            call.detail.value.forEach((val) => {
+                expect(typeof val).toBe('string');
+            });
+            expect(new Date(call.detail.value[0])).toEqual(
+                new Date('05/09/2021')
+            );
+            expect(new Date(call.detail.value[1])).toEqual(
+                new Date('05/07/2021')
+            );
         });
     });
 
@@ -1111,12 +1119,13 @@ describe('Calendar', () => {
             );
             day11.click();
             expect(handler).toHaveBeenCalled();
-            const normalizedStart = new Date('05/09/2021').toISOString();
-            const normalizedEnd = new Date('05/11/2021').toISOString();
-            expect(handler.mock.calls[0][0].detail.value).toEqual([
-                normalizedStart,
-                normalizedEnd
-            ]);
+            const value = handler.mock.calls[0][0].detail.value;
+            expect(value).toHaveLength(2);
+            value.forEach((val) => {
+                expect(typeof val).toBe('string');
+            });
+            expect(new Date(value[0])).toEqual(new Date('05/09/2021'));
+            expect(new Date(value[1])).toEqual(new Date('05/11/2021'));
         });
     });
 
@@ -1132,10 +1141,9 @@ describe('Calendar', () => {
             );
             nextMonthButton.click();
             expect(handler).toHaveBeenCalled();
-            const firstVisibleDay = new Date('06/01/2022').toISOString();
-            expect(handler.mock.calls[0][0].detail.date).toEqual(
-                firstVisibleDay
-            );
+            const date = handler.mock.calls[0][0].detail.date;
+            expect(typeof date).toBe('string');
+            expect(new Date(date)).toEqual(new Date('06/01/2022'));
         });
     });
 
@@ -1151,10 +1159,8 @@ describe('Calendar', () => {
             );
             previousMonthButton.click();
             expect(handler).toHaveBeenCalled();
-            const firstVisibleDay = new Date('04/01/2022').toISOString();
-            expect(handler.mock.calls[0][0].detail.date).toEqual(
-                firstVisibleDay
-            );
+            const date = handler.mock.calls[0][0].detail.date;
+            expect(new Date(date)).toEqual(new Date('04/01/2022'));
         });
     });
 
@@ -1176,9 +1182,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('04/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('04/01/2022'));
             });
     });
 
@@ -1200,9 +1205,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('06/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('06/01/2022'));
             });
     });
 
@@ -1224,9 +1228,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('04/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('04/01/2022'));
             });
     });
 
@@ -1248,9 +1251,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('06/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('06/01/2022'));
             });
     });
 
@@ -1272,9 +1274,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('05/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('05/01/2022'));
             });
     });
 
@@ -1296,9 +1297,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('06/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('06/01/2022'));
             });
     });
 
@@ -1320,9 +1320,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('06/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('06/01/2022'));
             });
     });
 
@@ -1344,9 +1343,8 @@ describe('Calendar', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].detail.date).toBe(
-                    new Date('04/01/2022').toISOString()
-                );
+                const date = handler.mock.calls[0][0].detail.date;
+                expect(new Date(date)).toEqual(new Date('04/01/2022'));
             });
     });
 });

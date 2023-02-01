@@ -120,6 +120,16 @@ export default {
                 defaultValue: { summary: 'single' }
             }
         },
+        timezone: {
+            control: {
+                type: 'string'
+            },
+            description:
+                "Time zone used, in a valid IANA format. If empty, the browser's time zone is used.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         value: {
             control: {
                 type: 'object'

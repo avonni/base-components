@@ -137,6 +137,14 @@ export default class ActivityTimeline extends LightningElement {
      */
     @api buttonShowMoreLabel = DEFAULT_BUTTON_SHOW_MORE_LABEL;
 
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api timezone;
+
     _actions = [];
     _buttonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;

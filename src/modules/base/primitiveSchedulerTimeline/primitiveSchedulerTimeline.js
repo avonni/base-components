@@ -33,7 +33,6 @@
 import { api, track } from 'lwc';
 import {
     addToDate,
-    dateTimeObjectFrom,
     deepCopy,
     normalizeArray,
     normalizeString
@@ -113,6 +112,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             // On the first move, display the event on the timeline.
             this.updateVisibleResources();
             this._eventData.setDraggedEvent();
+        }
+
+        if (!this.isVertical) {
+            // Remove the last row bottom border
+            const resources = this.template.querySelectorAll(
+                '[data-element-id="div-resource"]'
+            );
+            if (resources.length) {
+                const lastResource = resources[resources.length - 1];
+                const cells = lastResource.querySelectorAll(CELL_SELECTOR);
+                cells.forEach((cell) => {
+                    cell.classList.remove('avonni-scheduler__border_bottom');
+                });
+            }
         }
     }
 
@@ -194,11 +207,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateTimeObjectFrom(value);
-        if (computedDate.ts === this._start.ts) {
+        const computedDate = this.createDate(value);
+        if (computedDate && computedDate.ts === this.computedStart.ts) {
             return;
         }
-        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
+        this._start = computedDate ? value : DEFAULT_START_DATE;
     }
 
     /**
@@ -258,13 +271,22 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
     get cellClass() {
         return classSet('slds-p-around_none slds-wrap avonni-scheduler__cell')
             .add({
-                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__border_bottom':
+                'avonni-scheduler__flex-col slds-border_right avonni-scheduler__cell-horizontal avonni-scheduler__border_bottom':
                     !this.isVertical,
                 'avonni-scheduler__cell_vertical avonni-scheduler__border_right slds-border_bottom':
                     this.isVertical,
                 'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
+    }
+
+    /**
+     * Start date as a Luxon DateTime object, including the timezone.
+     *
+     * @type {DateTime}
+     */
+    get computedStart() {
+        return this.createDate(this.start);
     }
 
     /**
@@ -315,12 +337,13 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     get firstColClass() {
         return classSet(
-            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__border_left avonni-scheduler__border_top avonni-scheduler__border_bottom'
+            'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
         )
             .add({
                 'avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical':
                     this.isVertical,
-                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'avonni-scheduler__first-col_horizontal':
+                    !this.isVertical && !this._isCollapsed,
                 'avonni-scheduler__panel_collapsed': this._isCollapsed,
                 'avonni-scheduler__panel_expanded': this._isExpanded,
                 'avonni-scheduler__border_right':
@@ -485,8 +508,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
 
         const headerCellEnd =
             addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerCellEnd).diff(header.start)
-            .milliseconds;
+        return this.createDate(headerCellEnd).diff(header.start).milliseconds;
     }
 
     get splitterClass() {
@@ -503,7 +525,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {string}
      */
     get timezoneLabel() {
-        const timezone = this.start.toFormat('Z');
+        const timezone = this.computedStart.toFormat('Z');
         return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
     }
 
@@ -720,6 +742,7 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 name,
                 referenceCells: cells,
                 events: this.getOccurrencesFromResourceName(name),
+                timezone: this.timezone,
                 // We store the initial resource object in a variable,
                 // in case one of its fields is used by an event's label
                 data: { ...res }
@@ -1050,9 +1073,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         this.smallestHeader = event.detail.smallestHeader;
 
         // Update the start date in case it was not available
-        this._start = this.smallestHeader.start;
+        this._start = this.smallestHeader.start.ts;
 
-        this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
+        this.dispatchVisibleIntervalChange(
+            this.computedStart,
+            this.visibleInterval
+        );
         this.initEvents();
         this.updateVisibleResources();
         this._rowsHeight = [];

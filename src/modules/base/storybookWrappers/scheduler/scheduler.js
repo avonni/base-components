@@ -34,6 +34,7 @@ export default class Scheduler extends LightningElement {
     @api sidePanelPosition;
     @api start;
     @api timeSpans;
+    @api timezone;
     @api toolbarActions;
     @api variant;
     @api zoomToFit;

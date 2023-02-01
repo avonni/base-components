@@ -87,6 +87,7 @@ export class ScheduleBase extends LightningElement {
     _resources = [];
     _selectedResources = [];
     _timeSpan = DEFAULT_TIME_SPAN;
+    _timezone;
     _zoomToFit = false;
 
     _connected = false;
@@ -439,6 +440,24 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this._eventData.updateAllEventsDefaults();
+        }
+    }
+
+    /**
      * If present, horizontal scrolling will be prevented in the timeline view.
      *
      * @type {boolean}
@@ -458,6 +477,15 @@ export class ScheduleBase extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Selected date as a Luxon DateTime object, including the timezone.
+     *
+     * @type {DateTime}
+     */
+    get computedSelectedDate() {
+        return this.createDate(this.selectedDate);
+    }
 
     /**
      * First column HTML Element.
@@ -570,7 +598,7 @@ export class ScheduleBase extends LightningElement {
      */
     get splitterClass() {
         return classSet(
-            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__border_top avonni-scheduler__border_bottom'
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
         )
             .add({
                 'avonni-scheduler__splitter_resizable': this.showSplitterResize,
@@ -740,6 +768,16 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
      * Initialize the disabled dates of the left panel calendar.
      */
     initLeftPanelCalendarDisabledDates() {
@@ -770,13 +808,13 @@ export class ScheduleBase extends LightningElement {
 
         switch (state) {
             case 'START_OF_DAY':
-                this.start = this.selectedDate.startOf('day');
+                this.start = this.computedSelectedDate.startOf('day');
                 break;
             case 'START_OF_WEEK':
-                this.start = getStartOfWeek(this.selectedDate);
+                this.start = getStartOfWeek(this.computedSelectedDate);
                 break;
             case 'START_OF_MONTH_AND_WEEK':
-                this.start = this.selectedDate.startOf('month');
+                this.start = this.computedSelectedDate.startOf('month');
                 if (this.start.weekday !== 7) {
                     // Make sure there are available days in the current week.
                     // Otherwise, go to the next week.
@@ -788,10 +826,10 @@ export class ScheduleBase extends LightningElement {
                 this.start = getStartOfWeek(this.start);
                 break;
             case 'START_OF_MONTH':
-                this.start = this.selectedDate.startOf('month');
+                this.start = this.computedSelectedDate.startOf('month');
                 break;
             case 'START_OF_YEAR':
-                this.start = this.selectedDate.startOf('year');
+                this.start = this.computedSelectedDate.startOf('year');
                 break;
             default:
                 break;
@@ -828,11 +866,11 @@ export class ScheduleBase extends LightningElement {
     handleCalendarChange(event) {
         const value = event.detail.value;
         if (!value) {
-            event.currentTarget.value = this.selectedDate;
+            event.currentTarget.value = this.computedSelectedDate;
             return;
         }
 
-        this._selectedDate = dateTimeObjectFrom(value);
+        this._selectedDate = this.createDate(value).ts;
 
         /**
          * The event fired when the selected date changes.
@@ -845,7 +883,7 @@ export class ScheduleBase extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('datechange', {
                 detail: {
-                    value: this.selectedDate
+                    value: this.computedSelectedDate
                 }
             })
         );
@@ -877,13 +915,11 @@ export class ScheduleBase extends LightningElement {
         let from, to;
         const agendaDate = event.currentTarget.dataset.date;
         if (agendaDate) {
-            from = dateTimeObjectFrom(Number(agendaDate));
+            from = this.createDate(Number(agendaDate));
             to = from.endOf('day');
         } else {
-            from = dateTimeObjectFrom(
-                Number(event.currentTarget.dataset.start)
-            );
-            to = dateTimeObjectFrom(Number(event.currentTarget.dataset.end));
+            from = this.createDate(Number(event.currentTarget.dataset.start));
+            to = this.createDate(Number(event.currentTarget.dataset.end));
         }
 
         /**
@@ -1045,8 +1081,8 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     handleLeftPanelCalendarNavigate(event) {
-        const date = new Date(event.detail.date);
-        const month = date.getMonth();
+        const date = this.createDate(event.detail.date);
+        const month = date.month - 1;
         this.navCalendarDisabledDates = [...this.navCalendarDisabledWeekdays];
 
         if (!this.availableMonths.includes(month)) {
