@@ -45,7 +45,7 @@ const PROGRESS_CIRCLE_DIRECTIONS = {
 };
 
 const PROGRESS_CIRCLE_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large'],
     default: 'medium'
 };
 
@@ -152,7 +152,7 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * The size of the progress circle. Valid values include x-small (26x26px), small (52x52px), medium (104x104px), large (152x152px) and x-large (208x208px).
+     * The size of the progress circle. Valid values include xx-small (26x26px), 'x-small' (40x40px), small (52x52px), medium (104x104px), large (152x152px) and x-large (208x208px).
      *
      * @type {string}
      * @public
@@ -281,6 +281,14 @@ export default class ProgressCircle extends LightningElement {
         return classSet('avonni-progress-circle__content')
             .add(`avonni-progress-circle__content_size-${this._size}`)
             .add({
+                'avonni-progress-circle_thickness-x-small-size-xx-small':
+                    this._thickness === 'x-small' && this._size === 'xx-small',
+                'avonni-progress-circle_thickness-small-size-xx-small':
+                    this._thickness === 'small' && this._size === 'xx-small',
+                'avonni-progress-circle_thickness-large-size-xx-small':
+                    this._thickness === 'large' && this._size === 'xx-small',
+                'avonni-progress-circle_thickness-x-large-size-xx-small':
+                    this._thickness === 'x-large' && this._size === 'xx-small',
                 'avonni-progress-circle_thickness-x-small-size-x-small':
                     this._thickness === 'x-small' && this._size === 'x-small',
                 'avonni-progress-circle_thickness-small-size-x-small':
@@ -346,7 +354,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get progressLabelClass() {
-        return `avonni-progress-circle__label slds-text-align_center avonni-progress-circle__label_size slds-truncate avonni-progress-circle__label_size-${this._size}`;
+        return `avonni-progress-circle__label slds-text-align_center slds-truncate avonni-progress-circle__label_size-${this._size}`;
     }
 
     /**
@@ -407,11 +415,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get loadingDots() {
-        let dots = '';
-        for (let i = 0; i < this._dots; i++) {
-            dots += '.';
-        }
-        return dots;
+        return '.'.repeat(this._dots);
     }
 
     /**
@@ -440,11 +444,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get progress() {
-        if (this.isLoading) {
-            return this.loading;
-        }
-
-        return this.completeness;
+        return this.isLoading ? this.loading : this.completeness;
     }
 
     /**
