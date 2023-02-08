@@ -890,6 +890,35 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Handle a click on a time slot of the schedule.
+     *
+     * @param {Event} event `click` event coming a cell.
+     */
+    handleClick(event) {
+        const { end, start } = event.target.dataset;
+        if (end && start) {
+            /**
+             * The event fired when the user clicks on a time slot of the schedule.
+             *
+             * @event
+             * @name scheduleclick
+             * @param {string} from Start of the clicked cell as an ISO 8601 string.
+             * @param {string} to End of the clicked cell as an ISO 8601 string.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('scheduleclick', {
+                    detail: {
+                        from: this.createDate(Number(start)).toISO(),
+                        to: this.createDate(Number(end)).toISO()
+                    },
+                    bubbles: true
+                })
+            );
+        }
+    }
+
+    /**
      * Handle the `dblclick` event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
      *
      * @param {Event} event
