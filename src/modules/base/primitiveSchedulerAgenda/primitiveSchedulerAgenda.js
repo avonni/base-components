@@ -519,6 +519,11 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    handleClick(event) {
+        const { start, end } = event.currentTarget.dataset;
+        this.dispatchScheduleClick({ from: start, to: end });
+    }
+
     handleEmptySpotContextMenu(event) {
         if (!this.firstSelectedResource) {
             return;

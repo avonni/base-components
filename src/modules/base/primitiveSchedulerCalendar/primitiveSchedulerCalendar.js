@@ -1676,6 +1676,11 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    handleClick(event) {
+        const { start, end } = event.target.dataset;
+        this.dispatchScheduleClick({ from: start, to: end });
+    }
+
     /**
      * Handle a double click on an empty space. Create a new event at this position and open the edit dialog.
      *
