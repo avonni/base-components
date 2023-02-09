@@ -209,7 +209,7 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * The percentage value of the progress ring.
+     * The percentage value of the progress circle.
      * The value must be a number from 0 to 100. A value of 50 corresponds to a color fill of half the ring in a clockwise or counterclockwise direction, depending on the direction attribute.
      *
      * @type {number}
@@ -222,15 +222,10 @@ export default class ProgressCircle extends LightningElement {
     }
 
     set value(value) {
-        if (parseInt(value, 10) <= 0) {
-            this._value = 0;
-        } else if (parseInt(value, 10) > 100) {
-            this._value = 100;
-        } else if (isNaN(parseInt(value, 10))) {
-            this._value = DEFAULT_VALUE;
-        } else {
-            this._value = parseInt(value, 10);
-        }
+        const parsedValue = parseInt(value, 10);
+        this._value = isNaN(parsedValue)
+            ? DEFAULT_VALUE
+            : Math.min(Math.max(parsedValue, 0), 100);
     }
 
     /**
@@ -259,7 +254,97 @@ export default class ProgressCircle extends LightningElement {
      */
 
     /**
-     * Progress ring class styling based on attributes.
+     * Compute display fill for progress bar.
+     *
+     * @type {string}
+     */
+    get completeness() {
+        let fillValue = Number(this.value);
+        let isLong = this.value > 50 ? '1 1' : '0 1';
+
+        if (this._direction === 'fill' && fillValue !== 100) {
+            fillValue = 100 - this.value;
+            isLong = this.value > 50 ? '1 0' : '0 0';
+        }
+
+        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
+        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
+
+        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    /**
+     * There is no label when isLoading is true.
+     *
+     * @type {boolean}
+     */
+    get labelPresent() {
+        return this.label && !this.isLoading;
+    }
+
+    /**
+     * Animate progress bar with continuous loading animation.
+     *
+     * @type {string}
+     */
+    get loading() {
+        let previousValue = this._spinningValue;
+
+        setTimeout(() => {
+            if (previousValue < 100) {
+                this._spinningValue += 2.5;
+            } else {
+                setTimeout(() => {
+                    this._spinningValue = 0;
+                }, 800);
+            }
+        }, 60);
+
+        this._dots = Math.round(this._spinningValue / 33);
+
+        let fillValue = this._spinningValue;
+        let isLong = this._spinningValue > 50 ? '1 1' : '0 1';
+
+        if (this._direction === 'fill' && fillValue !== 100) {
+            fillValue = 100 - this._spinningValue;
+            isLong = this._spinningValue > 50 ? '1 0' : '0 0';
+        }
+
+        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
+        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
+
+        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    /**
+     * Return loading dots animations . .. ... for isLoading animation.
+     *
+     * @type {string}
+     */
+    get loadingDots() {
+        return '.'.repeat(this._dots);
+    }
+
+    /**
+     * Compute display fill for progress bar.
+     *
+     * @type {string}
+     */
+    get progress() {
+        return this.isLoading ? this.loading : this.completeness;
+    }
+
+    /**
+     * Progress circle label class styling based on attributes.
+     *
+     * @type {string}
+     */
+    get progressLabelClass() {
+        return `avonni-progress-circle__label slds-text-align_center slds-truncate avonni-progress-circle__label_size-${this._size}`;
+    }
+
+    /**
+     * Progress circle class styling based on attributes.
      *
      * @type {string}
      */
@@ -273,7 +358,7 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * Progress ring content class styling based on attributes.
+     * Progress circle content class styling based on attributes.
      *
      * @type {string}
      */
@@ -330,7 +415,7 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * Progress ring title class styling based on attributes.
+     * Progress circle title class styling based on attributes.
      *
      * @type {string}
      */
@@ -339,7 +424,7 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * Progress ring title top class styling based on attributes.
+     * Progress circle title top class styling based on attributes.
      *
      * @type {string}
      */
@@ -349,21 +434,12 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
-     * Progress ring label class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get progressLabelClass() {
-        return `avonni-progress-circle__label slds-text-align_center slds-truncate avonni-progress-circle__label_size-${this._size}`;
-    }
-
-    /**
-     * There is no label when isLoading is true.
+     * True if the title is on the top of the progress circle.
      *
      * @type {boolean}
      */
-    get labelPresent() {
-        return this.label && !this.isLoading;
+    get showPositionTop() {
+        return this.titlePosition === 'top' && this.title;
     }
 
     /**
@@ -373,86 +449,5 @@ export default class ProgressCircle extends LightningElement {
      */
     get showValue() {
         return this._variant === 'standard' && !this.isLoading;
-    }
-
-    /**
-     * Animate progress bar with continuous loading animation.
-     *
-     * @type {string}
-     */
-    get loading() {
-        let previousValue = this._spinningValue;
-
-        setTimeout(() => {
-            if (previousValue < 100) {
-                this._spinningValue += 2.5;
-            } else {
-                setTimeout(() => {
-                    this._spinningValue = 0;
-                }, 800);
-            }
-        }, 60);
-
-        this._dots = Math.round(this._spinningValue / 33);
-
-        let fillValue = this._spinningValue;
-        let isLong = this._spinningValue > 50 ? '1 1' : '0 1';
-
-        if (this._direction === 'fill' && fillValue !== 100) {
-            fillValue = 100 - this._spinningValue;
-            isLong = this._spinningValue > 50 ? '1 0' : '0 0';
-        }
-
-        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
-        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
-
-        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
-    }
-
-    /**
-     * Return loading dots animations . .. ... for isLoading animation.
-     *
-     * @type {string}
-     */
-    get loadingDots() {
-        return '.'.repeat(this._dots);
-    }
-
-    /**
-     * Compute display fill for progress bar.
-     *
-     * @type {string}
-     */
-    get completeness() {
-        let fillValue = Number(this.value);
-        let isLong = this.value > 50 ? '1 1' : '0 1';
-
-        if (this._direction === 'fill' && fillValue !== 100) {
-            fillValue = 100 - this.value;
-            isLong = this.value > 50 ? '1 0' : '0 0';
-        }
-
-        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
-        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
-
-        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
-    }
-
-    /**
-     * Compute display fill for progress bar.
-     *
-     * @type {string}
-     */
-    get progress() {
-        return this.isLoading ? this.loading : this.completeness;
-    }
-
-    /**
-     * True if the title is on the top of the progress circle.
-     *
-     * @type {boolean}
-     */
-    get showPositionTop() {
-        return this.titlePosition === 'top' && this.title;
     }
 }
