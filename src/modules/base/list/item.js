@@ -17,10 +17,7 @@ export default class Item {
     }
 
     get hasImage() {
-        if (!this.imageSrc) {
-            return false;
-        }
-        return this.imageSrc.length > 0;
+        return !!this.imageSrc;
     }
 
     /**
