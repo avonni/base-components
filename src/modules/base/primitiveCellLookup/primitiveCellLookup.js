@@ -35,7 +35,8 @@ import { LightningElement, api } from 'lwc';
 export default class PrimitiveCellLookup extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api label;
+    @api path;
+    @api target;
 
     _value;
     visible = false;

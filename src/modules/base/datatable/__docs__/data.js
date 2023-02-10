@@ -341,7 +341,7 @@ const columnsDO = [
         fieldName: 'lookup',
         editable: true,
         typeAttributes: {
-            label: { fieldName: 'email' }
+            path: { fieldName: 'email' }
         }
     },
     {
@@ -649,7 +649,7 @@ const recordsDO = [
             latitude: '45.53',
             longitude: '-73.61'
         },
-        lookup: 'www.salesforce.com',
+        lookup: 'Nina Gomez',
         number: '1789'
     },
     {
@@ -669,6 +669,7 @@ const recordsDO = [
             latitude: '45.53',
             longitude: '-73.58'
         },
+        lookup: 'Dave McKinsley',
         number: '1'
     },
     {
@@ -685,6 +686,7 @@ const recordsDO = [
             latitude: '45.54',
             longitude: '-73.60'
         },
+        lookup: 'Jung Phung',
         number: '1234'
     },
     {
@@ -703,6 +705,7 @@ const recordsDO = [
             latitude: '45.55',
             longitude: '-73.62'
         },
+        lookup: 'Lily Murray',
         number: '345'
     },
     {
@@ -720,6 +723,7 @@ const recordsDO = [
             latitude: '45.56',
             longitude: '-73.56'
         },
+        lookup: 'Mike Mickelson',
         number: '9'
     }
 ];

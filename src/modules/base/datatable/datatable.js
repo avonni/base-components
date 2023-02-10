@@ -214,7 +214,7 @@ export default class Datatable extends LightningDatatable {
         },
         lookup: {
             template: lookup,
-            typeAttributes: ['label']
+            typeAttributes: ['path', 'target']
         },
         'progress-bar': {
             template: progressBar,

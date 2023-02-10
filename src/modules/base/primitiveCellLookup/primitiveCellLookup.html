@@ -56,8 +56,9 @@
             "
         >
             <lightning-formatted-url
-                value={value}
-                label={label}
+                value={path}
+                label={value}
+                target={target}
             ></lightning-formatted-url>
             <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button
