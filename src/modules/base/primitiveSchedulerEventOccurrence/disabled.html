@@ -36,6 +36,7 @@
     <div
         class={disabledClass}
         style={disabledStyle}
+        title={title}
         data-element-id="div-disabled-wrapper"
         oncontextmenu={handleDisabledContextMenu}
         ondblclick={handleDisabledDoubleClick}
@@ -44,7 +45,6 @@
         <div
             if:false={isStandalone}
             class={disabledTitleClass}
-            title={title}
             data-element-id="div-disabled-title-wrapper"
         >
             <span>
@@ -57,8 +57,10 @@
             </span>
             <span
                 if:true={title}
-                class="slds-truncate slds-col"
-                title={title}
+                class="
+                    slds-truncate
+                    avonni-primitive-scheduler-event-occurrence__flex-col
+                "
                 data-element-id="div-disabled-title"
                 >{title}</span
             >
@@ -85,7 +87,6 @@
             <span
                 if:true={title}
                 class="slds-truncate avonni-scheduler__event-label-span_center"
-                title={title}
             >
                 <span
                     if:true={isMonthCalendarSingleDay}

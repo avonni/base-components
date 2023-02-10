@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellInputDateRange extends LightningElement {
+export default class PrimitiveCellToggle extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api disabled;

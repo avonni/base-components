@@ -54,7 +54,10 @@ export default class SchedulerCell {
         this.end = props.end;
         this.events = normalizeArray(props.events);
         this.placeholders = normalizeArray(props.placeholders);
-        this._startDate = dateTimeObjectFrom(this.start);
+        this.timezone = props.timezone;
+        this._startDate = dateTimeObjectFrom(this.start, {
+            zone: this.timezone
+        });
     }
 
     /**
@@ -82,11 +85,23 @@ export default class SchedulerCell {
      */
     get computedClass() {
         return classSet(
-            'avonni-scheduler__calendar-cell slds-border_right slds-border_bottom slds-p-around_none'
+            'avonni-scheduler__calendar-cell avonni-scheduler__border_right slds-border_bottom slds-p-around_none'
         ).add({
             'avonni-scheduler__calendar-cell_outside-of-current-month':
-                this.currentMonth && this.currentMonth !== this.month
+                this.currentMonth && this.currentMonth !== this.month,
+            'avonni-scheduler__calendar-cell_today': this.isToday
         });
+    }
+
+    get isToday() {
+        const today = dateTimeObjectFrom(Date.now(), {
+            zone: this.timezone
+        });
+        return (
+            this._startDate.year === today.year &&
+            this._startDate.month === today.month &&
+            this._startDate.day === today.day
+        );
     }
 
     /**

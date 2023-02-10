@@ -108,3 +108,31 @@
  * @property {number} span The number of unit the scheduler will show. Defaults to 1.
  * @property {string} unit Unit of this time span. Valid values include minute, hour, day, week, month and year. Defaults to day.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-scheduler-color-border-bottom
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-scheduler-color-border-left
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-scheduler-color-border-right
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-scheduler-color-border-top
+ * @default #c9c9c9
+ * @type color
+ */

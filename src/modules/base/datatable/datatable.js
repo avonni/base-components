@@ -38,6 +38,7 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 import {
+    dispatchCellChangeEvent,
     getCellValue,
     getCurrentSelectionLength,
     isSelectedRow,
@@ -998,6 +999,8 @@ export default class Datatable extends LightningDatatable {
 
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
+
+        dispatchCellChangeEvent(this, dirtyValues);
     };
 
     /**

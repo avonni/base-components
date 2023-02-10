@@ -98,6 +98,7 @@ blockquote.avonni-blockquote__container {
     height: var(--avonni-blockquote-sizing-height);
     width: var(--avonni-blockquote-sizing-width);
     overflow: var(--avonni-blockquote-sizing-overflow);
+    border-radius: var(--avonni-blockquote-radius-border);
 }
 
 blockquote.avonni-blockquote__container .avonni-blockquote__title {

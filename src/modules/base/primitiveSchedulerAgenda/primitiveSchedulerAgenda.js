@@ -31,7 +31,7 @@
  */
 
 import { api } from 'lwc';
-import { addToDate, dateTimeObjectFrom } from 'c/utilsPrivate';
+import { addToDate, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';
 import {
     getElementOnYAxis,
@@ -43,8 +43,13 @@ import {
     ScheduleBase
 } from 'c/schedulerUtils';
 import DayGroup from './dayGroup';
+import { classSet } from 'c/utils';
 
 const DEFAULT_SELECTED_DATE = new Date();
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
 
 /**
  * Main part of the scheduler, when the selected display is "agenda".
@@ -54,7 +59,10 @@ const DEFAULT_SELECTED_DATE = new Date();
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerAgenda extends ScheduleBase {
-    _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    _hideResourcesFilter = false;
+    _hideSidePanel = false;
+    _selectedDate = DEFAULT_SELECTED_DATE;
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _computedEvents = [];
     computedGroups = [];
@@ -114,6 +122,36 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     }
 
     /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the side panel will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
@@ -125,14 +163,32 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         return this._selectedDate;
     }
     set selectedDate(value) {
-        this._selectedDate =
-            dateTimeObjectFrom(value) ||
-            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+        this._selectedDate = this.createDate(value)
+            ? value
+            : DEFAULT_SELECTED_DATE;
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initLeftPanelCalendarDisabledDates();
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**
@@ -156,6 +212,26 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         }
     }
 
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return super.timezone;
+    }
+    set timezone(value) {
+        super.timezone = value;
+
+        if (this._connected) {
+            this.setStartToBeginningOfUnit();
+            this.initLeftPanelCalendarDisabledDates();
+            this.initEvents();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -173,6 +249,24 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
     set computedEvents(value) {
         this._computedEvents = value;
         this.initEventGroups();
+    }
+
+    /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get mainSectionClass() {
+        return classSet(
+            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
+        )
+            .add({
+                'avonni-scheduler__main-border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__main-border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
+            })
+            .toString();
     }
 
     /**
@@ -195,6 +289,44 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                 value: res.name
             };
         });
+    }
+
+    /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
+    get sidePanelClass() {
+        return classSet(
+            'avonni-scheduler__panel slds-scrollable avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__main-border_left':
+                    this.sidePanelPosition === 'left' || !this.showSplitter,
+                'avonni-scheduler__main-border_right':
+                    this.sidePanelPosition === 'right' || !this.showSplitter
+            })
+            .toString();
+    }
+
+    /**
+     * True if the left side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLeftPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the right side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showRightPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'right';
     }
 
     /*
@@ -224,7 +356,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             y,
             '[data-element-id="div-day-group"]'
         );
-        const date = dateTimeObjectFrom(Number(dayGroupElement.dataset.date));
+        const date = this.createDate(Number(dayGroupElement.dataset.date));
         const from = date.startOf('day');
         const to = from.endOf('day');
         const resourceNames = [this.firstSelectedResource.name];
@@ -296,8 +428,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         const groups = [];
         let currentMonth;
         days.forEach(([ISODay, events]) => {
-            const date = dateTimeObjectFrom(ISODay);
-            const today = dateTimeObjectFrom(new Date()).startOf('day');
+            const date = this.createDate(ISODay);
+            const today = this.createDate(new Date()).startOf('day');
             groups.push(
                 new DayGroup({
                     date,
@@ -376,7 +508,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.start = this.selectedDate.startOf('month');
         }
 
-        const end = dateTimeObjectFrom(addToDate(this.start, unit, span) - 1);
+        const end = this.createDate(addToDate(this.start, unit, span) - 1);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
         this.dispatchVisibleIntervalChange(this.start, this.visibleInterval);
         this.initEvents();

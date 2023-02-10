@@ -386,6 +386,17 @@ export default {
                 type: { summary: 'boolean' },
                 category: 'Date'
             }
+        },
+        timezone: {
+            control: {
+                type: 'text'
+            },
+            description:
+                "Time zone used, in a valid IANA format. If empty, the browser's time zone is used.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Time'
+            }
         }
     },
     args: {

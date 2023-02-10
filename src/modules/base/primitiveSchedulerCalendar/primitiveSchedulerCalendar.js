@@ -34,10 +34,10 @@ import { api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {
     addToDate,
-    dateTimeObjectFrom,
     deepCopy,
     getWeekNumber,
-    normalizeArray
+    normalizeBoolean,
+    normalizeString
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import Column from './column';
@@ -76,6 +76,10 @@ const MONTHS = {
     10: 'November',
     11: 'December'
 };
+const SIDE_PANEL_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
 const SPLITTER_BAR_WIDTH = 12;
 
 /**
@@ -86,8 +90,10 @@ const SPLITTER_BAR_WIDTH = 12;
  * @extends ScheduleBase
  */
 export default class PrimitiveSchedulerCalendar extends ScheduleBase {
-    _selectedDate = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
-    _selectedResources = [];
+    _hideResourcesFilter = false;
+    _hideSidePanel = false;
+    _selectedDate = DEFAULT_SELECTED_DATE;
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
 
     _centerDraggedEvent = false;
     _dayHeadersLoading = true;
@@ -95,7 +101,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     _hourHeadersLoading = true;
     _mouseInShowMorePopover = false;
     _mouseIsDown = false;
-    _splitterPanes = [];
     _resizeObserver;
     _showMorePopoverContextMenuIsOpened = false;
     _showMorePopoverIsFocused = false;
@@ -114,7 +119,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     multiDayEventsCellGroup = {};
     showMorePopover;
     singleDayEvents = [];
-    start = dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+    start = DEFAULT_SELECTED_DATE;
     visibleInterval;
 
     connectedCallback() {
@@ -156,7 +161,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const popover = this.template.querySelector(
                 '[data-element-id="div-popover"]'
             );
-            positionPopover(popover, this.showMorePopover.position, true);
+            const wrapper = this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            positionPopover(
+                wrapper.getBoundingClientRect(),
+                popover,
+                this.showMorePopover.position,
+                true
+            );
             this.focusPopoverClose();
         }
 
@@ -177,6 +190,99 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
 
     /**
+     * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
+     * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, ... , 5, 6]
+     */
+    @api
+    get availableDaysOfTheWeek() {
+        return super.availableDaysOfTheWeek;
+    }
+    set availableDaysOfTheWeek(value) {
+        super.availableDaysOfTheWeek = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
+     * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, … , 10, 11]
+     */
+    @api
+    get availableMonths() {
+        return super.availableMonths;
+    }
+    set availableMonths(value) {
+        super.availableMonths = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
+     * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: `['10:00-11:59', '14:30-18:44']`
+     *
+     * @type {string[]}
+     * @public
+     * @default ['00:00-23:59']
+     */
+    @api
+    get availableTimeFrames() {
+        return super.availableTimeFrames;
+    }
+    set availableTimeFrames(value) {
+        super.availableTimeFrames = value;
+
+        if (this._connected) {
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the side panel will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
      * Specifies the selected date/time on which the calendar should be centered. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
@@ -188,12 +294,12 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this._selectedDate;
     }
     set selectedDate(value) {
-        this._selectedDate =
-            dateTimeObjectFrom(value) ||
-            dateTimeObjectFrom(DEFAULT_SELECTED_DATE);
+        this._selectedDate = this.createDate(value)
+            ? value
+            : DEFAULT_SELECTED_DATE;
 
         if (this._connected) {
-            const previousStart = this.start.ts;
+            const previousStart = this.start && this.start.ts;
             this.setStartToBeginningOfUnit();
 
             if (previousStart !== this.start.ts) {
@@ -201,6 +307,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.initLeftPanelCalendarDisabledDates();
             }
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**
@@ -222,6 +346,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this._connected) {
             this.setStartToBeginningOfUnit();
             this.initHeaders();
+            this.initEvents();
 
             // If the hour headers appear or disappear, the visible width changes
             requestAnimationFrame(() => {
@@ -230,11 +355,52 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
     }
 
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return super.timezone;
+    }
+    set timezone(value) {
+        super.timezone = value;
+
+        if (this._connected) {
+            const previousStart = this.start && this.start.ts;
+            this.setStartToBeginningOfUnit();
+
+            if (!this.start || previousStart !== this.start.ts) {
+                this.initHeaders();
+                this.initLeftPanelCalendarDisabledDates();
+            }
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    get cellsGridClass() {
+        return classSet('slds-grid avonni-scheduler__flex-col')
+            .add({
+                'slds-border_top': !this.isMonth,
+                'avonni-scheduler__calendar-month-grid': this.isMonth
+            })
+            .toString();
+    }
+
+    get columnClass() {
+        return classSet('avonni-scheduler__calendar-column')
+            .add({
+                'avonni-scheduler__calendar-column_day': this.isDay
+            })
+            .toString();
+    }
 
     /**
      * Formatted available months, used to generate the calendars in the year view.
@@ -247,8 +413,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const luxonMonth = month + 1;
             const markedDates = this.getMonthMarkedDates(luxonMonth);
             const value =
-                this.selectedDate.month === luxonMonth
-                    ? this.selectedDate
+                this.computedSelectedDate.month === luxonMonth
+                    ? this.computedSelectedDate
                     : null;
             return {
                 key: month,
@@ -275,19 +441,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 span: 1
             }
         ];
-    }
-
-    /**
-     * Computed CSS classes for the horizontal primitive headers visible in the day, week and month view.
-     *
-     * @type {string}
-     */
-    get dayHeadersClass() {
-        return classSet('avonni-scheduler__calendar-header')
-            .add({
-                'slds-border_left': !this.isMonth
-            })
-            .toString();
     }
 
     /**
@@ -320,6 +473,18 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         return this.isMonth
             ? this._dayHeadersLoading
             : this._dayHeadersLoading || this._hourHeadersLoading;
+    }
+
+    get horizontalHeaderWrapperClass() {
+        return classSet(
+            'avonni-scheduler__calendar-day-header-wrapper slds-theme_default slds-is-relative slds-grid'
+        )
+            .add({
+                'avonni-scheduler__calendar-day-header-wrapper_month':
+                    this.isMonth,
+                'slds-m-bottom_medium': !this.isMonth
+            })
+            .toString();
     }
 
     /**
@@ -382,8 +547,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         // Normalize the end and start of the first and last cells
         const cells = [...this.eventHeaderCells.xAxis];
-        const start = dateTimeObjectFrom(cells[0].start);
-        const end = dateTimeObjectFrom(cells[cells.length - 1].end);
+        const start = this.createDate(cells[0].start);
+        const end = this.createDate(cells[cells.length - 1].end);
         cells[0].start = start.startOf('day').ts;
         cells[cells.length - 1].end = end.endOf('day').ts;
         return { xAxis: cells };
@@ -432,6 +597,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the right panel.
+     *
+     * @type {string}
+     */
+    get mainPanelClass() {
+        return classSet(
+            'avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__main-section slds-scrollable'
+        )
+            .add({
+                'avonni-scheduler__main-border_left':
+                    this.hideSidePanel || this.sidePanelPosition === 'right',
+                'avonni-scheduler__main-border_right':
+                    this.hideSidePanel || this.sidePanelPosition === 'left'
+            })
+            .toString();
+    }
+
+    /**
      * Computed CSS classes for the schedule wrapper.
      *
      * @type {string}
@@ -457,6 +640,24 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * True if the left side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showLeftPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'left';
+    }
+
+    /**
+     * True if the right side panel should be visible.
+     *
+     * @type {boolean}
+     */
+    get showRightPanel() {
+        return !this.hideSidePanel && this.sidePanelPosition === 'right';
+    }
+
+    /**
      * True if the multi-day events should be visible.
      *
      * @type {boolean}
@@ -470,12 +671,42 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
+     * Computed CSS classes for the side panel.
+     *
+     * @type {string}
+     */
+    get sidePanelClass() {
+        return classSet(
+            'slds-scrollable avonni-scheduler__panel avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__panel_collapsed': this._isCollapsed,
+                'avonni-scheduler__panel_expanded': this._isExpanded,
+                'avonni-scheduler__main-border_left':
+                    this.sidePanelPosition === 'left' || !this.showSplitter,
+                'avonni-scheduler__main-border_right':
+                    this.sidePanelPosition === 'right' || !this.showSplitter
+            })
+            .toString();
+    }
+
+    /**
      * Variant of the main grid events.
      *
      * @type {string}
      */
     get mainGridEventVariant() {
         return this.isMonth ? 'calendar-month' : 'calendar-vertical';
+    }
+
+    /**
+     * Timezone label, in the format GMT+0.
+     *
+     * @type {string}
+     */
+    get timezoneLabel() {
+        const timezone = this.computedSelectedDate.toFormat('Z');
+        return timezone === '+0' ? 'GMT' : `GMT${timezone}`;
     }
 
     /*
@@ -572,7 +803,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                     end: col.end.ts - 1
                 };
             });
-            this.multiDayEventsCellGroup = new Column({ referenceCells });
+            this.multiDayEventsCellGroup = new Column({
+                referenceCells,
+                timezone: this.timezone
+            });
             this._eventData.multiDayEventsCellGroup =
                 this.multiDayEventsCellGroup;
         }
@@ -586,7 +820,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this.isYear) {
             this._dayHeadersLoading = false;
             this._hourHeadersLoading = false;
-            this.initEvents();
             return;
         }
 
@@ -597,9 +830,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this.eventHeaderCells = {};
 
         // Start at the begining of the first day
-        let startDate = new Date(this.start.ts);
-        startDate.setHours(0, 0, 0, 0);
-        startDate = dateTimeObjectFrom(startDate);
+        let startDate = this.createDate(this.start).startOf('day');
 
         // Create a column for each available day
         const columns = [];
@@ -631,7 +862,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             } else {
                 this.computeHourCells(column, startDate);
             }
-            columns.push(new Column(column));
+            columns.push(new Column({ ...column, timezone: this.timezone }));
         }
         this.columns = columns;
 
@@ -665,7 +896,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         // Set the visible interval
         const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
-        const end = dateTimeObjectFrom(lastCell.end);
+        const end = this.createDate(lastCell.end);
         this.visibleInterval = Interval.fromDateTimes(this.start, end);
     }
 
@@ -678,7 +909,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const grid = this.template.querySelector(
             '[data-element-id="div-cells-grid"]'
         );
-        if (!grid || !this.leftPanelContent) {
+        if (!grid) {
             return null;
         }
         const resizeObserver = new AvonniResizeObserver(grid, () => {
@@ -688,7 +919,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             this.updateCellWidth();
             this.updateVisibleWidth();
         });
-        resizeObserver.observe(this.leftPanelContent);
+        if (this.leftPanelContent) {
+            resizeObserver.observe(this.leftPanelContent);
+        }
         return resizeObserver;
     }
 
@@ -709,7 +942,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             '[data-element-id="avonni-calendar-year-month"]'
         );
         const visibleMonths = this.getVisibleMonths();
-        let date = dateTimeObjectFrom(this.start);
+        let date = this.createDate(this.start);
         let monthIndex = visibleMonths.findIndex((month) => {
             return month + 1 === date.month;
         });
@@ -809,7 +1042,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 duplicate[key] = event[key];
             });
 
-            duplicate.weekStart = dateTimeObjectFrom(cells[i].start);
+            duplicate.weekStart = this.createDate(cells[i].start);
             placeholders.push(duplicate);
         }
         return placeholders;
@@ -835,7 +1068,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {number[]} Available hours.
      */
     getAvailableHours() {
-        let time = dateTimeObjectFrom(new Date());
+        let time = this.createDate(new Date());
         const availableHours = [];
 
         for (let i = 0; i < 24; i++) {
@@ -990,7 +1223,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const placeholders = [];
 
         if (cell.events.length || cell.placeholders.length) {
-            const cellStart = dateTimeObjectFrom(cell.start);
+            const cellStart = this.createDate(cell.start);
             const day = cellStart.day;
             const month = cellStart.month;
             const placeholderElements = this.template.querySelectorAll(
@@ -1093,7 +1326,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     isDisabledCell(cell) {
         const start = Number(cell.dataset.start);
         if (this.isMonth && start) {
-            const cellMonth = new Date(start).getMonth();
+            const cellMonth = this.createDate(start).month - 1;
             if (!this.availableMonths.includes(cellMonth)) {
                 return true;
             }
@@ -1105,10 +1338,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * Align the horizontal headers with the end of the vertical headers.
      */
     setHorizontalHeadersSideSpacing() {
-        const horizontalHeaders = this.template.querySelector(
-            '[data-element-id="div-horizontal-header-wrapper"]'
+        const firstColumn = this.template.querySelector(
+            '[data-element-id="div-horizontal-header-first-column"]'
         );
-        if (!horizontalHeaders) {
+        if (!firstColumn) {
             return;
         }
 
@@ -1118,9 +1351,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (verticalHeaders) {
             // Align the horizontal headers with the vertical headers
             const width = verticalHeaders.getBoundingClientRect().width;
-            horizontalHeaders.style.paddingLeft = `${width - 1}px`;
+            firstColumn.style.width = `${width - 1}px`;
         } else {
-            horizontalHeaders.style.paddingLeft = null;
+            firstColumn.style.width = null;
         }
     }
 
@@ -1131,7 +1364,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const loader = this.template.querySelector(
             '[data-element-id="div-loading-spinner"]'
         );
-        if (loader) {
+        if (loader && this.leftPanelContent) {
             loader.style.height = `${this.leftPanelContent.offsetWidth}px`;
         }
     }
@@ -1141,15 +1374,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     setSelectedDateToAvailableDate() {
         this._selectedDate = nextAllowedMonth(
-            this.selectedDate,
+            this.computedSelectedDate,
             this.availableMonths
-        );
+        ).ts;
         if (this.isDay || this.isWeek) {
             this._selectedDate = nextAllowedDay(
-                this.selectedDate,
+                this.computedSelectedDate,
                 this.availableMonths,
                 this.availableDaysOfTheWeek
-            );
+            ).ts;
         }
     }
 
@@ -1163,7 +1396,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         if (this.isYear) {
             // Compute the visible interval, since there is no primitive headers
             const endOfSpan = addToDate(this.start, unit, span) - 1;
-            const end = dateTimeObjectFrom(endOfSpan);
+            const end = this.createDate(endOfSpan);
             this.visibleInterval = Interval.fromDateTimes(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,
@@ -1177,15 +1410,15 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      */
     updateCellHeight() {
         const numberOfRows = this.columns[0].referenceCells.length;
-        const splitter = this.template.querySelector(
-            '[data-element-id="avonni-splitter"]'
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-main-wrapper"]'
         );
-        const splitterHeight = splitter.getBoundingClientRect().height - 2;
+        const wrapperHeight = wrapper.getBoundingClientRect().height - 2;
         const dayHeaders = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group-horizontal"]'
         );
         const dayHeadersHeight = dayHeaders.getBoundingClientRect().height;
-        const availableHeight = splitterHeight - dayHeadersHeight;
+        const availableHeight = wrapperHeight - dayHeadersHeight;
         this.cellHeight = availableHeight / numberOfRows;
         this.template.host.style = `
             --avonni-scheduler-cell-height: ${this.cellHeight}px;
@@ -1333,7 +1566,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             const selector = `[data-element-id="avonni-primitive-scheduler-event-occurrence-main-grid"][data-weekday="${column.weekday}"]`;
             this.updateOccurrencesOffset(column, selector, true);
 
-            if (this.multiDayEvents.length && this.multiDayWrapper) {
+            if (this.multiDayEvents.length) {
                 // Update the multi-day occurrences offset
                 const multiDaySelector =
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence-multi-day"]';
@@ -1344,6 +1577,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 const height = rowHeight || this.cellHeight;
                 this.multiDayCellHeight = height;
                 this.multiDayWrapper.style.height = `${height}px`;
+            } else {
+                this.multiDayWrapper.style.height = `15px`;
             }
         });
     }
@@ -1381,23 +1616,28 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        const hourHeader = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+        const sidePanel = this.template.querySelector(
+            '[data-element-id="div-panel"]'
         );
-
-        if (wrapper && this._splitterPanes.length === 2) {
-            const leftPanel = this._splitterPanes[0];
-            const rightPanel = this._splitterPanes[1];
-            const scrollBarWidth =
-                rightPanel.offsetWidth - rightPanel.clientWidth;
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-main-panel"]'
+        );
+        if (wrapper && schedule) {
+            const hourHeader = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+            );
+            const sidePanelWidth =
+                this.hideSidePanel || !sidePanel ? 0 : sidePanel.offsetWidth;
+            const scrollBarWidth = schedule.offsetWidth - schedule.clientWidth;
             const verticalHeaderWidth = hourHeader ? hourHeader.offsetWidth : 0;
             const splitterBarWidth =
-                this.collapseDisabled && this.resizeColumnDisabled
+                (this.collapseDisabled && this.resizeColumnDisabled) ||
+                this.hideSidePanel
                     ? 0
                     : SPLITTER_BAR_WIDTH;
             const width =
                 wrapper.offsetWidth -
-                leftPanel.offsetWidth -
+                sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
                 scrollBarWidth -
@@ -1514,7 +1754,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         }
         this.dispatchVisibleIntervalChange(start, this.visibleInterval);
         const end = addToDate(start, unit, span) - 1;
-        this.dayCellDuration = dateTimeObjectFrom(end).diff(start).milliseconds;
+        this.dayCellDuration = this.createDate(end).diff(start).milliseconds;
 
         this.initEvents();
         if (this.isMonth) {
@@ -1530,7 +1770,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleMonthCellShowMoreClick(event) {
         const columnIndex = Number(event.currentTarget.dataset.columnIndex);
         const start = Number(event.currentTarget.dataset.start);
-        const startDate = dateTimeObjectFrom(start);
+        const startDate = this.createDate(start);
         const cell = this.columns[columnIndex].cells.find((c) => {
             return c.start === start;
         });
@@ -1564,7 +1804,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             y: event.clientY
         };
 
-        const date = dateTimeObjectFrom(start);
+        const date = this.createDate(start);
         this.showMorePopover = {
             events,
             position,
@@ -1749,15 +1989,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Handle a change in the splitter slots. Save the pane elements in a property, to be able to get their width in the future.
-     *
-     * @param {Event} event `privateslotchange` event fired by the splitter.
-     */
-    handleSplitterSlotChange(event) {
-        this._splitterPanes = normalizeArray(event.detail.paneElements);
-    }
-
-    /**
      * Handle the closing of a "Show more" popover, in the month or year view.
      */
     handleShowMorePopoverClose() {
@@ -1901,8 +2132,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         this.eventHeaderCells.yAxis = cells;
         const end = addToDate(start, unit, span) - 1;
-        this.hourCellDuration =
-            dateTimeObjectFrom(end).diff(start).milliseconds;
+        this.hourCellDuration = this.createDate(end).diff(start).milliseconds;
     }
 
     /**
@@ -1924,8 +2154,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @param {Event} event
      */
     handleYearDateClick(event) {
-        const date = dateTimeObjectFrom(event.detail.clickedDate);
-        this._selectedDate = date;
+        const date = this.createDate(event.detail.clickedDate);
+        this._selectedDate = date.ts;
         const { x, y, width, height } = event.detail.bounds;
         const position = {
             x: x + width / 2,

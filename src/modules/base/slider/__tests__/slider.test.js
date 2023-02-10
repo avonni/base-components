@@ -198,8 +198,10 @@ describe('Slider', () => {
         element.value = 15;
 
         return Promise.resolve().then(() => {
-            expect(element.max).toEqual(10);
-            expect(element.value).toEqual(10);
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            expect(input.value).toBe('10');
         });
     });
 
@@ -210,8 +212,10 @@ describe('Slider', () => {
         element.value = 0;
 
         return Promise.resolve().then(() => {
-            expect(element.min).toEqual(10);
-            expect(element.value).toEqual(10);
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            expect(input.value).toBe('10');
         });
     });
 
@@ -401,7 +405,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.className).toBe(
                 'avonni-slider__container-horizontal-size_responsive'
@@ -424,7 +428,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-vertical-origin_responsive'
@@ -443,7 +447,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-vertical-origin_responsive'
@@ -456,7 +460,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_x-small'
@@ -469,7 +473,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_small'
@@ -482,7 +486,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_medium'
@@ -495,7 +499,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-wrapper"]'
+                '[data-element-id="div-range"]'
             );
             expect(wrapper.classList).toContain(
                 'avonni-slider__container-horizontal-size_large'
@@ -940,24 +944,6 @@ describe('Slider', () => {
             expect(
                 element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeFalsy();
-        });
-    });
-
-    it('value = 0 && 0 < min', () => {
-        element.min = 10;
-        element.value = 0;
-
-        return Promise.resolve().then(() => {
-            expect(element.value).toEqual(10);
-        });
-    });
-
-    it('value = 20 && 20 > max', () => {
-        element.max = 10;
-        element.value = 20;
-
-        return Promise.resolve().then(() => {
-            expect(element.value).toEqual(10);
         });
     });
 

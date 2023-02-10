@@ -30,12 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host {
-    --avonni-splitter-horizontal-color-border-around: transparent;
+.avonni-scheduler__flex-col {
+    flex: 1 1 auto;
 }
 
-.avonni-scheduler__event-detail-popover {
-    width: auto;
+.avonni-scheduler__schedule {
+    height: calc(100% - var(--avonni-scheduler-toolbar-height, 70px));
+}
+
+.avonni-scheduler__detail-popover-close-button {
+    z-index: 1;
+    top: 0;
+    right: 2px;
 }
 
 .avonni-scheduler__calendar {
@@ -52,4 +58,21 @@
 
 .avonni-scheduler__toolbar-date-range {
     --slds-c-button-text-color: #444444;
+}
+
+.avonni-scheduler__toolbar-button-group_first {
+    --slds-c-button-radius-border: 0.25rem 0 0 0.25rem;
+}
+
+.avonni-scheduler__toolbar-button-group_middle {
+    --slds-c-button-radius-border: 0;
+    --slds-c-button-sizing-border: 1px 0 1px 0;
+}
+
+.avonni-scheduler__toolbar-button-group_last {
+    --slds-c-button-radius-border: 0 0.25rem 0.25rem 0;
+}
+
+.avonni-scheduler__display-menu.avonni-scheduler__toolbar-button-group_first {
+    --slds-c-button-sizing-border: 1px 0 1px 1px;
 }

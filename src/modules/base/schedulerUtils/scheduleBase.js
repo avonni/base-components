@@ -39,7 +39,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
@@ -87,9 +87,12 @@ export class ScheduleBase extends LightningElement {
     _resources = [];
     _selectedResources = [];
     _timeSpan = DEFAULT_TIME_SPAN;
+    _timezone;
     _zoomToFit = false;
 
     _connected = false;
+    _isCollapsed = false;
+    _isExpanded = false;
     _resizeObserver;
     navCalendarDisabledWeekdays = [];
     navCalendarDisabledDates = [];
@@ -437,6 +440,24 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this._eventData.updateAllEventsDefaults();
+        }
+    }
+
+    /**
      * If present, horizontal scrolling will be prevented in the timeline view.
      *
      * @type {boolean}
@@ -458,21 +479,21 @@ export class ScheduleBase extends LightningElement {
      */
 
     /**
-     * True if the panels can be collapsed.
+     * Selected date as a Luxon DateTime object, including the timezone.
      *
-     * @type {boolean}
+     * @type {DateTime}
      */
-    get allowCollapse() {
-        return !this.collapseDisabled;
+    get computedSelectedDate() {
+        return this.createDate(this.selectedDate);
     }
 
     /**
-     * True if the panels can be resized.
+     * First column HTML Element.
      *
-     * @type {boolean}
+     * @type {HTMLElement}
      */
-    get allowResizeColumn() {
-        return !this.resizeColumnDisabled;
+    get panelElement() {
+        return this.template.querySelector('[data-element-id="div-panel"]');
     }
 
     /**
@@ -530,6 +551,64 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * True if the splitter bar should be visible.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showSplitter() {
+        return !this.collapseDisabled || !this.resizeColumnDisabled;
+    }
+
+    /**
+     * True if the splitter collapse button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterCollapse() {
+        return !this.collapseDisabled && !this._isCollapsed;
+    }
+
+    /**
+     * True if the splitter expand button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterExpand() {
+        return !this.collapseDisabled && !this._isExpanded;
+    }
+
+    /**
+     * True if the splitter resize handle should be visible.
+     *
+     * @type {boolean}
+     */
+    get showSplitterResize() {
+        return (
+            !this.resizeColumnDisabled &&
+            !this._isCollapsed &&
+            !this._isExpanded
+        );
+    }
+
+    /**
+     * Computed CSS classes for the splitter.
+     *
+     * @type {boolean}
+     */
+    get splitterClass() {
+        return classSet(
+            'avonni-scheduler__splitter slds-grid slds-grid_vertical slds-grid_align-center slds-grid_vertical-align-center avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom'
+        )
+            .add({
+                'avonni-scheduler__splitter_resizable': this.showSplitterResize,
+                'avonni-scheduler__border_left': !this._isCollapsed,
+                'avonni-scheduler__border_right': !this._isExpanded
+            })
+            .toString();
+    }
+
+    /**
      * Automatically generated unique key.
      *
      * @type {string}
@@ -556,6 +635,19 @@ export class ScheduleBase extends LightningElement {
         this._eventData.refreshEvents();
     }
 
+    @api
+    collapseSidePanel() {
+        if (this._isExpanded) {
+            this._isExpanded = false;
+        } else {
+            this._isCollapsed = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
+    }
+
     /**
      * Create a new event.
      *
@@ -576,6 +668,19 @@ export class ScheduleBase extends LightningElement {
     @api
     deleteEvent(name) {
         this._eventData.deleteEvent(name);
+    }
+
+    @api
+    expandSidePanel() {
+        if (this._isCollapsed) {
+            this._isCollapsed = false;
+        } else {
+            this._isExpanded = true;
+        }
+
+        if (this.panelElement) {
+            this.panelElement.style.flexBasis = null;
+        }
     }
 
     /**
@@ -663,6 +768,16 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
      * Initialize the disabled dates of the left panel calendar.
      */
     initLeftPanelCalendarDisabledDates() {
@@ -693,13 +808,13 @@ export class ScheduleBase extends LightningElement {
 
         switch (state) {
             case 'START_OF_DAY':
-                this.start = this.selectedDate.startOf('day');
+                this.start = this.computedSelectedDate.startOf('day');
                 break;
             case 'START_OF_WEEK':
-                this.start = getStartOfWeek(this.selectedDate);
+                this.start = getStartOfWeek(this.computedSelectedDate);
                 break;
             case 'START_OF_MONTH_AND_WEEK':
-                this.start = this.selectedDate.startOf('month');
+                this.start = this.computedSelectedDate.startOf('month');
                 if (this.start.weekday !== 7) {
                     // Make sure there are available days in the current week.
                     // Otherwise, go to the next week.
@@ -711,10 +826,10 @@ export class ScheduleBase extends LightningElement {
                 this.start = getStartOfWeek(this.start);
                 break;
             case 'START_OF_MONTH':
-                this.start = this.selectedDate.startOf('month');
+                this.start = this.computedSelectedDate.startOf('month');
                 break;
             case 'START_OF_YEAR':
-                this.start = this.selectedDate.startOf('year');
+                this.start = this.computedSelectedDate.startOf('year');
                 break;
             default:
                 break;
@@ -751,11 +866,11 @@ export class ScheduleBase extends LightningElement {
     handleCalendarChange(event) {
         const value = event.detail.value;
         if (!value) {
-            event.currentTarget.value = this.selectedDate;
+            event.currentTarget.value = this.computedSelectedDate;
             return;
         }
 
-        this._selectedDate = dateTimeObjectFrom(value);
+        this._selectedDate = this.createDate(value).ts;
 
         /**
          * The event fired when the selected date changes.
@@ -768,7 +883,7 @@ export class ScheduleBase extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('datechange', {
                 detail: {
-                    value: this.selectedDate
+                    value: this.computedSelectedDate
                 }
             })
         );
@@ -797,21 +912,35 @@ export class ScheduleBase extends LightningElement {
     handleEmptySpotContextMenu(event) {
         event.preventDefault();
 
-        const x = event.clientX;
-        const y = event.clientY;
-        this.newEvent({ x, y });
+        let from, to;
+        const agendaDate = event.currentTarget.dataset.date;
+        if (agendaDate) {
+            from = this.createDate(Number(agendaDate));
+            to = from.endOf('day');
+        } else {
+            from = this.createDate(Number(event.currentTarget.dataset.start));
+            to = this.createDate(Number(event.currentTarget.dataset.end));
+        }
 
         /**
          * The event fired when the context menu is opened on an empty spot of the schedule.
          *
          * @event
          * @name emptyspotcontextmenu
-         * @param {object} selection Information on the newly created event.
+         * @param {number} x Position of the cursor on the X axis.
+         * @param {number} y Position of the cursor on the Y axis.
+         * @param {DateTime} from Start date of the cell clicked.
+         * @param {DateTime} to End date of the cell clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('emptyspotcontextmenu', {
-                detail: { selection: this._eventData.selection }
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY,
+                    from: from.toISO(),
+                    to: to.toISO()
+                }
             })
         );
     }
@@ -895,9 +1024,9 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Handle the `privatemouseenter` event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     * Handle the cursor entering an event.
      *
-     * @param {Event} event
+     * @param {Event} event `privatemouseenter` event fired by a primitive event occurrence.
      */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown) {
@@ -923,10 +1052,27 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
-     * Dispatch the `hidepopovers` event only for the detail popover.
+     * Handle the cursor leaving an event.
+     *
+     * @param {Event} event `privatemouseleave` event fired by a primitive event occurrence.
      */
-    handleHideDetailPopover() {
-        this.dispatchHidePopovers(['detail']);
+    handleEventMouseLeave(event) {
+        /**
+         * The event fired when the mouse leaves an event.
+         *
+         * @event
+         * @name eventmouseleave
+         * @param {string} eventName Name of the event.
+         * @param {string} key Key of the occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventmouseleave', {
+                detail: event.detail
+            })
+        );
     }
 
     /**
@@ -935,8 +1081,8 @@ export class ScheduleBase extends LightningElement {
      * @param {Event} event
      */
     handleLeftPanelCalendarNavigate(event) {
-        const date = new Date(event.detail.date);
-        const month = date.getMonth();
+        const date = this.createDate(event.detail.date);
+        const month = date.month - 1;
         this.navCalendarDisabledDates = [...this.navCalendarDisabledWeekdays];
 
         if (!this.availableMonths.includes(month)) {
@@ -979,6 +1125,48 @@ export class ScheduleBase extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Handle a click on the splitter collapse button.
+     */
+    handleSplitterCollapse() {
+        this.collapseSidePanel();
+    }
+
+    /**
+     * Handle a click on the splitter expand button.
+     */
+    handleSplitterExpand() {
+        this.expandSidePanel();
+    }
+
+    /**
+     * Handle a mouse down on the splitter.
+     */
+    handleSplitterResizeMouseDown(event) {
+        if (!this.showSplitterResize || event.button !== 0) {
+            return;
+        }
+        const startX = event.clientX;
+        const startWidth = this.panelElement.offsetWidth;
+
+        const mouseMove = (moveEvent) => {
+            const diff = moveEvent.clientX - startX;
+            if (this.panelElement) {
+                const direction = this.sidePanelPosition === 'right' ? -1 : 1;
+                const width = startWidth + diff * direction;
+                this.panelElement.style.flexBasis = `${width}px`;
+            }
+        };
+
+        const mouseUp = () => {
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mouseup', mouseUp);
+        };
+
+        window.addEventListener('mousemove', mouseMove);
+        window.addEventListener('mouseup', mouseUp);
     }
 
     /**

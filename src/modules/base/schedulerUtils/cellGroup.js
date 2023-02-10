@@ -46,6 +46,7 @@ export class SchedulerCellGroup {
         this.cells = [];
         this.referenceCells = normalizeArray(props.referenceCells);
         this.events = normalizeArray(props.events);
+        this.timezone = props.timezone;
         this.initCells();
     }
 
@@ -55,7 +56,7 @@ export class SchedulerCellGroup {
     initCells() {
         this.cells = [];
         this.referenceCells.forEach((element) => {
-            this.cells.push(new Cell(element));
+            this.cells.push(new Cell({ ...element, timezone: this.timezone }));
         });
 
         const events = this.events;

@@ -257,7 +257,7 @@ describe('Carousel', () => {
                 const panelButtons = element.shadowRoot.querySelectorAll(
                     '.avonni-carousel__nav-button'
                 );
-                const nextButton = panelButtons[0];
+                const nextButton = panelButtons[1];
                 nextButton.click();
             })
             .then(() => {

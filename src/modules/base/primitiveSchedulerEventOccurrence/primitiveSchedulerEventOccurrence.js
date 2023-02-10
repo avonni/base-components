@@ -126,6 +126,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _referenceLine = false;
     _resourceKey;
     _resources = [];
+    _timezone;
     _title;
     _to;
     _variant = VARIANTS.default;
@@ -287,8 +288,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._from;
     }
     set from(value) {
-        this._from =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._from = value;
 
         if (this._connected) {
             this.updatePosition();
@@ -309,7 +309,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._headerCells;
     }
     set headerCells(value) {
-        this._headerCells = normalizeObject(value);
+        const normalized =
+            typeof value === 'string'
+                ? JSON.parse(value)
+                : normalizeObject(value);
+        this._headerCells = normalized;
 
         if (this._connected) {
             this.updatePosition();
@@ -476,6 +480,25 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.updatePosition();
+            this.updateLength();
+        }
+    }
+
+    /**
      * Title of the occurrence.
      *
      * @type {string}
@@ -503,8 +526,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._to;
     }
     set to(value) {
-        this._to =
-            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._to = value;
 
         if (this._connected) {
             this.updateLength();
@@ -723,7 +745,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const theme = this.theme;
         const centerLabel = normalizeObject(this.labels.center);
         let classes = classSet(
-            'avonni-scheduler__event slds-grid slds-has-flexi-truncate slds-col'
+            'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col'
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
@@ -732,10 +754,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     (theme === 'default' ||
                         theme === 'rounded' ||
                         (this._focused && theme === 'transparent')),
-                'avonni-scheduler__event-wrapper_focused': this._focused,
+                'avonni-scheduler__event_focused': this._focused,
                 'slds-p-vertical_xx-small': centerLabel.iconName,
-                'avonni-scheduler__event_vertical':
-                    theme !== 'line' && this.isVertical,
+                'avonni-scheduler__event_vertical-animated':
+                    theme !== 'line' && this.isVertical && !this.readOnly,
                 'slds-p-bottom_xx-small': theme === 'line',
                 'avonni-scheduler__event_display-as-dot': this.displayAsDot,
                 'slds-theme_shade slds-theme_alert-texture slds-text-color_weak':
@@ -743,7 +765,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell':
                     !this.displayAsDot && this.occurrence.startsInPreviousCell,
                 'avonni-scheduler__event_standalone-multi-day-ends-in-later-cell':
-                    !this.displayAsDot && this.occurrence.endsInLaterCell
+                    !this.displayAsDot && this.occurrence.endsInLaterCell,
+                'avonni-scheduler__event_past': this.from < Date.now()
             })
             .toString();
 
@@ -853,14 +876,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     !this.isVerticalTimeline &&
                     !this.isVerticalCalendar &&
                     !this.displayAsDot,
-                'slds-p-vertical_xx-small':
-                    !this.isVerticalTimeline &&
-                    !this.isVerticalCalendar &&
-                    !this.isMonthCalendar &&
-                    !this.isAgenda,
-                'slds-p-bottom_xx-small':
-                    this.isStandalone && this.spansOnMoreThanOneDay,
-                'avonni-scheduler__event-wrapper_vertical': this.isVertical
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical,
+                'avonni-scheduler__event-wrapper': !this.isVertical
             })
             .toString();
     }
@@ -1399,6 +1416,16 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
      * If the event is in a vertical setup of a calendar, remove the year, month and day from the date, to allow for comparison of the time only.
      *
      * @param {Date} date Date to transform.
@@ -1408,8 +1435,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (!this.isVerticalCalendar) {
             return date;
         }
-        const time = new Date(date);
-        return time.setFullYear(1, 0, 0);
+        const time = this.createDate(date);
+        return time.set({ year: 1, month: 1, day: 1 });
     }
 
     /**
@@ -1523,7 +1550,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         // Find the cell where it starts.
         const from = this.occurrence.firstAllowedDate;
         let i = headerCells.findIndex((cell) => {
-            const cellStart = dateTimeObjectFrom(cell.start);
+            const cellStart = this.createDate(cell.start);
             return cellStart.weekday === from.weekday;
         });
         if (i < 0) return;
@@ -1532,7 +1559,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         // Add the full length of the cells the event passes through
         while (i < headerCells.length) {
-            const cellStart = dateTimeObjectFrom(headerCells[i].start);
+            const cellStart = this.createDate(headerCells[i].start);
             const sameWeek = getWeekNumber(from) === getWeekNumber(to);
             if (getWeekday(cellStart) > getWeekday(to) && sameWeek) {
                 break;
@@ -1559,7 +1586,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         let overflows = this.overflowsCell;
         const yAxis = this.headerCells.yAxis;
         if (yAxis && !overflows && !isPlaceholder) {
-            const firstVisibleDate = dateTimeObjectFrom(yAxis[0].start);
+            const firstVisibleDate = this.createDate(yAxis[0].start);
             const startsBeforeBeginningOfMonth =
                 this.from < firstVisibleDate &&
                 this.to > firstVisibleDate.endOf('day');
@@ -1583,7 +1610,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const start = this.occurrence.firstAllowedDate;
         const yIndex = this.getStartCellIndex(headerCells.yAxis);
         const xIndex = headerCells.xAxis.findIndex((cell) => {
-            const cellEnd = dateTimeObjectFrom(cell.end);
+            const cellEnd = this.createDate(cell.end);
             const sameWeekDay = cellEnd.weekday === start.weekday;
             return cellEnd > start && (!this.isMonthCalendar || sameWeekDay);
         });

@@ -692,7 +692,10 @@ describe('Primitive Scheduler Header Group', () => {
 
     // visible-width and zoom-to-fit
     it('Scheduler header group: zoomToFit', () => {
-        element.shadowRoot.host.getBoundingClientRect = jest.fn(() => {
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        wrapper.getBoundingClientRect = jest.fn(() => {
             return { width: 120 };
         });
         const handler = jest.fn();

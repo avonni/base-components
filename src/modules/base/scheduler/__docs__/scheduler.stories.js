@@ -36,6 +36,7 @@ import {
     resources,
     headers,
     events,
+    eventsWithExtraKeys,
     eventsThemed,
     eventsWithLabels,
     disabledDatesTimes,
@@ -262,6 +263,18 @@ export default {
                 category: 'Events'
             }
         },
+        eventsDisplayFields: {
+            name: 'events-display-fields',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of data objects, displayed in the popover visible on hover on an event. See Output Data for valid keys. The value of each field should be a key of the selected event object.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Events'
+            }
+        },
         eventsTheme: {
             name: 'events-theme',
             control: {
@@ -285,6 +298,31 @@ export default {
                 'Array of display names that should not appear in the toolbar options. Valid values include calendar, agenda and timeline.',
             table: {
                 type: { summary: 'string[]' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        hideResourcesFilter: {
+            name: 'hide-resources-filter',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the resources filter is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        hideSidePanel: {
+            name: 'hide-side-panel',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
                 category: 'Panels and Toolbar'
             }
         },
@@ -412,7 +450,22 @@ export default {
                 'Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' }
+                defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        sidePanelPosition: {
+            name: 'side-panel-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Panels and Toolbar'
             }
         },
         start: {
@@ -425,6 +478,18 @@ export default {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date()' },
                 category: 'Available dates'
+            }
+        },
+        toolbarActions: {
+            name: 'toolbar-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. If present, the actions will be shown in the toolbar.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Panels and Toolbar'
             }
         },
         timeSpans: {
@@ -445,6 +510,16 @@ export default {
                     ]`
                 },
                 category: 'Panels and Toolbar'
+            }
+        },
+        timezone: {
+            control: {
+                type: 'text'
+            },
+            description:
+                "Time zone used, in a valid IANA format. If empty, the browser's time zone is used.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -517,6 +592,8 @@ export default {
         },
         eventsPalette: 'aurora',
         eventsTheme: 'default',
+        hideResourcesFilter: false,
+        hideSidePanel: false,
         hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
@@ -525,6 +602,7 @@ export default {
         resizeColumnDisabled: false,
         selectedDisplay: 'timeline',
         selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
+        sidePanelPosition: 'left',
         start: new Date(),
         timeSpans: [
             {
@@ -576,12 +654,38 @@ export const Calendar = Template.bind({});
 Calendar.args = {
     resources,
     start,
-    events,
+    events: eventsWithExtraKeys,
     selectedDisplay: 'calendar',
     selectedResources: ['Dave', 'Jung', 'Reginald'],
     selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
     disabledDatesTimes,
-    referenceLines
+    referenceLines,
+    eventsDisplayFields: [
+        {
+            label: 'Start',
+            value: 'from',
+            type: 'date'
+        },
+        {
+            label: 'End',
+            value: 'to',
+            type: 'date'
+        },
+        {
+            label: 'Office',
+            value: 'office'
+        },
+        {
+            label: 'Cost',
+            value: 'cost',
+            type: 'currency',
+            typeAttributes: {
+                currencyCode: 'CAD',
+                currencyDisplayAs: 'name',
+                minimumFractionDigits: 2
+            }
+        }
+    ]
 };
 
 export const Agenda = Template.bind({});
@@ -759,5 +863,15 @@ ThemesAndColors.args = {
     start,
     events: eventsThemed,
     eventsPalette: 'wildflowers',
-    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'],
+    toolbarActions: [
+        {
+            label: 'Action 1',
+            name: 'actionOne'
+        },
+        {
+            label: 'Action 2',
+            name: 'actionTwo'
+        }
+    ]
 };

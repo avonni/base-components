@@ -58,6 +58,7 @@ export const ActivityTimeline = ({
     orientation,
     maxVisibleItems,
     sortedDirection,
+    timezone,
     title
 }) => {
     const element = document.createElement('ac-activity-timeline');
@@ -81,6 +82,7 @@ export const ActivityTimeline = ({
     element.hideItemDate = hideItemDate;
     element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;
+    element.timezone = timezone;
     element.title = title;
     return element;
 };

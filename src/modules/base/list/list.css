@@ -34,6 +34,10 @@
     max-height: 100%;
 }
 
+.avonni-list__flex-col {
+    flex: 1 1 auto;
+}
+
 /* VALUE ASSIGNMENTS */
 .avonni-list__items-without-divider {
     --private-list-item-spacing-block-between: var(

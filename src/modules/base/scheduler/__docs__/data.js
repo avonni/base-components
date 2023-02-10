@@ -435,6 +435,139 @@ const events = [
     }
 ];
 
+const eventsWithExtraKeys = [
+    {
+        resourceNames: ['Jung'],
+        name: 'research',
+        title: 'Research',
+        from: new Date(2021, 11, 13, 9),
+        to: new Date(2021, 11, 14, 12),
+        office: 'Montreal, QC',
+        cost: 650
+    },
+    {
+        resourceNames: ['Nina'],
+        name: 'code-review',
+        title: 'Code review',
+        from: new Date(2021, 11, 13, 13),
+        to: new Date(2021, 11, 13, 15),
+        recurrence: 'daily',
+        office: 'Montreal, QC'
+    },
+    {
+        resourceNames: ['Jung'],
+        name: 'seminar',
+        title: 'Online seminar',
+        from: new Date(2021, 11, 14, 8),
+        to: new Date(2021, 11, 16),
+        office: 'Montreal, QC',
+        cost: 1304.5
+    },
+    {
+        resourceNames: ['Nina', 'Jung'],
+        name: 'write-spec',
+        title: 'Write specifications',
+        from: new Date(2021, 11, 15),
+        allDay: true,
+        office: 'Montreal, QC'
+    },
+    {
+        resourceNames: ['Dave'],
+        name: 'create-wireframe',
+        title: 'Create wireframe',
+        from: new Date(2021, 11, 13, 10, 15),
+        to: new Date(2021, 11, 16, 12),
+        office: 'Trois-Rivières, QC'
+    },
+    {
+        resourceNames: ['Lily'],
+        name: 'create-mockup',
+        title: 'Create mockup',
+        from: new Date(2021, 11, 20, 7),
+        to: new Date(2021, 11, 22, 10, 30),
+        office: 'Vancouver, BC'
+    },
+    {
+        resourceNames: ['Dave'],
+        name: 'test-new-ui',
+        title: 'Test new UI',
+        from: new Date(2021, 11, 17, 15),
+        to: new Date(2021, 11, 21),
+        office: 'Trois-Rivières, QC'
+    },
+    {
+        resourceNames: ['Reginald'],
+        name: 'implement-feature',
+        title: 'Implement feature',
+        from: new Date(2021, 11, 13, 14),
+        to: new Date(2021, 11, 15, 16),
+        office: 'Trois-Rivières, QC'
+    },
+    {
+        resourceNames: ['Nina'],
+        name: 'push-to-prod',
+        title: 'Push to production',
+        from: new Date(2021, 11, 16, 11),
+        to: new Date(2021, 11, 16, 12),
+        office: 'Montreal, QC'
+    },
+    {
+        resourceNames: ['Nina'],
+        name: 'phone-meeting',
+        title: 'Phone meeting',
+        from: new Date(2021, 11, 21, 10),
+        to: new Date(2021, 11, 21, 12),
+        office: 'Montreal, QC'
+    },
+    {
+        resourceNames: ['Jung'],
+        name: 'update-documentation',
+        title: 'Update documentation',
+        from: new Date(2021, 11, 17, 11),
+        to: new Date(2021, 11, 17, 18),
+        office: 'Montreal, QC'
+    },
+    {
+        resourceNames: ['Jung'],
+        name: 'presentation',
+        title: 'Presentation at the conference',
+        from: new Date(2021, 11, 16, 11),
+        to: new Date(2021, 11, 16, 18),
+        office: 'Montreal, QC',
+        cost: 346.8
+    },
+    {
+        resourceNames: ['Dave', 'Lily'],
+        name: 'ux-ui-team-meeting',
+        title: 'UI/UX team meeting',
+        from: new Date(2021, 11, 17, 11),
+        to: new Date(2021, 11, 17, 12),
+        recurrence: 'weekly',
+        office: 'Vancouver, BC'
+    },
+    {
+        resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
+        name: 'office-party',
+        title: 'Office party',
+        from: new Date(2021, 11, 24, 12),
+        to: new Date(2021, 11, 25),
+        office: 'Montreal, QC',
+        cost: 5670.6
+    },
+    {
+        resourceNames: ['Nina', 'Reginald'],
+        name: 'standup',
+        title: 'Stand-up meeting',
+        from: new Date(2021, 11, 13, 9, 30),
+        to: new Date(2021, 11, 14, 10),
+        recurrence: 'weekly',
+        recurrenceAttributes: {
+            weekdays: [1, 3, 5]
+        },
+        office: 'Montreal, QC'
+    }
+];
+
 const eventsWithLabels = [
     {
         resourceNames: ['Jung'],
@@ -614,6 +747,7 @@ export {
     basicEvents,
     events,
     eventsThemed,
+    eventsWithExtraKeys,
     eventsWithLabels,
     longEvents,
     lotsOfEvents,

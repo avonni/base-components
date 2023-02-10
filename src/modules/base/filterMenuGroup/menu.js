@@ -31,6 +31,7 @@
  */
 
 import {
+    dateTimeObjectFrom,
     formatDateFromStyle,
     normalizeArray,
     normalizeObject
@@ -111,7 +112,7 @@ export default class FilterMenuGroupMenu {
      * @type {object[]}
      */
     get selectedRangeItems() {
-        const { dateStyle, timeStyle, type, unit, unitAttributes } =
+        const { dateStyle, timeStyle, timezone, type, unit, unitAttributes } =
             this.typeAttributes;
 
         const selection = this.value.reduce((string, value) => {
@@ -122,7 +123,8 @@ export default class FilterMenuGroupMenu {
                 !isNaN(new Date(value))
             ) {
                 // Date range
-                normalizedValue = formatDateFromStyle(value, {
+                const date = dateTimeObjectFrom(value, { zone: timezone });
+                normalizedValue = formatDateFromStyle(date, {
                     dateStyle,
                     showTime: type === 'datetime',
                     timeStyle

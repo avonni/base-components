@@ -410,7 +410,7 @@ describe('Wizard', () => {
             expect(footerNavigation.indicatorPosition).toBe('bottom');
             expect(headerNavigation).toBeFalsy();
             expect(sideNavigation).toBeFalsy();
-            expect(mainCol.classList).not.toContain('slds-col');
+            expect(mainCol.classList).not.toContain('avonni-wizard__flex-col');
             expect(wrapper.classList).not.toContain('slds-grid');
         });
     });
@@ -437,7 +437,7 @@ describe('Wizard', () => {
             expect(headerNavigation).toBeTruthy();
             expect(headerNavigation.indicatorPosition).toBe('top');
             expect(sideNavigation).toBeFalsy();
-            expect(mainCol.classList).not.toContain('slds-col');
+            expect(mainCol.classList).not.toContain('avonni-wizard__flex-col');
             expect(wrapper.classList).not.toContain('slds-grid');
         });
     });
@@ -463,7 +463,7 @@ describe('Wizard', () => {
             expect(footerNavigation.indicatorPosition).toBe('right');
             expect(headerNavigation).toBeFalsy();
             expect(sideNavigation.indicatorPosition).toBe('right');
-            expect(mainCol.classList).toContain('slds-col');
+            expect(mainCol.classList).toContain('avonni-wizard__flex-col');
             expect(mainCol.classList).not.toContain('slds-order_2');
             expect(wrapper.classList).toContain('slds-grid');
         });
@@ -490,7 +490,7 @@ describe('Wizard', () => {
             expect(footerNavigation.indicatorPosition).toBe('left');
             expect(headerNavigation).toBeFalsy();
             expect(sideNavigation.indicatorPosition).toBe('left');
-            expect(mainCol.classList).toContain('slds-col');
+            expect(mainCol.classList).toContain('avonni-wizard__flex-col');
             expect(mainCol.classList).toContain('slds-order_2');
             expect(wrapper.classList).toContain('slds-grid');
         });

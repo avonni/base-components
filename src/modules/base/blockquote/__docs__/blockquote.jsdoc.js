@@ -27,6 +27,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-blockquote-radius-border
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-blockquote-color-border
  * @default #f2f2f2
  * @type color

@@ -1168,6 +1168,7 @@ describe('FilterMenu', () => {
             labelStartTime: 'Start time',
             labelEndTime: 'End time',
             timeStyle: 'long',
+            timezone: 'Pacific/Noumea',
             type: 'datetime'
         };
         element.type = 'date-range';
@@ -1191,6 +1192,7 @@ describe('FilterMenu', () => {
                 typeAttributes.labelStartTime
             );
             expect(dateRange.timeStyle).toBe(typeAttributes.timeStyle);
+            expect(dateRange.timezone).toBe(typeAttributes.timezone);
             expect(dateRange.type).toBe(typeAttributes.type);
         });
     });

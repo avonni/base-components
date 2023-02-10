@@ -32,6 +32,7 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    equal,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
@@ -42,12 +43,13 @@ import {
 } from 'c/utilsPrivate';
 import {
     getDisabledWeekdaysLabels,
+    parseTimeFrame,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime
 } from 'c/schedulerUtils';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     EDIT_MODES,
     EVENTS_THEMES,
@@ -59,6 +61,7 @@ import {
     DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
@@ -66,6 +69,7 @@ import {
     DEFAULT_SELECTED_TIME_SPAN,
     DISPLAYS,
     PALETTES,
+    SIDE_PANEL_POSITIONS,
     TIME_SPANS,
     VARIANTS
 } from './defaults';
@@ -91,8 +95,11 @@ export default class Scheduler extends LightningElement {
     _events = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
+    _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsTheme = EVENTS_THEMES.default;
     _hiddenDisplays = [];
+    _hideResourcesFilter = false;
+    _hideSidePanel = false;
     _hideToolbar = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -104,13 +111,18 @@ export default class Scheduler extends LightningElement {
     _selectedDisplay = DISPLAYS.default;
     _selectedResources = [];
     _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
-    _start = dateTimeObjectFrom(DEFAULT_START_DATE);
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
+    _start = DEFAULT_START_DATE;
     _timeSpans = TIME_SPANS.default;
+    _timezone;
+    _toolbarActions = [];
     _variant = VARIANTS.default;
     _zoomToFit = false;
 
+    _closeDetailPopoverTimeout;
     _connected = false;
     _focusCalendarPopover;
+    _openDetailPopoverTimeout;
     _toolbarCalendarDisabledWeekdays = [];
     _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
@@ -121,7 +133,8 @@ export default class Scheduler extends LightningElement {
     computedSelectedDisplay = {};
     contextMenuActions = [];
     currentTimeSpan = {};
-    selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
+    detailPopoverFields = [];
+    selectedDate;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
@@ -132,13 +145,21 @@ export default class Scheduler extends LightningElement {
     visibleIntervalLabel;
 
     connectedCallback() {
+        this.selectedDate = this.createDate(this.start);
+        this.initReferenceLines();
         this.initCurrentTimeSpan();
         this.updateSelectedDisplay();
         this.initEvents();
         this.initResources();
         this.initToolbarCalendarDisabledDates();
-        this.computeVisibleIntervalLabel(this.start, this.start);
+        this.computeVisibleIntervalLabel(
+            this.computedStart,
+            this.computedStart
+        );
         this._connected = true;
+
+        this.classList.add('slds-is-relative');
+        this.classList.add('slds-show');
     }
 
     renderedCallback() {
@@ -147,7 +168,7 @@ export default class Scheduler extends LightningElement {
             const popover = this.template.querySelector(
                 '[data-element-id="div-detail-popover"]'
             );
-            positionPopover(popover, this.selection);
+            positionPopover(this.bounds, popover, this.selection);
         }
 
         // Position the context menu
@@ -155,7 +176,7 @@ export default class Scheduler extends LightningElement {
             const contextMenu = this.template.querySelector(
                 '[data-element-id="avonni-primitive-dropdown-menu"]'
             );
-            positionPopover(contextMenu, this.selection);
+            positionPopover(this.bounds, contextMenu, this.selection);
         }
 
         // If the edit dialog is opened, focus on the first input
@@ -228,9 +249,14 @@ export default class Scheduler extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
-        const timeFrames = normalizeArray(value);
+        const timeFrames = normalizeArray(value, 'string');
+        const validTimeFrames = timeFrames.filter((timeFrame) => {
+            return parseTimeFrame(timeFrame).valid;
+        });
         this._availableTimeFrames =
-            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
+            validTimeFrames.length > 0
+                ? validTimeFrames
+                : DEFAULT_AVAILABLE_TIME_FRAMES;
     }
 
     /**
@@ -293,7 +319,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.
+     * Array of action objects. These actions will be displayed in the events context menu and detail popover.
      *
      * @type {object[]}
      * @public
@@ -497,7 +523,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Default palette used for the event colors. Valid values include aurora, bluegrass, dusk, fire, heat, lake, mineral, nightfall, ocean, pond, sunrise, water, watermelon and wildflowers (see Palette table for more information).
      *
-     * @type {string[]}
+     * @type {string}
      * @public
      * @default aurora
      */
@@ -514,6 +540,34 @@ export default class Scheduler extends LightningElement {
         if (this._connected) {
             this.initResources();
         }
+    }
+
+    /**
+     * Array of data objects, displayed in the popover visible on hover on an event. See [Output Data](/components/output-data) for valid keys.
+     * The value of each field should be a key of the selected event object.
+     *
+     * @type {object[]}
+     * @default [
+     *  {
+     *     type: 'date',
+     *     value: 'from'
+     *  },
+     *  {
+     *     type: 'date',
+     *     value: 'to'
+     *  }
+     * ]
+     * @public
+     */
+    @api
+    get eventsDisplayFields() {
+        return this._eventsDisplayFields;
+    }
+    set eventsDisplayFields(value) {
+        const fields = normalizeArray(value, 'object');
+        this._eventsDisplayFields = fields.length
+            ? fields
+            : DEFAULT_EVENTS_DISPLAY_FIELDS;
     }
 
     /**
@@ -570,6 +624,36 @@ export default class Scheduler extends LightningElement {
         this._hiddenDisplays = displays.filter((display) => {
             return DISPLAYS.valid.includes(display);
         });
+    }
+
+    /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
     }
 
     /**
@@ -672,26 +756,8 @@ export default class Scheduler extends LightningElement {
     set referenceLines(value) {
         this._referenceLines = normalizeArray(value);
 
-        this.computedReferenceLines = this._referenceLines.map((line) => {
-            const from = line.date
-                ? dateTimeObjectFrom(line.date)
-                : dateTimeObjectFrom(Date.now());
-            const to = addToDate(from, 'millisecond', 1);
-
-            return {
-                title: line.label,
-                theme: line.variant,
-                from,
-                to,
-                recurrence: line.recurrence,
-                recurrenceEndDate: line.recurrenceEndDate,
-                recurrenceCount: line.recurrenceCount,
-                recurrenceAttributes: line.recurrenceAttributes,
-                referenceLine: true
-            };
-        });
-
         if (this._connected) {
+            this.initReferenceLines();
             this.initEvents();
         }
     }
@@ -833,8 +899,29 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initCurrentTimeSpan();
-            this.computeVisibleIntervalLabel(this.start, this.start);
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
         }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
     }
 
     /**
@@ -849,12 +936,14 @@ export default class Scheduler extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateTimeObjectFrom(value);
-        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
-        this.selectedDate = dateTimeObjectFrom(this._start);
+        this._start = this.createDate(value) ? value : DEFAULT_START_DATE;
 
         if (this._connected) {
-            this.computeVisibleIntervalLabel(this.start, this.start);
+            this.selectedDate = this.createDate(this.start);
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
         }
     }
 
@@ -943,6 +1032,44 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.selectedDate = this.createDate(this.start);
+            this.initReferenceLines();
+            this.initEvents();
+        }
+    }
+
+    /**
+     * Array of action objects. If present, the actions will be shown in the toolbar.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get toolbarActions() {
+        return this._toolbarActions;
+    }
+    set toolbarActions(value) {
+        const actions = normalizeArray(value, 'object');
+        if (equal(this._toolbarActions, actions)) {
+            return;
+        }
+        this._toolbarActions = actions;
+    }
+
+    /**
      * Deprecated. Use the `time-spans` instead.
      *
      * @type {object[]}
@@ -1001,6 +1128,15 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Coordinates of the schedule's bounding box.
+     *
+     * @type {DOMRect}
+     */
+    get bounds() {
+        return this.template.host.getBoundingClientRect();
+    }
+
+    /**
      * Display options visible in the toolbar.
      *
      * @type {object[]}
@@ -1054,6 +1190,24 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Start date as a Luxon DateTime object, including the timezone.
+     *
+     * @type {DateTime}
+     */
+    get computedStart() {
+        return this.createDate(this.start);
+    }
+
+    get displayButtonClass() {
+        return classSet('avonni-scheduler__display-menu')
+            .add({
+                'avonni-scheduler__toolbar-button-group_first':
+                    this.toolbarActions.length
+            })
+            .toString();
+    }
+
+    /**
      * Computed title of the edit dialog.
      *
      * @type {string}
@@ -1063,6 +1217,22 @@ export default class Scheduler extends LightningElement {
             (this.selection && this.selection.event.title) ||
             this.dialogLabels.newEventTitle
         );
+    }
+
+    /**
+     * Array of action objects, to be displayed as buttons in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get firstEventActions() {
+        return this.computedContextMenuEvent.slice(0, 2);
+    }
+
+    get toolbarActionButtonClass() {
+        return classSet({
+            'avonni-scheduler__toolbar-button-group_last':
+                this.moreThanOneDisplay
+        }).toString();
     }
 
     /**
@@ -1093,12 +1263,60 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of action objects, to be displayed in a button menu, in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get lastEventActions() {
+        return this.computedContextMenuEvent.slice(2);
+    }
+
+    /**
      * True if more than one display is selectable.
      *
      * @type {boolean}
      */
     get moreThanOneDisplay() {
         return this.displayOptions.length > 1;
+    }
+
+    /**
+     * True if there is more than one toolbar action.
+     *
+     * @type {boolean}
+     */
+    get moreThanOneToolbarAction() {
+        return this.toolbarActions.length > 1;
+    }
+
+    /**
+     * If only one toolbar action is present, and it has a label, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneToolbarActionButton() {
+        if (this.toolbarActions.length === 1 && this.toolbarActions[0].label) {
+            return this.toolbarActions[0];
+        }
+        return false;
+    }
+
+    /**
+     * If only one toolbar action is present, and it doesn't have a label but it has an icon, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneToolbarActionButtonIcon() {
+        if (
+            this.toolbarActions.length === 1 &&
+            this.toolbarActions[0].iconName &&
+            !this.toolbarActions[0].label
+        ) {
+            return this.toolbarActions[0];
+        }
+        return false;
     }
 
     /**
@@ -1113,6 +1331,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Type attributes of the toolbar resource filter, visible in the timeline display.
+     *
+     * @type {object}
+     */
+    get resourceFilterTypeAttributes() {
+        return {
+            allowSearch: true,
+            isMultiSelect: true,
+            items: this.resourceOptions
+        };
+    }
+
+    /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
      * @type {object[]}
@@ -1124,24 +1355,6 @@ export default class Scheduler extends LightningElement {
                 value: res.name
             };
         });
-    }
-
-    /**
-     * Formated starting date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionFrom() {
-        return this.selection.occurrence.from.toFormat(this.dateFormat);
-    }
-
-    /**
-     * Formated ending date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionTo() {
-        return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
     /**
@@ -1163,6 +1376,15 @@ export default class Scheduler extends LightningElement {
             this.recurrentEditModes.length > 1 &&
             this.selection.event.recurrence
         );
+    }
+
+    /**
+     * True if the resource filter should be shown in the toolbar.
+     *
+     * @type {boolean}
+     */
+    get showResourceFilter() {
+        return this.isTimeline && !this.hideResourcesFilter;
     }
 
     /**
@@ -1215,7 +1437,7 @@ export default class Scheduler extends LightningElement {
      * @type {string}
      */
     get toolbarCalendarWrapperClass() {
-        return classSet('slds-col slds-has-flexi-truncate')
+        return classSet('avonni-scheduler__flex-col slds-has-flexi-truncate')
             .add({
                 'slds-text-align_center slds-p-horizontal_small':
                     this.showToolbarTimeSpans
@@ -1262,6 +1484,19 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Collapse the side panel. If the panel was fully expanded, collapse it to its original position. Otherwise, hide it.
+     *
+     * @public
+     */
+    @api
+    collapseSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.collapseSidePanel();
+    }
+
+    /**
      * Create a new event.
      *
      * @param {object} event Event object of the new event.
@@ -1296,6 +1531,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Expand the side panel. If the panel was already opened, expand it fully. Otherwise, open it.
+     *
+     * @public
+     */
+    @api
+    expandSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.expandSidePanel();
+    }
+
+    /**
      * Set the focus on an event.
      *
      * @param {string} name Unique name of the event to set the focus on.
@@ -1321,7 +1569,7 @@ export default class Scheduler extends LightningElement {
      */
     @api
     goToDate(date) {
-        const selectedDate = dateTimeObjectFrom(date);
+        const selectedDate = this.createDate(date);
         if (!selectedDate) {
             console.warn(`The date ${date} is not valid.`);
             return;
@@ -1342,7 +1590,23 @@ export default class Scheduler extends LightningElement {
                 start = removeFromDate(start, 'day', 1);
             }
         }
-        this._start = start;
+
+        if (start !== this.start) {
+            /**
+             * The event fired when the start date changes.
+             *
+             * @event
+             * @name startchange
+             * @param {string} value New start date, as an ISO 8601 formatted string.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('startchange', {
+                    detail: { value: start.toISO() }
+                })
+            );
+        }
+        this._start = start.ts;
     }
 
     /**
@@ -1429,12 +1693,35 @@ export default class Scheduler extends LightningElement {
         }
 
         events.sort((first, second) => {
-            return dateTimeObjectFrom(first.from) <
-                dateTimeObjectFrom(second.from)
+            return this.createDate(first.from) < this.createDate(second.from)
                 ? -1
                 : 1;
         });
         this.computedEvents = events;
+    }
+
+    /**
+     * Create the computed reference lines, taking the timezone into account.
+     */
+    initReferenceLines() {
+        this.computedReferenceLines = this._referenceLines.map((line) => {
+            const from = line.date
+                ? this.createDate(line.date)
+                : this.createDate(Date.now());
+            const to = addToDate(from, 'millisecond', 1);
+
+            return {
+                title: line.label,
+                theme: line.variant,
+                from,
+                to,
+                recurrence: line.recurrence,
+                recurrenceEndDate: line.recurrenceEndDate,
+                recurrenceCount: line.recurrenceCount,
+                recurrenceAttributes: line.recurrenceAttributes,
+                referenceLine: true
+            };
+        });
     }
 
     /**
@@ -1517,6 +1804,16 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Create a Luxon DateTime object from a date, including the timezone.
+     *
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
+     */
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
+    }
+
+    /**
      * Hide the detail popover, the context menu, the edit dialog, the delete dialog and the recurrence dialog.
      */
     hideAllPopovers() {
@@ -1544,6 +1841,7 @@ export default class Scheduler extends LightningElement {
      * Hide the detail popover.
      */
     hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
         this.showDetailPopover = false;
     }
 
@@ -1596,6 +1894,58 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Handle the click on an action.
+     *
+     * @param {Event} selectEvent `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
+     */
+    handleActionSelect(selectEvent) {
+        const name =
+            selectEvent.detail.name ||
+            selectEvent.detail.value ||
+            selectEvent.currentTarget.name;
+        const { event, from, to } = this.selection;
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName If the action came from an existing event, name of the event.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    from,
+                    name,
+                    targetName: event ? event.name : undefined,
+                    to
+                },
+                bubbles: true
+            })
+        );
+
+        switch (name) {
+            case 'Standard.Scheduler.EditEvent':
+                this.showEditDialog = true;
+                break;
+            case 'Standard.Scheduler.DeleteEvent':
+                this.showDeleteConfirmationDialog = true;
+                break;
+            case 'Standard.Scheduler.AddEvent':
+                this.showEditDialog = true;
+                this.selection = this.schedule.newEvent(this.selection);
+                this.computedEvents.push(event);
+                break;
+            default:
+                this.schedule.cleanSelection(true);
+                break;
+        }
+    }
+
+    /**
      * Handle a change of the selected date.
      *
      * @param {Event} event
@@ -1610,6 +1960,34 @@ export default class Scheduler extends LightningElement {
     handleCloseDeleteConfirmationDialog() {
         this.schedule.cleanSelection();
         this.hideDeleteConfirmationDialog();
+    }
+
+    /**
+     * Handle a key up on the event detail popover.
+     *
+     * @param {Event} event `keyup` event.
+     */
+    handleDetailPopoverKeyUp(event) {
+        if (event.key === 'Escape') {
+            this.hideDetailPopover();
+        }
+    }
+
+    /**
+     * Handle the cursor entering the event detail popover.
+     */
+    handleDetailPopoverMouseEnter() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+    }
+
+    /**
+     * Handle the cursor leaving the event detail popover.
+     */
+    handleDetailPopoverMouseLeave() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this._closeDetailPopoverTimeout = setTimeout(() => {
+            this.hideDetailPopover();
+        }, 200);
     }
 
     /**
@@ -1704,6 +2082,7 @@ export default class Scheduler extends LightningElement {
         if (!this.computedContextMenuEvent.length) {
             return;
         }
+        clearTimeout(this._openDetailPopoverTimeout);
         this.hideDetailPopover();
         this.contextMenuActions = [...this.computedContextMenuEvent];
         this.selection = event.currentTarget.selectEvent(event.detail);
@@ -1719,58 +2098,12 @@ export default class Scheduler extends LightningElement {
      */
     handleEmptySpotContextMenu(event) {
         if (!this.computedContextMenuEmptySpot.length) {
-            this.schedule.cleanSelection(true);
             return;
         }
         this.hideAllPopovers();
         this.contextMenuActions = [...this.computedContextMenuEmptySpot];
         this.showContextMenu = true;
-        this.selection = event.detail.selection;
-    }
-
-    /**
-     * Handle the privateselect event fired by the context menu. Dispatch the action click event and process the selected action.
-     */
-    handleActionSelect(event) {
-        const name = event.detail.name;
-
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {string} targetName If the action came from the context menu of an event, name of the event.
-         * @public
-         * @bubbles
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    targetName: this.selection.event
-                        ? this.selection.event.name
-                        : undefined
-                },
-                bubbles: true
-            })
-        );
-
-        switch (name) {
-            case 'Standard.Scheduler.EditEvent':
-                this.showEditDialog = true;
-                break;
-            case 'Standard.Scheduler.DeleteEvent':
-                this.showDeleteConfirmationDialog = true;
-                break;
-            case 'Standard.Scheduler.AddEvent':
-                this.showEditDialog = true;
-                this.computedEvents.push(this.selection.event);
-                break;
-            default:
-                this.schedule.cleanSelection();
-                break;
-        }
+        this.selection = event.detail;
     }
 
     /**
@@ -1905,8 +2238,85 @@ export default class Scheduler extends LightningElement {
         if (this.showContextMenu) {
             return;
         }
-        this.showDetailPopover = true;
-        this.selection = event.currentTarget.selectEvent(event.detail);
+
+        clearTimeout(this._openDetailPopoverTimeout);
+        this._openDetailPopoverTimeout = setTimeout(() => {
+            clearTimeout(this._closeDetailPopoverTimeout);
+
+            if (
+                this.showDetailPopover &&
+                this.selection &&
+                this.selection.occurrence.key === event.detail.key
+            ) {
+                return;
+            }
+            this.showDetailPopover = true;
+            this.selection = this.schedule.selectEvent(event.detail);
+
+            this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
+                const { type, label, variant } = field;
+                const eventData = this.selection.event.data;
+                const occurrenceData = this.selection.occurrence;
+                let value =
+                    occurrenceData[field.value] || eventData[field.value];
+
+                const isDate = type === 'date' && this.createDate(value);
+                if (isDate) {
+                    value = this.createDate(value);
+                    value = value.toFormat(this.dateFormat);
+                }
+
+                return {
+                    key: generateUUID(),
+                    label,
+                    type: isDate ? 'text' : type,
+                    value,
+                    variant
+                };
+            });
+
+            requestAnimationFrame(() => {
+                const closeButton = this.template.querySelector(
+                    '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
+                );
+                if (closeButton) {
+                    closeButton.focus();
+                }
+            });
+        }, 500);
+    }
+
+    handleEventMouseLeave(event) {
+        clearTimeout(this._openDetailPopoverTimeout);
+        const key = event.detail.key;
+        if (this.showDetailPopover && key === this.selection.occurrence.key) {
+            this.handleDetailPopoverMouseLeave();
+        }
+    }
+
+    /**
+     * Handle a click on a toolbar action.
+     *
+     * @param {Event} event click or select event.
+     */
+    handleToolbarActionSelect(event) {
+        const name = event.detail.value || event.currentTarget.value;
+
+        /**
+         * The event fired when a user clicks on a toolbar action.
+         *
+         * @event
+         * @name toolbaractionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('toolbaractionclick', {
+                detail: { name },
+                bubbles: true
+            })
+        );
     }
 
     /**
@@ -1915,6 +2325,7 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleHidePopovers(event) {
+        clearTimeout(this._openDetailPopoverTimeout);
         const list = event.detail.list;
         if (!list) {
             this.hideAllPopovers();
@@ -2043,7 +2454,7 @@ export default class Scheduler extends LightningElement {
      */
     handleToolbarNextClick() {
         const { unit, span } = this.currentTimeSpan;
-        let date = dateTimeObjectFrom(this.start);
+        let date = this.createDate(this.computedStart);
 
         if (this.isCalendar && unit === 'month') {
             // Make sure the start is on the first day of the month
@@ -2062,7 +2473,7 @@ export default class Scheduler extends LightningElement {
         // If the date is set to one that is not available,
         // the headers will automatically go to the next available date,
         // preventing the schedule from going in the past
-        let date = removeFromDate(this.start, unit, span);
+        let date = removeFromDate(this.computedStart, unit, span);
         if (unit === 'year' || unit === 'month') {
             if (this.isCalendar) {
                 // Make sure the start is on the first day of the month
@@ -2156,7 +2567,9 @@ export default class Scheduler extends LightningElement {
      * @param {Event} event
      */
     handleVisibleIntervalChange(event) {
-        this._start = event.detail.start;
+        if (event.detail.start.ts !== this.computedStart.ts) {
+            this._start = event.detail.start.ts;
+        }
         const { s, e } = event.detail.visibleInterval;
         this.computeVisibleIntervalLabel(s, e);
     }
