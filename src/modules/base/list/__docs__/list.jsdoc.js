@@ -380,3 +380,9 @@
  * @type color
  * @default 0.25rem
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-body-vertical-alignment
+ * @default center
+ * @type dimension
+ */
