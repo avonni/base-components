@@ -1014,6 +1014,11 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * -------------------------------------------------------------
      */
 
+    handleClick(event) {
+        const { start, end } = event.target.dataset;
+        this.dispatchScheduleClick({ from: start, to: end });
+    }
+
     /**
      * Handle the datatable resize. Update the rows heights.
      *

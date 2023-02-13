@@ -390,7 +390,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.avonni-list__header_font'
+                '[data-element-id="label"]'
             );
             expect(label.textContent).toBe('A string label');
         });
@@ -407,7 +407,7 @@ describe('List', () => {
                 '[data-element-id="li-item"]'
             );
             const menu = element.shadowRoot.querySelector(
-                '.avonni-list__item-menu'
+                '[data-element-id="list-element"]'
             );
 
             expect(menu.role).toBeFalsy();

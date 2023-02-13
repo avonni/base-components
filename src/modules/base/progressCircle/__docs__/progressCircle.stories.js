@@ -119,7 +119,14 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
+            options: [
+                'xx-small',
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large'
+            ],
             description:
                 'The size of the progress circle. Valid values include x-small (26x26px), small (52x52px), medium (104x104px), large (152x152px) and x-large (208x208px).',
             table: {

@@ -31,7 +31,7 @@
  */
 
 import { Carousel } from '../__examples__/carousel';
-import { items, menuItems } from './data';
+import { items, menuItems, imageItems } from './data';
 
 export default {
     title: 'Example/Carousel',
@@ -284,6 +284,11 @@ const Template = (args) => Carousel(args);
 export const Base = Template.bind({});
 Base.args = {
     items: items
+};
+
+export const OnlyImage = Template.bind({});
+OnlyImage.args = {
+    items: imageItems
 };
 
 export const BaseWithNoProgressIndicator = Template.bind({});

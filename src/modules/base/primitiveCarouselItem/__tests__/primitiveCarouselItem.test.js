@@ -343,14 +343,12 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Primitive Carousel Item: content height without actions', () => {
-        element.actionsVariant = 'menu';
-
+    it('Primitive Carousel Item: content height without actions and text', () => {
         return Promise.resolve().then(() => {
             const carouselContent = element.shadowRoot.querySelector(
                 '.slds-carousel__content'
             );
-            expect(carouselContent.style.height).toBe('6.625rem');
+            expect(carouselContent).toBeNull();
         });
     });
 
