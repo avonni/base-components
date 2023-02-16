@@ -108,13 +108,13 @@ describe('Primitive Scheduler Event Occurrence: timeline variants', () => {
                 '[data-element-id="div-center-label-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid slds-grid_vertical-align-center slds-p-vertical_xx-small'
+                'slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper'
             );
             expect(centerLabel.className).toBe(
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-p-horizontal_x-small'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_default'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default'
             );
             expect(eventContent.style.cssText).toBe(
                 'background-color: rgb(3, 56, 7); --avonni-primitive-scheduler-event-occurrence-background-color: rgb(3, 56, 7);'
@@ -187,7 +187,7 @@ describe('Primitive Scheduler Event Occurrence: timeline variants', () => {
                 'slds-truncate slds-grid avonni-scheduler__event-label_center'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_default avonni-scheduler__event_vertical'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default avonni-scheduler__event_vertical-animated'
             );
             expect(eventContent.style.cssText).toBe(
                 'background-color: rgb(3, 56, 7); --avonni-primitive-scheduler-event-occurrence-background-color: rgb(3, 56, 7);'

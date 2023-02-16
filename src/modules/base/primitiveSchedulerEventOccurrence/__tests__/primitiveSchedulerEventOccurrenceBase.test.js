@@ -85,6 +85,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
         expect(element.resources).toMatchObject([]);
         expect(element.scrollOffset).toBe(0);
         expect(element.theme).toBeUndefined();
+        expect(element.timezone).toBeUndefined();
         expect(element.title).toBeUndefined();
         expect(element.to).toBeUndefined();
         expect(element.variant).toBe('timeline-horizontal');
@@ -144,7 +145,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '[data-element-id="div-center-label-wrapper"] span'
+                '[data-element-id="span-center-label"]'
             );
             expect(label.textContent).toBe('31/08/21');
         });
@@ -1143,7 +1144,7 @@ describe('Primitive Scheduler Event Occurrence: base', () => {
 
         return Promise.resolve().then(() => {
             const focusedEvent = element.shadowRoot.querySelector(
-                '.avonni-scheduler__event-wrapper_focused'
+                '.avonni-scheduler__event_focused'
             );
             expect(focusedEvent).toBeTruthy();
         });
