@@ -47,11 +47,9 @@
             data-element-id="lightning-helptext"
         ></lightning-helptext>
         <div class="slds-grid">
-            <div
-                class="slds-dropdown-trigger slds-dropdown-trigger_click"
-                data-element-id="div-dropdown-trigger"
-            >
+            <div class={computedDropdownTriggerClass}>
                 <button
+                    if:false={hidePopover}
                     class={computedButtonClass}
                     disabled={disabled}
                     aria-expanded={computedAriaExpanded}
@@ -125,7 +123,6 @@
                                         slds-tabs_default
                                     "
                                     onblur={handleMenuBlur}
-                                    onchange={handleDefaultAndTokenChange}
                                 >
                                     <!-- Tabs -->
                                     <ul
@@ -223,6 +220,7 @@
                                             variant={colorPaletteVariant}
                                             data-element-id="avonni-color-palette"
                                             onblur={handleMenuBlur}
+                                            onchange={handleChangeAndDone}
                                         ></c-color-palette>
 
                                         <!-- Color Gradient -->
@@ -233,14 +231,14 @@
                                             value={computedGradientValue}
                                             read-only={readOnly}
                                             data-element-id="avonni-color-gradient"
-                                            onchange={handleChange}
                                             onblur={handleMenuBlur}
+                                            onchange={handleColorGradientChange}
                                         ></c-color-gradient>
                                     </div>
                                 </div>
                                 <!-- Footer -->
                                 <footer
-                                    if:true={showColorGradient}
+                                    if:true={showFooter}
                                     class="slds-popover__footer"
                                 >
                                     <div
@@ -279,7 +277,7 @@
             <!-- Input -->
             <div
                 class="slds-form-element slds-p-left_xx-small"
-                if:false={hideColorInput}
+                if:false={computedHideColorInput}
             >
                 <div
                     class="

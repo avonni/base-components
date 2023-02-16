@@ -182,6 +182,7 @@ export default class ColorPicker extends LightningElement {
     _groups = [];
     _hideColorInput = false;
     _hideClearIcon = false;
+    _hidePopover = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuNubbin = false;
@@ -331,7 +332,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * If true, hide the input color value.
+     * If present, hide the input color value.
      *
      * @public
      * @type {boolean}
@@ -344,6 +345,24 @@ export default class ColorPicker extends LightningElement {
 
     set hideColorInput(value) {
         this._hideColorInput = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the popover is deactivated and its content is directly shown on the page.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hidePopover() {
+        return this._hidePopover;
+    }
+
+    set hidePopover(value) {
+        this._hidePopover = normalizeBoolean(value);
+        this.dropdownOpened = this._hidePopover;
+        this.dropdownVisible = this._hidePopover;
     }
 
     /**
@@ -606,6 +625,12 @@ export default class ColorPicker extends LightningElement {
             : this.colors;
     }
 
+    get computedDropdownTriggerClass() {
+        return classSet('slds-dropdown-trigger slds-dropdown-trigger_click')
+            .add({ 'slds-is-open': this.dropdownVisible })
+            .toString();
+    }
+
     /**
      * Computed value for the gradient component. If the value is empty, the gradient is initialized with a white color.
      *
@@ -635,6 +660,15 @@ export default class ColorPicker extends LightningElement {
      */
     get computedIconClass() {
         return this.menuLabel ? 'slds-m-left_xx-small' : '';
+    }
+
+    /**
+     * Computed hide input value.
+     *
+     * @type {string}
+     */
+    get computedHideColorInput() {
+        return this._hideColorInput || this._hidePopover;
     }
 
     /**
@@ -805,6 +839,7 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
+        if (this._hidePopover) return '';
         return classSet(
             'slds-color-picker__selector slds-p-around_none slds-dropdown avonni-color-picker__dropdown'
         )
@@ -854,6 +889,10 @@ export default class ColorPicker extends LightningElement {
 
     get showColorGradient() {
         return this.type === 'custom' || this._currentTab === 'custom';
+    }
+
+    get showFooter() {
+        return this.showColorGradient && !this._hidePopover;
     }
 
     /**
@@ -1030,11 +1069,24 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handle a change in the color palette. Save and close the popover right away.
+     * Handle a change in the color gradient.
      *
      * @param {Event} event
      */
-    handleDefaultAndTokenChange(event) {
+    handleColorGradientChange(event) {
+        if (this._hidePopover) {
+            this.handleChangeAndDone(event);
+        } else {
+            this.handleChange(event);
+        }
+    }
+
+    /**
+     * Handle a color change. Save and close the popover right away.
+     *
+     * @param {Event} event
+     */
+    handleChangeAndDone(event) {
         this.handleChange(event);
         this.handleDone();
     }
@@ -1049,7 +1101,7 @@ export default class ColorPicker extends LightningElement {
             this.currentToken = { ...this._draftToken };
             this.newValue = null;
 
-            if (!this.menuIconName) {
+            if (!this.menuIconName && this.elementSwatch) {
                 this.elementSwatch.style.background = this.value;
             }
             if (this.colorGradient) {
@@ -1146,6 +1198,7 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleMenuKeydown(event) {
+        if (this._hidePopover) return;
         if (event.keyCode === 9) {
             this.tabPressed = true;
         } else if (event.keyCode === 16) {
@@ -1161,6 +1214,7 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleMenuKeyup(event) {
+        if (this._hidePopover) return;
         if (event.keyCode === 9) {
             this.tabPressed = false;
         } else if (event.keyCode === 16) {
@@ -1190,7 +1244,7 @@ export default class ColorPicker extends LightningElement {
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
-        if (!this.disabled) {
+        if (!this.disabled && !this._hidePopover) {
             this.dropdownVisible = !this.dropdownVisible;
 
             if (!this.dropdownOpened && this.dropdownVisible) {
@@ -1203,10 +1257,6 @@ export default class ColorPicker extends LightningElement {
                 this.pollBoundingRect();
                 this.loadPalette();
             }
-
-            this.template
-                .querySelector('[data-element-id="div-dropdown-trigger"]')
-                .classList.toggle('slds-is-open');
         }
     }
 

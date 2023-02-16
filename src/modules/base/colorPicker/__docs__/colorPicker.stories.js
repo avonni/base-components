@@ -120,13 +120,25 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        hidePopover: {
+            name: 'hide-popover',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover is deactivated and its content is directly shown on the page.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, a spinner is displayed to indicate that data is loading. ',
+                'If present, a spinner is displayed to indicate that data is loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
