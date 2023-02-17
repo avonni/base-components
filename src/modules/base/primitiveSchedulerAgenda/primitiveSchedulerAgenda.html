@@ -35,7 +35,7 @@
 <template>
     <div class="avonni-scheduler__wrapper slds-grid">
         <!-- Side panel: left position -->
-        <template if:true={showLeftPanel}>
+        <div if:true={showLeftPanel} data-element-id="side-panel-wrapper-left">
             <div class={sidePanelClass} data-element-id="div-panel">
                 <div
                     class="slds-p-around_medium"
@@ -51,6 +51,7 @@
                     <div
                         if:false={hideResourcesFilter}
                         class="slds-m-top_medium"
+                        data-element-id="div-resources-filter"
                     >
                         <template
                             for:each={resourceOptions}
@@ -73,6 +74,7 @@
             <div
                 if:true={showSplitter}
                 class={splitterClass}
+                data-element-id="div-splitter"
                 onmousedown={handleSplitterResizeMouseDown}
             >
                 <lightning-button-icon
@@ -108,10 +110,10 @@
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
             </div>
-        </template>
+        </div>
 
         <!-- Agenda panel -->
-        <div class={mainSectionClass}>
+        <div class={mainSectionClass} data-element-id="div-main-section">
             <div
                 class="avonni-primitive-scheduler-calendar__inherit-height"
                 data-element-id="div-schedule-body"
@@ -160,6 +162,8 @@
                         "
                         data-element-id="div-day-group"
                         data-date={group.date.ts}
+                        data-end={group.end.ts}
+                        data-start={group.start.ts}
                         oncontextmenu={handleEmptySpotContextMenu}
                         ondblclick={handleDoubleClick}
                     >
@@ -268,10 +272,14 @@
         </div>
 
         <!-- Side panel: right position -->
-        <template if:true={showRightPanel}>
+        <div
+            if:true={showRightPanel}
+            data-element-id="side-panel-wrapper-right"
+        >
             <div
                 if:true={showSplitter}
                 class={splitterClass}
+                data-element-id="div-splitter"
                 onmousedown={handleSplitterResizeMouseDown}
             >
                 <lightning-button-icon
@@ -280,6 +288,7 @@
                     icon-name="utility:left"
                     size="x-small"
                     variant="bare"
+                    data-element-id="lightning-button-icon-splitter-collapse"
                     onclick={handleSplitterCollapse}
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
@@ -290,6 +299,7 @@
                         slds-m-vertical_x-small
                         slds-m-horizontal_xx-small
                     "
+                    data-element-id="div-splitter-resize-handle"
                 >
                     <span class="slds-assistive-text">Resize</span>
                 </div>
@@ -300,6 +310,7 @@
                     icon-name="utility:right"
                     size="x-small"
                     variant="bare"
+                    data-element-id="lightning-button-icon-splitter-expand"
                     onclick={handleSplitterExpand}
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
@@ -338,6 +349,6 @@
                     </div>
                 </div>
             </div>
-        </template>
+        </div>
     </div>
 </template>
