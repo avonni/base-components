@@ -62,13 +62,13 @@
 /**
 * Size
 */
-.avonni-avatar_xx-small {
+.avonni-avatar_xx-small .avonni-avatar {
     font-size: 0.6rem;
     height: 0.875rem;
     width: 0.875rem;
 }
 
-.avonni-avatar_x-small {
+.avonni-avatar_x-small .avonni-avatar {
     font-size: 0.625rem;
     height: 1.25rem;
     width: 1.25rem;
@@ -93,13 +93,13 @@
     line-height: 1.25;
 }
 
-.avonni-avatar_x-large {
+.avonni-avatar_x-large .avonni-avatar {
     font-size: 1.25rem;
     width: 56px;
     height: 56px;
 }
 
-.avonni-avatar_xx-large {
+.avonni-avatar_xx-large .avonni-avatar {
     font-size: 1.5rem;
     width: 72px;
     height: 72px;
