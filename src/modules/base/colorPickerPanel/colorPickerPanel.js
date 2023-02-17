@@ -84,7 +84,7 @@ export default class ColorPickerPanel extends LightningElement {
      */
     get computedClassDefault() {
         return classSet({
-            'avonni-tabs_default__item': true,
+            'slds-tabs_default__item': true,
             'slds-is-active': !this._isCustomTabActive
         }).toString();
     }
@@ -96,7 +96,7 @@ export default class ColorPickerPanel extends LightningElement {
      */
     get computedClassCustom() {
         return classSet({
-            'avonni-tabs_default__item': true,
+            'slds-tabs_default__item': true,
             'slds-is-active': this._isCustomTabActive
         }).toString();
     }
