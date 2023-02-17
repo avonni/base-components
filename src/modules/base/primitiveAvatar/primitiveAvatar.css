@@ -74,19 +74,19 @@
     width: 1.25rem;
 }
 
-.avonni-avatar_small {
+.avonni-avatar_small .avonni-avatar {
     font-size: 0.625rem;
     height: 1.5rem;
     width: 1.5rem;
 }
 
-.avonni-avatar_medium {
+.avonni-avatar_medium .avonni-avatar {
     font-size: 0.875rem;
     height: 2rem;
     width: 2rem;
 }
 
-.avonni-avatar_large {
+.avonni-avatar_large .avonni-avatar {
     font-size: 1.25rem;
     height: 3rem;
     width: 3rem;
