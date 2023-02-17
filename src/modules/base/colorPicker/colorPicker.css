@@ -34,6 +34,68 @@
     text-decoration: underline;
 }
 
+.avonni-tabs_default {
+    display: block;
+    width: 100%;
+}
+
+.avonni-tabs_default__item {
+    color: #444;
+    position: relative;
+    padding: 0 0.75rem;
+    margin-bottom: calc(
+        var(
+                --slds-c-tabs-list-sizing-border,
+                var(--sds-c-tabs-list-sizing-border, 1px)
+            ) * -1
+    );
+}
+
+.avonni-tabs_default__item.slds-is-active {
+    color: #181818;
+}
+
+.avonni-tabs_default__item.slds-is-active .avonni-tabs_default__link {
+    font-weight: 700;
+}
+
+.avonni-tabs_default__item.slds-is-active:after {
+    background-color: #1b96ff;
+    height: 3px;
+}
+
+.avonni-tabs_default__item:after {
+    display: block;
+    content: '';
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    position: absolute;
+}
+
+.avonni-tabs_default__link {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    color: currentColor;
+    border: 0;
+    text-transform: inherit;
+    z-index: 1;
+}
+
+.avonni-tabs_default__nav {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid #e5e5e5;
+}
+
 .slds-form-element_stacked .slds-form-element {
     padding-left: 0.5rem;
 }
