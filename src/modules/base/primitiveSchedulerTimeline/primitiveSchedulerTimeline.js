@@ -1026,6 +1026,20 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      */
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
+            // Update the left panel width
+            const colWidths = event.detail.columnWidths;
+            if (
+                Array.isArray(colWidths) &&
+                colWidths.length &&
+                this.panelElement
+            ) {
+                const width = colWidths.reduce((total, colWidth) => {
+                    return total + colWidth;
+                }, 0);
+                this.panelElement.style.flexBasis = `${width}px`;
+            }
+
+            // Reset the rows height
             this._rowsHeight = [];
             this.simplifiedResources.forEach((resource) => {
                 resource.minHeight = undefined;

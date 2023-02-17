@@ -24,6 +24,7 @@ export default class PrimitiveSchedulerTimeline extends LightningElement {
     @api sidePanelPosition;
     @api start;
     @api timeSpan;
+    @api timezone;
     @api zoomToFit;
 
     @api cleanSelection() {}
