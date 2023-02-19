@@ -420,6 +420,13 @@ MenuNoInput.args = {
     hideColorInput: true
 };
 
+export const HidePopover = Template.bind({});
+HidePopover.args = {
+    hidePopover: true,
+    tokens,
+    variant: 'label-hidden'
+};
+
 export const Inline = Template.bind({});
 Inline.args = {
     label: 'Color label',
