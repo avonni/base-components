@@ -1280,7 +1280,7 @@ describe('Color Picker', () => {
         return Promise.resolve()
             .then(() => {
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).toContain('slds-is-open');
 
@@ -1293,7 +1293,7 @@ describe('Color Picker', () => {
             })
             .then(() => {
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).toContain('slds-is-open');
             });
@@ -1488,7 +1488,7 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
 
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).not.toContain('slds-is-open');
             });
