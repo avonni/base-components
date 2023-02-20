@@ -234,11 +234,10 @@ export default class ColorPicker extends LightningElement {
         const palette = this.template.querySelector(
             '[data-element-id^="avonni-color-palette"]'
         );
-        if (this.dropdownVisible && palette) {
+        if (palette) {
             const paletteWidth = palette.clientWidth;
             const tileWidth = Math.floor(paletteWidth / this.columns - 8);
-            const tileSize =
-                tileWidth > MINIMUM_TILE_SIZE ? tileWidth : MINIMUM_TILE_SIZE;
+            const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
             palette.tileWidth = tileSize;
             palette.tileHeight = tileSize;
         }

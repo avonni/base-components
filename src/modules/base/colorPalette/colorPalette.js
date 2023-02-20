@@ -422,6 +422,7 @@ export default class ColorPalette extends LightningElement {
             element.style.borderRadius =
                 'var(--avonni-color-palette-border-radius, 0.125rem)';
             element.style.height = `${this.tileHeight}px`;
+            element.style.width = `${this.tileWidth}px`;
 
             // Style checkmark for grid variant.
             if (this.variant === 'grid' && !this._hideCheckmark) {
@@ -440,7 +441,6 @@ export default class ColorPalette extends LightningElement {
                     element.firstChild.style.fill = 'black';
                 }
             }
-            element.style.width = `${this.tileWidth}px`;
         });
 
         this.selectColor(this._value);
