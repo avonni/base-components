@@ -40,9 +40,10 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
+import standard from './standard.html';
+import inline from './inline.html';
 
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -243,6 +244,10 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    render() {
+        return this.hidePopover ? inline : standard;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
@@ -362,8 +367,6 @@ export default class ColorPicker extends LightningElement {
 
     set hidePopover(value) {
         this._hidePopover = normalizeBoolean(value);
-        this.dropdownOpened = this._hidePopover;
-        this.dropdownVisible = this._hidePopover;
     }
 
     /**
