@@ -1617,7 +1617,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             '[data-element-id="div-wrapper"]'
         );
         const sidePanel = this.template.querySelector(
-            '[data-element-id="div-panel"]'
+            '[data-element-id^="div-panel"]'
         );
         const schedule = this.template.querySelector(
             '[data-element-id="div-main-panel"]'
