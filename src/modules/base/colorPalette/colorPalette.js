@@ -37,9 +37,10 @@ import {
     normalizeString,
     generateColors
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import grid from './grid.html';
 import list from './list.html';
+import { isLightColor } from '../utilsPrivate/colorUtils';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -92,6 +93,8 @@ export default class ColorPalette extends LightningElement {
     _columns = DEFAULT_COLUMNS;
     _disabled = false;
     _groups = [];
+    _hideCheckmark = false;
+    _hideOutline = false;
     _isLoading = false;
     _readOnly = false;
     _tileWidth = DEFAULT_TILE_WIDTH;
@@ -273,6 +276,10 @@ export default class ColorPalette extends LightningElement {
 
     set value(value) {
         this._value = value;
+
+        requestAnimationFrame(() => {
+            this.selectColor(this._value);
+        });
     }
 
     /**
@@ -299,6 +306,22 @@ export default class ColorPalette extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * CSS class of the swatch trigger element.
+     *
+     * @type {string}
+     */
+    get computedSwatchTriggerClass() {
+        return classSet('slds-color-picker__swatch-trigger')
+            .add({
+                'avonni-color-picker__show-selected-outline':
+                    this.variant === 'grid' && !this._hideOutline,
+                'avonni-color-picker__show-selected-checkmark':
+                    this.variant === 'grid' && !this._hideCheckmark
+            })
+            .toString();
+    }
 
     /**
      * CSS class of the group wrapping div.
@@ -369,6 +392,24 @@ export default class ColorPalette extends LightningElement {
             element.style.borderRadius =
                 'var(--avonni-color-palette-border-radius, 0.125rem)';
             element.style.height = `${this.tileHeight}px`;
+
+            // Style checkmark for grid variant.
+            if (this.variant === 'grid' && !this._hideCheckmark) {
+                const smallestLength = Math.min(
+                    this.tileHeight,
+                    this.tileWidth
+                );
+                const lengthStyle = `${
+                    smallestLength - (smallestLength * 4) / 10
+                }px`;
+                element.firstChild.style.height = lengthStyle;
+                element.firstChild.style.width = lengthStyle;
+
+                const { R, G, B } = generateColors(element.dataset.color);
+                if (isLightColor(R, G, B, 220)) {
+                    element.firstChild.style.fill = 'black';
+                }
+            }
             element.style.width = `${this.tileWidth}px`;
         });
     }
@@ -433,6 +474,35 @@ export default class ColorPalette extends LightningElement {
             computedGroups.unshift(undefinedGroup);
         }
         this.computedGroups = computedGroups;
+    }
+
+    /**
+     * Mark a color as selected.
+     *
+     * @param {string} value
+     */
+    selectColor(value) {
+        // Unselect last selected color.
+        const selectedColor = this.template.querySelector('.slds-is-selected');
+        if (selectedColor) selectedColor.classList.remove('slds-is-selected');
+
+        let elem;
+        if (this.variant === 'list') {
+            elem =
+                this.template.querySelector(
+                    `[data-selectable][data-token="${value}"]`
+                ) ||
+                this.template.querySelector(
+                    `[data-selectable][data-color="${value}"]`
+                );
+        } else {
+            elem = this.template.querySelector(
+                `[data-selectable][data-color="${value}"]`
+            );
+        }
+
+        // Select the new color with the value provided.
+        if (elem) elem.classList.add('slds-is-selected');
     }
 
     /**
@@ -502,11 +572,7 @@ export default class ColorPalette extends LightningElement {
             return;
         }
 
-        const selectedColor = this.template.querySelector('.slds-is-selected');
-        if (selectedColor) selectedColor.classList.remove('slds-is-selected');
-
         const currentTarget = event.currentTarget;
-        currentTarget.classList.add('slds-is-selected');
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = currentTarget.dataset.color;
         this.currentLabel = currentTarget.dataset.label;
