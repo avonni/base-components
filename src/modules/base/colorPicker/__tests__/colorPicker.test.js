@@ -121,6 +121,7 @@ describe('Color Picker', () => {
         expect(element.groups).toMatchObject([]);
         expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideColorInput).toBeFalsy();
+        expect(element.hidePopover).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.menuVariant).toBe('border');
@@ -1098,6 +1099,30 @@ describe('Color Picker', () => {
             );
             expect(input).toBeFalsy();
         });
+    });
+
+    // Hide popover
+    it('Color Picker: hide popover', () => {
+        element.hidePopover = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                expect(button).toBeFalsy();
+
+                const tab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                tab.click();
+            })
+            .then(() => {
+                const footer = element.shadowRoot.querySelector(
+                    '.slds-popover__footer'
+                );
+                expect(footer).toBeFalsy();
+            });
     });
 
     // opacity
