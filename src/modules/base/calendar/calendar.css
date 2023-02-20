@@ -103,6 +103,10 @@ lightning-combobox {
     font-weight: var(--avonni-calendar-week-label-font-weight, 600);
 }
 
+.avonni-calendar__table {
+    z-index: 0;
+}
+
 .avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
     background-color: var(
         --avonni-calendar-date-color-background-hover,
