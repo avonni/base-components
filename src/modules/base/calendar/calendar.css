@@ -71,7 +71,7 @@ div:focus {
     width: fit-content;
 }
 
-lightning-combobox {
+.avonni-calendar__year-combobox {
     width: 6rem;
 }
 

@@ -111,7 +111,7 @@ describe('Calendar', () => {
                 expect(button.disabled).toBeTruthy();
             });
             const combobox = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(combobox.disabled).toBeTruthy();
             const tds = element.shadowRoot.querySelectorAll(
@@ -179,7 +179,7 @@ describe('Calendar', () => {
             ).textContent;
 
             const yearValue = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             ).value;
 
             expect(monthValue).toBe('August');
@@ -388,7 +388,7 @@ describe('Calendar', () => {
             })
             .then(() => {
                 const comboBoxYear = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-combobox"]'
+                    '[data-element-id="avonni-combobox"]'
                 );
                 expect(comboBoxYear.value).toBe(2023);
                 expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
@@ -412,7 +412,7 @@ describe('Calendar', () => {
             })
             .then(() => {
                 const comboBoxYear = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-combobox"]'
+                    '[data-element-id="avonni-combobox"]'
                 );
                 expect(comboBoxYear.value).toBe(2021);
                 expect(new Date(element.value)).toEqual(new Date('05/09/2022'));
@@ -577,7 +577,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('April');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2021);
         });
@@ -597,7 +597,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('December');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2030);
         });
@@ -617,7 +617,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('January');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2020);
         });
@@ -642,7 +642,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe(currentMonthName);
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(currentDate.getFullYear());
         });
@@ -668,7 +668,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('May');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2022);
         });
@@ -693,7 +693,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('January');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2020);
         });
@@ -718,7 +718,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('December');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2021);
         });
@@ -739,7 +739,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('January');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2020);
         });
@@ -759,7 +759,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('January');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2020);
         });
@@ -783,7 +783,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('January');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2020);
         });
@@ -807,7 +807,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('April');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2022);
         });
@@ -860,7 +860,7 @@ describe('Calendar', () => {
             );
             expect(month.textContent).toBe('April');
             const year = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-combobox"]'
+                '[data-element-id="avonni-combobox"]'
             );
             expect(year.value).toBe(2021);
         });
