@@ -310,6 +310,7 @@ export default class ColorPalette extends LightningElement {
 
     set value(value) {
         this._value = value;
+        this.initContainer();
     }
 
     /**
