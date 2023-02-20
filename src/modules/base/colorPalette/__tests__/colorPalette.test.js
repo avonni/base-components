@@ -72,6 +72,8 @@ describe('Color Palette', () => {
 
     it('Color Palette: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
+        expect(element.hideCheckmark).toBeFalsy();
+        expect(element.hideOutline).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
@@ -132,6 +134,46 @@ describe('Color Palette', () => {
                 expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
             });
         });
+    });
+
+    // hideOutline
+    it('Color Palette: hideOutline', () => {
+        element.hideOutline = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                selectable.click();
+            })
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                expect(selectable.classList).not.toContain(
+                    'avonni-color-picker__show-selected-outline'
+                );
+                expect(selectable.classList).toContain('slds-is-selected');
+            });
+    });
+
+    // hideCheckmark
+    it('Color Palette: hideCheckmark', () => {
+        element.hideCheckmark = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                selectable.click();
+            })
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                expect(selectable.classList).not.toContain(
+                    'avonni-color-picker__show-selected-checkmark'
+                );
+                expect(selectable.classList).toContain('slds-is-selected');
+            });
     });
 
     // read-only
