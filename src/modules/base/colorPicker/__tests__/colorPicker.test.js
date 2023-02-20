@@ -78,7 +78,7 @@ const tokens = [
     {
         label: 'brand-accessible-active',
         value: '--lwc-brand-accessible-active',
-        color: 'rgb(1, 68, 134)'
+        color: 'rgb(1,68,134)'
     },
     {
         label: 'color-text-action-label',
@@ -329,7 +329,8 @@ describe('Color Picker', () => {
                 const swatch = element.shadowRoot.querySelector(
                     '[data-element-id="swatch"]'
                 );
-                expect(swatch.style.background).toBe(tokens[1].color);
+                // Spaces are added in css styles.
+                expect(swatch.style.background).toBe('rgb(1, 68, 134)');
             });
     });
 
@@ -1469,8 +1470,8 @@ describe('Color Picker', () => {
         const color = {
             hex: '#014486',
             hexa: '#014486ff',
-            rgb: 'rgb(1, 68, 134)',
-            rgba: 'rgba(1, 68, 134,1)',
+            rgb: 'rgb(1,68,134)',
+            rgba: 'rgba(1,68,134,1)',
             label: 'brand-accessible-active',
             token: '--lwc-brand-accessible-active'
         };
