@@ -801,8 +801,8 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve()
             .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="side-panel-wrapper"]'
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-left"]'
                 );
                 const mainSection = element.shadowRoot.querySelector(
                     '[data-element-id="div-main-section"]'
@@ -810,13 +810,13 @@ describe('Primitive Scheduler Agenda', () => {
                 expect(mainSection.classList).not.toContain(
                     'avonni-scheduler__main-border_left'
                 );
-                expect(panels).toHaveLength(1);
+                expect(panel).toBeTruthy();
 
                 element.sidePanelPosition = 'right';
             })
             .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="side-panel-wrapper"]'
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-right"]'
                 );
                 const mainSection = element.shadowRoot.querySelector(
                     '[data-element-id="div-main-section"]'
@@ -824,7 +824,7 @@ describe('Primitive Scheduler Agenda', () => {
                 expect(mainSection.classList).not.toContain(
                     'avonni-scheduler__main-border_right'
                 );
-                expect(panels).toHaveLength(1);
+                expect(panel).toBeTruthy();
             });
     });
 
@@ -833,8 +833,8 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve()
             .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="side-panel-wrapper"]'
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-left"]'
                 );
                 const mainSection = element.shadowRoot.querySelector(
                     '[data-element-id="div-main-section"]'
@@ -842,13 +842,13 @@ describe('Primitive Scheduler Agenda', () => {
                 expect(mainSection.classList).toContain(
                     'avonni-scheduler__main-border_left'
                 );
-                expect(panels).toHaveLength(0);
+                expect(panel).toBeFalsy();
 
                 element.sidePanelPosition = 'right';
             })
             .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="side-panel-wrapper"]'
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-right"]'
                 );
                 const mainSection = element.shadowRoot.querySelector(
                     '[data-element-id="div-main-section"]'
@@ -856,7 +856,7 @@ describe('Primitive Scheduler Agenda', () => {
                 expect(mainSection.classList).toContain(
                     'avonni-scheduler__main-border_right'
                 );
-                expect(panels).toHaveLength(0);
+                expect(panel).toBeFalsy();
             });
     });
 
@@ -1084,17 +1084,14 @@ describe('Primitive Scheduler Agenda', () => {
         element.sidePanelPosition = 'left';
 
         return Promise.resolve().then(() => {
-            const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="side-panel-wrapper-left"]'
-            );
-            const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="side-panel-wrapper-right"]'
-            );
             const mainSection = element.shadowRoot.querySelector(
                 '[data-element-id="div-main-section"]'
             );
-            const panel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+            const leftPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-left"]'
+            );
+            const rightPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-right"]'
             );
 
             expect(leftPanel).toBeTruthy();
@@ -1105,10 +1102,10 @@ describe('Primitive Scheduler Agenda', () => {
             expect(mainSection.classList).not.toContain(
                 'avonni-scheduler__main-border_left'
             );
-            expect(panel.classList).toContain(
+            expect(leftPanel.classList).toContain(
                 'avonni-scheduler__main-border_left'
             );
-            expect(panel.classList).not.toContain(
+            expect(leftPanel.classList).not.toContain(
                 'avonni-scheduler__main-border_right'
             );
         });
@@ -1119,16 +1116,13 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve().then(() => {
             const leftPanel = element.shadowRoot.querySelector(
-                '[data-element-id="side-panel-wrapper-left"]'
+                '[data-element-id="div-panel-left"]'
             );
             const rightPanel = element.shadowRoot.querySelector(
-                '[data-element-id="side-panel-wrapper-right"]'
+                '[data-element-id="div-panel-right"]'
             );
             const mainSection = element.shadowRoot.querySelector(
                 '[data-element-id="div-main-section"]'
-            );
-            const panel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
             );
 
             expect(leftPanel).toBeFalsy();
@@ -1139,10 +1133,10 @@ describe('Primitive Scheduler Agenda', () => {
             expect(mainSection.classList).toContain(
                 'avonni-scheduler__main-border_left'
             );
-            expect(panel.classList).not.toContain(
+            expect(rightPanel.classList).not.toContain(
                 'avonni-scheduler__main-border_left'
             );
-            expect(panel.classList).toContain(
+            expect(rightPanel.classList).toContain(
                 'avonni-scheduler__main-border_right'
             );
         });
@@ -1360,7 +1354,7 @@ describe('Primitive Scheduler Agenda', () => {
      */
 
     // collapseSidePanel
-    it('Primitive Scheduler Timeline: collapseSidePanel() method', () => {
+    it('Primitive Scheduler Agenda: collapseSidePanel() method', () => {
         let collapseButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-splitter-collapse"]'
         );
@@ -1368,7 +1362,7 @@ describe('Primitive Scheduler Agenda', () => {
             '[data-element-id="div-splitter-resize-handle"]'
         );
         let sidePanel = element.shadowRoot.querySelector(
-            '[data-element-id="div-panel"]'
+            '[data-element-id^="div-panel"]'
         );
         expect(collapseButton).toBeTruthy();
         expect(resizeButton).toBeTruthy();
@@ -1385,7 +1379,7 @@ describe('Primitive Scheduler Agenda', () => {
                 '[data-element-id="div-splitter-resize-handle"]'
             );
             sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(collapseButton).toBeFalsy();
             expect(resizeButton).toBeFalsy();
@@ -1395,7 +1389,7 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
-    it('Primitive Scheduler Timeline: collapseSidePanel() method, with right panel', () => {
+    it('Primitive Scheduler Agenda: collapseSidePanel() method, with right panel', () => {
         element.sidePanelPosition = 'right';
 
         return Promise.resolve()
@@ -1407,7 +1401,7 @@ describe('Primitive Scheduler Agenda', () => {
                     '[data-element-id="div-splitter-resize-handle"]'
                 );
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(collapseButton).toBeTruthy();
                 expect(resizeButton).toBeTruthy();
@@ -1424,7 +1418,7 @@ describe('Primitive Scheduler Agenda', () => {
                     '[data-element-id="div-splitter-resize-handle"]'
                 );
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(collapseButton).toBeFalsy();
                 expect(resizeButton).toBeFalsy();
@@ -1434,7 +1428,7 @@ describe('Primitive Scheduler Agenda', () => {
             });
     });
 
-    it('Primitive Scheduler Timeline: collapseSidePanel() method, user triggered', () => {
+    it('Primitive Scheduler Agenda: collapseSidePanel() method, user triggered', () => {
         const collapseButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-splitter-collapse"]'
         );
@@ -1442,7 +1436,7 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve().then(() => {
             const sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(sidePanel.classList).toContain(
                 'avonni-scheduler__panel_collapsed'
@@ -1450,12 +1444,12 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
-    it('Primitive Scheduler Timeline: collapseSidePanel() erases panel resizing', () => {
+    it('Primitive Scheduler Agenda: collapseSidePanel() erases panel resizing', () => {
         const splitter = element.shadowRoot.querySelector(
             '[data-element-id="div-splitter"]'
         );
         const panel = element.shadowRoot.querySelector(
-            '[data-element-id="div-panel"]'
+            '[data-element-id^="div-panel"]'
         );
         jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
 
@@ -1479,7 +1473,7 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve().then(() => {
             const sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(sidePanel.style.flexBasis).toBe('');
         });
@@ -1532,7 +1526,7 @@ describe('Primitive Scheduler Agenda', () => {
     });
 
     // expandSidePanel
-    it('Primitive Scheduler Timeline: expandSidePanel() method', () => {
+    it('Primitive Scheduler Agenda: expandSidePanel() method', () => {
         let expandButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-splitter-expand"]'
         );
@@ -1540,7 +1534,7 @@ describe('Primitive Scheduler Agenda', () => {
             '[data-element-id="div-splitter-resize-handle"]'
         );
         let sidePanel = element.shadowRoot.querySelector(
-            '[data-element-id="div-panel"]'
+            '[data-element-id^="div-panel"]'
         );
         expect(expandButton).toBeTruthy();
         expect(resizeButton).toBeTruthy();
@@ -1557,7 +1551,7 @@ describe('Primitive Scheduler Agenda', () => {
                 '[data-element-id="div-splitter-resize-handle"]'
             );
             sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(expandButton).toBeFalsy();
             expect(resizeButton).toBeFalsy();
@@ -1567,7 +1561,7 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
-    it('Primitive Scheduler Timeline: expandSidePanel() method, user triggered', () => {
+    it('Primitive Scheduler Agenda: expandSidePanel() method, user triggered', () => {
         const expandButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-splitter-expand"]'
         );
@@ -1575,7 +1569,7 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve().then(() => {
             const sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(sidePanel.classList).toContain(
                 'avonni-scheduler__panel_expanded'
@@ -1583,12 +1577,12 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
-    it('Primitive Scheduler Timeline: expandSidePanel() erases panel resizing', () => {
+    it('Primitive Scheduler Agenda: expandSidePanel() erases panel resizing', () => {
         const splitter = element.shadowRoot.querySelector(
             '[data-element-id="div-splitter"]'
         );
         const panel = element.shadowRoot.querySelector(
-            '[data-element-id="div-panel"]'
+            '[data-element-id^="div-panel"]'
         );
         jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
 
@@ -1612,20 +1606,20 @@ describe('Primitive Scheduler Agenda', () => {
 
         return Promise.resolve().then(() => {
             const sidePanel = element.shadowRoot.querySelector(
-                '[data-element-id="div-panel"]'
+                '[data-element-id^="div-panel"]'
             );
             expect(sidePanel.style.flexBasis).toBe('');
         });
     });
 
-    it('Primitive Scheduler Timeline: expandSidePanel() and collapseSidePanel() in a row', () => {
+    it('Primitive Scheduler Agenda: expandSidePanel() and collapseSidePanel() in a row', () => {
         // Collapse
         element.collapseSidePanel();
 
         return Promise.resolve()
             .then(() => {
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(sidePanel.classList).toContain(
                     'avonni-scheduler__panel_collapsed'
@@ -1638,7 +1632,7 @@ describe('Primitive Scheduler Agenda', () => {
             })
             .then(() => {
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(sidePanel.classList).not.toContain(
                     'avonni-scheduler__panel_collapsed'
@@ -1651,7 +1645,7 @@ describe('Primitive Scheduler Agenda', () => {
             })
             .then(() => {
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(sidePanel.classList).not.toContain(
                     'avonni-scheduler__panel_collapsed'
@@ -1664,7 +1658,7 @@ describe('Primitive Scheduler Agenda', () => {
             })
             .then(() => {
                 const sidePanel = element.shadowRoot.querySelector(
-                    '[data-element-id="div-panel"]'
+                    '[data-element-id^="div-panel"]'
                 );
                 expect(sidePanel.classList).not.toContain(
                     'avonni-scheduler__panel_collapsed'

@@ -35,8 +35,8 @@
 <template>
     <div class="avonni-scheduler__wrapper slds-grid">
         <!-- Side panel: left position -->
-        <div if:true={showLeftPanel} data-element-id="side-panel-wrapper-left">
-            <div class={sidePanelClass} data-element-id="div-panel">
+        <template if:true={showLeftPanel}>
+            <div class={sidePanelClass} data-element-id="div-panel-left">
                 <div
                     class="slds-p-around_medium"
                     data-element-id="div-panel-content"
@@ -110,7 +110,7 @@
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
             </div>
-        </div>
+        </template>
 
         <!-- Agenda panel -->
         <div class={mainSectionClass} data-element-id="div-main-section">
@@ -272,10 +272,7 @@
         </div>
 
         <!-- Side panel: right position -->
-        <div
-            if:true={showRightPanel}
-            data-element-id="side-panel-wrapper-right"
-        >
+        <template if:true={showRightPanel}>
             <div
                 if:true={showSplitter}
                 class={splitterClass}
@@ -315,7 +312,7 @@
                     onmousedown={stopPropagation}
                 ></lightning-button-icon>
             </div>
-            <div class={sidePanelClass} data-element-id="div-panel">
+            <div class={sidePanelClass} data-element-id="div-panel-right">
                 <div
                     class="slds-p-around_medium"
                     data-element-id="div-panel-content"
@@ -349,6 +346,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 </template>
