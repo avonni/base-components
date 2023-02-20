@@ -1521,6 +1521,126 @@ describe('Color Picker', () => {
             });
     });
 
+    it('Color Picker: change event after "default" tab click in inline mode with lastSelectedToken', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.hidePopover = true;
+        jest.useFakeTimers();
+
+        const color = {
+            hex: '#014486',
+            hexa: '#014486ff',
+            rgb: 'rgb(1,68,134)',
+            rgba: 'rgba(1,68,134,1)'
+        };
+
+        return Promise.resolve()
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                palette.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: color,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            })
+            .then(() => {
+                const customTab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                customTab.click();
+            })
+            .then(() => {
+                const defaultTab = element.shadowRoot.querySelector(
+                    '[data-element-id="default"]'
+                );
+                defaultTab.click();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBe(color.hex);
+                expect(handler.mock.calls[0][0].detail.hexa).toBe(color.hexa);
+                expect(handler.mock.calls[0][0].detail.rgb).toBe(color.rgb);
+                expect(handler.mock.calls[0][0].detail.rgba).toBe(color.rgba);
+                expect(handler.mock.calls[0][0].detail.token).toBe(color.token);
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            });
+    });
+
+    it('Color Picker: change event after "tokens" tab click in inline mode with lastSelectedToken', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.tokens = tokens;
+        element.hidePopover = true;
+        jest.useFakeTimers();
+
+        const color = {
+            hex: '#014486',
+            hexa: '#014486ff',
+            rgb: 'rgb(1,68,134)',
+            rgba: 'rgba(1,68,134,1)',
+            label: 'brand-accessible-active',
+            token: '--lwc-brand-accessible-active'
+        };
+
+        return Promise.resolve()
+            .then(() => {
+                const tokensTab = element.shadowRoot.querySelector(
+                    '[data-element-id="a-tokens-tab"]'
+                );
+                tokensTab.click();
+            })
+            .then(() => {
+                // The palette is loading when we open the popover
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeTruthy();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeFalsy();
+                palette.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: color,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            })
+            .then(() => {
+                const customTab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                customTab.click();
+            })
+            .then(() => {
+                const tokensTab = element.shadowRoot.querySelector(
+                    '[data-element-id="a-tokens-tab"]'
+                );
+                tokensTab.click();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBe(color.hex);
+                expect(handler.mock.calls[0][0].detail.hexa).toBe(color.hexa);
+                expect(handler.mock.calls[0][0].detail.rgb).toBe(color.rgb);
+                expect(handler.mock.calls[0][0].detail.rgba).toBe(color.rgba);
+                expect(handler.mock.calls[0][0].detail.token).toBe(color.token);
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            });
+    });
+
     // done button
     // Depends on type
     it('Color Picker: done button', () => {
