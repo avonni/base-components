@@ -1240,7 +1240,7 @@ export default class ColorPicker extends LightningElement {
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
-        if (!this.disabled) {
+        if (!this.disabled && !this._hidePopover) {
             this.dropdownVisible = !this.dropdownVisible;
 
             if (!this.dropdownOpened && this.dropdownVisible) {
