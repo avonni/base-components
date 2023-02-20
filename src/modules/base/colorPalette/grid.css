@@ -40,6 +40,11 @@
         var(--avonni-color-palette-selected-outline-color, #0176d3);
 }
 
+.slds-color-picker__swatch-trigger:focus,
+.slds-color-picker__swatch-trigger:active {
+    border-radius: var(--avonni-color-palette-border-radius, 0.25rem);
+}
+
 .avonni-color-palette__selected-checkmark {
     display: none;
     fill: white;
