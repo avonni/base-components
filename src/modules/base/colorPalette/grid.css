@@ -35,7 +35,8 @@
 .slds-color-picker__swatch-trigger.avonni-color-picker__show-selected-outline.slds-is-selected
     .slds-swatch {
     position: relative;
-    border: 1px solid white;
+    border: var(--avonni-color-palette-selected-border-width, 1px) solid
+        var(--avonni-color-palette-selected-border-color, white);
     outline: var(--avonni-color-palette-selected-outline-width, 2px) solid
         var(--avonni-color-palette-selected-outline-color, #0176d3);
 }
