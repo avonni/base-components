@@ -196,6 +196,40 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
+     * If present, the selected checkmark is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCheckmark() {
+        return this._hideCheckmark;
+    }
+
+    set hideCheckmark(value) {
+        this._hideCheckmark = normalizeBoolean(value);
+        this.initContainer();
+    }
+
+    /**
+     * If present, the selected outline is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideOutline() {
+        return this._hideOutline;
+    }
+
+    set hideOutline(value) {
+        this._hideOutline = normalizeBoolean(value);
+        this.initContainer();
+    }
+
+    /**
      * If present, a spinner is displayed to indicate that data is loading.
      *
      * @public

@@ -69,6 +69,28 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        hideCheckmark: {
+            name: 'hide-checkmark',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected checkmark is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        hideOutline: {
+            name: 'hide-outline',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected outline is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         tileWidth: {
             name: 'tile-width',
             control: {

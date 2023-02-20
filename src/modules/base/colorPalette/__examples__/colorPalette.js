@@ -44,6 +44,8 @@ export const ColorPalette = ({
     colors,
     columns,
     groups,
+    hideCheckmark,
+    hideOutline,
     tileWidth,
     tileHeight,
     variant
@@ -55,6 +57,8 @@ export const ColorPalette = ({
     element.colors = colors;
     element.columns = columns;
     element.groups = groups;
+    element.hideCheckmark = hideCheckmark;
+    element.hideOutline = hideOutline;
     element.tileWidth = tileWidth;
     element.tileHeight = tileHeight;
     element.variant = variant;
