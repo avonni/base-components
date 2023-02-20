@@ -31,3 +31,21 @@
  */
 
 @import './shared.css';
+
+.slds-color-picker__swatch-trigger.avonni-color-picker__show-selected-outline.slds-is-selected
+    .slds-swatch {
+    position: relative;
+    border: 1px solid white;
+    outline: var(--avonni-color-palette-selected-outline-width, 2px) solid
+        var(--avonni-color-palette-selected-outline-color, #0176d3);
+}
+
+.avonni-color-palette__selected-checkmark {
+    display: none;
+    fill: white;
+}
+
+.slds-color-picker__swatch-trigger.avonni-color-picker__show-selected-checkmark.slds-is-selected
+    .avonni-color-palette__selected-checkmark {
+    display: block;
+}
