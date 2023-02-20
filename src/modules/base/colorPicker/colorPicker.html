@@ -46,10 +46,134 @@
             content={fieldLevelHelp}
             data-element-id="lightning-helptext"
         ></lightning-helptext>
-        <div class="slds-grid">
+        <template if:true={hidePopover}>
+            <!-- Loading spinner -->
+            <template if:true={isLoading}>
+                <div class="avonni-color-picker__spinner-container">
+                    <lightning-spinner
+                        size="small"
+                        data-element-id="lightning-spinner"
+                    ></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <div
+                    class="
+                        slds-popover__body
+                        avonni-color-picker__popover-body
+                        slds-tabs_default
+                    "
+                >
+                    <!-- Tabs -->
+                    <ul
+                        if:true={isBase}
+                        class="slds-tabs_default__nav"
+                        role="tablist"
+                        data-element-id="ul-tabs"
+                    >
+                        <li
+                            class="slds-tabs_default__item slds-is-active"
+                            title="Default"
+                            role="presentation"
+                        >
+                            <a
+                                class="
+                                    slds-tabs_default__link
+                                    avonni-color-picker__tab
+                                "
+                                href="javascript:void(0);"
+                                role="tab"
+                                data-group-name="tabs"
+                                data-element-id="default"
+                                data-tab-name="default"
+                                onclick={handleTabClick}
+                                >Default</a
+                            >
+                        </li>
+                        <li
+                            if:true={tokens.length}
+                            class="slds-tabs_default__item"
+                            title="Tokens"
+                            role="presentation"
+                            data-element-id="li-tokens-tab"
+                        >
+                            <a
+                                class="
+                                    slds-tabs_default__link
+                                    avonni-color-picker__tab
+                                "
+                                href="javascript:void(0);"
+                                role="tab"
+                                data-element-id="a-tokens-tab"
+                                data-group-name="tabs"
+                                data-tab-name="tokens"
+                                onclick={handleTabClick}
+                                >Tokens</a
+                            >
+                        </li>
+                        <li
+                            class="slds-tabs_default__item"
+                            title="Custom"
+                            role="presentation"
+                        >
+                            <a
+                                class="
+                                    slds-tabs_default__link
+                                    avonni-color-picker__tab
+                                "
+                                href="javascript:void(0);"
+                                role="tab"
+                                data-group-name="tabs"
+                                data-element-id="custom"
+                                data-tab-name="custom"
+                                onclick={handleTabClick}
+                                >Custom</a
+                            >
+                        </li>
+                    </ul>
+
+                    <div
+                        class={computedTabBodyClass}
+                        data-element-id="tab-body"
+                        tabindex="-1"
+                    >
+                        <!-- Color palette -->
+                        <c-color-palette
+                            if:false={showColorGradient}
+                            class="
+                                slds-show
+                                slds-scrollable_y
+                                avonni-color-picker__default-palette
+                            "
+                            colors={computedColors}
+                            columns={columns}
+                            groups={groups}
+                            is-loading={paletteIsLoading}
+                            read-only={readOnly}
+                            value={value}
+                            variant={colorPaletteVariant}
+                            data-element-id="avonni-color-palette"
+                            onchange={handleColorPaletteChange}
+                        ></c-color-palette>
+
+                        <!-- Color Gradient -->
+                        <c-color-gradient
+                            if:true={showColorGradient}
+                            message-when-bad-input={messageWhenBadInput}
+                            opacity={opacity}
+                            value={computedGradientValue}
+                            read-only={readOnly}
+                            data-element-id="avonni-color-gradient"
+                            onchange={handleColorGradientChange}
+                        ></c-color-gradient>
+                    </div>
+                </div>
+            </template>
+        </template>
+        <div if:false={hidePopover} class="slds-grid">
             <div class={computedDropdownTriggerClass}>
                 <button
-                    if:false={hidePopover}
                     class={computedButtonClass}
                     disabled={disabled}
                     aria-expanded={computedAriaExpanded}
@@ -239,7 +363,7 @@
                                 </div>
                                 <!-- Footer -->
                                 <footer
-                                    if:true={showFooter}
+                                    if:true={showColorGradient}
                                     class="slds-popover__footer"
                                 >
                                     <div
@@ -278,7 +402,7 @@
             <!-- Input -->
             <div
                 class="slds-form-element slds-p-left_xx-small"
-                if:false={computedHideColorInput}
+                if:false={hideColorInput}
             >
                 <div
                     class="
