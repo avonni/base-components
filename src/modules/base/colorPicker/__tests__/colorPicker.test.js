@@ -1463,13 +1463,14 @@ describe('Color Picker', () => {
     it('Color Picker: change event in the dropdown', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
+        element.tokens = tokens;
         jest.useFakeTimers();
 
         const color = {
             hex: '#014486',
             hexa: '#014486ff',
-            rgb: 'rgb(1,68,134)',
-            rgba: 'rgba(1,68,134,1)',
+            rgb: 'rgb(1, 68, 134)',
+            rgba: 'rgba(1, 68, 134,1)',
             label: 'brand-accessible-active',
             token: '--lwc-brand-accessible-active'
         };
