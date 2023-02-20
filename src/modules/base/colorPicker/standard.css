@@ -31,3 +31,60 @@
  */
 
 @import './shared.css';
+
+.avonni-color-picker__popover-button {
+    display: grid;
+    width: 100%;
+}
+
+.slds-swatch-read-only {
+    padding: 0.3rem 0.5rem;
+}
+
+.avonni-color-picker__main-button:disabled {
+    background-color: #ecebea;
+}
+
+.avonni-color-picker__dropdown {
+    max-width: none;
+}
+
+.slds-nubbin_top {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.slds-nubbin_bottom {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.slds-nubbin_top-left {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+}
+
+.slds-nubbin_top-right {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+}
+
+.slds-nubbin_bottom-left {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+}
+
+.slds-nubbin_bottom-right {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+}
