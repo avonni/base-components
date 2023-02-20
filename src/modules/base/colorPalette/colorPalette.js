@@ -310,10 +310,6 @@ export default class ColorPalette extends LightningElement {
 
     set value(value) {
         this._value = value;
-
-        requestAnimationFrame(() => {
-            this.selectColor(this._value);
-        });
     }
 
     /**
@@ -446,6 +442,8 @@ export default class ColorPalette extends LightningElement {
             }
             element.style.width = `${this.tileWidth}px`;
         });
+
+        this.selectColor(this._value);
     }
 
     /**

@@ -195,6 +195,10 @@ export default class ColorGradient extends LightningElement {
             this._value = value;
             this.colors = generateColors(this._value);
 
+            if (this.opacity) {
+                this.setOpacityColor(this.colors.H);
+            }
+
             if (this.init) {
                 this.setPaletteColor(this.colors.H);
                 this.setSwatchColor(this.value);

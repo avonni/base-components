@@ -152,15 +152,6 @@ export default {
         },
         variant: {
             control: {
-                value: {
-                    control: {
-                        type: 'text'
-                    },
-                    description: 'Specifies the value of an input element.',
-                    table: {
-                        type: { summary: 'string' }
-                    }
-                },
                 type: 'radio'
             },
             options: ['grid', 'list'],
@@ -168,6 +159,15 @@ export default {
                 'Changes the appearance of the palette. Valid values include grid and list.',
             table: {
                 defaultValue: { summary: 'grid' },
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the value of an input element.',
+            table: {
                 type: { summary: 'string' }
             }
         }

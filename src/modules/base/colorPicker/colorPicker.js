@@ -198,7 +198,8 @@ export default class ColorPicker extends LightningElement {
     _variant = VARIANTS.default;
 
     _currentTab = DEFAULT_TAB;
-    _draftToken = {};
+    _lastSelectedDefault;
+    _lastSelectedToken;
 
     currentToken = {};
     dropdownOpened = false;
@@ -530,7 +531,7 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
-        if (this.isConnected) this.computeToken();
+        if (this._isConnected) this.computeToken();
     }
 
     /**
@@ -569,6 +570,7 @@ export default class ColorPicker extends LightningElement {
             this._value = value;
             this.inputValue = value;
             if (this._isConnected) this.computeToken();
+            this.setLastSelectedColor();
         } else {
             this._value = null;
             this._inputValue = '';
@@ -1042,10 +1044,24 @@ export default class ColorPicker extends LightningElement {
         this.value = undefined;
         this.inputValue = '';
         this.currentToken = {};
-        this._draftToken = {};
         this.focus();
 
         this.dispatchClear();
+    }
+
+    /**
+     * In hidePopover mode, set the last selected color for default and tokens tab.
+     */
+    setLastSelectedColor() {
+        if (this._hidePopover) {
+            const isTokensColor = this.currentToken.value;
+            const isDefaultColor = this.colors.includes(this.value);
+            if (isTokensColor) {
+                this._lastSelectedToken = this.value;
+            } else if (isDefaultColor) {
+                this._lastSelectedDefault = this.value;
+            }
+        }
     }
 
     /**
@@ -1058,13 +1074,10 @@ export default class ColorPicker extends LightningElement {
 
         if (event.detail) {
             this.newValue =
-                this.opacity && Number(event.detail.alpha) < 1
+                event.detail.token ||
+                (this.opacity && Number(event.detail.alpha) < 1
                     ? event.detail.hexa
-                    : event.detail.hex;
-            this._draftToken = {
-                label: event.detail.label,
-                value: event.detail.token
-            };
+                    : event.detail.hex);
         }
     }
 
@@ -1079,6 +1092,15 @@ export default class ColorPicker extends LightningElement {
         } else {
             this.handleChange(event);
         }
+    }
+
+    /**
+     * Handle a change in the color palette.
+     *
+     * @param {Event} event
+     */
+    handleColorPaletteChange(event) {
+        this.handleChangeAndDone(event);
     }
 
     /**
@@ -1098,17 +1120,9 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
-            this.currentToken = { ...this._draftToken };
             this.newValue = null;
-
-            if (!this.menuIconName && this.elementSwatch) {
-                this.elementSwatch.style.background = this.value;
-            }
-            if (this.colorGradient) {
-                this.colorGradient.renderValue(this.value);
-            }
-
-            this.dispatchChange(generateColors(this.value));
+            const color = this.currentToken.color || this.value;
+            this.dispatchChange(generateColors(color));
         }
 
         this.toggleMenuVisibility();
@@ -1119,10 +1133,6 @@ export default class ColorPicker extends LightningElement {
      */
     handleCancel() {
         this.newValue = null;
-
-        if (this.colorGradient) {
-            this.colorGradient.renderValue(this.value);
-        }
         this.toggleMenuVisibility();
     }
 
@@ -1304,23 +1314,42 @@ export default class ColorPicker extends LightningElement {
      */
     handleTabClick(event) {
         event.preventDefault();
+        const targetName = event.currentTarget.dataset.tabName;
+
+        // In hidePopover mode, a tab click selects the last selected color of that tab, except for 'custom'.
+        if (this._hidePopover) {
+            if (
+                targetName === 'default' &&
+                this._lastSelectedDefault &&
+                this._lastSelectedDefault !== this.value
+            ) {
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.value = this._lastSelectedDefault;
+                this.dispatchChange(generateColors(this.value));
+            } else if (
+                targetName === 'tokens' &&
+                this._lastSelectedToken &&
+                this._lastSelectedToken !== this.value
+            ) {
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.value = this._lastSelectedToken;
+                this.dispatchChange(generateColors(this.currentToken.color));
+            }
+        }
 
         this.template
             .querySelectorAll('[data-group-name="tabs"]')
             .forEach((tab) => {
-                const tabName = tab.dataset.tabName;
-                const targetName = event.currentTarget.dataset.tabName;
-
-                if (tabName === targetName) {
+                if (tab.dataset.tabName === targetName) {
                     tab.parentElement.classList.add('slds-is-active');
-                    this._currentTab = tabName;
+                    this._currentTab = targetName;
                 } else {
                     tab.parentElement.classList.remove('slds-is-active');
                 }
             });
 
         const palette = this.template.querySelector(
-            '[data-element-id="avonni-color-palette-default"]'
+            '[data-element-id="avonni-color-palette"]'
         );
         if (palette) {
             palette.colors = [...this.computedColors];
@@ -1346,10 +1375,6 @@ export default class ColorPicker extends LightningElement {
             }
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = color;
-
-            if (this.colorGradient) {
-                this.colorGradient.renderValue(color);
-            }
             this.dispatchChange(generateColors(color));
         } else if (color === '') {
             this.clearInput();
