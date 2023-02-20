@@ -26,8 +26,10 @@ export default class PrimitiveSchedulerAgenda extends LightningElement {
     @api zoomToFit;
 
     @api cleanSelection() {}
+    @api collapseSidePanel() {}
     @api createEvent() {}
     @api deleteEvent() {}
+    @api expandSidePanel() {}
     @api focusEvent() {}
     @api newEvent() {}
     @api saveSelection() {}
