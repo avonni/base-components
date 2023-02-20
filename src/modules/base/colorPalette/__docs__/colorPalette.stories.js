@@ -152,6 +152,15 @@ export default {
         },
         variant: {
             control: {
+                value: {
+                    control: {
+                        type: 'text'
+                    },
+                    description: 'Specifies the value of an input element.',
+                    table: {
+                        type: { summary: 'string' }
+                    }
+                },
                 type: 'radio'
             },
             options: ['grid', 'list'],
