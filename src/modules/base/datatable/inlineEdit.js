@@ -123,15 +123,6 @@ export function processInlineEditFinishCustom(
 ) {
     const state = dtState;
     const inlineEditState = state.inlineEdit;
-    if (inlineEditState.columnDef.type === 'lookup') {
-        const fieldName =
-            inlineEditState.columnDef.typeAttributes.label.fieldName;
-        const cells = state.rows[0].cells;
-        const ckValue = cells.find(
-            (cell) => cell.columnType === fieldName
-        ).colKeyValue;
-        colKeyValue = ckValue;
-    }
     const shouldSaveData =
         reason !== 'edit-canceled' &&
         !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&

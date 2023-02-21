@@ -996,11 +996,11 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
-
-        dispatchCellChangeEvent(this, dirtyValues);
+        if (value !== this.state.inlineEdit.editedValue) {
+            // Show yellow background and save/cancel button
+            super.updateRowsState(this.state);
+            dispatchCellChangeEvent(this, dirtyValues);
+        }
     };
 
     /**

@@ -167,6 +167,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is lookup.
+     *
+     * @type {boolean}
+     */
+    get isTypeLookup() {
+        return this.columnDef.type === 'lookup';
+    }
+
+    /**
      * Returns true if column type is type with menu.
      *
      * @type {boolean}
@@ -227,14 +236,14 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     comboboxFormattedValue(value) {
-        if (value.length > 2) {
-            return value;
-        } else if (value.length === 1) {
-            return value[0];
-        } else if (value.length === 0) {
-            return undefined;
+        switch (value.length) {
+            case 0:
+                return undefined;
+            case 1:
+                return value[0];
+            default:
+                return value;
         }
-        return value;
     }
 
     triggerEditFinished(detail) {
@@ -250,7 +259,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.isTypeRichText ? true : this.validity.valid;
+            detail.valid = this.validity.valid;
             detail.isMassEditChecked = this.isMassEditChecked;
             detail.value = this.comboboxFormattedValue(this.value);
         }
@@ -371,7 +380,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handlePanelLoosedFocus() {
-        if (this.visible) {
+        if (this.isTypeLookup && this.visible) {
+            this.processSubmission();
+        } else if (this.visible) {
             this.triggerEditFinished({
                 reason: 'loosed-focus'
             });
