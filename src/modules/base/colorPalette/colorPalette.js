@@ -103,8 +103,6 @@ export default class ColorPalette extends LightningElement {
     _variant = VARIANTS.default;
 
     computedGroups = [];
-    currentLabel;
-    currentToken;
     _isConnected = false;
 
     connectedCallback() {
@@ -140,7 +138,6 @@ export default class ColorPalette extends LightningElement {
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length ? colors : DEFAULT_COLORS;
-
         if (this._isConnected) this.initGroups();
     }
 
@@ -355,6 +352,16 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
+     * Get the current color object.
+     */
+    get currentColor() {
+        return (
+            this.colors.find((col) => col.value && col.value === this.value) ||
+            {}
+        );
+    }
+
+    /**
      * CSS class of the group wrapping div.
      *
      * @type {string|undefined}
@@ -387,7 +394,7 @@ export default class ColorPalette extends LightningElement {
     reset() {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = '';
-        this.dispatchChange();
+        this.dispatchChange(generateColors(''));
     }
 
     /*
@@ -518,9 +525,9 @@ export default class ColorPalette extends LightningElement {
         if (selectedColor) selectedColor.classList.remove('slds-is-selected');
 
         // Select new token or color.
-        const elem = this.currentToken
+        const elem = this.currentColor.value
             ? this.template.querySelector(
-                  `[data-selectable][data-token="${this.currentToken}"]`
+                  `[data-selectable][data-token="${this.currentColor.value}"]`
               )
             : this.template.querySelector(
                   `[data-selectable][data-color="${this.value}"]`
@@ -595,22 +602,19 @@ export default class ColorPalette extends LightningElement {
             return;
         }
 
-        const currentTarget = event.currentTarget;
-        this.currentLabel = currentTarget.dataset.label;
-        this.currentToken = currentTarget.dataset.token;
+        const { color, token } = event.currentTarget.dataset;
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.value = currentTarget.dataset.color;
+        this.value = token || color;
         event.preventDefault();
-        this.dispatchChange();
+        this.dispatchChange(generateColors(color));
     }
 
     /**
      * Change event handler.
      */
-    dispatchChange() {
-        let colors = generateColors(this.value);
-
+    dispatchChange(colors) {
         if (!this.disabled && !this.readOnly) {
+            const color = this.currentColor;
             /**
              * The event fired when the value is changed.
              *
@@ -637,8 +641,8 @@ export default class ColorPalette extends LightningElement {
                         rgb: colors.rgb,
                         rgba: colors.rgba,
                         alpha: colors.A,
-                        label: this.currentLabel,
-                        token: this.currentToken
+                        label: color.label,
+                        token: color.value
                     }
                 })
             );

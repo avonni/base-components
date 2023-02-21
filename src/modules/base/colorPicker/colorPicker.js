@@ -533,7 +533,7 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
-        if (this._isConnected) this.computeToken();
+        this.computeToken();
     }
 
     /**
@@ -571,7 +571,7 @@ export default class ColorPicker extends LightningElement {
         if (value && typeof value === 'string') {
             this._value = value;
             this.inputValue = value;
-            if (this._isConnected) this.computeToken();
+            this.computeToken();
             this.setLastSelectedColor();
         } else {
             this._value = null;
