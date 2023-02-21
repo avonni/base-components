@@ -426,7 +426,7 @@ export default class ColorPalette extends LightningElement {
                 : element.dataset.color;
             element.style.backgroundColor = backgroundColor;
             element.style.borderRadius =
-                'var(--avonni-color-palette-border-radius, 0.125rem)';
+                'var(--avonni-color-palette-swatch-border-radius, var(--avonni-color-picker-swatch-border-radius, 0.125rem))';
             element.style.height = `${this.tileHeight}px`;
             element.style.width = `${this.tileWidth}px`;
 

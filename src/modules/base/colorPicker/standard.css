@@ -45,6 +45,10 @@
     background-color: #ecebea;
 }
 
+.avonni-color-picker__main-button .slds-swatch {
+    border-radius: var(--avonni-color-picker-swatch-border-radius, 0.125rem);
+}
+
 .avonni-color-picker__dropdown {
     max-width: none;
 }
