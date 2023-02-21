@@ -13,3 +13,40 @@
  * @property {string} name Unique name of the group.
  * @property {string} label Label of the group.
  */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-border-radius
+ * @default --avonni-color-picker-swatch-border-radius, 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-selected-outline-width
+ * @default 2px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-selected-outline-color
+ * @default dynamic (swatch background-color)
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-selected-border-width
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-selected-border-color
+ * @default white
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-palette-swatch-selected-checkmark-color
+ * @default dynamic (white or black depending on the background color)
+ * @type dimension
+ */
