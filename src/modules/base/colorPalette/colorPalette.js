@@ -438,7 +438,7 @@ export default class ColorPalette extends LightningElement {
                 element.firstChild.style.width = lengthStyle;
 
                 const { R, G, B } = generateColors(element.dataset.color);
-                if (isLightColor(R, G, B, 235)) {
+                if (isLightColor(R, G, B)) {
                     element.firstChild.style.fill = 'black';
                 }
             }
