@@ -10,6 +10,7 @@ module.exports = {
         '^c/(calendar)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(card)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(colorGradient)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(combobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(filterMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
