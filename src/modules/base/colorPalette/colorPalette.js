@@ -421,32 +421,36 @@ export default class ColorPalette extends LightningElement {
         [
             ...this.template.querySelectorAll('[data-element-id="span-swatch"]')
         ].forEach((element) => {
-            if (this.disabled) {
-                element.style.backgroundColor = '#dddbda';
-            } else {
-                element.style.backgroundColor = element.dataset.color;
-            }
-
+            const backgroundColor = this.disabled
+                ? '#dddbda'
+                : element.dataset.color;
+            element.style.backgroundColor = backgroundColor;
             element.style.borderRadius =
                 'var(--avonni-color-palette-border-radius, 0.125rem)';
             element.style.height = `${this.tileHeight}px`;
             element.style.width = `${this.tileWidth}px`;
 
-            // Style checkmark for grid variant.
-            if (this.variant === 'grid' && !this._hideCheckmark) {
-                const smallestLength = Math.min(
-                    this.tileHeight,
-                    this.tileWidth
-                );
-                const lengthStyle = `${
-                    smallestLength - (smallestLength * 4) / 10
-                }px`;
-                element.firstChild.style.height = lengthStyle;
-                element.firstChild.style.width = lengthStyle;
+            if (this.variant === 'grid') {
+                // Style checkmark
+                if (this._showCheckmark) {
+                    const smallestLength = Math.min(
+                        this.tileHeight,
+                        this.tileWidth
+                    );
+                    const lengthStyle = `${
+                        smallestLength - smallestLength * 0.4
+                    }px`;
+                    element.firstChild.style.height = lengthStyle;
+                    element.firstChild.style.width = lengthStyle;
 
-                const { R, G, B } = generateColors(element.dataset.color);
-                if (isLightColor(R, G, B)) {
-                    element.firstChild.style.fill = 'black';
+                    const { R, G, B } = generateColors(element.dataset.color);
+                    const color = isLightColor(R, G, B) ? 'black' : 'white';
+                    element.firstChild.style.fill = `var(--avonni-color-palette-selected-checkmark-color, ${color})`;
+                }
+
+                // Style outline
+                if (!this._hideOutline) {
+                    element.style.outlineColor = `var(--avonni-color-palette-selected-outline-color, ${backgroundColor})`;
                 }
             }
         });
