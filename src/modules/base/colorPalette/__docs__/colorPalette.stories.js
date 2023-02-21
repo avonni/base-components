@@ -69,17 +69,6 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        showCheckmark: {
-            name: 'show-checkmark',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the selected checkmark is shown.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
         hideOutline: {
             name: 'hide-outline',
             control: {
@@ -133,6 +122,17 @@ export default {
             },
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        showCheckmark: {
+            name: 'show-checkmark',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected checkmark is shown.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

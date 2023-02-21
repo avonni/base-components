@@ -120,6 +120,17 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        hideOutline: {
+            name: 'hide-outline',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected outline is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hidePopover: {
             name: 'hide-popover',
             control: {
@@ -303,6 +314,17 @@ export default {
             },
             description:
                 'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        showCheckmark: {
+            name: 'show-checkmark',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected checkmark is shown.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

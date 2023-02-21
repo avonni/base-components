@@ -93,10 +93,10 @@ export default class ColorPalette extends LightningElement {
     _columns = DEFAULT_COLUMNS;
     _disabled = false;
     _groups = [];
-    _showCheckmark = false;
     _hideOutline = false;
     _isLoading = false;
     _readOnly = false;
+    _showCheckmark = false;
     _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
     _value;
@@ -193,23 +193,6 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * If present, the selected checkmark is hidden.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showCheckmark() {
-        return this._showCheckmark;
-    }
-
-    set showCheckmark(value) {
-        this._showCheckmark = normalizeBoolean(value);
-        this.initContainer();
-    }
-
-    /**
      * If present, the selected outline is hidden.
      *
      * @public
@@ -257,6 +240,23 @@ export default class ColorPalette extends LightningElement {
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+        this.initContainer();
+    }
+
+    /**
+     * If present, the selected checkmark is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showCheckmark() {
+        return this._showCheckmark;
+    }
+
+    set showCheckmark(value) {
+        this._showCheckmark = normalizeBoolean(value);
         this.initContainer();
     }
 

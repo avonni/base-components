@@ -48,6 +48,8 @@ export const ColorPicker = ({
     name,
     fieldLevelHelp,
     hideClearIcon,
+    showCheckmark,
+    hideOutline,
     value,
     variant,
     type,
@@ -72,6 +74,8 @@ export const ColorPicker = ({
     element.readOnly = readOnly;
     element.required = required;
     element.hidePopover = hidePopover;
+    element.hideOutline = hideOutline;
+    element.showCheckmark = showCheckmark;
     element.isLoading = isLoading;
     element.label = label;
     element.name = name;

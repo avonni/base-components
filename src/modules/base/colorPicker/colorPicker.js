@@ -183,6 +183,7 @@ export default class ColorPicker extends LightningElement {
     _groups = [];
     _hideColorInput = false;
     _hideClearIcon = false;
+    _hideOutline = false;
     _hidePopover = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
@@ -193,6 +194,7 @@ export default class ColorPicker extends LightningElement {
     _opacity = false;
     _readOnly = false;
     _required = false;
+    _showCheckmark = false;
     _tokens = [];
     _type = TYPES.default;
     _value;
@@ -350,6 +352,22 @@ export default class ColorPicker extends LightningElement {
 
     set hideColorInput(value) {
         this._hideColorInput = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the selected outline is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideOutline() {
+        return this._hideOutline;
+    }
+
+    set hideOutline(value) {
+        this._hideOutline = normalizeBoolean(value);
     }
 
     /**
@@ -518,6 +536,22 @@ export default class ColorPicker extends LightningElement {
 
     set required(value) {
         this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the selected checkmark is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showCheckmark() {
+        return this._showCheckmark;
+    }
+
+    set showCheckmark(value) {
+        this._showCheckmark = normalizeBoolean(value);
     }
 
     /**
