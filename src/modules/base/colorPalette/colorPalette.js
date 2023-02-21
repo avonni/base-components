@@ -444,7 +444,7 @@ export default class ColorPalette extends LightningElement {
             }
         });
 
-        this.selectColor(this._value);
+        this.selectColor();
     }
 
     /**
@@ -511,30 +511,20 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * Mark a color as selected.
-     *
-     * @param {string} value
      */
-    selectColor(value) {
+    selectColor() {
         // Unselect last selected color.
         const selectedColor = this.template.querySelector('.slds-is-selected');
         if (selectedColor) selectedColor.classList.remove('slds-is-selected');
 
-        let elem;
-        if (this.variant === 'list') {
-            elem =
-                this.template.querySelector(
-                    `[data-selectable][data-token="${value}"]`
-                ) ||
-                this.template.querySelector(
-                    `[data-selectable][data-color="${value}"]`
-                );
-        } else {
-            elem = this.template.querySelector(
-                `[data-selectable][data-color="${value}"]`
-            );
-        }
-
-        // Select the new color with the value provided.
+        // Select new token or color.
+        const elem = this.currentToken
+            ? this.template.querySelector(
+                  `[data-selectable][data-token="${this.currentToken}"]`
+              )
+            : this.template.querySelector(
+                  `[data-selectable][data-color="${this.value}"]`
+              );
         if (elem) elem.classList.add('slds-is-selected');
     }
 
@@ -606,10 +596,10 @@ export default class ColorPalette extends LightningElement {
         }
 
         const currentTarget = event.currentTarget;
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.value = currentTarget.dataset.color;
         this.currentLabel = currentTarget.dataset.label;
         this.currentToken = currentTarget.dataset.token;
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = currentTarget.dataset.color;
         event.preventDefault();
         this.dispatchChange();
     }
