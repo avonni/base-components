@@ -148,6 +148,7 @@
                             "
                             colors={computedColors}
                             columns={columns}
+                            disabled={disabled}
                             groups={groups}
                             is-loading={paletteIsLoading}
                             read-only={readOnly}
@@ -160,6 +161,7 @@
                         <!-- Color Gradient -->
                         <c-color-gradient
                             if:true={showColorGradient}
+                            disabled={disabled}
                             message-when-bad-input={messageWhenBadInput}
                             opacity={opacity}
                             value={computedGradientValue}
