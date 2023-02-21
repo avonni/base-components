@@ -445,12 +445,12 @@ export default class ColorPalette extends LightningElement {
 
                     const { R, G, B } = generateColors(element.dataset.color);
                     const color = isLightColor(R, G, B) ? 'black' : 'white';
-                    element.firstChild.style.fill = `var(--avonni-color-palette-selected-checkmark-color, ${color})`;
+                    element.firstChild.style.fill = `var(--avonni-color-palette-swatch-selected-checkmark-color, ${color})`;
                 }
 
                 // Style outline
                 if (!this._hideOutline) {
-                    element.style.outlineColor = `var(--avonni-color-palette-selected-outline-color, ${backgroundColor})`;
+                    element.style.outlineColor = `var(--avonni-color-palette-swatch-selected-outline-color, ${backgroundColor})`;
                 }
             }
         });
