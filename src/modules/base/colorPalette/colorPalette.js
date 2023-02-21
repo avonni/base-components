@@ -35,12 +35,12 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    generateColors
+    generateColors,
+    isLightColor
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import grid from './grid.html';
 import list from './list.html';
-import { isLightColor } from '../utilsPrivate/colorUtils';
 
 const DEFAULT_COLORS = [
     '#e3abec',
