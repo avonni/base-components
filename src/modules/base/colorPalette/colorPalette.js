@@ -93,7 +93,7 @@ export default class ColorPalette extends LightningElement {
     _columns = DEFAULT_COLUMNS;
     _disabled = false;
     _groups = [];
-    _hideCheckmark = false;
+    _showCheckmark = false;
     _hideOutline = false;
     _isLoading = false;
     _readOnly = false;
@@ -200,12 +200,12 @@ export default class ColorPalette extends LightningElement {
      * @default false
      */
     @api
-    get hideCheckmark() {
-        return this._hideCheckmark;
+    get showCheckmark() {
+        return this._showCheckmark;
     }
 
-    set hideCheckmark(value) {
-        this._hideCheckmark = normalizeBoolean(value);
+    set showCheckmark(value) {
+        this._showCheckmark = normalizeBoolean(value);
         this.initContainer();
     }
 
@@ -346,7 +346,7 @@ export default class ColorPalette extends LightningElement {
                 'avonni-color-picker__show-selected-outline':
                     this.variant === 'grid' && !this._hideOutline,
                 'avonni-color-picker__show-selected-checkmark':
-                    this.variant === 'grid' && !this._hideCheckmark
+                    this.variant === 'grid' && this._showCheckmark
             })
             .toString();
     }

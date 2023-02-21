@@ -48,7 +48,6 @@
 
 .avonni-color-palette__selected-checkmark {
     display: none;
-    fill: white;
 }
 
 .slds-color-picker__swatch-trigger.avonni-color-picker__show-selected-checkmark.slds-is-selected

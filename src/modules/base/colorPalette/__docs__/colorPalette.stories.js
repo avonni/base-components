@@ -69,12 +69,12 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        hideCheckmark: {
-            name: 'hide-checkmark',
+        showCheckmark: {
+            name: 'show-checkmark',
             control: {
                 type: 'boolean'
             },
-            description: 'If present, the selected checkmark is hidden.',
+            description: 'If present, the selected checkmark is shown.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

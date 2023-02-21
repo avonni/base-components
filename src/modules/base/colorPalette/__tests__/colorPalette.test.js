@@ -72,7 +72,7 @@ describe('Color Palette', () => {
 
     it('Color Palette: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
-        expect(element.hideCheckmark).toBeFalsy();
+        expect(element.showCheckmark).toBeFalsy();
         expect(element.hideOutline).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
@@ -156,9 +156,9 @@ describe('Color Palette', () => {
             });
     });
 
-    // hideCheckmark
-    it('Color Palette: hideCheckmark', () => {
-        element.hideCheckmark = true;
+    // showCheckmark
+    it('Color Palette: showCheckmark', () => {
+        element.showCheckmark = true;
 
         return Promise.resolve()
             .then(() => {
@@ -169,7 +169,7 @@ describe('Color Palette', () => {
             .then(() => {
                 const selectable =
                     element.shadowRoot.querySelector('[data-selectable]');
-                expect(selectable.classList).not.toContain(
+                expect(selectable.classList).toContain(
                     'avonni-color-picker__show-selected-checkmark'
                 );
                 expect(selectable.classList).toContain('slds-is-selected');
