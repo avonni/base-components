@@ -22,11 +22,14 @@ export default class PrimitiveSchedulerAgenda extends LightningElement {
     @api selectedResources;
     @api sidePanelPosition;
     @api timeSpan;
+    @api timezone;
     @api zoomToFit;
 
     @api cleanSelection() {}
+    @api collapseSidePanel() {}
     @api createEvent() {}
     @api deleteEvent() {}
+    @api expandSidePanel() {}
     @api focusEvent() {}
     @api newEvent() {}
     @api saveSelection() {}

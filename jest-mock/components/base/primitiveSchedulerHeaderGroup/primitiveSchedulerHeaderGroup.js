@@ -11,6 +11,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     @api scrollLeftOffset;
     @api variant;
     @api visibleWidth;
+    @api timezone;
     @api zoomToFit;
 
     _start;
@@ -31,7 +32,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const start = dateTimeObjectFrom(value);
+        const start = dateTimeObjectFrom(value, { zone: this.timezone });
         if (this._start && this._start.ts === start.ts) {
             // Prevent an infinite loop
             return;
