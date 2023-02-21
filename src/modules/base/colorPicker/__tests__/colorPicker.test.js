@@ -54,7 +54,7 @@ const defaultColors = [
     '#ffb758',
     '#bd35bd',
     '#5778c1',
-    '#5ebbff',
+    '#1b96ff',
     '#00aea9',
     '#3bba4c',
     '#f4bc25',
