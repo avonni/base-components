@@ -244,7 +244,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * If present, the selected checkmark is hidden.
+     * If present, the selected checkmark is shown.
      *
      * @public
      * @type {boolean}
