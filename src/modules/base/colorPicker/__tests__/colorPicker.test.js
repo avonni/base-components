@@ -134,6 +134,11 @@ describe('Color Picker', () => {
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.opacity).toBeFalsy();
+        expect(element.opacity).toBeFalsy();
+        expect(element.paletteHideOutline).toBeFalsy();
+        expect(element.paletteShowCheckmark).toBeFalsy();
+        expect(element.paletteTileHeight).toBeUndefined();
+        expect(element.paletteTileWidth).toBeUndefined();
         expect(element.tokens).toMatchObject([]);
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();

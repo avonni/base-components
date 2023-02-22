@@ -118,6 +118,8 @@ const DEFAULT_COLORS = [
 const DEFAULT_COLUMNS = 7;
 const DEFAULT_TAB = 'default';
 const MINIMUM_TILE_SIZE = 5;
+const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_TILE_HEIGHT = 20;
 
 /**
  * @class
@@ -183,7 +185,6 @@ export default class ColorPicker extends LightningElement {
     _groups = [];
     _hideColorInput = false;
     _hideClearIcon = false;
-    _hideOutline = false;
     _hidePopover = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
@@ -192,9 +193,12 @@ export default class ColorPicker extends LightningElement {
     _menuVariant = MENU_VARIANTS.default;
     _name;
     _opacity = false;
+    _paletteHideOutline = false;
+    _paletteShowCheckmark = false;
+    _paletteTileWidth;
+    _paletteTileHeight;
     _readOnly = false;
     _required = false;
-    _showCheckmark = false;
     _tokens = [];
     _type = TYPES.default;
     _value;
@@ -232,17 +236,7 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this._rendered = true;
         }
-
-        const palette = this.template.querySelector(
-            '[data-element-id^="avonni-color-palette"]'
-        );
-        if (palette) {
-            const paletteWidth = palette.clientWidth;
-            const tileWidth = Math.floor(paletteWidth / this.columns - 8);
-            const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
-            palette.tileWidth = tileSize;
-            palette.tileHeight = tileSize;
-        }
+        this.setPaletteTileSizes();
     }
 
     render() {
@@ -352,22 +346,6 @@ export default class ColorPicker extends LightningElement {
 
     set hideColorInput(value) {
         this._hideColorInput = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the selected outline is hidden.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideOutline() {
-        return this._hideOutline;
-    }
-
-    set hideOutline(value) {
-        this._hideOutline = normalizeBoolean(value);
     }
 
     /**
@@ -507,6 +485,70 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * If present, the selected palette swatch outline is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get paletteHideOutline() {
+        return this._paletteHideOutline;
+    }
+
+    set paletteHideOutline(value) {
+        this._paletteHideOutline = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the selected palette swatch shows a checkmark.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get paletteShowCheckmark() {
+        return this._paletteShowCheckmark;
+    }
+
+    set paletteShowCheckmark(value) {
+        this._paletteShowCheckmark = normalizeBoolean(value);
+    }
+
+    /**
+     * Specifies the palette swatches tile height.
+     *
+     * @public
+     * @type {number}
+     * @default 20
+     */
+    @api
+    get paletteTileHeight() {
+        return this._paletteTileHeight;
+    }
+
+    set paletteTileHeight(value) {
+        this._paletteTileHeight = Number(value);
+    }
+
+    /**
+     * Specifies the palette swatches tile width.
+     *
+     * @public
+     * @type {boolean}
+     * @default 20
+     */
+    @api
+    get paletteTileWidth() {
+        return this._paletteTileWidth;
+    }
+
+    set paletteTileWidth(value) {
+        this._paletteTileWidth = Number(value);
+    }
+
+    /**
      * If present, the input field is read-only and cannot be edited by users.
      *
      * @public
@@ -536,22 +578,6 @@ export default class ColorPicker extends LightningElement {
 
     set required(value) {
         this._required = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the selected checkmark is shown.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showCheckmark() {
-        return this._showCheckmark;
-    }
-
-    set showCheckmark(value) {
-        this._showCheckmark = normalizeBoolean(value);
     }
 
     /**
@@ -1075,7 +1101,7 @@ export default class ColorPicker extends LightningElement {
      * In hidePopover mode, set the last selected color for default and tokens tab.
      */
     setLastSelectedColor() {
-        if (this._hidePopover) {
+        if (this.hidePopover) {
             const isTokensColor = this.currentToken.value;
             const isDefaultColor = this.colors.includes(this.value);
             if (isTokensColor) {
@@ -1084,6 +1110,29 @@ export default class ColorPicker extends LightningElement {
                 this._lastSelectedDefault = this.value;
             }
         }
+    }
+
+    setPaletteTileSizes() {
+        requestAnimationFrame(() => {
+            const palette = this.template.querySelector(
+                '[data-element-id^="avonni-color-palette"]'
+            );
+            if (!palette) return;
+            if (this.hidePopover) {
+                palette.tileWidth =
+                    this._paletteTileWidth || DEFAULT_TILE_WIDTH;
+                palette.tileHeight =
+                    this._paletteTileHeight || DEFAULT_TILE_HEIGHT;
+            } else {
+                const paletteWidth = palette.clientWidth;
+                const tileWidth = Math.floor(paletteWidth / this.columns - 8);
+                const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
+                palette.tileWidth =
+                    this._paletteTileWidth || tileSize || DEFAULT_TILE_WIDTH;
+                palette.tileHeight =
+                    this._paletteTileHeight || tileSize || DEFAULT_TILE_HEIGHT;
+            }
+        });
     }
 
     /**
@@ -1109,7 +1158,7 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleColorGradientChange(event) {
-        if (this._hidePopover) {
+        if (this.hidePopover) {
             this.handleChangeAndDone(event);
         } else {
             this.handleChange(event);
@@ -1274,7 +1323,7 @@ export default class ColorPicker extends LightningElement {
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
-        if (!this.disabled && !this._hidePopover) {
+        if (!this.disabled && !this.hidePopover) {
             this.dropdownVisible = !this.dropdownVisible;
 
             if (!this.dropdownOpened && this.dropdownVisible) {
@@ -1337,7 +1386,7 @@ export default class ColorPicker extends LightningElement {
         const targetName = event.currentTarget.dataset.tabName;
 
         // In hidePopover mode, a tab click selects the last selected color of that tab, except for 'custom'.
-        if (this._hidePopover) {
+        if (this.hidePopover) {
             if (
                 targetName === 'default' &&
                 this._lastSelectedDefault &&

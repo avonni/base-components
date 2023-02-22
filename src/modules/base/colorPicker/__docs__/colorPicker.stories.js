@@ -120,17 +120,6 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        hideOutline: {
-            name: 'hide-outline',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the selected outline is hidden.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
         hidePopover: {
             name: 'hide-popover',
             control: {
@@ -296,6 +285,50 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        paletteHideOutline: {
+            name: 'palette-hide-outline',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected palette swatch outline is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        paletteShowCheckmark: {
+            name: 'palette-show-checkmark',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected palette swatch shows a checkmark.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        paletteTileHeight: {
+            name: 'palette-tile-height',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the palette swatches tile height.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        paletteTileWidth: {
+            name: 'palette-tile-width',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the palette swatches tile width.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -314,17 +347,6 @@ export default {
             },
             description:
                 'If present, the input field must be filled out before the form is submitted.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        showCheckmark: {
-            name: 'show-checkmark',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the selected checkmark is shown.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
