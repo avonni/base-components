@@ -75,7 +75,6 @@ const DEFAULT_COLORS = [
 
 const DEFAULT_TILE_WIDTH = 20;
 const DEFAULT_TILE_HEIGHT = 20;
-const DEFAULT_COLUMNS = 7;
 
 const VARIANTS = {
     default: 'grid',
@@ -90,7 +89,7 @@ const VARIANTS = {
  */
 export default class ColorPalette extends LightningElement {
     _colors = DEFAULT_COLORS;
-    _columns = DEFAULT_COLUMNS;
+    _columns;
     _disabled = false;
     _groups = [];
     _hideOutline = false;
@@ -142,11 +141,10 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Specifies the number of columns that will be displayed.
+     * Specifies the number of columns displayed. If unspecified, the tiles spread to the width of the container.
      *
      * @public
      * @type {number}
-     * @default 7
      */
     @api
     get columns() {
@@ -407,15 +405,14 @@ export default class ColorPalette extends LightningElement {
      * Initialize Palette container.
      */
     initContainer() {
-        const containerWidth = this.columns * (Number(this.tileWidth) + 8);
-        const containerMinHeight = Number(this.tileHeight) + 8;
         const container = this.template.querySelector(
             '[data-element-id="div-palette-container"]'
         );
-
         if (container) {
-            container.style.width = `${containerWidth}px`;
-            container.style.minHeight = `${containerMinHeight}px`;
+            container.style.width = this.columns
+                ? `${this.columns * (Number(this.tileWidth) + 8)}px`
+                : '';
+            container.style.minHeight = `${Number(this.tileHeight) + 8}px`;
         }
 
         [

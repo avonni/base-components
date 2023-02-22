@@ -180,7 +180,7 @@ export default class ColorPicker extends LightningElement {
     @api messageWhenValueMissing;
 
     _colors = DEFAULT_COLORS;
-    _columns = DEFAULT_COLUMNS;
+    _columns;
     _disabled = false;
     _groups = [];
     _hideColorInput = false;
@@ -267,7 +267,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Number of columns in the palette.
+     * Number of columns in the palette. If unspecified, defaults to 7 except when hidePopover is present.
      *
      * @public
      * @type {number}
@@ -275,7 +275,8 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     get columns() {
-        return this._columns;
+        if (this.hidePopover && !this._columns) return null;
+        return this._columns || DEFAULT_COLUMNS;
     }
 
     set columns(value) {

@@ -54,7 +54,7 @@ export default {
                 min: 0
             },
             description:
-                'Specifies the number of columns that will be displayed. ',
+                'Specifies the number of columns displayed. If unspecified, the tiles spread to the width of the container.',
             table: {
                 defaultValue: { summary: 7 },
                 type: { summary: 'number' }
@@ -203,7 +203,6 @@ export default {
             '#b67d11',
             '#b85d0d'
         ],
-        columns: 7,
         disabled: false,
         isLoading: false,
         readOnly: false,
@@ -216,21 +215,27 @@ export default {
 const Template = (args) => ColorPalette(args);
 
 export const Base = Template.bind({});
+Base.args = {
+    columns: 7
+};
 
 export const SmallTiles = Template.bind({});
 SmallTiles.args = {
+    columns: 7,
     tileWidth: 10,
     tileHeight: 10
 };
 
 export const LargeTiles = Template.bind({});
 LargeTiles.args = {
+    columns: 7,
     tileWidth: 30,
     tileHeight: 30
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
+    columns: 7,
     disabled: true
 };
 

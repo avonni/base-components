@@ -107,7 +107,7 @@ describe('Color Palette', () => {
             '#b67d11',
             '#b85d0d'
         ]);
-        expect(element.columns).toBe(7);
+        expect(element.columns).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.tileWidth).toBe(20);
         expect(element.tileHeight).toBe(20);
