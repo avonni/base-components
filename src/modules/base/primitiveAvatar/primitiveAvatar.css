@@ -502,7 +502,7 @@
 
 .avonni-avatar__image {
     height: 100%;
-    object-fit: cover;
+    object-fit: var(--avonni-avatar-image-object-fit, 'cover');
 }
 
 /** 
