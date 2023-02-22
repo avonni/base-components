@@ -31,3 +31,7 @@
  */
 
 @import './shared.css';
+
+.avonni-color-picker__inline-color-gradient {
+    --avonni-color-gradient-max-width: none;
+}
