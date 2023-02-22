@@ -58,13 +58,7 @@
             </template>
 
             <template if:false={isLoading}>
-                <div
-                    class="
-                        slds-popover__body
-                        avonni-color-picker__popover-body
-                        slds-tabs_default
-                    "
-                >
+                <div class="slds-tabs_default">
                     <!-- Tabs -->
                     <ul
                         if:true={isBase}
@@ -141,11 +135,6 @@
                         <!-- Color palette -->
                         <c-color-palette
                             if:false={showColorGradient}
-                            class="
-                                slds-show
-                                slds-scrollable_y
-                                avonni-color-picker__default-palette
-                            "
                             colors={computedColors}
                             columns={columns}
                             disabled={disabled}
