@@ -46,10 +46,7 @@
 
 .slds-color-picker__swatch-trigger:focus,
 .slds-color-picker__swatch-trigger:active {
-    border-radius: var(
-        --avonni-color-palette-swatch-border-radius,
-        var(--avonni-color-picker-swatch-border-radius, 0.25rem)
-    );
+    border-radius: var(--avonni-color-palette-swatch-border-radius, 0.25rem);
 }
 
 .avonni-color-palette__selected-checkmark {

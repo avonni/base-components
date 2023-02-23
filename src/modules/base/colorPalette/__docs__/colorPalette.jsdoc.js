@@ -17,7 +17,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-color-palette-swatch-border-radius
- * @default --avonni-color-picker-swatch-border-radius, 0.125rem
+ * @default 0.125rem
  * @type dimension
  */
 /**
