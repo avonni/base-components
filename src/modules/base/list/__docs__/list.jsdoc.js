@@ -268,6 +268,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-avatar-image-object-fit
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-image-color-background
  * @type color
  */
