@@ -180,7 +180,7 @@ export default class ColorPicker extends LightningElement {
     @api messageWhenValueMissing;
 
     _colors = DEFAULT_COLORS;
-    _columns;
+    _columns = DEFAULT_COLUMNS;
     _disabled = false;
     _groups = [];
     _hideColorInput = false;
@@ -275,16 +275,19 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     get columns() {
-        if (this.hidePopover && !this._columns) return null;
-        return this._columns || DEFAULT_COLUMNS;
+        return this._columns;
     }
 
     set columns(value) {
-        const normalizedValue = parseInt(value, 10);
-        this._columns =
-            !isNaN(normalizedValue) && normalizedValue
-                ? parseInt(value, 10)
-                : DEFAULT_COLUMNS;
+        if (!value) {
+            this._columns = value;
+        } else {
+            const normalizedValue = parseInt(value, 10);
+            this._columns =
+                !isNaN(normalizedValue) && normalizedValue
+                    ? normalizedValue
+                    : DEFAULT_COLUMNS;
+        }
     }
 
     /**
@@ -1116,7 +1119,7 @@ export default class ColorPicker extends LightningElement {
     setPaletteTileSizes() {
         requestAnimationFrame(() => {
             const palette = this.template.querySelector(
-                '[data-element-id^="avonni-color-palette"]'
+                '[data-element-id="avonni-color-palette"]'
             );
             if (!palette) return;
             if (this.hidePopover) {
@@ -1126,7 +1129,8 @@ export default class ColorPicker extends LightningElement {
                     this._paletteTileHeight || DEFAULT_TILE_HEIGHT;
             } else {
                 const paletteWidth = palette.clientWidth;
-                const tileWidth = Math.floor(paletteWidth / this.columns - 8);
+                const columns = this.columns || DEFAULT_COLUMNS;
+                const tileWidth = Math.floor(paletteWidth / columns - 8);
                 const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
                 palette.tileWidth =
                     this._paletteTileWidth || tileSize || DEFAULT_TILE_WIDTH;
