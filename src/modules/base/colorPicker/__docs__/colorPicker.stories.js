@@ -120,8 +120,8 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        hidePopover: {
-            name: 'hide-popover',
+        inline: {
+            name: 'inline',
             control: {
                 type: 'boolean'
             },
@@ -464,15 +464,15 @@ MenuNoInput.args = {
     hideColorInput: true
 };
 
-export const HidePopover = Template.bind({});
-HidePopover.args = {
-    hidePopover: true,
+export const Inline = Template.bind({});
+Inline.args = {
+    inline: true,
     tokens,
     variant: 'label-hidden'
 };
 
-export const Inline = Template.bind({});
-Inline.args = {
+export const LabelInline = Template.bind({});
+LabelInline.args = {
     label: 'Color label',
     fieldLevelHelp: 'The variant is "label-inline".',
     value: '#0a2399',
@@ -480,8 +480,8 @@ Inline.args = {
     menuVariant: 'container'
 };
 
-export const InlineNoInput = Template.bind({});
-InlineNoInput.args = {
+export const LabelInlineNoInput = Template.bind({});
+LabelInlineNoInput.args = {
     label: 'Color label',
     fieldLevelHelp:
         'The variant is "label-inline" and the color input is hidden.',

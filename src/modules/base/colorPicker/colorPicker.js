@@ -185,7 +185,7 @@ export default class ColorPicker extends LightningElement {
     _groups = [];
     _hideColorInput = false;
     _hideClearIcon = false;
-    _hidePopover = false;
+    _inline = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuNubbin = false;
@@ -240,7 +240,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     render() {
-        return this.hidePopover ? inline : standard;
+        return this.inline ? inline : standard;
     }
 
     /*
@@ -267,7 +267,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Number of columns in the palette. If unspecified, defaults to 7 except when hidePopover is present.
+     * Number of columns in the palette. If unspecified, defaults to 7 except when inline is present.
      *
      * @public
      * @type {number}
@@ -360,12 +360,12 @@ export default class ColorPicker extends LightningElement {
      * @default false
      */
     @api
-    get hidePopover() {
-        return this._hidePopover;
+    get inline() {
+        return this._inline;
     }
 
-    set hidePopover(value) {
-        this._hidePopover = normalizeBoolean(value);
+    set inline(value) {
+        this._inline = normalizeBoolean(value);
     }
 
     /**
@@ -1102,10 +1102,10 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * In hidePopover mode, set the last selected color for default and tokens tab.
+     * In inline mode, set the last selected color for default and tokens tab.
      */
     setLastSelectedColor() {
-        if (this.hidePopover) {
+        if (this.inline) {
             const isTokensColor = this.currentToken.value;
             const isDefaultColor = this.colors.includes(this.value);
             if (isTokensColor) {
@@ -1122,7 +1122,7 @@ export default class ColorPicker extends LightningElement {
                 '[data-element-id="avonni-color-palette"]'
             );
             if (!palette) return;
-            if (this.hidePopover) {
+            if (this.inline) {
                 palette.tileWidth =
                     this._paletteTileWidth || DEFAULT_TILE_WIDTH;
                 palette.tileHeight =
@@ -1163,7 +1163,7 @@ export default class ColorPicker extends LightningElement {
      * @param {Event} event
      */
     handleColorGradientChange(event) {
-        if (this.hidePopover) {
+        if (this.inline) {
             this.handleChangeAndDone(event);
         } else {
             this.handleChange(event);
@@ -1328,7 +1328,7 @@ export default class ColorPicker extends LightningElement {
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
-        if (!this.disabled && !this.hidePopover) {
+        if (!this.disabled && !this.inline) {
             this.dropdownVisible = !this.dropdownVisible;
 
             if (!this.dropdownOpened && this.dropdownVisible) {
@@ -1390,8 +1390,8 @@ export default class ColorPicker extends LightningElement {
         event.preventDefault();
         const targetName = event.currentTarget.dataset.tabName;
 
-        // In hidePopover mode, a tab click selects the last selected color of that tab, except for 'custom'.
-        if (this.hidePopover) {
+        // In inline mode, a tab click selects the last selected color of that tab, except for 'custom'.
+        if (this.inline) {
             if (
                 targetName === 'default' &&
                 this._lastSelectedDefault &&

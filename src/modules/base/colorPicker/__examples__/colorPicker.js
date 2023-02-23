@@ -42,7 +42,7 @@ export const ColorPicker = ({
     disabled,
     readOnly,
     required,
-    hidePopover,
+    inline,
     isLoading,
     label,
     name,
@@ -75,7 +75,7 @@ export const ColorPicker = ({
     element.hideClearIcon = hideClearIcon;
     element.readOnly = readOnly;
     element.required = required;
-    element.hidePopover = hidePopover;
+    element.inline = inline;
     element.paletteHideOutline = paletteHideOutline;
     element.paletteShowCheckmark = paletteShowCheckmark;
     element.paletteTileHeight = paletteTileHeight;

@@ -121,7 +121,7 @@ describe('Color Picker', () => {
         expect(element.groups).toMatchObject([]);
         expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideColorInput).toBeFalsy();
-        expect(element.hidePopover).toBeFalsy();
+        expect(element.inline).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.menuVariant).toBe('border');
@@ -1107,9 +1107,9 @@ describe('Color Picker', () => {
         });
     });
 
-    // Hide popover
-    it('Color Picker: hide popover', () => {
-        element.hidePopover = true;
+    // Inline
+    it('Color Picker: inline', () => {
+        element.inline = true;
 
         return Promise.resolve()
             .then(() => {
@@ -1529,7 +1529,7 @@ describe('Color Picker', () => {
     it('Color Picker: change event after "default" tab click in inline mode with lastSelectedToken', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
-        element.hidePopover = true;
+        element.inline = true;
         jest.useFakeTimers();
 
         const color = {
@@ -1581,7 +1581,7 @@ describe('Color Picker', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.tokens = tokens;
-        element.hidePopover = true;
+        element.inline = true;
         jest.useFakeTimers();
 
         const color = {
