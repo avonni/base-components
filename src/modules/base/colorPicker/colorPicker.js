@@ -234,9 +234,9 @@ export default class ColorPicker extends LightningElement {
     renderedCallback() {
         if (!this._rendered) {
             this.initSwatchColor();
+            this.setPaletteTileSizes();
             this._rendered = true;
         }
-        this.setPaletteTileSizes();
     }
 
     render() {
@@ -288,6 +288,7 @@ export default class ColorPicker extends LightningElement {
                     ? normalizedValue
                     : DEFAULT_COLUMNS;
         }
+        this.setPaletteTileSizes();
     }
 
     /**
@@ -534,6 +535,7 @@ export default class ColorPicker extends LightningElement {
 
     set paletteTileHeight(value) {
         this._paletteTileHeight = Number(value);
+        this.setPaletteTileSizes();
     }
 
     /**
@@ -550,6 +552,7 @@ export default class ColorPicker extends LightningElement {
 
     set paletteTileWidth(value) {
         this._paletteTileWidth = Number(value);
+        this.setPaletteTileSizes();
     }
 
     /**
