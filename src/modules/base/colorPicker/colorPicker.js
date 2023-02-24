@@ -234,9 +234,9 @@ export default class ColorPicker extends LightningElement {
     renderedCallback() {
         if (!this._rendered) {
             this.initSwatchColor();
-            this.setPaletteTileSizes();
             this._rendered = true;
         }
+        this.setPaletteTileSizes();
     }
 
     render() {
