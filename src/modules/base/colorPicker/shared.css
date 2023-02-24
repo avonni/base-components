@@ -54,6 +54,10 @@
     height: 4rem;
 }
 
+.avonni-color-picker__default-palette {
+    max-height: 180px;
+}
+
 .avonni-color-picker__label {
     color: var(--avonni-color-picker-label-text-color, #3e3e3c);
     font-size: var(--avonni-color-picker-label-font-size, 0.75rem);

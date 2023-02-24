@@ -57,10 +57,6 @@
     width: var(--avonni-color-picker-popover-width, 16rem);
 }
 
-.avonni-color-picker__default-palette {
-    max-height: 180px;
-}
-
 .slds-nubbin_top {
     position: absolute;
     top: 100%;
