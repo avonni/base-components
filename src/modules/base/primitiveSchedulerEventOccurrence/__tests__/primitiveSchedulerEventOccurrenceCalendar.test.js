@@ -182,10 +182,10 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-p-horizontal_x-small'
             );
             expect(wrapper.className).toBe(
-                'slds-grid slds-grid_vertical-align-center slds-p-vertical_xx-small'
+                'slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_default'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default'
             );
         });
     });
@@ -262,9 +262,11 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
             expect(centerLabel.className).toBe(
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-grid_vertical-align-center'
             );
-            expect(wrapper.className).toBe('slds-grid');
+            expect(wrapper.className).toBe(
+                'slds-grid avonni-scheduler__event-wrapper'
+            );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_display-as-dot'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_past avonni-scheduler__event_display-as-dot'
             );
         });
     });
@@ -367,10 +369,10 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
             );
             expect(time).toBeFalsy();
             expect(wrapper.className).toBe(
-                'slds-grid slds-grid_vertical-align-center slds-p-bottom_xx-small'
+                'slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_default avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell'
             );
             expect(centerLabel.className).toBe(
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-p-horizontal_x-small'
@@ -394,6 +396,83 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
             );
             expect(wrapper.className).toBe(
                 'slds-theme_alert-texture avonni-scheduler__disabled-date avonni-scheduler__disabled-date_standalone slds-p-horizontal_x-small slds-m-bottom_xx-small slds-is-relative'
+            );
+        });
+    });
+
+    // timezone
+    it('Scheduler event occurence as calendar-month: timezone', () => {
+        element.timezone = 'Asia/Shanghai';
+        element.variant = 'calendar-month';
+        element.occurrence = {
+            firstAllowedDate: dateTimeObjectFrom(new Date(2021, 11, 2), {
+                zone: 'Asia/Shanghai'
+            })
+        };
+        element.headerCells = {
+            yAxis: [
+                {
+                    start: 1638028800000,
+                    end: 1638633599999
+                },
+                {
+                    start: 1638633600000,
+                    end: 1639238399999
+                },
+                {
+                    start: 1639238400000,
+                    end: 1639843199999
+                },
+                {
+                    start: 1639843200000,
+                    end: 1640447999999
+                },
+                {
+                    start: 1640448000000,
+                    end: 1641052799999
+                }
+            ],
+            xAxis: [
+                {
+                    start: 1638028800000,
+                    end: 1640534399999
+                },
+                {
+                    start: 1638115200000,
+                    end: 1640620799999
+                },
+                {
+                    start: 1638201600000,
+                    end: 1640707199999
+                },
+                {
+                    start: 1638288000000,
+                    end: 1640793599999
+                },
+                {
+                    start: 1638374400000,
+                    end: 1640879999999
+                },
+                {
+                    start: 1638460800000,
+                    end: 1640966399999
+                },
+                {
+                    start: 1638547200000,
+                    end: 1641052799999
+                }
+            ]
+        };
+        element.from = new Date(2021, 11, 2);
+        element.to = new Date(2021, 11, 2, 13);
+
+        return Promise.resolve().then(() => {
+            expect(element.startPosition).toBe(CELL_WIDTH * 4);
+            expect(element.shadowRoot.host.style.width).toBe(
+                `${CELL_WIDTH * 2}px`
+            );
+            expect(element.shadowRoot.host.style.transform).toBe(
+                `translate(${CELL_WIDTH * 4}px, 0px)`
             );
         });
     });
@@ -448,7 +527,7 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 'slds-grid avonni-scheduler__event-wrapper_vertical'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-text-color_inverse slds-current-color avonni-scheduler__event_default avonni-scheduler__event_vertical'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default avonni-scheduler__event_vertical-animated'
             );
         });
     });

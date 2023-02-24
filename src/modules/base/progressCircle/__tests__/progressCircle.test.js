@@ -33,7 +33,8 @@
 import { createElement } from 'lwc';
 import ProgressCircle from 'c/progressCircle';
 
-const SIZES = ['x-small', 'small', 'medium', 'large', 'x-large'];
+const SIZES = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large'];
+const THICKNESSES = ['x-small', 'small', 'medium', 'large', 'x-large'];
 
 let element;
 describe('ProgressCircle', () => {
@@ -176,6 +177,57 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'medium') {
+                    expect(ring.classList).toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
+                    expect(content.classList).toContain(
+                        `avonni-progress-circle__content_size-${size}`
+                    );
+                    expect(title.classList).toContain(
+                        `avonni-progress-circle__title_size-${size}`
+                    );
+                    expect(label.classList).toContain(
+                        `avonni-progress-circle__label_size-${size}`
+                    );
+                } else {
+                    expect(ring.classList).not.toContain(
+                        `avonni-progress-circle_size-${size}`
+                    );
+                    expect(content.classList).not.toContain(
+                        `avonni-progress-circle__content_size-${size}`
+                    );
+                    expect(title.classList).not.toContain(
+                        `avonni-progress-circle__title_size-${size}`
+                    );
+                    expect(label.classList).not.toContain(
+                        `avonni-progress-circle__label_size-${size}`
+                    );
+                }
+            });
+        });
+    });
+
+    it('Progress Circle: size = xx-small', () => {
+        element.size = 'xx-small';
+        element.label = 'A string label';
+        element.title = 'A string title';
+
+        return Promise.resolve().then(() => {
+            const ring = element.shadowRoot.querySelector(
+                '.avonni-progress-circle'
+            );
+            const content = element.shadowRoot.querySelector(
+                '.avonni-progress-circle__content'
+            );
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="title"]'
+            );
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
+
+            SIZES.forEach((size) => {
+                if (size === 'xx-small') {
                     expect(ring.classList).toContain(
                         `avonni-progress-circle_size-${size}`
                     );
@@ -424,7 +476,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 expect(content.classList).not.toContain(
                     `avonni-progress-circle_thickness-${thickness}`
                 );
@@ -450,7 +502,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -488,7 +540,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -526,7 +578,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -564,7 +616,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -602,7 +654,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -640,7 +692,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -678,7 +730,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -716,7 +768,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -754,7 +806,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -792,7 +844,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -830,7 +882,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -868,7 +920,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -906,7 +958,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`
@@ -944,7 +996,7 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-circle__content'
             );
 
-            SIZES.forEach((thickness) => {
+            THICKNESSES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
                         `avonni-progress-circle_thickness-${thickness}`

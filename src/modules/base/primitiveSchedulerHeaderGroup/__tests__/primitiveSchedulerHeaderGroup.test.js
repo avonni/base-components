@@ -32,7 +32,6 @@
 
 import { createElement } from 'lwc';
 import PrimitiveSchedulerHeaderGroup from 'avonni/primitiveSchedulerHeaderGroup';
-import { DateTime } from 'c/luxon';
 
 // Not tested because depends on DOM measurement:
 // - Width of the columns and privatecellwidthchange.
@@ -86,8 +85,10 @@ describe('Primitive Scheduler Header Group', () => {
             }
         ]);
         expect(element.scrollLeftOffset).toBe(0);
-        expect(element.start).toBeInstanceOf(DateTime);
+        const today = new Date().setHours(0, 0, 0, 0);
+        expect(new Date(element.start).setHours(0, 0, 0, 0)).toBe(today);
         expect(element.timeSpan).toMatchObject({ unit: 'day', span: 1 });
+        expect(element.timezone).toBeUndefined();
         expect(element.variant).toBe('horizontal');
         expect(element.visibleInterval).toBeUndefined();
         expect(element.visibleWidth).toBe(0);
@@ -624,6 +625,28 @@ describe('Primitive Scheduler Header Group', () => {
             );
             const end = new Date(2021, 8, 17, 11).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
+        });
+    });
+
+    // timezone
+    it('Scheduler header group: timezone', () => {
+        element.timezone = 'Asia/Shanghai';
+        element.start = '2023-02-15T16:00:00.000Z';
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            jest.runAllTimers();
+            const firstCell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            const lastCell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            const start = new Date('2023-02-16T00:00:00.000+08:00').getTime();
+            const end = new Date('2023-02-17T00:00:00.000+08:00').getTime() - 1;
+
+            expect(Number(firstCell.dataset.start)).toBe(start);
+            expect(Number(lastCell.dataset.end)).toBe(end);
         });
     });
 

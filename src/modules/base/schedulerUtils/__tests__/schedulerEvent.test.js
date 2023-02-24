@@ -79,8 +79,11 @@ describe('SchedulerEvent class', () => {
         expect(element.referenceLine).toBeFalsy();
         expect(element.schedulerEnd).toBeFalsy();
         expect(element.schedulerStart).toBeFalsy();
+        expect(element.selectedResources).toEqual([]);
         expect(element.smallestHeader).toBeUndefined();
         expect(element.theme).toBe('default');
+        expect(element.timezone).toBeUndefined();
+        expect(element.title).toBeUndefined();
         expect(element.to).toBeFalsy();
     });
 
@@ -261,6 +264,21 @@ describe('SchedulerEvent class', () => {
         element.occurrences.forEach((occurrence, index) => {
             expect(occurrence.key).toContain(resourceNames[index]);
         });
+    });
+
+    // selectedResources
+    it('Scheduler event: selectedResources', () => {
+        const element = new SchedulerEvent({
+            name: NAME,
+            smallestHeader: SMALLEST_HEADER,
+            from: FROM,
+            to: TO,
+            resourceNames: ['1', '2', '3'],
+            selectedResources: ['1', '3']
+        });
+        expect(element.occurrences).toHaveLength(2);
+        expect(element.occurrences[0].resourceName).toBe('1');
+        expect(element.occurrences[1].resourceName).toBe('3');
     });
 
     // labels
@@ -626,6 +644,34 @@ describe('SchedulerEvent class', () => {
     it('Scheduler event: theme', () => {
         const element = new SchedulerEvent({ theme: 'hollow' });
         expect(element.theme).toBe('hollow');
+    });
+
+    // timezone
+    it('Scheduler event: timezone', () => {
+        const element = new SchedulerEvent({
+            name: NAME,
+            smallestHeader: SMALLEST_HEADER,
+            from: '2023-02-20T00:00:00.000Z',
+            to: '2023-02-20T16:00:00.000Z',
+            resourceNames: ['1', '2', '3'],
+            timezone: 'Asia/Shanghai'
+        });
+        const computedFrom = element.computedFrom.toISO();
+        expect(computedFrom).toBe('2023-02-20T08:00:00.000+08:00');
+        const computedTo = element.computedTo.toISO();
+        expect(computedTo).toBe('2023-02-21T00:00:00.000+08:00');
+    });
+
+    // title
+    it('Scheduler event: title', () => {
+        const element = new SchedulerEvent({
+            ...DEFAULTS,
+            title: 'someTitle',
+            referenceLine: true
+        });
+        expect(element.occurrences).toHaveLength(1);
+        expect(element.occurrences[0].title).toBe('someTitle');
+        expect(element.occurrences[0].key).toBe('someTitle-0');
     });
 
     // to
