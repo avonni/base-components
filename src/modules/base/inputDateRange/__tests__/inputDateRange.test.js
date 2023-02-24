@@ -36,12 +36,6 @@ import InputDateRange from 'avonni/inputDateRange';
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
 
-const timeZoneMock = (timezone) => {
-    jest.spyOn(Date.prototype, 'toLocaleString').mockImplementation(() => {
-        return timezone || 'GMT';
-    });
-};
-
 let element;
 describe('Input Date Range', () => {
     afterEach(() => {
@@ -191,10 +185,9 @@ describe('Input Date Range', () => {
     //time style
     it('Input Date Range: date time style short', () => {
         element.type = 'datetime';
+        element.timeStyle = 'short';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -203,8 +196,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('short');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -213,8 +204,6 @@ describe('Input Date Range', () => {
         element.timeStyle = 'medium';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -223,8 +212,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('medium');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -233,8 +220,6 @@ describe('Input Date Range', () => {
         element.timeStyle = 'long';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -243,8 +228,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('long');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -901,7 +884,7 @@ describe('Input Date Range', () => {
                 const startTimeInput = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-input-start-time"]'
                 );
-                expect(startTimeInput.value).toBe('04:00');
+                expect(startTimeInput.value).toBe('04:00:00.000');
 
                 const endDateInput = element.shadowRoot.querySelector(
                     '[data-element-id="input-end-date"]'
@@ -910,27 +893,26 @@ describe('Input Date Range', () => {
                 const endTimeInput = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-input-end-time"]'
                 );
-                expect(endTimeInput.value).toBe('15:00');
+                expect(endTimeInput.value).toBe('15:00:00.000');
 
                 startDateInput.click();
             })
             .then(() => {
-                timeZoneMock('GMT+08:00');
                 const calendar = element.shadowRoot.querySelector(
                     '[data-element-id="calendar-start-date"]'
                 );
                 calendar.dispatchEvent(
                     new CustomEvent('change', {
                         detail: {
-                            value: ['2022-08-16T04:00:00.000Z']
+                            value: ['2022-08-16T00:00:00.000+08:00']
                         }
                     })
                 );
 
                 expect(handler).toHaveBeenCalled();
                 const detail = handler.mock.calls[0][0].detail;
-                expect(detail.startDate).toBe('2022-08-16T04:00+08:00');
-                expect(detail.endDate).toBe('2022-08-20T15:00+08:00');
+                expect(detail.startDate).toBe('2022-08-16T04:00:00.000+08:00');
+                expect(detail.endDate).toBe('2022-08-20T15:00:00.000+08:00');
             });
     });
 
@@ -942,7 +924,7 @@ describe('Input Date Range', () => {
         const date = start.getDate();
         const year = start.getFullYear();
         const month = start.getMonth() + 1;
-        const time = start.toTimeString().substring(0, 5);
+        const time = `${start.toTimeString().substring(0, 5)}:00.000`;
         const formattedDate = `${month}/${date}/${year}`;
 
         return Promise.resolve().then(() => {

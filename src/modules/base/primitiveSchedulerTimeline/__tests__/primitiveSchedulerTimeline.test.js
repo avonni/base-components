@@ -187,11 +187,12 @@ describe('Primitive Scheduler Timeline', () => {
         expect(element.resizeColumnDisabled).toBeFalsy();
         expect(element.resources).toEqual([]);
 
+        const start = new Date(element.start);
         const today = new Date();
-        expect(element.start.hour).toBe(today.getHours());
-        expect(element.start.day).toBe(today.getDate());
-        expect(element.start.month - 1).toBe(today.getMonth());
-        expect(element.start.year).toBe(today.getFullYear());
+        expect(start.getHours()).toBe(today.getHours());
+        expect(start.getDate()).toBe(today.getDate());
+        expect(start.getMonth()).toBe(today.getMonth());
+        expect(start.getFullYear()).toBe(today.getFullYear());
 
         expect(element.selectedResources).toEqual([]);
         expect(element.timeSpan).toEqual({ unit: 'day', span: 1 });
@@ -1169,7 +1170,7 @@ describe('Primitive Scheduler Timeline', () => {
                     'slds-grid slds-is-relative'
                 );
                 expect(firstCol.className).toBe(
-                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__first-col_horizontal'
+                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__first-col_horizontal'
                 );
                 expect(scheduleWrapper.className).toBe(
                     'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper'
@@ -1233,10 +1234,10 @@ describe('Primitive Scheduler Timeline', () => {
                     'slds-grid slds-is-relative slds-grid_vertical avonni-scheduler__flex-col'
                 );
                 expect(firstCol.className).toBe(
-                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical'
+                    'avonni-scheduler__first-col slds-grid slds-scrollable avonni-scheduler__main-border_left avonni-scheduler__main-border_top avonni-scheduler__main-border_bottom avonni-scheduler__grid_align-end avonni-scheduler__first-col_vertical'
                 );
                 expect(scheduleWrapper.className).toBe(
-                    'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper avonni-scheduler__schedule-wrapper_vertical'
+                    'slds-grid slds-is-relative avonni-scheduler__schedule-wrapper avonni-scheduler__schedule-wrapper_vertical slds-border_top'
                 );
                 expect(scheduleBody.className).toBe(
                     'slds-is-relative slds-grid avonni-scheduler__schedule-body_vertical'
@@ -1341,6 +1342,157 @@ describe('Primitive Scheduler Timeline', () => {
      * -------------------------------------------------------------
      */
 
+    // collapseSidePanel
+    it('Primitive Scheduler Timeline: collapseSidePanel() method', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const collapseButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-collapse"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                expect(splitter.classList).toContain(
+                    'avonni-scheduler__splitter_resizable'
+                );
+                expect(splitter.classList).toContain(
+                    'avonni-scheduler__border_left'
+                );
+                expect(collapseButton).toBeTruthy();
+                expect(resizeButton).toBeTruthy();
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__first-col_horizontal'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const collapseButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-collapse"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                expect(splitter.classList).not.toContain(
+                    'avonni-scheduler__splitter_resizable'
+                );
+                expect(splitter.classList).not.toContain(
+                    'avonni-scheduler__border_left'
+                );
+                expect(collapseButton).toBeFalsy();
+                expect(resizeButton).toBeFalsy();
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__first-col_horizontal'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+            });
+    });
+
+    it('Primitive Scheduler Timeline: collapseSidePanel(), user triggered', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const collapseButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-collapse"]'
+                );
+                collapseButton.click();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+            });
+    });
+
+    it('Primitive Scheduler Timeline: collapseSidePanel() erases panel resizing', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
+
+                // Resize panel
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.button = 0;
+                mousedown.clientX = 100;
+                splitter.dispatchEvent(mousedown);
+
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 200;
+                window.dispatchEvent(mousemove);
+
+                const mouseup = new CustomEvent('mouseup');
+                window.dispatchEvent(mouseup);
+
+                expect(panel.style.flexBasis).toBe('150px');
+
+                // Collapse panel
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(panel.style.flexBasis).toBe('');
+            });
+    });
+
+    it('Primitive Scheduler Timeline: datatable resize overwrite panel width', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve().then(() => {
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
+            const panel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel"]'
+            );
+            expect(panel.style.flexBasis).toBe('');
+
+            datatable.dispatchEvent(
+                new CustomEvent('resize', {
+                    detail: {
+                        isUserTriggered: true,
+                        columnWidths: [23, 37, 100]
+                    }
+                })
+            );
+            expect(panel.style.flexBasis).toBe('160px');
+        });
+    });
+
     // createEvent
     it('Primitive Scheduler Timeline: createEvent() method', () => {
         element.start = START;
@@ -1386,6 +1538,187 @@ describe('Primitive Scheduler Timeline', () => {
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 expect(events).toHaveLength(1);
+            });
+    });
+
+    // expandSidePanel
+    it('Primitive Scheduler Timeline: expandSidePanel() method', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const expandButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-expand"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                expect(splitter.classList).toContain(
+                    'avonni-scheduler__splitter_resizable'
+                );
+                expect(splitter.classList).toContain(
+                    'avonni-scheduler__border_right'
+                );
+                expect(expandButton).toBeTruthy();
+                expect(resizeButton).toBeTruthy();
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const expandButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-expand"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                expect(splitter.classList).not.toContain(
+                    'avonni-scheduler__splitter_resizable'
+                );
+                expect(splitter.classList).not.toContain(
+                    'avonni-scheduler__border_right'
+                );
+                expect(expandButton).toBeFalsy();
+                expect(resizeButton).toBeFalsy();
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+            });
+    });
+
+    it('Primitive Scheduler Timeline: expandSidePanel(), user triggered', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const expandButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-expand"]'
+                );
+                expandButton.click();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+            });
+    });
+
+    it('Primitive Scheduler Timeline: expandSidePanel() erases panel resizing', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                const splitter = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter"]'
+                );
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
+
+                // Resize panel
+                const mousedown = new CustomEvent('mousedown');
+                mousedown.button = 0;
+                mousedown.clientX = 100;
+                splitter.dispatchEvent(mousedown);
+
+                const mousemove = new CustomEvent('mousemove');
+                mousemove.clientX = 200;
+                window.dispatchEvent(mousemove);
+
+                const mouseup = new CustomEvent('mouseup');
+                window.dispatchEvent(mouseup);
+
+                expect(panel.style.flexBasis).toBe('150px');
+
+                // Expand panel
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(panel.style.flexBasis).toBe('');
+            });
+    });
+
+    it('Primitive Scheduler Timeline: expandSidePanel() and collapseSidePanel() in a row', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+
+        return Promise.resolve()
+            .then(() => {
+                // Collapse
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Expand to original position
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Expand to full width
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Collapse to original position
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
             });
     });
 
@@ -2450,6 +2783,45 @@ describe('Primitive Scheduler Timeline', () => {
                 const selection = handler.mock.calls[0][0].detail.selection;
                 expect(selection.event.from.ts).toBe(from.getTime());
                 expect(selection.event.to.ts).toBe(to.getTime());
+            });
+    });
+
+    // scheduleclick
+    it('Primitive Scheduler Timeline: scheduleclick event', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.start = START;
+
+        const handler = jest.fn();
+        element.addEventListener('scheduleclick', handler);
+
+        const body = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        jest.spyOn(body, 'getBoundingClientRect').mockImplementation(() => {
+            return { left: 0, right: 1000, top: 0, bottom: 1000 };
+        });
+
+        return Promise.resolve()
+            .then(() => {
+                // Wait for the visible interval to be set
+            })
+            .then(() => {
+                const cell = element.shadowRoot.querySelector(
+                    '[data-element-id="div-cell"]'
+                );
+                const { start, end } = cell.dataset;
+                cell.dispatchEvent(new CustomEvent('click', { bubbles: true }));
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(new Date(call.detail.from).getTime()).toBe(
+                    Number(start)
+                );
+                expect(new Date(call.detail.to).getTime()).toBe(Number(end));
+                expect(call.bubbles).toBeTruthy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
             });
     });
 });

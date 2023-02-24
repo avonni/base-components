@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import Combobox from 'c/combobox';
+import Combobox from 'avonni/combobox';
 import { options, actions, scopes, scopesGroups, groups } from './data';
 
 let element;

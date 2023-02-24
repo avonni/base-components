@@ -493,7 +493,7 @@ export class ScheduleBase extends LightningElement {
      * @type {HTMLElement}
      */
     get panelElement() {
-        return this.template.querySelector('[data-element-id="div-panel"]');
+        return this.template.querySelector('[data-element-id^="div-panel"]');
     }
 
     /**

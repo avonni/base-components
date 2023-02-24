@@ -278,6 +278,7 @@ describe('Primitive Scheduler Agenda', () => {
             center: { fieldName: 'title' }
         });
         expect(element.eventsTheme).toBe('default');
+        expect(element.hideResourcesFilter).toBeFalsy();
         expect(element.newEventTitle).toBe('New event');
         expect(element.readOnly).toBeFalsy();
         expect(element.resizeColumnDisabled).toBeFalsy();
@@ -290,7 +291,9 @@ describe('Primitive Scheduler Agenda', () => {
         expect(element.selectedDate.year).toBe(today.getFullYear());
 
         expect(element.selectedResources).toEqual([]);
+        expect(element.sidePanelPosition).toBe('left');
         expect(element.timeSpan).toEqual({ unit: 'day', span: 1 });
+        expect(element.timezone).toBeUndefined();
     });
 
     /*
@@ -765,6 +768,98 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
+    // hide-resources-filter
+    it('Primitive Scheduler Agenda: hideResourcesFilter = false', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.hideResourcesFilter = false;
+
+        return Promise.resolve().then(() => {
+            const filter = element.shadowRoot.querySelector(
+                '[data-element-id="div-resources-filter"]'
+            );
+            expect(filter).toBeTruthy();
+        });
+    });
+
+    it('Primitive Scheduler Agenda: hideResourcesFilter = true', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.hideResourcesFilter = true;
+
+        return Promise.resolve().then(() => {
+            const filter = element.shadowRoot.querySelector(
+                '[data-element-id="div-resources-filter"]'
+            );
+            expect(filter).toBeFalsy();
+        });
+    });
+
+    // hide-side-panel
+    it('Primitive Scheduler Agenda: hideSidePanel = false', () => {
+        element.hideSidePanel = false;
+
+        return Promise.resolve()
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-left"]'
+                );
+                const mainSection = element.shadowRoot.querySelector(
+                    '[data-element-id="div-main-section"]'
+                );
+                expect(mainSection.classList).not.toContain(
+                    'avonni-scheduler__main-border_left'
+                );
+                expect(panel).toBeTruthy();
+
+                element.sidePanelPosition = 'right';
+            })
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-right"]'
+                );
+                const mainSection = element.shadowRoot.querySelector(
+                    '[data-element-id="div-main-section"]'
+                );
+                expect(mainSection.classList).not.toContain(
+                    'avonni-scheduler__main-border_right'
+                );
+                expect(panel).toBeTruthy();
+            });
+    });
+
+    it('Primitive Scheduler Agenda: hideSidePanel = true', () => {
+        element.hideSidePanel = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-left"]'
+                );
+                const mainSection = element.shadowRoot.querySelector(
+                    '[data-element-id="div-main-section"]'
+                );
+                expect(mainSection.classList).toContain(
+                    'avonni-scheduler__main-border_left'
+                );
+                expect(panel).toBeFalsy();
+
+                element.sidePanelPosition = 'right';
+            })
+            .then(() => {
+                const panel = element.shadowRoot.querySelector(
+                    '[data-element-id="div-panel-right"]'
+                );
+                const mainSection = element.shadowRoot.querySelector(
+                    '[data-element-id="div-main-section"]'
+                );
+                expect(mainSection.classList).toContain(
+                    'avonni-scheduler__main-border_right'
+                );
+                expect(panel).toBeFalsy();
+            });
+    });
+
     // read-only
     it('Primitive Scheduler Agenda: readOnly = false, double click on empty spot is possible', () => {
         element.resources = RESOURCES;
@@ -984,6 +1079,69 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
+    // side-panel-position
+    it('Primitive Scheduler Agenda: sidePanelPosition left', () => {
+        element.sidePanelPosition = 'left';
+
+        return Promise.resolve().then(() => {
+            const mainSection = element.shadowRoot.querySelector(
+                '[data-element-id="div-main-section"]'
+            );
+            const leftPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-left"]'
+            );
+            const rightPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-right"]'
+            );
+
+            expect(leftPanel).toBeTruthy();
+            expect(rightPanel).toBeFalsy();
+            expect(mainSection.classList).toContain(
+                'avonni-scheduler__main-border_right'
+            );
+            expect(mainSection.classList).not.toContain(
+                'avonni-scheduler__main-border_left'
+            );
+            expect(leftPanel.classList).toContain(
+                'avonni-scheduler__main-border_left'
+            );
+            expect(leftPanel.classList).not.toContain(
+                'avonni-scheduler__main-border_right'
+            );
+        });
+    });
+
+    it('Primitive Scheduler Agenda: sidePanelPosition right', () => {
+        element.sidePanelPosition = 'right';
+
+        return Promise.resolve().then(() => {
+            const leftPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-left"]'
+            );
+            const rightPanel = element.shadowRoot.querySelector(
+                '[data-element-id="div-panel-right"]'
+            );
+            const mainSection = element.shadowRoot.querySelector(
+                '[data-element-id="div-main-section"]'
+            );
+
+            expect(leftPanel).toBeFalsy();
+            expect(rightPanel).toBeTruthy();
+            expect(mainSection.classList).not.toContain(
+                'avonni-scheduler__main-border_right'
+            );
+            expect(mainSection.classList).toContain(
+                'avonni-scheduler__main-border_left'
+            );
+            expect(rightPanel.classList).not.toContain(
+                'avonni-scheduler__main-border_left'
+            );
+            expect(rightPanel.classList).toContain(
+                'avonni-scheduler__main-border_right'
+            );
+        });
+    });
+
     // time-span and visibleintervalchange event
     it('Primitive Scheduler Agenda: timeSpan of one day', () => {
         element.resources = RESOURCES;
@@ -1115,11 +1273,211 @@ describe('Primitive Scheduler Agenda', () => {
         });
     });
 
+    it('Primitive Scheduler Agenda: timezone', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = '2023-02-17T00:00:00.000Z';
+        element.events = [
+            {
+                name: 'someEvent',
+                from: '2023-02-17T00:00:00.000Z',
+                to: '2023-02-17T10:00:00.000Z',
+                resourceNames: [ALL_RESOURCES[0]]
+            }
+        ];
+
+        const handler = jest.fn();
+        element.addEventListener('visibleintervalchange', handler);
+
+        element.timezone = 'UTC';
+
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.start.zoneName).toBe('UTC');
+            expect(detail.visibleInterval.s.zoneName).toBe('UTC');
+            expect(detail.visibleInterval.e.zoneName).toBe('UTC');
+
+            const dayGroup = element.shadowRoot.querySelector(
+                '[data-element-id="div-day-group"]'
+            );
+            const start = new Date(
+                Number(dayGroup.dataset.start)
+            ).toISOString();
+            const end = new Date(Number(dayGroup.dataset.end)).toISOString();
+            expect(start).toBe('2023-02-17T00:00:00.000Z');
+            expect(end).toBe('2023-02-17T23:59:59.999Z');
+        });
+    });
+
+    it('Primitive Scheduler Agenda: timezone is not UTC', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = '2023-02-17T00:00:00.000Z';
+        element.events = [
+            {
+                name: 'someEvent',
+                from: '2023-02-17T00:00:00.000Z',
+                to: '2023-02-17T10:00:00.000Z',
+                resourceNames: [ALL_RESOURCES[0]]
+            }
+        ];
+
+        const handler = jest.fn();
+        element.addEventListener('visibleintervalchange', handler);
+
+        element.timezone = 'Asia/Shanghai';
+
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.start.zoneName).toBe('Asia/Shanghai');
+            expect(detail.visibleInterval.s.zoneName).toBe('Asia/Shanghai');
+            expect(detail.visibleInterval.e.zoneName).toBe('Asia/Shanghai');
+
+            const dayGroup = element.shadowRoot.querySelector(
+                '[data-element-id="div-day-group"]'
+            );
+            const start = new Date(
+                Number(dayGroup.dataset.start)
+            ).toISOString();
+            const end = new Date(Number(dayGroup.dataset.end)).toISOString();
+            expect(start).toBe('2023-02-16T16:00:00.000Z');
+            expect(end).toBe('2023-02-17T15:59:59.999Z');
+        });
+    });
+
     /*
      * ------------------------------------------------------------
      *  METHODS
      * -------------------------------------------------------------
      */
+
+    // collapseSidePanel
+    it('Primitive Scheduler Agenda: collapseSidePanel() method', () => {
+        let collapseButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-splitter-collapse"]'
+        );
+        let resizeButton = element.shadowRoot.querySelector(
+            '[data-element-id="div-splitter-resize-handle"]'
+        );
+        let sidePanel = element.shadowRoot.querySelector(
+            '[data-element-id^="div-panel"]'
+        );
+        expect(collapseButton).toBeTruthy();
+        expect(resizeButton).toBeTruthy();
+        expect(sidePanel.classList).not.toContain(
+            'avonni-scheduler__panel_collapsed'
+        );
+        element.collapseSidePanel();
+
+        return Promise.resolve().then(() => {
+            collapseButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-collapse"]'
+            );
+            resizeButton = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
+            );
+            sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(collapseButton).toBeFalsy();
+            expect(resizeButton).toBeFalsy();
+            expect(sidePanel.classList).toContain(
+                'avonni-scheduler__panel_collapsed'
+            );
+        });
+    });
+
+    it('Primitive Scheduler Agenda: collapseSidePanel() method, with right panel', () => {
+        element.sidePanelPosition = 'right';
+
+        return Promise.resolve()
+            .then(() => {
+                const collapseButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-collapse"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(collapseButton).toBeTruthy();
+                expect(resizeButton).toBeTruthy();
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const collapseButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-splitter-collapse"]'
+                );
+                const resizeButton = element.shadowRoot.querySelector(
+                    '[data-element-id="div-splitter-resize-handle"]'
+                );
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(collapseButton).toBeFalsy();
+                expect(resizeButton).toBeFalsy();
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+            });
+    });
+
+    it('Primitive Scheduler Agenda: collapseSidePanel() method, user triggered', () => {
+        const collapseButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-splitter-collapse"]'
+        );
+        collapseButton.click();
+
+        return Promise.resolve().then(() => {
+            const sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(sidePanel.classList).toContain(
+                'avonni-scheduler__panel_collapsed'
+            );
+        });
+    });
+
+    it('Primitive Scheduler Agenda: collapseSidePanel() erases panel resizing', () => {
+        const splitter = element.shadowRoot.querySelector(
+            '[data-element-id="div-splitter"]'
+        );
+        const panel = element.shadowRoot.querySelector(
+            '[data-element-id^="div-panel"]'
+        );
+        jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
+
+        // Resize panel
+        const mousedown = new CustomEvent('mousedown');
+        mousedown.button = 0;
+        mousedown.clientX = 100;
+        splitter.dispatchEvent(mousedown);
+
+        const mousemove = new CustomEvent('mousemove');
+        mousemove.clientX = 200;
+        window.dispatchEvent(mousemove);
+
+        const mouseup = new CustomEvent('mouseup');
+        window.dispatchEvent(mouseup);
+
+        expect(panel.style.flexBasis).toBe('150px');
+
+        // Collapse panel
+        element.collapseSidePanel();
+
+        return Promise.resolve().then(() => {
+            const sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(sidePanel.style.flexBasis).toBe('');
+        });
+    });
 
     // createEvent
     it('Primitive Scheduler Agenda: createEvent()', () => {
@@ -1164,6 +1522,150 @@ describe('Primitive Scheduler Agenda', () => {
                     '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 expect(events).toHaveLength(2);
+            });
+    });
+
+    // expandSidePanel
+    it('Primitive Scheduler Agenda: expandSidePanel() method', () => {
+        let expandButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-splitter-expand"]'
+        );
+        let resizeButton = element.shadowRoot.querySelector(
+            '[data-element-id="div-splitter-resize-handle"]'
+        );
+        let sidePanel = element.shadowRoot.querySelector(
+            '[data-element-id^="div-panel"]'
+        );
+        expect(expandButton).toBeTruthy();
+        expect(resizeButton).toBeTruthy();
+        expect(sidePanel.classList).not.toContain(
+            'avonni-scheduler__panel_expanded'
+        );
+        element.expandSidePanel();
+
+        return Promise.resolve().then(() => {
+            expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-splitter-expand"]'
+            );
+            resizeButton = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter-resize-handle"]'
+            );
+            sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(expandButton).toBeFalsy();
+            expect(resizeButton).toBeFalsy();
+            expect(sidePanel.classList).toContain(
+                'avonni-scheduler__panel_expanded'
+            );
+        });
+    });
+
+    it('Primitive Scheduler Agenda: expandSidePanel() method, user triggered', () => {
+        const expandButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-splitter-expand"]'
+        );
+        expandButton.click();
+
+        return Promise.resolve().then(() => {
+            const sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(sidePanel.classList).toContain(
+                'avonni-scheduler__panel_expanded'
+            );
+        });
+    });
+
+    it('Primitive Scheduler Agenda: expandSidePanel() erases panel resizing', () => {
+        const splitter = element.shadowRoot.querySelector(
+            '[data-element-id="div-splitter"]'
+        );
+        const panel = element.shadowRoot.querySelector(
+            '[data-element-id^="div-panel"]'
+        );
+        jest.spyOn(panel, 'offsetWidth', 'get').mockReturnValue(50);
+
+        // Resize panel
+        const mousedown = new CustomEvent('mousedown');
+        mousedown.button = 0;
+        mousedown.clientX = 100;
+        splitter.dispatchEvent(mousedown);
+
+        const mousemove = new CustomEvent('mousemove');
+        mousemove.clientX = 200;
+        window.dispatchEvent(mousemove);
+
+        const mouseup = new CustomEvent('mouseup');
+        window.dispatchEvent(mouseup);
+
+        expect(panel.style.flexBasis).toBe('150px');
+
+        // Collapse panel
+        element.expandSidePanel();
+
+        return Promise.resolve().then(() => {
+            const sidePanel = element.shadowRoot.querySelector(
+                '[data-element-id^="div-panel"]'
+            );
+            expect(sidePanel.style.flexBasis).toBe('');
+        });
+    });
+
+    it('Primitive Scheduler Agenda: expandSidePanel() and collapseSidePanel() in a row', () => {
+        // Collapse
+        element.collapseSidePanel();
+
+        return Promise.resolve()
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Expand to original position
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Expand to full width
+                element.expandSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
+                // Collapse to original position
+                element.collapseSidePanel();
+            })
+            .then(() => {
+                const sidePanel = element.shadowRoot.querySelector(
+                    '[data-element-id^="div-panel"]'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_collapsed'
+                );
+                expect(sidePanel.classList).not.toContain(
+                    'avonni-scheduler__panel_expanded'
+                );
             });
     });
 
@@ -1874,5 +2376,31 @@ describe('Primitive Scheduler Agenda', () => {
                 );
                 expect(events).toHaveLength(3);
             });
+    });
+
+    it('Primitive Scheduler Agenda: scheduleclick', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = '2022-08-24T00:00:00.000Z';
+        element.events = EVENTS;
+        element.timezone = 'UTC';
+
+        const handler = jest.fn();
+        element.addEventListener('scheduleclick', handler);
+
+        return Promise.resolve().then(() => {
+            const dayHeading = element.shadowRoot.querySelector(
+                '[data-element-id="div-day-heading"]'
+            );
+            dayHeading.click();
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(new Date(call.detail.from).toISOString()).toBe(
+                '2022-08-24T00:00:00.000Z'
+            );
+            expect(new Date(call.detail.to).toISOString()).toBe(
+                '2022-08-24T23:59:59.999Z'
+            );
+        });
     });
 });
