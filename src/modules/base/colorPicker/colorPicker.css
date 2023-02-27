@@ -34,32 +34,33 @@
     text-decoration: underline;
 }
 
-.avonni-tabs_default {
+.avonni-color-picker-tabs_default {
     display: block;
     width: 100%;
 }
 
-.avonni-tabs_default__item {
+.avonni-color-picker-tabs_default__item {
     color: #444;
     position: relative;
     padding: 0 0.75rem;
     margin-bottom: -1px;
 }
 
-.avonni-tabs_default__item.slds-is-active {
+.avonni-color-picker-tabs_default__item.slds-is-active {
     color: #181818;
 }
 
-.avonni-tabs_default__item.slds-is-active .avonni-tabs_default__link {
+.avonni-color-picker-tabs_default__item.slds-is-active
+    .avonni-color-picker-tabs_default__link {
     font-weight: 700;
 }
 
-.avonni-tabs_default__item.slds-is-active:after {
+.avonni-color-picker-tabs_default__item.slds-is-active:after {
     background-color: #1b96ff;
     height: 3px;
 }
 
-.avonni-tabs_default__item:after {
+.avonni-color-picker-tabs_default__item:after {
     display: block;
     content: '';
     bottom: 0;
@@ -69,7 +70,7 @@
     position: absolute;
 }
 
-.avonni-tabs_default__link {
+.avonni-color-picker-tabs_default__link {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,7 +86,7 @@
     z-index: 1;
 }
 
-.avonni-tabs_default__nav {
+.avonni-color-picker-tabs_default__nav {
     display: flex;
     align-items: flex-start;
     border-bottom: 1px solid #e5e5e5;
