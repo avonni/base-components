@@ -46,14 +46,15 @@
                                 <lightning-icon
                                     icon-name={iconName}
                                     data-element-id="lightning-icon-left"
-                                    class="avonni-visual-picker-icon"
+                                    class="avonni-visual-picker-link__icon"
                                 ></lightning-icon>
                                 <lightning-icon
+                                    if:true={completed}
+                                    class="slds-icon-action-check"
                                     icon-name="utility:check"
                                     alternative-text="Completed"
                                     variant="inverse"
                                     size="xx-small"
-                                    class="slds-icon-action-check"
                                 ></lightning-icon>
                             </div>
                         </div>
@@ -62,18 +63,22 @@
                 <div class="slds-media__body">
                     <div class={computedTileBodyClass}>
                         <template if:true={showTitle}>
-                            <h3 class="slds-welcome-mat__tile-title">
+                            <h3 class="avonni-visual-picker-link__tile-title">
                                 <slot name="title"></slot>
                             </h3>
                         </template>
                         <template if:false={showTitle}>
                             <template if:true={title}>
-                                <div class="slds-welcome-mat__tile-title">
+                                <div
+                                    class="
+                                        avonni-visual-picker-link__tile-title
+                                    "
+                                >
                                     {title}
                                 </div>
                             </template>
                         </template>
-                        <p class="slds-welcome-mat__tile-description">
+                        <p class="avonni-visual-picker-link__tile-description">
                             <slot></slot>
                         </p>
                     </div>
@@ -87,15 +92,16 @@
                             <div class="slds-welcome-mat__tile-icon-container">
                                 <lightning-icon
                                     data-element-id="lightning-icon-right"
-                                    class="avonni-visual-picker-icon"
+                                    class="avonni-visual-picker-link__icon"
                                     icon-name={iconName}
                                 ></lightning-icon>
                                 <lightning-icon
+                                    if:true={completed}
+                                    class="slds-icon-action-check"
                                     icon-name="utility:check"
                                     alternative-text="Completed"
                                     variant="inverse"
                                     size="xx-small"
-                                    class="slds-icon-action-check"
                                 ></lightning-icon>
                             </div>
                         </div>
