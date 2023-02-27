@@ -99,7 +99,30 @@ describe('Input choice set', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Input choice set: disabled', () => {
+    it('Input choice set: disabled = false', () => {
+        element.options = options;
+        element.disabled = false;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs.forEach((input) => {
+                expect(input.disabled).toBeFalsy();
+            });
+
+            const labels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="label"]'
+            );
+            labels.forEach((label) => {
+                expect(label.classList).toContain(
+                    'avonni-input-choice-set__option-label'
+                );
+            });
+        });
+    });
+
+    it('Input choice set: disabled = true', () => {
         element.options = options;
         element.disabled = true;
 
@@ -109,6 +132,15 @@ describe('Input choice set', () => {
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
+            });
+
+            const labels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="label"]'
+            );
+            labels.forEach((label) => {
+                expect(label.classList).not.toContain(
+                    'avonni-input-choice-set__option-label'
+                );
             });
         });
     });
