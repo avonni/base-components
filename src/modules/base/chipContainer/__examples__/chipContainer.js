@@ -38,12 +38,16 @@ export const ChipContainer = ({
     items,
     alternativeText,
     isCollapsible,
-    isExpanded
+    isExpanded,
+    singleLine,
+    sortable
 }) => {
     const element = document.createElement('ac-chip-container');
     element.items = items;
     element.alternativeText = alternativeText;
     element.isCollapsible = isCollapsible;
     element.isExpanded = isExpanded;
+    element.singleLine = singleLine;
+    element.sortable = sortable;
     return element;
 };

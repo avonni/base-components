@@ -51,6 +51,8 @@ export default class ChipContainer extends LightningElement {
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _isCollapsible = false;
     _isExpanded = false;
+    _singleLine = false;
+    _sortable = false;
 
     _wrappedChips = 0;
     _resizeObserver;
@@ -134,6 +136,38 @@ export default class ChipContainer extends LightningElement {
         this.checkForMedia();
     }
 
+    /**
+     * If present, the chips are limited to one line. This attribute overrides the is-collapsible and is-expanded attributes.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get singleLine() {
+        return this._singleLine;
+    }
+
+    set singleLine(value) {
+        this._singleLine = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the chips can be reordered by dragging and dropping, or using the spacebar key.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get sortable() {
+        return this._sortable;
+    }
+
+    set sortable(value) {
+        this._sortable = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -150,12 +184,16 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * True if the "show more" button should be visible.
+     * CSS classes of the listbox element.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get showMore() {
-        return this.isCollapsible && !this.isExpanded;
+    get computedListboxClass() {
+        return classSet('slds-listbox slds-is-relative slds-listbox_horizontal')
+            .add({
+                'slds-listbox_inline': this.singleLine
+            })
+            .toString();
     }
 
     /**
@@ -177,8 +215,19 @@ export default class ChipContainer extends LightningElement {
         return classSet(
             'slds-listbox_selection-group avonni-chip-container__list-box_height'
         ).add({
-            'avonni-chip-container__wrapper_is-collapsed': this.showMore
+            'avonni-chip-container__wrapper_is-collapsed': this.showMore,
+            'slds-pill_container slds-p-top_none slds-p-bottom_none':
+                this.singleLine
         });
+    }
+
+    /**
+     * True if the "show more" button should be visible.
+     *
+     * @type {boolean}
+     */
+    get showMore() {
+        return this.isCollapsible && !this.isExpanded;
     }
 
     /**
