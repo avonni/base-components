@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 
 const AVATAR_GROUP_SIZES = {
@@ -137,12 +137,8 @@ export default class AvatarGroup extends LightningElement {
     _imageWidth;
 
     showPopover = false;
-    hiddenItems = [];
 
     connectedCallback() {
-        if (!this.maxCount) {
-            this._maxCount = this.layout === 'stack' ? 5 : 11;
-        }
         this.template.addEventListener(
             'actionclick',
             this.handleAvatarActionClick
@@ -150,15 +146,13 @@ export default class AvatarGroup extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.isClassic) {
-            let avatars = this.template.querySelectorAll(
-                '.avonni-avatar-group__avatar'
-            );
+        const avatars = this.template.querySelectorAll(
+            '[data-group-name="avatar"]'
+        );
 
-            avatars.forEach((avatar, index) => {
-                avatar.style.zIndex = avatars.length - index;
-            });
-        }
+        avatars.forEach((avatar, index) => {
+            avatar.style.zIndex = avatars.length - index;
+        });
     }
 
     /*
@@ -367,57 +361,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Computed list items
-     * @type {object[]}
-     */
-    get listItems() {
-        let length = this.items.length;
-        let maxCount = this.maxCount;
-        let items = JSON.parse(JSON.stringify(this.items));
-
-        if (isNaN(maxCount)) {
-            maxCount = this.layout === 'stack' ? 5 : 11;
-        }
-
-        if (length > maxCount) {
-            items = items.slice(0, maxCount);
-
-            items.push({
-                initials: `+${length - maxCount}`,
-                showMore: true
-            });
-        }
-
-        items.forEach((item, index) => {
-            item.key = 'avatar-key-' + index;
-        });
-        return items;
-    }
-
-    /**
-     * Hidden extra items
-     * @type {object[]}
-     */
-    get listHiddenItems() {
-        let length = this.items.length;
-        let maxCount = this.maxCount;
-        let items = JSON.parse(JSON.stringify(this.items));
-
-        if (isNaN(maxCount)) {
-            maxCount = 11;
-        }
-
-        if (length > maxCount) {
-            items = items.slice(maxCount);
-            items.forEach((item, index) => {
-                item.key = 'avatar-key-hidden-' + index;
-            });
-            return items;
-        }
-        return [];
-    }
-
-    /**
      * Class wrapping the two-avatar group
      * @type {string}
      */
@@ -454,22 +397,6 @@ export default class AvatarGroup extends LightningElement {
         return classSet('avonni-avatar-group__avatar')
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack',
-                'avonni-avatar-group__avatar_radius-border-square':
-                    (this.layout === 'stack' || this.layout === 'grid') &&
-                    this.variant === 'square'
-            })
-            .add(`avonni-avatar-${this.size}`)
-            .toString();
-    }
-
-    /**
-     * Class of the show more button when the avatars are displayed in a line
-     * @type {string}
-     */
-    get avatarInlinePlusClass() {
-        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
-            .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
                 'avonni-avatar-group__avatar_radius-border-square':
                     (this.layout === 'stack' || this.layout === 'grid') &&
                     this.variant === 'square'
@@ -540,6 +467,50 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    get computedMaxCount() {
+        if (!isNaN(this.maxCount)) {
+            return this.maxCount;
+        }
+        return this.layout === 'stack' ? 5 : 11;
+    }
+
+    get generatedKey() {
+        return generateUUID();
+    }
+
+    get hiddenItems() {
+        if (this.showMoreButton) {
+            return this.items.slice(this.computedMaxCount);
+        }
+        return [];
+    }
+
+    /**
+     * Class of the show more button when the avatars are displayed in a line
+     *
+     * @type {string}
+     */
+    get showMoreAvatarClass() {
+        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
+            .add({
+                'avonni-avatar-group_in-line ': this.layout === 'stack',
+                'avonni-avatar-group__avatar_radius-border-square':
+                    (this.layout === 'stack' || this.layout === 'grid') &&
+                    this.variant === 'square'
+            })
+            .add(`avonni-avatar-${this.size}`)
+            .toString();
+    }
+
+    get showMoreButton() {
+        return this.computedMaxCount < this.items.length;
+    }
+
+    get showMoreInitials() {
+        const length = this.items.length - this.computedMaxCount;
+        return `+${length}`;
+    }
+
     /**
      * Class to reorder show more section
      * @type {string}
@@ -598,6 +569,16 @@ export default class AvatarGroup extends LightningElement {
         return !(this.layout === 'list');
     }
 
+    /**
+     * Computed list items
+     * @type {object[]}
+     */
+    get visibleItems() {
+        return this.items.length > this.computedMaxCount
+            ? this.items.slice(0, this.computedMaxCount)
+            : this.items;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -637,48 +618,41 @@ export default class AvatarGroup extends LightningElement {
             return;
         }
 
-        const itemId = event.target.dataset.itemId;
-        const type = event.target.dataset.type;
+        const { itemId, type } = event.currentTarget.dataset;
         let item;
 
         if (type === 'show') {
-            item = this.listItems[itemId];
+            item = this.visibleItems[itemId];
         } else {
-            item = this.listHiddenItems[itemId];
+            item = this.hiddenItems[itemId];
         }
 
-        if (item.showMore && !this.showPopover) {
-            this.showPopover = true;
-            this.template.querySelector('.slds-dropdown-trigger').focus();
-            this.allowBlur();
-        } else {
-            /**
-             * The event fired when the user click on an avatar.
-             *
-             * @event
-             * @name avatarclick
-             * @param {object} item The avatar detail.
-             * @param {string} name Name of the avatar.
-             * @bubbles
-             * @cancelable
-             * @public
-             */
-            this.dispatchEvent(
-                new CustomEvent('avatarclick', {
-                    bubbles: true,
-                    cancelable: true,
-                    detail: {
-                        item,
-                        name: item.name
-                    }
-                })
-            );
+        /**
+         * The event fired when the user click on an avatar.
+         *
+         * @event
+         * @name avatarclick
+         * @param {object} item The avatar detail.
+         * @param {string} name Name of the avatar.
+         * @bubbles
+         * @cancelable
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('avatarclick', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    item,
+                    name: item.name
+                }
+            })
+        );
 
-            if (this.layout !== 'list') {
-                this.showPopover = false;
-            }
-            this.cancelBlur();
+        if (this.layout !== 'list') {
+            this.showPopover = false;
         }
+        this.cancelBlur();
     }
 
     /**
@@ -714,9 +688,9 @@ export default class AvatarGroup extends LightningElement {
         let item;
 
         if (type === 'show') {
-            item = this.listItems[itemId];
+            item = this.visibleItems[itemId];
         } else {
-            item = this.listHiddenItems[itemId];
+            item = this.hiddenItems[itemId];
         }
 
         /**
@@ -743,7 +717,17 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Toggle the hidden extra avatars popover
      */
-    toggleShowHiddenList() {
+    handleToggleShowMore() {
         this.showPopover = !this.showPopover;
+
+        if (this.showPopover) {
+            const button = this.template.querySelector(
+                '[data-element-id="div-show-more-button-wrapper"]'
+            );
+            if (button) {
+                button.focus();
+                this.allowBlur();
+            }
+        }
     }
 }
