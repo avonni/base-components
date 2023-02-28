@@ -33,14 +33,12 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small">
-        <c-primitive-cell-progress-circle
-            value={value}
-            direction={typeAttributes.direction}
-            label={typeAttributes.label}
-            size={typeAttributes.size}
-            thickness={typeAttributes.thickness}
-            variant={typeAttributes.variant}
-        ></c-primitive-cell-progress-circle>
-    </div>
+    <c-primitive-cell-progress-circle
+        value={value}
+        direction={typeAttributes.direction}
+        label={typeAttributes.label}
+        size={typeAttributes.size}
+        thickness={typeAttributes.thickness}
+        variant={typeAttributes.variant}
+    ></c-primitive-cell-progress-circle>
 </template>
