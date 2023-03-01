@@ -2,6 +2,7 @@
  * @typedef {object} ChipContainerItems
  * @name items
  * @property {string} label Label display in the chip.
+ * @property {string} name Name to identify the chip.
  * @property {string} variant The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  * @property {boolean} outline If true, display an outline style button.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.

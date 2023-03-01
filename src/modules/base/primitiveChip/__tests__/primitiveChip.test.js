@@ -56,12 +56,13 @@ describe('Primitive Chip', () => {
     });
 
     it('Default attributes', () => {
-        expect(element.label).toEqual('');
-        expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(undefined);
-        expect(element.variant).toEqual('base');
         expect(element.hidden).toEqual(false);
         expect(element.iconName).toEqual(undefined);
+        expect(element.label).toBeUndefined();
+        expect(element.name).toBeUndefined();
+        expect(element.outline).toEqual(false);
+        expect(element.variant).toEqual('base');
     });
 
     /* ----- ATTRIBUTES ----- */

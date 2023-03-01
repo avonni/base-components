@@ -68,7 +68,6 @@ export default class PillContainer extends LightningElement {
     _dragTimeOut;
     _expandTimeOut;
     _focusedIndex = 0;
-    _focusedTabIndex = 0;
     _focusOnRender = false;
     _hasFocus = false;
     _hiddenItemsStartIndex = 0;
@@ -411,6 +410,11 @@ export default class PillContainer extends LightningElement {
         return this.items.slice(0, this._visibleItemsCount);
     }
 
+    /**
+     * Wrapper HTML element.
+     *
+     * @type {HTMLElement}
+     */
     get wrapperElement() {
         return this.template.querySelector('[data-element-id="div-wrapper"]');
     }

@@ -117,7 +117,9 @@ const TemplateWithMaxWidth = (args) => MaxWidthChipContainer(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: ITEMS
+    items: ITEMS,
+    isCollapsible: true,
+    singleLine: true
 };
 
 export const NoMedia = Template.bind({});

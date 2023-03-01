@@ -61,7 +61,22 @@ const MEDIA_POSITION = {
 };
 
 export default class PrimitiveChip extends LightningElement {
-    _label = '';
+    /**
+     * Label displayed in the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api label;
+
+    /**
+     * Name to identify the chip.
+     *
+     * @public
+     * @type {string}
+     */
+    @api name;
+
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = undefined;
@@ -69,20 +84,6 @@ export default class PrimitiveChip extends LightningElement {
     _prefixIconName = undefined;
     _suffixIconName = undefined;
     _hidden = false;
-
-    /**
-     * Label displayed in the chip.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get label() {
-        return this._label;
-    }
-    set label(value) {
-        this._label = value;
-    }
 
     /**
      * If true, display an outline style button.

@@ -35,45 +35,123 @@
 <template>
     <div class={computedWrapperClass} data-element-id="div-wrapper">
         <span
+            id="instructions"
+            class="slds-assistive-text"
+            aria-live="assertive"
+            lwc:dom="manual"
+            data-element-id="span-instructions"
+        ></span>
+
+        <span
             if:true={alternativeText}
+            id="label"
             class="slds-assistive-text"
             data-element-id="span-alternative-text"
             >{alternativeText}</span
         >
-        <lightning-button
-            if:true={showMore}
-            aria-hidden="true"
-            class="
-                slds-listbox-toggle
-                avonni-chip-container__show-more_centered
-            "
-            label={computedShowMoreLabel}
-            variant="base"
-            data-element-id="show-more-button"
-            onclick={handleMoreClick}
-        >
-        </lightning-button>
-        <div
-            role="list"
-            data-element-id="chip-container-list"
+
+        <ul
             class={computedListboxClass}
+            aria-describedby="instructions"
+            aria-labelledby="label"
+            aria-orientation="horizontal"
+            tabindex={listboxTabIndex}
+            data-element-id="ul"
+            onfocusin={handleChipFocus}
+            onfocusout={handleChipBlur}
+            onkeydown={handleKeyDown}
         >
-            <template for:each={items} for:item="chip" for:index="index">
-                <c-primitive-chip
-                    key={uniqueKey}
-                    class="slds-listbox-item"
-                    label={chip.label}
-                    variant={chip.variant}
-                    outline={chip.outline}
-                    avatar={chip.avatar}
-                    prefix-icon-name={chip.prefixIconName}
-                    suffix-icon-name={chip.suffixIconName}
+            <template for:each={visibleItems} for:item="chip" for:index="index">
+                <li
+                    key={chip.name}
+                    class={computedListItemClass}
+                    role="presentation"
+                    data-element-id="li-item"
                     data-index={index}
-                    role="listitem"
-                    data-element-id="chip"
+                    onmousemove={handleChipMouseMove}
+                    onmousedown={handleChipMouseDown}
                 >
-                </c-primitive-chip>
+                    <c-primitive-chip
+                        data-element-id="avonni-primitive-chip"
+                        data-index={index}
+                        class={computedChipClass}
+                        avatar={chip.avatar}
+                        label={chip.label}
+                        name={chip.name}
+                        outline={chip.outline}
+                        prefix-icon-name={chip.prefixIconName}
+                        suffix-icon-name={chip.suffixIconName}
+                        variant={chip.variant}
+                        role="option"
+                        tabindex="-1"
+                        onclick={handleChipClick}
+                    ></c-primitive-chip>
+                </li>
             </template>
+        </ul>
+
+        <div class="slds-is-relative slds-show_inline-block">
+            <!-- Show more -->
+            <lightning-button
+                if:true={isCollapsed}
+                class="slds-p-horizontal_xx-small"
+                label={buttonLabel}
+                variant="base"
+                data-element-id="lightning-button-show-more"
+                onclick={handleExpand}
+                onmouseenter={handleMoreButtonMouseEnter}
+                onmouseleave={handleMoreButtonMouseLeave}
+            ></lightning-button>
+            <div
+                if:true={showPopover}
+                class="
+                    slds-dropdown slds-dropdown_left slds-dropdown_length-7
+                    slds-p-vertical_none
+                    slds-p-horizontal_xx-small
+                "
+                data-element-id="div-popover"
+                onfocusin={handlePopoverFocusIn}
+                onfocusout={handlePopoverFocusOut}
+                onscroll={handlePopoverScroll}
+            >
+                <lightning-focus-trap data-element-id="ligthning-focus-trap">
+                    <ul
+                        aria-describedby="instructions"
+                        aria-labelledby="label"
+                        aria-orientation="vertical"
+                        onkeydown={handleKeyDown}
+                    >
+                        <template for:each={hiddenItems} for:item="chip">
+                            <li
+                                key={chip.name}
+                                class={computedHiddenListItemClass}
+                                role="presentation"
+                                data-element-id="li-item-hidden"
+                                data-index={chip.index}
+                                data-name={chip.name}
+                                onmousemove={handleChipMouseMove}
+                                onmousedown={handleChipMouseDown}
+                            >
+                                <c-primitive-chip
+                                    data-element-id="avonni-primitive-chip-hidden"
+                                    data-index={chip.index}
+                                    class={computedChipClass}
+                                    avatar={chip.avatar}
+                                    label={chip.label}
+                                    name={chip.name}
+                                    outline={chip.outline}
+                                    prefix-icon-name={chip.prefixIconName}
+                                    suffix-icon-name={chip.suffixIconName}
+                                    variant={chip.variant}
+                                    role="option"
+                                    tabindex="-1"
+                                    onclick={handleChipClick}
+                                ></c-primitive-chip>
+                            </li>
+                        </template>
+                    </ul>
+                </lightning-focus-trap>
+            </div>
         </div>
     </div>
 </template>
