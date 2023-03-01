@@ -33,13 +33,11 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small">
-        <c-progress-ring
-            value={value}
-            direction={typeAttributes.direction}
-            hide-icon={typeAttributes.hideIcon}
-            size={typeAttributes.size}
-            variant={typeAttributes.variant}
-        ></c-progress-ring>
-    </div>
+    <c-progress-ring
+        value={value}
+        direction={typeAttributes.direction}
+        hide-icon={typeAttributes.hideIcon}
+        size={typeAttributes.size}
+        variant={typeAttributes.variant}
+    ></c-progress-ring>
 </template>

@@ -147,7 +147,8 @@ export default class Datatable extends LightningDatatable {
         },
         badge: {
             template: badge,
-            typeAttributes: ['variant']
+            typeAttributes: ['variant'],
+            standardCellLayout: true
         },
         'checkbox-button': {
             template: checkboxButton,
@@ -199,7 +200,8 @@ export default class Datatable extends LightningDatatable {
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option']
+            typeAttributes: ['alternativeText', 'option'],
+            standardCellLayout: true
         },
         image: {
             template: image,
@@ -210,7 +212,8 @@ export default class Datatable extends LightningDatatable {
                 'srcset',
                 'thumbnail',
                 'width'
-            ]
+            ],
+            standardCellLayout: true
         },
         lookup: {
             template: lookup,
@@ -232,7 +235,8 @@ export default class Datatable extends LightningDatatable {
         },
         'progress-ring': {
             template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            standardCellLayout: true
         },
         'progress-circle': {
             template: progressCircle,
@@ -242,7 +246,8 @@ export default class Datatable extends LightningDatatable {
                 'size',
                 'thickness',
                 'variant'
-            ]
+            ],
+            standardCellLayout: true
         },
         qrcode: {
             template: qrcode,
@@ -255,7 +260,8 @@ export default class Datatable extends LightningDatatable {
                 'errorCorrection',
                 'padding',
                 'size'
-            ]
+            ],
+            standardCellLayout: true
         },
         rating: {
             template: rating,
