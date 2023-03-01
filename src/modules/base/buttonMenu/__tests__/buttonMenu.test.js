@@ -698,4 +698,18 @@ describe('Button Menu', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
+
+    it('Button menu: event open triggered by keyboard', () => {
+        const handler = jest.fn();
+        element.addEventListener('open', handler);
+
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        const event = new CustomEvent('keydown');
+        event.key = 'Enter';
+        button.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+    });
 });

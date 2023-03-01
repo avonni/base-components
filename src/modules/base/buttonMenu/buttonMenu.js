@@ -731,6 +731,19 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
+     * Handle a key down pressed on the button. Toggle the opening of the menu if the key is right.
+     *
+     * @param {Event} event `keydown` event.
+     */
+    handleButtonKeyDown(event) {
+        const key = event.key;
+        const isValidKey = key === 'Enter' || key === ' ' || key === 'Spacebar';
+        if (isValidKey) {
+            this.handleButtonClick();
+        }
+    }
+
+    /**
      * Button mouse down handler.
      *
      * @param {Event} event
