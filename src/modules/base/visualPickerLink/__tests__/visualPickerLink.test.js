@@ -65,7 +65,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile'
+                '.avonni-visual-picker-link__tile'
             );
             expect(wrapper.classList).not.toContain(
                 'slds-welcome-mat__tile_complete'
@@ -78,7 +78,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile'
+                '.avonni-visual-picker-link__tile'
             );
             expect(wrapper.classList).toContain(
                 'slds-welcome-mat__tile_complete'
@@ -121,7 +121,7 @@ describe('VisualPickerLink', () => {
             );
 
             expect(tileBody.classList).not.toContain(
-                'avonni-welcome-mat__tile-no-icon'
+                'avonni-visual-picker-link__tile-no-icon'
             );
         });
     });
@@ -137,7 +137,7 @@ describe('VisualPickerLink', () => {
                 'a div:first-of-type.slds-media__figure'
             );
             const iconRight = element.shadowRoot.querySelector(
-                '.avonni-media__figure-right'
+                '.avonni-visual-picker-link__figure-right'
             );
             const tileBody = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile-body'
@@ -146,7 +146,7 @@ describe('VisualPickerLink', () => {
             expect(iconLeft).toBeTruthy();
             expect(iconRight).toBeFalsy();
             expect(tileBody.classList).not.toContain(
-                'avonni-welcome-mat__tile-body-right'
+                'avonni-visual-picker-link__tile-body-right'
             );
         });
     });
@@ -160,7 +160,7 @@ describe('VisualPickerLink', () => {
                 'a div:first-of-type.slds-media__figure'
             );
             const iconRight = element.shadowRoot.querySelector(
-                '.avonni-media__figure-right'
+                '.avonni-visual-picker-link__figure-right'
             );
             const tileBody = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile-body'
@@ -169,7 +169,7 @@ describe('VisualPickerLink', () => {
             expect(iconLeft).toBeFalsy();
             expect(iconRight).toBeTruthy();
             expect(tileBody.classList).toContain(
-                'avonni-welcome-mat__tile-body-right'
+                'avonni-visual-picker-link__tile-body-right'
             );
         });
     });
@@ -180,7 +180,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile'
+                '.avonni-visual-picker-link__tile'
             );
             const link = element.shadowRoot.querySelector(
                 '[data-element-id="a"]'
@@ -188,7 +188,7 @@ describe('VisualPickerLink', () => {
 
             expect(link).toBeTruthy();
             expect(wrapper.classList).not.toContain(
-                'slds-welcome-mat__tile_info-only'
+                'avonni-visual-picker-link__tile_info-only'
             );
         });
     });
@@ -198,7 +198,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile'
+                '.avonni-visual-picker-link__tile'
             );
             const link = element.shadowRoot.querySelector(
                 '[data-element-id="a"]'
@@ -206,7 +206,7 @@ describe('VisualPickerLink', () => {
 
             expect(link).toBeFalsy();
             expect(wrapper.classList).toContain(
-                'slds-welcome-mat__tile_info-only'
+                'avonni-visual-picker-link__tile_info-only'
             );
         });
     });
@@ -217,7 +217,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile-title'
+                '.avonni-visual-picker-link__tile-title'
             );
             expect(title.textContent).toBe('A string title');
         });
