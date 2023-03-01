@@ -96,6 +96,41 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if massEdit is enabled and checkbox is checked.
+     *
+     * @type {boolean}
+     */
+    @api
+    get isMassEditChecked() {
+        return (
+            this.isMassEditEnabled &&
+            this.template.querySelector('[data-mass-selection="true"]').checked
+        );
+    }
+
+    /**
+     * Returns validity object of inputable element inside inline edit panel.
+     *
+     * @type {object}
+     */
+    @api
+    get validity() {
+        return this.inputableElement
+            ? this.inputableElement.validity
+            : undefined;
+    }
+
+    /**
+     * Returns value of inputable element inside inline edit panel.
+     *
+     * @type {(string|object)}
+     */
+    @api
+    get value() {
+        return this.inputableElement ? this.inputableElement.value : undefined;
+    }
+
+    /**
      * Computed panel class.
      *
      * @type {string}
@@ -110,23 +145,13 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
-     * Returns the checkbox label when mass edit.
+     * Returns element inputable element inside inline edit panel.
      *
-     * @type {string}
+     * @type {element}
      */
-    get massEditCheckboxLabel() {
-        return `Update ${this.numberOfSelectedRows} selected items`;
-    }
-
-    /**
-     * Returns true if column is required.
-     *
-     * @type {boolean}
-     */
-    get required() {
-        return (
-            this.columnDef.typeAttributes &&
-            this.columnDef.typeAttributes.required
+    get inputableElement() {
+        return this.template.querySelector(
+            '[data-element-id="dt-type-edit-factory-custom"]'
         );
     }
 
@@ -167,6 +192,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is lookup.
+     *
+     * @type {boolean}
+     */
+    get isTypeLookup() {
+        return this.columnDef.type === 'lookup';
+    }
+
+    /**
      * Returns true if column type is type with menu.
      *
      * @type {boolean}
@@ -176,6 +210,27 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.isTypeRichText ||
             this.isTypeDateRange ||
             this.isTypeColorPicker
+        );
+    }
+
+    /**
+     * Returns the checkbox label when mass edit.
+     *
+     * @type {string}
+     */
+    get massEditCheckboxLabel() {
+        return `Update ${this.numberOfSelectedRows} selected items`;
+    }
+
+    /**
+     * Returns true if column is required.
+     *
+     * @type {boolean}
+     */
+    get required() {
+        return (
+            this.columnDef.typeAttributes &&
+            this.columnDef.typeAttributes.required
         );
     }
 
@@ -191,6 +246,69 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             this.columnDef.type === 'counter' ||
             this.columnDef.type === 'textarea'
         );
+    }
+
+    @api
+    focus() {
+        this.interactingState.enter();
+
+        if (this.inputableElement) {
+            this.inputableElement.focus();
+        }
+    }
+
+    @api
+    getPositionedElement() {
+        return this.template.querySelector('section');
+    }
+
+    cancelEdition() {
+        this.triggerEditFinished({
+            reason: 'edit-canceled'
+        });
+    }
+
+    comboboxFormattedValue(value) {
+        switch (value.length) {
+            case 0:
+                return undefined;
+            case 1:
+                return value[0];
+            default:
+                return value;
+        }
+    }
+
+    dateRangeFormattedValue(value) {
+        return {
+            startDate: value.startDate,
+            endDate: value.endDate
+        };
+    }
+
+    focusLastElement() {
+        this.template.querySelector('[data-form-last-element="true"]').focus();
+    }
+
+    handleCellKeydown(event) {
+        const { keyCode } = event;
+
+        if (keyCode === 27) {
+            // Esc key
+            event.stopPropagation();
+            this.cancelEdition();
+        }
+    }
+
+    handleEditFormSubmit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
+            this.processSubmission();
+        }
+
+        return false;
     }
 
     handleFormStartFocus() {
@@ -219,109 +337,20 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         }
     }
 
-    dateRangeFormattedValue(value) {
-        return {
-            startDate: value.startDate,
-            endDate: value.endDate
-        };
-    }
-
-    comboboxFormattedValue(value) {
-        if (value.length > 2) {
-            return value;
-        } else if (value.length === 1) {
-            return value[0];
-        } else if (value.length === 0) {
-            return undefined;
-        }
-        return value;
-    }
-
-    triggerEditFinished(detail) {
-        if (!this.isTypeCombobox) {
-            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.isTypeRichText ? true : this.validity.valid;
-            detail.isMassEditChecked = this.isMassEditChecked;
-            detail.value = this.isTypeDateRange
-                ? this.dateRangeFormattedValue(this.value)
-                : this.value;
-        } else if (this.isTypeCombobox) {
-            // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
-            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.isTypeRichText ? true : this.validity.valid;
-            detail.isMassEditChecked = this.isMassEditChecked;
-            detail.value = this.comboboxFormattedValue(this.value);
-        }
-
-        this.dispatchEvent(
-            new CustomEvent('ieditfinishedcustom', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    @api
-    focus() {
-        this.interactingState.enter();
-
-        if (this.inputableElement) {
+    handleMassEditCheckboxClick() {
+        if (this.inputableElement && !this.isTypeDateRange) {
             this.inputableElement.focus();
         }
     }
 
-    /**
-     * Returns element inputable element inside inline edit panel.
-     *
-     * @type {element}
-     */
-    get inputableElement() {
-        return this.template.querySelector(
-            '[data-element-id="dt-type-edit-factory-custom"]'
-        );
-    }
-
-    /**
-     * Returns value of inputable element inside inline edit panel.
-     *
-     * @type {(string|object)}
-     */
-    @api
-    get value() {
-        return this.inputableElement ? this.inputableElement.value : undefined;
-    }
-
-    /**
-     * Returns validity object of inputable element inside inline edit panel.
-     *
-     * @type {object}
-     */
-    @api
-    get validity() {
-        return this.inputableElement
-            ? this.inputableElement.validity
-            : undefined;
-    }
-
-    /**
-     * Returns true if massEdit is enabled and checkbox is checked.
-     *
-     * @type {boolean}
-     */
-    @api
-    get isMassEditChecked() {
-        return (
-            this.isMassEditEnabled &&
-            this.template.querySelector('[data-mass-selection="true"]').checked
-        );
-    }
-
-    @api
-    getPositionedElement() {
-        return this.template.querySelector('section');
+    handlePanelLoosedFocus() {
+        if (this.isTypeLookup && this.visible) {
+            this.processSubmission();
+        } else if (this.visible) {
+            this.triggerEditFinished({
+                reason: 'loosed-focus'
+            });
+        }
     }
 
     handleTypeElemBlur() {
@@ -347,39 +376,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     handleTypeElemMouseEnter() {
         this._allowBlur = false;
-    }
-
-    handleEditFormSubmit(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
-            this.processSubmission();
-        }
-
-        return false;
-    }
-
-    handleCellKeydown(event) {
-        const { keyCode } = event;
-
-        if (keyCode === 27) {
-            // Esc key
-            event.stopPropagation();
-            this.cancelEdition();
-        }
-    }
-
-    handlePanelLoosedFocus() {
-        if (this.visible) {
-            this.triggerEditFinished({
-                reason: 'loosed-focus'
-            });
-        }
-    }
-
-    focusLastElement() {
-        this.template.querySelector('[data-form-last-element="true"]').focus();
     }
 
     processSubmission() {
@@ -424,15 +420,30 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         }
     };
 
-    cancelEdition() {
-        this.triggerEditFinished({
-            reason: 'edit-canceled'
-        });
-    }
-
-    handleMassEditCheckboxClick() {
-        if (this.inputableElement && !this.isTypeDateRange) {
-            this.inputableElement.focus();
+    triggerEditFinished(detail) {
+        if (!this.isTypeCombobox) {
+            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
+            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
+            detail.valid = this.isTypeRichText ? true : this.validity.valid;
+            detail.isMassEditChecked = this.isMassEditChecked;
+            detail.value = this.isTypeDateRange
+                ? this.dateRangeFormattedValue(this.value)
+                : this.value;
+        } else if (this.isTypeCombobox) {
+            // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
+            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
+            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
+            detail.valid = this.validity.valid;
+            detail.isMassEditChecked = this.isMassEditChecked;
+            detail.value = this.comboboxFormattedValue(this.value);
         }
+
+        this.dispatchEvent(
+            new CustomEvent('ieditfinishedcustom', {
+                detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

@@ -39,12 +39,14 @@ import dateRangeTpl from './dateRange.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
+import lookupTpl from './lookup.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     counter: counterTpl,
     'date-range': dateRangeTpl,
+    lookup: lookupTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };

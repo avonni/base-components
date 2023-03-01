@@ -55,6 +55,7 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
+import lookup from './lookup.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -95,6 +96,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
+    'lookup',
     'rating',
     'rich-text',
     'slider',
@@ -209,6 +211,10 @@ export default class Datatable extends LightningDatatable {
                 'thumbnail',
                 'width'
             ]
+        },
+        lookup: {
+            template: lookup,
+            typeAttributes: ['path', 'target']
         },
         'progress-bar': {
             template: progressBar,
@@ -990,11 +996,11 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
-
-        dispatchCellChangeEvent(this, dirtyValues);
+        if (value !== this.state.inlineEdit.editedValue) {
+            // Show yellow background and save/cancel button
+            super.updateRowsState(this.state);
+            dispatchCellChangeEvent(this, dirtyValues);
+        }
     };
 
     /**
