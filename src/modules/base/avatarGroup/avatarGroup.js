@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { keyCodes, normalizeString, normalizeArray } from 'c/utilsPrivate';
 
 const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
@@ -66,6 +66,8 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const LOADING_THRESHOLD = 60;
+const MAX_LOADED_ITEMS = 30;
 
 /**
  * @class
@@ -129,14 +131,18 @@ export default class AvatarGroup extends LightningElement {
     _maxCount;
     _size = AVATAR_GROUP_SIZES.default;
     _layout = AVATAR_GROUP_LAYOUTS.default;
-    _allowBlur = false;
     _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
     _listButtonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
     _listButtonVariant = BUTTON_VARIANTS.default;
     _variant = AVATAR_GROUP_VARIANTS.default;
     _imageWidth;
 
-    showPopover = false;
+    showHiddenItems = false;
+    _focusedIndex = 0;
+    _hiddenItemsStartIndex = 0;
+    _popoverFocusoutAnimationFrame;
+    _popoverIsFocused = false;
+    _preventPopoverClosing = false;
 
     connectedCallback() {
         this.template.addEventListener(
@@ -313,7 +319,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get currentlistButtonLabel() {
-        return this.showPopover
+        return this.showHiddenItems
             ? this.listButtonShowLessLabel
             : this.listButtonShowMoreLabel;
     }
@@ -323,7 +329,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get currentListButtonIcon() {
-        return this.showPopover
+        return this.showHiddenItems
             ? this.listButtonShowLessIconName
             : this.listButtonShowMoreIconName;
     }
@@ -333,7 +339,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get currentListButtonPosition() {
-        return this.showPopover
+        return this.showHiddenItems
             ? this.listButtonShowLessIconPosition
             : this.listButtonShowMoreIconPosition;
     }
@@ -412,7 +418,12 @@ export default class AvatarGroup extends LightningElement {
     get avatarWrapperClass() {
         return classSet('avonni-avatar-group__avatar-container')
             .add({
-                'slds-show': this.layout === 'list',
+                'slds-show avonni-avatar-group__avatar-container_list slds-p-horizontal_small slds-p-vertical_x-small':
+                    this.layout === 'list',
+                'avonni-avatar-group__avatar-container_grid':
+                    this.layout === 'grid',
+                'avonni-avatar-group__avatar-container_stack':
+                    this.layout === 'stack',
                 'avonni-avatar-group_circle': this.variant === 'circle',
                 'slds-p-right_x-small': this.layout === 'grid'
             })
@@ -459,7 +470,7 @@ export default class AvatarGroup extends LightningElement {
             .add({
                 'avonni-avatar-group__action-button-base-layout':
                     this.layout !== 'list',
-                'avonni-avatar-group__action-button-list slds-show':
+                'avonni-avatar-group__action-button-list slds-show slds-p-vertical_x-small slds-p-horizontal_small':
                     this.layout === 'list',
                 'avonni-avatar-group__avatar-button-in-line':
                     this.layout === 'stack'
@@ -479,10 +490,27 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get hiddenItems() {
-        if (this.showMoreButton) {
+        if (!this.showMoreButton) {
+            return [];
+        } else if (this.display === 'list') {
             return this.items.slice(this.computedMaxCount);
         }
-        return [];
+
+        let endIndex = this._hiddenItemsStartIndex + MAX_LOADED_ITEMS;
+        const lastIndex = this.items.length;
+        if (endIndex + 10 >= lastIndex) {
+            // If only 10 items are left, load them all
+            endIndex = lastIndex;
+        }
+
+        const items = this.items.slice(this._hiddenItemsStartIndex, endIndex);
+
+        return items.map((it, index) => {
+            return {
+                ...it,
+                index: index + this._hiddenItemsStartIndex
+            };
+        });
     }
 
     /**
@@ -528,7 +556,8 @@ export default class AvatarGroup extends LightningElement {
      */
     get hiddenListClass() {
         return classSet({
-            'slds-dropdown slds-dropdown_left': this.layout !== 'list'
+            'slds-dropdown slds-dropdown_left slds-p-around_none':
+                this.layout !== 'list'
         }).toString();
     }
 
@@ -585,28 +614,95 @@ export default class AvatarGroup extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Change the value of _allowBlur to true
-     */
-    allowBlur() {
-        this._allowBlur = true;
-    }
-
-    /**
-     * Change the value of _allowBlur to false
-     */
-    cancelBlur() {
-        this._allowBlur = false;
-    }
-
-    /**
-     * Close the hidden extra avatars popover
-     */
-    handleBlur() {
-        if (!this._allowBlur) {
-            return;
+    focusItem() {
+        const focusedItem = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
+        );
+        if (focusedItem) {
+            focusedItem.focus();
         }
-        this.showPopover = false;
+    }
+
+    getHiddenItemFromPosition(y) {
+        const elements = this.template.querySelectorAll(
+            '[data-element-id="li-hidden"]'
+        );
+
+        for (let i = 0; i < elements.length; i++) {
+            const el = elements[i];
+            const position = el.getBoundingClientRect();
+
+            if (y + 1 >= position.top && y - 1 <= position.bottom) {
+                return {
+                    index: Number(el.dataset.index),
+                    offset: y - position.top
+                };
+            }
+        }
+        return null;
+    }
+
+    normalizeFocusedIndex(index) {
+        let position = 'INDEX';
+        const popoverOpen = this.showHiddenItems && this.layout !== 'list';
+
+        if (popoverOpen && index < this.computedMaxCount) {
+            position = 'FIRST_HIDDEN_ITEM';
+        } else if (popoverOpen && index > this.items.length - 1) {
+            position = 'LAST_HIDDEN_ITEM';
+        } else if (!this.showHiddenItems && index >= this.computedMaxCount) {
+            position = 'LAST_VISIBLE_ITEM';
+        } else if (index < 0) {
+            position = 'FIRST_ITEM';
+        } else if (index > this.items.length - 1) {
+            position = 'LAST_ITEM';
+        }
+
+        switch (position) {
+            case 'FIRST_ITEM':
+                return 0;
+            case 'LAST_VISIBLE_ITEM':
+                return this.computedMaxCount - 1;
+            case 'FIRST_HIDDEN_ITEM':
+                return this.computedMaxCount;
+            case 'LAST_HIDDEN_ITEM':
+                return this.items.length - 1;
+            case 'LAST_ITEM':
+                return this.items.length - 1;
+            default:
+                return index;
+        }
+    }
+
+    /**
+     * Update the focused index.
+     *
+     * @param {number} index Index of the new focused item.
+     */
+    switchFocus(index) {
+        const list = this.template.querySelector('[data-element-id="ul"]');
+        if (list) {
+            list.tabIndex = '-1';
+        }
+
+        const normalizedIndex = this.normalizeFocusedIndex(index);
+
+        // remove focus from current item
+        const previousItem = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
+        );
+        if (previousItem) {
+            previousItem.tabIndex = '-1';
+        }
+
+        // move to next
+        this._focusedIndex = normalizedIndex;
+
+        // set focus
+        const item = this.template.querySelector(
+            `[data-element-id^="li"][data-index="${normalizedIndex}"]`
+        );
+        item.tabIndex = '0';
     }
 
     /**
@@ -618,14 +714,8 @@ export default class AvatarGroup extends LightningElement {
             return;
         }
 
-        const { itemId, type } = event.currentTarget.dataset;
-        let item;
-
-        if (type === 'show') {
-            item = this.visibleItems[itemId];
-        } else {
-            item = this.hiddenItems[itemId];
-        }
+        const index = Number(event.target.dataset.index);
+        const item = this.items[index];
 
         /**
          * The event fired when the user click on an avatar.
@@ -649,10 +739,11 @@ export default class AvatarGroup extends LightningElement {
             })
         );
 
-        if (this.layout !== 'list') {
-            this.showPopover = false;
+        if (this.layout !== 'list' && this.showHiddenItems) {
+            this.handleToggleShowHiddenItems();
+        } else if (!this.isClassic) {
+            this.switchFocus(index);
         }
-        this.cancelBlur();
     }
 
     /**
@@ -683,15 +774,8 @@ export default class AvatarGroup extends LightningElement {
      */
     handleAvatarActionClick = (event) => {
         const name = event.detail.name;
-        const itemId = event.target.dataset.itemId;
-        const type = event.target.dataset.type;
-        let item;
-
-        if (type === 'show') {
-            item = this.visibleItems[itemId];
-        } else {
-            item = this.hiddenItems[itemId];
-        }
+        const index = Number(event.target.dataset.index);
+        const item = this.items[index];
 
         /**
          * The event fired when the user clicks on an avatar action.
@@ -714,20 +798,155 @@ export default class AvatarGroup extends LightningElement {
         );
     };
 
+    handleHiddenItemsFocusIn() {
+        if (this.layout === 'list') {
+            return;
+        }
+        this._popoverIsFocused = true;
+    }
+
+    handleHiddenItemsFocusOut() {
+        if (this.layout === 'list') {
+            return;
+        }
+        this._popoverIsFocused = false;
+
+        cancelAnimationFrame(this._popoverFocusoutAnimationFrame);
+        this._popoverFocusoutAnimationFrame = requestAnimationFrame(() => {
+            if (
+                !this._popoverIsFocused &&
+                this.showHiddenItems &&
+                !this._preventPopoverClosing
+            ) {
+                this.handleToggleShowHiddenItems();
+            }
+            this._preventPopoverClosing = false;
+        });
+    }
+
+    handleHiddenItemsScroll(event) {
+        const popover = event.currentTarget;
+        const popoverTop = popover.getBoundingClientRect().top;
+        const height = popover.scrollHeight;
+        const scrolledDistance = popover.scrollTop;
+        const bottomLimit = height - popover.clientHeight - LOADING_THRESHOLD;
+        const loadDown = scrolledDistance >= bottomLimit;
+        const loadUp = scrolledDistance <= LOADING_THRESHOLD;
+
+        let newIndex;
+        if (loadUp) {
+            const previousIndex = this._hiddenItemsStartIndex - 10;
+            newIndex = Math.max(previousIndex, this.computedMaxCount);
+        } else if (loadDown) {
+            const nextIndex = this._hiddenItemsStartIndex + 10;
+            const maxIndex = this.items.length - MAX_LOADED_ITEMS - 10;
+            const minIndex = this.computedMaxCount;
+            newIndex =
+                maxIndex < minIndex ? minIndex : Math.min(nextIndex, maxIndex);
+        }
+
+        if (!isNaN(newIndex) && this._hiddenItemsStartIndex !== newIndex) {
+            const topItem = this.getHiddenItemFromPosition(popoverTop);
+            this._hiddenItemsStartIndex = newIndex;
+            this._preventPopoverClosing = true;
+
+            requestAnimationFrame(() => {
+                // Move the scroll bar back to the previous top item
+                const previousTopItem = this.template.querySelector(
+                    `[data-element-id="li-hidden"][data-index="${topItem.index}"]`
+                );
+                const lastHiddenItem =
+                    this.hiddenItems[this.hiddenItems.length - 1];
+                const focusIsTooHigh = this._focusedIndex < topItem.index;
+                const focusIsTooLow = this._focusedIndex > lastHiddenItem.index;
+
+                if (focusIsTooHigh || focusIsTooLow) {
+                    // If the scroll was triggered using the mouse,
+                    // keep an item focused
+                    this.switchFocus(topItem.index);
+                }
+                this.focusItem();
+                popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
+            });
+        }
+    }
+
+    handleItemFocus(event) {
+        const index = Number(event.currentTarget.dataset.index);
+        if (index !== this._focusedIndex) {
+            this.switchFocus(index);
+        }
+    }
+
+    handleItemsKeyDown(event) {
+        switch (event.keyCode) {
+            case keyCodes.left:
+            case keyCodes.up: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.switchFocus(this._focusedIndex - 1);
+                this.focusItem();
+                break;
+            }
+            case keyCodes.right:
+            case keyCodes.down: {
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.switchFocus(this._focusedIndex + 1);
+                this.focusItem();
+                break;
+            }
+            case keyCodes.space:
+            case keyCodes.enter:
+                // Prevent the page from scrolling
+                event.preventDefault();
+                this.handleAvatarClick(event);
+                break;
+            case keyCodes.escape:
+                if (this.showHiddenItems) {
+                    this.handleToggleShowHiddenItems();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleShowHiddenItemsButtonKeyDown(event) {
+        const key = event.key;
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+            this.handleToggleShowHiddenItems();
+        }
+    }
+
     /**
      * Toggle the hidden extra avatars popover
      */
-    handleToggleShowMore() {
-        this.showPopover = !this.showPopover;
+    handleToggleShowHiddenItems() {
+        this.showHiddenItems = !this.showHiddenItems;
 
-        if (this.showPopover) {
-            const button = this.template.querySelector(
-                '[data-element-id="div-show-more-button-wrapper"]'
-            );
-            if (button) {
-                button.focus();
-                this.allowBlur();
-            }
+        if (this.showHiddenItems) {
+            this._hiddenItemsStartIndex = this.computedMaxCount;
+            this._focusedIndex = this.computedMaxCount;
+        } else {
+            this._focusedIndex = this.computedMaxCount - 1;
         }
+
+        requestAnimationFrame(() => {
+            if (this.showHiddenItems) {
+                this.focusItem();
+            } else {
+                const showMoreButton = this.template.querySelector(
+                    '[data-show-more-button]'
+                );
+                if (showMoreButton) {
+                    showMoreButton.focus();
+                }
+            }
+        });
+    }
+
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 }
