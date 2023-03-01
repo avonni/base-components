@@ -117,14 +117,26 @@ const TemplateWithMaxWidth = (args) => MaxWidthChipContainer(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: ITEMS,
-    isCollapsible: true,
-    singleLine: true
+    items: ITEMS
 };
 
 export const NoMedia = Template.bind({});
 NoMedia.args = {
     items: ITEMS_NO_MEDIA
+};
+
+export const SingleLineSortable = Template.bind({});
+SingleLineSortable.args = {
+    items: ITEMS_NO_MEDIA,
+    singleLine: true,
+    sortable: true
+};
+
+export const SingleLineCollapsed = TemplateWithMaxWidth.bind({});
+SingleLineCollapsed.args = {
+    items: ITEMS,
+    isCollapsible: true,
+    singleLine: true
 };
 
 export const Collapsed = TemplateWithMaxWidth.bind({});

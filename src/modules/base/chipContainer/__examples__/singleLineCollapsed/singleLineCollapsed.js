@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ChipContainerCollapsed extends LightningElement {
+export default class ChipContainerSingleLineCollapsed extends LightningElement {
     items = [
         {
             label: 'First chip',
