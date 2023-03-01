@@ -419,9 +419,7 @@ export default class ChipContainer extends LightningElement {
         const focusedChip = this.template.querySelector(
             `[data-element-id^="avonni-primitive-chip"][data-index="${this._focusedIndex}"]`
         );
-        if (focusedChip && focusedChip.href) {
-            focusedChip.focusLink();
-        } else if (focusedChip) {
+        if (focusedChip) {
             focusedChip.focus();
         } else if (this.listElement) {
             this.listElement.focus();
