@@ -35,7 +35,6 @@ import ColorPicker from 'c/colorPicker';
 
 // not tested
 // Positioning of the dropdown menu.
-// Computed palette tile width and height.
 
 const defaultColors = [
     '#e3abec',
@@ -133,7 +132,6 @@ describe('Color Picker', () => {
         expect(element.messageWhenBadInput).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
-        expect(element.opacity).toBeFalsy();
         expect(element.opacity).toBeFalsy();
         expect(element.paletteHideOutline).toBeFalsy();
         expect(element.paletteShowCheckmark).toBeFalsy();
@@ -1109,7 +1107,14 @@ describe('Color Picker', () => {
 
     // Inline
     it('Color Picker: inline', () => {
+        const groups = ['firstGroup', 'secondGroup'];
+        element.colors = colors;
+        element.groups = groups;
+        element.paletteHideOutline = true;
+        element.paletteShowCheckmark = true;
         element.inline = true;
+        element.paletteTileHeight = 100;
+        element.paletteTileWidth = 30;
 
         return Promise.resolve()
             .then(() => {
@@ -1117,6 +1122,17 @@ describe('Color Picker', () => {
                     '[data-element-id="button"]'
                 );
                 expect(button).toBeFalsy();
+
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette).toBeTruthy();
+                expect(palette.groups).toEqual(groups);
+                expect(palette.colors).toEqual(colors);
+                expect(palette.hideOutline).toBe(true);
+                expect(palette.showCheckmark).toBe(true);
+                expect(palette.tileHeight).toBe(100);
+                expect(palette.tileWidth).toBe(30);
 
                 const tab = element.shadowRoot.querySelector(
                     '[data-element-id="custom"]'
@@ -1146,6 +1162,82 @@ describe('Color Picker', () => {
             );
             expect(gradient.opacity).toBe(true);
         });
+    });
+
+    // palette-hide-outline
+    it('Color Picker: paletteHideOutline', () => {
+        element.paletteHideOutline = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.hideOutline).toBeTruthy();
+            });
+    });
+
+    // palette-show-checkmark
+    it('Color Picker: paletteShowCheckmark', () => {
+        element.paletteShowCheckmark = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.showCheckmark).toBeTruthy();
+            });
+    });
+
+    // palette-tile-height
+    it('Color Picker: paletteTileHeight', () => {
+        element.paletteTileHeight = 45;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.tileHeight).toBe(45);
+            });
+    });
+
+    // palette-tile-width
+    it('Color Picker: paletteTileWidth', () => {
+        element.paletteTileWidth = 45;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.tileWidth).toBe(45);
+            });
     });
 
     // focus and blur on tab

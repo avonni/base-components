@@ -236,7 +236,7 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this._rendered = true;
         }
-        this.setPaletteTileSizes();
+        this.setPaletteData();
     }
 
     render() {
@@ -264,6 +264,10 @@ export default class ColorPicker extends LightningElement {
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+
+        if (this._isConnected) {
+            this.setLastSelectedColor();
+        }
     }
 
     /**
@@ -288,7 +292,6 @@ export default class ColorPicker extends LightningElement {
                     ? normalizedValue
                     : DEFAULT_COLUMNS;
         }
-        this.setPaletteTileSizes();
     }
 
     /**
@@ -320,6 +323,7 @@ export default class ColorPicker extends LightningElement {
 
     set groups(value) {
         this._groups = normalizeArray(value);
+        this.setPaletteData();
     }
 
     /**
@@ -535,7 +539,7 @@ export default class ColorPicker extends LightningElement {
 
     set paletteTileHeight(value) {
         this._paletteTileHeight = Number(value);
-        this.setPaletteTileSizes();
+        this.setPaletteData();
     }
 
     /**
@@ -552,7 +556,7 @@ export default class ColorPicker extends LightningElement {
 
     set paletteTileWidth(value) {
         this._paletteTileWidth = Number(value);
-        this.setPaletteTileSizes();
+        this.setPaletteData();
     }
 
     /**
@@ -600,7 +604,11 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
-        this.computeToken();
+
+        if (this._isConnected) {
+            this.computeToken();
+            this.setPaletteData();
+        }
     }
 
     /**
@@ -638,14 +646,15 @@ export default class ColorPicker extends LightningElement {
         if (value && typeof value === 'string') {
             this._value = value;
             this.inputValue = value;
-            this.computeToken();
-            this.setLastSelectedColor();
         } else {
             this._value = null;
             this._inputValue = '';
-            this.currentToken = {};
         }
-        this.initSwatchColor();
+
+        if (this._isConnected) {
+            this.computeToken();
+            this.setLastSelectedColor();
+        }
     }
 
     /**
@@ -1082,6 +1091,7 @@ export default class ColorPicker extends LightningElement {
             this.currentToken = {};
         }
         this.initSwatchColor();
+        this.setLastSelectedColor();
     }
 
     /**
@@ -1119,28 +1129,33 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
-    setPaletteTileSizes() {
-        requestAnimationFrame(() => {
-            const palette = this.template.querySelector(
-                '[data-element-id="avonni-color-palette"]'
-            );
-            if (!palette) return;
-            if (this.inline) {
-                palette.tileWidth =
-                    this._paletteTileWidth || DEFAULT_TILE_WIDTH;
-                palette.tileHeight =
-                    this._paletteTileHeight || DEFAULT_TILE_HEIGHT;
-            } else {
-                const paletteWidth = palette.clientWidth;
-                const columns = this.columns || DEFAULT_COLUMNS;
-                const tileWidth = Math.floor(paletteWidth / columns - 8);
-                const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
-                palette.tileWidth =
-                    this._paletteTileWidth || tileSize || DEFAULT_TILE_WIDTH;
-                palette.tileHeight =
-                    this._paletteTileHeight || tileSize || DEFAULT_TILE_HEIGHT;
-            }
-        });
+    setPaletteData() {
+        const palette = this.template.querySelector(
+            '[data-element-id="avonni-color-palette"]'
+        );
+        if (!palette) {
+            return;
+        }
+
+        // We set the colors and groups after the palette is rendered,
+        // to prevent speed issue in Salesforce, when Locker Service is enabled
+        // and there are a lot of colors and/or groups.
+        palette.colors = this.computedColors;
+        palette.groups = this.groups;
+
+        if (this.inline) {
+            palette.tileWidth = this._paletteTileWidth || DEFAULT_TILE_WIDTH;
+            palette.tileHeight = this._paletteTileHeight || DEFAULT_TILE_HEIGHT;
+        } else {
+            const paletteWidth = palette.clientWidth;
+            const columns = this.columns || DEFAULT_COLUMNS;
+            const tileWidth = Math.floor(paletteWidth / columns - 8);
+            const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
+            palette.tileWidth =
+                this._paletteTileWidth || tileSize || DEFAULT_TILE_WIDTH;
+            palette.tileHeight =
+                this._paletteTileHeight || tileSize || DEFAULT_TILE_HEIGHT;
+        }
     }
 
     /**
