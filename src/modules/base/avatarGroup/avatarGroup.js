@@ -145,9 +145,6 @@ export default class AvatarGroup extends LightningElement {
     _preventPopoverClosing = false;
 
     connectedCallback() {
-        if (!this.maxCount) {
-            this._maxCount = this.computedMaxCount;
-        }
         this.template.addEventListener(
             'actionclick',
             this.handleAvatarActionClick
@@ -272,7 +269,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set maxCount(value) {
-        this._maxCount = value;
+        this._maxCount = parseInt(value, 10);
     }
 
     /**
@@ -451,7 +448,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {number}
      */
     get computedMaxCount() {
-        if (!isNaN(this.maxCount)) {
+        if (this.maxCount) {
             return this.maxCount;
         }
         return this.layout === 'stack' ? 5 : 11;
