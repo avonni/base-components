@@ -187,7 +187,7 @@ export default class ColorPalette extends LightningElement {
     set groups(value) {
         this._groups = normalizeArray(value);
 
-        if (this.isConnected) this.initGroups();
+        if (this._isConnected) this.initGroups();
     }
 
     /**
