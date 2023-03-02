@@ -240,6 +240,40 @@ export default class ChipContainer extends LightningElement {
      */
 
     /**
+     * HTML element containing the instructions used during drag and drop.
+     *
+     * @type {HTMLElement}
+     */
+    get altTextElement() {
+        return this.template.querySelector(
+            '[data-element-id="span-instructions"]'
+        );
+    }
+
+    /**
+     * Label of the "show more" button.
+     *
+     * @type {string}
+     */
+    get buttonLabel() {
+        const hiddenCount = this.items.length - this._visibleItemsCount;
+        return `+${hiddenCount} more`;
+    }
+
+    /**
+     * CSS classes of the chip elements.
+     *
+     * @type {string}
+     */
+    get computedChipClass() {
+        return classSet()
+            .add({
+                'avonni-chip-container__chip-sortable': this.sortable
+            })
+            .toString();
+    }
+
+    /**
      * CSS classes of the items hidden in the single-line collapsed popover.
      *
      * @type {string}
@@ -291,19 +325,6 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * CSS classes of the chip elements.
-     *
-     * @type {string}
-     */
-    get computedChipClass() {
-        return classSet()
-            .add({
-                'avonni-chip-container__chip-sortable': this.sortable
-            })
-            .toString();
-    }
-
-    /**
      * CSS classes of the wrapper element.
      *
      * @type {string}
@@ -313,17 +334,6 @@ export default class ChipContainer extends LightningElement {
             'avonni-chip-container__container': this.singleLine,
             'avonni-chip-container__no-items': !this._visibleItemsCount
         });
-    }
-
-    /**
-     * HTML element containing the instructions used during drag and drop.
-     *
-     * @type {HTMLElement}
-     */
-    get altTextElement() {
-        return this.template.querySelector(
-            '[data-element-id="span-instructions"]'
-        );
     }
 
     /**
@@ -376,16 +386,6 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * Label of the "show more" button.
-     *
-     * @type {string}
-     */
-    get buttonLabel() {
-        const hiddenCount = this.items.length - this._visibleItemsCount;
-        return `+${hiddenCount} more`;
-    }
-
-    /**
      * Array of items that are always visible, even when the chip container is collapsed.
      *
      * @type {object[]}
@@ -431,51 +431,6 @@ export default class ChipContainer extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
-    /**
-     * Initialize the reordering of a chip.
-     *
-     * @param {number} index Index of the reordered chip.
-     */
-    initDragState(index) {
-        if (!this.sortable) return;
-
-        this._dragState = {
-            initialIndex: index,
-            lastHoveredIndex: index
-        };
-        this.wrapperElement.classList.add(
-            'avonni-chip-container__list_dragging'
-        );
-        this.updateAssistiveText(index + 1);
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        if (!this.wrapperElement) {
-            return null;
-        }
-        return new AvonniResizeObserver(
-            this.wrapperElement,
-            this.updateVisibleItems.bind(this)
-        );
-    }
-
-    /**
-     * Initialize the number visible items.
-     */
-    initVisibleItemsCount() {
-        const maxCount = this.items.length;
-        const count =
-            DEFAULT_NUMBER_OF_VISIBLE_ITEMS > maxCount
-                ? maxCount
-                : DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
-        this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
-    }
 
     /**
      * If the given position is close to the top or the bottom of the single-line collapsed popover, scroll the popover in this direction. Used to scroll automatically the popover when sorting an item.
@@ -556,6 +511,51 @@ export default class ChipContainer extends LightningElement {
             }
         }
         return null;
+    }
+
+    /**
+     * Initialize the reordering of a chip.
+     *
+     * @param {number} index Index of the reordered chip.
+     */
+    initDragState(index) {
+        if (!this.sortable) return;
+
+        this._dragState = {
+            initialIndex: index,
+            lastHoveredIndex: index
+        };
+        this.wrapperElement.classList.add(
+            'avonni-chip-container__list_dragging'
+        );
+        this.updateAssistiveText(index + 1);
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.wrapperElement) {
+            return null;
+        }
+        return new AvonniResizeObserver(
+            this.wrapperElement,
+            this.updateVisibleItems.bind(this)
+        );
+    }
+
+    /**
+     * Initialize the number visible items.
+     */
+    initVisibleItemsCount() {
+        const maxCount = this.items.length;
+        const count =
+            DEFAULT_NUMBER_OF_VISIBLE_ITEMS > maxCount
+                ? maxCount
+                : DEFAULT_NUMBER_OF_VISIBLE_ITEMS;
+        this._visibleItemsCount = !this.computedIsExpanded ? count : maxCount;
     }
 
     /**
@@ -666,6 +666,18 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
+     * Save the visible items widths, to compute their visibility later.
+     */
+    saveItemsWidths() {
+        const items = this.template.querySelectorAll(
+            '[data-element-id^="li-item"]'
+        );
+        items.forEach((item, i) => {
+            this._itemsWidths[i] = item.offsetWidth;
+        });
+    }
+
+    /**
      * Make sure the focused item is visible in the hidden items popover, to prevent a jump of the scroll bar next time it is focused.
      */
     scrollToFocusedItem() {
@@ -689,18 +701,6 @@ export default class ChipContainer extends LightningElement {
             popover.scrollTop +=
                 itemPosition.bottom - popoverPosition.bottom + 5;
         }
-    }
-
-    /**
-     * Save the visible items widths, to compute their visibility later.
-     */
-    saveItemsWidths() {
-        const items = this.template.querySelectorAll(
-            '[data-element-id^="li-item"]'
-        );
-        items.forEach((item, i) => {
-            this._itemsWidths[i] = item.offsetWidth;
-        });
     }
 
     /**
