@@ -145,6 +145,9 @@ export default class AvatarGroup extends LightningElement {
     _preventPopoverClosing = false;
 
     connectedCallback() {
+        if (!this.maxCount) {
+            this._maxCount = this.computedMaxCount;
+        }
         this.template.addEventListener(
             'actionclick',
             this.handleAvatarActionClick
