@@ -33,7 +33,11 @@
 -->
 
 <template>
-    <div class={computedChipClass} data-element-id="chip-wrapper">
+    <div
+        if:true={label}
+        data-element-id="chip-wrapper"
+        class={computedChipClass}
+    >
         <c-chip
             label={label}
             variant={variant}

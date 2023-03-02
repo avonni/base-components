@@ -79,45 +79,11 @@ export default class PrimitiveChip extends LightningElement {
 
     _outline = false;
     _variant = CHIP_VARIANTS.default;
-    _avatar = undefined;
+    _avatar = {};
     _position = MEDIA_POSITION.default;
     _prefixIconName = undefined;
     _suffixIconName = undefined;
     _hidden = false;
-
-    /**
-     * If true, display an outline style button.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get outline() {
-        return this._outline;
-    }
-    set outline(hasOutline) {
-        this._outline = normalizeBoolean(hasOutline);
-    }
-
-    /**
-     * The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
-     *
-     * @public
-     * @type {string}
-     * @default base
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: CHIP_VARIANTS.default,
-            validValues: CHIP_VARIANTS.valid
-        });
-    }
 
     /**
      *  The avatar to display. Set to null by default
@@ -136,6 +102,29 @@ export default class PrimitiveChip extends LightningElement {
         } else {
             this._avatar = null;
         }
+    }
+
+    @api
+    get hidden() {
+        return this._hidden;
+    }
+    set hidden(value) {
+        this._hidden = normalizeBoolean(value);
+    }
+
+    /**
+     * If true, display an outline style button.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get outline() {
+        return this._outline;
+    }
+    set outline(hasOutline) {
+        this._outline = normalizeBoolean(hasOutline);
     }
 
     /** The prefix name of the icon to display.
@@ -164,12 +153,23 @@ export default class PrimitiveChip extends LightningElement {
         this._suffixIconName = value;
     }
 
+    /**
+     * The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
+     *
+     * @public
+     * @type {string}
+     * @default base
+     */
     @api
-    get hidden() {
-        return this._hidden;
+    get variant() {
+        return this._variant;
     }
-    set hidden(value) {
-        this._hidden = normalizeBoolean(value);
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: CHIP_VARIANTS.default,
+            validValues: CHIP_VARIANTS.valid
+        });
     }
 
     /*

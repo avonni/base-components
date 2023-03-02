@@ -56,9 +56,9 @@ describe('Primitive Chip', () => {
     });
 
     it('Default attributes', () => {
-        expect(element.avatar).toEqual(undefined);
+        expect(element.avatar).toMatchObject({});
         expect(element.hidden).toEqual(false);
-        expect(element.iconName).toEqual(undefined);
+        expect(element.iconName).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.outline).toEqual(false);
@@ -68,7 +68,8 @@ describe('Primitive Chip', () => {
     /* ----- ATTRIBUTES ----- */
 
     //avatar
-    it('avatar', () => {
+    it('Primitive Chip: Avatar', () => {
+        element.label = 'This is a label text';
         element.avatar = MOCK_AVATAR;
         return Promise.resolve().then(() => {
             expect(
@@ -89,7 +90,8 @@ describe('Primitive Chip', () => {
     });
 
     // hidden
-    it('hidden', () => {
+    it('Primitive Chip: Hidden', () => {
+        element.label = 'This is a label text';
         element.hidden = true;
 
         return Promise.resolve().then(() => {
@@ -103,7 +105,8 @@ describe('Primitive Chip', () => {
     });
 
     // iconNames
-    it('prefixIconName', () => {
+    it('Primitive Chip: PrefixIconName', () => {
+        element.label = 'This is a label text';
         element.prefixIconName = 'utility:user';
 
         return Promise.resolve().then(() => {
@@ -114,7 +117,8 @@ describe('Primitive Chip', () => {
         });
     });
 
-    it('suffixIconName', () => {
+    it('Primitive Chip: SuffixIconName', () => {
+        element.label = 'This is a label text';
         element.suffixIconName = 'utility:user';
 
         return Promise.resolve().then(() => {
@@ -126,7 +130,7 @@ describe('Primitive Chip', () => {
     });
 
     // label
-    it('label', () => {
+    it('Primitive Chip: Label', () => {
         element.label = 'This is a label text';
         return Promise.resolve().then(() => {
             const chip = element.shadowRoot.querySelector(
@@ -137,7 +141,8 @@ describe('Primitive Chip', () => {
     });
 
     // outline
-    it('outline', () => {
+    it('Primitive Chip: outline', () => {
+        element.label = 'This is a label text';
         element.outline = true;
         return Promise.resolve().then(() => {
             const chip = element.shadowRoot.querySelector(
@@ -148,7 +153,8 @@ describe('Primitive Chip', () => {
     });
 
     // variant
-    it('variant', () => {
+    it('Primitive Chip: Variant', () => {
+        element.label = 'This is a label text';
         element.variant = 'warning';
         return Promise.resolve().then(() => {
             const chip = element.shadowRoot.querySelector(
