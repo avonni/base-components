@@ -318,55 +318,78 @@ export default class AvatarGroup extends LightningElement {
      */
 
     /**
-     * Current label of the list button (show more or show less)
+     * Class of the action button
      * @type {string}
      */
-    get currentlistButtonLabel() {
-        return this.showHiddenItems
-            ? this.listButtonShowLessLabel
-            : this.listButtonShowMoreLabel;
+    get actionButtonClass() {
+        return classSet('avonni-avatar-group__action-button')
+            .add({
+                'avonni-avatar-group__avatar-in-line-button':
+                    this.layout === 'stack'
+            })
+            .add({
+                'avonni-avatar-group__action-button_circle':
+                    this.variant === 'circle',
+                'avonni-avatar-group__action-button_square':
+                    this.variant === 'square',
+                'avonni-avatar-group__action-button_x-large':
+                    this.size === 'x-large',
+                'avonni-avatar-group__action-button_xx-large':
+                    this.size === 'xx-large',
+                'avonni-avatar-group__action-button_large':
+                    this.size === 'large',
+                'avonni-avatar-group__action-button_medium':
+                    this.size === 'medium',
+                'avonni-avatar-group__action-button_small':
+                    this.size === 'small',
+                'avonni-avatar-group__action-button_x-small':
+                    this.size === 'x-small'
+            })
+            .toString();
     }
 
     /**
-     * Current icon name of the list button (show more or show less)
+     * Action button icon size
      * @type {string}
      */
-    get currentListButtonIcon() {
-        return this.showHiddenItems
-            ? this.listButtonShowLessIconName
-            : this.listButtonShowMoreIconName;
-    }
-
-    /**
-     * Current icon position of the list button (show more or show less)
-     * @type {string}
-     */
-    get currentListButtonPosition() {
-        return this.showHiddenItems
-            ? this.listButtonShowLessIconPosition
-            : this.listButtonShowMoreIconPosition;
-    }
-
-    /**
-     * If there are exactly two items, contains the first. Else contains an empty object.
-     * @type {object}
-     */
-    get primaryItem() {
-        if (this.items.length === 2) {
-            return this.items[0];
+    get actionButtonIconSize() {
+        switch (this.size) {
+            case 'x-small':
+            case 'small':
+            case 'medium':
+                return 'x-small';
+            case 'xx-large':
+                return 'medium';
+            default:
+                return 'small';
         }
-        return {};
     }
 
     /**
-     * If there are exactly two items, contains the second. Else contains an empty object.
-     * @type {object}
+     * Class of action button wrapper
+     * @type {string}
      */
-    get secondaryItem() {
-        if (this.items.length === 2) {
-            return this.items[1];
-        }
-        return {};
+    get actionButtonWrapperClass() {
+        return classSet(`avonni-action-button-${this.size}`)
+            .add({
+                'avonni-avatar-group__action-button-base-layout':
+                    this.layout !== 'list',
+                'avonni-avatar-group__action-button-list slds-show slds-p-vertical_x-small slds-p-horizontal_small':
+                    this.layout === 'list',
+                'avonni-avatar-group__avatar-button-in-line':
+                    this.layout === 'stack'
+            })
+            .toString();
+    }
+
+    /**
+     * Class to add a flex row gap to grid and stack layouts
+     * @type {string}
+     */
+    get avatarFlexWrapperClass() {
+        return classSet({
+            'avonni-avatar-group__avatar-wrapper': this.layout !== 'list'
+        }).toString();
     }
 
     /**
@@ -386,16 +409,6 @@ export default class AvatarGroup extends LightningElement {
                 'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .toString();
-    }
-
-    /**
-     * Class to add a flex row gap to grid and stack layouts
-     * @type {string}
-     */
-    get avatarFlexWrapperClass() {
-        return classSet({
-            'avonni-avatar-group__avatar-wrapper': this.layout !== 'list'
-        }).toString();
     }
 
     /**
@@ -434,53 +447,9 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the action button
-     * @type {string}
+     * Maximum number of visible items.
+     * @type {number}
      */
-    get actionButtonClass() {
-        return classSet('avonni-avatar-group__action-button')
-            .add({
-                'avonni-avatar-group__avatar-in-line-button':
-                    this.layout === 'stack'
-            })
-            .add({
-                'avonni-avatar-group__action-button_circle':
-                    this.variant === 'circle',
-                'avonni-avatar-group__action-button_square':
-                    this.variant === 'square',
-                'avonni-avatar-group__action-button_x-large':
-                    this.size === 'x-large',
-                'avonni-avatar-group__action-button_xx-large':
-                    this.size === 'xx-large',
-                'avonni-avatar-group__action-button_large':
-                    this.size === 'large',
-                'avonni-avatar-group__action-button_medium':
-                    this.size === 'medium',
-                'avonni-avatar-group__action-button_small':
-                    this.size === 'small',
-                'avonni-avatar-group__action-button_x-small':
-                    this.size === 'x-small'
-            })
-            .toString();
-    }
-
-    /**
-     * Class of action button wrapper
-     * @type {string}
-     */
-    get actionButtonWrapperClass() {
-        return classSet(`avonni-action-button-${this.size}`)
-            .add({
-                'avonni-avatar-group__action-button-base-layout':
-                    this.layout !== 'list',
-                'avonni-avatar-group__action-button-list slds-show slds-p-vertical_x-small slds-p-horizontal_small':
-                    this.layout === 'list',
-                'avonni-avatar-group__avatar-button-in-line':
-                    this.layout === 'stack'
-            })
-            .toString();
-    }
-
     get computedMaxCount() {
         if (!isNaN(this.maxCount)) {
             return this.maxCount;
@@ -488,10 +457,49 @@ export default class AvatarGroup extends LightningElement {
         return this.layout === 'stack' ? 5 : 11;
     }
 
+    /**
+     * Current icon name of the list button (show more or show less)
+     * @type {string}
+     */
+    get currentListButtonIcon() {
+        return this.showHiddenItems
+            ? this.listButtonShowLessIconName
+            : this.listButtonShowMoreIconName;
+    }
+
+    /**
+     * Current label of the list button (show more or show less)
+     * @type {string}
+     */
+    get currentlistButtonLabel() {
+        return this.showHiddenItems
+            ? this.listButtonShowLessLabel
+            : this.listButtonShowMoreLabel;
+    }
+
+    /**
+     * Current icon position of the list button (show more or show less)
+     * @type {string}
+     */
+    get currentListButtonPosition() {
+        return this.showHiddenItems
+            ? this.listButtonShowLessIconPosition
+            : this.listButtonShowMoreIconPosition;
+    }
+
+    /**
+     * Automatically generated unique key.
+     * @type {string}
+     */
     get generatedKey() {
         return generateUUID();
     }
 
+    /**
+     * Array of hidden items.
+     *
+     * @type {object[]}
+     */
     get hiddenItems() {
         if (!this.showMoreButton) {
             return [];
@@ -517,43 +525,6 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
-     * Class of the show more button when the avatars are displayed in a line
-     *
-     * @type {string}
-     */
-    get showMoreAvatarClass() {
-        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
-            .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
-                'avonni-avatar-group__avatar_radius-border-square':
-                    (this.layout === 'stack' || this.layout === 'grid') &&
-                    this.variant === 'square'
-            })
-            .add(`avonni-avatar-${this.size}`)
-            .toString();
-    }
-
-    get showMoreButton() {
-        return this.computedMaxCount < this.items.length;
-    }
-
-    get showMoreInitials() {
-        const length = this.items.length - this.computedMaxCount;
-        return `+${length}`;
-    }
-
-    /**
-     * Class to reorder show more section
-     * @type {string}
-     */
-    get showMoreSectionClass() {
-        return classSet({
-            'slds-grid slds-grid_vertical-reverse': this.layout === 'list',
-            'slds-show_inline slds-is-relative': this.layout !== 'list'
-        }).toString();
-    }
-
-    /**
      * Class of the hidden extra items dropdown
      * @type {string}
      */
@@ -562,23 +533,6 @@ export default class AvatarGroup extends LightningElement {
             'slds-dropdown slds-dropdown_left slds-p-around_none':
                 this.layout !== 'list'
         }).toString();
-    }
-
-    /**
-     * Action button icon size
-     * @type {string}
-     */
-    get actionButtonIconSize() {
-        switch (this.size) {
-            case 'x-small':
-            case 'small':
-            case 'medium':
-                return 'x-small';
-            case 'xx-large':
-                return 'medium';
-            default:
-                return 'small';
-        }
     }
 
     /**
@@ -602,6 +556,75 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * If there are exactly two items, contains the first. Else contains an empty object.
+     * @type {object}
+     */
+    get primaryItem() {
+        if (this.items.length === 2) {
+            return this.items[0];
+        }
+        return {};
+    }
+
+    /**
+     * If there are exactly two items, contains the second. Else contains an empty object.
+     * @type {object}
+     */
+    get secondaryItem() {
+        if (this.items.length === 2) {
+            return this.items[1];
+        }
+        return {};
+    }
+
+    /**
+     * Class of the show more button when the avatars are displayed in a line
+     *
+     * @type {string}
+     */
+    get showMoreAvatarClass() {
+        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
+            .add({
+                'avonni-avatar-group_in-line ': this.layout === 'stack',
+                'avonni-avatar-group__avatar_radius-border-square':
+                    (this.layout === 'stack' || this.layout === 'grid') &&
+                    this.variant === 'square'
+            })
+            .add(`avonni-avatar-${this.size}`)
+            .toString();
+    }
+
+    /**
+     * True if the "Show More" button should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showMoreButton() {
+        return this.computedMaxCount < this.items.length;
+    }
+
+    /**
+     * Label of the "Show More" button.
+     *
+     * @type {string}
+     */
+    get showMoreInitials() {
+        const length = this.items.length - this.computedMaxCount;
+        return `+${length}`;
+    }
+
+    /**
+     * Class to reorder show more section
+     * @type {string}
+     */
+    get showMoreSectionClass() {
+        return classSet({
+            'slds-grid slds-grid_vertical-reverse': this.layout === 'list',
+            'slds-show_inline slds-is-relative': this.layout !== 'list'
+        }).toString();
+    }
+
+    /**
      * Computed list items
      * @type {object[]}
      */
@@ -617,6 +640,9 @@ export default class AvatarGroup extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the item at the saved focused index.
+     */
     focusItem() {
         const focusedItem = this.template.querySelector(
             `[data-element-id^="li"][data-index="${this._focusedIndex}"]`
@@ -626,6 +652,12 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Find the item at the given position.
+     *
+     * @param {number} y Position of the item on the Y axis.
+     * @returns {object} Object with two keys: index and offset (position of the given y compared to the top of the item).
+     */
     getHiddenItemFromPosition(y) {
         const elements = this.template.querySelectorAll(
             '[data-element-id="li-hidden"]'
@@ -645,6 +677,11 @@ export default class AvatarGroup extends LightningElement {
         return null;
     }
 
+    /**
+     * Normalize the focused index.
+     *
+     * @param {number} index Index to normalize.
+     */
     normalizeFocusedIndex(index) {
         let position = 'INDEX';
         const popoverOpen = this.showHiddenItems && this.layout !== 'list';
@@ -708,46 +745,11 @@ export default class AvatarGroup extends LightningElement {
         item.tabIndex = '0';
     }
 
-    /**
-     * If the "show more" avatar was clicked, open the popover.
-     * If another avatar was clicked, dispatch the avatarclick event.
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    handleAvatarClick(event) {
-        if (event.type === 'keyup' && event.key !== 'Enter') {
-            return;
-        }
-
-        const index = Number(event.target.dataset.index);
-        const item = this.items[index];
-
-        /**
-         * The event fired when the user click on an avatar.
-         *
-         * @event
-         * @name avatarclick
-         * @param {object} item The avatar detail.
-         * @param {string} name Name of the avatar.
-         * @bubbles
-         * @cancelable
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('avatarclick', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    item,
-                    name: item.name
-                }
-            })
-        );
-
-        if (this.layout !== 'list' && this.showHiddenItems) {
-            this.handleToggleShowHiddenItems();
-        } else if (!this.isClassic) {
-            this.switchFocus(index);
-        }
-    }
 
     /**
      * Dispatch the actionclick event
@@ -801,6 +803,50 @@ export default class AvatarGroup extends LightningElement {
         );
     };
 
+    /**
+     * If the "show more" avatar was clicked, open the popover.
+     * If another avatar was clicked, dispatch the avatarclick event.
+     */
+    handleAvatarClick(event) {
+        if (event.type === 'keyup' && event.key !== 'Enter') {
+            return;
+        }
+
+        const index = Number(event.target.dataset.index);
+        const item = this.items[index];
+
+        /**
+         * The event fired when the user click on an avatar.
+         *
+         * @event
+         * @name avatarclick
+         * @param {object} item The avatar detail.
+         * @param {string} name Name of the avatar.
+         * @bubbles
+         * @cancelable
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('avatarclick', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    item,
+                    name: item.name
+                }
+            })
+        );
+
+        if (this.layout !== 'list' && this.showHiddenItems) {
+            this.handleToggleShowHiddenItems();
+        } else if (!this.isClassic) {
+            this.switchFocus(index);
+        }
+    }
+
+    /**
+     * Handle a focus inside the hidden items list.
+     */
     handleHiddenItemsFocusIn() {
         if (this.layout === 'list') {
             return;
@@ -808,6 +854,9 @@ export default class AvatarGroup extends LightningElement {
         this._popoverIsFocused = true;
     }
 
+    /**
+     * Handle a focus outside the hidden items list.
+     */
     handleHiddenItemsFocusOut() {
         if (this.layout === 'list') {
             return;
@@ -827,6 +876,11 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
+    /**
+     * Handle a scroll movement inside the hidden items list.
+     *
+     * @param {Event} event `scroll` event.
+     */
     handleHiddenItemsScroll(event) {
         const popover = event.currentTarget;
         const popoverTop = popover.getBoundingClientRect().top;
@@ -874,6 +928,11 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Handle a focus on an item.
+     *
+     * @param {Event} event `focus` event.
+     */
     handleItemFocus(event) {
         const index = Number(event.currentTarget.dataset.index);
         if (index !== this._focusedIndex) {
@@ -881,6 +940,11 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Handle a keydown event on the items list.
+     *
+     * @param {Event} event `keydown` event.
+     */
     handleItemsKeyDown(event) {
         switch (event.keyCode) {
             case keyCodes.left:
@@ -915,6 +979,11 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * Handle a keydown event on the show more button.
+     *
+     * @param {Event} event `keydown` event.
+     */
     handleShowHiddenItemsButtonKeyDown(event) {
         const key = event.key;
         if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
@@ -949,6 +1018,11 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event Event to stop.
+     */
     stopPropagation(event) {
         event.stopPropagation();
     }

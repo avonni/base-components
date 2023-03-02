@@ -427,7 +427,34 @@ BaseExtraLargeWithTwoAvatars.args = {
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
 BaseWithMoreThanTwoAvatars.args = {
-    items: [...itemsWithPresence, ...itemsWithPresence, ...itemsWithPresence]
+    items: [
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence,
+        ...itemsWithPresence
+    ]
 };
 
 export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
