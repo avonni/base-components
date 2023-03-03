@@ -63,6 +63,13 @@ export default class Chip extends LightningElement {
      * @type {string}
      */
     @api label;
+    /**
+     * Name to identify the chip.
+     *
+     * @type {string}
+     * @public;
+     */
+    @api name;
 
     _outline = false;
     _variant = CHIP_VARIANTS.default;

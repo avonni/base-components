@@ -409,7 +409,7 @@ describe('Pill Container', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-pill-container__wrapper slds-is-relative slds-pill_container slds-p-top_none slds-p-bottom_none'
+                'avonni-pill-container__wrapper slds-is-relative slds-pill_container'
             );
 
             const ul = element.shadowRoot.querySelector(

@@ -64,7 +64,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.',
+                'If present, the chip list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of chips.',
             table: {
                 type: { summary: 'boolean' }
             }
@@ -75,16 +75,40 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set',
+                'If present and `is-collapsible` too, the list of chips is expanded. This attribute is ignored when `is-collapsible` is false, and the list of chips is expanded even if `is-expanded` is false or not set',
             table: {
                 type: { summary: 'boolean' }
+            }
+        },
+        singleLine: {
+            name: 'single-line',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the chips are limited to one line. This attribute overrides the is-collapsible and is-expanded attributes.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        sortable: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the chips are sortable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         }
     },
     args: {
         alternativeText: 'Selected Options:',
         isCollapsible: false,
-        isExpanded: false
+        isExpanded: false,
+        singleLine: false,
+        sortable: false
     }
 };
 
@@ -99,6 +123,20 @@ Base.args = {
 export const NoMedia = Template.bind({});
 NoMedia.args = {
     items: ITEMS_NO_MEDIA
+};
+
+export const SingleLineSortable = Template.bind({});
+SingleLineSortable.args = {
+    items: ITEMS_NO_MEDIA,
+    singleLine: true,
+    sortable: true
+};
+
+export const SingleLineCollapsed = TemplateWithMaxWidth.bind({});
+SingleLineCollapsed.args = {
+    items: ITEMS,
+    isCollapsible: true,
+    singleLine: true
 };
 
 export const Collapsed = TemplateWithMaxWidth.bind({});
