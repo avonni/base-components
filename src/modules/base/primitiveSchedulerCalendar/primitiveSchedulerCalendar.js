@@ -397,7 +397,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     get columnClass() {
         return classSet('avonni-scheduler__calendar-column')
             .add({
-                'avonni-scheduler__calendar-column_day': this.isDay
+                'avonni-scheduler__calendar-column_day':
+                    this.isDay && this.timeSpan.unit === 1
             })
             .toString();
     }
