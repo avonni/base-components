@@ -197,6 +197,29 @@ describe('Input Counter', () => {
             });
     });
 
+    it('Input Counter: decimal step with percent type', () => {
+        element.type = 'percent';
+        element.step = 0.2;
+
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe('0.2');
+                expect(element.value).toBeNull();
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon-increment"]'
+                );
+                addButton.click();
+                expect(input.value).toBe('20%');
+                expect(element.value).toBe(0.2);
+            });
+    });
+
     // value
     it('Input Counter: value', () => {
         element.value = 5;
