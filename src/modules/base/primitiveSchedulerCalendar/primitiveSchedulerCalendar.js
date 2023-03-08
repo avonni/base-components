@@ -1286,13 +1286,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     getVisibleWeekdays(startDate) {
         const span = this.timeSpan.span;
         const oneDay = this.isDay && span <= 1;
+        const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
         let availableDays = this.availableDaysOfTheWeek;
 
         if (oneDay) {
-            availableDays = [startDate.weekday];
+            availableDays = [weekday];
         } else if (this.isDay) {
             availableDays = [];
-            const weekday = startDate.weekday === 7 ? 0 : startDate.weekday;
             let dayIndex = this.availableDaysOfTheWeek.findIndex(
                 (dayNumber) => {
                     return dayNumber === weekday;
