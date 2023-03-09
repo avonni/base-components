@@ -189,3 +189,9 @@
  * @default left
  * @type alignment
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-sub-items-color-background
+ * @default #f7f9fb
+ * @type color
+ */
