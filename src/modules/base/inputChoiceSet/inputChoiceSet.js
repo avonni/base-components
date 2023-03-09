@@ -457,13 +457,19 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
-        const checkboxLabelClass =
-            this.isMultiSelect && this.checkboxVariant
-                ? 'slds-checkbox__label'
-                : 'slds-radio__label';
+        let label;
+        if (this.checkboxVariant && this.isMultiSelect) {
+            label = 'slds-checkbox__label';
+        } else if (this.checkboxVariant) {
+            label = 'slds-radio__label';
+        } else {
+            label = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
+        }
 
-        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
+        if (!this.disabled) {
+            label += ' avonni-input-choice-set__option-label';
+        }
+        return label;
     }
 
     /**

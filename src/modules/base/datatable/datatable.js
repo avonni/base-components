@@ -55,6 +55,7 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
+import lookup from './lookup.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -95,6 +96,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
+    'lookup',
     'rating',
     'rich-text',
     'slider',
@@ -145,7 +147,8 @@ export default class Datatable extends LightningDatatable {
         },
         badge: {
             template: badge,
-            typeAttributes: ['variant']
+            typeAttributes: ['variant'],
+            standardCellLayout: true
         },
         'checkbox-button': {
             template: checkboxButton,
@@ -197,7 +200,8 @@ export default class Datatable extends LightningDatatable {
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option']
+            typeAttributes: ['alternativeText', 'option'],
+            standardCellLayout: true
         },
         image: {
             template: image,
@@ -208,7 +212,12 @@ export default class Datatable extends LightningDatatable {
                 'srcset',
                 'thumbnail',
                 'width'
-            ]
+            ],
+            standardCellLayout: true
+        },
+        lookup: {
+            template: lookup,
+            typeAttributes: ['path', 'target']
         },
         'progress-bar': {
             template: progressBar,
@@ -226,7 +235,8 @@ export default class Datatable extends LightningDatatable {
         },
         'progress-ring': {
             template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            standardCellLayout: true
         },
         'progress-circle': {
             template: progressCircle,
@@ -236,7 +246,8 @@ export default class Datatable extends LightningDatatable {
                 'size',
                 'thickness',
                 'variant'
-            ]
+            ],
+            standardCellLayout: true
         },
         qrcode: {
             template: qrcode,
@@ -249,7 +260,8 @@ export default class Datatable extends LightningDatatable {
                 'errorCorrection',
                 'padding',
                 'size'
-            ]
+            ],
+            standardCellLayout: true
         },
         rating: {
             template: rating,
@@ -990,11 +1002,11 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
-
-        dispatchCellChangeEvent(this, dirtyValues);
+        if (value !== this.state.inlineEdit.editedValue) {
+            // Show yellow background and save/cancel button
+            super.updateRowsState(this.state);
+            dispatchCellChangeEvent(this, dirtyValues);
+        }
     };
 
     /**

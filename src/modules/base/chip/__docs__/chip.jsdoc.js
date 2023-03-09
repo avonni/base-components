@@ -239,6 +239,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-label-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-radius-border
  * @default 15rem
  * @type dimension

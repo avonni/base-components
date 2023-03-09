@@ -119,20 +119,22 @@
                                     class="
                                         slds-popover__body
                                         avonni-color-picker__popover-body
-                                        slds-tabs_default
+                                        avonni-color-picker-tabs_default
                                     "
                                     onblur={handleMenuBlur}
                                 >
                                     <!-- Tabs -->
                                     <ul
                                         if:true={isBase}
-                                        class="slds-tabs_default__nav"
+                                        class="
+                                            avonni-color-picker-tabs_default__nav
+                                        "
                                         role="tablist"
                                         data-element-id="ul-tabs"
                                     >
                                         <li
                                             class="
-                                                slds-tabs_default__item
+                                                avonni-color-picker-tabs_default__item
                                                 slds-is-active
                                             "
                                             title="Default"
@@ -140,7 +142,7 @@
                                         >
                                             <a
                                                 class="
-                                                    slds-tabs_default__link
+                                                    avonni-color-picker-tabs_default__link
                                                     avonni-color-picker__tab
                                                 "
                                                 href="javascript:void(0);"
@@ -155,14 +157,16 @@
                                         </li>
                                         <li
                                             if:true={tokens.length}
-                                            class="slds-tabs_default__item"
+                                            class="
+                                                avonni-color-picker-tabs_default__item
+                                            "
                                             title="Tokens"
                                             role="presentation"
                                             data-element-id="li-tokens-tab"
                                         >
                                             <a
                                                 class="
-                                                    slds-tabs_default__link
+                                                    avonni-color-picker-tabs_default__link
                                                     avonni-color-picker__tab
                                                 "
                                                 href="javascript:void(0);"
@@ -176,13 +180,15 @@
                                             >
                                         </li>
                                         <li
-                                            class="slds-tabs_default__item"
+                                            class="
+                                                avonni-color-picker-tabs_default__item
+                                            "
                                             title="Custom"
                                             role="presentation"
                                         >
                                             <a
                                                 class="
-                                                    slds-tabs_default__link
+                                                    avonni-color-picker-tabs_default__link
                                                     avonni-color-picker__tab
                                                 "
                                                 href="javascript:void(0);"

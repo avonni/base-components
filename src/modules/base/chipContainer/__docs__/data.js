@@ -1,11 +1,13 @@
 const ITEMS = [
     {
         label: 'First chip',
+        name: 'first',
         variant: 'base',
         prefixIconName: 'utility:check'
     },
     {
         label: 'Second chip',
+        name: 'second',
         variant: 'base',
         avatar: {
             fallbackIconName: 'custom:custom1',
@@ -15,12 +17,14 @@ const ITEMS = [
     },
     {
         label: 'Third chip',
+        name: 'third',
         variant: 'warning',
         suffixIconName: 'utility:bug',
         outline: true
     },
     {
         label: 'Fourth chip',
+        name: 'fourth',
         variant: 'base',
         avatar: {
             fallbackIconName: 'standard:user',
@@ -31,10 +35,12 @@ const ITEMS = [
     },
     {
         label: 'Fifth chip',
+        name: 'fifth',
         outline: false
     },
     {
         label: 'Sixth chip',
+        name: 'sixth',
         outline: true,
         prefixIconName: 'utility:check',
         suffixIconName: 'utility:table',
@@ -45,6 +51,7 @@ const ITEMS = [
     },
     {
         label: 'Seventh chip',
+        name: 'seventh',
         avatar: {
             variant: 'circle',
             position: 'right',
@@ -54,33 +61,40 @@ const ITEMS = [
         outline: true
     },
     {
-        label: 'Eighth chip'
+        label: 'Eight chip',
+        name: 'eight'
     }
 ];
 
 const ITEMS_NO_MEDIA = [
     {
         label: 'First chip',
+        name: 'first',
         variant: 'base'
     },
     {
         label: 'Second chip',
+        name: 'second',
         variant: 'offline'
     },
     {
         label: 'Third chip',
+        name: 'third',
         variant: 'error'
     },
     {
         label: 'Fourth chip',
+        name: 'fourth',
         variant: 'warning'
     },
     {
         label: 'Fifth chip',
+        name: 'fifth',
         variant: 'success'
     },
     {
         label: 'Sixth chip',
+        name: 'sixth',
         variant: 'brand'
     }
 ];

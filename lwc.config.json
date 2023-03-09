@@ -331,6 +331,10 @@
             "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
         },
         {
+            "name": "c/primitiveCellLookup",
+            "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
+        },
+        {
             "name": "c/primitiveCellProgressBar",
             "path": "src/modules/base/primitiveCellProgressBar/primitiveCellProgressBar.js"
         },

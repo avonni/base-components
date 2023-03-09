@@ -82,7 +82,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'Show as completed.',
+            description: 'If present, a checkmark is added to the icon.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

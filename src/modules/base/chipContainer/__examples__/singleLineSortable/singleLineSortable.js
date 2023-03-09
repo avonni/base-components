@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ChipContainerNoMedia extends LightningElement {
+export default class ChipContainerSingleLineSortable extends LightningElement {
     items = [
         {
             label: 'First chip',

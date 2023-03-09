@@ -33,6 +33,9 @@
 import { createElement } from 'lwc';
 import AvatarGroup from 'c/avatarGroup';
 
+// Not tested:
+// - Infinite loading
+
 const item = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
@@ -93,11 +96,17 @@ describe('Avatar Group', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.clearAllTimers();
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-avatar-group', {
             is: AvatarGroup
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -1007,8 +1016,43 @@ describe('Avatar Group', () => {
 
     /* ----- JS ----- */
 
-    // list hidden items
-    it('Avatar group: list hidden items', () => {
+    // Hidden items
+    it('Avatar group: open hidden items', () => {
+        element.maxCount = 3;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const avatarShow = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="avonni-avatar"]'
+                );
+                expect(avatarShow).toHaveLength(3);
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                const focusSpy = jest.spyOn(avatarHidden[0], 'focus');
+                expect(avatarHidden).toHaveLength(9);
+                jest.runAllTimers();
+                expect(focusSpy).toHaveBeenCalled();
+            });
+    });
+
+    it('Avatar group: open hidden items, list layout', () => {
         element.layout = 'list';
         element.maxCount = 3;
         element.items = [
@@ -1035,11 +1079,188 @@ describe('Avatar Group', () => {
             })
             .then(() => {
                 const avatarHidden = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="avonni-avatar-show-more-propover"]'
+                    '[data-element-id="li-hidden"]'
                 );
                 expect(avatarHidden).toHaveLength(9);
             });
     });
+
+    it('Avatar group: open hidden items using keyboard', () => {
+        element.maxCount = 3;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const avatarShow = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="avonni-avatar"]'
+                );
+                expect(avatarShow).toHaveLength(3);
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                const event = new CustomEvent('keydown');
+                event.key = 'Enter';
+                button.dispatchEvent(event);
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                expect(avatarHidden).toHaveLength(9);
+            });
+    });
+
+    it('Avatar group: close hidden items', () => {
+        element.maxCount = 3;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const avatarShow = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="avonni-avatar"]'
+                );
+                expect(avatarShow).toHaveLength(3);
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-hidden-items-popover"]'
+                );
+
+                const avatarFocusSpy = jest.spyOn(avatarHidden[0], 'focus');
+                const buttonFocusSpy = jest.spyOn(button, 'focus');
+                expect(avatarHidden).toHaveLength(9);
+                jest.runAllTimers();
+                expect(avatarFocusSpy).toHaveBeenCalledTimes(1);
+                expect(buttonFocusSpy).toHaveBeenCalledTimes(0);
+
+                popover.dispatchEvent(new CustomEvent('focusout'));
+                jest.runAllTimers();
+                expect(avatarFocusSpy).toHaveBeenCalledTimes(1);
+                expect(buttonFocusSpy).toHaveBeenCalledTimes(1);
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                expect(avatarHidden).toHaveLength(0);
+            });
+    });
+
+    it('Avatar group: close hidden items using keyboard', () => {
+        element.maxCount = 3;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                expect(avatarHidden).toHaveLength(9);
+                jest.runAllTimers();
+                const event = new CustomEvent('keydown', { bubbles: true });
+                event.keyCode = 27;
+                avatarHidden[0].dispatchEvent(event);
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-hidden"]'
+                );
+                expect(avatarHidden).toHaveLength(0);
+            });
+    });
+
+    // Keyboard navigation
+    it('Avatar group: change focus position on keyboard arrows', () => {
+        element.items = [...items, items[0]];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-visible"]'
+            );
+            const firstAvatarFocus = jest.spyOn(avatars[0], 'focus');
+            const secondAvatarFocus = jest.spyOn(avatars[1], 'focus');
+            const thirdAvatarFocus = jest.spyOn(avatars[2], 'focus');
+
+            // First focus on the group focuses the first avatar
+            const ul = element.shadowRoot.querySelector(
+                '[data-element-id="ul"]'
+            );
+            ul.focus();
+            expect(firstAvatarFocus).toHaveBeenCalledTimes(1);
+            expect(secondAvatarFocus).toHaveBeenCalledTimes(0);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(0);
+
+            // Move focus to the right
+            const event = new CustomEvent('keydown', { bubbles: true });
+            event.keyCode = 39;
+            avatars[0].dispatchEvent(event);
+            expect(firstAvatarFocus).toHaveBeenCalledTimes(1);
+            expect(secondAvatarFocus).toHaveBeenCalledTimes(1);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(0);
+
+            // Try to move to the right again: the focus stay on the last avatar
+            avatars[1].dispatchEvent(event);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(1);
+            avatars[2].dispatchEvent(event);
+            expect(firstAvatarFocus).toHaveBeenCalledTimes(1);
+            expect(secondAvatarFocus).toHaveBeenCalledTimes(1);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(2);
+
+            // Move focus back to the left
+            event.keyCode = 37;
+            avatars[2].dispatchEvent(event);
+            avatars[1].dispatchEvent(event);
+            expect(firstAvatarFocus).toHaveBeenCalledTimes(2);
+            expect(secondAvatarFocus).toHaveBeenCalledTimes(2);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(2);
+
+            // Try to move to the left again: the focus stay on the first avatar
+            avatars[0].dispatchEvent(event);
+            expect(firstAvatarFocus).toHaveBeenCalledTimes(3);
+            expect(secondAvatarFocus).toHaveBeenCalledTimes(2);
+            expect(thirdAvatarFocus).toHaveBeenCalledTimes(2);
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // avatar click
@@ -1061,6 +1282,53 @@ describe('Avatar Group', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
         });
+    });
+
+    it('Avatar group: avatar click event using keyboard', () => {
+        element.items = item;
+
+        const handler = jest.fn();
+        element.addEventListener('avatarclick', handler);
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="li-visible"]'
+            );
+            const event = new CustomEvent('keydown', { bubbles: true });
+            event.keyCode = 13;
+            avatar.dispatchEvent(event);
+            expect(handler).toHaveBeenCalled();
+            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
+            expect(handler.mock.calls[0][0].detail.name).toBe(item[0].name);
+        });
+    });
+
+    it('Avatar group: avatar click event closes hidden items popover', () => {
+        element.items = [...items, ...items, ...items];
+
+        const handler = jest.fn();
+        element.addEventListener('avatarclick', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-avatar-show-more-dropdown"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const hiddenAvatar = element.shadowRoot.querySelector(
+                    '[data-element-id="li-hidden"]'
+                );
+                hiddenAvatar.click();
+                expect(handler).toHaveBeenCalled();
+            })
+            .then(() => {
+                const hiddenAvatar = element.shadowRoot.querySelector(
+                    '[data-element-id="li-hidden"]'
+                );
+                expect(hiddenAvatar).toBeNull();
+            });
     });
 
     // Action button click

@@ -37,4 +37,6 @@ export default class MaxWidthPillContainer extends LightningElement {
     @api alternativeText;
     @api isCollapsible;
     @api isExpanded;
+    @api singleLine;
+    @api sortable;
 }
