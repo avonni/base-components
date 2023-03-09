@@ -58,22 +58,25 @@
             </template>
 
             <template if:false={isLoading}>
-                <div class="slds-tabs_default">
+                <div class="avonni-color-picker-tabs_default">
                     <!-- Tabs -->
                     <ul
                         if:true={isBase}
-                        class="slds-tabs_default__nav"
+                        class="avonni-color-picker-tabs_default__nav"
                         role="tablist"
                         data-element-id="ul-tabs"
                     >
                         <li
-                            class="slds-tabs_default__item slds-is-active"
+                            class="
+                                avonni-color-picker-tabs_default__item
+                                slds-is-active
+                            "
                             title="Default"
                             role="presentation"
                         >
                             <a
                                 class="
-                                    slds-tabs_default__link
+                                    avonni-color-picker-tabs_default__link
                                     avonni-color-picker__tab
                                 "
                                 href="javascript:void(0);"
@@ -87,14 +90,14 @@
                         </li>
                         <li
                             if:true={tokens.length}
-                            class="slds-tabs_default__item"
+                            class="avonni-color-picker-tabs_default__item"
                             title="Tokens"
                             role="presentation"
                             data-element-id="li-tokens-tab"
                         >
                             <a
                                 class="
-                                    slds-tabs_default__link
+                                    avonni-color-picker-tabs_default__link
                                     avonni-color-picker__tab
                                 "
                                 href="javascript:void(0);"
@@ -107,13 +110,13 @@
                             >
                         </li>
                         <li
-                            class="slds-tabs_default__item"
+                            class="avonni-color-picker-tabs_default__item"
                             title="Custom"
                             role="presentation"
                         >
                             <a
                                 class="
-                                    slds-tabs_default__link
+                                    avonni-color-picker-tabs_default__link
                                     avonni-color-picker__tab
                                 "
                                 href="javascript:void(0);"
