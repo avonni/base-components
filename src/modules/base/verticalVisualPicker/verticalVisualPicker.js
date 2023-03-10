@@ -510,17 +510,20 @@ export default class VerticalVisualPicker extends LightningElement {
      */
 
     /**
-     * The event fired when the value changed.
-     *
-     * @event
-     * @name change
-     * @param {string|string[]} value Selected items' value. Returns a string if the type is radio and no items have subItems. Otherwise returns an array of string.
-     * @public
+     * Dispatch the 'change' event.
      */
     _dispatchChange() {
         const dispatchString =
             this.type === 'radio' &&
             this._items.every((item) => !item.subItems);
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string|string[]} value Selected items' value. Returns a string if the type is radio and no items have subItems. Otherwise returns an array of string.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
