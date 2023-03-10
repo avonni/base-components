@@ -30,7 +30,7 @@
  * @memberof stylingHooks
  * @name --avonni-color-palette-swatch-selected-outline-color
  * @default dynamic (swatch background-color)
- * @type dimension
+ * @type color
  */
 /**
  * @memberof stylingHooks
@@ -42,11 +42,11 @@
  * @memberof stylingHooks
  * @name --avonni-color-palette-swatch-selected-border-color
  * @default white
- * @type dimension
+ * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-color-palette-swatch-selected-checkmark-color
  * @default dynamic (white or black depending on the background color)
- * @type dimension
+ * @type color
  */
