@@ -230,12 +230,18 @@ export default {
             },
             options: [
                 'brand',
+                'brand-outline',
                 'bare',
                 'bare-inverse',
                 'container',
                 'border',
                 'border-filled',
-                'border-inverse'
+                'border-inverse',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'success'
             ],
             description:
                 'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
@@ -264,4 +270,33 @@ const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
 
 export const Base = Template.bind({});
+
+export const Brand = Template.bind({});
+Brand.args = {
+    variant: 'brand'
+};
+export const BrandOutline = Template.bind({});
+BrandOutline.args = {
+    variant: 'brand-outline'
+};
+export const Destructive = Template.bind({});
+Destructive.args = {
+    variant: 'destructive'
+};
+export const DestructiveText = Template.bind({});
+DestructiveText.args = {
+    variant: 'destructive-text'
+};
+export const Inverse = Template.bind({});
+Inverse.args = {
+    variant: 'inverse'
+};
+export const Neutral = Template.bind({});
+Neutral.args = {
+    variant: 'neutral'
+};
+export const Success = Template.bind({});
+Success.args = {
+    variant: 'success'
+};
 export const Illustration = TemplateIllustration.bind({});

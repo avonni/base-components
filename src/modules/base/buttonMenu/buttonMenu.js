@@ -69,13 +69,19 @@ const ICON_SIZES = {
 
 const BUTTON_VARIANTS = {
     valid: [
+        'neutral',
         'brand',
+        'brand-outline',
         'bare',
         'bare-inverse',
         'container',
         'border',
         'border-filled',
-        'border-inverse'
+        'border-inverse',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
     ],
     default: 'border'
 };
@@ -452,18 +458,34 @@ export default class ButtonMenu extends LightningElement {
         const isDropdownIcon = !this.computedShowDownIcon;
         const isBare =
             this.variant === 'bare' || this.variant === 'bare-inverse';
+        const isAddedVariant =
+            this.variant === 'brand-outline' ||
+            this.variant === 'destructive' ||
+            this.variant === 'destructive-text' ||
+            this.variant === 'inverse' ||
+            this.variant === 'neutral' ||
+            this.variant === 'success' ||
+            this.variant === 'destructive';
 
         const classes = classSet('slds-button');
-        classes.add(buttonGroupOrderClass(this.groupOrder));
+        classes.add(`avonni-button-menu__button_${this.variant}`);
+        if (this.groupOrder)
+            classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
                 'slds-button_neutral':
                     this.variant === 'border' ||
-                    this.variant === 'border-filled',
+                    this.variant === 'border-filled' ||
+                    this.variant === 'neutral',
                 'slds-button_inverse': this.variant === 'border-inverse',
                 'slds-button_icon-inverse': this.variant === 'bare-inverse',
-                'slds-button_brand': this.variant === 'brand'
+                'slds-button_brand': this.variant === 'brand',
+                'slds-button_outline-brand': this.variant === 'brand-outline',
+                'slds-button_destructive': this.variant === 'destructive',
+                'slds-button_text-destructive':
+                    this.variant === 'destructive-text',
+                'slds-button_success': this.variant === 'success'
             });
         } else {
             const useMoreContainer =
@@ -483,7 +505,7 @@ export default class ButtonMenu extends LightningElement {
                     this.variant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
                     this.variant === 'border' && isDropdownIcon,
-                'slds-button_icon-border-filled avonni-button-menu_button-border-filled':
+                'slds-button_icon-border-filled':
                     this.variant === 'border-filled',
                 'slds-button_icon-border-inverse':
                     this.variant === 'border-inverse',
@@ -492,7 +514,10 @@ export default class ButtonMenu extends LightningElement {
                     this.iconSize === 'xx-small' && !isBare,
                 'slds-button_icon-x-small':
                     this.iconSize === 'x-small' && !isBare,
-                'slds-button_icon-small': this.iconSize === 'small' && !isBare
+                'slds-button_icon-small': this.iconSize === 'small' && !isBare,
+                'avonni-button-menu__button-icon_medium':
+                    this.iconSize === 'medium' && isAddedVariant,
+                'avonni-button-menu__button-icon': isAddedVariant
             });
         }
 
