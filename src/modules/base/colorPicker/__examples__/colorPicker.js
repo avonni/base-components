@@ -42,11 +42,16 @@ export const ColorPicker = ({
     disabled,
     readOnly,
     required,
+    inline,
     isLoading,
     label,
     name,
     fieldLevelHelp,
     hideClearIcon,
+    paletteShowCheckmark,
+    paletteHideOutline,
+    paletteTileHeight,
+    paletteTileWidth,
     value,
     variant,
     type,
@@ -70,6 +75,11 @@ export const ColorPicker = ({
     element.hideClearIcon = hideClearIcon;
     element.readOnly = readOnly;
     element.required = required;
+    element.inline = inline;
+    element.paletteHideOutline = paletteHideOutline;
+    element.paletteShowCheckmark = paletteShowCheckmark;
+    element.paletteTileHeight = paletteTileHeight;
+    element.paletteTileWidth = paletteTileWidth;
     element.isLoading = isLoading;
     element.label = label;
     element.name = name;

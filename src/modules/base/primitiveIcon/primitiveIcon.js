@@ -49,6 +49,7 @@ const ICON_VARIANTS = {
 export default class PrimitiveIcon extends LightningElement {
     @api src;
     @api svgClass;
+    @api svgStyle;
     @api size = ICON_SIZES.default;
     @api variant;
 
