@@ -47,9 +47,6 @@ const i18n = {
     showMenu: 'Show Menu'
 };
 
-const menuItemCSSClassName = 'slds-dropdown__item';
-const menuItemCSSSelector = `.slds-dropdown__list .${menuItemCSSClassName}`;
-
 const MENU_ALIGNMENTS = {
     valid: [
         'left',
@@ -63,7 +60,7 @@ const MENU_ALIGNMENTS = {
 };
 
 const ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
@@ -135,6 +132,13 @@ export default class ButtonMenu extends LightningElement {
      */
     @api loadingStateAlternativeText = i18n.loading;
     /**
+     * Displays title text when the mouse moves over the button menu.
+     *
+     * @public
+     * @type {string}
+     */
+    @api title;
+    /**
      * The value for the button element. This value is optional and can be used when submitting a form.
      *
      * @public
@@ -151,21 +155,15 @@ export default class ButtonMenu extends LightningElement {
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
-    _title;
     _tooltip;
     _variant = BUTTON_VARIANTS.default;
-
-    _order = null;
 
     _boundingRect = {};
     _dropdownVisible = false;
     _dropdownOpened = false;
     _focusOnIndexDuringRenderedCallback = null;
-    _positioning = false;
-    _rerenderFocus = false;
-    _tabindex = 0;
-
     _needsFocusAfterRender = false;
+    _rerenderFocus = false;
 
     connectedCallback() {
         this.classList.add(
@@ -177,43 +175,13 @@ export default class ButtonMenu extends LightningElement {
             this.classList.add('slds-is-unsaved');
         }
 
-        /**
-         * @event
-         * @name privatebuttonregister
-         * @param {object}
-         * @private
-         * @bubbles
-         */
-        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
-            bubbles: true,
-            detail: {
-                callbacks: {
-                    setOrder: this.setOrder.bind(this),
-                    setDeRegistrationCallback: (deRegistrationCallback) => {
-                        this._deRegistrationCallback = deRegistrationCallback;
-                    }
-                }
-            }
-        });
-
-        this.dispatchEvent(privatebuttonregister);
         this._connected = true;
-    }
-
-    disconnectedCallback() {
-        if (this._deRegistrationCallback) {
-            this._deRegistrationCallback();
-        }
     }
 
     renderedCallback() {
         this.initTooltip();
 
-        if (
-            !this._positioning &&
-            this._dropdownVisible &&
-            this._rerenderFocus
-        ) {
+        if (this._dropdownVisible && this._rerenderFocus) {
             this.focusOnMenuItemAfterRender();
         }
     }
@@ -235,8 +203,8 @@ export default class ButtonMenu extends LightningElement {
         return this._accessKey;
     }
 
-    set accessKey(newValue) {
-        this._accessKey = newValue;
+    set accessKey(accessKey) {
+        this._accessKey = accessKey;
     }
 
     /**
@@ -379,21 +347,6 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Displays title text when the mouse moves over the button menu.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get title() {
-        return this._title;
-    }
-
-    set title(newValue) {
-        this._title = newValue;
-    }
-
-    /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
      *
      * @public
@@ -421,7 +374,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include brand, bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success.
      *
      * @public
      * @type {string}
@@ -444,7 +397,6 @@ export default class ButtonMenu extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
     }
@@ -455,7 +407,7 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        const isDropdownIcon = !this.computedShowDownIcon;
+        const isDropdownIcon = this.computedHideDownIcon;
         const isBare =
             this.variant === 'bare' || this.variant === 'bare-inverse';
         const isAddedVariant =
@@ -469,10 +421,7 @@ export default class ButtonMenu extends LightningElement {
 
         const classes = classSet('slds-button');
         classes.add(`avonni-button-menu__button_${this.variant}`);
-        if (this.groupOrder) {
-            classes.add(buttonGroupOrderClass(this.groupOrder));
-            classes.add(`slds-button_${this._order}`).toString();
-        }
+        classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
@@ -481,8 +430,10 @@ export default class ButtonMenu extends LightningElement {
                     this.variant === 'border' ||
                     this.variant === 'border-filled' ||
                     this.variant === 'neutral',
-                'slds-button_inverse': this.variant === 'border-inverse',
-                'slds-button_icon-inverse': this.variant === 'bare-inverse',
+                'slds-button_inverse':
+                    this.variant === 'inverse' ||
+                    this.variant === 'bare-inverse' ||
+                    this.variant === 'border-inverse',
                 'slds-button_brand': this.variant === 'brand',
                 'slds-button_outline-brand': this.variant === 'brand-outline',
                 'slds-button_destructive': this.variant === 'destructive',
@@ -518,6 +469,7 @@ export default class ButtonMenu extends LightningElement {
                 'slds-button_icon-x-small':
                     this.iconSize === 'x-small' && !isBare,
                 'slds-button_icon-small': this.iconSize === 'small' && !isBare,
+                'slds-button_icon-large': this.iconSize === 'large' && !isBare,
                 'avonni-button-menu__button-icon_medium':
                     this.iconSize === 'medium' && isAddedVariant,
                 'avonni-button-menu__button-icon': isAddedVariant
@@ -539,10 +491,10 @@ export default class ButtonMenu extends LightningElement {
                     this.menuAlignment === 'left' || this.isAutoAlignment(),
                 'slds-dropdown_center': this.menuAlignment === 'center',
                 'slds-dropdown_right': this.menuAlignment === 'right',
-                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                'slds-dropdown_bottom': this.isBottomAlignment,
+                'slds-dropdown_right slds-dropdown_bottom-right':
                     this.menuAlignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                'slds-dropdown_left slds-dropdown_bottom-left':
                     this.menuAlignment === 'bottom-left',
                 'slds-nubbin_top-left':
                     this.nubbin && this.menuAlignment === 'left',
@@ -566,42 +518,12 @@ export default class ButtonMenu extends LightningElement {
      *
      * @type {boolean}
      */
-    get computedShowDownIcon() {
-        if (
+    get computedHideDownIcon() {
+        return (
             this.hideDownArrow ||
             this.iconName === 'utility:down' ||
             this.iconName === 'utility:chevrondown'
-        ) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Computed access key.
-     *
-     * @type {string}
-     */
-    get computedAccessKey() {
-        return this._accessKey;
-    }
-
-    /**
-     * Computed title.
-     *
-     * @type {string}
-     */
-    get computedTitle() {
-        return this._title;
-    }
-
-    /**
-     * Computed alternative text.
-     *
-     * @type {string}
-     */
-    get computedAlternativeText() {
-        return this.alternativeText || i18n.showMenu;
+        );
     }
 
     /**
@@ -611,6 +533,15 @@ export default class ButtonMenu extends LightningElement {
      */
     get computedLoadingStateAlternativeText() {
         return this.loadingStateAlternativeText || i18n.loading;
+    }
+
+    /**
+     * Returns true if menu alignment is bottom.
+     *
+     * @type {boolean}
+     */
+    get isBottomAlignment() {
+        return this.menuAlignment.includes('bottom');
     }
 
     /*
@@ -650,11 +581,103 @@ export default class ButtonMenu extends LightningElement {
      */
 
     /**
-     * Tooltip initialization.
+     * Menu item select dispatch method.
+     *
+     * @param {Event} event
      */
-    initTooltip() {
-        if (this._tooltip && !this._tooltip.initialized) {
-            this._tooltip.initialize();
+    dispatchSelect(event) {
+        /**
+         * The event fired when a menu item is selected.
+         *
+         * @event
+         * @name select
+         * @param {string} value Value of the selected option.
+         * @public
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                cancelable: true,
+                detail: {
+                    value: event.detail.value
+                }
+            })
+        );
+    }
+
+    /**
+     * Get item array from menu.
+     *
+     * @return {object[]}
+     */
+    getMenuItems() {
+        return Array.from(
+            this.querySelectorAll('.slds-dropdown__list .slds-dropdown__item')
+        );
+    }
+
+    /**
+     * Get item with index in menu item array.
+     *
+     * @param {object[]} index
+     * @return menu item from array
+     */
+    getMenuItemByIndex(index) {
+        return this.getMenuItems()[index];
+    }
+
+    /**
+     * Find menu item's index.
+     *
+     * @param {object} menuItemElement
+     * @returns {number} index of menu item
+     */
+    findMenuItemIndex(menuItemElement) {
+        return this.getMenuItems().indexOf(menuItemElement);
+    }
+
+    /**
+     * Find menu item from event target.
+     *
+     * @param {Element} element
+     * @returns {Element} menu item
+     */
+    findMenuItemFromEventTarget(element) {
+        let currentNode = element;
+        const stopAtElement = this.template.querySelector("[role='menu']");
+
+        while (currentNode !== stopAtElement) {
+            if (
+                currentNode.classList &&
+                currentNode.classList.contains('slds-dropdown__item')
+            ) {
+                return currentNode;
+            }
+            if (currentNode.parentNode) {
+                currentNode = currentNode.parentNode;
+            } else {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Button focus.
+     */
+    focusOnButton() {
+        this.template.querySelector('[data-element-id="button"]').focus();
+    }
+
+    /**
+     * Set focus on menu item via Item Index.
+     *
+     * @param {object} itemIndex
+     */
+    focusOnMenuItem(itemIndex) {
+        if (this._dropdownVisible) {
+            const menuItem = this.getMenuItemByIndex(itemIndex);
+            this.cancelBlurAndFocusOnMenuItem(menuItem);
         }
     }
 
@@ -722,31 +745,6 @@ export default class ButtonMenu extends LightningElement {
         }
 
         this.dispatchSelect(event);
-    }
-
-    /**
-     * Menu item select dispatch method.
-     *
-     * @param {Event} event
-     */
-    dispatchSelect(event) {
-        /**
-         * The event fired when a menu item is selected.
-         *
-         * @event
-         * @name select
-         * @param {string} value Value of the selected option.
-         * @public
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('select', {
-                cancelable: true,
-                detail: {
-                    value: event.detail.value
-                }
-            })
-        );
     }
 
     /**
@@ -872,21 +870,11 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Button focus.
+     * Tooltip initialization.
      */
-    focusOnButton() {
-        this.template.querySelector('[data-element-id="button"]').focus();
-    }
-
-    /**
-     * Set focus on menu item via Item Index.
-     *
-     * @param {object} itemIndex
-     */
-    focusOnMenuItem(itemIndex) {
-        if (this._dropdownVisible) {
-            const menuItem = this.getMenuItemByIndex(itemIndex);
-            this.cancelBlurAndFocusOnMenuItem(menuItem);
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
         }
     }
 
@@ -943,61 +931,6 @@ export default class ButtonMenu extends LightningElement {
 
             this.classList.toggle('slds-is-open');
         }
-    }
-
-    /**
-     * Get item array from menu.
-     *
-     * @return {object[]}
-     */
-    getMenuItems() {
-        return Array.from(this.querySelectorAll(menuItemCSSSelector));
-    }
-
-    /**
-     * Get item with index in menu item array.
-     *
-     * @param {object[]} index
-     * @return menu item from array
-     */
-    getMenuItemByIndex(index) {
-        return this.getMenuItems()[index];
-    }
-
-    /**
-     * Find menu item's index.
-     *
-     * @param {object} menuItemElement
-     * @returns {number} index of menu item
-     */
-    findMenuItemIndex(menuItemElement) {
-        return this.getMenuItems().indexOf(menuItemElement);
-    }
-
-    /**
-     * Find menu item from event target.
-     *
-     * @param {Element} element
-     * @returns {Element} menu item
-     */
-    findMenuItemFromEventTarget(element) {
-        let currentNode = element;
-        const stopAtElement = this.template.querySelector("[role='menu']");
-
-        while (currentNode !== stopAtElement) {
-            if (
-                currentNode.classList &&
-                currentNode.classList.contains(menuItemCSSClassName)
-            ) {
-                return currentNode;
-            }
-            if (currentNode.parentNode) {
-                currentNode = currentNode.parentNode;
-            } else {
-                return null;
-            }
-        }
-        return null;
     }
 
     /**

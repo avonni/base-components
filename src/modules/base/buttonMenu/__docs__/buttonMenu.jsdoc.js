@@ -105,7 +105,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-inverse-text-color
  * @type color
- * @default rgba(255, 255, 255, .75)
+ * @default #fff
  */
 /**
  * @memberof stylingHooks

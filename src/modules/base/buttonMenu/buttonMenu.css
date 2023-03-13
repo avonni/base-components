@@ -102,10 +102,7 @@ button {
         --avonni-button-menu-button-bare-inverse-color-border,
         transparent
     );
-    color: var(
-        --avonni-button-menu-button-bare-inverse-text-color,
-        rgba(255, 255, 255, 0.75)
-    );
+    color: var(--avonni-button-menu-button-bare-inverse-text-color, #fff);
 }
 
 .avonni-button-menu__button_bare-inverse:active {
