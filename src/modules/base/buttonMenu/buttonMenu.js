@@ -411,6 +411,7 @@ export default class ButtonMenu extends LightningElement {
         const isBare =
             this.variant === 'bare' || this.variant === 'bare-inverse';
         const isAddedVariant =
+            this.variant === 'brand' ||
             this.variant === 'brand-outline' ||
             this.variant === 'destructive' ||
             this.variant === 'destructive-text' ||
