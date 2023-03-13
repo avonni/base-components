@@ -18,6 +18,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-label-font-size
+ * @type font
+ * @default 0.8175rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-label-font-weight
+ * @type font
+ * @default 400
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-label-font-style
+ * @type font
+ * @default normal
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-color-background
  * @type color
  * @default transparent

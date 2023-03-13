@@ -34,6 +34,12 @@ button {
     padding-bottom: var(--avonni-button-menu-spacing-block-end);
 }
 
+.avonni-button-menu__button_label {
+    font-size: var(--avonni-button-menu-label-font-size, 0.8175rem);
+    font-weight: var(--avonni-button-menu-label-font-weight, 400);
+    font-style: var(--avonni-button-menu-label-font-style, normal);
+}
+
 .avonni-button-menu__button-icon_medium {
     height: 2rem;
     width: 2rem;

@@ -469,11 +469,14 @@ export default class ButtonMenu extends LightningElement {
 
         const classes = classSet('slds-button');
         classes.add(`avonni-button-menu__button_${this.variant}`);
-        if (this.groupOrder)
+        if (this.groupOrder) {
             classes.add(buttonGroupOrderClass(this.groupOrder));
+            classes.add(`slds-button_${this._order}`).toString();
+        }
 
         if (this.label) {
             classes.add({
+                'avonni-button-menu__button_label': this.label,
                 'slds-button_neutral':
                     this.variant === 'border' ||
                     this.variant === 'border-filled' ||
@@ -521,7 +524,7 @@ export default class ButtonMenu extends LightningElement {
             });
         }
 
-        return classes.add(`slds-button_${this._order}`).toString();
+        return classes;
     }
 
     /**
