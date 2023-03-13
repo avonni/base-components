@@ -109,7 +109,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon. Options include xx-small, x-small, small, or medium.',
+                'The size of the icon. Options include xx-small, x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }

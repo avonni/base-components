@@ -18,6 +18,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-button-menu-radius-border
+ * @type radius
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-sizing-border
+ * @type sizing
+ * @default 1px
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-menu-styling-border
+ * @type styling
+ * @default solid
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-button-menu-label-font-size
  * @type font
  * @default 0.8175rem

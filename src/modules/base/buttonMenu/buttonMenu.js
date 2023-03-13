@@ -256,7 +256,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * The size of the icon. Options include xx-small, x-small, small, or medium.
+     * The size of the icon. Options include xx-small, x-small, small, medium or large.
      *
      * @public
      * @type {string}
@@ -416,8 +416,7 @@ export default class ButtonMenu extends LightningElement {
             this.variant === 'destructive-text' ||
             this.variant === 'inverse' ||
             this.variant === 'neutral' ||
-            this.variant === 'success' ||
-            this.variant === 'destructive';
+            this.variant === 'success';
 
         const classes = classSet('slds-button');
         classes.add(`avonni-button-menu__button_${this.variant}`);
