@@ -105,6 +105,14 @@
     flex: 1;
 }
 
+/*-- Focus --*/
+.slds-visual-picker input:focus ~ label .slds-visual-picker__figure {
+    border: 1px solid transparent;
+    -webkit-box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
+    box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
+}
+
+/*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-is-selected {
     display: flex;
     justify-content: center;
@@ -112,7 +120,6 @@
     align-items: center;
 }
 
-/*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
     border-width: var(
         --avonni-vertical-visual-picker-figure-sizing-border,
