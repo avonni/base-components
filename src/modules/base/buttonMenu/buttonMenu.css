@@ -327,7 +327,7 @@ button {
 .avonni-button-menu__button_brand-outline:active {
     background-color: var(
         --avonni-button-menu-button-outline-brand-color-background-active,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(--slds-g-color-neutral-base-100, #f4f6f9)
     );
     border-color: var(
         --avonni-button-menu-button-outline-brand-color-border-active,
@@ -342,7 +342,7 @@ button {
 .avonni-button-menu__button_brand-outline:hover {
     background-color: var(
         --avonni-button-menu-button-outline-brand-color-background-hover,
-        var(--slds-g-color-neutral-base-100, #fff)
+        var(--slds-g-color-neutral-base-100, #f4f6f9)
     );
     border-color: var(
         --avonni-button-menu-button-outline-brand-color-border-hover,

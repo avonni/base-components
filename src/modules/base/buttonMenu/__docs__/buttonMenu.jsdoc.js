@@ -459,7 +459,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-outline-brand-color-background-active
  * @type color
- * @default #fff
+ * @default #f4f6f9
  */
 /**
  * @memberof stylingHooks
@@ -477,7 +477,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-outline-brand-color-background-hover
  * @type color
- * @default #fff
+ * @default #f4f6f9
  */
 /**
  * @memberof stylingHooks
