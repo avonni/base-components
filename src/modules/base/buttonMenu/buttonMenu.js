@@ -450,8 +450,9 @@ export default class ButtonMenu extends LightningElement {
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
                 'slds-button_icon-bare': isBare,
-                'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
-                'slds-button_icon-container-more':
+                'avonni-button-menu__button-icon-more':
+                    !useMoreContainer && !isDropdownIcon,
+                'avonni-button-menu__button-icon-container-more':
                     useMoreContainer && !isDropdownIcon,
                 'slds-button_icon-brand slds-button_icon':
                     this.variant === 'brand',

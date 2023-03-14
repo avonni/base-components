@@ -899,7 +899,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu: variant with icon name', () => {
+    it('Button menu: variant border-inverse with icon name', () => {
         element.variant = 'border-inverse';
         element.iconName = 'utility:close';
 
@@ -908,7 +908,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain(
-                'slds-button_icon-container-more'
+                'avonni-button-menu__button-icon-container-more'
             );
         });
     });
@@ -922,7 +922,9 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-bare');
-            expect(button.className).toContain('slds-button_icon-more');
+            expect(button.className).toContain(
+                'avonni-button-menu__button-icon-more'
+            );
         });
     });
 

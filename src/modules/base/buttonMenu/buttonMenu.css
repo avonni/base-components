@@ -37,6 +37,19 @@ button {
     border-style: var(--avonni-button-menu-styling-border, solid);
 }
 
+.avonni-button-menu__button-icon-more {
+    width: auto;
+    line-height: 1.875rem;
+    padding: 0 0.5rem;
+}
+
+.avonni-button-menu__button-icon-container-more {
+    width: auto;
+    line-height: 1.875rem;
+    padding: 0 0.5rem;
+    vertical-align: middle;
+}
+
 .avonni-button-menu__button_label {
     font-size: var(--avonni-button-menu-label-font-size, 0.8175rem);
     font-weight: var(--avonni-button-menu-label-font-weight, 400);
@@ -604,6 +617,14 @@ button {
         --avonni-button-menu-button-success-text-color-active,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+}
+
+.avonni-button-menu__button_success.slds-button__icon,
+.avonni-button-menu__button_success.slds-button_icon-more:active {
+    fill: var(
+        --avonni-button-menu-button-success-text-color-active,
+        var(--slds-g-color-neutral-base-100, #fff)
+    ) !important;
 }
 
 .avonni-button-menu__button_success:hover {
