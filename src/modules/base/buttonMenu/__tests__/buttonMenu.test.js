@@ -58,6 +58,7 @@ describe('Button Menu', () => {
         expect(element.alternativeText).toBe('Show Menu');
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
+        expect(element.groupOrder).toBeUndefined();
         expect(element.hideDownArrow).toBeFalsy();
         expect(element.iconName).toBe('utility:down');
         expect(element.iconSize).toBe('medium');
@@ -210,6 +211,23 @@ describe('Button Menu', () => {
         });
     });
 
+    it('Button Menu: icon size medium with added variant', () => {
+        element.iconSize = 'medium';
+        element.variant = 'success';
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.className).not.toContain('slds-button_icon-xx-small');
+            expect(button.className).not.toContain('slds-button_icon-x-small');
+            expect(button.className).not.toContain('slds-button_icon-small');
+            expect(button.className).toContain(
+                'avonni-button-menu__button-icon_medium'
+            );
+        });
+    });
+
     // is loading & loading state alternative text
     it('Button Menu: is loading & loading state alternative text', () => {
         element.isLoading = true;
@@ -244,6 +262,9 @@ describe('Button Menu', () => {
 
         return Promise.resolve().then(() => {
             expect(button.textContent).toContain('This is a label');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_label'
+            );
         });
     });
 
@@ -506,29 +527,23 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-bare');
-        });
-    });
-
-    it('Button menu: variant container without label', () => {
-        element.variant = 'container';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.className).toContain('slds-button_icon-container');
-        });
-    });
-
-    it('Button menu: variant border-filled without label', () => {
-        element.variant = 'border-filled';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
             expect(button.className).toContain(
-                'slds-button_icon-border-filled'
+                'avonni-button-menu__button_bare'
+            );
+        });
+    });
+
+    it('Button menu: variant bare with label', () => {
+        element.variant = 'bare';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).not.toContain('slds-button_icon-bare');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_bare'
             );
         });
     });
@@ -541,55 +556,38 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-inverse');
-        });
-    });
-
-    it('Button menu: variant brand without label', () => {
-        element.variant = 'brand';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.className).toContain('slds-button_icon-brand');
-        });
-    });
-
-    it('Button menu: variant brand with label', () => {
-        element.variant = 'brand';
-        element.label = 'label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.className).toContain('slds-button_brand');
-            expect(button.textContent).toContain('label');
-        });
-    });
-
-    it('Button menu: variant border-inverse without label', () => {
-        element.variant = 'border-inverse';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
             expect(button.className).toContain(
-                'slds-button_icon-border-inverse'
+                'avonni-button-menu__button_bare-inverse'
             );
         });
     });
 
-    it('Button menu: variant border-inverse with label', () => {
-        element.variant = 'border-inverse';
-        element.label = 'label';
+    it('Button menu: variant bare-inverse with label', () => {
+        element.variant = 'bare-inverse';
+        element.label = 'Button menu';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            expect(button.className).toContain('slds-button_inverse');
+            expect(button.className).not.toContain('slds-button_icon-inverse');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_bare-inverse'
+            );
+        });
+    });
+
+    it('Button menu: variant border without label', () => {
+        element.variant = 'border';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_icon-border');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border'
+            );
         });
     });
 
@@ -605,7 +603,303 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu: variant with icon name', () => {
+    it('Button menu: variant border-filled without label', () => {
+        element.variant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain(
+                'slds-button_icon-border-filled'
+            );
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border-filled'
+            );
+        });
+    });
+
+    it('Button menu: variant border-filled with label', () => {
+        element.variant = 'border-filled';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).not.toContain(
+                'slds-button_icon-border-filled'
+            );
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border-filled'
+            );
+        });
+    });
+
+    it('Button menu: variant border-inverse without label', () => {
+        element.variant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain(
+                'slds-button_icon-border-inverse'
+            );
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border-inverse'
+            );
+        });
+    });
+
+    it('Button menu: variant border-inverse with label', () => {
+        element.variant = 'border-inverse';
+        element.label = 'label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_inverse');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border-inverse'
+            );
+        });
+    });
+
+    it('Button menu: variant brand without label', () => {
+        element.variant = 'brand';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_icon-brand');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_brand'
+            );
+        });
+    });
+
+    it('Button menu: variant brand with label', () => {
+        element.variant = 'brand';
+        element.label = 'label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_brand');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_brand'
+            );
+            expect(button.textContent).toContain('label');
+        });
+    });
+
+    it('Button menu: variant brand-outline without label', () => {
+        element.variant = 'brand-outline';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(button.className).toContain(
+                'avonni-button-menu__button_brand-outline'
+            );
+        });
+    });
+
+    it('Button menu: variant brand-outline with label', () => {
+        element.variant = 'brand-outline';
+        element.label = 'label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_outline-brand');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_brand-outline'
+            );
+            expect(button.textContent).toContain('label');
+        });
+    });
+
+    it('Button menu: variant container without label', () => {
+        element.variant = 'container';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_icon-container');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_container'
+            );
+        });
+    });
+
+    it('Button menu: variant container with label', () => {
+        element.variant = 'container';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain(
+                'avonni-button-menu__button_container'
+            );
+        });
+    });
+
+    it('Button menu: variant destructive without label', () => {
+        element.variant = 'destructive';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(button.className).toContain(
+                'avonni-button-menu__button_destructive'
+            );
+        });
+    });
+
+    it('Button menu: variant destructive with label', () => {
+        element.variant = 'destructive';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_destructive');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_destructive'
+            );
+        });
+    });
+
+    it('Button menu: variant destructive-text without label', () => {
+        element.variant = 'destructive-text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain(
+                'avonni-button-menu__button_destructive-text'
+            );
+        });
+    });
+
+    it('Button menu: variant destructive-text with label', () => {
+        element.variant = 'destructive-text';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_text-destructive');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_destructive-text'
+            );
+        });
+    });
+
+    it('Button menu: variant inverse without label', () => {
+        element.variant = 'inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(button.className).toContain(
+                'avonni-button-menu__button_inverse'
+            );
+        });
+    });
+
+    it('Button menu: variant inverse with label', () => {
+        element.variant = 'inverse';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_inverse');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_inverse'
+            );
+        });
+    });
+
+    it('Button menu: variant neutral without label', () => {
+        element.variant = 'neutral';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(button.className).toContain(
+                'avonni-button-menu__button_neutral'
+            );
+        });
+    });
+
+    it('Button menu: variant neutral with label', () => {
+        element.variant = 'neutral';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_neutral');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_neutral'
+            );
+        });
+    });
+
+    it('Button menu: variant success without label', () => {
+        element.variant = 'success';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(button.className).toContain(
+                'avonni-button-menu__button_success'
+            );
+        });
+    });
+
+    it('Button menu: variant success with label', () => {
+        element.variant = 'success';
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_success');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_success'
+            );
+        });
+    });
+
+    it('Button menu: variant border-inverse with icon name', () => {
         element.variant = 'border-inverse';
         element.iconName = 'utility:close';
 
@@ -614,7 +908,7 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain(
-                'slds-button_icon-container-more'
+                'avonni-button-menu__button-icon-container-more'
             );
         });
     });
@@ -628,7 +922,9 @@ describe('Button Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toContain('slds-button_icon-bare');
-            expect(button.className).toContain('slds-button_icon-more');
+            expect(button.className).toContain(
+                'avonni-button-menu__button-icon-more'
+            );
         });
     });
 

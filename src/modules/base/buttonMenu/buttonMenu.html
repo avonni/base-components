@@ -37,8 +37,8 @@
         class={computedButtonClass}
         disabled={disabled}
         aria-expanded={computedAriaExpanded}
-        title={computedTitle}
-        accesskey={computedAccessKey}
+        title={title}
+        accesskey={accessKey}
         value={value}
         aria-haspopup="true"
         data-element-id="button"
@@ -64,7 +64,7 @@
             data-element-id="avonni-primitive-icon-main"
         ></c-primitive-icon>
 
-        <template if:true={computedShowDownIcon}>
+        <template if:false={computedHideDownIcon}>
             <c-primitive-icon
                 icon-name="utility:down"
                 svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
@@ -73,7 +73,7 @@
             ></c-primitive-icon>
         </template>
 
-        <span class="slds-assistive-text">{computedAlternativeText}</span>
+        <span class="slds-assistive-text">{alternativeText}</span>
     </button>
 
     <template if:true={_dropdownOpened}>
@@ -107,5 +107,4 @@
             </template>
         </div>
     </template>
-    <slot name="dialogs"></slot>
 </template>
