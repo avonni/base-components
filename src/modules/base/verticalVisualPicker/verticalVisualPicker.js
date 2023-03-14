@@ -614,6 +614,16 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Input keyup event handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
+    }
+
+    /**
      * Sub Items change event handler.
      *
      * @param {Event} event
