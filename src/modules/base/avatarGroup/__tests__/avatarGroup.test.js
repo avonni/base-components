@@ -111,12 +111,12 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
     });
 
-    it('Avatar Group:: Default attributes', () => {
+    it('Avatar Group: Default attributes', () => {
         expect(element.size).toBe('medium');
         expect(element.variant).toBe('square');
         expect(element.items).toMatchObject([]);
         expect(element.layout).toBe('stack');
-        expect(element.maxCount).toBe(5);
+        expect(element.maxCount).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.listButtonShowLessIconName).toBeUndefined();
         expect(element.listButtonShowLessIconPosition).toBe('left');
@@ -511,7 +511,26 @@ describe('Avatar Group', () => {
     });
 
     //max count
-    it('Avatar group: max count stack', () => {
+    it('Avatar group: max count', () => {
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+        element.maxCount = 3;
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatars).toHaveLength(3);
+        });
+    });
+
+    it('Avatar group: default max count stack', () => {
         element.layout = 'stack';
         element.items = [
             ...items,
@@ -523,16 +542,14 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            expect(element.maxCount).toBe(5);
             const avatars = element.shadowRoot.querySelectorAll(
-                '.avonni-avatar-group__avatar-container'
+                '[data-element-id="avonni-avatar"]'
             );
-            expect(avatars).toHaveLength(6);
+            expect(avatars).toHaveLength(5);
         });
     });
 
-    it('Avatar group: max count grid', () => {
-        element.maxCount = '11';
+    it('Avatar group: default max count grid', () => {
         element.layout = 'grid';
         element.items = [
             ...items,
@@ -549,14 +566,13 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const avatars = element.shadowRoot.querySelectorAll(
-                '.avonni-avatar-group__avatar-container'
+                '[data-element-id="avonni-avatar"]'
             );
-            expect(avatars).toHaveLength(12);
+            expect(avatars).toHaveLength(11);
         });
     });
 
-    it('Avatar group: max count list', () => {
-        element.maxCount = '11';
+    it('Avatar group: default max count list', () => {
         element.items = [
             ...items,
             ...items,
@@ -569,7 +585,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const avatars = element.shadowRoot.querySelectorAll(
-                '.avonni-avatar-group__avatar-container'
+                '[data-element-id="avonni-avatar"]'
             );
             expect(avatars).toHaveLength(11);
         });

@@ -48,3 +48,9 @@
  * @default 400
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-picker-swatch-border-radius
+ * @default 0.125rem
+ * @type dimension
+ */

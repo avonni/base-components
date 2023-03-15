@@ -30,39 +30,69 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/colorPalette';
+@import './shared.css';
 
-customElements.define(
-    'ac-base-color-palette',
-    Component.CustomElementConstructor
-);
+.avonni-color-picker__popover-button {
+    display: grid;
+    width: 100%;
+}
 
-export const ColorPalette = ({
-    disabled,
-    readOnly,
-    isLoading,
-    colors,
-    columns,
-    groups,
-    showCheckmark,
-    hideOutline,
-    tileWidth,
-    tileHeight,
-    value,
-    variant
-}) => {
-    const element = document.createElement('ac-base-color-palette');
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.isLoading = isLoading;
-    element.colors = colors;
-    element.columns = columns;
-    element.groups = groups;
-    element.showCheckmark = showCheckmark;
-    element.hideOutline = hideOutline;
-    element.tileWidth = tileWidth;
-    element.tileHeight = tileHeight;
-    element.value = value;
-    element.variant = variant;
-    return element;
-};
+.slds-swatch-read-only {
+    padding: 0.3rem 0.5rem;
+}
+
+.avonni-color-picker__main-button:disabled {
+    background-color: #ecebea;
+}
+
+.avonni-color-picker__main-button .slds-swatch {
+    border-radius: var(--avonni-color-picker-swatch-border-radius, 0.125rem);
+}
+
+.avonni-color-picker__dropdown {
+    max-width: none;
+}
+
+.avonni-color-picker__popover-body {
+    width: var(--avonni-color-picker-popover-width, 16rem);
+}
+
+.slds-nubbin_top {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.slds-nubbin_bottom {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.slds-nubbin_top-left {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+}
+
+.slds-nubbin_top-right {
+    position: absolute;
+    top: 100%;
+    margin-top: 1rem;
+}
+
+.slds-nubbin_bottom-left {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+}
+
+.slds-nubbin_bottom-right {
+    position: absolute;
+    top: auto;
+    margin-bottom: 1rem;
+}

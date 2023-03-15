@@ -165,7 +165,9 @@
                     class="slds-m-horizontal_xx-small slds-truncate"
                     if:true={description}
                 >
-                    {description}
+                    <lightning-formatted-rich-text
+                        value={description}
+                    ></lightning-formatted-rich-text>
                 </p>
                 <template if:false={closed}>
                     <template if:true={hasError}>
