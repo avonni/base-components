@@ -38,7 +38,6 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 import {
-    dispatchCellChangeEvent,
     getCellValue,
     getCurrentSelectionLength,
     isSelectedRow,
@@ -319,6 +318,10 @@ export default class Datatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+
+        this.addEventListener('privateeditcustomcell', (event) => {
+            event.detail.callbacks.dispatchCellChangeEvent(this.state);
+        });
 
         this.template.addEventListener(
             'privateavatarclick',
@@ -1005,7 +1008,6 @@ export default class Datatable extends LightningDatatable {
         if (value !== this.state.inlineEdit.editedValue) {
             // Show yellow background and save/cancel button
             super.updateRowsState(this.state);
-            dispatchCellChangeEvent(this, dirtyValues);
         }
     };
 

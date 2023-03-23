@@ -35,13 +35,13 @@ import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
-    @api visible;
-    @api rowKeyValue;
     @api colKeyValue;
-    @api editedValue;
     @api columnDef;
+    @api editedValue;
     @api isMassEditEnabled = false;
     @api numberOfSelectedRows;
+    @api rowKeyValue;
+    @api visible = false;
 
     //shared
     @api disabled;
@@ -89,11 +89,16 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         });
         this.interactingState.onleave(() => this.handlePanelLoosedFocus());
 
-        this.template.addEventListener(
-            'inlineeditchange',
-            this.processOnChange
+        this.template.addEventListener('inlineeditchange', (event) =>
+            this.processOnChange(event)
         );
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Returns true if massEdit is enabled and checkbox is checked.
@@ -115,9 +120,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     @api
     get validity() {
-        return this.inputableElement
-            ? this.inputableElement.validity
-            : undefined;
+        return this.inputableElement ? this.inputableElement.validity : {};
     }
 
     /**
@@ -129,6 +132,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     get value() {
         return this.inputableElement ? this.inputableElement.value : undefined;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed panel class.
@@ -248,6 +257,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         );
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
     @api
     focus() {
         this.interactingState.enter();
@@ -261,6 +276,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     getPositionedElement() {
         return this.template.querySelector('section');
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     cancelEdition() {
         this.triggerEditFinished({
@@ -286,8 +307,56 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         };
     }
 
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
     focusLastElement() {
         this.template.querySelector('[data-form-last-element="true"]').focus();
+    }
+
+    getCellChangesByColumn(state, changes) {
+        return Object.keys(changes).reduce((result, colKey) => {
+            const columns = state.columns;
+            const columnIndex = state.headerIndexes[colKey];
+            const columnDef = columns[columnIndex];
+
+            result[columnDef.columnKey || columnDef.fieldName] =
+                changes[colKey];
+
+            return result;
+        }, {});
+    }
+
+    getResolvedCellChanges(state, dirtyValues) {
+        const keyField = state.keyField;
+
+        return Object.keys(dirtyValues).reduce((result, rowKey) => {
+            // Get the changes made by column
+            const cellChanges = this.getCellChangesByColumn(
+                state,
+                dirtyValues[rowKey]
+            );
+
+            if (Object.keys(cellChanges).length > 0) {
+                // Add identifier for which row has change
+                cellChanges[keyField] = rowKey;
+                result.push(cellChanges);
+            }
+
+            return result;
+        }, []);
     }
 
     handleCellKeydown(event) {
@@ -379,30 +448,25 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     processSubmission() {
-        this.triggerEditFinished({ reason: 'submit-action' });
-        // if type input rich text, there is no validity check.
-        if (this.isTypeRichText) {
+        const validity =
+            this.isTypeRichText || this.inputableElement.validity.valid;
+        this.triggerEditFinished({ reason: 'submit-action', validity });
+
+        const detail = {
+            rowKeyValue: this.rowKeyValue,
+            colKeyValue: this.colKeyValue,
+            value: this.isTypeDateRange
+                ? this.dateRangeFormattedValue(this.value)
+                : this.value,
+            callbacks: {
+                dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
+            }
+        };
+
+        if (this.isTypeRichText || validity) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
-                    detail: {
-                        rowKeyValue: this.rowKeyValue,
-                        colKeyValue: this.colKeyValue,
-                        value: this.value
-                    },
-                    bubbles: true,
-                    composed: true
-                })
-            );
-        } else if (this.validity.valid) {
-            this.dispatchEvent(
-                new CustomEvent('privateeditcustomcell', {
-                    detail: {
-                        rowKeyValue: this.rowKeyValue,
-                        colKeyValue: this.colKeyValue,
-                        value: this.isTypeDateRange
-                            ? this.dateRangeFormattedValue(this.value)
-                            : this.value
-                    },
+                    detail,
                     bubbles: true,
                     composed: true
                 })
@@ -414,33 +478,34 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     processOnChange = (event) => {
         if (event.detail.validity) {
-            this.triggerEditFinished({ reason: 'on-change' });
+            this.triggerEditFinished({
+                reason: 'on-change',
+                validity: event.detail.validity
+            });
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
         }
     };
 
     triggerEditFinished(detail) {
-        if (!this.isTypeCombobox) {
-            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.isTypeRichText ? true : this.validity.valid;
-            detail.isMassEditChecked = this.isMassEditChecked;
-            detail.value = this.isTypeDateRange
+        const details = {
+            rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
+            colKeyValue: detail.colKeyValue || this.colKeyValue,
+            valid: this.isTypeRichText ? true : detail.validity,
+            isMassEditChecked: this.isMassEditChecked
+        };
+
+        if (this.isTypeCombobox) {
+            details.value = this.comboboxFormattedValue(this.value);
+        } else {
+            details.value = this.isTypeDateRange
                 ? this.dateRangeFormattedValue(this.value)
                 : this.value;
-        } else if (this.isTypeCombobox) {
-            // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
-            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.validity.valid;
-            detail.isMassEditChecked = this.isMassEditChecked;
-            detail.value = this.comboboxFormattedValue(this.value);
         }
 
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
-                detail: detail,
+                detail: details,
                 bubbles: true,
                 composed: true
             })
