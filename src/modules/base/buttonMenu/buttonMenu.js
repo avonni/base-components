@@ -64,25 +64,6 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
-const BUTTON_VARIANTS = {
-    valid: [
-        'neutral',
-        'brand',
-        'brand-outline',
-        'bare',
-        'bare-inverse',
-        'container',
-        'border',
-        'border-filled',
-        'border-inverse',
-        'destructive',
-        'destructive-text',
-        'inverse',
-        'success'
-    ],
-    default: 'border'
-};
-
 const DEFAULT_ICON_NAME = 'utility:down';
 
 /**
@@ -153,10 +134,11 @@ export default class ButtonMenu extends LightningElement {
     _iconSize = ICON_SIZES.default;
     _isDraft = false;
     _isLoading = false;
+    _label = '';
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
     _tooltip;
-    _variant = BUTTON_VARIANTS.default;
+    _variant;
 
     _boundingRect = {};
     _dropdownVisible = false;
@@ -374,7 +356,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success.
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.
      *
      * @public
      * @type {string}
@@ -386,10 +368,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: BUTTON_VARIANTS.default,
-            validValues: BUTTON_VARIANTS.valid
-        });
+        this._variant = variant;
     }
 
     /*
@@ -407,6 +386,11 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
+        this._variant = this.variant
+            ? this.variant
+            : this.label
+            ? 'neutral'
+            : 'border';
         const isDropdownIcon = this.computedHideDownIcon;
         const isBare =
             this.variant === 'bare' || this.variant === 'bare-inverse';
