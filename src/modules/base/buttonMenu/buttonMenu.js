@@ -150,7 +150,6 @@ export default class ButtonMenu extends LightningElement {
     _iconSize = ICON_SIZES.default;
     _isDraft = false;
     _isLoading = false;
-    _label = '';
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
     _tooltip;
@@ -162,6 +161,8 @@ export default class ButtonMenu extends LightningElement {
     _focusOnIndexDuringRenderedCallback = null;
     _needsFocusAfterRender = false;
     _rerenderFocus = false;
+    _connected = false;
+    _rendered = false;
 
     connectedCallback() {
         this.classList.add(
@@ -402,51 +403,49 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        this._variant =
-            this.variant && BUTTON_VARIANTS.includes(this.variant)
-                ? this.variant
-                : this.label
-                ? 'neutral'
-                : 'border';
         const isDropdownIcon = this.computedHideDownIcon;
         const isBare =
-            this.variant === 'bare' || this.variant === 'bare-inverse';
+            this.computedVariant === 'bare' ||
+            this.computedVariant === 'bare-inverse';
         const isAddedVariant =
-            this.variant === 'brand' ||
-            this.variant === 'brand-outline' ||
-            this.variant === 'destructive' ||
-            this.variant === 'destructive-text' ||
-            this.variant === 'inverse' ||
-            this.variant === 'neutral' ||
-            this.variant === 'success';
+            this.computedVariant === 'brand' ||
+            this.computedVariant === 'brand-outline' ||
+            this.computedVariant === 'destructive' ||
+            this.computedVariant === 'destructive-text' ||
+            this.computedVariant === 'inverse' ||
+            this.computedVariant === 'neutral' ||
+            this.computedVariant === 'success';
 
         const classes = classSet('slds-button');
-        classes.add(`avonni-button-menu__button_${this.variant}`);
+
+        classes.add(`avonni-button-menu__button_${this.computedVariant}`);
         classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
                 'avonni-button-menu__button_label': this.label,
                 'slds-button_neutral':
-                    this.variant === 'border' ||
-                    this.variant === 'border-filled' ||
-                    this.variant === 'neutral',
+                    this.computedVariant === 'border' ||
+                    this.computedVariant === 'border-filled' ||
+                    this.computedVariant === 'neutral',
                 'slds-button_inverse':
-                    this.variant === 'inverse' ||
-                    this.variant === 'bare-inverse' ||
-                    this.variant === 'border-inverse',
-                'slds-button_brand': this.variant === 'brand',
-                'slds-button_outline-brand': this.variant === 'brand-outline',
-                'slds-button_destructive': this.variant === 'destructive',
+                    this.computedVariant === 'inverse' ||
+                    this.computedVariant === 'bare-inverse' ||
+                    this.computedVariant === 'border-inverse',
+                'slds-button_brand': this.computedVariant === 'brand',
+                'slds-button_outline-brand':
+                    this.computedVariant === 'brand-outline',
+                'slds-button_destructive':
+                    this.computedVariant === 'destructive',
                 'slds-button_text-destructive':
-                    this.variant === 'destructive-text',
-                'slds-button_success': this.variant === 'success'
+                    this.computedVariant === 'destructive-text',
+                'slds-button_success': this.computedVariant === 'success'
             });
         } else {
             const useMoreContainer =
-                this.variant === 'container' ||
-                this.variant === 'bare-inverse' ||
-                this.variant === 'border-inverse';
+                this.computedVariant === 'container' ||
+                this.computedVariant === 'bare-inverse' ||
+                this.computedVariant === 'border-inverse';
 
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
@@ -456,16 +455,17 @@ export default class ButtonMenu extends LightningElement {
                 'avonni-button-menu__button-icon-container-more':
                     useMoreContainer && !isDropdownIcon,
                 'slds-button_icon-brand slds-button_icon':
-                    this.variant === 'brand',
+                    this.computedVariant === 'brand',
                 'slds-button_icon-container':
-                    this.variant === 'container' && isDropdownIcon,
+                    this.computedVariant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
-                    this.variant === 'border' && isDropdownIcon,
+                    this.computedVariant === 'border' && isDropdownIcon,
                 'slds-button_icon-border-filled':
-                    this.variant === 'border-filled',
+                    this.computedVariant === 'border-filled',
                 'slds-button_icon-border-inverse':
-                    this.variant === 'border-inverse',
-                'slds-button_icon-inverse': this.variant === 'bare-inverse',
+                    this.computedVariant === 'border-inverse',
+                'slds-button_icon-inverse':
+                    this.computedVariant === 'bare-inverse',
                 'slds-button_icon-xx-small':
                     this.iconSize === 'xx-small' && !isBare,
                 'slds-button_icon-x-small':
@@ -538,6 +538,19 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
+     * Computed variant.
+     *
+     * @type {string}
+     */
+    get computedVariant() {
+        return this.variant && BUTTON_VARIANTS.includes(this.variant)
+            ? this.variant
+            : this.label
+            ? 'neutral'
+            : 'border';
+    }
+
+    /**
      * Returns true if menu alignment is bottom.
      *
      * @type {boolean}
@@ -581,7 +594,6 @@ export default class ButtonMenu extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
-
     /**
      * Menu item select dispatch method.
      *

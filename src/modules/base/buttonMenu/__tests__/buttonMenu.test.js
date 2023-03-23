@@ -71,7 +71,7 @@ describe('Button Menu', () => {
         expect(element.title).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBe('');
-        expect(element.variant).toBe('border');
+        expect(element.variant).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -532,7 +532,6 @@ describe('Button Menu', () => {
     });
 
     it('Button menu: no variant with label', () => {
-        element.variant = undefined;
         element.label = 'Button menu';
 
         return Promise.resolve().then(() => {
