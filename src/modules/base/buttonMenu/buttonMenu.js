@@ -59,6 +59,22 @@ const MENU_ALIGNMENTS = {
     default: 'left'
 };
 
+const BUTTON_VARIANTS = [
+    'neutral',
+    'brand',
+    'brand-outline',
+    'bare',
+    'bare-inverse',
+    'container',
+    'border',
+    'border-filled',
+    'border-inverse',
+    'destructive',
+    'destructive-text',
+    'inverse',
+    'success'
+];
+
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
@@ -386,11 +402,12 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        this._variant = this.variant
-            ? this.variant
-            : this.label
-            ? 'neutral'
-            : 'border';
+        this._variant =
+            this.variant && BUTTON_VARIANTS.includes(this.variant)
+                ? this.variant
+                : this.label
+                ? 'neutral'
+                : 'border';
         const isDropdownIcon = this.computedHideDownIcon;
         const isBare =
             this.variant === 'bare' || this.variant === 'bare-inverse';
