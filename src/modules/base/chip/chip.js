@@ -146,8 +146,12 @@ export default class Chip extends LightningElement {
      */
 
     updateSlotsVisibility() {
-        const leftSlot = this.template.querySelector('slot[name=left]');
-        const rightSlot = this.template.querySelector('slot[name=right]');
+        const leftSlot = this.template.querySelector(
+            '[data-element-id="slot-left"]'
+        );
+        const rightSlot = this.template.querySelector(
+            '[data-element-id="slot-right"]'
+        );
 
         if (!leftSlot || !rightSlot) {
             return;
