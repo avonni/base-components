@@ -200,11 +200,13 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     handleOnChange(event) {
+        if (this.isMultiSelect) return;
+        const valid = this.validity.valid;
         this.dispatchEvent(
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.value,
-                    validity: this.validity.valid
+                    validity: valid
                 },
                 bubbles: true,
                 composed: true

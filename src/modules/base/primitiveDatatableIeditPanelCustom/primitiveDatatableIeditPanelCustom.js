@@ -201,12 +201,30 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is counter.
+     *
+     * @type {boolean}
+     */
+    get isTypeCounter() {
+        return this.columnDef.type === 'counter';
+    }
+
+    /**
      * Returns true if column type is lookup.
      *
      * @type {boolean}
      */
     get isTypeLookup() {
         return this.columnDef.type === 'lookup';
+    }
+
+    /**
+     * Returns true if column type is textarea.
+     *
+     * @type {boolean}
+     */
+    get isTypeTextArea() {
+        return this.columnDef.type === 'textarea';
     }
 
     /**
@@ -218,7 +236,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         return (
             this.isTypeRichText ||
             this.isTypeDateRange ||
-            this.isTypeColorPicker
+            this.isTypeColorPicker ||
+            this.isTypeCounter ||
+            this.isTypeTextArea ||
+            (this.isTypeCombobox && this.isMultiSelect)
         );
     }
 
@@ -249,12 +270,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      * @type {boolean}
      */
     get showButtons() {
-        return (
-            this.isMassEditEnabled ||
-            this.isTypeWithMenu ||
-            this.columnDef.type === 'counter' ||
-            this.columnDef.type === 'textarea'
-        );
+        return this.isMassEditEnabled || this.isTypeWithMenu;
     }
 
     /*
@@ -462,7 +478,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
                 dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
             }
         };
-
         if (this.isTypeRichText || validity) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {

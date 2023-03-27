@@ -68,21 +68,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this._value = value;
     }
 
-    handleChange(event) {
-        const detail = {
-            value: event.detail.value,
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
     /*----------- Inline Editing Functions -------------*/
 
     /**
@@ -144,5 +129,66 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
         this.getStateAndColumnsEvent();
         this.toggleInlineEdit();
+    }
+
+    handleChange(event) {
+        const detail = {
+            value: event.detail.value,
+            colKeyValue: this.colKeyValue,
+            rowKeyValue: this.rowKeyValue,
+            callbacks: {
+                dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
+            }
+        };
+        this._value = event.detail.value;
+        this.dispatchEvent(
+            new CustomEvent('privateeditcustomcell', {
+                detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    getResolvedCellChanges(state, dirtyValues) {
+        const keyField = state.keyField;
+        return Object.keys(dirtyValues).reduce((result, rowKey) => {
+            // Get the changes made by column
+            const cellChanges = this.getCellChangesByColumn(
+                state,
+                dirtyValues[rowKey]
+            );
+            if (Object.keys(cellChanges).length > 0) {
+                // Add identifier for which row has change
+                cellChanges[keyField] = rowKey;
+                result.push(cellChanges);
+            }
+            return result;
+        }, []);
+    }
+
+    getCellChangesByColumn(state, changes) {
+        return Object.keys(changes).reduce((result, colKey) => {
+            const columns = state.columns;
+            const columnIndex = state.headerIndexes[colKey];
+            const columnDef = columns[columnIndex];
+            result[columnDef.columnKey || columnDef.fieldName] =
+                changes[colKey];
+            return result;
+        }, {});
     }
 }
