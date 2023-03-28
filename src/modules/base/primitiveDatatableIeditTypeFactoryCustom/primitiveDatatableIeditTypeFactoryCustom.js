@@ -77,7 +77,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     // combobox attributes
     @api dropdownLength;
     @api isMultiSelect;
-    @api options;
+    _options;
 
     // counter attributes
     @api max;
@@ -105,6 +105,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._blurHandler = this.handleComponentBlur.bind(this);
         this._focusHandler = this.handleComponentFocus.bind(this);
         this._changeHandler = this.handleComponentChange.bind(this);
+        this.getComboboxOptionsEvent();
     }
 
     renderedCallback() {
@@ -131,17 +132,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     @api
-    get startDate() {
-        return typeof this.editedValue === 'object'
-            ? this.editedValue.startDate
-            : undefined;
-    }
-
-    set startDate(value) {
-        this._startDate = value;
-    }
-
-    @api
     get endDate() {
         return typeof this.editedValue === 'object'
             ? this.editedValue.endDate
@@ -150,6 +140,26 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     set endDate(value) {
         this._endDate = value;
+    }
+
+    @api
+    get options() {
+        return this._options;
+    }
+
+    set options(options) {
+        this._options = options;
+    }
+
+    @api
+    get startDate() {
+        return typeof this.editedValue === 'object'
+            ? this.editedValue.startDate
+            : undefined;
+    }
+
+    set startDate(value) {
+        this._startDate = value;
     }
 
     /**
@@ -189,12 +199,34 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         }
     }
 
+    getComboboxOptionsEvent() {
+        if (this.columnDef.type !== 'combobox') return;
+        this.dispatchEvent(
+            new CustomEvent('getcomboboxoptions', {
+                detail: {
+                    name: this.columnDef.fieldName,
+                    callbacks: {
+                        getComboboxOptions: this.getComboboxOptions.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    getComboboxOptions(options) {
+        this._options = options;
+    }
+
     handleComponentFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }
+
     handleComponentBlur() {
         this.dispatchEvent(new CustomEvent('blur'));
     }
+
     handleComponentChange() {
         this.showHelpMessageIfInvalid();
     }

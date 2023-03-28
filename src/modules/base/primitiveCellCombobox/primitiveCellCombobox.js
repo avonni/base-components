@@ -70,6 +70,16 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     /*----------- Inline Editing Functions -------------*/
 
+    get displayedValue() {
+        if (this.isMultiSelect && this.value) {
+            return this.options.filter((obj) => this.value.includes(obj.value));
+        }
+        const matchingOption = this.options.find(
+            (obj) => obj.value === this.value
+        );
+        return matchingOption?.label ? matchingOption.label : this.value;
+    }
+
     /**
      * Return true if cell is editable and not disabled.
      *

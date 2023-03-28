@@ -352,6 +352,20 @@ export default class Datatable extends LightningDatatable {
                 );
             }
         );
+        this.template.addEventListener('getcomboboxoptions', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const options = column.typeAttributes.options;
+            // if options is a fieldname, get the options from the data
+            if (options?.fieldName) {
+                const field = this.state.data[0][options.fieldName];
+                event.detail.callbacks.getComboboxOptions(field);
+            } else {
+                event.detail.callbacks.getComboboxOptions(options);
+            }
+        });
     }
 
     renderedCallback() {

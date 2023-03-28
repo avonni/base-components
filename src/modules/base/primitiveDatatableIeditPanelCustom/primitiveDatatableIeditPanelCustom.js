@@ -62,7 +62,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     // Primitive cell combobox
     @api dropdownLength;
     @api isMultiSelect;
-    @api options;
 
     // Primitive cell counter
     @api max;
