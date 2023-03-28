@@ -72,12 +72,25 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     get displayedValue() {
         if (this.isMultiSelect && this.value) {
-            return this.options.filter((obj) => this.value.includes(obj.value));
+            const selectedOptions = this.options.filter((option) =>
+                this.value.includes(option.value)
+            );
+            return selectedOptions.map((option) => ({
+                label: option.label,
+                name: option.value
+            }));
+        } else if (this.isMultiSelect && !this.value) {
+            return [];
         }
-        const matchingOption = this.options.find(
-            (obj) => obj.value === this.value
+
+        const selectedOption = this.options.find(
+            (option) => option.value === this.value
         );
-        return matchingOption?.label ? matchingOption.label : this.value;
+        return selectedOption?.label ?? this.value;
+    }
+
+    get displayPillContainer() {
+        return this.isMultiSelect && this.displayedValue?.length > 0;
     }
 
     /**

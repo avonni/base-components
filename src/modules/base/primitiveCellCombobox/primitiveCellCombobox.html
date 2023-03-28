@@ -61,10 +61,10 @@
                 if:false={isMultiSelect}
                 value={displayedValue}
             ></lightning-formatted-text>
-            <!-- <c-pill-container
+            <c-pill-container
                 if:true={isMultiSelect}
                 items={displayedValue}
-            ></c-pill-container> -->
+            ></c-pill-container>
             <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button
                     onclick={handleEditButtonClick}
