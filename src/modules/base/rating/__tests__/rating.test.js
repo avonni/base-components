@@ -269,6 +269,9 @@ describe('Rating', () => {
             );
             buttons[1].click();
             expect(element.value).toBe(2);
+            buttons.forEach((button) => {
+                expect(button.disabled).toBeFalsy();
+            });
         });
     });
 
@@ -282,6 +285,9 @@ describe('Rating', () => {
             );
             buttons[1].click();
             expect(element.value).toBe(3);
+            buttons.forEach((button) => {
+                expect(button.disabled).toBeTruthy();
+            });
         });
     });
 
