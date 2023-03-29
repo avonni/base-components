@@ -33,34 +33,51 @@
 -->
 
 <template>
-    <!-- Input label -->
-    <p
-        class="
-            slds-form-element__legend slds-form-element__label
-            avonni-date-time-picker__label
-        "
-        if:false={hideLabel}
-    >
-        <abbr
-            if:true={required}
-            title="required"
-            aria-label="required"
-            class="slds-required"
-            >*</abbr
-        >
-        {label}
-    </p>
-
-    <!-- Help text -->
-    <lightning-helptext
-        if:true={fieldLevelHelp}
-        content={fieldLevelHelp}
-        data-element-id="lightning-helptext"
-    ></lightning-helptext>
-
     <lightning-layout multiple-rows="true" pull-to-boundary="small">
-        <!-- Current date range -->
+        <lightning-layout-item
+            if:true={showAvatar}
+            padding="horizontal-small"
+            class="slds-p-right_none"
+        >
+            <c-avatar
+                alternative-text={avatar.alternativeText}
+                fallback-icon-name={avatar.fallbackIconName}
+                hide-avatar-details
+                initials={avatar.initials}
+                size={avatar.size}
+                src={avatar.src}
+                variant={avatar.variant}
+            ></c-avatar>
+        </lightning-layout-item>
+
         <lightning-layout-item flexibility="auto" padding="horizontal-small">
+            <!-- Input label -->
+            <p
+                class="
+                    slds-form-element__legend slds-form-element__label
+                    avonni-date-time-picker__label
+                    slds-p-top_none
+                "
+                if:false={hideLabel}
+            >
+                <abbr
+                    if:true={required}
+                    title="required"
+                    aria-label="required"
+                    class="slds-required"
+                    >*</abbr
+                >
+                {label}
+            </p>
+
+            <!-- Help text -->
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+                data-element-id="lightning-helptext"
+            ></lightning-helptext>
+
+            <!-- Current date range -->
             <p
                 class="
                     slds-text-heading_medium

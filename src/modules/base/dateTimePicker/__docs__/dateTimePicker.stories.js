@@ -57,6 +57,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        avatar: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Avatar object. The avatar will be displayed in the header, to the left of the label.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -429,7 +439,11 @@ const Template = (args) => DateTimePicker(args);
 
 export const Daily = Template.bind({});
 Daily.args = {
-    label: 'Date picker'
+    label: 'Date picker',
+    fieldLevelHelp: 'bouboubou',
+    avatar: {
+        fallbackIconName: 'custom:custom1'
+    }
 };
 
 export const Weekly = Template.bind({});

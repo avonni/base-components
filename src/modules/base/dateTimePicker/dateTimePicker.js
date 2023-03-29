@@ -36,6 +36,7 @@ import {
     getStartOfWeek,
     getWeekday,
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
@@ -117,6 +118,7 @@ export default class DateTimePicker extends LightningElement {
      */
     @api name;
 
+    _avatar = {};
     _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
     _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatMonth = MONTH_FORMATS.default;
@@ -195,6 +197,20 @@ export default class DateTimePicker extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Avatar object. The avatar will be displayed in the header, to the left of the label.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = normalizeObject(value);
+    }
 
     /**
      * Valid values include numeric and 2-digit.
@@ -930,6 +946,19 @@ export default class DateTimePicker extends LightningElement {
      */
     get isMonthly() {
         return this.variant === 'monthly';
+    }
+
+    /**
+     * True if the avatar should be shown.
+     *
+     * @type {boolean}
+     */
+    get showAvatar() {
+        return !!(
+            this.avatar.src ||
+            this.avatar.fallbackIconName ||
+            this.avatar.initials
+        );
     }
 
     /*

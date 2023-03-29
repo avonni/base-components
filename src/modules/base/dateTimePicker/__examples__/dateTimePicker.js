@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const DateTimePicker = ({
+    avatar,
     disabled,
     fieldLevelHelp,
     label,
@@ -71,6 +72,7 @@ export const DateTimePicker = ({
     timezone
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
+    element.avatar = avatar;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
