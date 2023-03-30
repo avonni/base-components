@@ -1,0 +1,39 @@
+<template>
+    <div class="slds-box slds-p-around_none">
+        <c-layout
+            direction={direction}
+            horizontal-align={horizontalAlign}
+            multiple-rows={multipleRows}
+            vertical-align={verticalAlign}
+        >
+            <c-layout-item
+                alignment-bump="right"
+                class="slds-p-around_medium"
+                style="background: #d8e2dc"
+                >First item
+            </c-layout-item>
+            <c-layout-item
+                class="slds-p-around_medium"
+                style="background: #ffe5d9"
+            >
+                Second item
+            </c-layout-item>
+            <c-layout-item
+                order="3"
+                class="slds-p-around_medium"
+                style="background: #ffcad4"
+                >Third item</c-layout-item
+            >
+            <c-layout-item
+                class="slds-p-around_medium"
+                style="background: #f4acb7"
+                >Fourth item</c-layout-item
+            >
+            <c-layout-item
+                class="slds-p-around_medium"
+                style="background: #9d8189"
+                >Fifth item</c-layout-item
+            >
+        </c-layout>
+    </div>
+</template>
