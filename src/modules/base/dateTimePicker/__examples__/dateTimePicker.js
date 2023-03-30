@@ -42,6 +42,7 @@ export const DateTimePicker = ({
     disabled,
     fieldLevelHelp,
     label,
+    hideDateLabel,
     hideLabel,
     variant,
     messageWhenValueMissing,
@@ -76,6 +77,7 @@ export const DateTimePicker = ({
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
+    element.hideDateLabel = hideDateLabel;
     element.hideLabel = hideLabel;
     element.variant = variant;
     element.messageWhenValueMissing = messageWhenValueMissing;

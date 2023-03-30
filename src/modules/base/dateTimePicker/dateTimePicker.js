@@ -125,6 +125,7 @@ export default class DateTimePicker extends LightningElement {
     _dateFormatYear;
     _disabledDateTimes = [];
     _endTime = DEFAULT_END_TIME;
+    _hideDateLabel = false;
     _hideDatePicker = false;
     _hideLabel;
     _hideNavigation = false;
@@ -352,6 +353,22 @@ export default class DateTimePicker extends LightningElement {
             this._initTimeSlots();
             this._generateTable();
         }
+    }
+
+    /**
+     * If present, hide the currently visible date or date range.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideDateLabel() {
+        return this._hideDateLabel;
+    }
+
+    set hideDateLabel(value) {
+        this._hideDateLabel = normalizeBoolean(value);
     }
 
     /**

@@ -385,6 +385,18 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        hideDateLabel: {
+            name: 'hide-date-label',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, hide the currently visible date or date range.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hideDatePicker: {
             name: 'hide-date-picker',
             control: {
@@ -415,6 +427,7 @@ export default {
         dateFormatWeekday: 'short',
         disabled: false,
         endTime: '18:00',
+        hideDateLabel: false,
         hideDatePicker: false,
         hideLabel: false,
         hideNavigation: false,
