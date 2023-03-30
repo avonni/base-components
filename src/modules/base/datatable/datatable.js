@@ -289,7 +289,8 @@ export default class Datatable extends LightningDatatable {
             typeAttributes: [
                 'disabled',
                 'label',
-                'maxlength',
+                'minLength',
+                'maxLength',
                 'name',
                 'placeholder'
             ]
