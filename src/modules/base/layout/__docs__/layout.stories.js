@@ -97,4 +97,8 @@ export default {
 const Template = (args) => Layout(args);
 
 export const Base = Template.bind({});
-Base.args = {};
+
+export const MultipleRows = Template.bind({});
+MultipleRows.args = {
+    multipleRows: true
+};

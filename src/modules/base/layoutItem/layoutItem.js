@@ -44,6 +44,8 @@ const CONTAINER_WIDTHS = {
     valid: ['default', 'small', 'medium', 'large']
 };
 
+const DEFAULT_SIZE = 'auto';
+
 export default class LayoutItem extends LightningElement {
     _alignmentBump = ALIGNMENT_BUMPS.default;
     _largeContainerOrder;
@@ -57,6 +59,7 @@ export default class LayoutItem extends LightningElement {
 
     _connected = false;
     _containerWidth = CONTAINER_WIDTHS.default;
+    _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
 
     connectedCallback() {
@@ -125,6 +128,11 @@ export default class LayoutItem extends LightningElement {
     }
     set largeContainerSize(value) {
         this._largeContainerSize = this.normalizeSize(value);
+        this._sizes.large = this.largeContainerSize;
+
+        if (this._connected && this._containerWidth === 'large') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -144,6 +152,11 @@ export default class LayoutItem extends LightningElement {
     }
     set mediumContainerSize(value) {
         this._mediumContainerSize = this.normalizeSize(value);
+        this._sizes.medium = this.mediumContainerSize;
+
+        if (this._connected && this._containerWidth === 'medium') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -160,7 +173,13 @@ export default class LayoutItem extends LightningElement {
         return this._size;
     }
     set size(value) {
-        this._size = this.normalizeSize(value);
+        const size = this.normalizeSize(value);
+        this._size = size || size === 0 ? size : DEFAULT_SIZE;
+        this._sizes.default = this.size;
+
+        if (this._connected && this._containerWidth === 'default') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -169,6 +188,11 @@ export default class LayoutItem extends LightningElement {
     }
     set smallContainerSize(value) {
         this._smallContainerSize = this.normalizeSize(value);
+        this._sizes.small = this.smallContainerSize;
+
+        if (this._connected && this._containerWidth === 'small') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -188,7 +212,30 @@ export default class LayoutItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    getCurrentSize() {
+        const { large, medium, small, default: defaultSize } = this._sizes;
+
+        switch (this._containerWidth) {
+            case 'large':
+                return large || medium || small || defaultSize;
+            case 'medium':
+                return medium || small || defaultSize;
+            case 'small':
+                return small || defaultSize;
+            default:
+                return defaultSize;
+        }
+    }
+
     normalizeSize(size) {
+        const normalizedNumber = parseInt(Number(size), 10);
+        const isGridFraction =
+            !isNaN(normalizedNumber) &&
+            normalizedNumber > 0 &&
+            normalizedNumber <= 12;
+        if (isGridFraction) {
+            return `${(100 / 12) * normalizedNumber}%`;
+        }
         return size;
     }
 
@@ -208,5 +255,7 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-top': this.alignmentBump === 'top',
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
+
+        this.template.host.style.flexBasis = this.getCurrentSize();
     }
 }
