@@ -59,6 +59,7 @@ export default class LayoutItem extends LightningElement {
 
     _connected = false;
     _containerWidth = CONTAINER_WIDTHS.default;
+    _orders = { default: 0 };
     _sizes = { default: DEFAULT_SIZE };
     name = generateUUID();
 
@@ -120,6 +121,11 @@ export default class LayoutItem extends LightningElement {
         this._largeContainerOrder = isNaN(normalizedNumber)
             ? undefined
             : normalizedNumber;
+        this._orders.large = this.largeContainerOrder;
+
+        if (this._connected && this._containerWidth === 'large') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -144,6 +150,11 @@ export default class LayoutItem extends LightningElement {
         this._mediumContainerOrder = isNaN(normalizedNumber)
             ? undefined
             : normalizedNumber;
+        this._orders.medium = this.mediumContainerOrder;
+
+        if (this._connected && this._containerWidth === 'medium') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -165,7 +176,12 @@ export default class LayoutItem extends LightningElement {
     }
     set order(value) {
         const normalizedNumber = parseInt(value, 10);
-        this._order = isNaN(normalizedNumber) ? undefined : normalizedNumber;
+        this._order = isNaN(normalizedNumber) ? 0 : normalizedNumber;
+        this._orders.default = this.order;
+
+        if (this._connected && this._containerWidth === 'default') {
+            this.updateClassAndStyle();
+        }
     }
 
     @api
@@ -204,6 +220,11 @@ export default class LayoutItem extends LightningElement {
         this._smallContainerOrder = isNaN(normalizedNumber)
             ? undefined
             : normalizedNumber;
+        this._orders.small = this.smallContainerOrder;
+
+        if (this._connected && this._containerWidth === 'small') {
+            this.updateClassAndStyle();
+        }
     }
 
     /*
@@ -212,8 +233,8 @@ export default class LayoutItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    getCurrentSize() {
-        const { large, medium, small, default: defaultSize } = this._sizes;
+    getCurrentValue(map) {
+        const { large, medium, small, default: defaultSize } = map;
 
         switch (this._containerWidth) {
             case 'large':
@@ -256,6 +277,7 @@ export default class LayoutItem extends LightningElement {
             'slds-col_bump-bottom': this.alignmentBump === 'bottom'
         });
 
-        this.template.host.style.flexBasis = this.getCurrentSize();
+        this.template.host.style.flexBasis = this.getCurrentValue(this._sizes);
+        this.template.host.style.order = this.getCurrentValue(this._orders);
     }
 }
