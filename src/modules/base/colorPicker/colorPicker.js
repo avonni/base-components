@@ -266,6 +266,7 @@ export default class ColorPicker extends LightningElement {
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
 
         if (this._isConnected) {
+            this.setPaletteData();
             this.setLastSelectedColor();
         }
     }
