@@ -54,7 +54,11 @@ describe('Chip', () => {
         expect(element.variant).toBe('base');
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     // label
     it('Chip: label', () => {
@@ -186,5 +190,39 @@ describe('Chip', () => {
             );
             expect(span.className).toContain('avonni-chip_outline');
         });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  SLOTS
+     * -------------------------------------------------------------
+     */
+
+    // Left slot visibility
+    it('Chip: left slot visibility', () => {
+        const leftSlot = element.shadowRoot.querySelector(
+            '[data-element-id="slot-left"]'
+        );
+        expect(leftSlot.classList).toContain('slds-hide');
+
+        leftSlot.assignedElements = jest.fn(() => {
+            return 1;
+        });
+        leftSlot.dispatchEvent(new CustomEvent('slotchange'));
+        expect(leftSlot.classList).not.toContain('slds-hide');
+    });
+
+    // Right slot visibility
+    it('Chip: right slot visibility', () => {
+        const rightSlot = element.shadowRoot.querySelector(
+            '[data-element-id="slot-right"]'
+        );
+        expect(rightSlot.classList).toContain('slds-hide');
+
+        rightSlot.assignedElements = jest.fn(() => {
+            return 1;
+        });
+        rightSlot.dispatchEvent(new CustomEvent('slotchange'));
+        expect(rightSlot.classList).not.toContain('slds-hide');
     });
 });
