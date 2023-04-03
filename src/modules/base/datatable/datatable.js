@@ -38,7 +38,6 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 import {
-    dispatchCellChangeEvent,
     getCellValue,
     getCurrentSelectionLength,
     isSelectedRow,
@@ -320,6 +319,10 @@ export default class Datatable extends LightningDatatable {
             this.handleEditCell
         );
 
+        this.addEventListener('privateeditcustomcell', (event) => {
+            event.detail.callbacks.dispatchCellChangeEvent(this.state);
+        });
+
         this.template.addEventListener(
             'privateavatarclick',
             this.handleDispatchEvents
@@ -349,6 +352,20 @@ export default class Datatable extends LightningDatatable {
                 );
             }
         );
+        this.template.addEventListener('getcomboboxoptions', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const options = column.typeAttributes.options;
+            // if options is a fieldname, get the options from the data
+            if (options?.fieldName) {
+                const field = this.state.data[0][options.fieldName];
+                event.detail.callbacks.getComboboxOptions(field);
+            } else {
+                event.detail.callbacks.getComboboxOptions(options);
+            }
+        });
     }
 
     renderedCallback() {
@@ -1005,7 +1022,6 @@ export default class Datatable extends LightningDatatable {
         if (value !== this.state.inlineEdit.editedValue) {
             // Show yellow background and save/cancel button
             super.updateRowsState(this.state);
-            dispatchCellChangeEvent(this, dirtyValues);
         }
     };
 
