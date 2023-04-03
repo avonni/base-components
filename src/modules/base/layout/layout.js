@@ -177,7 +177,7 @@ export default class Layout extends LightningElement {
                 this._width = WIDTHS.default;
             }
             Object.values(this._items).forEach((item) => {
-                item.setContainerWidth(this._width);
+                item.setContainerSize(this._width);
             });
         });
     }
@@ -193,7 +193,7 @@ export default class Layout extends LightningElement {
 
         const { name, callbacks } = event.detail;
         this._items[name] = callbacks;
-        callbacks.setContainerWidth(this._width);
+        callbacks.setContainerSize(this._width);
     }
 
     handleItemDisconnected(event) {

@@ -46,6 +46,12 @@ const CONTAINER_WIDTHS = {
 
 const DEFAULT_SIZE = 'auto';
 
+/**
+ * @class
+ * @descriptor avonni-layout-item
+ * @description Item placed in a layout component.
+ * @public
+ */
 export default class LayoutItem extends LightningElement {
     _alignmentBump = ALIGNMENT_BUMPS.default;
     _largeContainerOrder;
@@ -67,12 +73,21 @@ export default class LayoutItem extends LightningElement {
         this.updateClassAndStyle();
         this._connected = true;
 
+        /**
+         * The event fired when the layout item is inserted in the DOM.
+         *
+         * @event
+         * @name privatelayoutitemconnected
+         * @param {string} name Unique name of the layout item.
+         * @param {object} callbacks Object with one key, setContainerSize, which contains the callback that should be called when the layout size changes.
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('privatelayoutitemconnected', {
                 detail: {
                     name: this.name,
                     callbacks: {
-                        setContainerWidth: this.setContainerWidth.bind(this)
+                        setContainerSize: this.setContainerSize.bind(this)
                     }
                 },
                 bubbles: true
@@ -81,6 +96,14 @@ export default class LayoutItem extends LightningElement {
     }
 
     disconnectedCallback() {
+        /**
+         * The event fired when the layout item is removed from the DOM.
+         *
+         * @event
+         * @name privatelayoutitemdisconnected
+         * @param {string} name Unique name of the layout item.
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('privatelayoutitemdisconnected', {
                 detail: {
@@ -97,6 +120,12 @@ export default class LayoutItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Specifies a direction to bump the alignment of adjacent layout items. Allowed values are left, top, right, bottom.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get alignmentBump() {
         return this._alignmentBump;
@@ -112,6 +141,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Order of the item when the parent layout’s size is greater or equal to 1024px.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get largeContainerOrder() {
         return this._largeContainerOrder;
@@ -128,6 +163,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Size of the item when the parent layout’s size is greater or equal to 1024px. See `size` for accepted values.
+     *
+     * @type {string|number}
+     * @public
+     */
     @api
     get largeContainerSize() {
         return this._largeContainerSize;
@@ -141,6 +182,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Order of the item when the parent layout’s size is greater or equal to 768px.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get mediumContainerOrder() {
         return this._mediumContainerOrder;
@@ -157,6 +204,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Size of the item when the parent layout’s size is greater or equal to 768px. See `size` for accepted values.
+     *
+     * @type {string|number}
+     * @public
+     */
     @api
     get mediumContainerSize() {
         return this._mediumContainerSize;
@@ -170,6 +223,14 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Default order of the item in the layout item. It will be applied if the parent layout’s size is lesser than 480px, or if no other order attribute is specified.
+     * Beware that since the default is 0, you need to set the order of all the items in the layout for the attribute to work properly.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
     @api
     get order() {
         return this._order;
@@ -184,6 +245,16 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Default size of the item. It will be applied if the parent layout’s size is lesser than 480px, or if no other size attribute is specified.
+     * The size can be expressed:
+     * * As an integer from 1 through 12, representing the relative space the item occupies in its parent layout.
+     * * As a CSS flex-basis valid value (for example "20%", "5rem", etc.).
+     *
+     * @type {string|number}
+     * @default auto
+     * @public
+     */
     @api
     get size() {
         return this._size;
@@ -198,19 +269,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
-    @api
-    get smallContainerSize() {
-        return this._smallContainerSize;
-    }
-    set smallContainerSize(value) {
-        this._smallContainerSize = this.normalizeSize(value);
-        this._sizes.small = this.smallContainerSize;
-
-        if (this._connected && this._containerWidth === 'small') {
-            this.updateClassAndStyle();
-        }
-    }
-
+    /**
+     * Order of the item when the parent layout’s size is greater or equal to 480px.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get smallContainerOrder() {
         return this._smallContainerOrder;
@@ -227,12 +291,37 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Size of the item when the parent layout’s size is greater or equal to 480px. See `size` for accepted values.
+     *
+     * @type {string|number}
+     * @public
+     */
+    @api
+    get smallContainerSize() {
+        return this._smallContainerSize;
+    }
+    set smallContainerSize(value) {
+        this._smallContainerSize = this.normalizeSize(value);
+        this._sizes.small = this.smallContainerSize;
+
+        if (this._connected && this._containerWidth === 'small') {
+            this.updateClassAndStyle();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Returns the current value of the attribute (size or order) based on the current container width.
+     *
+     * @param {object} map Map of the attribute values, with a key for each container width.
+     * @returns {string|number}
+     */
     getCurrentValue(map) {
         const { large, medium, small, default: defaultSize } = map;
 
@@ -260,7 +349,7 @@ export default class LayoutItem extends LightningElement {
         return size;
     }
 
-    setContainerWidth(width) {
+    setContainerSize(width) {
         this._containerWidth = normalizeString(width, {
             fallbackValue: CONTAINER_WIDTHS.default,
             validValues: CONTAINER_WIDTHS.valid

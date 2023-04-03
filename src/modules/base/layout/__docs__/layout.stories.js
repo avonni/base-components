@@ -102,3 +102,8 @@ export const MultipleRows = Template.bind({});
 MultipleRows.args = {
     multipleRows: true
 };
+
+export const ReverseColumns = Template.bind({});
+ReverseColumns.args = {
+    direction: 'column-reverse'
+};

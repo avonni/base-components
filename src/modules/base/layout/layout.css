@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host,
+.avonni-layout-wrapper {
+    height: 100%;
+}
 .avonni-layout-wrapper {
     row-gap: var(--avonni-layout-items-spacing-block-between);
     column-gap: var(--avonni-layout-items-spacing-inline-between);
