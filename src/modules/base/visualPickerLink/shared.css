@@ -51,15 +51,17 @@
 }
 
 .avonni-visual-picker-link__icon {
-    --sds-c-icon-radius-border: var(--avonni-visual-picker-icon-radius-border);
+    --sds-c-icon-radius-border: var(
+        --avonni-visual-picker-link-icon-radius-border
+    );
     --sds-c-icon-color-background: var(
-        --avonni-visual-picker-icon-color-background
+        --avonni-visual-picker-link-icon-color-background
     );
     --sds-c-icon-color-foreground: var(
-        --avonni-visual-picker-icon-color-foreground
+        --avonni-visual-picker-link-icon-color-foreground
     );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-visual-picker-icon-color-foreground-default
+        --avonni-visual-picker-link-icon-color-foreground-default
     );
 }
 
