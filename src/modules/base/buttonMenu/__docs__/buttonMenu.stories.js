@@ -244,10 +244,9 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success.',
+                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
+                type: { summary: 'string' }
             }
         }
     },
@@ -261,8 +260,7 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
-        nubbin: false,
-        variant: 'border'
+        nubbin: false
     }
 };
 

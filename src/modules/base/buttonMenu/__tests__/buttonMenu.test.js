@@ -71,7 +71,7 @@ describe('Button Menu', () => {
         expect(element.title).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBe('');
-        expect(element.variant).toBe('border');
+        expect(element.variant).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -519,6 +519,32 @@ describe('Button Menu', () => {
     });
 
     // variant
+    it('Button menu: no variant without label', () => {
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_icon-border');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_border'
+            );
+        });
+    });
+
+    it('Button menu: no variant with label', () => {
+        element.label = 'Button menu';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_neutral');
+            expect(button.className).toContain(
+                'avonni-button-menu__button_neutral'
+            );
+        });
+    });
+
     it('Button menu: variant bare without label', () => {
         element.variant = 'bare';
 
