@@ -71,6 +71,9 @@ describe('Activity Timeline', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
+        expect(element.enableInfiniteLoading).toBeFalsy();
+        expect(element.isLoading).toBeFalsy();
+        expect(element.loadMoreOffset).toBe(20);
         expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
         expect(element.groupBy).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -132,6 +135,36 @@ describe('Activity Timeline', () => {
             );
             expect(expandableSection.collapsible).toBeTruthy();
         });
+    });
+
+    // enable-infinite-loading
+    it('Activity Timeline: enableInfiniteLoading', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.enableInfiniteLoading = true;
+
+        expect(handler).toHaveBeenCalled();
+    });
+
+    // is-loading
+    it('Activity Timeline: isLoading', () => {
+        element.isLoading = false;
+
+        return Promise.resolve()
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="div-loading-spinner"]'
+                );
+                expect(spinner).toBeFalsy();
+
+                element.isLoading = true;
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    '[data-element-id="div-loading-spinner"]'
+                );
+                expect(spinner).toBeTruthy();
+            });
     });
 
     // itemDateFormat
@@ -793,6 +826,51 @@ describe('Activity Timeline', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    // loadmore
+    it('Activity Timeline: loadmore event', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.enableInfiniteLoading = true;
+        element.loadMoreOffset = 50;
+
+        // First dispatch when there are no items
+        expect(handler).toHaveBeenCalledTimes(1);
+        const call = handler.mock.calls[0][0];
+        expect(call.bubbles).toBeFalsy();
+        expect(call.composed).toBeFalsy();
+        expect(call.cancelable).toBeFalsy();
+
+        element.isLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                element.items = testItems;
+                element.isLoading = false;
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-timeline-wrapper"]'
+                );
+                jest.spyOn(wrapper, 'clientHeight', 'get').mockImplementation(
+                    () => 100
+                );
+                jest.spyOn(wrapper, 'scrollHeight', 'get').mockImplementation(
+                    () => 200
+                );
+            })
+            .then(() => {
+                // No dispatch until the scroll position reaches the loadMoreOffset
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-timeline-wrapper"]'
+                );
+                wrapper.scrollTop = 49;
+                wrapper.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).toHaveBeenCalledTimes(1);
+
+                wrapper.scrollTop = 50;
+                wrapper.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).toHaveBeenCalledTimes(2);
+            });
     });
 
     // <-- HORIZONTAL TIMELINE -->

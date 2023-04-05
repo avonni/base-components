@@ -201,7 +201,7 @@ export default class ActivityTimeline extends LightningElement {
             this.renderedCallbackHorizontalTimeline();
         }
 
-        // Make sure all the items are not visible
+        // Check if the end of the timeline has been reached
         this.handleScroll();
     }
 
@@ -361,6 +361,7 @@ export default class ActivityTimeline extends LightningElement {
 
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+        this.handleScroll();
     }
 
     /**
@@ -979,11 +980,9 @@ export default class ActivityTimeline extends LightningElement {
 
         const { scrollTop, scrollHeight, clientHeight } = wrapper;
         const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
+        const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
 
-        if (
-            offsetFromBottom <= this.loadMoreOffset ||
-            (scrollTop === 0 && scrollHeight === clientHeight)
-        ) {
+        if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
             /**
              * The event fired when you scroll to the end of the timeline. This event is fired only if `enable-infinite-loading` is true.
              *

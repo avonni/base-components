@@ -163,7 +163,11 @@
             </template>
 
             <!-- Loading spinner -->
-            <div if:true={isLoading} class={loadingSpinnerClass}>
+            <div
+                if:true={isLoading}
+                class={loadingSpinnerClass}
+                data-element-id="div-loading-spinner"
+            >
                 <lightning-spinner
                     alternative-text="Loading..."
                 ></lightning-spinner>

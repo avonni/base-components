@@ -433,8 +433,7 @@ Yearly.args = {
 export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
     title: 'Infinite Loading Activity Timeline',
-    iconName: 'utility:sync',
-    maxVisibleItems: 4
+    iconName: 'utility:sync'
 };
 
 export const WithoutIcons = Template.bind({});
