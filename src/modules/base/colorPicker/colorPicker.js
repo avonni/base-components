@@ -1317,7 +1317,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @param {Event} event
      */
-    handleMenuKeyup(event) {
+    handleMenuKeyUp(event) {
         if (event.keyCode === 9) {
             this.tabPressed = false;
         } else if (event.keyCode === 16) {

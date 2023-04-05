@@ -32,7 +32,7 @@
 
 import { createElement } from 'lwc';
 import VerticalVisualPicker from 'c/verticalVisualPicker';
-import { itemsWithIcons } from '../__docs__/data.js';
+import { itemsWithIcons, itemsWithSubItems } from '../__docs__/data.js';
 
 let element;
 describe('VerticalVisualPicker', () => {
@@ -630,6 +630,121 @@ describe('VerticalVisualPicker', () => {
             expect(handler.mock.calls[1][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[1][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[1][0].composed).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with radio type and sub items, when selecting item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'radio';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[1].click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                'item-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with radio type and sub items, when selecting sub item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'radio';
+
+        return Promise.resolve().then(() => {
+            const inputChoiceSets = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input-choice-set"]'
+            );
+            inputChoiceSets[0].dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        value: 'sub-item-1-1'
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'sub-item-1-1'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with checkbox type and sub items, when selecting item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'checkbox';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[1].click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'item-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with checkbox type and sub items, when selecting sub item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'checkbox';
+
+        return Promise.resolve().then(() => {
+            const inputChoiceSets = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input-choice-set"]'
+            );
+            inputChoiceSets[0].dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        value: ['sub-item-1-1', 'sub-item-1-2']
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'sub-item-1-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

@@ -294,7 +294,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
      *
-     * @type {string}
+     * @type {(string|string[])}
      * @public
      * @required
      */
@@ -684,5 +684,15 @@ export default class InputChoiceSet extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    /**
+     * Input keyup event handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
     }
 }

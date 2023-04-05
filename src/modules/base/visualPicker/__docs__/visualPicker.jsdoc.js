@@ -10,7 +10,7 @@
  * @property {string} imgSrc The URL of the image in the figure.
  * @property {string} itemDescription The description can include text, and is displayed under the title.
  * @property {string} itemTitle The title can include text and is displayed under the item.
- * @property {string[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
+ * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
  * @property {string} title The title can include text and is displayed inside the figure.
  * @property {string} titlePosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
  * @property {string} value Required. A unique value for the item.
