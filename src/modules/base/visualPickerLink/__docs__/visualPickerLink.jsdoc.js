@@ -20,27 +20,27 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-icon-radius-border
+ * @name --avonni-visual-picker-link-icon-radius-border
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-icon-color-background
+ * @name --avonni-visual-picker-link-icon-color-background
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-icon-color-background-complete
+ * @name --avonni-visual-picker-link-icon-color-background-complete
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-icon-color-foreground
+ * @name --avonni-visual-picker-link-icon-color-foreground
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-icon-color-foreground-default
+ * @name --avonni-visual-picker-link-icon-color-foreground-default
  * @type color
  */
 /**
