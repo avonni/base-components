@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../activityTimeline';
+import Component from '../../storybookWrappers/activityTimeline/infiniteLoadingActivityTimeline';
 
 customElements.define(
-    'ac-activity-timeline',
+    'ac-infinite-loading-activity-timeline',
     Component.CustomElementConstructor
 );
 
-export const ActivityTimeline = ({
+export const InfiniteLoadingActivityTimeline = ({
     actions,
     buttonShowMoreLabel,
     buttonVariant,
@@ -64,7 +64,9 @@ export const ActivityTimeline = ({
     timezone,
     title
 }) => {
-    const element = document.createElement('ac-activity-timeline');
+    const element = document.createElement(
+        'ac-infinite-loading-activity-timeline'
+    );
     element.actions = actions;
     element.buttonShowMoreLabel = buttonShowMoreLabel;
     element.buttonVariant = buttonVariant;

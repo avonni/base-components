@@ -35,6 +35,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
+import { classSet } from 'c/utils';
 import {
     deepCopy,
     normalizeBoolean,
@@ -62,6 +63,7 @@ const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -151,12 +153,15 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _enableInfiniteLoading = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
+    _isLoading = false;
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _items = [];
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
@@ -195,6 +200,9 @@ export default class ActivityTimeline extends LightningElement {
         if (this.isTimelineHorizontal) {
             this.renderedCallbackHorizontalTimeline();
         }
+
+        // Make sure all the items are not visible
+        this.handleScroll();
     }
 
     renderedCallbackHorizontalTimeline() {
@@ -340,6 +348,22 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the timeline. Use with the `loadmore` event to retrieve more items.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is supported only for the vertical orientation.
      *
      * @public
@@ -392,6 +416,22 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * If present, a spinner is shown to indicate that more items are loading.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = value;
     }
 
     /**
@@ -454,6 +494,22 @@ export default class ActivityTimeline extends LightningElement {
                 this.renderedCallback();
             }
         }
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on how many pixels the timeline's scroll position is from the bottom of the timeline.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = parseInt(value, 10);
     }
 
     /**
@@ -597,15 +653,6 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Verify if dates exist.
-     *
-     * @type {boolean}
-     */
-    get hasDates() {
-        return this.orderedDates.length > 0;
-    }
-
-    /**
      * Assign header by title or icon-name.
      *
      * @type {boolean}
@@ -632,6 +679,18 @@ export default class ActivityTimeline extends LightningElement {
      */
     get isTimelineHorizontal() {
         return this.orientation === 'horizontal';
+    }
+
+    /**
+     * Computed CSS classes of the loading spinner.
+     *
+     * @type {string}
+     */
+    get loadingSpinnerClass() {
+        return classSet({
+            'slds-is-relative avonni-activity-timeline__spinner':
+                this.items.length
+        }).toString();
     }
 
     /**
@@ -905,6 +964,35 @@ export default class ActivityTimeline extends LightningElement {
                 detail: { name }
             })
         );
+    }
+
+    /**
+     * Handle a scroll of the vertical timeline.
+     */
+    handleScroll() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-timeline-wrapper"]'
+        );
+        if (!this.enableInfiniteLoading || this.isLoading || !wrapper) {
+            return;
+        }
+
+        const { scrollTop, scrollHeight, clientHeight } = wrapper;
+        const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
+
+        if (
+            offsetFromBottom <= this.loadMoreOffset ||
+            (scrollTop === 0 && scrollHeight === clientHeight)
+        ) {
+            /**
+             * The event fired when you scroll to the end of the timeline. This event is fired only if `enable-infinite-loading` is true.
+             *
+             * @event
+             * @name loadmore
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('loadmore'));
+        }
     }
 
     /**

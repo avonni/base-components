@@ -31,6 +31,7 @@
  */
 
 import { ActivityTimeline } from '../__examples__/activityTimeline';
+import { InfiniteLoadingActivityTimeline } from '../__examples__/infiniteLoadingActivityTimeline';
 import {
     actions,
     items,
@@ -175,6 +176,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the timeline. Use with the loadmore event to retrieve more items.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         groupBy: {
             name: 'group-by',
             control: {
@@ -211,6 +224,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         itemDateFormat: {
             name: 'item-date-format',
             control: {
@@ -242,6 +267,18 @@ export default {
             },
             table: {
                 type: { summary: 'object[]' }
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the timeline's scroll position is from the bottom of the timeline.",
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '20' }
             }
         },
         hideItemDate: {
@@ -324,8 +361,11 @@ export default {
         buttonShowMoreLabel: 'Show more',
         buttonShowMoreIconName: 'utility:down',
         buttonVariant: 'neutral',
+        enableInfiniteLoading: false,
         iconSize: 'medium',
+        isLoading: false,
         itemIconSize: 'small',
+        loadMoreOffset: 20,
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
         hideItemDate: false
@@ -333,17 +373,10 @@ export default {
 };
 
 const Template = (args) => ActivityTimeline(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingActivityTimeline(args);
 
 export const Base = Template.bind({});
-Base.args = {
-    title: 'Activity Timeline',
-    iconName: 'standard:timesheet_entry',
-    items: items,
-    collapsible: true,
-    itemDateFormat: 'dd LLL yyyy',
-    actions: actions,
-    maxVisibleItems: 3
-};
+Base.args = { items };
 
 export const Ascending = Template.bind({});
 Ascending.args = {
@@ -362,7 +395,6 @@ Horizontal.args = {
     iconName: 'standard:timesheet_entry',
     orientation: 'horizontal',
     items: horizontalItems,
-    collapsible: true,
     actions: actions
 };
 
@@ -411,12 +443,19 @@ Yearly.args = {
     actions: actions
 };
 
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    title: 'Infinite Loading Activity Timeline',
+    iconName: 'utility:sync',
+    maxVisibleItems: 4,
+    enableInfiniteLoading: true
+};
+
 export const WithoutIcons = Template.bind({});
 WithoutIcons.args = {
     title: 'Activity Timeline without some icons',
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
-    collapsible: true,
     actions: actions,
     hideItemDate: true
 };
