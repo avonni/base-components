@@ -166,17 +166,4 @@ export default class ActivityTimelineBase extends LightningElement {
             hasError: true
         }
     ];
-
-    actions = [
-        {
-            label: 'Add item',
-            name: 'add-item',
-            iconName: 'utility:add'
-        },
-        {
-            label: 'Edit item',
-            name: 'edit-item',
-            iconName: 'utility:edit'
-        }
-    ];
 }

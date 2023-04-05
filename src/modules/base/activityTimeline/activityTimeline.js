@@ -332,7 +332,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the section is collapsible and the collapse icon is visible. This attribute is supported only for the vertical orientation.
+     * If present, the section is collapsible and the collapse icon is visible. This attribute is supported only for the vertical orientation with grouped items.
      *
      * @public
      * @type {boolean}

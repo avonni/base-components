@@ -170,7 +170,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true, the section is collapsible, the left icon is present. This attribute is supported only for the vertical orientation.',
+                'If true, the section is collapsible, the left icon is present. This attribute is supported only for the vertical orientation with grouped items.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -383,7 +383,6 @@ Ascending.args = {
     title: 'Activity Timeline',
     iconName: 'standard:timesheet_entry',
     items: items,
-    collapsible: true,
     actions: actions,
     sortedDirection: 'asc',
     maxVisibleItems: 3
@@ -403,22 +402,10 @@ Weekly.args = {
     title: 'Activity Timeline grouped by week',
     iconName: 'standard:timesheet_entry',
     items: items,
-    collapsible: true,
     actions: actions,
     itemDateFormat: 'DDDD - t',
     groupBy: 'week',
     maxVisibleItems: 5
-};
-
-export const WeeklyNotCollapsible = Template.bind({});
-WeeklyNotCollapsible.args = {
-    title: 'Activity Timeline not collapsible',
-    iconName: 'standard:timesheet_entry',
-    items: items,
-    collapsible: false,
-    actions: actions,
-    itemDateFormat: 'DDDD - t',
-    groupBy: 'week'
 };
 
 export const Monthly = Template.bind({});
@@ -447,13 +434,12 @@ export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
     title: 'Infinite Loading Activity Timeline',
     iconName: 'utility:sync',
-    maxVisibleItems: 4,
-    enableInfiniteLoading: true
+    maxVisibleItems: 4
 };
 
 export const WithoutIcons = Template.bind({});
 WithoutIcons.args = {
-    title: 'Activity Timeline without some icons',
+    title: 'Activity Timeline without icons',
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
     actions: actions,
