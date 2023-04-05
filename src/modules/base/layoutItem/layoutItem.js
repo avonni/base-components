@@ -50,6 +50,7 @@ const DEFAULT_SIZE = 'auto';
  * @class
  * @descriptor avonni-layout-item
  * @description Item placed in a layout component.
+ * @storyId example-layout--base
  * @public
  */
 export default class LayoutItem extends LightningElement {
@@ -337,6 +338,12 @@ export default class LayoutItem extends LightningElement {
         }
     }
 
+    /**
+     * Normalize the given size to a valid CSS flex-basis value.
+     *
+     * @param {number|string} size
+     * @returns {string} Valid CSS flex-basis value.
+     */
     normalizeSize(size) {
         const normalizedNumber = parseInt(Number(size), 10);
         const isGridFraction =
@@ -349,6 +356,13 @@ export default class LayoutItem extends LightningElement {
         return size;
     }
 
+    /**
+     * Set the container width.
+     *
+     * @param {string} width Valid width include default, small, medium or large.
+     * @returns {}
+     * @public
+     */
     setContainerSize(width) {
         this._containerWidth = normalizeString(width, {
             fallbackValue: CONTAINER_WIDTHS.default,
@@ -358,6 +372,9 @@ export default class LayoutItem extends LightningElement {
         this.updateClassAndStyle();
     }
 
+    /**
+     * Update the class and style of the item.
+     */
     updateClassAndStyle() {
         classListMutation(this.classList, {
             'slds-col_bump-left': this.alignmentBump === 'left',

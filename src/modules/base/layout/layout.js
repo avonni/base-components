@@ -55,6 +55,13 @@ const WIDTHS = {
     valid: ['default', 'small', 'medium', 'large']
 };
 
+/**
+ * @class
+ * @descriptor avonni-layout
+ * @description Responsive grid system.
+ * @storyId example-layout--base
+ * @public
+ */
 export default class Layout extends LightningElement {
     _direction = DIRECTIONS.default;
     _horizontalAlign = HORIZONTAL_ALIGNMENTS.default;
@@ -84,6 +91,13 @@ export default class Layout extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Direction in which the items are placed in the container. Valid values include row, row-reverse, column and column-reverse.
+     *
+     * @type {string}
+     * @default row
+     * @public
+     */
     @api
     get direction() {
         return this._direction;
@@ -95,6 +109,13 @@ export default class Layout extends LightningElement {
         });
     }
 
+    /**
+     * Determines how to spread the layout items horizontally. Valid values include start, center, space, spread, and end.
+     *
+     * @type {string}
+     * @default start
+     * @public
+     */
     @api
     get horizontalAlign() {
         return this._horizontalAlign;
@@ -106,6 +127,13 @@ export default class Layout extends LightningElement {
         });
     }
 
+    /**
+     * If present, layout items wrap to the following line when they exceed the layout width.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get multipleRows() {
         return this._multipleRows;
@@ -114,6 +142,13 @@ export default class Layout extends LightningElement {
         this._multipleRows = normalizeBoolean(value);
     }
 
+    /**
+     * Determines how to align the layout items vertically in the container. Valid values include start, center, end, and stretch.
+     *
+     * @type {string}
+     * @default stretch
+     * @public
+     */
     @api
     get verticalAlign() {
         return this._verticalAlign;
@@ -131,6 +166,11 @@ export default class Layout extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Computed CSS classes for the layout wrapper.
+     *
+     * @type {string}
+     */
     get wrapperClass() {
         return classSet('slds-grid avonni-layout-wrapper')
             .add({
@@ -158,6 +198,9 @@ export default class Layout extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Initialize the resize observer, triggered when the layout is resized.
+     */
     initResizeObserver() {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
@@ -188,6 +231,11 @@ export default class Layout extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle an item inserted into the DOM.
+     *
+     * @param {Event} event `privatelayoutitemconnected` event coming from a layout item.
+     */
     handleItemConnected(event) {
         event.stopPropagation();
 
@@ -196,6 +244,11 @@ export default class Layout extends LightningElement {
         callbacks.setContainerSize(this._width);
     }
 
+    /**
+     * Handle an item removed from the DOM.
+     *
+     * @param {Event} event `privatelayoutitemdisconnected` event coming from a layout item.
+     */
     handleItemDisconnected(event) {
         event.stopPropagation();
         const name = event.detail.name;

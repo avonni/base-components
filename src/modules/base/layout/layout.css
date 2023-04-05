@@ -35,6 +35,6 @@
     height: 100%;
 }
 .avonni-layout-wrapper {
-    row-gap: var(--avonni-layout-items-spacing-block-between);
-    column-gap: var(--avonni-layout-items-spacing-inline-between);
+    row-gap: var(--avonni-layout-items-spacing-block-between, 0);
+    column-gap: var(--avonni-layout-items-spacing-inline-between, 0);
 }
