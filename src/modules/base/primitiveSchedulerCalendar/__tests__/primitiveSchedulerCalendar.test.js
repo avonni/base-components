@@ -1546,6 +1546,30 @@ describe('Primitive Scheduler Calendar', () => {
         });
     });
 
+    it('Primitive Scheduler Calendar: selectedDate is on spring time change', () => {
+        element.selectedDate = new Date(2023, 2, 12);
+
+        return Promise.resolve().then(() => {
+            const hourHeaders = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group-vertical"]'
+            );
+            expect(hourHeaders.start.ts).toBe(new Date(2023, 2, 13).getTime());
+
+            const threeAMCells = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-cell"][data-start="1678604400000"]'
+            );
+            expect(threeAMCells).toHaveLength(2);
+            expect(threeAMCells[0].classList).toContain('slds-theme_shade');
+            expect(threeAMCells[0].classList).toContain(
+                'slds-theme_alert-texture'
+            );
+            expect(threeAMCells[1].classList).not.toContain(
+                'slds-theme_alert-texture'
+            );
+            expect(threeAMCells[1].classList).not.toContain('slds-theme_shade');
+        });
+    });
+
     // selected-resources
     it('Primitive Scheduler Calendar: selectedResources', () => {
         element.resources = RESOURCES;

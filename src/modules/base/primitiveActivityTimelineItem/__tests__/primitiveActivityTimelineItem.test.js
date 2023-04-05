@@ -178,8 +178,10 @@ describe('Primitive Activity Timeline Item', () => {
         element.description = 'This is an description text';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('p');
-            expect(description.textContent).toBe('This is an description text');
+            const description = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-rich-text-description"]'
+            );
+            expect(description.value).toBe('This is an description text');
         });
     });
 

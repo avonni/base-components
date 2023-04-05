@@ -107,9 +107,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon. Options include xx-small, x-small, small, or medium.',
+                'The size of the icon. Options include xx-small, x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
@@ -229,19 +229,24 @@ export default {
                 type: 'select'
             },
             options: [
-                'brand',
                 'bare',
                 'bare-inverse',
-                'container',
                 'border',
                 'border-filled',
-                'border-inverse'
+                'border-inverse',
+                'brand',
+                'brand-outline',
+                'container',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'neutral',
+                'success'
             ],
             description:
-                'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
+                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'border' }
+                type: { summary: 'string' }
             }
         }
     },
@@ -255,13 +260,170 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
-        nubbin: false,
-        variant: 'border'
+        nubbin: false
     }
 };
 
 const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
 
-export const Base = Template.bind({});
+export const Border = Template.bind({});
+
+export const BorderWithLabel = Template.bind({});
+BorderWithLabel.args = {
+    label: 'Menu'
+};
+
+export const Bare = Template.bind({});
+Bare.args = {
+    variant: 'bare'
+};
+
+export const BareWithLabel = Template.bind({});
+BareWithLabel.args = {
+    variant: 'bare',
+    label: 'Menu'
+};
+
+export const BareInverse = Template.bind({});
+BareInverse.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+BareInverse.args = {
+    variant: 'bare-inverse'
+};
+
+export const BareInverseWithLabel = Template.bind({});
+BareInverseWithLabel.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+BareInverseWithLabel.args = {
+    variant: 'bare-inverse',
+    label: 'Menu'
+};
+
+export const BorderInverse = Template.bind({});
+BorderInverse.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+BorderInverse.args = {
+    variant: 'border-inverse'
+};
+
+export const BorderInverseWithLabel = Template.bind({});
+BorderInverseWithLabel.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+BorderInverseWithLabel.args = {
+    variant: 'border-inverse',
+    label: 'Menu'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    variant: 'brand'
+};
+
+export const BrandWithLabel = Template.bind({});
+BrandWithLabel.args = {
+    variant: 'brand',
+    label: 'Menu'
+};
+
+export const BrandOutline = Template.bind({});
+BrandOutline.args = {
+    variant: 'brand-outline'
+};
+
+export const BrandOutlineWithLabel = Template.bind({});
+BrandOutlineWithLabel.args = {
+    variant: 'brand-outline',
+    label: 'Menu'
+};
+
+export const Container = Template.bind({});
+Container.args = {
+    variant: 'container'
+};
+
+export const ContainerWithLabel = Template.bind({});
+ContainerWithLabel.args = {
+    variant: 'container',
+    label: 'Menu'
+};
+
+export const Destructive = Template.bind({});
+Destructive.args = {
+    variant: 'destructive'
+};
+
+export const DestructiveWithLabel = Template.bind({});
+DestructiveWithLabel.args = {
+    variant: 'destructive',
+    label: 'Menu'
+};
+
+export const DestructiveText = Template.bind({});
+DestructiveText.args = {
+    variant: 'destructive-text'
+};
+
+export const DestructiveTextWithLabel = Template.bind({});
+DestructiveTextWithLabel.args = {
+    variant: 'destructive-text',
+    label: 'Menu'
+};
+
+export const InverseXxSmall = Template.bind({});
+InverseXxSmall.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+InverseXxSmall.args = {
+    variant: 'inverse'
+};
+
+export const InverseWithLabel = Template.bind({});
+InverseWithLabel.parameters = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+InverseWithLabel.args = {
+    variant: 'inverse',
+    label: 'Menu'
+};
+
+export const NeutralSmall = Template.bind({});
+NeutralSmall.args = {
+    iconSize: 'small',
+    variant: 'neutral'
+};
+
+export const NeutralWithLabel = Template.bind({});
+NeutralWithLabel.args = {
+    variant: 'neutral',
+    label: 'Menu'
+};
+
+export const SuccessLarge = Template.bind({});
+SuccessLarge.args = {
+    iconSize: 'large',
+    variant: 'success'
+};
+
+export const SuccessWithLabel = Template.bind({});
+SuccessWithLabel.args = {
+    variant: 'success',
+    label: 'Menu'
+};
 export const Illustration = TemplateIllustration.bind({});
