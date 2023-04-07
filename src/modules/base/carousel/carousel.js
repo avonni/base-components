@@ -134,14 +134,6 @@ export default class Carousel extends LightningElement {
      * @default false
      */
     @api isInfinite;
-    /**
-     * Auto scroll delay. The default is 5 seconds, after which the next image is displayed.
-     *
-     * @type {number}
-     * @public
-     * @default 5
-     */
-    @api scrollDuration = DEFAULT_SCROLL_DURATION;
 
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
@@ -154,6 +146,7 @@ export default class Carousel extends LightningElement {
     _hideIndicator = false;
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
     _indicatorVariant = INDICATOR_VARIANTS.default;
+    _scrollDuration = DEFAULT_SCROLL_DURATION;
 
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -353,6 +346,25 @@ export default class Carousel extends LightningElement {
 
         this.columnsCount.default = this._itemsPerPanel;
         this.computeItemsPerPanel();
+    }
+
+    /**
+     * Auto scroll delay. The default is 5 seconds, after which the next image is displayed.
+     *
+     * @type {number}
+     * @public
+     * @default 5
+     */
+    @api
+    get scrollDuration() {
+        return this._scrollDuration;
+    }
+    set scrollDuration(value) {
+        const duration = Number(value);
+        this._scrollDuration =
+            isNaN(duration) || duration <= 0
+                ? DEFAULT_SCROLL_DURATION
+                : duration;
     }
 
     /**
