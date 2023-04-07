@@ -466,17 +466,21 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         const validity =
             this.isTypeRichText || this.inputableElement.validity.valid;
         this.triggerEditFinished({ reason: 'submit-action', validity });
+        const value = this.isTypeCombobox
+            ? this.comboboxFormattedValue(this.value)
+            : this.value;
 
         const detail = {
             rowKeyValue: this.rowKeyValue,
             colKeyValue: this.colKeyValue,
             value: this.isTypeDateRange
                 ? this.dateRangeFormattedValue(this.value)
-                : this.value,
+                : value,
             callbacks: {
                 dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
             }
         };
+
         if (this.isTypeRichText || validity) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {

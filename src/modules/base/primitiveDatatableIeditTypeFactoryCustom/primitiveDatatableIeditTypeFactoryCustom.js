@@ -56,6 +56,7 @@ const INVALID_TYPE_FOR_EDIT =
 
 export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningElement {
     @api editedValue;
+    @api isMassEditEnabled;
     @api required;
 
     // shared attributes
@@ -232,7 +233,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     handleOnChange(event) {
-        if (this.isMultiSelect) return;
+        if (this.isMultiSelect || this.isMassEditEnabled) return;
         const valid = this.validity.valid;
         this.dispatchEvent(
             new CustomEvent('inlineeditchange', {
