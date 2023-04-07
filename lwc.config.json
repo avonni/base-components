@@ -219,6 +219,14 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "c/layout",
+            "path": "src/modules/base/layout/layout.js"
+        },
+        {
+            "name": "c/layoutItem",
+            "path": "src/modules/base/layoutItem/layoutItem.js"
+        },
+        {
             "name": "c/link",
             "path": "src/modules/base/link/link.js"
         },
@@ -989,6 +997,8 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
+        "avonni/layout",
+        "avonni/layoutItem",
         "avonni/list",
         "avonni/map",
         "avonni/mediaObject",
