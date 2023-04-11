@@ -506,9 +506,11 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is supported only for the vertical orientation.
+     * Specifies the sorting direction.  Valid values include asc and desc.
+     * This attribute is only supported for the vertical orientation.
      *
      * @public
+     * @default desc
      * @type {string}
      */
     @api
