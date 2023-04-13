@@ -41,7 +41,6 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-import { classSet } from 'c/utils';
 import { TIME_ZONES } from './timezones';
 import { DateTime } from 'c/luxon';
 
@@ -883,16 +882,6 @@ export default class DateTimePicker extends LightningElement {
             : `${firstWeekDay}, ${firstDay}`;
     }
 
-    get dayClass() {
-        return classSet('slds-text-align_center slds-grid')
-            .add({
-                'avonni-date-time-picker__day_inline':
-                    this._variant === 'inline',
-                'avonni-date-time-picker__day': this._variant !== 'inline'
-            })
-            .toString();
-    }
-
     /**
      * Returns first weekday in an ISO8601 string format.
      *
@@ -900,6 +889,15 @@ export default class DateTimePicker extends LightningElement {
      */
     get firstWeekDayToString() {
         return this.firstWeekDay.toISO();
+    }
+
+    /**
+     * True if the variant is inline.
+     *
+     * @type {boolean}
+     */
+    get isInline() {
+        return this.variant === 'inline';
     }
 
     /**
@@ -976,6 +974,15 @@ export default class DateTimePicker extends LightningElement {
             this.avatar.fallbackIconName ||
             this.avatar.initials
         );
+    }
+
+    /**
+     * Returns the direction of the picker depending on the variant.
+     *
+     * @type {string}
+     */
+    get tableDirection() {
+        return this.isInline ? 'row' : 'column';
     }
 
     /*

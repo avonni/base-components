@@ -452,11 +452,7 @@ const Template = (args) => DateTimePicker(args);
 
 export const Daily = Template.bind({});
 Daily.args = {
-    label: 'Date picker',
-    fieldLevelHelp: 'bouboubou',
-    avatar: {
-        fallbackIconName: 'custom:custom1'
-    }
+    label: 'Date picker'
 };
 
 export const Weekly = Template.bind({});
