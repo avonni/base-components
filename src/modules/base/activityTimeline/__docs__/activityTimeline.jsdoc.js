@@ -31,3 +31,56 @@
  * @property {string} buttonVariant The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. Defaults to neutral.
  * @property {boolean} buttonDisabled If present, the button is disabled. Defaults to false.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-radius-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-background-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-text-color
+ * @type color
+ * @default #080707
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-size
+ * @type font
+ * @default 1em
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-style
+ * @type font
+ * @default normal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-weight
+ * @type font
+ * @default 400
+ */

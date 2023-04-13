@@ -49,6 +49,7 @@ const DEFAULT_MAX_PERCENTAGE = 1;
 const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
 const DEFAULT_VALUE = 50;
+const MAX_NUMBER_OF_TICKS = 500;
 
 const SLIDER_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'responsive'],
@@ -1134,12 +1135,17 @@ export default class Slider extends LightningElement {
         const numberOfSteps =
             (this.computedMax - this.computedMin) /
             (this.step * this._scalingFactor);
-        const stepWidth = (totalWidth - this._thumbRadius * 2) / numberOfSteps;
+        const normalizedNumberOfSteps =
+            numberOfSteps > MAX_NUMBER_OF_TICKS
+                ? MAX_NUMBER_OF_TICKS
+                : numberOfSteps;
+        const stepWidth =
+            (totalWidth - this._thumbRadius * 2) / normalizedNumberOfSteps;
 
         switch (this._tickMarkStyle) {
             case 'tick':
                 this.drawTickRuler(
-                    numberOfSteps,
+                    normalizedNumberOfSteps,
                     this._thumbRadius,
                     stepWidth,
                     drawPositions
@@ -1147,7 +1153,7 @@ export default class Slider extends LightningElement {
                 break;
             case 'dot':
                 this.drawDotRuler(
-                    numberOfSteps,
+                    normalizedNumberOfSteps,
                     this._thumbRadius,
                     stepWidth,
                     drawPositions
@@ -1156,7 +1162,7 @@ export default class Slider extends LightningElement {
             default:
                 // or when = 'inner-tick'
                 this.drawInnerTickRuler(
-                    numberOfSteps,
+                    normalizedNumberOfSteps,
                     this._thumbRadius,
                     stepWidth,
                     drawPositions

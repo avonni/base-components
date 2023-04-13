@@ -266,6 +266,7 @@ export default class ColorPicker extends LightningElement {
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
 
         if (this._isConnected) {
+            this.setPaletteData();
             this.setLastSelectedColor();
         }
     }
@@ -1316,7 +1317,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @param {Event} event
      */
-    handleMenuKeyup(event) {
+    handleMenuKeyUp(event) {
         if (event.keyCode === 9) {
             this.tabPressed = false;
         } else if (event.keyCode === 16) {

@@ -38,6 +38,7 @@ import {
     itemsWithImages,
     itemsWithImagesAndTags,
     itemsWithImagesRight,
+    itemsWithSubItems,
     employerTags
 } from './data';
 
@@ -246,4 +247,13 @@ EmployerTag.args = {
     name: 'Vertical Visual Picker',
     label: "Employer's tag",
     items: employerTags
+};
+
+export const SubItems = Template.bind({});
+SubItems.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Select an option',
+    items: itemsWithSubItems,
+    type: 'checkbox',
+    value: ['item-1', 'sub-item-1-2', 'sub-item-1-3', 'item-3', 'sub-item-3-1']
 };
