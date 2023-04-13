@@ -1213,6 +1213,11 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Create the weekday items used by the date picker, when its variant is inline.
+     *
+     * @param {DateTime} firstVisibleDay The first day of the week to be displayed.
+     */
     _createDatePickerWeekdays(firstVisibleDay = this.firstWeekDay) {
         this.datePickerWeekdays = [];
         this._inlineDatePickerFirstDay = getStartOfWeek(firstVisibleDay);
@@ -1455,6 +1460,11 @@ export default class DateTimePicker extends LightningElement {
         this.datePickerValue = date.toISO();
     }
 
+    /**
+     * Handle a click on the inline date picker.
+     *
+     * @param {Event} event click event.
+     */
     handleInlineDatePickerClick(event) {
         const date = this._processDate(
             Number(event.currentTarget.dataset.date)
@@ -1462,6 +1472,11 @@ export default class DateTimePicker extends LightningElement {
         this.goToDate(date);
     }
 
+    /**
+     * Handle the dragging of the inline date picker.
+     *
+     * @param {Event} start touchstart or mousedown event.
+     */
     handleInlineDatePickerDrag(start) {
         const startPosition = start.clientX || start.changedTouches[0].clientX;
 
@@ -1513,11 +1528,17 @@ export default class DateTimePicker extends LightningElement {
         window.addEventListener('touchend', handleEnd);
     }
 
+    /**
+     * Handle a click on the next button of the inline date picker.
+     */
     handleInlineDatePickerNextClick() {
         const date = this._inlineDatePickerFirstDay.plus({ days: 7 });
         this._createDatePickerWeekdays(date);
     }
 
+    /**
+     * Handle a click on the previous button of the inline date picker.
+     */
     handleInlineDatePickerPrevClick() {
         const date = this._inlineDatePickerFirstDay.minus({ days: 7 });
         this._createDatePickerWeekdays(date);

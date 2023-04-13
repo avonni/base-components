@@ -76,6 +76,10 @@
         --avonni-date-time-picker-date-picker-button-color-background-hover,
         #f3f3f3
     );
+    color: var(
+        --avonni-date-time-picker-date-picker-button-text-color-hover,
+        #181818
+    );
 }
 
 .avonni-date-time-picker__inline-date-picker-button[aria-selected='true'] {

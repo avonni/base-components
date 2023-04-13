@@ -103,6 +103,30 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-date-time-picker-date-picker-button-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-date-picker-button-color-background-selected
+ * @default #032d60
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-date-picker-button-text-color-hover
+ * @default #181818
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-date-time-picker-date-picker-button-text-color-selected
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-date-time-picker-label-font-size
  * @default 0.75rem
  * @type dimension
