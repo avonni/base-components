@@ -65,6 +65,52 @@
     );
 }
 
+.avonni-date-time-picker__inline-date-picker-button {
+    border: none;
+    background: none;
+    width: 100%;
+}
+
+.avonni-date-time-picker__inline-date-picker-button:hover {
+    background-color: var(
+        --avonni-date-time-picker-date-picker-button-color-background-hover,
+        #f3f3f3
+    );
+}
+
+.avonni-date-time-picker__inline-date-picker-button[aria-selected='true'] {
+    background-color: var(
+        --avonni-date-time-picker-date-picker-button-color-background-selected,
+        #032d60
+    );
+    color: var(
+        --avonni-date-time-picker-date-picker-button-text-color-selected,
+        #ffffff
+    );
+}
+
+.avonni-date-time-picker__inline-date-picker-next-button,
+.avonni-date-time-picker__inline-date-picker-previous-button {
+    bottom: 1.6rem;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+.avonni-date-time-picker__inline-date-picker-previous-button {
+    left: 0;
+}
+.avonni-date-time-picker__inline-date-picker-next-button {
+    right: 0;
+}
+
+.avonni-date-time-picker__inline-date-picker:hover
+    .avonni-date-time-picker__inline-date-picker-next-button,
+.avonni-date-time-picker__inline-date-picker-next-button:focus-within,
+.avonni-date-time-picker__inline-date-picker:hover
+    .avonni-date-time-picker__inline-date-picker-previous-button,
+.avonni-date-time-picker__inline-date-picker-previous-button:focus-within {
+    opacity: 1;
+}
+
 .avonni-date-time-picker__time {
     padding: 2px;
 }

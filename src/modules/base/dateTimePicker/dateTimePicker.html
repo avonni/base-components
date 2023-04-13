@@ -137,8 +137,10 @@
         </c-layout-item>
 
         <!-- Date picker -->
-        <c-layout-item if:false={hideDatePicker}>
+        <c-layout-item if:false={hideDatePicker} size={datePickerColumnSize}>
+            <!-- Input date picker -->
             <lightning-input
+                if:false={showInlineDatePicker}
                 label="Date"
                 name={name}
                 max={maxToString}
@@ -150,6 +152,91 @@
                 data-element-id="lightning-input"
                 onchange={handleDateChange}
             ></lightning-input>
+
+            <!-- Inline date picker -->
+            <div
+                if:true={showInlineDatePicker}
+                class="
+                    slds-is-relative
+                    avonni-date-time-picker__inline-date-picker
+                    slds-scrollable_none
+                    slds-border_bottom
+                "
+                onmousedown={handleInlineDatePickerDrag}
+                ontouchstart={handleInlineDatePickerDrag}
+            >
+                <!-- Left arrow -->
+                <lightning-button-icon
+                    class="
+                        slds-is-absolute
+                        avonni-date-time-picker__inline-date-picker-previous-button
+                    "
+                    icon-name="utility:chevronleft"
+                    size="large"
+                    variant="bare"
+                    onclick={handleInlineDatePickerPrevClick}
+                ></lightning-button-icon>
+
+                <!-- Weekday labels -->
+                <c-layout class="slds-show" aria-hidden="true">
+                    <template for:each={datePickerWeekdays} for:item="day">
+                        <c-layout-item
+                            key={day.date.ts}
+                            class="
+                                slds-text-align_center
+                                slds-theme_shade
+                                slds-p-vertical_xx-small
+                                slds-border_bottom slds-border_top
+                            "
+                            size="calc(100%/7)"
+                        >
+                            {day.weekdayLabel}
+                        </c-layout-item>
+                    </template>
+                </c-layout>
+
+                <!-- Selectable days -->
+                <c-layout
+                    class="slds-show"
+                    data-element-id="div-inline-date-picker"
+                >
+                    <template for:each={datePickerWeekdays} for:item="day">
+                        <c-layout-item
+                            key={day.date.ts}
+                            class="slds-text-align_center"
+                            size="calc(100%/7)"
+                        >
+                            <button
+                                class="
+                                    slds-show
+                                    avonni-date-time-picker__inline-date-picker-button
+                                    slds-p-vertical_small
+                                "
+                                aria-selected={day.isSelected}
+                                type="button"
+                                data-date={day.date.ts}
+                                onclick={handleInlineDatePickerClick}
+                            >
+                                <span class="slds-show slds-text-heading_medium"
+                                    >{day.date.day}</span
+                                >
+                                <span class="slds-show">{day.monthLabel}</span>
+                            </button>
+                        </c-layout-item>
+                    </template>
+                </c-layout>
+
+                <lightning-button-icon
+                    class="
+                        slds-is-absolute
+                        avonni-date-time-picker__inline-date-picker-next-button
+                    "
+                    icon-name="utility:chevronright"
+                    size="large"
+                    variant="bare"
+                    onclick={handleInlineDatePickerNextClick}
+                ></lightning-button-icon>
+            </div>
         </c-layout-item>
     </c-layout>
 

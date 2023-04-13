@@ -39,6 +39,7 @@ customElements.define(
 
 export const DateTimePicker = ({
     avatar,
+    datePickerVariant,
     disabled,
     fieldLevelHelp,
     label,
@@ -74,6 +75,7 @@ export const DateTimePicker = ({
 }) => {
     const element = document.createElement('ac-base-date-time-picker');
     element.avatar = avatar;
+    element.datePickerVariant = datePickerVariant;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;

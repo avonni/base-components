@@ -46,6 +46,11 @@ import { DateTime } from 'c/luxon';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+const DATE_PICKER_VARIANTS = {
+    valid: ['inpute', 'inline'],
+    default: 'input'
+};
+const DATE_PICKER_MOUSE_MOVE_OFFSET = 25;
 const DATE_TIME_VARIANTS = {
     valid: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
     default: 'daily'
@@ -122,6 +127,7 @@ export default class DateTimePicker extends LightningElement {
     _dateFormatWeekday = WEEKDAY_FORMATS.default;
     _dateFormatMonth = MONTH_FORMATS.default;
     _dateFormatYear;
+    _datePickerVariant = DATE_PICKER_VARIANTS.default;
     _disabledDateTimes = [];
     _endTime = DEFAULT_END_TIME;
     _hideDateLabel = false;
@@ -156,12 +162,14 @@ export default class DateTimePicker extends LightningElement {
     helpMessage;
     datePickerValue;
     timezones = TIME_ZONES;
+    datePickerWeekdays = [];
 
     _computedEndTime;
     _computedStartTime;
     _computedValue = [];
     _connected = false;
     _goToDate;
+    _inlineDatePickerFirstDay;
     _selectedDayTime;
     _today;
     _valid = true;
@@ -288,6 +296,29 @@ export default class DateTimePicker extends LightningElement {
         this._dateFormatYear = normalizeString(value, {
             validValues: DATE_TIME_FORMATS.valid
         });
+    }
+
+    /**
+     * Variant of the date picker displayed in the header. Valid values include input and inline.
+     *
+     * @type {string}
+     * @default input
+     * @public
+     */
+    @api
+    get datePickerVariant() {
+        return this._datePickerVariant;
+    }
+
+    set datePickerVariant(value) {
+        this._datePickerVariant = normalizeString(value, {
+            fallbackValue: DATE_PICKER_VARIANTS.default,
+            validValues: DATE_PICKER_VARIANTS.valid
+        });
+
+        if (this._connected && this.showInlineDatePicker) {
+            this._createDatePickerWeekdays();
+        }
     }
 
     /**
@@ -883,6 +914,15 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Size of the date picker column, depending on its variant.
+     *
+     * @type {string}
+     */
+    get datePickerColumnSize() {
+        return this.showInlineDatePicker ? '12' : 'auto';
+    }
+
+    /**
      * Returns first weekday in an ISO8601 string format.
      *
      * @type {string}
@@ -974,6 +1014,15 @@ export default class DateTimePicker extends LightningElement {
             this.avatar.fallbackIconName ||
             this.avatar.initials
         );
+    }
+
+    /**
+     * True if the date picker variant is inline.
+     *
+     * @type {boolean}
+     */
+    get showInlineDatePicker() {
+        return this.datePickerVariant === 'inline';
     }
 
     /**
@@ -1164,6 +1213,28 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    _createDatePickerWeekdays(firstVisibleDay = this.firstWeekDay) {
+        this.datePickerWeekdays = [];
+        this._inlineDatePickerFirstDay = getStartOfWeek(firstVisibleDay);
+
+        for (let i = 0; i < 7; i++) {
+            const date = this._inlineDatePickerFirstDay.plus({ days: i });
+            const weekday = {
+                date,
+                monthLabel: date.toFormat('LLL'),
+                weekdayLabel: date.toFormat('ccc')
+            };
+            if (this.table.length === 1) {
+                const visibleDay = this.table[0];
+                const visibleDayDate = visibleDay.day.startOf('day');
+                if (date.startOf('day').ts === visibleDayDate.ts) {
+                    weekday.isSelected = true;
+                }
+            }
+            this.datePickerWeekdays.push(weekday);
+        }
+    }
+
     /**
      * Center the picker on the right date.
      */
@@ -1219,6 +1290,10 @@ export default class DateTimePicker extends LightningElement {
 
         this.lastWeekDay = processedTable[processedTable.length - 1].day;
         this.table = processedTable;
+
+        if (this.showInlineDatePicker) {
+            this._createDatePickerWeekdays();
+        }
     }
 
     //  /!\ Changes the dayTime object passed as argument.
@@ -1378,6 +1453,74 @@ export default class DateTimePicker extends LightningElement {
             : this._processDate(value);
         this.goToDate(date);
         this.datePickerValue = date.toISO();
+    }
+
+    handleInlineDatePickerClick(event) {
+        const date = this._processDate(
+            Number(event.currentTarget.dataset.date)
+        );
+        this.goToDate(date);
+    }
+
+    handleInlineDatePickerDrag(start) {
+        const startPosition = start.clientX || start.changedTouches[0].clientX;
+
+        const handleMove = (move) => {
+            const datePicker = this.template.querySelector(
+                '[data-element-id="div-inline-date-picker"]'
+            );
+            const x = move.clientX || move.changedTouches[0].clientX;
+            let offset = x - startPosition;
+            if (Math.abs(offset) > DATE_PICKER_MOUSE_MOVE_OFFSET) {
+                const factor = offset < 0 ? -1 : 1;
+                offset = DATE_PICKER_MOUSE_MOVE_OFFSET * factor;
+            }
+            datePicker.style.transform = `translateX(${offset}px)`;
+        };
+
+        const handleEnd = (end) => {
+            window.removeEventListener('mouseup', handleEnd);
+            window.removeEventListener('mousemove', handleMove);
+            window.removeEventListener('touchend', handleEnd);
+            window.removeEventListener('touchmove', handleMove);
+
+            const endPosition = end.clientX || end.changedTouches[0].clientX;
+            const move = endPosition - startPosition;
+            const goToPreviousWeek = move >= DATE_PICKER_MOUSE_MOVE_OFFSET;
+            const goToNextWeek = move <= -DATE_PICKER_MOUSE_MOVE_OFFSET;
+            if (goToPreviousWeek) {
+                this.handleInlineDatePickerPrevClick();
+            } else if (goToNextWeek) {
+                this.handleInlineDatePickerNextClick();
+            }
+
+            const datePicker = this.template.querySelector(
+                '[data-element-id="div-inline-date-picker"]'
+            );
+            datePicker.style.transition = 'transform 0.2s ease-in-out';
+            datePicker.style.transform = '';
+
+            setTimeout(() => {
+                if (datePicker) {
+                    datePicker.style.transition = '';
+                }
+            }, 201);
+        };
+
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('touchmove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+        window.addEventListener('touchend', handleEnd);
+    }
+
+    handleInlineDatePickerNextClick() {
+        const date = this._inlineDatePickerFirstDay.plus({ days: 7 });
+        this._createDatePickerWeekdays(date);
+    }
+
+    handleInlineDatePickerPrevClick() {
+        const date = this._inlineDatePickerFirstDay.minus({ days: 7 });
+        this._createDatePickerWeekdays(date);
     }
 
     /**

@@ -409,6 +409,19 @@ export default {
                 category: 'Date'
             }
         },
+        datePickerVariant: {
+            name: 'date-picker-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['input', 'inline'],
+            description:
+                'Variant of the date picker displayed in the header. Valid values include input and inline.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Date'
+            }
+        },
         timezone: {
             control: {
                 type: 'text'
@@ -425,6 +438,7 @@ export default {
         dateFormatDay: 'numeric',
         dateFormatMonth: 'long',
         dateFormatWeekday: 'short',
+        datePickerVariant: 'input',
         disabled: false,
         endTime: '18:00',
         hideDateLabel: false,
@@ -477,7 +491,8 @@ export const Inline = Template.bind({});
 Inline.args = {
     label: 'Date picker',
     fieldLevelHelp: 'Pick a time',
-    variant: 'inline'
+    variant: 'inline',
+    datePickerVariant: 'inline'
 };
 
 export const Timeline = Template.bind({});
@@ -517,6 +532,5 @@ Monthly.args = {
     dateFormatWeekday: 'long',
     dateFormatYear: 'numeric',
     showTimeZone: true,
-    hideNavigation: true,
-    hideDatePicker: true
+    hideNavigation: true
 };
