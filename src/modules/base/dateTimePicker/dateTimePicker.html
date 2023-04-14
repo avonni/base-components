@@ -162,6 +162,7 @@
                     slds-scrollable_none
                     slds-border_bottom
                 "
+                data-element-id="div-inline-date-picker-wrapper"
                 onmousedown={handleInlineDatePickerDrag}
                 ontouchstart={handleInlineDatePickerDrag}
             >
@@ -185,10 +186,12 @@
                             class="
                                 slds-text-align_center
                                 slds-theme_shade
-                                slds-p-vertical_xx-small
+                                slds-p-around_xx-small
                                 slds-border_bottom slds-border_top
+                                slds-truncate
                             "
                             size="calc(100%/7)"
+                            data-element-id="avonni-layout-item-inline-date-picker-weekday-label"
                         >
                             {day.weekdayLabel}
                         </c-layout-item>
@@ -215,12 +218,15 @@
                                 aria-selected={day.isSelected}
                                 type="button"
                                 data-date={day.date.ts}
+                                data-element-id="button-inline-date-picker"
                                 onclick={handleInlineDatePickerClick}
                             >
                                 <span class="slds-show slds-text-heading_medium"
                                     >{day.date.day}</span
                                 >
-                                <span class="slds-show">{day.monthLabel}</span>
+                                <span class="slds-show slds-truncate"
+                                    >{day.monthLabel}</span
+                                >
                             </button>
                         </c-layout-item>
                     </template>

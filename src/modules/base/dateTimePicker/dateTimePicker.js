@@ -1226,8 +1226,12 @@ export default class DateTimePicker extends LightningElement {
             const date = this._inlineDatePickerFirstDay.plus({ days: i });
             const weekday = {
                 date,
-                monthLabel: date.toFormat('LLL'),
-                weekdayLabel: date.toFormat('ccc')
+                monthLabel: date.toLocaleString({
+                    month: this.dateFormatMonth
+                }),
+                weekdayLabel: date.toLocaleString({
+                    weekday: this.dateFormatWeekday
+                })
             };
             if (this.table.length === 1) {
                 const visibleDay = this.table[0];
