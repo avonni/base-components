@@ -113,6 +113,7 @@ describe('Layout Item', () => {
         element.smallContainerOrder = 1;
         element.order = 6;
 
+        setContainerSize('default');
         expect(element.shadowRoot.host.style.order).toBe('6');
         setContainerSize('large');
         expect(element.shadowRoot.host.style.order).toBe('3');
@@ -136,6 +137,7 @@ describe('Layout Item', () => {
         element.smallContainerSize = 'auto';
         element.size = '4rem';
 
+        setContainerSize('default');
         expect(element.shadowRoot.host.style.flexBasis).toBe('4rem');
         setContainerSize('large');
         expect(element.shadowRoot.host.style.flexBasis).toBe('25%');

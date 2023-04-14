@@ -277,7 +277,15 @@ describe('Layout', () => {
                 }
             })
         );
+        // The width is not defined yet
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback.mock.calls[0][0]).toBe('default');
+        expect(callback.mock.calls[0][0]).toBeUndefined();
+
+        wrapper.style.width = '2000px';
+        return Promise.resolve(() => {
+            // The width is set and passed to the items on render
+            expect(callback).toHaveBeenCalledTimes(2);
+            expect(callback.mock.calls[1][0]).toBe('large');
+        });
     });
 });

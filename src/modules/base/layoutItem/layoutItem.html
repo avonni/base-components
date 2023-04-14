@@ -33,5 +33,7 @@
 -->
 
 <template>
-    <slot></slot>
+    <template if:true={containerWidth}>
+        <slot></slot>
+    </template>
 </template>

@@ -50,11 +50,6 @@ const VERTICAL_ALIGNMENTS = {
     default: 'stretch'
 };
 
-const WIDTHS = {
-    default: 'default',
-    valid: ['default', 'small', 'medium', 'large']
-};
-
 /**
  * @class
  * @descriptor avonni-layout
@@ -70,9 +65,12 @@ export default class Layout extends LightningElement {
 
     _items = {};
     _resizeObserver;
-    _width = WIDTHS.default;
+    _width;
 
     renderedCallback() {
+        if (!this.width) {
+            this.updateWidth();
+        }
         if (!this._resizeObserver) {
             this.initResizeObserver();
         }
@@ -209,19 +207,32 @@ export default class Layout extends LightningElement {
             return;
         }
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
-            const width = wrapper.getBoundingClientRect().width;
-            if (width >= 1024) {
-                this._width = 'large';
-            } else if (width >= 768) {
-                this._width = 'medium';
-            } else if (width >= 480) {
-                this._width = 'small';
-            } else {
-                this._width = WIDTHS.default;
-            }
-            Object.values(this._items).forEach((item) => {
-                item.setContainerSize(this._width);
-            });
+            this.updateWidth();
+        });
+    }
+
+    /**
+     * Get the width of the layout, and update it in each of its items.
+     */
+    updateWidth() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (!wrapper || !Object.values(this._items).length) {
+            return;
+        }
+        const width = wrapper.getBoundingClientRect().width;
+        if (width >= 1024) {
+            this._width = 'large';
+        } else if (width >= 768) {
+            this._width = 'medium';
+        } else if (width >= 480) {
+            this._width = 'small';
+        } else {
+            this._width = 'default';
+        }
+        Object.values(this._items).forEach((item) => {
+            item.setContainerSize(this._width);
         });
     }
 
