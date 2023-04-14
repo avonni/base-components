@@ -67,6 +67,7 @@ describe('DateTimePicker', () => {
         expect(element.disabledDateTimes).toMatchObject([]);
         expect(element.endTime).toBe('18:00');
         expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.hideDateLabel).toBeFalsy();
         expect(element.hideDatePicker).toBeFalsy();
         expect(element.hideLabel).toBeFalsy();
         expect(element.hideNavigation).toBeFalsy();
@@ -921,6 +922,29 @@ describe('DateTimePicker', () => {
             expect(prevButton).toBeFalsy();
             expect(todayButton).toBeFalsy();
             expect(nextButton).toBeFalsy();
+        });
+    });
+
+    // hide date label
+    it('Date time picker: hideDateLabel = false', () => {
+        element.hideDateLabel = false;
+
+        return Promise.resolve().then(() => {
+            const dateLabel = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(dateLabel).toBeTruthy();
+        });
+    });
+
+    it('Date time picker: hideDateLabel = true', () => {
+        element.hideDateLabel = true;
+
+        return Promise.resolve().then(() => {
+            const dateLabel = element.shadowRoot.querySelector(
+                '[data-element-id="p-date-label"]'
+            );
+            expect(dateLabel).toBeFalsy();
         });
     });
 
