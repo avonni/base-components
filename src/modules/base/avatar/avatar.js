@@ -146,9 +146,10 @@ export default class Avatar extends LightningElement {
      */
     @api tertiaryText;
 
-    mediaObjectClass;
-
+    _actions = [];
+    _actionPosition = POSITIONS.actionDefault;
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
+    _disabledActions = false;
     _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
@@ -163,10 +164,10 @@ export default class Avatar extends LightningElement {
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
     _variant = AVATAR_VARIANTS.default;
+    _tags = [];
     _textPosition = TEXT_POSITIONS.default;
-    _tags;
-    _actions;
-    _actionPosition = POSITIONS.actionDefault;
+
+    mediaObjectClass;
 
     connectedCallback() {
         this._updateClassList();
@@ -229,6 +230,22 @@ export default class Avatar extends LightningElement {
     set alternativeText(value) {
         this._alternativeText =
             typeof value === 'string' ? value.trim() : DEFAULT_ALTERNATIVE_TEXT;
+    }
+
+    /**
+     * If present, the actions menu is disabled.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disabledActions() {
+        return this._disabledActions;
+    }
+
+    set disabledActions(value) {
+        this._disabledActions = normalizeBoolean(value);
     }
 
     /**
@@ -579,6 +596,7 @@ export default class Avatar extends LightningElement {
      * @param {event}
      */
     handleActionClick = (event) => {
+        if (this.disabledActions) return;
         /**
          * The event fired when a user clicks on an action.
          *

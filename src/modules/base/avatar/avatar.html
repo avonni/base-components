@@ -35,28 +35,29 @@
 <template>
     <c-primitive-avatar
         if:true={hideAvatarDetails}
-        alternative-text={alternativeText}
-        fallback-icon-name={fallbackIconName}
-        initials={initials}
-        size={size}
-        src={src}
-        variant={variant}
+        data-element-id="avonni-primitive-avatar-no-details"
         actions={actions}
         action-position={actionPosition}
         action-menu-icon={actionMenuIcon}
-        status={status}
-        status-title={statusTitle}
-        status-position={statusPosition}
-        presence={presence}
-        presence-title={presenceTitle}
-        presence-position={presencePosition}
+        alternative-text={alternativeText}
+        disabled-actions={disabledActions}
         entity-icon-name={entityIconName}
         entity-initials={entityInitials}
         entity-variant={entityVariant}
         entity-src={entitySrc}
         entity-title={entityTitle}
         entity-position={entityPosition}
-        data-element-id="avonni-primitive-avatar-no-details"
+        fallback-icon-name={fallbackIconName}
+        initials={initials}
+        presence={presence}
+        presence-title={presenceTitle}
+        presence-position={presencePosition}
+        size={size}
+        src={src}
+        status={status}
+        status-title={statusTitle}
+        status-position={statusPosition}
+        variant={variant}
     ></c-primitive-avatar>
     <c-media-object
         if:false={hideAvatarDetails}
@@ -67,79 +68,81 @@
         <template if:true={showAvatar}>
             <div if:true={textPositionLeft} slot="figure-inverse">
                 <c-primitive-avatar
-                    alternative-text={alternativeText}
-                    fallback-icon-name={fallbackIconName}
-                    initials={initials}
-                    size={size}
-                    src={src}
-                    variant={variant}
+                    data-element-id="avonni-primitive-avatar-details-left"
                     actions={actions}
                     action-position={actionPosition}
                     action-menu-icon={actionMenuIcon}
-                    status={status}
-                    status-title={statusTitle}
-                    status-position={statusPosition}
-                    presence={presence}
-                    presence-title={presenceTitle}
-                    presence-position={presencePosition}
+                    alternative-text={alternativeText}
+                    disabled-actions={disabledActions}
                     entity-icon-name={entityIconName}
                     entity-initials={entityInitials}
                     entity-variant={entityVariant}
                     entity-src={entitySrc}
                     entity-title={entityTitle}
                     entity-position={entityPosition}
-                    data-element-id="avonni-primitive-avatar-details-left"
+                    fallback-icon-name={fallbackIconName}
+                    initials={initials}
+                    presence={presence}
+                    presence-title={presenceTitle}
+                    presence-position={presencePosition}
+                    size={size}
+                    src={src}
+                    status={status}
+                    status-title={statusTitle}
+                    status-position={statusPosition}
+                    variant={variant}
                 ></c-primitive-avatar>
             </div>
             <div if:false={textPositionLeft} slot="figure">
                 <c-primitive-avatar
-                    alternative-text={alternativeText}
-                    fallback-icon-name={fallbackIconName}
-                    initials={initials}
-                    size={size}
-                    src={src}
-                    variant={variant}
+                    data-element-id="avonni-primitive-avatar-details-right"
                     actions={actions}
                     action-position={actionPosition}
                     action-menu-icon={actionMenuIcon}
-                    status={status}
-                    status-title={statusTitle}
-                    status-position={statusPosition}
-                    presence={presence}
-                    presence-title={presenceTitle}
-                    presence-position={presencePosition}
+                    alternative-text={alternativeText}
+                    disabled-actions={disabledActions}
                     entity-icon-name={entityIconName}
                     entity-initials={entityInitials}
                     entity-variant={entityVariant}
                     entity-src={entitySrc}
                     entity-title={entityTitle}
                     entity-position={entityPosition}
-                    data-element-id="avonni-primitive-avatar-details-right"
+                    fallback-icon-name={fallbackIconName}
+                    initials={initials}
+                    presence={presence}
+                    presence-title={presenceTitle}
+                    presence-position={presencePosition}
+                    size={size}
+                    src={src}
+                    status={status}
+                    status-title={statusTitle}
+                    status-position={statusPosition}
+                    variant={variant}
                 ></c-primitive-avatar>
             </div>
         </template>
         <p
+            data-element-id="avonni-avatar-primary-text"
             class="
                 slds-text-title_bold
                 avonni-avatar__primary-text avonni-avatar__truncate
             "
             title={primaryText}
-            data-element-id="avonni-avatar-primary-text"
         >
             {primaryText}
         </p>
         <p
+            data-element-id="avonni-avatar-secondary-text"
             class="avonni-avatar__secondary-text avonni-avatar__truncate"
             title={secondaryText}
-            data-element-id="avonni-avatar-secondary-text"
         >
             {secondaryText}
         </p>
         <p
             if:true={showTertiaryText}
+            data-element-id="avonni-avatar-tertiary-text"
             class="avonni-avatar__tertiary-text avonni-avatar__truncate"
             title={tertiaryText}
-            data-element-id="avonni-avatar-tertiary-text"
         >
             {tertiaryText}
         </p>
@@ -155,6 +158,7 @@
                     key={tag.label}
                 >
                     <c-chip
+                        data-element-id="avonni-avatar-tag"
                         if:true={tag.label}
                         label={tag.label}
                         variant={tag.variant}

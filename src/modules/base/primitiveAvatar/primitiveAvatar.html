@@ -116,12 +116,13 @@
         >
             <template if:true={actionMenu}>
                 <c-button-menu
-                    variant="border-filled"
+                    data-element-id="action-menu-icon"
+                    alternative-text="Actions"
+                    disabled={disabledActions}
+                    hide-down-arrow
                     icon-name={actionMenuIcon}
                     icon-size={actionMenuSize}
-                    alternative-text="Actions"
-                    data-element-id="action-menu-icon"
-                    hide-down-arrow
+                    variant="border-filled"
                     onselect={handleActionClick}
                 >
                     <template for:each={actions} for:item="action">
@@ -138,21 +139,22 @@
 
             <template if:false={actionMenu}>
                 <button
+                    data-element-id="action-icon"
                     class="
                         avonni-avatar-action-button
                         slds-button slds-button_icon
                     "
-                    data-element-id="action-icon"
+                    alternative-text={action.label}
+                    disabled={disabledActions}
                     title={action.label}
                     type="button"
                     value={action.name}
-                    alternative-text={action.label}
                     onclick={handleActionClick}
                 >
                     <c-primitive-icon
+                        data-element-id="primitive-icon-action"
                         class="avonni-avatar-action-button-icon"
                         icon-name={computedActionMenuIcon}
-                        data-element-id="primitive-icon-action"
                     >
                     </c-primitive-icon>
                 </button>

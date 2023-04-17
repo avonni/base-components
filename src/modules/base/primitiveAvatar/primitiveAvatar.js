@@ -86,6 +86,7 @@ export default class PrimitiveAvatar extends LightningElement {
     fallbackIconClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
+    _disabledActions = false;
     _entityIconName;
     _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
@@ -161,11 +162,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     set actionMenuIcon(icon) {
-        if (icon) {
-            this._actionMenuIcon = icon;
-        } else {
-            this._actionMenuIcon = DEFAULT_ICON_MENU_ICON;
-        }
+        this._actionMenuIcon = icon || DEFAULT_ICON_MENU_ICON;
     }
 
     @api
@@ -178,10 +175,18 @@ export default class PrimitiveAvatar extends LightningElement {
             typeof value === 'string' ? value.trim() : DEFAULT_ALTERNATIVE_TEXT;
     }
 
+    @api
+    get disabledActions() {
+        return this._disabledActions;
+    }
+
+    set disabledActions(value) {
+        this._disabledActions = value;
+    }
+
     /**
      * Entity
      */
-
     @api
     get entityIconName() {
         return this._entityIconName;
