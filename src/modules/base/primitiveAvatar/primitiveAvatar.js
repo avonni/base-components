@@ -86,7 +86,6 @@ export default class PrimitiveAvatar extends LightningElement {
     fallbackIconClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
-    _disabledActions = false;
     _entityIconName;
     _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
@@ -173,15 +172,6 @@ export default class PrimitiveAvatar extends LightningElement {
     set alternativeText(value) {
         this._alternativeText =
             typeof value === 'string' ? value.trim() : DEFAULT_ALTERNATIVE_TEXT;
-    }
-
-    @api
-    get disabledActions() {
-        return this._disabledActions;
-    }
-
-    set disabledActions(value) {
-        this._disabledActions = value;
     }
 
     /**

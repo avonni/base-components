@@ -39,7 +39,6 @@ export const Avatar = ({
     actionPosition,
     actionMenuIcon,
     alternativeText,
-    disabledActions,
     entityIconName,
     entityInitials,
     entityPosition,
@@ -69,7 +68,6 @@ export const Avatar = ({
     element.actionPosition = actionPosition;
     element.actionMenuIcon = actionMenuIcon;
     element.alternativeText = alternativeText;
-    element.disabledActions = disabledActions;
     element.entityIconName = entityIconName;
     element.entityInitials = entityInitials;
     element.entityPosition = entityPosition;

@@ -9,6 +9,7 @@
 /**
  * @typedef {Object} Action
  * @name actions
+ * @property {boolean} disabled If true, the action is disabled.
  * @property {string} label Action label. If only one action present, label is used as alternative-text. If there are many options, the icon and label are displayed in a menu.
  * @property {string} name A unique name with no spaces to identify the action.
  * @property {string} iconName The Lightning Design System name of the icon that represents the action. It may be omitted only if there are many actions.

@@ -83,18 +83,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        disabledActions: {
-            name: 'disabled-actions',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the action menu is disabled.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Action'
-            }
-        },
         entityIconName: {
             name: 'entity-icon-name',
             control: {
@@ -383,7 +371,6 @@ export default {
     },
     args: {
         actionPosition: 'bottom-left',
-        disabledActions: false,
         entityPosition: 'top-left',
         entityVariant: 'square',
         hideAvatarDetails: false,

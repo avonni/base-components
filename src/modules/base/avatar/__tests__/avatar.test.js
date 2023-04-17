@@ -53,7 +53,6 @@ describe('Avatar', () => {
         expect(element.actionPosition).toBe('bottom-left');
         expect(element.actionMenuIcon).toBeUndefined();
         expect(element.alternativeText).toBe('Avatar');
-        expect(element.disabledActions).toBeFalsy();
         expect(element.entityIconName).toBeUndefined();
         expect(element.entityVariant).toBe('square');
         expect(element.entitySrc).toBeUndefined();
@@ -922,44 +921,6 @@ describe('Avatar', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-        });
-    });
-
-    it('Avatar: disabled actionclick event', () => {
-        element.initials = 'LG';
-        const ACTIONS = [
-            {
-                label: 'Edit item',
-                name: 'edit-item',
-                iconName: 'utility:edit'
-            },
-            {
-                label: 'Add item',
-                name: 'add-item',
-                iconName: 'utility:add'
-            }
-        ];
-        element.actions = ACTIONS;
-        element.disabledActions = true;
-
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-
-        return Promise.resolve().then(() => {
-            const primitiveAvatar = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-avatar-details-right"]'
-            );
-            expect(primitiveAvatar).toBeTruthy();
-            primitiveAvatar.dispatchEvent(
-                new CustomEvent('actionclick', {
-                    bubbles: true,
-                    detail: {
-                        name: ACTIONS[0].name
-                    }
-                })
-            );
-
-            expect(handler).not.toHaveBeenCalled();
         });
     });
 });
