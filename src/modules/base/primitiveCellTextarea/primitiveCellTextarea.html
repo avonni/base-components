@@ -62,12 +62,13 @@
             <lightning-input
                 value={value}
                 disabled={disabled}
-                label={label}
+                label={computedLabel}
                 max-length={maxLength}
                 min-length={minLength}
                 name={name}
                 placeholder={placeholder}
                 readonly
+                variant={computedVariant}
             ></lightning-input>
             <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button

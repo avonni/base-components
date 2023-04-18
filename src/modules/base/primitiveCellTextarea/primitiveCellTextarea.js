@@ -63,7 +63,22 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this._value = value;
     }
 
-    /*----------- Inline Editing Functions -------------*/
+    /**
+     * Return label or value if label is not present.
+     *
+     * @type {String}
+     */
+    get computedLabel() {
+        return this.label || this.value || 'label';
+    }
+    /**
+     * Return standard or label-hidden variant based on the presence of a label.
+     *
+     * @type {String}
+     */
+    get computedVariant() {
+        return this.label ? 'standard' : 'label-hidden';
+    }
 
     /**
      * Return true if cell is editable and not disabled.
@@ -73,6 +88,8 @@ export default class PrimitiveCellTextarea extends LightningElement {
     get showEditButton() {
         return this.editable && !this.disabled;
     }
+
+    /*----------- Inline Editing Functions -------------*/
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
     toggleInlineEdit() {

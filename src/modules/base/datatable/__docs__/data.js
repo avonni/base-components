@@ -457,8 +457,8 @@ const columnsSZ = [
         fieldName: 'textarea',
         type: 'textarea',
         typeAttributes: {
-            disabled: { fieldName: 'textareaDisabled' },
-            label: 'Text area'
+            disabled: { fieldName: 'textareaDisabled' }
+            // label: 'Text area'
         },
         editable: true
     },
