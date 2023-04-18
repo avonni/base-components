@@ -83,9 +83,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'progress-ring',
     'qrcode',
     'rating',
-    'rich-text',
     'slider',
-    'textarea',
     'urls'
 ];
 
@@ -285,14 +283,7 @@ export default class Datatable extends LightningDatatable {
         },
         textarea: {
             template: textarea,
-            typeAttributes: [
-                'disabled',
-                'label',
-                'minLength',
-                'maxLength',
-                'name',
-                'placeholder'
-            ]
+            typeAttributes: ['minLength', 'maxLength', 'placeholder']
         },
         toggle: {
             template: toggle,

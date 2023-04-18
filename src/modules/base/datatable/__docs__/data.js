@@ -456,10 +456,6 @@ const columnsSZ = [
         label: 'Text Area',
         fieldName: 'textarea',
         type: 'textarea',
-        typeAttributes: {
-            disabled: { fieldName: 'textareaDisabled' },
-            label: 'Text area'
-        },
         editable: true
     },
     {
@@ -851,7 +847,6 @@ const recordsSZ = [
         id: 3,
         sliderDisabled: true,
         text: 'Jung Phung',
-        textareaDisabled: true,
         toggleDisabled: true,
         url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',

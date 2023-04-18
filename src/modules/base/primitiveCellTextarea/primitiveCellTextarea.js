@@ -35,11 +35,8 @@ import { LightningElement, api } from 'lwc';
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api disabled;
-    @api label;
     @api maxLength;
     @api minLength;
-    @api name;
     @api placeholder;
 
     _value;
@@ -63,8 +60,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this._value = value;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-
     /**
      * Return true if cell is editable and not disabled.
      *
@@ -73,6 +68,8 @@ export default class PrimitiveCellTextarea extends LightningElement {
     get showEditButton() {
         return this.editable && !this.disabled;
     }
+
+    /*----------- Inline Editing Functions -------------*/
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
     toggleInlineEdit() {
