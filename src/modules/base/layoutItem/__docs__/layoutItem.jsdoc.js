@@ -2,7 +2,7 @@
  * @namespace slots
  */
 /**
- * Placeholder for the individual items contained in the layout.
+ * Placeholder for the item content.
  *
  * @memberof slots
  * @name default

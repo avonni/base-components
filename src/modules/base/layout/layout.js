@@ -35,16 +35,16 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const HORIZONTAL_ALIGNMENTS = {
-    valid: ['start', 'center', 'end', 'space', 'spread'],
-    default: 'start'
-};
-
+const DEFAULT_COLUMN_GAP = 0;
+const DEFAULT_ROW_GAP = 0;
 const DIRECTIONS = {
     valid: ['row', 'row-reverse', 'column', 'column-reverse'],
     default: 'row'
 };
-
+const HORIZONTAL_ALIGNMENTS = {
+    valid: ['start', 'center', 'end', 'space', 'spread'],
+    default: 'start'
+};
 const VERTICAL_ALIGNMENTS = {
     valid: ['start', 'center', 'end', 'stretch'],
     default: 'stretch'
@@ -58,9 +58,11 @@ const VERTICAL_ALIGNMENTS = {
  * @public
  */
 export default class Layout extends LightningElement {
+    _columnGap = DEFAULT_COLUMN_GAP;
     _direction = DIRECTIONS.default;
     _horizontalAlign = HORIZONTAL_ALIGNMENTS.default;
     _multipleRows = false;
+    _rowGap = DEFAULT_ROW_GAP;
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
 
     _items = {};
@@ -88,6 +90,21 @@ export default class Layout extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Space between columns of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>.
+     *
+     * @type {string|number}
+     * @default 0
+     * @public
+     */
+    @api
+    get columnGap() {
+        return this._columnGap;
+    }
+    set columnGap(value) {
+        this._columnGap = value || DEFAULT_COLUMN_GAP;
+    }
 
     /**
      * Direction in which the items are placed in the container. Valid values include row, row-reverse, column and column-reverse.
@@ -141,6 +158,21 @@ export default class Layout extends LightningElement {
     }
 
     /**
+     * Space between rows of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>. Only used if `multiple-rows` is true.
+     *
+     * @type {string|number}
+     * @default 0
+     * @public
+     */
+    @api
+    get rowGap() {
+        return this._rowGap;
+    }
+    set rowGap(value) {
+        this._rowGap = value || DEFAULT_ROW_GAP;
+    }
+
+    /**
      * Determines how to align the layout items vertically in the container. Valid values include start, center, end, and stretch.
      *
      * @type {string}
@@ -188,6 +220,25 @@ export default class Layout extends LightningElement {
                 'slds-grid_vertical-align-end': this.verticalAlign === 'end'
             })
             .toString();
+    }
+
+    /**
+     * Computed CSS style for the layout wrapper.
+     *
+     * @type {string}
+     */
+    get wrapperStyle() {
+        if (!this.columnGap && !this.rowGap) {
+            return undefined;
+        }
+
+        const columnGap = !isNaN(Number(this.columnGap))
+            ? `${this.columnGap}px`
+            : this.columnGap;
+        const rowGap = !isNaN(Number(this.rowGap))
+            ? `${this.rowGap}px`
+            : this.rowGap;
+        return `gap: ${rowGap} ${columnGap};`;
     }
 
     /*

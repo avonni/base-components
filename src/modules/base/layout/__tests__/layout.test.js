@@ -52,9 +52,11 @@ describe('Layout', () => {
     });
 
     it('Default attributes', () => {
+        expect(element.columnGap).toBe(0);
         expect(element.direction).toBe('row');
         expect(element.horizontalAlign).toBe('start');
         expect(element.multipleRows).toBeFalsy();
+        expect(element.rowGap).toBe(0);
         expect(element.verticalAlign).toBe('stretch');
     });
 
@@ -63,6 +65,29 @@ describe('Layout', () => {
      *  ATTRIBUTES
      * -------------------------------------------------------------
      */
+
+    // columnGap
+    it('Layout: columnGap as a number', () => {
+        element.columnGap = 30;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.style.gap).toBe('0px 30px');
+        });
+    });
+
+    it('Layout: columnGap as a string', () => {
+        element.columnGap = '3rem';
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.style.gap).toBe('0px 3rem');
+        });
+    });
 
     // direction
     it('Layout: direction = row', () => {
@@ -201,6 +226,29 @@ describe('Layout', () => {
             expect(wrapper.className).toBe(
                 'slds-grid avonni-layout-wrapper slds-wrap'
             );
+        });
+    });
+
+    // rowGap
+    it('Layout: rowGap as a number', () => {
+        element.rowGap = 30;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.style.gap).toBe('30px 0px');
+        });
+    });
+
+    it('Layout: rowGap as a string', () => {
+        element.rowGap = '3rem';
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.style.gap).toBe('3rem 0px');
         });
     });
 
