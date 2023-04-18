@@ -35,11 +35,8 @@ import { LightningElement, api } from 'lwc';
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api disabled;
-    @api label;
     @api maxLength;
     @api minLength;
-    @api name;
     @api placeholder;
 
     _value;
@@ -61,23 +58,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
 
     set value(value) {
         this._value = value;
-    }
-
-    /**
-     * Return label or value if label is not present.
-     *
-     * @type {String}
-     */
-    get computedLabel() {
-        return this.label || this.value || 'label';
-    }
-    /**
-     * Return standard or label-hidden variant based on the presence of a label.
-     *
-     * @type {String}
-     */
-    get computedVariant() {
-        return this.label ? 'standard' : 'label-hidden';
     }
 
     /**

@@ -43,11 +43,8 @@
             column-def={state.inlineEdit.columnDef}
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            disabled={disabled}
-            label={label}
             max-length={maxLength}
             min-length={minLength}
-            name={name}
             placeholder={placeholder}
             style="position: absolute; top: 0"
         ></c-primitive-datatable-iedit-panel-custom>
@@ -59,17 +56,7 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <lightning-input
-                value={value}
-                disabled={disabled}
-                label={computedLabel}
-                max-length={maxLength}
-                min-length={minLength}
-                name={name}
-                placeholder={placeholder}
-                readonly
-                variant={computedVariant}
-            ></lightning-input>
+            <lightning-formatted-text value={value}></lightning-formatted-text>
             <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button
                     onclick={handleEditButtonClick}
