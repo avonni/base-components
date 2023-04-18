@@ -252,7 +252,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -270,7 +270,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -288,7 +288,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -306,7 +306,7 @@ describe('DateTimePicker', () => {
                 'No available time slots for this period.'
             );
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
         });
@@ -322,7 +322,7 @@ describe('DateTimePicker', () => {
             );
             expect(paragraph).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeFalsy();
             const calendar = element.shadowRoot.querySelector(
@@ -381,7 +381,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
@@ -400,7 +400,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
@@ -419,7 +419,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelectorAll(
@@ -438,7 +438,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time-timeline"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelector(
@@ -461,7 +461,7 @@ describe('DateTimePicker', () => {
             );
             expect(calendar).toBeTruthy();
             const time = element.shadowRoot.querySelector(
-                '.avonni-date-time-picker__time'
+                '[data-element-id="avonni-layout-item-time"]'
             );
             expect(time).toBeTruthy();
             const days = element.shadowRoot.querySelector(

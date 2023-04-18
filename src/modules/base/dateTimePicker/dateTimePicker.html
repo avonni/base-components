@@ -35,11 +35,12 @@
 <template>
     <c-layout class="slds-m-bottom_small slds-show" multiple-rows>
         <c-layout-item
-            class="avonni-date-time-picker__grow-column slds-p-right_small"
+            class="slds-p-right_small"
+            grow="1"
             size="12"
             medium-container-size="auto"
         >
-            <c-layout class="avonni-date-time-picker__no-grow-column">
+            <c-layout>
                 <c-layout-item if:true={showAvatar} class="slds-m-right_small">
                     <c-avatar
                         alternative-text={avatar.alternativeText}
@@ -51,7 +52,7 @@
                         variant={avatar.variant}
                     ></c-avatar>
                 </c-layout-item>
-                <c-layout-item class="avonni-date-time-picker__grow-column">
+                <c-layout-item grow="1">
                     <!-- Input label -->
                     <p
                         if:false={hideLabel}
@@ -268,43 +269,36 @@
             ></c-calendar>
         </c-layout-item>
 
-        <c-layout-item class="avonni-date-time-picker__grow-column">
+        <c-layout-item grow="1">
             <template if:true={entirePeriodIsDisabled}>
                 <p if:true={isMonthly} class="slds-text-align_right">
                     No available time slots for this period.
                 </p>
             </template>
             <!-- Hour table -->
-            <c-layout
-                class="
-                    avonni-date-time-picker__no-grow-column
-                    slds-show
-                    slds-scrollable_x
-                "
-            >
+            <c-layout class="slds-show slds-scrollable_x" column-gap="4">
                 <template for:each={table} for:item="day">
                     <c-layout-item
                         if:true={day.show}
                         key={day.key}
-                        class="
-                            slds-text-align_center
-                            avonni-date-time-picker__grow-column
-                        "
+                        grow="1"
+                        class="slds-text-align_center"
                         data-element-id="div-day"
                     >
                         <c-layout
-                            class="avonni-date-time-picker__no-grow-column"
+                            column-gap="4"
                             direction={tableDirection}
                             multiple-rows={isInline}
+                            row-gap="4"
                         >
                             <!-- Day label -->
                             <c-layout-item
                                 if:true={day.label}
                                 aria-selected={day.selected}
+                                grow="1"
                                 data-today={day.isToday}
                                 class="
                                     avonni-date-time-picker__day-label
-                                    avonni-date-time-picker__grow-column
                                     slds-p-around_medium
                                 "
                             >
@@ -337,16 +331,11 @@
                                             ></lightning-formatted-date-time>
                                         </c-layout-item>
 
-                                        <c-layout-item
-                                            class="
-                                                avonni-date-time-picker__grow-column
-                                            "
-                                        >
+                                        <c-layout-item grow="1">
                                             <c-layout
-                                                class="
-                                                    avonni-date-time-picker__no-grow-column
-                                                "
+                                                column-gap="4"
                                                 multiple-rows
+                                                row-gap="4"
                                             >
                                                 <template
                                                     for:each={time.times}
@@ -355,9 +344,7 @@
                                                     <c-layout-item
                                                         if:true={timelineTime.show}
                                                         key={timelineTime.startTimeISO}
-                                                        class="
-                                                            avonni-date-time-picker__time
-                                                        "
+                                                        data-element-id="avonni-layout-item-time-timeline"
                                                     >
                                                         <button
                                                             aria-selected={timelineTime.selected}
@@ -409,11 +396,11 @@
                                     <c-layout-item
                                         if:true={time.show}
                                         key={time.startTimeISO}
-                                        class="avonni-date-time-picker__time"
                                         size="4"
                                         small-container-size="3"
                                         medium-container-size="2"
                                         large-container-size="1"
+                                        data-element-id="avonni-layout-item-time"
                                     >
                                         <button
                                             aria-selected={time.selected}
