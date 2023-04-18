@@ -32,7 +32,5 @@
 
 :host {
     max-width: 100%;
-    flex-grow: var(--avonni-layout-item-layout-flex-grow, 0);
-    flex-shrink: var(--avonni-layout-item-layout-flex-shrink, 1);
     min-width: 0;
 }

@@ -43,7 +43,8 @@ const CONTAINER_WIDTHS = {
     default: 'default',
     valid: ['default', 'small', 'medium', 'large']
 };
-
+const DEFAULT_GROW = 0;
+const DEFAULT_SHRINK = 1;
 const DEFAULT_SIZE = 'auto';
 
 /**
@@ -55,11 +56,13 @@ const DEFAULT_SIZE = 'auto';
  */
 export default class LayoutItem extends LightningElement {
     _alignmentBump = ALIGNMENT_BUMPS.default;
+    _grow = DEFAULT_GROW;
     _largeContainerOrder;
     _largeContainerSize;
     _mediumContainerOrder;
     _mediumContainerSize;
     _order;
+    _shrink = DEFAULT_SHRINK;
     _size;
     _smallContainerOrder;
     _smallContainerSize;
@@ -136,6 +139,27 @@ export default class LayoutItem extends LightningElement {
             fallbackValue: ALIGNMENT_BUMPS.default,
             validValues: ALIGNMENT_BUMPS.valid
         });
+
+        if (this._connected) {
+            this.updateClassAndStyle();
+        }
+    }
+
+    /**
+     * Positive number representing the ability for the item to grow if necessary. When set to 0, the item will not grow.
+     * The number indicates the proportion of the empty space that the item will take. For example, if one item has a `grow` value of 2, it will take twice as much of the available space than the items that have a `grow` value of 1. If all the items have the same `grow` value, the available empty space will be equally divided between them.
+     *
+     * @type {number}
+     * @default 0
+     * @public
+     */
+    @api
+    get grow() {
+        return this._grow;
+    }
+    set grow(value) {
+        const number = parseInt(value, 10);
+        this._grow = number >= 0 ? number : DEFAULT_GROW;
 
         if (this._connected) {
             this.updateClassAndStyle();
@@ -242,6 +266,27 @@ export default class LayoutItem extends LightningElement {
         this._orders.default = this.order;
 
         if (this.containerWidth === 'default') {
+            this.updateClassAndStyle();
+        }
+    }
+
+    /**
+     * Positive number representing the ability for the item to shrink if necessary. When set to 0, the item will not shrink.
+     * The number indicates the proportion to which the item will shrink if needed. For example, if one item has a `shrink` value of 2, it will shrink twice as much than the items that have a `shrink` value of 1. If all the items have the same `shrink` value, they will all shrink the same.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get shrink() {
+        return this._shrink;
+    }
+    set shrink(value) {
+        const number = parseInt(value, 10);
+        this._shrink = number >= 0 ? number : DEFAULT_SHRINK;
+
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -385,5 +430,7 @@ export default class LayoutItem extends LightningElement {
 
         this.template.host.style.flexBasis = this.getCurrentValue(this._sizes);
         this.template.host.style.order = this.getCurrentValue(this._orders);
+        this.template.host.style.flexGrow = this.grow;
+        this.template.host.style.flexShrink = this.shrink;
     }
 }

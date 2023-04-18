@@ -50,11 +50,13 @@ describe('Layout Item', () => {
     it('Default attributes', () => {
         document.body.appendChild(element);
         expect(element.alignmentBump).toBeUndefined();
+        expect(element.grow).toBe(0);
         expect(element.largeContainerOrder).toBeUndefined();
         expect(element.largeContainerSize).toBeUndefined();
         expect(element.mediumContainerOrder).toBeUndefined();
         expect(element.mediumContainerSize).toBeUndefined();
         expect(element.order).toBeUndefined();
+        expect(element.shrink).toBe(1);
         expect(element.size).toBeUndefined();
         expect(element.smallContainerOrder).toBeUndefined();
         expect(element.smallContainerSize).toBeUndefined();
@@ -99,6 +101,13 @@ describe('Layout Item', () => {
         );
     });
 
+    // grow
+    it('Layout Item: grow', () => {
+        document.body.appendChild(element);
+        element.grow = '2';
+        expect(element.shadowRoot.host.style.flexGrow).toBe('2');
+    });
+
     // Container orders
     it('Layout Item: container orders', () => {
         let setContainerSize;
@@ -121,6 +130,13 @@ describe('Layout Item', () => {
         expect(element.shadowRoot.host.style.order).toBe('2');
         setContainerSize('small');
         expect(element.shadowRoot.host.style.order).toBe('1');
+    });
+
+    // shrink
+    it('Layout Item: shrink', () => {
+        document.body.appendChild(element);
+        element.shrink = '2';
+        expect(element.shadowRoot.host.style.flexShrink).toBe('2');
     });
 
     // Container sizes
