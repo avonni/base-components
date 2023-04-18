@@ -41,7 +41,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Space between columns of items, given as a number of pixels, or as a valid CSS length.',
+                'Space between columns of items, given as a number of pixels, or as a valid CSS length. If an item has an alignment bump, the gap in this direction will be half the given size.',
             table: {
                 type: { summary: 'string|number' },
                 defaultValue: { summary: '0' }
@@ -90,7 +90,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Space between rows of items, given as a number of pixels, or as a valid CSS length. Only used if `multiple-rows` is true.',
+                'Space between rows of items, given as a number of pixels, or as a valid CSS length. Only used if `multiple-rows` is true. If an item has an alignment bump, the gap in this direction will be half the given size.',
             table: {
                 type: { summary: 'string|number' },
                 defaultValue: { summary: '0' }

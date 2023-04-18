@@ -93,6 +93,7 @@ export default class Layout extends LightningElement {
 
     /**
      * Space between columns of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>.
+     * If an item has an alignment bump, the gap in this direction will be half the given size.
      *
      * @type {string|number}
      * @default 0
@@ -158,7 +159,8 @@ export default class Layout extends LightningElement {
     }
 
     /**
-     * Space between rows of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>. Only used if `multiple-rows` is true.
+     * Space between rows of items, given as a number of pixels, or as a valid <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length">CSS length</a>.
+     * Only used if `multiple-rows` is true. If an item has an alignment bump, the gap in this direction will be half the given size.
      *
      * @type {string|number}
      * @default 0
