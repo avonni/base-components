@@ -161,11 +161,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     set actionMenuIcon(icon) {
-        if (icon) {
-            this._actionMenuIcon = icon;
-        } else {
-            this._actionMenuIcon = DEFAULT_ICON_MENU_ICON;
-        }
+        this._actionMenuIcon = icon || DEFAULT_ICON_MENU_ICON;
     }
 
     @api
@@ -181,7 +177,6 @@ export default class PrimitiveAvatar extends LightningElement {
     /**
      * Entity
      */
-
     @api
     get entityIconName() {
         return this._entityIconName;

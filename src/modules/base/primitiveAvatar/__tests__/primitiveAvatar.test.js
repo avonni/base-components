@@ -42,7 +42,8 @@ const ACTIONS = [
     {
         label: 'Add item',
         name: 'add-item',
-        iconName: 'utility:add'
+        iconName: 'utility:add',
+        disabled: true
     }
 ];
 
@@ -174,6 +175,23 @@ describe('PrimitiveAvatar', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Primitive Avatar: disabled action actionclick event', () => {
+        element.initials = 'LG';
+        element.actions = new Array(ACTIONS[1]);
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '[data-element-id="action-icon"]'
+            );
+            expect(actionButton).toBeTruthy();
+            actionButton.click();
+
+            expect(handler).not.toHaveBeenCalled();
         });
     });
 });

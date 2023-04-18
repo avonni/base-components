@@ -370,10 +370,10 @@ export default {
         }
     },
     args: {
-        hideAvatarDetails: false,
         actionPosition: 'bottom-left',
         entityPosition: 'top-left',
         entityVariant: 'square',
+        hideAvatarDetails: false,
         presencePosition: 'bottom-right',
         size: 'medium',
         statusPosition: 'top-right',
