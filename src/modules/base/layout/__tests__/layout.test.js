@@ -74,7 +74,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.style.gap).toBe('0px 30px');
+            expect(wrapper.style.cssText).toContain(
+                '--private-layout-spacing-inline-between: 30px'
+            );
         });
     });
 
@@ -85,7 +87,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.style.gap).toBe('0px 3rem');
+            expect(wrapper.style.cssText).toContain(
+                '--private-layout-spacing-inline-between: 3rem'
+            );
         });
     });
 
@@ -237,7 +241,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.style.gap).toBe('30px 0px');
+            expect(wrapper.style.cssText).toContain(
+                '--private-layout-spacing-block-between: 30px'
+            );
         });
     });
 
@@ -248,7 +254,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.style.gap).toBe('3rem 0px');
+            expect(wrapper.style.cssText).toContain(
+                '--private-layout-spacing-block-between: 3rem'
+            );
         });
     });
 

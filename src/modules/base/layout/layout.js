@@ -238,7 +238,11 @@ export default class Layout extends LightningElement {
         const rowGap = !isNaN(Number(this.rowGap))
             ? `${this.rowGap}px`
             : this.rowGap;
-        return `gap: ${rowGap} ${columnGap};`;
+        return `
+            margin: calc(${rowGap} / -2) calc(${columnGap} / -2);
+            --private-layout-spacing-block-between: ${rowGap};
+            --private-layout-spacing-inline-between: ${columnGap};
+        `;
     }
 
     /*

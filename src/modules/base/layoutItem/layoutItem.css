@@ -33,4 +33,6 @@
 :host {
     max-width: 100%;
     min-width: 0;
+    padding: calc(var(--private-layout-spacing-block-between) / 2)
+        calc(var(--private-layout-spacing-inline-between) / 2);
 }
