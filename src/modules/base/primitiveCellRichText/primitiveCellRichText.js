@@ -36,6 +36,7 @@ export default class PrimitiveCellRichText extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api disabled;
+    @api formats;
     @api variant;
     @api placeholder;
 

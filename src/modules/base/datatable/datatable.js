@@ -275,7 +275,7 @@ export default class Datatable extends LightningDatatable {
         },
         'rich-text': {
             template: richText,
-            typeAttributes: ['disabled', 'placeholder', 'variant']
+            typeAttributes: ['disabled', 'formats', 'placeholder', 'variant']
         },
         slider: {
             template: slider,

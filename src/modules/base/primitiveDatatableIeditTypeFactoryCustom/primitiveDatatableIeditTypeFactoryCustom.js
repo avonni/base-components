@@ -94,6 +94,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _startDate;
     _endDate;
 
+    // rich-text attributes
+    @api formats;
+    @api variant;
+
     // textarea attributes
     @api maxLength;
     @api minLength;
