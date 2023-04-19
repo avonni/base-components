@@ -77,11 +77,16 @@ export default class PrimitiveCellCombobox extends LightningElement {
             );
 
             // Sort the selected options by the order they appear in the value array
-            return selectedOptions.sort((a, b) => {
+            selectedOptions.sort((a, b) => {
                 return (
                     this.value.indexOf(a.value) - this.value.indexOf(b.value)
                 );
             });
+
+            return selectedOptions.map((option) => ({
+                label: option.label,
+                name: option.value
+            }));
         } else if (this.isMultiSelect && !this.value) {
             return [];
         }
