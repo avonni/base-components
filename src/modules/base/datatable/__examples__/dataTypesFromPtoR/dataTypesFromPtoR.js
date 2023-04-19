@@ -72,7 +72,8 @@ export default class DataTypesFromPtoR extends LightningElement {
             fieldName: 'richText',
             type: 'rich-text',
             typeAttributes: {
-                disabled: { fieldName: 'richTextDisabled' }
+                disabled: { fieldName: 'richTextDisabled' },
+                formats: { fieldName: 'richTextFormats' }
             },
             editable: true,
             initialWidth: 275
@@ -135,7 +136,8 @@ export default class DataTypesFromPtoR extends LightningElement {
             progressRingVariant: 'expired',
             qrcode: 'https://www.avonni.app/',
             rating: '5',
-            richText: '<h4 style="text-align: center">With Value Centered</h4>'
+            richText: '<h4 style="text-align: center">With Value Centered</h4>',
+            richTextFormats: ['font']
         },
         {
             id: 5,

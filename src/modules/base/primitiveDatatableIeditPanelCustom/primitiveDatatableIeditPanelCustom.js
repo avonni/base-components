@@ -77,6 +77,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api labelStartDate;
     @api labelEndDate;
 
+    // primitive cell rich-text
+    @api formats;
+    @api variant;
+
     // primitive cell textarea
     @api maxLength;
     @api minLength;
