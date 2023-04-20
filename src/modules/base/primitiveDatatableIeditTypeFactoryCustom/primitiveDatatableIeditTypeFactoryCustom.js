@@ -95,8 +95,8 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _endDate;
 
     // rich-text attributes
-    @api formats;
     @api variant;
+    _formats;
 
     // textarea attributes
     @api maxLength;
@@ -111,6 +111,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._focusHandler = this.handleComponentFocus.bind(this);
         this._changeHandler = this.handleComponentChange.bind(this);
         this.getComboboxOptionsEvent();
+        this.getRichTextFormatsEvent();
     }
 
     renderedCallback() {
@@ -145,6 +146,15 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     set endDate(value) {
         this._endDate = value;
+    }
+
+    @api
+    get formats() {
+        return this._formats;
+    }
+
+    set formats(value) {
+        this._formats = value;
     }
 
     @api
@@ -220,8 +230,28 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         );
     }
 
+    getRichTextFormatsEvent() {
+        if (this.columnDef.type !== 'rich-text') return;
+        this.dispatchEvent(
+            new CustomEvent('getrichtextformats', {
+                detail: {
+                    name: this.columnDef.fieldName,
+                    callbacks: {
+                        getRichTextFormats: this.getRichTextFormats.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
     getComboboxOptions(options) {
         this._options = options;
+    }
+
+    getRichTextFormats(formats) {
+        this._formats = formats;
     }
 
     handleComponentFocus() {
