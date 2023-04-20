@@ -358,6 +358,15 @@ export default class Datatable extends LightningDatatable {
                 event.detail.callbacks.getComboboxOptions(options);
             }
         });
+
+        this.template.addEventListener('getrichtextformats', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const formats = column.typeAttributes.formats;
+            event.detail.callbacks.getRichTextFormats(formats);
+        });
     }
 
     renderedCallback() {
