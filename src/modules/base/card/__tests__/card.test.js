@@ -57,7 +57,11 @@ describe('Card', () => {
         expect(element.mediaSrc).toBeUndefined();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     // title
     it('Card: title', () => {
@@ -229,6 +233,28 @@ describe('Card', () => {
                 'avonni-card__media-overlay'
             );
             expect(mediaImage.src).toBe('https://via.placeholder.com/300x200');
+        });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
+
+    // privatecardrendered
+    it('Card: privatecardrendered event', () => {
+        const handler = jest.fn();
+        element.addEventListener('privatecardrendered', handler);
+        element.title = 'some title';
+        expect(handler).not.toHaveBeenCalled();
+
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
         });
     });
 });

@@ -150,6 +150,7 @@ export default class List extends LightningElement {
             large: 128
         }
     };
+    _cardRendersBeforeScrollUpdate = 0;
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
     _initialY;
@@ -180,7 +181,7 @@ export default class List extends LightningElement {
             this.initWrapObserver();
         }
 
-        this.restoreScrollPosition();
+        this.updateSpinnerVisibility();
         this.listResize();
 
         if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
@@ -191,10 +192,15 @@ export default class List extends LightningElement {
             this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
-        // Wait for the card to render before checking if the bottom is reached.
-        window.requestAnimationFrame(() => {
+        // Wait for all the cards to render before checking if the bottom is reached.
+        const cards = this.template.querySelectorAll(
+            '[data-element-id="avonni-card"]'
+        );
+        if (!cards.length) {
             this.handleScroll();
-        });
+        } else {
+            this._cardRendersBeforeScrollUpdate = cards.length;
+        }
     }
 
     connectedCallback() {
@@ -299,13 +305,7 @@ export default class List extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-
-        if (this._isLoading) {
-            // Wait for the list to render because the showLoading method needs to measure the list's scroll position.
-            window.requestAnimationFrame(() => {
-                this.showLoading();
-            });
-        }
+        this.updateSpinnerVisibility();
     }
 
     /**
@@ -547,6 +547,7 @@ export default class List extends LightningElement {
 
         if (this._connected) {
             this.setItemProperties();
+            this.updateSpinnerVisibility();
         }
     }
 
@@ -791,13 +792,6 @@ export default class List extends LightningElement {
      */
     get hasMultipleMediaActions() {
         return this.computedMediaActions.length > 1;
-    }
-
-    /**
-     * Show the loading spinner at the end of the list.
-     */
-    get isLoadingBelow() {
-        return this.isLoading && this.variant !== 'single-line';
     }
 
     /**
@@ -1500,21 +1494,6 @@ export default class List extends LightningElement {
         });
     }
 
-    /**
-     * Restore the scroll position when the list is rerendered. Needed when loading more items.
-     */
-    restoreScrollPosition() {
-        const scrollTop = this.listContainer
-            ? this.listContainer.scrollTop
-            : null;
-
-        if (scrollTop != null) {
-            window.requestAnimationFrame(() => {
-                this.listContainer.scrollTop = scrollTop;
-            });
-        }
-    }
-
     restoreItemsTransform(draggedIndex, targetIndex) {
         setTimeout(() => {
             const draggedItem = this._itemElements.find(
@@ -1537,34 +1516,6 @@ export default class List extends LightningElement {
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
         }, 0);
-    }
-
-    /**
-     * When the user has reached the bottom of the list, and the load-more spinner appears,
-     * scroll to view the spinner.
-     */
-    showLoading() {
-        if (!this.listContainer) {
-            return;
-        }
-        const offsetFromBottom =
-            this.listContainer.scrollHeight -
-            (this.listContainer.scrollTop + this.listContainer.clientHeight);
-
-        // Show the spinner if close to bottom, and not scrolled to the top
-        const closeToBottom =
-            offsetFromBottom < 100 && this.listContainer.scrollTop > 0;
-        if (closeToBottom) {
-            setTimeout(() => {
-                const spinner = this.template.querySelector(
-                    '[data-element-id="loading-spinner-below"]'
-                );
-                if (spinner) {
-                    this.listContainer.scrollTop =
-                        this.listContainer.scrollHeight;
-                }
-            }, 20);
-        }
     }
 
     /**
@@ -1608,6 +1559,23 @@ export default class List extends LightningElement {
         );
         // We don't use a variable to avoid rerendering
         element.textContent = `${label}. ${position} / ${total}`;
+    }
+
+    /**
+     * Update the loading spinner visibility.
+     */
+    updateSpinnerVisibility() {
+        const spinner = this.template.querySelector(
+            '[data-element-id="loading-spinner-container"]'
+        );
+        if (!spinner) {
+            return;
+        }
+        if (this.isLoading) {
+            spinner.classList.remove('slds-hide');
+        } else {
+            spinner.classList.add('slds-hide');
+        }
     }
 
     /*
@@ -1876,6 +1844,19 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Handle a card render. If the list was just rendered, triggers the `handleScroll()` method after the last card has been rendered.
+     */
+    handleCardRendered() {
+        if (this._cardRendersBeforeScrollUpdate === 1) {
+            this.handleScroll();
+        }
+
+        if (this._cardRendersBeforeScrollUpdate) {
+            this._cardRendersBeforeScrollUpdate -= 1;
+        }
+    }
+
+    /**
      * Handle a key pressed on an item.
      *
      * @param {Event} event
@@ -2027,7 +2008,7 @@ export default class List extends LightningElement {
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
     handleScroll() {
-        if (this.variant === 'single-line') {
+        if (this.variant === 'single-line' || !this.listContainer) {
             return;
         }
 
