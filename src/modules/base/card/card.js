@@ -110,6 +110,15 @@ export default class Card extends LightningElement {
 
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
+
+        /**
+         * The event fired when the card is rendered.
+         * Used by the list to check if the bottom has been reached after the card slots have been fully rendered.
+         *
+         * @event
+         * @name privatecardrendered
+         */
+        this.dispatchEvent(new CustomEvent('privatecardrendered'));
     }
 
     /*

@@ -113,6 +113,8 @@
                         <c-card
                             class={computedItemClass}
                             media-position={item.imagePosition}
+                            data-element-id="avonni-card"
+                            onprivatecardrendered={handleCardRendered}
                         >
                             <!-- Media Actions  -->
                             <div
@@ -460,13 +462,13 @@
                     </li>
                 </template>
                 <li
-                    if:true={isLoadingBelow}
                     data-element-id="loading-spinner-container"
                     class="
                         avonni-list__flex-col
                         slds-size_12-of-12
                         slds-is-relative
                         avonni-list__lower-spinner
+                        slds-hide
                     "
                 >
                     <lightning-spinner
