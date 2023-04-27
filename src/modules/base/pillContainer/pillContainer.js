@@ -332,7 +332,11 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedPillClass() {
-        return this.sortable ? 'avonni-pill-container__pill-sortable' : '';
+        return classSet('avonni-pill-container__pill')
+            .add({
+                'avonni-pill-container__pill-sortable': this.sortable
+            })
+            .toString();
     }
 
     /**
