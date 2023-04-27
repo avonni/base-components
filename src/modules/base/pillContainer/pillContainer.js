@@ -332,7 +332,11 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedPillClass() {
-        return this.sortable ? 'avonni-pill-container__pill-sortable' : '';
+        return classSet('avonni-pill-container__pill')
+            .add({
+                'avonni-pill-container__pill-sortable': this.sortable
+            })
+            .toString();
     }
 
     /**
@@ -832,7 +836,11 @@ export default class PillContainer extends LightningElement {
             fittingCount += 1;
         }
 
-        if (fittingCount === visibleItems.length && width < totalWidth) {
+        if (
+            fittingCount !== 0 &&
+            fittingCount === visibleItems.length &&
+            width < totalWidth
+        ) {
             // Add more visible items if needed
             const nextItemWidth = this._itemsWidths[fittingCount];
             const availableSpace = totalWidth - width;

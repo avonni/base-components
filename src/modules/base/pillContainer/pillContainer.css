@@ -79,6 +79,10 @@
     left: 0;
 }
 
+.avonni-pill-container__pill {
+    max-width: var(--lwc-sizeSmall, 15rem);
+}
+
 /*
 * ------------------------------------------------------------
 *  SORTABLE
