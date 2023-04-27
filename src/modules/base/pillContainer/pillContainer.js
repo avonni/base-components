@@ -832,7 +832,11 @@ export default class PillContainer extends LightningElement {
             fittingCount += 1;
         }
 
-        if (fittingCount === visibleItems.length && width < totalWidth) {
+        if (
+            fittingCount !== 0 &&
+            fittingCount === visibleItems.length &&
+            width < totalWidth
+        ) {
             // Add more visible items if needed
             const nextItemWidth = this._itemsWidths[fittingCount];
             const availableSpace = totalWidth - width;
