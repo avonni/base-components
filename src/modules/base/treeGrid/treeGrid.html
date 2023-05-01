@@ -1,20 +1,25 @@
 <template>
     <avonni-datatable
+        data-element-id="avonni-datatable"
+        aria-label={ariaLabel}
         columns={normalizedColumns}
-        records={normalizedRecords}
-        key-field={keyField}
+        column-widths-mode={columnWidthsMode}
         hide-checkbox-column={hideCheckboxColumn}
+        hide-table-header={hideTableHeader}
+        is-loading={isLoading}
+        key-field={keyField}
         max-column-width={maxColumnWidth}
+        max-row-selection={maxRowSelection}
         min-column-width={minColumnWidth}
+        records={normalizedRecords}
         resize-column-disabled={resizeColumnDisabled}
+        resize-step={resizeStep}
         row-number-offset={rowNumberOffset}
         selected-rows={selectedRows}
         show-row-number-column={showRowNumberColumn}
         onrowselection={handleRowSelection}
         onheaderaction={handleHeaderAction}
         onrowaction={handleRowAction}
-        is-loading={isLoading}
-        aria-label={ariaLabel}
     >
     </avonni-datatable>
 </template>

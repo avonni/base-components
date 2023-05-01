@@ -869,11 +869,9 @@ export default class Datatable extends LightningDatatable {
         );
 
         if (row) {
-            if (rowKeyField === this.data[0][this.keyField]) {
-                // The first row has one pixel more because of the border
-                return row.offsetHeight + 1;
-            }
-            return row.offsetHeight;
+            return rowKeyField === this.data[0][this.keyField]
+                ? row.offsetHeight + 1
+                : row.offsetHeight;
         }
         return null;
     }
