@@ -51,7 +51,8 @@ export const TreeGrid = ({
     resizeStep,
     rowNumberOffset,
     selectedRows,
-    showRowNumberColumn
+    showRowNumberColumn,
+    wrapTextMaxLines
 }) => {
     const element = document.createElement('ac-base-tree-grid');
     element.ariaLabel = ariaLabel;
@@ -71,5 +72,6 @@ export const TreeGrid = ({
     element.rowNumberOffset = rowNumberOffset;
     element.selectedRows = selectedRows;
     element.showRowNumberColumn = showRowNumberColumn;
+    element.wrapTextMaxLines = wrapTextMaxLines;
     return element;
 };

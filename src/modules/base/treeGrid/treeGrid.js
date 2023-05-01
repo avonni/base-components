@@ -39,6 +39,7 @@ export default class TreeGrid extends LightningElement {
     _rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
     _selectedRows = [];
     _showRowNumberColumn = false;
+    _wrapTextMaxLines;
 
     // raw values passed in
     _rawColumns;
@@ -358,6 +359,22 @@ export default class TreeGrid extends LightningElement {
 
     set showRowNumberColumn(value) {
         this._showRowNumberColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more.
+     * The text in the last line is truncated and shown with an ellipsis.
+     * @public
+     * @type {integer}
+     */
+    @api
+    get wrapTextMaxLines() {
+        return this.wrapTextMaxLines;
+    }
+
+    set wrapTextMaxLines(value) {
+        if (value === undefined) return;
+        this._wrapTextMaxLines = value;
     }
 
     /*
