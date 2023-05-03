@@ -44,7 +44,11 @@ export default class PrimitiveCellDateRange extends LightningElement {
     @api labelEndDate;
     @api type;
 
+    _columnsWidth = 0;
+    _index;
+    _style;
     _value;
+
     visible = false;
     editable = false;
     readOnly = true;
@@ -53,7 +57,7 @@ export default class PrimitiveCellDateRange extends LightningElement {
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
     }
 
     @api
@@ -75,8 +79,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-
     /**
      * Return true if cell is editable and not disabled.
      *
@@ -86,13 +88,9 @@ export default class PrimitiveCellDateRange extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
-    }
+    /*----------- Inline Editing Functions -------------*/
 
-    getStateAndColumnsEvent() {
+    dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
@@ -107,19 +105,17 @@ export default class PrimitiveCellDateRange extends LightningElement {
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns) {
+    getStateAndColumns(state, columns, width) {
         this.state = state;
         this.columns = columns;
-        this.isEditable();
-    }
+        this._index = this.state.headerIndexes[this.colKeyValue];
+        this._columnsWidth = width
+            ? width.slice(this._index).reduce((a, b) => a + b, 0)
+            : 0;
 
-    // Checks if the column is editable.
-    isEditable() {
-        let inputDateRange = {};
-        inputDateRange = this.columns.find(
-            (column) => column.type === 'date-range'
-        );
-        this.editable = inputDateRange.editable;
+        this.computedStyle();
+
+        this.isEditable();
     }
 
     // Handles the edit button click and dispatches the event.
@@ -136,7 +132,22 @@ export default class PrimitiveCellDateRange extends LightningElement {
                 }
             })
         );
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let inputDateRange = {};
+        inputDateRange = this.columns.find(
+            (column) => column.type === 'date-range'
+        );
+        this.editable = inputDateRange.editable;
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
     }
 }

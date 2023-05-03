@@ -38,7 +38,11 @@ export default class PrimitiveCellLookup extends LightningElement {
     @api path;
     @api target;
 
+    _columnsWidth = 0;
+    _index;
+    _style;
     _value;
+
     visible = false;
     editable = false;
     readOnly = true;
@@ -47,7 +51,7 @@ export default class PrimitiveCellLookup extends LightningElement {
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
     }
 
     @api
@@ -58,8 +62,6 @@ export default class PrimitiveCellLookup extends LightningElement {
     set value(value) {
         this._value = value;
     }
-
-    /*----------- Inline Editing Functions -------------*/
 
     /**
      * Return true if cell is editable and not disabled.
@@ -74,11 +76,9 @@ export default class PrimitiveCellLookup extends LightningElement {
         return this.label ? this.label : this.state.inlineEdit.editedValue;
     }
 
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-    }
+    /*----------- Inline Editing Functions -------------*/
 
-    getStateAndColumnsEvent() {
+    dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
@@ -93,17 +93,17 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns) {
+    getStateAndColumns(state, columns, width) {
         this.state = state;
         this.columns = columns;
-        this.isEditable();
-    }
+        this._index = this.state.headerIndexes[this.colKeyValue];
+        this._columnsWidth = width
+            ? width.slice(this._index).reduce((a, b) => a + b, 0)
+            : 0;
 
-    // Checks if the column is editable.
-    isEditable() {
-        let lookup = {};
-        lookup = this.columns.find((column) => column.type === 'lookup');
-        this.editable = lookup.editable;
+        this.computedStyle();
+
+        this.isEditable();
     }
 
     // Handles the edit button click and dispatches the event.
@@ -120,7 +120,18 @@ export default class PrimitiveCellLookup extends LightningElement {
                 }
             })
         );
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let lookup = {};
+        lookup = this.columns.find((column) => column.type === 'lookup');
+        this.editable = lookup.editable;
+    }
+
+    toggleInlineEdit() {
+        this.visible = !this.visible;
     }
 }

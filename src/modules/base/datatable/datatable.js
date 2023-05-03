@@ -340,7 +340,8 @@ export default class Datatable extends LightningDatatable {
             (event) => {
                 event.detail.callbacks.getStateAndColumns(
                     this.state,
-                    this.columns
+                    this.columns,
+                    this.primitiveWidthsData.columnWidths
                 );
             }
         );
