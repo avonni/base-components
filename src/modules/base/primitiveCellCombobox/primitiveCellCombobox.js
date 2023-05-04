@@ -72,8 +72,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this._value = value;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-
     get displayedValue() {
         if (this.isMultiSelect && this.value) {
             const selectedOptions = this.options.filter((option) =>
@@ -119,7 +117,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    computedStyle() {
+    /*----------- Inline Editing Functions -------------*/
+
+    computeStyle() {
         this._style =
             this._columnsWidth < 310
                 ? 'position: absolute; top: 0; right: 0'
@@ -133,6 +133,20 @@ export default class PrimitiveCellCombobox extends LightningElement {
             new CustomEvent('cellchangecustom', {
                 detail: {
                     draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchStateAndColumnsEvent() {
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
                 },
                 bubbles: true,
                 composed: true
@@ -177,22 +191,8 @@ export default class PrimitiveCellCombobox extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.computedStyle();
+        this.computeStyle();
         this.isEditable();
-    }
-
-    dispatchStateAndColumnsEvent() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateandcolumns', {
-                detail: {
-                    callbacks: {
-                        getStateAndColumns: this.getStateAndColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
     }
 
     handleChange(event) {

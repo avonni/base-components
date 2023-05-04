@@ -85,6 +85,12 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
+    computeStyle() {
+        this._style =
+            this._columnsWidth < 310
+                ? 'position: absolute; top: 0; right: 0'
+                : 'position: absolute; top: 0; left: 0;';
+    }
 
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
@@ -109,8 +115,7 @@ export default class PrimitiveCellColorPicker extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.computedStyle();
-
+        this.computeStyle();
         this.isEditable();
     }
 

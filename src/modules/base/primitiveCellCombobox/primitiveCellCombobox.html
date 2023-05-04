@@ -57,20 +57,22 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <lightning-formatted-text
-                if:false={isMultiSelect}
-                value={displayedValue}
-            ></lightning-formatted-text>
-            <c-pill-container
-                if:true={isMultiSelect}
-                items={displayedValue}
-            ></c-pill-container>
-            <template if:true={showEditButton}>
-                <c-primitive-cell-editable-button
-                    onclick={handleEditButtonClick}
-                    column-label="Combobox"
-                ></c-primitive-cell-editable-button>
-            </template>
+            <div if:false={isMultiSelect} class="slds-truncate">
+                <lightning-formatted-text
+                    value={displayedValue}
+                ></lightning-formatted-text>
+            </div>
+            <div if:true={isMultiSelect} style="width: 100%">
+                <c-pill-container
+                    items={displayedValue}
+                    is-collapsible
+                ></c-pill-container>
+            </div>
+            <c-primitive-cell-editable-button
+                if:true={showEditButton}
+                onclick={handleEditButtonClick}
+                column-label="Combobox"
+            ></c-primitive-cell-editable-button>
         </span>
     </template>
 </template>
