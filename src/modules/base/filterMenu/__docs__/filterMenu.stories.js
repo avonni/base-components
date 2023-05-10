@@ -90,6 +90,28 @@ export default {
                 category: 'Button'
             }
         },
+        closed: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the collapsible is closed. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        collapsible: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the headers are collapsible. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -308,6 +330,8 @@ export default {
     args: {
         applyButtonLabel: 'Apply',
         buttonVariant: 'border',
+        closed: false,
+        collapsible: false,
         disabled: false,
         dropdownAlignment: 'left',
         dropdownNubbin: false,

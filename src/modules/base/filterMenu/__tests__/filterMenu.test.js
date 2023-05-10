@@ -98,6 +98,8 @@ describe('FilterMenu', () => {
         expect(element.alternativeText).toBe('Show Menu');
         expect(element.applyButtonLabel).toBe('Apply');
         expect(element.buttonVariant).toBe('border');
+        expect(element.closed).toBeFalsy();
+        expect(element.collapsible).toBeFalsy();
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownNubbin).toBeFalsy();
@@ -401,6 +403,52 @@ describe('FilterMenu', () => {
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-border-inverse'
             );
+        });
+    });
+
+    // collapsible
+    // Depends on label and variant
+    it('Filter Menu: collapsible true', () => {
+        element.label = 'Some title';
+        element.variant = 'vertical';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-toggle"]'
+            );
+            expect(icon).toBeTruthy();
+        });
+    });
+
+    it('Filter Menu: collapsible false', () => {
+        element.label = 'Some title';
+        element.collapsible = false;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-toggle"]'
+            );
+            expect(icon).toBeFalsy();
+        });
+    });
+
+    it('Filter Menu: collapsible true click', () => {
+        element.label = 'Some title';
+        element.variant = 'vertical';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-toggle"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(element.closed).toBeFalsy();
+            icon.click();
+            return Promise.resolve().then(() => {
+                expect(element.closed).toBeTruthy();
+            });
         });
     });
 

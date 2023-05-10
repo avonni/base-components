@@ -208,6 +208,8 @@ describe('FilterMenuGroup', () => {
             menus.forEach((menu, i) => {
                 expect(menu.accessKey).toBe(MENUS[i].accessKey);
                 expect(menu.alternativeText).toBe(MENUS[i].alternativeText);
+                expect(menu.closed).toBe(MENUS[i].closed);
+                expect(menu.collapsible).toBe(MENUS[i].collapsible);
                 expect(menu.disabled).toBe(MENUS[i].disabled);
                 expect(menu.iconName).toBe(MENUS[i].iconName);
                 expect(menu.iconSize).toBe(MENUS[i].iconSize);

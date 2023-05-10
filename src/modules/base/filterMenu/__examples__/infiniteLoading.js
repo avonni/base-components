@@ -42,6 +42,8 @@ export const FilterMenuInfiniteLoading = ({
     alternativeText,
     applyButtonLabel,
     buttonVariant,
+    closed,
+    collapsible,
     disabled,
     dropdownAlignment,
     dropdownNubbin,
@@ -68,6 +70,8 @@ export const FilterMenuInfiniteLoading = ({
     element.alternativeText = alternativeText;
     element.applyButtonLabel = applyButtonLabel;
     element.buttonVariant = buttonVariant;
+    element.closed = closed;
+    element.collapsible = collapsible;
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
     element.dropdownNubbin = dropdownNubbin;

@@ -45,6 +45,10 @@ import { numberFormat } from 'c/internationalizationLibrary';
  * This property isn’t supported for the vertical variant.
  * @param {string} buttonVariant The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
  * This property isn’t supported for the vertical variant.
+ * @param {boolean} closed If present, the collapsible section is closed.
+ * This key is only supported by the vertical variant.
+ * @param {boolean} collapsible If present, the headers are collapsible.
+ * This key is only supported by the vertical variant.
  * @param {boolean} disabled If true, the menu cannot be used by users. Defaults to false.
  * @param {string} dropdownAlignment Alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. Defaults to left.
  * This key isn’t supported for the vertical variant.
@@ -69,6 +73,7 @@ export default class FilterMenuGroupMenu {
     get value() {
         return this._value;
     }
+
     set value(value) {
         this._value =
             typeof value === 'string' ? [value] : normalizeArray(value);

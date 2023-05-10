@@ -55,11 +55,13 @@
     >
         <template for:each={computedMenus} for:item="menu">
             <li class={filtersClass} key={menu.name}>
-                <c-filter-menu
+                <avonni-filter-menu
                     access-key={menu.accessKey}
                     alternative-text={menu.alternativeText}
                     apply-button-label={applyButtonLabel}
                     button-variant={menu.buttonVariant}
+                    closed={menu.closed}
+                    collapsible={menu.collapsible}
                     disabled={menu.disabled}
                     dropdown-alignment={menu.dropdownAlignment}
                     dropdown-nubbin={menu.dropdownNubbin}
@@ -81,7 +83,7 @@
                     data-element-id="avonni-filter-menu"
                     data-group-name="focusable-element"
                     data-name={menu.name}
-                ></c-filter-menu>
+                ></avonni-filter-menu>
             </li>
         </template>
     </ul>
