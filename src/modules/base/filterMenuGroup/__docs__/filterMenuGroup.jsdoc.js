@@ -6,6 +6,10 @@
  * This property isn’t supported for the vertical variant.
  * @property {string} buttonVariant The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
  * This key isn’t supported for the vertical variant.
+ * @property {boolean} closed If present, the collapsible section is closed.
+ * This key is only supported by the vertical variant.
+ * @property {boolean} collapsible If present, the headers are collapsible.
+ * This key is only supported by the vertical variant.
  * @property {boolean} disabled If true, the menu cannot be used by users. Defaults to false.
  * @property {string} dropdownAlignment Alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. Defaults to left.
  * This key isn’t supported for the vertical variant.

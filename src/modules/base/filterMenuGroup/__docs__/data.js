@@ -241,4 +241,63 @@ const ICONS_MENUS = [
     }
 ];
 
-export { MENUS, ICONS_MENUS };
+const COLLAPSIBLE_MENUS = [
+    {
+        name: 'contact',
+        label: 'Type',
+        accessKey: 'k',
+        alternativeText: 'Open contact type filter',
+        collapsible: true,
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
+        tooltip: 'Type of contact'
+    },
+    {
+        name: 'price',
+        label: 'Price',
+        type: 'range',
+        collapsible: true,
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
+    },
+
+    {
+        name: 'languages',
+        label: 'Languages',
+        collapsible: true,
+        typeAttributes: {
+            isMultiSelect: true,
+            items: languages,
+            dropdownLength: '5-items'
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        type: 'date-range',
+        collapsible: true,
+        typeAttributes: {
+            type: 'datetime'
+        }
+    },
+    {
+        name: 'editions',
+        label: 'Editions',
+        collapsible: true,
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
+    }
+];
+
+export { COLLAPSIBLE_MENUS, MENUS, ICONS_MENUS };

@@ -185,6 +185,8 @@ export default class FilterMenu extends LightningElement {
     _alternativeText = i18n.showMenu;
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _buttonVariant = BUTTON_VARIANTS.default;
+    _closed = false;
+    _collapsible = false;
     _disabled = false;
     _dropdownAlignment = MENU_ALIGNMENTS.default;
     _dropdownLength;
@@ -347,6 +349,38 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
+    }
+
+    /**
+     * If present, close the collapsible section. This attribute is only supported by the vertical variant.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get closed() {
+        return this._closed;
+    }
+
+    set closed(value) {
+        this._closed = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the headers are collapsible. This attribute is only supported by the vertical variant.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapsible() {
+        return this._collapsible;
+    }
+
+    set collapsible(value) {
+        this._collapsible = normalizeBoolean(value);
     }
 
     /**
@@ -816,18 +850,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Computed showdown icon.
-     *
-     * @type {boolean}
-     */
-    get computedShowDownIcon() {
-        return !(
-            this.iconName === 'utility:down' ||
-            this.iconName === 'utility:chevrondown'
-        );
-    }
-
-    /**
      * Computed Aria Expanded from dropdown menu.
      *
      * @type {string}
@@ -896,6 +918,10 @@ export default class FilterMenu extends LightningElement {
             .toString();
     }
 
+    get computedCollapsibleButtonIconName() {
+        return this.closed ? 'utility:chevronright' : 'utility:chevrondown';
+    }
+
     /**
      * Computed Dropdown class styling.
      *
@@ -954,6 +980,27 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Computed section class styling.
+     *
+     * @type {string}
+     */
+    get computedSectionClass() {
+        return this.displayFilters ? 'slds-show' : 'slds-hide';
+    }
+
+    /**
+     * Computed showdown icon.
+     *
+     * @type {boolean}
+     */
+    get computedShowDownIcon() {
+        return !(
+            this.iconName === 'utility:down' ||
+            this.iconName === 'utility:chevrondown'
+        );
+    }
+
+    /**
      * Computed vertical list CSS classes.
      *
      * @type {string}
@@ -968,6 +1015,15 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown_length-with-icon-10':
                 this.isList && length === '10-items'
         }).toString();
+    }
+
+    /**
+     * Returns true, if the filter menu is not collapsible or open and display the filters.
+     *
+     * @type {boolean}
+     */
+    get displayFilters() {
+        return !this.collapsible || (this.collapsible && !this.closed);
     }
 
     /**
@@ -1101,6 +1157,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Value of the slider, when the type is range.
+     *
+     * @type {number[]}
+     */
+    get rangeValue() {
+        if (this.currentValue.length) {
+            return this.currentValue;
+        }
+        const { min, max } = this.computedTypeAttributes;
+        const start = isNaN(min) ? DEFAULT_RANGE_VALUE[0] : Number(min);
+        const end = isNaN(max) ? DEFAULT_RANGE_VALUE[1] : Number(max);
+        return [start, end];
+    }
+
+    /**
      * True if the end of the list is reached.
      *
      * @type {boolean}
@@ -1130,21 +1201,6 @@ export default class FilterMenu extends LightningElement {
      */
     get showNoResultMessage() {
         return !this.isLoading && this.searchTerm && this.noVisibleListItem;
-    }
-
-    /**
-     * Value of the slider, when the type is range.
-     *
-     * @type {number[]}
-     */
-    get rangeValue() {
-        if (this.currentValue.length) {
-            return this.currentValue;
-        }
-        const { min, max } = this.computedTypeAttributes;
-        const start = isNaN(min) ? DEFAULT_RANGE_VALUE[0] : Number(min);
-        const end = isNaN(max) ? DEFAULT_RANGE_VALUE[1] : Number(max);
-        return [start, end];
     }
 
     /**
@@ -1983,5 +2039,12 @@ export default class FilterMenu extends LightningElement {
                 this.close();
             }
         }
+    }
+
+    /**
+     * Section change status toggle.
+     */
+    toggleSection() {
+        this._closed = !this._closed;
     }
 }

@@ -38,6 +38,8 @@ export default class FilterMenuInfiniteLoading extends LightningElement {
     @api alternativeText;
     @api applyButtonLabel;
     @api buttonVariant;
+    @api closed;
+    @api collapsible;
     @api disabled;
     @api dropdownAlignment;
     @api dropdownNubbin;

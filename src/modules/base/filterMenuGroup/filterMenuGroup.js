@@ -214,6 +214,29 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Filter Wrapper class styling
+     *
+     * @type {string}
+     */
+    get filtersWrapperClass() {
+        return classSet({
+            'slds-grid': !this.isVertical
+        });
+    }
+
+    /**
+     * Filters class styling
+     *
+     * @type {string}
+     */
+    get filtersClass() {
+        return classSet({
+            'slds-m-right_xx-small': !this.isVertical,
+            'slds-m-bottom_medium': this.isVertical
+        });
+    }
+
+    /**
      * True if the apply and reset buttons should be hidden for each menu.
      *
      * @type {boolean}
@@ -241,28 +264,10 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Filter Wrapper class styling
+     * Returns the pill actions.
      *
-     * @type {string}
+     * @type {object[]}
      */
-    get filtersWrapperClass() {
-        return classSet({
-            'slds-grid': !this.isVertical
-        });
-    }
-
-    /**
-     * Filters class styling
-     *
-     * @type {string}
-     */
-    get filtersClass() {
-        return classSet({
-            'slds-m-right_xx-small': !this.isVertical,
-            'slds-m-bottom_medium': this.isVertical
-        });
-    }
-
     get pillActions() {
         return [
             {

@@ -31,7 +31,7 @@
  */
 
 import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
-import { MENUS, ICONS_MENUS } from './data';
+import { COLLAPSIBLE_MENUS, MENUS, ICONS_MENUS } from './data';
 
 export default {
     title: 'Example/Filter Menu Group',
@@ -144,6 +144,18 @@ ButtonIcons.args = {
 export const Vertical = Template.bind({});
 Vertical.args = {
     menus: MENUS,
+    variant: 'vertical',
+    value: {
+        contact: 'email',
+        languages: ['dutch', 'english'],
+        price: [45, 67],
+        publication: [new Date(2022, 11, 4, 13, 45)]
+    }
+};
+
+export const CollapsibleVertical = Template.bind({});
+CollapsibleVertical.args = {
+    menus: COLLAPSIBLE_MENUS,
     variant: 'vertical',
     value: {
         contact: 'email',
