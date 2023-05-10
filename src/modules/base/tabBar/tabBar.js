@@ -31,9 +31,8 @@
  */
 
 import { LightningElement, api, track } from 'lwc';
-import { classSet } from 'c/utils';
-import { generateUUID } from 'c/utils';
 import { normalizeArray } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 /**
  * @class
@@ -43,6 +42,7 @@ import { normalizeArray } from 'c/utilsPrivate';
  * @public
  */
 export default class TabBar extends LightningElement {
+    _items = [];
     _labels = [];
     _tabsHidden = 0;
     _defaultTab;
@@ -58,10 +58,30 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * List of tab labels used to separate information.
+     * List of tab items.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get items() {
+        return this._items;
+    }
+
+    set items(value) {
+        this._items = normalizeArray(value);
+
+        if (this._connected) {
+            this.initializeVisibleTabs();
+        }
+    }
+
+    /**
+     * Deprecated. List of tab labels used to separate information. Use 'items' instead.
      *
      * @type {string[]}
      * @public
+     * @deprecated
      */
     @api
     get labels() {
@@ -96,7 +116,7 @@ export default class TabBar extends LightningElement {
     }
 
     /**
-     * The label of the active tab by default.
+     * The value of the active tab by default.
      *
      * @type {string}
      * @public
@@ -119,7 +139,7 @@ export default class TabBar extends LightningElement {
      * @type {boolean}
      */
     get hasTabs() {
-        return this.labels.length > 0;
+        return this.items.length > 0;
     }
 
     /**
@@ -128,7 +148,7 @@ export default class TabBar extends LightningElement {
      * @type {boolean}
      */
     get showTabs() {
-        return this.tabsHidden < this.labels.length;
+        return this.tabsHidden < this.items.length;
     }
 
     /**
@@ -144,9 +164,8 @@ export default class TabBar extends LightningElement {
      * @type {string[]}
      */
     get hiddenTabs() {
-        let visibleTabsName = [];
-        this.visibleTabs.forEach((tab) => visibleTabsName.push(tab.title));
-        return this.labels.slice().filter((n) => !visibleTabsName.includes(n));
+        const visibleTabsName = this.visibleTabs.map((tab) => tab.name);
+        return this.items.filter(({ name }) => !visibleTabsName.includes(name));
     }
 
     /**
@@ -170,46 +189,58 @@ export default class TabBar extends LightningElement {
      * @return {string}
      */
     computedTabClass(tabName) {
-        if (!this.defaultTab || !this.labels.includes(this.defaultTab)) {
-            this._defaultTab = tabName;
-        }
-        const classes = classSet('slds-tabs_default__item');
-        classes.add({ 'slds-is-active': tabName === this._defaultTab });
-        return classes.toString();
+        return classSet('slds-tabs_default__item')
+            .add({
+                'slds-is-active': tabName === this.defaultTab
+            })
+            .toString();
     }
 
     /**
      * Initializes the visible tabs and computes their CSS classes.
      */
     initializeVisibleTabs() {
+        // Support for deprecated 'labels' attribute.
+        if (!this.items.length && this.labels.length) {
+            this._items = this.labels.map((label) => {
+                return { label, name: label };
+            });
+        }
+
         this.visibleTabs = [];
-        const nVisibleTabs = Math.max(0, this.labels.length - this.tabsHidden);
+        const nVisibleTabs = Math.max(0, this.items.length - this.tabsHidden);
         if (nVisibleTabs === 0) return;
 
-        if (this.labels.indexOf(this.defaultTab) < nVisibleTabs) {
+        const activeTabIndex = this.items.findIndex(
+            ({ name }) => name === this.defaultTab
+        );
+        if (activeTabIndex < nVisibleTabs) {
             for (let i = 0; i < nVisibleTabs; i++) {
+                const tab = this.items[i];
+                const isActiveTab = this.defaultTab === tab.name;
                 this.visibleTabs.push({
-                    id: generateUUID(),
-                    title: this.labels[i],
-                    classes: this.computedTabClass(this.labels[i]),
-                    tabIndex: this.defaultTab === this.labels[i] ? 0 : -1,
-                    ariaSelected: this.defaultTab === this.labels[i]
+                    name: tab.name,
+                    title: tab.label,
+                    classes: this.computedTabClass(tab.name),
+                    tabIndex: isActiveTab ? 0 : -1,
+                    ariaSelected: isActiveTab
                 });
             }
         } else {
             // The default tab is in the hidden tabs and will be swapped a visible tab.
             for (let i = 0; i < nVisibleTabs - 1; i++) {
+                const tab = this.items[i];
                 this.visibleTabs.push({
-                    id: generateUUID(),
-                    title: this.labels[i],
-                    classes: this.computedTabClass(this.labels[i]),
+                    name: tab.name,
+                    title: tab.label,
+                    classes: this.computedTabClass(tab.name),
                     tabIndex: -1,
                     ariaSelected: false
                 });
             }
             this.visibleTabs.push({
-                id: generateUUID(),
-                title: this.defaultTab,
+                name: this.items[activeTabIndex].name,
+                title: this.items[activeTabIndex].label,
                 classes: this.computedTabClass(this.defaultTab),
                 tabIndex: 0,
                 ariaSelected: true
@@ -224,21 +255,21 @@ export default class TabBar extends LightningElement {
     handleTabClick(event) {
         event.preventDefault();
 
-        const tabName = event.target.title;
+        const tabName = event.currentTarget.dataset.name;
 
         for (let i = 0; i < this.visibleTabs.length; i++) {
             this.visibleTabs[i].classes = classSet('slds-tabs_default__item')
                 .add({
-                    'slds-is-active': this.visibleTabs[i].title === tabName
+                    'slds-is-active': this.visibleTabs[i].name === tabName
                 })
                 .toString();
             this.visibleTabs[i].tabIndex =
-                this.visibleTabs[i].title === tabName ? 0 : -1;
+                this.visibleTabs[i].name === tabName ? 0 : -1;
             this.visibleTabs[i].ariaSelected =
-                this.visibleTabs[i].title === tabName;
+                this.visibleTabs[i].name === tabName;
         }
 
-        this.dispatchTabChange(event.target.title);
+        this.dispatchTabChange(tabName);
     }
 
     /**
@@ -265,7 +296,7 @@ export default class TabBar extends LightningElement {
      * @param {Event} event
      */
     changeLastCategory(event) {
-        const newTabName = event.target.title;
+        const newTabName = event.currentTarget.dataset.name;
 
         for (let i = 0; i < this.visibleTabs.length - 1; i++) {
             this.visibleTabs[i].classes = classSet(
@@ -276,9 +307,11 @@ export default class TabBar extends LightningElement {
         }
 
         this.visibleTabs.splice(this.visibleTabs.length - 1, 1);
+
+        const activeTab = this.items.find(({ name }) => name === newTabName);
         this.visibleTabs.push({
-            id: generateUUID(),
-            title: newTabName,
+            name: newTabName,
+            title: activeTab.label,
             classes: classSet(
                 'slds-tabs_default__item slds-is-active'
             ).toString(),
@@ -291,8 +324,8 @@ export default class TabBar extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(() => {
             const links = [...this.template.querySelectorAll('a')];
-            if (links && links[this.labels.length - this.tabsHidden - 1]) {
-                links[this.labels.length - this.tabsHidden - 1].focus();
+            if (links && links[this.items.length - this.tabsHidden - 1]) {
+                links[this.items.length - this.tabsHidden - 1].focus();
             }
         }, 0);
     }
