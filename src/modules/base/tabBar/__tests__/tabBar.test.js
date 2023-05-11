@@ -1,7 +1,13 @@
 import { createElement } from 'lwc';
 import TabBar from 'c/tabBar';
 
-const labels = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];
+const items = [
+    { label: 'Tab 1', name: 'tab1' },
+    { label: 'Tab 2', name: 'tab2' },
+    { label: 'Tab 3', name: 'tab3' },
+    { label: 'Tab 4', name: 'tab4' },
+    { label: 'Tab 5', name: 'tab5' }
+];
 
 let element;
 describe('Tab Bar', () => {
@@ -32,13 +38,14 @@ describe('Tab Bar', () => {
      */
 
     it('Tab bar: Default attributes', () => {
+        expect(element.items).toEqual([]);
         expect(element.labels).toEqual([]);
         expect(element.tabsHidden).toBe(0);
         expect(element.defaultTab).toBeUndefined();
     });
 
     it('Tab bar: Labels attribute', () => {
-        element.labels = labels;
+        element.items = items;
 
         return Promise.resolve().then(() => {
             const tabs = element.shadowRoot.querySelectorAll('a');
@@ -52,7 +59,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: TabsHidden attribute', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -72,20 +79,21 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: DefaultTab attribute', () => {
-        element.labels = labels;
-        element.defaultTab = 'Tab 2';
+        element.items = items;
+        element.defaultTab = 'tab2';
 
         return Promise.resolve().then(() => {
             const defaultTab =
                 element.shadowRoot.querySelector('.slds-is-active');
             expect(defaultTab.firstChild.title).toBe('Tab 2');
+            expect(defaultTab.firstChild.dataset.name).toBe('tab2');
         });
     });
 
     /* ----- TABS CHANGE ----- */
 
     it('Tab bar: Click on visible tab', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -101,7 +109,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Click on hidden tab', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -131,8 +139,8 @@ describe('Tab Bar', () => {
      */
 
     it('Tab bar: focus method', () => {
-        element.labels = labels;
-        element.defaultTab = 'Tab 2';
+        element.items = items;
+        element.defaultTab = 'tab2';
 
         return Promise.resolve().then(() => {
             const tabs = element.shadowRoot.querySelectorAll(
@@ -152,7 +160,7 @@ describe('Tab Bar', () => {
      */
 
     it('Tab bar: Select event', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         const handler = jest.fn();
@@ -165,12 +173,12 @@ describe('Tab Bar', () => {
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.value).toBe('Tab 3');
+                expect(handler.mock.calls[0][0].detail.value).toBe('tab3');
             });
     });
 
     it('Tab bar: Blur event', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         const handler = jest.fn();
@@ -187,7 +195,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Dropdown button focus and blur', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -216,7 +224,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change dropdown option with down arrow', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         const handler = jest.fn();
@@ -252,7 +260,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change dropdown option with up arrow', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         const handler = jest.fn();
@@ -288,7 +296,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Close dropdown with Escape key', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -319,7 +327,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Close dropdown with Tab key', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -350,7 +358,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Close dropdown with button click', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -371,7 +379,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Invalid keypress in dropdown', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
 
         return Promise.resolve()
@@ -398,7 +406,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with right arrow with hidden tabs', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
 
@@ -422,7 +430,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with right arrow without hidden tabs', () => {
-        element.labels = labels;
+        element.items = items;
         element.defaultTab = 'Tab 4';
 
         return Promise.resolve()
@@ -445,7 +453,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with left arrow with hidden tabs', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
 
@@ -469,7 +477,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with left arrow without hidden tabs', () => {
-        element.labels = labels;
+        element.items = items;
         element.defaultTab = 'Tab 2';
 
         return Promise.resolve()
@@ -492,7 +500,7 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Invalid keypress when focus is on tabs', () => {
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
 
