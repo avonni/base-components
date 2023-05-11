@@ -39,7 +39,7 @@
                 <li
                     class={tab.classes}
                     role="presentation"
-                    key={tab.id}
+                    key={tab.name}
                     onkeydown={handleVisibleTabKeyDown}
                 >
                     <a
@@ -50,6 +50,7 @@
                         tabindex={tab.tabIndex}
                         aria-selected={tab.ariaSelected}
                         data-element-id="a-tab-link"
+                        data-name={tab.name}
                         onclick={handleTabClick}
                         onblur={triggerBlur}
                     >
@@ -111,22 +112,25 @@
                                         <li
                                             class="slds-dropdown__item"
                                             role="presentation"
-                                            key={hiddenTab}
+                                            key={hiddenTab.name}
+                                            data-name={hiddenTab.name}
                                             onkeydown={handleDropDownItemKeyDown}
                                         >
                                             <a
                                                 href="javascript:void(0);"
                                                 role="menuitem"
                                                 tabindex="-1"
-                                                title={hiddenTab}
+                                                title={hiddenTab.label}
+                                                data-name={hiddenTab.name}
                                                 data-element-id="a-hidden-tab"
                                                 onmousedown={changeLastCategory}
                                             >
                                                 <span
                                                     class="slds-truncate"
-                                                    title={hiddenTab}
-                                                    >{hiddenTab}</span
+                                                    title={hiddenTab.label}
                                                 >
+                                                    {hiddenTab.label}
+                                                </span>
                                             </a>
                                         </li>
                                     </template>
