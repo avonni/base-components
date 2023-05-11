@@ -232,7 +232,7 @@ export default class FilterMenuGroup extends LightningElement {
     get filtersClass() {
         return classSet({
             'slds-m-right_xx-small': !this.isVertical,
-            'slds-m-bottom_medium': this.isVertical
+            'slds-m-bottom_small': this.isVertical
         });
     }
 

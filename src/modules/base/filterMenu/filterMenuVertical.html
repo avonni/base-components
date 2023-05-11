@@ -7,48 +7,47 @@
             onactionclick={handleSelectedItemRemove}
         ></c-pill-container>
     </div>
-    <div
+    <button
+        if:true={collapsible}
+        data-element-id="lightning-icon-toggle"
         class="
-            slds-form-element__legend
-            slds-float_none
-            slds-truncate slds-is-relative
+            slds-button
+            slds-section__title-action
+            avonni-filter-menu__title-button_base
         "
-        title={title}
+        onclick={toggleSection}
     >
-        <button
-            if:true={collapsible}
-            data-element-id="lightning-icon-toggle"
+        <lightning-icon
+            icon-name={computedCollapsibleButtonIconName}
+            size="x-small"
+            class="slds-button__icon slds-button__icon_left"
+        ></lightning-icon>
+        <lightning-icon
+            if:true={computedShowDownIcon}
+            icon-name={iconName}
+            size={iconSize}
+            class="slds-m-right_x-small"
+        ></lightning-icon>
+        <div class="slds-form-element__legend">
+            {label}
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+                class="slds-m-left_xx-small slds-is-absolute"
+                style="top: -0.25rem"
+                data-element-id="lightning-helptext"
+            ></lightning-helptext>
+        </div>
+    </button>
+    <template if:false={collapsible}>
+        <div
             class="
-                slds-button
-                slds-section__title-action
-                avonni-filter-menu__title-button_base
+                slds-form-element__legend
+                slds-float_none
+                slds-truncate slds-is-relative
             "
-            type="button"
-            onclick={toggleSection}
+            title={title}
         >
-            <lightning-icon
-                icon-name={computedCollapsibleButtonIconName}
-                size="x-small"
-                class="slds-button__icon slds-button__icon_left"
-            ></lightning-icon>
-            <lightning-icon
-                if:true={computedShowDownIcon}
-                icon-name={iconName}
-                size={iconSize}
-                class="slds-m-right_x-small"
-            ></lightning-icon>
-            <div>
-                {label}
-                <lightning-helptext
-                    if:true={fieldLevelHelp}
-                    content={fieldLevelHelp}
-                    class="slds-m-left_xx-small slds-is-absolute"
-                    style="top: -0.25rem"
-                    data-element-id="lightning-helptext"
-                ></lightning-helptext>
-            </div>
-        </button>
-        <template if:false={collapsible}>
             <lightning-icon
                 if:true={computedShowDownIcon}
                 icon-name={iconName}
@@ -63,8 +62,8 @@
                 style="top: -0.25rem"
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
-        </template>
-    </div>
+        </div>
+    </template>
     <lightning-menu-divider
         if:false={computedTypeAttributes.allowSearch}
     ></lightning-menu-divider>
