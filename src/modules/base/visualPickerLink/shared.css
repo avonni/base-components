@@ -1,0 +1,164 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.avonni-visual-picker-link__tile-body-right {
+    border-left: 0;
+    border-right: var(--lwc-borderWidthThin, 1px) solid
+        var(--lwc-colorBorder, rgb(221, 219, 218));
+}
+
+.avonni-visual-picker-link__tile-no-icon {
+    border: 0;
+}
+
+.avonni-visual-picker-link__figure-right {
+    margin-left: 0.375rem;
+    margin-right: 0.375rem;
+}
+
+.avonni-visual-picker-link__tile_info-only
+    .avonni-visual-picker-link__tile-body-right {
+    border-right: 0;
+}
+
+.avonni-visual-picker-link__icon {
+    --sds-c-icon-radius-border: var(
+        var(
+            --avonni-visual-picker-icon-radius-border,
+            --avonni-visual-picker-link-icon-radius-border
+        )
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-visual-picker-icon-color-background,
+        var(--avonni-visual-picker-link-icon-color-background)
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-visual-picker-icon-color-foreground,
+        var(--avonni-visual-picker-link-icon-color-foreground)
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-visual-picker-icon-color-foreground-default,
+        var(--avonni-visual-picker-link-icon-color-foreground-default)
+    );
+}
+
+.avonni-visual-picker-link__tile_complete .avonni-visual-picker-link__icon {
+    --sds-c-icon-color-background: var(
+        --avonni-visual-picker-icon-color-background-complete
+    );
+}
+
+.avonni-visual-picker-link__tile-title {
+    color: var(--avonni-visual-picker-link-title-text-color, #080707);
+    font-weight: var(--avonni-visual-picker-link-title-font-weight, 700);
+    font-size: var(--avonni-visual-picker-link-title-font-size, 1em);
+    font-style: var(--avonni-visual-picker-link-title-font-style, normal);
+}
+
+.avonni-visual-picker-link__tile:not(.avonni-visual-picker-link__tile_complete):not(.avonni-visual-picker-link__tile_info-only) {
+    box-shadow: 0 2px 2px
+        var(--slds-g-color-neutral-base-10, rgba(0, 0, 0, 0.05));
+    border-radius: var(--avonni-visual-picker-link-tile-radius-border, 0.25rem);
+    background: var(
+        --avonni-visual-picker-link-tile-color-background,
+        rgb(255, 255, 255)
+    );
+}
+
+.avonni-visual-picker-link__tile:not(.avonni-visual-picker-link__tile_complete).avonni-visual-picker-link__tile_info-only {
+    background-color: var(
+        --avonni-visual-picker-link-tile-color-background-info-only
+    );
+}
+
+.avonni-visual-picker-link__tile.avonni-visual-picker-link__tile_info-only {
+    border-radius: var(--avonni-visual-picker-link-tile-radius-border, 0);
+    border-width: var(--avonni-visual-picker-link-tile-sizing-border);
+    border-style: var(--avonni-visual-picker-link-tile-styling-border);
+    border-color: var(--avonni-visual-picker-link-tile-color-border);
+}
+
+.avonni-visual-picker-link__tile:last-child {
+    margin-bottom: 0;
+}
+
+.avonni-visual-picker-link__tile:first-child {
+    margin-top: 0;
+}
+
+.avonni-visual-picker-link__tile {
+    margin: var(--lwc-spacingMedium, 1rem) 0;
+}
+
+.avonni-visual-picker-link__tile .slds-media {
+    padding: 0.5rem;
+}
+
+.avonni-visual-picker-link__box {
+    border-radius: var(--avonni-visual-picker-link-tile-radius-border, 0.25rem);
+    border-width: var(--avonni-visual-picker-link-tile-sizing-border, 1px);
+    border-style: var(--avonni-visual-picker-link-tile-styling-border, solid);
+    border-color: var(
+        --avonni-visual-picker-link-tile-color-border,
+        rgb(229, 229, 229)
+    );
+}
+
+.avonni-visual-picker-box_link {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.avonni-visual-picker-box_link:hover,
+.avonni-visual-picker-box_link:focus {
+    cursor: pointer;
+    outline: 0;
+    border-width: var(
+        --avonni-visual-picker-link-tile-sizing-border-hover,
+        1px
+    );
+    border-style: var(
+        --avonni-visual-picker-link-tile-styling-border-hover,
+        solid
+    );
+    border-color: var(
+        --avonni-visual-picker-link-tile-color-border-hover,
+        #1b96ff
+    );
+    box-shadow: 0 0 0 1px
+        var(--avonni-visual-picker-link-tile-color-border-hover, #1b96ff) inset;
+}
+
+.avonni-visual-picker-link__tile_info-only
+    .avonni-visual-picker-link__tile-body {
+    border-left: 0;
+}

@@ -31,12 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { keyCodes } from 'c/utilsPrivate';
 import {
+    keyCodes,
     normalizeBoolean,
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { generateUUID } from 'c/utils';
 
 const INDICATOR_ACTION =
@@ -64,7 +65,12 @@ const ACTIONS_VARIANTS = {
     default: 'border'
 };
 
-const ITEMS_PER_PANEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const ITEMS_PER_PANEL = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const MEDIA_QUERY_BREAKPOINTS = {
+    small: 480,
+    medium: 768,
+    large: 1024
+};
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -90,9 +96,9 @@ const i18n = {
  */
 export default class Carousel extends LightningElement {
     /**
-     * Dictates the currently active/visible carousel panel.
+     * Dictates the currently active/visible carousel panel. Use item’s name to select current panel.
      *
-     * @type {number}
+     * @type {string}
      * @public
      */
     @api currentPanel;
@@ -128,44 +134,61 @@ export default class Carousel extends LightningElement {
      * @default false
      */
     @api isInfinite;
-    /**
-     * Auto scroll delay. The default is 5 seconds, after which the next image is displayed.
-     *
-     * @type {number}
-     * @public
-     * @default 5
-     */
-    @api scrollDuration = DEFAULT_SCROLL_DURATION;
 
+    _actionsPosition = ACTIONS_POSITIONS.default;
+    _actionsVariant = ACTIONS_VARIANTS.default;
     _assistiveText = {
         nextPanel: i18n.nextPanel,
         previousPanel: i18n.previousPanel,
         autoplayButton: i18n.autoplayButton
     };
     _carouselItems = [];
-    _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
-    _initialRender = false;
-    _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
-    _actionsPosition = ACTIONS_POSITIONS.default;
-    _actionsVariant = ACTIONS_VARIANTS.default;
+    _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
+    _indicatorVariant = INDICATOR_VARIANTS.default;
+    _scrollDuration = DEFAULT_SCROLL_DURATION;
 
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
     autoScrollTimeOut;
     autoScrollOn;
+    columnsCount = {
+        default: 1
+    };
+    currentPanelIndex = 0;
+    currentItemsPerPanel;
+    initialRender = true;
     panelItems = [];
     paginationItems = [];
     panelStyle;
+    resizeObserver;
 
     renderedCallback() {
-        if (!this._initialRender) {
+        if (this.initialRender) {
             this.initCarousel();
             if (!this.disableAutoScroll) {
                 this.play();
             }
         }
-        this._initialRender = true;
+
+        if (!this.resizeObserver && this.carouselIsResponsive) {
+            this.initWrapObserver();
+        }
+
+        this.computeItemsPerPanel();
+        this.initialRender = false;
+    }
+
+    connectedCallback() {
+        this._connected = true;
+    }
+
+    disconnectedCallback() {
+        this._connected = false;
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+            this.resizeObserver = undefined;
+        }
     }
 
     /*
@@ -297,7 +320,7 @@ export default class Carousel extends LightningElement {
                 actions: item.actions || []
             });
         });
-        if (this._initialRender) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
@@ -315,18 +338,84 @@ export default class Carousel extends LightningElement {
     }
 
     set itemsPerPanel(value) {
-        this._itemsPerPanel = Number(
-            normalizeString(
-                typeof value === 'number' ? value.toString() : value,
-                {
-                    fallbackValue: '1',
-                    validValues: ITEMS_PER_PANEL
-                }
-            )
-        );
-        if (this._initialRender) {
-            this.initCarousel();
+        if (ITEMS_PER_PANEL.includes(value)) {
+            this._itemsPerPanel = value;
+        } else {
+            this._itemsPerPanel = 1;
         }
+
+        this.columnsCount.default = this._itemsPerPanel;
+        this.computeItemsPerPanel();
+    }
+
+    /**
+     * Auto scroll delay. The default is 5 seconds, after which the next image is displayed.
+     *
+     * @type {number}
+     * @public
+     * @default 5
+     */
+    @api
+    get scrollDuration() {
+        return this._scrollDuration;
+    }
+    set scrollDuration(value) {
+        const duration = Number(value);
+        this._scrollDuration =
+            isNaN(duration) || duration <= 0
+                ? DEFAULT_SCROLL_DURATION
+                : duration;
+    }
+
+    /**
+     * Number of items to be displayed at a time when the component is 480px wide or more. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get smallItemsPerPanel() {
+        return this._smallItemsPerPanel;
+    }
+
+    set smallItemsPerPanel(value) {
+        this._smallItemsPerPanel = this.normalizeItemsPerPanel(value, 'small');
+        this.computeItemsPerPanel();
+    }
+
+    /**
+     * Number of items to be displayed at a time when the component is 768px wide or more. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumItemsPerPanel() {
+        return this._mediumItemsPerPanel;
+    }
+
+    set mediumItemsPerPanel(value) {
+        this._mediumItemsPerPanel = this.normalizeItemsPerPanel(
+            value,
+            'medium'
+        );
+        this.computeItemsPerPanel();
+    }
+
+    /**
+     * Number of items to be displayed at a time in the carousel when the component is 1024px wide or more. Maximum of 10 items per panel.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get largeItemsPerPanel() {
+        return this._largeItemsPerPanel;
+    }
+
+    set largeItemsPerPanel(value) {
+        this._largeItemsPerPanel = this.normalizeItemsPerPanel(value, 'large');
+        this.computeItemsPerPanel();
     }
 
     /*
@@ -336,32 +425,36 @@ export default class Carousel extends LightningElement {
      */
 
     /**
-     * Verify if actions are present.
+     * HTML element for the carousel container.
+     *
+     * @type {HTMLElement}
      */
-    get hasActions() {
-        return this.items.map((item) => {
-            return item.actions && item.actions.length > 0;
-        });
+    get carouselContainer() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-carousel-container"]'
+        );
     }
 
     /**
-     * If navigation is not infinite - set previous panel as disabled.
+     * Returns true if the carousel is responsive.
      *
-     * @type {number}
+     * @type {boolean}
      */
-    get previousPanelNavigationDisabled() {
-        return !this.isInfinite ? this.activeIndexPanel === 0 : null;
+    get carouselIsResponsive() {
+        const { small, medium, large } = this.columnsCount;
+        return (
+            small !== undefined || medium !== undefined || large !== undefined
+        );
     }
 
     /**
-     * If not infinite - set next panel as disabled.
+     * Sets the width of each item, depending on the number of items per panel
      *
-     * @type {number}
+     * @type {string}
      */
-    get nextPanelNavigationDisabled() {
-        return !this.isInfinite
-            ? this.activeIndexPanel === this.paginationItems.length - 1
-            : null;
+    get carouselItemStyle() {
+        const itemWidth = 100 / this.currentItemsPerPanel;
+        return `flex-basis: ${itemWidth}%; width: ${itemWidth}%`;
     }
 
     /**
@@ -376,47 +469,32 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Sets the width of each item, depending on the number of items per panel
+     * Verify if actions are present.
      */
-    get carouselItemStyle() {
-        const flexBasis = 100 / this.itemsPerPanel;
-        return `flex-basis: ${flexBasis}%;`;
+    get hasActions() {
+        return this.items.some(
+            (item) => item.actions && item.actions.length > 0
+        );
     }
 
     /**
-     * Initialize Pagination items method.
+     * If not infinite - set next panel as disabled.
      *
-     * @param {number} numberOfPanels
+     * @type {number}
      */
-    initializePaginationItems(numberOfPanels) {
-        this.paginationItems = [];
-        for (let i = 0; i < numberOfPanels; i++) {
-            const id = generateUUID();
-            const isItemActive = i === this.activeIndexPanel;
-            if (this._indicatorVariant === 'base') {
-                this.paginationItems.push({
-                    key: id,
-                    id: `pagination-item-${i}`,
-                    className: isItemActive
-                        ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE
-                        : INDICATOR_ACTION,
-                    tabIndex: isItemActive ? '0' : '-1',
-                    ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
-                    tabTitle: `Tab ${i}`
-                });
-            } else if (this._indicatorVariant === 'shaded') {
-                this.paginationItems.push({
-                    key: i,
-                    id: `pagination-item-${i}`,
-                    className: isItemActive
-                        ? INDICATOR_ACTION_SHADED + ' ' + SLDS_ACTIVE_SHADED
-                        : INDICATOR_ACTION_SHADED,
-                    tabIndex: isItemActive ? '0' : '-1',
-                    ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
-                    tabTitle: `Tab ${i}`
-                });
-            }
-        }
+    get nextPanelNavigationDisabled() {
+        return !this.isInfinite
+            ? this.activeIndexPanel === this.paginationItems.length - 1
+            : null;
+    }
+
+    /**
+     * If navigation is not infinite - set previous panel as disabled.
+     *
+     * @type {number}
+     */
+    get previousPanelNavigationDisabled() {
+        return !this.isInfinite ? this.activeIndexPanel === 0 : null;
     }
 
     /*
@@ -526,47 +604,44 @@ export default class Carousel extends LightningElement {
      */
 
     /**
-     * Initialize current panel method.
-     *
-     * @param {number} numberOfPanels
+     * Computes the items per panel.
      */
-    initializeCurrentPanel(numberOfPanels) {
-        const firstPanel = parseInt(this.currentPanel, 10);
-        this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
-    }
-
-    /**
-     * Creates an array of panels, each containing an array of items.
-     */
-    initializePanels() {
-        const panelItems = [];
-        let panelIndex = 0;
-        for (
-            let i = 0;
-            i < this._carouselItems.length;
-            i += this.itemsPerPanel
-        ) {
-            panelItems.push({
-                index: panelIndex,
-                key: `panel-${panelIndex}`,
-                items: this._carouselItems.slice(i, i + this.itemsPerPanel),
-                ariaHidden:
-                    this.activeIndexPanel === i ? FALSE_STRING : TRUE_STRING
-            });
-            panelIndex += 1;
+    computeItemsPerPanel() {
+        if (!this.carouselContainer) {
+            return;
         }
-        this.panelItems = panelItems;
-        this.panelStyle = `transform: translateX(-${
-            this.activeIndexPanel * 100
-        }%);`;
-    }
 
-    /**
-     * Call the auto scroll.
-     */
-    startAutoScroll() {
-        this.next();
-        this.play();
+        const previousItemsPerPanel = this.currentItemsPerPanel;
+        const carouselWidth = this.carouselContainer.offsetWidth;
+
+        let calculatedItemsPerPanel;
+
+        if (
+            this.largeItemsPerPanel > 0 &&
+            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.large
+        ) {
+            calculatedItemsPerPanel = this.columnsCount.large;
+        } else if (
+            this.mediumItemsPerPanel > 0 &&
+            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.medium
+        ) {
+            calculatedItemsPerPanel = this.columnsCount.medium;
+        } else if (
+            this.smallItemsPerPanel > 0 &&
+            carouselWidth >= MEDIA_QUERY_BREAKPOINTS.small
+        ) {
+            calculatedItemsPerPanel = this.columnsCount.small;
+        } else {
+            calculatedItemsPerPanel = this.columnsCount.default;
+        }
+
+        if (
+            calculatedItemsPerPanel !== previousItemsPerPanel &&
+            this._connected
+        ) {
+            this.currentItemsPerPanel = calculatedItemsPerPanel;
+            this.initCarousel();
+        }
     }
 
     /**
@@ -618,6 +693,106 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Initialize Carousel method.
+     */
+    initCarousel() {
+        const numberOfPanels = Math.ceil(
+            this._carouselItems.length / this.currentItemsPerPanel
+        );
+
+        this.initializeCurrentPanel(numberOfPanels);
+        this.initializePaginationItems(numberOfPanels);
+        this.initializePanels();
+    }
+
+    /**
+     * Initialize current panel method.
+     *
+     * @param {number} numberOfPanels
+     */
+    initializeCurrentPanel(numberOfPanels) {
+        const currentPanelIndex = this.currentPanel
+            ? this.items.findIndex((item) => item.name === this.currentPanel)
+            : 0;
+        const firstPanel = parseInt(currentPanelIndex, 10);
+        this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
+    }
+
+    /**
+     * Initialize Pagination items method.
+     *
+     * @param {number} numberOfPanels
+     */
+    initializePaginationItems(numberOfPanels) {
+        this.paginationItems = [];
+        const indicatorVariantClass =
+            this.indicatorVariant === 'base'
+                ? INDICATOR_ACTION
+                : INDICATOR_ACTION_SHADED;
+        const activeIndicatorClass =
+            this.indicatorVariant === 'base' ? SLDS_ACTIVE : SLDS_ACTIVE_SHADED;
+
+        for (let i = 0; i < numberOfPanels; i++) {
+            const id = generateUUID();
+            const isItemActive = i === this.activeIndexPanel;
+            this.paginationItems.push({
+                key: id,
+                id: `pagination-item-${i}`,
+                className: isItemActive
+                    ? `${indicatorVariantClass} ${activeIndicatorClass}`
+                    : indicatorVariantClass,
+                tabIndex: isItemActive ? '0' : '-1',
+                ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
+                tabTitle: `Tab ${i}`
+            });
+        }
+    }
+
+    /**
+     * Setup the carousel resize observer. Used to update the number of items per panel when the carousel is resized.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initWrapObserver() {
+        if (!this.carouselContainer) {
+            return;
+        }
+        this.resizeObserver = new AvonniResizeObserver(
+            this.carouselContainer,
+            this.computeItemsPerPanel.bind(this)
+        );
+    }
+
+    /**
+     * Creates an array of panels, each containing an array of items.
+     */
+    initializePanels() {
+        const panelItems = [];
+        let panelIndex = 0;
+        for (
+            let i = 0;
+            i < this._carouselItems.length;
+            i += this.currentItemsPerPanel
+        ) {
+            panelItems.push({
+                index: panelIndex,
+                key: `panel-${panelIndex}`,
+                items: this._carouselItems.slice(
+                    i,
+                    i + this.currentItemsPerPanel
+                ),
+                ariaHidden:
+                    this.activeIndexPanel === i ? FALSE_STRING : TRUE_STRING
+            });
+            panelIndex += 1;
+        }
+        this.panelItems = panelItems;
+        this.panelStyle = `transform: translateX(-${
+            this.activeIndexPanel * 100
+        }%);`;
+    }
+
+    /**
      * Key down event handler.
      *
      * @param {Event}
@@ -663,15 +838,15 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Initialize Carousel method.
+     * Ensure items per panel is an accepted value, otherwise unset it.
      */
-    initCarousel() {
-        const numberOfPanels = Math.ceil(
-            this._carouselItems.length / this.itemsPerPanel
-        );
-        this.initializeCurrentPanel(numberOfPanels);
-        this.initializePaginationItems(numberOfPanels);
-        this.initializePanels();
+    normalizeItemsPerPanel(value, size) {
+        if (ITEMS_PER_PANEL.includes(value)) {
+            this.columnsCount[size] = value;
+            return value;
+        }
+        this.columnsCount[size] = undefined;
+        return undefined;
     }
 
     /**
@@ -704,16 +879,32 @@ export default class Carousel extends LightningElement {
         activePanelItem.ariaHidden = FALSE_STRING;
         activePaginationItem.tabIndex = '0';
         activePaginationItem.ariaHidden = TRUE_STRING;
-        if (this._indicatorVariant === 'base') {
+        if (this.indicatorVariant === 'base') {
             activePaginationItem.className =
                 INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
-        } else if (this._indicatorVariant === 'shaded') {
+        } else if (this.indicatorVariant === 'shaded') {
             activePaginationItem.className =
                 INDICATOR_ACTION_SHADED + ' ' + SLDS_ACTIVE_SHADED;
         }
 
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         this.activeIndexPanel = panelIndex;
+    }
+
+    /**
+     * Call the auto scroll.
+     */
+    startAutoScroll() {
+        this.next();
+        this.play();
+    }
+
+    /**
+     * Auto Scroll toggler method.
+     */
+    toggleAutoScroll() {
+        /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
+        this.autoScrollOn ? this.pause() : this.play();
     }
 
     /**
@@ -729,18 +920,10 @@ export default class Carousel extends LightningElement {
         activePanelItem.ariaHidden = TRUE_STRING;
         activePaginationItem.tabIndex = '-1';
         activePaginationItem.ariaSelected = FALSE_STRING;
-        if (this._indicatorVariant === 'shaded') {
+        if (this.indicatorVariant === 'shaded') {
             activePaginationItem.className = INDICATOR_ACTION_SHADED;
         } else {
             activePaginationItem.className = INDICATOR_ACTION;
         }
-    }
-
-    /**
-     * Auto Scroll toggler method.
-     */
-    toggleAutoScroll() {
-        /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
-        this.autoScrollOn ? this.pause() : this.play();
     }
 }

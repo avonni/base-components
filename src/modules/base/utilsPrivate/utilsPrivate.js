@@ -30,11 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export { assert } from './assert';
 export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
-export { deepCopy, arraysEqual, ArraySlice } from './utility';
+export { deepCopy, arraysEqual, ArraySlice, equal } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
@@ -47,6 +46,7 @@ export {
 export {
     generateColors,
     colorType,
+    isLightColor,
     RGBToHex,
     RGBAToHexA,
     hexToRGB,
@@ -79,12 +79,13 @@ export { observePosition } from './observers';
 export { hasOnlyAllowedVideoIframes } from './videoUtils';
 export {
     addToDate,
-    containsAllowedDateTimes,
     dateTimeObjectFrom,
-    nextAllowedDay,
-    nextAllowedMonth,
-    nextAllowedTime,
-    numberOfUnitsBetweenDates
+    getStartOfWeek,
+    getWeekday,
+    formatDateFromStyle,
+    getWeekNumber,
+    numberOfUnitsBetweenDates,
+    removeFromDate
 } from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';
 
@@ -175,4 +176,25 @@ export function animationFrame() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         window.requestAnimationFrame(resolve);
     });
+}
+
+export const BUTTON_GROUP_ORDER = {
+    FIRST: 'first',
+    MIDDLE: 'middle',
+    LAST: 'last',
+    ONLY: 'only'
+};
+
+/**
+ * returns the SLDS class for the given group order
+ * @param groupOrder
+ * @returns {string}
+ */
+export function buttonGroupOrderClass(groupOrder) {
+    return {
+        [BUTTON_GROUP_ORDER.FIRST]: 'slds-button_first',
+        [BUTTON_GROUP_ORDER.MIDDLE]: 'slds-button_middle',
+        [BUTTON_GROUP_ORDER.LAST]: 'slds-button_last',
+        [BUTTON_GROUP_ORDER.ONLY]: 'single-button'
+    }[groupOrder];
 }

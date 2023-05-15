@@ -36,7 +36,7 @@ import PrimitiveTreeItem from '../primitiveTreeItem';
 const ACTIONS = [
     {
         label: 'Some action',
-        name: 'edit',
+        name: 'Standard.Tree.Edit',
         iconName: 'utility:apps',
         visible: true
     },
@@ -47,7 +47,7 @@ const ACTIONS = [
     },
     {
         label: 'Some third action',
-        name: 'delete'
+        name: 'Standard.Tree.Delete'
     },
     {
         label: 'Some fourth action',
@@ -487,7 +487,7 @@ describe('Primitive Tree Item', () => {
         element.actions = [
             {
                 label: 'Edit',
-                name: 'edit',
+                name: 'Standard.Tree.Edit',
                 visible: true,
                 iconName: 'utility:edit'
             }
@@ -704,10 +704,10 @@ describe('Primitive Tree Item', () => {
         element.level = 3;
 
         return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                '.avonni-primitive-tree-item__item'
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
             );
-            expect(item.style.cssText).toContain(
+            expect(wrapper.style.cssText).toContain(
                 '--avonni-tree-item-spacing-inline-left: 3rem;'
             );
         });
@@ -1132,9 +1132,9 @@ describe('Primitive Tree Item', () => {
                     '[data-element-id="lightning-input-inline-label"]'
                 );
                 input.value = 'New label';
-                const keydown = new CustomEvent('keydown');
-                keydown.key = 'Enter';
-                input.dispatchEvent(keydown);
+                const keyup = new CustomEvent('keyup');
+                keyup.key = 'Enter';
+                input.dispatchEvent(keyup);
 
                 expect(element.label).toBe('New label');
                 expect(handler).toHaveBeenCalledTimes(1);
@@ -1268,7 +1268,9 @@ describe('Primitive Tree Item', () => {
                     'object'
                 );
                 expect(handler.mock.calls[0][0].detail.key).toBe('someKey');
-                expect(handler.mock.calls[0][0].detail.name).toBe('edit');
+                expect(handler.mock.calls[0][0].detail.name).toBe(
+                    'Standard.Tree.Edit'
+                );
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeTruthy();

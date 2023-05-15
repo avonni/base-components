@@ -35,7 +35,10 @@
 <template>
     <!-- Input label -->
     <p
-        class="slds-form-element__legend slds-form-element__label avonni-date-time-picker__label"
+        class="
+            slds-form-element__legend slds-form-element__label
+            avonni-date-time-picker__label
+        "
         if:false={hideLabel}
     >
         <abbr
@@ -59,7 +62,11 @@
         <!-- Current date range -->
         <lightning-layout-item flexibility="auto" padding="horizontal-small">
             <p
-                class="slds-text-heading_medium slds-m-bottom_small slds-grid slds-grid_vertical-align-center"
+                class="
+                    slds-text-heading_medium
+                    slds-m-bottom_small
+                    slds-grid slds-grid_vertical-align-center
+                "
             >
                 {currentDateRangeString}
             </p>
@@ -71,9 +78,9 @@
                 if:true={showTimeZone}
                 name="timezone"
                 label="Time zone"
-                value={selectedTimeZone}
+                value={timezone}
                 placeholder="Select time zone"
-                options={timeZones}
+                options={timezones}
                 variant="label-hidden"
                 class="slds-m-bottom_small avonni-date-time-picker__time-zone"
                 data-element-id="lightning-combobox"
@@ -125,6 +132,7 @@
                 name={name}
                 max={maxToString}
                 min={minToString}
+                timezone={timezone}
                 type="date"
                 value={datePickerValue}
                 variant="label-hidden"
@@ -135,7 +143,9 @@
     </lightning-layout>
 
     <template if:true={entirePeriodIsDisabled}>
-        <p if:false={isMonthly} data-element-id="p-empty-message">No available time slots for this period.</p>
+        <p if:false={isMonthly} data-element-id="p-empty-message">
+            No available time slots for this period.
+        </p>
     </template>
 
     <lightning-layout multiple-rows="true" pull-to-boundary="medium">
@@ -144,10 +154,11 @@
                 <!-- Monthly calendar -->
                 <c-calendar
                     value={firstWeekDayToString}
-                    disabled-dates={calendarDisabledDates}
+                    disabled-dates={disabledDateTimes}
                     disabled={disabled}
-                    max={max}
-                    min={min}
+                    max={computedMax}
+                    min={computedMin}
+                    timezone={timezone}
                     data-element-id="avonni-calendar"
                     onchange={handleDateChange}
                 ></c-calendar>
@@ -164,13 +175,20 @@
             <div class="slds-grid">
                 <template for:each={table} for:item="day">
                     <template if:true={day.show}>
-                        <div class={dayClass} key={day.key}>
+                        <div
+                            class={dayClass}
+                            key={day.key}
+                            data-element-id="div-day"
+                        >
                             <!-- Day label -->
                             <div
                                 if:true={day.label}
                                 aria-selected={day.selected}
                                 data-today={day.isToday}
-                                class="avonni-date-time-picker__day-label slds-p-around_medium"
+                                class="
+                                    avonni-date-time-picker__day-label
+                                    slds-p-around_medium
+                                "
                                 onblur={handleValueBlur}
                                 onfocus={handleValueFocus}
                             >
@@ -181,22 +199,33 @@
                                 <!-- Timeline variant -->
                                 <template if:true={isTimeline}>
                                     <div
-                                        class="slds-grid avonni-date-time-picker__timeline"
+                                        class="
+                                            slds-grid
+                                            avonni-date-time-picker__timeline
+                                        "
                                         key={time.hour}
                                     >
                                         <div
-                                            class="avonni-date-time-picker__timeline-hour-col slds-p-around_medium slds-text-align_center"
+                                            class="
+                                                avonni-date-time-picker__timeline-hour-col
+                                                slds-p-around_medium
+                                                slds-text-align_center
+                                            "
                                         >
                                             <lightning-formatted-date-time
                                                 value={time.hour}
-                                                time-zone={selectedTimeZone}
+                                                time-zone={timezone}
                                                 hour={timeFormatHour}
                                                 minute={timeFormatMinute}
                                                 second={timeFormatSecond}
                                                 hour12={timeFormatHour12}
                                             ></lightning-formatted-date-time>
                                         </div>
-                                        <div class="slds-col">
+                                        <div
+                                            class="
+                                                avonni-date-time-picker__flex-col
+                                            "
+                                        >
                                             <div class="slds-grid slds-wrap">
                                                 <template
                                                     for:each={time.times}
@@ -206,12 +235,18 @@
                                                         if:true={timelineTime.show}
                                                     >
                                                         <div
-                                                            class="avonni-date-time-picker__time"
+                                                            class="
+                                                                avonni-date-time-picker__time
+                                                            "
                                                             key={timelineTime.startTimeISO}
                                                         >
                                                             <button
                                                                 aria-selected={timelineTime.selected}
-                                                                class="avonni-date-time-picker__time-button slds-p-around_medium slds-theme_default"
+                                                                class="
+                                                                    avonni-date-time-picker__time-button
+                                                                    slds-p-around_medium
+                                                                    slds-theme_default
+                                                                "
                                                                 disabled={timelineTime.disabled}
                                                                 type="button"
                                                                 onclick={handleTimeSlotClick}
@@ -221,7 +256,7 @@
                                                             >
                                                                 <lightning-formatted-date-time
                                                                     value={timelineTime.startTimeISO}
-                                                                    time-zone={selectedTimeZone}
+                                                                    time-zone={timezone}
                                                                     hour={timeFormatHour}
                                                                     minute={timeFormatMinute}
                                                                     second={timeFormatSecond}
@@ -232,9 +267,11 @@
                                                                 >
                                                                     &nbsp;-&nbsp;
                                                                     <lightning-formatted-date-time
-                                                                        class="date-time-picker__formatted-end-time"
+                                                                        class="
+                                                                            date-time-picker__formatted-end-time
+                                                                        "
                                                                         value={timelineTime.endTimeISO}
-                                                                        time-zone={selectedTimeZone}
+                                                                        time-zone={timezone}
                                                                         hour={timeFormatHour}
                                                                         minute={timeFormatMinute}
                                                                         second={timeFormatSecond}
@@ -254,23 +291,30 @@
                                 <template if:false={isTimeline}>
                                     <template if:true={time.show}>
                                         <div
-                                            class="avonni-date-time-picker__time"
+                                            class="
+                                                avonni-date-time-picker__time
+                                            "
                                             key={time.startTimeISO}
                                         >
                                             <button
                                                 aria-selected={time.selected}
-                                                class="avonni-date-time-picker__time-button slds-p-around_medium slds-theme_default"
+                                                class="
+                                                    avonni-date-time-picker__time-button
+                                                    slds-p-around_medium
+                                                    slds-theme_default
+                                                "
                                                 disabled={time.disabled}
                                                 type="button"
                                                 aria-readonly={readOnly}
                                                 data-element-id="button-default"
+                                                data-time={time.startTimeISO}
                                                 onclick={handleTimeSlotClick}
                                                 onblur={handleValueBlur}
                                                 onfocus={handleValueFocus}
                                             >
                                                 <lightning-formatted-date-time
                                                     value={time.startTimeISO}
-                                                    time-zone={selectedTimeZone}
+                                                    time-zone={timezone}
                                                     hour={timeFormatHour}
                                                     minute={timeFormatMinute}
                                                     second={timeFormatSecond}
@@ -280,9 +324,11 @@
                                                 <template if:true={showEndTime}>
                                                     &nbsp;-&nbsp;
                                                     <lightning-formatted-date-time
-                                                        class="date-time-picker__formatted-end-time"
+                                                        class="
+                                                            date-time-picker__formatted-end-time
+                                                        "
                                                         value={time.endTimeISO}
-                                                        time-zone={selectedTimeZone}
+                                                        time-zone={timezone}
                                                         hour={timeFormatHour}
                                                         minute={timeFormatMinute}
                                                         second={timeFormatSecond}

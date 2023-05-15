@@ -63,14 +63,16 @@ describe('Expandable Section', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '[data-element-id="h3"]'
+                '[data-element-id="header"]'
             );
             expect(title.textContent).toBe('This is a title');
         });
     });
 
     it('Expandable Section: empty title and no collapsible', () => {
-        const header = element.shadowRoot.querySelector('.slds-section__title');
+        const header = element.shadowRoot.querySelector(
+            '[data-element-id="header"]'
+        );
         expect(header).toBeFalsy();
     });
 
@@ -94,7 +96,7 @@ describe('Expandable Section', () => {
             const section = element.shadowRoot.querySelector('.slds-section');
             expect(section.className).toContain('slds-is-open');
             const title = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '[data-element-id="header"]'
             );
             expect(title.className).not.toContain('slds-theme_shade');
             const spanTitle =
@@ -117,7 +119,7 @@ describe('Expandable Section', () => {
             const section = element.shadowRoot.querySelector('.slds-section');
             expect(section.className).toContain('slds-is-open');
             const title = element.shadowRoot.querySelector(
-                '.slds-section__title span'
+                '[data-element-id="header"] span'
             );
             expect(title).toBeTruthy();
 
@@ -136,7 +138,7 @@ describe('Expandable Section', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '[data-element-id="header"]'
             );
             expect(header.className).toContain('slds-theme_shade');
         });
@@ -148,7 +150,7 @@ describe('Expandable Section', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '[data-element-id="header"]'
             );
             expect(header.className).not.toContain('slds-theme_shade');
         });
@@ -160,12 +162,11 @@ describe('Expandable Section', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '[data-element-id="header"]'
             );
             expect(header.className).not.toContain('slds-theme_shade');
 
             const title = header.querySelector('.slds-section__title-action');
-            expect(title.classList).toContain('slds-theme_default');
             expect(title.classList).toContain(
                 'avonni-expandable-section__title-button_base'
             );
@@ -178,7 +179,7 @@ describe('Expandable Section', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '[data-element-id="header"]'
             );
             expect(header.className).not.toContain('slds-theme_shade');
 

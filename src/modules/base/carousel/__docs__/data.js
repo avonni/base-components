@@ -46,7 +46,7 @@ const items = [
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -64,7 +64,7 @@ const items = [
         name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -91,7 +91,7 @@ const items = [
         name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
@@ -112,7 +112,7 @@ const menuItems = [
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     },
@@ -128,7 +128,7 @@ const menuItems = [
         name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     },
@@ -152,10 +152,55 @@ const menuItems = [
         name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
-        imageAssistiveText: 'Apps',
+        imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         actions: menuActions
     }
 ];
 
-export { items, menuItems };
+const imageItems = [
+    {
+        name: '1',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '2',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '3',
+        imageAssistiveText: 'Salesforce Apps',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '4',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '5',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '6',
+        imageAssistiveText: 'Salesforce Apps',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        href: 'https://www.salesforce.com'
+    },
+    {
+        name: '7',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        href: 'https://www.salesforce.com'
+    }
+];
+
+export { items, menuItems, imageItems };

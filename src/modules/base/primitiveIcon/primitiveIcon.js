@@ -37,12 +37,19 @@ import standardTemplate from './primitiveIcon.html';
 import { getName, isValidName, polyfill } from 'c/iconUtils';
 import { fetchIconLibrary, hasIconLibrary, getIconLibrary } from './fetch';
 
-const ICON_SIZES = {valid:['xx-small', 'x-small', 'small', 'medium', 'large'] , default: 'medium'}
-const ICON_VARIANTS = {valid: ['bare', 'error', 'inverse', 'warning', 'success'], default: ''}
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const ICON_VARIANTS = {
+    valid: ['bare', 'error', 'inverse', 'warning', 'success'],
+    default: ''
+};
 
 export default class PrimitiveIcon extends LightningElement {
     @api src;
     @api svgClass;
+    @api svgStyle;
     @api size = ICON_SIZES.default;
     @api variant;
 

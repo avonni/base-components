@@ -71,6 +71,8 @@ describe('Primitive Pill', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.label).toBeUndefined();
+        expect(element.name).toBeUndefined();
+        expect(element.variant).toBe('base');
     });
 
     /*
@@ -87,18 +89,10 @@ describe('Primitive Pill', () => {
             const actionButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon"]'
             );
-            expect(actionButton).toBeFalsy();
-
-            const actions = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-menu-item"]'
-            );
-            expect(actions).toHaveLength(ACTIONS.length);
-            actions.forEach((action, index) => {
-                expect(action.disabled).toBe(ACTIONS[index].disabled);
-                expect(action.label).toBe(ACTIONS[index].label);
-                expect(action.prefixIconName).toBe(ACTIONS[index].iconName);
-                expect(action.value).toBe(ACTIONS[index].name);
-            });
+            expect(actionButton).toBeTruthy();
+            expect(actionButton.alternativeText).toBe('Actions menu');
+            expect(actionButton.disabled).toBeFalsy();
+            expect(actionButton.iconName).toBe('utility:down');
         });
     });
 
@@ -106,19 +100,12 @@ describe('Primitive Pill', () => {
         element.actions = [ACTIONS[0]];
 
         return Promise.resolve().then(() => {
-            const actions = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-menu-item"]'
-            );
-            expect(actions).toHaveLength(0);
-
             const actionButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon"]'
             );
-            expect(actionButton).toBeTruthy();
             expect(actionButton.alternativeText).toBe(ACTIONS[0].label);
             expect(actionButton.disabled).toBe(ACTIONS[0].disabled);
             expect(actionButton.iconName).toBe(ACTIONS[0].iconName);
-            expect(actionButton.value).toBe(ACTIONS[0].name);
         });
     });
 
@@ -127,7 +114,7 @@ describe('Primitive Pill', () => {
 
         return Promise.resolve().then(() => {
             const actionMenu = element.shadowRoot.querySelector(
-                '[data-group-name="action"]'
+                '[data-element-id="lightning-button-icon"]'
             );
             const focusSpy = jest.spyOn(actionMenu, 'focus');
             const event = new CustomEvent('keydown');
@@ -179,6 +166,9 @@ describe('Primitive Pill', () => {
 
         return Promise.resolve()
             .then(() => {
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-wrapper"]'
+                );
                 const span = element.shadowRoot.querySelector(
                     '[data-element-id="span-label"]'
                 );
@@ -190,13 +180,16 @@ describe('Primitive Pill', () => {
                 expect(link.href).toBe('https://avonni.app/');
                 expect(link.title).toBe('Some label');
                 expect(link.textContent).toBe('Some label');
-                expect(element.classList).toContain(
+                expect(wrapper.classList).toContain(
                     'avonni-primitive-pill__action'
                 );
 
                 element.href = null;
             })
             .then(() => {
+                const wrapper = element.shadowRoot.querySelector(
+                    '[data-element-id="div-wrapper"]'
+                );
                 const span = element.shadowRoot.querySelector(
                     '[data-element-id="span-label"]'
                 );
@@ -207,10 +200,35 @@ describe('Primitive Pill', () => {
                 expect(span).toBeTruthy();
                 expect(span.title).toBe('Some label');
                 expect(span.textContent).toBe('Some label');
-                expect(element.classList).not.toContain(
+                expect(wrapper.classList).not.toContain(
                     'avonni-primitive-pill__action'
                 );
             });
+    });
+
+    // variant
+    it('Primitive pill: variant = base', () => {
+        element.variant = 'base';
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-primitive-pill_list'
+            );
+        });
+    });
+
+    it('Primitive pill: variant = list', () => {
+        element.variant = 'list';
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain('avonni-primitive-pill_list');
+        });
     });
 
     /*
@@ -242,44 +260,50 @@ describe('Primitive Pill', () => {
 
     // actionclick
     it('Primitive pill: actionclick event', () => {
-        element.actions = ACTIONS;
+        element.actions = [ACTIONS[1]];
+        element.name = 'pill-name';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
 
-        return Promise.resolve()
-            .then(() => {
-                const action = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-menu-item"]'
-                );
-                action.dispatchEvent(
-                    new CustomEvent('select', {
-                        detail: {
-                            value: ACTIONS[1].name
-                        },
-                        bubbles: true
-                    })
-                );
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            action.click();
 
-                expect(handler).toHaveBeenCalledTimes(1);
-                const firstEvent = handler.mock.calls[0][0];
-                expect(firstEvent.detail.name).toBe(ACTIONS[1].name);
-                expect(firstEvent.bubbles).toBeTruthy();
-                expect(firstEvent.cancelable).toBeFalsy();
-                expect(firstEvent.composed).toBeFalsy();
+            expect(handler).toHaveBeenCalledTimes(1);
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(ACTIONS[1].name);
+            expect(call.detail.targetName).toBe('pill-name');
+            expect(call.bubbles).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+        });
+    });
 
-                element.actions = [ACTIONS[2]];
-            })
-            .then(() => {
-                const actionButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                actionButton.click();
+    // openactionmenu
+    it('Primitive pill: openactionmenu event', () => {
+        element.actions = ACTIONS;
+        element.name = 'pill-name';
 
-                expect(handler).toHaveBeenCalledTimes(2);
-                const secondEvent = handler.mock.calls[1][0];
-                expect(secondEvent.detail.name).toBe(ACTIONS[2].name);
-            });
+        const handler = jest.fn();
+        element.addEventListener('openactionmenu', handler);
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            action.click();
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.targetName).toBe('pill-name');
+            expect(call.detail.bounds).toEqual(action.getBoundingClientRect());
+            expect(call.bubbles).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+        });
     });
 
     // Event management relative to the pill container
@@ -288,14 +312,6 @@ describe('Primitive Pill', () => {
         element.href = 'https://avonni.app/';
 
         return Promise.resolve().then(() => {
-            const actionMenu = element.shadowRoot.querySelector(
-                '[data-group-name="action"]'
-            );
-            const clickEvent = new CustomEvent('click');
-            const spy = jest.spyOn(clickEvent, 'stopPropagation');
-            actionMenu.dispatchEvent(clickEvent);
-            expect(spy).toHaveBeenCalled();
-
             const link = element.shadowRoot.querySelector(
                 '[data-element-id="a-label"]'
             );

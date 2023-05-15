@@ -161,11 +161,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     set actionMenuIcon(icon) {
-        if (icon && icon.length > 0) {
-            this._actionMenuIcon = icon;
-        } else {
-            this._actionMenuIcon = DEFAULT_ICON_MENU_ICON;
-        }
+        this._actionMenuIcon = icon || DEFAULT_ICON_MENU_ICON;
     }
 
     @api
@@ -181,7 +177,6 @@ export default class PrimitiveAvatar extends LightningElement {
     /**
      * Entity
      */
-
     @api
     get entityIconName() {
         return this._entityIconName;
@@ -359,6 +354,19 @@ export default class PrimitiveAvatar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get actionMenuSize() {
+        switch (this.size) {
+            case 'x-large':
+                return 'x-small';
+            case 'large':
+                return 'xx-small';
+            case 'medium':
+                return 'xx-small';
+            default:
+                return 'small';
+        }
+    }
+
     get computedInitialsClass() {
         return classSet(
             'slds-avatar__initials avonni-avatar__initials_text-color'
@@ -376,6 +384,23 @@ export default class PrimitiveAvatar extends LightningElement {
         );
     }
 
+    get computedEntityInitialsClass() {
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.entityIconName))
+            .toString();
+    }
+
+    get computedActionMenuIcon() {
+        if (this.actions.length === 1 && this.actions[0].iconName) {
+            return this.actions[0].iconName;
+        }
+        return this.actionMenuIcon;
+    }
+
+    get groupedAvatar() {
+        return Array.from(this.classList).includes('slds-avatar-grouped');
+    }
+
     get showActions() {
         const { size, actions } = this;
         let _showAction = true;
@@ -388,29 +413,6 @@ export default class PrimitiveAvatar extends LightningElement {
             _showAction = false;
         }
         return _showAction;
-    }
-
-    get actionMenuSize() {
-        let _actionSize;
-        switch (this.size) {
-            case 'x-large':
-                _actionSize = 'x-small';
-                break;
-            case 'large':
-                _actionSize = 'xx-small';
-                break;
-            case 'medium':
-                _actionSize = 'xx-small';
-                break;
-            default:
-                _actionSize = 'small';
-                break;
-        }
-        return _actionSize;
-    }
-
-    get groupedAvatar() {
-        return this.template.host.classList.contains('slds-avatar-grouped');
     }
 
     get showAvatar() {
@@ -433,29 +435,19 @@ export default class PrimitiveAvatar extends LightningElement {
         return this.entitySrc || this.entityInitials || this.entityIconName;
     }
 
-    get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add(computeSldsClass(this.entityIconName))
-            .toString();
-    }
-
     _updateClassList() {
         const { size, variant, groupedAvatar } = this;
-        const wrapperClass = classSet('avonni-avatar slds-is-relative')
+        const wrapperClass = classSet(
+            'slds-is-relative avonni-avatar__display_inline-block'
+        )
             .add(`avonni-avatar_${variant}`)
-            .add({
-                'avonni-avatar_xx-small': size === 'xx-small',
-                'slds-avatar_x-small': size === 'x-small',
-                'slds-avatar_small': size === 'small',
-                'slds-avatar_medium': size === 'medium',
-                'slds-avatar_large': size === 'large',
-                'avonni-avatar_x-large': size === 'x-large',
-                'avonni-avatar_xx-large': size === 'xx-large'
-            });
+            .add(`avonni-avatar_${size}`);
 
-        const avatarClass = classSet('slds-avatar').add({
-            'slds-avatar_circle': variant === 'circle'
-        });
+        const avatarClass = classSet('avonni-avatar')
+            .add({
+                'avonni-avatar__border-radius_circle': variant === 'circle'
+            })
+            .add(computeSldsClass(this.fallbackIconName));
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
             'slds-avatar-grouped__icon': groupedAvatar
@@ -516,10 +508,12 @@ export default class PrimitiveAvatar extends LightningElement {
         const iconFullName =
             typeof entityIconName === 'string' ? entityIconName.trim() : ':';
         const iconCategory = iconFullName.split(':')[0];
-        const iconName = iconFullName.split(':')[1];
+        const iconName = iconFullName.split(':')[1]
+            ? iconFullName.split(':')[1].replace(/_/g, '-')
+            : '';
 
         this.entityClass = classSet(
-            `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
+            `avonni-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
         )
             .add(`avonni-avatar_${entityPosition}`)
             .add({
@@ -553,7 +547,7 @@ export default class PrimitiveAvatar extends LightningElement {
             new CustomEvent('actionclick', {
                 bubbles: true,
                 detail: {
-                    name: event.currentTarget.value
+                    name: event.currentTarget.value || event.detail.value
                 }
             })
         );

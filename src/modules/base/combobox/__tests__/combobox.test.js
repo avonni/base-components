@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import Combobox from 'c/combobox';
+import Combobox from 'avonni/combobox';
 import { options, actions, scopes, scopesGroups, groups } from './data';
 
 let element;
@@ -81,6 +81,7 @@ describe('Combobox', () => {
         expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.selectedOptionsDirection).toBe('horizontal');
         expect(element.sortableSelectedOptions).toBeFalsy();
+        expect(element.sortableSelectedOptionsIconName).toBeUndefined();
         expect(element.scopes).toMatchObject([]);
         expect(element.scopesGroups).toMatchObject([]);
         expect(element.search).toBeUndefined();
@@ -250,8 +251,12 @@ describe('Combobox', () => {
                 const pillContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-pill-container"]'
                 );
+                const modifiedOptions = JSON.parse(JSON.stringify(options));
+                modifiedOptions.forEach((option) => {
+                    option.name = option.value;
+                });
                 expect(pillContainer).toBeTruthy();
-                expect(pillContainer.items).toEqual(options);
+                expect(pillContainer.items).toEqual(modifiedOptions);
             });
     });
 
@@ -613,6 +618,35 @@ describe('Combobox', () => {
             });
     });
 
+    // sortable-selected-options-icon-name
+    // Depends on selectedOptionsDirection, isMultiSelect and options
+    it('Combobox: sortableSelectedOptionsIconName', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.sortableSelectedOptionsIconName = 'utility:user';
+        element.selectedOptionsDirection = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                expect(list.sortableIconName).toBe('utility:user');
+            });
+    });
+
     // validity
     // Depends on required
     it('Combobox: validity', () => {
@@ -774,6 +808,17 @@ describe('Combobox', () => {
         const spy = jest.spyOn(combobox, 'reportValidity');
 
         element.reportValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // resetLevel
+    it('Combobox: resetLevel method', () => {
+        const combobox = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+        const spy = jest.spyOn(combobox, 'resetLevel');
+
+        element.resetLevel();
         expect(spy).toHaveBeenCalled();
     });
 
@@ -1028,7 +1073,7 @@ describe('Combobox', () => {
         combobox.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: 'value-1'
+                    value: ['value-1']
                 }
             })
         );
@@ -1072,10 +1117,10 @@ describe('Combobox', () => {
                     new CustomEvent('reorder', {
                         detail: {
                             items: [
-                                options[0],
-                                options[4],
-                                options[1],
-                                options[3]
+                                { name: options[0].value },
+                                { name: options[4].value },
+                                { name: options[1].value },
+                                { name: options[3].value }
                             ]
                         }
                     })
@@ -1152,12 +1197,17 @@ describe('Combobox', () => {
                 list.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            item: options[2]
+                            name: 'remove',
+                            item: {
+                                label: 'Edge Communication',
+                                name: 'edge'
+                            },
+                            targetName: 'edge'
                         }
                     })
                 );
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mock.calls[0][0]).toBe(options[2].value);
+                expect(spy.mock.calls[0][0]).toBe('edge');
             });
     });
 });

@@ -97,6 +97,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        hideClearIcon: {
+            name: 'hide-clear-icon',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, it is not possible to clear a selected color using the input clear icon.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hideColorInput: {
             name: 'hide-color-input',
             control: {
@@ -108,13 +120,25 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        inline: {
+            name: 'inline',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover is deactivated and its content is directly shown on the page.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, a spinner is displayed to indicate that data is loading. ',
+                'If present, a spinner is displayed to indicate that data is loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -261,6 +285,50 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        paletteHideOutline: {
+            name: 'palette-hide-outline',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected palette swatch outline is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        paletteShowCheckmark: {
+            name: 'palette-show-checkmark',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the selected palette swatch shows a checkmark.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        paletteTileHeight: {
+            name: 'palette-tile-height',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the palette swatches tile height.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        paletteTileWidth: {
+            name: 'palette-tile-width',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the palette swatches tile width.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -338,6 +406,7 @@ export default {
         readOnly: false,
         isLoading: false,
         menuNubbin: false,
+        hideClearIcon: false,
         hideColorInput: false,
         opacity: false
     }
@@ -397,6 +466,13 @@ MenuNoInput.args = {
 
 export const Inline = Template.bind({});
 Inline.args = {
+    inline: true,
+    tokens,
+    variant: 'label-hidden'
+};
+
+export const LabelInline = Template.bind({});
+LabelInline.args = {
     label: 'Color label',
     fieldLevelHelp: 'The variant is "label-inline".',
     value: '#0a2399',
@@ -404,8 +480,8 @@ Inline.args = {
     menuVariant: 'container'
 };
 
-export const InlineNoInput = Template.bind({});
-InlineNoInput.args = {
+export const LabelInlineNoInput = Template.bind({});
+LabelInlineNoInput.args = {
     label: 'Color label',
     fieldLevelHelp:
         'The variant is "label-inline" and the color input is hidden.',

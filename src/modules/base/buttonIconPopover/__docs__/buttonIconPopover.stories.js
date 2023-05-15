@@ -203,11 +203,12 @@ export default {
             },
             options: [
                 'bare',
-                'container',
+                'bare-inverse',
                 'border',
                 'border-filled',
-                'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'brand',
+                'container'
             ],
             description:
                 'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
@@ -321,7 +322,7 @@ ContainerWithSmallPopoverError.args = {
     iconName: 'utility:error',
     iconClass: 'slds-icon-text-error',
     tooltip: 'Tooltip text',
-    variant: 'Container',
+    variant: 'container',
     popoverVariant: 'error',
     popoverSize: 'small'
 };

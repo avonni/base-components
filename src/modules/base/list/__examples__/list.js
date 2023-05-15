@@ -35,25 +35,43 @@ import Component from 'c/list';
 customElements.define('ac-base-list', Component.CustomElementConstructor);
 
 export const List = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
     actions,
+    alternativeText,
+    cols,
+    divider,
+    enableInfiniteLoading,
+    imageAttributes,
+    isLoading,
+    items,
+    label,
+    largeContainerCols,
+    loadMoreOffset,
+    mediaActions,
+    mediumContainerCols,
+    smallContainerCols,
+    sortable,
     sortableIconName,
     sortableIconPosition,
-    divider,
-    imageWidth
+    variant,
 }) => {
     const element = document.createElement('ac-base-list');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
     element.actions = actions;
+    element.alternativeText = alternativeText;
+    element.cols = cols;
+    element.divider = divider;
+    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.imageAttributes = imageAttributes;
+    element.isLoading = isLoading;
+    element.items = items;
+    element.label = label;
+    element.largeContainerCols = largeContainerCols;
+    element.loadMoreOffset = loadMoreOffset;
+    element.mediaActions = mediaActions;
+    element.mediumContainerCols = mediumContainerCols;
+    element.smallContainerCols = smallContainerCols;
+    element.sortable = sortable;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.imageWidth = imageWidth;
+    element.variant = variant;
     return element;
 };

@@ -3,13 +3,13 @@ import { TabBar } from '../__examples__/tabBar';
 export default {
     title: 'Example/Tab Bar',
     argTypes: {
-        labels: {
+        items: {
             control: {
                 type: 'object'
             },
-            description: 'List of tab labels used to separate information.',
+            description: 'Array of items',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'object[]' }
             }
         },
         tabsHidden: {
@@ -37,23 +37,29 @@ export default {
     }
 };
 
-const labels = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];
+const items = [
+    { label: 'Tab 1', name: 'tab1' },
+    { label: 'Tab 2', name: 'tab2' },
+    { label: 'Tab 3', name: 'tab3' },
+    { label: 'Tab 4', name: 'tab4' },
+    { label: 'Tab 5', name: 'tab5' }
+];
 
 const Template = (args) => TabBar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    labels: labels
+    items: items
 };
 
 export const BaseWithDefaultTab = Template.bind({});
 BaseWithDefaultTab.args = {
-    labels: labels,
-    defaultTab: 'Tab 2'
+    items: items,
+    defaultTab: 'tab2'
 };
 
 export const BaseWithTabsHidden = Template.bind({});
 BaseWithTabsHidden.args = {
-    labels: labels,
+    items: items,
     tabsHidden: 2
 };

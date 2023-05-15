@@ -33,9 +33,6 @@
 import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
 
-// not tested
-// timezone
-
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
 
@@ -45,20 +42,23 @@ describe('Input Date Range', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
         element = createElement('base-input-date-range', {
             is: InputDateRange
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
     });
 
     it('Input Date Range: Default attributes', () => {
-        expect(element.type).toBe('date');
         expect(element.dateStyle).toBe('medium');
-        expect(element.timeStyle).toBe('short');
-        expect(element.timezone).toBeUndefined();
+        expect(element.endDate).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.label).toBeUndefined();
@@ -66,11 +66,17 @@ describe('Input Date Range', () => {
         expect(element.labelStartTime).toBeUndefined();
         expect(element.labelEndDate).toBeUndefined();
         expect(element.labelEndTime).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
-        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
-        expect(element.endDate).toBeUndefined();
+        expect(element.timeStyle).toBe('short');
+        expect(element.timezone).toBeUndefined();
+        expect(element.type).toBe('date');
+        expect(element.value).toMatchObject({
+            endDate: undefined,
+            startDate: undefined
+        });
         expect(element.validity).toMatchObject({});
         expect(element.variant).toBe('standard');
     });
@@ -179,10 +185,9 @@ describe('Input Date Range', () => {
     //time style
     it('Input Date Range: date time style short', () => {
         element.type = 'datetime';
+        element.timeStyle = 'short';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -191,8 +196,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('short');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -201,8 +204,6 @@ describe('Input Date Range', () => {
         element.timeStyle = 'medium';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -211,8 +212,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('medium');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -221,8 +220,6 @@ describe('Input Date Range', () => {
         element.timeStyle = 'long';
         element.startDate = startDate;
         element.endDate = endDate;
-        const startTime = '10:00';
-        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -231,8 +228,6 @@ describe('Input Date Range', () => {
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('long');
             });
-            expect(lightningInputs[0].value).toBe(startTime);
-            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -261,6 +256,89 @@ describe('Input Date Range', () => {
             expect(helpText).toBeTruthy();
             expect(helpText.content).toBe('This is a field level help text');
         });
+    });
+
+    // keyboard access
+    it('Input Date Range: open start calendar with keyboard', () => {
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: open and escape start calendar with keyboard on icon', () => {
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeTruthy();
+            })
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'Escape',
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: open and escape end calendar with keyboard on icon', () => {
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            })
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'Escape',
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeFalsy();
+            });
     });
 
     // label
@@ -365,6 +443,380 @@ describe('Input Date Range', () => {
         });
     });
 
+    it('Input Date Range: Case: SELECT_ONLY_START', () => {
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                startCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/25/2021')],
+                            clickedDate: new Date('7/25/2021')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2021'),
+                    endDate: undefined
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_ONLY_END', () => {
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                endCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/25/2021')],
+                            clickedDate: new Date('7/25/2021')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: undefined,
+                    endDate: new Date('7/25/2021')
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeTruthy();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_NEW_START', () => {
+        element.startDate = new Date('7/15/2021');
+        element.endDate = new Date('7/30/2021');
+
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                startCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/25/2021')],
+                            clickedDate: new Date('7/25/2021')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2021'),
+                    endDate: new Date('7/30/2021')
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_NEW_END', () => {
+        element.startDate = new Date('7/20/2021');
+        element.endDate = new Date('7/25/2021');
+
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                endCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [
+                                new Date('7/20/2021'),
+                                new Date('7/27/2021')
+                            ],
+                            clickedDate: new Date('7/27/2021')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/20/2021'),
+                    endDate: new Date('7/27/2021')
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_START_ABOVE_END', () => {
+        element.startDate = new Date('7/15/2022');
+        element.endDate = new Date('7/20/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/15/2022'),
+                    endDate: new Date('7/20/2022')
+                });
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                startCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/26/2022')],
+                            clickedDate: new Date('7/26/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/26/2022'),
+                    endDate: null
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_END_BELOW_START', () => {
+        element.startDate = new Date('7/25/2022');
+        element.endDate = new Date('7/28/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2022'),
+                    endDate: new Date('7/28/2022')
+                });
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                endCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/22/2022')],
+                            clickedDate: new Date('7/22/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: null,
+                    endDate: new Date('7/22/2022')
+                });
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                expect(startCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: Case: DESELECT_START', () => {
+        element.startDate = new Date('7/15/2022');
+        element.endDate = new Date('7/20/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/15/2022'),
+                    endDate: new Date('7/20/2022')
+                });
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                startCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/20/2022')],
+                            clickedDate: new Date('7/15/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: null,
+                    endDate: new Date('7/20/2022')
+                });
+                jest.runAllTimers();
+                expect(startCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: Case: DESELECT_END', () => {
+        element.startDate = new Date('7/25/2022');
+        element.endDate = new Date('7/28/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2022'),
+                    endDate: new Date('7/28/2022')
+                });
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                endCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/25/2022')],
+                            clickedDate: new Date('7/28/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2022'),
+                    endDate: null
+                });
+                jest.runAllTimers();
+                expect(endCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_START_EQUAL_END', () => {
+        element.startDate = new Date('7/15/2022');
+        element.endDate = new Date('7/20/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/15/2022'),
+                    endDate: new Date('7/20/2022')
+                });
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                startCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/20/2022')],
+                            clickedDate: new Date('7/20/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/20/2022'),
+                    endDate: new Date('7/20/2022')
+                });
+            });
+    });
+
+    it('Input Date Range: Case: SELECT_END_EQUAL_START', () => {
+        element.startDate = new Date('7/25/2022');
+        element.endDate = new Date('7/28/2022');
+
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2022'),
+                    endDate: new Date('7/28/2022')
+                });
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date"]'
+                );
+                endCalendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: [new Date('7/25/2022')],
+                            clickedDate: new Date('7/25/2022')
+                        }
+                    })
+                );
+                expect(element.value).toMatchObject({
+                    startDate: new Date('7/25/2022'),
+                    endDate: new Date('7/25/2022')
+                });
+            });
+    });
+
     // required
     it('Input Date Range: required', () => {
         element.required = true;
@@ -388,6 +840,7 @@ describe('Input Date Range', () => {
                 element.focus();
                 element.blur();
                 element.showHelpMessageIfInvalid();
+                jest.runAllTimers();
             })
             .then(() => {
                 const lightningInputs = element.shadowRoot.querySelectorAll(
@@ -408,6 +861,83 @@ describe('Input Date Range', () => {
                 );
                 expect(message.textContent).toBe('Missing value!');
             });
+    });
+
+    // timezone
+    it('Input Date Range: timezone', () => {
+        element.timezone = 'Asia/Shanghai';
+        element.type = 'datetime';
+        element.dateStyle = 'short';
+        element.startDate = '2022-08-16T04:00+08:00';
+        element.endDate = '2022-08-20T15:00+08:00';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const startDateInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                expect(startDateInput.value).toBe('8/16/2022');
+
+                const startTimeInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input-start-time"]'
+                );
+                expect(startTimeInput.value).toBe('04:00:00.000');
+
+                const endDateInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-end-date"]'
+                );
+                expect(endDateInput.value).toBe('8/20/2022');
+                const endTimeInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input-end-time"]'
+                );
+                expect(endTimeInput.value).toBe('15:00:00.000');
+
+                startDateInput.click();
+            })
+            .then(() => {
+                const calendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date"]'
+                );
+                calendar.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            value: ['2022-08-16T00:00:00.000+08:00']
+                        }
+                    })
+                );
+
+                expect(handler).toHaveBeenCalled();
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.startDate).toBe('2022-08-16T04:00:00.000+08:00');
+                expect(detail.endDate).toBe('2022-08-20T15:00:00.000+08:00');
+            });
+    });
+
+    it('Input Date Range: no timezone with value that has a time zone', () => {
+        element.type = 'datetime';
+        element.dateStyle = 'short';
+        element.startDate = '2022-08-16T04:00:00.000+08:00';
+        const start = new Date('2022-08-16T04:00:00.000+08:00');
+        const date = start.getDate();
+        const year = start.getFullYear();
+        const month = start.getMonth() + 1;
+        const time = `${start.toTimeString().substring(0, 5)}:00.000`;
+        const formattedDate = `${month}/${date}/${year}`;
+
+        return Promise.resolve().then(() => {
+            const dateInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-start-date"]'
+            );
+            expect(dateInput.value).toBe(formattedDate);
+
+            const timeInput = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-start-time"]'
+            );
+            expect(timeInput.value).toBe(time);
+        });
     });
 
     // variant

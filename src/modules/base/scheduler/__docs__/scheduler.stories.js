@@ -33,217 +33,23 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
-    oneColumn,
-    rows,
+    resources,
     headers,
     events,
+    eventsWithExtraKeys,
     eventsThemed,
     eventsWithLabels,
     disabledDatesTimes,
     referenceLines,
     start,
-    lotsOfEvents,
-    lotsOfRows,
-    basicEvents
+    basicEvents,
+    oneColumn,
+    longEvents
 } from './data';
 
 export default {
     title: 'Example/Scheduler',
     argTypes: {
-        start: {
-            control: {
-                type: 'date'
-            },
-            description:
-                'Specifies the minimum date the calendar can show. It can be a Date object, timestamp, or an ISO8601 formatted string.',
-            table: {
-                type: { summary: 'object' },
-                defaultValue: { summary: 'Date()' },
-                category: 'Available dates'
-            }
-        },
-        headers: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'minuteAndHour',
-                'minuteHourAndDay',
-                'hourAndDay',
-                'hourDayAndWeek',
-                'dayAndWeek',
-                'dayLetterAndWeek',
-                'dayWeekAndMonth',
-                'weekAndMonth',
-                'weekMonthAndYear',
-                'monthAndYear',
-                'quartersAndYear',
-                'fiveYears'
-            ],
-            description:
-                'Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. ',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'hourAndDay' }
-            }
-        },
-        customHeaders: {
-            name: 'custom-headers',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of date/time scheduler header objects. If present, it will overwrite the headers.',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
-        columns: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of datatable column objects. The columns are displayed to the left of the schedule.',
-            table: {
-                type: { summary: 'object' }
-            }
-        },
-        resizeColumnDisabled: {
-            name: 'resize-column-disabled',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, column resizing is disabled.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        collapseDisabled: {
-            name: 'collapse-disabled',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the schedule column is not collapsible or expandable.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        rows: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of datatable data objects. Each object represents a row of the scheduler.',
-            table: {
-                type: { summary: 'object' }
-            }
-        },
-        rowsKeyField: {
-            name: 'rows-key-field',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Name of a key of the row objects. This key needs to be present in all row objects. Its value needs to be unique to a row, as it will be used as the row identifier.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        timeSpan: {
-            name: 'time-span',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
-            table: {
-                type: { summary: 'object' },
-                defaultValue: { summary: "{ unit: 'hour', span: 12 }" }
-            }
-        },
-        events: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of event objects.',
-            table: {
-                type: { summary: 'object' },
-                category: 'Events'
-            }
-        },
-        readOnly: {
-            name: 'read-only',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, a loading spinner will be visible.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        loadingStateAlternativeText: {
-            name: 'loading-state-alternative-text',
-            control: {
-                type: 'text'
-            },
-            description: 'Alternative text of the loading spinner.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Loading' }
-            }
-        },
-        recurrentEditModes: {
-            name: 'recurrent-edit-modes',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Allowed edition modes for recurrent events. Available options are: - "all": All recurrent event occurrences will be updated when a change is made to one occurrence. - "one": Only the selected occurrence will be updated when a change is made.',
-            table: {
-                type: { summary: 'string[]' },
-                defaultValue: { summary: ['all', 'one'] },
-                category: 'Events'
-            }
-        },
-        referenceLines: {
-            name: 'reference-lines',
-            control: {
-                type: 'object'
-            },
-            description: 'Array of reference line objects.',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
-        availableTimeFrames: {
-            name: 'available-time-frames',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available. \nEach time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.',
-            table: {
-                type: { summary: 'object' },
-                defaultValue: { summary: "['00:00-23:59']" },
-                category: 'Available dates'
-            }
-        },
         availableDaysOfTheWeek: {
             name: 'available-days-of-the-week',
             control: {
@@ -272,6 +78,86 @@ export default {
                 category: 'Available dates'
             }
         },
+        availableTimeFrames: {
+            name: 'available-time-frames',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available. \nEach time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: { summary: "['00:00-23:59']" },
+                category: 'Available dates'
+            }
+        },
+        collapseDisabled: {
+            name: 'collapse-disabled',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the schedule column is not collapsible or expandable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        columns: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of datatable column objects. The columns are displayed to the left of the schedule.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        contextMenuEventActions: {
+            name: 'context-menu-event-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: 'edit and delete actions',
+                    detail: `[{ name: 'Standard.Scheduler.EditEvent', label: 'Edit', iconName: 'utility:edit' }, { name: 'Standard.Scheduler.DeleteEvent', label: 'Delete', iconName: 'utility:delete' }]`
+                },
+                category: 'Events'
+            }
+        },
+        contextMenuEmptySpotActions: {
+            name: 'context-menu-empty-spot-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: 'Standard.Scheduler.AddEvent actions',
+                    detail: `[{ name: 'Standard.Scheduler.AddEvent', label: 'Add event', iconName: 'utility:add' }]`
+                }
+            }
+        },
+        customEventsPalette: {
+            name: 'custom-events-palette',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected. \nThe color strings have to be valid CSS color values.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Events'
+            }
+        },
         dateFormat: {
             name: 'date-format',
             control: {
@@ -285,6 +171,35 @@ export default {
                 defaultValue: { summary: 'ff' }
             }
         },
+        dialogLabels: {
+            name: 'dialog-labels',
+            control: {
+                type: 'object'
+            },
+            description: 'Labels used in the edit and delete dialogs.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: {
+                    summary: 'object containing key-label pairs',
+                    detail: `{
+                        title: 'Title',
+                        from: 'From',
+                        to: 'To',
+                        resources: 'Resources',
+                        saveButton: 'Save',
+                        saveOneRecurrent: 'Only this event',
+                        saveAllRecurrent: 'All events',
+                        editRecurrent: 'Edit recurring event.',
+                        cancelButton: 'Cancel',
+                        deleteButton: 'Delete',
+                        deleteTitle: 'Delete Event',
+                        deleteMessage: 'Are you sure you want to delete this event?'
+                        newEventTitle: 'New event'
+                    }`
+                },
+                category: 'Events'
+            }
+        },
         disabledDatesTimes: {
             name: 'disabled-dates-times',
             control: {
@@ -296,30 +211,26 @@ export default {
                 category: 'Available dates'
             }
         },
+        events: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of event objects.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Events'
+            }
+        },
         eventsLabels: {
             name: 'events-labels',
             control: {
                 type: 'object'
             },
             description:
-                'Labels of the events, by their position. Valid keys include: top, bottom, left, right, center. \nThe values can be the name of a row key, or the name of an event key. If the row and the event both have a key with the same name, the event value will be used.',
+                'Labels of the events. Valid keys include top, bottom, left, right and center. The value of each key should be a label object. \nTop, bottom, left and right labels are only supported for the timeline display with a horizontal variant.',
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: "{ center: { fieldName: 'title' } }" },
-                category: 'Events'
-            }
-        },
-        eventsTheme: {
-            name: 'events-theme',
-            control: {
-                type: 'select'
-            },
-            options: ['default', 'transparent', 'line', 'hollow', 'rounded'],
-            description:
-                'Theme of the events. Valid values include default, transparent, line, hollow and rounded.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'default' },
                 category: 'Events'
             }
         },
@@ -352,76 +263,287 @@ export default {
                 category: 'Events'
             }
         },
-        customEventsPalette: {
-            name: 'custom-events-palette',
+        eventsDisplayFields: {
+            name: 'events-display-fields',
             control: {
                 type: 'object'
             },
             description:
-                'Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected. \nThe color strings have to be valid CSS color values.',
+                'Array of data objects, displayed in the popover visible on hover on an event. See Output Data for valid keys. The value of each field should be a key of the selected event object.',
             table: {
-                type: { summary: 'object' },
+                type: { summary: 'object[]' },
                 category: 'Events'
             }
         },
-        contextMenuEventActions: {
-            name: 'context-menu-event-actions',
+        eventsTheme: {
+            name: 'events-theme',
+            control: {
+                type: 'select'
+            },
+            options: ['default', 'transparent', 'line', 'hollow', 'rounded'],
+            description:
+                'Theme of the events. Valid values include default, transparent, line, hollow and rounded.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'default' },
+                category: 'Events'
+            }
+        },
+        hiddenDisplays: {
+            name: 'hidden-displays',
             control: {
                 type: 'object'
             },
             description:
-                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.',
+                'Array of display names that should not appear in the toolbar options. Valid values include calendar, agenda and timeline.',
+            table: {
+                type: { summary: 'string[]' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        hideResourcesFilter: {
+            name: 'hide-resources-filter',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the resources filter is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        hideSidePanel: {
+            name: 'hide-side-panel',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        hideToolbar: {
+            name: 'hide-toolbar',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the toolbar is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, a loading spinner will be visible.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'Alternative text of the loading spinner.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading' }
+            }
+        },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        recurrentEditModes: {
+            name: 'recurrent-edit-modes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Allowed edition modes for recurrent events. Available options are: - "all": All recurrent event occurrences will be updated when a change is made to one occurrence. - "one": Only the selected occurrence will be updated when a change is made.',
+            table: {
+                type: { summary: 'string[]' },
+                defaultValue: { summary: ['all', 'one'] },
+                category: 'Events'
+            }
+        },
+        referenceLines: {
+            name: 'reference-lines',
+            control: {
+                type: 'object'
+            },
+            description: 'Array of reference line objects.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        resizeColumnDisabled: {
+            name: 'resize-column-disabled',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, column resizing is disabled.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        resources: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of resource objects. The resources can be bound to events.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        selectedDisplay: {
+            name: 'selected-display',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Selected display of the scheduler. Valid values include agenda, calendar and timeline.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'timeline' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        selectedResources: {
+            name: 'selected-resources',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of selected resources names. Only the events of the selected resources will be visible.',
+            table: {
+                type: { summary: 'string[]' }
+            }
+        },
+        selectedTimeSpan: {
+            name: 'selected-time-span',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Standard.Scheduler.DayTimeSpan' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        sidePanelPosition: {
+            name: 'side-panel-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        start: {
+            control: {
+                type: 'date'
+            },
+            description:
+                'Specifies the minimum date the calendar can show. It can be a Date object, timestamp, or an ISO8601 formatted string.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: { summary: 'Date()' },
+                category: 'Available dates'
+            }
+        },
+        toolbarActions: {
+            name: 'toolbar-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. If present, the actions will be shown in the toolbar.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Panels and Toolbar'
+            }
+        },
+        timeSpans: {
+            name: 'time-spans',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of time span objects. The time spans will be displayed in the toolbar. Only three options can be visible, the others will be listed in a button menu.',
             table: {
                 type: { summary: 'object[]' },
                 defaultValue: {
-                    summary: 'edit and delete actions',
-                    detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
+                    summary: `[
+                        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay', name: 'Standard.Scheduler.DayTimeSpan' },
+                        { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay', name: 'Standard.Scheduler.WeekTimeSpan' },
+                        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth', name: 'Standard.Scheduler.MonthTimeSpan' },
+                        { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth', name: 'Standard.Scheduler.YearTimeSpan' }
+                    ]`
                 },
-                category: 'Events'
+                category: 'Panels and Toolbar'
             }
         },
-        contextMenuEmptySpotActions: {
-            name: 'context-menu-empty-spot-actions',
+        timezone: {
             control: {
-                type: 'object'
+                type: 'text'
             },
             description:
-                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.',
+                "Time zone used, in a valid IANA format. If empty, the browser's time zone is used.",
             table: {
-                type: { summary: 'object[]' },
-                defaultValue: {
-                    summary: 'add-event actions',
-                    detail: `[{ name: 'add-event', label: 'Add event', iconName: 'utility:add' }]`
-                }
+                type: { summary: 'string' }
             }
         },
-        dialogLabels: {
-            name: 'dialog-labels',
+        variant: {
             control: {
-                type: 'object'
+                type: 'select'
             },
-            description: 'Labels used in the edit and delete dialogs.',
+            options: ['horizontal', 'vertical'],
+            description:
+                'Orientation of the scheduler. Valid values include horizontal and vertical.',
             table: {
-                type: { summary: 'object' },
-                defaultValue: {
-                    summary: 'object containing key-label pairs',
-                    detail: `{
-                        title: 'Title',
-                        from: 'From',
-                        to: 'To',
-                        resources: 'Resources',
-                        saveButton: 'Save',
-                        saveOneRecurrent: 'Only this event',
-                        saveAllRecurrent: 'All events',
-                        editRecurrent: 'Edit recurring event.',
-                        cancelButton: 'Cancel',
-                        deleteButton: 'Delete',
-                        deleteTitle: 'Delete Event',
-                        deleteMessage: 'Are you sure you want to delete this event?'
-                        newEventTitle: 'New event'
-                    }`
-                },
-                category: 'Events'
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
+            }
+        },
+        zoomToFit: {
+            name: 'zoom-to-fit',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, horizontal scrolling will be prevented in the timeline view, and vertical scrolling will be prevented in the calendar view.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         }
     },
@@ -431,11 +553,23 @@ export default {
         availableTimeFrames: ['00:00-23:59'],
         collapseDisabled: false,
         contextMenuEmptySpotActions: [
-            { name: 'add-event', label: 'Add event', iconName: 'utility:add' }
+            {
+                name: 'Standard.Scheduler.AddEvent',
+                label: 'Add event',
+                iconName: 'utility:add'
+            }
         ],
         contextMenuEventActions: [
-            { name: 'edit', label: 'Edit', iconName: 'utility:edit' },
-            { name: 'delete', label: 'Delete', iconName: 'utility:delete' }
+            {
+                name: 'Standard.Scheduler.EditEvent',
+                label: 'Edit',
+                iconName: 'utility:edit'
+            },
+            {
+                name: 'Standard.Scheduler.DeleteEvent',
+                label: 'Delete',
+                iconName: 'utility:delete'
+            }
         ],
         dateFormat: 'ff',
         dialogLabels: {
@@ -458,14 +592,50 @@ export default {
         },
         eventsPalette: 'aurora',
         eventsTheme: 'default',
-        headers: 'hourAndDay',
+        hideResourcesFilter: false,
+        hideSidePanel: false,
+        hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
+        selectedDisplay: 'timeline',
+        selectedTimeSpan: 'Standard.Scheduler.DayTimeSpan',
+        sidePanelPosition: 'left',
         start: new Date(),
-        timeSpan: { unit: 'hour', span: 12 }
+        timeSpans: [
+            {
+                headers: 'hourAndDay',
+                label: 'Day',
+                name: 'Standard.Scheduler.DayTimeSpan',
+                span: 1,
+                unit: 'day'
+            },
+            {
+                headers: 'hourAndDay',
+                label: 'Week',
+                name: 'Standard.Scheduler.WeekTimeSpan',
+                span: 1,
+                unit: 'week'
+            },
+            {
+                headers: 'dayAndMonth',
+                label: 'Month',
+                name: 'Standard.Scheduler.MonthTimeSpan',
+                span: 1,
+                unit: 'month'
+            },
+            {
+                headers: 'dayAndMonth',
+                label: 'Year',
+                name: 'Standard.Scheduler.YearTimeSpan',
+                span: 1,
+                unit: 'year'
+            }
+        ],
+        variant: 'horizontal',
+        zoomToFit: false
     }
 };
 
@@ -474,52 +644,137 @@ const Template = (args) => Scheduler(args);
 export const Base = Template.bind({});
 Base.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resources,
     start,
-    events: basicEvents
+    events: basicEvents,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
-export const BigDataSet = Template.bind({});
-BigDataSet.args = {
-    columns: oneColumn,
-    rowsKeyField: 'id',
-    rows: lotsOfRows(),
+export const Calendar = Template.bind({});
+Calendar.args = {
+    resources,
     start,
-    events: lotsOfEvents(),
-    timeSpan: {
-        unit: 'year',
-        span: 3
-    }
+    events: eventsWithExtraKeys,
+    selectedDisplay: 'calendar',
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    disabledDatesTimes,
+    referenceLines,
+    eventsDisplayFields: [
+        {
+            label: 'Start',
+            value: 'from',
+            type: 'date'
+        },
+        {
+            label: 'End',
+            value: 'to',
+            type: 'date'
+        },
+        {
+            label: 'Office',
+            value: 'office'
+        },
+        {
+            label: 'Cost',
+            value: 'cost',
+            type: 'currency',
+            typeAttributes: {
+                currencyCode: 'CAD',
+                currencyDisplayAs: 'name',
+                minimumFractionDigits: 2
+            }
+        }
+    ]
+};
+
+export const Agenda = Template.bind({});
+Agenda.args = {
+    resources,
+    start,
+    events,
+    selectedDisplay: 'agenda',
+    selectedResources: ['Dave', 'Jung', 'Reginald'],
+    selectedTimeSpan: 'Standard.Scheduler.WeekTimeSpan',
+    disabledDatesTimes,
+    referenceLines
+};
+
+export const VerticalTimeline = Template.bind({});
+VerticalTimeline.args = {
+    resources,
+    start,
+    availableTimeFrames: ['08:00-17:00'],
+    availableDaysOfTheWeek: [1, 2, 3, 4, 5],
+    events,
+    disabledDatesTimes,
+    referenceLines,
+    variant: 'vertical',
+    selectedResources: ['Dave', 'Reginald', 'Nina']
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});
 AvailableAndDisabledTimes.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
-    customHeaders: headers,
-    timeSpan: {
-        unit: 'week',
-        span: 2
-    },
+    resources,
     start,
+    timeSpans: [
+        {
+            unit: 'day',
+            span: 1,
+            label: 'Day',
+            headers: 'hourAndDay',
+            name: 'day'
+        },
+        {
+            unit: 'week',
+            span: 2,
+            label: 'Sprint',
+            name: 'sprint',
+            customHeaders: headers
+        },
+        {
+            unit: 'month',
+            span: 1,
+            label: 'Month',
+            headers: 'dayAndMonth',
+            name: 'month'
+        }
+    ],
+    selectedTimeSpan: 'sprint',
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
-    disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines
+    disabledDatesTimes,
+    referenceLines,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
-    timeSpan: {
-        unit: 'day',
-        span: 5
-    },
+    resources,
+    selectedTimeSpan: 'workWeek',
+    availableDaysOfTheWeek: [1, 2, 3, 4, 5],
+    timeSpans: [
+        {
+            name: 'day',
+            label: 'Day'
+        },
+        {
+            name: 'workWeek',
+            label: 'Work Week',
+            unit: 'day',
+            span: 5
+        },
+        {
+            name: 'trimester',
+            label: 'Trimester',
+            unit: 'month',
+            span: 3,
+            headers: 'monthAndYear'
+        }
+    ],
     start,
     events,
     eventsTheme: 'line',
@@ -530,21 +785,54 @@ ReadOnly.args = {
             name: 'see-details',
             label: 'See details'
         }
-    ]
+    ],
+    contextMenuEmptySpotActions: [],
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
+};
+
+export const ZoomToFit = Template.bind({});
+ZoomToFit.args = {
+    zoomToFit: true,
+    columns: oneColumn,
+    resources,
+    selectedTimeSpan: 'year',
+    timeSpans: [
+        {
+            unit: 'week',
+            span: 1,
+            label: 'Week',
+            headers: 'dayAndWeek',
+            name: 'week'
+        },
+        {
+            unit: 'month',
+            span: 1,
+            label: 'Month',
+            headers: 'dayAndMonth',
+            name: 'month'
+        },
+        {
+            unit: 'year',
+            span: 1,
+            label: 'Year',
+            headers: 'monthAndYear',
+            name: 'year'
+        }
+    ],
+    start: new Date(2021, 0, 1),
+    events: longEvents,
+    eventsPalette: 'pond',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily']
 };
 
 export const Labels = Template.bind({});
 Labels.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resources,
     start,
     events: eventsWithLabels,
-    timeSpan: {
-        unit: 'day',
-        span: '2'
-    },
-    headers: 'minuteHourAndDay',
+    selectedTimeSpan: 'twoDays',
+    timeSpans: [{ span: 2, label: 'Two days', name: 'twoDays' }],
     eventsLabels: {
         left: {
             fieldName: 'from'
@@ -559,19 +847,31 @@ Labels.args = {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'firstName',
+            fieldName: 'name',
             iconName: 'utility:user'
         }
     },
-    dateFormat: 'hh:mm'
+    dateFormat: 'hh:mm',
+    hideToolbar: true,
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung']
 };
 
 export const ThemesAndColors = Template.bind({});
 ThemesAndColors.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resources,
     start,
     events: eventsThemed,
-    eventsPalette: 'wildflowers'
+    eventsPalette: 'wildflowers',
+    selectedResources: ['Dave', 'Reginald', 'Nina', 'Jung', 'Lily'],
+    toolbarActions: [
+        {
+            label: 'Action 1',
+            name: 'actionOne'
+        },
+        {
+            label: 'Action 2',
+            name: 'actionTwo'
+        }
+    ]
 };

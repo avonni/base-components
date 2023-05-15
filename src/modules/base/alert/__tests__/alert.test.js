@@ -50,6 +50,7 @@ describe('Alert', () => {
 
     it('Alert: Default attributes', () => {
         expect(element.iconName).toBeUndefined();
+        expect(element.iconSize).toBe('small');
         expect(element.variant).toBe('base');
         expect(element.isDismissible).toBe(false);
     });
@@ -107,31 +108,35 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert: isDismissible', () => {
-        let lightningButtonIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon"]'
-        );
-
-        expect(lightningButtonIcon).toBeTruthy();
-
-        element.isDismissible = true;
+    // is Dismissible
+    it('Alert: isDismissible = false', () => {
+        element.isDismissible = false;
 
         return Promise.resolve().then(() => {
-            lightningButtonIcon = element.shadowRoot.querySelector(
+            const lightningButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon"]'
             );
-            expect(element.isDismissible).toBe(true);
             expect(lightningButtonIcon).toBeFalsy();
         });
     });
 
+    it('Alert: isDismissible = true', () => {
+        element.isDismissible = true;
+
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(lightningButtonIcon).toBeTruthy();
+        });
+    });
+
+    // iconName
     it('Alert: iconName', () => {
         let lightningIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-icon"]'
         );
-
-        expect(element.iconName).toBeUndefined();
-        expect(lightningIcon.iconName).toBeUndefined();
+        expect(lightningIcon).toBeFalsy();
 
         element.iconName = 'utility:user';
 
@@ -139,28 +144,116 @@ describe('Alert', () => {
             lightningIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon"]'
             );
-            expect(element.iconName).toBe('utility:user');
+            expect(lightningIcon).toBeTruthy();
             expect(lightningIcon.iconName).toBe('utility:user');
         });
     });
 
-    it('Alert: closeAction', () => {
-        const mockCallBack = jest.fn();
-
-        let div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        let lightningButtonIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon"]'
+    // iconSize
+    it('Alert: iconSize = xx-small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
         );
 
-        expect(div).toBeTruthy();
-        element.closeAction = mockCallBack;
-        lightningButtonIcon.click();
-
-        expect(mockCallBack.mock.calls.length).toEqual(1);
+        element.iconName = 'utility:user';
+        element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            div = element.shadowRoot.querySelector('[data-element-id="div"]');
-            expect(div).toBeFalsy();
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('xx-small');
         });
+    });
+
+    it('Alert: iconSize = x-small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('x-small');
+        });
+    });
+
+    it('Alert: iconSize = small', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('small');
+        });
+    });
+
+    it('Alert: iconSize = medium', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('medium');
+        });
+    });
+
+    it('Alert: iconSize = large', () => {
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
+
+        element.iconName = 'utility:user';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
+            expect(lightningIcon.size).toBe('large');
+        });
+    });
+
+    // closeAction
+    it('Alert: closeAction', () => {
+        element.isDismissible = true;
+        const mockCallBack = jest.fn();
+        element.closeAction = mockCallBack;
+
+        return Promise.resolve()
+            .then(() => {
+                const div = element.shadowRoot.querySelector(
+                    '[data-element-id="div"]'
+                );
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+
+                expect(div).toBeTruthy();
+                lightningButtonIcon.click();
+            })
+            .then(() => {
+                const div = element.shadowRoot.querySelector(
+                    '[data-element-id="div"]'
+                );
+                expect(div).toBeFalsy();
+                expect(mockCallBack.mock.calls.length).toEqual(1);
+            });
     });
 });

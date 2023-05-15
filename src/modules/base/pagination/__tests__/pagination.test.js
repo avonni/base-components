@@ -71,53 +71,47 @@ describe('Pagination', () => {
     // align
     it('Pagination: align = left', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination__container'
+            '[data-element-id="lightning-button-group"]'
         );
         element.align = 'left';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain(
-                'avonni-pagination__container_left'
-            );
+            expect(wrapper.className).toBe('');
         });
     });
 
     it('Pagination: align = center', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination__container'
+            '[data-element-id="lightning-button-group"]'
         );
         element.align = 'center';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain(
-                'avonni-pagination__container_center'
+            expect(wrapper.className).toBe(
+                'slds-grid slds-grid_align-center'
             );
         });
     });
 
     it('Pagination: align = right', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination__container'
+            '[data-element-id="lightning-button-group"]'
         );
         element.align = 'right';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain(
-                'avonni-pagination__container_right'
-            );
+            expect(wrapper.className).toBe('slds-grid slds-grid_align-end');
         });
     });
 
     it('Pagination: align = fill', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination__container'
+            '[data-element-id="lightning-button-group"]'
         );
         element.align = 'fill';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain(
-                'avonni-pagination__container_fill'
-            );
+            expect(wrapper.className).toBe('avonni-pagination__container_fill');
         });
     });
 
@@ -246,7 +240,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-button-no-icon-page"]'
+                '[data-element-id="button"]'
             );
             expect(buttons[0].value).toBe('A string ellipsis');
             expect(buttons[buttons.length - 1].value).toBe('A string ellipsis');
@@ -337,7 +331,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-button-no-icon"]'
+                '[data-element-id="button"]'
             );
             expect(buttons).toHaveLength(6);
         });
@@ -349,7 +343,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-button-no-icon"]'
+                '[data-element-id="button"]'
             );
             expect(buttons).toHaveLength(3);
         });
@@ -361,7 +355,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-button-no-icon"]'
+                '[data-element-id="button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -373,7 +367,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-button-no-icon"]'
+                '[data-element-id="button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -462,10 +456,11 @@ describe('Pagination', () => {
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector(
-                '.avonni-button-active'
-            );
-            expect(activeButton.value).toBe(3);
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            expect(buttons[2].classList).toContain('slds-button_brand');
+            [0, 1, 3, 4].forEach((i) => {
+                expect(buttons[i].classList).not.toContain('slds-button_brand');
+            });
         });
     });
 
@@ -528,10 +523,11 @@ describe('Pagination', () => {
                 expect(previousButton.disabled).toBeFalsy();
 
                 // The current page value should be 5
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(5);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[4].classList).toContain('slds-button_brand');
+                [0, 1, 2, 3].forEach(i => {
+                    expect(buttons[i].classList).not.toContain('slds-button_brand');
+                });
 
                 // Check if event is fired on click on previous button
                 let pageCounter = 4;
@@ -558,10 +554,11 @@ describe('Pagination', () => {
                 expect(nextButton.disabled).toBeFalsy();
 
                 // The current page value should be 1
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(1);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[0].classList).toContain('slds-button_brand');
+                [1, 2, 3, 4].forEach(i => {
+                    expect(buttons[i].classList).not.toContain('slds-button_brand');
+                });
             });
     });
 
@@ -575,10 +572,8 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(3);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[2].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
                 const handleChange = (event) => {
@@ -594,10 +589,8 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(1);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[0].classList).toContain('slds-button_brand');
             });
     });
 
@@ -608,10 +601,8 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(1);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
                 const handleChange = (event) => {
@@ -627,12 +618,10 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[4].classList).toContain('slds-button_brand');
                 // Based on the fact that the default value for limit is 5, there should be 10 pages
-                expect(activeButton.value).toBe(10);
+                expect(buttons[4].textContent).toBe('10');
             });
     });
 
@@ -643,10 +632,8 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(1);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
                 const handleChange = (event) => {
@@ -662,10 +649,8 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(2);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[1].classList).toContain('slds-button_brand');
             });
     });
 
@@ -677,10 +662,8 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(3);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[2].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
                 const handleChange = (event) => {
@@ -696,10 +679,8 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(2);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[1].classList).toContain('slds-button_brand');
             });
     });
 
@@ -710,10 +691,8 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(1);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
                 const handleChange = (event) => {
@@ -729,10 +708,9 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const activeButton = element.shadowRoot.querySelector(
-                    '.avonni-button-active'
-                );
-                expect(activeButton.value).toBe(4);
+                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                expect(buttons[2].classList).toContain('slds-button_brand');
+                expect(buttons[2].textContent).toBe('4');
             });
     });
 });

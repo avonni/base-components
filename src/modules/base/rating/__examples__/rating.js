@@ -46,6 +46,7 @@ export const Rating = ({
     selection,
     disabled,
     readOnly,
+    required,
     valueHidden
 }) => {
     const element = document.createElement('ac-base-rating');
@@ -60,6 +61,7 @@ export const Rating = ({
     element.selection = selection;
     element.disabled = disabled;
     element.readOnly = readOnly;
+    element.required = required;
     element.valueHidden = valueHidden;
     return element;
 };

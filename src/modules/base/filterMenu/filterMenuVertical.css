@@ -1,0 +1,7 @@
+.avonni-filter-menu__title-button_base {
+    background-color: white;
+}
+
+.avonni-filter-menu__title-button_base:active {
+    border-color: transparent;
+}

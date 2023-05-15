@@ -142,6 +142,15 @@ export default class Combobox extends LightningElement {
      */
     @api search;
 
+    /**
+     * The Lightning Design System name of the icon indicating that the selected options are sortable. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
+     * The icon is visible only if `sortable-selected-options` is present, and selected-options-direction is vertical.
+     *
+     * @type {string}
+     * @public
+     */
+    @api sortableSelectedOptionsIconName;
+
     _actions = [];
     _allowSearch = false;
     _backAction = DEFAULT_BACK_ACTION;
@@ -570,7 +579,9 @@ export default class Combobox extends LightningElement {
     }
     set value(value) {
         this._value =
-            typeof value === 'string' ? [value] : [...normalizeArray(value)];
+            typeof value === 'string' || typeof value === 'number'
+                ? [value]
+                : [...normalizeArray(value)];
     }
 
     /**
@@ -634,12 +645,10 @@ export default class Combobox extends LightningElement {
      * @type {string}
      */
     get computedMainComboboxClass() {
-        return classSet('avonni-combobox__main-combobox')
-            .add({
-                'slds-combobox-addon_end slds-col': this.showScopes,
-                'avonni-combobox__main-combobox_no-scopes': !this.showScopes
-            })
-            .toString();
+        return classSet({
+            'slds-combobox-addon_end avonni-combobox__main-combobox_scopes':
+                this.showScopes
+        }).toString();
     }
 
     /**
@@ -663,12 +672,16 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Selected options copied and converted to regular objects.
+     * Selected options copied and converted to regular objects. To be compatible with list reordering, options values need to be converted to names.
      *
      * @type {object[]}
      */
     get normalizedSelectedOptions() {
-        return deepCopy(this.selectedOptions);
+        const selectedOptions = deepCopy(this.selectedOptions);
+        selectedOptions.forEach((option) => {
+            option.name = option.value;
+        });
+        return selectedOptions;
     }
 
     /**
@@ -792,6 +805,16 @@ export default class Combobox extends LightningElement {
     @api
     reportValidity() {
         return this.mainCombobox.reportValidity();
+    }
+
+    /**
+     * Reset the combobox to the first options level.
+     *
+     * @public
+     */
+    @api
+    resetLevel() {
+        this.mainCombobox.resetLevel();
     }
 
     /**
@@ -965,7 +988,7 @@ export default class Combobox extends LightningElement {
      */
     handleChange(event) {
         const { action, levelPath, value } = event.detail;
-        this._value = this.isMultiSelect ? value : value.toString();
+        this._value = value;
         this.dispatchChange(action, levelPath);
     }
 
@@ -1024,7 +1047,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemoveListItem(event) {
-        const value = event.detail.item.value;
+        const value = event.detail.targetName;
         this.mainCombobox.removeSelectedOption(value);
     }
 
@@ -1045,7 +1068,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleReorderSelectedOptions(event) {
-        this._value = event.detail.items.map((item) => item.value);
+        this._value = event.detail.items.map((item) => item.name);
         this.dispatchChange('reorder');
     }
 
@@ -1070,7 +1093,7 @@ export default class Combobox extends LightningElement {
                 detail: {
                     action,
                     levelPath,
-                    value: this._value
+                    value: !this.isMultiSelect ? this.value[0] : this.value
                 },
                 bubbles: true
             })

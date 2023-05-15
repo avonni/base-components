@@ -121,6 +121,12 @@ const Template = (args) => Separator(args);
 export const Base = Template.bind({});
 Base.args = {
     iconName: 'utility:event',
+    label: 'Today'
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    iconName: 'utility:event',
     label: 'Today',
-    orientation: 'horizontal'
+    orientation: 'vertical'
 };

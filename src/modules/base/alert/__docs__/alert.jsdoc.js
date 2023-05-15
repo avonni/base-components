@@ -172,6 +172,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-alert-content-horizontal-alignment
+ * @default center
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-alert-font-weight
  * @default 400
  * @type font
@@ -199,4 +205,22 @@
  * @name --avonni-alert-icon-radius-border
  * @default 0.25rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-styling-border
+ * @default solid
+ * @type styling
  */

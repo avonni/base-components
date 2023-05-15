@@ -54,6 +54,7 @@ import counter from './counter.html';
 import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
+import lookup from './lookup.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -82,9 +83,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'progress-ring',
     'qrcode',
     'rating',
-    'rich-text',
     'slider',
-    'textarea',
     'urls'
 ];
 
@@ -94,6 +93,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'counter',
     'date-range',
+    'lookup',
     'rating',
     'rich-text',
     'slider',
@@ -144,7 +144,8 @@ export default class Datatable extends LightningDatatable {
         },
         badge: {
             template: badge,
-            typeAttributes: ['variant']
+            typeAttributes: ['variant'],
+            standardCellLayout: true
         },
         'checkbox-button': {
             template: checkboxButton,
@@ -196,7 +197,8 @@ export default class Datatable extends LightningDatatable {
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option']
+            typeAttributes: ['alternativeText', 'option'],
+            standardCellLayout: true
         },
         image: {
             template: image,
@@ -207,7 +209,12 @@ export default class Datatable extends LightningDatatable {
                 'srcset',
                 'thumbnail',
                 'width'
-            ]
+            ],
+            standardCellLayout: true
+        },
+        lookup: {
+            template: lookup,
+            typeAttributes: ['path', 'target']
         },
         'progress-bar': {
             template: progressBar,
@@ -225,18 +232,19 @@ export default class Datatable extends LightningDatatable {
         },
         'progress-ring': {
             template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            standardCellLayout: true
         },
         'progress-circle': {
             template: progressCircle,
             typeAttributes: [
-                'color',
                 'direction',
                 'label',
                 'size',
                 'thickness',
                 'variant'
-            ]
+            ],
+            standardCellLayout: true
         },
         qrcode: {
             template: qrcode,
@@ -249,7 +257,8 @@ export default class Datatable extends LightningDatatable {
                 'errorCorrection',
                 'padding',
                 'size'
-            ]
+            ],
+            standardCellLayout: true
         },
         rating: {
             template: rating,
@@ -266,7 +275,7 @@ export default class Datatable extends LightningDatatable {
         },
         'rich-text': {
             template: richText,
-            typeAttributes: ['disabled', 'placeholder', 'variant']
+            typeAttributes: ['disabled', 'formats', 'placeholder', 'variant']
         },
         slider: {
             template: slider,
@@ -274,13 +283,7 @@ export default class Datatable extends LightningDatatable {
         },
         textarea: {
             template: textarea,
-            typeAttributes: [
-                'disabled',
-                'label',
-                'maxlength',
-                'name',
-                'placeholder'
-            ]
+            typeAttributes: ['minLength', 'maxLength', 'placeholder']
         },
         toggle: {
             template: toggle,
@@ -303,10 +306,10 @@ export default class Datatable extends LightningDatatable {
     connectedCallback() {
         super.connectedCallback();
 
-        this.template.addEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
+        this.addEventListener('privateeditcustomcell', (event) => {
+            this.handleEditCell(event);
+            event.detail.callbacks.dispatchCellChangeEvent(this.state);
+        });
 
         this.template.addEventListener(
             'privateavatarclick',
@@ -333,10 +336,34 @@ export default class Datatable extends LightningDatatable {
             (event) => {
                 event.detail.callbacks.getStateAndColumns(
                     this.state,
-                    this.columns
+                    this.columns,
+                    this.primitiveWidthsData.columnWidths
                 );
             }
         );
+        this.template.addEventListener('getcomboboxoptions', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const options = column.typeAttributes.options;
+            // if options is a fieldname, get the options from the data
+            if (options?.fieldName) {
+                const field = this.state.data[0][options.fieldName];
+                event.detail.callbacks.getComboboxOptions(field);
+            } else {
+                event.detail.callbacks.getComboboxOptions(options);
+            }
+        });
+
+        this.template.addEventListener('getrichtextformats', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const formats = column.typeAttributes.formats;
+            event.detail.callbacks.getRichTextFormats(formats);
+        });
     }
 
     renderedCallback() {
@@ -346,9 +373,12 @@ export default class Datatable extends LightningDatatable {
         this.computeEditableOption();
 
         if (this.isLoading) {
-            this.template.querySelector(
+            const spinner = this.template.querySelector(
                 'lightning-primitive-datatable-loading-indicator'
-            ).style.height = '40px';
+            );
+            if (spinner) {
+                spinner.style.height = '40px';
+            }
         }
 
         // Make sure custom edited cells stay yellow on hover
@@ -612,6 +642,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make widthsData accessible
+     * @public
+     * @type {object}
+     */
+    @api
+    get primitiveWidthsData() {
+        return super.widthsData;
+    }
+
+    /**
      * The array of data to be displayed. The objects keys depend on the columns fieldNames.
      * @public
      * @type {array}
@@ -638,6 +678,22 @@ export default class Datatable extends LightningDatatable {
 
     set renderConfig(value) {
         super.renderConfig = value;
+    }
+
+    /**
+     * Reserved for internal use.
+     * Allows developer to opt-in to a role-based table.
+     * Allowed options - "role-based" or "default"
+     * `role-based` -> Renders <div>
+     * `default`    -> Renders <table>
+     */
+    @api
+    get renderMode() {
+        return super.renderMode;
+    }
+
+    set renderMode(value) {
+        super.renderMode = value;
     }
 
     /**
@@ -685,6 +741,16 @@ export default class Datatable extends LightningDatatable {
     set rowNumberOffset(value) {
         if (value === undefined) return;
         super.rowNumberOffset = value;
+    }
+
+    /**
+     * Make scrollable x container accessible.
+     * @public
+     * @type {Element}
+     */
+    @api
+    get scrollerX() {
+        return this.template.querySelector('.slds-scrollable_x');
     }
 
     /**
@@ -800,11 +866,9 @@ export default class Datatable extends LightningDatatable {
         );
 
         if (row) {
-            if (rowKeyField === this.data[0][this.keyField]) {
-                // The first row has one pixel more because of the border
-                return row.offsetHeight + 1;
-            }
-            return row.offsetHeight;
+            return rowKeyField === this.data[0][this.keyField]
+                ? row.offsetHeight + 1
+                : row.offsetHeight;
         }
         return null;
     }
@@ -824,6 +888,19 @@ export default class Datatable extends LightningDatatable {
 
         if (row) {
             row.style.height = height ? `${height}px` : undefined;
+        }
+    }
+
+    /**
+     * Scroll the inner table back to the top.
+     *
+     * @public
+     */
+    @api
+    scrollToTop() {
+        const scrollable_y = this.template.querySelector('.slds-scrollable_y');
+        if (scrollable_y) {
+            scrollable_y.scrollTop = 0;
         }
     }
 
@@ -938,9 +1015,10 @@ export default class Datatable extends LightningDatatable {
 
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
+        if (value !== this.state.inlineEdit.editedValue) {
+            // Show yellow background and save/cancel button
+            super.updateRowsState(this.state);
+        }
     };
 
     /**
@@ -975,7 +1053,6 @@ export default class Datatable extends LightningDatatable {
             isMassEditChecked
         } = event.detail;
         processInlineEditFinishCustom(
-            this,
             this.state,
             reason,
             rowKeyValue,

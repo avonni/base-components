@@ -34,18 +34,27 @@
 
 <template>
     <span class={chipClass} data-element-id="span-wrapper">
-        <span class="slds-truncate">
-            <template if:true={showLeft}>
-                <span class="slds-badge__icon slds-badge__icon_left">
-                    <slot name="left"></slot>
-                </span>
-            </template>
-            {label}
-            <template if:true={showRight}>
-                <span class="slds-badge__icon slds-badge__icon_right">
-                    <slot name="right"></slot>
-                </span>
-            </template>
+        <span class="slds-truncate slds-grid">
+            <slot
+                class="slds-badge__icon slds-badge__icon_left slds-hide"
+                name="left"
+                data-element-id="slot-left"
+                onslotchange={handleSlotChange}
+            ></slot>
+            <span
+                class="
+                    avonni-chip__chip-label
+                    slds-grid slds-grid_vertical slds-grid_align-center
+                "
+            >
+                {label}
+            </span>
+            <slot
+                class="slds-badge__icon slds-badge__icon_right slds-hide"
+                name="right"
+                data-element-id="slot-right"
+                onslotchange={handleSlotChange}
+            ></slot>
         </span>
     </span>
 </template>

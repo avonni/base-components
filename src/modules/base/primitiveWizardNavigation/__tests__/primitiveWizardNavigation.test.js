@@ -66,6 +66,7 @@ describe('PrimitiveWizardNavigation', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
@@ -73,6 +74,13 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
         document.body.appendChild(element);
+
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-layout-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'getBoundingClientRect').mockImplementation(() => {
+            return { width: 1050 };
+        });
     });
 
     it('Wizard navigation: Default attributes', () => {
@@ -649,6 +657,38 @@ describe('PrimitiveWizardNavigation', () => {
 
     it('Wizard navigation: indicatorType = bar', () => {
         element.indicatorType = 'bar';
+        element.steps = STEPS;
+
+        return Promise.resolve().then(() => {
+            const progressIndicator = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-progress-indicator"]'
+            );
+            const bulletIndicator = element.shadowRoot.querySelector(
+                '.slds-carousel__indicators'
+            );
+            const fractionsIndicator = element.shadowRoot.querySelector(
+                '.fractions-indicator'
+            );
+            const barIndicator = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar"]'
+            );
+
+            expect(progressIndicator).toBeFalsy();
+            expect(bulletIndicator).toBeFalsy();
+            expect(fractionsIndicator).toBeFalsy();
+            expect(barIndicator).toBeTruthy();
+        });
+    });
+
+    it('Wizard navigation: indicatorType is ignored on small screens', () => {
+        jest.restoreAllMocks();
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-layout-wrapper"]'
+        );
+        jest.spyOn(wrapper, 'getBoundingClientRect').mockImplementation(() => {
+            return { width: 320 };
+        });
+        element.indicatorType = 'path';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {

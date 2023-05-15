@@ -336,6 +336,15 @@ const columnsDO = [
         editable: true
     },
     {
+        label: 'Lookup',
+        type: 'lookup',
+        fieldName: 'lookup',
+        editable: true,
+        typeAttributes: {
+            path: { fieldName: 'email' }
+        }
+    },
+    {
         label: 'Number',
         type: 'number',
         fieldName: 'number',
@@ -367,7 +376,8 @@ const columnsPR = [
             referenceLines: { fieldName: 'progressBarReferenceLines' },
             theme: { fieldName: 'progressBarTheme' },
             variant: 'circular',
-            thickness: 'large'
+            thickness: 'large',
+            label: { fieldName: 'percent' }
         },
         initialWidth: 150
     },
@@ -377,8 +387,7 @@ const columnsPR = [
         type: 'progress-circle',
         typeAttributes: {
             thickness: 'large',
-            size: 'small',
-            color: { fieldName: 'progressCircleColor' }
+            size: 'small'
         },
         initialWidth: 100
     },
@@ -418,7 +427,8 @@ const columnsPR = [
         fieldName: 'richText',
         type: 'rich-text',
         typeAttributes: {
-            disabled: { fieldName: 'richTextDisabled' }
+            disabled: { fieldName: 'richTextDisabled' },
+            formats: { fieldName: 'richTextFormats' }
         },
         editable: true,
         initialWidth: 275
@@ -447,10 +457,6 @@ const columnsSZ = [
         label: 'Text Area',
         fieldName: 'textarea',
         type: 'textarea',
-        typeAttributes: {
-            disabled: { fieldName: 'textareaDisabled' },
-            label: 'Text area'
-        },
         editable: true
     },
     {
@@ -640,6 +646,7 @@ const recordsDO = [
             latitude: '45.53',
             longitude: '-73.61'
         },
+        lookup: 'Nina Gomez',
         number: '1789'
     },
     {
@@ -659,6 +666,7 @@ const recordsDO = [
             latitude: '45.53',
             longitude: '-73.58'
         },
+        lookup: 'Dave McKinsley',
         number: '1'
     },
     {
@@ -675,6 +683,7 @@ const recordsDO = [
             latitude: '45.54',
             longitude: '-73.60'
         },
+        lookup: 'Jung Phung',
         number: '1234'
     },
     {
@@ -693,6 +702,7 @@ const recordsDO = [
             latitude: '45.55',
             longitude: '-73.62'
         },
+        lookup: 'Lily Murray',
         number: '345'
     },
     {
@@ -710,6 +720,7 @@ const recordsDO = [
             latitude: '45.56',
             longitude: '-73.56'
         },
+        lookup: 'Mike Mickelson',
         number: '9'
     }
 ];
@@ -719,7 +730,7 @@ const recordsPR = [
         id: 1,
         percent: 0.34,
         phone: '5142223333',
-        progress: 34,
+        progress: 0.34,
         progressBarReferenceLines: [
             {
                 label: 'IT',
@@ -741,10 +752,9 @@ const recordsPR = [
         id: 2,
         percent: 0.45,
         phone: '5144546767',
-        progress: 100,
+        progress: 1,
         progressBarTheme: 'success',
         progressRingVariant: 'base-autocomplete',
-        progressCircleColor: '#45c65a',
         qrcode: 'https://www.avonni.app/',
         qrcodeBorderColor: '#45c65a',
         qrcodeBorderWidth: 5,
@@ -755,7 +765,7 @@ const recordsPR = [
         id: 3,
         percent: 0.67,
         phone: '6785643214',
-        progress: 43,
+        progress: 0.43,
         qrcode: 'https://www.avonni.app/',
         ratingDisabled: true,
         richText:
@@ -766,18 +776,19 @@ const recordsPR = [
         id: 4,
         percent: 4,
         phone: '3547789900',
-        progress: 5,
+        progress: 0.05,
         progressBarTheme: 'info',
         progressRingVariant: 'expired',
         qrcode: 'https://www.avonni.app/',
         rating: '5',
-        richText: '<h4 style="text-align: center">With Value Centered</h4>'
+        richText: '<h4 style="text-align: center">With Value Centered</h4>',
+        richTextFormats: ['font']
     },
     {
         id: 5,
         percent: 0.05,
         phone: '5143245564',
-        progress: 66,
+        progress: 0.66,
         progressBarTheme: 'alt-inverse',
         progressBarReferenceLines: [
             {
@@ -838,7 +849,6 @@ const recordsSZ = [
         id: 3,
         sliderDisabled: true,
         text: 'Jung Phung',
-        textareaDisabled: true,
         toggleDisabled: true,
         url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',

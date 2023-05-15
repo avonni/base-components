@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { generateColors } from '../../utilsPrivate/colorUtils';
 import Component from 'avonni/progressCircle';
 
 customElements.define(
@@ -44,7 +43,6 @@ export const ProgressCircle = ({
     value,
     label,
     variant,
-    color,
     direction,
     size,
     thickness,
@@ -56,7 +54,6 @@ export const ProgressCircle = ({
     element.value = value;
     element.label = label;
     element.variant = variant;
-    element.color = generateColors(color).hex;
     element.direction = direction;
     element.size = size;
     element.thickness = thickness;

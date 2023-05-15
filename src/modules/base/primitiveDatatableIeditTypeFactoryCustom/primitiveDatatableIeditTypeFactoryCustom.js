@@ -31,7 +31,6 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { assert } from 'c/utilsPrivate';
 
 import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
@@ -40,12 +39,14 @@ import dateRangeTpl from './dateRange.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
+import lookupTpl from './lookup.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     counter: counterTpl,
     'date-range': dateRangeTpl,
+    lookup: lookupTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -55,6 +56,7 @@ const INVALID_TYPE_FOR_EDIT =
 
 export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningElement {
     @api editedValue;
+    @api isMassEditEnabled;
     @api required;
 
     // shared attributes
@@ -76,7 +78,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     // combobox attributes
     @api dropdownLength;
     @api isMultiSelect;
-    @api options;
+    _options;
 
     // counter attributes
     @api max;
@@ -92,6 +94,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _startDate;
     _endDate;
 
+    // rich-text attributes
+    @api variant;
+    _formats;
+
     // textarea attributes
     @api maxLength;
     @api minLength;
@@ -104,6 +110,8 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._blurHandler = this.handleComponentBlur.bind(this);
         this._focusHandler = this.handleComponentFocus.bind(this);
         this._changeHandler = this.handleComponentChange.bind(this);
+        this.getComboboxOptionsEvent();
+        this.getRichTextFormatsEvent();
     }
 
     renderedCallback() {
@@ -121,24 +129,12 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     set columnDef(value) {
-        assert(
-            // eslint-disable-next-line no-prototype-builtins
-            CUSTOM_TYPES_TPL.hasOwnProperty(value.type),
-            INVALID_TYPE_FOR_EDIT
-        );
+        // eslint-disable-next-line no-prototype-builtins
+        if (!CUSTOM_TYPES_TPL.hasOwnProperty(value.type)) {
+            throw new Error(INVALID_TYPE_FOR_EDIT);
+        }
         this._columnDef = value;
         this.columnLabel = value.label;
-    }
-
-    @api
-    get startDate() {
-        return typeof this.editedValue === 'object'
-            ? this.editedValue.startDate
-            : undefined;
-    }
-
-    set startDate(value) {
-        this._startDate = value;
     }
 
     @api
@@ -150,6 +146,35 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     set endDate(value) {
         this._endDate = value;
+    }
+
+    @api
+    get formats() {
+        return this._formats;
+    }
+
+    set formats(value) {
+        this._formats = value;
+    }
+
+    @api
+    get options() {
+        return this._options;
+    }
+
+    set options(options) {
+        this._options = options;
+    }
+
+    @api
+    get startDate() {
+        return typeof this.editedValue === 'object'
+            ? this.editedValue.startDate
+            : undefined;
+    }
+
+    set startDate(value) {
+        this._startDate = value;
     }
 
     /**
@@ -189,22 +214,66 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         }
     }
 
+    getComboboxOptionsEvent() {
+        if (this.columnDef.type !== 'combobox') return;
+        this.dispatchEvent(
+            new CustomEvent('getcomboboxoptions', {
+                detail: {
+                    name: this.columnDef.fieldName,
+                    callbacks: {
+                        getComboboxOptions: this.getComboboxOptions.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    getRichTextFormatsEvent() {
+        if (this.columnDef.type !== 'rich-text') return;
+        this.dispatchEvent(
+            new CustomEvent('getrichtextformats', {
+                detail: {
+                    name: this.columnDef.fieldName,
+                    callbacks: {
+                        getRichTextFormats: this.getRichTextFormats.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    getComboboxOptions(options) {
+        this._options = options;
+    }
+
+    getRichTextFormats(formats) {
+        this._formats = formats;
+    }
+
     handleComponentFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }
+
     handleComponentBlur() {
         this.dispatchEvent(new CustomEvent('blur'));
     }
+
     handleComponentChange() {
         this.showHelpMessageIfInvalid();
     }
 
     handleOnChange(event) {
+        if (this.isMultiSelect || this.isMassEditEnabled) return;
+        const valid = this.validity.valid;
         this.dispatchEvent(
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.value,
-                    validity: this.validity.valid
+                    validity: valid
                 },
                 bubbles: true,
                 composed: true

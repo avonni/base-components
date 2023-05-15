@@ -46,9 +46,8 @@
             is-multi-select={isMultiSelect}
             disabled={disabled}
             dropdown-length={dropdownLength}
-            options={options}
             placeholder={placeholder}
-            style="position: absolute; top: 0"
+            style={style}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -58,24 +57,22 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <c-combobox
-                disabled={disabled}
-                dropdown-alignment={dropdownalignment}
-                dropdown-length={dropdownLength}
-                is-multi-select={isMultiSelect}
-                options={options}
-                placeholder={placeholder}
-                read-only={readOnly}
-                variant="label-hidden"
-                value={value}
-                onchange={handleChange}
-            ></c-combobox>
-            <template if:true={showEditButton}>
-                <c-primitive-cell-editable-button
-                    onclick={handleEditButtonClick}
-                    column-label="Combobox"
-                ></c-primitive-cell-editable-button>
-            </template>
+            <div if:false={isMultiSelect} class="slds-truncate">
+                <lightning-formatted-text
+                    value={displayedValue}
+                ></lightning-formatted-text>
+            </div>
+            <div if:true={isMultiSelect} style="width: 100%">
+                <c-pill-container
+                    items={displayedValue}
+                    is-collapsible
+                ></c-pill-container>
+            </div>
+            <c-primitive-cell-editable-button
+                if:true={showEditButton}
+                onclick={handleEditButtonClick}
+                column-label="Combobox"
+            ></c-primitive-cell-editable-button>
         </span>
     </template>
 </template>

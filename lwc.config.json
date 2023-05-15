@@ -59,6 +59,10 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
+            "name": "c/barcode",
+            "path": "src/modules/base/barcode/barcode.js"
+        },
+        {
             "name": "c/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -85,6 +89,10 @@
         {
             "name": "c/calendar",
             "path": "src/modules/base/calendar/calendar.js"
+        },
+        {
+            "name": "c/card",
+            "path": "src/modules/base/card/card.js"
         },
         {
             "name": "c/carousel",
@@ -215,6 +223,14 @@
             "path": "src/modules/base/kanban/kanban.js"
         },
         {
+            "name": "c/layout",
+            "path": "src/modules/base/layout/layout.js"
+        },
+        {
+            "name": "c/layoutItem",
+            "path": "src/modules/base/layoutItem/layoutItem.js"
+        },
+        {
             "name": "c/link",
             "path": "src/modules/base/link/link.js"
         },
@@ -245,6 +261,10 @@
         {
             "name": "c/messageDispatcher",
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
+        },
+        {
+            "name": "c/metric",
+            "path": "src/modules/base/metric/metric.js"
         },
         {
             "name": "c/outputData",
@@ -287,6 +307,10 @@
             "path": "src/modules/base/primitiveCarouselItem/primitiveCarouselItem.js"
         },
         {
+            "name": "c/primitiveCellAvatar",
+            "path": "src/modules/base/primitiveCellAvatar/primitiveCellAvatar.js"
+        },
+        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
@@ -307,16 +331,28 @@
             "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
-            "name": "c/primitiveCellEditableButton",
-            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
-        },
-        {
             "name": "c/primitiveCellCounter",
             "path": "src/modules/base/primitiveCellCounter/primitiveCellCounter.js"
         },
         {
             "name": "c/primitiveCellDateRange",
             "path": "src/modules/base/primitiveCellDateRange/primitiveCellDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellEditableButton",
+            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
+        },
+        {
+            "name": "c/primitiveCellLookup",
+            "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
+        },
+        {
+            "name": "c/primitiveCellProgressBar",
+            "path": "src/modules/base/primitiveCellProgressBar/primitiveCellProgressBar.js"
+        },
+        {
+            "name": "c/primitiveCellProgressCircle",
+            "path": "src/modules/base/primitiveCellProgressCircle/primitiveCellProgressCircle.js"
         },
         {
             "name": "c/primitiveCellRichText",
@@ -337,6 +373,14 @@
         {
             "name": "c/primitiveCellTextarea",
             "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
+        },
+        {
+            "name": "c/primitiveChip",
+            "path": "src/modules/base/primitiveChip/primitiveChip.js"
+        },
+        {
+            "name": "c/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
             "name": "c/primitiveColorpickerButton",
@@ -379,6 +423,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveMetric",
+            "path": "src/modules/base/primitiveMetric/primitiveMetric.js"
+        },
+        {
             "name": "c/primitivePill",
             "path": "src/modules/base/primitivePill/primitivePill.js"
         },
@@ -403,6 +451,14 @@
             "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
+            "name": "c/primitiveSchedulerAgenda",
+            "path": "src/modules/base/primitiveSchedulerAgenda/primitiveSchedulerAgenda.js"
+        },
+        {
+            "name": "c/primitiveSchedulerCalendar",
+            "path": "src/modules/base/primitiveSchedulerCalendar/primitiveSchedulerCalendar.js"
+        },
+        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
@@ -411,8 +467,16 @@
             "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
         },
         {
+            "name": "c/primitiveSchedulerTimeline",
+            "path": "src/modules/base/primitiveSchedulerTimeline/primitiveSchedulerTimeline.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
+        },
+        {
+            "name": "c/primitiveSvgIcon",
+            "path": "src/modules/base/primitiveSvgIcon/primitiveSvgIcon.js"
         },
         {
             "name": "c/primitiveTreeItem",
@@ -459,6 +523,10 @@
             "path": "src/modules/base/range/range.js"
         },
         {
+            "name": "c/slider",
+            "path": "src/modules/base/slider/slider.js"
+        },
+        {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
         },
@@ -469,6 +537,14 @@
         {
             "name": "c/scheduler",
             "path": "src/modules/base/scheduler/scheduler.js"
+        },
+        {
+            "name": "c/schedulerSharedStyle",
+            "path": "src/modules/base/schedulerSharedStyle/schedulerSharedStyle.css"
+        },
+        {
+            "name": "c/schedulerUtils",
+            "path": "src/modules/base/schedulerUtils/schedulerUtils.js"
         },
         {
             "name": "c/scopedNotification",
@@ -567,6 +643,10 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
+            "name": "avonni/barcode",
+            "path": "src/modules/base/barcode/barcode.js"
+        },
+        {
             "name": "avonni/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -595,12 +675,20 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "avonni/card",
+            "path": "src/modules/base/card/card.js"
+        },
+        {
             "name": "avonni/carousel",
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
+        },
+        {
+            "name": "avonni/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
             "name": "avonni/colorGradient",
@@ -723,6 +811,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "avonni/metric",
+            "path": "src/modules/base/metric/metric.js"
+        },
+        {
             "name": "avonni/outputData",
             "path": "src/modules/base/outputData/outputData.js"
         },
@@ -807,6 +899,10 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
+            "name": "avonni/slider",
+            "path": "src/modules/base/slider/slider.js"
+        },
+        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -872,6 +968,7 @@
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
+        "avonni/barcode",
         "avonni/blockquote",
         "avonni/buttonDialog",
         "avonni/buttonIconDialog",
@@ -879,8 +976,10 @@
         "avonni/buttonMenu",
         "avonni/buttonPopover",
         "avonni/calendar",
+        "avonni/card",
         "avonni/carousel",
         "avonni/chip",
+        "avonni/chipContainer",
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
@@ -907,10 +1006,13 @@
         "avonni/inputRichText",
         "avonni/inputToggle",
         "avonni/kanban",
+        "avonni/layout",
+        "avonni/layoutItem",
         "avonni/list",
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/metric",
         "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",
@@ -931,6 +1033,7 @@
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
+        "avonni/slider",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",

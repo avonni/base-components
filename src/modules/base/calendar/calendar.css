@@ -69,10 +69,9 @@ div:focus {
 
 .avonni-calendar__container {
     width: fit-content;
-    opacity: 0.99;
 }
 
-lightning-combobox {
+.avonni-calendar__year-combobox {
     width: 6rem;
 }
 
@@ -96,6 +95,16 @@ lightning-combobox {
     line-height: var(--lwc-squareIconMediumBoundary, 2rem);
     border-radius: var(--lwc-borderRadiusCircle, 50%);
     margin: auto;
+}
+
+.avonni-calendar__week-cell {
+    color: var(--avonni-calendar-week-label-text-color, #747474);
+    font-size: var(--avonni-calendar-week-label-font-size, 0.8125em);
+    font-weight: var(--avonni-calendar-week-label-font-weight, 600);
+}
+
+.avonni-calendar__table {
+    z-index: 0;
 }
 
 .avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
@@ -126,7 +135,8 @@ lightning-combobox {
     color: var(--avonni-calendar-weekdays-text-color, #3e3e3c);
 }
 
-.avonni-calendar__disabled-cell.slds-day {
+.avonni-calendar__disabled-cell.slds-day,
+.slds-day_adjacent-month .slds-day {
     color: var(--avonni-calendar-date-disabled-text-color, #adadad);
 }
 
@@ -148,7 +158,9 @@ lightning-combobox {
 }
 
 .slds-is-today .avonni-calendar__disabled-cell.slds-day {
-    background-color: var(--avonni-calendar-today-color-background, #ecebea);
+    background-color: var(--avonni-calendar-color-background, transparent);
+    outline: 1px solid var(--avonni-calendar-date-disabled-text-color, #adadad);
+    color: var(--avonni-calendar-date-disabled-text-color, #adadad);
 }
 
 .slds-is-selected .avonni-calendar__disabled-cell.slds-day {
@@ -168,7 +180,7 @@ lightning-combobox {
     position: absolute;
     height: 100%;
     width: var(--avonni-calendar-cell-sizing-width);
-    transform: translateX(calc(-var(--avonni-calendar-cell-sizing-width) / 2));
+    transform: translateX(-0.5rem);
     z-index: -1;
     background: var(--avonni-calendar-selected-date-color-background, #0176d3);
 }

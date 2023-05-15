@@ -1,6 +1,8 @@
 export const options = [
     {
-        avatarFallbackIconName: 'standard:account',
+        avatar: {
+            fallbackIconName: 'standard:account'
+        },
         groups: ['accounts'],
         label: 'Burlington Textiles Corp of America',
         secondaryText: 'Account - Burlington, NC',
@@ -16,7 +18,9 @@ export const options = [
         hasChildren: true,
         options: [
             {
-                avatarFallbackIconName: 'standard:opportunity',
+                avatar: {
+                    fallbackIconName: 'standard:opportunity'
+                },
                 groups: ['opportunities'],
                 label: 'Tyrell Corp',
                 options: [],
@@ -40,7 +44,9 @@ export const options = [
         ]
     },
     {
-        avatarFallbackIconName: 'standard:account',
+        avatar: {
+            fallbackIconName: 'standard:account'
+        },
         groups: ['accounts'],
         label: 'Edge Communication',
         secondaryText: 'Account - Singapore',
@@ -63,7 +69,9 @@ export const groups = [
         name: 'opportunities',
         options: [
             {
-                avatarFallbackIconName: 'standard:opportunity',
+                avatar: {
+                    fallbackIconName: 'standard:opportunity'
+                },
                 groups: ['opportunities'],
                 label: 'Tyrell Corp',
                 options: options,
@@ -79,7 +87,9 @@ export const groups = [
                 name: 'closed',
                 options: [
                     {
-                        avatarFallbackIconName: 'standard:opportunity',
+                        avatar: {
+                            fallbackIconName: 'standard:opportunity'
+                        },
                         groups: ['opportunities', 'closed'],
                         label: 'United Oil SLA',
                         secondaryText: 'Opportunity - Closed',
@@ -95,7 +105,9 @@ export const groups = [
                         name: 'won',
                         options: [
                             {
-                                avatarFallbackIconName: 'standard:opportunity',
+                                avatar: {
+                                    fallbackIconName: 'standard:opportunity'
+                                },
                                 groups: ['opportunities', 'closed', 'won'],
                                 label: 'United Oil Standby Generators',
                                 secondaryText: 'Opportunity - Closed Won',

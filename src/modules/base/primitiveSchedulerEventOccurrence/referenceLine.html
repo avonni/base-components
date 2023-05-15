@@ -34,12 +34,25 @@
 
 <template>
     <c-primitive-reference-line
-        class="avonni-scheduler__reference-line slds-is-absolute"
+        class={referenceLineClass}
         label={title}
         value="0"
         variant={theme}
+        data-element-id="avonni-primitive-reference-line"
         oncontextmenu={handleDisabledContextMenu}
         ondblclick={handleDisabledDoubleClick}
         onmousedown={handleDisabledMouseDown}
     ></c-primitive-reference-line>
+    <span
+        if:true={isMonthCalendar}
+        class="
+            avonni-scheduler__event-dot-time
+            slds-text-color_weak
+            slds-m-left_small
+            slds-m-top_xx-small
+            slds-show slds-is-absolute
+        "
+    >
+        {startTime}
+    </span>
 </template>

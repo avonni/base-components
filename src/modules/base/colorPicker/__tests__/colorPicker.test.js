@@ -35,7 +35,6 @@ import ColorPicker from 'c/colorPicker';
 
 // not tested
 // Positioning of the dropdown menu.
-// Computed palette tile width and height.
 
 const defaultColors = [
     '#e3abec',
@@ -54,7 +53,7 @@ const defaultColors = [
     '#ffb758',
     '#bd35bd',
     '#5778c1',
-    '#5ebbff',
+    '#1b96ff',
     '#00aea9',
     '#3bba4c',
     '#f4bc25',
@@ -78,7 +77,7 @@ const tokens = [
     {
         label: 'brand-accessible-active',
         value: '--lwc-brand-accessible-active',
-        color: 'rgb(1, 68, 134)'
+        color: 'rgb(1,68,134)'
     },
     {
         label: 'color-text-action-label',
@@ -119,7 +118,9 @@ describe('Color Picker', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([]);
+        expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideColorInput).toBeFalsy();
+        expect(element.inline).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.menuVariant).toBe('border');
@@ -132,6 +133,10 @@ describe('Color Picker', () => {
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.opacity).toBeFalsy();
+        expect(element.paletteHideOutline).toBeFalsy();
+        expect(element.paletteShowCheckmark).toBeFalsy();
+        expect(element.paletteTileHeight).toBeUndefined();
+        expect(element.paletteTileWidth).toBeUndefined();
         expect(element.tokens).toMatchObject([]);
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
@@ -327,7 +332,8 @@ describe('Color Picker', () => {
                 const swatch = element.shadowRoot.querySelector(
                     '[data-element-id="swatch"]'
                 );
-                expect(swatch.style.background).toBe(tokens[1].color);
+                // Spaces are added in css styles.
+                expect(swatch.style.background).toBe('rgb(1, 68, 134)');
             });
     });
 
@@ -1062,6 +1068,31 @@ describe('Color Picker', () => {
             });
     });
 
+    // Hide clear icon
+    it('Color Picker: hideClearIcon = false', () => {
+        element.hideClearIcon = false;
+        element.value = '#333';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(button).toBeTruthy();
+        });
+    });
+
+    it('Color Picker: hideClearIcon = true', () => {
+        element.hideClearIcon = true;
+        element.value = '#333';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button-clear"]'
+            );
+            expect(button).toBeFalsy();
+        });
+    });
+
     // Hide color input
     it('Color Picker: hide color input', () => {
         element.hideColorInput = true;
@@ -1072,6 +1103,48 @@ describe('Color Picker', () => {
             );
             expect(input).toBeFalsy();
         });
+    });
+
+    // Inline
+    it('Color Picker: inline', () => {
+        const groups = ['firstGroup', 'secondGroup'];
+        element.colors = colors;
+        element.groups = groups;
+        element.paletteHideOutline = true;
+        element.paletteShowCheckmark = true;
+        element.inline = true;
+        element.paletteTileHeight = 100;
+        element.paletteTileWidth = 30;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                expect(button).toBeFalsy();
+
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette).toBeTruthy();
+                expect(palette.groups).toEqual(groups);
+                expect(palette.colors).toEqual(colors);
+                expect(palette.hideOutline).toBe(true);
+                expect(palette.showCheckmark).toBe(true);
+                expect(palette.tileHeight).toBe(100);
+                expect(palette.tileWidth).toBe(30);
+
+                const tab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                tab.click();
+            })
+            .then(() => {
+                const footer = element.shadowRoot.querySelector(
+                    '.slds-popover__footer'
+                );
+                expect(footer).toBeFalsy();
+            });
     });
 
     // opacity
@@ -1089,6 +1162,82 @@ describe('Color Picker', () => {
             );
             expect(gradient.opacity).toBe(true);
         });
+    });
+
+    // palette-hide-outline
+    it('Color Picker: paletteHideOutline', () => {
+        element.paletteHideOutline = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.hideOutline).toBeTruthy();
+            });
+    });
+
+    // palette-show-checkmark
+    it('Color Picker: paletteShowCheckmark', () => {
+        element.paletteShowCheckmark = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.showCheckmark).toBeTruthy();
+            });
+    });
+
+    // palette-tile-height
+    it('Color Picker: paletteTileHeight', () => {
+        element.paletteTileHeight = 45;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.tileHeight).toBe(45);
+            });
+    });
+
+    // palette-tile-width
+    it('Color Picker: paletteTileWidth', () => {
+        element.paletteTileWidth = 45;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.tileWidth).toBe(45);
+            });
     });
 
     // focus and blur on tab
@@ -1202,26 +1351,46 @@ describe('Color Picker', () => {
 
     /* ----- EVENTS ----- */
 
-    // blur
-    it('Color Picker: close dropdown on button blur', () => {
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
+    it('Color Picker : close popover on outside click', () => {
         return Promise.resolve()
             .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-                button.dispatchEvent(new CustomEvent('blur'));
+                element.shadowRoot
+                    .querySelector('[data-element-id="button"]')
+                    .click();
             })
             .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                const popoverElement = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
                 );
-                expect(dropdownTrigger.classList).not.toContain('slds-is-open');
+                popoverElement.dispatchEvent(new CustomEvent('blur'));
+                expect(popoverElement.classList).not.toContain('slds-is-open');
+            });
+    });
+
+    it('Color Picker : do not close popover on inside click', () => {
+        return Promise.resolve()
+            .then(() => {
+                element.shadowRoot
+                    .querySelector('[data-element-id="button"]')
+                    .click();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                ).parentElement;
+                popover.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                ).parentElement;
+                popover.dispatchEvent(new CustomEvent('blur'));
+            })
+            .then(() => {
+                const popoverElement = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(popoverElement).not.toBeNull();
             });
     });
 
@@ -1234,7 +1403,7 @@ describe('Color Picker', () => {
         return Promise.resolve()
             .then(() => {
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).toContain('slds-is-open');
 
@@ -1247,9 +1416,72 @@ describe('Color Picker', () => {
             })
             .then(() => {
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).toContain('slds-is-open');
+            });
+    });
+
+    it('Color Picker: click on custom tab', () => {
+        return Promise.resolve()
+            .then(() => {
+                element.shadowRoot
+                    .querySelector('[data-element-id="button"]')
+                    .click();
+            })
+            .then(() => {
+                const dropdownElement = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                const customTab = dropdownElement.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                customTab.click();
+                const defaultTab = dropdownElement.querySelector(
+                    '[data-element-id="default"]'
+                );
+                expect(defaultTab.classList).not.toContain('slds-is-active');
+            });
+    });
+
+    it('Color Picker : do not close popover on blur', () => {
+        element.type = 'custom';
+        return Promise.resolve()
+            .then(() => {
+                element.shadowRoot
+                    .querySelector('[data-element-id="button"]')
+                    .click();
+            })
+            .then(() => {
+                const dropdownElement = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                dropdownElement.blur();
+
+                expect(dropdownElement).not.toBeNull();
+            });
+    });
+
+    it('Color Picker : do not close popover on shift + tab', () => {
+        return Promise.resolve()
+            .then(() => {
+                element.shadowRoot
+                    .querySelector('[data-element-id="button"]')
+                    .click();
+            })
+            .then(() => {
+                const dropdownElement = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+
+                dropdownElement.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        keyCode: 9,
+                        shiftKey: true
+                    })
+                );
+
+                expect(dropdownElement).not.toBeNull();
             });
     });
 
@@ -1329,6 +1561,8 @@ describe('Color Picker', () => {
     it('Color Picker: change event in the dropdown', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
+        element.tokens = tokens;
+        jest.useFakeTimers();
 
         const color = {
             hex: '#014486',
@@ -1346,9 +1580,18 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
+                // The palette is loading when we open the popover
                 const palette = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-color-palette"]'
                 );
+                expect(palette.isLoading).toBeTruthy();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeFalsy();
                 palette.dispatchEvent(
                     new CustomEvent('change', {
                         detail: color,
@@ -1369,9 +1612,129 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
 
                 const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
+                    '.slds-dropdown-trigger'
                 );
                 expect(dropdownTrigger.classList).not.toContain('slds-is-open');
+            });
+    });
+
+    it('Color Picker: change event after "default" tab click in inline mode with lastSelectedToken', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.inline = true;
+        jest.useFakeTimers();
+
+        const color = {
+            hex: '#014486',
+            hexa: '#014486ff',
+            rgb: 'rgb(1,68,134)',
+            rgba: 'rgba(1,68,134,1)'
+        };
+
+        return Promise.resolve()
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                palette.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: color,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            })
+            .then(() => {
+                const customTab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                customTab.click();
+            })
+            .then(() => {
+                const defaultTab = element.shadowRoot.querySelector(
+                    '[data-element-id="default"]'
+                );
+                defaultTab.click();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBe(color.hex);
+                expect(handler.mock.calls[0][0].detail.hexa).toBe(color.hexa);
+                expect(handler.mock.calls[0][0].detail.rgb).toBe(color.rgb);
+                expect(handler.mock.calls[0][0].detail.rgba).toBe(color.rgba);
+                expect(handler.mock.calls[0][0].detail.token).toBe(color.token);
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            });
+    });
+
+    it('Color Picker: change event after "tokens" tab click in inline mode with lastSelectedToken', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.tokens = tokens;
+        element.inline = true;
+        jest.useFakeTimers();
+
+        const color = {
+            hex: '#014486',
+            hexa: '#014486ff',
+            rgb: 'rgb(1,68,134)',
+            rgba: 'rgba(1,68,134,1)',
+            label: 'brand-accessible-active',
+            token: '--lwc-brand-accessible-active'
+        };
+
+        return Promise.resolve()
+            .then(() => {
+                const tokensTab = element.shadowRoot.querySelector(
+                    '[data-element-id="a-tokens-tab"]'
+                );
+                tokensTab.click();
+            })
+            .then(() => {
+                // The palette is loading when we open the popover
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeTruthy();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.isLoading).toBeFalsy();
+                palette.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: color,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            })
+            .then(() => {
+                const customTab = element.shadowRoot.querySelector(
+                    '[data-element-id="custom"]'
+                );
+                customTab.click();
+            })
+            .then(() => {
+                const tokensTab = element.shadowRoot.querySelector(
+                    '[data-element-id="a-tokens-tab"]'
+                );
+                tokensTab.click();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBe(color.hex);
+                expect(handler.mock.calls[0][0].detail.hexa).toBe(color.hexa);
+                expect(handler.mock.calls[0][0].detail.rgb).toBe(color.rgb);
+                expect(handler.mock.calls[0][0].detail.rgba).toBe(color.rgba);
+                expect(handler.mock.calls[0][0].detail.token).toBe(color.token);
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
     });
 
@@ -1412,21 +1775,5 @@ describe('Color Picker', () => {
                 expect(element.value).toBe('#e3abec');
                 expect(handler).toHaveBeenCalled();
             });
-    });
-
-    // focus event
-    it('Color Picker: focus event', () => {
-        const handler = jest.fn();
-        const input = element.shadowRoot.querySelector(
-            '[data-element-id="input"]'
-        );
-
-        element.addEventListener('focus', handler);
-        input.dispatchEvent(new CustomEvent('focus'));
-
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 });

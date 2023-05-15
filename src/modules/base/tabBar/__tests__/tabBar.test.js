@@ -1,37 +1,51 @@
 import { createElement } from 'lwc';
 import TabBar from 'c/tabBar';
 
-const labels = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];
+const items = [
+    { label: 'Tab 1', name: 'tab1' },
+    { label: 'Tab 2', name: 'tab2' },
+    { label: 'Tab 3', name: 'tab3' },
+    { label: 'Tab 4', name: 'tab4' },
+    { label: 'Tab 5', name: 'tab5' }
+];
 
+let element;
 describe('Tab Bar', () => {
     afterEach(() => {
         jest.useRealTimers();
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    beforeEach(() => {
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
 
-    it('Tab bar: Default attributes', () => {
-        const element = createElement('avonni-builder-tab-bar', {
+        element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
         document.body.appendChild(element);
+    });
 
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
+
+    it('Tab bar: Default attributes', () => {
+        expect(element.items).toEqual([]);
         expect(element.labels).toEqual([]);
         expect(element.tabsHidden).toBe(0);
         expect(element.defaultTab).toBeUndefined();
     });
 
     it('Tab bar: Labels attribute', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
-
-        document.body.appendChild(element);
+        element.items = items;
 
         return Promise.resolve().then(() => {
             const tabs = element.shadowRoot.querySelectorAll('a');
@@ -45,14 +59,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: TabsHidden attribute', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -71,33 +79,22 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: DefaultTab attribute', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
-        element.defaultTab = 'Tab 2';
-
-        document.body.appendChild(element);
+        element.items = items;
+        element.defaultTab = 'tab2';
 
         return Promise.resolve().then(() => {
             const defaultTab =
                 element.shadowRoot.querySelector('.slds-is-active');
             expect(defaultTab.firstChild.title).toBe('Tab 2');
+            expect(defaultTab.firstChild.dataset.name).toBe('tab2');
         });
     });
 
     /* ----- TABS CHANGE ----- */
 
     it('Tab bar: Click on visible tab', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -112,15 +109,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Click on hidden tab', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
-        jest.useFakeTimers();
 
         return Promise.resolve()
             .then(() => {
@@ -142,17 +132,36 @@ describe('Tab Bar', () => {
             });
     });
 
-    /* ----- EVENTS ----- */
+    /*
+     * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    it('Tab bar: focus method', () => {
+        element.items = items;
+        element.defaultTab = 'tab2';
+
+        return Promise.resolve().then(() => {
+            const tabs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="a-tab-link"]'
+            );
+            const spy = jest.spyOn(tabs[1], 'focus');
+
+            element.focus();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
 
     it('Tab bar: Select event', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -164,52 +173,30 @@ describe('Tab Bar', () => {
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.value).toBe('Tab 3');
+                expect(handler.mock.calls[0][0].detail.value).toBe('tab3');
             });
     });
 
     it('Tab bar: Blur event', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
-        jest.useFakeTimers();
 
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
-        return Promise.resolve()
-            .then(() => {
-                const hiddenTabsMenuButton =
-                    element.shadowRoot.querySelector('button');
-                hiddenTabsMenuButton.click();
-            })
-            .then(() => {
-                jest.runAllTimers();
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                jest.runAllTimers();
-            })
-            .then(() => {
-                expect(handler).toHaveBeenCalled();
-            });
+        return Promise.resolve().then(() => {
+            const tab = element.shadowRoot.querySelector(
+                '[data-element-id="a-tab-link"]'
+            );
+            tab.dispatchEvent(new CustomEvent('blur'));
+            jest.runAllTimers();
+            expect(handler).toHaveBeenCalled();
+        });
     });
 
     it('Tab bar: Dropdown button focus and blur', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -237,14 +224,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change dropdown option with down arrow', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -279,14 +260,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change dropdown option with up arrow', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -321,80 +296,70 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Close dropdown with Escape key', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
                 const hiddenTabsMenuButton =
                     element.shadowRoot.querySelector('button');
                 hiddenTabsMenuButton.click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].parentElement.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 27 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
+                expect(tabs).toHaveLength(2);
+                const event = new CustomEvent('keydown', {
+                    bubbles: true
+                });
+                event.keyCode = 27;
+                tabs[0].dispatchEvent(event);
+                jest.runAllTimers();
             })
             .then(() => {
-                element.shadowRoot.dispatchEvent(
-                    new KeyboardEvent('keyup', { keyCode: 27 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
-            })
-            .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                expect(tabs.length).toBe(3);
+                expect(tabs).toHaveLength(0);
             });
     });
 
     it('Tab bar: Close dropdown with Tab key', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
                 const hiddenTabsMenuButton =
                     element.shadowRoot.querySelector('button');
                 hiddenTabsMenuButton.click();
+                jest.runAllTimers();
             })
             .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                tabs[3].parentElement.dispatchEvent(
-                    new KeyboardEvent('keydown', { keyCode: 9 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
+                expect(tabs).toHaveLength(2);
+                const event = new CustomEvent('keydown', {
+                    bubbles: true
+                });
+                event.keyCode = 9;
+                tabs[1].dispatchEvent(event);
+                jest.runAllTimers();
             })
             .then(() => {
-                element.shadowRoot.dispatchEvent(
-                    new KeyboardEvent('keyup', { keyCode: 9 })
+                const tabs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="a-hidden-tab"]'
                 );
-            })
-            .then(() => {
-                const tabs = element.shadowRoot.querySelectorAll('a');
-                expect(tabs.length).toBe(3);
+                expect(tabs).toHaveLength(0);
             });
     });
 
     it('Tab bar: Close dropdown with button click', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -414,14 +379,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Invalid keypress in dropdown', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -447,15 +406,9 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with right arrow with hidden tabs', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -477,14 +430,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with right arrow without hidden tabs', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.defaultTab = 'Tab 4';
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -506,15 +453,9 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with left arrow with hidden tabs', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -536,14 +477,8 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Change selected tab with left arrow without hidden tabs', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.defaultTab = 'Tab 2';
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -565,15 +500,9 @@ describe('Tab Bar', () => {
     });
 
     it('Tab bar: Invalid keypress when focus is on tabs', () => {
-        const element = createElement('avonni-builder-tab-bar', {
-            is: TabBar
-        });
-
-        element.labels = labels;
+        element.items = items;
         element.tabsHidden = 2;
         element.defaultTab = 'Tab 2';
-
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {

@@ -294,7 +294,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
      *
-     * @type {string}
+     * @type {(string|string[])}
      * @public
      * @required
      */
@@ -457,13 +457,19 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
-        const checkboxLabelClass =
-            this.isMultiSelect && this.checkboxVariant
-                ? 'slds-checkbox__label'
-                : 'slds-radio__label';
+        let label;
+        if (this.checkboxVariant && this.isMultiSelect) {
+            label = 'slds-checkbox__label';
+        } else if (this.checkboxVariant) {
+            label = 'slds-radio__label';
+        } else {
+            label = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
+        }
 
-        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
+        if (!this.disabled) {
+            label += ' avonni-input-choice-set__option-label';
+        }
+        return label;
     }
 
     /**
@@ -637,14 +643,13 @@ export default class InputChoiceSet extends LightningElement {
 
         const value = event.currentTarget.value;
         const checkboxes = this.template.querySelectorAll(
-            '[data-element-id^="input"]'
+            '[data-element-id="input"]'
         );
         if (this.isMultiSelect) {
             this._value = this.handleValueChange(checkboxes);
         } else {
-            if (this.required && this.value === value) {
-                // Prevent unselecting the current option when the input is required
-                // (make sure the radio behaviour works when the type is 'button')
+            if (this.value === value) {
+                // Prevent unselecting the current option when the type is 'button'
                 event.currentTarget.checked = true;
                 return;
             }
@@ -679,5 +684,15 @@ export default class InputChoiceSet extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    /**
+     * Input keyup event handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
     }
 }

@@ -18,4 +18,6 @@ export default class MenuItem extends LightningElement {
     @api prefixIconName;
     @api target;
     @api value;
+
+    @api focus() {}
 }

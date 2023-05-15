@@ -34,10 +34,13 @@
 
 <template>
     <c-vertical-progress-indicator
-        current-step={currentStep}
-        variant={variant}
-        has-error={hasError}
+        completed-steps={completedSteps}
         content-in-line={contentInLine}
+        current-step={currentStep}
+        format={format}
+        has-error={hasError}
+        mark-as-complete={markAsComplete}
+        variant={variant}
     >
         <c-vertical-progress-step
             label="Step 1"

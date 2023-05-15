@@ -31,6 +31,7 @@
  */
 
 import { FilterMenu } from '../__examples__/filterMenu';
+import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
 
 export default {
     title: 'Example/Filter Menu',
@@ -89,6 +90,28 @@ export default {
                 category: 'Button'
             }
         },
+        closed: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the collapsible is closed. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        collapsible: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the headers are collapsible. This attribute is only supported by the vertical variant.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -121,20 +144,6 @@ export default {
                 category: 'Dropdown menu'
             }
         },
-        dropdownLength: {
-            name: 'dropdown-length',
-            control: {
-                type: 'select'
-            },
-            options: ['5-items', '7-items', '10-items'],
-            description:
-                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '7-items' },
-                category: 'Dropdown menu'
-            }
-        },
         dropdownNubbin: {
             name: 'dropdown-nubbin',
             control: {
@@ -145,20 +154,6 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
-                category: 'Dropdown menu'
-            }
-        },
-        dropdownWidth: {
-            name: 'dropdown-width',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            description:
-                'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'small' },
                 category: 'Dropdown menu'
             }
         },
@@ -226,26 +221,6 @@ export default {
                 category: 'Search'
             }
         },
-        isMultiSelect: {
-            name: 'is-multi-select',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, multiple items can be selected.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        items: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of item objects',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
         label: {
             control: {
                 type: 'text'
@@ -274,31 +249,6 @@ export default {
             description: 'Specifies the name of the filter menu.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        searchInputPlaceholder: {
-            name: 'search-input-placeholder',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Text displayed when the search input is empty, to prompt the user for a valid entry.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Search...' },
-                category: 'Search'
-            }
-        },
-        showSearchBox: {
-            name: 'show-search-box',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the search box is visible.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Search'
             }
         },
         resetButtonLabel: {
@@ -333,6 +283,28 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        type: {
+            control: {
+                type: 'select'
+            },
+            options: ['date-range', 'list', 'range'],
+            description:
+                'Type of the filter menu. Valid values include list, range and date-range.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'list' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes specific to the type.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         value: {
             control: {
                 type: 'object'
@@ -358,19 +330,17 @@ export default {
     args: {
         applyButtonLabel: 'Apply',
         buttonVariant: 'border',
+        closed: false,
+        collapsible: false,
         disabled: false,
         dropdownAlignment: 'left',
-        dropdownLength: '7-items',
         dropdownNubbin: false,
-        dropdownWidth: 'small',
         hideApplyResetButtons: false,
         hideSelectedItems: false,
         iconSize: 'medium',
         isLoading: false,
-        isMultiSelect: false,
         resetButtonLabel: 'Reset',
-        searchInputPlaceholder: 'Search...',
-        showSearchBox: false,
+        type: 'list',
         variant: 'horizontal'
     }
 };
@@ -413,97 +383,99 @@ const items = [
 ];
 
 const Template = (args) => FilterMenu(args);
+const InfiniteLoadingTemplate = (args) => FilterMenuInfiniteLoading(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    typeAttributes: { items }
 };
 
-export const MultiSelect = Template.bind({});
-MultiSelect.args = {
-    items: items,
-    isMultiSelect: true
-};
-
-export const Search = Template.bind({});
-Search.args = {
-    items: items,
-    showSearchBox: true
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-    items: items,
-    disabled: true
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-    items: items,
-    isLoading: true,
-    tooltip: 'is-loading is set to true'
-};
-
-export const XSmallIcon = Template.bind({});
-XSmallIcon.args = {
-    items: items,
-    iconSize: 'x-small',
-    iconName: 'utility:apps',
+export const MultiSelectList = Template.bind({});
+MultiSelectList.args = {
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        items
+    },
     value: ['item-5', 'meeting', 'wrong-value']
 };
 
-export const ContainerVariantWithCustomButtonLabels = Template.bind({});
-ContainerVariantWithCustomButtonLabels.args = {
-    items: items,
+export const CustomMenu = Template.bind({});
+CustomMenu.args = {
+    typeAttributes: {
+        dropdownLength: '5-items',
+        dropdownWidth: 'xx-small',
+        items
+    },
+    iconSize: 'x-small',
+    iconName: 'utility:apps',
+    dropdownNubbin: true,
+    hideApplyResetButtons: true
+};
+
+export const DateRange = Template.bind({});
+DateRange.args = {
+    typeAttributes: {
+        labelStartDate: 'Start',
+        labelEndDate: 'End'
+    },
     buttonVariant: 'container',
-    label: 'Open menu',
-    resetButtonLabel: 'Erase',
-    applyButtonLabel: 'Save'
+    resetButtonLabel: 'Clear',
+    applyButtonLabel: 'Save',
+    label: 'Dates',
+    type: 'date-range',
+    value: [new Date(2022, 10, 16, 11), new Date(2022, 10, 20, 15, 30)]
 };
 
-export const LargeWidthAndNubbin = Template.bind({});
-LargeWidthAndNubbin.args = {
-    items: items,
-    dropdownWidth: 'large',
-    dropdownNubbin: true
-};
-
-export const FiveItemsLength = Template.bind({});
-FiveItemsLength.args = {
-    items: items,
-    dropdownLength: '5-items'
+export const Range = Template.bind({});
+Range.args = {
+    typeAttributes: {
+        max: 30,
+        min: 6,
+        showPin: true,
+        step: 2,
+        tickMarkStyle: 'dot',
+        showTickMarks: true,
+        unit: 'currency',
+        unitAttributes: {
+            currencyCode: 'EUR'
+        }
+    },
+    iconName: 'utility:money',
+    type: 'range'
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    items: items,
-    variant: 'vertical',
-    label: 'Contact'
-};
-
-export const VerticalMultiSelect = Template.bind({});
-VerticalMultiSelect.args = {
-    items: items,
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        items
+    },
     variant: 'vertical',
     label: 'Contact',
-    isMultiSelect: true
-};
-
-export const VerticalWithSearchAndIcon = Template.bind({});
-VerticalWithSearchAndIcon.args = {
-    items: items,
-    variant: 'vertical',
-    label: 'Contact',
-    showSearchBox: true,
     iconName: 'custom:custom22',
     iconSize: 'small'
 };
 
-export const VerticalLoading = Template.bind({});
-VerticalLoading.args = {
-    items: items,
-    label: 'Contact',
-    isLoading: true,
-    tooltip: 'is-loading is set to true',
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    label: 'Infinite Loading',
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        enableInfiniteLoading: true
+    }
+};
+
+export const VerticalInfiniteLoading = InfiniteLoadingTemplate.bind({});
+VerticalInfiniteLoading.args = {
+    label: 'Vertical Infinite Loading',
+    typeAttributes: {
+        allowSearch: true,
+        isMultiSelect: true,
+        enableInfiniteLoading: true,
+        dropdownLength: '7-items'
+    },
     variant: 'vertical'
 };

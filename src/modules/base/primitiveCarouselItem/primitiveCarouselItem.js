@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import tag from './tag.html';
+import noTag from './noTag.html';
 
 const ACTIONS_POSITIONS = {
     valid: [
@@ -69,6 +71,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+
+    render() {
+        return normalizeBoolean(this.href) ? tag : noTag;
+    }
 
     /*
      * ------------------------------------------------------------
@@ -138,19 +144,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
 
     /**
-     * Retrieve image class - set to relative if not in bottom position.
-     *
-     * @type {string}
-     */
-    get computedCarouselImageClass() {
-        return classSet('slds-carousel__image')
-            .add({
-                'slds-is-relative': !this.isBottomPosition
-            })
-            .toString();
-    }
-
-    /**
      * Computed actions container class styling based on action position attributes.
      *
      * @type {string}
@@ -184,36 +177,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Action button icon class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedLightningButtonIconActionClass() {
-        return classSet('')
-            .add({
-                'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
-                'slds-m-right_x-small slds-m-top_xx-small':
-                    this._actionsVariant === 'bare'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed carousel content class - set to display content bottom if position is bottom.
-     *
-     * @type {string}
-     */
-    get computedCarouselContentClass() {
-        return classSet(
-            'slds-carousel__content avonni-primitive-carousel-item__content_background'
-        )
-            .add({
-                'avonni-carousel__content-bottom': this.isBottomPosition
-            })
-            .toString();
-    }
-
-    /**
      * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
      *
      * @type {string}
@@ -223,24 +186,45 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Verify if actions position is at the bottom.
+     * Action button icon class styling based on attributes.
+     *
+     * @type {string}
      */
-    get isBottomPosition() {
-        return this._actionsPosition.indexOf('bottom') > -1;
+    get computedButtonIconActionClass() {
+        return classSet('')
+            .add({
+                'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
+                'slds-m-right_x-small slds-m-top_xx-small':
+                    this._actionsVariant === 'bare',
+                'avonni-carousel__button-icon-top':
+                    this._actionsPosition === 'top-right' ||
+                    this._actionsPosition === 'top-left',
+                'avonni-carousel__button-icon-bottom':
+                    this._actionsPosition === 'bottom-right' ||
+                    this._actionsPosition === 'bottom-left' ||
+                    this._actionsPosition === 'bottom-center'
+            })
+            .toString();
     }
 
     /**
-     * Verify if actions are present.
+     * Action button menu action class styling based on attributes.
+     *
+     * @type {string}
      */
-    get hasActions() {
-        return this._actions.length > 0;
+    get computedButtonMenuActionClass() {
+        return this.isMenuVariant === false ? 'slds-hide_small' : '';
     }
 
     /**
-     * Verify if the actions variant is menu.
+     * Computed carousel content class - set to display content bottom if position is bottom.
+     *
+     * @type {string}
      */
-    get isMenuVariant() {
-        return this._actionsVariant === 'menu';
+    get computedCarouselContentClass() {
+        return this.isBottomPosition
+            ? 'slds-carousel__content avonni-primitive-carousel-item__content_background avonni-carousel__content-bottom'
+            : 'slds-carousel__content avonni-primitive-carousel-item__content_background';
     }
 
     /**
@@ -252,18 +236,104 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return `height: ${this._carouselContentHeight}rem`;
     }
 
+    /**
+     * Retrieve image class - set to relative if not in bottom position.
+     *
+     * @type {string}
+     */
+    get computedCarouselImageClass() {
+        return !this.isBottomPosition
+            ? 'slds-carousel__image slds-is-relative'
+            : 'slds-carousel__image';
+    }
+
+    /**
+     * Verify if has text or actions bottom.
+     *
+     * @type {boolean}
+     */
+    get displayContentContainer() {
+        return this.hasText || (this.hasActions && this.isBottomPosition);
+    }
+
+    /**
+     * Verify if actions are present.
+     *
+     * @type {boolean}
+     */
+    get hasActions() {
+        return this._actions.length > 0;
+    }
+
+    /**
+     * Verify if the title or description is present.
+     *
+     * @type {boolean}
+     */
+    get hasText() {
+        return this.title || this.description;
+    }
+
+    /**
+     * Verify if actions position is at the bottom.
+     *
+     * @type {boolean}
+     */
+    get isBottomPosition() {
+        return this._actionsPosition.includes('bottom');
+    }
+
+    /**
+     * Verify if the actions variant is menu.
+     *
+     * @type {boolean}
+     */
+    get isMenuVariant() {
+        return this._actionsVariant === 'menu';
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
-    /**
-     * Carousel height initialization.
-     */
-    initializeCarouselHeight() {
-        this._carouselContentHeight =
-            this.actions.length > 0 && this.isBottomPosition ? 7.5 : 6.625;
+    actionDispatcher(actionName) {
+        const {
+            title,
+            description,
+            src,
+            href,
+            actions,
+            imageAssistiveText,
+            name
+        } = this;
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {object} item Item clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: {
+                        title,
+                        description,
+                        name,
+                        src,
+                        href,
+                        actions,
+                        imageAssistiveText
+                    }
+                }
+            })
+        );
     }
 
     /**
@@ -312,42 +382,36 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @param {Event}
      */
     handleActionClick(event) {
+        event.stopPropagation();
         event.preventDefault();
         const actionName = event.currentTarget.name;
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
+        this.actionDispatcher(actionName);
+    }
 
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {object} item Item clicked.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: actionName,
-                    item: {
-                        title,
-                        description,
-                        name,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText
-                    }
-                }
-            })
-        );
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    /**
+     * Carousel height initialization.
+     */
+    initializeCarouselHeight() {
+        this._carouselContentHeight =
+            this.actions.length > 0 && this.isBottomPosition ? 7.5 : 6.625;
+    }
+
+    /**
+     * Prevent the default event browser behavior
+     *
+     * @param {Event}
+     */
+    preventDefault(event) {
+        event.preventDefault();
     }
 }

@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-const contact = [
+const CONTACT = [
     {
         label: 'Call',
         value: 'call',
@@ -24,18 +24,8 @@ const contact = [
         prefixIconName: 'standard:all'
     }
 ];
-const prices = [
-    {
-        label: 'Free',
-        value: 'free'
-    },
-    {
-        label: 'Paid',
-        value: 'paid'
-    }
-];
 
-const editions = [
+const EDITIONS = [
     {
         label: 'Essentials',
         value: 'essentials'
@@ -66,7 +56,7 @@ const editions = [
     }
 ];
 
-const languages = [
+const LANGUAGES = [
     {
         label: 'Dutch',
         value: 'dutch'
@@ -109,47 +99,60 @@ const languages = [
     }
 ];
 
-export default class FilterMenuGroupBase extends LightningElement {
-    menus = [
-        {
-            name: 'contact',
-            label: 'Type',
-            accessKey: 'k',
-            alternativeText: 'Open contact type filter',
-            items: contact,
-            tooltip: 'Type of contact',
-            value: 'email'
-        },
-        {
-            name: 'prices',
-            disabled: true,
-            label: 'Prices',
-            items: prices,
+const MENUS = [
+    {
+        name: 'contact',
+        label: 'Type',
+        accessKey: 'k',
+        alternativeText: 'Open contact type filter',
+        typeAttributes: {
+            items: CONTACT,
             dropdownWidth: 'large',
-            droddownNubbin: true,
-            hideSelectedItems: true
+            droddownNubbin: true
         },
-        {
-            name: 'editions',
-            items: editions,
-            label: 'Editions',
-            showSearchBox: true,
-            dropdownLength: '5-items',
-            isMultiSelect: true
-        },
-        {
-            name: 'ratings',
-            label: 'Ratings',
-            isLoading: true,
-            loadingStateAlternativeText: 'Waiting for the items to load...'
-        },
-        {
-            name: 'languages',
-            items: languages,
-            label: 'Laguages',
-            dropdownLength: '10-items',
-            isMultiSelect: true,
-            value: ['dutch', 'english']
+        tooltip: 'Type of contact',
+        buttonVariant: 'brand'
+    },
+    {
+        name: 'price',
+        label: 'Price',
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
         }
-    ];
+    },
+    {
+        name: 'editions',
+        label: 'Editions',
+        typeAttributes: {
+            items: EDITIONS,
+            allowSearch: true,
+            isMultiSelect: true
+        }
+    },
+    {
+        name: 'languages',
+        label: 'Languages',
+        typeAttributes: {
+            isMultiSelect: true,
+            items: LANGUAGES,
+            dropdownLength: '5-items'
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
+    }
+];
+
+export default class FilterMenuGroupBase extends LightningElement {
+    menus = MENUS;
 }

@@ -46,6 +46,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select',
+                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+            },
+            description:
+                'The size of the icon. Valid values include xx-small, x-small, small, medium, and large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -83,6 +96,7 @@ export default {
     },
     args: {
         closeAction: false,
+        iconSize: 'small',
         isDismissible: false,
         variant: 'base'
     }
@@ -92,27 +106,32 @@ const Template = (args) => Alert(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    iconName: 'utility:user'
+};
+
+export const DismissibleWithCloseAction = Template.bind({});
+DismissibleWithCloseAction.args = {
     iconName: 'utility:user',
-    closeAction: () => console.log('Close action')
+    isDismissible: true,
+    closeAction: () => {
+        console.log('Close action triggered');
+    }
 };
 
 export const Error = Template.bind({});
 Error.args = {
     iconName: 'utility:error',
-    variant: 'error',
-    closeAction: () => console.log('Close action')
+    variant: 'error'
 };
 
 export const Offline = Template.bind({});
 Offline.args = {
     iconName: 'utility:clock',
-    variant: 'offline',
-    closeAction: () => console.log('Close action')
+    variant: 'offline'
 };
 
 export const Warning = Template.bind({});
 Warning.args = {
     iconName: 'utility:warning',
-    variant: 'warning',
-    closeAction: () => console.log('Close action')
+    variant: 'warning'
 };

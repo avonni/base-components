@@ -3,9 +3,10 @@
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
+ * @property {string} name Name to identify the item in the list.
  * @property {string} href The URL of the page the link goes to.
- * @property {string[]} icons List of iconName display next to the label.
- * @property {string} imageSrc Image URL for the list item image. If present, the image is disaplyed to the left of the item.
+ * @property {string[]} icons List of iconName displayed next to the label.
+ * @property {string} imageSrc Image URL for the list item image. If present, the image is displayed to the left of the item.
  * @property {object} infos List of additional information to display. Valid keys:
  * - label: string
  * - href: string
@@ -30,6 +31,17 @@
  * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
+/**
+ * @typedef {Object} ImageAttributes
+ * @name imageAttributes
+ * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
+ * @property {string} size The size of the item image. The size controls the width for image positions left and right. Otherwise size controls the image height. Valid values are small, medium, large. The size defaults to large.
+ * @property {number} height The image height in pixels. The height is only used for image positions top, bottom, background and overlay. The height overrides the size value.
+ * @property {number} width The image width in pixels. The width is only used for image positions left and right. The width overrides the size value.
+ * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
+ * @property {number} cropPositionX The image object-position horizontal percentage property. The value defaults to 50.
+ * @property {number} cropPositionY The image object-position vertical percentage property. The value defaults to 50.
+ */
 
 /**
  * @namespace stylingHooks
@@ -43,7 +55,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-size
- * @default 1rem
+ * @default 0.875rem
  * @type font
  */
 /**
@@ -72,6 +84,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-header-text-color-inverse
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-header-font-size
  * @default 0.8125rem
  * @type font
@@ -92,6 +110,12 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-description-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-description-text-color-inverse
+ * @default white
  * @type color
  */
 /**
@@ -156,33 +180,80 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-color-background-sortable-hover
- * @default --avonni-list-item-color-background-hover, #f3f2f2
+ * @default --avonni-list-item-color-background-hover, rgba(207, 207, 207, 0.25)
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-spacing-inline-between
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-top-spacing-block-between
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-top-spacing-inline-between
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-bottom-spacing-block-between
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-bottom-spacing-inline-between
+ * @type dimension
+ * @default 0
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-around-spacing-block-between
+ * @type dimension
+ * @default 0.5rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-divider-around-spacing-inline-between
+ * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-start
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-end
  * @type dimension
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
@@ -194,4 +265,129 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor
  * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-avatar-image-object-fit
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-image-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse
+ * @type color
+ * @default white
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse-hover
+ * @type color
+ * @default rgba(255, 255, 255, 0.75)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-header-link-text-color-inverse-active
+ * @type color
+ * @default rgba(255, 255, 255, 0.75)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color
+ * @type color
+ * @default #0176d3
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-hover
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-active
+ * @type color
+ * @default #014486
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse
+ * @type color
+ * @default white
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse-hover
+ * @type color
+ * @default rgba(255, 255, 255, 0.75)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-infos-link-text-color-inverse-active
+ * @type color
+ * @default rgba(255, 255, 255, 0.75)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-background-inverse
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground-inverse
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-color-foreground-default-inverse
+ * @type color
+ * @default white
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-icon-radius-border
+ * @type color
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-body-vertical-alignment
+ * @default center
+ * @type dimension
  */

@@ -4,4 +4,33 @@
         icon-name="utility:clock"
         variant="brand"
     ></avonni-timer>
+    <div class="slds-m-top_small slds-m-bottom_medium">
+        <lightning-button-icon
+            onclick={start}
+            icon-name="utility:play"
+            size="x-small"
+        >
+        </lightning-button-icon>
+
+        <lightning-button-icon
+            onclick={pause}
+            icon-name="utility:pause"
+            size="x-small"
+        >
+        </lightning-button-icon>
+
+        <lightning-button-icon
+            onclick={stopTimer}
+            icon-name="utility:stop"
+            size="x-small"
+        >
+        </lightning-button-icon>
+
+        <lightning-button-icon
+            onclick={reset}
+            icon-name="utility:refresh"
+            size="x-small"
+        >
+        </lightning-button-icon>
+    </div>
 </template>

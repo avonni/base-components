@@ -72,6 +72,8 @@ describe('Color Palette', () => {
 
     it('Color Palette: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
+        expect(element.showCheckmark).toBeFalsy();
+        expect(element.hideOutline).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
@@ -92,7 +94,7 @@ describe('Color Palette', () => {
             '#ffb758',
             '#bd35bd',
             '#5778c1',
-            '#5ebbff',
+            '#1b96ff',
             '#00aea9',
             '#3bba4c',
             '#f4bc25',
@@ -105,7 +107,7 @@ describe('Color Palette', () => {
             '#b67d11',
             '#b85d0d'
         ]);
-        expect(element.columns).toBe(7);
+        expect(element.columns).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.tileWidth).toBe(20);
         expect(element.tileHeight).toBe(20);
@@ -132,6 +134,46 @@ describe('Color Palette', () => {
                 expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
             });
         });
+    });
+
+    // hideOutline
+    it('Color Palette: hideOutline', () => {
+        element.hideOutline = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                selectable.click();
+            })
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                expect(selectable.classList).not.toContain(
+                    'avonni-color-picker__show-selected-outline'
+                );
+                expect(selectable.classList).toContain('slds-is-selected');
+            });
+    });
+
+    // showCheckmark
+    it('Color Palette: showCheckmark', () => {
+        element.showCheckmark = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                selectable.click();
+            })
+            .then(() => {
+                const selectable =
+                    element.shadowRoot.querySelector('[data-selectable]');
+                expect(selectable.classList).toContain(
+                    'avonni-color-picker__show-selected-checkmark'
+                );
+                expect(selectable.classList).toContain('slds-is-selected');
+            });
     });
 
     // read-only

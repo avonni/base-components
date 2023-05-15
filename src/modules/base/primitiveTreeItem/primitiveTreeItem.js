@@ -101,7 +101,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     popoverVisible = false;
     _checkboxIsIndeterminate = false;
     _focusOn = false;
-    _isConnected = false;
+    _connected = false;
     _menuIsOpen = false;
 
     connectedCallback() {
@@ -141,7 +141,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.addEventListener('mousedown', this.handleMouseDown);
         this.splitActions();
         this.computeSelection();
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -181,7 +181,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value);
-        if (this._isConnected) this.splitActions();
+        if (this._connected) this.splitActions();
     }
 
     /**
@@ -196,7 +196,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
-        if (this._isConnected) this.splitActions();
+        if (this._connected) this.splitActions();
     }
 
     /**
@@ -240,7 +240,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set childItems(value) {
         this._childItems = normalizeArray(value);
-        if (this._isConnected) this.computeSelection();
+        if (this._connected) this.computeSelection();
     }
 
     /**
@@ -301,7 +301,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        if (this._isConnected) this.splitActions();
+        if (this._connected) this.splitActions();
     }
 
     /**
@@ -317,7 +317,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set independentMultiSelect(value) {
         this._independentMultiSelect = normalizeBoolean(value);
-        if (this._isConnected) this.computeSelection();
+        if (this._connected) this.computeSelection();
     }
 
     /**
@@ -437,7 +437,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set selected(value) {
         this._selected = normalizeBoolean(value);
-        if (this._isConnected) this.computeSelection();
+        if (this._connected) this.computeSelection();
     }
 
     /**
@@ -453,7 +453,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set showCheckbox(value) {
         this._showCheckbox = normalizeBoolean(value);
-        if (this._isConnected) this.computeSelection();
+        if (this._connected) this.computeSelection();
     }
 
     /**
@@ -951,8 +951,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Update the visual level offset of the item.
      */
     updateLevel() {
-        if (this.itemElement)
-            this.itemElement.style = `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (wrapper)
+            wrapper.style = `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
     }
 
     /**
@@ -1009,8 +1012,22 @@ export default class PrimitiveTreeItem extends LightningElement {
         });
         this.dispatchEvent(actionClickEvent);
 
-        if (name === 'edit' && !actionClickEvent.defaultPrevented) {
+        if (
+            name === 'Standard.Tree.Edit' &&
+            !actionClickEvent.defaultPrevented
+        ) {
             this.togglePopoverVisibility();
+        }
+    }
+
+    /**
+     * Handle a key pressed on the action menu. Prevent the scroll if the space bar is pressed.
+     *
+     * @param {Event} event
+     */
+    handleActionMenuKeyDown(event) {
+        if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault();
         }
     }
 
@@ -1172,7 +1189,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      *
      * @param {Event} event
      */
-    handleLabelInlineKeyDown(event) {
+    handleLabelInlineKeyUp(event) {
         event.stopPropagation();
         this.draftValues.label = event.currentTarget.value;
 

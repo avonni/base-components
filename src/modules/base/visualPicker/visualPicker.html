@@ -79,6 +79,7 @@
                         onblur={handleBlur}
                         onfocus={handleFocus}
                         onchange={handleChange}
+                        onkeyup={handleKeyUp}
                     />
                     <label for={item.value} data-element-id="label">
                         <span class={visualPickerTypeClass}>
@@ -244,6 +245,7 @@
                                                 for:item="tag"
                                             >
                                                 <avonni-chip
+                                                    if:true={tag.label}
                                                     key={tag.label}
                                                     label={tag.label}
                                                     variant={tag.variant}

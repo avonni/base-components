@@ -40,9 +40,10 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
-
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
+import standard from './standard.html';
+import inline from './inline.html';
 
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -100,7 +101,7 @@ const DEFAULT_COLORS = [
     '#ffb758',
     '#bd35bd',
     '#5778c1',
-    '#5ebbff',
+    '#1b96ff',
     '#00aea9',
     '#3bba4c',
     '#f4bc25',
@@ -117,6 +118,8 @@ const DEFAULT_COLORS = [
 const DEFAULT_COLUMNS = 7;
 const DEFAULT_TAB = 'default';
 const MINIMUM_TILE_SIZE = 5;
+const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_TILE_HEIGHT = 20;
 
 /**
  * @class
@@ -181,6 +184,8 @@ export default class ColorPicker extends LightningElement {
     _disabled = false;
     _groups = [];
     _hideColorInput = false;
+    _hideClearIcon = false;
+    _inline = false;
     _isLoading = false;
     _menuAlignment = MENU_ALIGNMENTS.default;
     _menuNubbin = false;
@@ -188,6 +193,10 @@ export default class ColorPicker extends LightningElement {
     _menuVariant = MENU_VARIANTS.default;
     _name;
     _opacity = false;
+    _paletteHideOutline = false;
+    _paletteShowCheckmark = false;
+    _paletteTileWidth;
+    _paletteTileHeight;
     _readOnly = false;
     _required = false;
     _tokens = [];
@@ -196,14 +205,20 @@ export default class ColorPicker extends LightningElement {
     _variant = VARIANTS.default;
 
     _currentTab = DEFAULT_TAB;
-    _draftToken = {};
+    _lastSelectedDefault;
+    _lastSelectedToken;
 
     currentToken = {};
     dropdownOpened = false;
     dropdownVisible = false;
     helpMessage;
     newValue;
+    paletteIsLoading = false;
     showError = false;
+    tabPressed = false;
+    shiftPressed = false;
+    isInsideMenu = false;
+    denyBlurOnMenuButtonClick = false;
 
     _inputValue = '';
     _isConnected = false;
@@ -221,18 +236,11 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this._rendered = true;
         }
+        this.setPaletteData();
+    }
 
-        const palette = this.template.querySelector(
-            '[data-element-id^="avonni-color-palette"]'
-        );
-        if (this.dropdownVisible && palette) {
-            const paletteWidth = palette.clientWidth;
-            const tileWidth = Math.floor(paletteWidth / this.columns - 8);
-            const tileSize =
-                tileWidth > MINIMUM_TILE_SIZE ? tileWidth : MINIMUM_TILE_SIZE;
-            palette.tileWidth = tileSize;
-            palette.tileHeight = tileSize;
-        }
+    render() {
+        return this.inline ? inline : standard;
     }
 
     /*
@@ -246,7 +254,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @public
      * @type {string[]}
-     * @default [“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
+     * @default [“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#1b96ff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
      */
     @api
     get colors() {
@@ -256,10 +264,15 @@ export default class ColorPicker extends LightningElement {
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+
+        if (this._isConnected) {
+            this.setPaletteData();
+            this.setLastSelectedColor();
+        }
     }
 
     /**
-     * Number of columns in the palette.
+     * Number of columns in the palette. If unspecified, defaults to 7 except when inline is present.
      *
      * @public
      * @type {number}
@@ -271,11 +284,15 @@ export default class ColorPicker extends LightningElement {
     }
 
     set columns(value) {
-        const normalizedValue = parseInt(value, 10);
-        this._columns =
-            !isNaN(normalizedValue) && normalizedValue
-                ? parseInt(value, 10)
-                : DEFAULT_COLUMNS;
+        if (!value) {
+            this._columns = value;
+        } else {
+            const normalizedValue = parseInt(value, 10);
+            this._columns =
+                !isNaN(normalizedValue) && normalizedValue
+                    ? normalizedValue
+                    : DEFAULT_COLUMNS;
+        }
     }
 
     /**
@@ -307,10 +324,26 @@ export default class ColorPicker extends LightningElement {
 
     set groups(value) {
         this._groups = normalizeArray(value);
+        this.setPaletteData();
     }
 
     /**
-     * If true, hide the input color value.
+     * If present, it is not possible to clear a selected color using the input clear icon.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideClearIcon() {
+        return this._hideClearIcon;
+    }
+    set hideClearIcon(value) {
+        this._hideClearIcon = value;
+    }
+
+    /**
+     * If present, hide the input color value.
      *
      * @public
      * @type {boolean}
@@ -323,6 +356,22 @@ export default class ColorPicker extends LightningElement {
 
     set hideColorInput(value) {
         this._hideColorInput = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the popover is deactivated and its content is directly shown on the page.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get inline() {
+        return this._inline;
+    }
+
+    set inline(value) {
+        this._inline = normalizeBoolean(value);
     }
 
     /**
@@ -446,6 +495,72 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * If present, the selected palette swatch outline is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get paletteHideOutline() {
+        return this._paletteHideOutline;
+    }
+
+    set paletteHideOutline(value) {
+        this._paletteHideOutline = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the selected palette swatch shows a checkmark.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get paletteShowCheckmark() {
+        return this._paletteShowCheckmark;
+    }
+
+    set paletteShowCheckmark(value) {
+        this._paletteShowCheckmark = normalizeBoolean(value);
+    }
+
+    /**
+     * Specifies the palette swatches tile height.
+     *
+     * @public
+     * @type {number}
+     * @default 20
+     */
+    @api
+    get paletteTileHeight() {
+        return this._paletteTileHeight;
+    }
+
+    set paletteTileHeight(value) {
+        this._paletteTileHeight = Number(value);
+        this.setPaletteData();
+    }
+
+    /**
+     * Specifies the palette swatches tile width.
+     *
+     * @public
+     * @type {boolean}
+     * @default 20
+     */
+    @api
+    get paletteTileWidth() {
+        return this._paletteTileWidth;
+    }
+
+    set paletteTileWidth(value) {
+        this._paletteTileWidth = Number(value);
+        this.setPaletteData();
+    }
+
+    /**
      * If present, the input field is read-only and cannot be edited by users.
      *
      * @public
@@ -490,7 +605,11 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
-        if (this.isConnected) this.computeToken();
+
+        if (this._isConnected) {
+            this.computeToken();
+            this.setPaletteData();
+        }
     }
 
     /**
@@ -528,13 +647,15 @@ export default class ColorPicker extends LightningElement {
         if (value && typeof value === 'string') {
             this._value = value;
             this.inputValue = value;
-            if (this._isConnected) this.computeToken();
         } else {
             this._value = null;
             this._inputValue = '';
-            this.currentToken = {};
         }
-        this.initSwatchColor();
+
+        if (this._isConnected) {
+            this.computeToken();
+            this.setLastSelectedColor();
+        }
     }
 
     /**
@@ -585,6 +706,12 @@ export default class ColorPicker extends LightningElement {
             : this.colors;
     }
 
+    get computedDropdownTriggerClass() {
+        return classSet('slds-dropdown-trigger slds-dropdown-trigger_click')
+            .add({ 'slds-is-open': this.dropdownVisible })
+            .toString();
+    }
+
     /**
      * Computed value for the gradient component. If the value is empty, the gradient is initialized with a white color.
      *
@@ -627,19 +754,6 @@ export default class ColorPicker extends LightningElement {
 
     set inputValue(val) {
         this._inputValue = val || '';
-    }
-
-    /**
-     * True if the input field contains a value.
-     *
-     * @type {string}
-     */
-    get isInputFilled() {
-        let input = this.template.querySelector('[data-element-id="input"]');
-        if (input == null) {
-            return this.inputValue;
-        }
-        return !!this.inputValue;
     }
 
     /**
@@ -708,7 +822,9 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('slds-form-element__label slds-no-flex')
+        return classSet(
+            'slds-form-element__label avonni-color-picker__label slds-no-flex'
+        )
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
@@ -831,6 +947,15 @@ export default class ColorPicker extends LightningElement {
                 'slds-tabs_default__content': this.isBase
             })
             .toString();
+    }
+
+    /**
+     * True if the clear icon should be visible.
+     *
+     * @type {boolean}
+     */
+    get showClearIcon() {
+        return !this.hideClearIcon && this.inputValue;
     }
 
     get showColorGradient() {
@@ -967,6 +1092,7 @@ export default class ColorPicker extends LightningElement {
             this.currentToken = {};
         }
         this.initSwatchColor();
+        this.setLastSelectedColor();
     }
 
     /**
@@ -984,10 +1110,53 @@ export default class ColorPicker extends LightningElement {
         this.value = undefined;
         this.inputValue = '';
         this.currentToken = {};
-        this._draftToken = {};
         this.focus();
 
         this.dispatchClear();
+    }
+
+    /**
+     * In inline mode, set the last selected color for default and tokens tab.
+     */
+    setLastSelectedColor() {
+        if (this.inline) {
+            const isTokensColor = this.currentToken.value;
+            const isDefaultColor = this.colors.includes(this.value);
+            if (isTokensColor) {
+                this._lastSelectedToken = this.value;
+            } else if (isDefaultColor) {
+                this._lastSelectedDefault = this.value;
+            }
+        }
+    }
+
+    setPaletteData() {
+        const palette = this.template.querySelector(
+            '[data-element-id="avonni-color-palette"]'
+        );
+        if (!palette) {
+            return;
+        }
+
+        // We set the colors and groups after the palette is rendered,
+        // to prevent speed issue in Salesforce, when Locker Service is enabled
+        // and there are a lot of colors and/or groups.
+        palette.colors = this.computedColors;
+        palette.groups = this.groups;
+
+        if (this.inline) {
+            palette.tileWidth = this._paletteTileWidth || DEFAULT_TILE_WIDTH;
+            palette.tileHeight = this._paletteTileHeight || DEFAULT_TILE_HEIGHT;
+        } else {
+            const paletteWidth = palette.clientWidth;
+            const columns = this.columns || DEFAULT_COLUMNS;
+            const tileWidth = Math.floor(paletteWidth / columns - 8);
+            const tileSize = Math.max(tileWidth, MINIMUM_TILE_SIZE);
+            palette.tileWidth =
+                this._paletteTileWidth || tileSize || DEFAULT_TILE_WIDTH;
+            palette.tileHeight =
+                this._paletteTileHeight || tileSize || DEFAULT_TILE_HEIGHT;
+        }
     }
 
     /**
@@ -1000,22 +1169,41 @@ export default class ColorPicker extends LightningElement {
 
         if (event.detail) {
             this.newValue =
-                this.opacity && Number(event.detail.alpha) < 1
+                event.detail.token ||
+                (this.opacity && Number(event.detail.alpha) < 1
                     ? event.detail.hexa
-                    : event.detail.hex;
-            this._draftToken = {
-                label: event.detail.label,
-                value: event.detail.token
-            };
+                    : event.detail.hex);
         }
     }
 
     /**
-     * Handle a change in the color palette. Save and close the popover right away.
+     * Handle a change in the color gradient.
      *
      * @param {Event} event
      */
-    handleDefaultAndTokenChange(event) {
+    handleColorGradientChange(event) {
+        if (this.inline) {
+            this.handleChangeAndDone(event);
+        } else {
+            this.handleChange(event);
+        }
+    }
+
+    /**
+     * Handle a change in the color palette.
+     *
+     * @param {Event} event
+     */
+    handleColorPaletteChange(event) {
+        this.handleChangeAndDone(event);
+    }
+
+    /**
+     * Handle a color change. Save and close the popover right away.
+     *
+     * @param {Event} event
+     */
+    handleChangeAndDone(event) {
         this.handleChange(event);
         this.handleDone();
     }
@@ -1027,21 +1215,12 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
-            this.currentToken = { ...this._draftToken };
             this.newValue = null;
-
-            if (!this.menuIconName) {
-                this.elementSwatch.style.background = this.value;
-            }
-            if (this.colorGradient) {
-                this.colorGradient.renderValue(this.value);
-            }
-
-            this.dispatchChange(generateColors(this.value));
+            const color = this.currentToken.color || this.value;
+            this.dispatchChange(generateColors(color));
         }
 
-        this.handleBlur();
-        this.focus();
+        this.toggleMenuVisibility();
     }
 
     /**
@@ -1049,88 +1228,126 @@ export default class ColorPicker extends LightningElement {
      */
     handleCancel() {
         this.newValue = null;
-
-        if (this.colorGradient) {
-            this.colorGradient.renderValue(this.value);
-        }
-
-        this.handleBlur();
+        this.toggleMenuVisibility();
     }
 
     /**
      * Button click handler.
      */
     handleButtonClick() {
+        this.denyBlurOnMenuButtonClick = false;
         if (!this.readOnly) {
-            this.allowBlur();
             this.toggleMenuVisibility();
-            this.focusOnButton();
         }
     }
 
     /**
-     * Handle mouse down on Button.
-     *
-     * @param {Event} event
+     * Button mousedown handler.
      */
     handleButtonMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
+        if (this.dropdownOpened) {
+            let clickedElement = event.target;
+            while (
+                clickedElement !== null &&
+                clickedElement.tagName !== 'BUTTON'
+            ) {
+                clickedElement = clickedElement.parentElement;
+            }
+
+            if (
+                clickedElement !== null &&
+                clickedElement.tagName === 'BUTTON'
+            ) {
+                this.denyBlurOnMenuButtonClick = true;
+            }
         }
     }
 
     /**
-     * Dropdown menu mouse down handler.
+     * Handles a mouseenter in the color picker.
      *
      * @param {Event} event
      */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
+    handleMenuMouseEnter() {
+        this.isInsideMenu = true;
     }
 
     /**
-     * Dropdown menu mouse up handler.
+     * Handles a blur of any element in the color picker.
+     *
+     * @param {Event} event
      */
-    handleDropdownMouseUp() {
-        this.allowBlur();
-    }
-
-    /**
-     * Sets blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancels blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
-     * Blur handler.
-     */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
-
-        if (this.dropdownVisible) {
+    handleMenuBlur() {
+        if (
+            !this.isInsideMenu &&
+            this.dropdownVisible &&
+            !this.denyBlurOnMenuButtonClick &&
+            !this.tabPressed
+        ) {
             this.toggleMenuVisibility();
         }
+    }
+
+    /**
+     * Handles a mouseleave from the color picker.
+     *
+     * @param {Event} event
+     */
+    handleMenuMouseLeave() {
+        this.isInsideMenu = false;
+    }
+
+    /**
+     * Handles a keydown inside the popover.
+     *
+     * @param {Event} event
+     */
+    handleMenuKeydown(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = true;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = true;
+        } else if (event.keyCode === 27) {
+            this.handleCancel();
+        }
+    }
+
+    /**
+     * Handles a keyup inside the popover.
+     *
+     * @param {Event} event
+     */
+    handleMenuKeyUp(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = false;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = false;
+        }
+    }
+
+    setInitialFocus() {
+        // Focus on an element inside the popover.
+        requestAnimationFrame(() => {
+            const tab = this.template.querySelector(
+                '[data-element-id="default"]'
+            );
+            const tabBody = this.template.querySelector(
+                '[data-element-id="tab-body"]'
+            );
+
+            if (tab) {
+                tab.focus();
+            } else if (tabBody) {
+                tabBody.focus();
+            }
+        });
     }
 
     /**
      * Dropdown menu visibility toggle.
      */
     toggleMenuVisibility() {
-        if (!this.disabled) {
+        if (!this.disabled && !this.inline) {
             this.dropdownVisible = !this.dropdownVisible;
 
             if (!this.dropdownOpened && this.dropdownVisible) {
@@ -1138,22 +1355,11 @@ export default class ColorPicker extends LightningElement {
             }
 
             if (this.dropdownVisible) {
+                this.setInitialFocus();
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
+                this.loadPalette();
             }
-
-            this.template
-                .querySelector('.slds-dropdown-trigger')
-                .classList.toggle('slds-is-open');
-        }
-    }
-
-    /**
-     * Close dropdown menu.
-     */
-    close() {
-        if (this.dropdownVisible) {
-            this.toggleMenuVisibility();
         }
     }
 
@@ -1164,6 +1370,16 @@ export default class ColorPicker extends LightningElement {
      */
     isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
+    }
+
+    /**
+     * Show a loading spinner while the palette is generated.
+     */
+    loadPalette() {
+        this.paletteIsLoading = true;
+        setTimeout(() => {
+            this.paletteIsLoading = false;
+        }, 0);
     }
 
     /**
@@ -1191,49 +1407,47 @@ export default class ColorPicker extends LightningElement {
      */
     handleTabClick(event) {
         event.preventDefault();
+        const targetName = event.currentTarget.dataset.tabName;
+
+        // In inline mode, a tab click selects the last selected color of that tab, except for 'custom'.
+        if (this.inline) {
+            if (
+                targetName === 'default' &&
+                this._lastSelectedDefault &&
+                this._lastSelectedDefault !== this.value
+            ) {
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.value = this._lastSelectedDefault;
+                this.dispatchChange(generateColors(this.value));
+            } else if (
+                targetName === 'tokens' &&
+                this._lastSelectedToken &&
+                this._lastSelectedToken !== this.value
+            ) {
+                // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+                this.value = this._lastSelectedToken;
+                this.dispatchChange(generateColors(this.currentToken.color));
+            }
+        }
 
         this.template
             .querySelectorAll('[data-group-name="tabs"]')
             .forEach((tab) => {
-                const tabName = tab.dataset.tabName;
-                const targetName = event.currentTarget.dataset.tabName;
-
-                if (tabName === targetName) {
+                if (tab.dataset.tabName === targetName) {
                     tab.parentElement.classList.add('slds-is-active');
-                    this._currentTab = tabName;
+                    this._currentTab = targetName;
                 } else {
                     tab.parentElement.classList.remove('slds-is-active');
                 }
             });
 
         const palette = this.template.querySelector(
-            '[data-element-id="avonni-color-palette-default"]'
+            '[data-element-id="avonni-color-palette"]'
         );
-        if (palette) palette.colors = [...this.computedColors];
-    }
-
-    /**
-     * Private focus handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateFocus(event) {
-        event.stopPropagation();
-
-        this.allowBlur();
-        this._menuHasFocus = true;
-    }
-
-    /**
-     * Private blur handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateBlur(event) {
-        event.stopPropagation();
-
-        this.handleBlur();
-        this._menuHasFocus = false;
+        if (palette) {
+            palette.colors = [...this.computedColors];
+        }
+        this.loadPalette();
     }
 
     /**
@@ -1254,10 +1468,6 @@ export default class ColorPicker extends LightningElement {
             }
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = color;
-
-            if (this.colorGradient) {
-                this.colorGradient.renderValue(color);
-            }
             this.dispatchChange(generateColors(color));
         } else if (color === '') {
             this.clearInput();

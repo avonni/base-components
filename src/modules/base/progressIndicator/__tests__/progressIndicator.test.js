@@ -46,7 +46,6 @@ const STEPS = [
         buttonIconName: 'utility:apps',
         buttonIconPosition: 'right',
         buttonDisabled: true,
-        buttonTitle: 'Some title',
         buttonVariant: 'brand',
         popoverVariant: 'button',
         popoverIconName: 'standard:user',
@@ -220,7 +219,6 @@ describe('Progress Indicator', () => {
                 expect(primitive.buttonDisabled).toBe(
                     STEPS[index].buttonDisabled || false
                 );
-                expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
                 expect(primitive.buttonVariant).toBe(
                     STEPS[index].buttonVariant || 'neutral'
                 );
@@ -291,7 +289,6 @@ describe('Progress Indicator', () => {
                 expect(primitive.buttonDisabled).toBe(
                     STEPS[index].buttonDisabled || false
                 );
-                expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
                 expect(primitive.buttonVariant).toBe(
                     STEPS[index].buttonVariant || 'neutral'
                 );
@@ -404,9 +401,12 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepclick'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepclick', { detail: { value: 'step-1' } })
+            );
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -424,8 +424,11 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepblur'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepblur', { detail: { value: 'step-1' } })
+            );
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -444,8 +447,11 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepfocus'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepfocus', { detail: { value: 'step-1' } })
+            );
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -464,8 +470,13 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepmouseenter'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepmouseenter', {
+                    detail: { value: 'step-1' }
+                })
+            );
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -484,8 +495,13 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepmouseleave'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepmouseleave', {
+                    detail: { value: 'step-1' }
+                })
+            );
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -504,8 +520,13 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('stepbuttonclick'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('stepbuttonclick', {
+                    detail: { value: 'step-1' }
+                })
+            );
 
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -524,9 +545,14 @@ describe('Progress Indicator', () => {
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-progress-step"]'
             );
-            primitives[1].dispatchEvent(new CustomEvent('steppopoverclick'));
+            primitives[1].dispatchEvent(
+                new CustomEvent('steppopoverclick', {
+                    detail: { value: 'step-1' }
+                })
+            );
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('step-1');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

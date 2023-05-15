@@ -12,6 +12,7 @@
  * @name items
  * @property {string} name Required. Unique name of the item.
  * @property {string} title Title of the item, displayed in the item header.
+ * @property {boolean} checked If true and `hasCheckbox` is true, the checkbox will be checked. Defaults to false.
  * @property {string} description Description of the item, displayed under the title.
  * @property {(Date|number|string)} datetimeValue Date/time value of the item. It can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} href URL to use as a link for the title.
@@ -29,4 +30,57 @@
  * @property {string} buttonIconPosition Describes the position of the icon with respect to the button label. Options include left and right. Defaults to left.
  * @property {string} buttonVariant The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. Defaults to neutral.
  * @property {boolean} buttonDisabled If present, the button is disabled. Defaults to false.
+ */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-radius-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-background-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-text-color
+ * @type color
+ * @default #080707
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-size
+ * @type font
+ * @default 1em
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-style
+ * @type font
+ * @default normal
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-activity-timeline-title-font-weight
+ * @type font
+ * @default 400
  */

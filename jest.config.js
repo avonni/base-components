@@ -4,18 +4,34 @@ module.exports = {
     ...jestConfig,
     preset: '@lwc/jest-preset',
     moduleNameMapper: {
+        d3: '<rootDir>/node_modules/d3/dist/d3.min.js',
         '^lightning/(.+)$': '<rootDir>/jest-mock/components/lightning/$1/$1',
+        '^c/(buttonMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(calendar)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(card)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(colorGradient)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(combobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(filterMenu)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveCombobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitivePill)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerAgenda)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerCalendar)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveSchedulerHeaderGroup)$':
             '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerTimeline)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveTreeItem)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(resizeObserver)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(slider)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(splitter)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(splitterPane)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(verticalProgressIndicator)$':
             '<rootDir>/jest-mock/components/base/$1/$1'
     },

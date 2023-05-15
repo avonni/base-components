@@ -35,75 +35,81 @@
 <template>
     <div
         class="avonni-calendar__container"
-        onfocus={handleFocus}
         onblur={handleBlur}
-        tabindex="0"
+        onfocusin={handleFocus}
+        tabindex="-1"
+        onkeydown={handleKeyDown}
+        data-element-id="avonni-calendar__container"
     >
-        <div class="slds-form-element avonni-calendar__background_color">
+        <div
+            class="slds-form-element avonni-calendar__background_color"
+            data-element-id="avonni-calendar__keyboard-handler"
+        >
             <div class="slds-datepicker">
-                <div class="slds-datepicker__filter slds-grid">
+                <template if:false={hideNavigation}>
                     <div
-                        class="
-                            slds-datepicker__filter_month
-                            slds-grid slds-grid_align-spread
-                            slds-grow
-                        "
+                        class="slds-datepicker__filter slds-grid"
+                        data-element-id="avonni-calendar__header"
                     >
-                        <div class="slds-align-middle">
-                            <lightning-button-icon
-                                icon-name="utility:left"
-                                variant="container"
-                                alternative-text="Previous Month"
-                                title="Previous Month"
-                                onclick={handlerPreviousMonth}
-                                disabled={disabledPrevious}
-                                data-element-id="previous-lightning-button-icon"
-                                onfocus={handleFocus}
-                                onblur={handleBlur}
-                            ></lightning-button-icon>
-                        </div>
-                        <h2
+                        <div
                             class="
-                                slds-align-middle
-                                avonni-calendar__month_color
+                                slds-datepicker__filter_month
+                                slds-grid slds-grid_align-spread
+                                slds-grow
                             "
-                            data-element-id="h2"
                         >
-                            {month}
-                        </h2>
-                        <div class="slds-align-middle">
-                            <lightning-button-icon
-                                icon-name="utility:right"
-                                variant="container"
-                                alternative-text="Next Month"
-                                title="Next Month"
-                                disabled={disabledNext}
-                                data-element-id="next-lightning-button-icon"
-                                onclick={handlerNextMonth}
-                                onfocus={handleFocus}
-                                onblur={handleBlur}
-                            ></lightning-button-icon>
+                            <div class="slds-align-middle">
+                                <lightning-button-icon
+                                    icon-name="utility:left"
+                                    variant="container"
+                                    alternative-text="Previous Month"
+                                    title="Previous Month"
+                                    onclick={handlerPreviousMonth}
+                                    disabled={disabledPrevious}
+                                    data-element-id="previous-lightning-button-icon"
+                                ></lightning-button-icon>
+                            </div>
+                            <h2
+                                class="
+                                    slds-align-middle
+                                    avonni-calendar__month_color
+                                "
+                                data-element-id="h2"
+                            >
+                                {month}
+                            </h2>
+                            <div class="slds-align-middle">
+                                <lightning-button-icon
+                                    icon-name="utility:right"
+                                    variant="container"
+                                    alternative-text="Next Month"
+                                    title="Next Month"
+                                    disabled={disabledNext}
+                                    data-element-id="next-lightning-button-icon"
+                                    onclick={handlerNextMonth}
+                                ></lightning-button-icon>
+                            </div>
                         </div>
+                        <c-combobox
+                            class="avonni-calendar__year-combobox"
+                            hide-clear-icon
+                            name="years"
+                            label="Years"
+                            variant="label-hidden"
+                            dropdown-alignment="right"
+                            value={year}
+                            placeholder={year}
+                            options={yearsList}
+                            disabled={disabled}
+                            data-element-id="avonni-combobox"
+                            onchange={handleYearChange}
+                        >
+                        </c-combobox>
                     </div>
-                    <lightning-combobox
-                        name="years"
-                        label="Years"
-                        variant="label-hidden"
-                        dropdown-alignment="right"
-                        value={year}
-                        placeholder={year}
-                        options={yearsList}
-                        disabled={disabled}
-                        data-element-id="lightning-combobox"
-                        onchange={handleYearChange}
-                        onfocus={handleFocus}
-                        onblur={handleBlur}
-                    >
-                    </lightning-combobox>
-                </div>
+                </template>
                 <table
                     aria-labelledby="month"
-                    aria-multiselectable="true"
+                    aria-multiselectable={isMultiSelect}
                     class={tableClasses}
                     role="grid"
                 >
@@ -133,26 +139,33 @@
                             >
                                 <template for:each={week} for:item="day">
                                     <td
-                                        class={day.class}
-                                        role="gridcell"
+                                        class={day.wrapperClass}
                                         key={generateKey}
                                         aria-selected={day.selected}
-                                        aria-current={day.currentDate}
+                                        aria-current={day.ariaCurrent}
+                                        role="gridcell"
+                                        tabindex={day.tabIndex}
+                                        data-date={day.label}
+                                        data-disabled={day.disabled}
+                                        data-element-id="td"
+                                        data-full-date={day.date.ts}
+                                        data-selected={day.appearsSelected}
+                                        data-today={day.isToday}
                                         onmouseover={handleMouseOver}
                                         onmouseout={handleMouseOut}
-                                        data-cell-day={day.fullDate}
-                                        data-day={day.fullDate}
+                                        onfocus={handleDateFocus}
                                     >
                                         <span
-                                            class={day.dayClass}
-                                            data-day={day.fullDate}
+                                            class={day.labelClass}
+                                            data-full-date={day.date.ts}
                                             data-date={day.label}
+                                            data-disabled={day.disabled}
                                             data-element-id="span-day-label"
-                                            onclick={handlerSelectDate}
-                                            >{day.label}
-                                        </span>
+                                            onclick={handleSelectDate}
+                                            >{day.label}</span
+                                        >
                                         <div
-                                            if:true={day.marked}
+                                            if:true={day.markers.length}
                                             class="slds-is-relative"
                                         >
                                             <div
@@ -161,7 +174,7 @@
                                                 "
                                             >
                                                 <template
-                                                    for:each={day.markedColors}
+                                                    for:each={day.markers}
                                                     for:item="marker"
                                                 >
                                                     <div
@@ -170,22 +183,22 @@
                                                             avonni-calendar__marked-cells
                                                         "
                                                         data-element-id="div-marked-cells"
-                                                        style={marker.color}
+                                                        style={marker}
                                                     ></div>
                                                 </template>
                                             </div>
                                         </div>
                                         <c-chip
-                                            if:true={day.labeled}
-                                            class={day.chip.classes}
+                                            if:true={day.hasChip}
+                                            class={day.chip.computedClass}
                                             label={day.chip.label}
                                             variant={day.chip.variant}
                                             outline={day.chip.outline}
-                                            data-day={day.fullDate}
+                                            data-full-date={day.date.ts}
                                             data-element-id="chip-date-label"
                                         >
                                             <c-primitive-icon
-                                                if:true={day.chip.showLeft}
+                                                if:true={day.chip.showLeftIcon}
                                                 class="
                                                     avonni-calendar-chip-icon-left
                                                 "
@@ -193,10 +206,10 @@
                                                 size="xx-small"
                                                 variant={day.chip.iconVariant}
                                                 icon-name={day.chip.iconName}
-                                                data-day={day.fullDate}
+                                                data-full-date={day.date.ts}
                                             ></c-primitive-icon>
                                             <c-primitive-icon
-                                                if:true={day.chip.showRight}
+                                                if:true={day.chip.showRightIcon}
                                                 class="
                                                     avonni-calendar-chip-icon-right
                                                 "
@@ -204,7 +217,7 @@
                                                 size="xx-small"
                                                 variant={day.chip.iconVariant}
                                                 icon-name={day.chip.iconName}
-                                                data-day={day.fullDate}
+                                                data-full-date={day.date.ts}
                                             ></c-primitive-icon>
                                         </c-chip>
                                     </td>

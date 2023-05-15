@@ -32,14 +32,24 @@
 
 import { LightningElement, api, track } from 'lwc';
 import {
+    equal,
     normalizeArray,
     normalizeBoolean,
     normalizeString,
     dateTimeObjectFrom,
-    addToDate
+    addToDate,
+    deepCopy,
+    removeFromDate
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
-import { eventCrudMethods } from './eventCrud';
+import {
+    getDisabledWeekdaysLabels,
+    parseTimeFrame,
+    positionPopover,
+    previousAllowedDay,
+    previousAllowedMonth,
+    previousAllowedTime
+} from 'c/schedulerUtils';
+import { classSet, generateUUID } from 'c/utils';
 import {
     EDIT_MODES,
     EVENTS_THEMES,
@@ -47,20 +57,22 @@ import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_COLUMNS,
     DEFAULT_DATE_FORMAT,
     DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
+    DEFAULT_EVENTS_DISPLAY_FIELDS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
-    DEFAULT_TIME_SPAN,
-    HEADERS,
+    DEFAULT_SELECTED_TIME_SPAN,
+    DISPLAYS,
     PALETTES,
-    PRESET_HEADERS
+    SIDE_PANEL_POSITIONS,
+    TIME_SPANS,
+    VARIANTS
 } from './defaults';
-import SchedulerRow from './row';
-import SchedulerEvent from './event';
 
 /**
  * @class
@@ -73,121 +85,98 @@ export default class Scheduler extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
-    _columns = [];
+    _columns = DEFAULT_COLUMNS;
     _contextMenuEmptySpotActions = [];
     _contextMenuEventActions = [];
     _customEventsPalette = [];
     _collapseDisabled = false;
-    _customHeaders = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _disabledDatesTimes = [];
     _events = [];
+    _eventsDisplayFields = DEFAULT_EVENTS_DISPLAY_FIELDS;
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
-    _headers = HEADERS.default;
+    _hiddenDisplays = [];
+    _hideResourcesFilter = false;
+    _hideSidePanel = false;
+    _hideToolbar = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
     _referenceLines = [];
     _resizeColumnDisabled = false;
-    _rows = [];
-    _rowsKeyField;
-    _start = dateTimeObjectFrom(DEFAULT_START_DATE);
-    _timeSpan = DEFAULT_TIME_SPAN;
+    _resources = [];
+    _selectedDisplay = DISPLAYS.default;
+    _selectedResources = [];
+    _selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
+    _sidePanelPosition = SIDE_PANEL_POSITIONS.default;
+    _start = DEFAULT_START_DATE;
+    _timeSpans = TIME_SPANS.default;
+    _timezone;
+    _toolbarActions = [];
+    _variant = VARIANTS.default;
+    _zoomToFit = false;
 
-    _allEvents = [];
-    _datatableRowsHeight;
-    datatableWidth = 0;
-    _draggedEvent;
-    _draggedSplitter = false;
-    _initialDatatableWidth;
-    _initialState = {};
-    _mouseIsDown = false;
-    _numberOfVisibleCells = 0;
-    _resizedEvent;
-    _headerHeightChange = false;
-    _visibleInterval;
-    cellWidth = 0;
+    _closeDetailPopoverTimeout;
+    _connected = false;
+    _focusCalendarPopover;
+    _openDetailPopoverTimeout;
+    _toolbarCalendarDisabledWeekdays = [];
+    _toolbarCalendarIsFocused = false;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
     computedReferenceLines = [];
-    computedRows = [];
+    computedResources = [];
     @track computedEvents = [];
+    computedSelectedDisplay = {};
     contextMenuActions = [];
-    datatableIsHidden = false;
-    datatableIsOpen = false;
-    scrollHeadersTo = () => {
-        return true;
-    };
-    selectedEvent;
+    currentTimeSpan = {};
+    detailPopoverFields = [];
+    selectedDate;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
-    smallestHeader;
+    showToolbarCalendar = false;
+    toolbarCalendarDisabledDates = [];
+    visibleIntervalLabel;
 
     connectedCallback() {
-        this.crud = eventCrudMethods(this);
-        this.initHeaders();
+        this.selectedDate = this.createDate(this.start);
+        this.initReferenceLines();
+        this.initCurrentTimeSpan();
+        this.updateSelectedDisplay();
+        this.initEvents();
+        this.initResources();
+        this.initToolbarCalendarDisabledDates();
+        this.computeVisibleIntervalLabel(
+            this.computedStart,
+            this.computedStart
+        );
         this._connected = true;
+
+        this.classList.add('slds-is-relative');
+        this.classList.add('slds-show');
     }
 
     renderedCallback() {
-        if (this._headerHeightChange) {
-            // The first header primitive render will set this variable to true
-            // and trigger a re-render. So we return to prevent running the other calculations twice.
-            this.updateDatatablePosition();
-            this._headerHeightChange = false;
-            return;
-        }
-
-        // Save the default datatable column width
-        if (!this._initialDatatableWidth) {
-            this._initialDatatableWidth =
-                this.datatableCol.getBoundingClientRect().width;
-            this.datatableWidth = this._initialDatatableWidth;
-        }
-
-        // Save the datatable row height and update the body styles
-        if (!this._datatableRowsHeight) {
-            this.updateDatatableRowsHeight();
-        }
-        this.updateOccurrencesOffsetTop();
-        this.updateRowsStyle();
-
-        // Update the position and height of occurrences
-        this.updateOccurrencesPosition();
-
         // Position the detail popover
         if (this.showDetailPopover) {
             const popover = this.template.querySelector(
-                '.avonni-scheduler__event-detail-popover'
+                '[data-element-id="div-detail-popover"]'
             );
-            this.positionPopover(popover);
+            positionPopover(this.bounds, popover, this.selection);
         }
 
         // Position the context menu
         if (this.showContextMenu && this.contextMenuActions.length) {
             const contextMenu = this.template.querySelector(
-                '.avonni-scheduler__context-menu'
+                '[data-element-id="avonni-primitive-dropdown-menu"]'
             );
-            this.positionPopover(contextMenu);
-        }
-
-        // If a new event was just created, set the dragged event
-        if (this.selection && this.selection.newEvent && !this._draggedEvent) {
-            this._draggedEvent = this.template.querySelector(
-                `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${this.selection.occurrence.key}"]`
-            );
-            if (this._draggedEvent) {
-                this.initDraggedEventState(
-                    this._initialState.mouseX,
-                    this._initialState.mouseY
-                );
-            }
+            positionPopover(this.bounds, contextMenu, this.selection);
         }
 
         // If the edit dialog is opened, focus on the first input
@@ -207,7 +196,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
      * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
-     * For example, if the available days are Monday to Friday, the value would be: <code>[1, 2, 3, 4, 5]</code>
+     * For example, if the available days are Monday to Friday, the value would be: `[1, 2, 3, 4, 5]`
      *
      * @type {number[]}
      * @public
@@ -222,18 +211,15 @@ export default class Scheduler extends LightningElement {
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
         if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
+            this.initToolbarCalendarDisabledDates();
         }
     }
 
     /**
      * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
      * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
-     * For example, if the available months are January, February, June, July, August and December, the value would be: <code>[0, 1, 5, 6, 7, 11]</code>
+     * For example, if the available months are January, February, June, July, August and December, the value would be: `[0, 1, 5, 6, 7, 11]`
      *
      * @type {number[]}
      * @public
@@ -247,19 +233,12 @@ export default class Scheduler extends LightningElement {
         const months = normalizeArray(value);
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
     }
 
     /**
      * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
      * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
-     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: <code>['10:00-11:59', '14:30-18:44']</code>
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: `['10:00-11:59', '14:30-18:44']`
      *
      * @type {string[]}
      * @public
@@ -270,97 +249,14 @@ export default class Scheduler extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
-        const timeFrames = normalizeArray(value);
+        const timeFrames = normalizeArray(value, 'string');
+        const validTimeFrames = timeFrames.filter((timeFrame) => {
+            return parseTimeFrame(timeFrame).valid;
+        });
         this._availableTimeFrames =
-            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
-    }
-
-    /**
-     * Array of datatable column objects. The columns are displayed to the left of the schedule. For more details on the allowed object keys, see the Data Table component.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get columns() {
-        return this._columns;
-    }
-    set columns(value) {
-        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
-    }
-
-    /**
-     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.
-     *
-     * @type {object[]}
-     * @public
-     * @default Add event
-     */
-    @api
-    get contextMenuEmptySpotActions() {
-        return this._contextMenuEmptySpotActions;
-    }
-    set contextMenuEmptySpotActions(value) {
-        this._contextMenuEmptySpotActions = normalizeArray(value);
-    }
-
-    /**
-     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.
-     *
-     * @type {object[]}
-     * @public
-     * @default Edit and Delete
-     */
-    @api
-    get contextMenuEventActions() {
-        return this._contextMenuEventActions;
-    }
-    set contextMenuEventActions(value) {
-        this._contextMenuEventActions = normalizeArray(value);
-    }
-
-    /**
-     * Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected.
-     * The color strings have to be a Hexadecimal or RGB color. For example <code>#3A7D44</code> or <code>rgb(58, 125, 68)</code>.
-     *
-     * @type {string[]}
-     * @public
-     */
-    @api
-    get customEventsPalette() {
-        return this._customEventsPalette;
-    }
-    set customEventsPalette(value) {
-        this._customEventsPalette = normalizeArray(value);
-
-        if (this._connected) this.initRows();
-    }
-
-    /**
-     * Array of header objects. If present, it will overwrite the predefined headers.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get customHeaders() {
-        return this._customHeaders;
-    }
-    set customHeaders(value) {
-        this._customHeaders = normalizeArray(value);
-
-        if (this._connected) {
-            this.computedEvents = [];
-            this.computedRows = [];
-            this.initHeaders();
-        }
+            validTimeFrames.length > 0
+                ? validTimeFrames
+                : DEFAULT_AVAILABLE_TIME_FRAMES;
     }
 
     /**
@@ -379,8 +275,102 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * The date format to use in the events' details popup and the labels. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format. If you want to insert text in the label, you need to escape it using single quote.
-     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the timeline display, in horizontal variant.
+     * The columns will be bound to the resources. If needed, extra keys can be added to the resource objects.
+     *
+     * @type {object[]}
+     * @default [
+     *   {
+     *      label: 'Resource',
+     *      fieldName: 'avatarSrc',
+     *      type: 'avatar',
+     *      typeAttributes: {
+     *          alternativeText: { fieldName: 'name' },
+     *          fallbackIconName: { fieldName: 'avatarFallbackIconName' },
+     *          initials: { fieldName: 'avatarInitials' },
+     *          primaryText: { fieldName: 'label' }
+     *      }
+     *   }
+     * ]
+     * @public
+     */
+    @api
+    get columns() {
+        return this._columns;
+    }
+    set columns(value) {
+        const columns = deepCopy(normalizeArray(value, 'object'));
+        this._columns = columns.length ? columns : DEFAULT_COLUMNS;
+    }
+
+    /**
+     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.
+     *
+     * @type {object[]}
+     * @public
+     * @default ['Standard.Scheduler.AddEvent']
+     */
+    @api
+    get contextMenuEmptySpotActions() {
+        return this._contextMenuEmptySpotActions;
+    }
+    set contextMenuEmptySpotActions(value) {
+        this._contextMenuEmptySpotActions = normalizeArray(value);
+    }
+
+    /**
+     * Array of action objects. These actions will be displayed in the events context menu and detail popover.
+     *
+     * @type {object[]}
+     * @public
+     * @default ['Standard.Scheduler.EditEvent', 'Standard.Scheduler.DeleteEvent']
+     */
+    @api
+    get contextMenuEventActions() {
+        return this._contextMenuEventActions;
+    }
+    set contextMenuEventActions(value) {
+        this._contextMenuEventActions = normalizeArray(value);
+    }
+
+    /**
+     * Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected.
+     * The color strings have to be a Hexadecimal or RGB color. For example `#3A7D44` or `rgb(58, 125, 68)`.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get customEventsPalette() {
+        return this._customEventsPalette;
+    }
+    set customEventsPalette(value) {
+        this._customEventsPalette = normalizeArray(value);
+
+        if (this._connected) {
+            this.initResources();
+        }
+    }
+
+    /**
+     * Deprecated. Set the custom headers in each time span instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
+    get customHeaders() {
+        return null;
+    }
+    set customHeaders(value) {
+        console.warn(
+            'The "custom-headers" attribute is deprecated. Set the custom headers in each time span instead.'
+        );
+    }
+
+    /**
+     * The date format to use in the events' details popup and the labels. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format. If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be `"LLL dd 'day shift'"`.
      *
      * @type {string}
      * @public
@@ -393,33 +383,6 @@ export default class Scheduler extends LightningElement {
     set dateFormat(value) {
         this._dateFormat =
             value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
-    }
-
-    /**
-     * Array of disabled date/time objects.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get disabledDatesTimes() {
-        return this._disabledDatesTimes;
-    }
-    set disabledDatesTimes(value) {
-        this._disabledDatesTimes = normalizeArray(value);
-
-        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
-            (evt) => {
-                const event = { ...evt };
-                event.disabled = true;
-                return event;
-            }
-        );
-
-        if (this._connected) {
-            this.initEvents();
-            this.updateVisibleRows();
-        }
     }
 
     /**
@@ -483,6 +446,32 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Array of disabled date/time objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get disabledDatesTimes() {
+        return this._disabledDatesTimes;
+    }
+    set disabledDatesTimes(value) {
+        this._disabledDatesTimes = normalizeArray(value);
+
+        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
+            (evt) => {
+                const event = { ...evt };
+                event.disabled = true;
+                return event;
+            }
+        );
+
+        if (this._connected) {
+            this.initEvents();
+        }
+    }
+
+    /**
      * Array of event objects.
      *
      * @type {object[]}
@@ -497,7 +486,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
         }
     }
 
@@ -509,6 +497,7 @@ export default class Scheduler extends LightningElement {
      * * right
      * * center
      * The value of each key should be a label object.
+     * Top, bottom, left and right labels are only supported for the timeline display with a horizontal variant.
      *
      * @type {object}
      * @public
@@ -528,14 +517,13 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
         }
     }
 
     /**
      * Default palette used for the event colors. Valid values include aurora, bluegrass, dusk, fire, heat, lake, mineral, nightfall, ocean, pond, sunrise, water, watermelon and wildflowers (see Palette table for more information).
      *
-     * @type {string[]}
+     * @type {string}
      * @public
      * @default aurora
      */
@@ -550,8 +538,36 @@ export default class Scheduler extends LightningElement {
         });
 
         if (this._connected) {
-            this.initRows();
+            this.initResources();
         }
+    }
+
+    /**
+     * Array of data objects, displayed in the popover visible on hover on an event. See [Output Data](/components/output-data) for valid keys.
+     * The value of each field should be a key of the selected event object.
+     *
+     * @type {object[]}
+     * @default [
+     *  {
+     *     type: 'date',
+     *     value: 'from'
+     *  },
+     *  {
+     *     type: 'date',
+     *     value: 'to'
+     *  }
+     * ]
+     * @public
+     */
+    @api
+    get eventsDisplayFields() {
+        return this._eventsDisplayFields;
+    }
+    set eventsDisplayFields(value) {
+        const fields = normalizeArray(value, 'object');
+        this._eventsDisplayFields = fields.length
+            ? fields
+            : DEFAULT_EVENTS_DISPLAY_FIELDS;
     }
 
     /**
@@ -573,45 +589,86 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
         }
     }
 
     /**
-     * Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. Valid values include:
-     * * minuteAndHour
-     * * minuteHourAndDay
-     * * hourAndDay
-     * * hourDayAndWeek
-     * * dayAndWeek
-     * * dayLetterAndWeek
-     * * dayWeekAndMonth
-     * * weekAndMonth
-     * * weekMonthAndYear
-     * * monthAndYear
-     * * quartersAndYear
-     * * fiveYears
+     * Deprecated. Set the headers in each time span instead.
      *
      * @type {string}
-     * @public
-     * @default hourAndDay
+     * @deprecated
      */
     @api
     get headers() {
-        return this._headers;
+        return null;
     }
     set headers(value) {
-        this._headers = normalizeString(value, {
-            fallbackValue: HEADERS.default,
-            validValues: HEADERS.valid,
-            toLowerCase: false
-        });
+        console.warn(
+            'The "headers" attribute is deprecated. Set the headers in each time span instead.'
+        );
+    }
 
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-            this.initHeaders();
-        }
+    /**
+     * Array of display names that should not appear in the toolbar options. Valid values include agenda, calendar and timeline.
+     * If one or zero display is visible, the toolbar button will be hidden.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get hiddenDisplays() {
+        return this._hiddenDisplays;
+    }
+    set hiddenDisplays(value) {
+        const displays = normalizeArray(value, 'string');
+        this._hiddenDisplays = displays.filter((display) => {
+            return DISPLAYS.valid.includes(display);
+        });
+    }
+
+    /**
+     * If present, the resources filter is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideResourcesFilter() {
+        return this._hideResourcesFilter;
+    }
+    set hideResourcesFilter(value) {
+        this._hideResourcesFilter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the side panel will be hidden. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideSidePanel() {
+        return this._hideSidePanel;
+    }
+    set hideSidePanel(value) {
+        this._hideSidePanel = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the toolbar is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideToolbar() {
+        return this._hideToolbar;
+    }
+    set hideToolbar(value) {
+        this._hideToolbar = normalizeBoolean(value);
     }
 
     /**
@@ -664,8 +721,8 @@ export default class Scheduler extends LightningElement {
 
     /**
      * Allowed edition modes for recurring events. Available options are:
-     * * <code>all</code>: All recurrent event occurrences will be updated when a change is made to one occurrence.
-     * * <code>one</code>: Only the selected occurrence will be updated when a change is made.
+     * * `all`: All recurrent event occurrences will be updated when a change is made to one occurrence.
+     * * `one`: Only the selected occurrence will be updated when a change is made.
      *
      * @type {string[]}
      * @public
@@ -699,28 +756,9 @@ export default class Scheduler extends LightningElement {
     set referenceLines(value) {
         this._referenceLines = normalizeArray(value);
 
-        this.computedReferenceLines = this._referenceLines.map((line) => {
-            const from = line.date
-                ? dateTimeObjectFrom(line.date)
-                : dateTimeObjectFrom(Date.now());
-            const to = addToDate(from, 'millisecond', 1);
-
-            return {
-                title: line.label,
-                theme: line.variant,
-                from,
-                to,
-                recurrence: line.recurrence,
-                recurrenceEndDate: line.recurrenceEndDate,
-                recurrenceCount: line.recurrenceCount,
-                recurrenceAttributes: line.recurrenceAttributes,
-                referenceLine: true
-            };
-        });
-
         if (this._connected) {
+            this.initReferenceLines();
             this.initEvents();
-            this.updateVisibleRows();
         }
     }
 
@@ -740,41 +778,154 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of datatable data objects. Each object represents a row of the scheduler. For more details, see the Data Table component.
+     * Array of resource objects. The resources can be bound to events.
      *
      * @type {object[]}
      * @public
      * @required
      */
     @api
-    get rows() {
-        return this._rows;
+    get resources() {
+        return this._resources;
     }
-    set rows(value) {
-        this._rows = normalizeArray(value);
+    set resources(value) {
+        this._resources = normalizeArray(value, 'object');
 
-        if (this._connected) this.initRows();
+        if (this._connected) {
+            this.initResources();
+        }
     }
 
     /**
-     * Name of a key of the row objects. This key needs to be present in all row objects. Its value needs to be unique to a row, as it will be used as the row identifier.
+     * Deprecated. The `name` field of the resource objects is used by default.
      *
      * @type {string}
-     * @public
-     * @required
+     * @deprecated
+     */
+    @api
+    get resourcesKeyField() {
+        return 'name';
+    }
+    set resourcesKeyField(value) {
+        console.warn(
+            'The "resources-key-field" attribute is deprecated. The "name" field of the resource objects is used by default.'
+        );
+    }
+
+    /**
+     * Deprecated. Use `resources` instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
+    get rows() {
+        return this.resources;
+    }
+    set rows(value) {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.resources = value;
+        console.warn(
+            'The "rows" attribute is deprecated. Use "resources" instead.'
+        );
+    }
+
+    /**
+     * Deprecated. The `name` field of the resource objects is used by default.
+     *
+     * @type {string}
+     * @deprecated
      */
     @api
     get rowsKeyField() {
-        return this._rowsKeyField;
+        return 'name';
     }
     set rowsKeyField(value) {
-        this._rowsKeyField = value.toString();
-
-        if (this._connected) this.initRows();
+        console.warn(
+            'The "rows-key-field" attribute is deprecated. The "name" field of the resource objects is used by default.'
+        );
     }
 
     /**
-     * Specifies the starting date/timedate of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     * Selected display of the scheduler. Valid values include agenda, calendar and timeline.
+     *
+     * @type {string}
+     * @default timeline
+     * @public
+     */
+    @api
+    get selectedDisplay() {
+        return this._selectedDisplay;
+    }
+    set selectedDisplay(value) {
+        this._selectedDisplay = normalizeString(value, {
+            fallbackValue: DISPLAYS.default,
+            validValues: DISPLAYS.valid
+        });
+
+        if (this._connected) {
+            this.updateSelectedDisplay();
+        }
+    }
+
+    /**
+     * Array of selected resources names. Only the events of the selected resources will be visible.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get selectedResources() {
+        return this._selectedResources;
+    }
+    set selectedResources(value) {
+        this._selectedResources = normalizeArray(value, 'string');
+    }
+
+    /**
+     * Unique name of the selected time span. The selected time span will determine the visible duration of the scheduler.
+     *
+     * @type {string}
+     * @default Standard.Scheduler.DayTimeSpan
+     * @public
+     */
+    @api
+    get selectedTimeSpan() {
+        return this._selectedTimeSpan;
+    }
+    set selectedTimeSpan(value) {
+        this._selectedTimeSpan =
+            typeof value === 'string' ? value : DEFAULT_SELECTED_TIME_SPAN;
+
+        if (this._connected) {
+            this.initCurrentTimeSpan();
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
+        }
+    }
+
+    /**
+     * Position of the side panel, relative to the schedule. This attribute only affects the agenda and calendar displays.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get sidePanelPosition() {
+        return this._sidePanelPosition;
+    }
+    set sidePanelPosition(value) {
+        this._sidePanelPosition = normalizeString(value, {
+            fallbackValue: SIDE_PANEL_POSITIONS.default,
+            validValues: SIDE_PANEL_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Starting date of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @type {(Date|number|string)}
      * @public
@@ -785,31 +936,189 @@ export default class Scheduler extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateTimeObjectFrom(value);
-        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
+        this._start = this.createDate(value) ? value : DEFAULT_START_DATE;
 
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.selectedDate = this.createDate(this.start);
+            this.computeVisibleIntervalLabel(
+                this.computedStart,
+                this.computedStart
+            );
+        }
     }
 
     /**
-     * Object used to set the duration of the scheduler. It has two keys:
-     * * <code>unit</code>. Valid values include minute, hour, day, week, month and year.
-     * * <code>span</code>. The number of unit the scheduler will show.
-     * For example, if the scheduler should be four-day long, the value would be: <code>{ unit: ‘day’, span: 4 }</code>
+     * Deprecated. Use the `time-spans` and the `selected-time-spans` instead.
      *
      * @type {object}
-     * @public
-     * @default { unit: ‘hour’, span: 12 }
-     * @required
+     * @deprecated
      */
     @api
     get timeSpan() {
-        return this._timeSpan;
+        return this.currentTimeSpan;
     }
     set timeSpan(value) {
-        this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
+        console.warn(
+            'The "time-span" attribute is deprecated. Use the "time-spans" and the "selected-time-span" instead.'
+        );
+    }
 
-        if (this._connected) this.initHeaders();
+    /**
+    * Array of time span objects.
+    * The time spans will be displayed in the toolbar. Only three options can be visible, the others will be listed in a button menu.
+    *
+    * @type {object[]}
+    * @public
+    * @required
+    * @default [
+        {
+            headers: 'hourAndDay',
+            label: 'Day',
+            name: 'Standard.Scheduler.DayTimeSpan',
+            span: 1,
+            unit: 'day'
+        },
+        {
+            headers: 'hourAndDay',
+            label: 'Week',
+            name: 'Standard.Scheduler.WeekTimeSpan',
+            span: 1,
+            unit: 'week'
+        },
+        {
+            headers: 'dayAndMonth',
+            label: 'Month',
+            name: 'Standard.Scheduler.MonthTimeSpan',
+            span: 1,
+            unit: 'month'
+        },
+        {
+            headers: 'dayAndMonth',
+            label: 'Year',
+            name: 'Standard.Scheduler.YearTimeSpan',
+            span: 1,
+            unit: 'year'
+        }
+    ]
+    */
+    @api
+    get timeSpans() {
+        return this._timeSpans;
+    }
+    set timeSpans(value) {
+        const normalizedTimeSpans = deepCopy(normalizeArray(value, 'object'));
+        let timeSpans = normalizedTimeSpans.filter((tsp) => {
+            return tsp.name;
+        });
+        if (!timeSpans.length) {
+            timeSpans = TIME_SPANS.default;
+        }
+        timeSpans.forEach((tsp) => {
+            if (!tsp.unit) {
+                tsp.unit = TIME_SPANS.defaultUnit;
+            }
+            if (!tsp.headers) {
+                tsp.headers = TIME_SPANS.defaultHeaders;
+            }
+            if (!tsp.span) {
+                tsp.span = TIME_SPANS.defaultSpan;
+            }
+        });
+        this._timeSpans = timeSpans;
+
+        if (this._connected) {
+            this.initCurrentTimeSpan();
+        }
+    }
+
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.selectedDate = this.createDate(this.start);
+            this.initReferenceLines();
+            this.initEvents();
+        }
+    }
+
+    /**
+     * Array of action objects. If present, the actions will be shown in the toolbar.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get toolbarActions() {
+        return this._toolbarActions;
+    }
+    set toolbarActions(value) {
+        const actions = normalizeArray(value, 'object');
+        if (equal(this._toolbarActions, actions)) {
+            return;
+        }
+        this._toolbarActions = actions;
+    }
+
+    /**
+     * Deprecated. Use the `time-spans` instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
+    get toolbarTimeSpans() {
+        return this.timeSpans;
+    }
+    set toolbarTimeSpans(value) {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.timeSpans = value;
+
+        console.warn(
+            'The "toolbar-time-spans" attribute is deprecated. Use "time-spans" instead.'
+        );
+    }
+
+    /**
+     * Orientation of the scheduler when the selected display is timeline. Valid values include horizontal and vertical.
+     *
+     * @type {string}
+     * @default horizontal
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+    }
+
+    /**
+     * If present, horizontal scrolling will be prevented in the timeline view.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get zoomToFit() {
+        return this._zoomToFit;
+    }
+    set zoomToFit(value) {
+        this._zoomToFit = normalizeBoolean(value);
     }
 
     /*
@@ -819,59 +1128,25 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
-     * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
+     * Coordinates of the schedule's bounding box.
+     *
+     * @type {DOMRect}
+     */
+    get bounds() {
+        return this.template.host.getBoundingClientRect();
+    }
+
+    /**
+     * Display options visible in the toolbar.
      *
      * @type {object[]}
      */
-    get resourcesComboboxOptions() {
-        const options = [];
-        this.rows.forEach((row) => {
-            if (row.resourceName) {
-                options.push({
-                    label: row.resourceName,
-                    value: row[this.rowsKeyField]
-                });
-            }
+    get displayOptions() {
+        const allOptions = deepCopy(DISPLAYS.options);
+        return allOptions.filter((display) => {
+            display.checked = display.value === this.selectedDisplay;
+            return !this.hiddenDisplays.includes(display.value);
         });
-        return options;
-    }
-
-    /**
-     * Datatable HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get datatable() {
-        return this.template.querySelector(
-            '[data-element-id="avonni-datatable"]'
-        );
-    }
-
-    /**
-     * Datatable column HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get datatableCol() {
-        return this.template.querySelector('.avonni-scheduler__datatable-col');
-    }
-
-    /**
-     * Class list of the datable column.
-     *
-     * @type {string}
-     * @default 'slds-border_right avonni-scheduler__datatable-col slds-grid'
-     */
-    get datatableColClass() {
-        return classSet(
-            'slds-border_right avonni-scheduler__datatable-col slds-grid'
-        )
-            .add({
-                'avonni-scheduler__datatable-col_hidden':
-                    this.datatableIsHidden,
-                'avonni-scheduler__datatable-col_open': this.datatableIsOpen
-            })
-            .toString();
     }
 
     /**
@@ -915,14 +1190,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of color strings.
+     * Start date as a Luxon DateTime object, including the timezone.
      *
-     * @type {string[]}
+     * @type {DateTime}
      */
-    get palette() {
-        return this.customEventsPalette.length
-            ? this.customEventsPalette
-            : PALETTES[this.eventsPalette];
+    get computedStart() {
+        return this.createDate(this.start);
+    }
+
+    get displayButtonClass() {
+        return classSet('avonni-scheduler__display-menu')
+            .add({
+                'avonni-scheduler__toolbar-button-group_first':
+                    this.toolbarActions.length
+            })
+            .toString();
     }
 
     /**
@@ -938,61 +1220,156 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If true, editing a recurring event only updates the occurrence, never the complete event.
+     * Array of action objects, to be displayed as buttons in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get firstEventActions() {
+        return this.computedContextMenuEvent.slice(0, 2);
+    }
+
+    get toolbarActionButtonClass() {
+        return classSet({
+            'avonni-scheduler__toolbar-button-group_last':
+                this.moreThanOneDisplay
+        }).toString();
+    }
+
+    /**
+     * True if the selected display is agenda.
      *
      * @type {boolean}
-     * @default false
      */
-    get onlyOccurrenceEditAllowed() {
-        return (
-            this.recurrentEditModes.length === 1 &&
-            this.recurrentEditModes[0] === 'one'
-        );
+    get isAgenda() {
+        return this.selectedDisplay === 'agenda';
     }
 
     /**
-     * Formated starting date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionFrom() {
-        return this.selection.occurrence.from.toFormat(this.dateFormat);
-    }
-
-    /**
-     * Formated ending date of the currently selected event.
-     *
-     * @type {string}
-     */
-    get selectionTo() {
-        return this.selection.occurrence.to.toFormat(this.dateFormat);
-    }
-
-    /**
-     * If true, the left collapse button is displayed on the splitter bar.
+     * True if the selected display is calendar.
      *
      * @type {boolean}
-     * @default true
      */
-    get showCollapseLeft() {
-        return !this.collapseDisabled && !this.datatableIsHidden;
+    get isCalendar() {
+        return this.selectedDisplay === 'calendar';
     }
 
     /**
-     * If true, the right collapse button is displayed on the splitter bar.
+     * True if the selected display is timeline.
      *
      * @type {boolean}
-     * @default true
      */
-    get showCollapseRight() {
-        return !this.collapseDisabled && !this.datatableIsOpen;
+    get isTimeline() {
+        return this.selectedDisplay === 'timeline';
+    }
+
+    /**
+     * Array of action objects, to be displayed in a button menu, in the event detail popover.
+     *
+     * @type {object[]}
+     */
+    get lastEventActions() {
+        return this.computedContextMenuEvent.slice(2);
+    }
+
+    /**
+     * True if more than one display is selectable.
+     *
+     * @type {boolean}
+     */
+    get moreThanOneDisplay() {
+        return this.displayOptions.length > 1;
+    }
+
+    /**
+     * True if there is more than one toolbar action.
+     *
+     * @type {boolean}
+     */
+    get moreThanOneToolbarAction() {
+        return this.toolbarActions.length > 1;
+    }
+
+    /**
+     * If only one toolbar action is present, and it has a label, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneToolbarActionButton() {
+        if (this.toolbarActions.length === 1 && this.toolbarActions[0].label) {
+            return this.toolbarActions[0];
+        }
+        return false;
+    }
+
+    /**
+     * If only one toolbar action is present, and it doesn't have a label but it has an icon, returns the action object.
+     * Otherwise, returns false.
+     *
+     * @type {object|boolean}
+     */
+    get oneToolbarActionButtonIcon() {
+        if (
+            this.toolbarActions.length === 1 &&
+            this.toolbarActions[0].iconName &&
+            !this.toolbarActions[0].label
+        ) {
+            return this.toolbarActions[0];
+        }
+        return false;
+    }
+
+    /**
+     * Array of color strings.
+     *
+     * @type {string[]}
+     */
+    get palette() {
+        return this.customEventsPalette.length
+            ? this.customEventsPalette
+            : PALETTES[this.eventsPalette];
+    }
+
+    /**
+     * Type attributes of the toolbar resource filter, visible in the timeline display.
+     *
+     * @type {object}
+     */
+    get resourceFilterTypeAttributes() {
+        return {
+            allowSearch: true,
+            isMultiSelect: true,
+            items: this.resourceOptions
+        };
+    }
+
+    /**
+     * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
+     *
+     * @type {object[]}
+     */
+    get resourceOptions() {
+        return this.resources.map((res) => {
+            return {
+                label: res.label || res.name,
+                value: res.name
+            };
+        });
+    }
+
+    /**
+     * True if the empty timeline message should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showEmptyTimelineMessage() {
+        return this.isTimeline && !this.showTimeline;
     }
 
     /**
      * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
      *
      * @type {boolean}
-     * @default true
      */
     get showRecurrenceSaveOptions() {
         return (
@@ -1002,66 +1379,102 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If true, a loading spinner is displayed on the left of the schedule.
+     * True if the resource filter should be shown in the toolbar.
      *
      * @type {boolean}
-     * @default false
      */
-    get showLeftInfiniteLoadSpinner() {
-        if (!this.smallestHeader || this.isLoading) return false;
-
-        const firstVisibleColumn = this.smallestHeader.columns[0];
-        const firstVisibleTime =
-            firstVisibleColumn && dateTimeObjectFrom(firstVisibleColumn.start);
-        return firstVisibleTime > this.smallestHeader.start;
+    get showResourceFilter() {
+        return this.isTimeline && !this.hideResourcesFilter;
     }
 
     /**
-     * If true, a loading spinner is displayed on the right of the schedule.
+     * True if the timeline should be displayed.
      *
      * @type {boolean}
-     * @default false
      */
-    get showRightInfiniteLoadSpinner() {
-        if (!this.smallestHeader || this.isLoading) return false;
-
-        const lastVisibleColumn =
-            this.smallestHeader.columns[this.smallestHeader.columns.length - 1];
-        const lastVisibleTime =
-            lastVisibleColumn && dateTimeObjectFrom(lastVisibleColumn.end);
-        return lastVisibleTime < this.smallestHeader.end;
+    get showTimeline() {
+        if (!this.isTimeline) {
+            return false;
+        }
+        return this.resources.some((res) => {
+            return this.selectedResources.includes(res.name);
+        });
     }
 
     /**
-     * Duration of one column of the smallest unit header, in milliseconds.
+     * True if the toolbar time span buttons should be visible.
      *
-     * @type {number}
-     * @default 0
+     * @type {boolean}
      */
-    get smallestColumnDuration() {
-        const header = this.smallestHeader;
-        if (!header) return 0;
-
-        const headerColumnEnd =
-            addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerColumnEnd).diff(header.start)
-            .milliseconds;
+    get showToolbarTimeSpans() {
+        return this.timeSpans.length > 1;
     }
 
     /**
-     * Class list of the splitter.
+     * HTML element of the primitive schedule: timeline, agenda or calendar.
+     *
+     * @type {HTMLElement}
+     */
+    get schedule() {
+        if (this.isCalendar) {
+            return this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-calendar"]'
+            );
+        }
+        if (this.isAgenda) {
+            return this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-agenda"]'
+            );
+        }
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-timeline"]'
+        );
+    }
+
+    /**
+     * Computed CSS classes for the calendar selector of the toolbar.
      *
      * @type {string}
-     * @default 'avonni-scheduler__splitter slds-is-absolute slds-grid'
      */
-    get splitterClass() {
-        return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
+    get toolbarCalendarWrapperClass() {
+        return classSet('avonni-scheduler__flex-col slds-has-flexi-truncate')
             .add({
-                'avonni-scheduler__splitter_disabled':
-                    this.resizeColumnDisabled,
-                'slds-grid_align-end': this.datatableIsOpen
+                'slds-text-align_center slds-p-horizontal_small':
+                    this.showToolbarTimeSpans
             })
             .toString();
+    }
+
+    /**
+     * Array of toolbar time spans that should be displayed as buttons in the toolbar.
+     *
+     * @type {object[]}
+     */
+    get toolbarTimeSpanButtons() {
+        const buttons = deepCopy(this.timeSpans.slice(0, 3));
+        buttons.forEach((button) => {
+            if (button.name === this.currentTimeSpan.name) {
+                button.variant = 'brand';
+            } else {
+                button.variant = 'neutral';
+            }
+        });
+        return buttons;
+    }
+
+    /**
+     * Array of toolbar time spans that should be displayed as menu items in the toolbar.
+     *
+     * @type {object[]}
+     */
+    get toolbarTimeSpanMenuItems() {
+        const items = deepCopy(this.timeSpans.slice(3));
+        items.forEach((item) => {
+            if (item.name === this.currentTimeSpan.name) {
+                item.checked = true;
+            }
+        });
+        return items;
     }
 
     /*
@@ -1071,6 +1484,19 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Collapse the side panel. If the panel was fully expanded, collapse it to its original position. Otherwise, hide it.
+     *
+     * @public
+     */
+    @api
+    collapseSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.collapseSidePanel();
+    }
+
+    /**
      * Create a new event.
      *
      * @param {object} event Event object of the new event.
@@ -1078,7 +1504,13 @@ export default class Scheduler extends LightningElement {
      */
     @api
     createEvent(eventObject) {
-        this.crud.createEvent(eventObject);
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to create the event.`
+            );
+            return;
+        }
+        this.schedule.createEvent(eventObject);
     }
 
     /**
@@ -1089,7 +1521,26 @@ export default class Scheduler extends LightningElement {
      */
     @api
     deleteEvent(eventName) {
-        this.crud.deleteEvent(eventName);
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to delete the event ${eventName}.`
+            );
+            return;
+        }
+        this.schedule.deleteEvent(eventName);
+    }
+
+    /**
+     * Expand the side panel. If the panel was already opened, expand it fully. Otherwise, open it.
+     *
+     * @public
+     */
+    @api
+    expandSidePanel() {
+        if (!this.schedule) {
+            return;
+        }
+        this.schedule.expandSidePanel();
     }
 
     /**
@@ -1100,8 +1551,62 @@ export default class Scheduler extends LightningElement {
      */
     @api
     focusEvent(eventName) {
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to set the focus on ${eventName}.`
+            );
+            return;
+        }
         this._programmaticFocus = true;
-        this.crud.focusEvent(eventName);
+        this.schedule.focusEvent(eventName);
+    }
+
+    /**
+     * Move the position of the scheduler so the specified date is visible. The difference with setting the start attribute is that the current time span is taken into account, so the scheduler won’t necessarily start with the given date.
+     *
+     * @param {string | number | Date} date Date the scheduler should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const selectedDate = this.createDate(date);
+        if (!selectedDate) {
+            console.warn(`The date ${date} is not valid.`);
+            return;
+        }
+        this.selectedDate = selectedDate;
+        const unit = this.currentTimeSpan.unit;
+        let start;
+
+        // Compensate the fact that Luxon weeks start on Monday
+        if (unit === 'week' && selectedDate.weekday === 7) {
+            // Start is on Sunday and the unit is week
+            start = selectedDate.startOf('day');
+        } else {
+            start = selectedDate.startOf(unit);
+
+            if (unit === 'week') {
+                // Start is not on a Sunday and the unit is week
+                start = removeFromDate(start, 'day', 1);
+            }
+        }
+
+        if (start !== this.start) {
+            /**
+             * The event fired when the start date changes.
+             *
+             * @event
+             * @name startchange
+             * @param {string} value New start date, as an ISO 8601 formatted string.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('startchange', {
+                    detail: { value: start.toISO() }
+                })
+            );
+        }
+        this._start = start.ts;
     }
 
     /**
@@ -1112,7 +1617,13 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openEditEventDialog(eventName) {
-        this._draggedEvent = undefined;
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to open the edit event dialog.`
+            );
+            return;
+        }
+
         this.focusEvent(eventName);
         this.hideAllPopovers();
         this.showEditDialog = true;
@@ -1125,7 +1636,17 @@ export default class Scheduler extends LightningElement {
      */
     @api
     openNewEventDialog() {
-        this.crud.newEvent();
+        if (!this.schedule) {
+            console.warn(
+                `The ${this.selectedDisplay} is not available. Failed to open the new event dialog.`
+            );
+            return;
+        }
+        this.selection = this.schedule.newEvent();
+        if (this.selection) {
+            this.hideAllPopovers();
+            this.showEditDialog = true;
+        }
     }
 
     /*
@@ -1135,721 +1656,172 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
-     * Create the computed headers.
+     * Set the current time span value.
      */
-    initHeaders() {
-        // Use the custom headers or a preset
-        let headers = [...this.customHeaders];
-        if (!headers.length) {
-            const presetConfig = PRESET_HEADERS.find(
-                (preset) => preset.name === this.headers
-            );
-            headers = presetConfig.headers;
-        }
+    initCurrentTimeSpan() {
+        this.currentTimeSpan = this.timeSpans.find((tsp) => {
+            return tsp.name === this.selectedTimeSpan;
+        });
 
-        this.computedHeaders = headers;
+        if (
+            !this.currentTimeSpan &&
+            this.selectedTimeSpan !== DEFAULT_SELECTED_TIME_SPAN
+        ) {
+            // Set the current time span to the default time span, if it exists
+            this.currentTimeSpan = this.timeSpans.find((tsp) => {
+                return tsp.name === DEFAULT_SELECTED_TIME_SPAN;
+            });
+        }
+        if (!this.currentTimeSpan) {
+            // Set the selected time span to the first time span
+            this.currentTimeSpan = this.timeSpans[0];
+        }
     }
 
     /**
      * Create the computed events.
      */
     initEvents() {
-        if (!this.smallestHeader) return;
-
         // The disabled dates/times and reference lines are special events
-        this._allEvents = this.events
+        const events = this.events
             .concat(this.computedDisabledDatesTimes)
             .concat(this.computedReferenceLines);
 
-        if (!this._allEvents.length) return;
+        if (!events.length) {
+            this.computedEvents = [];
+            return;
+        }
 
-        this._allEvents.sort((first, second) => {
-            return (
-                dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from)
-            );
+        events.sort((first, second) => {
+            return this.createDate(first.from) < this.createDate(second.from)
+                ? -1
+                : 1;
         });
-
-        // Create only the visible events
-        this.computedEvents = this.createVisibleEvents();
+        this.computedEvents = events;
     }
 
     /**
-     * Create the computed rows.
+     * Create the computed reference lines, taking the timezone into account.
      */
-    initRows() {
-        if (!this.smallestHeader || !this.rows || !this.rowsKeyField) return;
+    initReferenceLines() {
+        this.computedReferenceLines = this._referenceLines.map((line) => {
+            const from = line.date
+                ? this.createDate(line.date)
+                : this.createDate(Date.now());
+            const to = addToDate(from, 'millisecond', 1);
 
+            return {
+                title: line.label,
+                theme: line.variant,
+                from,
+                to,
+                recurrence: line.recurrence,
+                recurrenceEndDate: line.recurrenceEndDate,
+                recurrenceCount: line.recurrenceCount,
+                recurrenceAttributes: line.recurrenceAttributes,
+                referenceLine: true
+            };
+        });
+    }
+
+    /**
+     * Create the computed resources.
+     */
+    initResources() {
         let colorIndex = 0;
-        this.computedRows = this.rows.map((row) => {
-            const rowKey = row[this.rowsKeyField];
-
+        this.computedResources = this.resources.map((resource) => {
             // If there is no color left in the palette,
             // restart from the beginning
             if (!this.palette[colorIndex]) {
                 colorIndex = 0;
             }
 
-            const occurrences = this.getOccurrencesFromRowKey(rowKey);
-
-            const computedRow = new SchedulerRow({
-                color: this.palette[colorIndex],
-                key: rowKey,
-                referenceColumns: this.smallestHeader.columns,
-                events: occurrences,
-                // We store the initial row object in a variable,
-                // in case one of its fields is used by an event's label
-                data: { ...row }
-            });
-
-            // If there's already been a render and we know the datatable rows height,
-            // assign the min-height of the row
-            if (this._datatableRowsHeight) {
-                const dataRowHeight = this._datatableRowsHeight.find(
-                    (dataRow) => dataRow.rowKey === rowKey
-                ).height;
-                computedRow.minHeight = dataRowHeight;
-            }
-
+            const computedResource = {
+                ...resource,
+                color: this.palette[colorIndex]
+            };
             colorIndex += 1;
-            return computedRow;
+            return computedResource;
         });
     }
 
     /**
-     * Set the initial state of a dragged or resized event.
+     * Initialize the toolbar calendar disabled dates.
+     */
+    initToolbarCalendarDisabledDates() {
+        const disabled = getDisabledWeekdaysLabels(this.availableDaysOfTheWeek);
+        this._toolbarCalendarDisabledWeekdays = disabled;
+        this.toolbarCalendarDisabledDates = [...disabled];
+    }
+
+    /**
+     * Compute the time interval label displayed in the toolbar.
      *
-     * @param {number} mouseX The position of the mouse on the horizontal axis.
-     * @param {number} mouseY The position of the mouse on the vertical axis.
+     * @param {DateTime} start Start of the time interval.
+     * @param {DateTime} end End of the time interval.
      */
-    initDraggedEventState(mouseX, mouseY) {
-        // Save the initial position values
-        const scheduleElement = this.template.querySelector(
-            '.avonni-scheduler__body'
-        );
-        const schedulePosition = scheduleElement.getBoundingClientRect();
-        const eventPosition = this._draggedEvent.getBoundingClientRect();
-
-        const leftBoundary =
-            this._resizeSide === 'right'
-                ? eventPosition.left + 24
-                : schedulePosition.left + (mouseX - eventPosition.left);
-        const rightBoundary =
-            this._resizeSide === 'left'
-                ? eventPosition.right - 24
-                : schedulePosition.right + (mouseX - eventPosition.right);
-
-        this._initialState = {
-            mouseX,
-            mouseY,
-            initialX: this._draggedEvent.x,
-            initialY: this._draggedEvent.y,
-            eventLeft: eventPosition.left,
-            eventRight: eventPosition.right,
-            eventWidth: eventPosition.width,
-            left: leftBoundary,
-            right: rightBoundary,
-            top: schedulePosition.top + (mouseY - eventPosition.top),
-            bottom: schedulePosition.bottom + (mouseY - eventPosition.bottom),
-            row: this.getRowFromPosition(mouseY)
-        };
-    }
-
-    /**
-     * Set the rows height and cell width.
-     */
-    updateRowsStyle() {
-        const rows = this.template.querySelectorAll('.avonni-scheduler__row');
-
-        rows.forEach((row, index) => {
-            const key = row.dataset.key;
-            const computedRow = this.getRowFromKey(key);
-            const rowHeight = computedRow.height;
-
-            const dataRowHeight = this._datatableRowsHeight.find(
-                (dataRow) => dataRow.rowKey === key
-            ).height;
-
-            row.style = `
-                min-height: ${dataRowHeight}px;
-                height: ${rowHeight}px;
-                --avonni-scheduler-cell-width: ${this.cellWidth}px;
-            `;
-
-            if (index === 0) {
-                this.datatable.setRowHeight(key, rowHeight - 1);
-            } else {
-                this.datatable.setRowHeight(key, rowHeight);
+    computeVisibleIntervalLabel(start, end) {
+        const { unit, span } = this.currentTimeSpan;
+        let format;
+        switch (unit) {
+            case 'day':
+            case 'week': {
+                format = 'ccc, LLLL d, kkkk';
+                break;
             }
-        });
-    }
-
-    /**
-     * Update the cell width property if the cells grew because the splitter moved.
-     */
-    updateCellWidth() {
-        const cell = this.template.querySelector('.avonni-scheduler__cell');
-        const cellWidth = cell.getBoundingClientRect().width;
-        if (cellWidth !== this.cellWidth) {
-            this.cellWidth = cellWidth;
-            this._updateOccurrencesWidth = true;
+            case 'year': {
+                format = 'yyyy';
+                break;
+            }
+            case 'month': {
+                format = 'LLLL yyyy';
+                break;
+            }
+            case 'minute':
+            case 'hour': {
+                format = 't';
+                break;
+            }
+            default:
+                break;
         }
-    }
 
-    /**
-     * Vertically align the datatable header with the smallest unit schedule header.
-     */
-    updateDatatablePosition() {
-        const headers = this.template.querySelector(
-            '[data-element-id="avonni-primitive-scheduler-header-group"]'
-        );
-        this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
-    }
-
-    /**
-     * Save the datatable rows heights and use them as a min-height for the schedule rows.
-     */
-    updateDatatableRowsHeight() {
-        if (!this.datatable || !this.computedRows.length) return;
-
-        this._datatableRowsHeight = [];
-        this.computedRows.forEach((row) => {
-            const rowKey = row.key;
-            const height = this.datatable.getRowHeight(rowKey);
-            this._datatableRowsHeight.push({ rowKey, height });
-            row.minHeight = height;
-        });
-    }
-
-    /**
-     * Update the width of the resized event.
-     */
-    updateDraggedEventStyleAfterResize(x) {
-        const side = this._resizeSide;
-        const eventWidth = this._initialState.eventWidth;
-        const event = this._draggedEvent;
-        const multiplier = side === 'left' ? -1 : 1;
-        const computedX = side === 'left' ? x + this._initialState.initialX : x;
-
-        const width = eventWidth + x * multiplier;
-        event.style.width = `${width}px`;
-
-        if (side === 'left') {
-            event.x = computedX;
-        }
-    }
-
-    /**
-     * Set the default properties of the given event.
-     *
-     * @param {object} event The event object.
-     */
-    updateEventDefaults(event) {
-        // We store the initial event object in a variable,
-        // in case a custom field is used by the labels
-        event.data = { ...event };
-        event.schedulerEnd = this._visibleInterval.e;
-        event.schedulerStart = this._visibleInterval.s;
-        event.availableMonths = this.availableMonths;
-        event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-        event.availableTimeFrames = this.availableTimeFrames;
-        event.smallestHeader = this.smallestHeader;
-        event.theme = event.disabled
-            ? 'disabled'
-            : event.theme || this.eventsTheme;
-
-        event.labels =
-            typeof event.labels === 'object' ? event.labels : this.eventsLabels;
-    }
-
-    /**
-     * Compute the vertical position of the events and the rows height, so the events don't overlap.
-     */
-    updateOccurrencesOffsetTop() {
-        const schedule = this.template.querySelector('.avonni-scheduler__body');
-        const scheduleRightBorder = schedule.getBoundingClientRect().right;
-
-        // For each row
-        this.computedRows.forEach((row) => {
-            let rowHeight = 0;
-            let levelHeight = 0;
-
-            // Get all the event occurrences of the row
-            const occurrenceElements = Array.from(
-                this.template.querySelectorAll(
-                    `.avonni-scheduler__primitive-event[data-row-key="${row.key}"]`
-                )
-            );
-
-            if (occurrenceElements.length) {
-                // Sort the occurrences by ascending start date
-                occurrenceElements.sort((a, b) => a.from - b.from);
-
-                // Compute the vertical level of the occurrences
-                const previousOccurrences = [];
-                occurrenceElements.forEach((occElement) => {
-                    const left = occElement.leftPosition;
-                    const level = this.computeEventVerticalLevel(
-                        previousOccurrences,
-                        left
-                    );
-
-                    // If the occurrence is taller than the previous ones,
-                    // update the default level height
-                    const height = occElement.getBoundingClientRect().height;
-                    if (height > levelHeight) {
-                        levelHeight = height;
-                    }
-
-                    const occurrence = row.events.find(
-                        (occ) => occ.key === occElement.occurrenceKey
-                    );
-
-                    previousOccurrences.unshift({
-                        level,
-                        left,
-                        right: occElement.rightPosition,
-                        occurrence:
-                            occurrence ||
-                            (this.selection && this.selection.occurrence)
-                    });
-
-                    // Hide the right label
-                    if (occElement.labels.right) {
-                        const elementRightBorder =
-                            occElement.getBoundingClientRect().right +
-                            occElement.rightLabelWidth;
-                        if (elementRightBorder >= scheduleRightBorder) {
-                            occElement.hideRightLabel();
-                        } else {
-                            occElement.showRightLabel();
-                        }
-                    }
-                });
-
-                // Add the corresponding offset to the top of the occurrences
-                previousOccurrences.forEach((position) => {
-                    const offsetTop = position.level * levelHeight;
-                    position.occurrence.offsetTop = offsetTop;
-
-                    // If the occurrence offset is bigger than the previous occurrences,
-                    // update the row height
-                    const totalHeight = levelHeight + offsetTop;
-                    if (totalHeight > rowHeight) {
-                        rowHeight = totalHeight;
-                    }
-                });
-            }
-
-            // Add 10 pixels to the row for padding
-            row.height = rowHeight + 10;
-        });
-    }
-
-    /**
-     * Update the primitive occurrences height, width and position.
-     */
-    updateOccurrencesPosition() {
-        const eventOccurrences = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
-        );
-        eventOccurrences.forEach((occurrence) => {
-            if (occurrence.disabled) {
-                occurrence.updateHeight();
-            }
-            if (this._updateOccurrencesWidth) {
-                occurrence.updateWidth();
-            }
-            occurrence.updatePosition();
-        });
-        this._updateOccurrencesWidth = false;
-    }
-
-    /**
-     * Update the columns and events of the currently loaded rows.
-     */
-    updateVisibleRows() {
-        this.computedRows.forEach((computedRow) => {
-            computedRow.events = this.getOccurrencesFromRowKey(computedRow.key);
-            computedRow.referenceColumns = this.smallestHeader.columns;
-            computedRow.initColumns();
-        });
-    }
-
-    /**
-     * Find the cell element at a given schedule position.
-     *
-     * @param {HTMLElement} row The row element the cell is in.
-     * @param {number} x The horizontal position of the cell.
-     * @returns {(HTMLElement|undefined)} The cell element or undefined.
-     */
-    getCellFromPosition(row, x) {
-        const cells = Array.from(
-            row.querySelectorAll('.avonni-scheduler__cell')
-        );
-
-        return cells.find((td, index) => {
-            const left = td.getBoundingClientRect().left;
-            const right = td.getBoundingClientRect().right;
-
-            // Handle the cases where the events are on the side
-            // and the mouse moved out of the schedule
-            if (index === 0 && left >= x) return td;
-            if (index === cells.length - 1 && x > right) return td;
-
-            if (x >= left && x < right) return td;
-            return undefined;
-        });
-    }
-
-    /**
-     * Find the event occurrences for a given row key field.
-     *
-     * @param {string} key The unique key of the row.
-     * @returns {object[]} Array of occurrence objects.
-     */
-    getOccurrencesFromRowKey(key) {
-        const occurrences = [];
-        this.computedEvents.forEach((event) => {
-            if (!event.disabled) {
-                const occ = event.occurrences.filter((occurrence) => {
-                    return occurrence.rowKey === key;
-                });
-                occurrences.push(occ);
-            }
-        });
-
-        return occurrences.flat();
-    }
-
-    /**
-     * Find a computed row from its key field value.
-     *
-     * @param {string} key The unique key of the row.
-     * @returns {SchedulerRow} The computed row object.
-     */
-    getRowFromKey(key) {
-        return this.computedRows.find((row) => row.key === key);
-    }
-
-    /**
-     * Find a row element from its position in the schedule.
-     *
-     * @param {number} y The vertical position of the row.
-     * @returns {(HTMLElement|undefined)} The row element or undefined.
-     */
-    getRowFromPosition(y) {
-        const rows = Array.from(
-            this.template.querySelectorAll('.avonni-scheduler__row')
-        );
-        return rows.find((tr) => {
-            const top = tr.getBoundingClientRect().top;
-            const bottom = tr.getBoundingClientRect().bottom;
-
-            if (y >= top && y <= bottom) return tr;
-            return undefined;
-        });
-    }
-
-    /**
-     * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
-     */
-    cleanDraggedElement() {
-        if (this._draggedEvent) {
-            this._draggedEvent.classList.remove(
-                'avonni-scheduler__event-dragged'
-            );
-            this._draggedEvent = undefined;
-        }
-        this._resizeSide = undefined;
-    }
-
-    /**
-     * Clear the selected or new event.
-     */
-    cleanSelection() {
-        // If a new event was being created, remove the unfinished event from the computedEvents
-        const lastEvent = this.computedEvents[this.computedEvents.length - 1];
         if (
-            this.selection &&
-            this.selection.newEvent &&
-            lastEvent === this.selection.event
+            this.isCalendar &&
+            (unit === 'month' || unit === 'year') &&
+            span <= 1
         ) {
-            this.computedEvents.pop();
-        }
-        this.selection = undefined;
-    }
-
-    /**
-     * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
-     */
-    clearDatatableColumnWidth() {
-        const lastColumn = this.columns[this.columns.length - 1];
-        if (lastColumn.initialWidth) {
-            lastColumn.initialWidth = undefined;
-            this._columns = [...this.columns];
-        }
-    }
-
-    /**
-     * Push an event occurrence down a level, until it doesn't overlap another occurrence.
-     *
-     * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
-     * @param {number} left Left position of the occurrence.
-     * @param {number} level Vertical level of the occurrence. It starts at 0, so the occurrence is at the top of its row.
-     * @returns {number} Vertical level of the occurrence.
-     */
-    computeEventVerticalLevel(previousOccurrences, left, level = 0) {
-        // Find the last event with the same level
-        const sameOffset = previousOccurrences.find((occ) => {
-            return occ.level === level;
-        });
-
-        // If we find an event and their dates overlap, add one to the level
-        // and make sure there isn't another event at the same height
-        if (sameOffset && left < sameOffset.right) {
-            level += 1;
-            level = this.computeEventVerticalLevel(
-                previousOccurrences,
-                left,
-                level
-            );
-        }
-
-        return level;
-    }
-
-    /**
-     * Create the computed events that are included in the currently loaded interval of time.
-     */
-    createVisibleEvents() {
-        const interval = this._visibleInterval;
-        if (!interval) return [];
-
-        const events = this._allEvents.filter((event) => {
-            const from = dateTimeObjectFrom(event.from);
-            const to = dateTimeObjectFrom(event.to);
-            return (
-                interval.contains(from) ||
-                interval.contains(to) ||
-                (interval.isAfter(from) && interval.isBefore(to)) ||
-                event.recurrence
-            );
-        });
-
-        return events.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            const computedEvent = new SchedulerEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
-            }
-            return computedEvents;
-        }, []);
-    }
-
-    /**
-     * Update the given popover position so it is next to the currently selected event occurrence.
-     *
-     * @param {HTMLElement} popover Popover element.
-     */
-    positionPopover(popover) {
-        // Make sure the popover is not outside of the screen
-        const y = this.selection.y;
-        const x = this.selection.x;
-        const height = popover.offsetHeight;
-        const width = popover.offsetWidth;
-        const popoverBottom = y + height;
-        const popoverRight = x + width;
-
-        const bottomView = window.innerHeight;
-        const rightView = window.innerWidth;
-
-        const yTransform = popoverBottom > bottomView ? height * -1 : 0;
-        const xTransform = popoverRight > rightView ? width * -1 : 0;
-
-        popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
-        popover.style.top = `${y}px`;
-        popover.style.left = `${x}px`;
-    }
-
-    /**
-     * Set the selected event from an Event object.
-     *
-     * @param {Event} mouseEvent Event that triggered the selection.
-     */
-    selectEvent(mouseEvent) {
-        const { eventName, from, x, y, key } = mouseEvent.detail;
-        const computedEvent = this.computedEvents.find((evt) => {
-            return evt.name === eventName;
-        });
-        const occurrences = computedEvent.occurrences.filter((occ) => {
-            return occ.from.ts === from.ts;
-        });
-        const occurrence = occurrences.find((occ) => occ.key === key);
-
-        this.selection = {
-            event: computedEvent,
-            occurrences,
-            occurrence,
-            x,
-            y,
-            draftValues: {}
-        };
-    }
-
-    /**
-     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
-     *
-     * @param {number} x New horizontal position of the occurrence.
-     */
-    resizeEventToX(x) {
-        const occurrence = this.selection.occurrence;
-        const { row, mouseX } = this._initialState;
-        const distanceMoved = x - mouseX;
-
-        // If a new event is created through click and drag,
-        // Set the direction the user is going to
-        if (this.selection.newEvent) {
-            this._resizeSide = distanceMoved >= 0 ? 'right' : 'left';
-        }
-
-        const labelWidth =
-            this._resizeSide === 'left'
-                ? this._draggedEvent.leftLabelWidth * -1
-                : this._draggedEvent.rightLabelWidth;
-        const computedX = x + labelWidth;
-
-        // Get the events present in the cell crossed
-        const hoveredCell = this.getCellFromPosition(row, computedX);
-        const computedRow = this.getRowFromKey(row.dataset.key);
-        const computedCell = computedRow.getColumnFromStart(
-            Number(hoveredCell.dataset.start)
-        );
-        const cellEvents = computedCell.events;
-
-        // Check if any event in the cell has the same offsetTop
-        const eventIsHovered = cellEvents.some((cellEvent) => {
-            return (
-                cellEvent.offsetTop === occurrence.offsetTop &&
-                cellEvent.key !== occurrence.key
-            );
-        });
-
-        // If one of them do, the dragged event is overlapping it.
-        // We have to rerender the scheduler so the row height enlarges.
-        if (eventIsHovered) {
-            const cell = labelWidth
-                ? hoveredCell
-                : this.getCellFromPosition(row, x);
-            this.resizeEventToCell(cell);
+            const formatted = addToDate(start, 'week', 1).toFormat(format);
+            this.visibleIntervalLabel = formatted;
         } else {
-            // If we are not passing above another event,
-            // change the styling of the dragged event to follow the cursor
-            this.updateDraggedEventStyleAfterResize(distanceMoved);
+            const formattedStart = start.toFormat(format);
+            const formattedEnd = end.toFormat(format);
+            this.visibleIntervalLabel =
+                formattedStart === formattedEnd
+                    ? formattedStart
+                    : `${formattedStart} - ${formattedEnd}`;
         }
     }
 
     /**
-     * Resize an event to a given cell element and save the change.
+     * Create a Luxon DateTime object from a date, including the timezone.
      *
-     * @param {HTMLElement} cell The cell element.
+     * @param {string|number|Date} date Date to convert.
+     * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
      */
-    resizeEventToCell(cell) {
-        const side = this._resizeSide;
-        const occurrence = this.selection.occurrence;
-
-        // Remove the occurrence from the row
-        const rowKey = occurrence.rowKey;
-        const row = this.getRowFromKey(rowKey);
-        row.removeEvent(occurrence);
-
-        if (side === 'right') {
-            // Update the end date if the event was resized from the right
-            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
-        } else if (side === 'left') {
-            // Update the start date if the event was resized from the left
-            occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
-        }
-
-        // Add the occurrence to the row with the updated start/end date
-        row.events.push(occurrence);
-        row.addEventToColumns(occurrence);
-
-        // Force the rerender
-        this.computedEvents = [...this.computedEvents];
+    createDate(date) {
+        return dateTimeObjectFrom(date, { zone: this.timezone });
     }
 
     /**
-     * Drag an event to a cell and save the change.
-     *
-     * @param {HTMLElement} row The row element the event is being dragged to.
-     * @param {HTMLElement} cell The cell element the event is being dragged to.
-     */
-    dragEventTo(row, cell) {
-        const { occurrence, draftValues } = this.selection;
-
-        // Update the start and end date
-        const duration = occurrence.to - occurrence.from;
-        const start = dateTimeObjectFrom(Number(cell.dataset.start));
-        draftValues.from = start.toUTC().toISO();
-        draftValues.to = addToDate(start, 'millisecond', duration + 1)
-            .toUTC()
-            .toISO();
-
-        // Update the rows
-        const rowKey = row.dataset.key;
-        const previousRowKey = occurrence.rowKey;
-
-        if (previousRowKey !== rowKey) {
-            const keyFieldIndex = occurrence.keyFields.findIndex(
-                (key) => key === previousRowKey
-            );
-            draftValues.keyFields = [...occurrence.keyFields];
-            draftValues.keyFields.splice(keyFieldIndex, 1);
-
-            if (!draftValues.keyFields.includes(rowKey)) {
-                draftValues.keyFields.push(rowKey);
-            }
-        }
-    }
-
-    /**
-     * Normalize the mouse position so it will take the schedule borders as a value if the mouse is outside of the schedule.
-     *
-     * @param {number} mouseX The horizontal position of the mouse.
-     * @param {number} mouseY The vertical position of the mouse.
-     * @returns {object} Object with two keys: x and y
-     */
-    normalizeMousePosition(mouseX, mouseY) {
-        const { top, bottom, left, right } = this._initialState;
-
-        let x = mouseX;
-        let y = mouseY;
-
-        if (y < top) {
-            y = top;
-        } else if (y > bottom) {
-            y = bottom;
-        }
-
-        if (x < left) {
-            x = left;
-        } else if (x > right) {
-            x = right;
-        }
-
-        return { x, y };
-    }
-
-    /**
-     * Hide the detail popover, the context menu and the edit dialog if any was open.
+     * Hide the detail popover, the context menu, the edit dialog, the delete dialog and the recurrence dialog.
      */
     hideAllPopovers() {
         this.hideDetailPopover();
         this.hideContextMenu();
         this.hideEditDialog();
         this.hideDeleteConfirmationDialog();
+        this.hideRecurrenceDialog();
     }
 
     /**
@@ -1858,12 +1830,18 @@ export default class Scheduler extends LightningElement {
     hideContextMenu() {
         this.contextMenuActions.splice(0);
         this.showContextMenu = false;
+
+        if (this.isCalendar && this._focusCalendarPopover) {
+            this._focusCalendarPopover();
+            this._focusCalendarPopover = null;
+        }
     }
 
     /**
      * Hide the detail popover.
      */
     hideDetailPopover() {
+        clearTimeout(this._closeDetailPopoverTimeout);
         this.showDetailPopover = false;
     }
 
@@ -1888,323 +1866,44 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
-    handleCloseDeleteConfirmationDialog() {
-        this.cleanDraggedElement();
-        this.cleanSelection();
-        this.hideDeleteConfirmationDialog();
+    /**
+     * Normalize the given date to be on the first day of the month.
+     *
+     * @param {DateTime} date Date to normalize.
+     * @returns {DateTime} First day of the month.
+     */
+    normalizeDateToStartOfMonth(date) {
+        date = addToDate(date, 'week', 1);
+        return date.startOf('month');
     }
 
     /**
-     * Handle the privateheaderregister event fired by the primitive header. Save the header callback method to a variable.
+     * Update the computed selected display object.
      */
-    handleHeaderRegister(event) {
-        this.scrollHeadersTo = event.detail.callbacks.scrollHeadersTo;
+    updateSelectedDisplay() {
+        const selectedDisplay = DISPLAYS.options.find((display) => {
+            return display.value === this.selectedDisplay;
+        });
+        this.computedSelectedDisplay = { ...selectedDisplay };
     }
 
-    /**
-     * Handle the privatecellwidthchange event fired by the primitive header. Save the smallest unit header cell width to a variable.
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
      */
-    handleHeaderCellWidthChange(event) {
-        this.cellWidth = event.detail.cellWidth;
-    }
-
-    /**
-     * Handle the privateheaderchange event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
-     */
-    handleHeaderChange(event) {
-        this.smallestHeader = event.detail.smallestHeader;
-        this._headerHeightChange = true;
-    }
 
     /**
-     * Handle the privatevisibleheaderchange event fired by the primitive header. Create the computed events and computed rows of the new visible interval.
+     * Handle the click on an action.
+     *
+     * @param {Event} selectEvent `privateselect` event fired by the context menu, or `select` event fired by the detail popover button menu, or `click` event fired by a detail popover button.
      */
-    handleHeaderVisibleCellsChange(event) {
-        const { direction, visibleCells, visibleInterval } = event.detail;
-        this._numberOfVisibleCells = visibleCells;
-        this._visibleInterval = visibleInterval;
-
-        // Create the visible events
-        if (!this.computedEvents.length) {
-            this.initEvents();
-        } else {
-            this.computedEvents = this.createVisibleEvents();
-        }
-        // Create the rows or update the visible columns
-        if (!this.computedRows.length) {
-            this.initRows();
-        } else {
-            this.updateVisibleRows();
-        }
-
-        if (direction) {
-            const schedule = this.template.querySelector(
-                '.avonni-scheduler__wrapper'
-            );
-            const scrollOffset = this.cellWidth * visibleCells;
-            const scrollValue =
-                schedule.scrollLeft <= scrollOffset * 2
-                    ? schedule.scrollLeft + scrollOffset
-                    : schedule.scrollLeft - scrollOffset;
-            schedule.scrollTo({ left: scrollValue });
-        }
-    }
-
-    /**
-     * Handle the click event fired by the delete button. Delete the selected event.
-     */
-    handleEventDelete() {
-        this.crud.deleteEvent();
-    }
-
-    /**
-     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
-     */
-    handleEventFocus(event) {
-        const detail = {
-            name: event.detail.eventName
-        };
-        if (event.currentTarget.recurrence) {
-            detail.recurrenceDates = {
-                from: event.detail.from.toUTC().toISO(),
-                to: event.detail.to.toUTC().toISO()
-            };
-        }
-
-        if (!this._programmaticFocus) {
-            /**
-             * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
-             *
-             * @event
-             * @name eventselect
-             * @param {string} name Unique name of the event.
-             * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
-             * @public
-             * @bubbles
-             */
-            this.dispatchEvent(
-                new CustomEvent('eventselect', {
-                    detail,
-                    bubbles: true
-                })
-            );
-        }
-        this._programmaticFocus = false;
-
-        this.handleEventMouseEnter(event);
-    }
-
-    /**
-     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
-     */
-    handleMouseDown(mouseEvent) {
-        if (mouseEvent.button || this.readOnly) return;
-
-        this._mouseIsDown = true;
-        this.hideAllPopovers();
-        this.cleanDraggedElement();
-
-        const x = mouseEvent.clientX || mouseEvent.detail.x;
-        const y = mouseEvent.clientY || mouseEvent.detail.y;
-        this._initialState = { mouseX: x, mouseY: y };
-        this.crud.newEvent(x, y, false);
-    }
-
-    /**
-     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
-     */
-    handleEventMouseEnter(event) {
-        if (this._mouseIsDown || this.showContextMenu) return;
-
-        this.selectEvent(event);
-        this.showDetailPopover = true;
-        this._draggedEvent = event.currentTarget;
-    }
-
-    /**
-     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
-     */
-    handleEventMouseDown(mouseEvent) {
-        const { side, x, y } = mouseEvent.detail;
-        this._mouseIsDown = true;
-        this._resizeSide = side;
-        this._draggedEvent = mouseEvent.currentTarget;
-        this._draggedEvent.classList.add('avonni-scheduler__event-dragged');
-        this.selectEvent(mouseEvent);
-        this.hideAllPopovers();
-        this.initDraggedEventState(x, y);
-    }
-
-    /**
-     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizong or dragging.
-     */
-    handleMouseMove(mouseEvent) {
-        if (!this._mouseIsDown) return;
-
-        // Prevent scrolling
-        mouseEvent.preventDefault();
-
-        // The splitter between the datatable and the schedule is being dragged
-        if (this._draggedSplitter) {
-            const { mouseX, datatableWidth } = this._initialState;
-            const x = mouseEvent.clientX;
-            const width = datatableWidth + (x - mouseX);
-
-            this.datatable.style.width = `${width}px`;
-            this.datatableCol.style.width = `${width}px`;
-            this.datatableWidth = width;
-            this.updateCellWidth();
-
-            // An event is being dragged
-        } else if (this._draggedEvent) {
-            const { mouseX, mouseY, initialX, initialY } = this._initialState;
-
-            this.selection.isMoving = true;
-
-            // Prevent the event from being dragged out of the schedule grid,
-            // or from being squished outside of its boundaries when resizing
-            const position = this.normalizeMousePosition(
-                mouseEvent.clientX,
-                mouseEvent.clientY
-            );
-
-            if (this._resizeSide || this.selection.newEvent) {
-                // Resizing
-                this.resizeEventToX(position.x);
-            } else {
-                // Drag and drop
-                const x = position.x - mouseX;
-                const y = position.y - mouseY;
-                this._draggedEvent.x = x + initialX;
-                this._draggedEvent.y = y + initialY;
-            }
-
-            // The user started the creation of a new event, through click and drag.
-            // On the first move, display the new event on the schedule.
-        } else if (this.selection && this.selection.newEvent) {
-            this.computedEvents.push(this.selection.event);
-            this.updateVisibleRows();
-        }
-    }
-
-    /**
-     * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
-     */
-    handleMouseUp(mouseEvent) {
-        this._mouseIsDown = false;
-        if (mouseEvent.button !== 0) return;
-
-        if (this._draggedSplitter) {
-            this._draggedSplitter = false;
-        } else if (this.selection && this.selection.isMoving) {
-            // Get the new position
-            const { mouseX, eventLeft, eventRight } = this._initialState;
-            const { draftValues, newEvent, event, occurrence } = this.selection;
-            const side = this._resizeSide;
-            const position = this.normalizeMousePosition(
-                mouseEvent.clientX,
-                mouseEvent.clientY
-            );
-            const leftX = position.x - (mouseX - eventLeft);
-            const rightX = position.x + (eventRight - mouseX);
-            const x = side === 'right' ? rightX : leftX;
-            const y = position.y;
-
-            // Find the row and cell the event was dropped on
-            const rowElement = this.getRowFromPosition(y);
-            const cellElement = this.getCellFromPosition(rowElement, x);
-
-            // Update the draft values
-            const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
-            const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
-            switch (side) {
-                case 'right':
-                    draftValues.to = to.toUTC().toISO();
-                    if (newEvent) occurrence.to = to;
-                    break;
-                case 'left':
-                    draftValues.from = from.toUTC().toISO();
-                    if (newEvent) occurrence.from = from;
-                    break;
-                default:
-                    this.dragEventTo(rowElement, cellElement);
-                    break;
-            }
-
-            if (newEvent) {
-                this.showEditDialog = true;
-                this.selection.isMoving = false;
-            } else {
-                if (this.showRecurrenceSaveOptions) {
-                    this.showRecurrenceDialog = true;
-                    return;
-                } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
-                    this.crud.saveOccurrence();
-                } else {
-                    this.crud.saveEvent();
-                }
-                this.updateVisibleRows();
-                this.cleanSelection();
-            }
-        } else if (this.selection) {
-            this.cleanSelection();
-        }
-        this.cleanDraggedElement();
-    }
-
-    /**
-     * Handle the resize event fired by the datatable. Update the rows heights.
-     */
-    handleDatatableResize(event) {
-        if (event.detail.isUserTriggered) {
-            this.datatable.style.width = null;
-            this._datatableRowsHeight = undefined;
-            this.computedRows.forEach((row) => {
-                row.minHeight = undefined;
-            });
-            this.computedRows = [...this.computedRows];
-        } else {
-            this.updateDatatableRowsHeight();
-            this.updateRowsStyle();
-        }
-    }
-
-    /**
-     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
-     */
-    handleEventContextMenu(mouseEvent) {
-        const target = mouseEvent.currentTarget;
-        if (target.disabled || target.referenceLine) return;
-
-        if (this.computedContextMenuEvent.length) {
-            this.hideAllPopovers();
-            this.contextMenuActions = [...this.computedContextMenuEvent];
-            this.selectEvent(mouseEvent);
-            this.showContextMenu = true;
-        }
-    }
-
-    /**
-     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
-     */
-    handleEmptySpotContextMenu(mouseEvent) {
-        mouseEvent.preventDefault();
-
-        if (this.computedContextMenuEmptySpot.length) {
-            this.hideAllPopovers();
-            this.contextMenuActions = [...this.computedContextMenuEmptySpot];
-            this.showContextMenu = true;
-            const x = mouseEvent.clientX || mouseEvent.detail.x;
-            const y = mouseEvent.clientY || mouseEvent.detail.y;
-            this.crud.newEvent(x, y, false);
-        }
-    }
-
-    /**
-     * Handle the privateselect event fired by the context menu. Dispatch the action click event and process the selected action.
-     */
-    handleActionSelect(event) {
-        const name = event.detail.name;
+    handleActionSelect(selectEvent) {
+        const name =
+            selectEvent.detail.name ||
+            selectEvent.detail.value ||
+            selectEvent.currentTarget.name;
+        const { event, from, to } = this.selection;
 
         /**
          * The event fired when a user clicks on an action.
@@ -2212,61 +1911,199 @@ export default class Scheduler extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked.
-         * @param {string} targetName If the action came from the context menu of an event, name of the event.
+         * @param {string} targetName If the action came from an existing event, name of the event.
          * @public
          * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: name,
-                    targetName: this.selection.event
-                        ? this.selection.event.name
-                        : undefined
+                    from,
+                    name,
+                    targetName: event ? event.name : undefined,
+                    to
                 },
                 bubbles: true
             })
         );
 
         switch (name) {
-            case 'edit':
+            case 'Standard.Scheduler.EditEvent':
                 this.showEditDialog = true;
                 break;
-            case 'delete':
+            case 'Standard.Scheduler.DeleteEvent':
                 this.showDeleteConfirmationDialog = true;
                 break;
-            case 'add-event':
+            case 'Standard.Scheduler.AddEvent':
                 this.showEditDialog = true;
-                this.computedEvents.push(this.selection.event);
+                this.selection = this.schedule.newEvent(this.selection);
+                this.computedEvents.push(event);
                 break;
             default:
-                this.cleanSelection();
-                this.cleanDraggedElement();
+                this.schedule.cleanSelection(true);
                 break;
         }
     }
 
     /**
-     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
+     * Handle a change of the selected date.
+     *
+     * @param {Event} event
      */
-    handleDoubleClick(mouseEvent) {
-        const x = !isNaN(mouseEvent.clientX)
-            ? mouseEvent.clientX
-            : mouseEvent.detail.x;
-        const y = !isNaN(mouseEvent.clientY)
-            ? mouseEvent.clientY
-            : mouseEvent.detail.y;
-        this.crud.newEvent(x, y, true);
+    handleSelectedDateChange(event) {
+        this.goToDate(event.detail.value);
     }
 
     /**
-     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
+     * Handle the closing of the delete confirmation dialog.
      */
-    handleEventDoubleClick(event) {
-        this._draggedEvent = undefined;
-        this.selectEvent(event);
+    handleCloseDeleteConfirmationDialog() {
+        this.schedule.cleanSelection();
+        this.hideDeleteConfirmationDialog();
+    }
+
+    /**
+     * Handle a key up on the event detail popover.
+     *
+     * @param {Event} event `keyup` event.
+     */
+    handleDetailPopoverKeyUp(event) {
+        if (event.key === 'Escape') {
+            this.hideDetailPopover();
+        }
+    }
+
+    /**
+     * Handle the cursor entering the event detail popover.
+     */
+    handleDetailPopoverMouseEnter() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+    }
+
+    /**
+     * Handle the cursor leaving the event detail popover.
+     */
+    handleDetailPopoverMouseLeave() {
+        clearTimeout(this._closeDetailPopoverTimeout);
+        this._closeDetailPopoverTimeout = setTimeout(() => {
+            this.hideDetailPopover();
+        }, 200);
+    }
+
+    /**
+     * Handle the selection of a display.
+     *
+     * @param {Event} event
+     */
+    handleDisplaySelect(event) {
+        this._selectedDisplay = event.detail.value;
+        this.updateSelectedDisplay();
+
+        /**
+         * The event fired when a user selects a display.
+         *
+         * @event
+         * @name displayselect
+         * @param {string} name Name of the selected display.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('displayselect', {
+                detail: {
+                    name: this.selectedDisplay
+                }
+            })
+        );
+    }
+
+    /**
+     * Handle the click event fired by the delete button. Delete the selected event.
+     */
+    handleEventDelete() {
+        const name = this.selection.event.name;
+        this.deleteEvent(name);
+
+        /**
+         * The event fired when a user deletes an event.
+         *
+         * @event
+         * @name eventdelete
+         * @param {string} name Unique name of the deleted event.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventdelete', {
+                detail: {
+                    name
+                },
+                bubbles: true
+            })
+        );
         this.hideAllPopovers();
-        this.showEditDialog = true;
+    }
+
+    /**
+     * Handle the selection of an event.
+     *
+     * @param {Event} event
+     */
+    handleEventSelect(event) {
+        event.stopPropagation();
+        if (this._programmaticFocus) {
+            this._programmaticFocus = false;
+            return;
+        }
+
+        /**
+         * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
+         *
+         * @event
+         * @name eventselect
+         * @param {string} name Unique name of the event.
+         * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventselect', {
+                detail: event.detail,
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the opening of the context menu on an event.
+     *
+     * @param {Event} event
+     */
+    handleEventContextMenu(event) {
+        if (!this.computedContextMenuEvent.length) {
+            return;
+        }
+        clearTimeout(this._openDetailPopoverTimeout);
+        this.hideDetailPopover();
+        this.contextMenuActions = [...this.computedContextMenuEvent];
+        this.selection = event.currentTarget.selectEvent(event.detail);
+        this.showContextMenu = true;
+
+        if (this.isCalendar) {
+            this._focusCalendarPopover = event.detail.focusPopover;
+        }
+    }
+
+    /**
+     * Handle the `contextmenu` event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     */
+    handleEmptySpotContextMenu(event) {
+        if (!this.computedContextMenuEmptySpot.length) {
+            return;
+        }
+        this.hideAllPopovers();
+        this.contextMenuActions = [...this.computedContextMenuEmptySpot];
+        this.showContextMenu = true;
+        this.selection = event.detail;
     }
 
     /**
@@ -2289,19 +2126,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the change event fired by the edit dialog key fields combobox. Save the new row keys to the draft values.
+     * Handle the change event fired by the edit dialog key fields combobox. Save the new resource keys to the draft values.
      */
-    handleEventKeyFieldsChange(event) {
-        const keyFields = event.detail.value;
-        this.selection.draftValues.keyFields = keyFields;
+    handleEventResourceNamesChange(event) {
+        const resourceNames = event.detail.value;
+        this.selection.draftValues.resourceNames = resourceNames;
     }
 
     /**
      * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
      */
     handleCloseEditDialog() {
-        this.cleanDraggedElement();
-        this.cleanSelection();
+        this.schedule.cleanSelection(true);
+        this.selection = null;
         this.hideAllPopovers();
     }
 
@@ -2309,61 +2146,21 @@ export default class Scheduler extends LightningElement {
      * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
      */
     handleCloseRecurrenceDialog() {
-        if (this._resizeSide) {
-            const row = this._initialState.row;
-            let x;
-            if (this._resizeSide === 'left') {
-                x = this._initialState.eventLeft;
-            } else {
-                x = this._initialState.eventRight;
-            }
-            const initialCell = this.getCellFromPosition(row, x);
-            this.resizeEventToCell(initialCell);
-        }
-        this.cleanDraggedElement();
-        this.cleanSelection();
+        this.schedule.cleanSelection(true);
+        this.selection = null;
         this.hideRecurrenceDialog();
-        this.updateVisibleRows();
     }
 
     /**
      * Handle the click event fired by the save buttons of the edit or recurring event dialogs. Save the changes made to the event and close the dialog.
      */
     handleSaveEvent(mouseEvent) {
-        const { event, occurrence } = this.selection;
-        const recurrentChange =
+        const recurrenceMode =
             mouseEvent.detail.value || mouseEvent.currentTarget.value;
 
-        if (
-            recurrentChange === 'one' ||
-            (event.recurrence && this.onlyOccurrenceEditAllowed)
-        ) {
-            this.crud.saveOccurrence();
-        } else {
-            // Update the event with the selected occurrence values,
-            // in case the selected occurrence had already been edited
-            if (occurrence.from !== event.from) event._from = occurrence.from;
-            if (occurrence.to !== event.to) event._to = occurrence.to;
-            if (occurrence.title !== event.title)
-                event.title = occurrence.title;
-            if (occurrence.keyFields !== event.keyFields)
-                event.keyFields = occurrence.keyFields;
-
-            // Update the event with the draft values from the edit form
-            this.crud.saveEvent();
-        }
-
-        this.updateVisibleRows();
-        this.cleanDraggedElement();
-        this.cleanSelection();
-
-        if (this.showRecurrenceDialog) {
-            this.hideRecurrenceDialog();
-        } else {
-            this.hideEditDialog();
-        }
-        this.hideDetailPopover();
-        this.hideContextMenu();
+        this.schedule.saveSelection(recurrenceMode);
+        this.selection = null;
+        this.hideAllPopovers();
     }
 
     /**
@@ -2379,116 +2176,12 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the scroll event fired by the schedule. Trigger the headers, events and rows reloading if the scroll is big enough. Hide the popovers of the events that are scrolled out of the screen.
+     * Handle the change of an event.
+     *
+     * @param {Event} event
      */
-    handleScroll() {
-        if (this.showDetailPopover) {
-            // Hide the detail popover only if it goes off screen
-            const right = this._draggedEvent.getBoundingClientRect().right;
-            if (right < 0) this.hideDetailPopover();
-        } else {
-            this.hideDetailPopover();
-            this.hideContextMenu();
-        }
-
-        const schedule = this.template.querySelector(
-            '.avonni-scheduler__wrapper'
-        );
-        const scroll = schedule.scrollLeft;
-        const scrollOffset = this.cellWidth * this._numberOfVisibleCells;
-        const startOfSchedule =
-            this._visibleInterval.s.ts === this.smallestHeader.start.ts;
-        const loadLeftSchedule = !startOfSchedule && scroll <= scrollOffset;
-        const loadRightSchedule = scroll >= scrollOffset * 3;
-
-        // If the scroll value is at less or more than a quarter of the visible interval,
-        // reload the schedule with a new interval
-        if (loadRightSchedule || loadLeftSchedule) {
-            const direction = loadRightSchedule ? 'right' : 'left';
-            this.scrollHeadersTo(direction);
-        }
-    }
-
-    /**
-     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
-     */
-    handleSplitterMouseDown(mouseEvent) {
-        if (
-            this.resizeColumnDisabled ||
-            mouseEvent.button !== 0 ||
-            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
-        )
-            return;
-
-        this.clearDatatableColumnWidth();
-        this._mouseIsDown = true;
-        this._draggedSplitter = true;
-        this._initialState = {
-            mouseX: mouseEvent.clientX,
-            datatableWidth: this.datatable.offsetWidth
-        };
-        this.datatableIsHidden = false;
-        this.datatableIsOpen = false;
-        this.hideAllPopovers();
-    }
-
-    /**
-     * Handle the click event fired by the splitter left collapse button. If the datatable column was taking the full screen, resize it to its initial width. Else, hide the datatable column.
-     */
-    handleHideDatatable() {
-        this.hideAllPopovers();
-        this.datatableCol.style.width = null;
-
-        if (this.datatableIsOpen) {
-            this.datatableIsOpen = false;
-            this.datatable.style.width = null;
-            this.datatableWidth = this._initialDatatableWidth;
-        } else {
-            this.datatableIsHidden = true;
-            this.datatable.style.width = 0;
-            this.datatableWidth = 0;
-        }
-
-        this.updateCellWidth();
-    }
-
-    /**
-     * Handle the click event fired by the splitter right collapse button. If the datatable column was hidden, resize it to its initial width. Else, make it full screen.
-     */
-    handleOpenDatatable() {
-        this.hideAllPopovers();
-        this.datatableCol.style.width = null;
-        this.datatable.style.width = null;
-        this.clearDatatableColumnWidth();
-
-        if (this.datatableIsHidden) {
-            this.datatableIsHidden = false;
-            this.datatable.style.width = `${this._initialDatatableWidth}px`;
-            this.datatableWidth = this._initialDatatableWidth;
-            this.updateCellWidth();
-        } else {
-            this.datatableIsOpen = true;
-            const width = this.template.host.getBoundingClientRect().width;
-            this.datatable.style.width = `${width}px`;
-            this.datatableWidth = width;
-        }
-    }
-
-    /**
-     * Dispatch the eventchange event.
-     */
-    dispatchChangeEvent(name, onlyOneOccurrence = false) {
-        const detail = {
-            name: name,
-            draftValues: this.selection.draftValues
-        };
-
-        if (onlyOneOccurrence) {
-            detail.recurrenceDates = {
-                from: this.selection.occurrence.from.toUTC().toISO(),
-                to: this.selection.occurrence.to.toUTC().toISO()
-            };
-        }
+    handleEventChange(event) {
+        event.stopPropagation();
 
         /**
          * The event fired when a user edits an event.
@@ -2497,14 +2190,435 @@ export default class Scheduler extends LightningElement {
          * @name eventchange
          * @param {string} name Unique name of the event.
          * @param {object} draftValues Object containing one key-value pair per changed attribute.
-         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys: from and to.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys:
+         * * from
+         * * to
          * @public
          * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('eventchange', {
-                detail,
+                detail: event.detail,
                 bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the creation of an event.
+     *
+     * @param {Event} event
+     */
+    handleEventCreate(event) {
+        event.stopPropagation();
+
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event The event created.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('eventcreate', {
+                detail: event.detail,
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the mouse entering on an event.
+     *
+     * @param {Event} event
+     */
+    handleEventMouseEnter(event) {
+        if (this.showContextMenu) {
+            return;
+        }
+
+        clearTimeout(this._openDetailPopoverTimeout);
+        this._openDetailPopoverTimeout = setTimeout(() => {
+            clearTimeout(this._closeDetailPopoverTimeout);
+
+            if (
+                this.showDetailPopover &&
+                this.selection &&
+                this.selection.occurrence.key === event.detail.key
+            ) {
+                return;
+            }
+            this.showDetailPopover = true;
+            this.selection = this.schedule.selectEvent(event.detail);
+
+            this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
+                const { type, label, variant } = field;
+                const eventData = this.selection.event.data;
+                const occurrenceData = this.selection.occurrence;
+                let value =
+                    occurrenceData[field.value] || eventData[field.value];
+
+                const isDate = type === 'date' && this.createDate(value);
+                if (isDate) {
+                    value = this.createDate(value);
+                    value = value.toFormat(this.dateFormat);
+                }
+
+                return {
+                    key: generateUUID(),
+                    label,
+                    type: isDate ? 'text' : type,
+                    value,
+                    variant
+                };
+            });
+
+            requestAnimationFrame(() => {
+                const closeButton = this.template.querySelector(
+                    '[data-element-id="lightning-button-icon-detail-popover-close-button"]'
+                );
+                if (closeButton) {
+                    closeButton.focus();
+                }
+            });
+        }, 500);
+    }
+
+    handleEventMouseLeave(event) {
+        clearTimeout(this._openDetailPopoverTimeout);
+        const key = event.detail.key;
+        if (this.showDetailPopover && key === this.selection.occurrence.key) {
+            this.handleDetailPopoverMouseLeave();
+        }
+    }
+
+    /**
+     * Handle a click on a toolbar action.
+     *
+     * @param {Event} event click or select event.
+     */
+    handleToolbarActionSelect(event) {
+        const name = event.detail.value || event.currentTarget.value;
+
+        /**
+         * The event fired when a user clicks on a toolbar action.
+         *
+         * @event
+         * @name toolbaractionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(
+            new CustomEvent('toolbaractionclick', {
+                detail: { name },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
+     * Handle the `hidepopovers` event dispatched by a primitive schedule. Hide the appropriate popovers.
+     *
+     * @param {Event} event
+     */
+    handleHidePopovers(event) {
+        clearTimeout(this._openDetailPopoverTimeout);
+        const list = event.detail.list;
+        if (!list) {
+            this.hideAllPopovers();
+            return;
+        }
+
+        list.forEach((popover) => {
+            switch (popover) {
+                case 'detail':
+                    this.hideDetailPopover();
+                    break;
+                case 'context':
+                    this.hideContextMenu();
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Handle the opening of the edit dialog.
+     *
+     * @param {Event} event
+     */
+    handleOpenEditDialog(event) {
+        this.showEditDialog = true;
+        this.selection = event.detail.selection;
+    }
+
+    /**
+     * Handle the opening of the recurrence dialog.
+     *
+     * @param {Event} event
+     */
+    handleOpenRecurrenceDialog(event) {
+        this.showRecurrenceDialog = true;
+        this.selection = event.detail.selection;
+    }
+
+    /**
+     * Handle the selection of a resource.
+     *
+     * @param {Event} event
+     */
+    handleResourceSelect(event) {
+        const { selectedResources, name } = event.detail;
+        this._selectedResources = selectedResources;
+        this.dispatchResourceSelectEvent(name);
+    }
+
+    /**
+     * Handle a click on a time slot of the schedule.
+     *
+     * @param {Event} event `scheduleclick` event coming a primitive.
+     */
+    handleScheduleClick(event) {
+        event.stopPropagation();
+
+        /**
+         * The event fired when the user clicks on a time slot of the schedule.
+         *
+         * @event
+         * @name scheduleclick
+         * @param {string} from Start of the clicked cell as an ISO 8601 string.
+         * @param {string} to End of the clicked cell as an ISO 8601 string.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('scheduleclick', {
+                detail: event.detail
+            })
+        );
+    }
+
+    /**
+     * Handle the toggling of the toolbar calendar.
+     *
+     * @param {Event} event
+     */
+    handleToggleToolbarCalendar() {
+        this.showToolbarCalendar = !this.showToolbarCalendar;
+
+        requestAnimationFrame(() => {
+            const calendar = this.template.querySelector(
+                '[data-element-id="calendar-toolbar"]'
+            );
+            if (calendar) {
+                calendar.focus();
+            }
+        });
+    }
+
+    /**
+     * Handle a change in the toolbar calendar.
+     *
+     * @param {Event} event
+     */
+    handleToolbarCalendarChange(event) {
+        this.showToolbarCalendar = false;
+        const { value } = event.detail;
+        if (!value) {
+            return;
+        }
+
+        this.goToDate(value);
+    }
+
+    /**
+     * Handle a focus in the toolbar calendar.
+     */
+    handleToolbarCalendarFocusin() {
+        this._toolbarCalendarIsFocused = true;
+    }
+
+    /**
+     * Handle a focus out of the toolbar calendar.
+     */
+    handleToolbarCalendarFocusout() {
+        this._toolbarCalendarIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (!this._toolbarCalendarIsFocused) {
+                this.showToolbarCalendar = false;
+            }
+        });
+    }
+
+    /**
+     * Handle a navigate event coming from the toolbar calendar.
+     *
+     * @param {Event} event
+     */
+    handleToolbarCalendarNavigate(event) {
+        const date = new Date(event.detail.date);
+        const month = date.getMonth();
+        this.toolbarCalendarDisabledDates = [
+            ...this._toolbarCalendarDisabledWeekdays
+        ];
+
+        if (!this.availableMonths.includes(month)) {
+            for (let day = 1; day < 32; day++) {
+                this.toolbarCalendarDisabledDates.push(day);
+            }
+        }
+    }
+
+    /**
+     * Handle a click on the "Next" button of the toolbar.
+     */
+    handleToolbarNextClick() {
+        const { unit, span } = this.currentTimeSpan;
+        let date = this.createDate(this.computedStart);
+
+        if (this.isCalendar && unit === 'month') {
+            // Make sure the start is on the first day of the month
+            date = this.normalizeDateToStartOfMonth(date);
+        }
+        date = addToDate(date, unit, span);
+        this.goToDate(date);
+    }
+
+    /**
+     * Handle a click on the "Previous" button of the toolbar.
+     */
+    handleToolbarPrevClick() {
+        const { unit, span } = this.currentTimeSpan;
+
+        // If the date is set to one that is not available,
+        // the headers will automatically go to the next available date,
+        // preventing the schedule from going in the past
+        let date = removeFromDate(this.computedStart, unit, span);
+        if (unit === 'year' || unit === 'month') {
+            if (this.isCalendar) {
+                // Make sure the start is on the first day of the month
+                date = this.normalizeDateToStartOfMonth(date);
+            }
+            date = previousAllowedMonth(date, this.availableMonths);
+        } else if (unit === 'week' || unit === 'day') {
+            date = previousAllowedDay(
+                date,
+                this.availableMonths,
+                this.availableDaysOfTheWeek
+            );
+        } else {
+            date = previousAllowedTime(
+                date,
+                this.availableMonths,
+                this.availableDaysOfTheWeek,
+                this.availableTimeFrames,
+                unit,
+                span
+            );
+        }
+        this.goToDate(date);
+    }
+
+    /**
+     * Handle the selection of a resource through the toolbar filter menu.
+     *
+     * @param {Event} event
+     */
+    handleToolbarResourceSelect(event) {
+        const selectedResources = [...event.detail.value];
+        let name;
+        if (selectedResources.length > this.selectedResources.length) {
+            name = selectedResources.find(
+                (res) => !this.selectedResources.includes(res)
+            );
+        } else {
+            name = this.selectedResources.find(
+                (res) => !selectedResources.includes(res)
+            );
+        }
+        this._selectedResources = selectedResources;
+        this.dispatchResourceSelectEvent(name);
+    }
+
+    /**
+     * Handle a click on one of the toolbar time span buttons.
+     *
+     * @param {Event} event
+     */
+    handleToolbarTimeSpanClick(event) {
+        const name = event.target.value;
+        if (!name || name === this._selectedTimeSpan) {
+            return;
+        }
+        this._rowsHeight = [];
+        this._selectedTimeSpan = name;
+        const timeSpan = this.timeSpans.find((ts) => ts.name === name);
+        this.currentTimeSpan = timeSpan;
+
+        /**
+         * The event fired when the selected time span changes.
+         *
+         * @event
+         * @name timespanselect
+         * @param {string} name New selected time span name.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('timespanselect', {
+                detail: { name }
+            })
+        );
+    }
+
+    /**
+     * Handle a click on the toolbar "Today" button.
+     */
+    handleToolbarTodayClick() {
+        const today = new Date().setHours(0, 0, 0, 0);
+        if (today === this.selectedDate.ts) {
+            return;
+        }
+        this.goToDate(today);
+    }
+
+    /**
+     * Handle a change of the visible interval.
+     *
+     * @param {Event} event
+     */
+    handleVisibleIntervalChange(event) {
+        if (event.detail.start.ts !== this.computedStart.ts) {
+            this._start = event.detail.start.ts;
+        }
+        const { s, e } = event.detail.visibleInterval;
+        this.computeVisibleIntervalLabel(s, e);
+    }
+
+    /**
+     * Dispatch the resourceselect event.
+     *
+     * @param {string} name Name of the selected or unselected resource.
+     */
+    dispatchResourceSelectEvent(name) {
+        /**
+         * The event fired when a resource is selected or unselected.
+         *
+         * @event
+         * @name resourceselect
+         * @param {string} name Name of the resource that was selected or unselected.
+         * @param {string[]} selectedResources Updated list of selected resources names.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('resourceselect', {
+                detail: {
+                    selectedResources: this.selectedResources,
+                    name
+                }
             })
         );
     }

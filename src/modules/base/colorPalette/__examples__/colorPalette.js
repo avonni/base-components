@@ -44,8 +44,11 @@ export const ColorPalette = ({
     colors,
     columns,
     groups,
+    showCheckmark,
+    hideOutline,
     tileWidth,
     tileHeight,
+    value,
     variant
 }) => {
     const element = document.createElement('ac-base-color-palette');
@@ -55,8 +58,11 @@ export const ColorPalette = ({
     element.colors = colors;
     element.columns = columns;
     element.groups = groups;
+    element.showCheckmark = showCheckmark;
+    element.hideOutline = hideOutline;
     element.tileWidth = tileWidth;
     element.tileHeight = tileHeight;
+    element.value = value;
     element.variant = variant;
     return element;
 };

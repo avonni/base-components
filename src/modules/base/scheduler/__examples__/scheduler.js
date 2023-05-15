@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/scheduler';
+import Component from '../../storybookWrappers/scheduler/scheduler';
 
 customElements.define('ac-base-scheduler', Component.CustomElementConstructor);
 
@@ -49,18 +49,28 @@ export const Scheduler = ({
     events,
     eventsLabels,
     eventsPalette,
+    eventsDisplayFields,
     eventsTheme,
-    customHeaders,
-    headers,
+    toolbarActions,
+    hiddenDisplays,
+    hideResourcesFilter,
+    hideSidePanel,
+    hideToolbar,
     isLoading,
     readOnly,
     recurrentEditModes,
     referenceLines,
     resizeColumnDisabled,
-    rows,
-    rowsKeyField,
+    resources,
+    selectedDisplay,
+    selectedResources,
+    selectedTimeSpan,
+    sidePanelPosition,
     start,
-    timeSpan
+    timeSpans,
+    timezone,
+    variant,
+    zoomToFit
 }) => {
     const element = document.createElement('ac-base-scheduler');
     element.availableDaysOfTheWeek = availableDaysOfTheWeek;
@@ -77,17 +87,27 @@ export const Scheduler = ({
     element.events = events;
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
+    element.eventsDisplayFields = eventsDisplayFields;
     element.eventsTheme = eventsTheme;
-    element.customHeaders = customHeaders;
-    element.headers = headers;
+    element.toolbarActions = toolbarActions;
+    element.hiddenDisplays = hiddenDisplays;
+    element.hideResourcesFilter = hideResourcesFilter;
+    element.hideSidePanel = hideSidePanel;
+    element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
     element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
-    element.rows = rows;
-    element.rowsKeyField = rowsKeyField;
+    element.resources = resources;
+    element.selectedDisplay = selectedDisplay;
+    element.selectedResources = selectedResources;
+    element.selectedTimeSpan = selectedTimeSpan;
+    element.sidePanelPosition = sidePanelPosition;
     element.start = start;
-    element.timeSpan = timeSpan;
+    element.timeSpans = timeSpans;
+    element.timezone = timezone;
+    element.variant = variant;
+    element.zoomToFit = zoomToFit;
     return element;
 };

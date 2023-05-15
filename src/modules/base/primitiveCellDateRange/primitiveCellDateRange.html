@@ -53,7 +53,7 @@
             type={type}
             start-date={startDate}
             end-date={endDate}
-            style="position: absolute; top: 0"
+            style={style}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -74,14 +74,12 @@
                 type={type}
                 read-only={readOnly}
                 variant="label-hidden"
-                onchange={handleChange}
             ></c-input-date-range>
-            <template if:true={showEditButton}>
-                <c-primitive-cell-editable-button
-                    onclick={handleEditButtonClick}
-                    column-label="Input Date Range"
-                ></c-primitive-cell-editable-button>
-            </template>
+            <c-primitive-cell-editable-button
+                if:true={showEditButton}
+                onclick={handleEditButtonClick}
+                column-label="Input Date Range"
+            ></c-primitive-cell-editable-button>
         </span>
     </template>
 </template>

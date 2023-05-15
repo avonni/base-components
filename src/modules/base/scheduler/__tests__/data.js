@@ -30,7 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const START = new Date(2021, 8, 1);
+export const ACTIONS = [
+    {
+        label: 'Action 1',
+        name: 'action1'
+    },
+    {
+        label: 'Action 2',
+        name: 'action2'
+    }
+];
 
 export const COLUMNS = [
     {
@@ -47,75 +56,63 @@ export const COLUMNS = [
     }
 ];
 
-export const ROWS = [
+export const RESOURCES = [
     {
-        name: 'row-1',
-        resourceName: 'Row 1',
-        col1: 'Row 1, column 1',
-        col2: 'Row 1, column 2',
-        col3: 'Row 1, column 3'
+        name: 'resource-1',
+        label: 'Resource 1',
+        avatarSrc: 'some fake avatar src',
+        avatarFallbackIconName: 'utility:user',
+        avatarInitials: 'R1',
+        col1: 'Resource 1, column 1',
+        col2: 'Resource 1, column 2',
+        col3: 'Resource 1, column 3'
     },
     {
-        name: 'row-2',
-        resourceName: 'Row 2',
-        col1: 'Row 2, column 1',
-        col2: 'Row 2, column 2',
-        col3: 'Row 2, column 3'
+        name: 'resource-2',
+        label: 'Resource 2',
+        col1: 'Resource 2, column 1',
+        col2: 'Resource 2, column 2',
+        col3: 'Resource 2, column 3'
     },
     {
-        name: 'row-3',
-        resourceName: 'Row 3',
-        col1: 'Row 3, column 1',
-        col2: 'Row 3, column 2',
-        col3: 'Row 3, column 3'
+        name: 'resource-3',
+        label: 'Resource 3',
+        col1: 'Resource 3, column 1',
+        col2: 'Resource 3, column 2',
+        col3: 'Resource 3, column 3'
     }
 ];
-
-export const ROWS_KEY_FIELD = 'name';
 
 export const EVENTS = [
     {
-        keyFields: ['row-2', 'row-1'],
+        resourceNames: ['resource-2', 'resource-1'],
         name: 'event-1',
         title: 'Event 1',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3),
+        from: new Date(2022, 9, 4, 10),
+        to: new Date(2022, 9, 5, 11, 50),
         color: '#333'
     },
     {
-        keyFields: ['row-3'],
+        resourceNames: ['resource-3'],
         name: 'event-2',
         title: 'Event 2',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3)
+        from: new Date(2022, 9, 2),
+        to: new Date(2022, 9, 4)
     },
     {
-        keyFields: ['row-3'],
+        resourceNames: ['resource-3'],
         name: 'event-3',
         title: 'Event 3',
-        from: new Date(2021, 8, 3),
-        to: new Date(2021, 8, 5)
+        from: new Date(2022, 9, 3),
+        to: new Date(2022, 9, 5)
     }
 ];
 
-export const DISABLED_DATES_TIMES = [
-    {
-        keyFields: ['row-2', 'row-1'],
-        title: 'Disabled date 1',
-        iconName: 'utility:apps',
-        from: new Date(2021, 8, 2, 10),
-        to: new Date(2021, 8, 3)
-    },
-    {
-        keyFields: ['row-3'],
-        title: 'Disabled date 2',
-        from: new Date(2021, 8, 2),
-        to: new Date(2021, 8, 3)
-    },
-    {
-        keyFields: ['row-3'],
-        title: 'Disabled date 3',
-        from: new Date(2021, 8, 3),
-        to: new Date(2021, 8, 5)
-    }
-];
+export const RECURRING_EVENT = {
+    name: 'Recurrent event',
+    from: new Date(2022, 9, 4, 10),
+    to: new Date(2022, 9, 4, 11),
+    recurrence: 'daily',
+    recurrenceEndDate: new Date(2022, 9, 6, 10),
+    resourceNames: [RESOURCES[0].name]
+};

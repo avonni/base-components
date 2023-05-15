@@ -57,13 +57,14 @@
                 >
                     <c-primitive-datatable-iedit-type-factory-custom
                         required={required}
-                        class="slds-col"
+                        class="avonni-datatable-iedit-panel-custom__flex-col"
                         column-def={columnDef}
                         edited-value={editedValue}
                         onblur={handleTypeElemBlur}
                         onfocus={handleTypeElemFocus}
                         key={inputKey}
                         disabled={disabled}
+                        formats={formats}
                         label={label}
                         type={type}
                         colors={colors}
@@ -75,8 +76,8 @@
                         name={name}
                         opacity={opacity}
                         dropdown-length={dropdownLength}
+                        is-mass-edit-enabled={isMassEditEnabled}
                         is-multi-select={isMultiSelect}
-                        options={options}
                         placeholder={placeholder}
                         max={max}
                         max-length={maxLength}

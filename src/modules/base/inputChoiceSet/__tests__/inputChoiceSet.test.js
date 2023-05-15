@@ -99,7 +99,30 @@ describe('Input choice set', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Input choice set: disabled', () => {
+    it('Input choice set: disabled = false', () => {
+        element.options = options;
+        element.disabled = false;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs.forEach((input) => {
+                expect(input.disabled).toBeFalsy();
+            });
+
+            const labels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="label"]'
+            );
+            labels.forEach((label) => {
+                expect(label.classList).toContain(
+                    'avonni-input-choice-set__option-label'
+                );
+            });
+        });
+    });
+
+    it('Input choice set: disabled = true', () => {
         element.options = options;
         element.disabled = true;
 
@@ -109,6 +132,15 @@ describe('Input choice set', () => {
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
+            });
+
+            const labels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="label"]'
+            );
+            labels.forEach((label) => {
+                expect(label.classList).not.toContain(
+                    'avonni-input-choice-set__option-label'
+                );
             });
         });
     });
@@ -526,6 +558,23 @@ describe('Input choice set', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
+        });
+    });
+
+    it('Input choice set: change event is prevented with type button not multi select', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.options = options;
+        element.type = 'button';
+        element.isMultiSelect = false;
+        element.value = options[0].value;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            input.click();
+            expect(handler).not.toHaveBeenCalled();
         });
     });
 

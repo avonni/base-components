@@ -35,13 +35,14 @@ import {
     normalizeBoolean,
     normalizeArray,
     normalizeString,
-    deepCopy
+    deepCopy,
+    dateTimeObjectFrom
 } from 'c/utilsPrivate';
 
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
-
 const BUTTON_VARIANTS = {
     valid: [
         'neutral',
@@ -55,20 +56,23 @@ const BUTTON_VARIANTS = {
     ],
     default: 'neutral'
 };
-
 const DEFAULT_LOADING_TEXT = 'Loading';
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
+
+const MEDIA_QUERY_BREAKPOINTS = {
+    small: 480,
+    medium: 768
+};
 
 /**
  * @class
  * @descriptor c-primitive-activity-timeline-item
  */
 export default class PrimitiveActivityTimelineItem extends LightningElement {
-    /**
-     * Actions object sent from Activity Timeline
-     *
-     * @type {object[]}
-     */
-    @api actions = [];
     /**
      * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
@@ -83,13 +87,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api buttonLabel;
-    /**
-     * The value to be formatted, which can be a Date object, timestamp, or an ISO8601 formatted string. Use lightning-formatted-date-time.
-     *
-     * @public
-     * @type {datetime}
-     */
-    @api datetimeValue;
+
     /**
      * The description can include text, and is displayed under the title.
      *
@@ -150,18 +148,47 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api isActive;
 
+    _actions = [];
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
+    _checked = false;
     _closed = false;
+    _dateFormat;
+    _datetimeValue;
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
+    _timezone;
+
+    formattedDate = '';
+    resizeObserver;
+    _connected = false;
+    _fieldSize = 6;
+
+    connectedCallback() {
+        this.formatDate();
+        this._connected = true;
+    }
 
     renderedCallback() {
         this.setLineColor();
+
+        if (!this.resizeObserver && !this._closed) {
+            this.initFieldsContainerObserver();
+        }
+
+        this.computeFieldsPerColumn();
+    }
+
+    disconnectedCallback() {
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+            this.resizeObserver = undefined;
+        }
     }
 
     /*
@@ -169,6 +196,19 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Array of action objects.
+     *
+     * @type {object[]}
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value, 'object');
+    }
 
     /**
      * If true, the button is disabled.
@@ -225,6 +265,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * If present and `has-checkbox` is true, the checkbox will be checked.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get checked() {
+        return this._checked;
+    }
+    set checked(value) {
+        this._checked = normalizeBoolean(value);
+    }
+
+    /**
      * if true, close the section.
      *
      * @public
@@ -238,6 +293,45 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set closed(value) {
         this._closed = normalizeBoolean(value);
+    }
+
+    /**
+     * The date format to use for the item. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format.
+     * If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+
+    set dateFormat(value) {
+        this._dateFormat = typeof value === 'string' ? value : undefined;
+
+        if (this._connected) {
+            this.formatDate();
+        }
+    }
+
+    /**
+     * The value to be formatted, which can be a Date object, timestamp, or an ISO8601 formatted string. Use lightning-formatted-date-time.
+     *
+     * @public
+     * @type {datetime}
+     */
+    @api
+    get datetimeValue() {
+        return this._datetimeValue;
+    }
+    set datetimeValue(value) {
+        this._datetimeValue = value;
+
+        if (this._connected) {
+            this.formatDate();
+        }
     }
 
     /**
@@ -288,6 +382,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * The size of the item's icon. Valid values are x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
      * If present, the detail section is in a loading state and shows a spinner.
      *
      * @public
@@ -303,6 +416,24 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * Time zone used, in a valid IANA format. If empty, the browser's time zone is used.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timezone() {
+        return this._timezone;
+    }
+    set timezone(value) {
+        this._timezone = value;
+
+        if (this._connected) {
+            this.formatDate();
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -310,21 +441,26 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Check if fields is populated.
+     * Toggle for item expansion.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get hasFields() {
-        return this._fields.length > 0;
-    }
-
-    /**
-     * Check if actions exist.
-     *
-     * @type {boolean}
-     */
-    get hasActions() {
-        return this.actions && this.actions.length > 0;
+    get activityTimelineItemOuterClass() {
+        return classSet('slds-timeline__item_expandable')
+            .add({
+                'slds-is-open': !this.closed,
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__icon_large':
+                    this.iconSize === 'large'
+            })
+            .toString();
     }
 
     /**
@@ -337,16 +473,56 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Toggle for item expansion.
+     * Computed styling class for item without fields.
      *
      * @type {string}
      */
-    get activityTimelineItemOuterClass() {
-        return classSet('slds-timeline__item_expandable')
+    get computedSldsMedia() {
+        return classSet('slds-media')
             .add({
-                'slds-is-open': !this.closed
+                'avonni-primitive-activity-timeline-item__no-fields_margin':
+                    !this.hasFields
             })
             .toString();
+    }
+
+    /**
+     * Returns the container for the fields.
+     *
+     * @type {HTMLElement}
+     */
+    get fieldsContainer() {
+        return this.template.querySelector(
+            '[data-element-id="fields-container"]'
+        );
+    }
+
+    /**
+     * Returns the field size for the lightning layout item.
+     *
+     * @type {string}
+     */
+    get fieldSize() {
+        return this._fieldSize;
+    }
+
+    /**
+     * Check if fields is populated.
+     *
+     * @type {boolean}
+     */
+    get hasFields() {
+        return this._fields.length > 0;
+    }
+
+    /**
+     * Check if the type of the icon is action
+     */
+    get isActionIcon() {
+        return (
+            typeof this.iconName === 'string' &&
+            this.iconName.split(':')[0] === 'action'
+        );
     }
 
     /**
@@ -358,32 +534,122 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get timelineItemBullet() {
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__active-bullet': this.isActive
+                'avonni-timeline-item__active-bullet': this.isActive,
+                'avonni-primitive-activity-timeline-item__bullet-xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__bullet-x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__bullet-medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__bullet-large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
 
     /**
-     * Computed styling class for item without fields.
+     * Classes for timeline icons
      *
      * @type {string}
      */
-    get computedSldsMedia() {
-        return classSet('slds-media')
+    get timelineIconClass() {
+        return classSet('slds-timeline__icon')
             .add({
-                'avonni-activity-timeline-item-no-fields_margin':
-                    !this.hasFields
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    !this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    !this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    !this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    !this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_xx-small':
+                    this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__action-icon_x-small':
+                    this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__action-icon_small':
+                    this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__action-icon_medium':
+                    this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_large':
+                    this.isActionIcon && this.iconSize === 'large'
             })
             .toString();
-    }
-
-    get computedDatetimeValue() {
-        return new Date(this.datetimeValue).getTime();
     }
 
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Compute the number of fields per column based on the container width.
+     */
+    computeFieldsPerColumn() {
+        if (!this.fieldsContainer || this._closed) {
+            return;
+        }
+        const containerWidth = this.fieldsContainer.offsetWidth;
+
+        if (containerWidth < MEDIA_QUERY_BREAKPOINTS.small) {
+            this._fieldSize = 12;
+        } else if (
+            containerWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
+            containerWidth < MEDIA_QUERY_BREAKPOINTS.medium
+        ) {
+            this._fieldSize = 6;
+        } else if (containerWidth >= MEDIA_QUERY_BREAKPOINTS.medium) {
+            this._fieldSize = 4;
+        }
+    }
+
+    /**
+     * Set the formatted date.
+     */
+    formatDate() {
+        const date = dateTimeObjectFrom(this.datetimeValue, {
+            zone: this.timezone
+        });
+        if (!date || !this.dateFormat) {
+            this.formattedDate = '';
+            return;
+        }
+        this.formattedDate = date.toFormat(this.dateFormat);
+    }
+
+    /**
+     * Setup the activity timeline item resize observer. Used to update the number of fields per column when the activity timeline is resized.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initFieldsContainerObserver() {
+        if (!this.fieldsContainer) {
+            return;
+        }
+        this.resizeObserver = new AvonniResizeObserver(
+            this.fieldsContainer,
+            this.computeFieldsPerColumn.bind(this)
+        );
+    }
+
+    /**
+     * Takes computed style for icon color and sets it to the line color.
+     *
+     * @returns {string} line background color
+     */
+    setLineColor() {
+        const icon = this.template.querySelector(
+            '[data-element-id="item-marker"]'
+        );
+        if (icon === null) return;
+        const style = getComputedStyle(icon);
+        this._color = style.backgroundColor;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
 
@@ -400,8 +666,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
-        const name = event.currentTarget.value;
-
         /**
          * The event fired when a user clicks on an action.
          *
@@ -414,9 +678,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: name,
-                    fieldData: deepCopy(this._fields)
-                }
+                    name: event.detail.value,
+                    targetName: this.name,
+                    fieldData: deepCopy(this.fields)
+                },
+                bubbles: true
             })
         );
     }
@@ -431,7 +697,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
          * @public
          * @name buttonclick
          */
-        this.dispatchEvent(new CustomEvent('buttonclick'));
+        this.dispatchEvent(
+            new CustomEvent('buttonclick', {
+                detail: { name: this.name },
+                bubbles: true
+            })
+        );
     }
 
     /**
@@ -441,6 +712,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     handleCheck(event) {
         event.stopPropagation();
+        this._checked = event.detail.checked;
 
         /**
          * The check event returns the following parameters.
@@ -455,26 +727,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('check', {
                 detail: {
-                    checked: event.detail.checked
+                    checked: this.checked,
+                    name: this.name
                 },
-                bubbles: true,
-                cancelable: false,
-                composed: true
+                bubbles: true
             })
         );
     }
 
     /**
-     * Takes computed style for icon color and sets it to the line color.
-     *
-     * @returns {string} line background color
+     * Handle a click on the title. Dispatch the `itemclick` event.
      */
-    setLineColor() {
-        const icon = this.template.querySelector(
-            '[data-element-id="item-marker"]'
+    handleTitleClick() {
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    name: this.name
+                },
+                bubbles: true
+            })
         );
-        if (icon === null) return;
-        const style = getComputedStyle(icon);
-        this._color = style.backgroundColor;
     }
 }

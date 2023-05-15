@@ -36,59 +36,6 @@ import { NoActionsProfileCard } from '../__examples__/noActions';
 export default {
     title: 'Example/Profile Card',
     argTypes: {
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the header.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        subtitle: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The subtitle can include text, and is displayed under the title.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        backgroundSrc: {
-            name: 'background-src',
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the optional image.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
-        backgroundAlternativeText: {
-            name: 'background-alternative-text',
-            control: {
-                type: 'text'
-            },
-            description: "Value to set the image attribute 'alt'",
-            table: {
-                type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
-        avatarSrc: {
-            name: 'avatar-src',
-            control: {
-                type: 'text'
-            },
-            description: 'URL for the avatar image.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Avatar'
-            }
-        },
         avatarAlternativeText: {
             name: 'avatar-alternative-text',
             control: {
@@ -108,27 +55,6 @@ export default {
             description:
                 "The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.",
             table: {
-                type: { summary: 'string' },
-                category: 'Avatar'
-            }
-        },
-        avatarPosition: {
-            name: 'avatar-position',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'top-left',
-                'top-center',
-                'top-right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right'
-            ],
-            description:
-                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
-            table: {
-                defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
                 category: 'Avatar'
             }
@@ -154,6 +80,52 @@ export default {
                 category: 'Avatar'
             }
         },
+        avatarPosition: {
+            name: 'avatar-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+            table: {
+                defaultValue: { summary: 'top-left' },
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
+        avatarSize: {
+            name: 'avatar-size',
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
+            description:
+                'The size of the avatar. Valid values include x-small, small, medium, large, x-large.',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
+        avatarSrc: {
+            name: 'avatar-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the avatar image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
         avatarVariant: {
             name: 'avatar-variant',
             control: {
@@ -168,15 +140,45 @@ export default {
                 category: 'Avatar'
             }
         },
-        size: {
+        backgroundAlternativeText: {
+            name: 'background-alternative-text',
             control: {
-                type: 'select'
+                type: 'text'
             },
-            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
-            description:
-                'The size of the avatar. Valid values include x-small, small, medium, large, x-large.',
+            description: "Value to set the image attribute 'alt'",
             table: {
-                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        backgroundSrc: {
+            name: 'background-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the optional image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Background'
+            }
+        },
+        subtitle: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The subtitle can include text, and is displayed under the title.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header.',
+            table: {
                 type: { summary: 'string' }
             }
         }
@@ -185,7 +187,7 @@ export default {
         avatarPosition: 'top-left',
         avatarMobilePosition: 'top-left',
         avatarVariant: 'circle',
-        size: 'medium'
+        avatarSize: 'medium'
     }
 };
 
@@ -223,7 +225,7 @@ SmallTopRight.args = {
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
     avatarPosition: 'top-right',
-    size: 'small'
+    avatarSize: 'small'
 };
 
 export const ExtraSmallBottomCenter = NoActionsTemplate.bind({});
@@ -232,7 +234,7 @@ ExtraSmallBottomCenter.args = {
     subtitle: 'Manager',
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-    size: 'x-small',
+    avatarSize: 'x-small',
     avatarPosition: 'bottom-center'
 };
 
@@ -245,7 +247,7 @@ LargeBottomLeft.args = {
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
     avatarPosition: 'bottom-left',
-    size: 'large'
+    avatarSize: 'large'
 };
 
 export const ExtraLargeSquare = Template.bind({});
@@ -256,7 +258,7 @@ ExtraLargeSquare.args = {
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
         'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-    size: 'x-large',
+    avatarSize: 'x-large',
     avatarVariant: 'square'
 };
 
@@ -309,7 +311,7 @@ SmallBottomCenterMobile.parameters = {
 SmallBottomCenterMobile.args = {
     title: 'Title',
     subtitle: 'Subtitle',
-    size: 'small',
+    avatarSize: 'small',
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:

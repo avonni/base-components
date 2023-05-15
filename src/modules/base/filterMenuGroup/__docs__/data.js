@@ -30,73 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-const contact = [
-    {
-        label: 'Call',
-        value: 'call',
-        prefixIconName: 'standard:call',
-        iconName: 'utility:voicemail_drop'
-    },
-    {
-        label: 'Email',
-        value: 'email',
-        prefixIconName: 'standard:email'
-    },
-    {
-        label: 'Meeting',
-        value: 'meeting',
-        prefixIconName: 'standard:service_appointment',
-        disabled: true
-    },
-    {
-        label: 'Other',
-        value: 'other',
-        prefixIconName: 'standard:all'
-    }
-];
-
-const prices = [
-    {
-        label: 'Free',
-        value: 'free'
-    },
-    {
-        label: 'Paid',
-        value: 'paid'
-    }
-];
-
-const editions = [
-    {
-        label: 'Essentials',
-        value: 'essentials'
-    },
-    {
-        label: 'Professional',
-        value: 'professional'
-    },
-    {
-        label: 'Enterprise',
-        value: 'enterprise'
-    },
-    {
-        label: 'Unlimited',
-        value: 'unlimited'
-    },
-    {
-        label: 'Force.com',
-        value: 'forcecom'
-    },
-    {
-        label: 'Developer',
-        value: 'developer'
-    },
-    {
-        label: 'Performance',
-        value: 'performance'
-    }
-];
-
 const languages = [
     {
         label: 'Dutch',
@@ -140,113 +73,231 @@ const languages = [
     }
 ];
 
+const contact = [
+    {
+        label: 'Call',
+        value: 'call',
+        prefixIconName: 'standard:call',
+        iconName: 'utility:voicemail_drop'
+    },
+    {
+        label: 'Email',
+        value: 'email',
+        prefixIconName: 'standard:email'
+    },
+    {
+        label: 'Meeting',
+        value: 'meeting',
+        prefixIconName: 'standard:service_appointment',
+        disabled: true
+    },
+    {
+        label: 'Other',
+        value: 'other',
+        prefixIconName: 'standard:all'
+    }
+];
+
+const editions = [
+    {
+        label: 'Essentials',
+        value: 'essentials'
+    },
+    {
+        label: 'Professional',
+        value: 'professional'
+    },
+    {
+        label: 'Enterprise',
+        value: 'enterprise'
+    },
+    {
+        label: 'Unlimited',
+        value: 'unlimited'
+    },
+    {
+        label: 'Force.com',
+        value: 'forcecom'
+    },
+    {
+        label: 'Developer',
+        value: 'developer'
+    },
+    {
+        label: 'Performance',
+        value: 'performance'
+    }
+];
+
 const MENUS = [
     {
         name: 'contact',
         label: 'Type',
         accessKey: 'k',
         alternativeText: 'Open contact type filter',
-        items: contact,
-        tooltip: 'Type of contact',
-        value: 'email'
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
+        tooltip: 'Type of contact'
     },
     {
-        name: 'prices',
-        disabled: true,
-        label: 'Prices',
-        items: prices,
-        dropdownWidth: 'large',
-        droddownNubbin: true,
-        hideSelectedItems: true
+        name: 'price',
+        label: 'Price',
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
+    },
+
+    {
+        name: 'languages',
+        label: 'Languages',
+        typeAttributes: {
+            isMultiSelect: true,
+            items: languages,
+            dropdownLength: '5-items'
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
     },
     {
         name: 'editions',
-        items: editions,
         label: 'Editions',
-        showSearchBox: true,
-        dropdownLength: '5-items',
-        isMultiSelect: true
-    },
-    {
-        name: 'ratings',
-        label: 'Ratings',
-        isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...'
-    },
-    {
-        name: 'languages',
-        items: languages,
-        label: 'Laguages',
-        dropdownLength: '10-items',
-        isMultiSelect: true,
-        value: ['dutch', 'english']
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     }
 ];
 
 const ICONS_MENUS = [
     {
         name: 'contact',
+        iconName: 'utility:call',
         accessKey: 'k',
         alternativeText: 'Open contact type filter',
-        items: contact,
-        iconName: 'utility:call',
-        tooltip: 'Type of contact',
-        value: 'email'
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
+        tooltip: 'Type of contact'
     },
     {
-        name: 'prices',
+        name: 'price',
         disabled: true,
-        items: prices,
+        label: 'Price',
         iconName: 'utility:currency',
-        dropdownWidth: 'large',
-        droddownNubbin: true,
-        hideSelectedItems: true
+        type: 'range',
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
     },
     {
         name: 'editions',
-        items: editions,
+        label: 'Editions',
         iconName: 'utility:knowledge_base',
-        buttonVariant: 'bare',
-        showSearchBox: true,
-        dropdownLength: '5-items'
-    },
-    {
-        name: 'ratings',
-        iconName: 'utility:favorite',
-        isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...'
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     },
     {
         name: 'languages',
+        label: 'Languages',
         iconName: 'utility:world',
-        items: languages,
-        dropdownLength: '10-items',
-        isMultiSelect: true,
-        value: ['dutch', 'english']
+        typeAttributes: {
+            enableInfiniteLoading: true,
+            dropdownLength: '5-items',
+            isMultiSelect: true
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        iconName: 'utility:date_input',
+        type: 'date-range',
+        typeAttributes: {
+            type: 'datetime'
+        }
     }
 ];
 
-const NO_VALUE_MENU = [
+const COLLAPSIBLE_MENUS = [
     {
         name: 'contact',
         label: 'Type',
         accessKey: 'k',
         alternativeText: 'Open contact type filter',
-        items: [
-            {
-                label: 'Call',
-                value: 'call',
-                prefixIconName: 'standard:call',
-                iconName: 'utility:voicemail_drop'
-            },
-            {
-                label: 'Email',
-                value: 'email',
-                prefixIconName: 'standard:email'
-            }
-        ],
+        collapsible: true,
+        typeAttributes: {
+            items: contact,
+            dropdownWidth: 'large',
+            droddownNubbin: true
+        },
         tooltip: 'Type of contact'
+    },
+    {
+        name: 'price',
+        label: 'Price',
+        type: 'range',
+        collapsible: true,
+        typeAttributes: {
+            showPin: true,
+            unit: 'currency',
+            unitAttributes: {
+                currencyCode: 'CAD'
+            }
+        }
+    },
+
+    {
+        name: 'languages',
+        label: 'Languages',
+        collapsible: true,
+        typeAttributes: {
+            isMultiSelect: true,
+            items: languages,
+            dropdownLength: '5-items'
+        }
+    },
+    {
+        name: 'publication',
+        label: 'Publication',
+        type: 'date-range',
+        collapsible: true,
+        typeAttributes: {
+            type: 'datetime'
+        }
+    },
+    {
+        name: 'editions',
+        label: 'Editions',
+        collapsible: true,
+        typeAttributes: {
+            items: editions,
+            allowSearch: true,
+            isMultiSelect: true
+        }
     }
 ];
 
-export { MENUS, ICONS_MENUS, NO_VALUE_MENU };
+export { COLLAPSIBLE_MENUS, MENUS, ICONS_MENUS };

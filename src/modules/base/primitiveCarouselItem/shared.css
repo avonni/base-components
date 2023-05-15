@@ -1,0 +1,64 @@
+.avonni-carousel-item__content-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-line;
+    color: var(--avonni-carousel-item-title-text-color, #080707);
+    font-size: var(--avonni-carousel-item-title-font-size, 1rem);
+    font-style: var(--avonni-carousel-item-title-font-style, normal);
+    font-weight: var(--avonni-carousel-item-title-font-weight, 600);
+}
+
+.avonni-carousel__image {
+    height: var(--avonni-carousel-item-image-sizing-height);
+    background: var(--avonni-carousel-item-image-color-background, #ffffff);
+    object-fit: var(--avonni-carousel-item-image-positioning-object-fit, cover);
+    object-position: var(
+        --avonni-carousel-item-image-positioning-object-position
+    );
+    border-radius: var(--avonni-carousel-item-image-radius-border, 0.25rem);
+}
+
+.avonni-carousel__actions {
+    display: flex;
+    width: 100%;
+}
+
+.avonni-carousel__panel-action {
+    border-color: var(--avonni-carousel-item-color-border, #e5e5e5);
+    border-width: var(--avonni-carousel-item-sizing-border, 1px);
+    border-style: var(--avonni-carousel-item-styling-border, solid);
+    border-radius: var(--avonni-carousel-item-radius-border, 0.25rem);
+}
+
+.avonni-carousel__actions-bottom-center {
+    justify-content: center;
+}
+
+.avonni-carousel__actions-right {
+    justify-content: flex-end;
+}
+
+.avonni-carousel__actions-left {
+    justify-content: flex-start;
+}
+
+.avonni-carousel__content-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.avonni-primitive-carousel-item__content_background {
+    background-color: var(--avonni-carousel-item-color-background, #ffffff);
+    border-radius: var(--avonni-carousel-item-content-radius-border, 0.25rem);
+}
+
+.avonni-carousel-item__content-description {
+    color: var(--avonni-carousel-item-description-text-color, #080707);
+    font-size: var(--avonni-carousel-item-description-font-size, 0.8125rem);
+    font-style: var(--avonni-carousel-item-description-font-style, normal);
+    font-weight: var(--avonni-carousel-item-description-font-weight, 400);
+}

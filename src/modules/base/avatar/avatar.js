@@ -146,8 +146,8 @@ export default class Avatar extends LightningElement {
      */
     @api tertiaryText;
 
-    mediaObjectClass;
-
+    _actions = [];
+    _actionPosition = POSITIONS.actionDefault;
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
@@ -163,10 +163,10 @@ export default class Avatar extends LightningElement {
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
     _variant = AVATAR_VARIANTS.default;
+    _tags = [];
     _textPosition = TEXT_POSITIONS.default;
-    _tags;
-    _actions;
-    _actionPosition = POSITIONS.actionDefault;
+
+    mediaObjectClass;
 
     connectedCallback() {
         this._updateClassList();

@@ -97,6 +97,7 @@ export default class VisualPicker extends LightningElement {
     @api name = generateUUID();
 
     _disabled = DEFAULT_DISABLED;
+    _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _items = [];
     _ratio = VISUAL_PICKER_RATIOS.default;
@@ -113,11 +114,11 @@ export default class VisualPicker extends LightningElement {
 
     renderedCallback() {
         if (this.inputs) {
-            this.inputs.forEach((item) => {
-                if (this._value.indexOf(item.value) > -1) {
-                    item.checked = true;
+            this.inputs.forEach((input) => {
+                if (this._value.indexOf(input.value) > -1) {
+                    input.checked = true;
                 } else {
-                    item.removeAttribute('checked');
+                    input.checked = false;
                 }
             });
         }
@@ -149,6 +150,24 @@ export default class VisualPicker extends LightningElement {
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
+
+    /**
+     * Deprecated. Use the styling hooks instead.
+     *
+     * @type {boolean}
+     * @deprecated
+     */
+    @api
+    get hideBorder() {
+        return this._hideBorder;
+    }
+    set hideBorder(value) {
+        this._hideBorder = value;
+        console.warn(
+            'The "hide-border" attribute is deprecated. Use the styling hooks instead.'
+        );
+    }
+
     /**
      * If present, hide the check mark when selected.
      *
@@ -722,11 +741,12 @@ export default class VisualPicker extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
-        const value = this.inputs
-            .filter((input) => input.checked)
-            .map((input) => input.value);
-
-        this._value = value;
+        this._value =
+            this.type === 'radio'
+                ? event.target.value
+                : this.inputs
+                      .filter((input) => input.checked)
+                      .map((input) => input.value);
 
         /**
          * The event fired when the value changed.
@@ -739,9 +759,19 @@ export default class VisualPicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.type === 'radio' ? value[0] || null : value
+                    value: this.value
                 }
             })
         );
+    }
+
+    /**
+     * Input keyup event handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
     }
 }

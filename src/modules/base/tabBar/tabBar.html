@@ -39,7 +39,7 @@
                 <li
                     class={tab.classes}
                     role="presentation"
-                    key={tab.id}
+                    key={tab.name}
                     onkeydown={handleVisibleTabKeyDown}
                 >
                     <a
@@ -49,6 +49,8 @@
                         role="tab"
                         tabindex={tab.tabIndex}
                         aria-selected={tab.ariaSelected}
+                        data-element-id="a-tab-link"
+                        data-name={tab.name}
                         onclick={handleTabClick}
                         onblur={triggerBlur}
                     >
@@ -76,6 +78,7 @@
                             aria-haspopup="true"
                             aria-expanded={showHiddenTabsDropdown}
                             type="button"
+                            data-element-id="button-hidden-tabs"
                             onfocus={handleDropDownButtonFocus}
                             onblur={handleDropDownButtonBlur}
                             onclick={handleShowHiddenTabsClick}
@@ -87,7 +90,13 @@
                                 ></lightning-icon>
                             </span>
                         </button>
-                        <template if:true={showHiddenTabsDropdown}>
+
+                        <!-- Hidden tabs dropdown -->
+                        <div
+                            if:true={showHiddenTabsDropdown}
+                            onfocusin={handleDropDownFocusIn}
+                            onfocusout={handleDropDownFocusOut}
+                        >
                             <div class="slds-dropdown slds-dropdown_right">
                                 <ul
                                     class="
@@ -103,28 +112,31 @@
                                         <li
                                             class="slds-dropdown__item"
                                             role="presentation"
-                                            key={hiddenTab}
+                                            key={hiddenTab.name}
+                                            data-name={hiddenTab.name}
                                             onkeydown={handleDropDownItemKeyDown}
                                         >
                                             <a
                                                 href="javascript:void(0);"
                                                 role="menuitem"
                                                 tabindex="-1"
-                                                title={hiddenTab}
+                                                title={hiddenTab.label}
+                                                data-name={hiddenTab.name}
+                                                data-element-id="a-hidden-tab"
                                                 onmousedown={changeLastCategory}
-                                                onblur={dropdownBlur}
                                             >
                                                 <span
                                                     class="slds-truncate"
-                                                    title={hiddenTab}
-                                                    >{hiddenTab}</span
+                                                    title={hiddenTab.label}
                                                 >
+                                                    {hiddenTab.label}
+                                                </span>
                                             </a>
                                         </li>
                                     </template>
                                 </ul>
                             </div>
-                        </template>
+                        </div>
                     </div>
                 </li>
             </template>

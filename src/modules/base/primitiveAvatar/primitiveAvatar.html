@@ -116,20 +116,21 @@
         >
             <template if:true={actionMenu}>
                 <c-button-menu
-                    variant="border-filled"
+                    data-element-id="action-menu-icon"
+                    alternative-text="Actions"
+                    hide-down-arrow
                     icon-name={actionMenuIcon}
                     icon-size={actionMenuSize}
-                    alternative-text="Actions"
-                    data-element-id="action-menu-icon"
-                    hide-down-arrow
+                    variant="border-filled"
+                    onselect={handleActionClick}
                 >
                     <template for:each={actions} for:item="action">
                         <lightning-menu-item
                             key={action.name}
+                            disabled={action.disabled}
                             icon-name={action.iconName}
                             value={action.name}
                             label={action.label}
-                            onclick={handleActionClick}
                         >
                         </lightning-menu-item>
                     </template>
@@ -138,20 +139,22 @@
 
             <template if:false={actionMenu}>
                 <button
+                    data-element-id="action-icon"
                     class="
                         avonni-avatar-action-button
                         slds-button slds-button_icon
                     "
-                    data-element-id="action-icon"
+                    alternative-text={action.label}
+                    disabled={action.disabled}
                     title={action.label}
                     type="button"
                     value={action.name}
-                    alternative-text={action.label}
                     onclick={handleActionClick}
                 >
                     <c-primitive-icon
+                        data-element-id="primitive-icon-action"
                         class="avonni-avatar-action-button-icon"
-                        icon-name={action.iconName}
+                        icon-name={computedActionMenuIcon}
                     >
                     </c-primitive-icon>
                 </button>

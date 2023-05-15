@@ -246,7 +246,7 @@ export default class DynamicMenu extends LightningElement {
      */
 
     /**
-     * If present, display search box.
+     * If present, display a search box.
      *
      * @type {boolean}
      * @public
@@ -303,7 +303,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * If present, the menu cannot be opened by users.
+     * If present, hide the check mark when selected.
      *
      * @type {boolean}
      * @public
@@ -338,7 +338,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * The size of the icon. Options include xx-small, x-small, medium, or large.
+     * The size of the icon. Options include xx-small, x-small, small, medium, or large.
      *
      * @type {string}
      * @public
@@ -493,6 +493,24 @@ export default class DynamicMenu extends LightningElement {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
+    }
+
+    /**
+     * Deprecated. Use `allow-search` instead.
+     *
+     * @type {boolean}
+     * @default false
+     * @deprecated
+     */
+    @api
+    get withSearch() {
+        return this._allowSearch;
+    }
+    set withSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
+        console.warn(
+            'The "with-search" attribute is deprecated. Use "allow-search" instead.'
+        );
     }
 
     /*

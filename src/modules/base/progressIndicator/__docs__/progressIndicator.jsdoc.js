@@ -12,7 +12,6 @@
  * @property {string} buttonIconName The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
  * @property {string} buttonIconPosition Describes the position of the icon with respect to the button label. Options include left and right. This value defaults to left.
  * @property {boolean} buttonDisabled If true, the button is disabled.
- * @property {string} buttonTitle The title of the button.
  * @property {string} buttonVariant The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. This value defaults to neutral.
  * @property {string} popoverVariant Valid values include base and button. Default to base.
  * @property {string} popoverIconName The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.

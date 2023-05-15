@@ -157,10 +157,16 @@ export default class OutputData extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Computed class of label.
+     *
+     * @type {string}
+     */
     get computedLabelClass() {
-        return classSet('slds-item_label slds-text-color_weak slds-truncate')
+        return classSet('avonni-output-data__label slds-item_label slds-text-color_weak slds-truncate')
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
+                'slds-assistive-text': this.variant === 'label-hidden',
+                'slds-p-right_small avonni-output-data__label_inline': this.variant === 'label-inline'
             })
             .toString();
     }
@@ -267,6 +273,15 @@ export default class OutputData extends LightningElement {
             return this.type;
         }
         return 'decimal';
+    }
+
+    /**
+     * Check if label should be displayed or not.
+     *
+     * @type {boolean}
+     */
+    get shouldDisplayLabel(){
+        return this.label && this.variant !== 'label-hidden';
     }
 
     /**

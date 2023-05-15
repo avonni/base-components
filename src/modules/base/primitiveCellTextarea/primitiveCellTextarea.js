@@ -35,14 +35,15 @@ import { LightningElement, api } from 'lwc';
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api disabled;
-    @api label;
     @api maxLength;
     @api minLength;
-    @api name;
     @api placeholder;
 
+    _columnsWidth = 0;
+    _index;
+    _style;
     _value;
+
     visible = false;
     editable = false;
     readOnly = true;
@@ -51,7 +52,7 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
     }
 
     @api
@@ -63,8 +64,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this._value = value;
     }
 
-    /*----------- Inline Editing Functions -------------*/
-
     /**
      * Return true if cell is editable and not disabled.
      *
@@ -74,13 +73,19 @@ export default class PrimitiveCellTextarea extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
-    toggleInlineEdit() {
-        this.visible = !this.visible;
-        this.readOnly = !this.readOnly;
+    get style() {
+        return this._style;
     }
 
-    getStateAndColumnsEvent() {
+    /*----------- Inline Editing Functions -------------*/
+    computeStyle() {
+        this._style =
+            this._columnsWidth < 310
+                ? 'position: absolute; top: 0; right: 0'
+                : 'position: absolute; top: 0; left: 0;';
+    }
+
+    dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
@@ -95,17 +100,16 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns) {
+    getStateAndColumns(state, columns, width) {
         this.state = state;
         this.columns = columns;
-        this.isEditable();
-    }
+        this._index = this.state.headerIndexes[this.colKeyValue];
+        this._columnsWidth = width
+            ? width.slice(this._index).reduce((a, b) => a + b, 0)
+            : 0;
 
-    // Checks if the column is editable.
-    isEditable() {
-        let textArea = {};
-        textArea = this.columns.find((column) => column.type === 'textarea');
-        this.editable = textArea.editable;
+        this.computeStyle();
+        this.isEditable();
     }
 
     // Handles the edit button click and dispatches the event.
@@ -122,7 +126,20 @@ export default class PrimitiveCellTextarea extends LightningElement {
                 }
             })
         );
-        this.getStateAndColumnsEvent();
+        this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let textArea = {};
+        textArea = this.columns.find((column) => column.type === 'textarea');
+        this.editable = textArea.editable;
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
     }
 }

@@ -40,7 +40,12 @@ import {
     normalizeBoolean
 } from 'c/utilsPrivate';
 
-const DEFAULT_ACTION_NAMES = ['add', 'edit', 'delete', 'duplicate'];
+const DEFAULT_ACTION_NAMES = [
+    'Standard.Tree.Add',
+    'Standard.Tree.Edit',
+    'Standard.Tree.Delete',
+    'Standard.Tree.Duplicate'
+];
 const DEFAULT_EDITABLE_FIELDS = [
     'label',
     'metatext',
@@ -87,7 +92,7 @@ export default class Tree extends LightningElement {
     _dragState;
     _editedItemKey;
     _focusedItem;
-    _isConnected = false;
+    _connected = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
     _selectTimeout;
@@ -98,7 +103,7 @@ export default class Tree extends LightningElement {
 
         window.addEventListener('mouseup', this.handleMouseUp);
         window.addEventListener('mousemove', this.handleMouseMove);
-        this._isConnected = true;
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -166,7 +171,7 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard ``edit`` action.
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard `Standard.Tree.Edit` action.
      *
      * @type {string[]}
      * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
@@ -229,7 +234,7 @@ export default class Tree extends LightningElement {
 
     set isMultiSelect(value) {
         this._isMultiSelect = value;
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -249,7 +254,7 @@ export default class Tree extends LightningElement {
             return this.treedata.cloneItems(item);
         });
 
-        if (this._isConnected) this.initItems();
+        if (this._connected) this.initItems();
     }
 
     /**
@@ -290,7 +295,7 @@ export default class Tree extends LightningElement {
             typeof value === 'string'
                 ? [value]
                 : deepCopy(normalizeArray(value));
-        if (this._isConnected) this.resetSelection();
+        if (this._connected) this.resetSelection();
     }
 
     /**
@@ -323,7 +328,7 @@ export default class Tree extends LightningElement {
     get addAction() {
         return (
             !this.isLoading &&
-            this.actions.find((action) => action.name === 'add')
+            this.actions.find((action) => action.name === 'Standard.Tree.Add')
         );
     }
 
@@ -485,7 +490,7 @@ export default class Tree extends LightningElement {
             this.treedata.updateVisibleTreeItemsOnCollapse(node.key);
             this.dispatchChange({
                 name: node.name,
-                action: 'collapse',
+                action: 'Standard.Tree.Collapse',
                 key: node.key
             });
         }
@@ -586,15 +591,15 @@ export default class Tree extends LightningElement {
         }
 
         switch (action) {
-            case 'add': {
+            case 'Standard.Tree.Add': {
                 this.addItem(key);
                 break;
             }
-            case 'edit': {
+            case 'Standard.Tree.Edit': {
                 this._editedItemKey = key;
                 return;
             }
-            case 'delete': {
+            case 'Standard.Tree.Delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
                 if (prevItem && !this.isMultiSelect) {
                     this.singleSelect(prevItem.treeNode.name);
@@ -603,7 +608,7 @@ export default class Tree extends LightningElement {
                 items.splice(index, 1);
                 break;
             }
-            case 'duplicate': {
+            case 'Standard.Tree.Duplicate': {
                 previousName = item.treeNode.name;
                 const duplicatedItem = this.duplicateItem(key);
                 name = duplicatedItem.name;
@@ -629,7 +634,7 @@ export default class Tree extends LightningElement {
             node.nodeRef.expanded = true;
             this.dispatchChange({
                 name: node.name,
-                action: 'expand',
+                action: 'Standard.Tree.Expand',
                 key: node.key
             });
         }
@@ -908,6 +913,11 @@ export default class Tree extends LightningElement {
             if (selectedItem) {
                 this.treedata.expandTo(selectedItem);
                 this.setFocusToItem(selectedItem);
+            } else if (this._focusedItem) {
+                const callbacks = this.callbackMap[this._focusedItem.key];
+                callbacks.setSelected(false);
+                callbacks.unfocus();
+                this._focusedItem = null;
             }
             this.forceChildrenSelectionUpdate();
         }
@@ -956,7 +966,7 @@ export default class Tree extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-        const action = event.detail.name || 'add';
+        const action = event.detail.name || 'Standard.Tree.Add';
         const key = event.detail.key;
         const levelPath = this.treedata.getLevelPath(
             key || this.items.length.toString()
@@ -1022,7 +1032,7 @@ export default class Tree extends LightningElement {
         this.initItems();
         this.dispatchChange({
             name: item.name,
-            action: 'edit',
+            action: 'Standard.Tree.Edit',
             previousName,
             key
         });
@@ -1272,7 +1282,7 @@ export default class Tree extends LightningElement {
             this.initItems();
             this.dispatchChange({
                 name: initialItem.name,
-                action: 'move',
+                action: 'Standard.Tree.Move',
                 key
             });
         }
@@ -1326,21 +1336,29 @@ export default class Tree extends LightningElement {
      */
     dispatchChange({ key, name, action, previousName }) {
         // If no key is given, it's a new item at the root of the tree
-        const levelPath = this.treedata.getLevelPath(
+        let levelPath = this.treedata.getLevelPath(
             (key || this.items.length - 1).toString()
         );
+
+        const previousLevelPath = levelPath;
+        if (action === 'Standard.Tree.Move') {
+            const newItem = this.treedata.getItemFromName(name);
+            levelPath = this.treedata.getLevelPath(newItem.key);
+        }
 
         /**
          * The event fired when a change is made to the tree.
          *
          * @event
          * @name change
-         * @param {string} action Type of change made to the item. Options are ``add``, ``collapse``, ``delete``, ``duplicate``, ``edit``, ``expand`` and ``move``.
+         * @param {string} action Type of change made to the item. Options are `Standard.Tree.Add`, `Standard.Tree.Collapse`, `Standard.Tree.Delete`, `Standard.Tree.Duplicate`, `Standard.Tree.Edit`, `Standard.Tree.Expand` and `Standard.Tree.Move`.
          * @param {object[]} items The new items array.
          * @param {number[]} levelPath Array of the levels of depth of the changed item.
-         * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: ``[1, 2]``.
+         * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: `[1, 2]`.
          * @param {string} name Name of the specific item the change was made to.
-         * @param {string} previousName For the ``duplicate`` action, name of the original item. For the ``edit`` action, if the name has changed, previous name of the item.
+         * @param {string} previousName For the `Standard.Tree.Duplicate` action, name of the original item. For the `Standard.Tree.Edit` action, if the name has changed, previous name of the item.
+         * @param {number[]} previousLevelPath Array of the levels of depth, of the previous position of the changed item.
+         * This value will differ from the levelPath only if the action is `Standard.Tree.Move`.
          * @public
          */
         this.dispatchEvent(
@@ -1350,6 +1368,7 @@ export default class Tree extends LightningElement {
                     items: deepCopy(this.items),
                     levelPath,
                     name,
+                    previousLevelPath,
                     previousName
                 }
             })
