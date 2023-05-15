@@ -402,25 +402,32 @@ export default class Pagination extends LightningElement {
                             firstIndex,
                             lastIndex
                         );
-                        paginationButtons[0] = this.ellipsisText;
                     } else {
                         paginationButtons = paginationButtons.slice(
                             0,
                             this.limit
                         );
                     }
-                    paginationButtons[this.limit - 1] = this.ellipsisText;
                 } else {
                     paginationButtons = paginationButtons.slice(
                         this.paginationSize - this.limit,
                         this.paginationSize
                     );
-                    paginationButtons[0] = this.ellipsisText;
                 }
             }
         }
 
         return paginationButtons;
+    }
+
+    get showNextEllipsis() {
+        const pages = this.paginationButtons;
+        return pages.length && pages[pages.length - 1] !== this.paginationSize;
+    }
+
+    get showPreviousEllipsis() {
+        const pages = this.paginationButtons;
+        return pages.length && pages[0] !== 1;
     }
 
     /*
@@ -500,9 +507,7 @@ export default class Pagination extends LightningElement {
      * @param {Event} event
      */
     goToIndex(event) {
-        if (event.target.value !== this.ellipsisText) {
-            this.goto(Number(event.target.value));
-        }
+        this.goto(Number(event.target.value));
     }
 
     /**
@@ -524,6 +529,15 @@ export default class Pagination extends LightningElement {
                 }
             })
         );
+    }
+
+    handleNextEllipsisClick() {
+        const pages = this.paginationButtons;
+        this.goto(pages[pages.length - 1] + 1);
+    }
+
+    handlePreviousEllipsisClick() {
+        this.goto(this.paginationButtons[0] - 1);
     }
 
     /**
