@@ -66,7 +66,11 @@ describe('Pagination', () => {
         expect(element.value).toBe(1);
     });
 
-    /* ---- ATTRIBUTES ----- */
+    /*
+    * ------------------------------------------------------------
+    *  ATTRIBUTES
+    * -------------------------------------------------------------
+    */
 
     // align
     it('Pagination: align = left', () => {
@@ -87,9 +91,7 @@ describe('Pagination', () => {
         element.align = 'center';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.className).toBe(
-                'slds-grid slds-grid_align-center'
-            );
+            expect(wrapper.className).toBe('slds-grid slds-grid_align-center');
         });
     });
 
@@ -236,14 +238,16 @@ describe('Pagination', () => {
     it('Pagination: ellipsisText', () => {
         element.ellipsisText = 'A string ellipsis';
         element.totalRows = 200;
-        element.value = 3;
+        element.value = 4;
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button"]'
+                '[data-element-id="button-ellipsis"]'
             );
-            expect(buttons[0].value).toBe('A string ellipsis');
-            expect(buttons[buttons.length - 1].value).toBe('A string ellipsis');
+            expect(buttons).toHaveLength(2);
+            buttons.forEach((button) => {
+                expect(button.textContent).toBe('A string ellipsis');
+            });
         });
     });
 
@@ -456,7 +460,9 @@ describe('Pagination', () => {
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             expect(buttons[2].classList).toContain('slds-button_brand');
             [0, 1, 3, 4].forEach((i) => {
                 expect(buttons[i].classList).not.toContain('slds-button_brand');
@@ -523,10 +529,14 @@ describe('Pagination', () => {
                 expect(previousButton.disabled).toBeFalsy();
 
                 // The current page value should be 5
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[4].classList).toContain('slds-button_brand');
-                [0, 1, 2, 3].forEach(i => {
-                    expect(buttons[i].classList).not.toContain('slds-button_brand');
+                [0, 1, 2, 3].forEach((i) => {
+                    expect(buttons[i].classList).not.toContain(
+                        'slds-button_brand'
+                    );
                 });
 
                 // Check if event is fired on click on previous button
@@ -554,15 +564,23 @@ describe('Pagination', () => {
                 expect(nextButton.disabled).toBeFalsy();
 
                 // The current page value should be 1
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[0].classList).toContain('slds-button_brand');
-                [1, 2, 3, 4].forEach(i => {
-                    expect(buttons[i].classList).not.toContain('slds-button_brand');
+                [1, 2, 3, 4].forEach((i) => {
+                    expect(buttons[i].classList).not.toContain(
+                        'slds-button_brand'
+                    );
                 });
             });
     });
 
-    /* ---- METHODS ----- */
+    /*
+    * ------------------------------------------------------------
+    *  METHODS
+    * -------------------------------------------------------------
+    */
 
     // first
     // Depends on totalRows and value. Checks change event.
@@ -572,7 +590,9 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[2].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
@@ -589,7 +609,9 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[0].classList).toContain('slds-button_brand');
             });
     });
@@ -601,7 +623,9 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
@@ -618,7 +642,9 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[4].classList).toContain('slds-button_brand');
                 // Based on the fact that the default value for limit is 5, there should be 10 pages
                 expect(buttons[4].textContent).toBe('10');
@@ -632,7 +658,9 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
@@ -649,7 +677,9 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[1].classList).toContain('slds-button_brand');
             });
     });
@@ -662,7 +692,9 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[2].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
@@ -679,7 +711,9 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[1].classList).toContain('slds-button_brand');
             });
     });
@@ -691,7 +725,9 @@ describe('Pagination', () => {
 
         return Promise.resolve()
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[0].classList).toContain('slds-button_brand');
 
                 // Check if event is fired
@@ -708,9 +744,44 @@ describe('Pagination', () => {
                 element.removeEventListener('change', handleChange);
             })
             .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button"]'
+                );
                 expect(buttons[2].classList).toContain('slds-button_brand');
                 expect(buttons[2].textContent).toBe('4');
             });
+    });
+
+    it('Pagination: goto method is called on click on ellipsis', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.totalRows = 200;
+
+        return Promise.resolve().then(() => {
+            // Click on the next ellipsis
+            const ellipsis = element.shadowRoot.querySelector(
+                '[data-element-id="button-ellipsis"]'
+            );
+            ellipsis.click();
+            
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe(6);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(element.value).toBe(6);
+        }).then(() => {
+            // Click on the previous ellipsis
+            const ellipsis = element.shadowRoot.querySelector(
+                '[data-element-id="button-ellipsis"]'
+            );
+            ellipsis.click();
+
+            expect(handler).toHaveBeenCalledTimes(2);
+            const call = handler.mock.calls[1][0];
+            expect(call.detail.value).toBe(3);
+            expect(element.value).toBe(3);
+        });
     });
 });

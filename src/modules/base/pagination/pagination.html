@@ -33,7 +33,10 @@
 -->
 
 <template>
-    <lightning-button-group class={computedContainerClass} data-element-id="lightning-button-group">
+    <lightning-button-group
+        class={computedContainerClass}
+        data-element-id="lightning-button-group"
+    >
         <template if:true={showFirstButton}>
             <lightning-button-icon
                 if:true={firstButtonIcon}
@@ -72,6 +75,16 @@
             data-element-id="lightning-button-icon-previous"
             onclick={previous}
         ></lightning-button-icon>
+        <button
+            if:true={showPreviousEllipsis}
+            class={computedButtonClass}
+            disabled={disabled}
+            type="button"
+            data-element-id="button-ellipsis"
+            onclick={handlePreviousEllipsisClick}
+        >
+            {ellipsisText}
+        </button>
         <template for:each={paginationButtons} for:item="index">
             <button
                 class={computedButtonClass}
@@ -85,6 +98,16 @@
                 {index}
             </button>
         </template>
+        <button
+            if:true={showNextEllipsis}
+            class={computedButtonClass}
+            disabled={disabled}
+            type="button"
+            data-element-id="button-ellipsis"
+            onclick={handleNextEllipsisClick}
+        >
+            {ellipsisText}
+        </button>
         <lightning-button
             if:true={nextButtonLabel}
             label={nextButtonLabel}
