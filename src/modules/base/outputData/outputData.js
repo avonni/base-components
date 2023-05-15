@@ -123,6 +123,10 @@ export default class OutputData extends LightningElement {
             return this._value === 'true' || this._value;
         }
 
+        if (this.isNumber) {
+            return this.truncateNumber(this._value);
+        }
+
         return this._value;
     }
     set value(value) {
@@ -346,5 +350,14 @@ export default class OutputData extends LightningElement {
         }
 
         this.normalizedTypeAttributes = normalizedTypeAttributes;
+    }
+
+    /**
+     *
+     * Truncates a number to handle floatting point errors (4.500000000000000003 for example)
+     * @param {number} num Number to truncate
+     */
+    truncateNumber(num) {
+        return Math.round(num * 1e6) / 1e6;
     }
 }
