@@ -306,12 +306,8 @@ export default class Datatable extends LightningDatatable {
     connectedCallback() {
         super.connectedCallback();
 
-        this.template.addEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
-
         this.addEventListener('privateeditcustomcell', (event) => {
+            this.handleEditCell(event);
             event.detail.callbacks.dispatchCellChangeEvent(this.state);
         });
 
