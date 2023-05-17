@@ -418,9 +418,9 @@ export default class Image extends LightningElement {
 
     set horizontalOffset(value) {
         if (value && !isNaN(value)) {
-            this._horizontalOffset = `${value}px`;
-        } else {
             this._horizontalOffset = value;
+        } else if (value === undefined) {
+            this._horizontalOffset = 0;
         }
     }
 
@@ -436,11 +436,13 @@ export default class Image extends LightningElement {
     }
 
     set verticalOffset(value) {
-        if (value && !isNaN(value)) {
-            this._verticalOffset = `${value}px`;
-        } else {
+        console.log('verticalOffset received', value); // imprime 0
+        if (!isNaN(value)) {
             this._verticalOffset = value;
+        } else if (value === undefined) {
+            this._verticalOffset = 0;
         }
+        console.log('verticalOffset setted', this._verticalOffset); // imprime undefined
     }
 
     /**
@@ -600,79 +602,141 @@ export default class Image extends LightningElement {
     }
 
     handleMagnifier(img) {
-        var w, h;
         const magnifier = this.template.querySelector(
             '[data-element-id="magnifier"]'
         );
         const zoom = 2;
-        var posX;
-        var posY;
+        var pos = { x: 0, y: 0 };
 
         magnifier.style.width = this.zoomRatioWidth;
         magnifier.style.height = this.zoomRatioHeight;
 
+        magnifier.style.backgroundImage = 'url(' + img.src + ')';
+        magnifier.style.backgroundRepeat = 'no-repeat';
+        magnifier.style.backgroundSize =
+            img.width * zoom + 'px ' + img.height * zoom + 'px';
+        if (this.smoothMove) {
+            magnifier.style.transition = 'background-position 0.1s ease';
+        }
+
         img.addEventListener('mousemove', (event) => {
             event.preventDefault();
             img.style.cursor = 'crosshair';
-            const imgRect = img.getBoundingClientRect();
-
-            posX =
-                event.clientX -
-                event.target.offsetLeft +
-                imgRect.left +
-                window.pageXOffset +
-                window.scrollX;
-            posY =
-                event.clientY -
-                event.target.offsetTop +
-                imgRect.top +
-                window.pageYOffset +
-                window.scrollY;
-
-            w = magnifier.offsetWidth / 2;
-            h = magnifier.offsetHeight / 2;
-            const borderWidth = 1;
-
-            if (this.smoothMove) {
-                magnifier.style.transition = 'background-position 0.1s ease';
-            }
-
-            magnifier.style.left = posX - w + 'px';
-            magnifier.style.top = posY - h + 'px';
-
             magnifier.style.display = 'block';
+            const imgRect = img.getBoundingClientRect();
+            pos = this.getPos(event, imgRect);
 
-            if (posX > img.width - imgRect.left / zoom - borderWidth * zoom) {
-                posX = img.width - imgRect.left / zoom - borderWidth * zoom;
+            switch (this.magnifierType) {
+                case 'standard':
+                    this.standardMagnifier(pos, img, magnifier, zoom);
+                    break;
+                case 'inner':
+                    //this.innerMagnifier(event, img, magnifier, zoom);
+                    break;
+                case 'follow':
+                    this.followMagnifier(pos, img, magnifier, zoom);
+                    break;
+                default:
+                    break;
             }
-            if (posX < w / zoom) {
-                posX = w / zoom;
-            }
-            if (posY > img.height - imgRect.top / zoom - borderWidth * zoom) {
-                posY = img.height - imgRect.top / zoom - borderWidth * zoom;
-            }
-            if (posY < h / zoom) {
-                posY = h / zoom;
-            }
-
-            magnifier.style.backgroundImage = 'url(' + img.src + ')';
-            magnifier.style.backgroundRepeat = 'no-repeat';
-            magnifier.style.backgroundSize =
-                img.width * zoom + 'px ' + img.height * zoom + 'px';
-            magnifier.style.backgroundPosition =
-                '-' +
-                (posX * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
-                'px -' +
-                (posY * zoom -
-                    (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
-                    borderWidth * zoom -
-                    h) +
-                'px';
         });
 
         img.addEventListener('mouseout', function () {
             // Masquer la loupe
             magnifier.style.display = 'none';
         });
+    }
+
+    standardMagnifier(pos, img, magnifier, zoom) {
+        var w, h;
+        const imgRect = img.getBoundingClientRect();
+
+        w = magnifier.offsetWidth / 2;
+        h = magnifier.offsetHeight / 2;
+
+        const borderWidth = 1;
+
+        if (this.magnifierPosition === 'left') {
+            magnifier.style.left =
+                imgRect.left -
+                magnifier.offsetWidth -
+                this.horizontalOffset +
+                'px';
+        } else {
+            magnifier.style.left =
+                img.width + imgRect.left + this.horizontalOffset + 'px';
+        }
+        magnifier.style.top =
+            img.height / 2 - h + imgRect.top + this.verticalOffset + 'px';
+
+        console.log('verticalOffset', this.verticalOffset);
+
+        this.applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth);
+
+        magnifier.style.backgroundPosition =
+            '-' +
+            (pos.x * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
+            'px -' +
+            (pos.y * zoom -
+                (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
+                borderWidth * zoom -
+                h) +
+            'px';
+    }
+
+    followMagnifier(pos, img, magnifier, zoom) {
+        var w, h;
+        const imgRect = img.getBoundingClientRect();
+
+        w = magnifier.offsetWidth / 2;
+        h = magnifier.offsetHeight / 2;
+        const borderWidth = 1;
+
+        magnifier.style.left = pos.x - w + 'px';
+        magnifier.style.top = pos.y - h + 'px';
+
+        this.applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth);
+
+        magnifier.style.backgroundPosition =
+            '-' +
+            (pos.x * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
+            'px -' +
+            (pos.y * zoom -
+                (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
+                borderWidth * zoom -
+                h) +
+            'px';
+    }
+
+    getPos(event, imgRect) {
+        const posX =
+            event.clientX -
+            event.target.offsetLeft +
+            imgRect.left +
+            window.pageXOffset +
+            window.scrollX;
+        const posY =
+            event.clientY -
+            event.target.offsetTop +
+            imgRect.top +
+            window.pageYOffset +
+            window.scrollY;
+
+        return { x: posX, y: posY };
+    }
+
+    applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth) {
+        if (pos.x > img.width + imgRect.left - w / zoom - borderWidth * zoom) {
+            pos.x = img.width + imgRect.left - w / zoom - borderWidth * zoom;
+        }
+        if (pos.x < w / zoom) {
+            pos.x = w / zoom;
+        }
+        if (pos.y > img.height + imgRect.top - h / zoom - borderWidth * zoom) {
+            pos.y = img.height + imgRect.top - h / zoom - borderWidth * zoom;
+        }
+        if (pos.y < h / zoom) {
+            pos.y = h / zoom;
+        }
     }
 }
