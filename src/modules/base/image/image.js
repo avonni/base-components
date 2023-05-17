@@ -417,7 +417,7 @@ export default class Image extends LightningElement {
     }
 
     set horizontalOffset(value) {
-        if (value && !isNaN(value)) {
+        if (!isNaN(value)) {
             this._horizontalOffset = value;
         } else if (value === undefined) {
             this._horizontalOffset = 0;
@@ -436,13 +436,11 @@ export default class Image extends LightningElement {
     }
 
     set verticalOffset(value) {
-        console.log('verticalOffset received', value); // imprime 0
         if (!isNaN(value)) {
             this._verticalOffset = value;
         } else if (value === undefined) {
             this._verticalOffset = 0;
         }
-        console.log('verticalOffset setted', this._verticalOffset); // imprime undefined
     }
 
     /**
