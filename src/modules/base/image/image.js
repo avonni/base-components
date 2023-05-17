@@ -55,6 +55,15 @@ const LAZY_LOADING_VARIANTS = {
 const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
+const MAGNIFIER_TYPES = {
+    valid: ['standard', 'inner', 'follow'],
+    default: 'standard'
+};
+const MAGNIFIER_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
 /**
  * @class
  * @descriptor avonni-image
@@ -97,6 +106,14 @@ export default class Image extends LightningElement {
     _staticImages = false;
     _thumbnail = false;
     _width;
+    _magnifier = false;
+    _magnifierType = MAGNIFIER_TYPES.default;
+    _magnifierPosition = MAGNIFIER_POSITIONS.default;
+    _horizontalOffset;
+    _verticalOffset;
+    _smoothMove = true;
+    _zoomRatioWidth;
+    _zoomRatioHeight;
 
     _imgElementWidth;
     _imgElementHeight;
@@ -355,6 +372,150 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Enables magnification when hovering the image.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get magnifier() {
+        return this._magnifier;
+    }
+
+    set magnifier(value) {
+        this._magnifier = normalizeBoolean(value);
+    }
+
+    /**
+     * Specifies the magnifier type. Valid values include standard, inner and follow.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get magnifierType() {
+        return this._magnifierType;
+    }
+
+    set magnifierType(value) {
+        this._magnifierType = normalizeString(value, {
+            fallbackValue: MAGNIFIER_TYPES.default,
+            validValues: MAGNIFIER_TYPES.valid
+        });
+    }
+
+    /**
+     * The value to set the magnifier's horizontal offset.
+     *
+     * @public
+     * @type {number | string}
+     */
+    @api
+    get horizontalOffset() {
+        return this._horizontalOffset;
+    }
+
+    set horizontalOffset(value) {
+        if (value && !isNaN(value)) {
+            this._horizontalOffset = `${value}px`;
+        } else {
+            this._horizontalOffset = value;
+        }
+    }
+
+    /**
+     * The value to set the magnifier's vertical offset.
+     *
+     * @public
+     * @type {number | string}
+     */
+    @api
+    get verticalOffset() {
+        return this._verticalOffset;
+    }
+
+    set verticalOffset(value) {
+        if (value && !isNaN(value)) {
+            this._verticalOffset = `${value}px`;
+        } else {
+            this._verticalOffset = value;
+        }
+    }
+
+    /**
+     * Specifies the magnifier's position. Valid values include left and right.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get magnifierPosition() {
+        return this._magnifierPosition;
+    }
+
+    set magnifierPosition(value) {
+        this._magnifierPosition = normalizeString(value, {
+            fallbackValue: MAGNIFIER_POSITIONS.default,
+            validValues: MAGNIFIER_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Enables the magnifier's smoothing when hovering the image.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get smoothMove() {
+        return this._smoothMove;
+    }
+
+    set smoothMove(value) {
+        this._smoothMove = normalizeBoolean(value);
+    }
+
+    /**
+     * The value to set the magnifier's zoom ratio width.
+     *
+     * @public
+     * @type {number | string}
+     */
+    @api
+    get zoomRatioWidth() {
+        return this._zoomRatioWidth;
+    }
+
+    set zoomRatioWidth(value) {
+        if (value && !isNaN(value)) {
+            this._zoomRatioWidth = `${value}px`;
+        } else {
+            this._zoomRatioWidth = value;
+        }
+    }
+
+    /**
+     * The value to set the magnifier's zoom ratio height.
+     *
+     * @public
+     * @type {number | string}
+     */
+    @api
+    get zoomRatioHeight() {
+        return this._zoomRatioHeight;
+    }
+
+    set zoomRatioHeight(value) {
+        if (value && !isNaN(value)) {
+            this._zoomRatioHeight = `${value}px`;
+        } else {
+            this._zoomRatioHeight = value;
+        }
+    }
+
+    /**
      * Computed Image class styling.
      *
      * @type {string}
@@ -428,9 +589,90 @@ export default class Image extends LightningElement {
      */
     handleLoadImage() {
         const img = this.template.querySelector('[data-element-id="img"]');
+        console.log('loaded', img);
         if (img) {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
+            if (this.magnifier) {
+                this.handleMagnifier(img);
+            }
         }
+    }
+
+    handleMagnifier(img) {
+        var w, h;
+        const magnifier = this.template.querySelector(
+            '[data-element-id="magnifier"]'
+        );
+        const zoom = 2;
+        var posX;
+        var posY;
+
+        magnifier.style.width = this.zoomRatioWidth;
+        magnifier.style.height = this.zoomRatioHeight;
+
+        img.addEventListener('mousemove', (event) => {
+            event.preventDefault();
+            img.style.cursor = 'crosshair';
+            const imgRect = img.getBoundingClientRect();
+
+            posX =
+                event.clientX -
+                event.target.offsetLeft +
+                imgRect.left +
+                window.pageXOffset +
+                window.scrollX;
+            posY =
+                event.clientY -
+                event.target.offsetTop +
+                imgRect.top +
+                window.pageYOffset +
+                window.scrollY;
+
+            w = magnifier.offsetWidth / 2;
+            h = magnifier.offsetHeight / 2;
+            const borderWidth = 1;
+
+            if (this.smoothMove) {
+                magnifier.style.transition = 'background-position 0.1s ease';
+            }
+
+            magnifier.style.left = posX - w + 'px';
+            magnifier.style.top = posY - h + 'px';
+
+            magnifier.style.display = 'block';
+
+            if (posX > img.width - imgRect.left / zoom - borderWidth * zoom) {
+                posX = img.width - imgRect.left / zoom - borderWidth * zoom;
+            }
+            if (posX < w / zoom) {
+                posX = w / zoom;
+            }
+            if (posY > img.height - imgRect.top / zoom - borderWidth * zoom) {
+                posY = img.height - imgRect.top / zoom - borderWidth * zoom;
+            }
+            if (posY < h / zoom) {
+                posY = h / zoom;
+            }
+
+            magnifier.style.backgroundImage = 'url(' + img.src + ')';
+            magnifier.style.backgroundRepeat = 'no-repeat';
+            magnifier.style.backgroundSize =
+                img.width * zoom + 'px ' + img.height * zoom + 'px';
+            magnifier.style.backgroundPosition =
+                '-' +
+                (posX * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
+                'px -' +
+                (posY * zoom -
+                    (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
+                    borderWidth * zoom -
+                    h) +
+                'px';
+        });
+
+        img.addEventListener('mouseout', function () {
+            // Masquer la loupe
+            magnifier.style.display = 'none';
+        });
     }
 }

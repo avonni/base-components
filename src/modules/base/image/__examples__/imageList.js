@@ -50,7 +50,15 @@ export const ImageList = ({
     srcset,
     staticImages,
     thumbnail,
-    width
+    width,
+    magnifier,
+    magnifierType,
+    horizontalOffset,
+    verticalOffset,
+    magnifierPosition,
+    smoothMove,
+    zoomRatiowidth,
+    zoomRatioHeight
 }) => {
     const element = document.createElement('ac-image-list');
     element.alternativeText = alternativeText;
@@ -69,5 +77,13 @@ export const ImageList = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
+    element.magnifier = magnifier;
+    element.magnifierType = magnifierType;
+    element.horizontalOffset = horizontalOffset;
+    element.verticalOffset = verticalOffset;
+    element.magnifierPosition = magnifierPosition;
+    element.smoothMove = smoothMove;
+    element.zoomRatiowidth = zoomRatiowidth;
+    element.zoomRatioHeight = zoomRatioHeight;
     return element;
 };

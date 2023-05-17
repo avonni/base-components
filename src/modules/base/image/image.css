@@ -67,3 +67,11 @@
 .avonni-image_display-block {
     display: block;
 }
+
+.img-magnifier-glass {
+    position: absolute;
+    border: 1px solid #ccc;
+    pointer-events: none;
+    /*Set the size of the magnifier glass:*/
+    display: none;
+}

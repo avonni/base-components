@@ -50,7 +50,15 @@ export const Image = ({
     srcset,
     staticImages,
     thumbnail,
-    width
+    width,
+    magnifier,
+    magnifierType,
+    horizontalOffset,
+    verticalOffset,
+    magnifierPosition,
+    smoothMove,
+    zoomRatioWidth,
+    zoomRatioHeight
 }) => {
     const element = document.createElement('ac-base-image');
     element.alternativeText = alternativeText;
@@ -69,5 +77,13 @@ export const Image = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
+    element.magnifier = magnifier;
+    element.magnifierType = magnifierType;
+    element.horizontalOffset = horizontalOffset;
+    element.verticalOffset = verticalOffset;
+    element.magnifierPosition = magnifierPosition;
+    element.smoothMove = smoothMove;
+    element.zoomRatioWidth = zoomRatioWidth;
+    element.zoomRatioHeight = zoomRatioHeight;
     return element;
 };

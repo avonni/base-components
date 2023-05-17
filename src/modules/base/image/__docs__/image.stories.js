@@ -224,6 +224,107 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        magnifier: {
+            name: 'magnifier',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Enables magnification when hovering the image.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' },
+                category: 'Magnifier'
+            }
+        },
+        magnifierType: {
+            name: 'magnifier-type',
+            control: {
+                type: 'select'
+            },
+            options: ['inner', 'standard', 'follow'],
+            description:
+                'Specifies the magnification type. Valid values include inner, standard and follow.',
+            table: {
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
+                category: 'Magnifier'
+            }
+        },
+        horizontalOffset: {
+            name: 'horizontal-offset',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the horizontal offset of the magnifier.',
+            table: {
+                defaultValue: { summary: 0 },
+                type: { summary: 'number' },
+                category: 'Magnifier'
+            }
+        },
+        verticalOffset: {
+            name: 'vertical-offset',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the vertical offset of the magnifier.',
+            table: {
+                defaultValue: { summary: 0 },
+                type: { summary: 'number' },
+                category: 'Magnifier'
+            }
+        },
+        magnifierPosition: {
+            name: 'magnifier-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            description:
+                'Specifies the position of the magnifier. Valid values include left and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'Magnifier'
+            }
+        },
+        smoothMove: {
+            name: 'smooth-move',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Specifies whether the magnifier should be smoothed.',
+            table: {
+                defaultValue: { summary: true },
+                type: { summary: 'boolean' },
+                category: 'Magnifier'
+            }
+        },
+        zoomRatioWidth: {
+            name: 'zoom-ratio-width',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Specifies the horizontal zoom ratio of the magnifier.',
+            table: {
+                defaultValue: { summary: 100 },
+                type: { summary: 'number' },
+                category: 'Magnifier'
+            }
+        },
+        zoomRatioHeight: {
+            name: 'zoom-ratio-height',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the vertical zoom ratio of the magnifier.',
+            table: {
+                defaultValue: { summary: 100 },
+                type: { summary: 'number' },
+                category: 'Magnifier'
+            }
         }
     },
     args: {
@@ -236,7 +337,12 @@ export default {
         lazyLoading: 'auto',
         position: 'left',
         staticImages: false,
-        thumbnail: false
+        thumbnail: false,
+        magnifier: false,
+        magnifierType: 'standard',
+        smoothMove: true,
+        zoomRatioWidth: 100,
+        zoomRatioHeight: 100
     }
 };
 
