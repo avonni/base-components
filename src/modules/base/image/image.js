@@ -589,7 +589,6 @@ export default class Image extends LightningElement {
      */
     handleLoadImage() {
         const img = this.template.querySelector('[data-element-id="img"]');
-        console.log('loaded', img);
         if (img) {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
@@ -599,17 +598,19 @@ export default class Image extends LightningElement {
         }
     }
 
+    /**
+     * Call the right function to handle the magnifier.
+     *
+     * @returns {void}
+     */
     handleMagnifier(img) {
-        const magnifier = this.template.querySelector(
-            '[data-element-id="magnifier"]'
-        );
+        const magnifier = this.template.querySelector('[class="magnifier"]');
         const zoom = 2;
-        var pos = { x: 0, y: 0 };
 
         magnifier.style.width = this.zoomRatioWidth;
         magnifier.style.height = this.zoomRatioHeight;
 
-        magnifier.style.backgroundImage = 'url(' + img.src + ')';
+        magnifier.style.backgroundImage = `url(${img.src})`;
         magnifier.style.backgroundRepeat = 'no-repeat';
         magnifier.style.backgroundSize =
             img.width * zoom + 'px ' + img.height * zoom + 'px';
@@ -619,17 +620,17 @@ export default class Image extends LightningElement {
 
         img.addEventListener('mousemove', (event) => {
             event.preventDefault();
+            event.stopPropagation();
             img.style.cursor = 'crosshair';
             magnifier.style.display = 'block';
-            const imgRect = img.getBoundingClientRect();
-            pos = this.getPos(event, imgRect);
+            const pos = this.getPos(event);
 
             switch (this.magnifierType) {
                 case 'standard':
                     this.standardMagnifier(pos, img, magnifier, zoom);
                     break;
                 case 'inner':
-                    //this.innerMagnifier(event, img, magnifier, zoom);
+                    this.innerMagnifier(pos, img, magnifier, zoom);
                     break;
                 case 'follow':
                     this.followMagnifier(pos, img, magnifier, zoom);
@@ -640,101 +641,105 @@ export default class Image extends LightningElement {
         });
 
         img.addEventListener('mouseout', function () {
-            // Masquer la loupe
             magnifier.style.display = 'none';
         });
     }
 
+    /**
+     * Apply the standard magnifying effect to the image.
+     *
+     * @returns {void}
+     */
     standardMagnifier(pos, img, magnifier, zoom) {
-        var w, h;
-        const imgRect = img.getBoundingClientRect();
-
-        w = magnifier.offsetWidth / 2;
-        h = magnifier.offsetHeight / 2;
-
+        const w = magnifier.offsetWidth / 2;
+        const h = magnifier.offsetHeight / 2;
         const borderWidth = 1;
 
         if (this.magnifierPosition === 'left') {
             magnifier.style.left =
-                imgRect.left -
-                magnifier.offsetWidth -
-                this.horizontalOffset +
-                'px';
+                '-' + magnifier.offsetWidth - this.horizontalOffset + 'px';
         } else {
-            magnifier.style.left =
-                img.width + imgRect.left + this.horizontalOffset + 'px';
+            magnifier.style.left = img.width + this.horizontalOffset + 'px';
         }
-        magnifier.style.top =
-            img.height / 2 - h + imgRect.top + this.verticalOffset + 'px';
+        magnifier.style.top = img.height / 2 - h + this.verticalOffset + 'px';
 
-        console.log('verticalOffset', this.verticalOffset);
+        this.applyBoundaries(pos, img, zoom, w, h, borderWidth);
 
-        this.applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth);
-
-        magnifier.style.backgroundPosition =
-            '-' +
-            (pos.x * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
-            'px -' +
-            (pos.y * zoom -
-                (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
-                borderWidth * zoom -
-                h) +
-            'px';
+        magnifier.style.backgroundPosition = `-${pos.x * zoom - w}px -${
+            pos.y * zoom - h
+        }px`;
     }
 
-    followMagnifier(pos, img, magnifier, zoom) {
-        var w, h;
-        const imgRect = img.getBoundingClientRect();
+    /**
+     * Apply the inner magnifying effect to the image.
+     *
+     * @returns {void}
+     */
+    innerMagnifier(pos, img, magnifier, zoom) {
+        const w = magnifier.offsetWidth / 2;
+        const h = magnifier.offsetHeight / 2;
+        const borderWidth = 1;
 
-        w = magnifier.offsetWidth / 2;
-        h = magnifier.offsetHeight / 2;
+        magnifier.style.width = img.width + 'px';
+        magnifier.style.height = img.height + 'px';
+
+        this.applyBoundaries(pos, img, zoom, w, h, borderWidth);
+
+        magnifier.style.backgroundPosition = `-${pos.x * zoom - w}px -${
+            pos.y * zoom - h
+        }px`;
+    }
+
+    /**
+     * Apply the follow magnifying effect to the image.
+     *
+     * @returns {void}
+     */
+    followMagnifier(pos, img, magnifier, zoom) {
+        const w = magnifier.offsetWidth / 2;
+        const h = magnifier.offsetHeight / 2;
         const borderWidth = 1;
 
         magnifier.style.left = pos.x - w + 'px';
         magnifier.style.top = pos.y - h + 'px';
 
-        this.applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth);
+        this.applyBoundaries(pos, img, zoom, w, h, borderWidth);
 
-        magnifier.style.backgroundPosition =
-            '-' +
-            (pos.x * zoom - imgRect.left * zoom + borderWidth * zoom - w) +
-            'px -' +
-            (pos.y * zoom -
-                (imgRect.top * zoom + window.pageYOffset + window.scrollY) +
-                borderWidth * zoom -
-                h) +
-            'px';
+        magnifier.style.backgroundPosition = `-${pos.x * zoom - w}px -${
+            pos.y * zoom - h
+        }px`;
     }
 
-    getPos(event, imgRect) {
-        const posX =
-            event.clientX -
-            event.target.offsetLeft +
-            imgRect.left +
-            window.pageXOffset +
-            window.scrollX;
-        const posY =
-            event.clientY -
-            event.target.offsetTop +
-            imgRect.top +
-            window.pageYOffset +
-            window.scrollY;
+    /**
+     * Get the position of the cursor relative to the image.
+     *
+     * @returns {x: number, y: number} posX, posY
+     */
+    getPos(event) {
+        var rect = event.target.getBoundingClientRect();
+        const posX = event.clientX - rect.left;
+        const posY = event.clientY - rect.top;
 
         return { x: posX, y: posY };
     }
 
-    applyBoundaries(pos, img, zoom, imgRect, w, h, borderWidth) {
-        if (pos.x > img.width + imgRect.left - w / zoom - borderWidth * zoom) {
-            pos.x = img.width + imgRect.left - w / zoom - borderWidth * zoom;
+    /**
+     * Apply the boundaries to the magnifier.
+     *
+     * @returns {void}
+     */
+    applyBoundaries(pos, img, zoom, w, h, borderWidth) {
+        if (pos.x > img.width - w / zoom - borderWidth) {
+            pos.x = img.width - w / zoom - borderWidth;
         }
-        if (pos.x < w / zoom) {
-            pos.x = w / zoom;
+        if (pos.x < w / zoom + borderWidth) {
+            pos.x = w / zoom + borderWidth;
         }
-        if (pos.y > img.height + imgRect.top - h / zoom - borderWidth * zoom) {
-            pos.y = img.height + imgRect.top - h / zoom - borderWidth * zoom;
+        if (pos.y > img.height - h / zoom - borderWidth) {
+            pos.y = img.height - h / zoom - borderWidth;
         }
-        if (pos.y < h / zoom) {
-            pos.y = h / zoom;
+        if (pos.y < h / zoom + borderWidth) {
+            pos.y = h / zoom + borderWidth;
         }
     }
 }

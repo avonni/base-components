@@ -68,10 +68,13 @@
     display: block;
 }
 
-.img-magnifier-glass {
+.magnifier {
     position: absolute;
     border: 1px solid #ccc;
     pointer-events: none;
-    /*Set the size of the magnifier glass:*/
     display: none;
+}
+
+.container {
+    position: relative;
 }

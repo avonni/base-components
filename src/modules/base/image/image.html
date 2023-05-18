@@ -33,16 +33,18 @@
 -->
 
 <template>
-    <img
-        alt={alternativeText}
-        class={computedImageClass}
-        data-element-id="img"
-        src={src}
-        srcset={srcset}
-        sizes={sizes}
-        style={computedStyle}
-        loading={lazyLoading}
-        onload={handleLoadImage}
-    />
-    <div data-element-id="magnifier" class="img-magnifier-glass"></div>
+    <div class="container">
+        <img
+            alt={alternativeText}
+            class={computedImageClass}
+            data-element-id="img"
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            style={computedStyle}
+            loading={lazyLoading}
+            onload={handleLoadImage}
+        />
+        <div class="magnifier"></div>
+    </div>
 </template>
