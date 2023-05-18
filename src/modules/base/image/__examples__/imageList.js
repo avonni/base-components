@@ -57,6 +57,7 @@ export const ImageList = ({
     verticalOffset,
     magnifierPosition,
     smoothMove,
+    zoomFactor,
     zoomRatiowidth,
     zoomRatioHeight
 }) => {
@@ -83,6 +84,7 @@ export const ImageList = ({
     element.verticalOffset = verticalOffset;
     element.magnifierPosition = magnifierPosition;
     element.smoothMove = smoothMove;
+    element.zoomFactor = zoomFactor;
     element.zoomRatiowidth = zoomRatiowidth;
     element.zoomRatioHeight = zoomRatioHeight;
     return element;

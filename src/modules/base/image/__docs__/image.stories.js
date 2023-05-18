@@ -280,11 +280,11 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['left', 'right'],
+            options: ['auto', 'left', 'right', 'top', 'bottom'],
             description:
-                'Specifies the position of the magnifier. Valid values include left and right.',
+                'Specifies the position of the magnifier. Valid values include left, right, top, bottom and auto.',
             table: {
-                defaultValue: { summary: 'left' },
+                defaultValue: { summary: 'auto' },
                 type: { summary: 'string' },
                 category: 'Magnifier'
             }
@@ -298,6 +298,18 @@ export default {
             table: {
                 defaultValue: { summary: true },
                 type: { summary: 'boolean' },
+                category: 'Magnifier'
+            }
+        },
+        zoomFactor: {
+            name: 'zoom-factor',
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the zoom factor of the magnifier.',
+            table: {
+                defaultValue: { summary: 2 },
+                type: { summary: 'number' },
                 category: 'Magnifier'
             }
         },
@@ -339,8 +351,10 @@ export default {
         staticImages: false,
         thumbnail: false,
         magnifier: false,
+        magnifierPosition: 'auto',
         magnifierType: 'standard',
         smoothMove: true,
+        zoomFactor: 2,
         zoomRatioWidth: 100,
         zoomRatioHeight: 100
     }

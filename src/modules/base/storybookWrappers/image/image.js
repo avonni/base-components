@@ -54,6 +54,7 @@ export default class Image extends LightningElement {
     @api verticalOffset;
     @api magnifierPosition;
     @api smoothMove;
+    @api zoomFactor;
     @api zoomRatioWidth;
     @api zoomRatioHeight;
 }

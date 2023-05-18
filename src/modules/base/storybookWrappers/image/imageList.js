@@ -54,6 +54,7 @@ export default class Image extends LightningElement {
     @api verticalOffset;
     @api magnifierPosition;
     @api smoothMove;
+    @api zoomFactor;
     @api zoomRatioWidth;
     @api zoomRatioHeight;
 
@@ -83,6 +84,7 @@ export default class Image extends LightningElement {
                 verticalOffset: this.verticalOffset,
                 magnifierPosition: this.magnifierPosition,
                 smoothMove: this.smoothMove,
+                zoomFactor: this.zoomFactor,
                 zoomRatioWidth: this.zoomRatioWidth,
                 zoomRatioHeight: this.zoomRatioHeight
             };

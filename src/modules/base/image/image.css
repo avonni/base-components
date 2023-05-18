@@ -68,13 +68,14 @@
     display: block;
 }
 
-.magnifier {
+.avonni-image_magnifier {
     position: absolute;
-    border: 1px solid #ccc;
+    border: var(--avonni-image-magnifier-border, 1px solid #ccc);
     pointer-events: none;
     display: none;
 }
 
-.container {
+.avonni-image_container {
     position: relative;
+    width: fit-content;
 }

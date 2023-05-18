@@ -57,6 +57,7 @@ export const Image = ({
     verticalOffset,
     magnifierPosition,
     smoothMove,
+    zoomFactor,
     zoomRatioWidth,
     zoomRatioHeight
 }) => {
@@ -83,6 +84,7 @@ export const Image = ({
     element.verticalOffset = verticalOffset;
     element.magnifierPosition = magnifierPosition;
     element.smoothMove = smoothMove;
+    element.zoomFactor = zoomFactor;
     element.zoomRatioWidth = zoomRatioWidth;
     element.zoomRatioHeight = zoomRatioHeight;
     return element;
