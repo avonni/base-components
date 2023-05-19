@@ -45,5 +45,49 @@
             onload={handleLoadImage}
         />
         <div class="avonni-image_magnifier"></div>
+        <div if:true={compare} class="avonni-image_compare_container">
+            <div class="avonni-image_compare_img_container">
+                <img
+                    src={compareSrc}
+                    class="avonni-image_compare_img"
+                    style={computedStyle}
+                    loading={lazyLoading}
+                />
+            </div>
+            <div class="avonni-image_compare_slider">
+                <div class="avonni-image_compare_slider-handle">
+                    <lightning-icon
+                        icon-name="utility:left"
+                        size="x-small"
+                        alternative-text="<"
+                    >
+                    </lightning-icon>
+                    <lightning-icon
+                        icon-name="utility:right"
+                        size="x-small"
+                        alternative-text=">"
+                    >
+                    </lightning-icon>
+                </div>
+            </div>
+            <div if:true={showBeforeAfterOverlay}>
+                <div
+                    class="
+                        avonni-image_compare_overlay
+                        avonni-image_compare_overlay_before
+                    "
+                >
+                    Before
+                </div>
+                <div
+                    class="
+                        avonni-image_compare_overlay
+                        avonni-image_compare_overlay_after
+                    "
+                >
+                    After
+                </div>
+            </div>
+        </div>
     </div>
 </template>

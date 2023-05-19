@@ -337,6 +337,69 @@ export default {
                 type: { summary: 'number' },
                 category: 'Magnifier'
             }
+        },
+        compareSrc: {
+            name: 'compare-src',
+            control: {
+                type: 'object'
+            },
+            description: 'URL to set for the compare image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
+        compareOrientation: {
+            name: 'compare-orientation',
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            description: 'Specifies the orientation of the compare slider.',
+            table: {
+                defaultValue: { summary: 'horizontal' },
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
+        moveOn: {
+            name: 'move-on',
+            control: {
+                type: 'select'
+            },
+            options: ['click', 'hover'],
+            description: 'Specifies the event that moves the compare slider.',
+            table: {
+                defaultValue: { summary: 'click' },
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
+        showBeforeAfterOverlay: {
+            name: 'show-before-after-overlay',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Specifies whether to show the before and after overlay.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' },
+                category: 'Compare'
+            }
+        },
+        showBeforeAfterOverlayOnHover: {
+            name: 'show-before-after-overlay-on-hover',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Specifies whether to show the before and after overlay on hover.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' },
+                category: 'Compare'
+            }
         }
     },
     args: {
@@ -356,7 +419,12 @@ export default {
         smoothMove: true,
         zoomFactor: 2,
         zoomRatioWidth: 100,
-        zoomRatioHeight: 100
+        zoomRatioHeight: 100,
+        compareSrc: '',
+        compareOrientation: 'horizontal',
+        moveOn: 'click',
+        showBeforeAfterOverlay: false,
+        showBeforeAfterOverlayOnHover: false
     }
 };
 

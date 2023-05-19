@@ -59,7 +59,12 @@ export const Image = ({
     smoothMove,
     zoomFactor,
     zoomRatioWidth,
-    zoomRatioHeight
+    zoomRatioHeight,
+    compareSrc,
+    compareOrientation,
+    moveOn,
+    showBeforeAfterOverlay,
+    showBeforeAfterOverlayOnHover
 }) => {
     const element = document.createElement('ac-base-image');
     element.alternativeText = alternativeText;
@@ -87,5 +92,10 @@ export const Image = ({
     element.zoomFactor = zoomFactor;
     element.zoomRatioWidth = zoomRatioWidth;
     element.zoomRatioHeight = zoomRatioHeight;
+    element.compareSrc = compareSrc;
+    element.compareOrientation = compareOrientation;
+    element.moveOn = moveOn;
+    element.showBeforeAfterOverlay = showBeforeAfterOverlay;
+    element.showBeforeAfterOverlayOnHover = showBeforeAfterOverlayOnHover;
     return element;
 };

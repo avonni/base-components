@@ -79,3 +79,75 @@
     position: relative;
     width: fit-content;
 }
+
+.avonni-image_compare_container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.avonni-image_compare_slider {
+    position: relative;
+    height: 100%;
+    width: 3px;
+    left: 50%;
+    background-color: var(--avonni-image-compare-slider-color, #1b96ff);
+}
+
+.avonni-image_compare_slider-handle {
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    top: calc(50% - 35px / 2);
+    left: calc(50% - 35px / 2);
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    opacity: 0.8;
+    color: lightgray;
+    border-radius: 50%;
+    border: 2px solid var(--avonni-image-compare-slider-color, #1b96ff);
+    transition: all 0.2s ease;
+}
+
+.avonni-image_compare_slider-handle:hover {
+    cursor: grab;
+    scale: 1.1;
+    transition: all 0.2s ease;
+}
+
+.avonni-image_compare_overlay {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    background-color: white;
+    opacity: 0.8;
+    padding: 5px;
+    border-radius: 5px;
+    pointer-events: none;
+}
+
+.avonni-image_compare_img_container {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.avonni-image_compare_img {
+    max-width: fit-content;
+    height: auto;
+}
+
+.avonni-image_compare_overlay_before {
+    left: 10px;
+    top: 10px;
+}
+
+.avonni-image_compare_overlay_after {
+    right: 10px;
+    top: 10px;
+}

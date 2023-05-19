@@ -64,6 +64,16 @@ const MAGNIFIER_POSITIONS = {
     default: 'auto'
 };
 
+const COMPARE_ORIENTATION = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+
+const MOVE_ON_OPTIONS = {
+    valid: ['hover', 'click'],
+    default: 'click'
+};
+
 /**
  * @class
  * @descriptor avonni-image
@@ -115,6 +125,11 @@ export default class Image extends LightningElement {
     _zoomFactor;
     _zoomRatioWidth;
     _zoomRatioHeight;
+    _compareSrc;
+    _compareOrientation = COMPARE_ORIENTATION.default;
+    _moveOn;
+    _showBeforeAfterOverlay;
+    _showBeforeAfterOverlayOnHover;
 
     _imgElementWidth;
     _imgElementHeight;
@@ -490,7 +505,6 @@ export default class Image extends LightningElement {
     }
 
     set zoomFactor(value) {
-        console.log('zoomFactor setting: ', value);
         if (!isNaN(value)) {
             this._zoomFactor = value;
         } else {
@@ -534,6 +548,94 @@ export default class Image extends LightningElement {
         } else {
             this._zoomRatioHeight = value;
         }
+    }
+
+    @api
+    get compare() {
+        return this._compareSrc !== '';
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get compareSrc() {
+        return this._compareSrc;
+    }
+
+    set compareSrc(value) {
+        this._compareSrc = value;
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get compareOrientation() {
+        return this._compareOrientation;
+    }
+
+    set compareOrientation(value) {
+        this._compareOrientation = normalizeString(value, {
+            fallbackValue: COMPARE_ORIENTATION.default,
+            validValues: COMPARE_ORIENTATION.valid
+        });
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get moveOn() {
+        return this._moveOn;
+    }
+
+    set moveOn(value) {
+        this._moveOn = normalizeString(value, {
+            fallbackValue: MOVE_ON_OPTIONS.default,
+            validValues: MOVE_ON_OPTIONS.valid
+        });
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showBeforeAfterOverlay() {
+        return this._showBeforeAfterOverlay;
+    }
+
+    set showBeforeAfterOverlay(value) {
+        this._showBeforeAfterOverlay = normalizeBoolean(value);
+    }
+
+    /**
+     *
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showBeforeAfterOverlayOnHover() {
+        return this._showBeforeAfterOverlayOnHover;
+    }
+
+    set showBeforeAfterOverlayOnHover(value) {
+        this._showBeforeAfterOverlayOnHover = normalizeBoolean(value);
     }
 
     /**
@@ -615,6 +717,9 @@ export default class Image extends LightningElement {
             this._imgElementHeight = img.clientHeight;
             if (this.magnifier) {
                 this.handleMagnifier(img);
+            }
+            if (this.compareSrc !== '') {
+                this.handleCompareSlider(img);
             }
         }
     }
@@ -755,8 +860,6 @@ export default class Image extends LightningElement {
             computedStyle.getPropertyValue('border-width')
         );
 
-        console.log('zoomFactor', this.zoomFactor);
-
         magnifier.style.left = pos.x - w + 'px';
         magnifier.style.top = pos.y - h + 'px';
 
@@ -797,5 +900,83 @@ export default class Image extends LightningElement {
         if (pos.y < h / this.zoomFactor + borderWidth) {
             pos.y = h / this.zoomFactor + borderWidth;
         }
+    }
+
+    handleCompareSlider(img) {
+        const container = this.template.querySelector(
+            '.avonni-image_compare_container'
+        );
+        const slider = this.template.querySelector(
+            '.avonni-image_compare_slider'
+        );
+        const compareImg = this.template.querySelector(
+            '.avonni-image_compare_img_container'
+        );
+
+        slider.style.display = 'block';
+        slider.style.left = img.width / 2 + 'px';
+
+        let initialState = this.showBeforeAfterOverlay;
+
+        container.addEventListener('mouseover', () => {
+            if (this.showBeforeAfterOverlayOnHover) {
+                this._showBeforeAfterOverlay = true;
+            }
+        });
+        container.addEventListener('mouseout', () => {
+            if (!initialState) {
+                this._showBeforeAfterOverlay = false;
+            }
+        });
+
+        if (this.moveOn === 'hover') {
+            this.hoverSlider(slider, container, compareImg);
+        } else {
+            this.clickSlider(slider, container, img, compareImg);
+        }
+    }
+
+    hoverSlider(slider, container, compareImg) {
+        container.addEventListener('mousemove', (event) => {
+            const pos = this.getPos(event);
+            slider.style.pointerEvents = 'none';
+            slider.style.left = pos.x + 'px';
+            container.style.cursor = 'grab';
+            compareImg.style.width = pos.x + 'px';
+        });
+    }
+
+    clickSlider(slider, container, img, compareImg) {
+        const handle = this.template.querySelector(
+            '.avonni-image_compare_slider-handle'
+        );
+        let isDragging = false;
+        const handleStyles = window.getComputedStyle(handle);
+        const offsetX = parseFloat(handleStyles.width) / 2;
+
+        container.addEventListener('mousedown', (event) => {
+            isDragging = true;
+            slider.style.transition = 'left 0.15s ease-in-out';
+            compareImg.style.transition = 'width 0.15s ease-in-out';
+            slider.style.left = event.clientX - offsetX + 'px';
+            compareImg.style.width = event.clientX - offsetX + 'px';
+        });
+        container.addEventListener('mousemove', (event) => {
+            if (
+                isDragging &&
+                event.clientX < img.width + offsetX &&
+                event.clientX > offsetX
+            ) {
+                slider.style.transition = 'none';
+                compareImg.style.transition = 'none';
+                slider.style.left = event.clientX - offsetX + 'px';
+                compareImg.style.width = event.clientX - offsetX + 'px';
+            }
+        });
+        container.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+            }
+        });
     }
 }

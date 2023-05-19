@@ -57,4 +57,9 @@ export default class Image extends LightningElement {
     @api zoomFactor;
     @api zoomRatioWidth;
     @api zoomRatioHeight;
+    @api compareSrc;
+    @api compareOrientation;
+    @api moveOn;
+    @api showBeforeAfterOverlay;
+    @api showBeforeAfterOverlayOnHover;
 }
