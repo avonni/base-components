@@ -53,7 +53,7 @@
             type={type}
             start-date={startDate}
             end-date={endDate}
-            style={style}
+            style={computedPanelStyle}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -64,6 +64,7 @@
             "
         >
             <c-input-date-range
+                class="slds-truncate"
                 start-date={startDate}
                 end-date={endDate}
                 date-style={dateStyle}
