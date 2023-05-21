@@ -54,23 +54,15 @@
                     loading={lazyLoading}
                 />
             </div>
-            <div class="avonni-image_compare_slider">
+            <div class={computedSliderClass}>
                 <div class="avonni-image_compare_slider-handle">
-                    <lightning-icon
-                        icon-name="utility:left"
-                        size="x-small"
-                        alternative-text="<"
-                    >
+                    <lightning-icon icon-name={iconName1} size="x-small">
                     </lightning-icon>
-                    <lightning-icon
-                        icon-name="utility:right"
-                        size="x-small"
-                        alternative-text=">"
-                    >
+                    <lightning-icon icon-name={iconName2} size="x-small">
                     </lightning-icon>
                 </div>
             </div>
-            <div if:true={showBeforeAfterOverlay}>
+            <div class="avonni-image_compare_overlay_container">
                 <div
                     class="
                         avonni-image_compare_overlay

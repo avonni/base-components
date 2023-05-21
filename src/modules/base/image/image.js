@@ -705,6 +705,29 @@ export default class Image extends LightningElement {
         return styleValue;
     }
 
+    get computedSliderClass() {
+        return classSet('avonni-image_compare_slider')
+            .add({
+                'avonni-image_compare_slider-horizontal':
+                    this._compareOrientation === 'horizontal',
+                'avonni-image_compare_slider-vertical':
+                    this._compareOrientation === 'vertical'
+            })
+            .toString();
+    }
+
+    get iconName1() {
+        return this._compareOrientation === 'horizontal'
+            ? 'utility:left'
+            : 'utility:up';
+    }
+
+    get iconName2() {
+        return this._compareOrientation === 'horizontal'
+            ? 'utility:right'
+            : 'utility:down';
+    }
+
     /**
      * Get Image dimensions when values missing or %.
      *
@@ -902,6 +925,11 @@ export default class Image extends LightningElement {
         }
     }
 
+    /**
+     * Call the right compare slider type.
+     *
+     * @returns {void}
+     */
     handleCompareSlider(img) {
         const container = this.template.querySelector(
             '.avonni-image_compare_container'
@@ -912,65 +940,110 @@ export default class Image extends LightningElement {
         const compareImg = this.template.querySelector(
             '.avonni-image_compare_img_container'
         );
+        const handle = this.template.querySelector(
+            '.avonni-image_compare_slider-handle'
+        );
+        const overlay = this.template.querySelector(
+            '.avonni-image_compare_overlay_container'
+        );
 
-        slider.style.display = 'block';
-        slider.style.left = img.width / 2 + 'px';
+        if (this._compareOrientation === 'horizontal') {
+            compareImg.style.width = img.width / 2 + 'px';
+            compareImg.style.height = '100%';
+        } else {
+            compareImg.style.height = img.height / 2 + 'px';
+            compareImg.style.width = '100%';
+            handle.style.flexDirection = 'column';
+        }
 
         let initialState = this.showBeforeAfterOverlay;
 
+        if (initialState) {
+            overlay.style.display = 'block';
+            this.placeBeforeAfterOverlay();
+        }
+
         container.addEventListener('mouseover', () => {
             if (this.showBeforeAfterOverlayOnHover) {
-                this._showBeforeAfterOverlay = true;
+                overlay.style.display = 'block';
+                this.placeBeforeAfterOverlay();
             }
         });
         container.addEventListener('mouseout', () => {
             if (!initialState) {
-                this._showBeforeAfterOverlay = false;
+                overlay.style.display = 'none';
             }
         });
 
         if (this.moveOn === 'hover') {
             this.hoverSlider(slider, container, compareImg);
         } else {
-            this.clickSlider(slider, container, img, compareImg);
+            this.clickSlider(slider, container, handle, img, compareImg);
         }
     }
 
+    /**
+     * Handle the 'hover' type slider.
+     *
+     * @returns {void}
+     */
     hoverSlider(slider, container, compareImg) {
         container.addEventListener('mousemove', (event) => {
             const pos = this.getPos(event);
             slider.style.pointerEvents = 'none';
-            slider.style.left = pos.x + 'px';
+            if (this._compareOrientation === 'horizontal') {
+                slider.style.left = pos.x + 'px';
+                compareImg.style.width = pos.x + 'px';
+            } else {
+                slider.style.top = pos.y + 'px';
+                compareImg.style.height = pos.y + 'px';
+            }
             container.style.cursor = 'grab';
-            compareImg.style.width = pos.x + 'px';
         });
     }
 
-    clickSlider(slider, container, img, compareImg) {
-        const handle = this.template.querySelector(
-            '.avonni-image_compare_slider-handle'
-        );
+    /**
+     * Handle the 'click' type slider.
+     *
+     * @returns {void}
+     */
+    clickSlider(slider, container, handle, img, compareImg) {
         let isDragging = false;
         const handleStyles = window.getComputedStyle(handle);
         const offsetX = parseFloat(handleStyles.width) / 2;
+        const offsetY = parseFloat(handleStyles.height) / 2;
 
         container.addEventListener('mousedown', (event) => {
             isDragging = true;
-            slider.style.transition = 'left 0.15s ease-in-out';
-            compareImg.style.transition = 'width 0.15s ease-in-out';
-            slider.style.left = event.clientX - offsetX + 'px';
-            compareImg.style.width = event.clientX - offsetX + 'px';
+            slider.style.transition = 'all 0.15s ease-in-out';
+            compareImg.style.transition = 'all 0.15s ease-in-out';
+            if (this._compareOrientation === 'horizontal') {
+                slider.style.left = event.clientX - offsetX + 'px';
+                compareImg.style.width = event.clientX - offsetX + 'px';
+            } else {
+                slider.style.top = event.clientY - offsetY + 'px';
+                compareImg.style.height = event.clientY - offsetY + 'px';
+            }
         });
         container.addEventListener('mousemove', (event) => {
+            slider.style.transition = 'none';
+            compareImg.style.transition = 'none';
             if (
+                this._compareOrientation === 'horizontal' &&
                 isDragging &&
                 event.clientX < img.width + offsetX &&
                 event.clientX > offsetX
             ) {
-                slider.style.transition = 'none';
-                compareImg.style.transition = 'none';
                 slider.style.left = event.clientX - offsetX + 'px';
                 compareImg.style.width = event.clientX - offsetX + 'px';
+            } else if (
+                this._compareOrientation === 'vertical' &&
+                isDragging &&
+                event.clientY < img.height + offsetY &&
+                event.clientY > offsetY
+            ) {
+                slider.style.top = event.clientY - offsetY + 'px';
+                compareImg.style.height = event.clientY - offsetY + 'px';
             }
         });
         container.addEventListener('mouseup', () => {
@@ -978,5 +1051,34 @@ export default class Image extends LightningElement {
                 isDragging = false;
             }
         });
+    }
+
+    /**
+     * Correctly position the before after overlay.
+     *
+     * @returns {void}
+     */
+    placeBeforeAfterOverlay() {
+        const before = this.template.querySelector(
+            '.avonni-image_compare_overlay_before'
+        );
+        const after = this.template.querySelector(
+            '.avonni-image_compare_overlay_after'
+        );
+
+        const offsetBefore = before.offsetWidth / 2;
+        const offsetAfter = after.offsetWidth / 2;
+
+        if (this._compareOrientation === 'horizontal') {
+            before.style.left = '10px';
+            before.style.top = '10px';
+            after.style.right = '10px';
+            after.style.top = '10px';
+        } else {
+            before.style.left = `calc(50% - ${offsetBefore}px)`;
+            before.style.top = '10px';
+            after.style.left = `calc(50% - ${offsetAfter}px)`;
+            after.style.bottom = '10px';
+        }
     }
 }
