@@ -556,7 +556,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     *
+     * The image to compare with.
      *
      * @public
      * @type {string}
@@ -571,7 +571,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     *
+     * The compare slider orientation.
      *
      * @public
      * @type {string}
@@ -589,7 +589,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     *
+     * The compare slider movement behavior.
      *
      * @public
      * @type {string}
@@ -607,7 +607,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     *
+     * Enables the before and after overlay.
      *
      * @public
      * @type {boolean}
@@ -623,7 +623,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     *
+     * Enables the before and after overlay on hover.
      *
      * @public
      * @type {boolean}
@@ -705,6 +705,11 @@ export default class Image extends LightningElement {
         return styleValue;
     }
 
+    /**
+     * Final computed compare slider class styling.
+     *
+     * @type {string}
+     */
     get computedSliderClass() {
         return classSet('avonni-image_compare_slider')
             .add({
@@ -716,12 +721,22 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    /**
+     * The compare slider first icon (left or up).
+     *
+     * @type {string}
+     */
     get iconName1() {
         return this._compareOrientation === 'horizontal'
             ? 'utility:left'
             : 'utility:up';
     }
 
+    /**
+     * The compare slider second icon (right or down).
+     *
+     * @type {string}
+     */
     get iconName2() {
         return this._compareOrientation === 'horizontal'
             ? 'utility:right'
