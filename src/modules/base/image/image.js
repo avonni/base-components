@@ -57,8 +57,8 @@ const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
 const MAGNIFIER_TYPES = {
-    valid: ['standard', 'inner', 'follow'],
-    default: 'standard'
+    valid: ['none', 'standard', 'inner', 'follow'],
+    default: 'none'
 };
 const MAGNIFIER_POSITIONS = {
     valid: ['auto', 'left', 'right', 'top', 'bottom'],
@@ -87,7 +87,7 @@ export default class Image extends LightningElement {
      */
     @api cropPositionX = CROP_POSITION_X_DEFAULT;
     /**
-     * Position of the image on the Y axix (in percent).
+     * Position of the image on the Y axis (in percent).
      *
      * @public
      * @type {number}
@@ -107,7 +107,6 @@ export default class Image extends LightningElement {
     _staticImages = false;
     _thumbnail = false;
     _width;
-    _magnifier = false;
     _magnifierType = MAGNIFIER_TYPES.default;
     _magnifierAttributes = {
         position: MAGNIFIER_POSITIONS.default,
@@ -130,7 +129,7 @@ export default class Image extends LightningElement {
      */
 
     /**
-     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
+     * Image fit behavior inside its container. Valid values include cover, contain, fill and none.
      *
      * @public
      * @type {string}
@@ -199,7 +198,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * If present, the image is reponsive and will take up 100% of its container width.
+     * If present, the image is responsive and will take up 100% of its container width.
      *
      * @public
      * @type {boolean}
@@ -376,22 +375,6 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Enables magnification when hovering the image.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get magnifier() {
-        return this._magnifier;
-    }
-
-    set magnifier(value) {
-        this._magnifier = normalizeBoolean(value);
-    }
-
-    /**
      * Specifies the magnifier type. Valid values include standard, inner and follow.
      *
      * @public
@@ -553,7 +536,7 @@ export default class Image extends LightningElement {
         if (img) {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
-            if (this.magnifier) {
+            if (this.magnifierType !== 'none') {
                 this.handleMagnifier(img);
             }
         }
@@ -740,8 +723,6 @@ export default class Image extends LightningElement {
         const borderWidth = parseFloat(
             computedStyle.getPropertyValue('border-width')
         );
-
-        console.log('zoomFactor', this.magnifierAttributes.zoomFactor);
 
         magnifier.style.left = pos.x - w + 'px';
         magnifier.style.top = pos.y - h + 'px';

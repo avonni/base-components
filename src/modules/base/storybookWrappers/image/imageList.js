@@ -48,7 +48,6 @@ export default class Image extends LightningElement {
     @api staticImages;
     @api thumbnail;
     @api width;
-    @api magnifier;
     @api magnifierType;
     @api magnifierAttributes;
 
@@ -72,7 +71,6 @@ export default class Image extends LightningElement {
                 cropFit: this.cropFit,
                 cropPositionX: this.cropPositionX,
                 cropPositionY: this.cropPositionY,
-                magnifier: this.magnifier,
                 magnifierType: this.magnifierType,
                 magnifierAttributes: this.magnifierAttributes
             };

@@ -224,29 +224,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        magnifier: {
-            name: 'magnifier',
-            control: {
-                type: 'boolean'
-            },
-            description: 'Enables magnification when hovering the image.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' },
-                category: 'Magnifier'
-            }
-        },
         magnifierType: {
             name: 'magnifier-type',
             control: {
                 type: 'select'
             },
-            options: ['inner', 'standard', 'follow'],
+            options: ['none', 'inner', 'standard', 'follow'],
             description:
                 'Specifies the magnification type. Valid values include inner, standard and follow.',
             table: {
-                defaultValue: { summary: 'none' },
                 type: { summary: 'string' },
+                defaultValue: { summary: 'none' },
                 category: 'Magnifier'
             }
         },
@@ -273,8 +261,7 @@ export default {
         position: 'left',
         staticImages: false,
         thumbnail: false,
-        magnifier: false,
-        magnifierType: 'standard',
+        magnifierType: 'none',
         magnifierAttributes: {
             position: 'auto',
             horizontalOffset: 0,
