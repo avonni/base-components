@@ -31,7 +31,6 @@
  */
 
 import { Image } from '../__examples__/image';
-
 import { ImageList } from '../__examples__/imageList';
 
 export default {
@@ -251,90 +250,14 @@ export default {
                 category: 'Magnifier'
             }
         },
-        horizontalOffset: {
-            name: 'horizontal-offset',
+        magnifierAttributes: {
+            name: 'magnifier-attributes',
             control: {
-                type: 'number'
+                type: 'object'
             },
-            description: 'Specifies the horizontal offset of the magnifier.',
+            description: 'Specifies the magnifier attributes.',
             table: {
-                defaultValue: { summary: 0 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        verticalOffset: {
-            name: 'vertical-offset',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the vertical offset of the magnifier.',
-            table: {
-                defaultValue: { summary: 0 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        magnifierPosition: {
-            name: 'magnifier-position',
-            control: {
-                type: 'select'
-            },
-            options: ['auto', 'left', 'right', 'top', 'bottom'],
-            description:
-                'Specifies the position of the magnifier. Valid values include left, right, top, bottom and auto.',
-            table: {
-                defaultValue: { summary: 'auto' },
-                type: { summary: 'string' },
-                category: 'Magnifier'
-            }
-        },
-        smoothMove: {
-            name: 'smooth-move',
-            control: {
-                type: 'boolean'
-            },
-            description: 'Specifies whether the magnifier should be smoothed.',
-            table: {
-                defaultValue: { summary: true },
-                type: { summary: 'boolean' },
-                category: 'Magnifier'
-            }
-        },
-        zoomFactor: {
-            name: 'zoom-factor',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the zoom factor of the magnifier.',
-            table: {
-                defaultValue: { summary: 2 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        zoomRatioWidth: {
-            name: 'zoom-ratio-width',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Specifies the horizontal zoom ratio of the magnifier.',
-            table: {
-                defaultValue: { summary: 100 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        zoomRatioHeight: {
-            name: 'zoom-ratio-height',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the vertical zoom ratio of the magnifier.',
-            table: {
-                defaultValue: { summary: 100 },
-                type: { summary: 'number' },
+                type: { summary: 'object' },
                 category: 'Magnifier'
             }
         }
@@ -351,12 +274,16 @@ export default {
         staticImages: false,
         thumbnail: false,
         magnifier: false,
-        magnifierPosition: 'auto',
         magnifierType: 'standard',
-        smoothMove: true,
-        zoomFactor: 2,
-        zoomRatioWidth: 100,
-        zoomRatioHeight: 100
+        magnifierAttributes: {
+            position: 'auto',
+            horizontalOffset: 0,
+            verticalOffset: 0,
+            smoothMove: true,
+            zoomFactor: 2,
+            zoomRatioWidth: 100,
+            zoomRatioHeight: 100
+        }
     }
 };
 

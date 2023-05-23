@@ -53,13 +53,7 @@ export const Image = ({
     width,
     magnifier,
     magnifierType,
-    horizontalOffset,
-    verticalOffset,
-    magnifierPosition,
-    smoothMove,
-    zoomFactor,
-    zoomRatioWidth,
-    zoomRatioHeight
+    magnifierAttributes
 }) => {
     const element = document.createElement('ac-base-image');
     element.alternativeText = alternativeText;
@@ -80,12 +74,6 @@ export const Image = ({
     element.width = width;
     element.magnifier = magnifier;
     element.magnifierType = magnifierType;
-    element.horizontalOffset = horizontalOffset;
-    element.verticalOffset = verticalOffset;
-    element.magnifierPosition = magnifierPosition;
-    element.smoothMove = smoothMove;
-    element.zoomFactor = zoomFactor;
-    element.zoomRatioWidth = zoomRatioWidth;
-    element.zoomRatioHeight = zoomRatioHeight;
+    element.magnifierAttributes = magnifierAttributes;
     return element;
 };

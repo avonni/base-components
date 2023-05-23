@@ -53,13 +53,7 @@ export const ImageList = ({
     width,
     magnifier,
     magnifierType,
-    horizontalOffset,
-    verticalOffset,
-    magnifierPosition,
-    smoothMove,
-    zoomFactor,
-    zoomRatiowidth,
-    zoomRatioHeight
+    magnifierAttributes
 }) => {
     const element = document.createElement('ac-image-list');
     element.alternativeText = alternativeText;
@@ -80,12 +74,6 @@ export const ImageList = ({
     element.width = width;
     element.magnifier = magnifier;
     element.magnifierType = magnifierType;
-    element.horizontalOffset = horizontalOffset;
-    element.verticalOffset = verticalOffset;
-    element.magnifierPosition = magnifierPosition;
-    element.smoothMove = smoothMove;
-    element.zoomFactor = zoomFactor;
-    element.zoomRatiowidth = zoomRatiowidth;
-    element.zoomRatioHeight = zoomRatioHeight;
+    element.magnifierAttributes = magnifierAttributes;
     return element;
 };

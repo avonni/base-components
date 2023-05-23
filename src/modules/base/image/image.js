@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { normalizeObject } from '../utilsPrivate/normalize';
 
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
@@ -108,13 +109,15 @@ export default class Image extends LightningElement {
     _width;
     _magnifier = false;
     _magnifierType = MAGNIFIER_TYPES.default;
-    _magnifierPosition = MAGNIFIER_POSITIONS.default;
-    _horizontalOffset;
-    _verticalOffset;
-    _smoothMove = true;
-    _zoomFactor;
-    _zoomRatioWidth;
-    _zoomRatioHeight;
+    _magnifierAttributes = {
+        position: MAGNIFIER_POSITIONS.default,
+        horizontalOffset: 0,
+        verticalOffset: 0,
+        smoothMove: true,
+        zoomFactor: 2,
+        zoomRatioWidth: 100,
+        zoomRatioHeight: 100
+    };
 
     _imgElementWidth;
     _imgElementHeight;
@@ -407,132 +410,69 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * The value to set the magnifier's horizontal offset.
+     * Magnifier attributes: position, horizontalOffset, verticalOffset, smoothing, zoomFactor, zoomRatioWidth and zoomRatioHeight.
      *
+     * @type {object}
      * @public
-     * @type {number | string}
      */
     @api
-    get horizontalOffset() {
-        return this._horizontalOffset;
+    get magnifierAttributes() {
+        return this._magnifierAttributes;
     }
 
-    set horizontalOffset(value) {
-        if (!isNaN(value)) {
-            this._horizontalOffset = value;
-        } else if (value === undefined) {
-            this._horizontalOffset = 0;
+    set magnifierAttributes(value) {
+        const normalizedAttributes = normalizeObject(value);
+
+        this._magnifierAttributes.position = normalizeString(
+            normalizedAttributes.position,
+            {
+                fallbackValue: MAGNIFIER_POSITIONS.default,
+                validValues: MAGNIFIER_POSITIONS.valid
+            }
+        );
+
+        if (!isNaN(normalizedAttributes.horizontalOffset)) {
+            this._magnifierAttributes.horizontalOffset =
+                normalizedAttributes.horizontalOffset;
+        } else if (normalizedAttributes.horizontalOffset === undefined) {
+            this._magnifierAttributes.horizontalOffset = 0;
         }
-    }
 
-    /**
-     * The value to set the magnifier's vertical offset.
-     *
-     * @public
-     * @type {number | string}
-     */
-    @api
-    get verticalOffset() {
-        return this._verticalOffset;
-    }
-
-    set verticalOffset(value) {
-        if (!isNaN(value)) {
-            this._verticalOffset = value;
-        } else if (value === undefined) {
-            this._verticalOffset = 0;
+        if (!isNaN(normalizedAttributes.verticalOffset)) {
+            this._magnifierAttributes.verticalOffset =
+                normalizedAttributes.verticalOffset;
+        } else if (normalizedAttributes.verticalOffset === undefined) {
+            this._magnifierAttributes.verticalOffset = 0;
         }
-    }
 
-    /**
-     * Specifies the magnifier's position. Valid values include left and right.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get magnifierPosition() {
-        return this._magnifierPosition;
-    }
+        this._magnifierAttributes.smoothMove = normalizeBoolean(
+            normalizedAttributes.smoothMove
+        );
 
-    set magnifierPosition(value) {
-        this._magnifierPosition = normalizeString(value, {
-            fallbackValue: MAGNIFIER_POSITIONS.default,
-            validValues: MAGNIFIER_POSITIONS.valid
-        });
-    }
+        this._magnifierAttributes.zoomFactor = !isNaN(
+            normalizedAttributes.zoomFactor
+        )
+            ? normalizedAttributes.zoomFactor
+            : 2;
 
-    /**
-     * Enables the magnifier's smoothing when hovering the image.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get smoothMove() {
-        return this._smoothMove;
-    }
-
-    set smoothMove(value) {
-        this._smoothMove = normalizeBoolean(value);
-    }
-
-    /**
-     * The value to set the magnifier's zoom factor.
-     *
-     * @public
-     * @type {number}
-     */
-    @api
-    get zoomFactor() {
-        return this._zoomFactor;
-    }
-
-    set zoomFactor(value) {
-        console.log('zoomFactor setting: ', value);
-        if (!isNaN(value)) {
-            this._zoomFactor = value;
+        if (
+            normalizedAttributes.zoomRatioWidth &&
+            !isNaN(normalizedAttributes.zoomRatioWidth)
+        ) {
+            this._magnifierAttributes.zoomRatioWidth = `${normalizedAttributes.zoomRatioWidth}px`;
         } else {
-            this._zoomFactor = 2;
+            this._magnifierAttributes.zoomRatioWidth =
+                normalizedAttributes.zoomRatioWidth;
         }
-    }
 
-    /**
-     * The value to set the magnifier's zoom ratio width.
-     *
-     * @public
-     * @type {number | string}
-     */
-    @api
-    get zoomRatioWidth() {
-        return this._zoomRatioWidth;
-    }
-
-    set zoomRatioWidth(value) {
-        if (value && !isNaN(value)) {
-            this._zoomRatioWidth = `${value}px`;
+        if (
+            normalizedAttributes.zoomRatioHeight &&
+            !isNaN(normalizedAttributes.zoomRatioHeight)
+        ) {
+            this._magnifierAttributes.zoomRatioHeight = `${normalizedAttributes.zoomRatioHeight}px`;
         } else {
-            this._zoomRatioWidth = value;
-        }
-    }
-
-    /**
-     * The value to set the magnifier's zoom ratio height.
-     *
-     * @public
-     * @type {number | string}
-     */
-    @api
-    get zoomRatioHeight() {
-        return this._zoomRatioHeight;
-    }
-
-    set zoomRatioHeight(value) {
-        if (value && !isNaN(value)) {
-            this._zoomRatioHeight = `${value}px`;
-        } else {
-            this._zoomRatioHeight = value;
+            this._magnifierAttributes.zoomRatioHeight =
+                normalizedAttributes.zoomRatioHeight;
         }
     }
 
@@ -629,17 +569,17 @@ export default class Image extends LightningElement {
             '.avonni-image_magnifier'
         );
 
-        magnifier.style.width = this.zoomRatioWidth;
-        magnifier.style.height = this.zoomRatioHeight;
+        magnifier.style.width = this.magnifierAttributes.zoomRatioWidth;
+        magnifier.style.height = this.magnifierAttributes.zoomRatioHeight;
 
         magnifier.style.backgroundImage = `url(${img.src})`;
         magnifier.style.backgroundRepeat = 'no-repeat';
         magnifier.style.backgroundSize =
-            img.width * this.zoomFactor +
+            img.width * this.magnifierAttributes.zoomFactor +
             'px ' +
-            img.height * this.zoomFactor +
+            img.height * this.magnifierAttributes.zoomFactor +
             'px';
-        if (this.smoothMove) {
+        if (this.magnifierAttributes.smoothMove) {
             magnifier.style.transition = 'background-position 0.1s ease';
         }
 
@@ -683,27 +623,41 @@ export default class Image extends LightningElement {
             computedStyle.getPropertyValue('border-width')
         );
 
-        switch (this.magnifierPosition) {
+        switch (this.magnifierAttributes.position) {
             case 'auto':
                 this.autoPositionMagnifier(img, magnifier);
                 break;
             case 'left':
                 magnifier.style.left =
-                    '-' + magnifier.offsetWidth - this.horizontalOffset + 'px';
-                magnifier.style.top = this.verticalOffset + 'px';
+                    '-' +
+                    magnifier.offsetWidth -
+                    this.magnifierAttributes.horizontalOffset +
+                    'px';
+                magnifier.style.top =
+                    this.magnifierAttributes.verticalOffset + 'px';
                 break;
             case 'right':
-                magnifier.style.left = img.width + this.horizontalOffset + 'px';
-                magnifier.style.top = this.verticalOffset + 'px';
+                magnifier.style.left =
+                    img.width +
+                    this.magnifierAttributes.horizontalOffset +
+                    'px';
+                magnifier.style.top =
+                    this.magnifierAttributes.verticalOffset + 'px';
                 break;
             case 'top':
-                magnifier.style.left = this.horizontalOffset + 'px';
+                magnifier.style.left =
+                    this.magnifierAttributes.horizontalOffset + 'px';
                 magnifier.style.top =
-                    '-' + magnifier.offsetHeight - this.verticalOffset + 'px';
+                    '-' +
+                    magnifier.offsetHeight -
+                    this.magnifierAttributes.verticalOffset +
+                    'px';
                 break;
             case 'bottom':
-                magnifier.style.left = this.horizontalOffset + 'px';
-                magnifier.style.top = img.height + this.verticalOffset + 'px';
+                magnifier.style.left =
+                    this.magnifierAttributes.horizontalOffset + 'px';
+                magnifier.style.top =
+                    img.height + this.magnifierAttributes.verticalOffset + 'px';
                 break;
             default:
                 break;
@@ -712,24 +666,36 @@ export default class Image extends LightningElement {
         this.applyBoundaries(pos, img, w, h, borderWidth);
 
         magnifier.style.backgroundPosition = `-${
-            pos.x * this.zoomFactor - w
-        }px -${pos.y * this.zoomFactor - h}px`;
+            pos.x * this.magnifierAttributes.zoomFactor - w
+        }px -${pos.y * this.magnifierAttributes.zoomFactor - h}px`;
     }
 
     autoPositionMagnifier(img, magnifier) {
         switch (this.position) {
             case 'left':
-                magnifier.style.left = img.width + this.horizontalOffset + 'px';
-                magnifier.style.top = this.verticalOffset + 'px';
+                magnifier.style.left =
+                    img.width +
+                    this.magnifierAttributes.horizontalOffset +
+                    'px';
+                magnifier.style.top =
+                    this.magnifierAttributes.verticalOffset + 'px';
                 break;
             case 'right':
                 magnifier.style.left =
-                    '-' + magnifier.offsetWidth - this.horizontalOffset + 'px';
-                magnifier.style.top = this.verticalOffset + 'px';
+                    '-' +
+                    magnifier.offsetWidth -
+                    this.magnifierAttributes.horizontalOffset +
+                    'px';
+                magnifier.style.top =
+                    this.magnifierAttributes.verticalOffset + 'px';
                 break;
             case 'center':
-                magnifier.style.left = img.width + this.horizontalOffset + 'px';
-                magnifier.style.top = this.verticalOffset + 'px';
+                magnifier.style.left =
+                    img.width +
+                    this.magnifierAttributes.horizontalOffset +
+                    'px';
+                magnifier.style.top =
+                    this.magnifierAttributes.verticalOffset + 'px';
                 break;
             default:
                 break;
@@ -758,8 +724,8 @@ export default class Image extends LightningElement {
         this.applyBoundaries(pos, img, w, h, borderWidth);
 
         magnifier.style.backgroundPosition = `-${
-            pos.x * this.zoomFactor - w
-        }px -${pos.y * this.zoomFactor - h}px`;
+            pos.x * this.magnifierAttributes.zoomFactor - w
+        }px -${pos.y * this.magnifierAttributes.zoomFactor - h}px`;
     }
 
     /**
@@ -775,7 +741,7 @@ export default class Image extends LightningElement {
             computedStyle.getPropertyValue('border-width')
         );
 
-        console.log('zoomFactor', this.zoomFactor);
+        console.log('zoomFactor', this.magnifierAttributes.zoomFactor);
 
         magnifier.style.left = pos.x - w + 'px';
         magnifier.style.top = pos.y - h + 'px';
@@ -783,8 +749,8 @@ export default class Image extends LightningElement {
         this.applyBoundaries(pos, img, w, h, borderWidth);
 
         magnifier.style.backgroundPosition = `-${
-            pos.x * this.zoomFactor - w
-        }px -${pos.y * this.zoomFactor - h}px`;
+            pos.x * this.magnifierAttributes.zoomFactor - w
+        }px -${pos.y * this.magnifierAttributes.zoomFactor - h}px`;
     }
 
     /**
@@ -805,17 +771,29 @@ export default class Image extends LightningElement {
      * @returns {void}
      */
     applyBoundaries(pos, img, w, h, borderWidth) {
-        if (pos.x > img.width - w / this.zoomFactor - borderWidth) {
-            pos.x = img.width - w / this.zoomFactor - borderWidth;
+        if (
+            pos.x >
+            img.width - w / this.magnifierAttributes.zoomFactor - borderWidth
+        ) {
+            pos.x =
+                img.width -
+                w / this.magnifierAttributes.zoomFactor -
+                borderWidth;
         }
-        if (pos.x < w / this.zoomFactor + borderWidth) {
-            pos.x = w / this.zoomFactor + borderWidth;
+        if (pos.x < w / this.magnifierAttributes.zoomFactor + borderWidth) {
+            pos.x = w / this.magnifierAttributes.zoomFactor + borderWidth;
         }
-        if (pos.y > img.height - h / this.zoomFactor - borderWidth) {
-            pos.y = img.height - h / this.zoomFactor - borderWidth;
+        if (
+            pos.y >
+            img.height - h / this.magnifierAttributes.zoomFactor - borderWidth
+        ) {
+            pos.y =
+                img.height -
+                h / this.magnifierAttributes.zoomFactor -
+                borderWidth;
         }
-        if (pos.y < h / this.zoomFactor + borderWidth) {
-            pos.y = h / this.zoomFactor + borderWidth;
+        if (pos.y < h / this.magnifierAttributes.zoomFactor + borderWidth) {
+            pos.y = h / this.magnifierAttributes.zoomFactor + borderWidth;
         }
     }
 }

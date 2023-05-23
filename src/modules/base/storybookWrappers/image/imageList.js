@@ -50,13 +50,7 @@ export default class Image extends LightningElement {
     @api width;
     @api magnifier;
     @api magnifierType;
-    @api horizontalOffset;
-    @api verticalOffset;
-    @api magnifierPosition;
-    @api smoothMove;
-    @api zoomFactor;
-    @api zoomRatioWidth;
-    @api zoomRatioHeight;
+    @api magnifierAttributes;
 
     get itemList() {
         let result = [];
@@ -80,13 +74,7 @@ export default class Image extends LightningElement {
                 cropPositionY: this.cropPositionY,
                 magnifier: this.magnifier,
                 magnifierType: this.magnifierType,
-                horizontalOffset: this.horizontalOffset,
-                verticalOffset: this.verticalOffset,
-                magnifierPosition: this.magnifierPosition,
-                smoothMove: this.smoothMove,
-                zoomFactor: this.zoomFactor,
-                zoomRatioWidth: this.zoomRatioWidth,
-                zoomRatioHeight: this.zoomRatioHeight
+                magnifierAttributes: this.magnifierAttributes
             };
             result.push(item);
         }
