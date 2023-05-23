@@ -58,10 +58,7 @@ export default class Image extends LightningElement {
     @api zoomRatioWidth;
     @api zoomRatioHeight;
     @api compareSrc;
-    @api compareOrientation;
-    @api moveOn;
-    @api showBeforeAfterOverlay;
-    @api showBeforeAfterOverlayOnHover;
+    @api compareAttributes;
 
     get itemList() {
         let result = [];
@@ -93,11 +90,7 @@ export default class Image extends LightningElement {
                 zoomRatioWidth: this.zoomRatioWidth,
                 zoomRatioHeight: this.zoomRatioHeight,
                 compareSrc: this.compareSrc,
-                compareOrientation: this.compareOrientation,
-                moveOn: this.moveOn,
-                showBeforeAfterOverlay: this.showBeforeAfterOverlay,
-                showBeforeAfterOverlayOnHover:
-                    this.showBeforeAfterOverlayOnHover
+                compareAttributes: this.compareAttributes
             };
             result.push(item);
         }

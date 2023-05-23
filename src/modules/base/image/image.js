@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { normalizeObject } from '../utilsPrivate/normalize';
 
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
@@ -126,10 +127,12 @@ export default class Image extends LightningElement {
     _zoomRatioWidth;
     _zoomRatioHeight;
     _compareSrc;
-    _compareOrientation = COMPARE_ORIENTATION.default;
-    _moveOn;
-    _showBeforeAfterOverlay;
-    _showBeforeAfterOverlayOnHover;
+    _compareAttributes = {
+        orientation: COMPARE_ORIENTATION.default,
+        moveOn: MOVE_ON_OPTIONS.default,
+        showBeforeAfterOverlay: false,
+        showBeforeAfterOverlayOnHover: false
+    };
 
     _imgElementWidth;
     _imgElementHeight;
@@ -142,7 +145,7 @@ export default class Image extends LightningElement {
      */
 
     /**
-     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
+     * Image fit behavior inside its container. Valid values include cover, contain, fill and none.
      *
      * @public
      * @type {string}
@@ -571,71 +574,42 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * The compare slider orientation.
+     * Compare attributes: orientation, moveOn, showBeforeAfterOverlay, showBeforeAfterOverlayOnHover.
      *
+     * @type {object}
      * @public
-     * @type {string}
      */
     @api
-    get compareOrientation() {
-        return this._compareOrientation;
+    get compareAttributes() {
+        return this._compareAttributes;
     }
 
-    set compareOrientation(value) {
-        this._compareOrientation = normalizeString(value, {
-            fallbackValue: COMPARE_ORIENTATION.default,
-            validValues: COMPARE_ORIENTATION.valid
-        });
-    }
+    set compareAttributes(value) {
+        const normalizedAttributes = normalizeObject(value);
 
-    /**
-     * The compare slider movement behavior.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get moveOn() {
-        return this._moveOn;
-    }
+        this._compareAttributes.orientation = normalizeString(
+            normalizedAttributes.orientation,
+            {
+                fallbackValue: COMPARE_ORIENTATION.default,
+                validValues: COMPARE_ORIENTATION.valid
+            }
+        );
 
-    set moveOn(value) {
-        this._moveOn = normalizeString(value, {
-            fallbackValue: MOVE_ON_OPTIONS.default,
-            validValues: MOVE_ON_OPTIONS.valid
-        });
-    }
+        this._compareAttributes.moveOn = normalizeString(
+            normalizedAttributes.moveOn,
+            {
+                fallbackValue: MOVE_ON_OPTIONS.default,
+                validValues: MOVE_ON_OPTIONS.valid
+            }
+        );
 
-    /**
-     * Enables the before and after overlay.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showBeforeAfterOverlay() {
-        return this._showBeforeAfterOverlay;
-    }
-
-    set showBeforeAfterOverlay(value) {
-        this._showBeforeAfterOverlay = normalizeBoolean(value);
-    }
-
-    /**
-     * Enables the before and after overlay on hover.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get showBeforeAfterOverlayOnHover() {
-        return this._showBeforeAfterOverlayOnHover;
-    }
-
-    set showBeforeAfterOverlayOnHover(value) {
-        this._showBeforeAfterOverlayOnHover = normalizeBoolean(value);
+        this._compareAttributes.showBeforeAfterOverlay = normalizeBoolean(
+            normalizedAttributes.showBeforeAfterOverlay
+        );
+        this._compareAttributes.showBeforeAfterOverlayOnHover =
+            normalizeBoolean(
+                normalizedAttributes.showBeforeAfterOverlayOnHover
+            );
     }
 
     /**
@@ -714,9 +688,9 @@ export default class Image extends LightningElement {
         return classSet('avonni-image_compare_slider')
             .add({
                 'avonni-image_compare_slider-horizontal':
-                    this._compareOrientation === 'horizontal',
+                    this.compareAttributes.orientation === 'horizontal',
                 'avonni-image_compare_slider-vertical':
-                    this._compareOrientation === 'vertical'
+                    this.compareAttributes.orientation === 'vertical'
             })
             .toString();
     }
@@ -727,7 +701,7 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get iconName1() {
-        return this._compareOrientation === 'horizontal'
+        return this.compareAttributes.orientation === 'horizontal'
             ? 'utility:left'
             : 'utility:up';
     }
@@ -738,7 +712,7 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get iconName2() {
-        return this._compareOrientation === 'horizontal'
+        return this.compareAttributes.orientation === 'horizontal'
             ? 'utility:right'
             : 'utility:down';
     }
@@ -962,7 +936,7 @@ export default class Image extends LightningElement {
             '.avonni-image_compare_overlay_container'
         );
 
-        if (this._compareOrientation === 'horizontal') {
+        if (this.compareAttributes.orientation === 'horizontal') {
             compareImg.style.width = img.width / 2 + 'px';
             compareImg.style.height = '100%';
         } else {
@@ -971,7 +945,7 @@ export default class Image extends LightningElement {
             handle.style.flexDirection = 'column';
         }
 
-        let initialState = this.showBeforeAfterOverlay;
+        let initialState = this.compareAttributes.showBeforeAfterOverlay;
 
         if (initialState) {
             overlay.style.display = 'block';
@@ -979,7 +953,7 @@ export default class Image extends LightningElement {
         }
 
         container.addEventListener('mouseover', () => {
-            if (this.showBeforeAfterOverlayOnHover) {
+            if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
                 overlay.style.display = 'block';
                 this.placeBeforeAfterOverlay();
             }
@@ -990,7 +964,7 @@ export default class Image extends LightningElement {
             }
         });
 
-        if (this.moveOn === 'hover') {
+        if (this.compareAttributes.moveOn === 'hover') {
             this.hoverSlider(slider, container, compareImg);
         } else {
             this.clickSlider(slider, container, handle, img, compareImg);
@@ -1006,7 +980,7 @@ export default class Image extends LightningElement {
         container.addEventListener('mousemove', (event) => {
             const pos = this.getPos(event);
             slider.style.pointerEvents = 'none';
-            if (this._compareOrientation === 'horizontal') {
+            if (this.compareAttributes.orientation === 'horizontal') {
                 slider.style.left = pos.x + 'px';
                 compareImg.style.width = pos.x + 'px';
             } else {
@@ -1024,41 +998,41 @@ export default class Image extends LightningElement {
      */
     clickSlider(slider, container, handle, img, compareImg) {
         let isDragging = false;
-        const handleStyles = window.getComputedStyle(handle);
-        const offsetX = parseFloat(handleStyles.width) / 2;
-        const offsetY = parseFloat(handleStyles.height) / 2;
+        const rect = container.getBoundingClientRect();
 
         container.addEventListener('mousedown', (event) => {
             isDragging = true;
             slider.style.transition = 'all 0.15s ease-in-out';
             compareImg.style.transition = 'all 0.15s ease-in-out';
-            if (this._compareOrientation === 'horizontal') {
-                slider.style.left = event.clientX - offsetX + 'px';
-                compareImg.style.width = event.clientX - offsetX + 'px';
+            const posX = event.clientX - rect.left;
+            const posY = event.clientY - rect.top;
+            if (this.compareAttributes.orientation === 'horizontal') {
+                slider.style.left = posX + 'px';
+                compareImg.style.width = posX + 'px';
             } else {
-                slider.style.top = event.clientY - offsetY + 'px';
-                compareImg.style.height = event.clientY - offsetY + 'px';
+                slider.style.top = posY + 'px';
+                compareImg.style.height = posY + 'px';
             }
         });
         container.addEventListener('mousemove', (event) => {
             slider.style.transition = 'none';
             compareImg.style.transition = 'none';
+            const posX = event.clientX - rect.left;
+            const posY = event.clientY - rect.top;
             if (
-                this._compareOrientation === 'horizontal' &&
+                this.compareAttributes.orientation === 'horizontal' &&
                 isDragging &&
-                event.clientX < img.width + offsetX &&
-                event.clientX > offsetX
+                posX < img.width
             ) {
-                slider.style.left = event.clientX - offsetX + 'px';
-                compareImg.style.width = event.clientX - offsetX + 'px';
+                slider.style.left = posX + 'px';
+                compareImg.style.width = posX + 'px';
             } else if (
-                this._compareOrientation === 'vertical' &&
+                this.compareAttributes.orientation === 'vertical' &&
                 isDragging &&
-                event.clientY < img.height + offsetY &&
-                event.clientY > offsetY
+                event.clientY < img.height
             ) {
-                slider.style.top = event.clientY - offsetY + 'px';
-                compareImg.style.height = event.clientY - offsetY + 'px';
+                slider.style.top = posY + 'px';
+                compareImg.style.height = posY + 'px';
             }
         });
         container.addEventListener('mouseup', () => {
@@ -1084,7 +1058,7 @@ export default class Image extends LightningElement {
         const offsetBefore = before.offsetWidth / 2;
         const offsetAfter = after.offsetWidth / 2;
 
-        if (this._compareOrientation === 'horizontal') {
+        if (this.compareAttributes.orientation === 'horizontal') {
             before.style.left = '10px';
             before.style.top = '10px';
             after.style.right = '10px';
