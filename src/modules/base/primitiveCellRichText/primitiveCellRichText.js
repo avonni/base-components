@@ -42,7 +42,6 @@ export default class PrimitiveCellRichText extends LightningElement {
 
     _columnsWidth = 0;
     _index;
-    _style;
     _value;
 
     visible = false;
@@ -65,6 +64,12 @@ export default class PrimitiveCellRichText extends LightningElement {
         this._value = value;
     }
 
+    get computedPanelStyle() {
+        return this._columnsWidth < 310
+            ? 'position: absolute; top: 0; right: 0'
+            : 'position: absolute; top: 0; left: 0';
+    }
+
     /**
      * Return true if cell is editable and not disabled.
      *
@@ -74,18 +79,7 @@ export default class PrimitiveCellRichText extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    get style() {
-        return this._style;
-    }
-
     /*----------- Inline Editing Functions -------------*/
-    computeStyle() {
-        this._style =
-            this._columnsWidth < 310
-                ? 'position: absolute; top: 0; right: 0'
-                : 'position: absolute; top: 0; left: 0;';
-    }
-
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
@@ -109,7 +103,6 @@ export default class PrimitiveCellRichText extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.computeStyle();
         this.isEditable();
     }
 

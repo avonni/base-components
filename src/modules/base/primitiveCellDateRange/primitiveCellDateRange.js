@@ -46,7 +46,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
 
     _columnsWidth = 0;
     _index;
-    _style;
     _value;
 
     visible = false;
@@ -69,14 +68,20 @@ export default class PrimitiveCellDateRange extends LightningElement {
         this._value = value;
     }
 
-    get startDate() {
-        return typeof this.value === 'object'
-            ? this.value.startDate
-            : undefined;
+    get computedPanelStyle() {
+        return this._columnsWidth < 310
+            ? 'position: absolute; top: 0; right: 0'
+            : 'position: absolute; top: 0; left: 0';
     }
 
     get endDate() {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
+    }
+
+    get startDate() {
+        return typeof this.value === 'object'
+            ? this.value.startDate
+            : undefined;
     }
 
     /**
@@ -89,13 +94,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
-    computeStyle() {
-        this._style =
-            this._columnsWidth < 310
-                ? 'position: absolute; top: 0; right: 0'
-                : 'position: absolute; top: 0; left: 0;';
-    }
-
     dispatchStateAndColumnsEvent() {
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
@@ -119,7 +117,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.computeStyle();
         this.isEditable();
     }
 

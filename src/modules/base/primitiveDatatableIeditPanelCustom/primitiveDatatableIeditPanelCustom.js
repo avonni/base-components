@@ -309,14 +309,12 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     comboboxFormattedValue(value) {
-        switch (value.length) {
-            case 0:
-                return undefined;
-            case 1:
-                return value[0];
-            default:
-                return value;
+        if (value.length === 0) {
+            return undefined;
+        } else if (value.length === 1) {
+            return value[0];
         }
+        return value;
     }
 
     dateRangeFormattedValue(value) {
@@ -426,7 +424,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleMassEditCheckboxClick() {
-        if (this.inputableElement && !this.isTypeDateRange) {
+        if (this.inputableElement) {
             this.inputableElement.focus();
         }
     }
@@ -442,14 +440,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleTypeElemBlur() {
-        if (
-            this.visible &&
-            !this.template.activeElement &&
-            !this.isTypeWithMenu
-        ) {
-            this.interactingState.leave();
-        }
-        if (this.isTypeWithMenu && this._allowBlur) {
+        if (this.visible && !this.template.activeElement) {
             this.interactingState.leave();
         }
     }
@@ -510,6 +501,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     };
 
     triggerEditFinished(detail) {
+        console.log('triggerEditFinished', detail);
         const details = {
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,

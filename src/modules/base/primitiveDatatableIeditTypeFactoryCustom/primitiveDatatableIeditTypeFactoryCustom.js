@@ -202,9 +202,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     focus() {
-        if (this.concreteComponent) {
-            this.concreteComponent.focus();
-        }
+        this.concreteComponent.focus();
     }
 
     @api
