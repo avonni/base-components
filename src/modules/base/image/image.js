@@ -685,7 +685,7 @@ export default class Image extends LightningElement {
 
         switch (this.magnifierPosition) {
             case 'auto':
-                // TODO
+                this.autoPositionMagnifier(img, magnifier);
                 break;
             case 'left':
                 magnifier.style.left =
@@ -714,6 +714,26 @@ export default class Image extends LightningElement {
         magnifier.style.backgroundPosition = `-${
             pos.x * this.zoomFactor - w
         }px -${pos.y * this.zoomFactor - h}px`;
+    }
+
+    autoPositionMagnifier(img, magnifier) {
+        switch (this.position) {
+            case 'left':
+                magnifier.style.left = img.width + this.horizontalOffset + 'px';
+                magnifier.style.top = this.verticalOffset + 'px';
+                break;
+            case 'right':
+                magnifier.style.left =
+                    '-' + magnifier.offsetWidth - this.horizontalOffset + 'px';
+                magnifier.style.top = this.verticalOffset + 'px';
+                break;
+            case 'center':
+                magnifier.style.left = img.width + this.horizontalOffset + 'px';
+                magnifier.style.top = this.verticalOffset + 'px';
+                break;
+            default:
+                break;
+        }
     }
 
     /**
