@@ -2224,7 +2224,7 @@ describe('FilterMenu', () => {
         return Promise.resolve()
             .then(() => {
                 expect(openHandler).toHaveBeenCalled();
-                expect(openHandler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(openHandler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(openHandler.mock.calls[0][0].cancelable).toBeFalsy();
                 expect(openHandler.mock.calls[0][0].composed).toBeFalsy();
 
@@ -2237,7 +2237,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 expect(closeHandler).toHaveBeenCalled();
-                expect(closeHandler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(closeHandler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(closeHandler.mock.calls[0][0].cancelable).toBeFalsy();
                 expect(closeHandler.mock.calls[0][0].composed).toBeFalsy();
 

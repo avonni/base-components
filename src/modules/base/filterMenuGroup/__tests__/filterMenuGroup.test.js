@@ -641,6 +641,35 @@ describe('FilterMenuGroup', () => {
             });
     });
 
+    // close
+    it('Filter menu group: close event', () => {
+        element.menus = MENUS;
+
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menu.dispatchEvent(
+                new CustomEvent('close', {
+                    detail: {
+                        name: MENUS[0].name
+                    },
+                    bubbles: true
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(MENUS[0].name);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
     // loadmore
     it('Filter menu group: loadmore event', () => {
         element.menus = MENUS;
@@ -660,6 +689,35 @@ describe('FilterMenuGroup', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
+    // open
+    it('Filter menu group: open event', () => {
+        element.menus = MENUS;
+
+        const handler = jest.fn();
+        element.addEventListener('open', handler);
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menu.dispatchEvent(
+                new CustomEvent('open', {
+                    detail: {
+                        name: MENUS[0].name
+                    },
+                    bubbles: true
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(MENUS[0].name);
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
