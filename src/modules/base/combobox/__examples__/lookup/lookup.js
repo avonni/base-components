@@ -72,6 +72,7 @@ export default class ComboboxLookup extends LightningElement {
         {
             label: 'United Oil SLA',
             value: 'oil-sla',
+            disabled: true,
             avatar: {
                 fallbackIconName: 'standard:opportunity'
             },
