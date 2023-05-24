@@ -501,7 +501,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     };
 
     triggerEditFinished(detail) {
-        console.log('triggerEditFinished', detail);
         const details = {
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,
