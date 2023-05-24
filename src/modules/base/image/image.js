@@ -415,16 +415,21 @@ export default class Image extends LightningElement {
         );
 
         if (!isNaN(normalizedAttributes.horizontalOffset)) {
-            this._magnifierAttributes.horizontalOffset =
-                normalizedAttributes.horizontalOffset;
-        } else if (normalizedAttributes.horizontalOffset === undefined) {
+            this._magnifierAttributes.horizontalOffset = Number(
+                normalizedAttributes.horizontalOffset
+            );
+        } else {
             this._magnifierAttributes.horizontalOffset = 0;
         }
 
-        if (!isNaN(normalizedAttributes.verticalOffset)) {
-            this._magnifierAttributes.verticalOffset =
-                normalizedAttributes.verticalOffset;
-        } else if (normalizedAttributes.verticalOffset === undefined) {
+        if (
+            !isNaN(normalizedAttributes.verticalOffset) &&
+            normalizedAttributes.verticalOffset !== ''
+        ) {
+            this._magnifierAttributes.verticalOffset = Number(
+                normalizedAttributes.verticalOffset
+            );
+        } else {
             this._magnifierAttributes.verticalOffset = 0;
         }
 
@@ -489,7 +494,7 @@ export default class Image extends LightningElement {
 
         styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
         styleProperties['object-position'] =
-            this.cropPositionX && this.cropPositionY
+            this.cropPositionX !== '' && this.cropPositionY !== ''
                 ? `${this.cropPositionX}% ${this.cropPositionY}%`
                 : null;
         styleProperties['aspect-ratio'] = this._aspectRatio
@@ -526,6 +531,29 @@ export default class Image extends LightningElement {
         return styleValue;
     }
 
+    get computedMagnifierStyle() {
+        let styleProperties = {};
+
+        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
+        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
+        styleProperties['background-image'] = `url(${this._src})`;
+        styleProperties['background-repeat'] = 'no-repeat';
+
+        if (this.magnifierAttributes.smoothMove) {
+            styleProperties.transition = 'background-position 0.1s ease';
+        }
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+        return styleValue;
+    }
+
     /**
      * Get Image dimensions when values missing or %.
      *
@@ -536,9 +564,6 @@ export default class Image extends LightningElement {
         if (img) {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
-            if (this.magnifierType !== 'none') {
-                this.handleMagnifier(img);
-            }
         }
     }
 
@@ -547,28 +572,19 @@ export default class Image extends LightningElement {
      *
      * @returns {void}
      */
-    handleMagnifier(img) {
-        const magnifier = this.template.querySelector(
-            '.avonni-image_magnifier'
-        );
-
-        magnifier.style.width = this.magnifierAttributes.zoomRatioWidth;
-        magnifier.style.height = this.magnifierAttributes.zoomRatioHeight;
-
-        magnifier.style.backgroundImage = `url(${img.src})`;
-        magnifier.style.backgroundRepeat = 'no-repeat';
-        magnifier.style.backgroundSize =
-            img.width * this.magnifierAttributes.zoomFactor +
-            'px ' +
-            img.height * this.magnifierAttributes.zoomFactor +
-            'px';
-        if (this.magnifierAttributes.smoothMove) {
-            magnifier.style.transition = 'background-position 0.1s ease';
-        }
-
-        img.addEventListener('mousemove', (event) => {
+    handleMouseMove(event) {
+        if (this.magnifierType !== 'none') {
             event.preventDefault();
             event.stopPropagation();
+            const img = event.target;
+            const magnifier = this.template.querySelector(
+                '[data-element-id="magnifier"]'
+            );
+
+            magnifier.style.backgroundSize =
+                'auto ' +
+                img.height * this.magnifierAttributes.zoomFactor +
+                'px';
             img.style.cursor = 'crosshair';
             magnifier.style.display = 'block';
             const pos = this.getPos(event);
@@ -586,11 +602,14 @@ export default class Image extends LightningElement {
                 default:
                     break;
             }
-        });
+        }
+    }
 
-        img.addEventListener('mouseout', function () {
-            magnifier.style.display = 'none';
-        });
+    handleMouseOut() {
+        const magnifier = this.template.querySelector(
+            '[data-element-id="magnifier"]'
+        );
+        magnifier.style.display = 'none';
     }
 
     /**

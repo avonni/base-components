@@ -72,6 +72,14 @@ describe('Image', () => {
         expect(element.staticImages).toBeFalsy();
         expect(element.thumbnail).toBeFalsy();
         expect(element.width).toBeUndefined();
+        expect(element.magnifierType).toBe('none');
+        expect(element.magnifierAttributes.position).toBe('auto');
+        expect(element.magnifierAttributes.horizontalOffset).toBe(0);
+        expect(element.magnifierAttributes.verticalOffset).toBe(0);
+        expect(element.magnifierAttributes.smoothMove).toBeTruthy();
+        expect(element.magnifierAttributes.zoomFactor).toBe(2);
+        expect(element.magnifierAttributes.zoomRatioWidth).toBe(100);
+        expect(element.magnifierAttributes.zoomRatioHeight).toBe(100);
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -166,10 +174,14 @@ describe('Image', () => {
         element.position = 'left';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe('avonni-image avonni-image_float-left');
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_float-left'
+            );
         });
     });
 
@@ -180,11 +192,14 @@ describe('Image', () => {
         element.position = 'center';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe(
-                'avonni-image avonni-image_margin-auto avonni-image_display-block'
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_margin-auto',
+                'avonni-image_display-block'
             );
         });
     });
@@ -196,10 +211,14 @@ describe('Image', () => {
         element.position = 'right';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe('avonni-image avonni-image_float-right');
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_float-right'
+            );
         });
     });
 
@@ -222,10 +241,11 @@ describe('Image', () => {
         element.fluid = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toContain('avonni-image_fluid');
+            const classes = container.className.split(' ');
+            expect(classes).toContain('avonni-image_fluid');
         });
     });
 
@@ -235,11 +255,13 @@ describe('Image', () => {
         element.fluidGrow = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toContain(
-                'avonni-image_fluid avonni-image_fluid-grow'
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image_fluid',
+                'avonni-image_fluid-grow'
             );
         });
     });
@@ -250,10 +272,14 @@ describe('Image', () => {
         element.position = 'left';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe('avonni-image avonni-image_float-left');
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_float-left'
+            );
         });
     });
 
@@ -262,10 +288,14 @@ describe('Image', () => {
         element.position = 'right';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe('avonni-image avonni-image_float-right');
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_float-right'
+            );
         });
     });
 
@@ -274,11 +304,14 @@ describe('Image', () => {
         element.position = 'center';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toBe(
-                'avonni-image avonni-image_margin-auto avonni-image_display-block'
+            const classes = container.className.split(' ');
+            expect(classes).toContain(
+                'avonni-image',
+                'avonni-image_margin-auto',
+                'avonni-image_display-block'
             );
         });
     });
@@ -371,7 +404,11 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-image');
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
+            );
+            const containerClasses = container.className.split(' ');
+            expect(containerClasses).toContain('avonni-image');
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.height).toBeFalsy();
         });
@@ -404,7 +441,11 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                expect(img.className).toBe('avonni-image');
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                const containerClasses = container.className.split(' ');
+                expect(containerClasses).toContain('avonni-image');
                 expect(img.style.minWidth).toBe('400px');
                 expect(img.style.minHeight).toBe('300px');
                 expect(img.style.maxWidth).toBe('400px');
@@ -453,10 +494,11 @@ describe('Image', () => {
         element.thumbnail = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="container"]'
             );
-            expect(img.className).toContain('avonni-image_thumbnail');
+            const classes = container.className.split(' ');
+            expect(classes).toContain('avonni-image_thumbnail');
         });
     });
 
@@ -481,6 +523,288 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.style.height).toBe('50%');
+        });
+    });
+
+    // magnifier
+    it('Image: Magnifier attributes', () => {
+        element.src = src;
+        const attributes = {
+            position: 'top',
+            horizontalOffset: '10',
+            verticalOffset: '10',
+            smoothMove: true,
+            zoomFactor: '6',
+            zoomRatioWidth: '150px',
+            zoomRatioHeight: '150px'
+        };
+        element.magnifierAttributes = attributes;
+
+        return Promise.resolve().then(() => {
+            const magnifier = element.shadowRoot.querySelector(
+                '[data-element-id="magnifier"]'
+            );
+            expect(magnifier.style.width).toBe('150px');
+            expect(magnifier.style.height).toBe('150px');
+            expect(magnifier.style.backgroundImage).toBe(`url(${src})`);
+            expect(magnifier.style.transition).toBe(
+                'background-position 0.1s ease'
+            );
+        });
+    });
+
+    it('Image: Magnifier attributes - incorrect', () => {
+        element.src = src;
+        const attributes = {
+            position: 'top',
+            horizontalOffset: '10px',
+            verticalOffset: '10px',
+            smoothMove: true,
+            zoomFactor: '6',
+            zoomRatioWidth: 150,
+            zoomRatioHeight: 150
+        };
+        element.magnifierAttributes = attributes;
+
+        return Promise.resolve().then(() => {
+            const magnifier = element.shadowRoot.querySelector(
+                '[data-element-id="magnifier"]'
+            );
+            expect(magnifier.style.width).toBe('150px');
+            expect(magnifier.style.height).toBe('150px');
+            expect(element.magnifierAttributes.horizontalOffset).toBe(0);
+            expect(element.magnifierAttributes.verticalOffset).toBe(0);
+        });
+    });
+
+    describe('Image: Magnifier types', () => {
+        it('Image: Standard magnifier mousemove', () => {
+            element.src = src;
+            element.magnifierType = 'standard';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+            });
+        });
+
+        it('Image: Follow magnifier mousemove', () => {
+            element.src = src;
+            element.magnifierType = 'follow';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+            });
+        });
+
+        it('Image: Inner magnifier mousemove', () => {
+            element.src = src;
+            element.magnifierType = 'inner';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+            });
+        });
+
+        it('Image: Magnifier mouseout', () => {
+            element.src = src;
+            element.magnifierType = 'standard';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.dispatchEvent(new MouseEvent('mouseout'));
+                expect(magnifier.style.display).toBe('none');
+            });
+        });
+    });
+
+    describe('Image: Standard magnifier auto position', () => {
+        const attributes = {
+            position: 'auto',
+            horizontalOffset: 10,
+            verticalOffset: 10
+        };
+
+        beforeEach(() => {
+            element.src = src;
+            element.magnifierType = 'standard';
+            element.magnifierAttributes = attributes;
+        });
+
+        it('Image: Standard magnifier auto position - image left', () => {
+            element.position = 'left';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = attributes.verticalOffset + 'px';
+                const left = img.width + attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+
+        it('Image: Standard magnifier auto position - image center', () => {
+            element.position = 'center';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = attributes.verticalOffset + 'px';
+                const left = img.width + attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+
+        it('Image: Standard magnifier auto position - image right', () => {
+            element.position = 'right';
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = attributes.verticalOffset + 'px';
+                const left =
+                    '-' +
+                    magnifier.offsetWidth -
+                    attributes.horizontalOffset +
+                    'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+    });
+
+    describe('Image: Standard magnifier manual position', () => {
+        var attributes = {
+            position: 'left',
+            horizontalOffset: 10,
+            verticalOffset: 10
+        };
+
+        beforeEach(() => {
+            element.src = src;
+            element.magnifierType = 'standard';
+        });
+
+        it('Image: Standard magnifier manual position - left', () => {
+            attributes.position = 'left';
+            element.magnifierAttributes = attributes;
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = attributes.verticalOffset + 'px';
+                const left = '-' + attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+
+        it('Image: Standard magnifier manual position - right', () => {
+            attributes.position = 'right';
+            element.magnifierAttributes = attributes;
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = attributes.verticalOffset + 'px';
+                const left = img.width + attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+
+        it('Image: Standard magnifier manual position - top', () => {
+            attributes.position = 'top';
+            element.magnifierAttributes = attributes;
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top =
+                    '-' +
+                    magnifier.offsetHeight -
+                    attributes.verticalOffset +
+                    'px';
+                const left = attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
+        });
+
+        it('Image: Standard magnifier manual position - bottom', () => {
+            attributes.position = 'bottom';
+            element.magnifierAttributes = attributes;
+
+            return Promise.resolve().then(() => {
+                const magnifier = element.shadowRoot.querySelector(
+                    '[data-element-id="magnifier"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const top = img.height + attributes.verticalOffset + 'px';
+                const left = attributes.horizontalOffset + 'px';
+                img.dispatchEvent(new MouseEvent('mousemove'));
+                expect(magnifier.style.top).toBe(top);
+                expect(magnifier.style.left).toBe(left);
+            });
         });
     });
 });

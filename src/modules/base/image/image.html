@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class={computedImageClass}>
+    <div data-element-id="container" class={computedImageClass}>
         <img
             alt={alternativeText}
             data-element-id="img"
@@ -43,7 +43,13 @@
             style={computedStyle}
             loading={lazyLoading}
             onload={handleLoadImage}
+            onmousemove={handleMouseMove}
+            onmouseout={handleMouseOut}
         />
-        <div class="avonni-image_magnifier"></div>
+        <div
+            data-element-id="magnifier"
+            class="avonni-image_magnifier"
+            style={computedMagnifierStyle}
+        ></div>
     </div>
 </template>
