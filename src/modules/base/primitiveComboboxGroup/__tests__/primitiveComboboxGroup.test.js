@@ -109,20 +109,12 @@ describe('PrimitiveComboboxGroup', () => {
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!options[index].showCheckmark);
 
                 const avatar = option.querySelector(
                     '[data-element-id="avonni-avatar"]'
                 );
-                if (options[index].hasAvatar) {
-                    expect(avatar).toBeTruthy();
-                } else {
-                    expect(avatar).toBeFalsy();
-                }
+                expect(!!avatar).toBe(!!options[index].hasAvatar);
 
                 const label = option.querySelector(
                     '.slds-listbox__option-text'
@@ -132,22 +124,17 @@ describe('PrimitiveComboboxGroup', () => {
                 const secondaryText = option.querySelector(
                     '.slds-listbox__option-meta'
                 );
-                if (options[index].secondaryText) {
-                    expect(secondaryText.textContent).toBe(
-                        options[index].secondaryText
-                    );
-                } else {
-                    expect(secondaryText).toBeFalsy();
-                }
+                expect(
+                    options[index].secondaryText
+                        ? secondaryText.textContent ===
+                              options[index].secondaryText
+                        : !secondaryText
+                ).toBeTruthy();
 
                 const childrenChevron = option.querySelector(
                     '.slds-media__figure_reverse lightning-icon'
                 );
-                if (options[index].options.length) {
-                    expect(childrenChevron).toBeTruthy();
-                } else {
-                    expect(childrenChevron).toBeFalsy();
-                }
+                expect(!!childrenChevron).toBe(!!options[index].options.length);
             });
         });
     });
@@ -173,11 +160,7 @@ describe('PrimitiveComboboxGroup', () => {
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!options[index].showCheckmark);
             });
         });
     });
