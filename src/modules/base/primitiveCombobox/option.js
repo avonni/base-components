@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    normalizeAriaAttribute,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 /**
@@ -93,6 +97,15 @@ export default class Option {
                         : 'square'
             };
         }
+    }
+
+    /**
+     * String of true or false.
+     *
+     * @type {string}
+     */
+    get computedAriaDisabled() {
+        return normalizeAriaAttribute(this.disabled.toString());
     }
 
     /**
