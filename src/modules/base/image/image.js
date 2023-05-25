@@ -608,9 +608,10 @@ export default class Image extends LightningElement {
                 '[data-element-id="magnified-img"]'
             );
             const computedStyle = window.getComputedStyle(magnifier);
-            const borderWidth = parseFloat(
+            const borderWidthValue = parseFloat(
                 computedStyle.getPropertyValue('border-width')
             );
+            const borderWidth = isNaN(borderWidthValue) ? 0 : borderWidthValue;
             const w = magnifier.offsetWidth / 2;
             const h = magnifier.offsetHeight / 2;
             const pos = this.getPos(event);

@@ -544,11 +544,13 @@ describe('Image', () => {
             const magnifier = element.shadowRoot.querySelector(
                 '[data-element-id="magnifier"]'
             );
+            const magnifiedImage = element.shadowRoot.querySelector(
+                '[data-element-id="magnified-img"]'
+            );
             expect(magnifier.style.width).toBe('150px');
             expect(magnifier.style.height).toBe('150px');
-            expect(magnifier.style.backgroundImage).toBe(`url(${src})`);
-            expect(magnifier.style.transition).toBe(
-                'background-position 0.1s ease'
+            expect(magnifiedImage.style.transition).toBe(
+                'transform 0.15s ease-out'
             );
         });
     });
@@ -583,14 +585,16 @@ describe('Image', () => {
             element.magnifierType = 'standard';
 
             return Promise.resolve().then(() => {
-                const magnifier = element.shadowRoot.querySelector(
-                    '[data-element-id="magnifier"]'
-                );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
+                );
                 img.dispatchEvent(new MouseEvent('mousemove'));
-                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+                expect(magnifiedImage.style.transform).toBe(
+                    'translate(-0px, -0px)'
+                );
             });
         });
 
@@ -599,14 +603,16 @@ describe('Image', () => {
             element.magnifierType = 'follow';
 
             return Promise.resolve().then(() => {
-                const magnifier = element.shadowRoot.querySelector(
-                    '[data-element-id="magnifier"]'
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
                 img.dispatchEvent(new MouseEvent('mousemove'));
-                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+                expect(magnifiedImage.style.transform).toBe(
+                    'translate(-0px, -0px)'
+                );
             });
         });
 
@@ -615,14 +621,16 @@ describe('Image', () => {
             element.magnifierType = 'inner';
 
             return Promise.resolve().then(() => {
-                const magnifier = element.shadowRoot.querySelector(
-                    '[data-element-id="magnifier"]'
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
                 img.dispatchEvent(new MouseEvent('mousemove'));
-                expect(magnifier.style.backgroundPosition).toBe('-0px -0px');
+                expect(magnifiedImage.style.transform).toBe(
+                    'translate(-0px, -0px)'
+                );
             });
         });
 
