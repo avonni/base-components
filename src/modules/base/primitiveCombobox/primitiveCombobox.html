@@ -157,6 +157,7 @@
                         id="backlink"
                         aria-disabled={backLink.computedAriaDisabled}
                         role="option"
+                        data-aria-disabled={action.computedAriaDisabled}
                         data-fixed={backLink.fixed}
                         data-group-name="actions"
                         data-position={backLink.position}
@@ -207,6 +208,7 @@
                                 role="option"
                                 aria-label="Action button"
                                 aria-disabled={action.computedAriaDisabled}
+                                data-aria-disabled={action.computedAriaDisabled}
                                 data-element-id="li-top-action"
                                 data-group-name="actions"
                                 data-fixed={action.fixed}
@@ -283,6 +285,7 @@
                                 data-group-name="actions"
                                 data-position={action.position}
                                 aria-disabled={action.computedAriaDisabled}
+                                data-aria-disabled={action.computedAriaDisabled}
                                 onclick={handleActionClick}
                                 onmouseenter={handleMouseEnter}
                             >

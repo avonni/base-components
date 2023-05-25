@@ -748,7 +748,8 @@ export default class PrimitiveCombobox extends LightningElement {
                 '[data-group-name="actions"][data-position="top"]'
             );
             topActions.forEach((action) => {
-                if (action.ariaDisabled === 'false') elements.push(action);
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
             });
 
             const groups = this.template.querySelectorAll(
@@ -757,7 +758,7 @@ export default class PrimitiveCombobox extends LightningElement {
             groups.forEach((group) => {
                 elements.push(
                     group.optionElements.filter(
-                        (option) => option.ariaDisabled === 'false'
+                        (option) => option.dataset.ariaDisabled === 'false'
                     )
                 );
             });
@@ -766,7 +767,8 @@ export default class PrimitiveCombobox extends LightningElement {
                 '[data-group-name="actions"][data-position="bottom"]'
             );
             bottomActions.forEach((action) => {
-                if (action.ariaDisabled === 'false') elements.push(action);
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
             });
 
             return elements.flat();
@@ -1757,7 +1759,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (typeof eventOrName === 'string') {
             name = eventOrName;
         } else {
-            if (eventOrName.currentTarget.ariaDisabled === 'true') {
+            if (eventOrName.currentTarget.dataset.ariaDisabled === 'true') {
                 this.focus();
                 return;
             }
@@ -1868,7 +1870,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleMouseEnter(event) {
         event.stopPropagation();
-        if (event.currentTarget.ariaDisabled === 'true') return;
+        if (event.currentTarget.dataset.ariaDisabled === 'true') return;
 
         // If the mouse enters an option, the id will be sent through an event from the group
         const id = event.detail.id ? event.detail.id : event.currentTarget.id;
