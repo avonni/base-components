@@ -103,51 +103,42 @@ describe('PrimitiveComboboxGroup', () => {
             expect(optionElements).toHaveLength(options.length);
 
             optionElements.forEach((option, index) => {
-                expect(option.className).toBe(options[index].computedClass);
-                expect(option.dataset.value).toBe(options[index].value);
+                const optionObject = options[index];
+                expect(option.ariaDisabled).toBe(
+                    optionObject.disabled ? 'true' : 'false'
+                );
+                expect(option.className).toBe(optionObject.computedClass);
+                expect(option.dataset.value).toBe(optionObject.value);
 
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!optionObject.showCheckmark);
 
                 const avatar = option.querySelector(
                     '[data-element-id="avonni-avatar"]'
                 );
-                if (options[index].hasAvatar) {
-                    expect(avatar).toBeTruthy();
-                } else {
-                    expect(avatar).toBeFalsy();
-                }
+                expect(!!avatar).toBe(!!optionObject.hasAvatar);
 
                 const label = option.querySelector(
                     '.slds-listbox__option-text'
                 );
-                expect(label.textContent).toBe(options[index].label);
+                expect(label.textContent).toBe(optionObject.label);
 
                 const secondaryText = option.querySelector(
                     '.slds-listbox__option-meta'
                 );
-                if (options[index].secondaryText) {
-                    expect(secondaryText.textContent).toBe(
-                        options[index].secondaryText
-                    );
-                } else {
-                    expect(secondaryText).toBeFalsy();
-                }
+                expect(
+                    optionObject.secondaryText
+                        ? secondaryText.textContent ===
+                              optionObject.secondaryText
+                        : !secondaryText
+                ).toBeTruthy();
 
                 const childrenChevron = option.querySelector(
                     '.slds-media__figure_reverse lightning-icon'
                 );
-                if (options[index].options.length) {
-                    expect(childrenChevron).toBeTruthy();
-                } else {
-                    expect(childrenChevron).toBeFalsy();
-                }
+                expect(!!childrenChevron).toBe(!!optionObject.options.length);
             });
         });
     });
@@ -173,11 +164,7 @@ describe('PrimitiveComboboxGroup', () => {
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!options[index].showCheckmark);
             });
         });
     });
@@ -244,6 +231,21 @@ describe('PrimitiveComboboxGroup', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Primitive combobox group: privateoptionclick event, disabled', () => {
+        element.options = options;
+        element.name = 'string-name';
+        const handler = jest.fn();
+        element.addEventListener('privateoptionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const option =
+                element.shadowRoot.querySelectorAll('li[role="option"]')[2];
+            option.click();
+
+            expect(handler).toHaveBeenCalledTimes(0);
         });
     });
 

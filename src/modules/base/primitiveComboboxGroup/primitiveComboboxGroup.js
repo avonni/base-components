@@ -110,6 +110,7 @@ export default class PrimitiveComboboxGroup extends LightningElement {
     }
 
     handleAction(event) {
+        if (event.currentTarget.ariaDisabled === 'true') return;
         this.dispatchEvent(
             new CustomEvent(`privateoption${event.type}`, {
                 detail: {

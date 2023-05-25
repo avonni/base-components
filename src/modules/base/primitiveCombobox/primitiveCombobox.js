@@ -755,7 +755,11 @@ export default class PrimitiveCombobox extends LightningElement {
                 '[data-element-id="avonni-primitive-combobox-group"]'
             );
             groups.forEach((group) => {
-                elements.push(group.optionElements);
+                elements.push(
+                    group.optionElements.filter(
+                        (option) => option.ariaDisabled === 'false'
+                    )
+                );
             });
 
             const bottomActions = this.template.querySelectorAll(
