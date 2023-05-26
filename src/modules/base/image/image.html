@@ -45,7 +45,16 @@
             onload={handleLoadImage}
         />
         <div class="avonni-image_magnifier"></div>
-        <div if:true={compare} class="avonni-image_compare_container">
+        <div
+            if:true={compare}
+            class="avonni-image_compare_container"
+            data-element-id="compare-container"
+            onmousemove={handleCompareMouseMove}
+            onmousedown={handleCompareMouseDown}
+            onmouseup={handleCompareMouseUp}
+            onmouseover={handleCompareMouseOver}
+            onmouseout={handleCompareMouseOut}
+        >
             <div class="avonni-image_compare_img_container">
                 <img
                     src={compareSrc}
@@ -54,7 +63,7 @@
                     loading={lazyLoading}
                 />
             </div>
-            <div class={computedSliderClass}>
+            <div class={computedSliderClass} data-element-id="compare-slider">
                 <div class="avonni-image_compare_slider-handle">
                     <lightning-icon icon-name={iconName1} size="x-small">
                     </lightning-icon>

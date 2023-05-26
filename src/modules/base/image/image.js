@@ -137,6 +137,8 @@ export default class Image extends LightningElement {
     _imgElementWidth;
     _imgElementHeight;
     _aspectRatio;
+    _isDragging = false;
+    _initialState;
 
     /*
      * ------------------------------------------------------------
@@ -555,7 +557,7 @@ export default class Image extends LightningElement {
 
     @api
     get compare() {
-        return this._compareSrc !== '';
+        return this._compareSrc !== '' && this._compareSrc !== undefined;
     }
 
     /**
@@ -715,6 +717,31 @@ export default class Image extends LightningElement {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'utility:right'
             : 'utility:down';
+    }
+
+    /**
+     * Gets all the needed element for comparing.
+     *
+     * @type {Object}
+     */
+    get compareElements() {
+        const container = this.template.querySelector(
+            '.avonni-image_compare_container'
+        );
+        const slider = this.template.querySelector(
+            '.avonni-image_compare_slider'
+        );
+        const compareImg = this.template.querySelector(
+            '.avonni-image_compare_img_container'
+        );
+        const handle = this.template.querySelector(
+            '.avonni-image_compare_slider-handle'
+        );
+        const overlay = this.template.querySelector(
+            '.avonni-image_compare_overlay_container'
+        );
+
+        return { container, slider, compareImg, handle, overlay };
     }
 
     /**
@@ -915,80 +942,121 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Call the right compare slider type.
+     * Initiate the compare slider.
      *
      * @returns {void}
      */
     handleCompareSlider(img) {
-        const container = this.template.querySelector(
-            '.avonni-image_compare_container'
-        );
-        const slider = this.template.querySelector(
-            '.avonni-image_compare_slider'
-        );
-        const compareImg = this.template.querySelector(
-            '.avonni-image_compare_img_container'
-        );
-        const handle = this.template.querySelector(
-            '.avonni-image_compare_slider-handle'
-        );
-        const overlay = this.template.querySelector(
-            '.avonni-image_compare_overlay_container'
-        );
+        const compareElements = this.compareElements;
 
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareImg.style.width = img.width / 2 + 'px';
-            compareImg.style.height = '100%';
+            compareElements.compareImg.style.width = img.width / 2 + 'px';
+            compareElements.compareImg.style.height = '100%';
         } else {
-            compareImg.style.height = img.height / 2 + 'px';
-            compareImg.style.width = '100%';
-            handle.style.flexDirection = 'column';
+            compareElements.compareImg.style.height = img.height / 2 + 'px';
+            compareElements.compareImg.style.width = '100%';
+            compareElements.handle.style.flexDirection = 'column';
         }
 
-        let initialState = this.compareAttributes.showBeforeAfterOverlay;
+        this._initialState = this.compareAttributes.showBeforeAfterOverlay;
 
-        if (initialState) {
-            overlay.style.display = 'block';
+        if (this._initialState) {
+            compareElements.overlay.style.display = 'block';
             this.placeBeforeAfterOverlay();
-        }
-
-        container.addEventListener('mouseover', () => {
-            if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
-                overlay.style.display = 'block';
-                this.placeBeforeAfterOverlay();
-            }
-        });
-        container.addEventListener('mouseout', () => {
-            if (!initialState) {
-                overlay.style.display = 'none';
-            }
-        });
-
-        if (this.compareAttributes.moveOn === 'hover') {
-            this.hoverSlider(slider, container, compareImg);
-        } else {
-            this.clickSlider(slider, container, handle, img, compareImg);
         }
     }
 
     /**
-     * Handle the 'hover' type slider.
+     * Show the before after overlay on hover.
      *
      * @returns {void}
      */
-    hoverSlider(slider, container, compareImg) {
-        container.addEventListener('mousemove', (event) => {
-            const pos = this.getPos(event);
-            slider.style.pointerEvents = 'none';
+    handleCompareMouseOver() {
+        const compareElements = this.compareElements;
+        if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
+            compareElements.overlay.style.display = 'block';
+            this.placeBeforeAfterOverlay();
+        }
+    }
+
+    /**
+     * Remove the before after overlay on mouse out.
+     *
+     * @returns {void}
+     */
+    handleCompareMouseOut() {
+        const compareElements = this.compareElements;
+        if (!this._initialState) {
+            compareElements.overlay.style.display = 'none';
+        }
+    }
+
+    /**
+     * Call the right compare slider type on mouse move.
+     *
+     * @returns {void}
+     */
+    handleCompareMouseMove(event) {
+        const compareElements = this.compareElements;
+        const img = this.template.querySelector('[data-element-id="img"]');
+
+        if (this.compareAttributes.moveOn === 'hover') {
+            this.hoverSlider(event, compareElements);
+        } else {
+            this.clickSlider(event, compareElements, img);
+        }
+    }
+
+    /**
+     * Slide and grip the compare slider on click.
+     *
+     * @returns {void}
+     */
+    handleCompareMouseDown(event) {
+        if (this.compareAttributes.moveOn === 'click') {
+            const compareElements = this.compareElements;
+            const rect = compareElements.container.getBoundingClientRect();
+            this._isDragging = true;
+            compareElements.slider.style.transition = 'all 0.15s ease-in-out';
+            compareElements.compareImg.style.transition =
+                'all 0.15s ease-in-out';
+            const posX = event.clientX - rect.left;
+            const posY = event.clientY - rect.top;
             if (this.compareAttributes.orientation === 'horizontal') {
-                slider.style.left = pos.x + 'px';
-                compareImg.style.width = pos.x + 'px';
+                compareElements.slider.style.left = posX + 'px';
+                compareElements.compareImg.style.width = posX + 'px';
             } else {
-                slider.style.top = pos.y + 'px';
-                compareImg.style.height = pos.y + 'px';
+                compareElements.slider.style.top = posY + 'px';
+                compareElements.compareImg.style.height = posY + 'px';
             }
-            container.style.cursor = 'grab';
-        });
+        }
+    }
+
+    /**
+     * Disable the slider dragging after releasing mouse button.
+     *
+     * @returns {void}
+     */
+    handleCompareMouseUp() {
+        this._isDragging = false;
+    }
+
+    /**
+     * Slide the compare slider on hover.
+     *
+     * @returns {void}
+     */
+    hoverSlider(event, compareElements) {
+        const pos = this.getPos(event);
+        compareElements.slider.style.pointerEvents = 'none';
+        if (this.compareAttributes.orientation === 'horizontal') {
+            compareElements.slider.style.left = pos.x + 'px';
+            compareElements.compareImg.style.width = pos.x + 'px';
+        } else {
+            compareElements.slider.style.top = pos.y + 'px';
+            compareElements.compareImg.style.height = pos.y + 'px';
+        }
+        compareElements.container.style.cursor = 'grab';
     }
 
     /**
@@ -996,50 +1064,27 @@ export default class Image extends LightningElement {
      *
      * @returns {void}
      */
-    clickSlider(slider, container, handle, img, compareImg) {
-        let isDragging = false;
-        const rect = container.getBoundingClientRect();
-
-        container.addEventListener('mousedown', (event) => {
-            isDragging = true;
-            slider.style.transition = 'all 0.15s ease-in-out';
-            compareImg.style.transition = 'all 0.15s ease-in-out';
-            const posX = event.clientX - rect.left;
-            const posY = event.clientY - rect.top;
-            if (this.compareAttributes.orientation === 'horizontal') {
-                slider.style.left = posX + 'px';
-                compareImg.style.width = posX + 'px';
-            } else {
-                slider.style.top = posY + 'px';
-                compareImg.style.height = posY + 'px';
-            }
-        });
-        container.addEventListener('mousemove', (event) => {
-            slider.style.transition = 'none';
-            compareImg.style.transition = 'none';
-            const posX = event.clientX - rect.left;
-            const posY = event.clientY - rect.top;
-            if (
-                this.compareAttributes.orientation === 'horizontal' &&
-                isDragging &&
-                posX < img.width
-            ) {
-                slider.style.left = posX + 'px';
-                compareImg.style.width = posX + 'px';
-            } else if (
-                this.compareAttributes.orientation === 'vertical' &&
-                isDragging &&
-                event.clientY < img.height
-            ) {
-                slider.style.top = posY + 'px';
-                compareImg.style.height = posY + 'px';
-            }
-        });
-        container.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-            }
-        });
+    clickSlider(event, compareElements, img) {
+        const rect = compareElements.container.getBoundingClientRect();
+        compareElements.slider.style.transition = 'none';
+        compareElements.compareImg.style.transition = 'none';
+        const posX = event.clientX - rect.left;
+        const posY = event.clientY - rect.top;
+        if (
+            this.compareAttributes.orientation === 'horizontal' &&
+            this._isDragging &&
+            posX <= img.width
+        ) {
+            compareElements.slider.style.left = posX + 'px';
+            compareElements.compareImg.style.width = posX + 'px';
+        } else if (
+            this.compareAttributes.orientation === 'vertical' &&
+            this._isDragging &&
+            event.clientY <= img.height
+        ) {
+            compareElements.slider.style.top = posY + 'px';
+            compareElements.compareImg.style.height = posY + 'px';
+        }
     }
 
     /**

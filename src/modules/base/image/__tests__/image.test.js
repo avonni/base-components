@@ -72,6 +72,14 @@ describe('Image', () => {
         expect(element.staticImages).toBeFalsy();
         expect(element.thumbnail).toBeFalsy();
         expect(element.width).toBeUndefined();
+        expect(element.compareSrc).toBeUndefined();
+        expect(element.compare).toBeFalsy();
+        expect(element.compareAttributes.orientation).toBe('horizontal');
+        expect(element.compareAttributes.moveOn).toBe('click');
+        expect(element.compareAttributes.showBeforeAfterOverlay).toBeFalsy();
+        expect(
+            element.compareAttributes.showBeforeAfterOverlayOnHover
+        ).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -481,6 +489,192 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.style.height).toBe('50%');
+        });
+    });
+
+    describe('Image: Compare slider', () => {
+        it('Image: Compare slider - horizontal', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { orientation: 'horizontal' };
+
+            return Promise.resolve().then(() => {
+                const compareSlider = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider"]'
+                );
+                const classes = compareSlider.className.split(' ');
+                const icon1 = compareSlider.children[0].children[0];
+                const icon2 = compareSlider.children[0].children[1];
+                expect(classes).toContain(
+                    'avonni-image_compare_slider-horizontal'
+                );
+                expect(icon1.iconName).toBe('utility:left');
+                expect(icon2.iconName).toBe('utility:right');
+            });
+        });
+
+        it('Image: Compare slider - vertical', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { orientation: 'vertical' };
+
+            return Promise.resolve().then(() => {
+                const compareSlider = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider"]'
+                );
+                const classes = compareSlider.className.split(' ');
+                const icon1 = compareSlider.children[0].children[0];
+                const icon2 = compareSlider.children[0].children[1];
+                expect(classes).toContain(
+                    'avonni-image_compare_slider-vertical'
+                );
+                expect(icon1.iconName).toBe('utility:up');
+                expect(icon2.iconName).toBe('utility:down');
+            });
+        });
+
+        it('Image: Compare slider - show overlay on hover - horizontal', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'horizontal',
+                showBeforeAfterOverlayOnHover: true
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const overlay = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_overlay_container'
+                );
+                const after = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_overlay_after'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mouseover'));
+                expect(overlay.style.display).toBe('block');
+                expect(after.style.top).toBe('10px');
+            });
+        });
+
+        it('Image: Compare slider - show overlay on hover - vertical', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'vertical',
+                showBeforeAfterOverlayOnHover: true
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const overlay = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_overlay_container'
+                );
+                const after = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_overlay_after'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mouseover'));
+                expect(overlay.style.display).toBe('block');
+                expect(after.style.bottom).toBe('10px');
+            });
+        });
+
+        it('Image: Compare slider - show overlay on hover - mouseout', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { showBeforeAfterOverlayOnHover: true };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const overlay = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_overlay_container'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mouseout'));
+                expect(overlay.style.display).toBe('none');
+            });
+        });
+
+        it('Image: Compare slider - moveOn hover - horizontal', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'horizontal',
+                moveOn: 'hover'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const container = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_container'
+                );
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_img_container'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
+                expect(compareImg.style.width).toBe('0px');
+                expect(container.style.cursor).toBe('grab');
+            });
+        });
+
+        it('Image: Compare slider - moveOn hover - vertical', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'vertical',
+                moveOn: 'hover'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_img_container'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
+                expect(compareImg.style.height).toBe('0px');
+            });
+        });
+
+        it('Image: Compare slider - moveOn click - horizontal', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'horizontal',
+                moveOn: 'click'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_img_container'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mousedown'));
+                expect(compareImg.style.width).toBe('0px');
+                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
+                expect(compareImg.style.width).toBe('0px');
+            });
+        });
+
+        it('Image: Compare slider - moveOn click - vertical', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'vertical',
+                moveOn: 'click'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image_compare_img_container'
+                );
+                compareContainer.dispatchEvent(new MouseEvent('mousedown'));
+                expect(compareImg.style.height).toBe('0px');
+                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
+                expect(compareImg.style.height).toBe('0px');
+            });
         });
     });
 });
