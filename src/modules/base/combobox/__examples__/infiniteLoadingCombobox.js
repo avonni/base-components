@@ -30,11 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../combobox';
+import Component from '../../storybookWrappers/combobox/combobox';
 
-customElements.define('ac-base-combobox', Component.CustomElementConstructor);
+customElements.define(
+    'ac-infinite-loading-combobox',
+    Component.CustomElementConstructor
+);
 
-export const Combobox = ({
+export const InfiniteLoadingCombobox = ({
     actions,
     allowSearch,
     backAction,
@@ -70,7 +73,7 @@ export const Combobox = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-base-combobox');
+    const element = document.createElement('ac-infinite-loading-combobox');
     element.actions = actions;
     element.allowSearch = allowSearch;
     element.backAction = backAction;

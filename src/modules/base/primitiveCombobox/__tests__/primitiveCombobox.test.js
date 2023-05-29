@@ -52,11 +52,12 @@ import { deepCopy } from 'c/utilsPrivate';
 //   * resetLevel method
 
 let element;
-describe('PrimitiveCombobox', () => {
+describe('Primitive Combobox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
@@ -75,11 +76,13 @@ describe('PrimitiveCombobox', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownLength).toBe('7-items');
+        expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([{ name: 'ungrouped' }]);
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
+        expect(element.loadMoreOffset).toBe(20);
         expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.messageWhenBadInput).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
@@ -537,6 +540,40 @@ describe('PrimitiveCombobox', () => {
             });
     });
 
+    // enable-infinite-loading
+    it('enableInfiniteLoading = true', () => {
+        element.enableInfiniteLoading = true;
+        element.options = options;
+
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                expect(handler).not.toHaveBeenCalled();
+                element.open();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+            });
+    });
+
+    it('enableInfiniteLoading = false', () => {
+        element.enableInfiniteLoading = false;
+        element.options = options;
+
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                expect(handler).not.toHaveBeenCalled();
+            });
+    });
+
     // field-level-help
     it('Primitive combobox: fieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
@@ -629,6 +666,41 @@ describe('PrimitiveCombobox', () => {
             );
             expect(label.textContent).toBe('A string label');
         });
+    });
+
+    // load-more-offset
+    it('loadMoreOffset', () => {
+        element.loadMoreOffset = 100;
+        element.enableInfiniteLoading = true;
+        element.options = options;
+
+        const handler = jest.fn();
+
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-listbox"]'
+                );
+                jest.spyOn(list, 'scrollHeight', 'get').mockImplementation(
+                    () => 500
+                );
+                jest.spyOn(list, 'scrollTop', 'get').mockImplementation(
+                    () => 399
+                );
+                element.addEventListener('loadmore', handler);
+
+                list.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).not.toHaveBeenCalled();
+
+                jest.spyOn(list, 'scrollTop', 'get').mockImplementation(
+                    () => 400
+                );
+                list.dispatchEvent(new CustomEvent('scroll'));
+                expect(handler).toHaveBeenCalled();
+            });
     });
 
     // loading-state-altermative-text
@@ -1241,6 +1313,63 @@ describe('PrimitiveCombobox', () => {
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 
+    // loadmore
+    it('Primitive combobox: loadmore event', () => {
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.options = options;
+        element.enableInfiniteLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                element.open();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.optionValue).toBeNull();
+                expect(call.detail.searchTerm).toBe('');
+                expect(call.bubbles).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+            });
+    });
+
+    it('Primitive combobox: loadmore event, with a search term', () => {
+        jest.useFakeTimers();
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+        element.options = options;
+        element.enableInfiniteLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                input.click();
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalledTimes(1);
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                input.value = 'Bur';
+                input.dispatchEvent(new CustomEvent('input'));
+                jest.runAllTimers();
+
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-listbox"]'
+                );
+                list.dispatchEvent(new CustomEvent('scroll'));
+
+                expect(handler).toHaveBeenCalledTimes(2);
+                const call = handler.mock.calls[1][0];
+                expect(call.detail.optionValue).toBeNull();
+                expect(call.detail.searchTerm).toBe('Bur');
+            });
+    });
+
     // privateselect
     it('Primitive combobox: privateselect event', () => {
         const handler = jest.fn();
@@ -1260,6 +1389,7 @@ describe('PrimitiveCombobox', () => {
     // search
     // Depends on options and allowSearch
     it('Primitive combobox: search event', () => {
+        jest.useFakeTimers();
         const handler = jest.fn();
         element.addEventListener('search', handler);
         element.options = options;
@@ -1271,7 +1401,9 @@ describe('PrimitiveCombobox', () => {
         return Promise.resolve().then(() => {
             input.value = 'Some search term';
             input.dispatchEvent(new CustomEvent('input'));
+            jest.runAllTimers();
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.optionValue).toBeNull();
             expect(handler.mock.calls[0][0].detail.value).toBe(
                 'Some search term'
             );

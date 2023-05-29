@@ -7,12 +7,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api disabled;
     @api dropdownAlignment;
     @api dropdownLength;
+    @api enableInfiniteLoading;
     @api fieldsLevelHelp;
     @api groups;
     @api isLoading;
     @api isMultiSelect;
     @api label;
     @api loadingStateAlternativeText;
+    @api loadMoreOffset;
     @api messageWhenBadInput;
     @api messageWhenValueMissing;
     @api multiLevelGroups;

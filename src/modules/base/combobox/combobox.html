@@ -77,10 +77,12 @@
                 disabled={disabled}
                 dropdown-alignment={dropdownAlignment}
                 dropdown-length={dropdownLength}
+                enable-infinite-loading={enableInfiniteLoading}
                 groups={groups}
                 label={computedLabel}
                 is-loading={isLoading}
                 is-multi-select={isMultiSelect}
+                load-more-offset={loadMoreOffset}
                 loading-state-alternative-text={loadingStateAlternativeText}
                 message-when-bad-input={messageWhenBadInput}
                 message-when-value-missing={messageWhenValueMissing}
@@ -97,6 +99,7 @@
                 variant="label-hidden"
                 data-element-id="avonni-primitive-combobox-main"
                 onblur={handleBlur}
+                onclose={handleClose}
                 onfocus={handleFocus}
                 onopen={handleOpen}
                 onsearch={handleSearch}
@@ -104,6 +107,7 @@
                 onbackactionclick={handleBackActionClick}
                 onchange={handleChange}
                 onlevelchange={handleLevelChange}
+                onloadmore={handleLoadMore}
                 onprivateselect={handlePrivateSelect}
             ></c-primitive-combobox>
         </div>
