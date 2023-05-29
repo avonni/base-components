@@ -604,6 +604,9 @@ export default class Image extends LightningElement {
             const magnifier = this.template.querySelector(
                 '[data-element-id="magnifier"]'
             );
+            const magnifiedLens = this.template.querySelector(
+                '[data-element-id="magnifier-lens"]'
+            );
             const magnifiedImage = this.template.querySelector(
                 '[data-element-id="magnified-img"]'
             );
@@ -622,6 +625,7 @@ export default class Image extends LightningElement {
                 w: w,
                 h: h,
                 magnifier: magnifier,
+                magnifiedLens: magnifiedLens,
                 magnifiedImage: magnifiedImage,
                 img: img
             };
@@ -651,7 +655,11 @@ export default class Image extends LightningElement {
         const magnifier = this.template.querySelector(
             '[data-element-id="magnifier"]'
         );
+        const magnifiedLens = this.template.querySelector(
+            '[data-element-id="magnifier-lens"]'
+        );
         magnifier.style.display = 'none';
+        magnifiedLens.style.display = 'none';
     }
 
     /**
@@ -660,6 +668,22 @@ export default class Image extends LightningElement {
      * @returns {void}
      */
     standardMagnifier(data) {
+        const ratioW = parseFloat(this.magnifierAttributes.zoomRatioWidth);
+        const ratioH = parseFloat(this.magnifierAttributes.zoomRatioHeight);
+        data.magnifiedLens.style.display = 'block';
+        data.magnifiedLens.style.width = `${
+            ratioW / this.magnifierAttributes.zoomFactor
+        }px`;
+        data.magnifiedLens.style.height = `${
+            ratioH / this.magnifierAttributes.zoomFactor
+        }px`;
+        data.magnifiedLens.style.top = `${
+            data.y - data.h / this.magnifierAttributes.zoomFactor
+        }px`;
+        data.magnifiedLens.style.left = `${
+            data.x - data.w / this.magnifierAttributes.zoomFactor
+        }px`;
+
         switch (this.magnifierAttributes.position) {
             case 'auto':
                 this.autoPositionMagnifier(data);

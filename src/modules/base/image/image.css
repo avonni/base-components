@@ -75,6 +75,13 @@
     display: none;
 }
 
+.avonni-image_magnifier-lens {
+    display: none;
+    position: absolute;
+    background-image: url('/assets/images/magnified-zone.gif');
+    pointer-events: none;
+}
+
 .avonni-image_container {
     position: relative;
     width: fit-content;
