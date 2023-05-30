@@ -362,3 +362,10 @@ CropImageStaticThumbnailMobile.args = {
     thumbnail: true,
     staticImages: true
 };
+
+export const Magnifier = Template.bind({});
+Magnifier.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    magnifierType: 'standard'
+};
