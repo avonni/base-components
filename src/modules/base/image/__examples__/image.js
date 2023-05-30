@@ -51,7 +51,6 @@ export const Image = ({
     staticImages,
     thumbnail,
     width,
-    magnifier,
     magnifierType,
     magnifierAttributes
 }) => {
@@ -72,7 +71,6 @@ export const Image = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
-    element.magnifier = magnifier;
     element.magnifierType = magnifierType;
     element.magnifierAttributes = magnifierAttributes;
     return element;

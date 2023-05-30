@@ -51,7 +51,6 @@ export const ImageList = ({
     staticImages,
     thumbnail,
     width,
-    magnifier,
     magnifierType,
     magnifierAttributes
 }) => {
@@ -72,7 +71,6 @@ export const ImageList = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
-    element.magnifier = magnifier;
     element.magnifierType = magnifierType;
     element.magnifierAttributes = magnifierAttributes;
     return element;

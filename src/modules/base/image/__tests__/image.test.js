@@ -72,14 +72,14 @@ describe('Image', () => {
         expect(element.staticImages).toBeFalsy();
         expect(element.thumbnail).toBeFalsy();
         expect(element.width).toBeUndefined();
-        expect(element.magnifierType).toBe('none');
+        expect(element.magnifierType).toBeUndefined();
         expect(element.magnifierAttributes.position).toBe('auto');
         expect(element.magnifierAttributes.horizontalOffset).toBe(0);
         expect(element.magnifierAttributes.verticalOffset).toBe(0);
-        expect(element.magnifierAttributes.smoothMove).toBeTruthy();
+        expect(element.magnifierAttributes.smoothMove).toBeFalsy();
         expect(element.magnifierAttributes.zoomFactor).toBe(2);
-        expect(element.magnifierAttributes.zoomRatioWidth).toBe(100);
-        expect(element.magnifierAttributes.zoomRatioHeight).toBe(100);
+        expect(element.magnifierAttributes.zoomRatioWidth).toBe('100px');
+        expect(element.magnifierAttributes.zoomRatioHeight).toBe('100px');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -97,141 +97,132 @@ describe('Image', () => {
         });
     });
 
-    // Crop Fit
-    it('Image: Crop Fit Cover', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.cropFit = 'cover';
+    describe('Image: Cropping', () => {
+        it('Image: Crop Fit Cover', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.cropFit = 'cover';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.objectFit).toBe('cover');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.objectFit).toBe('cover');
+            });
         });
-    });
 
-    it('Image: Crop Fit Contain', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.cropFit = 'contain';
+        it('Image: Crop Fit Contain', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.cropFit = 'contain';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.objectFit).toBe('contain');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.objectFit).toBe('contain');
+            });
         });
-    });
 
-    it('Image: Crop Fit Fill', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.cropFit = 'fill';
+        it('Image: Crop Fit Fill', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.cropFit = 'fill';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.objectFit).toBe('fill');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.objectFit).toBe('fill');
+            });
         });
-    });
 
-    it('Image: Crop Fit None', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.cropFit = 'none';
+        it('Image: Crop Fit None', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.cropFit = 'none';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.objectFit).toBe('none');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.objectFit).toBe('none');
+            });
         });
-    });
 
-    // Crop Position
-    it('Image: Crop Position', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.cropFit = 'none';
-        element.cropPositionX = '25';
-        element.cropPositionY = '75';
+        // Crop Position
+        it('Image: Crop Position', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.cropFit = 'none';
+            element.cropPositionX = '25';
+            element.cropPositionY = '75';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.objectPosition).toBe('25% 75%');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.objectPosition).toBe('25% 75%');
+            });
         });
-    });
 
-    // Cropped Img Alignment - left, right, centre
-    it('Image: Cropped Image Left', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.width = '300';
-        element.position = 'left';
+        // Cropped Img Alignment - left, right, centre
+        it('Image: Cropped Image Left', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.width = '300';
+            element.position = 'left';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_float-left'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain('slds-float_left');
+            });
         });
-    });
 
-    it('Image: Cropped Image Center', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.width = '300';
-        element.position = 'center';
+        it('Image: Cropped Image Center', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.width = '300';
+            element.position = 'center';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_margin-auto',
-                'avonni-image_display-block'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain(
+                    'slds-align_absolute-center',
+                    'slds-show'
+                );
+            });
         });
-    });
 
-    it('Image: Cropped Image - Right', () => {
-        element.src = src;
-        element.cropSize = '16x9';
-        element.width = '300';
-        element.position = 'right';
+        it('Image: Cropped Image - Right', () => {
+            element.src = src;
+            element.cropSize = '16x9';
+            element.width = '300';
+            element.position = 'right';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_float-right'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain('slds-float_right');
+            });
         });
-    });
 
-    // img NO Crop - Height Only
-    it('Image: No crop - Height Only', () => {
-        element.src = src;
-        element.height = '225';
+        // img NO Crop - Height Only
+        it('Image: No crop - Height Only', () => {
+            element.src = src;
+            element.height = '225';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.height).toBe('225px');
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.height).toBe('225px');
+            });
         });
     });
 
@@ -244,8 +235,7 @@ describe('Image', () => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const classes = container.className.split(' ');
-            expect(classes).toContain('avonni-image_fluid');
+            expect(container.classList).toContain('avonni-image_fluid');
         });
     });
 
@@ -258,61 +248,51 @@ describe('Image', () => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
+            expect(container.classList).toContain(
                 'avonni-image_fluid',
                 'avonni-image_fluid-grow'
             );
         });
     });
 
-    // position
-    it('Image: Position left', () => {
-        element.src = src;
-        element.position = 'left';
+    describe('Image: Position', () => {
+        it('Image: Position left', () => {
+            element.src = src;
+            element.position = 'left';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_float-left'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain('slds-float_left');
+            });
         });
-    });
 
-    it('Image: Position right', () => {
-        element.src = src;
-        element.position = 'right';
+        it('Image: Position right', () => {
+            element.src = src;
+            element.position = 'right';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_float-right'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain('slds-float_right');
+            });
         });
-    });
 
-    it('Image: Position center', () => {
-        element.src = src;
-        element.position = 'center';
+        it('Image: Position center', () => {
+            element.src = src;
+            element.position = 'center';
 
-        return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const classes = container.className.split(' ');
-            expect(classes).toContain(
-                'avonni-image',
-                'avonni-image_margin-auto',
-                'avonni-image_display-block'
-            );
+            return Promise.resolve().then(() => {
+                const container = element.shadowRoot.querySelector(
+                    '[data-element-id="container"]'
+                );
+                expect(container.classList).toContain(
+                    'slds-align_absolute-center',
+                    'slds-show'
+                );
+            });
         });
     });
 
@@ -394,97 +374,89 @@ describe('Image', () => {
         });
     });
 
-    // Static Images NO CROP
-    it('Image: Static Image - No Crop - Width - No Height', () => {
-        element.src = src;
-        element.staticImages = true;
-        element.width = '400';
+    describe('Image: Static image', () => {
+        // Static Images NO CROP
+        it('Image: Static Image - No Crop - Width - No Height', () => {
+            element.src = src;
+            element.staticImages = true;
+            element.width = '400';
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            const container = element.shadowRoot.querySelector(
-                '[data-element-id="container"]'
-            );
-            const containerClasses = container.className.split(' ');
-            expect(containerClasses).toContain('avonni-image');
-            expect(img.style.maxWidth).toBe('400px');
-            expect(img.style.height).toBeFalsy();
-        });
-    });
-    it('Image: Static Image - No Crop - No Width - Height', () => {
-        element.src = src;
-        element.staticImages = true;
-        element.height = '400';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.maxHeight).toBe('400px');
-            expect(img.style.minHeight).toBe('400px');
-            expect(img.style.height).toBe('400px');
-        });
-    });
-
-    it('Image: Static Image - No Crop - No Width - No Height', () => {
-        element.src = src;
-        element.staticImages = true;
-        element.width = 400;
-        element.height = 300;
-        document.body.appendChild(element);
-
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
+            return Promise.resolve().then(() => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                const container = element.shadowRoot.querySelector(
-                    '[data-element-id="container"]'
-                );
-                const containerClasses = container.className.split(' ');
-                expect(containerClasses).toContain('avonni-image');
-                expect(img.style.minWidth).toBe('400px');
-                expect(img.style.minHeight).toBe('300px');
                 expect(img.style.maxWidth).toBe('400px');
-                expect(img.style.maxHeight).toBe('300px');
+                expect(img.style.height).toBeFalsy();
             });
-    });
+        });
+        it('Image: Static Image - No Crop - No Width - Height', () => {
+            element.src = src;
+            element.staticImages = true;
+            element.height = '400';
 
-    it('Image: Static Image - No Crop - Width - Height', () => {
-        element.src = src;
-        element.staticImages = true;
-        element.height = 400;
-        element.width = 400;
-
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
+            return Promise.resolve().then(() => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                expect(img.style.minWidth).toBe('400px');
-                expect(img.style.minHeight).toBe('400px');
-                expect(img.style.maxWidth).toBe('400px');
                 expect(img.style.maxHeight).toBe('400px');
+                expect(img.style.minHeight).toBe('400px');
+                expect(img.style.height).toBe('400px');
             });
-    });
+        });
 
-    // Static Images - Cropped
-    it('Image: Static Image - Crop 1x1 - Width - No Height', () => {
-        element.src = src;
-        element.staticImages = true;
-        element.width = '400';
-        element.cropSize = '1x1';
+        it('Image: Static Image - No Crop - No Width - No Height', () => {
+            element.src = src;
+            element.staticImages = true;
+            element.width = 400;
+            element.height = 300;
+            document.body.appendChild(element);
 
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.style.maxWidth).toBe('400px');
-            expect(img.style.minWidth).toBe('400px');
+            return Promise.resolve()
+                .then(() => {})
+                .then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.minWidth).toBe('400px');
+                    expect(img.style.minHeight).toBe('300px');
+                    expect(img.style.maxWidth).toBe('400px');
+                    expect(img.style.maxHeight).toBe('300px');
+                });
+        });
+
+        it('Image: Static Image - No Crop - Width - Height', () => {
+            element.src = src;
+            element.staticImages = true;
+            element.height = 400;
+            element.width = 400;
+
+            return Promise.resolve()
+                .then(() => {})
+                .then(() => {
+                    const img = element.shadowRoot.querySelector(
+                        '[data-element-id="img"]'
+                    );
+                    expect(img.style.minWidth).toBe('400px');
+                    expect(img.style.minHeight).toBe('400px');
+                    expect(img.style.maxWidth).toBe('400px');
+                    expect(img.style.maxHeight).toBe('400px');
+                });
+        });
+
+        // Static Images - Cropped
+        it('Image: Static Image - Crop 1x1 - Width - No Height', () => {
+            element.src = src;
+            element.staticImages = true;
+            element.width = '400';
+            element.cropSize = '1x1';
+
+            return Promise.resolve().then(() => {
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.style.maxWidth).toBe('400px');
+                expect(img.style.minWidth).toBe('400px');
+            });
         });
     });
 
@@ -497,8 +469,7 @@ describe('Image', () => {
             const container = element.shadowRoot.querySelector(
                 '[data-element-id="container"]'
             );
-            const classes = container.className.split(' ');
-            expect(classes).toContain('avonni-image_thumbnail');
+            expect(container.classList).toContain('avonni-image_thumbnail');
         });
     });
 
@@ -591,9 +562,13 @@ describe('Image', () => {
                 const magnifiedImage = element.shadowRoot.querySelector(
                     '[data-element-id="magnified-img"]'
                 );
-                img.dispatchEvent(new MouseEvent('mousemove'));
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 6, clientY: 8 })
+                );
                 expect(magnifiedImage.style.transform).toBe(
-                    'translate(-0px, -0px)'
+                    'translate(-12px, -16px)'
                 );
             });
         });
@@ -609,9 +584,13 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                img.dispatchEvent(new MouseEvent('mousemove'));
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 10, clientY: 12 })
+                );
                 expect(magnifiedImage.style.transform).toBe(
-                    'translate(-0px, -0px)'
+                    'translate(-20px, -24px)'
                 );
             });
         });
@@ -627,9 +606,13 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                img.dispatchEvent(new MouseEvent('mousemove'));
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 4, clientY: 5 })
+                );
                 expect(magnifiedImage.style.transform).toBe(
-                    'translate(-0px, -0px)'
+                    'translate(-8px, -10px)'
                 );
             });
         });
@@ -647,6 +630,106 @@ describe('Image', () => {
                 );
                 img.dispatchEvent(new MouseEvent('mouseout'));
                 expect(magnifier.style.display).toBe('none');
+            });
+        });
+    });
+
+    describe('Image: Magnifier boundaries', () => {
+        it('Image: Magnifier boundaries - top', () => {
+            element.src = src;
+            element.magnifierType = 'standard';
+
+            return Promise.resolve().then(() => {
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 10, clientY: -5 })
+                );
+                expect(magnifiedImage.style.transform).toBe(
+                    'translate(-20px, -0px)'
+                );
+            });
+        });
+
+        it('Image: Magnifier boundaries - bottom', () => {
+            element.src = src;
+            element.magnifierType = 'inner';
+
+            return Promise.resolve().then(() => {
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', {
+                        clientX: 10,
+                        clientY: img.height + 5
+                    })
+                );
+                expect(magnifiedImage.style.transform).toBe(
+                    `translate(-20px, -${
+                        img.height * element.magnifierAttributes.zoomFactor
+                    }px)`
+                );
+            });
+        });
+
+        it('Image: Magnifier boundaries - left', () => {
+            element.src = src;
+            element.magnifierType = 'follow';
+
+            return Promise.resolve().then(() => {
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: -5, clientY: 10 })
+                );
+                expect(magnifiedImage.style.transform).toBe(
+                    'translate(-0px, -20px)'
+                );
+            });
+        });
+
+        it('Image: Magnifier boundaries - right', () => {
+            element.src = src;
+            element.magnifierType = 'standard';
+
+            return Promise.resolve().then(() => {
+                const magnifiedImage = element.shadowRoot.querySelector(
+                    '[data-element-id="magnified-img"]'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 400;
+                img.height = 300;
+                img.dispatchEvent(
+                    new MouseEvent('mousemove', {
+                        clientX: img.width + 5,
+                        clientY: 10
+                    })
+                );
+                expect(magnifiedImage.style.transform).toBe(
+                    `translate(-${
+                        img.width * element.magnifierAttributes.zoomFactor
+                    }px, -20px)`
+                );
             });
         });
     });
@@ -724,7 +807,7 @@ describe('Image', () => {
     });
 
     describe('Image: Standard magnifier manual position', () => {
-        var attributes = {
+        const attributes = {
             position: 'left',
             horizontalOffset: 10,
             verticalOffset: 10

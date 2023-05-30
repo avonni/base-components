@@ -30,10 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-image {
-    border-radius: var(--avonni-image-radius-border, 0);
-}
-
 .avonni-image_fluid {
     max-width: 100% !important;
     height: auto;
@@ -51,33 +47,20 @@
     border-radius: var(--avonni-image-radius-border, 0.25rem);
 }
 
-.avonni-image_float-left {
-    float: left;
-}
-
-.avonni-image_float-right {
-    float: right;
-}
-
-.avonni-image_margin-auto {
-    margin-right: auto;
-    margin-left: auto;
-}
-
-.avonni-image_display-block {
-    display: block;
+.avonni-image_fit-content {
+    max-width: fit-content;
 }
 
 .avonni-image_magnifier {
-    position: absolute;
-    border: var(--avonni-image-magnifier-border, 1px solid #ccc);
+    border-width: var(--avonni-magnifier-sizing-border, 1px);
+    border-style: var(--avonni-magnifier-styling-border, solid);
+    border-color: var(--avonni-magnifier-color-border, #ccc);
     pointer-events: none;
     display: none;
 }
 
 .avonni-image_magnifier-lens {
     display: none;
-    position: absolute;
     background-image: url('/assets/images/magnified-zone.gif');
     pointer-events: none;
 }
@@ -85,4 +68,5 @@
 .avonni-image_container {
     position: relative;
     width: fit-content;
+    border-radius: var(--avonni-image-radius-border, 0);
 }

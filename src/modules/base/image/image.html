@@ -48,16 +48,16 @@
         />
         <div
             data-element-id="magnifier-lens"
-            class="avonni-image_magnifier-lens"
+            class="avonni-image_magnifier-lens slds-is-absolute"
         ></div>
         <div
             data-element-id="magnifier"
-            class="avonni-image_magnifier"
+            class="avonni-image_magnifier slds-scrollable_none slds-is-absolute"
             style={computedMagnifierStyle}
         >
             <img
                 src={src}
-                alt="test"
+                class="avonni-image_fit-content"
                 sizes={sizes}
                 style={computedMagnifiedImgStyle}
                 data-element-id="magnified-img"
