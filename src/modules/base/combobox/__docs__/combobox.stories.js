@@ -31,6 +31,7 @@
  */
 
 import { Combobox } from '../__examples__/combobox';
+import { InfiniteLoadingCombobox } from '../__examples__/infiniteLoadingCombobox';
 import {
     options,
     optionsWithAvatars,
@@ -133,6 +134,18 @@ export default {
                 category: 'Appearance'
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the loadmore event handler to retrieve more data.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -228,6 +241,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Loading' },
                 category: 'Parameters'
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the drop-down's scroll position is from the bottom of the drop-down.",
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '20' }
             }
         },
         messageWhenBadInput: {
@@ -460,11 +485,13 @@ export default {
         disabled: false,
         dropdownAlignment: 'left',
         dropdownLength: '7-items',
+        enableInfiniteLoading: false,
         hideClearIcon: false,
         hideSelectedOptions: false,
         isLoading: false,
         isMultiSelect: false,
         loadingStateAlternativeText: 'Loading',
+        loadMoreOffset: 20,
         multiLevelGroups: false,
         readOnly: false,
         removeSelectedOptions: false,
@@ -487,6 +514,7 @@ const search = (props) => {
 };
 
 const Template = (args) => Combobox(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingCombobox(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -508,7 +536,7 @@ ReadOnlyMultiSelect.args = {
     options: options,
     isMultiSelect: true,
     readOnly: true,
-    value: ['no-avatar-dickenson', 'no-avatar-oil-sla']
+    value: ['no-avatar-edge', 'no-avatar-oil-sla']
 };
 
 export const VerticalSelectedOptions = Template.bind({});
@@ -524,11 +552,11 @@ VerticalSelectedOptions.args = {
     value: ['tyrell', 'oil-sla', 'dickenson']
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    label: 'Loading combobox',
-    options: options,
-    isLoading: true
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    allowSearch: true,
+    label: 'Combobox with infinite loading enabled',
+    enableInfiniteLoading: true
 };
 
 export const MultiSelect = Template.bind({});
