@@ -34,8 +34,14 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString as normalize } from 'c/utilsPrivate';
 import standardTemplate from './primitiveIcon.html';
-import { getName, isValidName, polyfill } from 'c/iconUtils';
-import { fetchIconLibrary, hasIconLibrary, getIconLibrary } from './fetch';
+import {
+    fetchIconLibrary,
+    hasIconLibrary,
+    getIconLibrary,
+    getName,
+    isValidName,
+    polyfill
+} from 'c/iconUtils';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],

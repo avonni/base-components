@@ -32,7 +32,8 @@
 
 import { getPathPrefix, getToken } from 'lightning/configProvider';
 import isIframeInEdge from './isIframeInEdge';
-import { IconSVGCreator } from './iconSVGCreator'
+import { IconSVGCreator } from './iconSVGCreator';
+export { fetchIconLibrary, hasIconLibrary, getIconLibrary } from './fetch';
 
 const validNameRe = /^([a-zA-Z]+):([a-zA-Z]\w*)$/;
 const underscoreRe = /_/g;
@@ -125,7 +126,7 @@ let iconCreator;
 // SALESFORCE ?
 // export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethodOfView) => {
 //     if(!iconCreator){
-//         iconCreator = new IconSVGCreator(resetMethodOfView); 
+//         iconCreator = new IconSVGCreator(resetMethodOfView);
 //     }
 
 //     iconInformation.xLinkHref = getIconPath(`${iconInformation.category}:${iconInformation.iconName}`);
@@ -136,20 +137,30 @@ let iconCreator;
  * Create specific svg icon to append in a foreign object.
  * @param {object} iconInformation Information to create specific icon. Valid keys include iconName, category and categoryIconClass.
  * @param {object} foreignObjectForIcon Foreign object that will contain icon's svg.
- * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay, 
- * it will allow to refresh the icons when the libraries are ready. 
+ * @param resetMethodOfView this method will be called if no path are available and the icon needs to be created from template. Since there is a delay,
+ * it will allow to refresh the icons when the libraries are ready.
  * @returns {object} icon's svg created
  */
-export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethodOfView) => {
-    if(!iconCreator){
-        iconCreator = new IconSVGCreator(resetMethodOfView); 
+export const createSVGIcon = (
+    iconInformation,
+    foreignObjectForIcon,
+    resetMethodOfView
+) => {
+    if (!iconCreator) {
+        iconCreator = new IconSVGCreator(resetMethodOfView);
     }
 
     let iconSVG;
     if (!iconCreator.isIconPathAvailable) {
-        iconSVG = iconCreator.createIconFromTemplate(foreignObjectForIcon, iconInformation);
-    } else { 
-        iconInformation.xLinkHref = iconCreator.getIconXLinkHref(iconInformation.category, iconInformation.iconName); 
+        iconSVG = iconCreator.createIconFromTemplate(
+            foreignObjectForIcon,
+            iconInformation
+        );
+    } else {
+        iconInformation.xLinkHref = iconCreator.getIconXLinkHref(
+            iconInformation.category,
+            iconInformation.iconName
+        );
         iconSVG = iconCreator.createIconFromDefaultPath(
             foreignObjectForIcon,
             iconInformation
@@ -157,4 +168,4 @@ export const createSVGIcon = (iconInformation, foreignObjectForIcon, resetMethod
     }
 
     return iconSVG;
-}
+};
