@@ -683,6 +683,9 @@ export default class Image extends LightningElement {
         magnifiedImage.style.height = `${
             data.img.height * this.magnifierAttributes.zoomFactor
         }px`;
+        magnifiedImage.style.width = `${
+            data.img.width * this.magnifierAttributes.zoomFactor
+        }px`;
 
         switch (this.magnifierType) {
             case 'standard':
