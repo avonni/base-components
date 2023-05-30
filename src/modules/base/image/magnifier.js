@@ -113,8 +113,12 @@ export function followMagnifier(
  */
 export function getCursorPosition(event) {
     const rect = event.target.getBoundingClientRect();
-    const posX = event.clientX - rect.left;
-    const posY = event.clientY - rect.top;
+    const x =
+        event.type === 'touchmove' ? event.touches[0].clientX : event.clientX;
+    const y =
+        event.type === 'touchmove' ? event.touches[0].clientY : event.clientY;
+    const posX = x - rect.left;
+    const posY = y - rect.top;
     return { x: posX, y: posY };
 }
 

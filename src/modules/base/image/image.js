@@ -635,7 +635,7 @@ export default class Image extends LightningElement {
     /**
      * Call the right function to handle the magnifier.
      */
-    handleMouseMove(event) {
+    handleMove(event) {
         if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
             return;
         }
@@ -709,7 +709,7 @@ export default class Image extends LightningElement {
     /**
      * Remove the magnifier when mouse out.
      */
-    handleMouseOut() {
+    handleOut() {
         const magnifier = this.template.querySelector(
             '[data-element-id="magnifier"]'
         );

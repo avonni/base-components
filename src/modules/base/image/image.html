@@ -43,8 +43,10 @@
             style={computedStyle}
             loading={lazyLoading}
             onload={handleLoadImage}
-            onmousemove={handleMouseMove}
-            onmouseout={handleMouseOut}
+            onmousemove={handleMove}
+            ontouchmove={handleMove}
+            onmouseout={handleOut}
+            ontouchend={handleOut}
         />
         <div
             data-element-id="magnifier-lens"
