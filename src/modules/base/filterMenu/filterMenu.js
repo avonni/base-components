@@ -1667,8 +1667,9 @@ export default class FilterMenu extends LightningElement {
                  * @event
                  * @name open
                  * @public
+                 * @bubbles
                  */
-                this.dispatchEvent(new CustomEvent('open'));
+                this.dispatchEvent(new CustomEvent('open', { bubbles: true }));
 
                 // update the bounding rect when the menu is toggled
                 this._boundingRect = this.getBoundingClientRect();
@@ -1686,8 +1687,9 @@ export default class FilterMenu extends LightningElement {
                  * @event
                  * @name close
                  * @public
+                 * @bubbles
                  */
-                this.dispatchEvent(new CustomEvent('close'));
+                this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
                 this._previousScroll = undefined;
             }
         }
