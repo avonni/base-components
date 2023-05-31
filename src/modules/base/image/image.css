@@ -52,9 +52,9 @@
 }
 
 .avonni-image_magnifier {
-    border-width: var(--avonni-magnifier-sizing-border, 1px);
-    border-style: var(--avonni-magnifier-styling-border, solid);
-    border-color: var(--avonni-magnifier-color-border, #ccc);
+    border-width: var(--avonni-image-magnifier-sizing-border, 1px);
+    border-style: var(--avonni-image-magnifier-styling-border, solid);
+    border-color: var(--avonni-image-magnifier-color-border, #ccc);
     pointer-events: none;
     display: none;
 }
