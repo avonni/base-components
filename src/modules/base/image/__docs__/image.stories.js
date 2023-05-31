@@ -437,6 +437,20 @@ BaseWithLazyLoading.args = {
     lazyLoading: 'lazy'
 };
 
+export const Compare = Template.bind({});
+Compare.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    compareSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+    compareAttributes: {
+        moveOn: 'click',
+        orientation: 'horizontal',
+        showBeforeAfterOverlay: true,
+        showBeforeAfterOverlayOnHover: false
+    }
+};
+
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
     src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',

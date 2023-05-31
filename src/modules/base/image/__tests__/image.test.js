@@ -501,10 +501,9 @@ describe('Image', () => {
                 const compareSlider = element.shadowRoot.querySelector(
                     '[data-element-id="compare-slider"]'
                 );
-                const classes = compareSlider.className.split(' ');
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
-                expect(classes).toContain(
+                expect(compareSlider.classList).toContain(
                     'avonni-image_compare_slider-horizontal'
                 );
                 expect(icon1.iconName).toBe('utility:left');
@@ -520,10 +519,9 @@ describe('Image', () => {
                 const compareSlider = element.shadowRoot.querySelector(
                     '[data-element-id="compare-slider"]'
                 );
-                const classes = compareSlider.className.split(' ');
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
-                expect(classes).toContain(
+                expect(compareSlider.classList).toContain(
                     'avonni-image_compare_slider-vertical'
                 );
                 expect(icon1.iconName).toBe('utility:up');
@@ -543,13 +541,13 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const overlay = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_overlay_container'
+                    '[data-element-id="compare-overlay-container"]'
                 );
                 const after = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_overlay_after'
+                    '[data-element-id="compare-overlay-after"]'
                 );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
-                expect(overlay.style.display).toBe('block');
+                expect(overlay.classList).not.toContain('slds-hide');
                 expect(after.style.top).toBe('10px');
             });
         });
@@ -566,13 +564,13 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const overlay = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_overlay_container'
+                    '[data-element-id="compare-overlay-container"]'
                 );
                 const after = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_overlay_after'
+                    '[data-element-id="compare-overlay-after"]'
                 );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
-                expect(overlay.style.display).toBe('block');
+                expect(overlay.classList).not.toContain('slds-hide');
                 expect(after.style.bottom).toBe('10px');
             });
         });
@@ -586,10 +584,10 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const overlay = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_overlay_container'
+                    '[data-element-id="compare-overlay-container"]'
                 );
                 compareContainer.dispatchEvent(new MouseEvent('mouseout'));
-                expect(overlay.style.display).toBe('none');
+                expect(overlay.classList).toContain('slds-hide');
             });
         });
 
@@ -604,14 +602,21 @@ describe('Image', () => {
                 const compareContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-container"]'
                 );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 const container = element.shadowRoot.querySelector(
                     '.avonni-image_compare_container'
                 );
                 const compareImg = element.shadowRoot.querySelector(
                     '.avonni-image_compare_img_container'
                 );
-                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
-                expect(compareImg.style.width).toBe('0px');
+                img.width = 200;
+                img.height = 200;
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 100 })
+                );
+                expect(compareImg.style.width).toBe('100px');
                 expect(container.style.cursor).toBe('grab');
             });
         });
@@ -627,11 +632,18 @@ describe('Image', () => {
                 const compareContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-container"]'
                 );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 const compareImg = element.shadowRoot.querySelector(
                     '.avonni-image_compare_img_container'
                 );
-                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
-                expect(compareImg.style.height).toBe('0px');
+                img.width = 200;
+                img.height = 200;
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousemove', { clientY: 100 })
+                );
+                expect(compareImg.style.height).toBe('100px');
             });
         });
 
@@ -649,10 +661,19 @@ describe('Image', () => {
                 const compareImg = element.shadowRoot.querySelector(
                     '.avonni-image_compare_img_container'
                 );
-                compareContainer.dispatchEvent(new MouseEvent('mousedown'));
-                expect(compareImg.style.width).toBe('0px');
-                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
-                expect(compareImg.style.width).toBe('0px');
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 200;
+                img.height = 200;
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousedown', { clientX: 100 })
+                );
+                expect(compareImg.style.width).toBe('100px');
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousemove', { clientX: 125 })
+                );
+                expect(compareImg.style.width).toBe('125px');
             });
         });
 
@@ -670,10 +691,19 @@ describe('Image', () => {
                 const compareImg = element.shadowRoot.querySelector(
                     '.avonni-image_compare_img_container'
                 );
-                compareContainer.dispatchEvent(new MouseEvent('mousedown'));
-                expect(compareImg.style.height).toBe('0px');
-                compareContainer.dispatchEvent(new MouseEvent('mousemove'));
-                expect(compareImg.style.height).toBe('0px');
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                img.width = 200;
+                img.height = 200;
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousedown', { clientY: 100 })
+                );
+                expect(compareImg.style.height).toBe('100px');
+                compareContainer.dispatchEvent(
+                    new MouseEvent('mousemove', { clientY: 125 })
+                );
+                expect(compareImg.style.height).toBe('125px');
             });
         });
     });
