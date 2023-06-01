@@ -283,6 +283,118 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Computed first button class styling.
+     *
+     * @type {string}
+     */
+    get computedFirstButtonClass() {
+        return classSet(
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+        )
+            .add({
+                'slds-button_icon slds-button_icon-border-filled':
+                    this.firstButtonIcon,
+                'slds-button_neutral': !this.firstButtonIcon
+            })
+            .toString();
+    }
+
+    /**
+     * Computed first icon class styling.
+     *
+     * @type {string}
+     */
+    get computedFirstIconClass() {
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_left': this.firstButtonLabel
+        });
+    }
+
+    /**
+     * Computed next button class styling.
+     *
+     * @type {string}
+     */
+    get computedNextButtonClass() {
+        return classSet(
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+        )
+            .add({
+                'slds-button_icon slds-button_icon-border-filled':
+                    !this.nextButtonLabel,
+                'slds-button_neutral': this.nextButtonLabel
+            })
+            .toString();
+    }
+
+    /**
+     * Computed next icon class styling.
+     *
+     * @type {string}
+     */
+    get computedNextIconClass() {
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_left': this.nextButtonLabel
+        });
+    }
+
+    /**
+     * Computed last button class styling.
+     *
+     * @type {string}
+     */
+    get computedLastButtonClass() {
+        return classSet(
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+        )
+            .add({
+                'slds-button_icon slds-button_icon-border-filled':
+                    this.lastButtonIcon,
+                'slds-button_neutral': !this.lastButtonIcon
+            })
+            .toString();
+    }
+
+    /**
+     * Computed last icon class styling.
+     *
+     * @type {string}
+     */
+    get computedLastIconClass() {
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_left': this.lastButtonLabel
+        });
+    }
+
+    /**
+     * Computed previous button class styling.
+     *
+     * @type {string}
+     */
+    get computedPreviousButtonClass() {
+        return classSet(
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+        )
+            .add({
+                'slds-button_icon slds-button_icon-border-filled':
+                    !this.previousButtonLabel,
+                'slds-button_neutral': this.previousButtonLabel
+            })
+            .toString();
+    }
+
+    /**
+     * Computed previous icon class styling.
+     *
+     * @type {string}
+     */
+    get computedPreviousIconClass() {
+        return classSet('slds-button__icon').add({
+            'slds-button__icon_left': this.previousButtonLabel
+        });
+    }
+
+    /**
      * Check whether Left button is disabled.
      *
      * @type {boolean | number}

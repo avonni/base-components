@@ -269,7 +269,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const firstButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-first"]'
+                '[data-element-id="lightning-button-first"]'
             );
             expect(firstButton.textContent).toBe('A string label');
             expect(firstButton.iconName).toBeUndefined();
@@ -282,7 +282,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const firstButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-first"]'
+                '[data-element-id="lightning-button-first"]'
             );
             const firstButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-first"]'
@@ -310,13 +310,13 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const lastButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-last"]'
+                '[data-element-id="lightning-button-last"]'
             );
             const lastButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-last"]'
             );
             expect(lastButton.textContent).toBe('A string label');
-            expect(lastButtonIcon.iconName).toBeUndefined();
+            expect(lastButtonIcon).toBeNull();
         });
     });
 
@@ -326,7 +326,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const lastButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-last"]'
+                '[data-element-id="lightning-button-last"]'
             );
             const lastButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-last"]'
@@ -404,13 +404,13 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const nextButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-next"]'
+                '[data-element-id="lightning-button-next"]'
             );
             const nextButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-next"]'
             );
             expect(nextButton.textContent).toBe('A string label');
-            expect(nextButtonIcon.iconName).toBeUndefined();
+            expect(nextButtonIcon).toBeNull();
         });
     });
 
@@ -420,7 +420,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const nextButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-next"]'
+                '[data-element-id="lightning-button-next"]'
             );
             const nextButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-next"]'
@@ -448,13 +448,13 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const previousButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-previous"]'
+                '[data-element-id="lightning-button-previous"]'
             );
             const previousButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-previous"]'
             );
             expect(previousButton.textContent).toBe('A string label');
-            expect(previousButtonIcon.iconName).toBeUndefined();
+            expect(previousButtonIcon).toBeNull();
         });
     });
 
@@ -464,7 +464,7 @@ describe('Pagination', () => {
 
         return Promise.resolve().then(() => {
             const previousButton = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-no-icon-previous"]'
+                '[data-element-id="lightning-button-previous"]'
             );
             const previousButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-icon-previous"]'
@@ -517,10 +517,10 @@ describe('Pagination', () => {
             '[data-element-id="lightning-icon-next"]'
         );
         const nextButton = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon-next"]'
+            '[data-element-id="lightning-button-next"]'
         );
         const previousButton = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon-previous"]'
+            '[data-element-id="lightning-button-previous"]'
         );
 
         // The previous button should be disabled on first page

@@ -37,81 +37,36 @@
         class={computedContainerClass}
         data-element-id="lightning-button-group"
     >
-        <template if:true={showFirstButton}>
-            <button
-                if:true={firstButtonIcon}
-                class="
-                    slds-button slds-button_icon slds-button_icon-border-filled
-                    avonni-pagination__button_neutral
-                    avonni-pagination__navigation-button
-                "
-                disabled={disabledLeftButtons}
-                data-element-id="lightning-button-icon-first"
-                onclick={first}
-            >
-                <c-primitive-icon
-                    icon-name={firstButtonIconName}
-                    svg-class="slds-button__icon"
-                    variant="bare"
-                    data-element-id="lightning-icon-first"
-                ></c-primitive-icon>
-            </button>
-            <button
-                if:false={firstButtonIcon}
-                class="
-                    slds-button slds-button_neutral
-                    avonni-pagination__button_neutral
-                    avonni-pagination__navigation-button
-                "
-                disabled={disabledLeftButtons}
-                data-element-id="lightning-button-no-icon-first"
-                onclick={first}
-            >
-                <c-primitive-icon
-                    icon-name={firstButtonIconName}
-                    svg-class="slds-button__icon_left slds-button__icon"
-                    variant="bare"
-                    data-element-id="lightning-icon-first"
-                ></c-primitive-icon>
-                {firstButtonLabel}
-            </button>
-        </template>
         <button
-            if:true={previousButtonLabel}
-            class="
-                slds-button slds-button_neutral
-                avonni-pagination__button_neutral
-                avonni-pagination__navigation-button
-            "
+            if:true={showFirstButton}
+            class={computedFirstButtonClass}
             disabled={disabledLeftButtons}
-            data-element-id="lightning-button-no-icon-previous"
+            data-element-id="lightning-button-first"
+            onclick={first}
+        >
+            <c-primitive-icon
+                if:true={firstButtonIconName}
+                icon-name={firstButtonIconName}
+                svg-class={computedFirstIconClass}
+                variant="bare"
+                data-element-id="lightning-icon-first"
+            ></c-primitive-icon>
+            {firstButtonLabel}
+        </button>
+        <button
+            class={computedPreviousButtonClass}
+            disabled={disabledLeftButtons}
+            data-element-id="lightning-button-previous"
             onclick={previous}
         >
             <c-primitive-icon
+                if:true={previousButtonIconName}
                 icon-name={previousButtonIconName}
-                svg-class="slds-button__icon_left slds-button__icon"
+                svg-class={computedPreviousIconClass}
                 variant="bare"
                 data-element-id="lightning-icon-previous"
             ></c-primitive-icon>
             {previousButtonLabel}
-        </button>
-        <button
-            if:false={previousButtonLabel}
-            class="
-                slds-button slds-button_icon slds-button_icon-border-filled
-                avonni-pagination__button_neutral
-                avonni-pagination__navigation-button
-            "
-            disabled={disabledLeftButtons}
-            data-element-id="lightning-button-icon-previous"
-            onclick={previous}
-        >
-            <c-primitive-icon
-                icon-name={previousButtonIconName}
-                svg-class="slds-button__icon"
-                variant="bare"
-                data-element-id="lightning-icon-previous"
-            ></c-primitive-icon>
         </button>
         <button
             if:true={showPreviousEllipsis}
@@ -147,79 +102,36 @@
             {ellipsisText}
         </button>
         <button
-            if:true={nextButtonLabel}
-            class="
-                slds-button slds-button_neutral
-                avonni-pagination__button_neutral
-                avonni-pagination__navigation-button
-            "
+            class={computedNextButtonClass}
             disabled={disabledRightButtons}
-            data-element-id="lightning-button-no-icon-next"
+            data-element-id="lightning-button-next"
             onclick={next}
         >
+            <c-primitive-icon
+                if:true={nextButtonIconName}
+                icon-name={nextButtonIconName}
+                svg-class={computedNextIconClass}
+                variant="bare"
+                data-element-id="lightning-icon-next"
+            ></c-primitive-icon>
             {nextButtonLabel}
-            <c-primitive-icon
-                icon-name={nextButtonIconName}
-                svg-class="slds-button__icon_right slds-button__icon"
-                variant="bare"
-                data-element-id="lightning-icon-next"
-            ></c-primitive-icon>
         </button>
+
         <button
-            if:false={nextButtonLabel}
-            class="
-                slds-button slds-button_icon slds-button_icon-border-filled
-                avonni-pagination__button_neutral
-                avonni-pagination__navigation-button
-            "
+            if:true={showLastButton}
+            class={computedLastButtonClass}
             disabled={disabledRightButtons}
-            data-element-id="lightning-button-icon-next"
-            onclick={next}
+            data-element-id="lightning-button-last"
+            onclick={last}
         >
             <c-primitive-icon
-                icon-name={nextButtonIconName}
-                svg-class="slds-button__icon"
+                if:true={lastButtonIconName}
+                icon-name={lastButtonIconName}
+                svg-class={computedLastIconClass}
                 variant="bare"
-                data-element-id="lightning-icon-next"
+                data-element-id="lightning-icon-last"
             ></c-primitive-icon>
+            {lastButtonLabel}
         </button>
-        <template if:true={showLastButton}>
-            <button
-                if:true={lastButtonIcon}
-                class="
-                    slds-button slds-button_icon slds-button_icon-border-filled
-                    avonni-pagination__button_neutral
-                "
-                disabled={disabledRightButtons}
-                data-element-id="lightning-button-icon-last"
-                onclick={last}
-            >
-                <c-primitive-icon
-                    icon-name={lastButtonIconName}
-                    svg-class="slds-button__icon"
-                    variant="bare"
-                    data-element-id="lightning-icon-last"
-                ></c-primitive-icon>
-            </button>
-            <button
-                if:false={lastButtonIcon}
-                class="
-                    slds-button slds-button_neutral
-                    avonni-pagination__button_neutral
-                    avonni-pagination__navigation-button
-                "
-                disabled={disabledRightButtons}
-                data-element-id="lightning-button-no-icon-last"
-                onclick={last}
-            >
-                {lastButtonLabel}
-                <c-primitive-icon
-                    icon-name={lastButtonIconName}
-                    svg-class="slds-button__icon_right slds-button__icon"
-                    variant="bare"
-                    data-element-id="lightning-icon-last"
-                ></c-primitive-icon>
-            </button>
-        </template>
     </lightning-button-group>
 </template>
