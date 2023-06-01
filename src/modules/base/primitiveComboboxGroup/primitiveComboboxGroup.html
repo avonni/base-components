@@ -63,7 +63,9 @@
                 key={generateKey}
                 class={option.computedClass}
                 role="option"
+                aria-disabled={option.computedAriaDisabled}
                 aria-selected={option.selected}
+                data-aria-disabled={option.computedAriaDisabled}
                 data-element-id="li-option"
                 data-value={option.value}
                 onclick={handleAction}
@@ -108,8 +110,9 @@
                                     slds-listbox__option-text
                                     slds-listbox__option-text_entity
                                 "
-                                >{option.label}</span
                             >
+                                {option.label}
+                            </span>
                             <span
                                 if:true={option.secondaryText}
                                 class="
@@ -117,8 +120,9 @@
                                     slds-listbox__option-meta_entity
                                     slds-truncate
                                 "
-                                >{option.secondaryText}</span
                             >
+                                {option.secondaryText}
+                            </span>
                         </div>
                     </div>
                 </div>

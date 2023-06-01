@@ -30,15 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-primitive-combobox__option {
+.avonni-primitive-combobox__option
+    .avonni-primitive-combobox__option.avonni-primitive-combobox__option_disabled {
     background: var(--avonni-combobox-option-color-background, transparent);
 }
 
-.avonni-primitive-combobox__option:hover,
-.avonni-primitive-combobox__option_focused {
+.avonni-primitive-combobox__option:not(.avonni-primitive-combobox__option_disabled):hover,
+.avonni-primitive-combobox__option.avonni-primitive-combobox__option_focused {
     background: var(--avonni-combobox-option-color-background-hover, #f3f2f2);
 }
 
 .avonni-primitive-combobox__option_focused {
     text-decoration: none;
+}
+
+.avonni-primitive-combobox__option_disabled,
+.avonni-primitive-combobox__option_disabled lightning-icon {
+    color: #dddbda;
+}
+
+.avonni-primitive-combobox__option_disabled
+    .slds-media__body
+    .slds-listbox__option-icon {
+    --avonni-avatar-fallback-icon-color-background: #dddbda;
 }

@@ -2,6 +2,7 @@
  * @typedef {Object} ComboboxOption
  * @name options
  * @property {object} avatar An object with item fields to be rendered as an avatar.
+ * @property {boolean} disabled If true, the option will be disabled.
  * @property {boolean} isLoading If true, the option will be considered having nested options. On click, the back action and a spinner will appear.
  * @property {string} label Label of the option.
  * @property {object[]} options Array of option objects. If present:

@@ -74,6 +74,7 @@ export const optionsWithAvatars = [
     {
         label: 'United Oil SLA',
         value: 'oil-sla',
+        disabled: true,
         avatar: {
             fallbackIconName: 'standard:opportunity'
         },

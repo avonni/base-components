@@ -104,6 +104,7 @@
                     data-element-id="input"
                     onfocus={handleFocus}
                     onblur={handleBlur}
+                    onchange={stopPropagation}
                     onkeydown={handleInputKeyDown}
                     oninput={handleInput}
                 />
@@ -149,6 +150,7 @@
                     aria-multiselectable={isMultiSelect}
                     role="listbox"
                     data-element-id="ul-listbox"
+                    onscroll={handleScroll}
                 >
                     <!-- Back to parent link -->
                     <li
@@ -157,6 +159,7 @@
                         id="backlink"
                         aria-disabled={backLink.computedAriaDisabled}
                         role="option"
+                        data-aria-disabled={backLink.computedAriaDisabled}
                         data-fixed={backLink.fixed}
                         data-group-name="actions"
                         data-position={backLink.position}
@@ -184,134 +187,132 @@
                         </div>
                     </li>
 
-                    <!-- Loading spinner -->
+                    <!-- Top actions -->
+                    <template for:each={topActions} for:item="action">
+                        <li
+                            key={action.name}
+                            class={action.computedClass}
+                            id={action.name}
+                            role="option"
+                            aria-label="Action button"
+                            aria-disabled={action.computedAriaDisabled}
+                            data-aria-disabled={action.computedAriaDisabled}
+                            data-element-id="li-top-action"
+                            data-group-name="actions"
+                            data-fixed={action.fixed}
+                            data-name={action.name}
+                            data-position={action.position}
+                            onclick={handleActionClick}
+                            onmouseenter={handleMouseEnter}
+                        >
+                            <div
+                                if:true={action.iconName}
+                                class="
+                                    slds-media__figure
+                                    slds-listbox__option-icon
+                                "
+                            >
+                                <lightning-icon
+                                    class="slds-current-color"
+                                    icon-name={action.iconName}
+                                    size="x-small"
+                                    aria-hidden="true"
+                                    data-element-id="lightning-icon-top-action"
+                                ></lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <span
+                                    class="
+                                        slds-listbox__option-text
+                                        slds-listbox__option-text_entity
+                                    "
+                                    data-element-id="span-top-action-label"
+                                    >{action.label}</span
+                                >
+                            </div>
+                        </li>
+                    </template>
+                    <!-- No search results -->
                     <li
-                        if:true={showLoader}
-                        class="slds-p-around_large slds-is-relative"
-                        data-element-id="li-loading-spinner"
+                        if:true={showNoSearchResultMessage}
+                        class="slds-listbox__option_plain"
+                        role="presentation"
+                        data-element-id="li-no-matches"
                     >
-                        <lightning-spinner
-                            size="small"
-                            alternative-text={loadingStateAlternativeText}
-                            data-element-id="lightning-spinner"
-                        ></lightning-spinner>
+                        No matches found
                     </li>
 
-                    <template if:false={isLoading}>
-                        <!-- Top actions -->
-                        <template for:each={topActions} for:item="action">
-                            <li
-                                key={action.name}
-                                class={action.computedClass}
-                                id={action.name}
-                                role="option"
-                                aria-label="Action button"
-                                aria-disabled={action.computedAriaDisabled}
-                                data-element-id="li-top-action"
-                                data-group-name="actions"
-                                data-fixed={action.fixed}
-                                data-name={action.name}
-                                data-position={action.position}
-                                onclick={handleActionClick}
-                                onmouseenter={handleMouseEnter}
-                            >
-                                <div
-                                    if:true={action.iconName}
-                                    class="
-                                        slds-media__figure
-                                        slds-listbox__option-icon
-                                    "
-                                >
-                                    <lightning-icon
-                                        class="slds-current-color"
-                                        icon-name={action.iconName}
-                                        size="x-small"
-                                        aria-hidden="true"
-                                        data-element-id="lightning-icon-top-action"
-                                    ></lightning-icon>
-                                </div>
-                                <div class="slds-media__body">
-                                    <span
-                                        class="
-                                            slds-listbox__option-text
-                                            slds-listbox__option-text_entity
-                                        "
-                                        data-element-id="span-top-action-label"
-                                        >{action.label}</span
-                                    >
-                                </div>
-                            </li>
+                    <!-- Groups -->
+                    <li>
+                        <template for:each={computedGroups} for:item="group">
+                            <c-primitive-combobox-group
+                                key={generateKey}
+                                name={group.name}
+                                label={group.label}
+                                options={group.options}
+                                groups={group.groups}
+                                remove-selected-options={removeSelectedOptions}
+                                data-element-id="avonni-primitive-combobox-group"
+                                onprivateoptionclick={handleOptionClick}
+                                onprivateoptionmouseenter={handleMouseEnter}
+                                onclick={focus}
+                            ></c-primitive-combobox-group>
                         </template>
-                        <!-- No search results -->
-                        <li
-                            if:true={showNoSearchResultMessage}
-                            class="slds-listbox__option_plain"
-                            role="presentation"
+                        <!-- Loading spinner -->
+                        <div
+                            if:true={showLoader}
+                            class="slds-p-around_large slds-is-relative"
+                            data-element-id="li-loading-spinner"
                         >
-                            No matches found
-                        </li>
-                        <!-- Groups -->
-                        <li>
-                            <template
-                                for:each={computedGroups}
-                                for:item="group"
+                            <lightning-spinner
+                                size="small"
+                                alternative-text={loadingStateAlternativeText}
+                                data-element-id="lightning-spinner"
+                            ></lightning-spinner>
+                        </div>
+                    </li>
+                    <!-- Bottom actions -->
+                    <template for:each={bottomActions} for:item="action">
+                        <li
+                            key={action.name}
+                            class={action.computedClass}
+                            id={action.name}
+                            role="option"
+                            data-element-id="li-bottom-action"
+                            data-fixed={action.fixed}
+                            data-name={action.name}
+                            data-group-name="actions"
+                            data-position={action.position}
+                            aria-disabled={action.computedAriaDisabled}
+                            data-aria-disabled={action.computedAriaDisabled}
+                            onclick={handleActionClick}
+                            onmouseenter={handleMouseEnter}
+                        >
+                            <div
+                                if:true={action.iconName}
+                                class="
+                                    slds-media__figure
+                                    slds-listbox__option-icon
+                                "
                             >
-                                <c-primitive-combobox-group
-                                    key={generateKey}
-                                    name={group.name}
-                                    label={group.label}
-                                    options={group.options}
-                                    groups={group.groups}
-                                    remove-selected-options={removeSelectedOptions}
-                                    data-element-id="avonni-primitive-combobox-group"
-                                    onprivateoptionclick={handleOptionClick}
-                                    onprivateoptionmouseenter={handleMouseEnter}
-                                    onclick={focus}
-                                ></c-primitive-combobox-group>
-                            </template>
-                        </li>
-                        <!-- Bottom actions -->
-                        <template for:each={bottomActions} for:item="action">
-                            <li
-                                key={action.name}
-                                class={action.computedClass}
-                                id={action.name}
-                                role="option"
-                                data-element-id="li-bottom-action"
-                                data-fixed={action.fixed}
-                                data-name={action.name}
-                                data-group-name="actions"
-                                data-position={action.position}
-                                aria-disabled={action.computedAriaDisabled}
-                                onclick={handleActionClick}
-                                onmouseenter={handleMouseEnter}
-                            >
-                                <div
-                                    if:true={action.iconName}
+                                <lightning-icon
+                                    class="slds-current-color"
+                                    icon-name={action.iconName}
+                                    size="x-small"
+                                    aria-hidden="true"
+                                    data-element-id="lightning-icon-bottom-action"
+                                ></lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <span
                                     class="
-                                        slds-media__figure
-                                        slds-listbox__option-icon
+                                        slds-listbox__option-text
+                                        slds-listbox__option-text_entity
                                     "
+                                    >{action.label}</span
                                 >
-                                    <lightning-icon
-                                        class="slds-current-color"
-                                        icon-name={action.iconName}
-                                        size="x-small"
-                                        aria-hidden="true"
-                                        data-element-id="lightning-icon-bottom-action"
-                                    ></lightning-icon>
-                                </div>
-                                <div class="slds-media__body">
-                                    <span
-                                        class="
-                                            slds-listbox__option-text
-                                            slds-listbox__option-text_entity
-                                        "
-                                        >{action.label}</span
-                                    >
-                                </div>
-                            </li>
-                        </template>
+                            </div>
+                        </li>
                     </template>
                 </ul>
             </div>

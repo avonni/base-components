@@ -399,6 +399,32 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Handle the closing of a menu popover.
+     *
+     * @param {Event} event close event fired by the menu.
+     */
+    handleClose(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when a horizontal menu popover is closed.
+         *
+         * @event
+         * @name close
+         * @param {string} name Name of the closed menu.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('close', {
+                detail: {
+                    name: menuName
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the load more event.
      *
      * @param {Event} event `loadmore` event fired by the menu.
@@ -417,6 +443,32 @@ export default class FilterMenuGroup extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', { detail: { name: menuName } })
+        );
+    }
+
+    /**
+     * Handle the opening of a menu popover.
+     *
+     * @param {Event} event open event fired by the menu.
+     */
+    handleOpen(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when a horizontal menu popover is opened.
+         *
+         * @event
+         * @name open
+         * @param {string} name Name of the opened menu.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('open', {
+                detail: {
+                    name: menuName
+                }
+            })
         );
     }
 

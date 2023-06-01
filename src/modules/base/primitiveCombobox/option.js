@@ -30,7 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    normalizeAriaAttribute,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 /**
@@ -49,6 +53,7 @@ import { classSet } from 'c/utils';
  */
 export default class Option {
     constructor(option, levelPath) {
+        this.disabled = normalizeBoolean(option.disabled);
         this.iconName = option.iconName;
         this.isLoading = normalizeBoolean(option.isLoading);
         this.levelPath = levelPath;
@@ -95,6 +100,15 @@ export default class Option {
     }
 
     /**
+     * String of true or false.
+     *
+     * @type {string}
+     */
+    get computedAriaDisabled() {
+        return normalizeAriaAttribute(this.disabled.toString());
+    }
+
+    /**
      * Class of the option.
      *
      * @type {string}
@@ -104,6 +118,7 @@ export default class Option {
             'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity avonni-primitive-combobox__option'
         )
             .add({
+                'avonni-primitive-combobox__option_disabled': this.disabled,
                 'slds-is-selected': this.selected || this.hasSelectedChildren()
             })
             .toString();
