@@ -41,7 +41,6 @@ export const Pagination = ({
     perPage,
     totalRows,
     ellipsisText,
-    ellipsisClass,
     align,
     firstButtonLabel,
     firstButtonIconName,
@@ -59,7 +58,6 @@ export const Pagination = ({
     element.perPage = perPage;
     element.totalRows = totalRows;
     element.ellipsisText = ellipsisText;
-    element.ellipsisClass = ellipsisClass;
     element.align = align;
     element.firstButtonLabel = firstButtonLabel;
     element.firstButtonIconName = firstButtonIconName;

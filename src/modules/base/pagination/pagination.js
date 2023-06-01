@@ -260,7 +260,9 @@ export default class Pagination extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        return classSet('slds-button slds-button_neutral')
+        return classSet(
+            'slds-button slds-button_neutral avonni-pagination__button_neutral avonni-pagination__navigation-button'
+        )
             .add({
                 'slds-button_stretch': this.align === 'fill'
             })
@@ -268,31 +270,16 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Get index of pagination buttons.
-     *
-     * @type {number}
-     */
-    get index() {
-        return this.limit === 3 ? 2 : this.limit - Math.ceil(this.limit / 3);
-    }
-
-    /**
-     * Check pagination size to display.
-     *
-     * @type {number}
-     */
-    get paginationSize() {
-        let size = Math.ceil(this.totalRows / this.perPage);
-        return size === 0 ? 1 : size;
-    }
-
-    /**
-     * Generate unique Key iD for buttons.
+     * Computed container class styling for alignment attribute.
      *
      * @type {string}
      */
-    get uniqueKey() {
-        return generateUUID();
+    get computedContainerClass() {
+        return classSet({
+            'slds-grid slds-grid_align-center': this.align === 'center',
+            'slds-grid slds-grid_align-end': this.align === 'right',
+            'avonni-pagination__container_fill': this.align === 'fill'
+        }).toString();
     }
 
     /**
@@ -314,15 +301,6 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Check which label or icon to display on the first button.
-     *
-     * @type {boolean}
-     */
-    get showFirstButton() {
-        return this.firstButtonLabel || this.firstButtonIconName;
-    }
-
-    /**
      * Check whether the label is not specified and that the icon is present to display on the first button.
      *
      * @type {string}
@@ -332,12 +310,12 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Check which label or icon to display on the last button.
+     * Get index of pagination buttons.
      *
-     * @type {boolean}
+     * @type {number}
      */
-    get showLastButton() {
-        return this.lastButtonLabel || this.lastButtonIconName;
+    get index() {
+        return this.limit === 3 ? 2 : this.limit - Math.ceil(this.limit / 3);
     }
 
     /**
@@ -347,19 +325,6 @@ export default class Pagination extends LightningElement {
      */
     get lastButtonIcon() {
         return !this.lastButtonLabel && this.lastButtonIconName;
-    }
-
-    /**
-     * Computed container class styling for alignment attribute.
-     *
-     * @type {string}
-     */
-    get computedContainerClass() {
-        return classSet({
-            'slds-grid slds-grid_align-center': this.align === 'center',
-            'slds-grid slds-grid_align-end': this.align === 'right',
-            'avonni-pagination__container_fill': this.align === 'fill'
-        }).toString();
     }
 
     /**
@@ -420,14 +385,61 @@ export default class Pagination extends LightningElement {
         return paginationButtons;
     }
 
+    /**
+     * Check pagination size to display.
+     *
+     * @type {number}
+     */
+    get paginationSize() {
+        let size = Math.ceil(this.totalRows / this.perPage);
+        return size === 0 ? 1 : size;
+    }
+
+    /**
+     * Check which label or icon to display on the first button.
+     *
+     * @type {boolean}
+     */
+    get showFirstButton() {
+        return this.firstButtonLabel || this.firstButtonIconName;
+    }
+
+    /**
+     * Check which label or icon to display on the last button.
+     *
+     * @type {boolean}
+     */
+    get showLastButton() {
+        return this.lastButtonLabel || this.lastButtonIconName;
+    }
+
+    /**
+     * Check whether to display the next ellipsis.
+     *
+     * @type {boolean}
+     */
     get showNextEllipsis() {
         const pages = this.paginationButtons;
         return pages.length && pages[pages.length - 1] !== this.paginationSize;
     }
 
+    /**
+     * Check whether to display the previous ellipsis.
+     *
+     * @type {boolean}
+     */
     get showPreviousEllipsis() {
         const pages = this.paginationButtons;
         return pages.length && pages[0] !== 1;
+    }
+
+    /**
+     * Generate unique Key iD for buttons.
+     *
+     * @type {string}
+     */
+    get uniqueKey() {
+        return generateUUID();
     }
 
     /*
@@ -443,8 +455,11 @@ export default class Pagination extends LightningElement {
      */
     @api
     first() {
+        if (this.disabled) {
+            return;
+        }
         this._value = 1;
-        this.handlerChange();
+        this.handleChange();
     }
 
     /**
@@ -456,7 +471,7 @@ export default class Pagination extends LightningElement {
     previous() {
         if (this.value > 1) {
             this._value = this.value - 1;
-            this.handlerChange();
+            this.handleChange();
         }
     }
 
@@ -469,7 +484,7 @@ export default class Pagination extends LightningElement {
     next() {
         if (this.value < this.paginationSize) {
             this._value = this.value + 1;
-            this.handlerChange();
+            this.handleChange();
         }
     }
 
@@ -481,7 +496,7 @@ export default class Pagination extends LightningElement {
     @api
     last() {
         this._value = this.paginationSize;
-        this.handlerChange();
+        this.handleChange();
     }
 
     /**
@@ -492,7 +507,7 @@ export default class Pagination extends LightningElement {
     @api
     goto(index) {
         this._value = Number(index);
-        this.handlerChange();
+        this.handleChange();
     }
 
     /*
@@ -513,7 +528,7 @@ export default class Pagination extends LightningElement {
     /**
      * Change event handler.
      */
-    handlerChange() {
+    handleChange() {
         /**
          * The event fired when the page changed.
          *
@@ -531,11 +546,17 @@ export default class Pagination extends LightningElement {
         );
     }
 
+    /**
+     * Function to handle the click on the next ellipsis button.
+     */
     handleNextEllipsisClick() {
         const pages = this.paginationButtons;
         this.goto(pages[pages.length - 1] + 1);
     }
 
+    /**
+     * Function to handle the click on the previous ellipsis button.
+     */
     handlePreviousEllipsisClick() {
         this.goto(this.paginationButtons[0] - 1);
     }
@@ -549,9 +570,9 @@ export default class Pagination extends LightningElement {
         );
         buttons.forEach((button) => {
             if (Number(button.value) === this.value) {
-                button.classList.add('slds-button_brand');
+                button.classList.add('avonni-pagination__button_active');
             } else {
-                button.classList.remove('slds-button_brand');
+                button.classList.remove('avonni-pagination__button_active');
             }
         });
     }
