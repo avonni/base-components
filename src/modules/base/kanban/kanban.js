@@ -1050,7 +1050,8 @@ export default class Kanban extends LightningElement {
         const overflowX = fieldContainer.scrollWidth > this._initialScrollWidth;
 
         if (!overflowX && (!overflowY || !this._hasSubGroups)) {
-            this._currentScrollTarget.scrollBy(scrollStep.x, scrollStep.y);
+            this._currentScrollTarget.scrollLeft += scrollStep.x;
+            this._currentScrollTarget.scrollTop += scrollStep.y;
             scrollStep.x =
                 this._currentScrollTarget.scrollLeft === 0 && scrollStep.x < 0
                     ? 0
@@ -1776,12 +1777,13 @@ export default class Kanban extends LightningElement {
             ? this._draggedTile
             : this._draggedGroup;
         const style = window.getComputedStyle(draggedItem);
-        const matrix = new DOMMatrixReadOnly(style.transform);
+        const matrixValues = style.transform
+            .match(/matrix.*\((.+)\)/)[1]
+            .split(', ');
         const currentTranslate = {
-            translateX: matrix.m41,
-            translateY: matrix.m42
+            translateX: parseFloat(matrixValues[4]),
+            translateY: parseFloat(matrixValues[5])
         };
-
         draggedItem.style.transform = `translateX(${
             currentTranslate.translateX + delta.x
         }px) translateY(${
