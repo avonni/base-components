@@ -1571,7 +1571,7 @@ export default class Kanban extends LightningElement {
             return null;
         }
 
-        const resizeObserver = new AvonniResizeObserver(() => {
+        return new AvonniResizeObserver(container, () => {
             this._scrollWidth = this.template.querySelector(
                 '[data-element-id="avonni-kanban__container"]'
             ).scrollWidth;
@@ -1583,8 +1583,6 @@ export default class Kanban extends LightningElement {
             const { x, y } = this.getBoundingClientRect();
             this._kanbanOffset = { x, y };
         });
-        resizeObserver.observe(container);
-        return resizeObserver;
     }
 
     /**
