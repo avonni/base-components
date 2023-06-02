@@ -109,7 +109,7 @@ export function followMagnifier(
 /**
  * Get the position of the cursor relative to the image.
  *
- * @returns {x: number, y: number} posX, posY
+ * @returns {object} posX, posY
  */
 export function getCursorPosition(event) {
     const rect = event.target.getBoundingClientRect();
