@@ -289,12 +289,10 @@ export default class Pagination extends LightningElement {
      */
     get computedFirstButtonClass() {
         return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
         )
             .add({
-                'slds-button_icon slds-button_icon-border-filled':
-                    this.firstButtonIcon,
-                'slds-button_neutral': !this.firstButtonIcon
+                'slds-button_icon': this.firstButtonIcon
             })
             .toString();
     }
@@ -317,12 +315,10 @@ export default class Pagination extends LightningElement {
      */
     get computedNextButtonClass() {
         return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
         )
             .add({
-                'slds-button_icon slds-button_icon-border-filled':
-                    !this.nextButtonLabel,
-                'slds-button_neutral': this.nextButtonLabel
+                'slds-button_icon': !this.nextButtonLabel
             })
             .toString();
     }
@@ -345,12 +341,10 @@ export default class Pagination extends LightningElement {
      */
     get computedLastButtonClass() {
         return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
         )
             .add({
-                'slds-button_icon slds-button_icon-border-filled':
-                    this.lastButtonIcon,
-                'slds-button_neutral': !this.lastButtonIcon
+                'slds-button_icon': this.lastButtonIcon
             })
             .toString();
     }
@@ -373,12 +367,10 @@ export default class Pagination extends LightningElement {
      */
     get computedPreviousButtonClass() {
         return classSet(
-            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button'
+            'slds-button avonni-pagination__button_neutral avonni-pagination__navigation-button slds-button_neutral'
         )
             .add({
-                'slds-button_icon slds-button_icon-border-filled':
-                    !this.previousButtonLabel,
-                'slds-button_neutral': this.previousButtonLabel
+                'slds-button_icon': !this.previousButtonLabel
             })
             .toString();
     }

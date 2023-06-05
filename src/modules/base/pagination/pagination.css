@@ -35,12 +35,12 @@
 }
 
 .avonni-pagination__navigation-button {
-    border-width: var(--avonni-pagination-button-sizing-border, 1px);
+    border-width: var(--avonni-pagination-button-sizing-border, 12px);
     border-style: var(--avonni-pagination-button-styling-border, solid);
 }
 
 .avonni-pagination__button_neutral:hover:disabled,
-.slds-button_icon.avonni-pagination__button_neutral:active:disabled,
+.slds-button.avonni-pagination__button_neutral:active:disabled,
 .slds-button.avonni-pagination__button_active:disabled,
 .avonni-pagination__button_neutral:disabled {
     background-color: var(
