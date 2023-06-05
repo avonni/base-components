@@ -57,19 +57,19 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-pagination-button-color-background-hover
+ * @name --avonni-pagination-button-color-background-disabled
  * @default #fff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-pagination-button-color-border-hover
+ * @name --avonni-pagination-button-color-border-disabled
  * @default #c9c9c9
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-pagination-button-text-color-hover
+ * @name --avonni-pagination-button-text-color-disabled
  * @default #c9c9c9
  * @type color
  */
