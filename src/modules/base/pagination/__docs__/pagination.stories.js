@@ -116,16 +116,6 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        ellipsisClass: {
-            name: 'ellipsis-class',
-            control: {
-                type: 'text'
-            },
-            description: "Class(es) to apply to the 'ellipsis' placeholders.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         firstButtonLabel: {
             name: 'first-button-label',
             control: {
