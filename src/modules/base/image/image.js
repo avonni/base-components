@@ -980,7 +980,7 @@ export default class Image extends LightningElement {
      * Slide the compare slider on hover.
      */
     hoverSlider(event, compareElements) {
-        const pos = this.getPos(event);
+        const pos = getCursorPosition(event);
         compareElements.slider.style.pointerEvents = 'none';
         if (this.compareAttributes.orientation === 'horizontal') {
             compareElements.slider.style.left = `${pos.x}px`;
