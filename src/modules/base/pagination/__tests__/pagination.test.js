@@ -48,7 +48,7 @@ describe('Pagination', () => {
         document.body.appendChild(element);
     });
 
-    describe('Pagination: Attributes', () => {
+    describe('Attributes', () => {
         it('Default attributes', () => {
             expect(element.align).toBe('left');
             expect(element.disabled).toBeFalsy();
@@ -624,7 +624,7 @@ describe('Pagination', () => {
         });
     });
 
-    describe('Pagination: Methods', () => {
+    describe('Methods', () => {
         describe('First', () => {
             // Depends on totalRows and value. Checks change event.
             it('First', () => {
