@@ -83,53 +83,66 @@
     width: fit-content;
 }
 
-.avonni-image_compare_container {
+.avonni-image__compare-container {
     top: 0;
     height: 100%;
     width: 100%;
 }
 
-.avonni-image_compare_slider {
+.avonni-image__compare-slider {
     position: relative;
-    background-color: var(--avonni-image-compare-slider-color, #1b96ff);
+    background-color: var(--avonni-image-compare-slider-color-border, #1b96ff);
 }
 
-.avonni-image_compare_slider-horizontal {
+.avonni-image__compare-slider_horizontal {
     height: 100%;
     width: 3px;
     left: 50%;
 }
 
-.avonni-image_compare_slider-vertical {
+.avonni-image__compare-slider_vertical {
     height: 3px;
     width: 100%;
     top: 50%;
 }
 
-.avonni-image_compare_slider-handle {
+.avonni-image__compare-slider-handle {
     display: flex;
     justify-content: space-around;
     top: calc(50% - 35px / 2);
     left: calc(50% - 35px / 2);
     width: 35px;
     height: 35px;
-    background-color: var(--avonni-image-compare-slider-handle-color, white);
+    background-color: var(
+        --avonni-image-compare-slider-handle-color-background,
+        white
+    );
     opacity: var(--avonni-image-compare-slider-handle-opacity, 0.8);
     border-radius: 50%;
-    border: 2px solid var(--avonni-image-compare-slider-color, #1b96ff);
+    border: 2px solid var(--avonni-image-compare-slider-color-border, #1b96ff);
     transition: all 0.2s ease;
 }
 
-.avonni-image_compare_slider-handle:hover {
+.avonni-image__compare-slider-handle lightning-icon {
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-image-compare-slider-handle-icon-color-foreground,
+        #747474
+    );
+}
+
+.avonni-image__compare-slider-handle:hover {
     cursor: grab;
     scale: 1.1;
     transition: all 0.2s ease;
 }
 
-.avonni-image_compare_overlay {
+.avonni-image__compare-overlay {
     width: fit-content;
     height: fit-content;
-    background-color: var(--avonni-image-compare-overlay-color, white);
+    background-color: var(
+        --avonni-image-compare-overlay-color-background,
+        white
+    );
     opacity: var(--avonni-image-compare-overlay-opacity, 0.8);
     padding: 5px;
     border-width: var(--avonni-image-compare-overlay-sizing-border, 0);
@@ -139,13 +152,13 @@
     pointer-events: none;
 }
 
-.avonni-image_compare_img_container {
+.avonni-image__compare-img-container {
     top: 0;
     width: 0;
     height: 0;
 }
 
-.avonni-image_compare_img {
+.avonni-image__compare-img {
     max-width: fit-content;
     height: auto;
 }

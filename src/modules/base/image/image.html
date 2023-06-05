@@ -68,7 +68,7 @@
         </div>
         <div
             if:true={compareSrc}
-            class="avonni-image_compare_container slds-is-absolute"
+            class="avonni-image__compare-container slds-is-absolute"
             data-element-id="compare-container"
             onmousemove={handleCompareMouseMove}
             onmousedown={handleCompareMouseDown}
@@ -78,14 +78,15 @@
         >
             <div
                 class="
-                    avonni-image_compare_img_container
+                    avonni-image__compare-img-container
                     slds-is-absolute
                     slds-scrollable_none
                 "
+                data-element-id="compare-img-container"
             >
                 <img
                     src={compareSrc}
-                    class="avonni-image_compare_img"
+                    class="avonni-image__compare-img"
                     style={computedStyle}
                     loading={lazyLoading}
                 />
@@ -93,26 +94,27 @@
             <div class={computedSliderClass} data-element-id="compare-slider">
                 <div
                     class="
-                        avonni-image_compare_slider-handle
+                        avonni-image__compare-slider-handle
                         slds-is-absolute
                         slds-align_absolute-center
                     "
+                    data-element-id="compare-slider-handle"
                 >
-                    <lightning-icon icon-name={iconName1} size="x-small">
+                    <lightning-icon icon-name={compareIconName1} size="x-small">
                     </lightning-icon>
-                    <lightning-icon icon-name={iconName2} size="x-small">
+                    <lightning-icon icon-name={compareIconName2} size="x-small">
                     </lightning-icon>
                 </div>
             </div>
             <div class="slds-hide" data-element-id="compare-overlay-container">
                 <div
-                    class="avonni-image_compare_overlay slds-is-absolute"
+                    class="avonni-image__compare-overlay slds-is-absolute"
                     data-element-id="compare-overlay-before"
                 >
                     Before
                 </div>
                 <div
-                    class="avonni-image_compare_overlay slds-is-absolute"
+                    class="avonni-image__compare-overlay slds-is-absolute"
                     data-element-id="compare-overlay-after"
                 >
                     After

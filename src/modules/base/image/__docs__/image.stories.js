@@ -293,7 +293,6 @@ export default {
             zoomRatioWidth: 100,
             zoomRatioHeight: 100
         },
-        compareSrc: '',
         compareAttributes: {
             orientation: 'horizontal',
             moveOn: 'click',

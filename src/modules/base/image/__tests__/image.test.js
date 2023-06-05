@@ -517,7 +517,7 @@ describe('Image', () => {
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
                 expect(compareSlider.classList).toContain(
-                    'avonni-image_compare_slider-horizontal'
+                    'avonni-image__compare-slider_horizontal'
                 );
                 expect(icon1.iconName).toBe('utility:left');
                 expect(icon2.iconName).toBe('utility:right');
@@ -535,7 +535,7 @@ describe('Image', () => {
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
                 expect(compareSlider.classList).toContain(
-                    'avonni-image_compare_slider-vertical'
+                    'avonni-image__compare-slider_vertical'
                 );
                 expect(icon1.iconName).toBe('utility:up');
                 expect(icon2.iconName).toBe('utility:down');
@@ -619,10 +619,10 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 const container = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_container'
+                    '.avonni-image__compare-container'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_img_container'
+                    '.avonni-image__compare-img-container'
                 );
                 img.width = 200;
                 img.height = 200;
@@ -649,7 +649,7 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_img_container'
+                    '.avonni-image__compare-img-container'
                 );
                 img.width = 200;
                 img.height = 200;
@@ -672,7 +672,7 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_img_container'
+                    '.avonni-image__compare-img-container'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
@@ -702,7 +702,7 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image_compare_img_container'
+                    '.avonni-image__compare-img-container'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'

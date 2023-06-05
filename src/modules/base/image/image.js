@@ -94,7 +94,6 @@ const MOVE_ON_OPTIONS = {
  */
 export default class Image extends LightningElement {
     _aspectRatio;
-    _compareSrc;
     _compareAttributes = {
         orientation: COMPARE_ORIENTATION.default,
         moveOn: MOVE_ON_OPTIONS.default,
@@ -151,14 +150,7 @@ export default class Image extends LightningElement {
      * @public
      * @type {string}
      */
-    @api
-    get compareSrc() {
-        return this._compareSrc;
-    }
-
-    set compareSrc(value) {
-        this._compareSrc = value;
-    }
+    @api compareSrc;
 
     /**
      * Compare attributes: orientation, moveOn, showBeforeAfterOverlay, showBeforeAfterOverlayOnHover.
@@ -698,39 +690,14 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get computedSliderClass() {
-        return classSet('avonni-image_compare_slider')
+        return classSet('avonni-image__compare-slider')
             .add({
-                'avonni-image_compare_slider-horizontal':
+                'avonni-image__compare-slider_horizontal':
                     this.compareAttributes.orientation === 'horizontal',
-                'avonni-image_compare_slider-vertical':
+                'avonni-image__compare-slider_vertical':
                     this.compareAttributes.orientation === 'vertical'
             })
             .toString();
-    }
-
-    /**
-     * Gets all the needed element for comparing.
-     *
-     * @type {Object}
-     */
-    get compareElements() {
-        const container = this.template.querySelector(
-            '.avonni-image_compare_container'
-        );
-        const slider = this.template.querySelector(
-            '.avonni-image_compare_slider'
-        );
-        const compareImg = this.template.querySelector(
-            '.avonni-image_compare_img_container'
-        );
-        const handle = this.template.querySelector(
-            '.avonni-image_compare_slider-handle'
-        );
-        const overlay = this.template.querySelector(
-            '[data-element-id="compare-overlay-container"]'
-        );
-
-        return { container, slider, compareImg, handle, overlay };
     }
 
     /**
@@ -738,7 +705,7 @@ export default class Image extends LightningElement {
      *
      * @type {string}
      */
-    get iconName1() {
+    get compareIconName1() {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'utility:left'
             : 'utility:up';
@@ -749,7 +716,7 @@ export default class Image extends LightningElement {
      *
      * @type {string}
      */
-    get iconName2() {
+    get compareIconName2() {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'utility:right'
             : 'utility:down';
@@ -762,19 +729,27 @@ export default class Image extends LightningElement {
         if (this.compareAttributes.moveOn !== 'click') {
             return;
         }
-        const compareElements = this.compareElements;
-        const rect = compareElements.container.getBoundingClientRect();
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const rect = container.getBoundingClientRect();
         this._isDragging = true;
-        compareElements.slider.style.transition = 'all 0.15s ease-in-out';
-        compareElements.compareImg.style.transition = 'all 0.15s ease-in-out';
+        slider.style.transition = 'all 0.15s ease-in-out';
+        compareImg.style.transition = 'all 0.15s ease-in-out';
         const posX = event.clientX - rect.left;
         const posY = event.clientY - rect.top;
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareElements.slider.style.left = `${posX}px`;
-            compareElements.compareImg.style.width = `${posX}px`;
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
         } else {
-            compareElements.slider.style.top = `${posY}px`;
-            compareElements.compareImg.style.height = `${posY}px`;
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
         }
     }
 
@@ -782,13 +757,12 @@ export default class Image extends LightningElement {
      * Call the right compare slider type on mouse move.
      */
     handleCompareMouseMove(event) {
-        const compareElements = this.compareElements;
         const img = this.template.querySelector('[data-element-id="img"]');
 
         if (this.compareAttributes.moveOn === 'hover') {
-            this.hoverSlider(event, compareElements);
+            this.hoverSlider(event);
         } else {
-            this.clickSlider(event, compareElements, img);
+            this.clickSlider(event, img);
         }
     }
 
@@ -796,9 +770,11 @@ export default class Image extends LightningElement {
      * Remove the before after overlay on mouse out.
      */
     handleCompareMouseOut() {
-        const compareElements = this.compareElements;
+        const overlay = this.template.querySelector(
+            '[data-element-id="compare-overlay-container"]'
+        );
         if (!this._initialState) {
-            compareElements.overlay.classList.add('slds-hide');
+            overlay.classList.add('slds-hide');
         }
     }
 
@@ -806,9 +782,11 @@ export default class Image extends LightningElement {
      * Show the before after overlay on hover.
      */
     handleCompareMouseOver() {
-        const compareElements = this.compareElements;
+        const overlay = this.template.querySelector(
+            '[data-element-id="compare-overlay-container"]'
+        );
         if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
-            compareElements.overlay.classList.remove('slds-hide');
+            overlay.classList.remove('slds-hide');
             this.placeBeforeAfterOverlay();
         }
     }
@@ -833,7 +811,7 @@ export default class Image extends LightningElement {
             if (this.magnifier) {
                 this.handleMagnifier(img);
             }
-            if (this.compareSrc !== '') {
+            if (this.compareSrc) {
                 this.handleCompareSlider(img);
             }
         }
@@ -930,26 +908,35 @@ export default class Image extends LightningElement {
     /**
      * Handle the 'click' type slider.
      */
-    clickSlider(event, compareElements, img) {
-        const rect = compareElements.container.getBoundingClientRect();
+    clickSlider(event, img) {
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const rect = container.getBoundingClientRect();
         const posX = event.clientX - rect.left;
         const posY = event.clientY - rect.top;
-        compareElements.slider.style.transition = 'none';
-        compareElements.compareImg.style.transition = 'none';
+        slider.style.transition = 'none';
+        compareImg.style.transition = 'none';
         if (
             this.compareAttributes.orientation === 'horizontal' &&
             this._isDragging &&
             posX <= img.width
         ) {
-            compareElements.slider.style.left = `${posX}px`;
-            compareElements.compareImg.style.width = `${posX}px`;
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
         } else if (
             this.compareAttributes.orientation === 'vertical' &&
             this._isDragging &&
             event.clientY <= img.height
         ) {
-            compareElements.slider.style.top = `${posY}px`;
-            compareElements.compareImg.style.height = `${posY}px`;
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
         }
     }
 
@@ -957,21 +944,28 @@ export default class Image extends LightningElement {
      * Initiate the compare slider.
      */
     handleCompareSlider(img) {
-        const compareElements = this.compareElements;
-
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
+        const overlay = this.template.querySelector(
+            '[data-element-id="compare-overlay-container"]'
+        );
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareElements.compareImg.style.width = `${img.width / 2}px`;
-            compareElements.compareImg.style.height = '100%';
+            compareImg.style.width = `${img.width / 2}px`;
+            compareImg.style.height = '100%';
         } else {
-            compareElements.compareImg.style.height = `${img.height / 2}px`;
-            compareElements.compareImg.style.width = '100%';
-            compareElements.handle.style.flexDirection = 'column';
+            compareImg.style.height = `${img.height / 2}px`;
+            compareImg.style.width = '100%';
+            handle.style.flexDirection = 'column';
         }
 
         this._initialState = this.compareAttributes.showBeforeAfterOverlay;
 
         if (this._initialState) {
-            compareElements.overlay.classList.remove('slds-hide');
+            overlay.classList.remove('slds-hide');
             this.placeBeforeAfterOverlay();
         }
     }
@@ -979,17 +973,26 @@ export default class Image extends LightningElement {
     /**
      * Slide the compare slider on hover.
      */
-    hoverSlider(event, compareElements) {
+    hoverSlider(event) {
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
         const pos = getCursorPosition(event);
-        compareElements.slider.style.pointerEvents = 'none';
+        slider.style.pointerEvents = 'none';
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareElements.slider.style.left = `${pos.x}px`;
-            compareElements.compareImg.style.width = `${pos.x}px`;
+            slider.style.left = `${pos.x}px`;
+            compareImg.style.width = `${pos.x}px`;
         } else {
-            compareElements.slider.style.top = `${pos.y}px`;
-            compareElements.compareImg.style.height = `${pos.y}px`;
+            slider.style.top = `${pos.y}px`;
+            compareImg.style.height = `${pos.y}px`;
         }
-        compareElements.container.style.cursor = 'grab';
+        container.style.cursor = 'grab';
     }
 
     /**
