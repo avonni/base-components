@@ -48,4 +48,6 @@ export default class Image extends LightningElement {
     @api staticImages;
     @api thumbnail;
     @api width;
+    @api magnifierType;
+    @api magnifierAttributes;
 }

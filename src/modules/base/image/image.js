@@ -31,8 +31,19 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeObject
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import {
+    applyBoundaries,
+    followMagnifier,
+    getCursorPosition,
+    innerMagnifier,
+    standardMagnifier
+} from './magnifier';
 
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
@@ -55,6 +66,16 @@ const LAZY_LOADING_VARIANTS = {
 const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
+const MAGNIFIER_TYPES = {
+    valid: ['standard', 'inner', 'follow'],
+    default: undefined
+};
+const MAGNIFIER_POSITIONS = {
+    valid: ['auto', 'left', 'right', 'top', 'bottom'],
+    default: 'auto'
+};
+const DEFAULT_ZOOM_FACTOR = 2;
+
 /**
  * @class
  * @descriptor avonni-image
@@ -62,34 +83,27 @@ const CROP_POSITION_Y_DEFAULT = '50';
  * @public
  */
 export default class Image extends LightningElement {
-    /**
-     * The value to set for the 'alt' attribute.
-     *
-     * @public
-     * @type  {string}
-     */
-    @api alternativeText;
-    /**
-     * Position of the image on the X axis (in percent).
-     *
-     * @public
-     * @type {number}
-     */
-    @api cropPositionX = CROP_POSITION_X_DEFAULT;
-    /**
-     * Position of the image on the Y axix (in percent).
-     *
-     * @public
-     * @type {number}
-     */
-    @api cropPositionY = CROP_POSITION_Y_DEFAULT;
-
+    _aspectRatio;
+    _cropPositionX = CROP_POSITION_X_DEFAULT;
+    _cropPositionY = CROP_POSITION_Y_DEFAULT;
     _cropFit = CROP_FIT.default;
     _cropSize;
     _fluid = false;
     _fluidGrow = false;
     _height;
+    _imgElementWidth;
+    _imgElementHeight;
     _lazyLoading = LAZY_LOADING_VARIANTS.default;
+    _magnifierType = MAGNIFIER_TYPES.default;
+    _magnifierAttributes = {
+        position: MAGNIFIER_POSITIONS.default,
+        horizontalOffset: 0,
+        verticalOffset: 0,
+        smoothMove: false,
+        zoomFactor: DEFAULT_ZOOM_FACTOR,
+        zoomRatioWidth: '100px',
+        zoomRatioHeight: '100px'
+    };
     _position = POSITIONS.default;
     _sizes;
     _src;
@@ -98,10 +112,6 @@ export default class Image extends LightningElement {
     _thumbnail = false;
     _width;
 
-    _imgElementWidth;
-    _imgElementHeight;
-    _aspectRatio;
-
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
@@ -109,13 +119,58 @@ export default class Image extends LightningElement {
      */
 
     /**
-     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
+     * The value to set for the 'alt' attribute.
+     *
+     * @public
+     * @type  {string}
+     */
+    @api alternativeText;
+
+    /**
+     * Position of the image on the X axis (in percent).
+     *
+     * @public
+     * @type {number}
+     */
+    @api
+    get cropPositionX() {
+        return this._cropPositionX;
+    }
+
+    set cropPositionX(value) {
+        const normalizedValue = parseFloat(value);
+        if (!isNaN(normalizedValue)) {
+            this._cropPositionX = normalizedValue;
+        }
+    }
+
+    /**
+     * Position of the image on the Y axis (in percent).
+     *
+     * @public
+     * @type {number}
+     */
+    @api
+    get cropPositionY() {
+        return this._cropPositionY;
+    }
+
+    set cropPositionY(value) {
+        const normalizedValue = parseFloat(value);
+        if (!isNaN(normalizedValue)) {
+            this._cropPositionY = normalizedValue;
+        }
+    }
+
+    /**
+     * Image fit behavior inside its container. Valid values include cover, contain, fill and none.
      *
      * @public
      * @type {string}
      * @default cover
      */
-    @api get cropFit() {
+    @api
+    get cropFit() {
         return this._cropFit;
     }
 
@@ -133,7 +188,8 @@ export default class Image extends LightningElement {
      * @type {string}
      * @default none
      */
-    @api get cropSize() {
+    @api
+    get cropSize() {
         return this._cropSize;
     }
 
@@ -178,7 +234,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * If present, the image is reponsive and will take up 100% of its container width.
+     * If present, the image is responsive and will take up 100% of its container width.
      *
      * @public
      * @type {boolean}
@@ -230,6 +286,96 @@ export default class Image extends LightningElement {
             fallbackValue: LAZY_LOADING_VARIANTS.default,
             validValues: LAZY_LOADING_VARIANTS.valid
         });
+    }
+
+    /**
+     * Specifies the magnifier type. If a type is selected, a zoom of the hovered area will be displayed. Valid values include standard, inner and follow.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get magnifierType() {
+        return this._magnifierType;
+    }
+
+    set magnifierType(value) {
+        this._magnifierType = normalizeString(value, {
+            fallbackValue: MAGNIFIER_TYPES.default,
+            validValues: MAGNIFIER_TYPES.valid
+        });
+    }
+
+    /**
+     * Magnifier attributes: position, horizontalOffset, verticalOffset, smoothing, zoomFactor, zoomRatioWidth and zoomRatioHeight.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get magnifierAttributes() {
+        return this._magnifierAttributes;
+    }
+
+    set magnifierAttributes(value) {
+        const normalizedAttributes = normalizeObject(value);
+
+        this._magnifierAttributes.position = normalizeString(
+            normalizedAttributes.position,
+            {
+                fallbackValue: MAGNIFIER_POSITIONS.default,
+                validValues: MAGNIFIER_POSITIONS.valid
+            }
+        );
+
+        if (!isNaN(normalizedAttributes.horizontalOffset)) {
+            this._magnifierAttributes.horizontalOffset = Number(
+                normalizedAttributes.horizontalOffset
+            );
+        } else {
+            this._magnifierAttributes.horizontalOffset = 0;
+        }
+
+        if (
+            !isNaN(normalizedAttributes.verticalOffset) &&
+            normalizedAttributes.verticalOffset !== ''
+        ) {
+            this._magnifierAttributes.verticalOffset = Number(
+                normalizedAttributes.verticalOffset
+            );
+        } else {
+            this._magnifierAttributes.verticalOffset = 0;
+        }
+
+        this._magnifierAttributes.smoothMove = normalizeBoolean(
+            normalizedAttributes.smoothMove
+        );
+
+        this._magnifierAttributes.zoomFactor = !isNaN(
+            normalizedAttributes.zoomFactor
+        )
+            ? normalizedAttributes.zoomFactor
+            : DEFAULT_ZOOM_FACTOR;
+
+        if (
+            normalizedAttributes.zoomRatioWidth &&
+            !isNaN(normalizedAttributes.zoomRatioWidth)
+        ) {
+            this._magnifierAttributes.zoomRatioWidth = `${normalizedAttributes.zoomRatioWidth}px`;
+        } else if (normalizedAttributes.zoomRatioWidth) {
+            this._magnifierAttributes.zoomRatioWidth =
+                normalizedAttributes.zoomRatioWidth;
+        }
+
+        if (
+            normalizedAttributes.zoomRatioHeight &&
+            !isNaN(normalizedAttributes.zoomRatioHeight)
+        ) {
+            this._magnifierAttributes.zoomRatioHeight = `${normalizedAttributes.zoomRatioHeight}px`;
+        } else if (normalizedAttributes.zoomRatioHeight) {
+            this._magnifierAttributes.zoomRatioHeight =
+                normalizedAttributes.zoomRatioHeight;
+        }
     }
 
     /**
@@ -360,16 +506,16 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get computedImageClass() {
-        return classSet('avonni-image')
+        return classSet('avonni-image_container')
             .add({
                 'avonni-image_fluid': this.fluid || this.fluidGrow,
                 'avonni-image_fluid-grow': this.fluidGrow,
                 'avonni-image_thumbnail': this.thumbnail,
-                'avonni-image_float-left':
+                'slds-float_left':
                     this._position === 'left' && this._lazyLoading === 'auto',
-                'avonni-image_float-right': this._position === 'right',
-                'avonni-image_margin-auto': this._position === 'center',
-                'avonni-image_display-block': this._position === 'center'
+                'slds-float_right': this._position === 'right',
+                'slds-align_absolute-center': this._position === 'center',
+                'slds-show': this._position === 'center'
             })
             .toString();
     }
@@ -377,16 +523,15 @@ export default class Image extends LightningElement {
     /**
      * Final Computed Image Style.
      *
-     * @type {boolean}
+     * @type {string}
      */
     get computedStyle() {
-        let styleProperties = {};
+        const styleProperties = {};
 
         styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
-        styleProperties['object-position'] =
-            this.cropPositionX && this.cropPositionY
-                ? `${this.cropPositionX}% ${this.cropPositionY}%`
-                : null;
+        styleProperties[
+            'object-position'
+        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
         styleProperties['aspect-ratio'] = this._aspectRatio
             ? this._aspectRatio
             : null;
@@ -422,6 +567,59 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Final Computed Magnifier Style.
+     *
+     * @type {string}
+     */
+    get computedMagnifierStyle() {
+        const styleProperties = {};
+
+        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
+        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+        return styleValue;
+    }
+
+    /**
+     * Final Computed Magnifier Image Style.
+     *
+     * @type {string}
+     */
+    get computedMagnifiedImgStyle() {
+        const styleProperties = {};
+
+        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties['aspect-ratio'] = this._aspectRatio
+            ? this._aspectRatio
+            : null;
+        styleProperties[
+            'object-position'
+        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
+
+        if (this.magnifierAttributes.smoothMove) {
+            styleProperties.transition = 'transform 0.15s ease-out';
+        }
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+        return styleValue;
+    }
+
+    /**
      * Get Image dimensions when values missing or %.
      *
      * @returns {number} imgHeight , imgWidth
@@ -432,5 +630,93 @@ export default class Image extends LightningElement {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
         }
+    }
+
+    /**
+     * Call the right function to handle the magnifier.
+     */
+    handleMove(event) {
+        if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
+            return;
+        }
+        const img = event.target;
+        const magnifier = this.template.querySelector(
+            '[data-element-id="magnifier"]'
+        );
+        const magnifiedLens = this.template.querySelector(
+            '[data-element-id="magnifier-lens"]'
+        );
+        const magnifiedImage = this.template.querySelector(
+            '[data-element-id="magnified-img"]'
+        );
+        const computedStyle = window.getComputedStyle(magnifier);
+        const borderWidthValue = parseFloat(
+            computedStyle.getPropertyValue('border-width')
+        );
+        const borderWidth = isNaN(borderWidthValue) ? 0 : borderWidthValue;
+        const w = magnifier.offsetWidth / 2;
+        const h = magnifier.offsetHeight / 2;
+        const dimensions = {
+            img: img,
+            w: w,
+            h: h,
+            borderWidth: borderWidth
+        };
+        const realPos = getCursorPosition(event);
+        const boundedPos = applyBoundaries(
+            realPos,
+            dimensions,
+            this.magnifierAttributes
+        );
+        const data = {
+            x: boundedPos.x,
+            y: boundedPos.y,
+            w: w,
+            h: h,
+            magnifier: magnifier,
+            magnifiedLens: magnifiedLens,
+            magnifiedImage: magnifiedImage,
+            img: img
+        };
+        img.style.cursor = 'crosshair';
+        magnifier.style.display = 'block';
+        magnifiedImage.style.height = `${
+            data.img.height * this.magnifierAttributes.zoomFactor
+        }px`;
+        magnifiedImage.style.width = `${
+            data.img.width * this.magnifierAttributes.zoomFactor
+        }px`;
+
+        switch (this.magnifierType) {
+            case 'standard':
+                standardMagnifier(
+                    data,
+                    this.magnifierAttributes,
+                    this.position
+                );
+                break;
+            case 'inner':
+                innerMagnifier(data, this.magnifierAttributes.zoomFactor);
+                break;
+            case 'follow':
+                followMagnifier(data, this.magnifierAttributes.zoomFactor);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Remove the magnifier when mouse out.
+     */
+    handleOut() {
+        const magnifier = this.template.querySelector(
+            '[data-element-id="magnifier"]'
+        );
+        const magnifiedLens = this.template.querySelector(
+            '[data-element-id="magnifier-lens"]'
+        );
+        magnifier.style.display = 'none';
+        magnifiedLens.style.display = 'none';
     }
 }

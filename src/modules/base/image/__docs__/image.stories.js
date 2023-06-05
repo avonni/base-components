@@ -31,7 +31,6 @@
  */
 
 import { Image } from '../__examples__/image';
-
 import { ImageList } from '../__examples__/imageList';
 
 export default {
@@ -224,6 +223,31 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        magnifierType: {
+            name: 'magnifier-type',
+            control: {
+                type: 'select'
+            },
+            options: ['none', 'inner', 'standard', 'follow'],
+            description:
+                'Specifies the magnification type. Valid values include inner, standard and follow.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'none' },
+                category: 'Magnifier'
+            }
+        },
+        magnifierAttributes: {
+            name: 'magnifier-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Specifies the magnifier attributes.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Magnifier'
+            }
         }
     },
     args: {
@@ -236,7 +260,17 @@ export default {
         lazyLoading: 'auto',
         position: 'left',
         staticImages: false,
-        thumbnail: false
+        thumbnail: false,
+        magnifierType: 'none',
+        magnifierAttributes: {
+            position: 'auto',
+            horizontalOffset: 0,
+            verticalOffset: 0,
+            smoothMove: true,
+            zoomFactor: 2,
+            zoomRatioWidth: 100,
+            zoomRatioHeight: 100
+        }
     }
 };
 
@@ -327,4 +361,11 @@ CropImageStaticThumbnailMobile.args = {
     cropPositionY: '80',
     thumbnail: true,
     staticImages: true
+};
+
+export const Magnifier = Template.bind({});
+Magnifier.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    magnifierType: 'standard'
 };

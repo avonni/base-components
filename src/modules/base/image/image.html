@@ -33,15 +33,38 @@
 -->
 
 <template>
-    <img
-        alt={alternativeText}
-        class={computedImageClass}
-        data-element-id="img"
-        src={src}
-        srcset={srcset}
-        sizes={sizes}
-        style={computedStyle}
-        loading={lazyLoading}
-        onload={handleLoadImage}
-    />
+    <div data-element-id="container" class={computedImageClass}>
+        <img
+            alt={alternativeText}
+            data-element-id="img"
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            style={computedStyle}
+            loading={lazyLoading}
+            onload={handleLoadImage}
+            onmousemove={handleMove}
+            ontouchmove={handleMove}
+            onmouseout={handleOut}
+            ontouchend={handleOut}
+        />
+        <div
+            data-element-id="magnifier-lens"
+            class="avonni-image_magnifier-lens slds-is-absolute"
+        ></div>
+        <div
+            data-element-id="magnifier"
+            class="avonni-image_magnifier slds-scrollable_none slds-is-absolute"
+            style={computedMagnifierStyle}
+        >
+            <img
+                src={src}
+                alt=""
+                class="avonni-image_fit-content"
+                sizes={sizes}
+                style={computedMagnifiedImgStyle}
+                data-element-id="magnified-img"
+            />
+        </div>
+    </div>
 </template>
