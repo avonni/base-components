@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { fetchIconLibrary, getIconLibrary } from '../primitiveIcon/fetch'; 
+import { fetchIconLibrary, getIconLibrary } from './fetch';
 
 const DEFAULT_ICON_NAME = 'empty';
 const DEFAULT_ICON_CATEGORY = 'standard';
@@ -59,7 +59,6 @@ const VALID_ICON_CATEGORIES = [
     'custom'
 ];
 
-
 export class IconSVGCreator {
     _iconsFolderPath = DEFAULT_ICON_PATH;
     _iconLibraries = {
@@ -67,10 +66,9 @@ export class IconSVGCreator {
         utility: null,
         action: null,
         doctype: null,
-        custom: null,
+        custom: null
     };
     _resetViewMethod;
-
 
     constructor(resetMethod) {
         this.testIconPath(DEFAULT_ICON_PATH);
@@ -89,7 +87,9 @@ export class IconSVGCreator {
      * @return {boolean}
      */
     get areIconLibrariesReady() {
-        return Object.keys(this._iconLibraries).every((category)=> this._iconLibraries[category] !== null);
+        return Object.keys(this._iconLibraries).every(
+            (category) => this._iconLibraries[category] !== null
+        );
     }
 
     /**
@@ -97,7 +97,7 @@ export class IconSVGCreator {
      *
      * @return {boolean}
      */
-    get isIconPathAvailable(){
+    get isIconPathAvailable() {
         return this._iconsFolderPath !== '';
     }
 
@@ -137,10 +137,7 @@ export class IconSVGCreator {
 
             // Add all the attributes of element
             Object.keys(element.attributes).forEach((attribute) => {
-                elementToAdd.attr(
-                    attribute,
-                    element.attributes[attribute]
-                );
+                elementToAdd.attr(attribute, element.attributes[attribute]);
             });
         });
     }
@@ -179,7 +176,8 @@ export class IconSVGCreator {
      * Create icon from template found in libraries. This method will be used if the default path are invalid.
      */
     createIconFromTemplate(foreignObjectForIcon, iconInformation) {
-        const elementsToCreateIcon = this.extractElementsFromIconTemplate(iconInformation);
+        const elementsToCreateIcon =
+            this.extractElementsFromIconTemplate(iconInformation);
         const svgAttributes = elementsToCreateIcon.svg;
 
         // Create svg to contain icon
@@ -214,7 +212,10 @@ export class IconSVGCreator {
                 svgAttributes.viewBox ? svgAttributes.viewBox : '0 0 100 100'
             );
 
-        this.appendAllElementsToIconSVG(elementsToCreateIcon.childrenElements, iconSVG);
+        this.appendAllElementsToIconSVG(
+            elementsToCreateIcon.childrenElements,
+            iconSVG
+        );
 
         return iconSVG;
     }
@@ -288,7 +289,8 @@ export class IconSVGCreator {
 
         if (this.areIconLibrariesReady) {
             const iconFileName = `${iconInformation.category}_${iconInformation.iconName}`;
-            template = this._iconLibraries[iconInformation.category][iconFileName];
+            template =
+                this._iconLibraries[iconInformation.category][iconFileName];
 
             if (template && template !== null) {
                 // Removing different whitespace characters
@@ -319,7 +321,7 @@ export class IconSVGCreator {
      *
      * @return {string}
      */
-    getIconXLinkHref(iconCategory, iconName){
+    getIconXLinkHref(iconCategory, iconName) {
         return `${this._iconsFolderPath}/icons/${iconCategory}-sprite/svg/symbols.svg#${iconName}`;
     }
 
@@ -336,7 +338,7 @@ export class IconSVGCreator {
      *  Set all the icon's libraries if the default paths are not working.
      */
     async setIconLibraries() {
-        for(const category of VALID_ICON_CATEGORIES){
+        for (const category of VALID_ICON_CATEGORIES) {
             this._iconLibraries[category] = getIconLibrary('ltr', category);
         }
 
@@ -345,10 +347,22 @@ export class IconSVGCreator {
                 'ltr',
                 'standard'
             );
-            this._iconLibraries.utility = await fetchIconLibrary('ltr', 'utility');
-            this._iconLibraries.action = await fetchIconLibrary('ltr', 'action');
-            this._iconLibraries.doctype = await fetchIconLibrary('ltr', 'doctype');
-            this._iconLibraries.custom = await fetchIconLibrary('ltr', 'custom');
+            this._iconLibraries.utility = await fetchIconLibrary(
+                'ltr',
+                'utility'
+            );
+            this._iconLibraries.action = await fetchIconLibrary(
+                'ltr',
+                'action'
+            );
+            this._iconLibraries.doctype = await fetchIconLibrary(
+                'ltr',
+                'doctype'
+            );
+            this._iconLibraries.custom = await fetchIconLibrary(
+                'ltr',
+                'custom'
+            );
 
             // To re-render view that contains icons when libraries are ready.
             this._resetViewMethod();

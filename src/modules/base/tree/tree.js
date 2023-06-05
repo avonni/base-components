@@ -98,6 +98,12 @@ export default class Tree extends LightningElement {
     _selectTimeout;
     _setFocus = false;
 
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
+
     connectedCallback() {
         this.initItems();
 

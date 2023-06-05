@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import Combobox from 'avonni/combobox';
+import Combobox from '../combobox';
 import { options, actions, scopes, scopesGroups, groups } from './data';
 
 let element;
@@ -61,13 +61,15 @@ describe('Combobox', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownLength).toBe('7-items');
-        expect(element.fieldLevelLevel).toBeUndefined();
+        expect(element.enableInfiniteLoading).toBeFalsy();
+        expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideSelectedOptions).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
+        expect(element.loadMoreOffset).toBe(20);
         expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.messageWhenBadInput).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
@@ -190,6 +192,18 @@ describe('Combobox', () => {
         });
     });
 
+    // enable-infinite-loading
+    it('Combobox: enableInfiniteLoading', () => {
+        element.enableInfiniteLoading = true;
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            expect(combobox.enableInfiniteLoading).toBeTruthy();
+        });
+    });
+
     // field-level-help
     it('Combobox: fieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
@@ -251,12 +265,11 @@ describe('Combobox', () => {
                 const pillContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-pill-container"]'
                 );
-                const modifiedOptions = JSON.parse(JSON.stringify(options));
-                modifiedOptions.forEach((option) => {
-                    option.name = option.value;
-                });
                 expect(pillContainer).toBeTruthy();
-                expect(pillContainer.items).toEqual(modifiedOptions);
+                const items = options.map((option) => {
+                    return { ...option, name: option.value };
+                });
+                expect(pillContainer.items).toEqual(items);
             });
     });
 
@@ -323,6 +336,18 @@ describe('Combobox', () => {
                 '[data-element-id="span-label"]'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // load-more-offset
+    it('Combobox: loadMoreOffset', () => {
+        element.loadMoreOffset = true;
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            expect(combobox.loadMoreOffset).toBeTruthy();
         });
     });
 
@@ -968,6 +993,35 @@ describe('Combobox', () => {
         });
     });
 
+    // loadmore
+    it('Combobox: loadmore event', () => {
+        element.options = options;
+        const handler = jest.fn();
+        element.addEventListener('loadmore', handler);
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            combobox.dispatchEvent(
+                new CustomEvent('loadmore', {
+                    detail: {
+                        optionValue: options[3].options[0].value,
+                        searchTerm: 'some research'
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const event = handler.mock.calls[0][0];
+            expect(event.detail.option).toEqual(options[3].options[0]);
+            expect(event.detail.searchTerm).toBe('some research');
+            expect(event.bubbles).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+        });
+    });
+
     // open
     it('Combobox: open event', () => {
         const handler = jest.fn();
@@ -1113,15 +1167,13 @@ describe('Combobox', () => {
                 const pillContainer = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-pill-container"]'
                 );
+                const items = options.map((opt) => {
+                    return { ...opt, name: opt.value };
+                });
                 pillContainer.dispatchEvent(
                     new CustomEvent('reorder', {
                         detail: {
-                            items: [
-                                { name: options[0].value },
-                                { name: options[4].value },
-                                { name: options[1].value },
-                                { name: options[3].value }
-                            ]
+                            items: [items[0], items[4], items[1], items[3]]
                         }
                     })
                 );
@@ -1135,6 +1187,23 @@ describe('Combobox', () => {
                 ]);
                 expect(detail.action).toBe('reorder');
             });
+    });
+
+    // close
+    it('Combobox: close event', () => {
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            combobox.dispatchEvent(new CustomEvent('close'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
     });
 
     // Remove a selected option
@@ -1197,17 +1266,12 @@ describe('Combobox', () => {
                 list.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            name: 'remove',
-                            item: {
-                                label: 'Edge Communication',
-                                name: 'edge'
-                            },
-                            targetName: 'edge'
+                            targetName: options[2].value
                         }
                     })
                 );
                 expect(spy).toHaveBeenCalled();
-                expect(spy.mock.calls[0][0]).toBe('edge');
+                expect(spy.mock.calls[0][0]).toBe(options[2].value);
             });
     });
 });

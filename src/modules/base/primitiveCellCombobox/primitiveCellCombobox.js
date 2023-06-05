@@ -44,7 +44,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     _columnsWidth = 0;
     _index;
-    _style;
     _value;
 
     visible = false;
@@ -70,6 +69,12 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     set value(value) {
         this._value = value;
+    }
+
+    get computedPanelStyle() {
+        return this._columnsWidth < 310
+            ? 'position: absolute; top: 0; right: 0'
+            : 'position: absolute; top: 0; left: 0';
     }
 
     get displayedValue() {
@@ -104,10 +109,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         return this.isMultiSelect && this.displayedValue?.length > 0;
     }
 
-    get style() {
-        return this._style;
-    }
-
     /**
      * Return true if cell is editable and not disabled.
      *
@@ -118,14 +119,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
-
-    computeStyle() {
-        this._style =
-            this._columnsWidth < 310
-                ? 'position: absolute; top: 0; right: 0'
-                : 'position: absolute; top: 0; left: 0;';
-    }
-
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
         dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
@@ -191,7 +184,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.computeStyle();
         this.isEditable();
     }
 

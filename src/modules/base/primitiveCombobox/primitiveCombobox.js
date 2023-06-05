@@ -71,6 +71,7 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_BACK_ACTION = {
     iconName: 'utility:chevronleft'
 };
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
@@ -144,9 +145,11 @@ export default class PrimitiveCombobox extends LightningElement {
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
+    _enableInfiniteLoading = false;
     _groups = [{ name: DEFAULT_GROUP_NAME }];
     _isLoading = false;
     _isMultiSelect = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _multiLevelGroups = false;
     _options = [];
@@ -163,6 +166,12 @@ export default class PrimitiveCombobox extends LightningElement {
     _cancelBlur = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _highlightedOptionIndex = 0;
+    _isSearching = false;
+    _previousScroll;
+    _restoreScrollTimeout;
+    _searchTerm = '';
+    _searchTimeout;
+    _scrollState;
     _visibleOptions = [];
     backLink;
     computedGroups = [];
@@ -194,8 +203,23 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.dropdownVisible) {
             this.updateDropdownHeight();
             this.highlightOption(0);
+
+            if (this.enableInfiniteLoading) {
+                const list = this.template.querySelector(
+                    '[data-element-id="ul-listbox"]'
+                );
+                if (list && list.scrollTop === 0) {
+                    this.handleScroll();
+                }
+            }
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of action objects. The actions are displayed at the end of the primitive combobox options.
@@ -319,6 +343,29 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the `loadmore` event handler to retrieve more data.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (
+            this.dropdownVisible &&
+            this._enableInfiniteLoading &&
+            this.showLoader
+        ) {
+            this.restoreScroll();
+        }
+    }
+
+    /**
      * Array of group objects. The groups are used to separate the options inside the drop-down.
      *
      * @type {object[]}
@@ -350,6 +397,14 @@ export default class PrimitiveCombobox extends LightningElement {
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
         this.showLoader = this._isLoading;
+
+        if (
+            this.dropdownVisible &&
+            this.showLoader &&
+            this.enableInfiniteLoading
+        ) {
+            this.restoreScroll();
+        }
     }
 
     /**
@@ -366,6 +421,24 @@ export default class PrimitiveCombobox extends LightningElement {
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
         if (this._connected) this.initValue();
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on how many pixels the drop-down's scroll position is from the bottom of the drop-down.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        const number = Number(value);
+        this._loadMoreOffset = isNaN(number)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : number;
     }
 
     /**
@@ -427,9 +500,24 @@ export default class PrimitiveCombobox extends LightningElement {
             this.visibleOptions = this.currentParent
                 ? this.currentParent.options
                 : this.options;
-            this.showLoader = this.currentParent
-                ? this.currentParent.isLoading
-                : this.isLoading;
+            if (this._searchTerm) {
+                this.visibleOptions = this.search({
+                    options: this.visibleOptions,
+                    searchTerm: this._searchTerm
+                });
+            }
+            this.showLoader =
+                this.currentParent && !this.enableInfiniteLoading
+                    ? this.currentParent.isLoading
+                    : this.isLoading;
+
+            if (
+                this.dropdownVisible &&
+                this.showLoader &&
+                this.enableInfiniteLoading
+            ) {
+                this.restoreScroll();
+            }
         } else {
             this.visibleOptions = optionObjects;
         }
@@ -593,6 +681,12 @@ export default class PrimitiveCombobox extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Returns an array of visible options.
      *
@@ -748,21 +842,27 @@ export default class PrimitiveCombobox extends LightningElement {
                 '[data-group-name="actions"][data-position="top"]'
             );
             topActions.forEach((action) => {
-                if (action.ariaDisabled === 'false') elements.push(action);
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
             });
 
             const groups = this.template.querySelectorAll(
                 '[data-element-id="avonni-primitive-combobox-group"]'
             );
             groups.forEach((group) => {
-                elements.push(group.optionElements);
+                elements.push(
+                    group.optionElements.filter(
+                        (option) => option.dataset.ariaDisabled === 'false'
+                    )
+                );
             });
 
             const bottomActions = this.template.querySelectorAll(
                 '[data-group-name="actions"][data-position="bottom"]'
             );
             bottomActions.forEach((action) => {
-                if (action.ariaDisabled === 'false') elements.push(action);
+                if (action.dataset.ariaDisabled === 'false')
+                    elements.push(action);
             });
 
             return elements.flat();
@@ -782,6 +882,18 @@ export default class PrimitiveCombobox extends LightningElement {
         );
     }
 
+    get scrolledToEnd() {
+        const list = this.template.querySelector(
+            '[data-element-id="ul-listbox"]'
+        );
+        const fullHeight = list.scrollHeight;
+        const scrolledDistance = list.scrollTop;
+        const visibleHeight = list.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
+        );
+    }
+
     /**
      * True if hide-clear-input is false and the input has a value.
      *
@@ -797,7 +909,11 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {boolean}
      */
     get showNoSearchResultMessage() {
-        return this.inputValue && !this.visibleOptions.length;
+        return (
+            !this._isSearching &&
+            !this.showLoader &&
+            !this.visibleOptions.length
+        );
     }
 
     /**
@@ -887,6 +1003,12 @@ export default class PrimitiveCombobox extends LightningElement {
         return this.validity.valid ? this.inputValue : '';
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Removes focus from the input.
      *
@@ -917,6 +1039,7 @@ export default class PrimitiveCombobox extends LightningElement {
     close() {
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
+            this._previousScroll = undefined;
             this.stopDropdownPositioning();
 
             if (this.isMultiSelect) {
@@ -952,7 +1075,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (
             !this.inputIsDisabled &&
             !this.dropdownVisible &&
-            (hasItems || this.isLoading)
+            (hasItems || this.isLoading || this.enableInfiniteLoading)
         ) {
             this.dropdownVisible = true;
             requestAnimationFrame(() => {
@@ -974,6 +1097,7 @@ export default class PrimitiveCombobox extends LightningElement {
         selectedOption.selected = false;
 
         this.computeSelection();
+        this._value = this.selectedOptions.map((option) => option.value);
         this.visibleOptions = this.options;
         this.dispatchChange('unselect', selectedOption.levelPath);
     }
@@ -1026,11 +1150,16 @@ export default class PrimitiveCombobox extends LightningElement {
         this.reportValidity();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Value initialization.
      */
     initValue() {
-        this.inputValue = '';
         if (this.selectedOption) {
             this.selectedOption.selected = false;
             this.selectedOption = undefined;
@@ -1045,6 +1174,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 if (selectedOption) selectedOption.selected = true;
             });
             this.selectedOption = undefined;
+            this.inputValue = this._searchTerm;
             this.computeSelection();
         } else {
             const selectedOption = this.getOption(this.value[0], this.options);
@@ -1053,6 +1183,17 @@ export default class PrimitiveCombobox extends LightningElement {
                 selectedOption.selected = true;
                 this.selectedOption = selectedOption;
                 this.inputValue = selectedOption.label;
+            }
+
+            if (!this.inputValue) {
+                // Filter the options if there is a search term
+                this.inputValue = this._searchTerm;
+                this.search({
+                    searchTerm: this._searchTerm,
+                    options:
+                        (this.currentParent && this.currentParent.options) ||
+                        this.options
+                });
             }
         }
     }
@@ -1164,6 +1305,21 @@ export default class PrimitiveCombobox extends LightningElement {
             if (title) visibleGroupTitles.push(title);
             i += 1;
         }
+        // Add the loading spinner as an option
+        const loadingSpinner = this.template.querySelector(
+            '[data-element-id="li-loading-spinner"]'
+        );
+        if (loadingSpinner) {
+            visibleItems.push(loadingSpinner);
+        }
+
+        // Add the empty option message as an option
+        const emptyMessage = this.template.querySelector(
+            '[data-element-id="li-no-matches"]'
+        );
+        if (emptyMessage) {
+            visibleItems.push(emptyMessage);
+        }
 
         // Height of the visible options, according to the dropdown length
         const optionsHeight = getListHeight(
@@ -1173,14 +1329,6 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Height of the title groups
         const titlesHeight = getListHeight(visibleGroupTitles);
-
-        // Height of the loading spinner
-        const loadingSpinner = this.template.querySelector(
-            '[data-element-id="li-loading-spinner"]'
-        );
-        const loadingSpinnerHeight = loadingSpinner
-            ? loadingSpinner.offsetHeight
-            : 0;
 
         // Height of the top actions
         const topActions = this.template.querySelectorAll(
@@ -1203,14 +1351,13 @@ export default class PrimitiveCombobox extends LightningElement {
         const height =
             optionsHeight +
             titlesHeight +
-            loadingSpinnerHeight +
             topActionsHeight +
             bottomActionsHeight;
 
         // Do not set the height when there is no actions or options
         // (for example 0 search results or is loading)
         if (height) {
-            dropdown.style.height = `${height}px`;
+            dropdown.style.height = `${height + 5}px`;
         }
 
         this.updateFixedActionsHeight();
@@ -1341,7 +1488,6 @@ export default class PrimitiveCombobox extends LightningElement {
             const indexB = this.value.indexOf(b.value);
             return indexA - indexB;
         });
-        this._value = this.selectedOptions.map((option) => option.value);
 
         this.dispatchEvent(
             new CustomEvent('privateselect', {
@@ -1391,6 +1537,37 @@ export default class PrimitiveCombobox extends LightningElement {
             }
         });
         return unselectedOptions;
+    }
+
+    /**
+     * Restore the scroll position to prevent a jump when the loading spinner appears, or more options are loaded.
+     */
+    restoreScroll() {
+        const list = this.template.querySelector(
+            '[data-element-id="ul-listbox"]'
+        );
+        if (!list) {
+            return;
+        }
+
+        const hasScrolled = list.scrollTop !== 0;
+        if (hasScrolled) {
+            // We make sure the scroll is restored only once,
+            // to the position it had before all renders
+            if (!this._scrollState) {
+                this._scrollState = {
+                    position: list.scrollTop,
+                    isAtEnd: this.scrolledToEnd
+                };
+            }
+
+            clearTimeout(this._restoreScrollTimeout);
+            this._restoreScrollTimeout = setTimeout(() => {
+                const { isAtEnd, position } = this._scrollState;
+                list.scrollTop = isAtEnd ? list.scrollHeight : position;
+                this._scrollState = null;
+            }, 0);
+        }
     }
 
     /**
@@ -1543,6 +1720,12 @@ export default class PrimitiveCombobox extends LightningElement {
         listbox.style.paddingBottom = `${offset}px`;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
     /**
      * If selected-option and input-value = '' closes the dropdown.
      * Dispatches blur event.
@@ -1556,10 +1739,14 @@ export default class PrimitiveCombobox extends LightningElement {
         } else {
             this.inputValue = '';
         }
+        if (this._searchTerm) {
+            this._searchTerm = '';
+            this.handleSearch();
+        }
+
         this.close();
-
+        this.dispatchClose();
         this.interactingState.leave();
-
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -1577,27 +1764,9 @@ export default class PrimitiveCombobox extends LightningElement {
      * Dispatches search event.
      */
     handleInput(event) {
-        const searchTerm = event.currentTarget.value;
-        this.inputValue = searchTerm;
-
-        // Search in the current level of options
-        const options =
-            (this.currentParent && this.currentParent.options) || this.options;
-
-        const result = this.search({
-            searchTerm,
-            options: options
-        });
-
-        this.visibleOptions = result;
-
-        this.dispatchEvent(
-            new CustomEvent('search', {
-                detail: {
-                    value: searchTerm
-                }
-            })
-        );
+        this._searchTerm = event.currentTarget.value;
+        this.inputValue = this._searchTerm;
+        this.handleSearch();
     }
 
     /**
@@ -1680,6 +1849,7 @@ export default class PrimitiveCombobox extends LightningElement {
                     break;
                 case 'Escape':
                     this.close();
+                    this.dispatchClose();
                     break;
                 case 'Home':
                     this.highlightOption(0);
@@ -1724,6 +1894,10 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.disabled) return;
 
         this.inputValue = '';
+        if (this._searchTerm) {
+            this._searchTerm = '';
+            this.handleSearch();
+        }
 
         // Clear the value
         if (!this.isMultiSelect && this.selectedOption) {
@@ -1731,6 +1905,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.selectedOption.selected = false;
             this.selectedOption = undefined;
             this.computeSelection();
+            this._value = this.selectedOptions.map((option) => option.value);
             this.dispatchChange('unselect', levelPath);
         }
 
@@ -1753,7 +1928,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (typeof eventOrName === 'string') {
             name = eventOrName;
         } else {
-            if (eventOrName.currentTarget.ariaDisabled === 'true') {
+            if (eventOrName.currentTarget.dataset.ariaDisabled === 'true') {
                 this.focus();
                 return;
             }
@@ -1779,6 +1954,7 @@ export default class PrimitiveCombobox extends LightningElement {
         );
 
         this.close();
+        this.dispatchClose();
         this.focus();
     }
 
@@ -1808,6 +1984,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showLoader = true;
             }
             this.focus();
+            this._searchTerm = '';
 
             /**
              * The event fired when an option with nested options has been selected.
@@ -1843,6 +2020,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
         selectedOption.selected = !selectedOption.selected;
         this.computeSelection();
+        this._value = this.selectedOptions.map((option) => option.value);
 
         // Update the input value
         if (!this.isMultiSelect && selectedOption.selected) {
@@ -1856,6 +2034,7 @@ export default class PrimitiveCombobox extends LightningElement {
         const action = selectedOption.selected ? 'select' : 'unselect';
         this.dispatchChange(action, selectedOption.levelPath);
         this.close();
+        this.dispatchClose();
         this.focus();
     }
 
@@ -1864,7 +2043,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleMouseEnter(event) {
         event.stopPropagation();
-        if (event.currentTarget.ariaDisabled === 'true') return;
+        if (event.currentTarget.dataset.ariaDisabled === 'true') return;
 
         // If the mouse enters an option, the id will be sent through an event from the group
         const id = event.detail.id ? event.detail.id : event.currentTarget.id;
@@ -1874,6 +2053,84 @@ export default class PrimitiveCombobox extends LightningElement {
         });
 
         this.highlightOption(index);
+    }
+
+    /**
+     * Handle a scroll down the drop-down.
+     */
+    handleScroll() {
+        if (
+            !this.enableInfiniteLoading ||
+            this.showLoader ||
+            this._isSearching
+        ) {
+            return;
+        }
+
+        const list = this.template.querySelector(
+            '[data-element-id="ul-listbox"]'
+        );
+        const loadLimit =
+            list.scrollHeight - list.offsetHeight - this.loadMoreOffset;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            /**
+             * The event fired when the infinite loading is enabled, and the user scrolls to the bottom of the dropdown.
+             *
+             * @event
+             * @property {string} optionValue Value of the selected parent option, if any.
+             * @property {string} searchTerm Current search term, if any.
+             * @name loadmore
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('loadmore', {
+                    detail: {
+                        optionValue: this.currentParent
+                            ? this.currentParent.value
+                            : null,
+                        searchTerm: this._searchTerm
+                    }
+                })
+            );
+        }
+        this._previousScroll = list.scrollTop;
+    }
+
+    /**
+     * Handle an input in the combobox.
+     */
+    handleSearch() {
+        // Search in the current level of options
+        const options =
+            (this.currentParent && this.currentParent.options) || this.options;
+
+        const result = this.search({
+            searchTerm: this._searchTerm,
+            options
+        });
+
+        this.visibleOptions = result;
+
+        clearTimeout(this._searchTimeout);
+        this._isSearching = true;
+        this._searchTimeout = setTimeout(() => {
+            this.dispatchEvent(
+                new CustomEvent('search', {
+                    detail: {
+                        value: this._searchTerm,
+                        optionValue: this.currentParent
+                            ? this.currentParent.value
+                            : null
+                    }
+                })
+            );
+            this._isSearching = false;
+        }, 500);
     }
 
     /**
@@ -1916,5 +2173,28 @@ export default class PrimitiveCombobox extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Dispatch the close event.
+     */
+    dispatchClose() {
+        /**
+         * The event fired when the drop-down is closed. It is not fired when the drop-down is closed programmatically with the `close()` method.
+         *
+         * @event
+         * @name close
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('close'));
+    }
+
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event Event to stop the propagation of.
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 }

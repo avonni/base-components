@@ -51,15 +51,8 @@ export const Image = ({
     staticImages,
     thumbnail,
     width,
-    magnifier,
     magnifierType,
-    horizontalOffset,
-    verticalOffset,
-    magnifierPosition,
-    smoothMove,
-    zoomFactor,
-    zoomRatioWidth,
-    zoomRatioHeight,
+    magnifierAttributes,
     compareSrc,
     compareAttributes
 }) => {
@@ -80,15 +73,8 @@ export const Image = ({
     element.staticImages = staticImages;
     element.thumbnail = thumbnail;
     element.width = width;
-    element.magnifier = magnifier;
     element.magnifierType = magnifierType;
-    element.horizontalOffset = horizontalOffset;
-    element.verticalOffset = verticalOffset;
-    element.magnifierPosition = magnifierPosition;
-    element.smoothMove = smoothMove;
-    element.zoomFactor = zoomFactor;
-    element.zoomRatioWidth = zoomRatioWidth;
-    element.zoomRatioHeight = zoomRatioHeight;
+    element.magnifierAttributes = magnifierAttributes;
     element.compareSrc = compareSrc;
     element.compareAttributes = compareAttributes;
     return element;

@@ -66,6 +66,7 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_BACK_ACTION = {
     iconName: 'utility:chevronleft'
 };
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
@@ -157,11 +158,13 @@ export default class Combobox extends LightningElement {
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
+    _enableInfiniteLoading = false;
     _groups = [];
     _hideClearIcon = false;
     _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _multiLevelGroups = false;
     _options = [];
@@ -288,6 +291,21 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the `loadmore` event handler to retrieve more data.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Array of group objects. The groups are used to separate the options inside the drop-down.
      *
      * @type {object[]}
@@ -359,6 +377,24 @@ export default class Combobox extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on how many pixels the drop-down's scroll position is from the bottom of the drop-down.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        const number = Number(value);
+        this._loadMoreOffset = isNaN(number)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : number;
     }
 
     /**
@@ -672,16 +708,14 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Selected options copied and converted to regular objects. To be compatible with list reordering, options values need to be converted to names.
+     * Selected options, in a valid pill container or list items format.
      *
      * @type {object[]}
      */
     get normalizedSelectedOptions() {
-        const selectedOptions = deepCopy(this.selectedOptions);
-        selectedOptions.forEach((option) => {
-            option.name = option.value;
+        return deepCopy(this.selectedOptions).map((opt) => {
+            return { ...opt, name: opt.value };
         });
-        return selectedOptions;
     }
 
     /**
@@ -746,7 +780,7 @@ export default class Combobox extends LightningElement {
      */
 
     /**
-     * Removes focus from the combobox.
+     * Remove focus from the combobox.
      *
      * @public
      */
@@ -756,7 +790,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Checks if the input is valid.
+     * Check if the input is valid.
      *
      * @returns {boolean} True if the element meets all constraint validations.
      * @public
@@ -767,7 +801,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Closes the dropdown.
+     * Close the drop-down.
      *
      * @public
      */
@@ -777,7 +811,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Sets focus on the combobox.
+     * Set focus on the combobox.
      *
      * @public
      */
@@ -787,7 +821,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Opens the dropdown.
+     * Open the drop-down.
      *
      * @public
      */
@@ -797,7 +831,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
+     * Display the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
      * @public
@@ -818,7 +852,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Sets a custom error message to be displayed when a form is submitted.
+     * Set a custom error message to be displayed when a form is submitted.
      *
      * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
@@ -829,7 +863,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Displays error messages on invalid fields.
+     * Display error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
@@ -840,7 +874,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Update the scope dropdown value.
+     * Update the scope drop-down value.
      *
      * @param {string} value Unique value of the scope that should be selected.
      * @public
@@ -917,21 +951,54 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Handle the load more event dispatched by the primitive combobox.
+     *
+     * @param {Event} event `loadmore` event.
+     */
+    handleLoadMore(event) {
+        const { optionValue, searchTerm } = event.detail;
+        const option = optionValue ? this.getOption(optionValue) : null;
+
+        /**
+         * The event fired when you scroll to the bottom of the drop-down to load more options.
+         *
+         * @event
+         * @name loadmore
+         * @param {object} option Current parent option, if the visible options are nested.
+         * @param {string} searchTerm Value of the search input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('loadmore', {
+                detail: {
+                    option: deepCopy(option),
+                    searchTerm
+                }
+            })
+        );
+    }
+
+    /**
      * Dispatches search event.
      */
     handleSearch(event) {
+        const { optionValue, value } = event.detail;
+        const option = optionValue ? this.getOption(optionValue) : null;
+
         /**
          * The event fired when a user types into the combobox input.
          *
          * @event
          * @name search
+         * @param {object} option Current parent option, if the visible options are nested.
          * @param {string} value The value of the search input.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('search', {
                 detail: {
-                    value: event.detail.value
+                    value,
+                    option: deepCopy(option)
                 }
             })
         );
@@ -990,6 +1057,20 @@ export default class Combobox extends LightningElement {
         const { action, levelPath, value } = event.detail;
         this._value = value;
         this.dispatchChange(action, levelPath);
+    }
+
+    /**
+     * Dispatch the close event.
+     */
+    handleClose() {
+        /**
+         * The event fired when the drop-down is closed. It is not fired when the drop-down is closed programmatically with the `close()` method.
+         *
+         * @event
+         * @name close
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('close'));
     }
 
     /**

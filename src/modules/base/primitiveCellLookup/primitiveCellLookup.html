@@ -36,16 +36,15 @@
     <template if:true={visible}>
         <c-primitive-datatable-iedit-panel-custom
             data-iedit-panel-custom="true"
-            visible={state.inlineEdit.panelVisible}
-            row-key-value={state.inlineEdit.rowKeyValue}
             col-key-value={state.inlineEdit.colKeyValue}
-            edited-value={editedValue}
             column-def={state.inlineEdit.columnDef}
+            disabled={disabled}
+            edited-value={editedValue}
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            disabled={disabled}
-            label={label}
-            style={style}
+            row-key-value={state.inlineEdit.rowKeyValue}
+            visible={state.inlineEdit.panelVisible}
+            style={computedPanelStyle}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>

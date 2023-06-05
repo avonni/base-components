@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class={computedImageClass}>
+    <div data-element-id="container" class={computedImageClass}>
         <img
             alt={alternativeText}
             data-element-id="img"
@@ -43,8 +43,29 @@
             style={computedStyle}
             loading={lazyLoading}
             onload={handleLoadImage}
+            onmousemove={handleMove}
+            ontouchmove={handleMove}
+            onmouseout={handleOut}
+            ontouchend={handleOut}
         />
-        <div class="avonni-image_magnifier"></div>
+        <div
+            data-element-id="magnifier-lens"
+            class="avonni-image_magnifier-lens slds-is-absolute"
+        ></div>
+        <div
+            data-element-id="magnifier"
+            class="avonni-image_magnifier slds-scrollable_none slds-is-absolute"
+            style={computedMagnifierStyle}
+        >
+            <img
+                src={src}
+                alt=""
+                class="avonni-image_fit-content"
+                sizes={sizes}
+                style={computedMagnifiedImgStyle}
+                data-element-id="magnified-img"
+            />
+        </div>
         <div
             if:true={compareSrc}
             class="avonni-image_compare_container slds-is-absolute"

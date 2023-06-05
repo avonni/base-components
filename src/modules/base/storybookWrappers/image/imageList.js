@@ -48,15 +48,8 @@ export default class Image extends LightningElement {
     @api staticImages;
     @api thumbnail;
     @api width;
-    @api magnifier;
     @api magnifierType;
-    @api horizontalOffset;
-    @api verticalOffset;
-    @api magnifierPosition;
-    @api smoothMove;
-    @api zoomFactor;
-    @api zoomRatioWidth;
-    @api zoomRatioHeight;
+    @api magnifierAttributes;
     @api compareSrc;
     @api compareAttributes;
 
@@ -80,15 +73,8 @@ export default class Image extends LightningElement {
                 cropFit: this.cropFit,
                 cropPositionX: this.cropPositionX,
                 cropPositionY: this.cropPositionY,
-                magnifier: this.magnifier,
                 magnifierType: this.magnifierType,
-                horizontalOffset: this.horizontalOffset,
-                verticalOffset: this.verticalOffset,
-                magnifierPosition: this.magnifierPosition,
-                smoothMove: this.smoothMove,
-                zoomFactor: this.zoomFactor,
-                zoomRatioWidth: this.zoomRatioWidth,
-                zoomRatioHeight: this.zoomRatioHeight,
+                magnifierAttributes: this.magnifierAttributes,
                 compareSrc: this.compareSrc,
                 compareAttributes: this.compareAttributes
             };

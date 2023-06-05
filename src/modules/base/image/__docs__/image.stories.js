@@ -31,7 +31,6 @@
  */
 
 import { Image } from '../__examples__/image';
-
 import { ImageList } from '../__examples__/imageList';
 
 export default {
@@ -225,116 +224,28 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        magnifier: {
-            name: 'magnifier',
-            control: {
-                type: 'boolean'
-            },
-            description: 'Enables magnification when hovering the image.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' },
-                category: 'Magnifier'
-            }
-        },
         magnifierType: {
             name: 'magnifier-type',
             control: {
                 type: 'select'
             },
-            options: ['inner', 'standard', 'follow'],
+            options: ['none', 'inner', 'standard', 'follow'],
             description:
                 'Specifies the magnification type. Valid values include inner, standard and follow.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'none' },
-                type: { summary: 'string' },
                 category: 'Magnifier'
             }
         },
-        horizontalOffset: {
-            name: 'horizontal-offset',
+        magnifierAttributes: {
+            name: 'magnifier-attributes',
             control: {
-                type: 'number'
+                type: 'object'
             },
-            description: 'Specifies the horizontal offset of the magnifier.',
+            description: 'Specifies the magnifier attributes.',
             table: {
-                defaultValue: { summary: 0 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        verticalOffset: {
-            name: 'vertical-offset',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the vertical offset of the magnifier.',
-            table: {
-                defaultValue: { summary: 0 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        magnifierPosition: {
-            name: 'magnifier-position',
-            control: {
-                type: 'select'
-            },
-            options: ['auto', 'left', 'right', 'top', 'bottom'],
-            description:
-                'Specifies the position of the magnifier. Valid values include left, right, top, bottom and auto.',
-            table: {
-                defaultValue: { summary: 'auto' },
-                type: { summary: 'string' },
-                category: 'Magnifier'
-            }
-        },
-        smoothMove: {
-            name: 'smooth-move',
-            control: {
-                type: 'boolean'
-            },
-            description: 'Specifies whether the magnifier should be smoothed.',
-            table: {
-                defaultValue: { summary: true },
-                type: { summary: 'boolean' },
-                category: 'Magnifier'
-            }
-        },
-        zoomFactor: {
-            name: 'zoom-factor',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the zoom factor of the magnifier.',
-            table: {
-                defaultValue: { summary: 2 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        zoomRatioWidth: {
-            name: 'zoom-ratio-width',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Specifies the horizontal zoom ratio of the magnifier.',
-            table: {
-                defaultValue: { summary: 100 },
-                type: { summary: 'number' },
-                category: 'Magnifier'
-            }
-        },
-        zoomRatioHeight: {
-            name: 'zoom-ratio-height',
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the vertical zoom ratio of the magnifier.',
-            table: {
-                defaultValue: { summary: 100 },
-                type: { summary: 'number' },
+                type: { summary: 'object' },
                 category: 'Magnifier'
             }
         },
@@ -372,13 +283,16 @@ export default {
         position: 'left',
         staticImages: false,
         thumbnail: false,
-        magnifier: false,
-        magnifierPosition: 'auto',
-        magnifierType: 'standard',
-        smoothMove: true,
-        zoomFactor: 2,
-        zoomRatioWidth: 100,
-        zoomRatioHeight: 100,
+        magnifierType: 'none',
+        magnifierAttributes: {
+            position: 'auto',
+            horizontalOffset: 0,
+            verticalOffset: 0,
+            smoothMove: true,
+            zoomFactor: 2,
+            zoomRatioWidth: 100,
+            zoomRatioHeight: 100
+        },
         compareSrc: '',
         compareAttributes: {
             orientation: 'horizontal',
@@ -490,4 +404,11 @@ CropImageStaticThumbnailMobile.args = {
     cropPositionY: '80',
     thumbnail: true,
     staticImages: true
+};
+
+export const Magnifier = Template.bind({});
+Magnifier.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    magnifierType: 'standard'
 };
