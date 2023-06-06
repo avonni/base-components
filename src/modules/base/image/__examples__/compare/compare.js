@@ -4,7 +4,8 @@ export default class Compare extends LightningElement {
     compareAttributes = {
         moveOn: 'click',
         orientation: 'horizontal',
-        showBeforeAfterOverlay: true,
-        showBeforeAfterOverlayOnHover: false
+        originalLabel: 'Before',
+        compareLabel: 'After',
+        showLabelsOnHover: false
     };
 }

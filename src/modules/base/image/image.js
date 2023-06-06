@@ -97,8 +97,9 @@ export default class Image extends LightningElement {
     _compareAttributes = {
         orientation: COMPARE_ORIENTATION.default,
         moveOn: MOVE_ON_OPTIONS.default,
-        showBeforeAfterOverlay: false,
-        showBeforeAfterOverlayOnHover: false
+        originalLabel: 'Before',
+        compareLabel: 'After',
+        showLabelsOnHover: false
     };
     _cropPositionX = CROP_POSITION_X_DEFAULT;
     _cropPositionY = CROP_POSITION_Y_DEFAULT;
@@ -122,7 +123,6 @@ export default class Image extends LightningElement {
         zoomRatioHeight: '100px'
     };
     _position = POSITIONS.default;
-    _showOverlay;
     _sizes;
     _src;
     _srcset;
@@ -153,7 +153,7 @@ export default class Image extends LightningElement {
     @api compareSrc;
 
     /**
-     * Compare attributes: orientation, moveOn, showBeforeAfterOverlay, showBeforeAfterOverlayOnHover.
+     * Compare attributes: orientation, moveOn, originalLabel, compareLabel and showLabelsOnHover.
      *
      * @type {object}
      * @public
@@ -182,13 +182,14 @@ export default class Image extends LightningElement {
             }
         );
 
-        this._compareAttributes.showBeforeAfterOverlay = normalizeBoolean(
-            normalizedAttributes.showBeforeAfterOverlay
+        this._compareAttributes.originalLabel =
+            normalizedAttributes.originalLabel;
+        this._compareAttributes.compareLabel =
+            normalizedAttributes.compareLabel;
+
+        this._compareAttributes.showLabelsOnHover = normalizeBoolean(
+            normalizedAttributes.showLabelsOnHover
         );
-        this._compareAttributes.showBeforeAfterOverlayOnHover =
-            normalizeBoolean(
-                normalizedAttributes.showBeforeAfterOverlayOnHover
-            );
     }
 
     /**
@@ -808,7 +809,7 @@ export default class Image extends LightningElement {
         const overlay = this.template.querySelector(
             '[data-element-id="compare-overlay-container"]'
         );
-        if (!this._showOverlay) {
+        if (this.compareAttributes.showLabelsOnHover) {
             overlay.classList.add('slds-hide');
         }
     }
@@ -820,7 +821,11 @@ export default class Image extends LightningElement {
         const overlay = this.template.querySelector(
             '[data-element-id="compare-overlay-container"]'
         );
-        if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
+        if (
+            this.compareAttributes.showLabelsOnHover &&
+            this.compareAttributes.originalLabel &&
+            this.compareAttributes.compareLabel
+        ) {
             overlay.classList.remove('slds-hide');
         }
     }
@@ -994,9 +999,11 @@ export default class Image extends LightningElement {
             handle.style.flexDirection = 'column';
         }
 
-        this._showOverlay = this.compareAttributes.showBeforeAfterOverlay;
-
-        if (this._showOverlay) {
+        if (
+            !this.compareAttributes.showLabelsOnHover &&
+            this.compareAttributes.originalLabel &&
+            this.compareAttributes.compareLabel
+        ) {
             overlay.classList.remove('slds-hide');
         }
     }

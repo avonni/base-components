@@ -3,8 +3,9 @@
  * @name items
  * @property {string} orientation The orientation of the slider. Valid values include horizontal and vertical. The default is horizontal.
  * @property {string} moveOn Indicates the behavior of the slider. Valid values include hover and click. The default is click.
- * @property {boolean} showBeforeAfterOverlay Indicates whether to show the overlay. The default is false.
- * @property {boolean} showBeforeAfterOverlayOnHover Indicates whether to show the overlay on hover. The default is false.
+ * @property {string} originalLabel The label to display on the original image. The default is Before.
+ * @property {string} compareLabel The label to display on the compared image. The default is After.
+ * @property {boolean} showLabelsOnHover If present, the labels are displayed only when the mouse pointer is over the image. Otherwise, the labels are always displayed. The default is false.
  */
 /**
  * @namespace stylingHooks
