@@ -109,8 +109,7 @@ export default class Image extends LightningElement {
     _height;
     _imgElementWidth;
     _imgElementHeight;
-    _initialState;
-    _isDragging = false;
+    _isDraggingCompareCursor = false;
     _lazyLoading = LAZY_LOADING_VARIANTS.default;
     _magnifierType = MAGNIFIER_TYPES.default;
     _magnifierAttributes = {
@@ -123,6 +122,7 @@ export default class Image extends LightningElement {
         zoomRatioHeight: '100px'
     };
     _position = POSITIONS.default;
+    _showOverlay;
     _sizes;
     _src;
     _srcset;
@@ -677,11 +677,43 @@ export default class Image extends LightningElement {
         if (styleProperties) {
             Object.keys(styleProperties).forEach((key) => {
                 if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
+                    styleValue += `${key}: ${styleProperties[key]};`;
                 }
             });
         }
         return styleValue;
+    }
+
+    /**
+     * Final computed 'before' overlay class styling.
+     *
+     * @type {string}
+     */
+    get computedOverlayBeforeClass() {
+        return classSet('avonni-image__compare-overlay slds-is-absolute')
+            .add({
+                'avonni-image__compare-overlay-before_horizontal':
+                    this.compareAttributes.orientation === 'horizontal',
+                'avonni-image__compare-overlay-before_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
+    }
+
+    /**
+     * Final computed 'after' overlay class styling.
+     *
+     * @type {string}
+     */
+    get computedOverlayAfterClass() {
+        return classSet('avonni-image__compare-overlay slds-is-absolute')
+            .add({
+                'avonni-image__compare-overlay-after_horizontal':
+                    this.compareAttributes.orientation === 'horizontal',
+                'avonni-image__compare-overlay-after_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
     }
 
     /**
@@ -739,7 +771,7 @@ export default class Image extends LightningElement {
             '[data-element-id="compare-slider"]'
         );
         const rect = container.getBoundingClientRect();
-        this._isDragging = true;
+        this._isDraggingCompareCursor = true;
         slider.style.transition = 'all 0.15s ease-in-out';
         compareImg.style.transition = 'all 0.15s ease-in-out';
         const posX = event.clientX - rect.left;
@@ -751,18 +783,21 @@ export default class Image extends LightningElement {
             slider.style.top = `${posY}px`;
             compareImg.style.height = `${posY}px`;
         }
+        const handleMouseUp = () => {
+            this._isDraggingCompareCursor = false;
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+        window.addEventListener('mouseup', handleMouseUp);
     }
 
     /**
      * Call the right compare slider type on mouse move.
      */
     handleCompareMouseMove(event) {
-        const img = this.template.querySelector('[data-element-id="img"]');
-
         if (this.compareAttributes.moveOn === 'hover') {
-            this.hoverSlider(event, img);
+            this.hoverSlider(event);
         } else {
-            this.clickSlider(event, img);
+            this.clickSlider(event);
         }
     }
 
@@ -773,7 +808,7 @@ export default class Image extends LightningElement {
         const overlay = this.template.querySelector(
             '[data-element-id="compare-overlay-container"]'
         );
-        if (!this._initialState) {
+        if (!this._showOverlay) {
             overlay.classList.add('slds-hide');
         }
     }
@@ -787,15 +822,7 @@ export default class Image extends LightningElement {
         );
         if (this.compareAttributes.showBeforeAfterOverlayOnHover) {
             overlay.classList.remove('slds-hide');
-            this.placeBeforeAfterOverlay();
         }
-    }
-
-    /**
-     * Disable the slider dragging after releasing mouse button.
-     */
-    handleCompareMouseUp() {
-        this._isDragging = false;
     }
 
     /**
@@ -822,7 +849,7 @@ export default class Image extends LightningElement {
     /**
      * Call the right function to handle the magnifier.
      */
-    handleMove(event) {
+    handleMagnifierMove(event) {
         if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
             return;
         }
@@ -896,7 +923,7 @@ export default class Image extends LightningElement {
     /**
      * Remove the magnifier when mouse out.
      */
-    handleOut() {
+    handleMagnifierOut() {
         const magnifier = this.template.querySelector(
             '[data-element-id="magnifier"]'
         );
@@ -910,7 +937,8 @@ export default class Image extends LightningElement {
     /**
      * Handle the 'click' type slider.
      */
-    clickSlider(event, img) {
+    clickSlider(event) {
+        const img = this.template.querySelector('[data-element-id="img"]');
         const container = this.template.querySelector(
             '[data-element-id="compare-container"]'
         );
@@ -927,7 +955,7 @@ export default class Image extends LightningElement {
         compareImg.style.transition = 'none';
         if (
             this.compareAttributes.orientation === 'horizontal' &&
-            this._isDragging &&
+            this._isDraggingCompareCursor &&
             posX <= img.width &&
             posX >= 0
         ) {
@@ -935,7 +963,7 @@ export default class Image extends LightningElement {
             compareImg.style.width = `${posX}px`;
         } else if (
             this.compareAttributes.orientation === 'vertical' &&
-            this._isDragging &&
+            this._isDraggingCompareCursor &&
             posY <= img.height &&
             posY >= 0
         ) {
@@ -966,18 +994,18 @@ export default class Image extends LightningElement {
             handle.style.flexDirection = 'column';
         }
 
-        this._initialState = this.compareAttributes.showBeforeAfterOverlay;
+        this._showOverlay = this.compareAttributes.showBeforeAfterOverlay;
 
-        if (this._initialState) {
+        if (this._showOverlay) {
             overlay.classList.remove('slds-hide');
-            this.placeBeforeAfterOverlay();
         }
     }
 
     /**
      * Slide the compare slider on hover.
      */
-    hoverSlider(event, img) {
+    hoverSlider(event) {
+        const img = this.template.querySelector('[data-element-id="img"]');
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
         );
@@ -1008,32 +1036,5 @@ export default class Image extends LightningElement {
             compareImg.style.height = `${posY}px`;
         }
         container.style.cursor = 'grab';
-    }
-
-    /**
-     * Correctly position the before after overlay.
-     */
-    placeBeforeAfterOverlay() {
-        const before = this.template.querySelector(
-            '[data-element-id="compare-overlay-before"]'
-        );
-        const after = this.template.querySelector(
-            '[data-element-id="compare-overlay-after"]'
-        );
-
-        const offsetBefore = before.offsetWidth / 2;
-        const offsetAfter = after.offsetWidth / 2;
-
-        if (this.compareAttributes.orientation === 'horizontal') {
-            before.style.left = '10px';
-            before.style.top = '10px';
-            after.style.right = '10px';
-            after.style.top = '10px';
-        } else {
-            before.style.left = `calc(50% - ${offsetBefore}px)`;
-            before.style.top = '10px';
-            after.style.left = `calc(50% - ${offsetAfter}px)`;
-            after.style.bottom = '10px';
-        }
     }
 }

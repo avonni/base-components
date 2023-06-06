@@ -154,6 +154,28 @@
     pointer-events: none;
 }
 
+.avonni-image__compare-overlay-before_horizontal {
+    left: 10px;
+    top: 10px;
+}
+
+.avonni-image__compare-overlay-before_vertical {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.avonni-image__compare-overlay-after_horizontal {
+    right: 10px;
+    top: 10px;
+}
+
+.avonni-image__compare-overlay-after_vertical {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .avonni-image__compare-img-container {
     width: 0;
     height: 0;

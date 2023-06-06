@@ -43,10 +43,10 @@
             style={computedStyle}
             loading={lazyLoading}
             onload={handleLoadImage}
-            onmousemove={handleMove}
-            ontouchmove={handleMove}
-            onmouseout={handleOut}
-            ontouchend={handleOut}
+            onmousemove={handleMagnifierMove}
+            ontouchmove={handleMagnifierMove}
+            onmouseout={handleMagnifierOut}
+            ontouchend={handleMagnifierOut}
         />
         <div
             data-element-id="magnifier-lens"
@@ -108,13 +108,13 @@
             </div>
             <div class="slds-hide" data-element-id="compare-overlay-container">
                 <div
-                    class="avonni-image__compare-overlay slds-is-absolute"
+                    class={computedOverlayBeforeClass}
                     data-element-id="compare-overlay-before"
                 >
                     Before
                 </div>
                 <div
-                    class="avonni-image__compare-overlay slds-is-absolute"
+                    class={computedOverlayAfterClass}
                     data-element-id="compare-overlay-after"
                 >
                     After
