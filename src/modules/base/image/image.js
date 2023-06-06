@@ -760,7 +760,7 @@ export default class Image extends LightningElement {
         const img = this.template.querySelector('[data-element-id="img"]');
 
         if (this.compareAttributes.moveOn === 'hover') {
-            this.hoverSlider(event);
+            this.hoverSlider(event, img);
         } else {
             this.clickSlider(event, img);
         }
@@ -812,7 +812,9 @@ export default class Image extends LightningElement {
                 this.handleMagnifier(img);
             }
             if (this.compareSrc) {
-                this.handleCompareSlider(img);
+                setTimeout(() => {
+                    this.handleCompareSlider(img);
+                }, 50);
             }
         }
     }
@@ -926,14 +928,16 @@ export default class Image extends LightningElement {
         if (
             this.compareAttributes.orientation === 'horizontal' &&
             this._isDragging &&
-            posX <= img.width
+            posX <= img.width &&
+            posX >= 0
         ) {
             slider.style.left = `${posX}px`;
             compareImg.style.width = `${posX}px`;
         } else if (
             this.compareAttributes.orientation === 'vertical' &&
             this._isDragging &&
-            event.clientY <= img.height
+            posY <= img.height &&
+            posY >= 0
         ) {
             slider.style.top = `${posY}px`;
             compareImg.style.height = `${posY}px`;
@@ -973,7 +977,7 @@ export default class Image extends LightningElement {
     /**
      * Slide the compare slider on hover.
      */
-    hoverSlider(event) {
+    hoverSlider(event, img) {
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
         );
@@ -983,14 +987,25 @@ export default class Image extends LightningElement {
         const compareImg = this.template.querySelector(
             '[data-element-id="compare-img-container"]'
         );
-        const pos = getCursorPosition(event);
+        //const pos = getCursorPosition(event);
+        const rect = container.getBoundingClientRect();
+        const posX = event.clientX - rect.left;
+        const posY = event.clientY - rect.top;
         slider.style.pointerEvents = 'none';
-        if (this.compareAttributes.orientation === 'horizontal') {
-            slider.style.left = `${pos.x}px`;
-            compareImg.style.width = `${pos.x}px`;
-        } else {
-            slider.style.top = `${pos.y}px`;
-            compareImg.style.height = `${pos.y}px`;
+        if (
+            this.compareAttributes.orientation === 'horizontal' &&
+            posX <= img.width &&
+            posX >= 0
+        ) {
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
+        } else if (
+            this.compareAttributes.orientation === 'vertical' &&
+            posY <= img.height &&
+            posY >= 0
+        ) {
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
         }
         container.style.cursor = 'grab';
     }

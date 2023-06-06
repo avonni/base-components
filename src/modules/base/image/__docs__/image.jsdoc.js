@@ -7,17 +7,6 @@
  * @property {boolean} showBeforeAfterOverlayOnHover Indicates whether to show the overlay on hover. The default is false.
  */
 /**
- * @typedef {object} MagnifierAttributes
- * @name items
- * @property {string} position The position of the magnifier. Valid values include left, right, top, bottom and auto. The default is auto.
- * @property {number} horizontalOffset The horizontal offset of the magnifier. The default is 0.
- * @property {number} verticalOffset The vertical offset of the magnifier. The default is 0.
- * @property {boolean} smoothMove Indicates whether to move the magnifier smoothly. The default is false.
- * @property {number} zoomFactor The zoom factor of the magnifier. The default is 2.
- * @property {string} zoomRatioWidth The width of the magnifier. The default is 100px.
- * @property {string} zoomRatioHeight The height of the magnifier. The default is 100px.
- */
-/**
  * @namespace stylingHooks
  */
 /**
