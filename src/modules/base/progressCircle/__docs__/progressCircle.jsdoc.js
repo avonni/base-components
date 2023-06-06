@@ -51,6 +51,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-circle-title-line-clamp
+ * @default 3
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-circle-label-text-color
  * @default #706e6b
  * @type color
