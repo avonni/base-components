@@ -143,27 +143,14 @@
         >
             {tertiaryText}
         </p>
-        <lightning-layout
-            if:true={tags}
-            class="avonni-avatar__tags"
-            multiple-rows
-        >
-            <template for:each={tags} for:item="tag">
-                <lightning-layout-item
-                    if:true={tag.label}
-                    class="slds-p-around_xx-small"
-                    key={tag.label}
-                >
-                    <c-chip
-                        data-element-id="avonni-avatar-tag"
-                        if:true={tag.label}
-                        label={tag.label}
-                        variant={tag.variant}
-                        outline={tag.outline}
-                    >
-                    </c-chip>
-                </lightning-layout-item>
-            </template>
-        </lightning-layout>
+        <div class="avonni-avatar__tags">
+            <c-chip-container
+                if:true={showChipContainer}
+                data-element-id="avonni-avatar-tags"
+                items={tags}
+                single-line
+                is-collapsible
+            ></c-chip-container>
+        </div>
     </c-media-object>
 </template>

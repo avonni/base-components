@@ -538,6 +538,15 @@ export default class Avatar extends LightningElement {
     }
 
     /**
+     * Chip container show.
+     *
+     * @type {boolean}
+     */
+    get showChipContainer() {
+        return this.tags.length;
+    }
+
+    /**
      * Tertiary text show.
      *
      * @type {boolean}
