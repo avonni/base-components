@@ -72,7 +72,6 @@
             data-element-id="compare-container"
             onmousemove={handleCompareMouseMove}
             onmousedown={handleCompareMouseDown}
-            onmouseup={handleCompareMouseUp}
             onmouseover={handleCompareMouseOver}
             onmouseout={handleCompareMouseOut}
         >
@@ -99,6 +98,9 @@
                         slds-align_absolute-center
                     "
                     data-element-id="compare-slider-handle"
+                    aria-role="button"
+                    tabindex="0"
+                    onkeydown={handleCompareKeydown}
                 >
                     <lightning-icon icon-name={compareIconName1} size="x-small">
                     </lightning-icon>

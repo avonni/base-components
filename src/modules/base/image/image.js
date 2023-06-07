@@ -755,6 +755,82 @@ export default class Image extends LightningElement {
             : 'utility:down';
     }
 
+    handleCompareKeydown(event) {
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            const handleMouseDown = () => {
+                this._isDraggingCompareCursor = false;
+                window.removeEventListener('mousedown', handleMouseDown);
+            };
+            window.addEventListener('mousedown', handleMouseDown);
+            if (event.target === handle) {
+                this._isDraggingCompareCursor = !this._isDraggingCompareCursor;
+            }
+        } else if (this._isDraggingCompareCursor && event.target === handle) {
+            event.preventDefault();
+            const img = this.template.querySelector('[data-element-id="img"]');
+            const slider = this.template.querySelector(
+                '[data-element-id="compare-slider"]'
+            );
+            const compareImg = this.template.querySelector(
+                '[data-element-id="compare-img-container"]'
+            );
+            const computedStyle = window.getComputedStyle(slider);
+            let initialPosition;
+            if (this.compareAttributes.orientation === 'horizontal') {
+                initialPosition = computedStyle.getPropertyValue('left');
+            } else {
+                initialPosition = computedStyle.getPropertyValue('top');
+            }
+            const numericValue = parseFloat(initialPosition);
+            slider.style.transition = 'all 0.15s ease-out';
+            compareImg.style.transition = 'all 0.15s ease-out';
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+                if (this.compareAttributes.orientation === 'horizontal') {
+                    if (numericValue > 20) {
+                        slider.style.left = `${numericValue - 20}px`;
+                        compareImg.style.width = `${numericValue - 20}px`;
+                    } else {
+                        slider.style.left = '0px';
+                        compareImg.style.width = '0px';
+                    }
+                } else {
+                    if (numericValue > 20) {
+                        slider.style.top = `${numericValue - 20}px`;
+                        compareImg.style.height = `${numericValue - 20}px`;
+                    } else {
+                        slider.style.top = '0px';
+                        compareImg.style.height = '0px';
+                    }
+                }
+            } else if (
+                event.key === 'ArrowRight' ||
+                event.key === 'ArrowDown'
+            ) {
+                if (this.compareAttributes.orientation === 'horizontal') {
+                    if (numericValue < img.width - 20) {
+                        slider.style.left = `${numericValue + 20}px`;
+                        compareImg.style.width = `${numericValue + 20}px`;
+                    } else {
+                        slider.style.left = `${img.width}px`;
+                        compareImg.style.width = `${img.width}px`;
+                    }
+                } else {
+                    if (numericValue < img.height - 20) {
+                        slider.style.top = `${numericValue + 20}px`;
+                        compareImg.style.height = `${numericValue + 20}px`;
+                    } else {
+                        slider.style.top = `${img.height}px`;
+                        compareImg.style.height = `${img.height}px`;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Slide and grip the compare slider on click.
      */
@@ -1027,6 +1103,8 @@ export default class Image extends LightningElement {
         const posX = event.clientX - rect.left;
         const posY = event.clientY - rect.top;
         slider.style.pointerEvents = 'none';
+        slider.style.transition = 'none';
+        compareImg.style.transition = 'none';
         if (
             this.compareAttributes.orientation === 'horizontal' &&
             posX <= img.width &&
