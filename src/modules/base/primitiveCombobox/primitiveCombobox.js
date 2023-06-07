@@ -986,6 +986,15 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Computed Hide options Until Search value.
+     *
+     * @type {boolean}
+     */
+    get computedHideOptionsUntilSearch() {
+        return this.allowSearch && this.hideOptionsUntilSearch;
+    }
+
+    /**
      * Computed Input Container Class styling.
      *
      * @type {string}
@@ -1783,6 +1792,17 @@ export default class PrimitiveCombobox extends LightningElement {
         this._searchTerm = event.currentTarget.value;
         this.inputValue = this._searchTerm;
         this.handleSearch();
+
+        // Update dropdown visibility when hideOptionsUntilSearch is present.
+        if (this.computedHideOptionsUntilSearch) {
+            if (!this.inputValue && this.dropdownVisible) {
+                this.close();
+                this.dispatchClose();
+            } else if (this.inputValue && !this.dropdownVisible) {
+                this.open();
+                this.dispatchOpen();
+            }
+        }
     }
 
     /**
@@ -2155,7 +2175,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Dispatches open event.
      */
     handleTriggerClick() {
-        if (!this.dropdownVisible) {
+        if (!this.dropdownVisible && !this.computedHideOptionsUntilSearch) {
             this.open();
             this.dispatchOpen();
         }
