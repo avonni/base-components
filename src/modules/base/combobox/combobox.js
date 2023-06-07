@@ -161,6 +161,7 @@ export default class Combobox extends LightningElement {
     _enableInfiniteLoading = false;
     _groups = [];
     _hideClearIcon = false;
+    _hideOptionsUntilSearch = false;
     _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
@@ -332,6 +333,21 @@ export default class Combobox extends LightningElement {
     }
     set hideClearIcon(value) {
         this._hideClearIcon = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the combobox options are hidden until a search value is entered.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideOptionsUntilSearch() {
+        return this._hideOptionsUntilSearch;
+    }
+    set hideOptionsUntilSearch(value) {
+        this._hideOptionsUntilSearch = normalizeBoolean(value);
     }
 
     /**

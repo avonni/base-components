@@ -79,6 +79,7 @@ describe('Primitive Combobox', () => {
         expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([{ name: 'ungrouped' }]);
+        expect(element.hideOptionsUntilSearch).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();

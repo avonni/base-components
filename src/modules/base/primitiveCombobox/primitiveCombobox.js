@@ -147,6 +147,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _dropdownLength = DROPDOWN_LENGTHS.default;
     _enableInfiniteLoading = false;
     _groups = [{ name: DEFAULT_GROUP_NAME }];
+    _hideOptionsUntilSearch = false;
     _isLoading = false;
     _isMultiSelect = false;
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
@@ -381,6 +382,21 @@ export default class PrimitiveCombobox extends LightningElement {
         // Add a default group for options without groups
         this._groups.unshift({ name: DEFAULT_GROUP_NAME });
         if (this.visibleOptions.length) this.computeGroups();
+    }
+
+    /**
+     * If present, the primitive combobox options are hidden until a search value is entered.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideOptionsUntilSearch() {
+        return this._hideOptionsUntilSearch;
+    }
+    set hideOptionsUntilSearch(value) {
+        this._hideOptionsUntilSearch = normalizeBoolean(value);
     }
 
     /**
@@ -1814,7 +1830,7 @@ export default class PrimitiveCombobox extends LightningElement {
     handleInputKeyDown(event) {
         if (!this.dropdownVisible) {
             this.open();
-            this.dispatchEvent(new CustomEvent('open'));
+            this.dispatchOpen();
         } else {
             const index = this._highlightedOptionIndex;
             switch (event.key) {
@@ -2141,7 +2157,7 @@ export default class PrimitiveCombobox extends LightningElement {
     handleTriggerClick() {
         if (!this.dropdownVisible) {
             this.open();
-            this.dispatchEvent(new CustomEvent('open'));
+            this.dispatchOpen();
         }
     }
 
@@ -2187,6 +2203,20 @@ export default class PrimitiveCombobox extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('close'));
+    }
+
+    /**
+     * Dispatch the close event.
+     */
+    dispatchOpen() {
+        /**
+         * The event fired when the drop-down is closed. It is not fired when the drop-down is closed programmatically with the `close()` method.
+         *
+         * @event
+         * @name close
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('open'));
     }
 
     /**

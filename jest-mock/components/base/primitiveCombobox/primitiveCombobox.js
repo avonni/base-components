@@ -10,6 +10,7 @@ export default class PrimitiveCombobox extends LightningElement {
     @api enableInfiniteLoading;
     @api fieldsLevelHelp;
     @api groups;
+    @api hideOptionsUntilSearch;
     @api isLoading;
     @api isMultiSelect;
     @api label;

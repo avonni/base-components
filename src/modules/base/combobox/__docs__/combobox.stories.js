@@ -182,6 +182,19 @@ export default {
                 category: 'Appearance'
             }
         },
+        hideOptionsUntilSearch: {
+            name: 'hide-options-until-search',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the combobox options are hidden until a search value is entered.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
+            }
+        },
         hideSelectedOptions: {
             name: 'hide-selected-options',
             control: {
@@ -487,6 +500,7 @@ export default {
         dropdownLength: '7-items',
         enableInfiniteLoading: false,
         hideClearIcon: false,
+        hideOptionsUntilSearch: false,
         hideSelectedOptions: false,
         isLoading: false,
         isMultiSelect: false,
