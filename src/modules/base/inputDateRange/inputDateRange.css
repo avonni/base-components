@@ -33,7 +33,6 @@
 .avonni-date-range__container {
     display: flex;
     align-items: flex-end;
-    flex-wrap: wrap;
 }
 
 .avonni-date-range__container .slds-form-element {
