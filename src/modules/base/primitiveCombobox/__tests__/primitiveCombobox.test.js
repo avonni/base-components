@@ -623,6 +623,47 @@ describe('Primitive Combobox', () => {
         });
     });
 
+    // hide-options-until-search
+    // Depends on allow-search
+    it('Primitive combobox: hideOptionsUntilSearch = true', () => {
+        element.allowSearch = true;
+        element.hideOptionsUntilSearch = true;
+        element.options = options;
+
+        const dropdownTrigger = element.shadowRoot.querySelector(
+            '[data-element-id="div-dropdown-trigger"]'
+        );
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+
+        dropdownTrigger.click();
+
+        return Promise.resolve()
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeNull();
+                input.value = 'test';
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeTruthy();
+                input.value = '';
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeNull();
+            });
+    });
+
     // is-loading
     // Depends on options
     it('Primitive combobox: isLoading = false', () => {
