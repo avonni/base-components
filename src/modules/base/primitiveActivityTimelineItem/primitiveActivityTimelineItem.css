@@ -78,6 +78,7 @@
 
 .avonni-activity-timeline-item-header-date {
     margin-left: auto;
+    max-width: 100%;
 }
 
 .slds-timeline__item_expandable:before {

@@ -132,7 +132,7 @@
                     >
                         <div
                             if:true={dateFormat}
-                            class="slds-timeline__date"
+                            class="slds-timeline__date slds-truncate"
                             data-element-id="avonni-formatted-date-time"
                         >
                             {formattedDate}
@@ -188,7 +188,9 @@
                                 size="x-small"
                                 class="slds-m-right_x-small"
                             ></lightning-icon>
-                            <p>There was an error loading the details</p>
+                            <p class="slds-truncate">
+                                There was an error loading the details
+                            </p>
                         </div>
                     </template>
                     <template if:false={hasError}>
