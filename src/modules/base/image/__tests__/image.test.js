@@ -76,10 +76,9 @@ describe('Image', () => {
         expect(element.compare).toBeFalsy();
         expect(element.compareAttributes.orientation).toBe('horizontal');
         expect(element.compareAttributes.moveOn).toBe('click');
-        expect(element.compareAttributes.showBeforeAfterOverlay).toBeFalsy();
-        expect(
-            element.compareAttributes.showBeforeAfterOverlayOnHover
-        ).toBeFalsy();
+        expect(element.compareAttributes.originalLabel).toBe('Before');
+        expect(element.compareAttributes.compareLabel).toBe('After');
+        expect(element.compareAttributes.showLabelsOnHover).toBeFalsy();
         expect(element.magnifierType).toBeUndefined();
         expect(element.magnifierAttributes.position).toBe('auto');
         expect(element.magnifierAttributes.horizontalOffset).toBe(0);
@@ -546,7 +545,9 @@ describe('Image', () => {
             element.compareSrc = src;
             element.compareAttributes = {
                 orientation: 'horizontal',
-                showBeforeAfterOverlayOnHover: true
+                originalLabel: 'Before',
+                compareLabel: 'After',
+                showLabelsOnHover: true
             };
 
             return Promise.resolve().then(() => {
@@ -559,9 +560,17 @@ describe('Image', () => {
                 const after = element.shadowRoot.querySelector(
                     '[data-element-id="compare-overlay-after"]'
                 );
+                const before = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-overlay-before"]'
+                );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
                 expect(overlay.classList).not.toContain('slds-hide');
-                expect(after.style.top).toBe('10px');
+                expect(after.classList).toContain(
+                    'avonni-image__compare-overlay-after_horizontal'
+                );
+                expect(before.classList).toContain(
+                    'avonni-image__compare-overlay-before_horizontal'
+                );
             });
         });
 
@@ -569,7 +578,9 @@ describe('Image', () => {
             element.compareSrc = src;
             element.compareAttributes = {
                 orientation: 'vertical',
-                showBeforeAfterOverlayOnHover: true
+                originalLabel: 'Before',
+                compareLabel: 'After',
+                showLabelsOnHover: true
             };
 
             return Promise.resolve().then(() => {
@@ -582,9 +593,17 @@ describe('Image', () => {
                 const after = element.shadowRoot.querySelector(
                     '[data-element-id="compare-overlay-after"]'
                 );
+                const before = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-overlay-before"]'
+                );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
                 expect(overlay.classList).not.toContain('slds-hide');
-                expect(after.style.bottom).toBe('10px');
+                expect(after.classList).toContain(
+                    'avonni-image__compare-overlay-after_vertical'
+                );
+                expect(before.classList).toContain(
+                    'avonni-image__compare-overlay-before_vertical'
+                );
             });
         });
 
@@ -717,6 +736,122 @@ describe('Image', () => {
                     new MouseEvent('mousemove', { clientY: 125 })
                 );
                 expect(compareImg.style.height).toBe('125px');
+            });
+        });
+
+        it('Image: Compare slider - move with keyboard - horizontal', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'horizontal'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image__compare-img-container'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const handle = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider-handle"]'
+                );
+                const slider = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider"]'
+                );
+                img.width = 200;
+                img.height = 200;
+                compareImg.width = 100;
+                compareImg.height = 200;
+                slider.style.left = '100px';
+                // Start compare (Enter or Space)
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'Enter' })
+                );
+                // Move handle right
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowRight' })
+                );
+                expect(compareImg.style.width).toBe('120px');
+                // Boundary right
+                compareImg.width = 199;
+                slider.style.left = '199px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowRight' })
+                );
+                expect(compareImg.style.width).toBe(`${img.width}px`);
+
+                // Move handle left
+                compareImg.width = 100;
+                slider.style.left = '100px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowLeft' })
+                );
+                expect(compareImg.style.width).toBe('80px');
+                // Boundary left
+                compareImg.width = 1;
+                slider.style.left = '1px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowLeft' })
+                );
+                expect(compareImg.style.width).toBe('0px');
+            });
+        });
+
+        it('Image: Compare slider - move with keyboard - vertical', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {
+                orientation: 'vertical'
+            };
+
+            return Promise.resolve().then(() => {
+                const compareImg = element.shadowRoot.querySelector(
+                    '.avonni-image__compare-img-container'
+                );
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                const handle = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider-handle"]'
+                );
+                const slider = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider"]'
+                );
+                img.width = 200;
+                img.height = 200;
+                compareImg.width = 200;
+                compareImg.height = 100;
+                slider.style.top = '100px';
+                // Start compare (Enter or Space)
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'Enter' })
+                );
+                // Move handle down
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowDown' })
+                );
+                expect(compareImg.style.height).toBe('120px');
+                // Boundary down
+                compareImg.height = 199;
+                slider.style.top = '199px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowDown' })
+                );
+                expect(compareImg.style.height).toBe(`${img.height}px`);
+
+                // Move handle up
+                compareImg.height = 100;
+                slider.style.top = '100px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowUp' })
+                );
+                expect(compareImg.style.height).toBe('80px');
+                // Boundary up
+                compareImg.height = 1;
+                slider.style.top = '1px';
+                handle.dispatchEvent(
+                    new KeyboardEvent('keydown', { key: 'ArrowUp' })
+                );
+                expect(compareImg.style.height).toBe('0px');
             });
         });
     });
