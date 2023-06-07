@@ -638,10 +638,10 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 const container = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-container'
+                    '[data-element-id="compare-container"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 img.width = 200;
                 img.height = 200;
@@ -668,7 +668,7 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 img.width = 200;
                 img.height = 200;
@@ -691,7 +691,7 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
@@ -721,7 +721,7 @@ describe('Image', () => {
                     '[data-element-id="compare-container"]'
                 );
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
@@ -747,7 +747,7 @@ describe('Image', () => {
 
             return Promise.resolve().then(() => {
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
@@ -805,7 +805,7 @@ describe('Image', () => {
 
             return Promise.resolve().then(() => {
                 const compareImg = element.shadowRoot.querySelector(
-                    '.avonni-image__compare-img-container'
+                    '[data-element-id="compare-img-container"]'
                 );
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
