@@ -48,6 +48,7 @@ export const InfiniteLoadingCombobox = ({
     enableInfiniteLoading,
     groups,
     hideClearIcon,
+    hideOptionsUntilSearch,
     hideSelectedOptions,
     isLoading,
     isMultiSelect,
@@ -84,6 +85,7 @@ export const InfiniteLoadingCombobox = ({
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
     element.hideClearIcon = hideClearIcon;
+    element.hideOptionsUntilSearch = hideOptionsUntilSearch;
     element.hideSelectedOptions = hideSelectedOptions;
     element.isLoading = isLoading;
     element.isMultiSelect = isMultiSelect;
