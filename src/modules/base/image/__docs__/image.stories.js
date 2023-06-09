@@ -296,8 +296,8 @@ export default {
         compareAttributes: {
             orientation: 'horizontal',
             moveOn: 'click',
-            originalLabel: 'Before',
-            compareLabel: 'After',
+            originalLabel: '',
+            compareLabel: '',
             showLabelsOnHover: false
         }
     }
@@ -356,7 +356,11 @@ Compare.args = {
     src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     compareSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg'
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+    compareAttributes: {
+        originalLabel: 'Before',
+        compareLabel: 'After'
+    }
 };
 
 export const Thumbnail = Template.bind({});

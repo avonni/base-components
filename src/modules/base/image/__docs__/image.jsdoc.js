@@ -43,37 +43,37 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-overlay-color-background
+ * @name --avonni-image-compare-label-color-background
  * @default white
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-overlay-opacity
+ * @name --avonni-image-compare-label-opacity
  * @default 0.8
  * @type number
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-overlay-sizing-border
+ * @name --avonni-image-compare-label-sizing-border
  * @default 0
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-overlay-styling-border
+ * @name --avonni-image-compare-label-styling-border
  * @default none
  * @type string
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-overlay-color-border
+ * @name --avonni-image-compare-label-color-border
  * @default none
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-image-compare-overlay-radius-border
+ * @name --avonni-image-compare-label-radius-border
  * @default 5px
  * @type radius
  */
