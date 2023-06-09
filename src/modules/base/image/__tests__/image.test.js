@@ -76,8 +76,8 @@ describe('Image', () => {
         expect(element.compare).toBeFalsy();
         expect(element.compareAttributes.orientation).toBe('horizontal');
         expect(element.compareAttributes.moveOn).toBe('click');
-        expect(element.compareAttributes.originalLabel).toBe('Before');
-        expect(element.compareAttributes.compareLabel).toBe('After');
+        expect(element.compareAttributes.originalLabel).toBe('');
+        expect(element.compareAttributes.compareLabel).toBe('');
         expect(element.compareAttributes.showLabelsOnHover).toBeFalsy();
         expect(element.magnifierType).toBeUndefined();
         expect(element.magnifierAttributes.position).toBe('auto');
@@ -554,9 +554,6 @@ describe('Image', () => {
                 const compareContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-container"]'
                 );
-                const overlay = element.shadowRoot.querySelector(
-                    '[data-element-id="compare-overlay-container"]'
-                );
                 const after = element.shadowRoot.querySelector(
                     '[data-element-id="compare-overlay-after"]'
                 );
@@ -564,7 +561,9 @@ describe('Image', () => {
                     '[data-element-id="compare-overlay-before"]'
                 );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
-                expect(overlay.classList).not.toContain('slds-hide');
+                expect(compareContainer.classList).toContain(
+                    'avonni-image__container_compare-labels-on-hover'
+                );
                 expect(after.classList).toContain(
                     'avonni-image__compare-overlay-after_horizontal'
                 );
@@ -587,9 +586,6 @@ describe('Image', () => {
                 const compareContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-container"]'
                 );
-                const overlay = element.shadowRoot.querySelector(
-                    '[data-element-id="compare-overlay-container"]'
-                );
                 const after = element.shadowRoot.querySelector(
                     '[data-element-id="compare-overlay-after"]'
                 );
@@ -597,7 +593,9 @@ describe('Image', () => {
                     '[data-element-id="compare-overlay-before"]'
                 );
                 compareContainer.dispatchEvent(new MouseEvent('mouseover'));
-                expect(overlay.classList).not.toContain('slds-hide');
+                expect(compareContainer.classList).toContain(
+                    'avonni-image__container_compare-labels-on-hover'
+                );
                 expect(after.classList).toContain(
                     'avonni-image__compare-overlay-after_vertical'
                 );
@@ -607,19 +605,21 @@ describe('Image', () => {
             });
         });
 
-        it('Image: Compare slider - show overlay on hover - mouseout', () => {
+        it('Image: Compare slider - show overlay', () => {
             element.compareSrc = src;
-            element.compareAttributes = { showBeforeAfterOverlayOnHover: true };
+            element.compareAttributes = {
+                originalLabel: 'Before',
+                compareLabel: 'After',
+                showLabelsOnHover: false
+            };
 
             return Promise.resolve().then(() => {
                 const compareContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-container"]'
                 );
-                const overlay = element.shadowRoot.querySelector(
-                    '[data-element-id="compare-overlay-container"]'
+                expect(compareContainer.classList).not.toContain(
+                    'avonni-image__container_compare-labels-on-hover'
                 );
-                compareContainer.dispatchEvent(new MouseEvent('mouseout'));
-                expect(overlay.classList).toContain('slds-hide');
             });
         });
 
