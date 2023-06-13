@@ -138,6 +138,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-color-background
  * @default transparent
  * @type color

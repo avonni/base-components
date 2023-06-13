@@ -254,7 +254,10 @@
 
 /* AVATAR */
 .avonni-list-item-avatar {
-    --avonni-avatar-image-object-fit: var(--avonni-list-item-avatar-image-object-fit, 'cover');
+    --avonni-avatar-image-object-fit: var(
+        --avonni-list-item-avatar-image-object-fit,
+        'cover'
+    );
 }
 
 /* LINK COLORS */
@@ -308,6 +311,7 @@ a.avonni-list__item-info-link:active {
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+    -webkit-line-clamp: var(--avonni-list-item-description-line-clamp, 2);
 }
 
 /* LINK INVERSE COLORS */
