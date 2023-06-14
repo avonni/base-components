@@ -50,17 +50,28 @@
         />
         <div
             data-element-id="magnifier-lens"
-            class="avonni-image_magnifier-lens slds-is-absolute"
+            class="
+                avonni-image_magnifier-lens
+                slds-is-absolute
+                avonni-image_pointer-events-none
+            "
         ></div>
         <div
             data-element-id="magnifier"
-            class="avonni-image_magnifier slds-scrollable_none slds-is-absolute"
+            class="
+                avonni-image_magnifier
+                slds-scrollable_none
+                slds-is-absolute
+                avonni-image_pointer-events-none
+            "
             style={computedMagnifierStyle}
         >
             <img
                 src={src}
                 alt=""
-                class="avonni-image_fit-content"
+                class="
+                    avonni-image_fit-content avonni-image_pointer-events-none
+                "
                 sizes={sizes}
                 style={computedMagnifiedImgStyle}
                 data-element-id="magnified-img"
