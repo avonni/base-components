@@ -295,6 +295,36 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-fields-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-radius-border
+ * @type color
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-styling-border
+ * @default solid
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-fields-spacing
  * @type dimension
  * @default 1rem
