@@ -717,11 +717,7 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom'
             })
-            .add(
-                `avonni-list__flex-col slds-size_${
-                    12 / this._currentColumnCount
-                }-of-12`
-            )
+            .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
     }
 
