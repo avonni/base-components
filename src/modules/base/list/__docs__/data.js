@@ -151,7 +151,8 @@ export const itemsWithImagesAndAvatars = [
         label: 'Item 1',
         avatar: {
             fallbackIconName: 'custom:custom5',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'left-of-title'
         },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -163,7 +164,8 @@ export const itemsWithImagesAndAvatars = [
         label: 'Item 2',
         avatar: {
             fallbackIconName: 'custom:custom9',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right-of-title'
         },
         href: '/path/to_somewhere',
         description:
@@ -174,6 +176,11 @@ export const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 3',
+        avatar: {
+            fallbackIconName: 'custom:custom9',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right'
+        },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -207,7 +214,8 @@ export const itemsWithImagesAndAvatars = [
         label: 'Item 4',
         avatar: {
             fallbackIconName: 'custom:custom11',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right-of-title'
         },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',

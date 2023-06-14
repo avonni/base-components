@@ -1,9 +1,21 @@
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+
+const AVATAR_POSITION = {
+    valid: ['left', 'right', 'left-of-title', 'right-of-title'],
+    default: 'left'
+};
 
 export default class Item {
     constructor(value) {
         this.avatar = value.avatar;
+        this.avatarPosition = normalizeString(
+            value.avatar && value.avatar.position,
+            {
+                validValues: AVATAR_POSITION.valid,
+                fallbackValue: AVATAR_POSITION.default
+            }
+        );
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
         this.fields = value.fields;
@@ -16,8 +28,32 @@ export default class Item {
         this.name = value.name;
     }
 
-    get hasImage() {
-        return !!this.imageSrc;
+    /**
+     * Computes if the avatar is at the left.
+     */
+    get isAvatarLeft() {
+        return this.avatarPosition === 'left';
+    }
+
+    /**
+     * Computes if the avatar is at the right.
+     */
+    get isAvatarRight() {
+        return this.avatarPosition === 'right';
+    }
+
+    /**
+     * Computes if the avatar is at the left of the title.
+     */
+    get isAvatarLeftOfTitle() {
+        return this.avatarPosition === 'left-of-title';
+    }
+
+    /**
+     * Computes if the avatar is at the right of the title.
+     */
+    get isAvatarRightOfTitle() {
+        return this.avatarPosition === 'right-of-title';
     }
 
     /**
@@ -31,5 +67,12 @@ export default class Item {
                     this.imagePosition === 'overlay'
             })
             .toString();
+    }
+
+    /**
+     * Computes if the item has an image.
+     */
+    get hasImage() {
+        return !!this.imageSrc;
     }
 }

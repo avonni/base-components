@@ -252,10 +252,8 @@
                                         avonni-list-item-body
                                     "
                                 >
-                                    <!-- Avatar -->
-
                                     <c-avatar
-                                        if:true={item.avatar}
+                                        if:true={item.isAvatarLeft}
                                         class="
                                             avonni-list-item-avatar
                                             slds-m-right_x-small
@@ -283,6 +281,23 @@
                                                 slds-margin-bottom_xx-small
                                             "
                                         >
+                                            <c-avatar
+                                                if:true={item.isAvatarLeftOfTitle}
+                                                class="
+                                                    avonni-list-item-avatar
+                                                    slds-m-right_x-small
+                                                "
+                                                fallback-icon-name={item.avatar.fallbackIconName}
+                                                src={item.avatar.src}
+                                                size={item.avatar.size}
+                                                initials={item.avatar.initials}
+                                                onmousedown={handleAvatarDragStart}
+                                                variant={item.avatar.variant}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                hide-avatar-details="true"
+                                                data-element-id="avonni-avatar"
+                                            ></c-avatar>
                                             <div
                                                 class="
                                                     slds-truncate
@@ -332,6 +347,23 @@
                                                     </span>
                                                 </template>
                                             </span>
+                                            <c-avatar
+                                                if:true={item.isAvatarRightOfTitle}
+                                                class="
+                                                    avonni-list-item-avatar
+                                                    slds-m-left_x-small
+                                                "
+                                                fallback-icon-name={item.avatar.fallbackIconName}
+                                                src={item.avatar.src}
+                                                size={item.avatar.size}
+                                                initials={item.avatar.initials}
+                                                onmousedown={handleAvatarDragStart}
+                                                variant={item.avatar.variant}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                hide-avatar-details="true"
+                                                data-element-id="avonni-avatar"
+                                            ></c-avatar>
                                         </div>
 
                                         <!-- Description -->
@@ -417,6 +449,23 @@
                                             </c-layout>
                                         </div>
                                     </div>
+                                    <c-avatar
+                                        if:true={item.isAvatarRight}
+                                        class="
+                                            avonni-list-item-avatar
+                                            slds-m-left_x-small
+                                        "
+                                        fallback-icon-name={item.avatar.fallbackIconName}
+                                        src={item.avatar.src}
+                                        size={item.avatar.size}
+                                        initials={item.avatar.initials}
+                                        onmousedown={handleAvatarDragStart}
+                                        variant={item.avatar.variant}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        hide-avatar-details="true"
+                                        data-element-id="avonni-avatar"
+                                    ></c-avatar>
                                 </div>
 
                                 <!-- Sort icon -->
