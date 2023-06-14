@@ -76,8 +76,8 @@ describe('Image', () => {
         expect(element.compare).toBeFalsy();
         expect(element.compareAttributes.orientation).toBe('horizontal');
         expect(element.compareAttributes.moveOn).toBe('click');
-        expect(element.compareAttributes.originalLabel).toBe('');
-        expect(element.compareAttributes.compareLabel).toBe('');
+        expect(element.compareAttributes.originalLabel).toBeUndefined();
+        expect(element.compareAttributes.compareLabel).toBeUndefined();
         expect(element.compareAttributes.showLabelsOnHover).toBeFalsy();
         expect(element.magnifierType).toBeUndefined();
         expect(element.magnifierAttributes.position).toBe('auto');
@@ -620,6 +620,22 @@ describe('Image', () => {
                 expect(compareContainer.classList).not.toContain(
                     'avonni-image__container_compare-labels-on-hover'
                 );
+            });
+        });
+
+        it('Image: Compare slider - no overlay', () => {
+            element.compareSrc = src;
+            element.compareAttributes = {};
+
+            return Promise.resolve().then(() => {
+                const originalLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-overlay-before"]'
+                );
+                const compareLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-overlay-after"]'
+                );
+                expect(originalLabel.classList).toContain('slds-hide');
+                expect(compareLabel.classList).toContain('slds-hide');
             });
         });
 

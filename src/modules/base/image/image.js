@@ -113,8 +113,6 @@ export default class Image extends LightningElement {
     _compareAttributes = {
         orientation: COMPARE_ORIENTATION.default,
         moveOn: MOVE_ON_OPTIONS.default,
-        originalLabel: '',
-        compareLabel: '',
         showLabelsOnHover: false
     };
     _cropPositionX = CROP_POSITION_X_DEFAULT;
@@ -618,7 +616,9 @@ export default class Image extends LightningElement {
                     this._position === 'left' && this._lazyLoading === 'auto',
                 'slds-float_right': this._position === 'right',
                 'slds-align_absolute-center': this._position === 'center',
-                'slds-show': this._position === 'center'
+                'slds-show': this._position === 'center',
+                'avonni-image__container_compare-labels-on-hover':
+                    this.compareAttributes.showLabelsOnHover
             })
             .toString();
     }
@@ -687,7 +687,8 @@ export default class Image extends LightningElement {
                 'avonni-image__compare-overlay-after_horizontal':
                     this.compareAttributes.orientation === 'horizontal',
                 'avonni-image__compare-overlay-after_vertical':
-                    this.compareAttributes.orientation === 'vertical'
+                    this.compareAttributes.orientation === 'vertical',
+                'slds-hide': !this.compareAttributes.compareLabel
             })
             .toString();
     }
@@ -703,7 +704,8 @@ export default class Image extends LightningElement {
                 'avonni-image__compare-overlay-before_horizontal':
                     this.compareAttributes.orientation === 'horizontal',
                 'avonni-image__compare-overlay-before_vertical':
-                    this.compareAttributes.orientation === 'vertical'
+                    this.compareAttributes.orientation === 'vertical',
+                'slds-hide': !this.compareAttributes.originalLabel
             })
             .toString();
     }
@@ -865,9 +867,6 @@ export default class Image extends LightningElement {
         const handle = this.template.querySelector(
             '[data-element-id="compare-slider-handle"]'
         );
-        const overlay = this.template.querySelector(
-            '[data-element-id="compare-overlay-container"]'
-        );
         if (this.compareAttributes.orientation === 'horizontal') {
             compareImg.style.width = `${img.width / 2}px`;
             compareImg.style.height = '100%';
@@ -875,14 +874,6 @@ export default class Image extends LightningElement {
             compareImg.style.height = `${img.height / 2}px`;
             compareImg.style.width = '100%';
             handle.style.flexDirection = 'column';
-        }
-
-        if (
-            !this.compareAttributes.showLabelsOnHover &&
-            this.compareAttributes.originalLabel &&
-            this.compareAttributes.compareLabel
-        ) {
-            overlay.classList.remove('slds-hide');
         }
     }
 
@@ -973,8 +964,9 @@ export default class Image extends LightningElement {
      */
     handleCompareMouseDown(event) {
         if (
-            this.compareAttributes.moveOn !== 'click' &&
-            event.type !== 'touchstart'
+            (this.compareAttributes.moveOn !== 'click' &&
+                event.type !== 'touchstart') ||
+            (event.button !== 0 && event.type !== 'touchstart')
         ) {
             return;
         }

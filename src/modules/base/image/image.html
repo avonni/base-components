@@ -50,6 +50,12 @@
             ontouchend={handleMagnifierOut}
         />
         <div
+            class={computedOverlayAfterClass}
+            data-element-id="compare-overlay-after"
+        >
+            {compareAttributes.compareLabel}
+        </div>
+        <div
             data-element-id="magnifier-lens"
             class="avonni-image__magnifier-lens slds-is-absolute"
         ></div>
@@ -90,6 +96,12 @@
                     style={computedStyle}
                     loading={lazyLoading}
                 />
+                <div
+                    class={computedOverlayBeforeClass}
+                    data-element-id="compare-overlay-before"
+                >
+                    {compareAttributes.originalLabel}
+                </div>
             </div>
             <div class={computedSliderClass} data-element-id="compare-slider">
                 <div
@@ -116,20 +128,6 @@
                         size="x-small"
                     >
                     </lightning-icon>
-                </div>
-            </div>
-            <div data-element-id="compare-overlay-container">
-                <div
-                    class={computedOverlayBeforeClass}
-                    data-element-id="compare-overlay-before"
-                >
-                    {compareAttributes.originalLabel}
-                </div>
-                <div
-                    class={computedOverlayAfterClass}
-                    data-element-id="compare-overlay-after"
-                >
-                    {compareAttributes.compareLabel}
                 </div>
             </div>
         </div>
