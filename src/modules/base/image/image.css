@@ -191,3 +191,7 @@
     .avonni-image__compare-overlay {
     display: block;
 }
+
+.avonni-image__container_user-select_none {
+    user-select: none;
+}

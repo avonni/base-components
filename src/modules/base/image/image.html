@@ -50,6 +50,7 @@
             ontouchend={handleMagnifierOut}
         />
         <div
+            if:true={compareAttributes.compareLabel}
             class={computedOverlayAfterClass}
             data-element-id="compare-overlay-after"
         >
@@ -97,6 +98,7 @@
                     loading={lazyLoading}
                 />
                 <div
+                    if:true={compareAttributes.originalLabel}
                     class={computedOverlayBeforeClass}
                     data-element-id="compare-overlay-before"
                 >

@@ -618,7 +618,8 @@ export default class Image extends LightningElement {
                 'slds-align_absolute-center': this._position === 'center',
                 'slds-show': this._position === 'center',
                 'avonni-image__container_compare-labels-on-hover':
-                    this.compareAttributes.showLabelsOnHover
+                    this.compareAttributes.showLabelsOnHover,
+                'avonni-image__container_user-select_none': this.compareSrc
             })
             .toString();
     }
@@ -687,8 +688,7 @@ export default class Image extends LightningElement {
                 'avonni-image__compare-overlay-after_horizontal':
                     this.compareAttributes.orientation === 'horizontal',
                 'avonni-image__compare-overlay-after_vertical':
-                    this.compareAttributes.orientation === 'vertical',
-                'slds-hide': !this.compareAttributes.compareLabel
+                    this.compareAttributes.orientation === 'vertical'
             })
             .toString();
     }
@@ -704,8 +704,7 @@ export default class Image extends LightningElement {
                 'avonni-image__compare-overlay-before_horizontal':
                     this.compareAttributes.orientation === 'horizontal',
                 'avonni-image__compare-overlay-before_vertical':
-                    this.compareAttributes.orientation === 'vertical',
-                'slds-hide': !this.compareAttributes.originalLabel
+                    this.compareAttributes.orientation === 'vertical'
             })
             .toString();
     }
