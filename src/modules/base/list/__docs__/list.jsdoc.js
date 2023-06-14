@@ -296,7 +296,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-fields-color-background
- * @default #ffffff
  * @type color
  */
 /**
@@ -320,14 +319,18 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-fields-styling-border
- * @default solid
  * @type string
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-fields-spacing
+ * @name --avonni-list-item-fields-spacing-block
  * @type dimension
  * @default 1rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-spacing-inline
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

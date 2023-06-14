@@ -254,14 +254,16 @@
 }
 
 .avonni-list__item-fields-container {
-    background-color: var(--avonni-list-item-fields-color-background, #ffffff);
+    background-color: var(--avonni-list-item-fields-color-background);
     border-radius: var(--avonni-list-item-fields-radius-border, 0.25rem);
     border-width: var(--avonni-list-item-fields-sizing-border, 1px);
-    border-style: var(--avonni-list-item-fields-styling-border, solid);
+    border-style: var(--avonni-list-item-fields-styling-border);
     border-color: var(--avonni-list-item-fields-color-border, #e5e5e5);
-    padding-bottom: var(--avonni-list-item-fields-spacing, 1rem);
+    padding-right: var(--avonni-list-item-fields-spacing-inline);
+    padding-left: var(--avonni-list-item-fields-spacing-inline);
+    padding-bottom: var(--avonni-list-item-fields-spacing-block, 1rem);
     --avonni-layout-item-spacing-block-start: var(
-        --avonni-list-item-fields-spacing,
+        --avonni-list-item-fields-spacing-block,
         1rem
     );
 }
