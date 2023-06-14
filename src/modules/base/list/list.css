@@ -252,6 +252,17 @@
     );
 }
 
+.avonni-list__item-fields-container {
+    background-color: rgb(243, 243, 243);
+    border-radius: 0.25rem;
+    border: 1px solid rgb(229, 229, 229);
+    padding-bottom: var(--avonni-list-item-fields-spacing, 1rem);
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-list-item-fields-spacing,
+        1rem
+    );
+}
+
 /* AVATAR */
 .avonni-list-item-avatar {
     --avonni-avatar-image-object-fit: var(

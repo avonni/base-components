@@ -76,7 +76,20 @@ describe('List', () => {
         expect(element.largeContainerCols).toBeUndefined();
         expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
-        expect(element.imageAttributes).toMatchObject({});
+        expect(element.fieldAttributes).toEqual({
+            cols: null,
+            largeContainerCols: 4,
+            mediumContainerCols: 6,
+            smallContainerCols: 12,
+            variant: 'standard'
+        });
+        expect(element.imageAttributes).toEqual({
+            position: 'left',
+            size: 'large',
+            cropPositionX: 50,
+            cropPositionY: 50,
+            cropFit: 'cover'
+        });
         expect(element.label).toBeUndefined();
         expect(element.loadMoreOffset).toBe(20);
         expect(element.mediaActions).toMatchObject([]);
@@ -277,6 +290,18 @@ describe('List', () => {
                 '[data-element-id="list-element"]'
             );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
+        });
+    });
+
+    /* field attributes */
+    it('List: Field Attributes, cols', () => {
+        element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
+
+        return Promise.resolve().then(() => {
+            expect(element.fieldAttributes.cols).toBe(12);
+            expect(element.fieldAttributes.largeContainerCols).toBe(4);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(12);
+            expect(element.fieldAttributes.smallContainerCols).toBe(12);
         });
     });
 

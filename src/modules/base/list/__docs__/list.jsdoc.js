@@ -3,7 +3,7 @@
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
- * @property {string} name Name to identify the item in the list.
+ * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName displayed next to the label.
  * @property {string} imageSrc Image URL for the list item image. If present, the image is displayed to the left of the item.
@@ -11,6 +11,7 @@
  * - label: string
  * - href: string
  * @property {string} label Required. Label of the item.
+ * @property {string} name Name to identify the item in the list.
  */
 /**
  * @typedef {Object} ListAction
@@ -41,6 +42,15 @@
  * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
  * @property {number} cropPositionX The image object-position horizontal percentage property. The value defaults to 50.
  * @property {number} cropPositionY The image object-position vertical percentage property. The value defaults to 50.
+ */
+/**
+ * @typedef {Object} FieldAttributes
+ * @name fieldAttributes
+ * @property {string|number} cols Default number of columns the field occupies. It will be applied if the fields container’s size is lesser than 480px, or if no other cols attribute is specified. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string|number} largeContainerCols Number of columns the field occupies when the container’s size is greater or equal to 1024px. See `size` for accepted values.
+ * @property {string|number} mediumContainerCols Number of columns the field occupies when the container’s size is greater or equal to 768px. See `size` for accepted values.
+ * @property {string|number} smallContainerCols Number of columns the field occupies when the container’s size is greater or equal to 480px. See `size` for accepted values.
+ * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
  */
 
 /**
@@ -276,6 +286,12 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-avatar-image-object-fit
  * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-spacing
+ * @type dimension
+ * @default 1rem
  */
 /**
  * @memberof stylingHooks

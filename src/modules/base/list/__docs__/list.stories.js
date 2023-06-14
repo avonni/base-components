@@ -124,6 +124,16 @@ export default {
                 category: 'Infinite Loading'
             }
         },
+        fieldAttributes: {
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item fields.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
+            }
+        },
         imageAttributes: {
             control: {
                 type: 'object'
@@ -291,6 +301,9 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
+    fieldAttributes: {
+        variant: 'standard'
+    },
     imageAttributes: {
         size: 'medium'
     }
@@ -317,10 +330,12 @@ ColumnsWithImageOverlay.args = {
     label: 'Columns with Image Overlay',
     items: itemsWithImages,
     actions: actions,
-    mediaActions: [{
-        name: 'event-action',
-        iconName: 'utility:bookmark'
-    }],
+    mediaActions: [
+        {
+            name: 'event-action',
+            iconName: 'utility:bookmark'
+        }
+    ],
     divider: 'around',
     imageAttributes: {
         position: 'overlay'

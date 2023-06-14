@@ -80,6 +80,17 @@ const MEDIA_QUERY_BREAKPOINTS = {
 
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 
+const DEFAULT_FIELD_COLUMNS = {
+    small: 12,
+    medium: 6,
+    large: 4
+};
+
+const FIELD_VARIANTS = {
+    default: 'standard',
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
+
 /**
  * @class
  * @storyId example-list--base
@@ -121,6 +132,13 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _divider;
     _enableInfiniteLoading = false;
+    _fieldAttributes = {
+        cols: null,
+        largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
+        mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
+        smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
+        variant: 'standard'
+    };
     _imageAttributes = {
         position: 'left',
         size: 'large',
@@ -289,6 +307,54 @@ export default class List extends LightningElement {
 
         if (this._enableInfiniteLoading) {
             this._hasUsedInfiniteLoading = true;
+        }
+    }
+
+    /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+
+        this._fieldAttributes.cols = this.normalizeColumns(
+            normalizedFieldAttributes.cols
+        );
+        this._fieldAttributes.largeContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.largeContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.large;
+        this._fieldAttributes.mediumContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.mediumContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.smallContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.smallContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.small;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            {
+                fallbackValue: FIELD_VARIANTS.default,
+                validValues: FIELD_VARIANTS.valid
+            }
+        );
+
+        if (this._connected) {
+            this.setItemProperties();
         }
     }
 

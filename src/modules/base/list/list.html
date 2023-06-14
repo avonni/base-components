@@ -377,6 +377,45 @@
                                                 </li>
                                             </template>
                                         </ul>
+
+                                        <!-- Fields -->
+                                        <div
+                                            if:true={item.fields}
+                                            aria-hidden="false"
+                                            class="
+                                                slds-m-top_xx-small
+                                                slds-p-horizontal_medium
+                                                avonni-list__item-fields-container
+                                            "
+                                        >
+                                            <c-layout
+                                                data-element-id="fields-container"
+                                                multiple-rows
+                                            >
+                                                <template
+                                                    for:each={item.fields}
+                                                    for:item="field"
+                                                    for:index="index"
+                                                >
+                                                    <c-layout-item
+                                                        key={field.value}
+                                                        class="slds-truncate"
+                                                        size={fieldAttributes.cols}
+                                                        large-container-size={fieldAttributes.largeContainerCols}
+                                                        medium-container-size={fieldAttributes.mediumContainerCols}
+                                                        small-container-size={fieldAttributes.smallContainerCols}
+                                                    >
+                                                        <c-output-data
+                                                            label={field.label}
+                                                            value={field.value}
+                                                            type={field.type}
+                                                            type-attributes={field.typeAttributes}
+                                                            variant={fieldAttributes.variant}
+                                                        ></c-output-data>
+                                                    </c-layout-item>
+                                                </template>
+                                            </c-layout>
+                                        </div>
                                     </div>
                                 </div>
 

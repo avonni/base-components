@@ -51,7 +51,30 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
-                'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
+                'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+            fields: [
+                {
+                    label: 'Name',
+                    value: 'Charlie Gomez',
+                    type: 'url',
+                    typeAttributes: {
+                        label: 'Charlie Gomez'
+                    }
+                },
+                {
+                    label: 'Related To',
+                    value: 'Tesla Cloudhub + Anypoint Connectors',
+                    type: 'url',
+                    typeAttributes: {
+                        label: 'Tesla Cloudhub + Anypoint Connectors'
+                    }
+                },
+                {
+                    label: 'Description',
+                    value: 'Need to finalize proposals and brand details before the meeting',
+                    type: 'text'
+                }
+            ]
         },
         {
             label: 'Item 4',
