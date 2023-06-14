@@ -4,7 +4,6 @@ import { classSet } from 'c/utils';
 export default class Item {
     constructor(value) {
         this.avatar = value.avatar;
-        this.avatarSrc = value.avatarSrc;
         this.description = value.description;
         this.fallbackIconName = value.fallbackIconName;
         this.fields = value.fields;
