@@ -10,7 +10,7 @@ export default class Item {
     constructor(value) {
         this.avatar = value.avatar;
         this.avatarPosition = normalizeString(
-            value.avatar && value.avatar.position,
+            this.avatar && this.avatar.position,
             {
                 validValues: AVATAR_POSITION.valid,
                 fallbackValue: AVATAR_POSITION.default
@@ -32,28 +32,28 @@ export default class Item {
      * Computes if the avatar is at the left.
      */
     get isAvatarLeft() {
-        return this.avatarPosition === 'left';
+        return this.avatar && this.avatarPosition === 'left';
     }
 
     /**
      * Computes if the avatar is at the right.
      */
     get isAvatarRight() {
-        return this.avatarPosition === 'right';
+        return this.avatar && this.avatarPosition === 'right';
     }
 
     /**
      * Computes if the avatar is at the left of the title.
      */
     get isAvatarLeftOfTitle() {
-        return this.avatarPosition === 'left-of-title';
+        return this.avatar && this.avatarPosition === 'left-of-title';
     }
 
     /**
      * Computes if the avatar is at the right of the title.
      */
     get isAvatarRightOfTitle() {
-        return this.avatarPosition === 'right-of-title';
+        return this.avatar && this.avatarPosition === 'right-of-title';
     }
 
     /**
