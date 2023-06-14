@@ -249,6 +249,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-shadow
+ * @default none
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
  * @type dimension
  * @default 0.5rem

@@ -81,7 +81,7 @@
         --avonni-list-item-divider-around-spacing-inline-between,
         0.5rem
     );
-    --avonni-card-shadow: none;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
     --avonni-card-sizing-border: 1px;
 }
 
@@ -103,6 +103,7 @@
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-body-spacing-block-start: 0px;
     --avonni-card-body-spacing-block-end: 0px;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
 }
 
 .avonni-list-item-body {
@@ -123,7 +124,7 @@
 .avonni-list__item-borderless {
     --avonni-card-sizing-border: 0px;
     --avonni-card-radius-border: 0px;
-    --avonni-card-shadow: none;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
 }
 
 .avonni-list__header_font {
