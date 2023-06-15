@@ -64,17 +64,17 @@ const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_FIELD_COLUMNS = {
-    horizontal: 6,
+    horizontal: 12,
     small: 12,
     medium: 6,
     large: 4
 };
+const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
 
 const FIELD_VARIANTS = {
-    default: 'standard',
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
@@ -171,7 +171,7 @@ export default class ActivityTimeline extends LightningElement {
         largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
         mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
         smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
-        variant: 'standard'
+        variant: null
     };
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
@@ -398,10 +398,7 @@ export default class ActivityTimeline extends LightningElement {
 
         this._fieldAttributes.variant = normalizeString(
             normalizedFieldAttributes.variant,
-            {
-                fallbackValue: FIELD_VARIANTS.default,
-                validValues: FIELD_VARIANTS.valid
-            }
+            { validValues: FIELD_VARIANTS.valid }
         );
 
         this._fieldAttributes = { ...this._fieldAttributes };
@@ -691,6 +688,15 @@ export default class ActivityTimeline extends LightningElement {
      */
     get horizontalFieldsCols() {
         return this.fieldAttributes.cols || DEFAULT_FIELD_COLUMNS.horizontal;
+    }
+
+    /**
+     * Compute the field's variant for the horizontal timeline.
+     *
+     * @type {string}
+     */
+    get horizontalFieldsVariant() {
+        return this.fieldAttributes.variant || DEFAULT_HORIZONTAL_FIELD_VARIANT;
     }
 
     /*

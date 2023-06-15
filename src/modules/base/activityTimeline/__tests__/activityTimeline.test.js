@@ -78,7 +78,7 @@ describe('Activity Timeline', () => {
             largeContainerCols: 4,
             mediumContainerCols: 6,
             smallContainerCols: 12,
-            variant: 'standard'
+            variant: null
         });
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
