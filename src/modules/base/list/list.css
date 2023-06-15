@@ -268,6 +268,10 @@
     );
 }
 
+.avonni-list__item-actions-container {
+    align-self: var(--avonni-list-item-actions-vertical-alignment, center);
+}
+
 /* AVATAR */
 .avonni-list-item-avatar {
     --avonni-avatar-image-object-fit: var(

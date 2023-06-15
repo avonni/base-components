@@ -453,3 +453,9 @@
  * @default center
  * @type dimension
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-actions-vertical-alignment
+ * @default center
+ * @type alignment
+ */
