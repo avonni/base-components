@@ -359,23 +359,33 @@ export default class Image extends LightningElement {
 
         if (
             normalizedAttributes.zoomRatioWidth &&
-            !isNaN(normalizedAttributes.zoomRatioWidth)
+            !isNaN(normalizedAttributes.zoomRatioWidth) &&
+            normalizedAttributes.zoomRatioWidth > 0
         ) {
             this._magnifierAttributes.zoomRatioWidth = `${normalizedAttributes.zoomRatioWidth}px`;
-        } else if (normalizedAttributes.zoomRatioWidth) {
+        } else if (
+            normalizedAttributes.zoomRatioWidth &&
+            normalizedAttributes.zoomRatioWidth > 0
+        ) {
             this._magnifierAttributes.zoomRatioWidth =
                 normalizedAttributes.zoomRatioWidth;
         }
 
         if (
             normalizedAttributes.zoomRatioHeight &&
-            !isNaN(normalizedAttributes.zoomRatioHeight)
+            !isNaN(normalizedAttributes.zoomRatioHeight) &&
+            normalizedAttributes.zoomRatioHeight > 0
         ) {
             this._magnifierAttributes.zoomRatioHeight = `${normalizedAttributes.zoomRatioHeight}px`;
-        } else if (normalizedAttributes.zoomRatioHeight) {
+        } else if (
+            normalizedAttributes.zoomRatioHeight &&
+            normalizedAttributes.zoomRatioHeight > 0
+        ) {
             this._magnifierAttributes.zoomRatioHeight =
                 normalizedAttributes.zoomRatioHeight;
         }
+
+        this._magnifierAttributes = { ...this._magnifierAttributes };
     }
 
     /**
@@ -649,18 +659,13 @@ export default class Image extends LightningElement {
         const magnifiedImage = this.template.querySelector(
             '[data-element-id="magnified-img"]'
         );
-        const computedStyle = window.getComputedStyle(magnifier);
-        const borderWidthValue = parseFloat(
-            computedStyle.getPropertyValue('border-width')
-        );
-        const borderWidth = isNaN(borderWidthValue) ? 0 : borderWidthValue;
+        magnifier.style.display = 'block';
         const w = magnifier.offsetWidth / 2;
         const h = magnifier.offsetHeight / 2;
         const dimensions = {
             img: img,
             w: w,
-            h: h,
-            borderWidth: borderWidth
+            h: h
         };
         const realPos = getCursorPosition(event);
         const boundedPos = applyBoundaries(
@@ -679,7 +684,6 @@ export default class Image extends LightningElement {
             img: img
         };
         img.style.cursor = 'crosshair';
-        magnifier.style.display = 'block';
         magnifiedImage.style.height = `${
             data.img.height * this.magnifierAttributes.zoomFactor
         }px`;

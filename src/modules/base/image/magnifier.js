@@ -36,17 +36,11 @@
 export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
     const boundedPos = { x: realPos.x, y: realPos.y };
     const rightBoundary =
-        dimensions.img.width -
-        dimensions.w / magnifierAttributes.zoomFactor -
-        dimensions.borderWidth;
-    const leftBoundary =
-        dimensions.w / magnifierAttributes.zoomFactor + dimensions.borderWidth;
+        dimensions.img.width - dimensions.w / magnifierAttributes.zoomFactor;
+    const leftBoundary = dimensions.w / magnifierAttributes.zoomFactor;
     const bottomBoundary =
-        dimensions.img.height -
-        dimensions.h / magnifierAttributes.zoomFactor -
-        dimensions.borderWidth;
-    const topBoundary =
-        dimensions.h / magnifierAttributes.zoomFactor + dimensions.borderWidth;
+        dimensions.img.height - dimensions.h / magnifierAttributes.zoomFactor;
+    const topBoundary = dimensions.h / magnifierAttributes.zoomFactor;
 
     if (realPos.x > rightBoundary) {
         boundedPos.x = rightBoundary;
@@ -60,7 +54,6 @@ export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
     if (realPos.y < topBoundary) {
         boundedPos.y = topBoundary;
     }
-
     return boundedPos;
 }
 
