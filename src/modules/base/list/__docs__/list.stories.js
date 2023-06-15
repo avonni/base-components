@@ -302,7 +302,8 @@ SortableWithImagesAndAvatars.args = {
     sortable: true,
     divider: 'around',
     fieldAttributes: {
-        variant: 'standard'
+        cols: 12,
+        variant: 'label-inline'
     },
     imageAttributes: {
         size: 'medium'
