@@ -174,7 +174,7 @@
  * @memberof stylingHooks
  * @name --avonni-alert-content-horizontal-alignment
  * @default center
- * @type dimension
+ * @type alignment
  */
 /**
  * @memberof stylingHooks
