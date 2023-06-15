@@ -43,7 +43,7 @@ import {
 export default {
     title: 'Example/List',
     argTypes: {
-        action: {
+        actions: {
             control: {
                 type: 'object'
             },

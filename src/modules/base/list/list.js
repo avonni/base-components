@@ -353,9 +353,7 @@ export default class List extends LightningElement {
             }
         );
 
-        if (this._connected) {
-            this.setItemProperties();
-        }
+        this._fieldAttributes = { ...this._fieldAttributes };
     }
 
     /**

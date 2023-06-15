@@ -158,8 +158,40 @@
 }
 
 .avonni-primitive-activity-timeline-item__fields-container {
-    background-color: rgb(243, 243, 243);
-    border-radius: 0.25rem;
-    border: 1px solid rgb(229, 229, 229);
-    padding: 0rem 1rem 1rem 1rem;
+    background-color: var(
+        --avonni-activity-timeline-item-fields-color-background,
+        #f3f3f3
+    );
+    border-radius: var(
+        --avonni-activity-timeline-item-fields-radius-border,
+        0.25rem
+    );
+    border-width: var(
+        --avonni-activity-timeline-item-fields-sizing-border,
+        1px
+    );
+    border-style: var(
+        --avonni-activity-timeline-item-fields-styling-border,
+        solid
+    );
+    border-color: var(
+        --avonni-activity-timeline-item-fields-color-border,
+        #e5e5e5
+    );
+    padding-right: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-left: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-bottom: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        1rem
+    );
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        1rem
+    );
 }
