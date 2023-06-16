@@ -861,14 +861,13 @@ describe('DualListbox', () => {
     // testing selection
     it('Dual Listbox: selection', () => {
         return Promise.resolve().then(() => {
-            const option = element.shadowRoot.querySelectorAll(
-                '.slds-listbox__option'
+            const options = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-source"]'
             );
-            const firstOption = option[0];
+            const firstOption = options[0];
             firstOption.click();
-            const secondOption = option[1];
+            const secondOption = options[1];
             expect(firstOption.tabIndex).toBe(0);
-            expect(firstOption.getAttribute('data-type')).toContain('source');
             expect(secondOption.tabIndex).toBe(-1);
         });
     });
