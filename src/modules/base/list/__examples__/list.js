@@ -53,7 +53,9 @@ export const List = ({
     sortable,
     sortableIconName,
     sortableIconPosition,
-    variant
+    variant,
+    visibleActions,
+    visibleMediaActions
 }) => {
     const element = document.createElement('ac-base-list');
     element.actions = actions;
@@ -75,5 +77,7 @@ export const List = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.variant = variant;
+    element.visibleActions = visibleActions;
+    element.visibleMediaActions = visibleMediaActions;
     return element;
 };

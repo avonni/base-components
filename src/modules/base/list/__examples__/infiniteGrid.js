@@ -56,7 +56,9 @@ export const InfiniteGrid = ({
     sortable,
     sortableIconName,
     sortableIconPosition,
-    variant
+    variant,
+    visibleActions,
+    visibleMediaActions
 }) => {
     const element = document.createElement('ac-base-infinite-grid');
     element.actions = actions;
@@ -78,5 +80,7 @@ export const InfiniteGrid = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.variant = variant;
+    element.visibleActions = visibleActions;
+    element.visibleMediaActions = visibleMediaActions;
     return element;
 };

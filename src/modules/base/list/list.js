@@ -152,6 +152,8 @@ export default class List extends LightningElement {
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
     _variant = VARIANTS.default;
+    _visibleActions;
+    _visibleMediaActions;
 
     _columnsSizes = {
         default: 1
@@ -615,6 +617,42 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * The number of actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleActions() {
+        return this._visibleActions;
+    }
+
+    set visibleActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
+    }
+
+    /**
+     * The number of media actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleMediaActions() {
+        return this._visibleMediaActions;
+    }
+
+    set visibleMediaActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleMediaActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -779,6 +817,26 @@ export default class List extends LightningElement {
         }
         this._singleLinePageFirstIndex = pageStart;
         return pageItems;
+    }
+
+    /**
+     * Compute the number of visible actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleActions() {
+        if (this.visibleActions) return this.visibleActions;
+        return this.hasMultipleActions ? 0 : 1;
+    }
+
+    /**
+     * Compute the number of visible media actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleMediaActions() {
+        if (this.visibleMediaActions) return this.visibleMediaActions;
+        return this.hasMultipleMediaActions ? 0 : 1;
     }
 
     /**
@@ -1236,6 +1294,7 @@ export default class List extends LightningElement {
         delete itemCopy.listHasImages;
         delete itemCopy.infos;
         delete itemCopy.icons;
+        delete itemCopy.avatarPosition;
         return itemCopy;
     }
 
@@ -1836,9 +1895,7 @@ export default class List extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
         /**
          * The event fired when a user clicks on an action.
@@ -1868,11 +1925,8 @@ export default class List extends LightningElement {
      */
     handleMediaActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleMediaActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-
         /**
          * The event fired when a user clicks on a media action.
          *

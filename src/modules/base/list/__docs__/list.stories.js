@@ -53,6 +53,18 @@ export default {
                 category: 'Base'
             }
         },
+        visibleActions: {
+            name: 'visible-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
+        },
         alternativeText: {
             name: 'alternative-text',
             control: {
@@ -125,6 +137,7 @@ export default {
             }
         },
         fieldAttributes: {
+            name: 'field-attributes',
             control: {
                 type: 'object'
             },
@@ -218,6 +231,18 @@ export default {
             description: 'Array of actions',
             table: {
                 type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
+        visibleMediaActions: {
+            name: 'visible-media-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of media actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
                 category: 'Base'
             }
         },

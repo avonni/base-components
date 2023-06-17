@@ -126,65 +126,18 @@
                                     if:true={item.hasImage}
                                     onkeydown={handleStopKeyDown}
                                 >
-                                    <lightning-button-menu
-                                        if:true={hasMultipleMediaActions}
-                                        menu-alignment="right"
-                                        icon-size="x-small"
-                                        data-element-id="media-action-menu"
+                                    <c-primitive-actions
+                                        actions={computedMediaActions}
+                                        button-icon-size="small"
+                                        button-icon-variant="border-filled"
+                                        visible-actions={computedVisibleMediaActions}
                                         data-item-index={item.index}
+                                        data-element-id="primitive-media-actions"
                                         onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
-                                        onselect={handleMediaActionClick}
-                                        variant="border-filled"
-                                    >
-                                        <template
-                                            for:each={computedMediaActions}
-                                            for:item="action"
-                                        >
-                                            <lightning-menu-item
-                                                key={action.name}
-                                                value={action.name}
-                                                label={action.label}
-                                                disabled={action.disabled}
-                                                icon-name={action.iconName}
-                                                data-element-id="media-action-menu-item"
-                                            ></lightning-menu-item>
-                                        </template>
-                                    </lightning-button-menu>
-                                    <template
-                                        if:false={hasMultipleMediaActions}
-                                    >
-                                        <lightning-button
-                                            if:true={firstMediaAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstMediaAction.name}
-                                            value={firstMediaAction.name}
-                                            label={firstMediaAction.label}
-                                            disabled={firstMediaAction.disabled}
-                                            icon-name={firstMediaAction.iconName}
-                                            data-item-index={item.index}
-                                            data-element-id="media-action-button"
-                                            onclick={handleMediaActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button>
-                                        <lightning-button-icon
-                                            if:false={firstMediaAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstMediaAction.name}
-                                            value={firstMediaAction.name}
-                                            disabled={firstMediaAction.disabled}
-                                            icon-name={firstMediaAction.iconName}
-                                            size="small"
-                                            variant="border-filled"
-                                            data-item-index={item.index}
-                                            data-element-id="media-action-button-icon"
-                                            onclick={handleMediaActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button-icon>
-                                    </template>
+                                        onactionclick={handleMediaActionClick}
+                                    ></c-primitive-actions>
                                 </div>
                             </div>
                             <div
@@ -490,63 +443,18 @@
                                     "
                                     onkeydown={handleStopKeyDown}
                                 >
-                                    <lightning-button-menu
-                                        if:true={hasMultipleActions}
-                                        menu-alignment="right"
-                                        icon-size="x-small"
-                                        data-element-id="lightning-button-menu"
+                                    <c-primitive-actions
+                                        actions={computedActions}
+                                        button-icon-size={actionButtonIconSize}
+                                        button-icon-variant={actionButtonIconVariant}
+                                        visible-actions={computedVisibleActions}
                                         data-item-index={item.index}
+                                        data-element-id="primitive-actions"
                                         onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
-                                        onselect={handleActionClick}
-                                        variant="border-filled"
-                                    >
-                                        <template
-                                            for:each={computedActions}
-                                            for:item="action"
-                                        >
-                                            <lightning-menu-item
-                                                key={action.name}
-                                                value={action.name}
-                                                label={action.label}
-                                                disabled={action.disabled}
-                                                icon-name={action.iconName}
-                                                data-element-id="lightning-menu-item"
-                                            ></lightning-menu-item>
-                                        </template>
-                                    </lightning-button-menu>
-                                    <template if:false={hasMultipleActions}>
-                                        <lightning-button
-                                            if:true={firstAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            label={firstAction.label}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            data-item-index={item.index}
-                                            data-element-id="lightning-button"
-                                            onclick={handleActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button>
-                                        <lightning-button-icon
-                                            if:false={firstAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            size={actionButtonIconSize}
-                                            variant={actionButtonIconVariant}
-                                            data-item-index={item.index}
-                                            data-element-id="lightning-button-icon"
-                                            onclick={handleActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button-icon>
-                                    </template>
+                                        onactionclick={handleActionClick}
+                                    ></c-primitive-actions>
                                 </div>
                             </div>
                         </c-card>
