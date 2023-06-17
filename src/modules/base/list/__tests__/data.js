@@ -87,11 +87,3 @@ export const ACTION = [
         disabled: false
     }
 ];
-
-export const ACTION_NO_LABEL = [
-    {
-        name: 'event-action',
-        iconName: 'utility:event',
-        disabled: false
-    }
-];

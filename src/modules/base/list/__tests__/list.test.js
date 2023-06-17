@@ -31,13 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import {
-    ITEMS,
-    ITEMS_WITHOUT_ICONS,
-    ACTIONS,
-    ACTION,
-    ACTION_NO_LABEL
-} from './data';
+import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
 import List from 'c/list';
 
 // Not tested:
@@ -101,134 +95,40 @@ describe('List', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('List: Actions button-menu', () => {
+    // actions
+    it('List: Actions', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
-        return Promise.resolve()
-            .then(() => {
-                const actions = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-menu"]'
-                );
-                actions.click();
-            })
-            .then(() => {
-                const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="lightning-menu-item"]'
-                );
-                expect(menuItem[0].label).toBe('Completed');
-                expect(menuItem[0].value).toBe('completed-action');
-                expect(menuItem[0].iconName).toBe('utility:check');
-                expect(menuItem[0].disabled).toBeFalsy();
-                expect(menuItem[1].label).toBe('Pending');
-                expect(menuItem[1].value).toBe('pending-action');
-                expect(menuItem[1].iconName).toBe('utility:spinner');
-                expect(menuItem[1].disabled).toBeFalsy();
-                expect(menuItem[2].label).toBe('Delete');
-                expect(menuItem[2].value).toBe('delete-action');
-                expect(menuItem[2].iconName).toBe('utility:delete');
-                expect(menuItem[2].disabled).toBeTruthy();
-            });
-    });
-    it('List: Action lightning-button', () => {
-        element.items = ITEMS;
-        element.actions = ACTION;
-
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-actions"]'
             );
-
-            expect(button.label).toBe('Completed');
-            expect(button.iconName).toBe('utility:check');
-            expect(button.disabled).toBeFalsy();
-            expect(button.value).toBe('completed-action');
+            expect(primitiveActions).not.toBeNull();
         });
     });
-    it('List: Action lightning-button-icon', () => {
-        element.items = ITEMS;
-        element.actions = ACTION_NO_LABEL;
 
-        return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-
-            expect(buttonIcon.iconName).toBe('utility:event');
-            expect(buttonIcon.disabled).toBeFalsy();
-            expect(buttonIcon.value).toBe('event-action');
-        });
-    });
-    // MEDIA-ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('List: Media-Actions button-menu', () => {
+    // mediaActions
+    it('List: Media Actions', () => {
         element.items = ITEMS;
         element.mediaActions = ACTIONS;
 
-        return Promise.resolve()
-            .then(() => {
-                const actions = element.shadowRoot.querySelector(
-                    '[data-element-id="media-action-menu"]'
-                );
-                actions.click();
-            })
-            .then(() => {
-                const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="media-action-menu-item"]'
-                );
-                expect(menuItem[0].label).toBe('Completed');
-                expect(menuItem[0].value).toBe('completed-action');
-                expect(menuItem[0].iconName).toBe('utility:check');
-                expect(menuItem[0].disabled).toBeFalsy();
-                expect(menuItem[1].label).toBe('Pending');
-                expect(menuItem[1].value).toBe('pending-action');
-                expect(menuItem[1].iconName).toBe('utility:spinner');
-                expect(menuItem[1].disabled).toBeFalsy();
-                expect(menuItem[2].label).toBe('Delete');
-                expect(menuItem[2].value).toBe('delete-action');
-                expect(menuItem[2].iconName).toBe('utility:delete');
-                expect(menuItem[2].disabled).toBeTruthy();
-            });
-    });
-    it('List: Media-Actions media-action-button', () => {
-        element.items = ITEMS;
-        element.mediaActions = ACTION;
-
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
+            const primitiveMediaActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-
-            expect(button.label).toBe('Completed');
-            expect(button.iconName).toBe('utility:check');
-            expect(button.disabled).toBeFalsy();
-            expect(button.value).toBe('completed-action');
+            expect(primitiveMediaActions).not.toBeNull();
         });
     });
-    it('List: Media-Actions media-action-button-icon', () => {
-        element.items = ITEMS;
-        element.mediaActions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button-icon"]'
-            );
-
-            expect(buttonIcon.iconName).toBe('utility:event');
-            expect(buttonIcon.disabled).toBeFalsy();
-            expect(buttonIcon.value).toBe('event-action');
-        });
-    });
-    it('List: No Media-Actions without images', () => {
+    it('List: Media Actions, without images', () => {
         element.items = ITEMS_WITHOUT_ICONS;
         element.mediaActions = ACTION;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
+            const primitiveMediaActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-
-            expect(button).toBeFalsy();
+            expect(primitiveMediaActions).toBeNull();
         });
     });
 
@@ -673,75 +573,20 @@ describe('List', () => {
     /* ----- EVENT ----- */
 
     // actionclick
-    // Depends on items and actions
-    it('List: Actionclick event, one action', () => {
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Actionclick event, one icon action', () => {
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(
-                ACTION_NO_LABEL[0].name
-            );
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Actionclick event, multiple action', () => {
+    it('List: Action, Actionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-actions"]'
             );
-            button.dispatchEvent(
-                new CustomEvent('select', {
+            primitiveActions.dispatchEvent(
+                new CustomEvent('actionclick', {
                     detail: {
-                        value: ACTIONS[0].name
+                        name: ACTIONS[0].name
                     }
                 })
             );
@@ -760,81 +605,29 @@ describe('List', () => {
         });
     });
 
-    it('List: Media-Action, Actionclick event, multiple actions', () => {
+    it('List: Media-Action, Actionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('mediaactionclick', handler);
         element.items = ITEMS;
         element.mediaActions = ACTIONS;
 
         return Promise.resolve().then(() => {
-            const actionMenu = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-menu"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-            actionMenu.dispatchEvent(
-                new CustomEvent('select', {
+            primitiveActions.dispatchEvent(
+                new CustomEvent('actionclick', {
                     detail: {
-                        value: ACTIONS[0].name
+                        name: ACTIONS[0].name
                     }
                 })
             );
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-    it('List: Media-Action Actionclick event, one action', () => {
-        const handler = jest.fn();
-        element.addEventListener('mediaactionclick', handler);
-        element.items = ITEMS;
-        element.mediaActions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.item).toMatchObject(
                 ITEMS[0]
             );
             expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Media-Action, Actionclick event, one icon action', () => {
-        const handler = jest.fn();
-        element.addEventListener('mediaactionclick', handler);
-        element.items = ITEMS;
-        element.mediaActions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button-icon"]'
-            );
-            button.click();
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(
-                ACTION_NO_LABEL[0].name
-            );
             expect(handler.mock.calls[0][0].detail.targetName).toBe(
                 ITEMS[0].name
             );
@@ -891,23 +684,6 @@ describe('List', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Itemclick event, keyboard actionclick do not dispatch itemclick', () => {
-        const handler = jest.fn();
-        element.addEventListener('itemclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-            const keydown = new CustomEvent('keydown', { bubbles: true });
-            keydown.key = 'Enter';
-            button.dispatchEvent(keydown);
-            expect(handler).not.toHaveBeenCalled();
         });
     });
 
