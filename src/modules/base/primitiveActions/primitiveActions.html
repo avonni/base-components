@@ -1,0 +1,124 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <template if:true={hasActions}>
+        <template if:false={singleAction}>
+            <lightning-button-group if:false={hasZeroActionButtons}>
+                <template for:each={actionButtons} for:item="action">
+                    <lightning-button
+                        key={action.name}
+                        if:true={action.label}
+                        data-name={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        variant="border-filled"
+                        onclick={handleActionButtonClick}
+                    ></lightning-button>
+                    <lightning-button-icon
+                        key={action.name}
+                        if:false={action.label}
+                        data-name={action.name}
+                        class="slds-m-right_none"
+                        value={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        size="medium"
+                        variant="border-filled"
+                        onclick={handleActionButtonClick}
+                    ></lightning-button-icon>
+                </template>
+                <lightning-button-menu
+                    if:true={hasActionsButtonMenu}
+                    menu-alignment="right"
+                    variant="border-filled"
+                    onselect={handleActionButtonMenuClick}
+                >
+                    <template for:each={actionsButtonMenu} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            disabled={action.disabled}
+                            icon-name={action.iconName}
+                            label={action.label}
+                            value={action.name}
+                        ></lightning-menu-item>
+                    </template>
+                </lightning-button-menu>
+            </lightning-button-group>
+            <lightning-button-menu
+                if:true={hasZeroActionButtons}
+                data-value={value}
+                icon-size="x-small"
+                menu-alignment="right"
+                variant="border-filled"
+                onselect={handleActionButtonMenuClick}
+            >
+                <template for:each={actionsButtonMenu} for:item="action">
+                    <lightning-menu-item
+                        key={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        value={action.name}
+                    ></lightning-menu-item>
+                </template>
+            </lightning-button-menu>
+        </template>
+        <template if:true={singleAction}>
+            <lightning-button
+                key={singleAction.name}
+                if:true={singleAction.label}
+                data-name={singleAction.name}
+                disabled={singleAction.disabled}
+                icon-name={singleAction.iconName}
+                label={singleAction.label}
+                variant="border-filled"
+                onclick={handleActionButtonClick}
+            ></lightning-button>
+            <lightning-button-icon
+                key={singleAction.name}
+                if:false={singleAction.label}
+                data-name={singleAction.name}
+                class="slds-m-right_none"
+                value={singleAction.name}
+                disabled={singleAction.disabled}
+                icon-name={singleAction.iconName}
+                size={buttonIconSize}
+                variant={buttonIconVariant}
+                onclick={handleActionButtonClick}
+            ></lightning-button-icon>
+        </template>
+    </template>
+</template>
