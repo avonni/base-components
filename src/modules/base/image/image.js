@@ -347,15 +347,19 @@ export default class Image extends LightningElement {
             this._magnifierAttributes.verticalOffset = 0;
         }
 
-        this._magnifierAttributes.smoothMove = normalizeBoolean(
-            normalizedAttributes.smoothMove
-        );
+        if (normalizedAttributes.smoothMove) {
+            this._magnifierAttributes.smoothMove = normalizeBoolean(
+                normalizedAttributes.smoothMove
+            );
+        }
 
-        this._magnifierAttributes.zoomFactor = !isNaN(
-            normalizedAttributes.zoomFactor
-        )
-            ? normalizedAttributes.zoomFactor
-            : DEFAULT_ZOOM_FACTOR;
+        if (
+            normalizedAttributes.zoomFactor &&
+            !isNaN(normalizedAttributes.zoomFactor)
+        ) {
+            this._magnifierAttributes.zoomFactor =
+                normalizedAttributes.zoomFactor;
+        }
 
         if (
             normalizedAttributes.zoomRatioWidth &&
@@ -365,7 +369,7 @@ export default class Image extends LightningElement {
             this._magnifierAttributes.zoomRatioWidth = `${normalizedAttributes.zoomRatioWidth}px`;
         } else if (
             normalizedAttributes.zoomRatioWidth &&
-            normalizedAttributes.zoomRatioWidth > 0
+            parseFloat(normalizedAttributes.zoomRatioWidth) > 0
         ) {
             this._magnifierAttributes.zoomRatioWidth =
                 normalizedAttributes.zoomRatioWidth;
@@ -379,7 +383,7 @@ export default class Image extends LightningElement {
             this._magnifierAttributes.zoomRatioHeight = `${normalizedAttributes.zoomRatioHeight}px`;
         } else if (
             normalizedAttributes.zoomRatioHeight &&
-            normalizedAttributes.zoomRatioHeight > 0
+            parseFloat(normalizedAttributes.zoomRatioHeight) > 0
         ) {
             this._magnifierAttributes.zoomRatioHeight =
                 normalizedAttributes.zoomRatioHeight;
