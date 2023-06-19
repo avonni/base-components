@@ -45,6 +45,7 @@ import { handleKeyDownOnOption } from './keyboard';
 const DEFAULT_MIN = 0;
 const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
@@ -190,8 +191,10 @@ export default class DualListbox extends LightningElement {
     _disabled = false;
     _downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     _draggable = false;
+    _enableInfiniteLoading = false;
     _hideBottomDivider = false;
     _isLoading = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _max;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
@@ -204,14 +207,13 @@ export default class DualListbox extends LightningElement {
     _value = [];
     _variant = LABEL_VARIANTS.default;
 
-    _connected = false;
-    _rendered = false;
-
     highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
     focusableInSelected;
     isFocusOnList = false;
+    _connected = false;
+    _previousScroll;
     _searchTerm;
     _upButtonDisabled = false;
     _downButtonDisabled = false;
@@ -250,7 +252,11 @@ export default class DualListbox extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.options.length) {
+        if (
+            !this.options.length &&
+            !this.enableInfiniteLoading &&
+            !this.isLoading
+        ) {
             console.warn(
                 '<avonni-dual-listbox> Missing required "options" attribute.'
             );
@@ -276,6 +282,15 @@ export default class DualListbox extends LightningElement {
         this.updateBoxesHeight();
         this.disabledButtons();
         this.setOptionIndexes();
+
+        if (this.enableInfiniteLoading) {
+            const sourceBox = this.template.querySelector(
+                '[data-element-id="div-source-list"]'
+            );
+            if (sourceBox && sourceBox.scrollTop === 0) {
+                this.handleScroll();
+            }
+        }
     }
 
     /*
@@ -423,6 +438,21 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * If present, you can load a subset of options and then display more when users scroll to the end of the source listbox. Use with the `loadmore` event handler to retrieve more data.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
      * If present, hides the bottom divider.
      *
      * @type {boolean}
@@ -452,6 +482,23 @@ export default class DualListbox extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Number of pixels from the bottom of the source listbox. If `enable-infinite-loading` is `true` and the source listbox is scrolled passed this limit, the `loadmore` event will be fired.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = isNaN(value)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : parseInt(value, 10);
     }
 
     /**
@@ -871,6 +918,13 @@ export default class DualListbox extends LightningElement {
         return i18n;
     }
 
+    get loadingSpinnerClass() {
+        return classSet({
+            'slds-is-relative avonni-dual-listbox__loading-spinner':
+                this.computedSourceGroups.length
+        }).toString();
+    }
+
     /**
      * Check if move buttons are disabled.
      *
@@ -970,6 +1024,18 @@ export default class DualListbox extends LightningElement {
                     !this.hideBottomDivider
             })
             .toString();
+    }
+
+    get scrolledToEnd() {
+        const sourceBox = this.template.querySelector(
+            '[data-element-id="div-source-list"]'
+        );
+        const fullHeight = sourceBox.scrollHeight;
+        const scrolledDistance = sourceBox.scrollTop;
+        const visibleHeight = sourceBox.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
+        );
     }
 
     /**
@@ -1336,6 +1402,43 @@ export default class DualListbox extends LightningElement {
             return;
         }
         handleKeyDownOnOption(event, this.keyboardInterface);
+    }
+
+    handleScroll() {
+        if (!this.enableInfiniteLoading || this.isLoading) {
+            return;
+        }
+
+        const sourceBox = this.template.querySelector(
+            '[data-element-id="div-source-list"]'
+        );
+        const loadLimit =
+            sourceBox.scrollHeight -
+            sourceBox.offsetHeight -
+            this.loadMoreOffset;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            /**
+             * The event fired when the users scroll to the bottom of the source listbox to load more options.
+             *
+             * @event
+             * @name loadmore
+             * @property {string} searchTerm Value of the search input, if any.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('loadmore', {
+                    detail: {
+                        searchTerm: this._searchTerm
+                    }
+                })
+            );
+        }
+        this._previousScroll = sourceBox.scrollTop;
     }
 
     /**
