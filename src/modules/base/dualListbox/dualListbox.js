@@ -452,6 +452,10 @@ export default class DualListbox extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
@@ -501,6 +505,10 @@ export default class DualListbox extends LightningElement {
         this._loadMoreOffset = isNaN(value)
             ? DEFAULT_LOAD_MORE_OFFSET
             : parseInt(value, 10);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
