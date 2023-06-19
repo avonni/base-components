@@ -43,13 +43,25 @@ import {
 export default {
     title: 'Example/List',
     argTypes: {
-        action: {
+        actions: {
             control: {
                 type: 'object'
             },
             description: 'Array of actions',
             table: {
                 type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
+        visibleActions: {
+            name: 'visible-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
                 category: 'Base'
             }
         },
@@ -122,6 +134,17 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 category: 'Infinite Loading'
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item fields.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
             }
         },
         imageAttributes: {
@@ -211,6 +234,18 @@ export default {
                 category: 'Base'
             }
         },
+        visibleMediaActions: {
+            name: 'visible-media-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of media actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
+        },
         sortableIconPosition: {
             name: 'sortable-icon-position',
             control: {
@@ -291,6 +326,10 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
+    fieldAttributes: {
+        cols: 12,
+        variant: 'label-inline'
+    },
     imageAttributes: {
         size: 'medium'
     }
@@ -317,10 +356,12 @@ ColumnsWithImageOverlay.args = {
     label: 'Columns with Image Overlay',
     items: itemsWithImages,
     actions: actions,
-    mediaActions: [{
-        name: 'event-action',
-        iconName: 'utility:bookmark'
-    }],
+    mediaActions: [
+        {
+            name: 'event-action',
+            iconName: 'utility:bookmark'
+        }
+    ],
     divider: 'around',
     imageAttributes: {
         position: 'overlay'

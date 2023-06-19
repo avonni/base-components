@@ -1,8 +1,6 @@
 export const ITEMS = [
     {
         label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatar: {
             fallbackIconName: 'custom:custom5',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
@@ -27,8 +25,6 @@ export const ITEMS = [
             fallbackIconName: 'custom:custom1',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
         },
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         name: 'item-3'
     },
     {
@@ -88,14 +84,6 @@ export const ACTION = [
         label: 'Completed',
         name: 'completed-action',
         iconName: 'utility:check',
-        disabled: false
-    }
-];
-
-export const ACTION_NO_LABEL = [
-    {
-        name: 'event-action',
-        iconName: 'utility:event',
         disabled: false
     }
 ];

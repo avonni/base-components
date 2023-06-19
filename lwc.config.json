@@ -43,6 +43,10 @@
             "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
+            "name": "c/primitiveActions",
+            "path": "src/modules/base/primitiveActions/primitiveActions.js"
+        },
+        {
             "name": "c/primitiveActivityTimelineItem",
             "path": "src/modules/base/primitiveActivityTimelineItem/primitiveActivityTimelineItem.js"
         },

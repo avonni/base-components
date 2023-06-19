@@ -80,6 +80,17 @@ const MEDIA_QUERY_BREAKPOINTS = {
 
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 
+const DEFAULT_FIELD_COLUMNS = {
+    small: 12,
+    medium: 6,
+    large: 4
+};
+
+const FIELD_VARIANTS = {
+    default: 'standard',
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
+
 /**
  * @class
  * @storyId example-list--base
@@ -121,6 +132,13 @@ export default class List extends LightningElement {
     _largeContainerCols;
     _divider;
     _enableInfiniteLoading = false;
+    _fieldAttributes = {
+        cols: null,
+        largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
+        mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
+        smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
+        variant: 'standard'
+    };
     _imageAttributes = {
         position: 'left',
         size: 'large',
@@ -134,6 +152,8 @@ export default class List extends LightningElement {
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
     _variant = VARIANTS.default;
+    _visibleActions;
+    _visibleMediaActions;
 
     _columnsSizes = {
         default: 1
@@ -290,6 +310,52 @@ export default class List extends LightningElement {
         if (this._enableInfiniteLoading) {
             this._hasUsedInfiniteLoading = true;
         }
+    }
+
+    /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+
+        this._fieldAttributes.cols = this.normalizeColumns(
+            normalizedFieldAttributes.cols
+        );
+        this._fieldAttributes.largeContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.largeContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.large;
+        this._fieldAttributes.mediumContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.mediumContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.smallContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.smallContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.small;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            {
+                fallbackValue: FIELD_VARIANTS.default,
+                validValues: FIELD_VARIANTS.valid
+            }
+        );
+
+        this._fieldAttributes = { ...this._fieldAttributes };
     }
 
     /**
@@ -551,6 +617,42 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * The number of actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleActions() {
+        return this._visibleActions;
+    }
+
+    set visibleActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
+    }
+
+    /**
+     * The number of media actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleMediaActions() {
+        return this._visibleMediaActions;
+    }
+
+    set visibleMediaActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleMediaActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -651,11 +753,7 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom'
             })
-            .add(
-                `avonni-list__flex-col slds-size_${
-                    12 / this._currentColumnCount
-                }-of-12`
-            )
+            .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
     }
 
@@ -719,6 +817,26 @@ export default class List extends LightningElement {
         }
         this._singleLinePageFirstIndex = pageStart;
         return pageItems;
+    }
+
+    /**
+     * Compute the number of visible actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleActions() {
+        if (this.visibleActions) return this.visibleActions;
+        return this.hasMultipleActions ? 0 : 1;
+    }
+
+    /**
+     * Compute the number of visible media actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleMediaActions() {
+        if (this.visibleMediaActions) return this.visibleMediaActions;
+        return this.hasMultipleMediaActions ? 0 : 1;
     }
 
     /**
@@ -1176,6 +1294,7 @@ export default class List extends LightningElement {
         delete itemCopy.listHasImages;
         delete itemCopy.infos;
         delete itemCopy.icons;
+        delete itemCopy.avatarPosition;
         return itemCopy;
     }
 
@@ -1776,9 +1895,7 @@ export default class List extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
         /**
          * The event fired when a user clicks on an action.
@@ -1808,11 +1925,8 @@ export default class List extends LightningElement {
      */
     handleMediaActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleMediaActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-
         /**
          * The event fired when a user clicks on a media action.
          *

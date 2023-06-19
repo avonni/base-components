@@ -151,7 +151,8 @@ export const itemsWithImagesAndAvatars = [
         label: 'Item 1',
         avatar: {
             fallbackIconName: 'custom:custom5',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'left-of-title'
         },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -163,7 +164,8 @@ export const itemsWithImagesAndAvatars = [
         label: 'Item 2',
         avatar: {
             fallbackIconName: 'custom:custom9',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right-of-title'
         },
         href: '/path/to_somewhere',
         description:
@@ -174,17 +176,46 @@ export const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 3',
+        avatar: {
+            fallbackIconName: 'custom:custom9',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right'
+        },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
-        name: 'name-item-3'
+        name: 'name-item-3',
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     },
     {
         label: 'Item 4',
         avatar: {
             fallbackIconName: 'custom:custom11',
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            position: 'right-of-title'
         },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
