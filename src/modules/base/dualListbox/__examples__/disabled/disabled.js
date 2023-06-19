@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DualListboxBase extends LightningElement {
+export default class DualListboxDisabled extends LightningElement {
     options = [
         {
             value: '1',
@@ -43,4 +43,6 @@ export default class DualListboxBase extends LightningElement {
             label: 'Option 10'
         }
     ];
+
+    values = ['2', '3'];
 }
