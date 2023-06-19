@@ -54,6 +54,7 @@ describe('VisualPickerLink', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition).toBe('left');
         expect(element.infoOnly).toBeFalsy();
+        expect(element.disabled).toBeFalsy();
         expect(element.title).toBeUndefined();
     });
 
@@ -208,6 +209,39 @@ describe('VisualPickerLink', () => {
             expect(wrapper.classList).toContain(
                 'avonni-visual-picker-link__tile_info-only'
             );
+        });
+    });
+
+    // disabled
+    it('Visual picker link: disabled = true', () => {
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
+
+            expect(link.classList).toContain(
+                'avonni-visual-picker-link_disabled'
+            );
+            expect(link.classList).not.toContain(
+                'avonni-visual-picker-box_link'
+            );
+        });
+    });
+
+    it('Visual picker link: disabled = false', () => {
+        element.disabled = false;
+
+        return Promise.resolve().then(() => {
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
+
+            expect(link.classList).not.toContain(
+                'avonni-visual-picker-link_disabled'
+            );
+            expect(link.classList).toContain('avonni-visual-picker-box_link');
         });
     });
 

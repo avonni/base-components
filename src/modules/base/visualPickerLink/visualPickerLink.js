@@ -36,6 +36,7 @@ import { classSet } from 'c/utils';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 
+const DEFAULT_DISABLED = false;
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 /**
@@ -67,6 +68,8 @@ export default class VisualPickerLink extends LightningElement {
      * @public
      */
     @api title;
+
+    _disabled = DEFAULT_DISABLED;
 
     _completed = false;
 
@@ -100,6 +103,22 @@ export default class VisualPickerLink extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * If present, the visual picker is disabled and the user cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
 
     /**
      * If present, a checkmark is added to the icon.
@@ -168,6 +187,17 @@ export default class VisualPickerLink extends LightningElement {
             .add({
                 'slds-welcome-mat__tile_complete': this._completed,
                 'avonni-visual-picker-link__tile_info-only': this._infoOnly
+            })
+            .toString();
+    }
+
+    get computedLinkClass() {
+        return classSet(
+            'slds-media slds-p-around_medium avonni-visual-picker-link__box'
+        )
+            .add({
+                'avonni-visual-picker-box_link': !this.disabled,
+                'avonni-visual-picker-link_disabled': this.disabled
             })
             .toString();
     }

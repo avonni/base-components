@@ -136,7 +136,7 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * If present, the visual picker is disabled and the user cannot with it.
+     * If present, the visual picker is disabled and the user cannot interact with it.
      *
      * @type {boolean}
      * @public
