@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/dualListbox';
+import Component from '../../storybookWrappers/dualListbox/infiniteLoading';
 
 customElements.define(
-    'ac-base-dual-listbox',
+    'ac-infinite-loading-dual-listbox',
     Component.CustomElementConstructor
 );
 
-export const DualListbox = ({
+export const InfiniteLoadingDualListbox = ({
     addButtonIconName,
     addButtonLabel,
     buttonSize,
@@ -75,7 +75,7 @@ export const DualListbox = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-base-dual-listbox');
+    const element = document.createElement('ac-infinite-loading-dual-listbox');
     element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
     element.buttonSize = buttonSize;
