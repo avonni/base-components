@@ -225,7 +225,7 @@ export default {
                 type: 'select'
             },
             description:
-                'Position of the actions. Valid values include top-left, top-right, bottom-left, bottom-right and bottom-center.',
+                'Valid values include top-left, top-right, bottom-left, bottom-right and bottom-center.',
             options: [
                 'top-left',
                 'top-right',
@@ -244,9 +244,8 @@ export default {
             control: {
                 type: 'select'
             },
-            description:
-                'Changes the appearance of the actions. Valid values include bare, border, menu and stretch.',
-            options: ['bare', 'border', 'menu', 'stretch'],
+            description: 'Valid values include bare, border and menu.',
+            options: ['bare', 'border', 'menu'],
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' },
@@ -358,16 +357,4 @@ ResponsiveItemsPerPanel.args = {
     largeItemsPerPanel: 5,
     actionsVariant: 'menu',
     actionsPosition: 'top-right'
-};
-
-export const ResponsiveWithStretchButtons = Template.bind({});
-ResponsiveWithStretchButtons.args = {
-    items: menuItems,
-    disableAutoScroll: true,
-    itemsPerPanel: 1,
-    smallItemsPerPanel: 2,
-    mediumItemsPerPanel: 2,
-    largeItemsPerPanel: 2,
-    actionsVariant: 'stretch',
-    actionsPosition: 'bottom-center'
 };

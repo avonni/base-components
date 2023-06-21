@@ -12,7 +12,7 @@
         "bwip-js": "^3.0.4",
         "d3": "^7.4.4",
         "dompurify": "^2.2.6",
-        "lightning-base-components": "^1.18.7-alpha"
+        "lightning-base-components": "^1.14.7-alpha"
     },
     "devDependencies": {
         "@babel/core": "^7.12.13",
