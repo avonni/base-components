@@ -581,28 +581,6 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Final Computed Magnifier Style.
-     *
-     * @type {string}
-     */
-    get computedMagnifierStyle() {
-        const styleProperties = {};
-
-        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
-        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
-
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
-                }
-            });
-        }
-        return styleValue;
-    }
-
-    /**
      * Final Computed Magnifier Image Style.
      *
      * @type {string}
@@ -663,6 +641,13 @@ export default class Image extends LightningElement {
         const magnifiedImage = this.template.querySelector(
             '[data-element-id="magnified-img"]'
         );
+        if (this.magnifierType === 'inner') {
+            magnifier.style.width = `${img.width}px`;
+            magnifier.style.height = `${img.height}px`;
+        } else {
+            magnifier.style.width = this.magnifierAttributes.zoomRatioWidth;
+            magnifier.style.height = this.magnifierAttributes.zoomRatioHeight;
+        }
         magnifier.style.display = 'block';
         const w = magnifier.offsetWidth / 2;
         const h = magnifier.offsetHeight / 2;

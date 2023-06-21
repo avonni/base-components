@@ -62,12 +62,6 @@ export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
  */
 function autoPositionMagnifier(magnifier, img, magnifierAttributes, position) {
     switch (position) {
-        case 'left':
-            magnifier.style.left = `${
-                img.width + magnifierAttributes.horizontalOffset
-            }px`;
-            magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
-            break;
         case 'right':
             magnifier.style.left = `${
                 -magnifier.offsetWidth - magnifierAttributes.horizontalOffset
@@ -81,6 +75,10 @@ function autoPositionMagnifier(magnifier, img, magnifierAttributes, position) {
             magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
             break;
         default:
+            magnifier.style.left = `${
+                img.width + magnifierAttributes.horizontalOffset
+            }px`;
+            magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
             break;
     }
 }
@@ -119,14 +117,11 @@ export function getCursorPosition(event) {
  * Apply the inner magnifying effect to the image.
  */
 export function innerMagnifier(
-    { x, y, w, h, magnifier, magnifiedImage, img },
+    { x, y, w, h, magnifier, magnifiedImage },
     zoomFactor
 ) {
     magnifier.style.left = 0;
     magnifier.style.top = 0;
-
-    magnifier.style.width = `${img.width}px`;
-    magnifier.style.height = `${img.height}px`;
 
     magnifiedImage.style.transform = `translate(-${x * zoomFactor - w}px, -${
         y * zoomFactor - h
