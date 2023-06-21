@@ -190,6 +190,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
         return this._actionsVariant === 'bare' ? 'base' : 'neutral';
     }
 
+    /**
+     * Lightning Button class styling based on attributes.
+     *
+     * @type {string}
+     */
     get computedButtonClass() {
         return classSet('')
             .add({
@@ -207,11 +212,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedButtonsContainerClass() {
-        return classSet('slds-show_small')
-            .add({
-                'slds-grid': !this.isStretchVariant
-            })
-            .toString();
+        return !this.isStretchVariant
+            ? 'slds-show_small slds-grid'
+            : 'slds-show_small';
     }
 
     /**
@@ -260,7 +263,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedButtonMenuActionClass() {
-        return this.isMenuVariant === false ? 'slds-hide_small' : '';
+        return !this.isMenuVariant ? 'slds-hide_small' : '';
     }
 
     /**
@@ -462,5 +465,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
             this.actions.length > 0 && this.isBottomPosition
                 ? isStretch
                 : 6.625;
+    }
+
+    /**
+     * Prevent the default event browser behavior
+     *
+     * @param {Event}
+     */
+    preventDefault(event) {
+        event.preventDefault();
     }
 }
