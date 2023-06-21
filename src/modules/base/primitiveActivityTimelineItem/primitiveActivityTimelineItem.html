@@ -132,7 +132,7 @@
                     >
                         <div
                             if:true={dateFormat}
-                            class="slds-timeline__date"
+                            class="slds-timeline__date slds-truncate"
                             data-element-id="avonni-formatted-date-time"
                         >
                             {formattedDate}
@@ -188,7 +188,9 @@
                                 size="x-small"
                                 class="slds-m-right_x-small"
                             ></lightning-icon>
-                            <p>There was an error loading the details</p>
+                            <p class="slds-truncate">
+                                There was an error loading the details
+                            </p>
                         </div>
                     </template>
                     <template if:false={hasError}>
@@ -200,33 +202,34 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                <lightning-layout
+                                <c-layout
                                     data-element-id="fields-container"
-                                    multiple-rows="true"
+                                    multiple-rows
                                 >
                                     <template
                                         for:each={fields}
                                         for:item="field"
                                         for:index="index"
                                     >
-                                        <lightning-layout-item
+                                        <c-layout-item
                                             key={field.value}
-                                            class="
-                                                slds-truncate
-                                                slds-p-top_medium
-                                            "
-                                            size={fieldSize}
+                                            class="slds-truncate"
+                                            size={fieldAttributes.cols}
+                                            large-container-size={fieldAttributes.largeContainerCols}
+                                            medium-container-size={fieldAttributes.mediumContainerCols}
+                                            small-container-size={fieldAttributes.smallContainerCols}
                                         >
                                             <c-output-data
                                                 label={field.label}
                                                 value={field.value}
                                                 type={field.type}
                                                 type-attributes={field.typeAttributes}
+                                                variant={fieldAttributes.variant}
                                                 data-element-id="avonni-output-data"
                                             ></c-output-data>
-                                        </lightning-layout-item>
+                                        </c-layout-item>
                                     </template>
-                                </lightning-layout>
+                                </c-layout>
                                 <template if:true={buttonLabel}>
                                     <lightning-button
                                         label={buttonLabel}

@@ -230,42 +230,39 @@
                         </p>
                     </div>
 
-                    <!-- Table (2 columns) for fields -->
+                    <!-- Fields -->
                     <footer
                         class="slds-grid slds-wrap slds-media__body"
                         if:true={selectedItem.fields}
                     >
                         <div
-                            class="slds-has-flexi-truncate slds-p-left_x-small"
+                            class="
+                                slds-has-flexi-truncate
+                                avonni-activity-timeline__horizontal-fields-container
+                            "
                         >
-                            <lightning-layout
-                                horizontal-align="spread"
-                                multiple-rows="true"
-                            >
+                            <c-layout multiple-rows>
                                 <template
                                     for:each={selectedItem.fields}
                                     for:item="field"
                                     for:index="index"
                                 >
-                                    <lightning-layout-item
-                                        class="
-                                            slds-size_1-of-2
-                                            slds-p-vertical_x-small
-                                            slds-p-horizontal_small
-                                            slds-line-clamp_x-small
-                                        "
+                                    <c-layout-item
                                         key={field.value}
+                                        class="slds-truncate"
+                                        size={horizontalFieldsCols}
                                     >
                                         <c-output-data
                                             label={field.label}
                                             value={field.value}
                                             type={field.type}
                                             type-attributes={field.typeAttributes}
+                                            variant={horizontalFieldsVariant}
                                             data-element-id="avonni-output-data"
                                         ></c-output-data>
-                                    </lightning-layout-item>
+                                    </c-layout-item>
                                 </template>
-                            </lightning-layout>
+                            </c-layout>
                         </div>
                     </footer>
                 </div>

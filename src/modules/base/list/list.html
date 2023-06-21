@@ -126,65 +126,18 @@
                                     if:true={item.hasImage}
                                     onkeydown={handleStopKeyDown}
                                 >
-                                    <lightning-button-menu
-                                        if:true={hasMultipleMediaActions}
-                                        menu-alignment="right"
-                                        icon-size="x-small"
-                                        data-element-id="media-action-menu"
+                                    <c-primitive-actions
+                                        actions={computedMediaActions}
+                                        button-icon-size="small"
+                                        button-icon-variant="border-filled"
+                                        visible-actions={computedVisibleMediaActions}
                                         data-item-index={item.index}
+                                        data-element-id="primitive-media-actions"
                                         onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
-                                        onselect={handleMediaActionClick}
-                                        variant="border-filled"
-                                    >
-                                        <template
-                                            for:each={computedMediaActions}
-                                            for:item="action"
-                                        >
-                                            <lightning-menu-item
-                                                key={action.name}
-                                                value={action.name}
-                                                label={action.label}
-                                                disabled={action.disabled}
-                                                icon-name={action.iconName}
-                                                data-element-id="media-action-menu-item"
-                                            ></lightning-menu-item>
-                                        </template>
-                                    </lightning-button-menu>
-                                    <template
-                                        if:false={hasMultipleMediaActions}
-                                    >
-                                        <lightning-button
-                                            if:true={firstMediaAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstMediaAction.name}
-                                            value={firstMediaAction.name}
-                                            label={firstMediaAction.label}
-                                            disabled={firstMediaAction.disabled}
-                                            icon-name={firstMediaAction.iconName}
-                                            data-item-index={item.index}
-                                            data-element-id="media-action-button"
-                                            onclick={handleMediaActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button>
-                                        <lightning-button-icon
-                                            if:false={firstMediaAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstMediaAction.name}
-                                            value={firstMediaAction.name}
-                                            disabled={firstMediaAction.disabled}
-                                            icon-name={firstMediaAction.iconName}
-                                            size="small"
-                                            variant="border-filled"
-                                            data-item-index={item.index}
-                                            data-element-id="media-action-button-icon"
-                                            onclick={handleMediaActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button-icon>
-                                    </template>
+                                        onactionclick={handleMediaActionClick}
+                                    ></c-primitive-actions>
                                 </div>
                             </div>
                             <div
@@ -218,12 +171,11 @@
                                         <img
                                             loading="lazy"
                                             style={computedImageStyle}
-                                            if:true={item.imageSrc}
                                             class={computedImageMediaClass}
-                                            key={item.imageSrc}
                                             src={item.imageSrc}
                                             draggable="false"
                                             data-element-id="list-img-media"
+                                            onerror={handleItemImageError}
                                         />
                                     </div>
                                 </div>
@@ -252,10 +204,8 @@
                                         avonni-list-item-body
                                     "
                                 >
-                                    <!-- Avatar -->
-
                                     <c-avatar
-                                        if:true={item.avatar}
+                                        if:true={item.isAvatarLeft}
                                         class="
                                             avonni-list-item-avatar
                                             slds-m-right_x-small
@@ -283,6 +233,23 @@
                                                 slds-margin-bottom_xx-small
                                             "
                                         >
+                                            <c-avatar
+                                                if:true={item.isAvatarLeftOfTitle}
+                                                class="
+                                                    avonni-list-item-avatar
+                                                    slds-m-right_x-small
+                                                "
+                                                fallback-icon-name={item.avatar.fallbackIconName}
+                                                src={item.avatar.src}
+                                                size={item.avatar.size}
+                                                initials={item.avatar.initials}
+                                                onmousedown={handleAvatarDragStart}
+                                                variant={item.avatar.variant}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                hide-avatar-details="true"
+                                                data-element-id="avonni-avatar"
+                                            ></c-avatar>
                                             <div
                                                 class="
                                                     slds-truncate
@@ -332,6 +299,23 @@
                                                     </span>
                                                 </template>
                                             </span>
+                                            <c-avatar
+                                                if:true={item.isAvatarRightOfTitle}
+                                                class="
+                                                    avonni-list-item-avatar
+                                                    slds-m-left_x-small
+                                                "
+                                                fallback-icon-name={item.avatar.fallbackIconName}
+                                                src={item.avatar.src}
+                                                size={item.avatar.size}
+                                                initials={item.avatar.initials}
+                                                onmousedown={handleAvatarDragStart}
+                                                variant={item.avatar.variant}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                hide-avatar-details="true"
+                                                data-element-id="avonni-avatar"
+                                            ></c-avatar>
                                         </div>
 
                                         <!-- Description -->
@@ -377,7 +361,62 @@
                                                 </li>
                                             </template>
                                         </ul>
+
+                                        <!-- Fields -->
+                                        <div
+                                            if:true={item.fields}
+                                            aria-hidden="false"
+                                            class="
+                                                slds-m-top_xx-small
+                                                avonni-list__item-fields-container
+                                            "
+                                        >
+                                            <c-layout
+                                                data-element-id="fields-container"
+                                                multiple-rows
+                                            >
+                                                <template
+                                                    for:each={item.fields}
+                                                    for:item="field"
+                                                    for:index="index"
+                                                >
+                                                    <c-layout-item
+                                                        key={field.value}
+                                                        class="slds-truncate"
+                                                        size={fieldAttributes.cols}
+                                                        large-container-size={fieldAttributes.largeContainerCols}
+                                                        medium-container-size={fieldAttributes.mediumContainerCols}
+                                                        small-container-size={fieldAttributes.smallContainerCols}
+                                                    >
+                                                        <c-output-data
+                                                            label={field.label}
+                                                            value={field.value}
+                                                            type={field.type}
+                                                            type-attributes={field.typeAttributes}
+                                                            variant={fieldAttributes.variant}
+                                                        ></c-output-data>
+                                                    </c-layout-item>
+                                                </template>
+                                            </c-layout>
+                                        </div>
                                     </div>
+                                    <c-avatar
+                                        if:true={item.isAvatarRight}
+                                        class="
+                                            avonni-list-item-avatar
+                                            slds-m-left_x-small
+                                        "
+                                        fallback-icon-name={item.avatar.fallbackIconName}
+                                        src={item.avatar.src}
+                                        size={item.avatar.size}
+                                        initials={item.avatar.initials}
+                                        onmousedown={handleAvatarDragStart}
+                                        variant={item.avatar.variant}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        hide-avatar-details="true"
+                                        data-element-id="avonni-avatar"
+                                    ></c-avatar>
                                 </div>
 
                                 <!-- Sort icon -->
@@ -396,66 +435,25 @@
                                 <!-- Actions -->
                                 <div
                                     if:true={hasActions}
-                                    class="slds-m-right_x-small"
+                                    class="
+                                        slds-m-right_x-small
+                                        slds-m-vertical_x-small
+                                        avonni-list__item-actions-container
+                                    "
                                     onkeydown={handleStopKeyDown}
                                 >
-                                    <lightning-button-menu
-                                        if:true={hasMultipleActions}
-                                        menu-alignment="right"
-                                        icon-size="x-small"
-                                        data-element-id="lightning-button-menu"
+                                    <c-primitive-actions
+                                        actions={computedActions}
+                                        button-icon-size={actionButtonIconSize}
+                                        button-icon-variant={actionButtonIconVariant}
+                                        visible-actions={computedVisibleActions}
                                         data-item-index={item.index}
+                                        data-element-id="primitive-actions"
                                         onclick={stopPropagation}
                                         onmousedown={stopPropagation}
                                         ontouchstart={stopPropagation}
-                                        onselect={handleActionClick}
-                                        variant="border-filled"
-                                    >
-                                        <template
-                                            for:each={computedActions}
-                                            for:item="action"
-                                        >
-                                            <lightning-menu-item
-                                                key={action.name}
-                                                value={action.name}
-                                                label={action.label}
-                                                disabled={action.disabled}
-                                                icon-name={action.iconName}
-                                                data-element-id="lightning-menu-item"
-                                            ></lightning-menu-item>
-                                        </template>
-                                    </lightning-button-menu>
-                                    <template if:false={hasMultipleActions}>
-                                        <lightning-button
-                                            if:true={firstAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            label={firstAction.label}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            data-item-index={item.index}
-                                            data-element-id="lightning-button"
-                                            onclick={handleActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button>
-                                        <lightning-button-icon
-                                            if:false={firstAction.label}
-                                            class="slds-m-right_none"
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            size={actionButtonIconSize}
-                                            variant={actionButtonIconVariant}
-                                            data-item-index={item.index}
-                                            data-element-id="lightning-button-icon"
-                                            onclick={handleActionClick}
-                                            onmousedown={stopPropagation}
-                                            ontouchstart={stopPropagation}
-                                        ></lightning-button-icon>
-                                    </template>
+                                        onactionclick={handleActionClick}
+                                    ></c-primitive-actions>
                                 </div>
                             </div>
                         </c-card>

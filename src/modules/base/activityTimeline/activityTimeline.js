@@ -37,9 +37,10 @@ import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
 import {
     deepCopy,
+    normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeArray
+    normalizeObject,
+    normalizeString
 } from 'c/utilsPrivate';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
@@ -58,11 +59,25 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const DEFAULT_FIELD_COLUMNS = {
+    horizontal: 12,
+    small: 12,
+    medium: 6,
+    large: 4
+};
+const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
+
+const FIELD_VARIANTS = {
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
+
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
@@ -151,6 +166,13 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _fieldAttributes = {
+        cols: null,
+        largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
+        mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
+        smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
+        variant: null
+    };
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
@@ -337,6 +359,49 @@ export default class ActivityTimeline extends LightningElement {
 
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
+    }
+
+    /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+
+        this._fieldAttributes.cols = this.normalizeColumns(
+            normalizedFieldAttributes.cols
+        );
+        this._fieldAttributes.largeContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.largeContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.large;
+        this._fieldAttributes.mediumContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.mediumContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.smallContainerCols =
+            this.normalizeColumns(
+                normalizedFieldAttributes.smallContainerCols
+            ) ||
+            this._fieldAttributes.cols ||
+            DEFAULT_FIELD_COLUMNS.small;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            { validValues: FIELD_VARIANTS.valid }
+        );
+
+        this._fieldAttributes = { ...this._fieldAttributes };
     }
 
     /**
@@ -616,6 +681,24 @@ export default class ActivityTimeline extends LightningElement {
         return this.title || this.iconName;
     }
 
+    /**
+     * Compute the number of columns by field for the horizontal timeline.
+     *
+     * @type {number}
+     */
+    get horizontalFieldsCols() {
+        return this.fieldAttributes.cols || DEFAULT_FIELD_COLUMNS.horizontal;
+    }
+
+    /**
+     * Compute the field's variant for the horizontal timeline.
+     *
+     * @type {string}
+     */
+    get horizontalFieldsVariant() {
+        return this.fieldAttributes.variant || DEFAULT_HORIZONTAL_FIELD_VARIANT;
+    }
+
     /*
      * Verify if show button should be hidden or not
      *
@@ -785,6 +868,24 @@ export default class ActivityTimeline extends LightningElement {
             this.requestRedrawTimeline();
             this.renderedCallback();
         });
+    }
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) {
+            return null;
+        }
+
+        if (COLUMNS.valid.includes(numValue)) {
+            return numValue;
+        }
+        return null;
     }
 
     /**

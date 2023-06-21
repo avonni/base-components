@@ -48,10 +48,11 @@ export const DualListbox = ({
     downButtonLabel,
     draggable,
     fieldLevelHelp,
-    groups,
+    enableInfiniteLoading,
     hideBottomDivider,
     isLoading,
     label,
+    loadMoreOffset,
     maxVisibleOptions,
     max,
     min,
@@ -71,7 +72,6 @@ export const DualListbox = ({
     sourceLabel,
     upButtonIconName,
     upButtonLabel,
-    validity,
     value,
     variant
 }) => {
@@ -86,10 +86,11 @@ export const DualListbox = ({
     element.downButtonLabel = downButtonLabel;
     element.draggable = draggable;
     element.fieldLevelHelp = fieldLevelHelp;
-    element.groups = groups;
+    element.enableInfiniteLoading = enableInfiniteLoading;
     element.hideBottomDivider = hideBottomDivider;
     element.isLoading = isLoading;
     element.label = label;
+    element.loadMoreOffset = loadMoreOffset;
     element.maxVisibleOptions = maxVisibleOptions;
     element.max = max;
     element.min = min;
@@ -109,7 +110,6 @@ export const DualListbox = ({
     element.sourceLabel = sourceLabel;
     element.upButtonIconName = upButtonIconName;
     element.upButtonLabel = upButtonLabel;
-    element.validity = validity;
     element.value = value;
     element.variant = variant;
     return element;

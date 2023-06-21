@@ -18,7 +18,7 @@
  * @memberof stylingHooks
  * @name --avonni-metric-alignment
  * @default left
- * @type string
+ * @type alignment
  */
 /**
  * @memberof stylingHooks

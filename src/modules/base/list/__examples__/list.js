@@ -40,6 +40,7 @@ export const List = ({
     cols,
     divider,
     enableInfiniteLoading,
+    fieldAttributes,
     imageAttributes,
     isLoading,
     items,
@@ -53,6 +54,8 @@ export const List = ({
     sortableIconName,
     sortableIconPosition,
     variant,
+    visibleActions,
+    visibleMediaActions
 }) => {
     const element = document.createElement('ac-base-list');
     element.actions = actions;
@@ -60,6 +63,7 @@ export const List = ({
     element.cols = cols;
     element.divider = divider;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.fieldAttributes = fieldAttributes;
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
     element.items = items;
@@ -73,5 +77,7 @@ export const List = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.variant = variant;
+    element.visibleActions = visibleActions;
+    element.visibleMediaActions = visibleMediaActions;
     return element;
 };

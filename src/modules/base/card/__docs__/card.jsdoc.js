@@ -173,7 +173,7 @@
  * @memberof stylingHooks
  * @name --avonni-card-footer-text-align
  * @default center
- * @type string
+ * @type alignment
  */
 /**
  * @memberof stylingHooks

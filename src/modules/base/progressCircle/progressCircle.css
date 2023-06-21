@@ -48,6 +48,7 @@
     color: var(--avonni-progress-circle-title-text-color, #080707);
     font-style: var(--avonni-progress-circle-title-font-style, normal);
     font-weight: var(--avonni-progress-circle-title-font-weight, 400);
+    -webkit-line-clamp: var(--avonni-progress-circle-title-line-clamp, 3);
 }
 
 .avonni-progress-circle__dots {

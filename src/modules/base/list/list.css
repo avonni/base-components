@@ -81,7 +81,7 @@
         --avonni-list-item-divider-around-spacing-inline-between,
         0.5rem
     );
-    --avonni-card-shadow: none;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
     --avonni-card-sizing-border: 1px;
 }
 
@@ -103,6 +103,7 @@
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-body-spacing-block-start: 0px;
     --avonni-card-body-spacing-block-end: 0px;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
 }
 
 .avonni-list-item-body {
@@ -123,7 +124,7 @@
 .avonni-list__item-borderless {
     --avonni-card-sizing-border: 0px;
     --avonni-card-radius-border: 0px;
-    --avonni-card-shadow: none;
+    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
 }
 
 .avonni-list__header_font {
@@ -252,9 +253,31 @@
     );
 }
 
+.avonni-list__item-fields-container {
+    background-color: var(--avonni-list-item-fields-color-background);
+    border-radius: var(--avonni-list-item-fields-radius-border, 0.25rem);
+    border-width: var(--avonni-list-item-fields-sizing-border, 1px);
+    border-style: var(--avonni-list-item-fields-styling-border);
+    border-color: var(--avonni-list-item-fields-color-border, #e5e5e5);
+    padding-right: var(--avonni-list-item-fields-spacing-inline);
+    padding-left: var(--avonni-list-item-fields-spacing-inline);
+    padding-bottom: var(--avonni-list-item-fields-spacing-block, 1rem);
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-list-item-fields-spacing-block,
+        1rem
+    );
+}
+
+.avonni-list__item-actions-container {
+    align-self: var(--avonni-list-item-actions-vertical-alignment, center);
+}
+
 /* AVATAR */
 .avonni-list-item-avatar {
-    --avonni-avatar-image-object-fit: var(--avonni-list-item-avatar-image-object-fit, 'cover');
+    --avonni-avatar-image-object-fit: var(
+        --avonni-list-item-avatar-image-object-fit,
+        'cover'
+    );
 }
 
 /* LINK COLORS */
@@ -308,6 +331,7 @@ a.avonni-list__item-info-link:active {
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+    -webkit-line-clamp: var(--avonni-list-item-description-line-clamp, 2);
 }
 
 /* LINK INVERSE COLORS */

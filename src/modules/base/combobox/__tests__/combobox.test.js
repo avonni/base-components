@@ -65,6 +65,7 @@ describe('Combobox', () => {
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.hideClearIcon).toBeFalsy();
+        expect(element.hideOptionsUntilSearch).toBeFalsy();
         expect(element.hideSelectedOptions).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
@@ -239,6 +240,18 @@ describe('Combobox', () => {
             );
             // A default group will be added to the beginning of the list by the primitive combobox
             expect(combobox.hideClearIcon).toBeTruthy();
+        });
+    });
+
+    // hide-options-until-search
+    it('Combobox: hideOptionsUntilSearch', () => {
+        element.hideOptionsUntilSearch = true;
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            expect(combobox.hideOptionsUntilSearch).toBeTruthy();
         });
     });
 

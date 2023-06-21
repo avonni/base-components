@@ -43,13 +43,25 @@ import {
 export default {
     title: 'Example/List',
     argTypes: {
-        action: {
+        actions: {
             control: {
                 type: 'object'
             },
             description: 'Array of actions',
             table: {
                 type: { summary: 'object[]' },
+                category: 'Base'
+            }
+        },
+        visibleActions: {
+            name: 'visible-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
                 category: 'Base'
             }
         },
@@ -122,6 +134,17 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 category: 'Infinite Loading'
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item fields.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
             }
         },
         imageAttributes: {
@@ -211,6 +234,18 @@ export default {
                 category: 'Base'
             }
         },
+        visibleMediaActions: {
+            name: 'visible-media-actions',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The number of media actions that appear as regular buttons.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Base'
+            }
+        },
         sortableIconPosition: {
             name: 'sortable-icon-position',
             control: {
@@ -261,7 +296,11 @@ DividerOnTop.args = {
 
 export const Images = Template.bind({});
 Images.args = {
-    items: itemsWithImages
+    items: itemsWithImages,
+    imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    }
 };
 
 export const Avatars = Template.bind({});
@@ -291,6 +330,10 @@ SortableWithImagesAndAvatars.args = {
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around',
+    fieldAttributes: {
+        cols: 12,
+        variant: 'label-inline'
+    },
     imageAttributes: {
         size: 'medium'
     }
@@ -303,6 +346,8 @@ ColumnsWithImageBottom.args = {
     mediaActions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom',
         height: 100
     },
@@ -317,12 +362,16 @@ ColumnsWithImageOverlay.args = {
     label: 'Columns with Image Overlay',
     items: itemsWithImages,
     actions: actions,
-    mediaActions: [{
-        name: 'event-action',
-        iconName: 'utility:bookmark'
-    }],
+    mediaActions: [
+        {
+            name: 'event-action',
+            iconName: 'utility:bookmark'
+        }
+    ],
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'overlay'
     },
     cols: 1,
@@ -339,6 +388,8 @@ SingleLineWithInfiniteLoading.args = {
     enableInfiniteLoading: true,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom'
     },
     cols: 1,
@@ -353,6 +404,8 @@ ColumnsWithInfiniteLoading.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'top'
     },
     loadMoreOffset: 100,
