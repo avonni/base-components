@@ -171,12 +171,11 @@
                                         <img
                                             loading="lazy"
                                             style={computedImageStyle}
-                                            if:true={item.imageSrc}
                                             class={computedImageMediaClass}
-                                            key={item.imageSrc}
                                             src={item.imageSrc}
                                             draggable="false"
                                             data-element-id="list-img-media"
+                                            onerror={handleItemImageError}
                                         />
                                     </div>
                                 </div>

@@ -141,7 +141,6 @@ export const itemsWithImages = [
             { label: 'info 2', href: '' }
         ],
         icons: ['utility:share', 'utility:refresh'],
-        imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         name: 'name-item-5'
     }
 ];
@@ -225,7 +224,7 @@ export const itemsWithImagesAndAvatars = [
         ],
         icons: ['utility:share', 'utility:refresh'],
         imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         name: 'name-item-4'
     },
     {

@@ -101,7 +101,7 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
             ],
             icons: ['utility:share', 'utility:refresh'],
             imageSrc:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
             name: 'name-item-4'
         },
         {

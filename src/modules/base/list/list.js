@@ -140,6 +140,7 @@ export default class List extends LightningElement {
         variant: 'standard'
     };
     _imageAttributes = {
+        fallbackSrc: null,
         position: 'left',
         size: 'large',
         cropPositionX: 50,
@@ -397,7 +398,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Image attributes: cropFit, position, size, width, height and cropPosition.
+     * Image attributes: fallbackSrc, cropFit, position, size, width, height and cropPosition.
      *
      * @type {object}
      * @public
@@ -408,6 +409,8 @@ export default class List extends LightningElement {
     }
     set imageAttributes(value) {
         const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
 
         this._imageAttributes.width = !isNaN(normalizedImgAttributes.width)
             ? normalizedImgAttributes.width
@@ -1545,13 +1548,14 @@ export default class List extends LightningElement {
     setItemProperties() {
         this.listHasImages = this.items.some((item) => item.imageSrc);
         this.computedItems = this.items.map((item, index) => {
+            const imageSrc = item.imageSrc || this._imageAttributes.fallbackSrc;
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
             let usedImagePosition = this.imageAttributes.position;
             const layoutRequiresImage =
                 usedImagePosition === 'background' ||
                 usedImagePosition === 'overlay';
-            if (!item.imageSrc && layoutRequiresImage) {
+            if (!imageSrc && layoutRequiresImage) {
                 usedImagePosition = 'top';
             }
             const newItem = new Item(item);
@@ -1559,6 +1563,7 @@ export default class List extends LightningElement {
             newItem.imagePosition = usedImagePosition;
             newItem.listHasImages = this.listHasImages;
             newItem.variant = this.variant;
+            newItem.imageSrc = imageSrc;
             return newItem;
         });
     }
@@ -2068,6 +2073,21 @@ export default class List extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Handle an item image loading error.
+     * If a fallbackSrc exists assign it to the image src attribute.
+     * @param {Event} event
+     */
+    handleItemImageError(event) {
+        if (
+            !this._imageAttributes.fallbackSrc ||
+            event.target.src === this._imageAttributes.fallbackSrc
+        )
+            return;
+        event.target.onerror = null;
+        event.target.src = this._imageAttributes.fallbackSrc;
     }
 
     handleItemMouseUp(event) {

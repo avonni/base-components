@@ -78,6 +78,7 @@ describe('List', () => {
             variant: 'standard'
         });
         expect(element.imageAttributes).toEqual({
+            fallbackSrc: null,
             position: 'left',
             size: 'large',
             cropPositionX: 50,
@@ -254,6 +255,26 @@ describe('List', () => {
             expect(images[1].style['min-width']).toBe('128px');
             expect(images[2].style['min-width']).toBe('128px');
         });
+    });
+    it('List: Images fallback src', () => {
+        element.items = ITEMS;
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = { fallbackSrc };
+
+        return Promise.resolve()
+            .then(() => {
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="list-img-media"]'
+                );
+                image.dispatchEvent(new CustomEvent('error'));
+            })
+            .then(() => {
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="list-img-media"]'
+                );
+                expect(image.src).toBe(fallbackSrc);
+            });
     });
 
     // items

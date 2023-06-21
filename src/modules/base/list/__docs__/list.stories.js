@@ -296,7 +296,11 @@ DividerOnTop.args = {
 
 export const Images = Template.bind({});
 Images.args = {
-    items: itemsWithImages
+    items: itemsWithImages,
+    imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    }
 };
 
 export const Avatars = Template.bind({});
@@ -342,6 +346,8 @@ ColumnsWithImageBottom.args = {
     mediaActions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom',
         height: 100
     },
@@ -364,6 +370,8 @@ ColumnsWithImageOverlay.args = {
     ],
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'overlay'
     },
     cols: 1,
@@ -380,6 +388,8 @@ SingleLineWithInfiniteLoading.args = {
     enableInfiniteLoading: true,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'bottom'
     },
     cols: 1,
@@ -394,6 +404,8 @@ ColumnsWithInfiniteLoading.args = {
     actions: actions,
     divider: 'around',
     imageAttributes: {
+        fallbackSrc:
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
         position: 'top'
     },
     loadMoreOffset: 100,

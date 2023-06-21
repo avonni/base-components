@@ -36,6 +36,7 @@
 /**
  * @typedef {Object} ImageAttributes
  * @name imageAttributes
+ * @property {string} fallbackSrc The source URL to use if item.imageSrc is invalid or is not specified.
  * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
  * @property {string} size The size of the item image. The size controls the width for image positions left and right. Otherwise size controls the image height. Valid values are small, medium, large. The size defaults to large.
  * @property {number} height The image height in pixels. The height is only used for image positions top, bottom, background and overlay. The height overrides the size value.
