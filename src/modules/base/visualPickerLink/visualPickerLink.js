@@ -36,7 +36,6 @@ import { classSet } from 'c/utils';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 
-const DEFAULT_DISABLED = false;
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 /**
@@ -69,7 +68,7 @@ export default class VisualPickerLink extends LightningElement {
      */
     @api title;
 
-    _disabled = DEFAULT_DISABLED;
+    _disabled = false;
 
     _completed = false;
 
