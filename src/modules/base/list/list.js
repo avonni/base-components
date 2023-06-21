@@ -1546,9 +1546,11 @@ export default class List extends LightningElement {
      * Make sure all used properties are set before they are used in items.
      */
     setItemProperties() {
-        this.listHasImages = this.items.some((item) => item.imageSrc);
+        this.listHasImages = this.items.some(
+            (item) => item.imageSrc || this.imageAttributes.fallbackSrc
+        );
         this.computedItems = this.items.map((item, index) => {
-            const imageSrc = item.imageSrc || this._imageAttributes.fallbackSrc;
+            const imageSrc = item.imageSrc || this.imageAttributes.fallbackSrc;
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
             let usedImagePosition = this.imageAttributes.position;
@@ -2081,13 +2083,11 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleItemImageError(event) {
-        if (
-            !this._imageAttributes.fallbackSrc ||
-            event.target.src === this._imageAttributes.fallbackSrc
-        )
+        const fallbackSrc = this.imageAttributes.fallbackSrc;
+        if (!event.target || !fallbackSrc || event.target?.src === fallbackSrc)
             return;
         event.target.onerror = null;
-        event.target.src = this._imageAttributes.fallbackSrc;
+        event.target.src = fallbackSrc;
     }
 
     handleItemMouseUp(event) {
