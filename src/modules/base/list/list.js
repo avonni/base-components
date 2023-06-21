@@ -174,6 +174,7 @@ export default class List extends LightningElement {
     _cardRendersBeforeScrollUpdate = 0;
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
+    _isFallbackLoadedMap = {};
     _initialY;
     _itemElements;
     _menuTop;
@@ -411,6 +412,7 @@ export default class List extends LightningElement {
         const normalizedImgAttributes = normalizeObject(value);
 
         this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
+        this._isFallbackLoadedMap = {};
 
         this._imageAttributes.width = !isNaN(normalizedImgAttributes.width)
             ? normalizedImgAttributes.width
@@ -2083,11 +2085,25 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     handleItemImageError(event) {
+        const itemIndex = event.target?.dataset.itemIndex;
         const fallbackSrc = this.imageAttributes.fallbackSrc;
-        if (!event.target || !fallbackSrc || event.target?.src === fallbackSrc)
+
+        // _isFallbackLoadedMap is a fix to avoid infinite image error loop.
+        // Happens when the loaded img fallbackSrc is not equal to the original fallbackSrc.
+        // It remembers wich item image has already loaded the fallbackSrc so it doesnt loop.
+        if (
+            !event.target ||
+            !fallbackSrc ||
+            event.target?.src === fallbackSrc ||
+            itemIndex < 0 ||
+            this._isFallbackLoadedMap[itemIndex]
+        ) {
             return;
+        }
+
         event.target.onerror = null;
         event.target.src = fallbackSrc;
+        this._isFallbackLoadedMap[itemIndex] = true;
     }
 
     handleItemMouseUp(event) {
