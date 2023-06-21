@@ -24,6 +24,7 @@
 .avonni-carousel__actions {
     display: flex;
     width: 100%;
+    align-items: center;
 }
 
 .avonni-carousel__panel-action {
@@ -61,4 +62,9 @@
     font-size: var(--avonni-carousel-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-carousel-item-description-font-style, normal);
     font-weight: var(--avonni-carousel-item-description-font-weight, 400);
+}
+
+.avonni-carousel__actions_full-width {
+    width: 100%;
+    height: 100%;
 }

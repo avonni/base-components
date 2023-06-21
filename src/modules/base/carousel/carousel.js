@@ -61,7 +61,7 @@ const ACTIONS_POSITIONS = {
     default: 'bottom-center'
 };
 const ACTIONS_VARIANTS = {
-    valid: ['bare', 'border', 'menu'],
+    valid: ['bare', 'border', 'menu', 'stretch'],
     default: 'border'
 };
 

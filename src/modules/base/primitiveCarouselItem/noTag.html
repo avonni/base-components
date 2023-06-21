@@ -45,36 +45,41 @@
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
                         <div
-                            class="slds-show_small"
+                            class={computedButtonsContainerClass}
                             data-element-id="button-bare-border"
                         >
                             <template for:each={actions} for:item="action">
-                                <lightning-button
+                                <div
                                     if:true={action.label}
-                                    class="
-                                        slds-m-horizontal_xx-small
-                                        avonni-carousel__button
-                                    "
                                     key={action.name}
-                                    icon-name={action.iconName}
-                                    label={action.label}
-                                    name={action.name}
-                                    disabled={action.disabled}
-                                    variant={computedActionsVariantButton}
-                                    data-element-id="lightning-button-actions"
-                                    onclick={handleActionClick}
-                                ></lightning-button>
-                                <lightning-button-icon
+                                    class={computedButtonActionClass}
+                                >
+                                    <lightning-button
+                                        disabled={action.disabled}
+                                        icon-name={action.iconName}
+                                        label={action.label}
+                                        name={action.name}
+                                        stretch={isStretchVariant}
+                                        variant={computedActionsVariantButton}
+                                        data-element-id="lightning-button-actions"
+                                        onclick={handleActionClick}
+                                    ></lightning-button>
+                                </div>
+                                <div
                                     if:false={action.label}
-                                    class={computedButtonIconActionClass}
                                     key={action.name}
-                                    icon-name={action.iconName}
-                                    name={action.name}
-                                    disabled={action.disabled}
-                                    variant={computedActionsVariantButtonIcon}
-                                    data-element-id="lightning-button-icon-actions"
-                                    onclick={handleActionClick}
-                                ></lightning-button-icon>
+                                    class={computedButtonIconActionClass}
+                                >
+                                    <lightning-button-icon
+                                        if:false={action.label}
+                                        icon-name={action.iconName}
+                                        name={action.name}
+                                        disabled={action.disabled}
+                                        variant={computedActionsVariantButtonIcon}
+                                        data-element-id="lightning-button-icon-actions"
+                                        onclick={handleActionClick}
+                                    ></lightning-button-icon>
+                                </div>
                             </template>
                         </div>
                     </template>
@@ -138,36 +143,41 @@
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
                         <div
-                            class="slds-show_small"
+                            class={computedButtonsContainerClass}
                             data-element-id="button-bare-border"
                         >
                             <template for:each={actions} for:item="action">
-                                <lightning-button
+                                <div
                                     if:true={action.label}
-                                    class="
-                                        slds-m-horizontal_xx-small
-                                        avonni-carousel__button
-                                    "
                                     key={action.name}
-                                    icon-name={action.iconName}
-                                    label={action.label}
-                                    name={action.name}
-                                    disabled={action.disabled}
-                                    variant={computedActionsVariantButton}
-                                    data-element-id="lightning-button-actions"
-                                    onclick={handleActionClick}
-                                ></lightning-button>
-                                <lightning-button-icon
+                                    class={computedButtonActionClass}
+                                >
+                                    <lightning-button
+                                        disabled={action.disabled}
+                                        icon-name={action.iconName}
+                                        label={action.label}
+                                        name={action.name}
+                                        stretch={isStretchVariant}
+                                        variant={computedActionsVariantButton}
+                                        data-element-id="lightning-button-actions"
+                                        onclick={handleActionClick}
+                                    ></lightning-button>
+                                </div>
+                                <div
                                     if:false={action.label}
-                                    class={computedButtonIconActionClass}
                                     key={action.name}
-                                    icon-name={action.iconName}
-                                    name={action.name}
-                                    disabled={action.disabled}
-                                    variant={computedActionsVariantButtonIcon}
-                                    data-element-id="lightning-button-icon-actions"
-                                    onclick={handleActionClick}
-                                ></lightning-button-icon>
+                                    class={computedButtonIconActionClass}
+                                >
+                                    <lightning-button-icon
+                                        if:false={action.label}
+                                        icon-name={action.iconName}
+                                        name={action.name}
+                                        disabled={action.disabled}
+                                        variant={computedActionsVariantButtonIcon}
+                                        data-element-id="lightning-button-icon-actions"
+                                        onclick={handleActionClick}
+                                    ></lightning-button-icon>
+                                </div>
                             </template>
                         </div>
                     </template>
