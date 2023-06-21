@@ -74,6 +74,7 @@ const MAGNIFIER_POSITIONS = {
     valid: ['auto', 'left', 'right', 'top', 'bottom'],
     default: 'auto'
 };
+const DEFAULT_ZOOM_RATIO = '100px';
 const DEFAULT_ZOOM_FACTOR = 2;
 
 /**
@@ -101,8 +102,8 @@ export default class Image extends LightningElement {
         verticalOffset: 0,
         smoothMove: false,
         zoomFactor: DEFAULT_ZOOM_FACTOR,
-        zoomRatioWidth: '100px',
-        zoomRatioHeight: '100px'
+        zoomRatioWidth: DEFAULT_ZOOM_RATIO,
+        zoomRatioHeight: DEFAULT_ZOOM_RATIO
     };
     _position = POSITIONS.default;
     _sizes;
@@ -347,11 +348,9 @@ export default class Image extends LightningElement {
             this._magnifierAttributes.verticalOffset = 0;
         }
 
-        if (normalizedAttributes.smoothMove) {
-            this._magnifierAttributes.smoothMove = normalizeBoolean(
-                normalizedAttributes.smoothMove
-            );
-        }
+        this._magnifierAttributes.smoothMove = normalizedAttributes.smoothMove
+            ? normalizeBoolean(normalizedAttributes.smoothMove)
+            : false;
 
         if (
             normalizedAttributes.zoomFactor &&
@@ -359,6 +358,8 @@ export default class Image extends LightningElement {
         ) {
             this._magnifierAttributes.zoomFactor =
                 normalizedAttributes.zoomFactor;
+        } else {
+            this._magnifierAttributes.zoomFactor = DEFAULT_ZOOM_FACTOR;
         }
 
         if (
@@ -373,6 +374,8 @@ export default class Image extends LightningElement {
         ) {
             this._magnifierAttributes.zoomRatioWidth =
                 normalizedAttributes.zoomRatioWidth;
+        } else {
+            this._magnifierAttributes.zoomRatioWidth = DEFAULT_ZOOM_RATIO;
         }
 
         if (
@@ -387,6 +390,8 @@ export default class Image extends LightningElement {
         ) {
             this._magnifierAttributes.zoomRatioHeight =
                 normalizedAttributes.zoomRatioHeight;
+        } else {
+            this._magnifierAttributes.zoomRatioHeight = DEFAULT_ZOOM_RATIO;
         }
 
         this._magnifierAttributes = { ...this._magnifierAttributes };
