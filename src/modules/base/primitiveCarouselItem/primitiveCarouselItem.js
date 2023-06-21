@@ -166,7 +166,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 'slds-is-absolute': !this.isBottomPosition
             })
             .add({
-                'avonni-carousel__actions_full-width': this.isStretchVariant,
+                'avonni-carousel__actions_stretch': this.isStretchVariant,
                 'avonni-carousel__actions': !this.isStretchVariant
             })
             .toString();
@@ -188,6 +188,17 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     get computedActionsVariantButton() {
         return this._actionsVariant === 'bare' ? 'base' : 'neutral';
+    }
+
+    get computedButtonClass() {
+        return classSet('')
+            .add({
+                'avonni-carousel__actions_bare':
+                    this._actionsVariant === 'bare',
+                'avonni-carousel__actions_neutral':
+                    this._actionsVariant === 'border' || this.isStretchVariant
+            })
+            .toString();
     }
 
     /**
