@@ -43,7 +43,8 @@ export const VisualPickerLinkWithSlot = ({
     href,
     iconPosition,
     completed,
-    infoOnly
+    infoOnly,
+    disabled
 }) => {
     const element = document.createElement(
         'ac-base-visual-picker-link-with-slot'
@@ -54,5 +55,6 @@ export const VisualPickerLinkWithSlot = ({
     element.iconPosition = iconPosition;
     element.completed = completed;
     element.infoOnly = infoOnly;
+    element.disabled = disabled;
     return element;
 };

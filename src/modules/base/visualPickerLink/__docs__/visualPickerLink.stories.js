@@ -99,12 +99,25 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        disabled: {
+            name: 'disabled',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'The tile is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
         completed: false,
         iconPosition: 'left',
-        infoOnly: false
+        infoOnly: false,
+        disabled: false
     }
 };
 
@@ -149,6 +162,13 @@ InfoOnly.args = {
     title: 'Share the knowledge',
     iconName: 'utility:knowledge_base',
     infoOnly: true
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    title: 'Share the knowledge',
+    iconName: 'utility:knowledge_base',
+    disabled: true
 };
 
 export const WithSlots = TemplateWithSlots.bind({});
