@@ -55,18 +55,22 @@
     border-width: var(--avonni-image-magnifier-sizing-border, 1px);
     border-style: var(--avonni-image-magnifier-styling-border, solid);
     border-color: var(--avonni-image-magnifier-color-border, #ccc);
-    pointer-events: none;
+    border-radius: var(--avonni-image-magnifier-radius-border, 0);
     display: none;
 }
 
 .avonni-image_magnifier-lens {
     display: none;
-    background-image: url('/assets/images/magnified-zone.gif');
-    pointer-events: none;
+    background-color: #739fe1;
+    opacity: 0.4;
 }
 
 .avonni-image_container {
     position: relative;
     width: fit-content;
     border-radius: var(--avonni-image-radius-border, 0);
+}
+
+.avonni-image_pointer-events-none {
+    pointer-events: none;
 }
