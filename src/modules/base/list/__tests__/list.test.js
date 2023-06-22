@@ -71,7 +71,7 @@ describe('List', () => {
         expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
         expect(element.fieldAttributes).toEqual({
-            cols: null,
+            cols: 12,
             largeContainerCols: 4,
             mediumContainerCols: 6,
             smallContainerCols: 12,
