@@ -103,7 +103,7 @@ export default class KanbanGroup {
 
         this._tiles.forEach((tile) => {
             const toSummarize = tile.field.find(
-                (field) => field.label === this._summarizeFieldName
+                (field) => field.fieldName === this._summarizeFieldName
             );
             if (toSummarize && typeof toSummarize.value === 'number') {
                 this._summarize.type = toSummarize.type;

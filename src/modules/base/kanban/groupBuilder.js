@@ -89,6 +89,7 @@ export default class KanbanGroupsBuilder {
                     if (JSON.stringify(record[field.fieldName])) {
                         tile.addField({
                             label: field.label,
+                            fieldName: field.fieldName,
                             value: record[field.fieldName],
                             type: field.type,
                             typeAttributes: field.typeAttributes
