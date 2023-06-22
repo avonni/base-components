@@ -35,7 +35,7 @@
 }
 
 .avonni-pagination__navigation-button {
-    border-width: var(--avonni-pagination-button-sizing-border, 12px);
+    border-width: var(--avonni-pagination-button-sizing-border, 1px);
     border-style: var(--avonni-pagination-button-styling-border, solid);
 }
 
