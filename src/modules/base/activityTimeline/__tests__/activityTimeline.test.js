@@ -74,7 +74,7 @@ describe('Activity Timeline', () => {
         expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
         expect(element.groupBy).toBeUndefined();
         expect(element.fieldAttributes).toEqual({
-            cols: null,
+            cols: 12,
             largeContainerCols: 4,
             mediumContainerCols: 6,
             smallContainerCols: 12,

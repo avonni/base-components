@@ -43,7 +43,8 @@ export const VisualPickerLink = ({
     href,
     iconPosition,
     completed,
-    infoOnly
+    infoOnly,
+    disabled
 }) => {
     const element = document.createElement('ac-base-visual-picker-link');
     element.iconName = iconName;
@@ -52,5 +53,6 @@ export const VisualPickerLink = ({
     element.iconPosition = iconPosition;
     element.completed = completed;
     element.infoOnly = infoOnly;
+    element.disabled = disabled;
     return element;
 };

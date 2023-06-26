@@ -64,7 +64,7 @@ const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_FIELD_COLUMNS = {
-    horizontal: 12,
+    default: 12,
     small: 12,
     medium: 6,
     large: 4
@@ -167,7 +167,7 @@ export default class ActivityTimeline extends LightningElement {
     _closed = false;
     _collapsible = false;
     _fieldAttributes = {
-        cols: null,
+        cols: DEFAULT_FIELD_COLUMNS.default,
         largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
         mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
         smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
@@ -374,27 +374,25 @@ export default class ActivityTimeline extends LightningElement {
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
 
-        this._fieldAttributes.cols = this.normalizeColumns(
-            normalizedFieldAttributes.cols
+        const small = this.normalizeColumns(
+            normalizedFieldAttributes.smallContainerCols
         );
-        this._fieldAttributes.largeContainerCols =
-            this.normalizeColumns(
-                normalizedFieldAttributes.largeContainerCols
-            ) ||
-            this._fieldAttributes.cols ||
-            DEFAULT_FIELD_COLUMNS.large;
-        this._fieldAttributes.mediumContainerCols =
-            this.normalizeColumns(
-                normalizedFieldAttributes.mediumContainerCols
-            ) ||
-            this._fieldAttributes.cols ||
-            DEFAULT_FIELD_COLUMNS.medium;
+        const medium = this.normalizeColumns(
+            normalizedFieldAttributes.mediumContainerCols
+        );
+        const large = this.normalizeColumns(
+            normalizedFieldAttributes.largeContainerCols
+        );
+        const defaults = this.normalizeColumns(normalizedFieldAttributes.cols);
+
+        // Keep same logic as in layoutItem.
+        this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
         this._fieldAttributes.smallContainerCols =
-            this.normalizeColumns(
-                normalizedFieldAttributes.smallContainerCols
-            ) ||
-            this._fieldAttributes.cols ||
-            DEFAULT_FIELD_COLUMNS.small;
+            small || defaults || DEFAULT_FIELD_COLUMNS.small;
+        this._fieldAttributes.mediumContainerCols =
+            medium || small || defaults || DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.largeContainerCols =
+            large || medium || small || defaults || DEFAULT_FIELD_COLUMNS.large;
 
         this._fieldAttributes.variant = normalizeString(
             normalizedFieldAttributes.variant,
@@ -679,15 +677,6 @@ export default class ActivityTimeline extends LightningElement {
      */
     get hasHeader() {
         return this.title || this.iconName;
-    }
-
-    /**
-     * Compute the number of columns by field for the horizontal timeline.
-     *
-     * @type {number}
-     */
-    get horizontalFieldsCols() {
-        return this.fieldAttributes.cols || DEFAULT_FIELD_COLUMNS.horizontal;
     }
 
     /**

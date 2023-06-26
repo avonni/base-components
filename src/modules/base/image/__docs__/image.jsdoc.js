@@ -26,3 +26,9 @@
  * @default #ccc
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-magnifier-radius-border
+ * @default 0
+ * @type dimension
+ */

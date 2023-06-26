@@ -150,7 +150,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedActionsContainerClass() {
-        return classSet('avonni-carousel__actions')
+        return classSet('')
             .add({
                 'avonni-carousel__actions-bottom-center':
                     this._actionsPosition === 'bottom-center',
