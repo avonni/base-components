@@ -224,6 +224,9 @@ export default class List extends LightningElement {
         } else {
             this._cardRendersBeforeScrollUpdate = cards.length;
         }
+
+        // Reset loaded fallback map.
+        this._isFallbackLoadedMap = {};
     }
 
     connectedCallback() {
@@ -411,7 +414,6 @@ export default class List extends LightningElement {
         const normalizedImgAttributes = normalizeObject(value);
 
         this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
-        this._isFallbackLoadedMap = {};
 
         this._imageAttributes.width = !isNaN(normalizedImgAttributes.width)
             ? normalizedImgAttributes.width
