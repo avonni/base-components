@@ -79,3 +79,38 @@
         --avonni-activity-timeline-icon-color-foreground-default
     );
 }
+
+.avonni-activity-timeline__horizontal-fields-container {
+    background-color: var(
+        --avonni-activity-timeline-item-fields-color-background
+    );
+    border-radius: var(
+        --avonni-activity-timeline-item-fields-radius-border,
+        0.25rem
+    );
+    border-width: var(
+        --avonni-activity-timeline-item-fields-sizing-border,
+        1px
+    );
+    border-style: var(--avonni-activity-timeline-item-fields-styling-border);
+    border-color: var(
+        --avonni-activity-timeline-item-fields-color-border,
+        #e5e5e5
+    );
+    padding-right: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-left: var(
+        --avonni-activity-timeline-item-fields-spacing-inline,
+        1rem
+    );
+    padding-bottom: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        0.75rem
+    );
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-activity-timeline-item-fields-spacing-block,
+        0.75rem
+    );
+}

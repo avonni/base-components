@@ -43,6 +43,7 @@ export const InfiniteGrid = ({
     cols,
     divider,
     enableInfiniteLoading,
+    fieldAttributes,
     imageAttributes,
     isLoading,
     items,
@@ -56,6 +57,8 @@ export const InfiniteGrid = ({
     sortableIconName,
     sortableIconPosition,
     variant,
+    visibleActions,
+    visibleMediaActions
 }) => {
     const element = document.createElement('ac-base-infinite-grid');
     element.actions = actions;
@@ -63,6 +66,7 @@ export const InfiniteGrid = ({
     element.cols = cols;
     element.divider = divider;
     element.enableInfiniteLoading = enableInfiniteLoading;
+    element.fieldAttributes = fieldAttributes;
     element.imageAttributes = imageAttributes;
     element.isLoading = isLoading;
     element.items = items;
@@ -76,5 +80,7 @@ export const InfiniteGrid = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.variant = variant;
+    element.visibleActions = visibleActions;
+    element.visibleMediaActions = visibleMediaActions;
     return element;
 };

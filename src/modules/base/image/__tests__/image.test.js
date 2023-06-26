@@ -875,6 +875,7 @@ describe('Image', () => {
     // magnifier
     it('Image: Magnifier attributes', () => {
         element.src = src;
+        element.magnifierType = 'standard';
         const attributes = {
             position: 'top',
             horizontalOffset: '10',
@@ -887,12 +888,16 @@ describe('Image', () => {
         element.magnifierAttributes = attributes;
 
         return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             const magnifier = element.shadowRoot.querySelector(
                 '[data-element-id="magnifier"]'
             );
             const magnifiedImage = element.shadowRoot.querySelector(
                 '[data-element-id="magnified-img"]'
             );
+            img.dispatchEvent(new MouseEvent('mousemove'));
             expect(magnifier.style.width).toBe('150px');
             expect(magnifier.style.height).toBe('150px');
             expect(magnifiedImage.style.transition).toBe(
@@ -903,6 +908,7 @@ describe('Image', () => {
 
     it('Image: Magnifier attributes - incorrect', () => {
         element.src = src;
+        element.magnifierType = 'standard';
         const attributes = {
             position: 'top',
             horizontalOffset: '10px',
@@ -915,9 +921,13 @@ describe('Image', () => {
         element.magnifierAttributes = attributes;
 
         return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             const magnifier = element.shadowRoot.querySelector(
                 '[data-element-id="magnifier"]'
             );
+            img.dispatchEvent(new MouseEvent('mousemove'));
             expect(magnifier.style.width).toBe('150px');
             expect(magnifier.style.height).toBe('150px');
             expect(element.magnifierAttributes.horizontalOffset).toBe(0);

@@ -73,6 +73,13 @@ describe('Activity Timeline', () => {
         expect(element.collapsible).toBeFalsy();
         expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
         expect(element.groupBy).toBeUndefined();
+        expect(element.fieldAttributes).toEqual({
+            cols: 12,
+            largeContainerCols: 4,
+            mediumContainerCols: 6,
+            smallContainerCols: 12,
+            variant: null
+        });
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
         expect(element.hideItemDate).toBeFalsy();
@@ -131,6 +138,18 @@ describe('Activity Timeline', () => {
                 'c-expandable-section'
             );
             expect(expandableSection.collapsible).toBeTruthy();
+        });
+    });
+
+    // fieldAttributes
+    it('Activity Timeline: Field Attributes, cols', () => {
+        element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
+
+        return Promise.resolve().then(() => {
+            expect(element.fieldAttributes.cols).toBe(12);
+            expect(element.fieldAttributes.largeContainerCols).toBe(4);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(12);
+            expect(element.fieldAttributes.smallContainerCols).toBe(12);
         });
     });
 

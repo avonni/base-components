@@ -11,6 +11,7 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     @api fieldLevelHelp;
     @api groups;
     @api hideClearIcon;
+    @api hideOptionsUntilSearch;
     @api hideSelectedOptions;
     @api isMultiSelect;
     @api label;

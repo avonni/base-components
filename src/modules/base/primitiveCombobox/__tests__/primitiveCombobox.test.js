@@ -79,6 +79,7 @@ describe('Primitive Combobox', () => {
         expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([{ name: 'ungrouped' }]);
+        expect(element.hideOptionsUntilSearch).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -620,6 +621,47 @@ describe('Primitive Combobox', () => {
                 expect(group.groups).toHaveLength(0);
             });
         });
+    });
+
+    // hide-options-until-search
+    // Depends on allow-search
+    it('Primitive combobox: hideOptionsUntilSearch = true', () => {
+        element.allowSearch = true;
+        element.hideOptionsUntilSearch = true;
+        element.options = options;
+
+        const dropdownTrigger = element.shadowRoot.querySelector(
+            '[data-element-id="div-dropdown-trigger"]'
+        );
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+
+        dropdownTrigger.click();
+
+        return Promise.resolve()
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeNull();
+                input.value = 'test';
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeTruthy();
+                input.value = '';
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                expect(dropdown).toBeNull();
+            });
     });
 
     // is-loading

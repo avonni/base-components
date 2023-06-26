@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_ICON_POSITION = 'left'
+const DEFAULT_ICON_POSITION = 'left';
 
 export default class VisualPickerLink extends LightningElement {
     @api iconName;
@@ -41,4 +41,5 @@ export default class VisualPickerLink extends LightningElement {
     @api iconPosition = DEFAULT_ICON_POSITION;
     @api completed = false;
     @api infoOnly = false;
+    @api disabled = false;
 }

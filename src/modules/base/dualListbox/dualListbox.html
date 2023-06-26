@@ -75,9 +75,10 @@
                     </div>
                     <div
                         class={computedListboxSourceContainerClass}
-                        style={sourceHeight}
+                        data-element-id="div-source-list"
                         ondragover={handleDragOverSource}
                         ondragleave={handleDragLeaveSource}
+                        onscroll={handleScroll}
                     >
                         <ul
                             id="source-list"
@@ -179,10 +180,9 @@
                                 </template>
                             </template>
                         </ul>
-                        <div if:true={isLoading}>
+                        <div if:true={isLoading} class={loadingSpinnerClass}>
                             <lightning-spinner
                                 size="small"
-                                class="slds-spinner_container"
                                 alternative-text={i18n.loadingText}
                                 data-element-id="lightning-spinner"
                             ></lightning-spinner>
@@ -231,7 +231,7 @@
                     >
                     <div
                         class={computedListboxSelectedContainerClass}
-                        style={selectedHeight}
+                        data-element-id="div-selected-list"
                         ondragover={handleDragOverSelected}
                         ondragleave={handleDragLeaveSelected}
                     >

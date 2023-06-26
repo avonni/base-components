@@ -45,6 +45,7 @@ export const Combobox = ({
     enableInfiniteLoading,
     groups,
     hideClearIcon,
+    hideOptionsUntilSearch,
     hideSelectedOptions,
     isLoading,
     isMultiSelect,
@@ -81,6 +82,7 @@ export const Combobox = ({
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
     element.hideClearIcon = hideClearIcon;
+    element.hideOptionsUntilSearch = hideOptionsUntilSearch;
     element.hideSelectedOptions = hideSelectedOptions;
     element.isLoading = isLoading;
     element.isMultiSelect = isMultiSelect;

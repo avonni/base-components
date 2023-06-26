@@ -1059,6 +1059,7 @@ export default class InputDateRange extends LightningElement {
                 // Don't hide the calendar if the focus was moved to the icon
                 this.showEndDate = false;
             }
+            this.enteredEndCalendar = false;
         });
     }
 

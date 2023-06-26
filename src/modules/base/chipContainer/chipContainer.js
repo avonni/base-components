@@ -39,6 +39,7 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+import { generateUUID } from 'c/inputUtils';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const AUTO_SCROLL_INCREMENT = 5;
@@ -192,7 +193,12 @@ export default class ChipContainer extends LightningElement {
         return this._items;
     }
     set items(value) {
-        this._items = deepCopy(normalizeArray(value));
+        this._items = deepCopy(normalizeArray(value)).map((tag) => {
+            return {
+                ...tag,
+                name: tag.name || generateUUID()
+            };
+        });
         this._itemsWidths = [];
         this.clearDrag();
 
@@ -726,7 +732,9 @@ export default class ChipContainer extends LightningElement {
         const chip = this.template.querySelector(
             `[data-element-id^="avonni-primitive-chip"][data-index="${normalizedIndex}"]`
         );
-        chip.tabIndex = '0';
+        if (chip) {
+            chip.tabIndex = '0';
+        }
         this.focus();
     }
 
@@ -1143,7 +1151,7 @@ export default class ChipContainer extends LightningElement {
                 const previousTopItem = this.template.querySelector(
                     `[data-element-id="li-item-hidden"][data-name="${topItem.name}"]`
                 );
-                popover.scrollTop = previousTopItem.offsetTop + topItem.offset;
+                popover.scrollTop = previousTopItem?.offsetTop + topItem.offset;
 
                 if (this._focusedIndex < topItem.index) {
                     // If the scroll was triggered using the mouse,

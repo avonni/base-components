@@ -1,4 +1,5 @@
 .avonni-activity-timeline__title {
+    display: block;
     font-size: var(--avonni-activity-timeline-title-font-size, 1rem);
     font-weight: var(--avonni-activity-timeline-title-font-weight, 400);
     font-style: var(--avonni-activity-timeline-title-font-style, normal);

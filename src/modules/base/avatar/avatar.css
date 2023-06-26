@@ -67,6 +67,6 @@
 }
 
 .avonni-avatar__tags {
-    margin-right: calc(-1 * var(--lwc-spacingXxSmall, 0.25rem));
-    margin-left: calc(-1 * var(--lwc-spacingXxSmall, 0.25rem));
+    margin-left: -0.5rem;
+    --avonni-chip-container-color-border: transparent;
 }

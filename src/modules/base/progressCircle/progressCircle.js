@@ -420,7 +420,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get progressTitleClass() {
-        return `avonni-progress-circle__title slds-text-align_center slds-truncate avonni-progress-circle__title_size-${this._size}`;
+        return `slds-line-clamp_small slds-text-align_center avonni-progress-circle__title_size-${this._size} avonni-progress-circle__title`;
     }
 
     /**

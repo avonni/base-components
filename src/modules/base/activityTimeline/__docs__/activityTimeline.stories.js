@@ -175,6 +175,15 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        fieldAttributes: {
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item fields.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         groupBy: {
             name: 'group-by',
             control: {

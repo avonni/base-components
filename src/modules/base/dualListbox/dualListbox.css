@@ -187,3 +187,7 @@
     font-style: var(--avonni-dual-listbox-boxes-label-font-style, normal);
     font-weight: var(--avonni-dual-listbox-boxes-label-font-weight, 400);
 }
+
+.avonni-dual-listbox__loading-spinner {
+    height: 48px;
+}
