@@ -94,7 +94,7 @@ describe('Primitive Carousel Item', () => {
     });
 
     describe('Attributes', () => {
-        it('Primitive Carousel Item: Default attributes', () => {
+        it('Default attributes', () => {
             expect(element.title).toBeUndefined();
             expect(element.description).toBeUndefined();
             expect(element.infos).toBeUndefined();
@@ -131,7 +131,7 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it.skip('Bare with label', () => {
+            it('Bare with label', () => {
                 element.actions = menuActions;
                 element.actionsVariant = 'bare';
 
@@ -143,7 +143,7 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it.skip('Border with label', () => {
+            it('Border with label', () => {
                 element.actions = menuActions;
                 element.actionsVariant = 'border';
 
@@ -168,7 +168,7 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it.skip('HTML with tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
+            it('HTML with tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
                 element.href = 'example.com';
                 element.actions = menuActions;
                 element.actionsPosition = 'top-center';
@@ -188,7 +188,7 @@ describe('Primitive Carousel Item', () => {
                         element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-menu"'
                         );
-                    expect(button.className).toBe('slds-show_small slds-grid');
+                    expect(button.className).toBe('slds-show_small');
                     expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
                     expect(
@@ -197,7 +197,7 @@ describe('Primitive Carousel Item', () => {
                 });
             });
 
-            it.skip('HTML with no tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
+            it('HTML with no tag should have buttons and button menus with class slds-show_small and slds-hide_small', () => {
                 element.href = null;
                 element.actions = menuActions;
                 element.actionsPosition = 'top-center';
@@ -217,7 +217,7 @@ describe('Primitive Carousel Item', () => {
                         element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-menu"'
                         );
-                    expect(button.className).toBe('slds-show_small slds-grid');
+                    expect(button.className).toBe('slds-show_small');
                     expect(buttonMenu.className).toBe('slds-hide_small');
                     expect(button.contains(lightningButton)).toBeTruthy();
                     expect(
@@ -365,8 +365,7 @@ describe('Primitive Carousel Item', () => {
     });
 
     describe('Events', () => {
-        // Itemclick
-        it('Primitive Carousel Item: item click', () => {
+        it('Item click', () => {
             const handler = jest.fn();
             element.addEventListener('itemclick', handler);
             element.title = 'Visit App Exchange';
@@ -394,8 +393,7 @@ describe('Primitive Carousel Item', () => {
             });
         });
 
-        // Actionclick
-        it('Primitive Carousel Item: actionclick', () => {
+        it('Actionclick', () => {
             element.title = 'Visit App Exchange';
             element.description =
                 'Extend Salesforce with the #1 business marketplace.';
@@ -425,8 +423,7 @@ describe('Primitive Carousel Item', () => {
             });
         });
 
-        // Actionclick on menu
-        it('Primitive Carousel Item: menu actionclick', () => {
+        it('Menu Actionclick', () => {
             element.title = 'Visit App Exchange';
             element.description =
                 'Extend Salesforce with the #1 business marketplace.';
@@ -456,8 +453,7 @@ describe('Primitive Carousel Item', () => {
             });
         });
 
-        // PreventDefault on menu
-        it('Primitive Carousel Item: menu preventDefault', () => {
+        it('Menu PreventDefault', () => {
             element.title = 'Visit App Exchange';
             element.description =
                 'Extend Salesforce with the #1 business marketplace.';

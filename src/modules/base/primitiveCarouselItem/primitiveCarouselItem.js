@@ -150,16 +150,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedActionsContainerClass() {
-        return classSet('')
+        return classSet('avonni-carousel__actions')
             .add({
                 'avonni-carousel__actions-bottom-center':
                     this._actionsPosition === 'bottom-center',
                 'avonni-carousel__actions-right':
-                    this._actionsPosition === 'bottom-right' ||
-                    this._actionsPosition === 'top-right',
+                    this._actionsPosition.includes('right'),
                 'avonni-carousel__actions-left':
-                    this._actionsPosition === 'bottom-left' ||
-                    this._actionsPosition === 'top-left'
+                    this._actionsPosition.includes('left')
             })
             .add({
                 'slds-p-around_small': !this.isBottomPosition,
@@ -212,9 +210,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedButtonsContainerClass() {
-        return !this.isStretchVariant
-            ? 'slds-show_small slds-grid'
-            : 'slds-show_small';
+        return !this.isStretchVariant ? 'slds-show_small' : 'slds-show_small';
     }
 
     /**
@@ -225,18 +221,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get computedButtonIconActionClass() {
         return classSet('')
             .add({
-                'slds-m-horizontal_xx-small avonni-carousel__actions':
+                'avonni-carousel-item__float':
                     this._actionsVariant === 'border' ||
                     this._actionsVariant === 'bare',
-                'slds-m-around_xx-small slds-grid': this.isStretchVariant,
-                'avonni-carousel__actions-right':
-                    this._actionsPosition === 'bottom-right' ||
-                    this._actionsPosition === 'top-right',
-                'avonni-carousel__actions-left':
-                    this._actionsPosition === 'bottom-left' ||
-                    this._actionsPosition === 'top-left',
-                'avonni-carousel__actions-bottom-center':
-                    this._actionsPosition === 'bottom-center'
+                'slds-p-around_xx-small slds-grid': this.isStretchVariant
             })
             .toString();
     }
@@ -249,10 +237,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get computedButtonActionClass() {
         return classSet('')
             .add({
-                'slds-m-horizontal_xx-small avonni-carousel__actions':
+                'avonni-carousel-item__float':
                     this._actionsVariant === 'border' ||
                     this._actionsVariant === 'bare',
-                'slds-m-around_xx-small': this.isStretchVariant
+                'slds-p-around_xx-small': this.isStretchVariant
             })
             .toString();
     }
