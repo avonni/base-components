@@ -189,6 +189,8 @@ export default class Image extends LightningElement {
         this._compareAttributes.showLabelsOnHover = normalizeBoolean(
             normalizedAttributes.showLabelsOnHover
         );
+
+        this._compareAttributes = { ...this._compareAttributes };
     }
 
     /**
@@ -598,6 +600,12 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    get computedCompareImgContainerStyle() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'width: 50%; height: 100%;'
+            : 'width: 100%; height: 50%;';
+    }
+
     /**
      * The compare slider first icon (left or up).
      *
@@ -744,6 +752,12 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    get computedSliderHandleStyle() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'flex-direction: row;'
+            : 'flex-direction: column;';
+    }
+
     /**
      * Final Computed Image Style.
      *
@@ -882,16 +896,10 @@ export default class Image extends LightningElement {
         const compareImg = this.template.querySelector(
             '[data-element-id="compare-img-container"]'
         );
-        const handle = this.template.querySelector(
-            '[data-element-id="compare-slider-handle"]'
-        );
         if (this.compareAttributes.orientation === 'horizontal') {
             compareImg.style.width = `${img.width / 2}px`;
-            compareImg.style.height = '100%';
         } else {
             compareImg.style.height = `${img.height / 2}px`;
-            compareImg.style.width = '100%';
-            handle.style.flexDirection = 'column';
         }
     }
 

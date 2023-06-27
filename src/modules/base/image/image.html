@@ -100,6 +100,7 @@
                     slds-scrollable_none
                 "
                 data-element-id="compare-img-container"
+                style={computedCompareImgContainerStyle}
             >
                 <img
                     src={compareSrc}
@@ -127,6 +128,7 @@
                     aria-pressed="false"
                     tabindex="0"
                     onkeydown={handleCompareKeydown}
+                    style={computedSliderHandleStyle}
                 >
                     <lightning-icon
                         icon-name={compareIconName1}
