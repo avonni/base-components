@@ -965,7 +965,7 @@ export default class Image extends LightningElement {
             slider.style.top = `${posY}px`;
             compareImg.style.height = `${posY}px`;
         }
-        container.style.cursor = 'grab';
+        container.style.cursor = 'grabbing';
     }
 
     /**
@@ -1090,7 +1090,12 @@ export default class Image extends LightningElement {
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
         );
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
         const rect = container.getBoundingClientRect();
+        container.style.cursor = 'grabbing';
+        handle.style.cursor = 'grabbing';
         this._isDraggingCompareCursor = true;
         slider.style.transition = 'all 0.15s ease-in-out';
         compareImg.style.transition = 'all 0.15s ease-in-out';
@@ -1105,6 +1110,8 @@ export default class Image extends LightningElement {
         }
         const handleMouseUp = () => {
             this._isDraggingCompareCursor = false;
+            container.style.cursor = 'default';
+            handle.style.cursor = 'grab';
             window.removeEventListener('mouseup', handleMouseUp);
         };
         window.addEventListener('mouseup', handleMouseUp);
