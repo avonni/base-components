@@ -629,24 +629,38 @@ export default class Image extends LightningElement {
             styleProperties['max-height'] = null;
         }
 
-        if (this._height && !this._width) {
-            styleProperties.width = this._height
-                ? `${
-                      (parseFloat(this._height) / this._imgElementHeight) *
-                      this._imgElementWidth
-                  }px`
-                : this._imgElementWidth;
+        if (
+            this._height &&
+            !this._width &&
+            this.compareAttributes.orientation === 'horizontal'
+        ) {
+            styleProperties.width = `${
+                (parseFloat(this._height) / this._imgElementHeight) *
+                this._imgElementWidth
+            }px`;
+        } else if (
+            this._height &&
+            !this._width &&
+            this.compareAttributes.orientation === 'vertical'
+        ) {
+            styleProperties.width = 'inherit';
         } else if (this._width) {
             styleProperties.width = this._width;
         } else {
             styleProperties.width = `${this._imgElementWidth}px`;
         }
 
-        if (this._height && this._width) {
+        if (
+            (this._height && this._width) ||
+            (this.compareAttributes.orientation === 'vertical' && this._height)
+        ) {
             styleProperties.height = this._height;
+        } else if (this.compareAttributes.orientation === 'horizontal') {
+            styleProperties.height = 'inherit';
         } else {
-            styleProperties.height = 'auto';
+            styleProperties.height = `${this._imgElementHeight}px`;
         }
+
         let styleValue = '';
         if (styleProperties) {
             Object.keys(styleProperties).forEach((key) => {
@@ -863,10 +877,16 @@ export default class Image extends LightningElement {
         return styleValue;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Handle the 'click' type slider.
      */
-    clickSlider(event) {
+    _clickSlider(event) {
         const img = this.template.querySelector('[data-element-id="img"]');
         const container = this.template.querySelector(
             '[data-element-id="compare-container"]'
@@ -912,7 +932,7 @@ export default class Image extends LightningElement {
     /**
      * Slide the compare slider on hover.
      */
-    hoverSlider(event) {
+    _hoverSlider(event) {
         const img = this.template.querySelector('[data-element-id="img"]');
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
@@ -951,7 +971,7 @@ export default class Image extends LightningElement {
     /**
      * Initiate the compare slider.
      */
-    initCompareSlider(img) {
+    _initCompareSlider(img) {
         const compareImg = this.template.querySelector(
             '[data-element-id="compare-img-container"]'
         );
@@ -961,6 +981,12 @@ export default class Image extends LightningElement {
             compareImg.style.height = `${img.height / 2}px`;
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Handle the 'keydown' event on the compare slider handle.
@@ -1092,9 +1118,9 @@ export default class Image extends LightningElement {
             this.compareAttributes.moveOn === 'hover' &&
             event.type !== 'touchmove'
         ) {
-            this.hoverSlider(event);
+            this._hoverSlider(event);
         } else {
-            this.clickSlider(event);
+            this._clickSlider(event);
         }
     }
 
@@ -1113,7 +1139,7 @@ export default class Image extends LightningElement {
             }
             if (this.compareSrc) {
                 requestAnimationFrame(() => {
-                    this.initCompareSlider(img);
+                    this._initCompareSlider(img);
                 });
             }
         }
