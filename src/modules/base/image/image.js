@@ -606,6 +606,59 @@ export default class Image extends LightningElement {
             : 'width: 100%; height: 50%;';
     }
 
+    get computedCompareImgStyle() {
+        const styleProperties = {};
+
+        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties[
+            'object-position'
+        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
+        styleProperties['aspect-ratio'] = this._aspectRatio
+            ? this._aspectRatio
+            : null;
+
+        if (this.staticImages) {
+            styleProperties['min-width'] = this._width ? this._width : null;
+            styleProperties['max-width'] = this._width ? this._width : null;
+            styleProperties['min-height'] = this._height ? this._height : null;
+            styleProperties['max-height'] = this._height ? this._height : null;
+        } else {
+            styleProperties['min-width'] = null;
+            styleProperties['max-width'] = null;
+            styleProperties['min-height'] = null;
+            styleProperties['max-height'] = null;
+        }
+
+        if (this._height && !this._width) {
+            styleProperties.width = this._height
+                ? `${
+                      (parseFloat(this._height) / this._imgElementHeight) *
+                      this._imgElementWidth
+                  }px`
+                : this._imgElementWidth;
+        } else if (this._width) {
+            styleProperties.width = this._width;
+        } else {
+            styleProperties.width = `${this._imgElementWidth}px`;
+        }
+
+        if (this._height && this._width) {
+            styleProperties.height = this._height;
+        } else {
+            styleProperties.height = 'auto';
+        }
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+
+        return styleValue;
+    }
+
     /**
      * The compare slider first icon (left or up).
      *
@@ -756,6 +809,12 @@ export default class Image extends LightningElement {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'flex-direction: row;'
             : 'flex-direction: column;';
+    }
+
+    get computedSliderStyle() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'top: 0;'
+            : 'left: 0;';
     }
 
     /**
