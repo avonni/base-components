@@ -66,6 +66,7 @@ export default class Kanban extends LightningElement {
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
+    _summarizeFieldName;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -180,15 +181,6 @@ export default class Kanban extends LightningElement {
      * @required
      */
     @api keyField;
-
-    /**
-     *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
-     *
-     * @type {string}
-     * @public
-     */
-    @api summarizeFieldName;
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -338,6 +330,24 @@ export default class Kanban extends LightningElement {
     }
     set subGroupFieldName(value) {
         this._subGroupFieldName = value;
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
+
+    /**
+     *
+     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get summarizeFieldName() {
+        return this._summarizeFieldName;
+    }
+    set summarizeFieldName(value) {
+        this._summarizeFieldName = value;
         if (this._connected) {
             this.updateTiles();
         }
@@ -555,7 +565,17 @@ export default class Kanban extends LightningElement {
                         summary.value = this._oldSummarizeValues[group.index];
                     }
 
-                    summary.value += summarizeUpdate / SUMMARY_UPDATE_SPEED;
+                    if (
+                        (summarizeUpdate < 0 &&
+                            summary.value <=
+                                this._summarizeValues[group.index]) ||
+                        (summarizeUpdate > 0 &&
+                            summary.value >= this._summarizeValues[group.index])
+                    ) {
+                        summary.value = this._summarizeValues[group.index];
+                    } else {
+                        summary.value += summarizeUpdate / SUMMARY_UPDATE_SPEED;
+                    }
                 }, 0.5 * j);
             }
         }
