@@ -513,6 +513,9 @@ describe('Image', () => {
                 const compareSlider = element.shadowRoot.querySelector(
                     '[data-element-id="compare-slider"]'
                 );
+                const compareImgContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-img-container"]'
+                );
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
                 expect(compareSlider.classList).toContain(
@@ -520,6 +523,8 @@ describe('Image', () => {
                 );
                 expect(icon1.iconName).toBe('utility:left');
                 expect(icon2.iconName).toBe('utility:right');
+                expect(compareImgContainer.style.width).toBe('50%');
+                expect(compareImgContainer.style.height).toBe('100%');
             });
         });
 
@@ -531,6 +536,9 @@ describe('Image', () => {
                 const compareSlider = element.shadowRoot.querySelector(
                     '[data-element-id="compare-slider"]'
                 );
+                const compareImgContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-img-container"]'
+                );
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
                 expect(compareSlider.classList).toContain(
@@ -538,6 +546,53 @@ describe('Image', () => {
                 );
                 expect(icon1.iconName).toBe('utility:up');
                 expect(icon2.iconName).toBe('utility:down');
+                expect(compareImgContainer.style.width).toBe('100%');
+                expect(compareImgContainer.style.height).toBe('50%');
+            });
+        });
+
+        it('Image: Compare slider - vertical - compare img size with height and static img', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { orientation: 'vertical' };
+            element.height = 300;
+            element.staticImages = true;
+
+            return Promise.resolve().then(() => {
+                const compareImg = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-img"]'
+                );
+                expect(compareImg.style.maxHeight).toBe('300px');
+                expect(compareImg.style.width).toBe('inherit');
+                expect(compareImg.style.height).toBe('300px');
+            });
+        });
+
+        it('Image: Compare slider - vertical - compare img size with height and width', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { orientation: 'vertical' };
+            element.height = 300;
+            element.width = 300;
+
+            return Promise.resolve().then(() => {
+                const compareImg = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-img"]'
+                );
+                expect(compareImg.style.width).toBe('300px');
+                expect(compareImg.style.height).toBe('300px');
+            });
+        });
+
+        it('Image: Compare slider - horizontal - compare img size with width', () => {
+            element.compareSrc = src;
+            element.compareAttributes = { orientation: 'horizontal' };
+            element.width = 300;
+
+            return Promise.resolve().then(() => {
+                const compareImg = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-img"]'
+                );
+                expect(compareImg.style.width).toBe('300px');
+                expect(compareImg.style.height).toBe('inherit');
             });
         });
 
@@ -634,8 +689,8 @@ describe('Image', () => {
                 const compareLabel = element.shadowRoot.querySelector(
                     '[data-element-id="compare-overlay-after"]'
                 );
-                expect(originalLabel.classList).toContain('slds-hide');
-                expect(compareLabel.classList).toContain('slds-hide');
+                expect(originalLabel).toBeNull();
+                expect(compareLabel).toBeNull();
             });
         });
 

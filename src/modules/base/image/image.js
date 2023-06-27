@@ -972,13 +972,13 @@ export default class Image extends LightningElement {
      * Initiate the compare slider.
      */
     _initCompareSlider(img) {
-        const compareImg = this.template.querySelector(
+        const compareImgContainer = this.template.querySelector(
             '[data-element-id="compare-img-container"]'
         );
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareImg.style.width = `${img.width / 2}px`;
+            compareImgContainer.style.width = `${img.width / 2}px`;
         } else {
-            compareImg.style.height = `${img.height / 2}px`;
+            compareImgContainer.style.height = `${img.height / 2}px`;
         }
     }
 
