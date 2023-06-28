@@ -32,6 +32,7 @@
 
 .avonni-kanban__disabled_column_drag .avonni-kanban__group_header {
     pointer-events: none;
+    cursor: default !important;
 }
 
 .avonni-kanban__field_disabled_column_drag .avonni-kanban__summarize_wrapper {
