@@ -43,11 +43,19 @@
             style={computedStyle}
             loading={lazyLoading}
             onload={handleLoadImage}
-            onmousemove={handleMove}
-            ontouchmove={handleMove}
-            onmouseout={handleOut}
-            ontouchend={handleOut}
+            onmousemove={handleMagnifierMove}
+            ontouchstart={handleMagnifierMove}
+            ontouchmove={handleMagnifierMove}
+            onmouseout={handleMagnifierOut}
+            ontouchend={handleMagnifierOut}
         />
+        <div
+            if:true={compareAttributes.compareLabel}
+            class={computedOverlayAfterClass}
+            data-element-id="compare-overlay-after"
+        >
+            {compareAttributes.compareLabel}
+        </div>
         <div
             data-element-id="magnifier-lens"
             class="
@@ -75,6 +83,65 @@
                 style={computedMagnifiedImgStyle}
                 data-element-id="magnified-img"
             />
+        </div>
+        <div
+            if:true={compareSrc}
+            class={computedCompareContainerClass}
+            data-element-id="compare-container"
+            onmousemove={handleCompareMouseMove}
+            ontouchstart={handleCompareMouseDown}
+            ontouchmove={handleCompareMouseMove}
+            onmousedown={handleCompareMouseDown}
+        >
+            <div
+                class="
+                    avonni-image__compare-img-container
+                    slds-is-absolute
+                    slds-scrollable_none
+                "
+                data-element-id="compare-img-container"
+            >
+                <img
+                    src={compareSrc}
+                    class="avonni-image__compare-img"
+                    style={computedStyle}
+                    loading={lazyLoading}
+                />
+                <div
+                    if:true={compareAttributes.originalLabel}
+                    class={computedOverlayBeforeClass}
+                    data-element-id="compare-overlay-before"
+                >
+                    {compareAttributes.originalLabel}
+                </div>
+            </div>
+            <div class={computedSliderClass} data-element-id="compare-slider">
+                <div
+                    class="
+                        avonni-image__compare-slider-handle
+                        slds-is-absolute
+                        slds-align_absolute-center
+                    "
+                    data-element-id="compare-slider-handle"
+                    role="button"
+                    aria-pressed="false"
+                    tabindex="0"
+                    onkeydown={handleCompareKeydown}
+                >
+                    <lightning-icon
+                        icon-name={compareIconName1}
+                        alternative-text="Press left to show the original image"
+                        size="x-small"
+                    >
+                    </lightning-icon>
+                    <lightning-icon
+                        icon-name={compareIconName2}
+                        alternative-text="Press right to show the compared image"
+                        size="x-small"
+                    >
+                    </lightning-icon>
+                </div>
+            </div>
         </div>
     </div>
 </template>

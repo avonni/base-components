@@ -248,6 +248,28 @@ export default {
                 type: { summary: 'object' },
                 category: 'Magnifier'
             }
+        },
+        compareSrc: {
+            name: 'compare-src',
+            control: {
+                type: 'object'
+            },
+            description: 'URL to set for the compare image.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Compare'
+            }
+        },
+        compareAttributes: {
+            name: 'compare-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes of the compare slider.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Compare'
+            }
         }
     },
     args: {
@@ -270,6 +292,13 @@ export default {
             zoomFactor: 2,
             zoomRatioWidth: 100,
             zoomRatioHeight: 100
+        },
+        compareAttributes: {
+            orientation: 'horizontal',
+            moveOn: 'click',
+            originalLabel: '',
+            compareLabel: '',
+            showLabelsOnHover: false
         }
     }
 };
@@ -320,6 +349,18 @@ BaseWithLazyLoading.args = {
     width: '400',
     alternativeText: 'Alternative text',
     lazyLoading: 'lazy'
+};
+
+export const Compare = Template.bind({});
+Compare.args = {
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    alternativeText: 'Alternative text',
+    compareSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+    compareAttributes: {
+        originalLabel: 'Before',
+        compareLabel: 'After'
+    }
 };
 
 export const Thumbnail = Template.bind({});

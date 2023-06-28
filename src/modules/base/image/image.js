@@ -77,6 +77,16 @@ const MAGNIFIER_POSITIONS = {
 const DEFAULT_ZOOM_RATIO = '100px';
 const DEFAULT_ZOOM_FACTOR = 2;
 
+const COMPARE_ORIENTATION = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+
+const MOVE_ON_OPTIONS = {
+    valid: ['hover', 'click'],
+    default: 'click'
+};
+
 /**
  * @class
  * @descriptor avonni-image
@@ -84,7 +94,28 @@ const DEFAULT_ZOOM_FACTOR = 2;
  * @public
  */
 export default class Image extends LightningElement {
+    /**
+     * The value to set for the 'alt' attribute.
+     *
+     * @public
+     * @type  {string}
+     */
+    @api alternativeText;
+
+    /**
+     * The image to compare with.
+     *
+     * @public
+     * @type {string}
+     */
+    @api compareSrc;
+
     _aspectRatio;
+    _compareAttributes = {
+        orientation: COMPARE_ORIENTATION.default,
+        moveOn: MOVE_ON_OPTIONS.default,
+        showLabelsOnHover: false
+    };
     _cropPositionX = CROP_POSITION_X_DEFAULT;
     _cropPositionY = CROP_POSITION_Y_DEFAULT;
     _cropFit = CROP_FIT.default;
@@ -94,6 +125,7 @@ export default class Image extends LightningElement {
     _height;
     _imgElementWidth;
     _imgElementHeight;
+    _isDraggingCompareCursor = false;
     _lazyLoading = LAZY_LOADING_VARIANTS.default;
     _magnifierType = MAGNIFIER_TYPES.default;
     _magnifierAttributes = {
@@ -120,12 +152,44 @@ export default class Image extends LightningElement {
      */
 
     /**
-     * The value to set for the 'alt' attribute.
+     * Specifies the compare slider attributes.
      *
+     * @type {object}
      * @public
-     * @type  {string}
      */
-    @api alternativeText;
+    @api
+    get compareAttributes() {
+        return this._compareAttributes;
+    }
+
+    set compareAttributes(value) {
+        const normalizedAttributes = normalizeObject(value);
+
+        this._compareAttributes.orientation = normalizeString(
+            normalizedAttributes.orientation,
+            {
+                fallbackValue: COMPARE_ORIENTATION.default,
+                validValues: COMPARE_ORIENTATION.valid
+            }
+        );
+
+        this._compareAttributes.moveOn = normalizeString(
+            normalizedAttributes.moveOn,
+            {
+                fallbackValue: MOVE_ON_OPTIONS.default,
+                validValues: MOVE_ON_OPTIONS.valid
+            }
+        );
+
+        this._compareAttributes.originalLabel =
+            normalizedAttributes.originalLabel;
+        this._compareAttributes.compareLabel =
+            normalizedAttributes.compareLabel;
+
+        this._compareAttributes.showLabelsOnHover = normalizeBoolean(
+            normalizedAttributes.showLabelsOnHover
+        );
+    }
 
     /**
      * Position of the image on the X axis (in percent).
@@ -290,25 +354,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Specifies the magnifier type. If a type is selected, a zoom of the hovered area will be displayed. Valid values include standard, inner and follow.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get magnifierType() {
-        return this._magnifierType;
-    }
-
-    set magnifierType(value) {
-        this._magnifierType = normalizeString(value, {
-            fallbackValue: MAGNIFIER_TYPES.default,
-            validValues: MAGNIFIER_TYPES.valid
-        });
-    }
-
-    /**
-     * Magnifier attributes: position, horizontalOffset, verticalOffset, smoothing, zoomFactor, zoomRatioWidth and zoomRatioHeight.
+     * Specifies the magnifier's attributes.
      *
      * @type {object}
      * @public
@@ -395,6 +441,24 @@ export default class Image extends LightningElement {
         }
 
         this._magnifierAttributes = { ...this._magnifierAttributes };
+    }
+
+    /**
+     * Specifies the magnifier type. If a type is selected, a zoom of the hovered area will be displayed. Valid values include standard, inner and follow.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get magnifierType() {
+        return this._magnifierType;
+    }
+
+    set magnifierType(value) {
+        this._magnifierType = normalizeString(value, {
+            fallbackValue: MAGNIFIER_TYPES.default,
+            validValues: MAGNIFIER_TYPES.valid
+        });
     }
 
     /**
@@ -520,7 +584,44 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Computed Image class styling.
+     * Final computed compare container class styling.
+     *
+     * @public
+     * @type {string}
+     */
+    get computedCompareContainerClass() {
+        return classSet('avonni-image__compare-container slds-is-absolute')
+            .add({
+                'avonni-image__container_compare-labels-on-hover':
+                    this.compareAttributes.showLabelsOnHover
+            })
+            .toString();
+    }
+
+    /**
+     * The compare slider first icon (left or up).
+     *
+     * @type {string}
+     */
+    get compareIconName1() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'utility:left'
+            : 'utility:up';
+    }
+
+    /**
+     * The compare slider second icon (right or down).
+     *
+     * @type {string}
+     */
+    get compareIconName2() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'utility:right'
+            : 'utility:down';
+    }
+
+    /**
+     * Final computed Image class styling.
      *
      * @type {string}
      */
@@ -534,7 +635,111 @@ export default class Image extends LightningElement {
                     this._position === 'left' && this._lazyLoading === 'auto',
                 'slds-float_right': this._position === 'right',
                 'slds-align_absolute-center': this._position === 'center',
-                'slds-show': this._position === 'center'
+                'slds-show': this._position === 'center',
+                'avonni-image__container_compare-labels-on-hover':
+                    this.compareAttributes.showLabelsOnHover,
+                'avonni-image__container_user-select_none': this.compareSrc
+            })
+            .toString();
+    }
+
+    /**
+     * Final computed Magnifier Style.
+     *
+     * @type {string}
+     */
+    get computedMagnifierStyle() {
+        const styleProperties = {};
+
+        styleProperties.width = this.magnifierAttributes.zoomRatioWidth;
+        styleProperties.height = this.magnifierAttributes.zoomRatioHeight;
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+        return styleValue;
+    }
+
+    /**
+     * Final Computed Magnifier Image Style.
+     *
+     * @type {string}
+     */
+    get computedMagnifiedImgStyle() {
+        const styleProperties = {};
+
+        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties['aspect-ratio'] = this._aspectRatio
+            ? this._aspectRatio
+            : null;
+        styleProperties[
+            'object-position'
+        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
+
+        if (this.magnifierAttributes.smoothMove) {
+            styleProperties.transition = 'transform 0.15s ease-out';
+        }
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]};`;
+                }
+            });
+        }
+        return styleValue;
+    }
+
+    /**
+     * Final computed 'after' overlay class styling.
+     *
+     * @type {string}
+     */
+    get computedOverlayAfterClass() {
+        return classSet('avonni-image__compare-overlay slds-is-absolute')
+            .add({
+                'avonni-image__compare-overlay-after_horizontal':
+                    this.compareAttributes.orientation === 'horizontal',
+                'avonni-image__compare-overlay-after_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
+    }
+
+    /**
+     * Final computed 'before' overlay class styling.
+     *
+     * @type {string}
+     */
+    get computedOverlayBeforeClass() {
+        return classSet('avonni-image__compare-overlay slds-is-absolute')
+            .add({
+                'avonni-image__compare-overlay-before_horizontal':
+                    this.compareAttributes.orientation === 'horizontal',
+                'avonni-image__compare-overlay-before_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
+    }
+
+    /**
+     * Final computed compare slider class styling.
+     *
+     * @type {string}
+     */
+    get computedSliderClass() {
+        return classSet('avonni-image__compare-slider')
+            .add({
+                'avonni-image__compare-slider_horizontal':
+                    this.compareAttributes.orientation === 'horizontal',
+                'avonni-image__compare-slider_vertical':
+                    this.compareAttributes.orientation === 'vertical'
             })
             .toString();
     }
@@ -586,34 +791,244 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Final Computed Magnifier Image Style.
-     *
-     * @type {string}
+     * Handle the 'click' type slider.
      */
-    get computedMagnifiedImgStyle() {
-        const styleProperties = {};
-
-        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
-        styleProperties['aspect-ratio'] = this._aspectRatio
-            ? this._aspectRatio
-            : null;
-        styleProperties[
-            'object-position'
-        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
-
-        if (this.magnifierAttributes.smoothMove) {
-            styleProperties.transition = 'transform 0.15s ease-out';
+    clickSlider(event) {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const rect = container.getBoundingClientRect();
+        let posX =
+            event.type === 'touchmove'
+                ? event.touches[0].clientX
+                : event.clientX;
+        let posY =
+            event.type === 'touchmove'
+                ? event.touches[0].clientY
+                : event.clientY;
+        posX -= rect.left;
+        posY -= rect.top;
+        slider.style.transition = 'none';
+        compareImg.style.transition = 'none';
+        if (
+            this.compareAttributes.orientation === 'horizontal' &&
+            this._isDraggingCompareCursor &&
+            posX <= img.width &&
+            posX >= 0
+        ) {
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
+        } else if (
+            this.compareAttributes.orientation === 'vertical' &&
+            this._isDraggingCompareCursor &&
+            posY <= img.height &&
+            posY >= 0
+        ) {
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
         }
+    }
 
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
+    /**
+     * Slide the compare slider on hover.
+     */
+    hoverSlider(event) {
+        const img = this.template.querySelector('[data-element-id="img"]');
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        //const pos = getCursorPosition(event);
+        const rect = container.getBoundingClientRect();
+        const posX = event.clientX - rect.left;
+        const posY = event.clientY - rect.top;
+        slider.style.pointerEvents = 'none';
+        slider.style.transition = 'none';
+        compareImg.style.transition = 'none';
+        if (
+            this.compareAttributes.orientation === 'horizontal' &&
+            posX <= img.width &&
+            posX >= 0
+        ) {
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
+        } else if (
+            this.compareAttributes.orientation === 'vertical' &&
+            posY <= img.height &&
+            posY >= 0
+        ) {
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
+        }
+        container.style.cursor = 'grab';
+    }
+
+    /**
+     * Initiate the compare slider.
+     */
+    initCompareSlider(img) {
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
+        if (this.compareAttributes.orientation === 'horizontal') {
+            compareImg.style.width = `${img.width / 2}px`;
+            compareImg.style.height = '100%';
+        } else {
+            compareImg.style.height = `${img.height / 2}px`;
+            compareImg.style.width = '100%';
+            handle.style.flexDirection = 'column';
+        }
+    }
+
+    /**
+     * Handle the 'keydown' event on the compare slider handle.
+     */
+    handleCompareKeydown(event) {
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            const handleMouseDown = () => {
+                this._isDraggingCompareCursor = false;
+                handle.setAttribute(
+                    'aria-pressed',
+                    this._isDraggingCompareCursor
+                );
+                window.removeEventListener('mousedown', handleMouseDown);
+            };
+            window.addEventListener('mousedown', handleMouseDown);
+            this._isDraggingCompareCursor = !this._isDraggingCompareCursor;
+            handle.setAttribute('aria-pressed', this._isDraggingCompareCursor);
+        } else if (this._isDraggingCompareCursor) {
+            event.preventDefault();
+            const img = this.template.querySelector('[data-element-id="img"]');
+            const slider = this.template.querySelector(
+                '[data-element-id="compare-slider"]'
+            );
+            const compareImg = this.template.querySelector(
+                '[data-element-id="compare-img-container"]'
+            );
+            const computedStyle = window.getComputedStyle(slider);
+            let initialPosition;
+            if (this.compareAttributes.orientation === 'horizontal') {
+                initialPosition = computedStyle.getPropertyValue('left');
+            } else {
+                initialPosition = computedStyle.getPropertyValue('top');
+            }
+            const numericValue = parseFloat(initialPosition);
+            slider.style.transition = 'all 0.15s ease-out';
+            compareImg.style.transition = 'all 0.15s ease-out';
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+                if (this.compareAttributes.orientation === 'horizontal') {
+                    if (numericValue > 20) {
+                        slider.style.left = `${numericValue - 20}px`;
+                        compareImg.style.width = `${numericValue - 20}px`;
+                    } else {
+                        slider.style.left = '0';
+                        compareImg.style.width = '0';
+                    }
+                } else {
+                    if (numericValue > 20) {
+                        slider.style.top = `${numericValue - 20}px`;
+                        compareImg.style.height = `${numericValue - 20}px`;
+                    } else {
+                        slider.style.top = '0';
+                        compareImg.style.height = '0';
+                    }
                 }
-            });
+            } else if (
+                event.key === 'ArrowRight' ||
+                event.key === 'ArrowDown'
+            ) {
+                if (this.compareAttributes.orientation === 'horizontal') {
+                    if (numericValue < img.width - 20) {
+                        slider.style.left = `${numericValue + 20}px`;
+                        compareImg.style.width = `${numericValue + 20}px`;
+                    } else {
+                        slider.style.left = `${img.width}px`;
+                        compareImg.style.width = `${img.width}px`;
+                    }
+                } else {
+                    if (numericValue < img.height - 20) {
+                        slider.style.top = `${numericValue + 20}px`;
+                        compareImg.style.height = `${numericValue + 20}px`;
+                    } else {
+                        slider.style.top = `${img.height}px`;
+                        compareImg.style.height = `${img.height}px`;
+                    }
+                }
+            }
         }
-        return styleValue;
+    }
+
+    /**
+     * Slide and grip the compare slider on click.
+     */
+    handleCompareMouseDown(event) {
+        if (
+            (this.compareAttributes.moveOn !== 'click' &&
+                event.type !== 'touchstart') ||
+            (event.button !== 0 && event.type !== 'touchstart')
+        ) {
+            return;
+        }
+        const container = this.template.querySelector(
+            '[data-element-id="compare-container"]'
+        );
+        const compareImg = this.template.querySelector(
+            '[data-element-id="compare-img-container"]'
+        );
+        const slider = this.template.querySelector(
+            '[data-element-id="compare-slider"]'
+        );
+        const rect = container.getBoundingClientRect();
+        this._isDraggingCompareCursor = true;
+        slider.style.transition = 'all 0.15s ease-in-out';
+        compareImg.style.transition = 'all 0.15s ease-in-out';
+        const posX = event.clientX - rect.left;
+        const posY = event.clientY - rect.top;
+        if (this.compareAttributes.orientation === 'horizontal') {
+            slider.style.left = `${posX}px`;
+            compareImg.style.width = `${posX}px`;
+        } else {
+            slider.style.top = `${posY}px`;
+            compareImg.style.height = `${posY}px`;
+        }
+        const handleMouseUp = () => {
+            this._isDraggingCompareCursor = false;
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+        window.addEventListener('mouseup', handleMouseUp);
+    }
+
+    /**
+     * Call the right compare slider type on mouse move.
+     */
+    handleCompareMouseMove(event) {
+        if (
+            this.compareAttributes.moveOn === 'hover' &&
+            event.type !== 'touchmove'
+        ) {
+            this.hoverSlider(event);
+        } else {
+            this.clickSlider(event);
+        }
     }
 
     /**
@@ -626,13 +1041,21 @@ export default class Image extends LightningElement {
         if (img) {
             this._imgElementWidth = img.clientWidth;
             this._imgElementHeight = img.clientHeight;
+            if (this.magnifier) {
+                this.handleMagnifier(img);
+            }
+            if (this.compareSrc) {
+                requestAnimationFrame(() => {
+                    this.initCompareSlider(img);
+                });
+            }
         }
     }
 
     /**
      * Call the right function to handle the magnifier.
      */
-    handleMove(event) {
+    handleMagnifierMove(event) {
         if (!MAGNIFIER_TYPES.valid.includes(this.magnifierType)) {
             return;
         }
@@ -707,7 +1130,7 @@ export default class Image extends LightningElement {
     /**
      * Remove the magnifier when mouse out.
      */
-    handleOut() {
+    handleMagnifierOut() {
         const magnifier = this.template.querySelector(
             '[data-element-id="magnifier"]'
         );

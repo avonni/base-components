@@ -52,7 +52,9 @@ export const ImageList = ({
     thumbnail,
     width,
     magnifierType,
-    magnifierAttributes
+    magnifierAttributes,
+    compareSrc,
+    compareAttributes
 }) => {
     const element = document.createElement('ac-image-list');
     element.alternativeText = alternativeText;
@@ -73,5 +75,7 @@ export const ImageList = ({
     element.width = width;
     element.magnifierType = magnifierType;
     element.magnifierAttributes = magnifierAttributes;
+    element.compareSrc = compareSrc;
+    element.compareAttributes = compareAttributes;
     return element;
 };

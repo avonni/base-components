@@ -1530,7 +1530,7 @@ export default class PrimitiveCombobox extends LightningElement {
     computeSearch(params) {
         const { options, searchTerm } = params;
         return options.filter((option) => {
-            return option.label
+            return String(option.label)
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase());
         });

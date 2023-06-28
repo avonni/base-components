@@ -70,7 +70,6 @@ export default class Layout extends LightningElement {
 
     _items = {};
     _resizeObserver;
-    _width = WIDTHS.default;
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -167,6 +166,24 @@ export default class Layout extends LightningElement {
      */
 
     /**
+     * Compute current width value.
+     */
+    get width() {
+        const width = this.wrapper?.getBoundingClientRect().width || 0;
+        if (width >= 1024) return 'large';
+        if (width >= 768) return 'medium';
+        if (width >= 480) return 'small';
+        return WIDTHS.default;
+    }
+
+    /**
+     * Wrapper element
+     */
+    get wrapper() {
+        return this.template.querySelector('[data-element-id="div-wrapper"]');
+    }
+
+    /**
      * Computed CSS classes for the layout wrapper.
      *
      * @type {string}
@@ -202,25 +219,10 @@ export default class Layout extends LightningElement {
      * Initialize the resize observer, triggered when the layout is resized.
      */
     initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        );
-        if (!wrapper) {
-            return;
-        }
-        this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
-            const width = wrapper.getBoundingClientRect().width;
-            if (width >= 1024) {
-                this._width = 'large';
-            } else if (width >= 768) {
-                this._width = 'medium';
-            } else if (width >= 480) {
-                this._width = 'small';
-            } else {
-                this._width = WIDTHS.default;
-            }
+        if (!this.wrapper) return;
+        this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
             Object.values(this._items).forEach((item) => {
-                item.setContainerSize(this._width);
+                item.setContainerSize(this.width);
             });
         });
     }
@@ -238,10 +240,9 @@ export default class Layout extends LightningElement {
      */
     handleItemConnected(event) {
         event.stopPropagation();
-
         const { name, callbacks } = event.detail;
         this._items[name] = callbacks;
-        callbacks.setContainerSize(this._width);
+        callbacks.setContainerSize(this.width);
     }
 
     /**

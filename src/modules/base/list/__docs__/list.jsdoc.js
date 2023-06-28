@@ -29,7 +29,7 @@
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} src Image URL.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
- * @property {string} position The position changes the location of the avatar in the list item. Valid values include left, right, left-of-title and right-of-title.
+ * @property {string} position The position changes the location of the avatar in the list item. Valid values include left, top-left, bottom-left, right, top-right, bottom-right, left-of-title and right-of-title.
  * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
@@ -327,7 +327,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-fields-spacing-block
  * @type dimension
- * @default 1rem
+ * @default 0.25rem
  */
 /**
  * @memberof stylingHooks
@@ -457,6 +457,12 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-actions-vertical-alignment
- * @default center
+ * @default --avonni-list-item-body-vertical-alignment, center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-avatar-vertical-alignment
+ * @default --avonni-list-item-body-vertical-alignment, center
  * @type alignment
  */
