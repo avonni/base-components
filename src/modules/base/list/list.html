@@ -207,10 +207,7 @@
                                 >
                                     <c-avatar
                                         if:true={item.isAvatarLeft}
-                                        class="
-                                            avonni-list-item-avatar
-                                            slds-m-right_x-small
-                                        "
+                                        class={item.computedAvatarClass}
                                         fallback-icon-name={item.avatar.fallbackIconName}
                                         src={item.avatar.src}
                                         size={item.avatar.size}
@@ -236,10 +233,7 @@
                                         >
                                             <c-avatar
                                                 if:true={item.isAvatarLeftOfTitle}
-                                                class="
-                                                    avonni-list-item-avatar
-                                                    slds-m-right_x-small
-                                                "
+                                                class={item.computedAvatarClass}
                                                 fallback-icon-name={item.avatar.fallbackIconName}
                                                 src={item.avatar.src}
                                                 size={item.avatar.size}
@@ -302,10 +296,7 @@
                                             </span>
                                             <c-avatar
                                                 if:true={item.isAvatarRightOfTitle}
-                                                class="
-                                                    avonni-list-item-avatar
-                                                    slds-m-left_x-small
-                                                "
+                                                class={item.computedAvatarClass}
                                                 fallback-icon-name={item.avatar.fallbackIconName}
                                                 src={item.avatar.src}
                                                 size={item.avatar.size}
@@ -403,10 +394,7 @@
                                     </div>
                                     <c-avatar
                                         if:true={item.isAvatarRight}
-                                        class="
-                                            avonni-list-item-avatar
-                                            slds-m-left_x-small
-                                        "
+                                        class={item.computedAvatarClass}
                                         fallback-icon-name={item.avatar.fallbackIconName}
                                         src={item.avatar.src}
                                         size={item.avatar.size}

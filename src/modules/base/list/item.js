@@ -2,7 +2,16 @@ import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const AVATAR_POSITION = {
-    valid: ['left', 'right', 'left-of-title', 'right-of-title'],
+    valid: [
+        'left',
+        'top-left',
+        'bottom-left',
+        'right',
+        'top-right',
+        'bottom-right',
+        'left-of-title',
+        'right-of-title'
+    ],
     default: 'left'
 };
 
@@ -32,14 +41,14 @@ export default class Item {
      * Computes if the avatar is at the left.
      */
     get isAvatarLeft() {
-        return this.avatar && this.avatarPosition === 'left';
+        return this.avatar && this.avatarPosition.endsWith('left');
     }
 
     /**
      * Computes if the avatar is at the right.
      */
     get isAvatarRight() {
-        return this.avatar && this.avatarPosition === 'right';
+        return this.avatar && this.avatarPosition.endsWith('right');
     }
 
     /**
@@ -54,6 +63,24 @@ export default class Item {
      */
     get isAvatarRightOfTitle() {
         return this.avatar && this.avatarPosition === 'right-of-title';
+    }
+
+    /**
+     * Compute the class of the avatar
+     */
+    get computedAvatarClass() {
+        return classSet('avonni-list-item-avatar')
+            .add({
+                'slds-m-right_x-small':
+                    this.isAvatarLeft || this.isAvatarLeftOfTitle,
+                'slds-m-left_x-small':
+                    this.isAvatarRight || this.isAvatarRightOfTitle,
+                'avonni-list-item-avatar-top':
+                    this.avatarPosition.includes('top'),
+                'avonni-list-item-avatar-bottom':
+                    this.avatarPosition.includes('bottom')
+            })
+            .toString();
     }
 
     /**
