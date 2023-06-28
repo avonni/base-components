@@ -261,10 +261,10 @@
     border-color: var(--avonni-list-item-fields-color-border, #e5e5e5);
     padding-right: var(--avonni-list-item-fields-spacing-inline);
     padding-left: var(--avonni-list-item-fields-spacing-inline);
-    padding-bottom: var(--avonni-list-item-fields-spacing-block, 1rem);
+    padding-bottom: var(--avonni-list-item-fields-spacing-block, 0.25rem);
     --avonni-layout-item-spacing-block-start: var(
         --avonni-list-item-fields-spacing-block,
-        1rem
+        0.25rem
     );
 }
 

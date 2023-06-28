@@ -327,7 +327,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-fields-spacing-block
  * @type dimension
- * @default 1rem
+ * @default 0.25rem
  */
 /**
  * @memberof stylingHooks
@@ -457,12 +457,12 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-actions-vertical-alignment
- * @default center
+ * @default --avonni-list-item-body-vertical-alignment, center
  * @type alignment
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-avatar-vertical-alignment
- * @default center
+ * @default --avonni-list-item-body-vertical-alignment, center
  * @type alignment
  */
