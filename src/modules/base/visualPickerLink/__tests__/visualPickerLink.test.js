@@ -218,14 +218,11 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const link = element.shadowRoot.querySelector(
-                '[data-element-id="a"]'
+                '[data-element-id="container"]'
             );
 
             expect(link.classList).toContain(
                 'avonni-visual-picker-link_disabled'
-            );
-            expect(link.classList).not.toContain(
-                'avonni-visual-picker-box_link'
             );
         });
     });
@@ -235,13 +232,12 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const link = element.shadowRoot.querySelector(
-                '[data-element-id="a"]'
+                '[data-element-id="container"]'
             );
 
             expect(link.classList).not.toContain(
                 'avonni-visual-picker-link_disabled'
             );
-            expect(link.classList).toContain('avonni-visual-picker-box_link');
         });
     });
 

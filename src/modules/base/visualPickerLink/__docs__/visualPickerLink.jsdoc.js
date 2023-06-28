@@ -51,6 +51,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-background-disabled
+ * @type color
+ * @default #ecebea
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-background-info-only
  * @type color
  */
@@ -77,6 +83,12 @@
  * @name --avonni-visual-picker-link-tile-color-border
  * @type color
  * @default rgb(229, 229, 229)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border-disabled
+ * @type color
+ * @default #c9c7c5
  */
 /**
  * @memberof stylingHooks

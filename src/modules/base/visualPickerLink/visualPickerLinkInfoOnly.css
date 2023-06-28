@@ -34,8 +34,14 @@
 
 /*-- disabled --*/
 .avonni-visual-picker-link_disabled {
-    border-color: #c9c7c5;
-    background-color: #ecebea;
+    border-color: var(
+        --avonni-visual-picker-link-tile-color-border-disabled,
+        #c9c7c5
+    );
+    background-color: var(
+        --avonni-visual-picker-link-tile-color-background-disabled,
+        #ecebea
+    );
     -webkit-box-shadow: none;
     box-shadow: none;
 }
