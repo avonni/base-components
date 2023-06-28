@@ -123,17 +123,12 @@
                 style={computedSliderStyle}
             >
                 <div
-                    class="
-                        avonni-image__compare-slider-handle
-                        slds-is-absolute
-                        slds-align_absolute-center
-                    "
+                    class={computedSliderHandleClass}
                     data-element-id="compare-slider-handle"
                     role="button"
                     aria-pressed="false"
                     tabindex="0"
                     onkeydown={handleCompareKeydown}
-                    style={computedSliderHandleStyle}
                 >
                     <lightning-icon
                         icon-name={compareIconName1}

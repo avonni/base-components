@@ -539,10 +539,16 @@ describe('Image', () => {
                 const compareImgContainer = element.shadowRoot.querySelector(
                     '[data-element-id="compare-img-container"]'
                 );
+                const compareSliderHandle = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-slider-handle"]'
+                );
                 const icon1 = compareSlider.children[0].children[0];
                 const icon2 = compareSlider.children[0].children[1];
                 expect(compareSlider.classList).toContain(
                     'avonni-image__compare-slider_vertical'
+                );
+                expect(compareSliderHandle.classList).toContain(
+                    'slds-grid_vertical'
                 );
                 expect(icon1.iconName).toBe('utility:up');
                 expect(icon2.iconName).toBe('utility:down');
@@ -720,7 +726,7 @@ describe('Image', () => {
                     new MouseEvent('mousemove', { clientX: 100 })
                 );
                 expect(compareImg.style.width).toBe('100px');
-                expect(container.style.cursor).toBe('grab');
+                expect(container.style.cursor).toBe('grabbing');
             });
         });
 

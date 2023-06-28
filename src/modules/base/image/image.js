@@ -609,52 +609,47 @@ export default class Image extends LightningElement {
     get computedCompareImgStyle() {
         const styleProperties = {};
 
-        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties['object-fit'] = this.cropFit;
         styleProperties[
             'object-position'
         ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
-        styleProperties['aspect-ratio'] = this._aspectRatio
-            ? this._aspectRatio
-            : null;
+        styleProperties['aspect-ratio'] = this._aspectRatio;
 
-        if (this.staticImages) {
-            styleProperties['min-width'] = this._width ? this._width : null;
-            styleProperties['max-width'] = this._width ? this._width : null;
-            styleProperties['min-height'] = this._height ? this._height : null;
-            styleProperties['max-height'] = this._height ? this._height : null;
-        } else {
-            styleProperties['min-width'] = null;
-            styleProperties['max-width'] = null;
-            styleProperties['min-height'] = null;
-            styleProperties['max-height'] = null;
-        }
+        styleProperties['min-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['max-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['min-height'] =
+            this.staticImages && this.height ? this.height : null;
+        styleProperties['max-height'] =
+            this.staticImages && this.height ? this.height : null;
 
         if (
-            this._height &&
-            !this._width &&
+            this.height &&
+            !this.width &&
             this.compareAttributes.orientation === 'horizontal'
         ) {
             styleProperties.width = `${
-                (parseFloat(this._height) / this._imgElementHeight) *
+                (parseFloat(this.height) / this._imgElementHeight) *
                 this._imgElementWidth
             }px`;
         } else if (
-            this._height &&
-            !this._width &&
+            this.height &&
+            !this.width &&
             this.compareAttributes.orientation === 'vertical'
         ) {
             styleProperties.width = 'inherit';
-        } else if (this._width) {
-            styleProperties.width = this._width;
+        } else if (this.width) {
+            styleProperties.width = this.width;
         } else {
             styleProperties.width = `${this._imgElementWidth}px`;
         }
 
         if (
-            (this._height && this._width) ||
-            (this.compareAttributes.orientation === 'vertical' && this._height)
+            (this.height && this.width) ||
+            (this.compareAttributes.orientation === 'vertical' && this.height)
         ) {
-            styleProperties.height = this._height;
+            styleProperties.height = this.height;
         } else if (this.compareAttributes.orientation === 'horizontal') {
             styleProperties.height = 'inherit';
         } else {
@@ -819,12 +814,27 @@ export default class Image extends LightningElement {
             .toString();
     }
 
-    get computedSliderHandleStyle() {
-        return this.compareAttributes.orientation === 'horizontal'
-            ? 'flex-direction: row;'
-            : 'flex-direction: column;';
+    /**
+     * Final computed compare slider handle class styling.
+     *
+     * @type {string}
+     */
+    get computedSliderHandleClass() {
+        return classSet(
+            'avonni-image__compare-slider-handle slds-is-absolute slds-align_absolute-center'
+        )
+            .add({
+                'slds-grid_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
     }
 
+    /**
+     * Final computed slider style.
+     *
+     * @type {string}
+     */
     get computedSliderStyle() {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'top: 0;'
@@ -839,30 +849,25 @@ export default class Image extends LightningElement {
     get computedStyle() {
         const styleProperties = {};
 
-        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties['object-fit'] = this.cropFit;
         styleProperties[
             'object-position'
         ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
-        styleProperties['aspect-ratio'] = this._aspectRatio
-            ? this._aspectRatio
-            : null;
+        styleProperties['aspect-ratio'] = this._aspectRatio;
 
-        if (this.staticImages) {
-            styleProperties['min-width'] = this._width ? this._width : null;
-            styleProperties['max-width'] = this._width ? this._width : null;
-            styleProperties['min-height'] = this._height ? this._height : null;
-            styleProperties['max-height'] = this._height ? this._height : null;
-        } else {
-            styleProperties['min-width'] = null;
-            styleProperties['max-width'] = null;
-            styleProperties['min-height'] = null;
-            styleProperties['max-height'] = null;
-        }
+        styleProperties['min-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['max-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['min-height'] =
+            this.staticImages && this.height ? this.height : null;
+        styleProperties['max-height'] =
+            this.staticImages && this.height ? this.height : null;
 
         styleProperties.width =
-            this._cropSize && !this._width && !this._height
+            this._cropSize && !this.width && !this.height
                 ? `${this._imgElementWidth}px`
-                : this._width;
+                : this.width;
         styleProperties.height = this._height;
 
         let styleValue = '';
