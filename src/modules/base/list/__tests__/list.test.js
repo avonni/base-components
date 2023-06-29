@@ -207,10 +207,17 @@ describe('List', () => {
     it('List: Divider = top', () => {
         element.items = ITEMS;
         element.divider = 'top';
+        element.smallContainerCols = 6;
 
         return Promise.resolve().then(() => {
             const liItem = element.shadowRoot.querySelector(
                 '[data-element-id="li-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(listElem.classList).not.toContain(
+                'avonni-list__vertical-compact'
             );
             expect(liItem.classList).toContain('avonni-list__item-divider_top');
         });
@@ -222,6 +229,12 @@ describe('List', () => {
         return Promise.resolve().then(() => {
             const liItem = element.shadowRoot.querySelector(
                 '[data-element-id="li-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(listElem.classList).toContain(
+                'avonni-list__vertical-compact'
             );
             expect(liItem.classList).toContain(
                 'avonni-list__item-divider_bottom'

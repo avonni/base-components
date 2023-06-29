@@ -51,6 +51,10 @@
     );
 }
 
+.avonni-list__vertical-compact {
+    row-gap: var(--avonni-list-item-spacing-block-between, 0);
+}
+
 .avonni-list__item {
     align-self: stretch;
     --avonni-card-color-background: var(

@@ -777,7 +777,10 @@ export default class List extends LightningElement {
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap':
                     this._currentColumnCount > 1 && this.variant === 'base',
-                'avonni-list__has-card-style': this.divider === 'around'
+                'avonni-list__has-card-style': this.divider === 'around',
+                'avonni-list__vertical-compact':
+                    ['', 'top', 'bottom'].includes(this.divider) &&
+                    this.isRegularList
             })
             .toString();
     }
@@ -912,6 +915,15 @@ export default class List extends LightningElement {
      */
     get hasMultipleMediaActions() {
         return this.computedMediaActions.length > 1;
+    }
+
+    /**
+     * Check if the list is vertical with one column and not a 'grid'.
+     */
+    get isRegularList() {
+        return Object.values(this._columnsSizes).every(
+            (size) => !size || size === 1
+        );
     }
 
     /**
