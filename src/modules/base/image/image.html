@@ -100,11 +100,13 @@
                     slds-scrollable_none
                 "
                 data-element-id="compare-img-container"
+                style={computedCompareImgContainerStyle}
             >
                 <img
+                    data-element-id="compare-img"
                     src={compareSrc}
                     class="avonni-image__compare-img"
-                    style={computedStyle}
+                    style={computedCompareImgStyle}
                     loading={lazyLoading}
                 />
                 <div
@@ -115,13 +117,13 @@
                     {compareAttributes.originalLabel}
                 </div>
             </div>
-            <div class={computedSliderClass} data-element-id="compare-slider">
+            <div
+                class={computedSliderClass}
+                data-element-id="compare-slider"
+                style={computedSliderStyle}
+            >
                 <div
-                    class="
-                        avonni-image__compare-slider-handle
-                        slds-is-absolute
-                        slds-align_absolute-center
-                    "
+                    class={computedSliderHandleClass}
                     data-element-id="compare-slider-handle"
                     role="button"
                     aria-pressed="false"

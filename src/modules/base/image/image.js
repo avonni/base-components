@@ -189,6 +189,8 @@ export default class Image extends LightningElement {
         this._compareAttributes.showLabelsOnHover = normalizeBoolean(
             normalizedAttributes.showLabelsOnHover
         );
+
+        this._compareAttributes = { ...this._compareAttributes };
     }
 
     /**
@@ -598,6 +600,74 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    get computedCompareImgContainerStyle() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'width: 50%; height: 100%;'
+            : 'width: 100%; height: 50%;';
+    }
+
+    get computedCompareImgStyle() {
+        const styleProperties = {};
+
+        styleProperties['object-fit'] = this.cropFit;
+        styleProperties[
+            'object-position'
+        ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
+        styleProperties['aspect-ratio'] = this._aspectRatio;
+
+        styleProperties['min-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['max-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['min-height'] =
+            this.staticImages && this.height ? this.height : null;
+        styleProperties['max-height'] =
+            this.staticImages && this.height ? this.height : null;
+
+        if (
+            this.height &&
+            !this.width &&
+            this.compareAttributes.orientation === 'horizontal'
+        ) {
+            styleProperties.width = `${
+                (parseFloat(this.height) / this._imgElementHeight) *
+                this._imgElementWidth
+            }px`;
+        } else if (
+            this.height &&
+            !this.width &&
+            this.compareAttributes.orientation === 'vertical'
+        ) {
+            styleProperties.width = 'inherit';
+        } else if (this.width) {
+            styleProperties.width = this.width;
+        } else {
+            styleProperties.width = `${this._imgElementWidth}px`;
+        }
+
+        if (
+            (this.height && this.width) ||
+            (this.compareAttributes.orientation === 'vertical' && this.height)
+        ) {
+            styleProperties.height = this.height;
+        } else if (this.compareAttributes.orientation === 'horizontal') {
+            styleProperties.height = 'inherit';
+        } else {
+            styleProperties.height = `${this._imgElementHeight}px`;
+        }
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+
+        return styleValue;
+    }
+
     /**
      * The compare slider first icon (left or up).
      *
@@ -745,6 +815,33 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * Final computed compare slider handle class styling.
+     *
+     * @type {string}
+     */
+    get computedSliderHandleClass() {
+        return classSet(
+            'avonni-image__compare-slider-handle slds-is-absolute slds-align_absolute-center'
+        )
+            .add({
+                'slds-grid_vertical':
+                    this.compareAttributes.orientation === 'vertical'
+            })
+            .toString();
+    }
+
+    /**
+     * Final computed slider style.
+     *
+     * @type {string}
+     */
+    get computedSliderStyle() {
+        return this.compareAttributes.orientation === 'horizontal'
+            ? 'top: 0;'
+            : 'left: 0;';
+    }
+
+    /**
      * Final Computed Image Style.
      *
      * @type {string}
@@ -752,30 +849,25 @@ export default class Image extends LightningElement {
     get computedStyle() {
         const styleProperties = {};
 
-        styleProperties['object-fit'] = this.cropFit ? this.cropFit : null;
+        styleProperties['object-fit'] = this.cropFit;
         styleProperties[
             'object-position'
         ] = `${this.cropPositionX}% ${this.cropPositionY}%`;
-        styleProperties['aspect-ratio'] = this._aspectRatio
-            ? this._aspectRatio
-            : null;
+        styleProperties['aspect-ratio'] = this._aspectRatio;
 
-        if (this.staticImages) {
-            styleProperties['min-width'] = this._width ? this._width : null;
-            styleProperties['max-width'] = this._width ? this._width : null;
-            styleProperties['min-height'] = this._height ? this._height : null;
-            styleProperties['max-height'] = this._height ? this._height : null;
-        } else {
-            styleProperties['min-width'] = null;
-            styleProperties['max-width'] = null;
-            styleProperties['min-height'] = null;
-            styleProperties['max-height'] = null;
-        }
+        styleProperties['min-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['max-width'] =
+            this.staticImages && this.width ? this.width : null;
+        styleProperties['min-height'] =
+            this.staticImages && this.height ? this.height : null;
+        styleProperties['max-height'] =
+            this.staticImages && this.height ? this.height : null;
 
         styleProperties.width =
-            this._cropSize && !this._width && !this._height
+            this._cropSize && !this.width && !this.height
                 ? `${this._imgElementWidth}px`
-                : this._width;
+                : this.width;
         styleProperties.height = this._height;
 
         let styleValue = '';
@@ -790,10 +882,16 @@ export default class Image extends LightningElement {
         return styleValue;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Handle the 'click' type slider.
      */
-    clickSlider(event) {
+    _clickSlider(event) {
         const img = this.template.querySelector('[data-element-id="img"]');
         const container = this.template.querySelector(
             '[data-element-id="compare-container"]'
@@ -839,7 +937,7 @@ export default class Image extends LightningElement {
     /**
      * Slide the compare slider on hover.
      */
-    hoverSlider(event) {
+    _hoverSlider(event) {
         const img = this.template.querySelector('[data-element-id="img"]');
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
@@ -872,28 +970,28 @@ export default class Image extends LightningElement {
             slider.style.top = `${posY}px`;
             compareImg.style.height = `${posY}px`;
         }
-        container.style.cursor = 'grab';
+        container.style.cursor = 'grabbing';
     }
 
     /**
      * Initiate the compare slider.
      */
-    initCompareSlider(img) {
-        const compareImg = this.template.querySelector(
+    _initCompareSlider(img) {
+        const compareImgContainer = this.template.querySelector(
             '[data-element-id="compare-img-container"]'
         );
-        const handle = this.template.querySelector(
-            '[data-element-id="compare-slider-handle"]'
-        );
         if (this.compareAttributes.orientation === 'horizontal') {
-            compareImg.style.width = `${img.width / 2}px`;
-            compareImg.style.height = '100%';
+            compareImgContainer.style.width = `${img.width / 2}px`;
         } else {
-            compareImg.style.height = `${img.height / 2}px`;
-            compareImg.style.width = '100%';
-            handle.style.flexDirection = 'column';
+            compareImgContainer.style.height = `${img.height / 2}px`;
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Handle the 'keydown' event on the compare slider handle.
@@ -997,7 +1095,12 @@ export default class Image extends LightningElement {
         const slider = this.template.querySelector(
             '[data-element-id="compare-slider"]'
         );
+        const handle = this.template.querySelector(
+            '[data-element-id="compare-slider-handle"]'
+        );
         const rect = container.getBoundingClientRect();
+        container.style.cursor = 'grabbing';
+        handle.style.cursor = 'grabbing';
         this._isDraggingCompareCursor = true;
         slider.style.transition = 'all 0.15s ease-in-out';
         compareImg.style.transition = 'all 0.15s ease-in-out';
@@ -1012,6 +1115,8 @@ export default class Image extends LightningElement {
         }
         const handleMouseUp = () => {
             this._isDraggingCompareCursor = false;
+            container.style.cursor = 'default';
+            handle.style.cursor = 'grab';
             window.removeEventListener('mouseup', handleMouseUp);
         };
         window.addEventListener('mouseup', handleMouseUp);
@@ -1025,9 +1130,9 @@ export default class Image extends LightningElement {
             this.compareAttributes.moveOn === 'hover' &&
             event.type !== 'touchmove'
         ) {
-            this.hoverSlider(event);
+            this._hoverSlider(event);
         } else {
-            this.clickSlider(event);
+            this._clickSlider(event);
         }
     }
 
@@ -1046,7 +1151,7 @@ export default class Image extends LightningElement {
             }
             if (this.compareSrc) {
                 requestAnimationFrame(() => {
-                    this.initCompareSlider(img);
+                    this._initCompareSlider(img);
                 });
             }
         }

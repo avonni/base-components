@@ -123,9 +123,8 @@
         --avonni-image-compare-slider-handle-color-background,
         white
     );
-    opacity: var(--avonni-image-compare-slider-handle-opacity, 0.8);
     border-radius: 50%;
-    border: 2px solid var(--avonni-image-compare-slider-color-border, #1b96ff);
+    border: 2px solid var(--avonni-image-compare-slider-color-border, #1a94ffcc);
     transition: all 0.2s ease;
 }
 
@@ -145,8 +144,10 @@
 .avonni-image__compare-overlay {
     width: fit-content;
     height: fit-content;
-    background-color: var(--avonni-image-compare-label-color-background, white);
-    opacity: var(--avonni-image-compare-label-opacity, 0.8);
+    background-color: var(
+        --avonni-image-compare-label-color-background,
+        #ffffffcc
+    );
     padding: 5px;
     border-width: var(--avonni-image-compare-label-sizing-border, 0);
     border-style: var(--avonni-image-compare-label-styling-border, none);
@@ -179,12 +180,10 @@
 
 .avonni-image__compare-img-container {
     width: 0;
-    height: 0;
 }
 
 .avonni-image__compare-img {
-    max-width: fit-content;
-    height: auto;
+    max-width: none;
 }
 
 .avonni-image__container_compare-labels-on-hover

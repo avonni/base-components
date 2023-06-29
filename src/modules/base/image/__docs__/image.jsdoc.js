@@ -20,7 +20,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-image-compare-slider-color-border
- * @default #1b96ff
+ * @default #1a94ffcc
  * @type color
  */
 /**
@@ -37,21 +37,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-image-compare-slider-handle-opacity
- * @default 0.8
- * @type number
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-image-compare-label-color-background
- * @default white
+ * @default #ffffffcc
  * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-image-compare-label-opacity
- * @default 0.8
- * @type number
  */
 /**
  * @memberof stylingHooks
