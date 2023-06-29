@@ -66,8 +66,8 @@ function startCase(string) {
     // Replace all non-alphanumeric characters with spaces
     const stringWithSpaces = string.replace(/[^0-9a-zA-Z]/g, ' ');
 
-    // Split the string into words
-    const words = stringWithSpaces.split(' ');
+    // Split at the capitalized letters and at spaces
+    const words = stringWithSpaces.split(/(?=[A-Z][a-z])| /);
 
     // Capitalize the first letter of each word
     const capitalizedWords = words.map((word) => {
