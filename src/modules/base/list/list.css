@@ -309,6 +309,12 @@ a.avonni-list__item-info-link:active {
     border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
 }
 
+.avonni-list__item-divider_around {
+    --avonni-card-sizing-border: var(--avonni-list-item-sizing-border, 1px);
+    --avonni-card-styling-border: var(--avonni-list-item-styling-border, solid);
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #c9c9c9);
+}
+
 .avonni-list__item-header_font {
     color: var(--avonni-list-item-header-text-color, #080707);
     font-size: var(--avonni-list-item-header-font-size, 0.8125rem);

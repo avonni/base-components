@@ -69,6 +69,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-sizing-border
  * @default 1px
  * @type dimension

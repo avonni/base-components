@@ -47,7 +47,7 @@ article.avonni-card {
     padding-bottom: var(--avonni-card-spacing-block-end, 0px);
 
     border-width: var(--avonni-card-sizing-border, 1px);
-    border-style: solid;
+    border-style: var(--avonni-card-styling-border, solid);
     border-color: var(--avonni-card-color-border, #c9c9c9);
     border-radius: var(--avonni-card-radius-border, 0.25rem);
 

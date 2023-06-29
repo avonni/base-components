@@ -757,7 +757,8 @@ export default class List extends LightningElement {
                     this._currentColumnCount === 1 &&
                     this.variant === 'base',
                 'avonni-list__item-divider_top': this.divider === 'top',
-                'avonni-list__item-divider_bottom': this.divider === 'bottom'
+                'avonni-list__item-divider_bottom': this.divider === 'bottom',
+                'avonni-list__item-divider_around': this.divider === 'around'
             })
             .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
