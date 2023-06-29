@@ -68,7 +68,6 @@ import urls from './urls.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
-    'badge',
     'avatar-group',
     'checkbox-button',
     'color-picker',
@@ -79,8 +78,6 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'image',
     'toggle',
     'progress-bar',
-    'progress-circle',
-    'progress-ring',
     'qrcode',
     'rating',
     'slider',
