@@ -79,7 +79,9 @@ export default class VisualPickerLink extends LightningElement {
     showTitle = true;
 
     render() {
-        return this._infoOnly ? visualPickerLinkInfoOnly : visualPickerLink;
+        return this._infoOnly || this._disabled
+            ? visualPickerLinkInfoOnly
+            : visualPickerLink;
     }
 
     renderedCallback() {
@@ -185,18 +187,12 @@ export default class VisualPickerLink extends LightningElement {
         return classSet('avonni-visual-picker-link__tile')
             .add({
                 'slds-welcome-mat__tile_complete': this._completed,
-                'avonni-visual-picker-link__tile_info-only': this._infoOnly
-            })
-            .toString();
-    }
-
-    get computedLinkClass() {
-        return classSet(
-            'slds-media slds-p-around_medium avonni-visual-picker-link__box'
-        )
-            .add({
-                'avonni-visual-picker-box_link': !this.disabled,
-                'avonni-visual-picker-link_disabled': this.disabled
+                'avonni-visual-picker-link__tile_info-only': this._infoOnly,
+                'avonni-visual-picker-link__box':
+                    this._disabled && !this._infoOnly,
+                'avonni-visual-picker-link_disabled':
+                    this._disabled && !this._infoOnly,
+                'avonni-visual-picker-link_cursor-not-allowed': this._disabled
             })
             .toString();
     }

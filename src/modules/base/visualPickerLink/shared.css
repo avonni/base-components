@@ -84,7 +84,7 @@
     font-style: var(--avonni-visual-picker-link-title-font-style, normal);
 }
 
-.avonni-visual-picker-link__tile:not(.avonni-visual-picker-link__tile_complete):not(.avonni-visual-picker-link__tile_info-only) {
+.avonni-visual-picker-link__tile:not(.avonni-visual-picker-link__tile_complete):not(.avonni-visual-picker-link__tile_info-only):not(.avonni-visual-picker-link_disabled) {
     box-shadow: 0 2px 2px
         var(--slds-g-color-neutral-base-10, rgba(0, 0, 0, 0.05));
     border-radius: var(--avonni-visual-picker-link-tile-radius-border, 0.25rem);

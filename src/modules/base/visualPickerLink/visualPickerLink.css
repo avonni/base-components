@@ -31,12 +31,3 @@
  */
 
 @import './shared.css';
-
-/*-- disabled --*/
-.avonni-visual-picker-link_disabled {
-    border-color: #c9c7c5;
-    background-color: #ecebea;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    pointer-events: none;
-}
