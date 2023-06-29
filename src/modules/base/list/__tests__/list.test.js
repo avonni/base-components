@@ -184,6 +184,12 @@ describe('List', () => {
             const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
+            const liItem = element.shadowRoot.querySelector(
+                '[data-element-id="li-item"]'
+            );
+            expect(liItem.classList).toContain(
+                'avonni-list__item-divider_around'
+            );
             expect(listElem.classList).toContain('avonni-list__has-card-style');
             expect(card.className).toEqual('avonni-list__item-card-style');
         });
