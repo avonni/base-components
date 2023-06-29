@@ -339,9 +339,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-carousel-item-action-bare-styling-border
- * @default solid
- * @type styling
+ * @name --avonni-carousel-item-action-bare-radius-border
+ * @default 0.25rem
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -405,9 +405,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-carousel-item-action-neutral-styling-border
- * @default solid
- * @type styling
+ * @name --avonni-carousel-item-action-neutral-radius-border
+ * @default 0.25rem
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

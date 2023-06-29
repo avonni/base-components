@@ -77,10 +77,9 @@
                                     class={computedButtonIconActionClass}
                                 >
                                     <lightning-button-icon
-                                        if:false={action.label}
+                                        disabled={action.disabled}
                                         icon-name={action.iconName}
                                         name={action.name}
-                                        disabled={action.disabled}
                                         variant={computedActionsVariantButtonIcon}
                                         data-element-id="lightning-button-icon-actions"
                                         onclick={handleActionClick}
@@ -177,10 +176,9 @@
                                     class={computedButtonIconActionClass}
                                 >
                                     <lightning-button-icon
-                                        if:false={action.label}
+                                        disabled={action.disabled}
                                         icon-name={action.iconName}
                                         name={action.name}
-                                        disabled={action.disabled}
                                         variant={computedActionsVariantButtonIcon}
                                         data-element-id="lightning-button-icon-actions"
                                         onclick={handleActionClick}

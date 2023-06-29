@@ -125,7 +125,6 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     }
 
     handleLevelChange(event) {
-        console.log('level change', event.detail);
         const option = event.detail.option;
         if (option.isLoading) {
             this.loadNestedOption(option);
@@ -133,7 +132,6 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     }
 
     handleLoadMore(event) {
-        console.log('loadmore', event.detail);
         const { option, searchTerm } = event.detail;
         if (option) {
             this.loadNestedOption(option, searchTerm);
@@ -143,7 +141,6 @@ export default class ComboboxInfiniteLoading extends LightningElement {
     }
 
     handleSearch(event) {
-        console.log('search', event.detail);
         const { option, value } = event.detail;
 
         if (!value) {
