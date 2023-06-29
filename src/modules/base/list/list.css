@@ -39,55 +39,20 @@
 }
 
 /* VALUE ASSIGNMENTS */
-.avonni-list__items-without-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-spacing-inline-between,
-        0px
-    );
-}
-
-.avonni-list__items-have-top-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-top-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-top-spacing-inline-between,
-        0px
-    );
-}
-
-.avonni-list__items-have-bottom-divider {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-bottom-spacing-block-between,
-        0px
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-bottom-spacing-inline-between,
-        0px
-    );
-}
-
 .avonni-list__has-card-style {
-    --private-list-item-spacing-block-between: var(
-        --avonni-list-item-divider-around-spacing-block-between,
-        0.5rem
-    );
-    --private-list-item-spacing-inline-between: var(
-        --avonni-list-item-divider-around-spacing-inline-between,
-        0.5rem
-    );
     --avonni-card-shadow: var(--avonni-list-item-shadow, none);
     --avonni-card-sizing-border: 1px;
 }
 
 .avonni-list__item-menu {
-    row-gap: var(--private-list-item-spacing-block-between);
-    margin-inline: calc(var(--private-list-item-spacing-inline-between) / -2);
+    row-gap: var(
+        --avonni-list-item-divider-bottom-spacing-block-between,
+        0.5rem
+    );
+    margin-inline: calc(
+        var(--avonni-list-item-divider-bottom-spacing-inline-between, 0.5rem) /
+            -2
+    );
 }
 
 .avonni-list__item {
@@ -96,8 +61,14 @@
         --avonni-list-item-color-background,
         transparent
     );
-    padding-left: calc(var(--private-list-item-spacing-inline-between) / 2);
-    padding-right: calc(var(--private-list-item-spacing-inline-between) / 2);
+    padding-left: calc(
+        var(--avonni-list-item-divider-bottom-spacing-inline-between, 0.5rem) /
+            2
+    );
+    padding-right: calc(
+        var(--avonni-list-item-divider-bottom-spacing-inline-between, 0.5rem) /
+            2
+    );
     --avonni-card-header-spacing-block-start: 0px;
     --avonni-card-header-spacing-block-end: 0px;
     --avonni-card-media-sizing-border: 0px;

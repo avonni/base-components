@@ -776,12 +776,7 @@ export default class List extends LightningElement {
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap':
                     this._currentColumnCount > 1 && this.variant === 'base',
-                'avonni-list__items-without-divider': this.divider === '',
-                'avonni-list__has-card-style': this.divider === 'around',
-                'slds-has-dividers_top-space avonni-list__items-have-top-divider':
-                    this.divider === 'top',
-                'slds-has-dividers_bottom-space avonni-list__items-have-bottom-divider':
-                    this.divider === 'bottom'
+                'avonni-list__has-card-style': this.divider === 'around'
             })
             .toString();
     }

@@ -223,13 +223,13 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-top-spacing-inline-between
  * @type dimension
- * @default 0
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-divider-bottom-spacing-block-between
  * @type dimension
- * @default 0
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
