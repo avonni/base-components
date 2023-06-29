@@ -163,45 +163,35 @@ describe('List', () => {
     });
 
     // divider
-    it('List: Divider = around, list element', () => {
-        element.divider = 'around';
+    it('List: Divider = none', () => {
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
             );
-            expect(menu.classList).toContain('avonni-list__has-card-style');
+            expect(divItem.className).toEqual('slds-template__container');
         });
     });
-    it('List: Divider = around, card', () => {
+    it('List: Divider = around', () => {
         element.items = ITEMS;
         element.divider = 'around';
 
         return Promise.resolve().then(() => {
-            const card = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-card"]'
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
             );
             const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
-            const liItem = element.shadowRoot.querySelector(
-                '[data-element-id="li-item"]'
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
             );
-            expect(liItem.classList).toContain(
+            expect(divItem.classList).toContain(
                 'avonni-list__item-divider_around'
             );
             expect(listElem.classList).toContain('avonni-list__has-card-style');
-            expect(card.className).toEqual('avonni-list__item-card-style');
-        });
-    });
-    it('List: Divider != around, card', () => {
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const card = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-card"]'
-            );
-            expect(card.className).toEqual('avonni-list__item-borderless');
+            expect(menu.classList).toContain('avonni-list__has-card-style');
         });
     });
     it('List: Divider = top', () => {
@@ -210,8 +200,8 @@ describe('List', () => {
         element.smallContainerCols = 6;
 
         return Promise.resolve().then(() => {
-            const liItem = element.shadowRoot.querySelector(
-                '[data-element-id="li-item"]'
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
             );
             const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
@@ -219,7 +209,9 @@ describe('List', () => {
             expect(listElem.classList).not.toContain(
                 'avonni-list__vertical-compact'
             );
-            expect(liItem.classList).toContain('avonni-list__item-divider_top');
+            expect(divItem.classList).toContain(
+                'avonni-list__item-divider_top'
+            );
         });
     });
     it('List: Divider = bottom', () => {
@@ -227,8 +219,8 @@ describe('List', () => {
         element.divider = 'bottom';
 
         return Promise.resolve().then(() => {
-            const liItem = element.shadowRoot.querySelector(
-                '[data-element-id="li-item"]'
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
             );
             const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
@@ -236,7 +228,7 @@ describe('List', () => {
             expect(listElem.classList).toContain(
                 'avonni-list__vertical-compact'
             );
-            expect(liItem.classList).toContain(
+            expect(divItem.classList).toContain(
                 'avonni-list__item-divider_bottom'
             );
         });

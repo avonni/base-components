@@ -691,9 +691,14 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return this.divider === 'around'
-            ? 'avonni-list__item-card-style'
-            : 'avonni-list__item-borderless';
+        return classSet('slds-template__container')
+            .add({
+                'avonni-list__item-divider_none': this.divider === '',
+                'avonni-list__item-divider_top': this.divider === 'top',
+                'avonni-list__item-divider_bottom': this.divider === 'bottom',
+                'avonni-list__item-divider_around': this.divider === 'around'
+            })
+            .toString();
     }
 
     /**
@@ -755,10 +760,7 @@ export default class List extends LightningElement {
                 'avonni-list__item-sortable':
                     this.sortable &&
                     this._currentColumnCount === 1 &&
-                    this.variant === 'base',
-                'avonni-list__item-divider_top': this.divider === 'top',
-                'avonni-list__item-divider_bottom': this.divider === 'bottom',
-                'avonni-list__item-divider_around': this.divider === 'around'
+                    this.variant === 'base'
             })
             .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
