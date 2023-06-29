@@ -285,7 +285,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api
     focus() {
         this.interactingState.enter();
-
         if (this.inputableElement) {
             this.inputableElement.focus();
         }
@@ -440,7 +439,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handleTypeElemBlur() {
-        if (this.visible && !this.template.activeElement) {
+        if (this.visible && !this.template.activeElement && this._allowBlur) {
             this.interactingState.leave();
         }
     }
