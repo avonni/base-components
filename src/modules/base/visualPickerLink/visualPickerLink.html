@@ -34,10 +34,15 @@
 
 <template>
     <div class="slds-welcome-mat">
-        <div class={computedContainerClass}>
+        <div class={computedContainerClass} data-element-id="container">
             <a
                 href={href}
-                class={computedLinkClass}
+                class="
+                    slds-media
+                    slds-p-around_medium
+                    avonni-visual-picker-link__box
+                    avonni-visual-picker-box_link
+                "
                 data-element-id="a"
                 onclick={handleClick}
             >
