@@ -172,7 +172,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
@@ -192,7 +192,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         element.disableItemDragAndDrop = true;
 
@@ -211,7 +211,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
@@ -244,7 +244,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         element.variant = 'base';
 
@@ -277,7 +277,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
 
         const handler = jest.fn();
@@ -317,7 +317,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
+        element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
 
         const handler = jest.fn();

@@ -65,6 +65,8 @@ export default class Kanban extends LightningElement {
     _hideHeader = false;
     _isLoading = false;
     _records = [];
+    _subGroupFieldName;
+    _summarizeFieldName;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -179,24 +181,6 @@ export default class Kanban extends LightningElement {
      * @required
      */
     @api keyField;
-
-    /**
-     *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
-     *
-     * @type {string}
-     * @public
-     */
-    @api summarizeFieldName;
-
-    /**
-     *
-     * Name of the data field containing the sub-group label the data belongs to.
-     *
-     * @type {string}
-     * @public
-     */
-    @api subGroupFieldName;
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -328,6 +312,42 @@ export default class Kanban extends LightningElement {
     }
     set records(values) {
         this._records = normalizeArray(values);
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
+
+    /**
+     *
+     * Name of the data field containing the sub-group label the data belongs to.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get subGroupFieldName() {
+        return this._subGroupFieldName;
+    }
+    set subGroupFieldName(value) {
+        this._subGroupFieldName = value;
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
+
+    /**
+     *
+     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get summarizeFieldName() {
+        return this._summarizeFieldName;
+    }
+    set summarizeFieldName(value) {
+        this._summarizeFieldName = value;
         if (this._connected) {
             this.updateTiles();
         }
@@ -545,7 +565,17 @@ export default class Kanban extends LightningElement {
                         summary.value = this._oldSummarizeValues[group.index];
                     }
 
-                    summary.value += summarizeUpdate / SUMMARY_UPDATE_SPEED;
+                    if (
+                        (summarizeUpdate < 0 &&
+                            summary.value <=
+                                this._summarizeValues[group.index]) ||
+                        (summarizeUpdate > 0 &&
+                            summary.value >= this._summarizeValues[group.index])
+                    ) {
+                        summary.value = this._summarizeValues[group.index];
+                    } else {
+                        summary.value += summarizeUpdate / SUMMARY_UPDATE_SPEED;
+                    }
                 }, 0.5 * j);
             }
         }
@@ -1638,9 +1668,12 @@ export default class Kanban extends LightningElement {
             .forEach((fieldContainer, i) => {
                 this._subGroupsHeight[i] = fieldContainer.scrollHeight;
             });
-        this._initialScrollWidth = this.template.querySelector(
+        const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__field_container"]'
-        ).scrollWidth;
+        );
+        this._initialScrollWidth = fieldContainer
+            ? fieldContainer.scrollWidth
+            : 0;
         if (this._hasSubGroups) {
             this._initialScrollHeight = this.template.querySelector(
                 '[data-element-id="avonni-kanban__container"]'

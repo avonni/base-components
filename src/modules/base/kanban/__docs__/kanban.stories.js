@@ -200,7 +200,7 @@ export default {
         coverImageFieldName: 'coverImage',
         isLoading: false,
         hideHeader: false,
-        summarizeFieldName: 'Amount',
+        summarizeFieldName: 'amount',
         groupFieldName: 'status',
         variant: 'base',
         keyField: 'id'
