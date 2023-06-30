@@ -38,18 +38,12 @@ function kebabCase(string) {
         return string;
     }
 
-    // Replace all non-alphanumeric characters with hyphens
-    const stringWithHyphens = string.replace(/[^0-9a-zA-Z]/g, '-');
-
-    // Replace all consecutive hyphens with a single hyphen
-    const stringWithSingleHyphens = stringWithHyphens.replace(/-+/g, '-');
-
-    // Remove hyphens from the beginning and end of the string
-    const stringWithoutLeadingOrTrailingHyphens =
-        stringWithSingleHyphens.replace(/^-+|-+$/g, '');
-
-    // Convert the string to lowercase
-    return stringWithoutLeadingOrTrailingHyphens.toLowerCase();
+    return string
+        .match(
+            /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
+        )
+        .map((w) => w.toLowerCase())
+        .join('-');
 }
 
 function lowerCase(string) {
