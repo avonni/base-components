@@ -331,16 +331,18 @@ export default class List extends LightningElement {
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
 
-        const small = this.normalizeColumns(
+        const small = this.normalizeFieldColumns(
             normalizedFieldAttributes.smallContainerCols
         );
-        const medium = this.normalizeColumns(
+        const medium = this.normalizeFieldColumns(
             normalizedFieldAttributes.mediumContainerCols
         );
-        const large = this.normalizeColumns(
+        const large = this.normalizeFieldColumns(
             normalizedFieldAttributes.largeContainerCols
         );
-        const defaults = this.normalizeColumns(normalizedFieldAttributes.cols);
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
 
         // Keep same logic as in layoutItem.
         this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
@@ -464,7 +466,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Default number of columns on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @default 1
@@ -481,7 +483,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on small container widths. See `cols` for accepted values.
      * @type {number}
      * @public
      */
@@ -496,7 +498,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on medium container widths. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -512,7 +514,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on large container widths and above. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -1544,6 +1546,20 @@ export default class List extends LightningElement {
             return numValue;
         }
         return null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     * Matches the logic of cols, smallContainerCols, mediumContainerCols and largeContainerCols attributes.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
     }
 
     /**

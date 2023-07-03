@@ -34,10 +34,10 @@
 /**
  * @typedef {Object} FieldAttributes
  * @name fieldAttributes
- * @property {string|number} cols Default number of columns the field occupies. It will be applied if the fields container’s size is lesser than 480px, or if no other cols attribute is specified. Valid values include 1, 2, 3, 4, 6 and 12.
- * @property {string|number} largeContainerCols Number of columns the field occupies when the container’s size is greater or equal to 1024px. See `cols` for accepted values.
- * @property {string|number} mediumContainerCols Number of columns the field occupies when the container’s size is greater or equal to 768px. See `cols` for accepted values.
- * @property {string|number} smallContainerCols Number of columns the field occupies when the container’s size is greater or equal to 480px. See `cols` for accepted values.
+ * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string|number} largeContainerCols Number of columns on small container widths. Width is greater or equal to 1024px. See `cols` for accepted values.
+ * @property {string|number} mediumContainerCols Number of columns on small container widths. Width is greater or equal to 768px. See `cols` for accepted values.
+ * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
  * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
  */
 
