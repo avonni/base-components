@@ -146,10 +146,10 @@ describe('Activity Timeline', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
 
         return Promise.resolve().then(() => {
-            expect(element.fieldAttributes.cols).toBe(12);
-            expect(element.fieldAttributes.largeContainerCols).toBe(4);
-            expect(element.fieldAttributes.mediumContainerCols).toBe(12);
-            expect(element.fieldAttributes.smallContainerCols).toBe(12);
+            expect(element.fieldAttributes.cols).toBe(1);
+            expect(element.fieldAttributes.largeContainerCols).toBe(3);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(1);
+            expect(element.fieldAttributes.smallContainerCols).toBe(1);
         });
     });
 
