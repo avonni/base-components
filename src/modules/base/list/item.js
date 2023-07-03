@@ -71,6 +71,8 @@ export default class Item {
     get computedAvatarClass() {
         return classSet('avonni-list-item-avatar')
             .add({
+                'slds-m-bottom_xx-small':
+                    this.isAvatarLeftOfTitle || this.isAvatarRightOfTitle,
                 'slds-m-right_x-small':
                     this.isAvatarLeft || this.isAvatarLeftOfTitle,
                 'slds-m-left_x-small':
