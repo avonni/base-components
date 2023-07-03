@@ -602,7 +602,7 @@ export default class Image extends LightningElement {
 
     get computedCompareImgContainerStyle() {
         return this.compareAttributes.orientation === 'horizontal'
-            ? 'width: 50%; height: 100%;'
+            ? 'width: 50%;'
             : 'width: 100%; height: 50%;';
     }
 
