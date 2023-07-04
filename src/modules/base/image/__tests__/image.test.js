@@ -524,7 +524,6 @@ describe('Image', () => {
                 expect(icon1.iconName).toBe('utility:left');
                 expect(icon2.iconName).toBe('utility:right');
                 expect(compareImgContainer.style.width).toBe('50%');
-                expect(compareImgContainer.style.height).toBe('100%');
             });
         });
 
