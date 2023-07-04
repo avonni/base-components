@@ -68,6 +68,7 @@
 .avonni-image_container {
     position: relative;
     width: fit-content;
+    overflow: auto;
     border-radius: var(--avonni-image-radius-border, 0);
 }
 
