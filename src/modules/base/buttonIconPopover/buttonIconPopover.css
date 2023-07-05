@@ -101,3 +101,7 @@ div:focus {
     display: flex;
     justify-content: space-between;
 }
+
+.avonni-button-icon-popover__dropdown_z-index {
+    z-index: 98;
+}

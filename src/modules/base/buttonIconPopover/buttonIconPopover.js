@@ -453,7 +453,9 @@ export default class ButtonIconPopover extends LightningElement {
      * @type {string}
      */
     get computedPopoverClass() {
-        return classSet('slds-popover')
+        return classSet(
+            'slds-popover avonni-button-icon-popover__dropdown_z-index'
+        )
             .add({
                 'slds-dropdown_left':
                     this._placement === 'left' || this.isAutoAlignment(),

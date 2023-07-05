@@ -933,7 +933,9 @@ export default class FilterMenu extends LightningElement {
         const isDateTime = this.computedTypeAttributes.type === 'datetime';
         const isSmallRange = this.isRange || (this.isDateRange && isDateTime);
 
-        const classes = classSet('slds-dropdown slds-p-around_none').add({
+        const classes = classSet(
+            'slds-dropdown slds-p-around_none avonni-filter-menu__dropdown_z-index'
+        ).add({
             'slds-dropdown_left': alignment === 'left' || this.isAutoAlignment,
             'slds-dropdown_center': alignment === 'center',
             'slds-dropdown_right': alignment === 'right',
