@@ -32,7 +32,13 @@
 
 import { createElement } from 'lwc';
 import Kanban from '../kanban';
-import { ACTIONS, FIELDS, GROUP_VALUES, RECORDS } from './data';
+import {
+    ACTIONS,
+    FIELDS,
+    GROUP_VALUES,
+    RECORDS,
+    FIELD_ATTRIBUTES
+} from './data';
 
 let element;
 describe('Kanban', () => {
@@ -63,6 +69,7 @@ describe('Kanban', () => {
         expect(element.hideHeader).toBeFalsy();
         expect(element.subGroupFieldName).toBeUndefined();
         expect(element.keyField).toBeUndefined();
+        expect(element.fieldAttributes).toMatchObject(FIELD_ATTRIBUTES);
     });
 
     /* ----- ATTRIBUTES ----- */

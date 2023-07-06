@@ -1,18 +1,19 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Kanban extends LightningElement {
-    @api groupValues;
-    @api fields;
-    @api records;
     @api actions;
-    @api summarizeFieldName;
-    @api disableItemDragAndDrop;
-    @api disableColumnDragAndDrop;
-    @api isLoading;
-    @api variant;
-    @api hideHeader;
-    @api groupFieldName;
-    @api subGroupFieldName;
-    @api keyField;
     @api coverImageFieldName;
+    @api disableColumnDragAndDrop;
+    @api disableItemDragAndDrop;
+    @api fieldAttributes;
+    @api fields;
+    @api groupFieldName;
+    @api groupValues;
+    @api hideHeader;
+    @api isLoading;
+    @api keyField;
+    @api records;
+    @api subGroupFieldName;
+    @api summarizeFieldName;
+    @api variant;
 }

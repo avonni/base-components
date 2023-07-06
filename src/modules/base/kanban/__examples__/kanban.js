@@ -35,35 +35,37 @@ import Component from '../../storybookWrappers/kanban/kanban';
 customElements.define('ac-kanban', Component.CustomElementConstructor);
 
 export const Kanban = ({
-    groupValues,
-    fields,
-    records,
-    summarizeFieldName,
     actions,
+    coverImageFieldName,
     disableColumnDragAndDrop,
     disableItemDragAndDrop,
+    fieldAttributes,
+    fields,
     groupFieldName,
-    coverImageFieldName,
-    isLoading,
+    groupValues,
     hideHeader,
+    isLoading,
+    keyField,
+    records,
     subGroupFieldName,
-    variant,
-    keyField
+    summarizeFieldName,
+    variant
 }) => {
     const element = document.createElement('ac-kanban');
-    element.groupValues = groupValues;
-    element.fields = fields;
-    element.records = records;
-    element.summarizeFieldName = summarizeFieldName;
     element.actions = actions;
-    element.disableItemDragAndDrop = disableItemDragAndDrop;
-    element.disableColumnDragAndDrop = disableColumnDragAndDrop;
-    element.groupFieldName = groupFieldName;
-    element.isLoading = isLoading;
-    element.variant = variant;
     element.coverImageFieldName = coverImageFieldName;
+    element.disableColumnDragAndDrop = disableColumnDragAndDrop;
+    element.disableItemDragAndDrop = disableItemDragAndDrop;
+    element.fieldAttributes = fieldAttributes;
+    element.fields = fields;
+    element.groupFieldName = groupFieldName;
+    element.groupValues = groupValues;
     element.hideHeader = hideHeader;
-    element.subGroupFieldName = subGroupFieldName;
+    element.isLoading = isLoading;
     element.keyField = keyField;
+    element.records = records;
+    element.subGroupFieldName = subGroupFieldName;
+    element.summarizeFieldName = summarizeFieldName;
+    element.variant = variant;
     return element;
 };
