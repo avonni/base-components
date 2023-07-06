@@ -184,4 +184,8 @@ const ACTIONS = [
     { disabled: true, label: 'Action 3', name: 'Action 3' }
 ];
 
-export { GROUP_VALUES, FIELDS, RECORDS, ACTIONS };
+const FIELD_ATTRIBUTES = {
+    variant: 'label-hidden'
+};
+
+export { GROUP_VALUES, FIELDS, RECORDS, ACTIONS, FIELD_ATTRIBUTES };

@@ -176,6 +176,16 @@ export default {
                 type: { summary: 'String' }
             }
         },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the list item fields.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         variant: {
             name: 'variant',
             control: {
@@ -191,19 +201,22 @@ export default {
         }
     },
     args: {
-        groupValues: GROUP_VALUES,
-        fields: FIELDS,
-        records: RECORDS,
         actions: ACTIONS,
-        disableItemDragAndDrop: false,
-        disableColumnDragAndDrop: false,
         coverImageFieldName: 'coverImage',
-        isLoading: false,
-        hideHeader: false,
-        summarizeFieldName: 'amount',
+        disableColumnDragAndDrop: false,
+        disableItemDragAndDrop: false,
+        fieldAttributes: {
+            variant: 'label-hidden'
+        },
+        fields: FIELDS,
         groupFieldName: 'status',
-        variant: 'base',
-        keyField: 'id'
+        groupValues: GROUP_VALUES,
+        hideHeader: false,
+        isLoading: false,
+        keyField: 'id',
+        records: RECORDS,
+        summarizeFieldName: 'amount',
+        variant: 'base'
     }
 };
 
@@ -360,4 +373,9 @@ disabledItemDrag.args = {
 export const disabledColumnDrag = Template.bind({});
 disabledColumnDrag.args = {
     disableColumnDragAndDrop: true
+};
+
+export const fieldLabelInline = Template.bind({});
+fieldLabelInline.args = {
+    fieldAttributes: { variant: 'label-inline' }
 };

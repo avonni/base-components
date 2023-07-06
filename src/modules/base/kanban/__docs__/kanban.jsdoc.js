@@ -40,6 +40,12 @@
  */
 
 /**
+ * @typedef {Object} FieldAttributes
+ * @name fieldAttributes
+ * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**
