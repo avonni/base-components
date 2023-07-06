@@ -181,7 +181,7 @@ export default {
             control: {
                 type: 'object'
             },
-            description: 'Object of attributes for the list item fields.',
+            description: 'Object of attributes for the item fields.',
             table: {
                 type: { summary: 'object' }
             }
