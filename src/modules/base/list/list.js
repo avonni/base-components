@@ -48,7 +48,8 @@ const ICON_POSITIONS = {
 };
 
 const DIVIDER = {
-    valid: ['top', 'bottom', 'around']
+    valid: ['none', 'top', 'bottom', 'around'],
+    default: 'none'
 };
 
 const DEFAULT_LOAD_MORE_OFFSET = 20;
@@ -131,7 +132,7 @@ export default class List extends LightningElement {
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
-    _divider;
+    _divider = DIVIDER.default;
     _enableInfiniteLoading = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
@@ -283,7 +284,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Position of the item divider. Valid values include top, bottom and around.
+     * Position of the item divider. Valid values include none, top, bottom and around.
      *
      * @type {string}
      * @public
@@ -294,6 +295,7 @@ export default class List extends LightningElement {
     }
     set divider(value) {
         this._divider = normalizeString(value, {
+            fallbackValue: DIVIDER.default,
             validValues: DIVIDER.valid
         });
     }
@@ -695,7 +697,7 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet('slds-template__container')
             .add({
-                'avonni-list__item-divider_none': this.divider === '',
+                'avonni-list__item-divider_none': this.divider === 'none',
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'avonni-list__item-divider_around': this.divider === 'around'
@@ -781,9 +783,8 @@ export default class List extends LightningElement {
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap':
                     this._currentColumnCount > 1 && this.variant === 'base',
-                'avonni-list__has-card-style': this.divider === 'around',
                 'avonni-list__vertical-compact':
-                    ['', 'top', 'bottom'].includes(this.divider) &&
+                    ['none', 'top', 'bottom'].includes(this.divider) &&
                     this.isRegularList
             })
             .toString();

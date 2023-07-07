@@ -116,7 +116,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['', 'top', 'bottom', 'around'],
+            options: ['none', 'top', 'bottom', 'around'],
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
