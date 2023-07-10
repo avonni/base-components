@@ -325,7 +325,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     dispatchCellChangeEvent(state) {
         const dirtyValues = state.inlineEdit.dirtyValues;
-        dirtyValues[this.rowKeyValue][this.colKeyValue] = this.value;
 
         this.dispatchEvent(
             new CustomEvent('cellchangecustom', {

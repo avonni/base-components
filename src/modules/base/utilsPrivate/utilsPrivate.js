@@ -37,6 +37,15 @@ export { deepCopy, arraysEqual, ArraySlice, equal } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
 export {
+    camelCase,
+    capitalize,
+    kebabCase,
+    lowerCase,
+    startCase,
+    upperCase,
+    upperFirst
+} from './fontCase';
+export {
     normalizeBoolean,
     normalizeString,
     normalizeArray,

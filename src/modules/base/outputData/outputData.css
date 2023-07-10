@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .slds-checkbox
+.slds-checkbox
     [type='checkbox'][disabled]
     + .slds-checkbox__label
     .slds-checkbox_faux {
@@ -48,9 +48,19 @@ span {
 }
 
 .avonni-output-data__label {
-    font-weight: var(--avonni-output-data-label-font-weight, 'normal');
+    color: var(--avonni-output-data-label-text-color, #444444);
+    font-size: var(--avonni-output-data-label-font-size, 0.8125rem);
+    font-style: var(--avonni-output-data-label-font-style, normal);
+    font-weight: var(--avonni-output-data-label-font-weight, 400);
 }
 
 .avonni-output-data__label_inline {
     width: 30%;
+}
+
+.avonni-output-data__value {
+    color: var(--avonni-output-data-value-text-color, #080707);
+    font-size: var(--avonni-output-data-value-font-size, 0.8125rem);
+    font-style: var(--avonni-output-data-value-font-style, normal);
+    font-weight: var(--avonni-output-data-value-font-weight, 400);
 }

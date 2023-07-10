@@ -48,7 +48,8 @@ const ICON_POSITIONS = {
 };
 
 const DIVIDER = {
-    valid: ['top', 'bottom', 'around']
+    valid: ['none', 'top', 'bottom', 'around'],
+    default: 'none'
 };
 
 const DEFAULT_LOAD_MORE_OFFSET = 20;
@@ -131,7 +132,7 @@ export default class List extends LightningElement {
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
-    _divider;
+    _divider = DIVIDER.default;
     _enableInfiniteLoading = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
@@ -283,7 +284,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Position of the item divider. Valid values include top, bottom and around.
+     * Position of the item divider. Valid values include none, top, bottom and around.
      *
      * @type {string}
      * @public
@@ -294,6 +295,7 @@ export default class List extends LightningElement {
     }
     set divider(value) {
         this._divider = normalizeString(value, {
+            fallbackValue: DIVIDER.default,
             validValues: DIVIDER.valid
         });
     }
@@ -331,16 +333,18 @@ export default class List extends LightningElement {
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
 
-        const small = this.normalizeColumns(
+        const small = this.normalizeFieldColumns(
             normalizedFieldAttributes.smallContainerCols
         );
-        const medium = this.normalizeColumns(
+        const medium = this.normalizeFieldColumns(
             normalizedFieldAttributes.mediumContainerCols
         );
-        const large = this.normalizeColumns(
+        const large = this.normalizeFieldColumns(
             normalizedFieldAttributes.largeContainerCols
         );
-        const defaults = this.normalizeColumns(normalizedFieldAttributes.cols);
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
 
         // Keep same logic as in layoutItem.
         this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
@@ -464,7 +468,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Default number of columns on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @default 1
@@ -481,7 +485,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on small container widths. See `cols` for accepted values.
      * @type {number}
      * @public
      */
@@ -496,7 +500,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on medium container widths. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -512,7 +516,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on large container widths and above. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -693,7 +697,7 @@ export default class List extends LightningElement {
     get computedItemClass() {
         return classSet('slds-template__container')
             .add({
-                'avonni-list__item-divider_none': this.divider === '',
+                'avonni-list__item-divider_none': this.divider === 'none',
                 'avonni-list__item-divider_top': this.divider === 'top',
                 'avonni-list__item-divider_bottom': this.divider === 'bottom',
                 'avonni-list__item-divider_around': this.divider === 'around'
@@ -779,9 +783,8 @@ export default class List extends LightningElement {
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap':
                     this._currentColumnCount > 1 && this.variant === 'base',
-                'avonni-list__has-card-style': this.divider === 'around',
                 'avonni-list__vertical-compact':
-                    ['', 'top', 'bottom'].includes(this.divider) &&
+                    ['none', 'top', 'bottom'].includes(this.divider) &&
                     this.isRegularList
             })
             .toString();
@@ -1544,6 +1547,20 @@ export default class List extends LightningElement {
             return numValue;
         }
         return null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     * Matches the logic of cols, smallContainerCols, mediumContainerCols and largeContainerCols attributes.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
     }
 
     /**

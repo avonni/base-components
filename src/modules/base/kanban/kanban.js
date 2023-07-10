@@ -39,6 +39,7 @@ import { classSet } from 'c/utils';
 import {
     normalizeArray,
     normalizeBoolean,
+    normalizeObject,
     normalizeString
 } from 'c/utilsPrivate';
 import KanbanGroupsBuilder from './groupBuilder';
@@ -49,6 +50,11 @@ const KANBAN_VARIANTS = {
 };
 
 const SUMMARY_UPDATE_SPEED = 300;
+
+const FIELD_VARIANTS = {
+    default: 'label-hidden',
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
 
 /**
  * @class
@@ -79,6 +85,7 @@ export default class Kanban extends LightningElement {
     _draggedGroup;
     _draggedTile;
     _droppedTileHeight = 0;
+    _fieldAttributes = { variant: 'label-hidden' };
     _fieldsDistance = [];
     _groupsHeight = [];
     _groupsLength = [];
@@ -231,6 +238,28 @@ export default class Kanban extends LightningElement {
     }
     set disableItemDragAndDrop(value) {
         this._disableItemDragAndDrop = normalizeBoolean(value);
+    }
+
+    /**
+     * Object of attributes for the item fields. Field attributes: variant
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            {
+                fallbackValue: FIELD_VARIANTS.default,
+                validValues: FIELD_VARIANTS.valid
+            }
+        );
+        this._fieldAttributes = { ...this._fieldAttributes };
     }
 
     /**

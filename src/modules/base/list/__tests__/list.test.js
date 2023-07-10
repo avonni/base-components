@@ -170,7 +170,15 @@ describe('List', () => {
             const divItem = element.shadowRoot.querySelector(
                 '[data-element-id="div-item"]'
             );
-            expect(divItem.className).toEqual('slds-template__container');
+            const listElem = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(listElem.classList).toContain(
+                'avonni-list__vertical-compact'
+            );
+            expect(divItem.className).toEqual(
+                'slds-template__container avonni-list__item-divider_none'
+            );
         });
     });
     it('List: Divider = around', () => {
@@ -184,14 +192,12 @@ describe('List', () => {
             const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
-            const menu = element.shadowRoot.querySelector(
-                '[data-element-id="list-element"]'
-            );
             expect(divItem.classList).toContain(
                 'avonni-list__item-divider_around'
             );
-            expect(listElem.classList).toContain('avonni-list__has-card-style');
-            expect(menu.classList).toContain('avonni-list__has-card-style');
+            expect(listElem.classList).not.toContain(
+                'avonni-list__vertical-compact'
+            );
         });
     });
     it('List: Divider = top', () => {
@@ -239,10 +245,10 @@ describe('List', () => {
         element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
 
         return Promise.resolve().then(() => {
-            expect(element.fieldAttributes.cols).toBe(12);
-            expect(element.fieldAttributes.largeContainerCols).toBe(4);
-            expect(element.fieldAttributes.mediumContainerCols).toBe(12);
-            expect(element.fieldAttributes.smallContainerCols).toBe(12);
+            expect(element.fieldAttributes.cols).toBe(1);
+            expect(element.fieldAttributes.largeContainerCols).toBe(3);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(1);
+            expect(element.fieldAttributes.smallContainerCols).toBe(1);
         });
     });
 

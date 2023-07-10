@@ -39,11 +39,6 @@
 }
 
 /* VALUE ASSIGNMENTS */
-.avonni-list__has-card-style {
-    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
-    --avonni-card-sizing-border: 1px;
-}
-
 .avonni-list__item-menu {
     row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
     margin-inline: calc(
@@ -293,7 +288,6 @@ a.avonni-list__item-info-link:active {
 .avonni-list__item-divider_bottom {
     --avonni-card-sizing-border: 0px;
     --avonni-card-radius-border: 0px;
-    --avonni-card-shadow: var(--avonni-list-item-shadow, none);
 }
 
 .avonni-list__item-divider_top {

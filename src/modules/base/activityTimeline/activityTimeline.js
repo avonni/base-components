@@ -374,16 +374,18 @@ export default class ActivityTimeline extends LightningElement {
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
 
-        const small = this.normalizeColumns(
+        const small = this.normalizeFieldColumns(
             normalizedFieldAttributes.smallContainerCols
         );
-        const medium = this.normalizeColumns(
+        const medium = this.normalizeFieldColumns(
             normalizedFieldAttributes.mediumContainerCols
         );
-        const large = this.normalizeColumns(
+        const large = this.normalizeFieldColumns(
             normalizedFieldAttributes.largeContainerCols
         );
-        const defaults = this.normalizeColumns(normalizedFieldAttributes.cols);
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
 
         // Keep same logic as in layoutItem.
         this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
@@ -875,6 +877,19 @@ export default class ActivityTimeline extends LightningElement {
             return numValue;
         }
         return null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
     }
 
     /**

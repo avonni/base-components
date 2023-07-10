@@ -34,10 +34,17 @@
 
 <template>
     <div class={computedWrapperClass}>
-        <div if:true={shouldDisplayLabel} class={computedLabelClass} title={label}>
+        <div
+            if:true={shouldDisplayLabel}
+            class={computedLabelClass}
+            title={label}
+        >
             {label}
         </div>
-        <div class="slds-truncate slds-item_detail" title={value}>
+        <div
+            class="avonni-output-data__value slds-truncate slds-item_detail"
+            title={value}
+        >
             <!-- Boolean -->
             <template if:true={showBoolean}>
                 <lightning-icon
