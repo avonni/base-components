@@ -600,9 +600,32 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    get computedCompareContainerStyle() {
+        const styleProperties = {};
+
+        styleProperties.width = `calc(100% - ${
+            this.thumbnail ? '0.5rem' : '0%'
+        })`;
+        styleProperties.height = `calc(100% - ${
+            this.thumbnail ? '0.5rem' : '0%'
+        })`;
+        styleProperties.margin = this.thumbnail ? '0.25rem' : 0;
+
+        let styleValue = '';
+        if (styleProperties) {
+            Object.keys(styleProperties).forEach((key) => {
+                if (styleProperties[key]) {
+                    styleValue += `${key}: ${styleProperties[key]}; `;
+                }
+            });
+        }
+
+        return styleValue;
+    }
+
     get computedCompareImgContainerStyle() {
         return this.compareAttributes.orientation === 'horizontal'
-            ? 'width: 50%;'
+            ? 'width: 50%; height: 100%;'
             : 'width: 100%; height: 50%;';
     }
 

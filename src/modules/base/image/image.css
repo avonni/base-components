@@ -44,7 +44,7 @@
     padding: 0.25rem;
     background-color: #fff;
     border: 1px solid #dee2e6;
-    border-radius: var(--avonni-image-radius-border, 0.25rem);
+    border-radius: var(--avonni-image-radius-border, 0.25rem) !important;
 }
 
 .avonni-image_magnifier_thumbnail {
@@ -75,6 +75,10 @@
     border-radius: var(--avonni-image-radius-border, 0);
 }
 
+.avonni-image_img_border-radius {
+    border-radius: var(--avonni-image-radius-border, 0);
+}
+
 .avonni-image_pointer-events-none {
     pointer-events: none;
 }
@@ -94,9 +98,8 @@
 .avonni-image__compare-container {
     top: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
-    padding: inherit;
+    border-radius: var(--avonni-image-radius-border, 0);
+    overflow: hidden;
 }
 
 .avonni-image__compare-slider {

@@ -36,6 +36,7 @@
     <div data-element-id="container" class={computedImageClass}>
         <img
             alt={alternativeText}
+            class="avonni-image_img_border-radius"
             data-element-id="img"
             src={src}
             srcset={srcset}
@@ -80,6 +81,7 @@
             if:true={compareSrc}
             class={computedCompareContainerClass}
             data-element-id="compare-container"
+            style={computedCompareContainerStyle}
             onmousemove={handleCompareMouseMove}
             ontouchstart={handleCompareMouseDown}
             ontouchmove={handleCompareMouseMove}
