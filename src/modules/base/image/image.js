@@ -713,6 +713,17 @@ export default class Image extends LightningElement {
             .toString();
     }
 
+    get computedMagnifierClass() {
+        return classSet(
+            'avonni-image_magnifier slds-scrollable_none slds-is-absolute avonni-image_pointer-events-none'
+        )
+            .add({
+                'avonni-image_magnifier_thumbnail':
+                    this.thumbnail && this.magnifierType !== 'standard'
+            })
+            .toString();
+    }
+
     /**
      * Final computed Magnifier Style.
      *
@@ -1218,7 +1229,8 @@ export default class Image extends LightningElement {
                 standardMagnifier(
                     data,
                     this.magnifierAttributes,
-                    this.position
+                    this.position,
+                    this.thumbnail
                 );
                 break;
             case 'inner':

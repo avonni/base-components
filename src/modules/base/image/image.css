@@ -47,6 +47,10 @@
     border-radius: var(--avonni-image-radius-border, 0.25rem);
 }
 
+.avonni-image_magnifier_thumbnail {
+    margin: 0.25rem;
+}
+
 .avonni-image_fit-content {
     max-width: fit-content;
 }
@@ -68,7 +72,6 @@
 .avonni-image_container {
     position: relative;
     width: fit-content;
-    overflow: auto;
     border-radius: var(--avonni-image-radius-border, 0);
 }
 
