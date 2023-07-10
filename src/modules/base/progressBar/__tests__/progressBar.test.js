@@ -78,7 +78,8 @@ describe('ProgressBar', () => {
         expect(element.theme).toBe('base');
         expect(element.thickness).toBe('medium');
         expect(element.value).toBe(0);
-        expect(element.valueLabel).toBeUndefined();
+        expect(element.valuePrefix).toBeUndefined();
+        expect(element.valueSuffix).toBeUndefined();
         expect(element.valuePosition).toBe('top-right');
         expect(element.variant).toBe('base');
     });
@@ -852,15 +853,16 @@ describe('ProgressBar', () => {
 
     // value-label
     // Depends on showValue
-    it('Progress Bar: valueLabel', () => {
-        element.valueLabel = 'A string label';
+    it('Progress Bar: value labels', () => {
+        element.valuePrefix = 'Prefix';
+        element.valueSuffix = 'Suffix';
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
                 '.avonni-progress-bar__value_font'
             );
-            expect(value.textContent.trim()).toBe('0% A string label');
+            expect(value.textContent.trim()).toBe('Prefix 0% Suffix');
         });
     });
 

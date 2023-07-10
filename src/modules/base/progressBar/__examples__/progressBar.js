@@ -43,7 +43,8 @@ export const ProgressBar = ({
     value,
     showValue,
     valuePosition,
-    valueLabel,
+    valuePrefix,
+    valueSuffix,
     referenceLines,
     variant,
     theme,
@@ -57,7 +58,8 @@ export const ProgressBar = ({
     element.value = value;
     element.showValue = showValue;
     element.valuePosition = valuePosition;
-    element.valueLabel = valueLabel;
+    element.valuePrefix = valuePrefix;
+    element.valueSuffix = valueSuffix;
     element.referenceLines = referenceLines;
     element.variant = variant;
     element.theme = theme;

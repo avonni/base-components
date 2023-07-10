@@ -102,8 +102,20 @@ export default {
                 category: 'Value'
             }
         },
-        valueLabel: {
-            name: 'value-label',
+        valuePrefix: {
+            name: 'value-prefix',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text display before the value. <br> Example: Progress 25%',
+            table: {
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        valueSuffix: {
+            name: 'value-suffix',
             control: {
                 type: 'text'
             },
@@ -281,7 +293,8 @@ TexturedVisibleValue.args = {
     label: 'Textured progress bar with visible value',
     value: 24,
     referenceLines: oneReferenceLine,
-    valueLabel: 'Value label',
+    valuePrefix: 'Progress:',
+    valueSuffix: 'completed',
     showValue: true,
     textured: true
 };
@@ -291,7 +304,8 @@ ExtraSmallVertical.args = {
     label: 'Extra small and thin vertical progress bar',
     value: 63,
     referenceLines: oneReferenceLine,
-    valueLabel: 'Value label',
+    valuePrefix: 'Progress:',
+    valueSuffix: 'completed',
     valuePosition: 'bottom-right',
     showValue: true,
     size: 'x-small',

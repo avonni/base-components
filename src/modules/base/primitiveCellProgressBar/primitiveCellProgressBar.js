@@ -39,7 +39,8 @@ export default class PrimitiveCellProgressBar extends LightningElement {
     @api textured;
     @api theme;
     @api thickness;
-    @api valueLabel;
+    @api valuePrefix;
+    @api valueSuffix;
     @api valuePosition;
     @api variant;
 
