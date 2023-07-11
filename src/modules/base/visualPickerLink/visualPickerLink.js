@@ -187,6 +187,7 @@ export default class VisualPickerLink extends LightningElement {
         return classSet('avonni-visual-picker-link__tile')
             .add({
                 'slds-welcome-mat__tile_complete': this._completed,
+                'avonni-visual-picker-link__tile_complete': this._completed,
                 'avonni-visual-picker-link__tile_info-only': this._infoOnly,
                 'avonni-visual-picker-link__box':
                     this._disabled && !this._infoOnly,
