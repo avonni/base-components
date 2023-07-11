@@ -1731,6 +1731,7 @@ export default class Kanban extends LightningElement {
      */
     swapGroups() {
         const groups = JSON.parse(JSON.stringify(this._groupValues));
+        const groupValue = groups[this._clickedGroupIndex].value;
         groups.splice(
             this._releasedGroupIndex,
             0,
@@ -1756,6 +1757,26 @@ export default class Kanban extends LightningElement {
                 array.splice(this._clickedGroupIndex, 1)[0]
             );
         });
+
+        /**
+         * The event fired when a column is moved from a position to another.
+         *
+         * @event
+         * @name columnchange
+         * @param {number} index Index of the final position of the column.
+         * @param {string} name Value of the column.
+         * @param {object[]} groupValues New group values of the Kanban.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('columnchange', {
+                detail: {
+                    index: this._releasedGroupIndex,
+                    name: groupValue,
+                    groupValues: this._groupValues
+                }
+            })
+        );
 
         this.updateTiles();
     }
