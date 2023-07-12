@@ -600,29 +600,6 @@ export default class Image extends LightningElement {
             .toString();
     }
 
-    get computedCompareContainerStyle() {
-        const styleProperties = {};
-
-        styleProperties.width = `calc(100% - ${
-            this.thumbnail ? '0.5rem' : '0%'
-        })`;
-        styleProperties.height = `calc(100% - ${
-            this.thumbnail ? '0.5rem' : '0%'
-        })`;
-        styleProperties.margin = this.thumbnail ? '0.25rem' : 0;
-
-        let styleValue = '';
-        if (styleProperties) {
-            Object.keys(styleProperties).forEach((key) => {
-                if (styleProperties[key]) {
-                    styleValue += `${key}: ${styleProperties[key]}; `;
-                }
-            });
-        }
-
-        return styleValue;
-    }
-
     get computedCompareImgContainerStyle() {
         return this.compareAttributes.orientation === 'horizontal'
             ? 'width: 50%; height: 100%;'
@@ -732,17 +709,6 @@ export default class Image extends LightningElement {
                 'avonni-image__container_compare-labels-on-hover':
                     this.compareAttributes.showLabelsOnHover,
                 'avonni-image__container_user-select_none': this.compareSrc
-            })
-            .toString();
-    }
-
-    get computedMagnifierClass() {
-        return classSet(
-            'avonni-image_magnifier slds-scrollable_none slds-is-absolute avonni-image_pointer-events-none'
-        )
-            .add({
-                'avonni-image_magnifier_thumbnail':
-                    this.thumbnail && this.magnifierType !== 'standard'
             })
             .toString();
     }
@@ -1252,8 +1218,7 @@ export default class Image extends LightningElement {
                 standardMagnifier(
                     data,
                     this.magnifierAttributes,
-                    this.position,
-                    this.thumbnail
+                    this.position
                 );
                 break;
             case 'inner':

@@ -60,38 +60,26 @@ export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
 /**
  * Automatically position the magnifier depending on the image alignment.
  */
-function autoPositionMagnifier(
-    magnifier,
-    img,
-    magnifierAttributes,
-    position,
-    thumbnail
-) {
-    const thumbnailMargin = thumbnail ? 0.25 : 0;
+function autoPositionMagnifier(magnifier, img, magnifierAttributes, position) {
+    //const thumbnailMargin = thumbnail ? 0.25 : 0;
     switch (position) {
         case 'right':
             magnifier.style.left = `${
                 -magnifier.offsetWidth - magnifierAttributes.horizontalOffset
             }px`;
             magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
-            magnifier.style.marginRight = `calc(${thumbnailMargin}rem * 2)`;
-            magnifier.style.marginTop = `${thumbnailMargin}rem`;
             break;
         case 'center':
             magnifier.style.left = `${
                 img.width + magnifierAttributes.horizontalOffset
             }px`;
             magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
-            magnifier.style.marginLeft = `calc(${thumbnailMargin}rem * 2)`;
-            magnifier.style.marginTop = `${thumbnailMargin}rem`;
             break;
         default:
             magnifier.style.left = `${
                 img.width + magnifierAttributes.horizontalOffset
             }px`;
             magnifier.style.top = `${magnifierAttributes.verticalOffset}px`;
-            magnifier.style.marginLeft = `calc(${thumbnailMargin}rem * 2)`;
-            magnifier.style.marginTop = `${thumbnailMargin}rem`;
             break;
     }
 }
@@ -148,12 +136,7 @@ export function innerMagnifier(
 /**
  * Apply the standard magnifying effect to the image.
  */
-export function standardMagnifier(
-    data,
-    magnifierAttributes,
-    imgPosition,
-    thumbnail
-) {
+export function standardMagnifier(data, magnifierAttributes, imgPosition) {
     const { x, y, w, h, magnifier, magnifiedLens, magnifiedImage, img } = data;
     const {
         position,
@@ -165,14 +148,14 @@ export function standardMagnifier(
     } = magnifierAttributes;
     const ratioW = parseFloat(zoomRatioWidth);
     const ratioH = parseFloat(zoomRatioHeight);
-    const thumbnailMargin = thumbnail ? 0.25 : 0;
+    //const thumbnailMargin = thumbnail ? 0.25 : 0;
 
     magnifiedLens.style.display = 'block';
     magnifiedLens.style.width = `${ratioW / zoomFactor}px`;
     magnifiedLens.style.height = `${ratioH / zoomFactor}px`;
     magnifiedLens.style.top = `${y - h / zoomFactor}px`;
     magnifiedLens.style.left = `${x - w / zoomFactor}px`;
-    magnifiedLens.style.margin = thumbnail ? '0.25rem' : 0;
+    //magnifiedLens.style.margin = thumbnail ? '0.25rem' : 0;
 
     switch (position) {
         case 'auto':
@@ -180,8 +163,7 @@ export function standardMagnifier(
                 magnifier,
                 img,
                 magnifierAttributes,
-                imgPosition,
-                thumbnail
+                imgPosition
             );
             break;
         case 'left':
@@ -189,28 +171,20 @@ export function standardMagnifier(
                 -magnifier.offsetWidth - horizontalOffset
             }px`;
             magnifier.style.top = `${verticalOffset}px`;
-            magnifier.style.marginRight = `${thumbnailMargin}rem`;
-            magnifier.style.marginTop = `${thumbnailMargin}rem`;
             break;
         case 'right':
             magnifier.style.left = `${img.width + horizontalOffset}px`;
             magnifier.style.top = `${verticalOffset}px`;
-            magnifier.style.marginLeft = `calc(${thumbnailMargin}rem * 2)`;
-            magnifier.style.marginTop = `${thumbnailMargin}rem`;
             break;
         case 'top':
             magnifier.style.left = `${horizontalOffset}px`;
             magnifier.style.top = `${
                 -magnifier.offsetHeight - verticalOffset
             }px`;
-            magnifier.style.marginBottom = `${thumbnailMargin}rem`;
-            magnifier.style.marginLeft = `${thumbnailMargin}rem`;
             break;
         case 'bottom':
             magnifier.style.left = `${horizontalOffset}px`;
             magnifier.style.top = `${img.height + verticalOffset}px`;
-            magnifier.style.marginLeft = `${thumbnailMargin}rem`;
-            magnifier.style.marginTop = `calc(${thumbnailMargin}rem * 2)`;
             break;
         default:
             break;
