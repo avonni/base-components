@@ -40,7 +40,7 @@
 }
 
 .avonni-kanban__path_item {
-    min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
+    min-width: var(--avonni-kanban-column-sizing-min-width, 18em);
     max-width: calc(
         var(--avonni-kanban-column-sizing-max-width, 22.5em) - 0.5rem
     );
@@ -126,7 +126,7 @@
 
 .avonni-kanban__field {
     flex-direction: column;
-    min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
+    min-width: var(--avonni-kanban-column-sizing-min-width, 18em);
     max-width: var(--avonni-kanban-column-sizing-max-width, 22.5em);
     width: 100%;
     border-right: 1px solid #c9c7c5;

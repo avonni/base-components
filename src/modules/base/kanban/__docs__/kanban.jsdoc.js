@@ -51,7 +51,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-kanban-column-sizing-min-width
- * @default 14em
+ * @default 18em
  * @type (length|percentage)
  */
 /**

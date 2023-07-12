@@ -318,6 +318,38 @@ describe('Kanban', () => {
         });
     });
 
+    it('Kanban : columnchange event', () => {
+        element.keyField = 'id';
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('columnchange', handler);
+
+        return Promise.resolve().then(() => {
+            const groupHeader = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__group_header"]'
+            );
+            groupHeader.dispatchEvent(new MouseEvent('mousedown'));
+
+            // mousemove is handled on the kanban, not the group header
+            groupHeader.parentElement.dispatchEvent(
+                new MouseEvent('mousemove')
+            );
+            groupHeader.dispatchEvent(new MouseEvent('mouseup'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('open');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     it('Kanban : actionclick event', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
