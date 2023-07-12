@@ -17,11 +17,18 @@
 }
 
 /* Texts and value */
+.avonni-metric__description,
+.avonni-metric__label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 .avonni-metric__description {
     font-size: var(--avonni-metric-description-font-size, 0.75rem);
     font-style: var(--avonni-metric-description-font-style, normal);
     font-weight: var(--avonni-metric-description-font-weight, normal);
     color: var(--avonni-metric-description-text-color, #747474);
+    -webkit-line-clamp: var(--avonni-metric-description-sizing-line-clamp, 2);
 }
 
 .avonni-metric__label {
@@ -29,6 +36,7 @@
     font-style: var(--avonni-metric-label-font-style, normal);
     font-weight: var(--avonni-metric-label-font-weight, normal);
     color: var(--avonni-metric-label-text-color, #444444);
+    -webkit-line-clamp: var(--avonni-metric-label-sizing-line-clamp, 1);
 }
 
 .avonni-metric__primary {
