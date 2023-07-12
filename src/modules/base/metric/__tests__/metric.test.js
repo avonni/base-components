@@ -414,19 +414,21 @@ describe('Metric', () => {
                 '[data-element-id="div-metrics"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-align-end'
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-wrap slds-grid_vertical-align-end'
             );
 
             const primary = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-primary"]'
             );
-            expect(primary.className).toBe('avonni-metric__primary slds-show');
+            expect(primary.className).toBe(
+                'avonni-metric__primary slds-show slds-m-right_x-small'
+            );
 
             const secondary = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-secondary"]'
             );
             expect(secondary.className).toBe(
-                'avonni-metric__secondary slds-m-left_x-small slds-show'
+                'avonni-metric__secondary slds-show'
             );
         });
     });
@@ -441,19 +443,21 @@ describe('Metric', () => {
                 '[data-element-id="div-metrics"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-align-end slds-grid_reverse'
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-wrap slds-grid_vertical-align-end slds-grid_reverse'
             );
 
             const primary = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-primary"]'
             );
-            expect(primary.className).toBe('avonni-metric__primary slds-show');
+            expect(primary.className).toBe(
+                'avonni-metric__primary slds-show slds-m-left_x-small'
+            );
 
             const secondary = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-metric-secondary"]'
             );
             expect(secondary.className).toBe(
-                'avonni-metric__secondary slds-m-right_x-small slds-show'
+                'avonni-metric__secondary slds-show'
             );
         });
     });
@@ -497,7 +501,7 @@ describe('Metric', () => {
                 '[data-element-id="div-metrics"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-grid_vertical-reverse'
+                'avonni-metric__primary-and-secondary-wrapper slds-grid slds-wrap slds-grid_vertical-reverse'
             );
 
             const primary = element.shadowRoot.querySelector(
