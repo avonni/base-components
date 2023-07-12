@@ -40,6 +40,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-metric-description-sizing-line-clamp
+ * @default 2
+ * @type integer
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-metric-description-text-color
  * @default #747474
  * @type color
@@ -61,6 +67,12 @@
  * @name --avonni-metric-label-font-weigth
  * @default normal
  * @type (string|number)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-metric-label-sizing-line-clamp
+ * @default 1
+ * @type integer
  */
 /**
  * @memberof stylingHooks

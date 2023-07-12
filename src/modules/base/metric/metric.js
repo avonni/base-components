@@ -701,7 +701,7 @@ export default class Metric extends LightningElement {
         const position = this.secondaryPosition;
         return classSet('avonni-metric__primary-and-secondary-wrapper')
             .add({
-                'slds-grid': position !== 'bottom',
+                'slds-grid slds-wrap': position !== 'bottom',
                 'slds-grid_vertical-align-end':
                     position === 'left' || position === 'right',
                 'slds-grid_reverse': position === 'left',
@@ -720,6 +720,10 @@ export default class Metric extends LightningElement {
         const classes = classSet('avonni-metric__primary').add({
             'slds-show_inline-block':
                 position === 'bottom' || position === 'top',
+            'slds-m-right_x-small':
+                isFinite(this.secondaryValue) && position === 'right',
+            'slds-m-left_x-small':
+                isFinite(this.secondaryValue) && position === 'left',
             'slds-show': position === 'left' || position === 'right'
         });
 
@@ -744,8 +748,6 @@ export default class Metric extends LightningElement {
     get secondaryClass() {
         const position = this.secondaryPosition;
         const classes = classSet('avonni-metric__secondary').add({
-            'slds-m-left_x-small': isFinite(this.value) && position === 'right',
-            'slds-m-right_x-small': isFinite(this.value) && position === 'left',
             'slds-show_inline-block':
                 position === 'bottom' || position === 'top',
             'slds-show': position === 'left' || position === 'right'

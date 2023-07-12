@@ -47,7 +47,7 @@
             data-element-id="avonni-avatar"
         ></c-avatar>
 
-        <div class="avonni-metric__flex-col">
+        <div class="avonni-metric__flex-col slds-has-flexi-truncate">
             <!-- Label -->
             <div
                 if:true={label}
@@ -58,7 +58,7 @@
             </div>
             <div class={metricsClass} data-element-id="div-metrics">
                 <!-- Primary -->
-                <div>
+                <div class="slds-truncate">
                     <c-primitive-metric
                         class={primaryClass}
                         currency-code={currencyCode}
@@ -80,7 +80,7 @@
                 </div>
 
                 <!-- Secondary -->
-                <div class="avonni-metric__secondary-wrapper">
+                <div class="avonni-metric__secondary-wrapper slds-truncate">
                     <c-primitive-metric
                         if:true={showSecondaryMetric}
                         class={secondaryClass}
