@@ -20,6 +20,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-description-line-clamp
+ * @type number
+ * @default 2
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-icon-radius-border
  * @type sizing
  */
@@ -131,4 +137,10 @@
  * @name --avonni-visual-picker-link-title-font-weight
  * @type font
  * @default 700
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-title-line-clamp
+ * @type number
+ * @default 1
  */
