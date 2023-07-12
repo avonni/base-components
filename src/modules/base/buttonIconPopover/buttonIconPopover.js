@@ -544,14 +544,6 @@ export default class ButtonIconPopover extends LightningElement {
         if (this.popoverVisible) {
             this.toggleMenuVisibility();
         }
-        /**
-         * The event fired when the popover is closed.
-         *
-         * @event
-         * @name close
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('close'));
     }
 
     /*
@@ -788,6 +780,9 @@ export default class ButtonIconPopover extends LightningElement {
             if (this.popoverVisible) {
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
+                this.dispatchOpen();
+            } else {
+                this.dispatchClose();
             }
 
             this.classList.toggle('slds-is-open');
@@ -806,6 +801,7 @@ export default class ButtonIconPopover extends LightningElement {
                 if (this._connected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
+                        this.dispatchClose();
                     });
 
                     this.pollBoundingRect();
@@ -819,5 +815,33 @@ export default class ButtonIconPopover extends LightningElement {
      */
     isAutoAlignment() {
         return this._placement.startsWith('auto');
+    }
+
+    /**
+     * Dispatch the `close` event.
+     */
+    dispatchClose() {
+        /**
+         * The event fired when the popover is closed.
+         *
+         * @event
+         * @name close
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('close'));
+    }
+
+    /**
+     * Dispatch the `open` event.
+     */
+    dispatchOpen() {
+        /**
+         * The event fired when the popover is opened.
+         *
+         * @event
+         * @name open
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('open'));
     }
 }

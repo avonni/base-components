@@ -728,14 +728,30 @@ describe('Button Icon Popover', () => {
     });
 
     // button icon popover close
-    it('Button icon Popover: event close', () => {
-        const handler = jest.fn();
-        element.addEventListener('close', handler);
-        element.close();
+    it('Button icon Popover: event close and open', () => {
+        const closeHandler = jest.fn();
+        const openHandler = jest.fn();
+        element.addEventListener('close', closeHandler);
+        element.addEventListener('open', openHandler);
 
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        let button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-main"]'
+        );
+        button.click();
+        expect(openHandler).toHaveBeenCalled();
+        expect(openHandler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(openHandler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(openHandler.mock.calls[0][0].composed).toBeFalsy();
+
+        return Promise.resolve().then(() => {
+            button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-main"]'
+            );
+            button.click();
+            expect(closeHandler).toHaveBeenCalled();
+            expect(closeHandler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(closeHandler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(closeHandler.mock.calls[0][0].composed).toBeFalsy();
+        });
     });
 });
