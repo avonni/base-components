@@ -99,9 +99,9 @@ export default class ProgressBar extends LightningElement {
      * @public
      */
     @api label;
-    
+
     /**
-     * Text display before the value.
+     * Text displayed before the value.
      *
      * @type {string}
      * @public
@@ -321,7 +321,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
-     * Text display next to the value.
+     * Text displayed next to the value.
      *
      * @type {string}
      * @public
