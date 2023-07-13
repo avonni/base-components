@@ -78,10 +78,24 @@
 }
 
 .avonni-visual-picker-link__tile-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(--avonni-visual-picker-link-title-line-clamp, 1);
     color: var(--avonni-visual-picker-link-title-text-color, #080707);
     font-weight: var(--avonni-visual-picker-link-title-font-weight, 700);
     font-size: var(--avonni-visual-picker-link-title-font-size, 1em);
     font-style: var(--avonni-visual-picker-link-title-font-style, normal);
+}
+
+.avonni-visual-picker-link__tile-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(
+        --avonni-visual-picker-link-description-line-clamp,
+        2
+    );
 }
 
 .avonni-visual-picker-link__tile:not(.avonni-visual-picker-link__tile_complete):not(.avonni-visual-picker-link__tile_info-only):not(.avonni-visual-picker-link_disabled) {
