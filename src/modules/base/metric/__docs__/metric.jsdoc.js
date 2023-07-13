@@ -40,7 +40,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metric-description-sizing-line-clamp
+ * @name --avonni-metric-description-line-clamp
  * @default 2
  * @type integer
  */
@@ -70,7 +70,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-metric-label-sizing-line-clamp
+ * @name --avonni-metric-label-line-clamp
  * @default 1
  * @type integer
  */
