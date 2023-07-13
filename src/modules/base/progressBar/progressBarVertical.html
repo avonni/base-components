@@ -40,7 +40,7 @@
                 class="avonni-progress-bar__value_font"
                 aria-hidden="true"
             >
-                {value}% {valueLabel}
+                {valuePrefix} {value}% {valueSuffix}
             </span>
             <span
                 if:true={label}
@@ -52,7 +52,7 @@
                 class="avonni-progress-bar__value_font"
                 aria-hidden="true"
             >
-                {value}% {valueLabel}
+            {valuePrefix} {value}% {valueSuffix}
             </span>
         </lightning-layout-item>
     </lightning-layout>
@@ -84,7 +84,7 @@
     <lightning-layout if:true={showPositionBottom}>
         <lightning-layout-item size="12" class="slds-text-align_center">
             <span class="avonni-progress-bar__value_font" aria-hidden="true">
-                {value}% {valueLabel}
+                {valuePrefix} {value}% {valueSuffix}
             </span>
         </lightning-layout-item>
     </lightning-layout>

@@ -99,13 +99,14 @@ export default class ProgressBar extends LightningElement {
      * @public
      */
     @api label;
+
     /**
-     * Text display next to the value.
+     * Text displayed before the value.
      *
      * @type {string}
      * @public
      */
-    @api valueLabel;
+    @api valuePrefix;
 
     _orientation = PROGRESS_BAR_ORIENTATIONS.default;
     _referenceLines = [];
@@ -117,6 +118,7 @@ export default class ProgressBar extends LightningElement {
     _value = DEFAULT_VALUE;
     _valuePosition = VALUE_POSITIONS.default;
     _variant = PROGRESS_BAR_VARIANTS.default;
+    _valueSuffix;
 
     /**
      * Render the progress bar depending on its orientation.
@@ -283,6 +285,23 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
+     * Deprecated. Use `value-suffix` instead.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get valueLabel() {
+        return this._valueSuffix;
+    }
+    set valueLabel(value) {
+        this._valueSuffix = value;
+        console.warn(
+            'The "value-label" attribute is deprecated. Use "value-suffix" instead.'
+        );
+    }
+
+    /**
      * Position of the value if present. Valid values include left, right, top-right, top-left, bottom-right and bottom-left.
      *
      * @type {string}
@@ -299,6 +318,20 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: VALUE_POSITIONS.default,
             validValues: VALUE_POSITIONS.valid
         });
+    }
+
+    /**
+     * Text displayed next to the value.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get valueSuffix() {
+        return this._valueSuffix;
+    }
+    set valueSuffix(value) {
+        this._valueSuffix = value;
     }
 
     /**

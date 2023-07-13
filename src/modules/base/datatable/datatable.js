@@ -223,6 +223,8 @@ export default class Datatable extends LightningDatatable {
                 'theme',
                 'thickness',
                 'valueLabel',
+                'valuePrefix',
+                'valueSuffix',
                 'valuePostion',
                 'variant'
             ]
