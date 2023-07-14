@@ -61,7 +61,6 @@ export function applyBoundaries(realPos, dimensions, magnifierAttributes) {
  * Automatically position the magnifier depending on the image alignment.
  */
 function autoPositionMagnifier(magnifier, img, magnifierAttributes, position) {
-    //const thumbnailMargin = thumbnail ? 0.25 : 0;
     switch (position) {
         case 'right':
             magnifier.style.left = `${
@@ -148,14 +147,12 @@ export function standardMagnifier(data, magnifierAttributes, imgPosition) {
     } = magnifierAttributes;
     const ratioW = parseFloat(zoomRatioWidth);
     const ratioH = parseFloat(zoomRatioHeight);
-    //const thumbnailMargin = thumbnail ? 0.25 : 0;
 
     magnifiedLens.style.display = 'block';
     magnifiedLens.style.width = `${ratioW / zoomFactor}px`;
     magnifiedLens.style.height = `${ratioH / zoomFactor}px`;
     magnifiedLens.style.top = `${y - h / zoomFactor}px`;
     magnifiedLens.style.left = `${x - w / zoomFactor}px`;
-    //magnifiedLens.style.margin = thumbnail ? '0.25rem' : 0;
 
     switch (position) {
         case 'auto':
