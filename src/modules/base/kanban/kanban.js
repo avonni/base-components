@@ -172,6 +172,20 @@ export default class Kanban extends LightningElement {
     @api coverImageFieldName;
 
     /**
+     * Name of the field containing the description of the tile.
+     * @type {string}
+     * @public
+     */
+    @api descriptionFieldName;
+
+    /**
+     * Name of the field containing the due date of the tile.
+     * @type {string}
+     * @public
+     */
+    @api dueDateFieldName;
+
+    /**
      * Name of the data field containing the group label the data belongs to.
      *
      * @type {string}
@@ -188,6 +202,20 @@ export default class Kanban extends LightningElement {
      * @required
      */
     @api keyField;
+
+    /**
+     * Name of the field containing the start date of the tile.
+     * @type {string}
+     * @public
+     */
+    @api startDateFieldName;
+
+    /**
+     * Name of the field containing the title of the tile.
+     * @type {string}
+     * @public
+     */
+    @api titleFieldName;
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -479,6 +507,15 @@ export default class Kanban extends LightningElement {
      */
     get hasActions() {
         return this.actions && this.actions.length > 0;
+    }
+
+    /**
+     * Check if the tile has a header.
+     *
+     * @type {boolean}
+     */
+    get hasTileHeader() {
+        return this.titleFieldName || this.descriptionFieldName;
     }
 
     /**
@@ -1592,7 +1629,11 @@ export default class Kanban extends LightningElement {
             summarizeFieldName: this.summarizeFieldName,
             coverImageFieldName: this.coverImageFieldName,
             subGroupFieldName: this.subGroupFieldName,
-            keyField: this.keyField
+            keyField: this.keyField,
+            titleFieldName: this.titleFieldName,
+            descriptionFieldName: this.descriptionFieldName,
+            startDateFieldName: this.startDateFieldName,
+            dueDateFieldName: this.dueDateFieldName
         });
         if (this._computedGroups.length === 0) {
             this._groupValues.forEach((_, i) => {

@@ -77,6 +77,28 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        titleFieldName: {
+            name: 'title-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the field that contains the title for the tile.',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
+        descriptionFieldName: {
+            name: 'description-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the field that contains the description for the tile.',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
         coverImageFieldName: {
             name: 'cover-image-field-name',
             control: {
@@ -95,6 +117,28 @@ export default {
             },
             description:
                 ' Name of the data field containing the group label the data belongs to. ',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
+        startDateFieldName: {
+            name: 'start-date-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the field that contains the start date for the tile.',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
+        dueDateFieldName: {
+            name: 'due-date-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the field that contains the due date for the tile.',
             table: {
                 type: { summary: 'String' }
             }
@@ -215,7 +259,11 @@ export default {
         isLoading: false,
         keyField: 'id',
         records: RECORDS,
+        startDateFieldName: 'startDate',
+        dueDateFieldName: 'dueDate',
         summarizeFieldName: 'amount',
+        titleFieldName: 'opportunityName',
+        descriptionFieldName: 'description',
         variant: 'base'
     }
 };

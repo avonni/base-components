@@ -186,12 +186,6 @@
     z-index: 1;
 }
 
-.avonni-kanban__tile_icon {
-    position: absolute;
-    right: 0.75rem;
-    bottom: 0.75rem;
-}
-
 .avonni-kanban__tile_actions {
     position: absolute;
     z-index: 99;
@@ -290,6 +284,45 @@
 
 .avonni-kanban__variant_base .avonni-kanban__avatar {
     margin-right: -5%;
+}
+
+.avonni-kanban__tile_header {
+    padding: 0.75rem 0.75rem 0 0.75rem;
+}
+
+.avonni-kanban__tile_title {
+    font-size: var(--avonni-kanban-title-font-size, 1rem);
+    font-weight: var(--avonni-kanban-title-font-weight, 400);
+    font-style: var(--avonni-kanban-title-font-style, normal);
+    color: var(--avonni-kanban-title-text-color, #000000);
+    -webkit-line-clamp: var(--avonni-kanban-title-line-clamp, 1);
+}
+
+.avonni-kanban__tile_description {
+    font-size: var(--avonni-kanban-description-font-size, 0.875rem);
+    font-weight: var(--avonni-kanban-description-font-weight, 400);
+    font-style: var(--avonni-kanban-description-font-style, normal);
+    color: var(--avonni-kanban-description-text-color, #444444);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: var(--avonni-kanban-description-line-clamp, 2);
+}
+
+.avonni-kanban__tile_dates {
+    width: fit-content;
+    color: #2c2c2c;
+    border-radius: 0.25rem;
+}
+
+.avonni-kanban__tile_dates_overdue {
+    color: #ba0517;
+    background-color: #fef1ee;
+}
+
+.avonni-kanban__tile_dates_overdue .avonni-kanban__tile_dates-icon {
+    --sds-c-icon-color-foreground: red;
+    --sds-c-icon-color-foreground-default: red;
 }
 
 .avonni-kanban__tile_image {

@@ -46,6 +46,10 @@ export default class KanbanGroupsBuilder {
         this.hasSubGroups = false;
         this.groups = [];
         this.keyField = props.keyField;
+        this.titleFieldName = props.titleFieldName;
+        this.descriptionFieldName = props.descriptionFieldName;
+        this.startDateFieldName = props.startDateFieldName;
+        this.dueDateFieldName = props.dueDateFieldName;
     }
 
     /**
@@ -98,11 +102,28 @@ export default class KanbanGroupsBuilder {
                 });
 
                 if (
-                    Object.keys(record).find(
-                        (key) => key === this.coverImageFieldName
-                    )
+                    this.coverImageFieldName &&
+                    record[this.coverImageFieldName]
                 ) {
                     tile.coverImage = record[this.coverImageFieldName];
+                }
+                if (this.titleFieldName && record[this.titleFieldName]) {
+                    tile.title = record[this.titleFieldName];
+                }
+                if (
+                    this.descriptionFieldName &&
+                    record[this.descriptionFieldName]
+                ) {
+                    tile.description = record[this.descriptionFieldName];
+                }
+                if (
+                    this.startDateFieldName &&
+                    record[this.startDateFieldName]
+                ) {
+                    tile.startDate = record[this.startDateFieldName];
+                }
+                if (this.dueDateFieldName && record[this.dueDateFieldName]) {
+                    tile.dueDate = record[this.dueDateFieldName];
                 }
 
                 recordGroup.addTile(tile);

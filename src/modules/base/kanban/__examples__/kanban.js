@@ -37,8 +37,10 @@ customElements.define('ac-kanban', Component.CustomElementConstructor);
 export const Kanban = ({
     actions,
     coverImageFieldName,
+    descriptionFieldName,
     disableColumnDragAndDrop,
     disableItemDragAndDrop,
+    dueDateFieldName,
     fieldAttributes,
     fields,
     groupFieldName,
@@ -47,15 +49,19 @@ export const Kanban = ({
     isLoading,
     keyField,
     records,
+    startDateFieldName,
     subGroupFieldName,
     summarizeFieldName,
+    titleFieldName,
     variant
 }) => {
     const element = document.createElement('ac-kanban');
     element.actions = actions;
     element.coverImageFieldName = coverImageFieldName;
+    element.descriptionFieldName = descriptionFieldName;
     element.disableColumnDragAndDrop = disableColumnDragAndDrop;
     element.disableItemDragAndDrop = disableItemDragAndDrop;
+    element.dueDateFieldName = dueDateFieldName;
     element.fieldAttributes = fieldAttributes;
     element.fields = fields;
     element.groupFieldName = groupFieldName;
@@ -64,8 +70,10 @@ export const Kanban = ({
     element.isLoading = isLoading;
     element.keyField = keyField;
     element.records = records;
+    element.startDateFieldName = startDateFieldName;
     element.subGroupFieldName = subGroupFieldName;
     element.summarizeFieldName = summarizeFieldName;
+    element.titleFieldName = titleFieldName;
     element.variant = variant;
     return element;
 };
