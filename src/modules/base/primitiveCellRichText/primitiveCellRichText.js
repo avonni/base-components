@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { isEditable } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellRichText extends LightningElement {
     @api colKeyValue;
@@ -103,7 +104,7 @@ export default class PrimitiveCellRichText extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.isEditable();
+        this.editable = isEditable(this.state, this._index, this.columns);
     }
 
     // Handles the edit button click and dispatches the event.
@@ -122,21 +123,6 @@ export default class PrimitiveCellRichText extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
-    }
-
-    // Checks if the column is editable.
-    isEditable() {
-        const systemCols = Object.keys(this.state.headerIndexes).filter(
-            (colKeyValue) =>
-                colKeyValue.includes('-rowNumber-') ||
-                colKeyValue.includes('-SELECTABLE_CHECKBOX-')
-        );
-
-        if (this._index) {
-            let colIndex = this._index - systemCols.length;
-            const column = this.columns && this.columns[colIndex];
-            this.editable = column ? column.editable : false;
-        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
