@@ -132,11 +132,17 @@ export default class PrimitiveCellColorPicker extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let colorPicker = {};
-        colorPicker = this.columns.find(
-            (column) => column.type === 'color-picker'
+        const systemCols = Object.keys(this.state.headerIndexes).filter(
+            (colKeyValue) =>
+                colKeyValue.includes('-rowNumber-') ||
+                colKeyValue.includes('-SELECTABLE_CHECKBOX-')
         );
-        this.editable = colorPicker.editable;
+
+        if (this._index) {
+            let colIndex = this._index - systemCols.length;
+            const column = this.columns && this.columns[colIndex];
+            this.editable = column ? column.editable : false;
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.

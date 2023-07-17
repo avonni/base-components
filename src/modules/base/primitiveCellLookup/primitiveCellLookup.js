@@ -128,9 +128,17 @@ export default class PrimitiveCellLookup extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let lookup = {};
-        lookup = this.columns.find((column) => column.type === 'lookup');
-        this.editable = lookup.editable;
+        const systemCols = Object.keys(this.state.headerIndexes).filter(
+            (colKeyValue) =>
+                colKeyValue.includes('-rowNumber-') ||
+                colKeyValue.includes('-SELECTABLE_CHECKBOX-')
+        );
+
+        if (this._index) {
+            let colIndex = this._index - systemCols.length;
+            const column = this.columns && this.columns[colIndex];
+            this.editable = column ? column.editable : false;
+        }
     }
 
     toggleInlineEdit() {

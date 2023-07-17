@@ -126,9 +126,17 @@ export default class PrimitiveCellRichText extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let richText = {};
-        richText = this.columns.find((column) => column.type === 'rich-text');
-        this.editable = richText.editable;
+        const systemCols = Object.keys(this.state.headerIndexes).filter(
+            (colKeyValue) =>
+                colKeyValue.includes('-rowNumber-') ||
+                colKeyValue.includes('-SELECTABLE_CHECKBOX-')
+        );
+
+        if (this._index) {
+            let colIndex = this._index - systemCols.length;
+            const column = this.columns && this.columns[colIndex];
+            this.editable = column ? column.editable : false;
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.

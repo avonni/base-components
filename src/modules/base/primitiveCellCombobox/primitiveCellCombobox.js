@@ -226,9 +226,17 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let combobox = {};
-        combobox = this.columns.find((column) => column.type === 'combobox');
-        this.editable = combobox.editable;
+        const systemCols = Object.keys(this.state.headerIndexes).filter(
+            (colKeyValue) =>
+                colKeyValue.includes('-rowNumber-') ||
+                colKeyValue.includes('-SELECTABLE_CHECKBOX-')
+        );
+
+        if (this._index) {
+            let colIndex = this._index - systemCols.length;
+            const column = this.columns && this.columns[colIndex];
+            this.editable = column ? column.editable : false;
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
