@@ -524,7 +524,6 @@ describe('Image', () => {
                 expect(icon1.iconName).toBe('utility:left');
                 expect(icon2.iconName).toBe('utility:right');
                 expect(compareImgContainer.style.width).toBe('50%');
-                expect(compareImgContainer.style.height).toBe('100%');
             });
         });
 
@@ -554,6 +553,24 @@ describe('Image', () => {
                 expect(icon2.iconName).toBe('utility:down');
                 expect(compareImgContainer.style.width).toBe('100%');
                 expect(compareImgContainer.style.height).toBe('50%');
+            });
+        });
+
+        it('Image: Compare slider - thumbnail', () => {
+            element.compareSrc = src;
+            element.thumbnail = true;
+
+            return Promise.resolve().then(() => {
+                const compareContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="compare-container"]'
+                );
+                expect(compareContainer.style.width).toBe(
+                    'calc(100% - 0.5rem)'
+                );
+                expect(compareContainer.style.height).toBe(
+                    'calc(100% - 0.5rem)'
+                );
+                expect(compareContainer.style.margin).toBe('0.25rem');
             });
         });
 

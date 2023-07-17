@@ -147,6 +147,7 @@ export function standardMagnifier(data, magnifierAttributes, imgPosition) {
     } = magnifierAttributes;
     const ratioW = parseFloat(zoomRatioWidth);
     const ratioH = parseFloat(zoomRatioHeight);
+
     magnifiedLens.style.display = 'block';
     magnifiedLens.style.width = `${ratioW / zoomFactor}px`;
     magnifiedLens.style.height = `${ratioH / zoomFactor}px`;
