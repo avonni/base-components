@@ -122,6 +122,21 @@ describe('Layout Item', () => {
         expect(element.shadowRoot.host.style.order).toBe('1');
     });
 
+    it('Layout Item: container orders inheritance', () => {
+        let setContainerSize;
+        element.addEventListener('privatelayoutitemconnected', (event) => {
+            setContainerSize = event.detail.callbacks.setContainerSize;
+        });
+        document.body.appendChild(element);
+        setContainerSize('large');
+        expect(element.shadowRoot.host.style.order).toBe('0');
+
+        element.order = 6;
+        expect(element.shadowRoot.host.style.order).toBe('6');
+        element.largeContainerOrder = 3;
+        expect(element.shadowRoot.host.style.order).toBe('3');
+    });
+
     // Container sizes
     it('Layout Item: container sizes', () => {
         let setContainerSize;

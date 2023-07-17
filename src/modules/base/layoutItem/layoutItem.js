@@ -159,7 +159,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.large = this.largeContainerOrder;
 
-        if (this._connected && this._containerWidth === 'large') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -178,7 +178,7 @@ export default class LayoutItem extends LightningElement {
         this._largeContainerSize = this.normalizeSize(value);
         this._sizes.large = this.largeContainerSize;
 
-        if (this._connected && this._containerWidth === 'large') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -200,7 +200,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.medium = this.mediumContainerOrder;
 
-        if (this._connected && this._containerWidth === 'medium') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -219,7 +219,7 @@ export default class LayoutItem extends LightningElement {
         this._mediumContainerSize = this.normalizeSize(value);
         this._sizes.medium = this.mediumContainerSize;
 
-        if (this._connected && this._containerWidth === 'medium') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -241,7 +241,7 @@ export default class LayoutItem extends LightningElement {
         this._order = isNaN(normalizedNumber) ? 0 : normalizedNumber;
         this._orders.default = this.order;
 
-        if (this._connected && this._containerWidth === 'default') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -265,7 +265,7 @@ export default class LayoutItem extends LightningElement {
         this._size = size || size === 0 ? size : DEFAULT_SIZE;
         this._sizes.default = this.size;
 
-        if (this._connected && this._containerWidth === 'default') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -287,7 +287,7 @@ export default class LayoutItem extends LightningElement {
             : normalizedNumber;
         this._orders.small = this.smallContainerOrder;
 
-        if (this._connected && this._containerWidth === 'small') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
@@ -306,7 +306,7 @@ export default class LayoutItem extends LightningElement {
         this._smallContainerSize = this.normalizeSize(value);
         this._sizes.small = this.smallContainerSize;
 
-        if (this._connected && this._containerWidth === 'small') {
+        if (this._connected) {
             this.updateClassAndStyle();
         }
     }
