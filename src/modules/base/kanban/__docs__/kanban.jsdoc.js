@@ -62,11 +62,70 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-kanban-title-text-color
+ * @default #000000
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-title-font-size
+ * @default 1rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-title-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-title-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-title-line-clamp
+ * @default 1
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-description-text-color
+ * @default #444444
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-description-font-size
+ * @default 0.875rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-description-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-description-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-kanban-path-color-background
  * @default #014486
  * @type color
  */
-
 /**
  * @memberof stylingHooks
  * @name --avonni-kanban-summarize-header-sizing-height
