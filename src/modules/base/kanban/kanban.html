@@ -271,6 +271,7 @@
                             <div
                                 if:true={hasTileHeader}
                                 class="avonni-kanban__tile_header"
+                                data-element-id="avonni-kanban__tile_header"
                             >
                                 <div
                                     if:true={record.title}
@@ -312,6 +313,7 @@
                                     >
                                         <div
                                             class={record.computedTileDatesClass}
+                                            data-element-id="avonni-kanban__tile_dates"
                                             if:true={record.hasDates}
                                         >
                                             <lightning-icon

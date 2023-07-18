@@ -71,7 +71,10 @@ export default class KanbanTile {
         }
         date = dateTimeObjectFrom(date);
         this._dueDate = !date || dueDate === null ? null : new Date(date.ts);
-        this.initDueDate();
+        if (this._dueDate) {
+            const dateTZ = this.getDateWithTimeZone(this._dueDate);
+            this._dueDate = new Date(dateTZ.ts);
+        }
     }
 
     get startDate() {
@@ -85,7 +88,10 @@ export default class KanbanTile {
         date = dateTimeObjectFrom(date);
         this._startDate =
             !date || startDate === null ? null : new Date(date.ts);
-        this.initStartDate();
+        if (this._startDate) {
+            const dateTZ = this.getDateWithTimeZone(this._startDate);
+            this._startDate = new Date(dateTZ.ts);
+        }
     }
 
     get computedTileDatesClass() {
@@ -159,21 +165,5 @@ export default class KanbanTile {
         return dateTimeObjectFrom(date, {
             locale: 'en-US'
         });
-    }
-
-    initStartDate() {
-        if (!this.startDate) {
-            return;
-        }
-        const date = this.getDateWithTimeZone(this.startDate);
-        this._startDate = new Date(date.ts);
-    }
-
-    initDueDate() {
-        if (!this.dueDate) {
-            return;
-        }
-        const date = this.getDateWithTimeZone(this.dueDate);
-        this._dueDate = new Date(date.ts);
     }
 }

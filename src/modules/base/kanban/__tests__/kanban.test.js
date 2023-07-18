@@ -70,6 +70,11 @@ describe('Kanban', () => {
         expect(element.subGroupFieldName).toBeUndefined();
         expect(element.keyField).toBeUndefined();
         expect(element.fieldAttributes).toMatchObject(FIELD_ATTRIBUTES);
+        expect(element.coverImageFieldName).toBeUndefined();
+        expect(element.titleFieldName).toBeUndefined();
+        expect(element.descriptionFieldName).toBeUndefined();
+        expect(element.startDateFieldName).toBeUndefined();
+        expect(element.dueDateFieldName).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -273,6 +278,96 @@ describe('Kanban', () => {
             group.dispatchEvent(new MouseEvent('mouseup'));
             expect(group.parentElement.classList).not.toContain(
                 'avonni-kanban__dragged_group'
+            );
+        });
+    });
+
+    // cover image
+    it('Kanban : tile cover image', () => {
+        jest.useFakeTimers();
+        element.keyField = 'id';
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.coverImageFieldName = 'coverImage';
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            jest.runAllTimers();
+            const coverImage = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile_image"]'
+            );
+            expect(coverImage).not.toBeNull();
+        });
+    });
+
+    // title and description
+    it('Kanban : tile title and description', () => {
+        jest.useFakeTimers();
+        element.keyField = 'id';
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.titleFieldName = 'opportunityName';
+        element.descriptionFieldName = 'description';
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            jest.runAllTimers();
+            const tileHeader = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile_header"]'
+            );
+            expect(tileHeader.children.length).toBe(2);
+        });
+    });
+
+    // start and due dates
+    it('Kanban : tile start and due dates', () => {
+        jest.useFakeTimers();
+        element.keyField = 'id';
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.startDateFieldName = 'startDate';
+        element.dueDateFieldName = 'dueDate';
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            jest.runAllTimers();
+            const dates = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-kanban__tile_dates"]'
+            );
+            expect(dates[1].classList).not.toContain(
+                'avonni-kanban__tile_dates_overdue'
+            );
+        });
+    });
+
+    it('Kanban : tile start and due dates overdue', () => {
+        jest.useFakeTimers();
+        element.keyField = 'id';
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.startDateFieldName = 'startDate';
+        element.dueDateFieldName = 'dueDate';
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            jest.runAllTimers();
+            const dates = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-kanban__tile_dates"]'
+            );
+            expect(dates[0].classList).toContain(
+                'avonni-kanban__tile_dates_overdue'
             );
         });
     });
