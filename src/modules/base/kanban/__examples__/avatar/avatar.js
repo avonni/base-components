@@ -53,7 +53,7 @@ export default class KanbanAvatar extends LightningElement {
         },
         {
             label: 'Created date',
-            fieldName: 'date',
+            fieldName: 'createdDate',
             type: 'date'
         },
         {
@@ -76,9 +76,13 @@ export default class KanbanAvatar extends LightningElement {
             amount: 25000,
             warningIcon: 'utility:warning',
             phone: '+375292567896',
-            date: '1547250828000',
+            createdDate: '1594133308000',
+            startDate: '2020/07/07',
+            dueDate: '1600354108000',
             percent: 0.28,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '002',
@@ -86,9 +90,11 @@ export default class KanbanAvatar extends LightningElement {
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
-            date: '1347250828000',
+            createdDate: '1347250828000',
             percent: 0.77,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '003',
@@ -96,9 +102,12 @@ export default class KanbanAvatar extends LightningElement {
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: '1547250828000',
+            startDate: '1547250828000',
             percent: 0.83,
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '004',
@@ -106,9 +115,11 @@ export default class KanbanAvatar extends LightningElement {
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
-            date: '1647250828000',
+            createdDate: '1647250828000',
             percent: 0.2,
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '005',
@@ -116,9 +127,13 @@ export default class KanbanAvatar extends LightningElement {
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
-            date: '1347250828000',
+            createdDate: '2541422908000',
+            startDate: '2541422908000',
+            dueDate: '2541941308000',
             percent: 0.18,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '006',
@@ -126,7 +141,7 @@ export default class KanbanAvatar extends LightningElement {
             opportunityName: 'Opportunity 6',
             amount: 17500,
             phone: '+375292567896',
-            date: '1547250828000',
+            createdDate: '1547250828000',
             percent: 0.92,
             available: true
         }
