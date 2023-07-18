@@ -73,6 +73,7 @@ export default class Kanban extends LightningElement {
     _records = [];
     _subGroupFieldName;
     _summarizeFieldName;
+    _titleFieldName;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -209,13 +210,6 @@ export default class Kanban extends LightningElement {
      * @public
      */
     @api startDateFieldName;
-
-    /**
-     * Name of the field containing the title of the tile.
-     * @type {string}
-     * @public
-     */
-    @api titleFieldName;
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -405,6 +399,22 @@ export default class Kanban extends LightningElement {
     }
     set summarizeFieldName(value) {
         this._summarizeFieldName = value;
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
+
+    /**
+     * Name of the field containing the title of the tile.
+     * @type {string}
+     * @public
+     */
+    @api
+    get titleFieldName() {
+        return this._titleFieldName;
+    }
+    set titleFieldName(value) {
+        this._titleFieldName = value;
         if (this._connected) {
             this.updateTiles();
         }

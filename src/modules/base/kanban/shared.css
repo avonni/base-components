@@ -295,6 +295,9 @@
     font-weight: var(--avonni-kanban-title-font-weight, 400);
     font-style: var(--avonni-kanban-title-font-style, normal);
     color: var(--avonni-kanban-title-text-color, #000000);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     -webkit-line-clamp: var(--avonni-kanban-title-line-clamp, 1);
 }
 
