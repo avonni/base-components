@@ -34,12 +34,7 @@
     display: block;
 }
 
-.slds-checkbox.avonni-input-choice-set__horizontal {
-    /* .avonni-input-choice-set__horizontal ??? */
-    display: inline-flex;
-}
-
-.slds-radio.avonni-input-choice-set__horizontal {
+.avonni-input-choice-set__horizontal {
     display: inline-flex;
 }
 

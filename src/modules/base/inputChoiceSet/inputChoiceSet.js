@@ -56,7 +56,10 @@ const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
 };
-const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
+const INPUT_CHOICE_TYPES = {
+    valid: ['default', 'button', 'toggle'],
+    default: 'default'
+};
 
 /**
  * @class
@@ -114,7 +117,7 @@ export default class InputChoiceSet extends LightningElement {
     _value = [];
     _variant;
 
-    _helpMessage;
+    helpMessage;
     _isConnected = false;
 
     constructor() {
@@ -146,7 +149,7 @@ export default class InputChoiceSet extends LightningElement {
         }
 
         this.classList.add('slds-form-element');
-        this.updateClassList();
+        this._updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._isConnected = true;
@@ -341,7 +344,7 @@ export default class InputChoiceSet extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeVariant(value);
-        this.updateClassList();
+        this._updateClassList();
     }
 
     /*
@@ -351,12 +354,30 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
+     * True if type is button.
+     *
+     * @type {boolean}
+     */
+    get buttonVariant() {
+        return this.type === 'button';
+    }
+
+    /**
      * True if type is default.
      *
      * @type {boolean}
      */
     get checkboxVariant() {
         return this.type === 'default';
+    }
+
+    /**
+     * True if type is default or toggle.
+     *
+     * @type {boolean}
+     */
+    get checkboxToggleVariant() {
+        return this.type === 'default' || this.type === 'toggle';
     }
 
     /**
@@ -432,8 +453,10 @@ export default class InputChoiceSet extends LightningElement {
      */
     get computedButtonClass() {
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
-            'slds-checkbox_button-group': !this.checkboxVariant,
-            'avonni-input-choice-set__stretch': this.stretch
+            'slds-checkbox_button-group': this.buttonVariant,
+            'avonni-input-choice-set__stretch':
+                this.stretch && !this.toggleVariant,
+            'slds-size_full': this.stretch && this.toggleVariant
         });
     }
 
@@ -447,8 +470,14 @@ export default class InputChoiceSet extends LightningElement {
             ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
             : `slds-radio avonni-input-choice-set__${this.orientation}`;
         const buttonClass = `slds-button slds-checkbox_button avonni-input-choice-set__${this.orientation}`;
+        const toggleClass = `slds-checkbox_toggle slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
 
-        return this.checkboxVariant ? checkboxClass : buttonClass;
+        if (this.checkboxVariant) {
+            return checkboxClass;
+        } else if (this.buttonVariant) {
+            return buttonClass;
+        }
+        return toggleClass;
     }
 
     /**
@@ -457,12 +486,12 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        let label;
+        let label = '';
         if (this.checkboxVariant && this.isMultiSelect) {
             label = 'slds-checkbox__label';
         } else if (this.checkboxVariant) {
             label = 'slds-radio__label';
-        } else {
+        } else if (this.buttonVariant) {
             label = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
         }
 
@@ -470,6 +499,15 @@ export default class InputChoiceSet extends LightningElement {
             label += ' avonni-input-choice-set__option-label';
         }
         return label;
+    }
+
+    get computedMediaFigureClass() {
+        return classSet('slds-media__figure')
+            .add({
+                'slds-p-top_x-small':
+                    this.toggleVariant && this.orientation === 'vertical'
+            })
+            .toString();
     }
 
     /**
@@ -490,6 +528,15 @@ export default class InputChoiceSet extends LightningElement {
      */
     get computedCheckboxShapeClass() {
         return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
+    }
+
+    /**
+     * True if type is toggle.
+     *
+     * @type {boolean}
+     */
+    get toggleVariant() {
+        return this.type === 'toggle';
     }
 
     /*
@@ -518,7 +565,7 @@ export default class InputChoiceSet extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this._helpMessage = message;
+            this.helpMessage = message;
         });
     }
 
@@ -568,12 +615,79 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Update form class styling.
      */
-    updateClassList() {
+    _updateClassList() {
         classListMutation(this.classList, {
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
             'slds-form-element_horizontal':
                 this.variant === VARIANT.LABEL_INLINE
         });
+    }
+
+    /**
+     * Value change handler.
+     *
+     * @param {array} inputs All inputs.
+     * @returns {array} Checked values.
+     */
+    _valueChangeHandler(inputs) {
+        const checkedValues = Array.from(inputs)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+        return this.isMultiSelect ? checkedValues : checkedValues[0] || null;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Dispatch the blur event.
+     */
+    handleBlur() {
+        this.interactingState.leave();
+
+        /**
+         * The event fired when the focus is removed from the input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
+     * Handles the change event for default and button type.
+     *
+     * @param {Event} event
+     */
+    handleChange(event) {
+        event.stopPropagation();
+
+        const value = event.currentTarget.value;
+        const checkboxes = this.template.querySelectorAll(
+            '[data-element-id="input"]'
+        );
+        if (this.isMultiSelect) {
+            this._value = this._valueChangeHandler(checkboxes);
+        } else {
+            if (this.value === value) {
+                // Prevent unselecting the current option when the type is 'button'
+                event.currentTarget.checked = true;
+                return;
+            }
+
+            const checkboxesToUncheck = Array.from(checkboxes).filter(
+                (checkbox) => checkbox.value !== value
+            );
+            checkboxesToUncheck.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+            this._value = this._valueChangeHandler(checkboxes);
+        }
+        this._dispatchChangeEvent();
     }
 
     /**
@@ -593,22 +707,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the blur event.
-     */
-    handleBlur() {
-        this.interactingState.leave();
-
-        /**
-         * The event fired when the focus is removed from the input.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    /**
      * Click handler.
      *
      * @param {Event} event
@@ -623,46 +721,46 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Value change handler.
+     * Input keyup event handler.
      *
-     * @param {array} inputs All inputs.
-     * @returns {array} Checked values.
+     * @param {Event} event
      */
-    handleValueChange(inputs) {
-        const checkedValues = Array.from(inputs)
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
-        return this.isMultiSelect ? checkedValues : checkedValues[0] || null;
+    handleKeyUp(event) {
+        if (event.key !== 'Enter') return;
+        event.currentTarget.click();
+    }
+
+    /**
+     * Handles the change event for toggle type.
+     *
+     * @param {Event} event
+     */
+    handleToggleChange(event) {
+        event.stopPropagation();
+        console.log('handleToggleChange');
+        const value = event.currentTarget.name;
+        let checkboxes = Array.from(
+            this.template.querySelectorAll('[data-element-id="input"]')
+        );
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = this.isMultiSelect
+                ? checkbox.checked
+                : checkbox.value === value;
+        });
+
+        this._value = this._valueChangeHandler(checkboxes);
+
+        if (!this.isMultiSelect && this.value === value) {
+            event.currentTarget.checked = true;
+        }
+        this._dispatchChangeEvent();
     }
 
     /**
      * Dispatches the change event.
      */
-    handleChange(event) {
-        event.stopPropagation();
-
-        const value = event.currentTarget.value;
-        const checkboxes = this.template.querySelectorAll(
-            '[data-element-id="input"]'
-        );
-        if (this.isMultiSelect) {
-            this._value = this.handleValueChange(checkboxes);
-        } else {
-            if (this.value === value) {
-                // Prevent unselecting the current option when the type is 'button'
-                event.currentTarget.checked = true;
-                return;
-            }
-
-            const checkboxesToUncheck = Array.from(checkboxes).filter(
-                (checkbox) => checkbox.value !== value
-            );
-            checkboxesToUncheck.forEach((checkbox) => {
-                checkbox.checked = false;
-            });
-            this._value = this.handleValueChange(checkboxes);
-        }
-
+    _dispatchChangeEvent() {
         /**
          * The event fired when the value changed.
          *
@@ -684,15 +782,5 @@ export default class InputChoiceSet extends LightningElement {
                 cancelable: true
             })
         );
-    }
-
-    /**
-     * Input keyup event handler.
-     *
-     * @param {Event} event
-     */
-    handleKeyUp(event) {
-        if (event.key !== 'Enter') return;
-        event.currentTarget.click();
     }
 }

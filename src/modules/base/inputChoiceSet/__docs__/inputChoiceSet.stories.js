@@ -155,8 +155,8 @@ export default {
                 type: 'radio'
             },
             description:
-                'Type of the input. Valid values include default and button.',
-            options: ['default', 'button'],
+                'Type of the input. Valid values include default, button and toggle.',
+            options: ['default', 'button', 'toggle'],
             table: {
                 defaultValue: { summary: 'default' },
                 type: { summary: 'string' }
@@ -373,4 +373,23 @@ ButtonsWithRightIcons.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithIcon,
     value: alignmentValue
+};
+
+export const Toggle = Template.bind({});
+Toggle.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleHorizontal = Template.bind({});
+ToggleHorizontal.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
 };
