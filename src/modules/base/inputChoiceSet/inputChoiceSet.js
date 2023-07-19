@@ -52,6 +52,12 @@ const i18n = {
     required: 'required'
 };
 
+const CHECK_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
 const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
@@ -108,11 +114,18 @@ export default class InputChoiceSet extends LightningElement {
      */
     @api options;
 
+    _checkPosition = CHECK_POSITIONS.default;
+    _cols = COLUMNS.default;
     _disabled = false;
+    _displayButtonAsRow = false;
     _isLoading = false;
     _isMultiSelect = false;
+    _largeContainerCols;
+    _mediumContainerCols;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
     _required = false;
+    _showButtonCheckMark = false;
+    _smallContainerCols;
     _type = INPUT_CHOICE_TYPES.default;
     _value = [];
     _variant;
@@ -166,6 +179,39 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
+     * Describes the position of the toggle, radio or checkbox. Options include left and right and is not available for type button.
+     *
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get checkPosition() {
+        return this._checkPosition;
+    }
+    set checkPosition(value) {
+        this._checkPosition = normalizeString(value, {
+            fallbackValue: CHECK_POSITIONS.default,
+            validValues: CHECK_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get cols() {
+        return this._cols;
+    }
+    set cols(value) {
+        this._cols = this._normalizeColumns(value) || COLUMNS.default;
+    }
+
+    /**
      * If present, the input field is disabled and users cannot interact with it.
      *
      * @type {boolean}
@@ -178,6 +224,21 @@ export default class InputChoiceSet extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, display buttons as row.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get displayButtonAsRow() {
+        return this._displayButtonAsRow || false;
+    }
+    set displayButtonAsRow(value) {
+        this._displayButtonAsRow = normalizeBoolean(value);
     }
 
     /**
@@ -209,6 +270,34 @@ export default class InputChoiceSet extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
+    }
+
+    /**
+     * Number of columns on medium container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumContainerCols() {
+        return this._mediumContainerCols;
+    }
+    set mediumContainerCols(value) {
+        this._mediumContainerCols = this._normalizeColumns(value);
+    }
+
+    /**
+     * Number of columns on large container widths and above. See `cols` for accepted values.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get largeContainerCols() {
+        return this._largeContainerCols;
+    }
+    set largeContainerCols(value) {
+        this._largeContainerCols = this._normalizeColumns(value);
     }
 
     /**
@@ -258,6 +347,35 @@ export default class InputChoiceSet extends LightningElement {
     }
     set required(value) {
         this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, show check mark on button when selected..
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get showButtonCheckMark() {
+        return this._showButtonCheckMark;
+    }
+
+    set showButtonCheckMark(value) {
+        this._showButtonCheckMark = normalizeBoolean(value);
+    }
+
+    /**
+     * Number of columns on small container widths. See `cols` for accepted values.
+     * @type {number}
+     * @public
+     */
+    @api
+    get smallContainerCols() {
+        return this._smallContainerCols;
+    }
+    set smallContainerCols(value) {
+        this._smallContainerCols = this._normalizeColumns(value);
     }
 
     /**
@@ -611,6 +729,17 @@ export default class InputChoiceSet extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    _normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
+    }
 
     /**
      * Update form class styling.

@@ -35,11 +35,74 @@ import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 export default {
     title: 'Example/Input Choice Set',
     argTypes: {
+        checkPosition: {
+            name: 'check-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the toggle, radio or checkbox. Options include left and right and is not available for type button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
+        cols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        smallContainerCols: {
+            name: 'small-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        mediumContainerCols: {
+            name: 'medium-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        largeContainerCols: {
+            name: 'large-container-cols',
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
             },
             description: 'If present, the input is disabled.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        displayButtonAsRow: {
+            name: 'display-button-as-row',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display buttons as row.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -133,12 +196,27 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        showButtonCheckMark: {
+            name: 'show-button-check-mark',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, show check mark on button when selected.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         stretch: {
             control: {
                 type: 'boolean'
             },
             description:
-                'If present, vertical or horizontal button groups stretch to full width.'
+                'If present, vertical or horizontal button groups stretch to full width.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
         },
         required: {
             control: {
@@ -193,13 +271,17 @@ export default {
         }
     },
     args: {
+        checkPosition: 'left',
+        cols: 1,
         disabled: false,
+        displayButtonAsRow: false,
         isLoading: false,
         isMultiSelect: false,
         orientation: 'vertical',
         readOnly: false,
         required: false,
         stretch: false,
+        showButtonCheckMark: false,
         type: 'default',
         variant: 'standard'
     }
