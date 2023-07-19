@@ -64,16 +64,15 @@ const FIELD_VARIANTS = {
  */
 export default class Kanban extends LightningElement {
     _actions = [];
+    _cardAttributes = {};
     _disableColumnDragAndDrop = false;
     _disableItemDragAndDrop = false;
-    _fields = [];
     _groupValues = [];
     _hideHeader = false;
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
     _summarizeFieldName;
-    _titleFieldName;
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -86,7 +85,6 @@ export default class Kanban extends LightningElement {
     _draggedGroup;
     _draggedTile;
     _droppedTileHeight = 0;
-    _fieldAttributes = { variant: 'label-hidden' };
     _fieldsDistance = [];
     _groupsHeight = [];
     _groupsLength = [];
@@ -166,25 +164,37 @@ export default class Kanban extends LightningElement {
      */
 
     /**
-     * Name of the field containing the cover image of the tile.
-     * @type {string}
+     * Object of attributes for the card.
+     * Card attributes: coverImage, title, description, startDate, dueDate, customFields and customFieldAttributes
+     *
+     * @type {object}
      * @public
      */
-    @api coverImageFieldName;
+    @api
+    get cardAttributes() {
+        return this._cardAttributes;
+    }
+    set cardAttributes(value) {
+        this._cardAttributes = normalizeObject(value);
 
-    /**
-     * Name of the field containing the description of the tile.
-     * @type {string}
-     * @public
-     */
-    @api descriptionFieldName;
-
-    /**
-     * Name of the field containing the due date of the tile.
-     * @type {string}
-     * @public
-     */
-    @api dueDateFieldName;
+        const normalizedFieldAttributes = normalizeObject(
+            this._cardAttributes.customFieldAttributes
+        );
+        const variant = normalizeString(normalizedFieldAttributes.variant, {
+            fallbackValue: FIELD_VARIANTS.default,
+            validValues: FIELD_VARIANTS.valid
+        });
+        this._cardAttributes = {
+            ...this.cardAttributes,
+            customFieldAttributes: {
+                ...normalizedFieldAttributes,
+                variant
+            }
+        };
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
 
     /**
      * Name of the data field containing the group label the data belongs to.
@@ -203,13 +213,6 @@ export default class Kanban extends LightningElement {
      * @required
      */
     @api keyField;
-
-    /**
-     * Name of the field containing the start date of the tile.
-     * @type {string}
-     * @public
-     */
-    @api startDateFieldName;
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -260,45 +263,6 @@ export default class Kanban extends LightningElement {
     }
     set disableItemDragAndDrop(value) {
         this._disableItemDragAndDrop = normalizeBoolean(value);
-    }
-
-    /**
-     * Object of attributes for the item fields. Field attributes: variant
-     *
-     * @type {object}
-     * @public
-     */
-    @api
-    get fieldAttributes() {
-        return this._fieldAttributes;
-    }
-    set fieldAttributes(value) {
-        const normalizedFieldAttributes = normalizeObject(value);
-        this._fieldAttributes.variant = normalizeString(
-            normalizedFieldAttributes.variant,
-            {
-                fallbackValue: FIELD_VARIANTS.default,
-                validValues: FIELD_VARIANTS.valid
-            }
-        );
-        this._fieldAttributes = { ...this._fieldAttributes };
-    }
-
-    /**
-     * Array of field objects, used to define the allowed data fields.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get fields() {
-        return this._fields;
-    }
-    set fields(values) {
-        this._fields = normalizeArray(values);
-        if (this._connected) {
-            this.updateTiles();
-        }
     }
 
     /**
@@ -405,22 +369,6 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Name of the field containing the title of the tile.
-     * @type {string}
-     * @public
-     */
-    @api
-    get titleFieldName() {
-        return this._titleFieldName;
-    }
-    set titleFieldName(value) {
-        this._titleFieldName = value;
-        if (this._connected) {
-            this.updateTiles();
-        }
-    }
-
-    /**
      * The variant changes the apparence of the kanban. Valid values include base and path. Default to base.
      * @type {string}
      * @default base
@@ -511,6 +459,18 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Returns the object of attributes for the fields.
+     *
+     * @type {object}
+     */
+    get customFieldAttributes() {
+        if (this.cardAttributes && this.cardAttributes.customFieldAttributes) {
+            return this.cardAttributes.customFieldAttributes;
+        }
+        return {};
+    }
+
+    /**
      * Check if actions exist.
      *
      * @type {boolean}
@@ -525,7 +485,7 @@ export default class Kanban extends LightningElement {
      * @type {boolean}
      */
     get hasTileHeader() {
-        return this.titleFieldName || this.descriptionFieldName;
+        return this.cardAttributes.title || this.cardAttributes.description;
     }
 
     /**
@@ -1634,16 +1594,11 @@ export default class Kanban extends LightningElement {
         const kanbanGroupsBuilder = new KanbanGroupsBuilder({
             groupValues: this._groupValues,
             records: this._records,
-            fields: this._fields,
             groupFieldName: this.groupFieldName,
             summarizeFieldName: this.summarizeFieldName,
-            coverImageFieldName: this.coverImageFieldName,
             subGroupFieldName: this.subGroupFieldName,
             keyField: this.keyField,
-            titleFieldName: this.titleFieldName,
-            descriptionFieldName: this.descriptionFieldName,
-            startDateFieldName: this.startDateFieldName,
-            dueDateFieldName: this.dueDateFieldName
+            cardAttributes: this.cardAttributes
         });
         if (this._computedGroups.length === 0) {
             this._groupValues.forEach((_, i) => {

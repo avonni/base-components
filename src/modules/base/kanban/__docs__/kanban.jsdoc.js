@@ -23,7 +23,7 @@
 
 /**
  * @typedef {Object} KanbanField
- * @name fields
+ * @name field
  * @property {string} fieldName Required. Unique name for the field, used as a key in the data objects.
  * @property {string} label Label of the field.
  * @property {string} type Required. The data type to be used for data formatting.
@@ -37,6 +37,18 @@
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} src Image URL for the avatar of the group. If present, the avatar is displayed before the label.
  * @property {object} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. The value defaults to square.
+ */
+
+/**
+ * @typedef {Object} CardAttributes
+ * @name cardAttributes
+ * @property {object} coverImage Kanban Field object. The field containing the cover image of the card.
+ * @property {object[]} customFields Array of fields to be displayed on the card.
+ * @property {object} customFieldAttributes FieldAttributes object. Object of attributes for the card fields.
+ * @property {object} description Kanban Field object. The field containing the description of the card.
+ * @property {object} dueDate Kanban Field object. The field containing the due date of the card.
+ * @property {object} startDate Kanban Field object. The field containing the start date of the card.
+ * @property {object} title Kanban Field object. The field containing the title of the card.
  */
 
 /**

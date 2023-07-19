@@ -32,13 +32,7 @@
 
 import { createElement } from 'lwc';
 import Kanban from '../kanban';
-import {
-    ACTIONS,
-    FIELDS,
-    GROUP_VALUES,
-    RECORDS,
-    FIELD_ATTRIBUTES
-} from './data';
+import { ACTIONS, CARD_ATTRIBUTES, GROUP_VALUES, RECORDS } from './data';
 
 let element;
 describe('Kanban', () => {
@@ -57,7 +51,6 @@ describe('Kanban', () => {
 
     it('Kanban : Default attributes', () => {
         expect(element.groupValues).toMatchObject([]);
-        expect(element.fields).toMatchObject([]);
         expect(element.records).toMatchObject([]);
         expect(element.summarizeFieldName).toBeUndefined();
         expect(element.actions).toMatchObject([]);
@@ -69,12 +62,7 @@ describe('Kanban', () => {
         expect(element.hideHeader).toBeFalsy();
         expect(element.subGroupFieldName).toBeUndefined();
         expect(element.keyField).toBeUndefined();
-        expect(element.fieldAttributes).toMatchObject(FIELD_ATTRIBUTES);
-        expect(element.coverImageFieldName).toBeUndefined();
-        expect(element.titleFieldName).toBeUndefined();
-        expect(element.descriptionFieldName).toBeUndefined();
-        expect(element.startDateFieldName).toBeUndefined();
-        expect(element.dueDateFieldName).toBeUndefined();
+        expect(element.cardAttributes).toMatchObject({});
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -107,10 +95,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
@@ -125,11 +117,15 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.subGroupFieldName = 'assignee';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const records = element.shadowRoot.querySelector(
@@ -144,11 +140,15 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.hideHeader = true;
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const summarize = element.shadowRoot.querySelector(
@@ -163,16 +163,22 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const fields = element.shadowRoot.querySelector(
                 '[data-element-id="fields"]'
             );
-            expect(fields.children.length).toBe(FIELDS.length + 1);
+            expect(fields.children.length).toBe(
+                CARD_ATTRIBUTES.customFields.length + 1
+            );
         });
     });
 
@@ -182,10 +188,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -197,16 +207,20 @@ describe('Kanban', () => {
         });
     });
 
-    // drag and drop disabled
+    // item drag and drop disabled
     it('Kanban : disableItemDragAndDrop true', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         element.disableItemDragAndDrop = true;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
@@ -221,10 +235,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
@@ -254,11 +272,15 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         element.variant = 'base';
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
@@ -288,11 +310,18 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
-        element.coverImageFieldName = 'coverImage';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            coverImage: {
+                fieldName: 'coverImage',
+                label: 'Cover Image',
+                type: 'text'
+            }
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -309,12 +338,23 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
-        element.titleFieldName = 'opportunityName';
-        element.descriptionFieldName = 'description';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            title: {
+                fieldName: 'opportunityName',
+                label: 'Opportunity Name',
+                type: 'text'
+            },
+            description: {
+                fieldName: 'description',
+                label: 'Description',
+                type: 'text'
+            }
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -331,12 +371,23 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
-        element.startDateFieldName = 'startDate';
-        element.dueDateFieldName = 'dueDate';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            startDate: {
+                fieldName: 'startDate',
+                label: 'Start Date',
+                type: 'date'
+            },
+            dueDate: {
+                fieldName: 'dueDate',
+                label: 'Due Date',
+                type: 'date'
+            }
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -354,12 +405,23 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
-        element.startDateFieldName = 'startDate';
-        element.dueDateFieldName = 'dueDate';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            startDate: {
+                fieldName: 'startDate',
+                label: 'Start Date',
+                type: 'date'
+            },
+            dueDate: {
+                fieldName: 'dueDate',
+                label: 'Due Date',
+                type: 'date'
+            }
+        };
+        element.cardAttributes = cardAttributes;
 
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -377,10 +439,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -417,10 +483,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         const handler = jest.fn();
         element.addEventListener('columnchange', handler);
@@ -449,10 +519,14 @@ describe('Kanban', () => {
         element.keyField = 'id';
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
-        element.fields = FIELDS;
         element.groupFieldName = 'status';
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
+
+        const cardAttributes = {
+            customFields: CARD_ATTRIBUTES.customFields
+        };
+        element.cardAttributes = cardAttributes;
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);

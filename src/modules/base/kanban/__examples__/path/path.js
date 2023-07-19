@@ -43,39 +43,69 @@ export default class KanbanPath extends LightningElement {
         }
     ];
 
-    fields = [
-        {
-            label: 'Opportunity name',
-            fieldName: 'opportunityName',
+    cardAttributes = {
+        coverImage: {
+            fieldName: 'coverImage',
+            label: 'Cover Image',
             type: 'text'
         },
-        {
-            label: 'Amount',
-            fieldName: 'amount',
-            type: 'currency',
-            typeAttributes: { currencyCode: 'EUR' }
+        title: {
+            fieldName: 'opportunityName',
+            label: 'Opportunity Name',
+            type: 'text'
         },
-        {
-            label: 'Phone',
-            fieldName: 'phone',
-            type: 'phone'
+        description: {
+            fieldName: 'description',
+            label: 'Description',
+            type: 'text'
         },
-        {
-            label: 'Created date',
-            fieldName: 'createdDate',
+        startDate: {
+            fieldName: 'startDate',
+            label: 'Start Date',
             type: 'date'
         },
-        {
-            label: 'Percent',
-            fieldName: 'percent',
-            type: 'percent'
+        dueDate: {
+            fieldName: 'dueDate',
+            label: 'Due Date',
+            type: 'date'
         },
-        {
-            label: 'Available',
-            fieldName: 'available',
-            type: 'boolean'
+        customFields: [
+            {
+                label: 'Opportunity name',
+                fieldName: 'opportunityName',
+                type: 'text'
+            },
+            {
+                label: 'Amount',
+                fieldName: 'amount',
+                type: 'currency',
+                typeAttributes: { currencyCode: 'EUR' }
+            },
+            {
+                label: 'Phone',
+                fieldName: 'phone',
+                type: 'phone'
+            },
+            {
+                label: 'Created date',
+                fieldName: 'createdDate',
+                type: 'date'
+            },
+            {
+                label: 'Percent',
+                fieldName: 'percent',
+                type: 'percent'
+            },
+            {
+                label: 'Available',
+                fieldName: 'available',
+                type: 'boolean'
+            }
+        ],
+        customFieldAttributes: {
+            variant: 'label-hidden'
         }
-    ];
+    };
 
     records = [
         {

@@ -31,7 +31,7 @@
  */
 
 import { Kanban } from '../__examples__/kanban';
-import { GROUP_VALUES, FIELDS, RECORDS, ACTIONS } from './data';
+import { GROUP_VALUES, RECORDS, ACTIONS, CARD_ATTRIBUTES } from './data';
 
 export default {
     title: 'Example/Kanban',
@@ -56,14 +56,14 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        fields: {
+        cardAttributes: {
+            name: 'card-attributes',
             control: {
                 type: 'object'
             },
-            description:
-                ' Array of field objects, used to define the allowed data fields.',
+            description: 'Object of attributes for the card.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object' }
             }
         },
         groupValues: {
@@ -77,39 +77,6 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        titleFieldName: {
-            name: 'title-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the title for the tile.',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
-        descriptionFieldName: {
-            name: 'description-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the description for the tile.',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
-        coverImageFieldName: {
-            name: 'cover-image-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the cover image for the tile.',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
         groupFieldName: {
             name: 'group-field-name',
             control: {
@@ -117,28 +84,6 @@ export default {
             },
             description:
                 ' Name of the data field containing the group label the data belongs to. ',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
-        startDateFieldName: {
-            name: 'start-date-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the start date for the tile.',
-            table: {
-                type: { summary: 'String' }
-            }
-        },
-        dueDateFieldName: {
-            name: 'due-date-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the due date for the tile.',
             table: {
                 type: { summary: 'String' }
             }
@@ -220,16 +165,6 @@ export default {
                 type: { summary: 'String' }
             }
         },
-        fieldAttributes: {
-            name: 'field-attributes',
-            control: {
-                type: 'object'
-            },
-            description: 'Object of attributes for the item fields.',
-            table: {
-                type: { summary: 'object' }
-            }
-        },
         variant: {
             name: 'variant',
             control: {
@@ -246,24 +181,16 @@ export default {
     },
     args: {
         actions: ACTIONS,
-        coverImageFieldName: 'coverImage',
+        cardAttributes: CARD_ATTRIBUTES,
         disableColumnDragAndDrop: false,
         disableItemDragAndDrop: false,
-        fieldAttributes: {
-            variant: 'label-hidden'
-        },
-        fields: FIELDS,
         groupFieldName: 'status',
         groupValues: GROUP_VALUES,
         hideHeader: false,
         isLoading: false,
         keyField: 'id',
         records: RECORDS,
-        startDateFieldName: 'startDate',
-        dueDateFieldName: 'dueDate',
         summarizeFieldName: 'amount',
-        titleFieldName: 'opportunityName',
-        descriptionFieldName: 'description',
         variant: 'base'
     }
 };
@@ -440,5 +367,10 @@ disabledColumnDrag.args = {
 
 export const fieldLabelInline = Template.bind({});
 fieldLabelInline.args = {
-    fieldAttributes: { variant: 'label-inline' }
+    cardAttributes: {
+        ...CARD_ATTRIBUTES,
+        customFieldAttributes: {
+            variant: 'label-inline'
+        }
+    }
 };

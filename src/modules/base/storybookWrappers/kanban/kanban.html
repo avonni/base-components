@@ -2,8 +2,6 @@
     <div style="height: 500px; max-height: 500px">
         <c-kanban
             group-values={groupValues}
-            fields={fields}
-            field-attributes={fieldAttributes}
             records={records}
             summarize-field-name={summarizeFieldName}
             actions={actions}
@@ -11,15 +9,11 @@
             disable-column-drag-and-drop={disableColumnDragAndDrop}
             group-field-name={groupFieldName}
             is-loading={isLoading}
-            cover-image-field-name={coverImageFieldName}
             variant={variant}
             hide-header={hideHeader}
             sub-group-field-name={subGroupFieldName}
             key-field={keyField}
-            title-field-name={titleFieldName}
-            description-field-name={descriptionFieldName}
-            start-date-field-name={startDateFieldName}
-            due-date-field-name={dueDateFieldName}
+            card-attributes={cardAttributes}
         ></c-kanban>
     </div>
 </template>

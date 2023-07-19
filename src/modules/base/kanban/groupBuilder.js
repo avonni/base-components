@@ -38,18 +38,13 @@ export default class KanbanGroupsBuilder {
         this._summarizeValues = props.summarizeValues;
         this._oldSummarizeValues = props.oldSummarizeValues;
         this._records = props.records;
-        this._fields = props.fields;
         this.groupFieldName = props.groupFieldName;
         this.summarizeFieldName = props.summarizeFieldName;
-        this.coverImageFieldName = props.coverImageFieldName;
         this.subGroupFieldName = props.subGroupFieldName;
         this.hasSubGroups = false;
         this.groups = [];
         this.keyField = props.keyField;
-        this.titleFieldName = props.titleFieldName;
-        this.descriptionFieldName = props.descriptionFieldName;
-        this.startDateFieldName = props.startDateFieldName;
-        this.dueDateFieldName = props.dueDateFieldName;
+        this.cardAttributes = props.cardAttributes;
     }
 
     /**
@@ -88,44 +83,27 @@ export default class KanbanGroupsBuilder {
                         ? record[this.subGroupFieldName]
                         : null
                 });
-
-                this._fields.forEach((field) => {
-                    if (JSON.stringify(record[field.fieldName])) {
-                        tile.addField({
-                            label: field.label,
-                            fieldName: field.fieldName,
-                            value: record[field.fieldName],
-                            type: field.type,
-                            typeAttributes: field.typeAttributes
+                Object.keys(this.cardAttributes).forEach((key) => {
+                    if (key === 'customFields') {
+                        this.cardAttributes[key].forEach((field) => {
+                            if (JSON.stringify(record[field.fieldName])) {
+                                tile.addField({
+                                    ...field,
+                                    value: record[field.fieldName]
+                                });
+                            }
                         });
+                    } else if (key !== 'customFieldAttributes') {
+                        const fieldDefinition = this.cardAttributes[key];
+                        if (
+                            fieldDefinition &&
+                            fieldDefinition.fieldName &&
+                            record[fieldDefinition.fieldName]
+                        ) {
+                            tile[key] = record[fieldDefinition.fieldName];
+                        }
                     }
                 });
-
-                if (
-                    this.coverImageFieldName &&
-                    record[this.coverImageFieldName]
-                ) {
-                    tile.coverImage = record[this.coverImageFieldName];
-                }
-                if (this.titleFieldName && record[this.titleFieldName]) {
-                    tile.title = record[this.titleFieldName];
-                }
-                if (
-                    this.descriptionFieldName &&
-                    record[this.descriptionFieldName]
-                ) {
-                    tile.description = record[this.descriptionFieldName];
-                }
-                if (
-                    this.startDateFieldName &&
-                    record[this.startDateFieldName]
-                ) {
-                    tile.startDate = record[this.startDateFieldName];
-                }
-                if (this.dueDateFieldName && record[this.dueDateFieldName]) {
-                    tile.dueDate = record[this.dueDateFieldName];
-                }
-
                 recordGroup.addTile(tile);
             }
         });

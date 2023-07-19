@@ -72,35 +72,6 @@ const GROUP_VALUES = [
     }
 ];
 
-const FIELDS = [
-    {
-        label: 'Amount',
-        fieldName: 'amount',
-        type: 'currency',
-        typeAttributes: { currencyCode: 'EUR' }
-    },
-    {
-        label: 'Phone',
-        fieldName: 'phone',
-        type: 'phone'
-    },
-    {
-        label: 'Created date',
-        fieldName: 'createdDate',
-        type: 'date'
-    },
-    {
-        label: 'Percent',
-        fieldName: 'percent',
-        type: 'percent'
-    },
-    {
-        label: 'Available',
-        fieldName: 'available',
-        type: 'boolean'
-    }
-];
-
 const RECORDS = [
     {
         id: '001',
@@ -251,4 +222,68 @@ const ACTIONS = [
     { disabled: true, label: 'Action 3', name: 'Action 3' }
 ];
 
-export { GROUP_VALUES, FIELDS, RECORDS, ACTIONS };
+const CARD_ATTRIBUTES = {
+    coverImage: {
+        fieldName: 'coverImage',
+        label: 'Cover Image',
+        type: 'text'
+    },
+    title: {
+        fieldName: 'opportunityName',
+        label: 'Opportunity Name',
+        type: 'text'
+    },
+    description: {
+        fieldName: 'description',
+        label: 'Description',
+        type: 'text'
+    },
+    startDate: {
+        fieldName: 'startDate',
+        label: 'Start Date',
+        type: 'date'
+    },
+    dueDate: {
+        fieldName: 'dueDate',
+        label: 'Due Date',
+        type: 'date'
+    },
+    customFields: [
+        {
+            label: 'Opportunity name',
+            fieldName: 'opportunityName',
+            type: 'text'
+        },
+        {
+            label: 'Amount',
+            fieldName: 'amount',
+            type: 'currency',
+            typeAttributes: { currencyCode: 'EUR' }
+        },
+        {
+            label: 'Phone',
+            fieldName: 'phone',
+            type: 'phone'
+        },
+        {
+            label: 'Created date',
+            fieldName: 'createdDate',
+            type: 'date'
+        },
+        {
+            label: 'Percent',
+            fieldName: 'percent',
+            type: 'percent'
+        },
+        {
+            label: 'Available',
+            fieldName: 'available',
+            type: 'boolean'
+        }
+    ],
+    customFieldAttributes: {
+        variant: 'label-hidden'
+    }
+};
+
+export { GROUP_VALUES, CARD_ATTRIBUTES, RECORDS, ACTIONS };
