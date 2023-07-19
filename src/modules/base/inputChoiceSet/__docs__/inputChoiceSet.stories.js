@@ -38,7 +38,7 @@ export default {
         checkPosition: {
             name: 'check-position',
             control: {
-                type: 'select'
+                type: 'radio'
             },
             options: ['left', 'right'],
             description:
@@ -196,12 +196,12 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        showButtonCheckMark: {
-            name: 'show-button-check-mark',
+        showButtonCheckmark: {
+            name: 'show-button-checkmark',
             control: {
                 type: 'boolean'
             },
-            description: 'If present, show check mark on button when selected.',
+            description: 'If present, show checkmark on button when selected.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -281,7 +281,7 @@ export default {
         readOnly: false,
         required: false,
         stretch: false,
-        showButtonCheckMark: false,
+        showButtonCheckmark: false,
         type: 'default',
         variant: 'standard'
     }
@@ -294,7 +294,7 @@ const optionsWithIcon = [
         label: 'Left',
         value: 'left',
         iconName: 'utility:left_align_text',
-        iconPosition: 'right'
+        iconPosition: 'top'
     },
     {
         label: 'Center',
@@ -425,7 +425,8 @@ ButtonsWithLabelInline.args = {
     variant: 'label-inline',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: dayValue,
+    showButtonCheckmark: true
 };
 
 export const ButtonsDisabled = Template.bind({});

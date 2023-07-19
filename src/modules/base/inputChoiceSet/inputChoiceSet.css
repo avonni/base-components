@@ -65,8 +65,11 @@
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal {
-    border-right: 1px solid #dddbda;
     border-bottom: none;
+}
+
+.slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
+    border-right: 1px solid #dddbda;
 }
 
 .avonni-input-choice-set__display_flex {

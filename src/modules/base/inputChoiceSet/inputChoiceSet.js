@@ -124,7 +124,7 @@ export default class InputChoiceSet extends LightningElement {
     _mediumContainerCols;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
     _required = false;
-    _showButtonCheckMark = false;
+    _showButtonCheckmark = false;
     _smallContainerCols;
     _type = INPUT_CHOICE_TYPES.default;
     _value = [];
@@ -357,12 +357,12 @@ export default class InputChoiceSet extends LightningElement {
      * @public
      */
     @api
-    get showButtonCheckMark() {
-        return this._showButtonCheckMark;
+    get showButtonCheckmark() {
+        return this._showButtonCheckmark;
     }
 
-    set showButtonCheckMark(value) {
-        this._showButtonCheckMark = normalizeBoolean(value);
+    set showButtonCheckmark(value) {
+        this._showButtonCheckmark = normalizeBoolean(value);
     }
 
     /**
@@ -490,15 +490,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * True if type is default or toggle.
-     *
-     * @type {boolean}
-     */
-    get checkboxToggleVariant() {
-        return this.type === 'default' || this.type === 'toggle';
-    }
-
-    /**
      * Localization.
      *
      * @type {i18n}
@@ -550,21 +541,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Computed Legend Class styling.
-     *
-     * @type {string}
-     */
-    get computedLegendClass() {
-        return classSet('')
-            .add({
-                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-                'avonni-input-choice-set__display_flex':
-                    this.variant !== VARIANT.LABEL_INLINE
-            })
-            .toString();
-    }
-
-    /**
      * Computed Button Class styling.
      *
      * @type {string}
@@ -578,12 +554,46 @@ export default class InputChoiceSet extends LightningElement {
         });
     }
 
+    get computedCheckContainerClass() {
+        return classSet('')
+            .add({
+                'slds-order_2': this.checkPosition === 'right',
+                'slds-p-left_x-small':
+                    (!this.toggleVariant && this.checkPosition === 'right') ||
+                    (this.toggleVariant &&
+                        this.checkPosition === 'right' &&
+                        this.orientation === 'vertical'),
+                'slds-p-right_x-small':
+                    this.toggleVariant &&
+                    this.checkPosition === 'left' &&
+                    this.orientation === 'vertical',
+                'slds-p-horizontal_x-small':
+                    this.toggleVariant && this.orientation === 'horizontal',
+                'slds-p-left_xx-small':
+                    !this.toggleVariant &&
+                    this.checkPosition === 'left' &&
+                    this.orientation === 'horizontal'
+            })
+            .toString();
+    }
+
+    get computedCheckmarkClass() {
+        return classSet('')
+            .add({
+                'slds-order_0 slds-p-left_x-small':
+                    this.checkPosition === 'left',
+                'slds-order_2 slds-p-right_x-small':
+                    this.checkPosition === 'right'
+            })
+            .toString();
+    }
+
     /**
-     * Computed Checkbox Container Class styling.
+     * Computed Input Container Class styling.
      *
      * @type {string}
      */
-    get computedCheckboxContainerClass() {
+    get computedInputContainerClass() {
         const checkboxClass = this.isMultiSelect
             ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
             : `slds-radio avonni-input-choice-set__${this.orientation}`;
@@ -596,6 +606,26 @@ export default class InputChoiceSet extends LightningElement {
             return buttonClass;
         }
         return toggleClass;
+    }
+
+    /**
+     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
+    }
+
+    /**
+     * Returns checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedInputType() {
+        return this.isMultiSelect || !this.checkboxVariant
+            ? 'checkbox'
+            : 'radio';
     }
 
     /**
@@ -619,33 +649,19 @@ export default class InputChoiceSet extends LightningElement {
         return label;
     }
 
-    get computedMediaFigureClass() {
-        return classSet('slds-media__figure')
+    /**
+     * Computed Legend Class styling.
+     *
+     * @type {string}
+     */
+    get computedLegendClass() {
+        return classSet('')
             .add({
-                'slds-p-top_x-small':
-                    this.toggleVariant && this.orientation === 'vertical'
+                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+                'avonni-input-choice-set__display_flex':
+                    this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
-    }
-
-    /**
-     * Returns checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedInputType() {
-        return this.isMultiSelect || !this.checkboxVariant
-            ? 'checkbox'
-            : 'radio';
-    }
-
-    /**
-     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedCheckboxShapeClass() {
-        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
 
     /**

@@ -63,32 +63,6 @@ export default class InputChoiceOption {
     }
 
     /**
-     * True if options's icon position is top or left or no icon position or no icon name.
-     *
-     * @type {boolean}
-     */
-    get isIconTopLeft() {
-        return (
-            this.iconPosition === POSITION_ICON.TOP ||
-            this.iconPosition === POSITION_ICON.LEFT ||
-            !this.iconPosition ||
-            !this.iconName
-        );
-    }
-
-    /**
-     * True if options's icon position is bottom or right.
-     *
-     * @type {boolean}
-     */
-    get isIconBottomRight() {
-        return (
-            this.iconPosition === POSITION_ICON.BOTTOM ||
-            this.iconPosition === POSITION_ICON.RIGHT
-        );
-    }
-
-    /**
      * Class of options's icon button.
      *
      * @type {string}
@@ -106,6 +80,15 @@ export default class InputChoiceOption {
                     this.label &&
                     (this.iconPosition === POSITION_ICON.LEFT ||
                         !this.iconPosition)
+            })
+            .toString();
+    }
+
+    get computedIconClass() {
+        return classSet('slds-p-right_x-small')
+            .add({
+                'slds-order_0': this.isIconTopLeft,
+                'slds-order_2': this.isIconBottomRight
             })
             .toString();
     }
@@ -132,5 +115,31 @@ export default class InputChoiceOption {
      */
     get computedVariantButton() {
         return this.isChecked ? 'inverse' : 'base';
+    }
+
+    /**
+     * True if options's icon position is bottom or right.
+     *
+     * @type {boolean}
+     */
+    get isIconBottomRight() {
+        return (
+            this.iconPosition === POSITION_ICON.BOTTOM ||
+            this.iconPosition === POSITION_ICON.RIGHT
+        );
+    }
+
+    /**
+     * True if options's icon position is top or left or no icon position or no icon name.
+     *
+     * @type {boolean}
+     */
+    get isIconTopLeft() {
+        return (
+            this.iconPosition === POSITION_ICON.TOP ||
+            this.iconPosition === POSITION_ICON.LEFT ||
+            !this.iconPosition ||
+            !this.iconName
+        );
     }
 }
