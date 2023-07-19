@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { isEditable } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellDateRange extends LightningElement {
     @api colKeyValue;
@@ -117,7 +118,7 @@ export default class PrimitiveCellDateRange extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.isEditable();
+        this.editable = isEditable(this.state, this._index, this.columns);
     }
 
     // Handles the edit button click and dispatches the event.
@@ -136,15 +137,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
-    }
-
-    // Checks if the column is editable.
-    isEditable() {
-        let inputDateRange = {};
-        inputDateRange = this.columns.find(
-            (column) => column.type === 'date-range'
-        );
-        this.editable = inputDateRange.editable;
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.

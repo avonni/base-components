@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { isEditable } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
@@ -102,7 +103,7 @@ export default class PrimitiveCellTextarea extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.isEditable();
+        this.editable = isEditable(this.state, this._index, this.columns);
     }
 
     // Handles the edit button click and dispatches the event.
@@ -121,13 +122,6 @@ export default class PrimitiveCellTextarea extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
-    }
-
-    // Checks if the column is editable.
-    isEditable() {
-        let textArea = {};
-        textArea = this.columns.find((column) => column.type === 'textarea');
-        this.editable = textArea.editable;
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.

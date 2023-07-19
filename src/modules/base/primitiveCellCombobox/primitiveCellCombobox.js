@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { isEditable } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
@@ -184,7 +185,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
             ? width.slice(this._index).reduce((a, b) => a + b, 0)
             : 0;
 
-        this.isEditable();
+        this.editable = isEditable(this.state, this._index, this.columns);
     }
 
     handleChange(event) {
@@ -222,13 +223,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
-    }
-
-    // Checks if the column is editable.
-    isEditable() {
-        let combobox = {};
-        combobox = this.columns.find((column) => column.type === 'combobox');
-        this.editable = combobox.editable;
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.

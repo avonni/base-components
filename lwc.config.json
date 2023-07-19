@@ -359,16 +359,12 @@
             "path": "src/modules/base/primitiveCellProgressCircle/primitiveCellProgressCircle.js"
         },
         {
-            "name": "c/primitiveCellRichText",
-            "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
-        },
-        {
-            "name": "c/primitiveCellToggle",
-            "path": "src/modules/base/primitiveCellToggle/primitiveCellToggle.js"
-        },
-        {
             "name": "c/primitiveCellRating",
             "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
+        },
+        {
+            "name": "c/primitiveCellRichText",
+            "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
         },
         {
             "name": "c/primitiveCellSlider",
@@ -377,6 +373,14 @@
         {
             "name": "c/primitiveCellTextarea",
             "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
+        },
+        {
+            "name": "c/primitiveCellToggle",
+            "path": "src/modules/base/primitiveCellToggle/primitiveCellToggle.js"
+        },
+        {
+            "name": "c/primitiveCellUtils",
+            "path": "src/modules/base/primitiveCellUtils/primitiveCellUtils.js"
         },
         {
             "name": "c/primitiveChip",
