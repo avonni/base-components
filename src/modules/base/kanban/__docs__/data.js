@@ -286,4 +286,17 @@ const CARD_ATTRIBUTES = {
     }
 };
 
-export { GROUP_VALUES, CARD_ATTRIBUTES, RECORDS, ACTIONS };
+const SUMMARIZE_ATTRIBUTES = {
+    label: 'Amount',
+    fieldName: 'amount',
+    type: 'currency',
+    typeAttributes: { currencyCode: 'EUR' }
+};
+
+export {
+    GROUP_VALUES,
+    CARD_ATTRIBUTES,
+    RECORDS,
+    ACTIONS,
+    SUMMARIZE_ATTRIBUTES
+};

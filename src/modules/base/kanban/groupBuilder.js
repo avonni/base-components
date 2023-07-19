@@ -39,7 +39,7 @@ export default class KanbanGroupsBuilder {
         this._oldSummarizeValues = props.oldSummarizeValues;
         this._records = props.records;
         this.groupFieldName = props.groupFieldName;
-        this.summarizeFieldName = props.summarizeFieldName;
+        this.summarizeAttributes = props.summarizeAttributes;
         this.subGroupFieldName = props.subGroupFieldName;
         this.hasSubGroups = false;
         this.groups = [];
@@ -65,7 +65,7 @@ export default class KanbanGroupsBuilder {
                     pathColor: groupValue.pathColor,
                     showItemCount: groupValue.showItemCount,
                     avatar: groupValue.avatar,
-                    summarizeFieldName: this.summarizeFieldName
+                    summarizeAttributes: this.summarizeAttributes
                 })
             );
         });

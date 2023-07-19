@@ -32,7 +32,13 @@
 
 import { createElement } from 'lwc';
 import Kanban from '../kanban';
-import { ACTIONS, CARD_ATTRIBUTES, GROUP_VALUES, RECORDS } from './data';
+import {
+    ACTIONS,
+    CARD_ATTRIBUTES,
+    GROUP_VALUES,
+    RECORDS,
+    SUMMARIZE_ATTRIBUTES
+} from './data';
 
 let element;
 describe('Kanban', () => {
@@ -52,7 +58,7 @@ describe('Kanban', () => {
     it('Kanban : Default attributes', () => {
         expect(element.groupValues).toMatchObject([]);
         expect(element.records).toMatchObject([]);
-        expect(element.summarizeFieldName).toBeUndefined();
+        expect(element.summarizeAttributes).toMatchObject({});
         expect(element.actions).toMatchObject([]);
         expect(element.disableItemDragAndDrop).toBeFalsy();
         expect(element.disableColumnDragAndDrop).toBeFalsy();
@@ -96,7 +102,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -118,7 +124,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.subGroupFieldName = 'assignee';
         element.actions = ACTIONS;
 
@@ -141,7 +147,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.hideHeader = true;
         element.actions = ACTIONS;
 
@@ -164,7 +170,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -189,7 +195,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -213,7 +219,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
         element.disableItemDragAndDrop = true;
 
@@ -236,7 +242,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -273,7 +279,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
         element.variant = 'base';
 
@@ -311,7 +317,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -339,7 +345,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -372,7 +378,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -406,7 +412,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -440,7 +446,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -484,7 +490,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {
@@ -520,7 +526,7 @@ describe('Kanban', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeAttributes = SUMMARIZE_ATTRIBUTES;
         element.actions = ACTIONS;
 
         const cardAttributes = {

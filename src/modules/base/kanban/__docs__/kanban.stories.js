@@ -31,7 +31,13 @@
  */
 
 import { Kanban } from '../__examples__/kanban';
-import { GROUP_VALUES, RECORDS, ACTIONS, CARD_ATTRIBUTES } from './data';
+import {
+    GROUP_VALUES,
+    RECORDS,
+    ACTIONS,
+    CARD_ATTRIBUTES,
+    SUMMARIZE_ATTRIBUTES
+} from './data';
 
 export default {
     title: 'Example/Kanban',
@@ -143,15 +149,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        summarizeFieldName: {
-            name: 'summarize-field-name',
+        summarizeAttributes: {
+            name: 'summarize-attributes',
             control: {
-                type: 'text'
+                type: 'object'
             },
             description:
-                ' Name of the data field containing the number to add to the group summarization, at the top of each column.',
+                ' The field containing the number to add to the group summarization, at the top of each column.',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'object' }
             }
         },
         subGroupFieldName: {
@@ -190,7 +196,7 @@ export default {
         isLoading: false,
         keyField: 'id',
         records: RECORDS,
-        summarizeFieldName: 'amount',
+        summarizeAttributes: SUMMARIZE_ATTRIBUTES,
         variant: 'base'
     }
 };
@@ -346,7 +352,11 @@ hideHeader.args = {
 export const path = Template.bind({});
 path.args = {
     variant: 'path',
-    summarizeFieldName: 'Percent'
+    summarizeAttributes: {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent'
+    }
 };
 
 export const subGroups = Template.bind({});
@@ -357,7 +367,11 @@ subGroups.args = {
 export const disabledItemDrag = Template.bind({});
 disabledItemDrag.args = {
     disableItemDragAndDrop: true,
-    summarizeFieldName: 'Percent'
+    summarizeAttributes: {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent'
+    }
 };
 
 export const disabledColumnDrag = Template.bind({});

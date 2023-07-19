@@ -72,7 +72,7 @@ export default class Kanban extends LightningElement {
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
-    _summarizeFieldName;
+    _summarizeAttributes = {};
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -352,17 +352,17 @@ export default class Kanban extends LightningElement {
 
     /**
      *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     * The field containing the number to add to the group summarization, at the top of each column.
      *
      * @type {string}
      * @public
      */
     @api
-    get summarizeFieldName() {
-        return this._summarizeFieldName;
+    get summarizeAttributes() {
+        return this._summarizeAttributes;
     }
-    set summarizeFieldName(value) {
-        this._summarizeFieldName = value;
+    set summarizeAttributes(value) {
+        this._summarizeAttributes = normalizeObject(value);
         if (this._connected) {
             this.updateTiles();
         }
@@ -1595,7 +1595,7 @@ export default class Kanban extends LightningElement {
             groupValues: this._groupValues,
             records: this._records,
             groupFieldName: this.groupFieldName,
-            summarizeFieldName: this.summarizeFieldName,
+            summarizeAttributes: this.summarizeAttributes,
             subGroupFieldName: this.subGroupFieldName,
             keyField: this.keyField,
             cardAttributes: this.cardAttributes

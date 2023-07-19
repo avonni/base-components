@@ -165,4 +165,11 @@ export default class KanbanDisabledColumnDrag extends LightningElement {
         { disabled: false, label: 'Action 2', name: 'Action 2' },
         { disabled: true, label: 'Action 3', name: 'Action 3' }
     ];
+
+    summarizeAttributes = {
+        label: 'Amount',
+        fieldName: 'amount',
+        type: 'currency',
+        typeAttributes: { currencyCode: 'EUR' }
+    };
 }

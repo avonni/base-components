@@ -12,6 +12,6 @@ export default class Kanban extends LightningElement {
     @api keyField;
     @api records;
     @api subGroupFieldName;
-    @api summarizeFieldName;
+    @api summarizeAttributes;
     @api variant;
 }

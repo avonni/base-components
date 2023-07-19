@@ -46,7 +46,7 @@ export const Kanban = ({
     keyField,
     records,
     subGroupFieldName,
-    summarizeFieldName,
+    summarizeAttributes,
     variant
 }) => {
     const element = document.createElement('ac-kanban');
@@ -61,7 +61,7 @@ export const Kanban = ({
     element.keyField = keyField;
     element.records = records;
     element.subGroupFieldName = subGroupFieldName;
-    element.summarizeFieldName = summarizeFieldName;
+    element.summarizeAttributes = summarizeAttributes;
     element.variant = variant;
     return element;
 };
