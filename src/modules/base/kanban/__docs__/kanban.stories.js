@@ -31,7 +31,13 @@
  */
 
 import { Kanban } from '../__examples__/kanban';
-import { GROUP_VALUES, FIELDS, RECORDS, ACTIONS } from './data';
+import {
+    GROUP_VALUES,
+    RECORDS,
+    ACTIONS,
+    CARD_ATTRIBUTES,
+    SUMMARIZE_ATTRIBUTES
+} from './data';
 
 export default {
     title: 'Example/Kanban',
@@ -56,14 +62,14 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        fields: {
+        cardAttributes: {
+            name: 'card-attributes',
             control: {
                 type: 'object'
             },
-            description:
-                ' Array of field objects, used to define the allowed data fields.',
+            description: 'Object of attributes for the card.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object' }
             }
         },
         groupValues: {
@@ -75,17 +81,6 @@ export default {
                 ' Array of group objects. Each group represents one step of the path.',
             table: {
                 type: { summary: 'object[]' }
-            }
-        },
-        coverImageFieldName: {
-            name: 'cover-image-field-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                ' Name of the field that contains the cover image for the tile.',
-            table: {
-                type: { summary: 'String' }
             }
         },
         groupFieldName: {
@@ -154,15 +149,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        summarizeFieldName: {
-            name: 'summarize-field-name',
+        summarizeAttributes: {
+            name: 'summarize-attributes',
             control: {
-                type: 'text'
+                type: 'object'
             },
             description:
-                ' Name of the data field containing the number to add to the group summarization, at the top of each column.',
+                ' The field containing the number to add to the group summarization, at the top of each column.',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'object' }
             }
         },
         subGroupFieldName: {
@@ -174,16 +169,6 @@ export default {
                 ' Name of the data field containing the sub-group label the data belongs to. ',
             table: {
                 type: { summary: 'String' }
-            }
-        },
-        fieldAttributes: {
-            name: 'field-attributes',
-            control: {
-                type: 'object'
-            },
-            description: 'Object of attributes for the item fields.',
-            table: {
-                type: { summary: 'object' }
             }
         },
         variant: {
@@ -202,20 +187,16 @@ export default {
     },
     args: {
         actions: ACTIONS,
-        coverImageFieldName: 'coverImage',
+        cardAttributes: CARD_ATTRIBUTES,
         disableColumnDragAndDrop: false,
         disableItemDragAndDrop: false,
-        fieldAttributes: {
-            variant: 'label-hidden'
-        },
-        fields: FIELDS,
         groupFieldName: 'status',
         groupValues: GROUP_VALUES,
         hideHeader: false,
         isLoading: false,
         keyField: 'id',
         records: RECORDS,
-        summarizeFieldName: 'amount',
+        summarizeAttributes: SUMMARIZE_ATTRIBUTES,
         variant: 'base'
     }
 };
@@ -290,9 +271,13 @@ avatar.args = {
             amount: 25000,
             warningIcon: 'utility:warning',
             phone: '+375292567896',
-            date: '1547250828000',
+            createdDate: '1594133308000',
+            startDate: '2020/07/07',
+            dueDate: '1600354108000',
             percent: 0.28,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '002',
@@ -300,9 +285,11 @@ avatar.args = {
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
-            date: '1347250828000',
+            createdDate: '1347250828000',
             percent: 0.77,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '003',
@@ -310,9 +297,12 @@ avatar.args = {
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: '1547250828000',
+            startDate: '1547250828000',
             percent: 0.83,
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '004',
@@ -320,9 +310,11 @@ avatar.args = {
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
-            date: '1647250828000',
+            createdDate: '1647250828000',
             percent: 0.2,
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '005',
@@ -330,9 +322,13 @@ avatar.args = {
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
-            date: '1347250828000',
+            createdDate: '2541422908000',
+            startDate: '2541422908000',
+            dueDate: '2541941308000',
             percent: 0.18,
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '006',
@@ -340,7 +336,7 @@ avatar.args = {
             opportunityName: 'Opportunity 6',
             amount: 17500,
             phone: '+375292567896',
-            date: '1547250828000',
+            createdDate: '1547250828000',
             percent: 0.92,
             available: true
         }
@@ -356,7 +352,11 @@ hideHeader.args = {
 export const path = Template.bind({});
 path.args = {
     variant: 'path',
-    summarizeFieldName: 'Percent'
+    summarizeAttributes: {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent'
+    }
 };
 
 export const subGroups = Template.bind({});
@@ -367,7 +367,11 @@ subGroups.args = {
 export const disabledItemDrag = Template.bind({});
 disabledItemDrag.args = {
     disableItemDragAndDrop: true,
-    summarizeFieldName: 'Percent'
+    summarizeAttributes: {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent'
+    }
 };
 
 export const disabledColumnDrag = Template.bind({});
@@ -377,5 +381,10 @@ disabledColumnDrag.args = {
 
 export const fieldLabelInline = Template.bind({});
 fieldLabelInline.args = {
-    fieldAttributes: { variant: 'label-inline' }
+    cardAttributes: {
+        ...CARD_ATTRIBUTES,
+        customFieldAttributes: {
+            variant: 'label-inline'
+        }
+    }
 };

@@ -1,12 +1,12 @@
 <template>
     <avonni-kanban
         group-values={groupValues}
-        fields={fields}
         records={records}
-        summarize-field-name="amount"
+        summarize-attributes={summarizeAttributes}
         actions={actions}
         disable-column-drag-and-drop
         group-field-name="status"
         key-field="id"
+        card-attributes={cardAttributes}
     ></avonni-kanban>
 </template>

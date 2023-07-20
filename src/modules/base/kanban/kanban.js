@@ -64,15 +64,15 @@ const FIELD_VARIANTS = {
  */
 export default class Kanban extends LightningElement {
     _actions = [];
+    _cardAttributes = {};
     _disableColumnDragAndDrop = false;
     _disableItemDragAndDrop = false;
-    _fields = [];
     _groupValues = [];
     _hideHeader = false;
     _isLoading = false;
     _records = [];
     _subGroupFieldName;
-    _summarizeFieldName;
+    _summarizeAttributes = {};
 
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
@@ -85,7 +85,6 @@ export default class Kanban extends LightningElement {
     _draggedGroup;
     _draggedTile;
     _droppedTileHeight = 0;
-    _fieldAttributes = { variant: 'label-hidden' };
     _fieldsDistance = [];
     _groupsHeight = [];
     _groupsLength = [];
@@ -165,11 +164,37 @@ export default class Kanban extends LightningElement {
      */
 
     /**
-     * Name of the field containing the cover image of the tile.
-     * @type {string}
+     * Object of attributes for the card.
+     * Card attributes: coverImage, title, description, startDate, dueDate, customFields and customFieldAttributes
+     *
+     * @type {object}
      * @public
      */
-    @api coverImageFieldName;
+    @api
+    get cardAttributes() {
+        return this._cardAttributes;
+    }
+    set cardAttributes(value) {
+        this._cardAttributes = normalizeObject(value);
+
+        const normalizedFieldAttributes = normalizeObject(
+            this._cardAttributes.customFieldAttributes
+        );
+        const variant = normalizeString(normalizedFieldAttributes.variant, {
+            fallbackValue: FIELD_VARIANTS.default,
+            validValues: FIELD_VARIANTS.valid
+        });
+        this._cardAttributes = {
+            ...this.cardAttributes,
+            customFieldAttributes: {
+                ...normalizedFieldAttributes,
+                variant
+            }
+        };
+        if (this._connected) {
+            this.updateTiles();
+        }
+    }
 
     /**
      * Name of the data field containing the group label the data belongs to.
@@ -238,45 +263,6 @@ export default class Kanban extends LightningElement {
     }
     set disableItemDragAndDrop(value) {
         this._disableItemDragAndDrop = normalizeBoolean(value);
-    }
-
-    /**
-     * Object of attributes for the item fields. Field attributes: variant
-     *
-     * @type {object}
-     * @public
-     */
-    @api
-    get fieldAttributes() {
-        return this._fieldAttributes;
-    }
-    set fieldAttributes(value) {
-        const normalizedFieldAttributes = normalizeObject(value);
-        this._fieldAttributes.variant = normalizeString(
-            normalizedFieldAttributes.variant,
-            {
-                fallbackValue: FIELD_VARIANTS.default,
-                validValues: FIELD_VARIANTS.valid
-            }
-        );
-        this._fieldAttributes = { ...this._fieldAttributes };
-    }
-
-    /**
-     * Array of field objects, used to define the allowed data fields.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get fields() {
-        return this._fields;
-    }
-    set fields(values) {
-        this._fields = normalizeArray(values);
-        if (this._connected) {
-            this.updateTiles();
-        }
     }
 
     /**
@@ -366,17 +352,17 @@ export default class Kanban extends LightningElement {
 
     /**
      *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     * The field containing the number to add to the group summarization, at the top of each column.
      *
      * @type {string}
      * @public
      */
     @api
-    get summarizeFieldName() {
-        return this._summarizeFieldName;
+    get summarizeAttributes() {
+        return this._summarizeAttributes;
     }
-    set summarizeFieldName(value) {
-        this._summarizeFieldName = value;
+    set summarizeAttributes(value) {
+        this._summarizeAttributes = normalizeObject(value);
         if (this._connected) {
             this.updateTiles();
         }
@@ -473,12 +459,33 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Returns the object of attributes for the fields.
+     *
+     * @type {object}
+     */
+    get customFieldAttributes() {
+        if (this.cardAttributes && this.cardAttributes.customFieldAttributes) {
+            return this.cardAttributes.customFieldAttributes;
+        }
+        return {};
+    }
+
+    /**
      * Check if actions exist.
      *
      * @type {boolean}
      */
     get hasActions() {
         return this.actions && this.actions.length > 0;
+    }
+
+    /**
+     * Check if the tile has a header.
+     *
+     * @type {boolean}
+     */
+    get hasTileHeader() {
+        return this.cardAttributes.title || this.cardAttributes.description;
     }
 
     /**
@@ -1587,12 +1594,11 @@ export default class Kanban extends LightningElement {
         const kanbanGroupsBuilder = new KanbanGroupsBuilder({
             groupValues: this._groupValues,
             records: this._records,
-            fields: this._fields,
             groupFieldName: this.groupFieldName,
-            summarizeFieldName: this.summarizeFieldName,
-            coverImageFieldName: this.coverImageFieldName,
+            summarizeAttributes: this.summarizeAttributes,
             subGroupFieldName: this.subGroupFieldName,
-            keyField: this.keyField
+            keyField: this.keyField,
+            cardAttributes: this.cardAttributes
         });
         if (this._computedGroups.length === 0) {
             this._groupValues.forEach((_, i) => {

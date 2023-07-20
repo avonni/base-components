@@ -38,14 +38,13 @@ export default class KanbanGroupsBuilder {
         this._summarizeValues = props.summarizeValues;
         this._oldSummarizeValues = props.oldSummarizeValues;
         this._records = props.records;
-        this._fields = props.fields;
         this.groupFieldName = props.groupFieldName;
-        this.summarizeFieldName = props.summarizeFieldName;
-        this.coverImageFieldName = props.coverImageFieldName;
+        this.summarizeAttributes = props.summarizeAttributes;
         this.subGroupFieldName = props.subGroupFieldName;
         this.hasSubGroups = false;
         this.groups = [];
         this.keyField = props.keyField;
+        this.cardAttributes = props.cardAttributes;
     }
 
     /**
@@ -66,7 +65,7 @@ export default class KanbanGroupsBuilder {
                     pathColor: groupValue.pathColor,
                     showItemCount: groupValue.showItemCount,
                     avatar: groupValue.avatar,
-                    summarizeFieldName: this.summarizeFieldName
+                    summarizeAttributes: this.summarizeAttributes
                 })
             );
         });
@@ -84,27 +83,27 @@ export default class KanbanGroupsBuilder {
                         ? record[this.subGroupFieldName]
                         : null
                 });
-
-                this._fields.forEach((field) => {
-                    if (JSON.stringify(record[field.fieldName])) {
-                        tile.addField({
-                            label: field.label,
-                            fieldName: field.fieldName,
-                            value: record[field.fieldName],
-                            type: field.type,
-                            typeAttributes: field.typeAttributes
+                Object.keys(this.cardAttributes).forEach((key) => {
+                    if (key === 'customFields') {
+                        this.cardAttributes[key].forEach((field) => {
+                            if (JSON.stringify(record[field.fieldName])) {
+                                tile.addField({
+                                    ...field,
+                                    value: record[field.fieldName]
+                                });
+                            }
                         });
+                    } else if (key !== 'customFieldAttributes') {
+                        const fieldDefinition = this.cardAttributes[key];
+                        if (
+                            fieldDefinition &&
+                            fieldDefinition.fieldName &&
+                            record[fieldDefinition.fieldName]
+                        ) {
+                            tile[key] = record[fieldDefinition.fieldName];
+                        }
                     }
                 });
-
-                if (
-                    Object.keys(record).find(
-                        (key) => key === this.coverImageFieldName
-                    )
-                ) {
-                    tile.coverImage = record[this.coverImageFieldName];
-                }
-
                 recordGroup.addTile(tile);
             }
         });

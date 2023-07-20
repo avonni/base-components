@@ -43,39 +43,69 @@ export default class KanbanSubGroups extends LightningElement {
         }
     ];
 
-    fields = [
-        {
-            label: 'Opportunity name',
-            fieldName: 'opportunityName',
+    cardAttributes = {
+        coverImage: {
+            fieldName: 'coverImage',
+            label: 'Cover Image',
             type: 'text'
         },
-        {
-            label: 'Amount',
-            fieldName: 'amount',
-            type: 'currency',
-            typeAttributes: { currencyCode: 'EUR' }
+        title: {
+            fieldName: 'opportunityName',
+            label: 'Opportunity Name',
+            type: 'text'
         },
-        {
-            label: 'Phone',
-            fieldName: 'phone',
-            type: 'phone'
+        description: {
+            fieldName: 'description',
+            label: 'Description',
+            type: 'text'
         },
-        {
-            label: 'Created date',
-            fieldName: 'date',
+        startDate: {
+            fieldName: 'startDate',
+            label: 'Start Date',
             type: 'date'
         },
-        {
-            label: 'Percent',
-            fieldName: 'percent',
-            type: 'percent'
+        dueDate: {
+            fieldName: 'dueDate',
+            label: 'Due Date',
+            type: 'date'
         },
-        {
-            label: 'Available',
-            fieldName: 'available',
-            type: 'boolean'
+        customFields: [
+            {
+                label: 'Opportunity name',
+                fieldName: 'opportunityName',
+                type: 'text'
+            },
+            {
+                label: 'Amount',
+                fieldName: 'amount',
+                type: 'currency',
+                typeAttributes: { currencyCode: 'EUR' }
+            },
+            {
+                label: 'Phone',
+                fieldName: 'phone',
+                type: 'phone'
+            },
+            {
+                label: 'Created date',
+                fieldName: 'createdDate',
+                type: 'date'
+            },
+            {
+                label: 'Percent',
+                fieldName: 'percent',
+                type: 'percent'
+            },
+            {
+                label: 'Available',
+                fieldName: 'available',
+                type: 'boolean'
+            }
+        ],
+        customFieldAttributes: {
+            variant: 'label-hidden'
         }
-    ];
+    };
 
     records = [
         {
@@ -85,12 +115,16 @@ export default class KanbanSubGroups extends LightningElement {
             amount: 25000,
             warningIcon: 'utility:warning',
             phone: '+375292567896',
-            date: '1547250828000',
+            createdDate: '1594133308000',
+            startDate: '2020/07/07',
+            dueDate: '1600354108000',
             percent: 0.28,
             available: true,
             assignee: 'John Doe',
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '002',
@@ -98,10 +132,14 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 2',
             amount: 13200,
             phone: '+375292567896',
-            date: '1347250828000',
+            createdDate: '2541422908000',
+            startDate: '2541422908000',
+            dueDate: '2541941308000',
             percent: 0.77,
             assignee: 'John Doe',
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '003',
@@ -109,10 +147,14 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 3',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: '1547250828000',
+            startDate: '1547250828000',
+            dueDate: '1568731708000',
             percent: 0.83,
             assignee: 'Jane Doe',
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '004',
@@ -120,10 +162,13 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 4',
             amount: 21570,
             phone: '+375292567896',
-            date: '1647250828000',
+            createdDate: Date.now(),
+            startDate: Date.now(),
             percent: 0.2,
             assignee: 'John Smith',
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '005',
@@ -131,10 +176,14 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 5',
             amount: 200,
             phone: '+375299999999',
-            date: '1347250828000',
+            createdDate: '1647250828000',
+            startDate: '1647250828000',
+            dueDate: '1647874108000',
             percent: 0.18,
             assignee: 'Jane Doe',
-            available: true
+            available: true,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '006',
@@ -143,7 +192,9 @@ export default class KanbanSubGroups extends LightningElement {
             amount: 17500,
             assignee: 'John Doe',
             coverImage:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '007',
@@ -151,10 +202,13 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 7',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: '1547250828000',
+            startDate: 1547250828000,
             percent: 0.83,
             assignee: 'John Smith',
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '008',
@@ -162,9 +216,13 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 8',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: '1547250828000',
+            startDate: '1547250828000',
+            dueDate: '1547822908000',
             assignee: 'Jane Doe',
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '009',
@@ -173,7 +231,9 @@ export default class KanbanSubGroups extends LightningElement {
             amount: 5100,
             phone: '+37529888888',
             assignee: 'John Doe',
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         },
         {
             id: '010',
@@ -181,10 +241,13 @@ export default class KanbanSubGroups extends LightningElement {
             opportunityName: 'Opportunity 10',
             amount: 5100,
             phone: '+37529888888',
-            date: '1547250828000',
+            createdDate: Date.now(),
+            startDate: Date.now(),
             assignee: 'John Smith',
             percent: 0.83,
-            available: false
+            available: false,
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
         }
     ];
 
@@ -193,4 +256,11 @@ export default class KanbanSubGroups extends LightningElement {
         { disabled: false, label: 'Action 2', name: 'Action 2' },
         { disabled: true, label: 'Action 3', name: 'Action 3' }
     ];
+
+    summarizeAttributes = {
+        label: 'Amount',
+        fieldName: 'amount',
+        type: 'currency',
+        typeAttributes: { currencyCode: 'EUR' }
+    };
 }

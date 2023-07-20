@@ -2,11 +2,9 @@ import { LightningElement, api } from 'lwc';
 
 export default class Kanban extends LightningElement {
     @api actions;
-    @api coverImageFieldName;
+    @api cardAttributes;
     @api disableColumnDragAndDrop;
     @api disableItemDragAndDrop;
-    @api fieldAttributes;
-    @api fields;
     @api groupFieldName;
     @api groupValues;
     @api hideHeader;
@@ -14,6 +12,6 @@ export default class Kanban extends LightningElement {
     @api keyField;
     @api records;
     @api subGroupFieldName;
-    @api summarizeFieldName;
+    @api summarizeAttributes;
     @api variant;
 }

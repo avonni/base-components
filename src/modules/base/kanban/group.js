@@ -1,4 +1,8 @@
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeObject
+} from 'c/utilsPrivate';
 
 /**
  * BSD 3-Clause License
@@ -47,8 +51,8 @@ export default class KanbanGroup {
         this._backgroundColor = props.backgroundColor || '';
         this._pathColor = props.pathColor || '';
         this._showItemCount = normalizeBoolean(props.showItemCount);
-        this._avatar = props.avatar;
-        this._summarizeFieldName = props.summarizeFieldName;
+        this._avatar = normalizeObject(props.avatar);
+        this._summarizeAttributes = normalizeObject(props.summarizeAttributes);
     }
 
     addTile(tile) {
@@ -103,7 +107,9 @@ export default class KanbanGroup {
 
         this._tiles.forEach((tile) => {
             const toSummarize = tile.field.find(
-                (field) => field.fieldName === this._summarizeFieldName
+                (field) =>
+                    this._summarizeAttributes &&
+                    field.fieldName === this._summarizeAttributes.fieldName
             );
             if (toSummarize && typeof toSummarize.value === 'number') {
                 this._summarize.type = toSummarize.type;

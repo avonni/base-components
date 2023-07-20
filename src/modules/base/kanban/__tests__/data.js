@@ -78,40 +78,6 @@ const GROUP_VALUES = [
     }
 ];
 
-const FIELDS = [
-    {
-        label: 'Opportunity name',
-        fieldName: 'opportunityName',
-        type: 'text'
-    },
-    {
-        label: 'Amount',
-        fieldName: 'amount',
-        type: 'currency',
-        typeAttributes: { currencyCode: 'EUR' }
-    },
-    {
-        label: 'Phone',
-        fieldName: 'phone',
-        type: 'phone'
-    },
-    {
-        label: 'Created date',
-        fieldName: 'date',
-        type: 'date'
-    },
-    {
-        label: 'Percent',
-        fieldName: 'percent',
-        type: 'percent'
-    },
-    {
-        label: 'Available',
-        fieldName: 'available',
-        type: 'boolean'
-    }
-];
-
 const RECORDS = [
     {
         id: '001',
@@ -120,9 +86,15 @@ const RECORDS = [
         amount: 25000,
         warningIcon: 'utility:warning',
         phone: '+375292567896',
-        date: '1547250828000',
+        createdDate: '1594133308000',
+        startDate: '2020/07/07',
+        dueDate: '1600354108000',
         percent: 0.28,
-        available: true
+        available: true,
+        coverImage:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         id: '002',
@@ -130,9 +102,13 @@ const RECORDS = [
         opportunityName: 'Opportunity 2',
         amount: 13200,
         phone: '+375292567896',
-        date: '1347250828000',
+        createdDate: '2541422908000',
+        startDate: '2541422908000',
+        dueDate: '2541941308000',
         percent: 0.77,
-        available: true
+        available: true,
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         id: '003',
@@ -141,9 +117,13 @@ const RECORDS = [
         amount: 5100,
         assignee: 'John Doe',
         phone: '+37529888888',
-        date: '1547250828000',
+        createdDate: '1547250828000',
+        startDate: '1547250828000',
+        dueDate: '1568731708000',
         percent: 0.83,
-        available: false
+        available: false,
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         id: '004',
@@ -152,9 +132,12 @@ const RECORDS = [
         assignee: 'John Doe',
         amount: 21570,
         phone: '+375292567896',
-        date: '1647250828000',
+        createdDate: Date.now(),
+        startDate: Date.now(),
         percent: 0.2,
-        available: false
+        available: false,
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         id: '005',
@@ -162,9 +145,13 @@ const RECORDS = [
         opportunityName: 'Opportunity 5',
         amount: 200,
         phone: '+375299999999',
-        date: '1347250828000',
+        createdDate: '1647250828000',
+        startDate: '1647250828000',
+        dueDate: '1647874108000',
         percent: 0.18,
-        available: true
+        available: true,
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         id: '006',
@@ -172,9 +159,10 @@ const RECORDS = [
         opportunityName: 'Opportunity 6',
         amount: 17500,
         phone: '+375292567896',
-        date: '1547250828000',
+        createdDate: '1547250828000',
         percent: 0.92,
-        available: true
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     }
 ];
 
@@ -184,8 +172,81 @@ const ACTIONS = [
     { disabled: true, label: 'Action 3', name: 'Action 3' }
 ];
 
-const FIELD_ATTRIBUTES = {
-    variant: 'label-hidden'
+const CARD_ATTRIBUTES = {
+    coverImage: {
+        fieldName: 'coverImage',
+        label: 'Cover Image',
+        type: 'text'
+    },
+    title: {
+        fieldName: 'opportunityName',
+        label: 'Opportunity Name',
+        type: 'text'
+    },
+    description: {
+        fieldName: 'description',
+        label: 'Description',
+        type: 'text'
+    },
+    startDate: {
+        fieldName: 'startDate',
+        label: 'Start Date',
+        type: 'date'
+    },
+    dueDate: {
+        fieldName: 'dueDate',
+        label: 'Due Date',
+        type: 'date'
+    },
+    customFields: [
+        {
+            label: 'Opportunity name',
+            fieldName: 'opportunityName',
+            type: 'text'
+        },
+        {
+            label: 'Amount',
+            fieldName: 'amount',
+            type: 'currency',
+            typeAttributes: { currencyCode: 'EUR' }
+        },
+        {
+            label: 'Phone',
+            fieldName: 'phone',
+            type: 'phone'
+        },
+        {
+            label: 'Created date',
+            fieldName: 'createdDate',
+            type: 'date'
+        },
+        {
+            label: 'Percent',
+            fieldName: 'percent',
+            type: 'percent'
+        },
+        {
+            label: 'Available',
+            fieldName: 'available',
+            type: 'boolean'
+        }
+    ],
+    customFieldAttributes: {
+        variant: 'label-hidden'
+    }
 };
 
-export { GROUP_VALUES, FIELDS, RECORDS, ACTIONS, FIELD_ATTRIBUTES };
+const SUMMARIZE_ATTRIBUTES = {
+    label: 'Amount',
+    fieldName: 'amount',
+    type: 'currency',
+    typeAttributes: { currencyCode: 'EUR' }
+};
+
+export {
+    GROUP_VALUES,
+    CARD_ATTRIBUTES,
+    RECORDS,
+    ACTIONS,
+    SUMMARIZE_ATTRIBUTES
+};

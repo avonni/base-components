@@ -29,6 +29,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import { classSet } from 'c/utils';
+import { dateTimeObjectFrom } from 'c/utilsPrivate';
+
 export default class KanbanTile {
     constructor(props) {
         this._index = props.index;
@@ -37,41 +41,129 @@ export default class KanbanTile {
         this._field = [];
         this._subGroup = props.subGroup;
         this._coverImage = null;
+        this._title = props.title;
+        this._description = props.description;
+        this._startDate = props.startDate;
+        this._dueDate = props.dueDate;
     }
 
-    get index() {
-        return this._index;
+    get coverImage() {
+        return this._coverImage;
+    }
+    set coverImage(coverImage) {
+        this._coverImage = coverImage;
     }
 
-    get group() {
-        return this._group;
+    get description() {
+        return this._description;
+    }
+    set description(description) {
+        this._description = description;
     }
 
-    get warningIcon() {
-        return this._warningIcon;
+    get dueDate() {
+        return this._dueDate;
+    }
+    set dueDate(dueDate) {
+        let date = dueDate;
+        if (!isNaN(Number(date))) {
+            date = Number(date);
+        }
+        date = dateTimeObjectFrom(date);
+        this._dueDate = !date || dueDate === null ? null : new Date(date.ts);
+        if (this._dueDate) {
+            const dateTZ = this.getDateWithTimeZone(this._dueDate);
+            this._dueDate = new Date(dateTZ.ts);
+        }
     }
 
-    get field() {
-        return this._field;
+    get startDate() {
+        return this._startDate;
+    }
+    set startDate(startDate) {
+        let date = startDate;
+        if (!isNaN(Number(date))) {
+            date = Number(date);
+        }
+        date = dateTimeObjectFrom(date);
+        this._startDate =
+            !date || startDate === null ? null : new Date(date.ts);
+        if (this._startDate) {
+            const dateTZ = this.getDateWithTimeZone(this._startDate);
+            this._startDate = new Date(dateTZ.ts);
+        }
     }
 
-    get subGroup() {
-        return this._subGroup;
+    get computedTileDatesClass() {
+        return classSet(
+            'avonni-kanban__tile_dates slds-grid slds-grid_vertical-align-center slds-p-around_xx-small'
+        ).add({
+            'avonni-kanban__tile_dates_overdue slds-p-vertical_xx-small slds-p-horizontal_x-small':
+                this.isOverdue
+        });
+    }
+
+    get computedTileFieldsBottomClass() {
+        return classSet('').add({
+            'slds-grid slds-grid_vertical-align-center slds-m-top_x-small':
+                this.hasDates
+        });
     }
 
     get coverImageStyle() {
         return `background-image: url(${this._coverImage}); height: 250px;`;
     }
 
-    get coverImage() {
-        return this._coverImage;
+    get field() {
+        return this._field;
     }
 
-    set coverImage(coverImage) {
-        this._coverImage = coverImage;
+    get group() {
+        return this._group;
+    }
+
+    get hasDates() {
+        return this.startDate && (!this.dueDate || this.dueDate);
+    }
+
+    get index() {
+        return this._index;
+    }
+
+    get isOverdue() {
+        const date = this.getDateWithTimeZone(this.dueDate);
+        const dueDate = new Date(date.ts);
+        return dueDate && Date.now() > dueDate;
+    }
+
+    get subGroup() {
+        return this._subGroup;
+    }
+
+    get title() {
+        return this._title;
+    }
+    set title(title) {
+        this._title = title;
+    }
+
+    get warningIcon() {
+        return this._warningIcon;
+    }
+
+    get warningIconStyle() {
+        return `position: absolute; right: 0.75rem; ${
+            this.hasDates ? '' : 'bottom: 0.75rem;'
+        }`;
     }
 
     addField(field) {
         this._field.push(field);
+    }
+
+    getDateWithTimeZone(date) {
+        return dateTimeObjectFrom(date, {
+            locale: 'en-US'
+        });
     }
 }
