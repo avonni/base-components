@@ -112,6 +112,7 @@
                                         if:true={toggleVariant}
                                         data-element-id="input-toggle"
                                         checked={option.isChecked}
+                                        hide-mark={computedHideCheck}
                                         label={option.label}
                                         message-toggle-active=""
                                         message-toggle-inactive=""
@@ -166,7 +167,9 @@
                                         >{option.label}</span
                                     >
                                 </div>
-                                <template if:true={showButtonCheckmark}>
+                                <template
+                                    if:true={computedTypeAttributes.showCheckmark}
+                                >
                                     <lightning-icon
                                         if:true={option.isChecked}
                                         class={computedCheckmarkClass}

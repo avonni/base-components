@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
+    normalizeObject,
     normalizeString,
     normalizeArray,
     synchronizeAttrs,
@@ -56,8 +57,6 @@ const CHECK_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
 };
-const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
-
 const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
@@ -65,6 +64,11 @@ const INPUT_CHOICE_ORIENTATIONS = {
 const INPUT_CHOICE_TYPES = {
     valid: ['default', 'button', 'toggle'],
     default: 'default'
+};
+const TYPE_ATTRIBUTES = {
+    default: [],
+    button: ['checkmarkPosition', 'displayAsRow', 'showCheckmark', 'stretch'],
+    toggle: ['showCheckmark']
 };
 
 /**
@@ -115,22 +119,21 @@ export default class InputChoiceSet extends LightningElement {
     @api options;
 
     _checkPosition = CHECK_POSITIONS.default;
-    _cols = COLUMNS.default;
     _disabled = false;
-    _displayButtonAsRow = false;
     _isLoading = false;
     _isMultiSelect = false;
-    _largeContainerCols;
-    _mediumContainerCols;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
     _required = false;
-    _showButtonCheckmark = false;
-    _smallContainerCols;
     _type = INPUT_CHOICE_TYPES.default;
+    _typeAttributes = {};
     _value = [];
     _variant;
 
     helpMessage;
+    computedTypeAttributes = {};
+    _columnsSizes = {
+        default: 1
+    };
     _isConnected = false;
 
     constructor() {
@@ -197,21 +200,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
-     *
-     * @type {number}
-     * @default 1
-     * @public
-     */
-    @api
-    get cols() {
-        return this._cols;
-    }
-    set cols(value) {
-        this._cols = this._normalizeColumns(value) || COLUMNS.default;
-    }
-
-    /**
      * If present, the input field is disabled and users cannot interact with it.
      *
      * @type {boolean}
@@ -224,21 +212,6 @@ export default class InputChoiceSet extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, display buttons as row.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get displayButtonAsRow() {
-        return this._displayButtonAsRow || false;
-    }
-    set displayButtonAsRow(value) {
-        this._displayButtonAsRow = normalizeBoolean(value);
     }
 
     /**
@@ -273,34 +246,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Number of columns on medium container widths. See `cols` for accepted values.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get mediumContainerCols() {
-        return this._mediumContainerCols;
-    }
-    set mediumContainerCols(value) {
-        this._mediumContainerCols = this._normalizeColumns(value);
-    }
-
-    /**
-     * Number of columns on large container widths and above. See `cols` for accepted values.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get largeContainerCols() {
-        return this._largeContainerCols;
-    }
-    set largeContainerCols(value) {
-        this._largeContainerCols = this._normalizeColumns(value);
-    }
-
-    /**
      * Orientation of the input options. Valid values include vertical and horizontal.
      *
      * @type {string}
@@ -311,7 +256,6 @@ export default class InputChoiceSet extends LightningElement {
     get orientation() {
         return this._orientation;
     }
-
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
             fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
@@ -350,35 +294,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * If present, show check mark on button when selected..
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get showButtonCheckmark() {
-        return this._showButtonCheckmark;
-    }
-
-    set showButtonCheckmark(value) {
-        this._showButtonCheckmark = normalizeBoolean(value);
-    }
-
-    /**
-     * Number of columns on small container widths. See `cols` for accepted values.
-     * @type {number}
-     * @public
-     */
-    @api
-    get smallContainerCols() {
-        return this._smallContainerCols;
-    }
-    set smallContainerCols(value) {
-        this._smallContainerCols = this._normalizeColumns(value);
-    }
-
-    /**
      * If present, the options stretch to full width.
      *
      * @type {boolean}
@@ -391,10 +306,17 @@ export default class InputChoiceSet extends LightningElement {
     }
     set stretch(value) {
         this._stretch = normalizeBoolean(value);
+
+        console.warn(
+            'The "stretch" attribute is deprecated. Add a "stretch" key to the type attributes instead.'
+        );
+        if (this._connected) {
+            this._supportDeprecatedAttributes();
+        }
     }
 
     /**
-     * Type of the input. Valid values include default and button.
+     * Type of the input. Valid values include default, button and toggle.
      *
      * @type {string}
      * @default default
@@ -404,12 +326,27 @@ export default class InputChoiceSet extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: INPUT_CHOICE_TYPES.default,
             validValues: INPUT_CHOICE_TYPES.valid
         });
+    }
+
+    /**
+     * Attributes specific to the type (see **Types and Type Attributes**).
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get typeAttributes() {
+        return this._typeAttributes;
+    }
+    set typeAttributes(value) {
+        this._typeAttributes = normalizeObject(value);
+
+        this._normalizeTypeAttributes();
     }
 
     /**
@@ -423,7 +360,6 @@ export default class InputChoiceSet extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
 
@@ -459,7 +395,6 @@ export default class InputChoiceSet extends LightningElement {
     get variant() {
         return this._variant || VARIANT.STANDARD;
     }
-
     set variant(value) {
         this._variant = normalizeVariant(value);
         this._updateClassList();
@@ -472,7 +407,7 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
-     * True if type is button.
+     * Returns true, if type is button.
      *
      * @type {boolean}
      */
@@ -481,46 +416,12 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * True if type is default.
+     * Returns true, if type is default.
      *
      * @type {boolean}
      */
     get checkboxVariant() {
         return this.type === 'default';
-    }
-
-    /**
-     * Localization.
-     *
-     * @type {i18n}
-     */
-    get i18n() {
-        return i18n;
-    }
-
-    /**
-     * Create new InputChoiceOption object.
-     *
-     * @type {Object[]}
-     */
-    get transformedOptions() {
-        const { options, value } = this;
-        if (Array.isArray(options)) {
-            return options.map((option) => {
-                return new InputChoiceOption(option, value, this.itemIndex++);
-            });
-        }
-        return [];
-    }
-
-    /**
-     * Get element unique help ID.
-     *
-     * @type {string}
-     */
-    get computedUniqueHelpElementId() {
-        const helpElement = this.template.querySelector('[data-helptext]');
-        return getRealDOMId(helpElement);
     }
 
     /**
@@ -549,43 +450,65 @@ export default class InputChoiceSet extends LightningElement {
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
             'slds-checkbox_button-group': this.buttonVariant,
             'avonni-input-choice-set__stretch':
-                this.stretch && !this.toggleVariant,
-            'slds-size_full': this.stretch && this.toggleVariant
+                this.computedTypeAttributes.stretch
         });
     }
 
+    /**
+     * Computed Check Container Class styling.
+     *
+     * @type {string}
+     */
     get computedCheckContainerClass() {
         return classSet('')
             .add({
                 'slds-order_2': this.checkPosition === 'right',
                 'slds-p-left_x-small':
-                    (!this.toggleVariant && this.checkPosition === 'right') ||
-                    (this.toggleVariant &&
-                        this.checkPosition === 'right' &&
-                        this.orientation === 'vertical'),
+                    this.toggleVariant &&
+                    this.checkPosition === 'right' &&
+                    this.orientation === 'vertical',
                 'slds-p-right_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'left' &&
                     this.orientation === 'vertical',
                 'slds-p-horizontal_x-small':
-                    this.toggleVariant && this.orientation === 'horizontal',
-                'slds-p-left_xx-small':
-                    !this.toggleVariant &&
-                    this.checkPosition === 'left' &&
-                    this.orientation === 'horizontal'
+                    this.toggleVariant && this.orientation === 'horizontal'
             })
             .toString();
     }
 
+    /**
+     * Computed Checkmark Class styling.
+     *
+     * @type {string}
+     */
     get computedCheckmarkClass() {
         return classSet('')
             .add({
                 'slds-order_0 slds-p-left_x-small':
-                    this.checkPosition === 'left',
+                    this.computedTypeAttributes.checkmarkPosition === 'left',
                 'slds-order_2 slds-p-right_x-small':
-                    this.checkPosition === 'right'
+                    this.computedTypeAttributes.checkmarkPosition === 'right'
             })
             .toString();
+    }
+
+    /**
+     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
+    }
+
+    /**
+     * Computed hide check attributes for c-input-toggle based on typeAttributes showCheckmark.
+     *
+     * @type {string}
+     */
+    get computedHideCheck() {
+        return !this.computedTypeAttributes.showCheckmark;
     }
 
     /**
@@ -606,15 +529,6 @@ export default class InputChoiceSet extends LightningElement {
             return buttonClass;
         }
         return toggleClass;
-    }
-
-    /**
-     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedCheckboxShapeClass() {
-        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
 
     /**
@@ -665,12 +579,55 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Get element unique help ID.
+     *
+     * @type {string}
+     */
+    get computedUniqueHelpElementId() {
+        const helpElement = this.template.querySelector('[data-helptext]');
+        return getRealDOMId(helpElement);
+    }
+
+    /**
+     * Localization.
+     *
+     * @type {i18n}
+     */
+    get i18n() {
+        return i18n;
+    }
+
+    /**
+     * Query selector for the list container.
+     */
+    get listContainer() {
+        return this.template.querySelector(
+            '[data-element-id="list-container"]'
+        );
+    }
+
+    /**
      * True if type is toggle.
      *
      * @type {boolean}
      */
     get toggleVariant() {
         return this.type === 'toggle';
+    }
+
+    /**
+     * Create new InputChoiceOption object.
+     *
+     * @type {Object[]}
+     */
+    get transformedOptions() {
+        const { options, value } = this;
+        if (Array.isArray(options)) {
+            return options.map((option) => {
+                return new InputChoiceOption(option, value, this.itemIndex++);
+            });
+        }
+        return [];
     }
 
     /*
@@ -747,14 +704,31 @@ export default class InputChoiceSet extends LightningElement {
      */
 
     /**
-     * Only accept predetermined number of columns.
-     *
-     * @param {number} value
-     * @returns {number}
+     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
      */
-    _normalizeColumns(value) {
-        const numValue = parseInt(value, 10);
-        return COLUMNS.valid.includes(numValue) ? numValue : null;
+    _normalizeTypeAttributes() {
+        const typeAttributes = {};
+        Object.entries(this.typeAttributes).forEach(([key, value]) => {
+            const allowedAttribute =
+                TYPE_ATTRIBUTES[this.type] &&
+                TYPE_ATTRIBUTES[this.type].includes(key);
+            if (allowedAttribute) {
+                typeAttributes[key] = value;
+            }
+        });
+        this.computedTypeAttributes = typeAttributes;
+        this._supportDeprecatedAttributes();
+    }
+
+    /**
+     * Make sure the deprecated attributes are still supported through the type attributes.
+     */
+    _supportDeprecatedAttributes() {
+        const { stretch } = this.computedTypeAttributes;
+
+        if (stretch === undefined) {
+            this.computedTypeAttributes.stretch = this.stretch;
+        }
     }
 
     /**
@@ -882,7 +856,6 @@ export default class InputChoiceSet extends LightningElement {
      */
     handleToggleChange(event) {
         event.stopPropagation();
-        console.log('handleToggleChange');
         const value = event.currentTarget.name;
         let checkboxes = Array.from(
             this.template.querySelectorAll('[data-element-id="input"]')

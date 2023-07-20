@@ -48,61 +48,11 @@ export default {
                 defaultValue: { summary: 'left' }
             }
         },
-        cols: {
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        smallContainerCols: {
-            name: 'small-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        mediumContainerCols: {
-            name: 'medium-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
-        largeContainerCols: {
-            name: 'large-container-cols',
-            control: { type: 'number', min: 1, max: 12 },
-            description:
-                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Columns'
-            }
-        },
         disabled: {
             control: {
                 type: 'boolean'
             },
             description: 'If present, the input is disabled.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        displayButtonAsRow: {
-            name: 'display-button-as-row',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, display buttons as row.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -184,6 +134,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        orientationAttributes: {
+            name: 'orientation-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'An object of attributes for the orientation containing the cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -191,28 +153,6 @@ export default {
             },
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        showButtonCheckmark: {
-            name: 'show-button-checkmark',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, show checkmark on button when selected.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        stretch: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, vertical or horizontal button groups stretch to full width.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -238,6 +178,16 @@ export default {
             table: {
                 defaultValue: { summary: 'default' },
                 type: { summary: 'string' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes specific to the type.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         value: {
@@ -272,16 +222,12 @@ export default {
     },
     args: {
         checkPosition: 'left',
-        cols: 1,
         disabled: false,
-        displayButtonAsRow: false,
         isLoading: false,
         isMultiSelect: false,
         orientation: 'vertical',
         readOnly: false,
         required: false,
-        stretch: false,
-        showButtonCheckmark: false,
         type: 'default',
         variant: 'standard'
     }
@@ -425,8 +371,7 @@ ButtonsWithLabelInline.args = {
     variant: 'label-inline',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue,
-    showButtonCheckmark: true
+    value: dayValue
 };
 
 export const ButtonsDisabled = Template.bind({});
