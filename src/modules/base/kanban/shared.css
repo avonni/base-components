@@ -114,9 +114,18 @@
         --avonni-kanban-summarize-header-sizing-line-height,
         2.5rem
     );
-    color: var(--avonni-kanban-summary-text-color, #10aa52);
-    font-size: var(--avonni-kanban-summarize-font-size, 1.5rem);
-    font-weight: var(--avonni-kanban-summarize-font-weight, 400);
+    --avonni-output-data-value-text-color: var(
+        --avonni-kanban-summary-text-color,
+        #10aa52
+    );
+    --avonni-output-data-value-font-size: var(
+        --avonni-kanban-summarize-font-size,
+        1.5rem
+    );
+    --avonni-output-data-value-font-weight: var(
+        --avonni-kanban-summarize-font-weight,
+        400
+    );
 }
 
 .avonni-kanban__variant_base .avonni-kanban__group_header {
