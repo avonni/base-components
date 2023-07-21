@@ -149,6 +149,7 @@ describe('Filter Menu', () => {
 
         describe('Apply Button Label', () => {
             it('applyButtonLabel', () => {
+                element.typeAttributes = { items: ITEMS };
                 element.applyButtonLabel = 'A string label';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -851,6 +852,7 @@ describe('Filter Menu', () => {
             // Depends on variant
             it('hideApplyResetButtons = false, with horizontal variant', () => {
                 element.hideApplyResetButtons = false;
+                element.typeAttributes = { items: ITEMS };
 
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -867,6 +869,7 @@ describe('Filter Menu', () => {
 
             it('hideApplyResetButtons = false, with vertical variant', () => {
                 element.hideApplyResetButtons = false;
+                element.typeAttributes = { items: ITEMS };
                 element.variant = 'vertical';
 
                 return Promise.resolve().then(() => {
@@ -1143,7 +1146,19 @@ describe('Filter Menu', () => {
                     const items = element.shadowRoot.querySelectorAll(
                         '[data-element-id^="lightning-menu-item"]'
                     );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-result-message"]'
+                    );
 
+                    expect(apply).toBeTruthy();
+                    expect(reset).toBeTruthy();
+                    expect(noResultMessage).toBeFalsy();
                     expect(items).toHaveLength(6);
 
                     let firstFocusableItem;
@@ -1165,6 +1180,33 @@ describe('Filter Menu', () => {
                             expect(item.tabIndex).toBe(-1);
                         }
                     });
+                });
+            });
+
+            it('No items shows empty message and hides buttons', () => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-menu-item"]'
+                    );
+                    const apply = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-apply"]'
+                    );
+                    const reset = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-button-reset"]'
+                    );
+                    const noResultMessage = element.shadowRoot.querySelector(
+                        '[data-element-id="p-no-result-message"]'
+                    );
+
+                    expect(apply).toBeFalsy();
+                    expect(reset).toBeFalsy();
+                    expect(noResultMessage).toBeTruthy();
+                    expect(items).toHaveLength(0);
                 });
             });
         });
@@ -1226,6 +1268,7 @@ describe('Filter Menu', () => {
 
         describe('Reset Button Label', () => {
             it('resetButtonLabel', () => {
+                element.typeAttributes = { items: ITEMS };
                 element.resetButtonLabel = 'A string label';
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
