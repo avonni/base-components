@@ -327,6 +327,10 @@
     border-radius: 0.25rem;
 }
 
+.avonni-kanban__tile_dates_due-date {
+    font-size: 0.75rem;
+}
+
 .avonni-kanban__tile_dates_overdue {
     color: #ba0517;
     background-color: #fef1ee;

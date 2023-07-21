@@ -98,6 +98,7 @@ export default class KanbanTile {
         return classSet(
             'avonni-kanban__tile_dates slds-grid slds-grid_vertical-align-center slds-p-around_xx-small'
         ).add({
+            'avonni-kanban__tile_dates_due-date': this.dueDate,
             'avonni-kanban__tile_dates_overdue slds-p-vertical_xx-small slds-p-horizontal_x-small':
                 this.isOverdue
         });
