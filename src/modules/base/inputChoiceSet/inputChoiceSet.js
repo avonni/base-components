@@ -57,6 +57,13 @@ const CHECK_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
 };
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+const DEFAULT_COLUMNS = {
+    default: 1,
+    small: 12,
+    medium: 6,
+    large: 4
+};
 const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
@@ -123,6 +130,12 @@ export default class InputChoiceSet extends LightningElement {
     _isLoading = false;
     _isMultiSelect = false;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
+    _orientationAttributes = {
+        cols: DEFAULT_COLUMNS.default,
+        largeContainerCols: DEFAULT_COLUMNS.large,
+        mediumContainerCols: DEFAULT_COLUMNS.medium,
+        smallContainerCols: DEFAULT_COLUMNS.small
+    };
     _required = false;
     _type = INPUT_CHOICE_TYPES.default;
     _typeAttributes = {};
@@ -131,9 +144,6 @@ export default class InputChoiceSet extends LightningElement {
 
     helpMessage;
     computedTypeAttributes = {};
-    _columnsSizes = {
-        default: 1
-    };
     _isConnected = false;
 
     constructor() {
@@ -261,6 +271,54 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
             validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
+    }
+
+    /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get orientationAttributes() {
+        return this._orientationAttributes;
+    }
+    set orientationAttributes(value) {
+        const normalizedOrientationAttributes = normalizeObject(value);
+
+        const small = this._normalizeHorizontalColumns(
+            normalizedOrientationAttributes.smallContainerCols
+        );
+        const medium = this._normalizeHorizontalColumns(
+            normalizedOrientationAttributes.mediumContainerCols
+        );
+        const large = this._normalizeHorizontalColumns(
+            normalizedOrientationAttributes.largeContainerCols
+        );
+        const defaults = this._normalizeHorizontalColumns(
+            normalizedOrientationAttributes.cols
+        );
+
+        // Keep same logic as in layoutItem.
+        this._orientationAttributes.cols =
+            this.orientation === 'horizontal'
+                ? defaults || DEFAULT_COLUMNS.default
+                : 12;
+        this._orientationAttributes.smallContainerCols =
+            this.orientation === 'horizontal'
+                ? small || defaults || DEFAULT_COLUMNS.small
+                : 12;
+
+        this._orientationAttributes.mediumContainerCols =
+            this.orientation === 'horizontal'
+                ? medium || small || defaults || DEFAULT_COLUMNS.medium
+                : 12;
+        this._orientationAttributes.largeContainerCols =
+            this.orientation === 'horizontal'
+                ? large || medium || small || defaults || DEFAULT_COLUMNS.large
+                : 12;
+
+        this._orientationAttributes = { ...this._orientationAttributes };
     }
 
     /**
@@ -477,6 +535,14 @@ export default class InputChoiceSet extends LightningElement {
             .toString();
     }
 
+    get computedCheckLabelClass() {
+        return classSet('slds-grid')
+            .add({
+                'slds-grid_vertical-align-center': !this.toggleVariant
+            })
+            .toString();
+    }
+
     /**
      * Computed Checkmark Class styling.
      *
@@ -576,6 +642,10 @@ export default class InputChoiceSet extends LightningElement {
                     this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
+    }
+
+    get computedMultipleRows() {
+        return this.orientation === 'horizontal' && !this.buttonVariant;
     }
 
     /**
@@ -702,6 +772,31 @@ export default class InputChoiceSet extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    _normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     * Matches the logic of cols, smallContainerCols, mediumContainerCols and largeContainerCols attributes.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    _normalizeHorizontalColumns(value) {
+        const normalizedCols = this._normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
+    }
 
     /**
      * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
