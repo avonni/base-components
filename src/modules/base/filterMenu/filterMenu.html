@@ -181,10 +181,10 @@
                     </div>
                     <!-- Reset and apply buttons -->
                     <lightning-menu-divider
-                        if:false={hideApplyResetButtons}
+                        if:true={showApplyResetButtons}
                     ></lightning-menu-divider>
                     <div
-                        if:false={hideApplyResetButtons}
+                        if:true={showApplyResetButtons}
                         class="
                             slds-p-horizontal_small
                             slds-p-bottom_x-small

@@ -1186,6 +1186,15 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * True if the apply and reset buttons should be visible.
+     *
+     * @type {boolean}
+     */
+    get showApplyResetButtons() {
+        return !this.hideApplyResetButtons && !this.showNoResultMessage;
+    }
+
+    /**
      * True if the load more button should be visible.
      *
      * @type {boolean}
@@ -1195,12 +1204,16 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * True if the no search result message should be visible.
+     * True if the no result message should be visible.
      *
      * @type {boolean}
      */
     get showNoResultMessage() {
-        return !this.isLoading && this.searchTerm && this.noVisibleListItem;
+        return (
+            !this.isLoading &&
+            this.noVisibleListItem &&
+            (this.searchTerm || this.variant === 'horizontal')
+        );
     }
 
     /**
