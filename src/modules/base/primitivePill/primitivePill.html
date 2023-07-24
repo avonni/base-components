@@ -61,8 +61,10 @@
             class="slds-pill__label"
             title={label}
             data-element-id="span-label"
-            >{label}</span
-        >
+            ><lightning-formatted-rich-text
+                value={label}
+            ></lightning-formatted-rich-text
+        ></span>
         <!-- Actions -->
         <lightning-button-icon
             if:true={actions.length}
