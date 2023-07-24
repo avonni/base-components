@@ -287,12 +287,12 @@ Checkboxes.args = {
 
 export const HorizontalCheckboxes = Template.bind({});
 HorizontalCheckboxes.args = {
+    isMultiSelect: true,
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     orientation: 'horizontal',
-    value: dayValue,
-    isMultiSelect: true
+    value: dayValue
 };
 
 export const CheckboxesDisabled = Template.bind({});
@@ -354,16 +354,50 @@ Buttons.args = {
     value: dayValue
 };
 
-export const HorizontalButtons = Template.bind({});
-HorizontalButtons.args = {
+export const buttonsHorizontal = Template.bind({});
+buttonsHorizontal.args = {
     label: 'Please select a value',
     type: 'button',
-    typeAttributes: {
-        displayAsRow: true
-    },
     orientation: 'horizontal',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRow = Template.bind({});
+buttonsHorizontalStretchRow.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        multipleRows: false
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRowCols = Template.bind({});
+buttonsHorizontalStretchRowCols.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
     value: dayValue
 };
 

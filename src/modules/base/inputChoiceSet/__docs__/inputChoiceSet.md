@@ -8,7 +8,7 @@
 
 ### orientation-attributes
 
-| **Type**   | **Description**                            | **Supported type attributes**                                     |
-| ---------- | ------------------------------------------ | ----------------------------------------------------------------- |
-| vertical   | Displays input-choice-set vertically.      | N/A                                                               |
-| horizontal | Displays as input-choice-set horizontally. | cols, largeContainerCols, mediumContainerCols, smallContainerCols |
+| **Type**   | **Description**                            | **Supported type attributes**                                                   |
+| ---------- | ------------------------------------------ | ------------------------------------------------------------------------------- |
+| vertical   | Displays input-choice-set vertically.      | N/A                                                                             |
+| horizontal | Displays as input-choice-set horizontally. | cols, largeContainerCols, mediumContainerCols, multipleRows, smallContainerCols |

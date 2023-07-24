@@ -134,7 +134,8 @@ export default class InputChoiceSet extends LightningElement {
         cols: DEFAULT_COLUMNS.default,
         largeContainerCols: DEFAULT_COLUMNS.large,
         mediumContainerCols: DEFAULT_COLUMNS.medium,
-        smallContainerCols: DEFAULT_COLUMNS.small
+        smallContainerCols: DEFAULT_COLUMNS.small,
+        multipleRows: false
     };
     _required = false;
     _type = INPUT_CHOICE_TYPES.default;
@@ -317,6 +318,8 @@ export default class InputChoiceSet extends LightningElement {
             this.orientation === 'horizontal'
                 ? large || medium || small || defaults || DEFAULT_COLUMNS.large
                 : 12;
+        this._orientationAttributes.multipleRows =
+            normalizedOrientationAttributes.multipleRows || true;
 
         this._orientationAttributes = { ...this._orientationAttributes };
     }
@@ -482,6 +485,15 @@ export default class InputChoiceSet extends LightningElement {
         return this.type === 'default';
     }
 
+    get hasLayoutItem() {
+        return (
+            this.type === 'default' ||
+            this.type === 'toggle' ||
+            (this.type === 'button' &&
+                this.computedTypeAttributes?.displayAsRow)
+        );
+    }
+
     /**
      * Gets FieldConstraintApi for validation.
      *
@@ -505,11 +517,28 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
+        const { stretch, displayAsRow } = this.computedTypeAttributes;
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
-            'slds-checkbox_button-group': this.buttonVariant,
-            'avonni-input-choice-set__stretch':
-                this.computedTypeAttributes.stretch
+            'slds-checkbox_button-group': this.buttonVariant && !displayAsRow,
+            'avonni-input-choice-set__stretch': stretch
         });
+    }
+
+    get computedButtonContainerClass() {
+        const { displayAsRow, stretch } = this.computedTypeAttributes;
+        return classSet('slds-button')
+            .add({
+                'slds-checkbox_button': !displayAsRow,
+                'avonni-input-choice-set__button__row': displayAsRow,
+                'avonni-input-choice-set__horizontal':
+                    this.orientation === 'horizontal' &&
+                    !displayAsRow &&
+                    !stretch,
+                'slds-grow': stretch,
+                'slds-grid':
+                    stretch && this.orientation === 'horizontal' && displayAsRow
+            })
+            .toString();
     }
 
     /**
@@ -586,13 +615,12 @@ export default class InputChoiceSet extends LightningElement {
         const checkboxClass = this.isMultiSelect
             ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
             : `slds-radio avonni-input-choice-set__${this.orientation}`;
-        const buttonClass = `slds-button slds-checkbox_button avonni-input-choice-set__${this.orientation}`;
         const toggleClass = `slds-checkbox_toggle slds-grid slds-grid_vertical slds-grid_align-spread avonni-input-choice-set__${this.orientation}`;
 
         if (this.checkboxVariant) {
             return checkboxClass;
         } else if (this.buttonVariant) {
-            return buttonClass;
+            return this.computedButtonContainerClass;
         }
         return toggleClass;
     }
@@ -642,10 +670,6 @@ export default class InputChoiceSet extends LightningElement {
                     this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
-    }
-
-    get computedMultipleRows() {
-        return this.orientation === 'horizontal' && !this.buttonVariant;
     }
 
     /**
