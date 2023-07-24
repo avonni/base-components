@@ -21,6 +21,7 @@
  * @property {string|number} largeContainerCols Number of columns on small container widths. Width is greater or equal to 1024px. See `cols` for accepted values.
  * @property {string|number} mediumContainerCols Number of columns on small container widths. Width is greater or equal to 768px. See `cols` for accepted values.
  * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
+ *  * @property {string|number} multipleRows If present, checks wrap to the following line when they exceed the layout width.
  */
 
 /**

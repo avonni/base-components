@@ -78,25 +78,56 @@ describe('Input choice set', () => {
     });
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.checkPosition).toBe('left');
             expect(element.disabled).toBeFalsy();
-            expect(element.label).toBeUndefined();
             expect(element.fieldLevelHelp).toBeUndefined();
             expect(element.isLoading).toBe(false);
             expect(element.isMultiSelect).toBe(false);
+            expect(element.label).toBeUndefined();
             expect(element.messageWhenValueMissing).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.options).toBeUndefined();
             expect(element.orientation).toBe('vertical');
+            expect(element.orientationAttributes).toMatchObject({});
             expect(element.readOnly).toBeFalsy();
             expect(element.required).toBeFalsy();
-            expect(element.stretch).toBe(false);
+            expect(element.stretch).toBeFalsy();
             expect(element.type).toBe('default');
+            expect(element.typeAttributes).toMatchObject({});
             expect(element.validity).toMatchObject({});
             expect(element.value).toMatchObject([]);
             expect(element.variant).toBe('standard');
         });
 
         /* ----- ATTRIBUTES ----- */
+
+        describe('Check Position', () => {
+            it('checkPosition = left', () => {
+                element.options = options;
+                element.checkPosition = 'left';
+
+                return Promise.resolve().then(() => {
+                    const checkContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="div-check-container"]'
+                    );
+                    expect(checkContainer.className).not.toContain(
+                        'slds-order_3'
+                    );
+                });
+            });
+
+            it('checkPosition = right', () => {
+                element.options = options;
+                element.checkPosition = 'right';
+
+                return Promise.resolve().then(() => {
+                    const checkContainer = element.shadowRoot.querySelector(
+                        '[data-element-id="div-check-container"]'
+                    );
+                    expect(checkContainer.className).toContain('slds-order_3');
+                });
+            });
+        });
 
         describe('Disabled', () => {
             it('disabled = false', () => {
@@ -331,6 +362,58 @@ describe('Input choice set', () => {
             });
         });
 
+        describe('Orientation Attributes', () => {
+            it('vertical', () => {
+                element.options = options;
+                element.orientation = 'vertical';
+                element.orientationAttributes = {
+                    cols: 3,
+                    multipleRows: false
+                };
+
+                return Promise.resolve().then(() => {
+                    // When vertical orientation, cols and multipleRows are ignored
+                    // and multipleRows is always true and cols is always 100%
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="layout"]'
+                    );
+                    expect(layout.multipleRows).toBeTruthy();
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="layout-item"]'
+                    );
+                    expect(items).toHaveLength(5);
+                    items.forEach((item) => {
+                        expect(item.size).toBe('100%');
+                    });
+                });
+            });
+
+            it('horizontal', () => {
+                element.options = options;
+                element.orientation = 'horizontal';
+                element.orientationAttributes = {
+                    cols: 4,
+                    multipleRows: false
+                };
+
+                return Promise.resolve().then(() => {
+                    // When vertical orientation, cols and multipleRows are ignored
+                    // and multipleRows is always true and cols is always 100%
+                    const layout = element.shadowRoot.querySelector(
+                        '[data-element-id="layout"]'
+                    );
+                    expect(layout.multipleRows).toBeFalsy();
+                    const items = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="layout-item"]'
+                    );
+                    expect(items).toHaveLength(5);
+                    items.forEach((item) => {
+                        expect(item.size).toBe('25%');
+                    });
+                });
+            });
+        });
+
         describe('Read Only', () => {
             it('readOnly', () => {
                 element.options = options;
@@ -361,38 +444,6 @@ describe('Input choice set', () => {
                         '[data-element-id="abbr"]'
                     );
                     expect(abbr).toBeTruthy();
-                });
-            });
-        });
-
-        describe('Stretch', () => {
-            it('stretch and not toggle', () => {
-                element.options = options;
-                element.stretch = true;
-
-                return Promise.resolve().then(() => {
-                    const inputGroup = element.shadowRoot.querySelector(
-                        '[data-element-id="input-group"]'
-                    );
-                    expect(inputGroup.className).toContain(
-                        'avonni-input-choice-set__stretch'
-                    );
-                });
-            });
-
-            it('stretch and toggle', () => {
-                element.options = options;
-                element.stretch = true;
-                element.type = 'toggle';
-
-                return Promise.resolve().then(() => {
-                    const inputGroup = element.shadowRoot.querySelector(
-                        '[data-element-id="input-group"]'
-                    );
-                    expect(inputGroup.className).not.toContain(
-                        'avonni-input-choice-set__stretch'
-                    );
-                    expect(inputGroup.className).toContain('slds-size_full');
                 });
             });
         });
@@ -430,10 +481,29 @@ describe('Input choice set', () => {
                     inputs.forEach((input) => {
                         const expected =
                             input.className ===
-                                'slds-button slds-checkbox_button avonni-input-choice-set__vertical' ||
-                            input.className === 'slds-checkbox_faux';
+                            'slds-button slds-checkbox_button';
                         expect(expected).toBe(true);
                         expect(input.className).not.toBe('slds-checkbox');
+                    });
+                });
+            });
+
+            it('type button display as row', () => {
+                element.options = options;
+                element.type = 'button';
+                element.orientation = 'horizontal';
+                element.typeAttributes = {
+                    displayAsRow: true
+                };
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="span-checkbox-container"]'
+                    );
+                    inputs.forEach((input) => {
+                        expect(input.className).toBe(
+                            'slds-button avonni-input-choice-set__button__row'
+                        );
                     });
                 });
             });
@@ -454,6 +524,62 @@ describe('Input choice set', () => {
                             input.className === 'slds-checkbox_faux';
                         expect(expected).toBe(true);
                         expect(input.className).not.toBe('slds-checkbox');
+                    });
+                });
+            });
+        });
+
+        describe('Type Attributes', () => {
+            it('typeAttributes button: showCheckmark', () => {
+                element.options = options;
+                element.type = 'button';
+                element.typeAttributes = {
+                    showCheckmark: true
+                };
+                element.value = 'mon';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-check"]'
+                    );
+                    expect(icon.className).toBe(
+                        'slds-order_0 slds-p-left_x-small slds-align_absolute-center'
+                    );
+                });
+            });
+
+            it('typeAttributes button: checkmarkPosition', () => {
+                element.options = options;
+                element.type = 'button';
+                element.typeAttributes = {
+                    showCheckmark: true,
+                    checkmarkPosition: 'right'
+                };
+                element.value = 'mon';
+
+                return Promise.resolve().then(() => {
+                    const icon = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-icon-check"]'
+                    );
+                    expect(icon.className).toBe(
+                        'slds-order_2 slds-p-right_x-small slds-align_absolute-center'
+                    );
+                });
+            });
+
+            it('typeAttributes toggle: showCheckmark', () => {
+                element.options = options;
+                element.type = 'toggle';
+                element.typeAttributes = {
+                    showCheckmark: false
+                };
+
+                return Promise.resolve().then(() => {
+                    const inputs = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="input-toggle"]'
+                    );
+                    inputs.forEach((input) => {
+                        expect(input.hideMark).toBeTruthy();
                     });
                 });
             });
@@ -627,6 +753,27 @@ describe('Input choice set', () => {
         });
 
         describe('Change Events', () => {
+            it('keyup', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+                element.options = options;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    input.dispatchEvent(
+                        new KeyboardEvent('keyup', { key: 'Enter' })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe('mon');
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                    expect(handler.mock.calls[0][0].composed).toBeTruthy();
+                });
+            });
+
             it('single', () => {
                 const handler = jest.fn();
                 element.addEventListener('change', handler);

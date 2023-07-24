@@ -354,6 +354,18 @@ Buttons.args = {
     value: dayValue
 };
 
+export const ButtonsCheckmark = Template.bind({});
+ButtonsCheckmark.args = {
+    label: 'Please select a value',
+    type: 'button',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue,
+    typeAttributes: {
+        showCheckmark: true
+    }
+};
+
 export const buttonsHorizontal = Template.bind({});
 buttonsHorizontal.args = {
     label: 'Please select a value',
@@ -454,6 +466,20 @@ ToggleHorizontal.args = {
     label: 'Please select a value',
     type: 'toggle',
     orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleHorizontalCols = Template.bind({});
+ToggleHorizontalCols.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue

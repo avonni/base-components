@@ -72,6 +72,16 @@ const INPUT_CHOICE_TYPES = {
     valid: ['default', 'button', 'toggle'],
     default: 'default'
 };
+const ORIENTATION_ATTRIBUTES = {
+    vertical: [],
+    horizontal: [
+        'cols',
+        'smallContainerCols',
+        'mediumContainerCols',
+        'largeContainerCols',
+        'multipleRows'
+    ]
+};
 const TYPE_ATTRIBUTES = {
     default: [],
     button: ['checkmarkPosition', 'displayAsRow', 'showCheckmark', 'stretch'],
@@ -134,8 +144,7 @@ export default class InputChoiceSet extends LightningElement {
         cols: DEFAULT_COLUMNS.default,
         largeContainerCols: DEFAULT_COLUMNS.large,
         mediumContainerCols: DEFAULT_COLUMNS.medium,
-        smallContainerCols: DEFAULT_COLUMNS.small,
-        multipleRows: false
+        smallContainerCols: DEFAULT_COLUMNS.small
     };
     _required = false;
     _type = INPUT_CHOICE_TYPES.default;
@@ -144,8 +153,9 @@ export default class InputChoiceSet extends LightningElement {
     _variant;
 
     helpMessage;
+    computedOrientationAttributes = {};
     computedTypeAttributes = {};
-    _isConnected = false;
+    _rendered = false;
 
     constructor() {
         super();
@@ -179,11 +189,14 @@ export default class InputChoiceSet extends LightningElement {
         this._updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this._isConnected = true;
     }
 
     renderedCallback() {
         this.synchronizeA11y();
+        if (!this._rendered) {
+            this._setWidth();
+        }
+        this._rendered = true;
     }
 
     /*
@@ -275,7 +288,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and multipleRows.
      *
      * @type {object}
      * @public
@@ -318,10 +331,14 @@ export default class InputChoiceSet extends LightningElement {
             this.orientation === 'horizontal'
                 ? large || medium || small || defaults || DEFAULT_COLUMNS.large
                 : 12;
+
         this._orientationAttributes.multipleRows =
-            normalizedOrientationAttributes.multipleRows || true;
+            'multipleRows' in normalizedOrientationAttributes
+                ? normalizedOrientationAttributes.multipleRows
+                : true;
 
         this._orientationAttributes = { ...this._orientationAttributes };
+        this._normalizeOrientationAttributes();
     }
 
     /**
@@ -355,11 +372,11 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * If present, the options stretch to full width.
+     * Deprecated. If present, the options stretch to full width.
      *
      * @type {boolean}
      * @default false
-     * @public
+     * @deprecated
      */
     @api
     get stretch() {
@@ -406,7 +423,6 @@ export default class InputChoiceSet extends LightningElement {
     }
     set typeAttributes(value) {
         this._typeAttributes = normalizeObject(value);
-
         this._normalizeTypeAttributes();
     }
 
@@ -485,6 +501,11 @@ export default class InputChoiceSet extends LightningElement {
         return this.type === 'default';
     }
 
+    /**
+     * Returns true, if type is default, toggle or button displayAsRow.
+     *
+     * @type {boolean}
+     */
     get hasLayoutItem() {
         return (
             this.type === 'default' ||
@@ -524,6 +545,11 @@ export default class InputChoiceSet extends LightningElement {
         });
     }
 
+    /**
+     * Computed Button Container Class styling.
+     *
+     * @type {string}
+     */
     get computedButtonContainerClass() {
         const { displayAsRow, stretch } = this.computedTypeAttributes;
         return classSet('slds-button')
@@ -549,7 +575,7 @@ export default class InputChoiceSet extends LightningElement {
     get computedCheckContainerClass() {
         return classSet('')
             .add({
-                'slds-order_2': this.checkPosition === 'right',
+                'slds-order_3': this.checkPosition === 'right',
                 'slds-p-left_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'right' &&
@@ -564,6 +590,11 @@ export default class InputChoiceSet extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Check Label Class styling.
+     *
+     * @type {string}
+     */
     get computedCheckLabelClass() {
         return classSet('slds-grid')
             .add({
@@ -578,12 +609,13 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedCheckmarkClass() {
+        const { checkmarkPosition } = this.computedTypeAttributes;
         return classSet('')
             .add({
-                'slds-order_0 slds-p-left_x-small':
-                    this.computedTypeAttributes.checkmarkPosition === 'left',
-                'slds-order_2 slds-p-right_x-small':
-                    this.computedTypeAttributes.checkmarkPosition === 'right'
+                'slds-order_0 slds-p-left_x-small slds-align_absolute-center':
+                    checkmarkPosition === 'left' || !checkmarkPosition,
+                'slds-order_2 slds-p-right_x-small slds-align_absolute-center':
+                    checkmarkPosition === 'right'
             })
             .toString();
     }
@@ -689,15 +721,6 @@ export default class InputChoiceSet extends LightningElement {
      */
     get i18n() {
         return i18n;
-    }
-
-    /**
-     * Query selector for the list container.
-     */
-    get listContainer() {
-        return this.template.querySelector(
-            '[data-element-id="list-container"]'
-        );
     }
 
     /**
@@ -823,7 +846,26 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the list items.
+     * Create the computed orientation attributes. Make sure only the authorized attributes for the given orientation are kept.
+     */
+    _normalizeOrientationAttributes() {
+        const orientationAttributes = {};
+        Object.entries(this._orientationAttributes).forEach(([key, value]) => {
+            const allowedAttribute =
+                ORIENTATION_ATTRIBUTES[this.orientation] &&
+                ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
+            if (allowedAttribute) {
+                orientationAttributes[key] = value;
+            } else {
+                orientationAttributes.cols = 12;
+                orientationAttributes.multipleRows = true;
+            }
+        });
+        this.computedOrientationAttributes = orientationAttributes;
+    }
+
+    /**
+     * Create the computed type attributes. Make sure only the authorized attributes for the given type are kept, add the deperecated attributes and compute the input choice set.
      */
     _normalizeTypeAttributes() {
         const typeAttributes = {};
@@ -837,6 +879,23 @@ export default class InputChoiceSet extends LightningElement {
         });
         this.computedTypeAttributes = typeAttributes;
         this._supportDeprecatedAttributes();
+    }
+
+    _setWidth() {
+        if (this.orientation !== 'vertical' && this.checkPosition !== 'right')
+            return;
+        const labelIconContainers = this.template.querySelectorAll(
+            '[data-element-id="label-icon-container"]'
+        );
+        let maxWidth = 0;
+
+        labelIconContainers.forEach((labelIconContainer) => {
+            maxWidth = Math.max(maxWidth, labelIconContainer.offsetWidth);
+        });
+
+        labelIconContainers.forEach((labelIconContainer) => {
+            labelIconContainer.style.width = maxWidth + 'px';
+        });
     }
 
     /**
