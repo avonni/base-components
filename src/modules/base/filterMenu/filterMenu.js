@@ -54,6 +54,7 @@ import {
 
 import filterMenuVertical from './filterMenuVertical.html';
 import filterMenu from './filterMenu.html';
+import Item from './item';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -1324,17 +1325,21 @@ export default class FilterMenu extends LightningElement {
             'object'
         );
 
-        this.computedItems = deepCopy(items).map((item) => {
-            item.checked = this.currentValue.includes(item.value);
-            item.hidden = this.isOutOfSearchScope(item.label);
+        this.computedItems = items.map((item) => {
+            const checked = this.currentValue.includes(item.value);
+            const hidden = this.isOutOfSearchScope(item.label);
 
+            let tabindex = '-1';
             if (!firstFocusableItem && !item.disabled && !item.hidden) {
                 firstFocusableItem = true;
-                item.tabindex = '0';
-            } else {
-                item.tabindex = '-1';
+                tabindex = '0';
             }
-            return item;
+            return new Item({
+                ...item,
+                checked,
+                hidden,
+                tabindex
+            });
         });
 
         if (this.dropdownVisible) {
@@ -1457,7 +1462,7 @@ export default class FilterMenu extends LightningElement {
      */
     focusListItem(currentIndex, addedIndex = 1) {
         const items = this.template.querySelectorAll(
-            '[data-element-id="lightning-menu-item"]'
+            '[data-element-id="a-list-item"]'
         );
         items[currentIndex].tabIndex = '-1';
         const index = currentIndex + addedIndex;
@@ -1810,6 +1815,35 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
+     * Handle a click on a list item.
+     *
+     * @param {Event} event click event.
+     */
+    handleListItemClick(event) {
+        const { index, disabled } = event.currentTarget.dataset;
+        if (disabled) {
+            event.preventDefault();
+            return;
+        }
+
+        const selectedValue = this.computedItems[index].value;
+        this.currentValue = [];
+        this.computedItems = this.computedItems.map((item) => {
+            if (item.value === selectedValue) {
+                item.checked = !item.checked;
+            } else if (!this.computedTypeAttributes.isMultiSelect) {
+                item.checked = false;
+            }
+            if (item.checked) {
+                this.currentValue.push(item.value);
+            }
+            return item;
+        });
+
+        this.dispatchSelect();
+    }
+
+    /**
      * Handle a key down on a list item.
      *
      * @param {Event} event keydown event.
@@ -1827,34 +1861,14 @@ export default class FilterMenu extends LightningElement {
                 this.focusListItem(index);
                 break;
             }
+            case ' ':
+            case 'Spacebar': {
+                event.currentTarget.click();
+                break;
+            }
             default:
                 break;
         }
-    }
-
-    /**
-     * Handle the selection of a list item.
-     *
-     * @param {Event} event privateselect event.
-     */
-    handlePrivateSelect(event) {
-        event.stopPropagation();
-
-        const selectedValue = event.detail.value;
-        this.currentValue = [];
-        this.computedItems = this.computedItems.map((item) => {
-            if (item.value === selectedValue) {
-                item.checked = !item.checked;
-            } else if (!this.computedTypeAttributes.isMultiSelect) {
-                item.checked = false;
-            }
-            if (item.checked) {
-                this.currentValue.push(item.value);
-            }
-            return item;
-        });
-
-        this.dispatchSelect();
     }
 
     /**

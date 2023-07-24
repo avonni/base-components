@@ -101,31 +101,59 @@
                     <div
                         class={computedDropdownContentClass}
                         data-element-id="div-dropdown-content"
-                        onprivateselect={handlePrivateSelect}
                         onscroll={handleScroll}
                     >
                         <!-- List -->
-                        <template
-                            if:true={isList}
-                            for:each={visibleListItems}
-                            for:item="item"
-                            for:index="index"
-                        >
-                            <lightning-menu-item
-                                key={item.value}
-                                label={item.label}
-                                value={item.value}
-                                icon-name={item.iconName}
-                                prefix-icon-name={item.prefixIconName}
-                                checked={item.checked}
-                                disabled={item.disabled}
-                                tab-index={item.tabindex}
-                                data-element-id="lightning-menu-item"
-                                data-index={index}
-                                onkeydown={handleListItemKeyDown}
+                        <ul if:true={isList}>
+                            <template
+                                for:each={visibleListItems}
+                                for:item="item"
+                                for:index="index"
                             >
-                            </lightning-menu-item>
-                        </template>
+                                <li key={item.value} class={item.wrapperClass}>
+                                    <a
+                                        class="slds-truncate"
+                                        href="javascript:void(0)"
+                                        aria-checked={item.checked}
+                                        aria-disabled={item.disabled}
+                                        role="menuitemcheckbox"
+                                        tabindex={item.tabindex}
+                                        data-disabled={item.disabled}
+                                        data-element-id="a-list-item"
+                                        data-index={index}
+                                        onclick={handleListItemClick}
+                                        onkeydown={handleListItemKeyDown}
+                                    >
+                                        <span class="slds-truncate">
+                                            <c-primitive-icon
+                                                class="slds-m-right_x-small"
+                                                icon-name="utility:check"
+                                                svg-class="slds-icon_selected"
+                                                size="x-small"
+                                            ></c-primitive-icon>
+                                            <c-primitive-icon
+                                                if:true={item.prefixIconName}
+                                                class="slds-m-right_x-small"
+                                                icon-name={item.prefixIconName}
+                                                size="x-small"
+                                            ></c-primitive-icon>
+                                            <lightning-formatted-rich-text
+                                                disable-linkify
+                                                title={item.label}
+                                                value={item.label}
+                                            ></lightning-formatted-rich-text>
+                                        </span>
+                                        <c-primitive-icon
+                                            if:true={item.iconName}
+                                            class="slds-m-left_small"
+                                            icon-name={item.iconName}
+                                            size="x-small"
+                                        ></c-primitive-icon>
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+
                         <!-- Loading spinner -->
                         <div
                             if:true={isLoading}
