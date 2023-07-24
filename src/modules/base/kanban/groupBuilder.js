@@ -81,7 +81,12 @@ export default class KanbanGroupsBuilder {
                     warningIcon: record.warningIcon,
                     subGroup: this.subGroupFieldName
                         ? record[this.subGroupFieldName]
-                        : null
+                        : null,
+                    summarizeValue:
+                        this.summarizeAttributes &&
+                        this.summarizeAttributes.fieldName
+                            ? record[this.summarizeAttributes.fieldName]
+                            : 0
                 });
                 Object.keys(this.cardAttributes).forEach((key) => {
                     if (key === 'customFields') {

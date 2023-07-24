@@ -105,17 +105,15 @@ export default class KanbanGroup {
         this._summarize.type = '';
         this._summarize.typeAttributes = {};
 
-        this._tiles.forEach((tile) => {
-            const toSummarize = tile.field.find(
-                (field) =>
-                    this._summarizeAttributes &&
-                    field.fieldName === this._summarizeAttributes.fieldName
-            );
-            if (toSummarize && typeof toSummarize.value === 'number') {
-                this._summarize.type = toSummarize.type;
-                this._summarize.typeAttributes = toSummarize.typeAttributes;
-                this._summarize.value += toSummarize.value;
-            }
-        });
+        if (this._summarizeAttributes) {
+            this._tiles.forEach((tile) => {
+                if (typeof tile.summarizeValue === 'number') {
+                    this._summarize.type = this._summarizeAttributes.type;
+                    this._summarize.typeAttributes =
+                        this._summarizeAttributes.typeAttributes;
+                    this._summarize.value += tile.summarizeValue;
+                }
+            });
+        }
     }
 }

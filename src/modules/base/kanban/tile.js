@@ -45,6 +45,7 @@ export default class KanbanTile {
         this._description = props.description;
         this._startDate = props.startDate;
         this._dueDate = props.dueDate;
+        this._summarizeValue = props.summarizeValue;
     }
 
     get coverImage() {
@@ -92,6 +93,13 @@ export default class KanbanTile {
             const dateTZ = this.getDateWithTimeZone(this._startDate);
             this._startDate = new Date(dateTZ.ts);
         }
+    }
+
+    get summarizeValue() {
+        return this._summarizeValue;
+    }
+    set summarizeValue(summarizeValue) {
+        this._summarizeValue = summarizeValue;
     }
 
     get computedTileDatesClass() {
