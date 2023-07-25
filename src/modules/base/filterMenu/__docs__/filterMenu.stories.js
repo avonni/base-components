@@ -347,7 +347,7 @@ export default {
 
 const items = [
     {
-        label: 'Here is <strong>some custom rich text</strong>, with <a href="#">a lot happening</a>.',
+        label: 'Call',
         value: 'call',
         prefixIconName: 'custom:custom1',
         iconName: 'utility:voicemail_drop'

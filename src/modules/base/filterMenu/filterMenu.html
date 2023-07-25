@@ -111,7 +111,11 @@
                                 for:item="item"
                                 for:index="index"
                             >
-                                <li key={item.value} class={item.wrapperClass}>
+                                <li
+                                    key={item.value}
+                                    class={item.wrapperClass}
+                                    data-element-id="li-item"
+                                >
                                     <a
                                         class="slds-truncate"
                                         href="javascript:void(0)"
@@ -122,6 +126,7 @@
                                         data-disabled={item.disabled}
                                         data-element-id="a-list-item"
                                         data-index={index}
+                                        data-value={item.value}
                                         onclick={handleListItemClick}
                                         onkeydown={handleListItemKeyDown}
                                     >
@@ -137,11 +142,13 @@
                                                 class="slds-m-right_x-small"
                                                 icon-name={item.prefixIconName}
                                                 size="x-small"
+                                                data-element-id="avonni-primitive-icon-prefix"
                                             ></c-primitive-icon>
                                             <lightning-formatted-rich-text
                                                 disable-linkify
                                                 title={item.label}
                                                 value={item.label}
+                                                data-element-id="lightning-formatted-rich-text"
                                             ></lightning-formatted-rich-text>
                                         </span>
                                         <c-primitive-icon
@@ -149,6 +156,7 @@
                                             class="slds-m-left_small"
                                             icon-name={item.iconName}
                                             size="x-small"
+                                            data-element-id="avonni-primitive-icon-suffix"
                                         ></c-primitive-icon>
                                     </a>
                                 </li>

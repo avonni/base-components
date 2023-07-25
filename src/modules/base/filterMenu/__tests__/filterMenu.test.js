@@ -1144,7 +1144,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="lightning-menu-item"]'
+                        '[data-element-id="a-list-item"]'
                     );
                     const apply = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-apply"]'
@@ -1161,24 +1161,36 @@ describe('Filter Menu', () => {
                     expect(noResultMessage).toBeFalsy();
                     expect(items).toHaveLength(6);
 
-                    let firstFocusableItem;
                     items.forEach((item, index) => {
-                        expect(item.label).toBe(ITEMS[index].label);
-                        expect(item.value).toBe(ITEMS[index].value);
-                        expect(item.iconName).toBe(ITEMS[index].iconName);
-                        expect(item.prefixIconName).toBe(
-                            ITEMS[index].prefixIconName
+                        const label = item.querySelector(
+                            '[data-element-id="lightning-formatted-rich-text"]'
                         );
-                        expect(item.disabled).toBe(ITEMS[index].disabled);
+                        const disabled = ITEMS[index].disabled ? 'true' : null;
+                        expect(item.dataset.value).toBe(ITEMS[index].value);
+                        expect(item.ariaDisabled).toBe(disabled);
+                        expect(label.value).toBe(ITEMS[index].label);
+                    });
 
-                        if (!firstFocusableItem && !item.disabled) {
-                            // eslint-disable-next-line jest/no-conditional-expect
-                            expect(item.tabIndex).toBe(0);
-                            firstFocusableItem = true;
-                        } else {
-                            // eslint-disable-next-line jest/no-conditional-expect
-                            expect(item.tabIndex).toBe(-1);
-                        }
+                    const prefixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-prefix"]'
+                    );
+                    const suffixIcon = items[1].querySelector(
+                        '[data-element-id="avonni-primitive-icon-suffix"]'
+                    );
+                    expect(prefixIcon).toBeTruthy();
+                    expect(suffixIcon).toBeTruthy();
+                    expect(items[1].tabIndex).toBe(0);
+
+                    [0, 2, 3, 4, 5].forEach((index) => {
+                        const prefix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-prefix"]'
+                        );
+                        const suffix = items[index].querySelector(
+                            '[data-element-id="avonni-primitive-icon-suffix"]'
+                        );
+                        expect(prefix).toBeFalsy();
+                        expect(suffix).toBeFalsy();
+                        expect(items[index].tabIndex).toBe(-1);
                     });
                 });
             });
@@ -1191,7 +1203,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="lightning-menu-item"]'
+                        '[data-element-id="lightning-formatted-rich-text"]'
                     );
                     const apply = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-apply"]'
@@ -1325,7 +1337,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-menu-item"]'
+                        '[data-element-id="a-list-item"]'
                     );
                     expect(items).toHaveLength(ITEMS.length);
                 });
@@ -1720,32 +1732,18 @@ describe('Filter Menu', () => {
                 return Promise.resolve()
                     .then(() => {
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"][data-index="2"]'
                         );
-                        item.dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: ITEMS[0].value
-                                },
-                                bubbles: true
-                            })
-                        );
+                        item.click();
                         expect(handler.mock.calls[0][0].detail.value).toEqual([
-                            ITEMS[0].value
+                            ITEMS[2].value
                         ]);
                     })
                     .then(() => {
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"][data-index="1"]'
                         );
-                        item.dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: ITEMS[1].value
-                                },
-                                bubbles: true
-                            })
-                        );
+                        item.click();
                         expect(handler.mock.calls[1][0].detail.value).toEqual([
                             ITEMS[1].value
                         ]);
@@ -1783,35 +1781,21 @@ describe('Filter Menu', () => {
                 return Promise.resolve()
                     .then(() => {
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"][data-index="2"]'
                         );
-                        item.dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: ITEMS[0].value
-                                },
-                                bubbles: true
-                            })
-                        );
+                        item.click();
                         expect(handler.mock.calls[0][0].detail.value).toEqual([
-                            ITEMS[0].value
+                            ITEMS[2].value
                         ]);
                     })
                     .then(() => {
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"][data-index="1"]'
                         );
-                        item.dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: ITEMS[1].value
-                                },
-                                bubbles: true
-                            })
-                        );
+                        item.click();
                         expect(handler.mock.calls[1][0].detail.value).toEqual([
-                            ITEMS[0].value,
-                            ITEMS[1].value
+                            ITEMS[1].value,
+                            ITEMS[2].value
                         ]);
                     });
             });
@@ -1884,11 +1868,13 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id^="lightning-menu-item"]'
+                        '[data-element-id="li-item"]'
                     );
-                    expect(items[0].checked).toBeTruthy();
-                    expect(items[1].checked).toBeTruthy();
-                    expect(items[2].checked).toBeFalsy();
+                    expect(items[0].classList).toContain('slds-is-selected');
+                    expect(items[1].classList).toContain('slds-is-selected');
+                    expect(items[2].classList).not.toContain(
+                        'slds-is-selected'
+                    );
 
                     const pillContainer = element.shadowRoot.querySelector(
                         '[data-element-id="avonni-pill-container"]'
@@ -2148,19 +2134,10 @@ describe('Filter Menu', () => {
                 return Promise.resolve()
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
-                        expect(items[2].checked).toBeFalsy();
-
-                        items[2].dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                bubbles: true,
-                                cancelable: true,
-                                detail: {
-                                    value: items[2].value
-                                }
-                            })
-                        );
+                        expect(items[2].ariaChecked).toBe('false');
+                        items[2].click();
 
                         expect(applyHandler).not.toHaveBeenCalled();
                         expect(handler).toHaveBeenCalled();
@@ -2172,25 +2149,16 @@ describe('Filter Menu', () => {
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
-                        expect(items[2].checked).toBeTruthy();
-
-                        items[2].dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                bubbles: true,
-                                cancelable: true,
-                                detail: {
-                                    value: items[2].value
-                                }
-                            })
-                        );
+                        expect(items[2].ariaChecked).toBe('true');
+                        items[2].click();
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
-                        expect(items[2].checked).toBeFalsy();
+                        expect(items[2].ariaChecked).toBe('false');
                     });
             });
 
@@ -2301,16 +2269,9 @@ describe('Filter Menu', () => {
                 return Promise.resolve()
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
-                        items[3].dispatchEvent(
-                            new CustomEvent('privateselect', {
-                                detail: {
-                                    value: 'item-4'
-                                },
-                                bubbles: true
-                            })
-                        );
+                        items[3].click();
                         const applyButton = element.shadowRoot.querySelector(
                             '[data-element-id="lightning-button-apply"]'
                         );
@@ -2349,16 +2310,9 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-menu-item"]'
+                        '[data-element-id="a-list-item"]'
                     );
-                    items[3].dispatchEvent(
-                        new CustomEvent('privateselect', {
-                            detail: {
-                                value: 'item-4'
-                            },
-                            bubbles: true
-                        })
-                    );
+                    items[3].click();
 
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toEqual([
@@ -2415,16 +2369,9 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-menu-item"]'
+                        '[data-element-id="a-list-item"]'
                     );
-                    items[3].dispatchEvent(
-                        new CustomEvent('privateselect', {
-                            detail: {
-                                value: 'item-4'
-                            },
-                            bubbles: true
-                        })
-                    );
+                    items[3].click();
                     const applyButton = element.shadowRoot.querySelector(
                         '[data-element-id="lightning-button-apply"]'
                     );
@@ -2468,7 +2415,7 @@ describe('Filter Menu', () => {
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
                         items.forEach((item) => {
                             expect(item.checked).toBeFalsy();
@@ -2647,10 +2594,10 @@ describe('Filter Menu', () => {
                     })
                     .then(() => {
                         const items = element.shadowRoot.querySelectorAll(
-                            '[data-element-id^="lightning-menu-item"]'
+                            '[data-element-id="a-list-item"]'
                         );
                         expect(items).toHaveLength(1);
-                        expect(items[0].value).toBe('item-3');
+                        expect(items[0].dataset.value).toBe('item-3');
                     });
             });
         });
@@ -2687,7 +2634,7 @@ describe('Filter Menu', () => {
                         expect(dropdown).toBeTruthy();
 
                         const item = element.shadowRoot.querySelector(
-                            '[data-element-id^="lightning-menu-item"]'
+                            '[data-element-id="lightning-formatted-rich-text"]'
                         );
                         item.dispatchEvent(
                             new CustomEvent('privatefocus', {
@@ -2761,7 +2708,7 @@ describe('Filter Menu', () => {
 
                 return Promise.resolve().then(() => {
                     const items = element.shadowRoot.querySelectorAll(
-                        '[data-element-id="lightning-menu-item"]'
+                        '[data-element-id="a-list-item"]'
                     );
                     const secondItemSpy = jest.spyOn(items[1], 'focus');
                     const firstItemSpy = jest.spyOn(items[0], 'focus');
@@ -2772,11 +2719,17 @@ describe('Filter Menu', () => {
                     const keyEvent = new CustomEvent('keydown');
                     keyEvent.key = 'ArrowDown';
                     items[0].dispatchEvent(keyEvent);
-
                     expect(secondItemSpy).toHaveBeenCalled();
+                    expect(firstItemSpy).not.toHaveBeenCalled();
+                    expect(lastItemSpy).not.toHaveBeenCalled();
+
                     keyEvent.key = 'ArrowUp';
                     items[1].dispatchEvent(keyEvent);
-                    expect(firstItemSpy).not.toHaveBeenCalled();
+                    expect(firstItemSpy).toHaveBeenCalled();
+                    expect(lastItemSpy).not.toHaveBeenCalled();
+
+                    keyEvent.key = 'ArrowUp';
+                    items[0].dispatchEvent(keyEvent);
                     expect(lastItemSpy).toHaveBeenCalled();
                 });
             });

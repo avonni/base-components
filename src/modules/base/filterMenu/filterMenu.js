@@ -1213,6 +1213,7 @@ export default class FilterMenu extends LightningElement {
         return (
             !this.isLoading &&
             this.noVisibleListItem &&
+            this.type === 'list' &&
             (this.searchTerm || this.variant === 'horizontal')
         );
     }
@@ -1833,16 +1834,15 @@ export default class FilterMenu extends LightningElement {
      * @param {Event} event click event.
      */
     handleListItemClick(event) {
-        const { index, disabled } = event.currentTarget.dataset;
+        const { value, disabled } = event.currentTarget.dataset;
         if (disabled) {
             event.preventDefault();
             return;
         }
 
-        const selectedValue = this.computedItems[index].value;
         this.currentValue = [];
         this.computedItems = this.computedItems.map((item) => {
-            if (item.value === selectedValue) {
+            if (item.value === value) {
                 item.checked = !item.checked;
             } else if (!this.computedTypeAttributes.isMultiSelect) {
                 item.checked = false;
