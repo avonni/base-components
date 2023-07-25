@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    deepCopy,
     normalizeBoolean,
     normalizeObject,
     normalizeString,
@@ -140,12 +141,7 @@ export default class InputChoiceSet extends LightningElement {
     _isLoading = false;
     _isMultiSelect = false;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
-    _orientationAttributes = {
-        cols: DEFAULT_COLUMNS.default,
-        largeContainerCols: DEFAULT_COLUMNS.large,
-        mediumContainerCols: DEFAULT_COLUMNS.medium,
-        smallContainerCols: DEFAULT_COLUMNS.small
-    };
+    _orientationAttributes = {};
     _required = false;
     _type = INPUT_CHOICE_TYPES.default;
     _typeAttributes = {};
@@ -155,6 +151,7 @@ export default class InputChoiceSet extends LightningElement {
     helpMessage;
     computedOrientationAttributes = {};
     computedTypeAttributes = {};
+    _connected = false;
     _rendered = false;
 
     constructor() {
@@ -177,6 +174,10 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     connectedCallback() {
+        if (!Object.keys(this.computedOrientationAttributes).length) {
+            this._initOrientationAttributes();
+        }
+
         if (this.isMultiSelect && this.value) {
             // Make sure the value is an array when the input is multiselect
             this._value =
@@ -189,6 +190,7 @@ export default class InputChoiceSet extends LightningElement {
         this._updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -298,47 +300,12 @@ export default class InputChoiceSet extends LightningElement {
         return this._orientationAttributes;
     }
     set orientationAttributes(value) {
-        const normalizedOrientationAttributes = normalizeObject(value);
-
-        const small = this._normalizeHorizontalColumns(
-            normalizedOrientationAttributes.smallContainerCols
-        );
-        const medium = this._normalizeHorizontalColumns(
-            normalizedOrientationAttributes.mediumContainerCols
-        );
-        const large = this._normalizeHorizontalColumns(
-            normalizedOrientationAttributes.largeContainerCols
-        );
-        const defaults = this._normalizeHorizontalColumns(
-            normalizedOrientationAttributes.cols
-        );
-
-        // Keep same logic as in layoutItem.
-        this._orientationAttributes.cols =
-            this.orientation === 'horizontal'
-                ? defaults || DEFAULT_COLUMNS.default
-                : 12;
-        this._orientationAttributes.smallContainerCols =
-            this.orientation === 'horizontal'
-                ? small || defaults || DEFAULT_COLUMNS.small
-                : 12;
-
-        this._orientationAttributes.mediumContainerCols =
-            this.orientation === 'horizontal'
-                ? medium || small || defaults || DEFAULT_COLUMNS.medium
-                : 12;
-        this._orientationAttributes.largeContainerCols =
-            this.orientation === 'horizontal'
-                ? large || medium || small || defaults || DEFAULT_COLUMNS.large
-                : 12;
-
-        this._orientationAttributes.multipleRows =
-            'multipleRows' in normalizedOrientationAttributes
-                ? normalizedOrientationAttributes.multipleRows
-                : true;
-
-        this._orientationAttributes = { ...this._orientationAttributes };
+        this._orientationAttributes = normalizeObject(value);
         this._normalizeOrientationAttributes();
+
+        if (this._connected) {
+            this._initOrientationAttributes();
+        }
     }
 
     /**
@@ -820,6 +787,44 @@ export default class InputChoiceSet extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    _initOrientationAttributes() {
+        const attributes = deepCopy(this.orientationAttributes);
+        const small = this._normalizeHorizontalColumns(
+            attributes.smallContainerCols
+        );
+        const medium = this._normalizeHorizontalColumns(
+            attributes.mediumContainerCols
+        );
+        const large = this._normalizeHorizontalColumns(
+            attributes.largeContainerCols
+        );
+        const defaults = this._normalizeHorizontalColumns(attributes.cols);
+
+        // Keep same logic as in layoutItem.
+        attributes.cols =
+            this.orientation === 'horizontal'
+                ? defaults || DEFAULT_COLUMNS.default
+                : 12;
+        attributes.smallContainerCols =
+            this.orientation === 'horizontal'
+                ? small || defaults || DEFAULT_COLUMNS.small
+                : 12;
+
+        attributes.mediumContainerCols =
+            this.orientation === 'horizontal'
+                ? medium || small || defaults || DEFAULT_COLUMNS.medium
+                : 12;
+        attributes.largeContainerCols =
+            this.orientation === 'horizontal'
+                ? large || medium || small || defaults || DEFAULT_COLUMNS.large
+                : 12;
+
+        if (!('multipleRows' in attributes)) {
+            attributes.multipleRows = true;
+        }
+        this.computedOrientationAttributes = attributes;
+    }
+
     /**
      * Only accept predetermined number of columns.
      *
@@ -856,12 +861,9 @@ export default class InputChoiceSet extends LightningElement {
                 ORIENTATION_ATTRIBUTES[this.orientation].includes(key);
             if (allowedAttribute) {
                 orientationAttributes[key] = value;
-            } else {
-                orientationAttributes.cols = 12;
-                orientationAttributes.multipleRows = true;
             }
         });
-        this.computedOrientationAttributes = orientationAttributes;
+        this._orientationAttributes = orientationAttributes;
     }
 
     /**
