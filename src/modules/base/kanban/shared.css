@@ -114,9 +114,18 @@
         --avonni-kanban-summarize-header-sizing-line-height,
         2.5rem
     );
-    color: var(--avonni-kanban-summary-text-color, #10aa52);
-    font-size: var(--avonni-kanban-summarize-font-size, 1.5rem);
-    font-weight: var(--avonni-kanban-summarize-font-weight, 400);
+    --avonni-output-data-value-text-color: var(
+        --avonni-kanban-summary-text-color,
+        #10aa52
+    );
+    --avonni-output-data-value-font-size: var(
+        --avonni-kanban-summarize-font-size,
+        1.5rem
+    );
+    --avonni-output-data-value-font-weight: var(
+        --avonni-kanban-summarize-font-weight,
+        400
+    );
 }
 
 .avonni-kanban__variant_base .avonni-kanban__group_header {
@@ -217,29 +226,6 @@
     pointer-events: none;
 }
 
-.avonni-kanban__container::-webkit-scrollbar,
-.avonni-kanban__tiles_container::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-}
-
-.avonni-kanban__container::-webkit-scrollbar-track,
-.avonni-kanban__tiles_container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.avonni-kanban__container::-webkit-scrollbar-thumb,
-.avonni-kanban__tiles_container::-webkit-scrollbar-thumb {
-    background: #dbdbdb;
-    border-radius: 5px;
-}
-
-.avonni-kanban__container::-webkit-scrollbar-thumb:hover,
-.avonni-kanban__tiles_container::-webkit-scrollbar-thumb:hover,
-.avonni-kanban__tiles_container::-webkit-scrollbar-thumb:hover {
-    background: #c0c0c0;
-}
-
 .avonni-kanban__variant_base
     .avonni-kanban__field.avonni-kanban__dragged_group {
     position: relative;
@@ -316,6 +302,10 @@
     width: fit-content;
     color: #2c2c2c;
     border-radius: 0.25rem;
+}
+
+.avonni-kanban__tile_dates_due-date {
+    font-size: 0.75rem;
 }
 
 .avonni-kanban__tile_dates_overdue {

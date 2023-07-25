@@ -45,6 +45,7 @@ export default class KanbanTile {
         this._description = props.description;
         this._startDate = props.startDate;
         this._dueDate = props.dueDate;
+        this._summarizeValue = props.summarizeValue;
     }
 
     get coverImage() {
@@ -94,10 +95,18 @@ export default class KanbanTile {
         }
     }
 
+    get summarizeValue() {
+        return this._summarizeValue;
+    }
+    set summarizeValue(summarizeValue) {
+        this._summarizeValue = summarizeValue;
+    }
+
     get computedTileDatesClass() {
         return classSet(
             'avonni-kanban__tile_dates slds-grid slds-grid_vertical-align-center slds-p-around_xx-small'
         ).add({
+            'avonni-kanban__tile_dates_due-date': this.dueDate,
             'avonni-kanban__tile_dates_overdue slds-p-vertical_xx-small slds-p-horizontal_x-small':
                 this.isOverdue
         });
@@ -133,7 +142,17 @@ export default class KanbanTile {
     get isOverdue() {
         const date = this.getDateWithTimeZone(this.dueDate);
         const dueDate = new Date(date.ts);
-        return dueDate && Date.now() > dueDate;
+        const currentDate = new Date();
+        if (dueDate) {
+            const isSameDate =
+                dueDate.getUTCFullYear() === currentDate.getUTCFullYear() &&
+                dueDate.getDay() === currentDate.getDay() &&
+                dueDate.getMonth() === currentDate.getMonth();
+            return isSameDate
+                ? false
+                : dueDate.getTime() < currentDate.getTime();
+        }
+        return true;
     }
 
     get subGroup() {
