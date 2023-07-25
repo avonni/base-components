@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class InputChoiceSetButtonsCheckmark extends LightningElement {
+export default class InputChoiceSetToggleHorizontalCols extends LightningElement {
     optionsWithoutIcon = [
         { label: 'Mon', value: 'mon' },
         { label: 'Tue', value: 'tue' },
@@ -8,5 +8,9 @@ export default class InputChoiceSetButtonsCheckmark extends LightningElement {
         { label: 'Thu', value: 'thu' },
         { label: 'Fri', value: 'fri' }
     ];
+    orientationAttributes = {
+        cols: 2,
+        multipleRows: true
+    };
     dayValue = ['fri'];
 }

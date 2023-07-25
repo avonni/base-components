@@ -35,6 +35,19 @@ import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 export default {
     title: 'Example/Input Choice Set',
     argTypes: {
+        checkPosition: {
+            name: 'check-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Describes the position of the toggle, radio or checkbox. Options include left and right and is not available for type button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -121,6 +134,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        orientationAttributes: {
+            name: 'orientation-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'An object of attributes for the orientation containing the cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Base'
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -132,13 +157,6 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
-        },
-        stretch: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, vertical or horizontal button groups stretch to full width.'
         },
         required: {
             control: {
@@ -155,11 +173,21 @@ export default {
                 type: 'radio'
             },
             description:
-                'Type of the input. Valid values include default and button.',
-            options: ['default', 'button'],
+                'Type of the input. Valid values include default, button and toggle.',
+            options: ['default', 'button', 'toggle'],
             table: {
                 defaultValue: { summary: 'default' },
                 type: { summary: 'string' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Attributes specific to the type.',
+            table: {
+                type: { summary: 'object' }
             }
         },
         value: {
@@ -193,13 +221,13 @@ export default {
         }
     },
     args: {
+        checkPosition: 'left',
         disabled: false,
         isLoading: false,
         isMultiSelect: false,
         orientation: 'vertical',
         readOnly: false,
         required: false,
-        stretch: false,
         type: 'default',
         variant: 'standard'
     }
@@ -212,7 +240,7 @@ const optionsWithIcon = [
         label: 'Left',
         value: 'left',
         iconName: 'utility:left_align_text',
-        iconPosition: 'right'
+        iconPosition: 'top'
     },
     {
         label: 'Center',
@@ -259,12 +287,12 @@ Checkboxes.args = {
 
 export const HorizontalCheckboxes = Template.bind({});
 HorizontalCheckboxes.args = {
+    isMultiSelect: true,
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     orientation: 'horizontal',
-    value: dayValue,
-    isMultiSelect: true
+    value: dayValue
 };
 
 export const CheckboxesDisabled = Template.bind({});
@@ -326,13 +354,62 @@ Buttons.args = {
     value: dayValue
 };
 
-export const HorizontalButtons = Template.bind({});
-HorizontalButtons.args = {
+export const ButtonsCheckmark = Template.bind({});
+ButtonsCheckmark.args = {
+    label: 'Please select a value',
+    type: 'button',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue,
+    typeAttributes: {
+        showCheckmark: true
+    }
+};
+
+export const buttonsHorizontal = Template.bind({});
+buttonsHorizontal.args = {
     label: 'Please select a value',
     type: 'button',
     orientation: 'horizontal',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRow = Template.bind({});
+buttonsHorizontalStretchRow.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        multipleRows: false
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
+    value: dayValue
+};
+
+export const buttonsHorizontalStretchRowCols = Template.bind({});
+buttonsHorizontalStretchRowCols.args = {
+    isMultiSelect: true,
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
+    type: 'button',
+    typeAttributes: {
+        displayAsRow: true,
+        stretch: true
+    },
     value: dayValue
 };
 
@@ -373,4 +450,37 @@ ButtonsWithRightIcons.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithIcon,
     value: alignmentValue
+};
+
+export const Toggle = Template.bind({});
+Toggle.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleHorizontal = Template.bind({});
+ToggleHorizontal.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ToggleHorizontalCols = Template.bind({});
+ToggleHorizontalCols.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    orientation: 'horizontal',
+    orientationAttributes: {
+        cols: 2,
+        multipleRows: true
+    },
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
 };

@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class InputChoiceSetButtonsCheckmark extends LightningElement {
+export default class InputChoiceSetToggle extends LightningElement {
     optionsWithoutIcon = [
         { label: 'Mon', value: 'mon' },
         { label: 'Tue', value: 'tue' },

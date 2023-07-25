@@ -1539,14 +1539,7 @@ export default class List extends LightningElement {
      */
     normalizeColumns(value) {
         const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) {
-            return null;
-        }
-
-        if (COLUMNS.valid.includes(numValue)) {
-            return numValue;
-        }
-        return null;
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
     }
 
     /**
