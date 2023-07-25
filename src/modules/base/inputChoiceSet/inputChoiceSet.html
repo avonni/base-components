@@ -148,7 +148,11 @@
                                                     slds-order_1
                                                 "
                                             >
-                                                {option.label}
+                                                <lightning-formatted-rich-text
+                                                    disable-linkify
+                                                    title={option.label}
+                                                    value={option.label}
+                                                ></lightning-formatted-rich-text>
                                             </div>
                                             <lightning-icon
                                                 if:true={option.iconName}
