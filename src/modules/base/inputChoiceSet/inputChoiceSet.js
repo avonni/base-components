@@ -882,7 +882,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     _setWidth() {
-        if (this.orientation !== 'vertical' && this.checkPosition !== 'right')
+        if (this.orientation === 'horizontal' && this.checkPosition === 'left')
             return;
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
@@ -894,7 +894,7 @@ export default class InputChoiceSet extends LightningElement {
         });
 
         labelIconContainers.forEach((labelIconContainer) => {
-            labelIconContainer.style.width = maxWidth + 'px';
+            labelIconContainer.style.width = maxWidth + 8 + 'px';
         });
     }
 
