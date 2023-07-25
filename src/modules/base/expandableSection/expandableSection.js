@@ -58,6 +58,15 @@ export default class ExpandableSection extends LightningElement {
     _collapsible = false;
     _variant = VARIANTS.default;
 
+    showTitleSlot = true;
+
+    renderedCallback() {
+        this.showTitleSlot =
+            !this.title &&
+            this.titleSlot &&
+            this.titleSlot.assignedElements().length !== 0;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC PROPERTIES
@@ -136,6 +145,15 @@ export default class ExpandableSection extends LightningElement {
     }
 
     /**
+     * Get the title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
+    }
+
+    /**
      * Computed list of the header classes.
      *
      * @type {string}
@@ -160,12 +178,14 @@ export default class ExpandableSection extends LightningElement {
      * @default slds-button slds-section__title-action
      */
     get titleButtonClass() {
-        return classSet('slds-button slds-section__title-action')
+        return classSet('slds-button slds-section__title-action slds-grid')
             .add({
                 'avonni-expandable-section__title-button_base':
                     this.variant === 'base',
                 'avonni-expandable-section__title-button_shaded':
-                    this.variant === 'shaded'
+                    this.variant === 'shaded',
+                'avonni-expandable-section__title-button_noncollapsible':
+                    !this.collapsible
             })
             .toString();
     }
@@ -177,7 +197,7 @@ export default class ExpandableSection extends LightningElement {
      * @default false
      */
     get showHeader() {
-        return this.title || this.collapsible;
+        return this.title || this.showTitleSlot;
     }
 
     /*

@@ -47,6 +47,42 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-profile-card-header-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-header-sizing-border-bottom
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-header-styling-border-bottom
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-header-color-border-bottom
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-title-font-family
+ * @default 'Salesforce Sans', Arial, sans-serif
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-subtitle-font-family
+ * @default 'Salesforce Sans', Arial, sans-serif
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-profile-card-title-text-color
  * @default #000000
  * @type color
@@ -92,4 +128,28 @@
  * @name --avonni-profile-card-subtitle-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-spacing-block-start
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-spacing-block-end
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-spacing-inline-start
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-spacing-inline-end
+ * @default 0px
+ * @type dimension
  */

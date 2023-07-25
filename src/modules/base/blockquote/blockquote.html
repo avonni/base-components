@@ -34,7 +34,7 @@
 
 <template>
     <blockquote class={blockquoteClass}>
-        <div class="slds-grid slds-grid--vertical-align-center">
+        <div if:true={showHeader} class={blockquoteHeaderClass}>
             <lightning-icon
                 if:true={leftIcon}
                 icon-name={iconName}
@@ -60,7 +60,7 @@
             ></lightning-icon>
         </div>
         <p class="avonni-blockquote__container">
-            <slot></slot>
+            <slot data-element-id="avonni-blockquote-default-slot"></slot>
         </p>
     </blockquote>
 </template>

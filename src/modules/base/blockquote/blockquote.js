@@ -152,6 +152,31 @@ export default class Blockquote extends LightningElement {
     }
 
     /**
+     * Compute blockquote header style by variant.
+     *
+     * @type {string}
+     */
+    get blockquoteHeaderClass() {
+        return classSet('slds-grid slds-grid--vertical-align-center')
+            .add({
+                'avonni-blockquote__header-spacing':
+                    this.defaultSlot?.assignedElements().length !== 0
+            })
+            .toString();
+    }
+
+    /**
+     * Get the default slot DOM element.
+     *
+     * @type {Element}
+     */
+    get defaultSlot() {
+        return this.template.querySelector(
+            'slot[data-element-id="avonni-blockquote-default-slot"]'
+        );
+    }
+
+    /**
      * Set icon left.
      *
      * @type {boolean}
@@ -167,5 +192,14 @@ export default class Blockquote extends LightningElement {
      */
     get rightIcon() {
         return this._iconPosition === 'right' && this.iconName;
+    }
+
+    /**
+     * Show header.
+     *
+     * @type {boolean}
+     */
+    get showHeader() {
+        return this.iconName || this.title;
     }
 }

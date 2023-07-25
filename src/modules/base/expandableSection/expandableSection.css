@@ -208,3 +208,18 @@
 .avonni-expandable-section__closed-icon {
     margin-top: -3px;
 }
+
+.avonni-expandable-section__title-block {
+    display: block;
+    width: 100%;
+}
+
+.avonni-expandable-section__title-button_noncollapsible,
+.avonni-expandable-section__title-button_noncollapsible:focus,
+.avonni-expandable-section__title-button_noncollapsible:active,
+.avonni-expandable-section__title-button_noncollapsible:hover {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    cursor: auto !important;
+    border: none !important;
+}

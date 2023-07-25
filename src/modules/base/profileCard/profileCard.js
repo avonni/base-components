@@ -74,13 +74,6 @@ export default class ProfileCard extends LightningElement {
      */
     @api avatarFallbackIconName;
     /**
-     * URL for the avatar image.
-     *
-     * @type {string}
-     * @public
-     */
-    @api avatarSrc;
-    /**
      * Value to set the image attribute 'alt'.
      *
      * @type {string}
@@ -112,9 +105,9 @@ export default class ProfileCard extends LightningElement {
     _avatarMobilePosition = AVATAR_POSITIONS.default;
     _avatarPosition = AVATAR_POSITIONS.default;
     _avatarSize = AVATAR_SIZES.default;
+    _avatarSrc;
     _avatarVariant = AVATAR_VARIANTS.default;
 
-    isError = false;
     showActions = true;
     showFooter = true;
     showAvatarActions = true;
@@ -175,6 +168,15 @@ export default class ProfileCard extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
+    }
+
+    @api
+    get avatarSrc() {
+        return this._avatarSrc;
+    }
+
+    set avatarSrc(value) {
+        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
     }
 
     /**
@@ -310,6 +312,24 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
+     * Convert profile card avatar size to primitive avatar size
+     *
+     * @type {boolean}
+     */
+    get primitiveAvatarSize() {
+        switch (this.avatarSize) {
+            case 'x-small':
+                return 'medium';
+            case 'small':
+                return 'large';
+            case 'medium':
+                return 'x-large';
+            default:
+                return 'xx-large';
+        }
+    }
+
+    /**
      * Computed container class styling based on selected attributes.
      *
      * @type {string}
@@ -372,9 +392,18 @@ export default class ProfileCard extends LightningElement {
             .add({
                 'avonni-profile-card__avatar-img-circle':
                     this._avatarVariant === 'circle',
-                'slds-align_absolute-center': this.isError
+                'slds-align_absolute-center': this.showAvatarFallbackIcon
             })
             .toString();
+    }
+
+    /**
+     * Show avatar fallback icon.
+     *
+     * @type {boolean}
+     */
+    get showAvatarFallbackIcon() {
+        return !this.avatarSrc && !this.initials;
     }
 
     /**
@@ -403,18 +432,11 @@ export default class ProfileCard extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Set the fallback Icon for the avatar.
-     *
-     * @type {string}
-     */
-    setFallbackIcon() {
-        if (
-            this.avatarFallbackIconName &&
-            (this.avatarFallbackIconName.indexOf('standard') > -1 ||
-                this.avatarFallbackIconName.indexOf('custom') > -1)
-        ) {
-            this.isError = true;
-        }
+    handleImageError(event) {
+        // eslint-disable-next-line no-console
+        console.warn(
+            `Avatar component Image with src="${event.target.src}" failed to load.`
+        );
+        this._avatarSrc = '';
     }
 }

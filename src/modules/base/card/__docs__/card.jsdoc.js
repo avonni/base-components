@@ -81,6 +81,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-header-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-header-font-weight
  * @default 700
  * @type string
@@ -90,6 +95,36 @@
  * @name --avonni-card-header-font-size
  * @default 1rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-font-family
+ * @default 'Salesforce Sans', Arial, sans-serif
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-sizing-border-bottom
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-styling-border-bottom
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-color-border-bottom
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-text-color
+ * @default #181818
+ * @type color
  */
 /**
  * @memberof stylingHooks

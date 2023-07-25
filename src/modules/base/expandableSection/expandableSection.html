@@ -35,12 +35,12 @@
 <template>
     <div class={sectionClass}>
         <h3 if:true={showHeader} class={headerClass} data-element-id="header">
-            <template if:true={collapsible}>
-                <button
-                    class={titleButtonClass}
-                    type="button"
-                    onclick={toggleSection}
-                >
+            <button
+                class={titleButtonClass}
+                type="button"
+                onclick={toggleSection}
+            >
+                <template if:true={collapsible}>
                     <template if:false={closed}>
                         <lightning-icon
                             icon-name="utility:chevrondown"
@@ -63,22 +63,22 @@
                             data-element-id="lightning-icon-closed"
                         ></lightning-icon>
                     </template>
-                    <span
-                        class="slds-truncate avonni-expandable-section__title"
-                        title={title}
-                        data-element-id="title"
-                        >{title}</span
-                    >
-                </button>
-            </template>
-            <template if:false={collapsible}>
+                </template>
                 <span
-                    class="slds-truncate avonni-expandable-section__title"
+                    if:true={title}
+                    class="avonni-expandable-section__title slds-truncate"
                     title={title}
                     data-element-id="title"
                     >{title}</span
                 >
-            </template>
+                <template if:true={showTitleSlot}>
+                    <slot
+                        name="title"
+                        class="avonni-expandable-section__title-block"
+                        data-element-id="avonni-expandable-section-title-slot"
+                    ></slot>
+                </template>
+            </button>
         </h3>
         <div class="slds-section__content">
             <slot></slot>

@@ -30,16 +30,48 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+article.avonni-profile-card {
+    position: relative;
+    background-color: var(--avonni-profile-card-color-background, white);
+
+    padding-top: var(--avonni-profile-card-spacing-block-start, 0px);
+    padding-left: var(--avonni-profile-card-spacing-inline-start, 0px);
+    padding-right: var(--avonni-profile-card-spacing-inline-end, 0px);
+    padding-bottom: var(--avonni-profile-card-spacing-block-end, 0px);
+
+    border-width: var(--avonni-profile-card-sizing-border, 1px);
+    border-style: solid;
+    border-color: var(--avonni-profile-card-color-border, #c9c9c9);
+    border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
+
+    box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
+}
+
 .avonni-profile-card__flex-container {
     display: flex;
     flex-direction: column;
 }
 
 .avonni-profile-card_color-background {
-    background-color: var(--avonni-profile-card-color-background, #ffffff);
+    background-color: var(
+        --avonni-profile-card-header-color-background,
+        #ffffff
+    );
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    border-bottom-width: var(
+        --avonni-profile-card-header-sizing-border-bottom,
+        0px
+    );
+    border-bottom-style: var(
+        --avonni-profile-card-header-styling-border-bottom,
+        solid
+    );
+    border-bottom-color: var(
+        --avonni-profile-card-header-color-border-bottom,
+        #c9c9c9
+    );
     width: 100%;
     flex: 1 1 auto;
 }
@@ -117,6 +149,12 @@
 }
 
 .avonni-profile-card__title {
+    font-family: var(
+        --avonni-profile-card-header-title-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-size: var(--avonni-profile-card-title-font-size, 18px);
     font-style: var(--avonni-profile-card-title-font-style, normal);
     font-weight: var(--avonni-profile-card-title-font-weight, 400);
@@ -125,6 +163,12 @@
 }
 
 .avonni-profile-card__subtitle {
+    font-family: var(
+        --avonni-profile-card-header-subtitle-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-size: var(--avonni-profile-card-subtitle-font-size, 14px);
     font-weight: var(--avonni-profile-card-subtitle-font-weight, 400);
     font-style: var(--avonni-profile-card-subtitle-font-style, normal);

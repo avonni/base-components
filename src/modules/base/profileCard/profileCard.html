@@ -34,7 +34,7 @@
 
 <template>
     <div class={computedMainContainerClass} data-element-id="main-container">
-        <article class="slds-card">
+        <article class="avonni-profile-card">
             <div class={computedContainerClass} data-element-id="container">
                 <header class={computedHeaderClass} data-element-id="header">
                     <span
@@ -45,24 +45,25 @@
                 </header>
                 <div class={computedAvatarClass} data-element-id="avatar">
                     <div
-                        if:true={isError}
+                        if:true={showAvatarFallbackIcon}
                         class={isCircle}
                         data-element-id="icon-wrapper"
                     >
-                        <lightning-icon
-                            icon-name={avatarFallbackIconName}
-                            size="large"
+                        <c-primitive-avatar
                             alternative-text={avatarAlternativeText}
+                            fallback-icon-name={avatarFallbackIconName}
+                            size={primitiveAvatarSize}
+                            variant={avatarVariant}
                             data-element-id="avatar-lightning-icon"
-                        ></lightning-icon>
+                        ></c-primitive-avatar>
                     </div>
                     <img
-                        if:false={isError}
+                        if:true={avatarSrc}
                         class={isCircle}
                         alt={avatarAlternativeText}
                         src={avatarSrc}
                         data-element-id="img"
-                        onerror={setFallbackIcon}
+                        onerror={handleImageError}
                     />
                     <template if:true={showAvatarActions}>
                         <div

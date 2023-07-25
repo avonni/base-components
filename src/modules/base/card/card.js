@@ -80,6 +80,7 @@ export default class Card extends LightningElement {
 
     _mediaPosition = MEDIA_POSITIONS.default;
 
+    showHeader = true;
     showMediaSlot = true;
     showTitleSlot = true;
     showActionsSlot = true;
@@ -110,6 +111,8 @@ export default class Card extends LightningElement {
 
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
+
+        this.showHeader = this.title || this.showTitleSlot || this.iconName;
 
         /**
          * The event fired when the card is rendered.
