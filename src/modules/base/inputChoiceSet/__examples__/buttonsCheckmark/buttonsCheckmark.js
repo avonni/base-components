@@ -9,4 +9,8 @@ export default class InputChoiceSetButtonsCheckmark extends LightningElement {
         { label: 'Fri', value: 'fri' }
     ];
     dayValue = ['fri'];
+
+    typeAttributes = {
+        showCheckmark: true
+    };
 }

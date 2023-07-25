@@ -79,7 +79,8 @@ export default {
         },
         cols: {
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Default number of columns',
+            description:
+                'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -88,7 +89,8 @@ export default {
         smallContainerCols: {
             name: 'small-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for small containers',
+            description:
+                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -97,7 +99,8 @@ export default {
         mediumContainerCols: {
             name: 'medium-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for medium containers',
+            description:
+                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -106,7 +109,8 @@ export default {
         largeContainerCols: {
             name: 'large-container-cols',
             control: { type: 'number', min: 1, max: 12 },
-            description: 'Number of columns for large containers',
+            description:
+                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
             table: {
                 type: { summary: 'number' },
                 category: 'Columns'
@@ -274,6 +278,7 @@ export default {
         }
     },
     args: {
+        cols: 1,
         sortable: false,
         sortableIconPosition: 'right',
         variant: 'base'
