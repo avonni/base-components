@@ -130,6 +130,7 @@ export default class Kanban extends LightningElement {
         }
 
         this.capContainerWidth();
+        this.capFieldWidth();
         this.setContainerDimensions();
         this.capFieldHeight();
         this.cropSubGroupHeaders();
@@ -384,6 +385,9 @@ export default class Kanban extends LightningElement {
             fallbackValue: KANBAN_VARIANTS.default,
             validValues: KANBAN_VARIANTS.valid
         });
+        if (this._connected) {
+            this.capFieldWidth();
+        }
     }
 
     /*
@@ -742,6 +746,51 @@ export default class Kanban extends LightningElement {
             });
         }
         this._droppedTileHeight = 0;
+    }
+
+    /**
+     *
+     * Limits the width of the fields to align columns for Path variant
+     */
+    capFieldWidth() {
+        if (this.isLoading && this.variant !== 'path') return;
+
+        const pathItems = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__path_item"]'
+        );
+        const fields = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__field"]'
+        );
+        const headers = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group_header_wrapper"]'
+        );
+
+        for (let i = 0; i < pathItems.length; i++) {
+            const rect = pathItems[i].getBoundingClientRect();
+            if (rect) {
+                let width = rect.width || 0;
+                let offset = 0;
+                if (i !== 0) {
+                    const pathStyle = getComputedStyle(pathItems[i]);
+                    if (pathStyle) {
+                        offset +=
+                            parseInt(pathStyle.marginLeft.split('px')[0], 10) +
+                            parseInt(pathStyle.marginRight.split('px')[0], 10);
+                    }
+                }
+                width += offset;
+                if (this._hasSubGroups && headers && headers[i]) {
+                    headers[i].style.minWidth = `${width}px`;
+                    headers[i].style.width = `${width}px`;
+                    headers[i].style.maxWidth = `${width}px`;
+                }
+                if (fields && fields[i]) {
+                    fields[i].style.minWidth = `${width}px`;
+                    fields[i].style.width = `${width}px`;
+                    fields[i].style.maxWidth = `${width}px`;
+                }
+            }
+        }
     }
 
     /**
@@ -1643,6 +1692,7 @@ export default class Kanban extends LightningElement {
             ).scrollWidth;
 
             this.capFieldHeight();
+            this.capFieldWidth();
             this.capContainerWidth();
             this.setContainerDimensions();
 
