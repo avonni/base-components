@@ -142,7 +142,17 @@ export default class KanbanTile {
     get isOverdue() {
         const date = this.getDateWithTimeZone(this.dueDate);
         const dueDate = new Date(date.ts);
-        return dueDate && Date.now() > dueDate;
+        const currentDate = new Date();
+        if (dueDate) {
+            const isSameDate =
+                dueDate.getUTCFullYear() === currentDate.getUTCFullYear() &&
+                dueDate.getDay() === currentDate.getDay() &&
+                dueDate.getMonth() === currentDate.getMonth();
+            return isSameDate
+                ? false
+                : dueDate.getTime() < currentDate.getTime();
+        }
+        return true;
     }
 
     get subGroup() {
