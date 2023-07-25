@@ -56,13 +56,11 @@
             onmousedown={handleDraggableMouseDown}
             >{label}</a
         >
-        <span
-            if:false={href}
-            class="slds-pill__label"
-            title={label}
-            data-element-id="span-label"
+        <span if:false={href} class="slds-pill__label"
             ><lightning-formatted-rich-text
+                title={label}
                 value={label}
+                data-element-id="lightning-formatted-rich-text"
             ></lightning-formatted-rich-text
         ></span>
         <!-- Actions -->
