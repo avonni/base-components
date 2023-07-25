@@ -169,13 +169,13 @@ describe('Primitive Pill', () => {
                 const wrapper = element.shadowRoot.querySelector(
                     '[data-element-id="div-wrapper"]'
                 );
-                const span = element.shadowRoot.querySelector(
-                    '[data-element-id="span-label"]'
+                const label = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-formatted-rich-text"]'
                 );
                 const link = element.shadowRoot.querySelector(
                     '[data-element-id="a-label"]'
                 );
-                expect(span).toBeFalsy();
+                expect(label).toBeFalsy();
                 expect(link).toBeTruthy();
                 expect(link.href).toBe('https://avonni.app/');
                 expect(link.title).toBe('Some label');
@@ -190,16 +190,16 @@ describe('Primitive Pill', () => {
                 const wrapper = element.shadowRoot.querySelector(
                     '[data-element-id="div-wrapper"]'
                 );
-                const span = element.shadowRoot.querySelector(
-                    '[data-element-id="span-label"]'
+                const label = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-formatted-rich-text"]'
                 );
                 const link = element.shadowRoot.querySelector(
                     '[data-element-id="a-label"]'
                 );
                 expect(link).toBeFalsy();
-                expect(span).toBeTruthy();
-                expect(span.title).toBe('Some label');
-                expect(span.textContent).toBe('Some label');
+                expect(label).toBeTruthy();
+                expect(label.title).toBe('Some label');
+                expect(label.value).toBe('Some label');
                 expect(wrapper.classList).not.toContain(
                     'avonni-primitive-pill__action'
                 );

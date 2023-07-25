@@ -349,7 +349,7 @@ const items = [
     {
         label: 'Call',
         value: 'call',
-        prefixIconName: 'standard:call',
+        prefixIconName: 'custom:custom1',
         iconName: 'utility:voicemail_drop'
     },
     {

@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,50 +29,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <div class={wrapperClass} data-element-id="div-wrapper">
-        <!-- Avatar -->
-        <c-avatar
-            if:true={avatar}
-            class="slds-pill__icon_container"
-            fallback-icon-name={avatar.fallbackIconName}
-            initials={avatar.initials}
-            size="x-small"
-            src={avatar.src}
-            variant={avatar.variant}
-            data-element-id="avonni-avatar"
-            onmousedown={handleDraggableMouseDown}
-        ></c-avatar>
-        <!-- Label -->
-        <a
-            if:true={href}
-            href={href}
-            title={label}
-            class="slds-pill__label avonni-primitive-pill__label-link"
-            data-element-id="a-label"
-            onmousedown={handleDraggableMouseDown}
-            >{label}</a
-        >
-        <span if:false={href} class="slds-pill__label"
-            ><lightning-formatted-rich-text
-                title={label}
-                value={label}
-                data-element-id="lightning-formatted-rich-text"
-            ></lightning-formatted-rich-text
-        ></span>
-        <!-- Actions -->
-        <lightning-button-icon
-            if:true={actions.length}
-            class="slds-pill__remove"
-            alternative-text={actionButtonAltText}
-            disabled={actionButtonDisabled}
-            icon-name={actionButtonIconName}
-            tabindex="-1"
-            variant="bare"
-            data-element-id="lightning-button-icon"
-            onclick={handleActionClick}
-        ></lightning-button-icon>
-    </div>
-</template>
+import { classSet } from 'c/utils';
+
+export default class FilterMenuItem {
+    constructor(props) {
+        Object.assign(this, props);
+    }
+
+    get wrapperClass() {
+        return classSet('slds-dropdown__item slds-truncate')
+            .add({
+                'slds-is-selected': this.checked
+            })
+            .toString();
+    }
+}
