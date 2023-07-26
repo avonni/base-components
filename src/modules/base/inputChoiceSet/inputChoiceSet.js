@@ -355,9 +355,7 @@ export default class InputChoiceSet extends LightningElement {
         console.warn(
             'The "stretch" attribute is deprecated. Add a "stretch" key to the type attributes instead.'
         );
-        if (this._connected) {
-            this._supportDeprecatedAttributes();
-        }
+        this._supportDeprecatedAttributes();
     }
 
     /**
@@ -883,12 +881,21 @@ export default class InputChoiceSet extends LightningElement {
         this._supportDeprecatedAttributes();
     }
 
+    /**
+     * Set the width of the label icon container when check position is right and orientation vertical.
+     *
+     */
     _setWidth() {
-        if (this.orientation === 'horizontal' && this.checkPosition === 'left')
-            return;
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
         );
+        if (labelIconContainers.length === 0) return;
+        labelIconContainers.forEach((labelIconContainer) => {
+            labelIconContainer.style = '';
+        });
+
+        if (this.orientation === 'horizontal' || this.checkPosition === 'left')
+            return;
         let maxWidth = 0;
 
         labelIconContainers.forEach((labelIconContainer) => {
@@ -896,7 +903,7 @@ export default class InputChoiceSet extends LightningElement {
         });
 
         labelIconContainers.forEach((labelIconContainer) => {
-            labelIconContainer.style.width = maxWidth + 8 + 'px';
+            labelIconContainer.style.width = `${maxWidth + 4}px`;
         });
     }
 
