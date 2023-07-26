@@ -142,8 +142,7 @@ export default {
             description:
                 'An object of attributes for the orientation containing the cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
             table: {
-                type: { summary: 'object' },
-                category: 'Base'
+                type: { summary: 'object' }
             }
         },
         readOnly: {
