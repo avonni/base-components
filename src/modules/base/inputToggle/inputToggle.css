@@ -31,8 +31,8 @@
  */
 
 .faux_x-small {
-    height: 0.75rem;
-    width: 1.5rem;
+    height: 0.75rem !important;
+    width: 1.5rem !important;
 }
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_x-small {
@@ -53,8 +53,8 @@ label.slds-grid .faux_x-small {
 }
 
 .faux_small {
-    height: 1rem;
-    width: 2rem;
+    height: 1rem !important;
+    width: 2rem !important;
 }
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_small {
@@ -75,8 +75,8 @@ label.slds-grid .faux_small {
 }
 
 .faux_large {
-    height: 1.75rem;
-    width: 3.5rem;
+    height: 1.75rem !important;
+    width: 3.5rem !important;
 }
 
 .label input:checked + .slds-checkbox_faux_container .faux_large::before,
