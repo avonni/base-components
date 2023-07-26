@@ -370,6 +370,9 @@ export const buttonsHorizontal = Template.bind({});
 buttonsHorizontal.args = {
     label: 'Please select a value',
     type: 'button',
+    typeAttributes: {
+        stretch: true
+    },
     orientation: 'horizontal',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,

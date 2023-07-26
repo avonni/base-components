@@ -129,3 +129,11 @@
     color: white;
     border: 1px solid #0176d3;
 }
+
+.avonni-input-choice-set__stretch .slds-checkbox_button:not(:last-child) {
+    border-right: 1px solid #dddbda;
+}
+
+.avonni-input-choice-set__stretch .slds-checkbox_button {
+    border-bottom: none;
+}
