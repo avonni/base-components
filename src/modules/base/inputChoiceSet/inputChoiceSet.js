@@ -817,7 +817,7 @@ export default class InputChoiceSet extends LightningElement {
                 ? large || medium || small || defaults || DEFAULT_COLUMNS.large
                 : 12;
 
-        if (!('multipleRows' in attributes)) {
+        if (this.orientation === 'vertical') {
             attributes.multipleRows = true;
         }
         this.computedOrientationAttributes = attributes;

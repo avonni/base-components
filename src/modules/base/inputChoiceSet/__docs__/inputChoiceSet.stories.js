@@ -142,8 +142,7 @@ export default {
             description:
                 'An object of attributes for the orientation containing the cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
             table: {
-                type: { summary: 'object' },
-                category: 'Base'
+                type: { summary: 'object' }
             }
         },
         readOnly: {
@@ -370,9 +369,6 @@ export const buttonsHorizontal = Template.bind({});
 buttonsHorizontal.args = {
     label: 'Please select a value',
     type: 'button',
-    typeAttributes: {
-        stretch: true
-    },
     orientation: 'horizontal',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
