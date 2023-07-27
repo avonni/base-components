@@ -185,6 +185,10 @@
     font-style: var(--avonni-visual-picker-item-description-font-style, normal);
     font-weight: var(--avonni-visual-picker-item-description-font-weight, 400);
     line-height: var(--avonni-visual-picker-item-description-line-height, 1.25);
+    -webkit-line-clamp: var(
+        --avonni-visual-picker-item-description-line-clamp,
+        2
+    );
 }
 
 /*-- figure description --*/
@@ -195,6 +199,7 @@
     font-size: var(--avonni-visual-picker-description-font-size, 0.75rem);
     line-height: var(--avonni-visual-picker-description-line-height, 1.25);
     text-align: var(--avonni-visual-picker-description-alignment, center);
+    -webkit-line-clamp: var(--avonni-visual-picker-description-line-clamp, 2);
 }
 
 /*-- xx-small --*/
