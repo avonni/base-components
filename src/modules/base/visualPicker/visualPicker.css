@@ -184,6 +184,7 @@
     font-size: var(--avonni-visual-picker-item-description-font-size, 0.75rem);
     font-style: var(--avonni-visual-picker-item-description-font-style, normal);
     font-weight: var(--avonni-visual-picker-item-description-font-weight, 400);
+    text-align: var(--avonni-visual-picker-item-description-alignment, center);
     line-height: var(--avonni-visual-picker-item-description-line-height, 1.25);
     -webkit-line-clamp: var(
         --avonni-visual-picker-item-description-line-clamp,
