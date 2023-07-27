@@ -123,6 +123,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-item-description-line-height
  * @default 1.25
  * @type dimension
@@ -144,6 +150,183 @@
  * @name --avonni-visual-picker-tags-padding
  * @default 0.5rem
  * @type padding
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-alt-inverse-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-base-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-brand-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-error-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-info-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-inverse-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-offline-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-success-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-warning-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-label-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-radius-border
+ * @default 15rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tag-line-height
+ * @default normal
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -204,6 +387,12 @@
  * @name --avonni-visual-picker-description-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-description-line-clamp
+ * @default 2
+ * @type number
  */
 /**
  * @memberof stylingHooks
