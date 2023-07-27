@@ -186,6 +186,9 @@
     font-weight: var(--avonni-visual-picker-item-description-font-weight, 400);
     text-align: var(--avonni-visual-picker-item-description-alignment, center);
     line-height: var(--avonni-visual-picker-item-description-line-height, 1.25);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     -webkit-line-clamp: var(
         --avonni-visual-picker-item-description-line-clamp,
         2
@@ -200,6 +203,9 @@
     font-size: var(--avonni-visual-picker-description-font-size, 0.75rem);
     line-height: var(--avonni-visual-picker-description-line-height, 1.25);
     text-align: var(--avonni-visual-picker-description-alignment, center);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     -webkit-line-clamp: var(--avonni-visual-picker-description-line-clamp, 2);
 }
 
