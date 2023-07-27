@@ -482,6 +482,136 @@
     padding: var(--avonni-visual-picker-tags-padding, 0.5rem);
 }
 
+.avonni-visual-picker__tags {
+    --avonni-chip-sizing-border: var(
+        --avonni-visual-picker-tag-sizing-border,
+        1px
+    );
+    --avonni-chip-styling-border: var(
+        --avonni-visual-picker-tag-styling-border,
+        solid
+    );
+    --avonni-chip-radius-border: var(
+        --avonni-visual-picker-tag-radius-border,
+        15rem
+    );
+    --avonni-chip-label-font-size: var(
+        --avonni-visual-picker-tag-label-font-size,
+        0.75rem
+    );
+    --avonni-chip-label-font-style: var(
+        --avonni-visual-picker-tag-label-font-style,
+        normal
+    );
+    --avonni-chip-label-font-weight: var(
+        --avonni-visual-picker-tag-label-font-weight,
+        700
+    );
+    --avonni-chip-line-height: var(
+        --avonni-visual-picker-tag-line-height,
+        normal
+    );
+
+    /* Alt inverse */
+    --avonni-chip-alt-inverse-color-background: var(
+        --avonni-visual-picker-tag-alt-inverse-color-background
+    );
+    --avonni-chip-alt-inverse-color-border: var(
+        --avonni-visual-picker-tag-alt-inverse-color-border
+    );
+    --avonni-chip-alt-inverse-text-color: var(
+        --avonni-visual-picker-tag-alt-inverse-text-color
+    );
+
+    /* Base */
+    --avonni-chip-base-color-background: var(
+        --avonni-visual-picker-tag-base-color-background
+    );
+    --avonni-chip-base-color-border: var(
+        --avonni-visual-picker-tag-base-color-border
+    );
+    --avonni-chip-base-text-color: var(
+        --avonni-visual-picker-tag-base-text-color
+    );
+
+    /* Brand */
+    --avonni-chip-brand-color-background: var(
+        --avonni-visual-picker-tag-brand-color-background
+    );
+    --avonni-chip-brand-color-border: var(
+        --avonni-visual-picker-tag-brand-color-border
+    );
+    --avonni-chip-brand-text-color: var(
+        --avonni-visual-picker-tag-brand-text-color
+    );
+
+    /* Error */
+    --avonni-chip-error-color-background: var(
+        --avonni-visual-picker-tag-error-color-background
+    );
+    --avonni-chip-error-color-border: var(
+        --avonni-visual-picker-tag-error-color-border
+    );
+    --avonni-chip-error-text-color: var(
+        --avonni-visual-picker-tag-error-text-color
+    );
+
+    /* Info */
+    --avonni-chip-info-color-background: var(
+        --avonni-visual-picker-tag-info-color-background
+    );
+    --avonni-chip-info-color-border: var(
+        --avonni-visual-picker-tag-info-color-border
+    );
+    --avonni-chip-info-text-color: var(
+        --avonni-visual-picker-tag-info-text-color
+    );
+
+    /* Inverse */
+    --avonni-chip-inverse-color-background: var(
+        --avonni-visual-picker-tag-inverse-color-background
+    );
+    --avonni-chip-inverse-color-border: var(
+        --avonni-visual-picker-tag-inverse-color-border
+    );
+    --avonni-chip-inverse-text-color: var(
+        --avonni-visual-picker-tag-inverse-text-color
+    );
+
+    /* Offline */
+    --avonni-chip-offline-color-background: var(
+        --avonni-visual-picker-tag-offline-color-background
+    );
+    --avonni-chip-offline-color-border: var(
+        --avonni-visual-picker-tag-offline-color-border
+    );
+    --avonni-chip-offline-text-color: var(
+        --avonni-visual-picker-tag-offline-text-color
+    );
+
+    /* Success */
+    --avonni-chip-success-color-background: var(
+        --avonni-visual-picker-tag-success-color-background
+    );
+    --avonni-chip-success-color-border: var(
+        --avonni-visual-picker-tag-success-color-border
+    );
+    --avonni-chip-success-text-color: var(
+        --avonni-visual-picker-tag-success-text-color
+    );
+
+    /* Warning */
+    --avonni-chip-warning-color-background: var(
+        --avonni-visual-picker-tag-warning-color-background
+    );
+    --avonni-chip-warning-color-border: var(
+        --avonni-visual-picker-tag-warning-color-border
+    );
+    --avonni-chip-warning-text-color: var(
+        --avonni-visual-picker-tag-warning-text-color
+    );
+}
+
 .avonni-visual-picker__tags:not(:first-child) {
     margin-left: 0.25rem;
 }
