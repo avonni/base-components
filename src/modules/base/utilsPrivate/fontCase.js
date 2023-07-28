@@ -4,7 +4,10 @@ function camelCase(string) {
     }
 
     // Replace all non-alphanumeric characters with spaces
-    const stringWithSpaces = string.replace(/[^0-9a-zA-Z]/g, ' ');
+    let stringWithSpaces = string.replace(/[^0-9a-zA-Z]/g, ' ');
+
+    // Add a space before each capitalized letter
+    stringWithSpaces = stringWithSpaces.replace(/[A-Z]/g, ' $&').trim();
 
     // Split the string into words
     const words = stringWithSpaces.split(' ');
