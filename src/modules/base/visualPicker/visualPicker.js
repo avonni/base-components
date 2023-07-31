@@ -35,7 +35,8 @@ import { classSet, generateUUID } from 'c/utils';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray
+    normalizeArray,
+    normalizeObject
 } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 
@@ -60,6 +61,17 @@ const VISUAL_PICKER_SIZES = {
 const VISUAL_PICKER_RATIOS = {
     valid: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
     default: '1-by-1'
+};
+
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+const DEFAULT_FIELD_COLUMNS = {
+    default: 12,
+    small: 12,
+    medium: 6,
+    large: 4
+};
+const FIELD_VARIANTS = {
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
 const DEFAULT_REQUIRED = false;
@@ -97,6 +109,8 @@ export default class VisualPicker extends LightningElement {
     @api name = generateUUID();
 
     _disabled = DEFAULT_DISABLED;
+    _fieldAttributes = {};
+    _fields = [];
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _items = [];
@@ -107,10 +121,10 @@ export default class VisualPicker extends LightningElement {
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
-    helpMessage;
     displayImg = false;
     displayImgC = false;
     displayImgT = false;
+    helpMessage;
 
     renderedCallback() {
         if (this.inputs) {
@@ -146,9 +160,48 @@ export default class VisualPicker extends LightningElement {
     get disabled() {
         return this._disabled;
     }
-
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * Field attributes: variant, cols
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
+
+        // Keep same logic as in layoutItem.
+        this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            { validValues: FIELD_VARIANTS.valid }
+        );
+        this._fieldAttributes = { ...this._fieldAttributes };
+    }
+
+    /**
+     * Array of field objects, used to define the fields that will be displayed after the figure description.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get fields() {
+        return this._fields;
+    }
+    set fields(values) {
+        this._fields = normalizeArray(values);
     }
 
     /**
@@ -179,7 +232,6 @@ export default class VisualPicker extends LightningElement {
     get hideCheckMark() {
         return this._hideCheckMark;
     }
-
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
     }
@@ -193,7 +245,6 @@ export default class VisualPicker extends LightningElement {
     get items() {
         return this._items;
     }
-
     set items(value) {
         this._items = normalizeArray(value);
     }
@@ -208,7 +259,6 @@ export default class VisualPicker extends LightningElement {
     get ratio() {
         return this._ratio;
     }
-
     set ratio(ratio) {
         this._ratio = normalizeString(ratio, {
             fallbackValue: VISUAL_PICKER_RATIOS.default,
@@ -226,7 +276,6 @@ export default class VisualPicker extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -241,7 +290,6 @@ export default class VisualPicker extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(size) {
         this._size = normalizeString(size, {
             fallbackValue: VISUAL_PICKER_SIZES.default,
@@ -259,7 +307,6 @@ export default class VisualPicker extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
             fallbackValue: INPUT_TYPES.default,
@@ -405,6 +452,19 @@ export default class VisualPicker extends LightningElement {
                 (titleIsCenter || titleIsBottom);
             this.displayImgC = displayImgCenter;
             this.displayImgT = displayImgTop;
+
+            // Fields
+            const fields = this.isBiggerThanXSmall
+                ? this._fields.map((field, fieldIndex) => {
+                      return {
+                          ...field,
+                          value: item[field.fieldName],
+                          key: `visual-picker-item-field-key-${fieldIndex}`
+                      };
+                  })
+                : [];
+            const hasFields = fields && fields.length > 0;
+
             return {
                 key,
                 itemTitle,
@@ -435,7 +495,9 @@ export default class VisualPicker extends LightningElement {
                 imgAlternativeText,
                 imgSrc,
                 computedSelectedClass,
-                computedDescriptionClass
+                computedDescriptionClass,
+                fields,
+                hasFields
             };
         });
     }
@@ -719,6 +781,37 @@ export default class VisualPicker extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) {
+            return null;
+        }
+
+        if (COLUMNS.valid.includes(numValue)) {
+            return numValue;
+        }
+        return null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
+    }
 
     /**
      * Dispatches the blur event.

@@ -254,6 +254,59 @@ export const itemsWithTags = [
     }
 ];
 
+export const itemsWithFields = [
+    {
+        value: 'AccountRef1',
+        title: 'Meridian Partners',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        AccountNumber: 'A55261860',
+        Industry: 'Technology',
+        Phone: '(720) 555-0153',
+        Website: 'www.meridianpartners.com'
+    },
+    {
+        value: 'AccountRef2',
+        title: 'Inventure, Inc.',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        AccountNumber: 'A32009651',
+        Industry: 'Financial Services',
+        Phone: '(502) 555-4387',
+        Website: 'www.inventure.com'
+    },
+    {
+        value: 'AccountRef3',
+        title: 'Mercy Hospital Chicago',
+        titlePosition: 'top',
+        description:
+            'A customer but there are a lot of  whitespace we can sell to.',
+        descriptionPosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        AccountNumber: 'MHC-0001',
+        Industry: 'Healthcare & Life Sciences',
+        Phone: '3124445566'
+    },
+    {
+        value: 'AccountRef4',
+        title: 'Acme Hospitals',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        AccountNumber: 'A45475905',
+        Industry: 'Healthcare & Life Sciences',
+        Phone: '(794) 555-0153',
+        Website: 'www.acmehospitals.com'
+    }
+];
+
 export const analyticsItems = [
     {
         value: 'appointment-analytics',
@@ -851,3 +904,31 @@ export const templates = [
         ]
     }
 ];
+
+export const fields = [
+    {
+        label: 'Account Number',
+        fieldName: 'AccountNumber',
+        type: 'text'
+    },
+    {
+        label: 'Account Phone',
+        fieldName: 'Phone',
+        type: 'phone'
+    },
+    {
+        label: 'Industry',
+        fieldName: 'Industry',
+        type: 'text'
+    },
+    {
+        label: 'Website',
+        fieldName: 'Website',
+        type: 'url'
+    }
+];
+
+export const fieldAttributes = {
+    variant: 'label-stacked',
+    cols: 1
+};

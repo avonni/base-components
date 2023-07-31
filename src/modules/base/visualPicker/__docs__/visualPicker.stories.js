@@ -43,7 +43,10 @@ import {
     botStories,
     avatarStories,
     xSmallAvatarStories,
-    templates
+    templates,
+    itemsWithFields,
+    fieldAttributes,
+    fields
 } from './data';
 
 export default {
@@ -78,6 +81,26 @@ export default {
             },
             description:
                 'Array of items with attributes populating the visual picker.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        fields: {
+            control: {
+                type: 'object'
+            },
+            description:
+                ' Array of field objects, used to define fields to be displayed after the figure description.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item fields.',
             table: {
                 type: { summary: 'object' }
             }
@@ -276,16 +299,25 @@ ItemsWithPictures.args = {
     ratio: '3-by-4'
 };
 
-export const analyticItems = Template.bind({});
-analyticItems.args = {
+export const ItemsWithFields = Template.bind({});
+ItemsWithFields.args = {
+    items: itemsWithFields,
+    name: 'with-fields',
+    size: 'xx-large',
+    fieldAttributes: fieldAttributes,
+    fields: fields
+};
+
+export const AnalyticItems = Template.bind({});
+AnalyticItems.args = {
     items: analyticsItems,
     label: 'All Templates',
     name: 'analytic-items',
     size: 'xx-large'
 };
 
-export const analyticItemsTop = Template.bind({});
-analyticItemsTop.args = {
+export const AnalyticItemsTop = Template.bind({});
+AnalyticItemsTop.args = {
     items: topAnalyticsItems,
     label: 'All Templates',
     name: 'analytic-items',

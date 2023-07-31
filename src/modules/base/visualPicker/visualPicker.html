@@ -201,6 +201,40 @@
                                             />
                                         </div>
                                     </template>
+                                    <div
+                                        if:true={item.hasFields}
+                                        class="
+                                            slds-m-top_xx-small
+                                            avonni-visual-picker__item-fields-container
+                                        "
+                                    >
+                                        <c-layout
+                                            multiple-rows
+                                            data-element-id="fields-container"
+                                        >
+                                            <template
+                                                for:each={item.fields}
+                                                for:item="field"
+                                            >
+                                                <c-layout-item
+                                                    key={field.key}
+                                                    class="
+                                                        avonni-visual-picker__item-fields
+                                                        slds-truncate
+                                                    "
+                                                    size={fieldAttributes.cols}
+                                                >
+                                                    <c-output-data
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        type={field.type}
+                                                        type-attributes={field.typeAttributes}
+                                                        variant={fieldAttributes.variant}
+                                                    ></c-output-data>
+                                                </c-layout-item>
+                                            </template>
+                                        </c-layout>
+                                    </div>
                                 </div>
                                 <!-- Position Bottom -->
                                 <div class={visualPickerItemsClass}>
