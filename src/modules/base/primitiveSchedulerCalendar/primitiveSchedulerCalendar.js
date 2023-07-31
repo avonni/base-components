@@ -31,11 +31,11 @@
  */
 
 import { api } from 'lwc';
-import { Interval } from 'c/luxon';
 import {
     addToDate,
     deepCopy,
     getWeekNumber,
+    intervalFrom,
     normalizeBoolean,
     normalizeString,
     numberOfUnitsBetweenDates
@@ -45,7 +45,6 @@ import Column from './column';
 import {
     getElementOnXAxis,
     getElementOnYAxis,
-    isAllowedDay,
     isAllowedTime,
     nextAllowedMonth,
     nextAllowedDay,
@@ -305,7 +304,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
             if (previousStart !== this.start.ts) {
                 this.initHeaders();
-                this.initLeftPanelCalendarDisabledDates();
+                if (this.isYear) {
+                    this.initEvents();
+                }
+                if (!this.hideSidePanel) {
+                    this.initLeftPanelCalendarDisabledDates();
+                    this.initLeftPanelCalendarMarkedDates();
+                }
             }
         }
     }
@@ -821,6 +826,10 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         this._eventData.smallestHeader = this.hourHeaders[0];
         this._eventData.initEvents();
 
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
+
         if (this.isDay || this.isWeek) {
             // Create a cell group for the multi day events row
             const referenceCells = this.columns.map((col) => {
@@ -923,7 +932,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
         // Set the visible interval
         const lastCell = lastColumn.cells[lastColumn.cells.length - 1];
         const end = this.createDate(lastCell.end);
-        this.visibleInterval = Interval.fromDateTimes(this.start, end);
+        this.visibleInterval = intervalFrom(this.start, end);
     }
 
     /**
@@ -1121,66 +1130,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     }
 
     /**
-     * Get the marked dates in the calendar of a specific month of the year view.
-     *
-     * @param {number} month Month of which the marked dates should be returned.
-     * @returns {object[]} Array of valid calendar marked dates.
-     */
-    getMonthMarkedDates(month) {
-        let date = this.start;
-        if (month < this.start.month) {
-            // Make sure the month is in the future
-            date = addToDate(this.start, 'year', 1);
-        }
-        date = date.set({ month });
-        const monthStart = date.startOf('month');
-        const monthEnd = date.endOf('month');
-        const monthInterval = Interval.fromDateTimes(monthStart, monthEnd);
-        const dayMap = {};
-
-        return this._eventData.events.reduce((markedDates, event) => {
-            event.occurrences.forEach((occ) => {
-                const { from, to, resourceName } = occ;
-                const normalizedTo = event.referenceLine ? from : to;
-                const occInterval = Interval.fromDateTimes(from, normalizedTo);
-                const intersection = monthInterval.intersection(occInterval);
-
-                if (intersection) {
-                    const days = intersection.count('days');
-                    const color =
-                        event.color || this.getResourceColor(resourceName);
-                    let currentDate = intersection.s;
-
-                    for (let i = 0; i < days; i++) {
-                        // Only add one marker per resource per day
-                        const alreadyMarked =
-                            dayMap[currentDate.day] &&
-                            dayMap[currentDate.day].includes(resourceName);
-                        const isAllowed = isAllowedDay(
-                            currentDate,
-                            this.availableDaysOfTheWeek
-                        );
-
-                        if (!alreadyMarked && isAllowed) {
-                            markedDates.push({
-                                color,
-                                date: currentDate.toUTC().toISO()
-                            });
-
-                            if (!dayMap[currentDate.day]) {
-                                dayMap[currentDate.day] = [];
-                            }
-                            dayMap[currentDate.day].push(resourceName);
-                        }
-                        currentDate = addToDate(currentDate, 'day', 1);
-                    }
-                }
-            });
-            return markedDates;
-        }, []);
-    }
-
-    /**
      * Get the placeholders for the given occurrence, in a specific column.
      *
      * @param {boolean} isFirstCol True if the current column is the first one.
@@ -1262,19 +1211,6 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             });
         }
         return placeholders;
-    }
-
-    /**
-     * Get the color associated with a resource.
-     *
-     * @param {string} resourceName Unique name of the resource.
-     * @returns {string} Color of the resource, or undefined if not found.
-     */
-    getResourceColor(resourceName) {
-        const resource = this.resources.find(
-            (res) => res.name === resourceName
-        );
-        return resource && resource.color;
     }
 
     /**
@@ -1410,6 +1346,9 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.availableDaysOfTheWeek
             ).ts;
         }
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
     }
 
     /**
@@ -1423,7 +1362,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
             // Compute the visible interval, since there is no primitive headers
             const endOfSpan = addToDate(this.start, unit, span) - 1;
             const end = this.createDate(endOfSpan);
-            this.visibleInterval = Interval.fromDateTimes(this.start, end);
+            this.visibleInterval = intervalFrom(this.start, end);
             this.dispatchVisibleIntervalChange(
                 this.start,
                 this.visibleInterval
@@ -2192,6 +2131,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
     handleYearDateClick(event) {
         const date = this.createDate(event.detail.clickedDate);
         this._selectedDate = date.ts;
+        this.initLeftPanelCalendarMarkedDates();
         const { x, y, width, height } = event.detail.bounds;
         const position = {
             x: x + width / 2,
@@ -2204,8 +2144,8 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 // If the event is a reference line,
                 // use the start date as an end date too
                 const to = occ.to ? occ.to : occ.from;
-                const interval = Interval.fromDateTimes(occ.from, to);
-                const day = Interval.fromDateTimes(
+                const interval = intervalFrom(occ.from, to);
+                const day = intervalFrom(
                     date.startOf('day'),
                     date.endOf('day')
                 );
