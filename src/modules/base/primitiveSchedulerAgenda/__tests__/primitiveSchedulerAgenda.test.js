@@ -698,6 +698,48 @@ describe('Primitive Scheduler Agenda', () => {
         expect(noEvents).toBeTruthy();
     });
 
+    it('Primitive Scheduler Agenda: events are displayed in the side panel calendar', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = EVENTS;
+        element.timeSpan = { unit: 'week', span: 1 };
+
+        return Promise.resolve().then(() => {
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar-left-panel"]'
+            );
+            expect(calendar.markedDates).toHaveLength(6);
+
+            const august23 = calendar.markedDates.filter((d) => {
+                return d.date.includes('2022-08-23');
+            });
+            expect(august23).toHaveLength(1);
+            expect(august23[0].color).toBe('#444');
+
+            const august24 = calendar.markedDates.filter((d) => {
+                return d.date.includes('2022-08-24');
+            });
+            expect(august24).toHaveLength(3);
+            [0, 1].forEach((i) => {
+                expect(august24[i].color).toBe('#333');
+            });
+            expect(august24[2].color).toBe('#444');
+
+            const august25 = calendar.markedDates.filter((d) => {
+                return d.date.includes('2022-08-25');
+            });
+            expect(august25).toHaveLength(1);
+            expect(august25[0].color).toBe('#444');
+
+            const august26 = calendar.markedDates.filter((d) => {
+                return d.date.includes('2022-08-26');
+            });
+            expect(august26).toHaveLength(1);
+            expect(august26[0].color).toBe('#444');
+        });
+    });
+
     // events-labels
     it('Primitive Scheduler Agenda: eventsLabels', () => {
         element.resources = RESOURCES;
