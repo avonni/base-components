@@ -408,7 +408,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                         endsInLaterCell: to.day > date.day,
                         event,
                         startsInPreviousCell: from.day < date.day,
-                        time: this.formatTime(event, from, to)
+                        time: this.formatTime(event, from, to),
+                        to
                     });
                     date = addToDate(date, 'day', 1);
                 }
