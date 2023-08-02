@@ -262,10 +262,31 @@ export const itemsWithFields = [
         avatar: {
             iconName: 'standard:account'
         },
-        AccountNumber: 'A55261860',
-        Industry: 'Technology',
-        Phone: '(720) 555-0153',
-        Website: 'www.meridianpartners.com'
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A55261860',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(720) 555-0153',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Technology',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.meridianpartners.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.meridianpartners.com'
+                }
+            }
+        ]
     },
     {
         value: 'AccountRef2',
@@ -274,10 +295,31 @@ export const itemsWithFields = [
         avatar: {
             iconName: 'standard:account'
         },
-        AccountNumber: 'A32009651',
-        Industry: 'Financial Services',
-        Phone: '(502) 555-4387',
-        Website: 'www.inventure.com'
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A32009651',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(502) 555-4387',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Financial Services',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.inventure.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.inventure.com'
+                }
+            }
+        ]
     },
     {
         value: 'AccountRef3',
@@ -289,9 +331,23 @@ export const itemsWithFields = [
         avatar: {
             iconName: 'standard:account'
         },
-        AccountNumber: 'MHC-0001',
-        Industry: 'Healthcare & Life Sciences',
-        Phone: '3124445566'
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'MHC-0001',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '3124445566',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Healthcare & Life Sciences',
+                type: 'text'
+            }
+        ]
     },
     {
         value: 'AccountRef4',
@@ -300,10 +356,31 @@ export const itemsWithFields = [
         avatar: {
             iconName: 'standard:account'
         },
-        AccountNumber: 'A45475905',
-        Industry: 'Healthcare & Life Sciences',
-        Phone: '(794) 555-0153',
-        Website: 'www.acmehospitals.com'
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A45475905',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(794) 555-0153',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Healthcare & Life Sciences',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.acmehospitals.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.acmehospitals.com'
+                }
+            }
+        ]
     }
 ];
 
@@ -902,29 +979,6 @@ export const templates = [
                 label: 'Featured'
             }
         ]
-    }
-];
-
-export const fields = [
-    {
-        label: 'Account Number',
-        fieldName: 'AccountNumber',
-        type: 'text'
-    },
-    {
-        label: 'Account Phone',
-        fieldName: 'Phone',
-        type: 'phone'
-    },
-    {
-        label: 'Industry',
-        fieldName: 'Industry',
-        type: 'text'
-    },
-    {
-        label: 'Website',
-        fieldName: 'Website',
-        type: 'url'
     }
 ];
 

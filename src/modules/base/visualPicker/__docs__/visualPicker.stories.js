@@ -45,8 +45,7 @@ import {
     xSmallAvatarStories,
     templates,
     itemsWithFields,
-    fieldAttributes,
-    fields
+    fieldAttributes
 } from './data';
 
 export default {
@@ -83,16 +82,6 @@ export default {
                 'Array of items with attributes populating the visual picker.',
             table: {
                 type: { summary: 'object' }
-            }
-        },
-        fields: {
-            control: {
-                type: 'object'
-            },
-            description:
-                ' Array of field objects, used to define fields to be displayed after the figure description.',
-            table: {
-                type: { summary: 'object[]' }
             }
         },
         fieldAttributes: {
@@ -304,8 +293,7 @@ ItemsWithFields.args = {
     items: itemsWithFields,
     name: 'with-fields',
     size: 'xx-large',
-    fieldAttributes: fieldAttributes,
-    fields: fields
+    fieldAttributes: fieldAttributes
 };
 
 export const AnalyticItems = Template.bind({});

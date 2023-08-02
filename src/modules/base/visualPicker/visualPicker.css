@@ -76,10 +76,6 @@
     justify-content: center;
 }
 
-.avonni-visual-picker__items:empty {
-    display: none;
-}
-
 .avonni-visual-picker__items_responsive_image {
     overflow: hidden;
 }

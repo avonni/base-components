@@ -110,7 +110,6 @@ export default class VisualPicker extends LightningElement {
 
     _disabled = DEFAULT_DISABLED;
     _fieldAttributes = {};
-    _fields = [];
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _items = [];
@@ -188,20 +187,6 @@ export default class VisualPicker extends LightningElement {
             { validValues: FIELD_VARIANTS.valid }
         );
         this._fieldAttributes = { ...this._fieldAttributes };
-    }
-
-    /**
-     * Array of field objects, used to define the fields that will be displayed after the figure description.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get fields() {
-        return this._fields;
-    }
-    set fields(values) {
-        this._fields = normalizeArray(values);
     }
 
     /**
@@ -378,6 +363,7 @@ export default class VisualPicker extends LightningElement {
                 description,
                 descriptionPosition,
                 disabled,
+                fields,
                 imgAlternativeText,
                 imgSrc,
                 itemDescription,
@@ -454,15 +440,6 @@ export default class VisualPicker extends LightningElement {
             this.displayImgT = displayImgTop;
 
             // Fields
-            const fields = this.isBiggerThanXSmall
-                ? this._fields.map((field, fieldIndex) => {
-                      return {
-                          ...field,
-                          value: item[field.fieldName],
-                          key: `visual-picker-item-field-key-${fieldIndex}`
-                      };
-                  })
-                : [];
             const hasFields = fields && fields.length > 0;
 
             return {
