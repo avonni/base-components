@@ -260,6 +260,7 @@
                             class={computedFieldClass}
                             for:each={computedSubGroups}
                             for:item="group"
+                            for:index="groupIndex"
                             data-element-id="avonni-kanban__field"
                             data-subgroup-field={section.label}
                             style={group.backgroundStyle}
@@ -289,6 +290,7 @@
                                     data-element-id="avonni-kanban__tile"
                                     data-record-index={record.index}
                                     data-subgroup={section.label}
+                                    data-group-index={groupIndex}
                                     class={computedTileClass}
                                     onmousedown={handleTileMouseDown}
                                     onmouseup={handleTileMouseUp}
