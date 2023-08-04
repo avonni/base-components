@@ -294,15 +294,16 @@
                     <template if:false={readOnly}>
                         <input
                             class="slds-input"
-                            type="text"
-                            label="color"
-                            value={inputValue}
-                            name={name}
-                            onchange={handleInputColor}
-                            onblur={handleMenuBlur}
                             disabled={disabled}
-                            data-element-id="input"
+                            label="color"
+                            name={name}
                             required={required}
+                            type="text"
+                            value={inputValue}
+                            data-element-id="input"
+                            onblur={handleMenuBlur}
+                            onchange={handleInputColor}
+                            onfocus={handleInputFocus}
                         />
                         <button
                             if:true={showClearIcon}
