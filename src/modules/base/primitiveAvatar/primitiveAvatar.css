@@ -36,10 +36,11 @@
 }
 
 .avonni-avatar {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     line-height: 0;
     overflow: hidden;
-    vertical-align: middle;
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
 }
 
@@ -129,12 +130,45 @@
     scale: 1;
 }
 
+.avonni-avatar_xx-small .avonni-avatar__icon {
+    scale: 0.8;
+}
+
 .avonni-avatar_x-large .avonni-avatar__icon {
     scale: 1.8;
 }
 
 .avonni-avatar_xx-large .avonni-avatar__icon {
     scale: 2.2;
+}
+
+/* Fix icon sizes for action icons */
+.avonni-avatar_xx-small .avonni-avatar__action-icon {
+    scale: 0.6;
+}
+
+.avonni-avatar_x-small .avonni-avatar__action-icon {
+    scale: 0.7;
+}
+
+.avonni-avatar_small .avonni-avatar__action-icon {
+    scale: 0.6;
+}
+
+.avonni-avatar_medium .avonni-avatar__action-icon {
+    scale: 0.65;
+}
+
+.avonni-avatar_large .avonni-avatar__action-icon {
+    scale: 0.65;
+}
+
+.avonni-avatar_x-large .avonni-avatar__action-icon {
+    scale: 1.1;
+}
+
+.avonni-avatar_xx-large .avonni-avatar__action-icon {
+    scale: 1.4;
 }
 
 /**
