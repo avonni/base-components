@@ -80,7 +80,8 @@ const DEFAULT_FIELD_COLUMNS = {
     large: 4
 };
 const FIELD_VARIANTS = {
-    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
+    default: 'standard'
 };
 
 const IMAGE_CROP_FIT = {
@@ -134,12 +135,7 @@ export default class VisualPicker extends LightningElement {
     _fieldAttributes = {};
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
-    _imageAttributes = {
-        fallbackSrc: null,
-        position: 'top',
-        size: 'large',
-        cropFit: 'cover'
-    };
+    _imageAttributes = {};
     _items = [];
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
@@ -298,7 +294,10 @@ export default class VisualPicker extends LightningElement {
 
         this._fieldAttributes.variant = normalizeString(
             normalizedFieldAttributes.variant,
-            { validValues: FIELD_VARIANTS.valid }
+            {
+                fallbackValue: FIELD_VARIANTS.default,
+                validValues: FIELD_VARIANTS.valid
+            }
         );
         this._fieldAttributes = { ...this._fieldAttributes };
     }
@@ -377,10 +376,6 @@ export default class VisualPicker extends LightningElement {
                 validValues: IMAGE_POSITION.valid
             }
         );
-
-        if (this._connected) {
-            this.setItemProperties();
-        }
     }
 
     /**
@@ -680,7 +675,10 @@ export default class VisualPicker extends LightningElement {
                 displayImgBackground
             );
 
-            const notSelectedClass = this.computeNotSelectedClass(imgPosition);
+            const notSelectedClass = this.computeNotSelectedClass(
+                imgPosition,
+                value
+            );
             const bodyContainerClass =
                 this.computeBodyContainerClass(avatarPosition);
             const itemsContainerClass =
@@ -1091,18 +1089,23 @@ export default class VisualPicker extends LightningElement {
      */
     computeImageStyle(imgIsHorizontal, isImgBackgroundOrOverlay) {
         const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
-        const size = this.imageAttributes.size || this.size;
-        let heightInPx = this.imageAttributes.height;
-        let heightSize = heightInPx
-            ? `${heightInPx}px`
-            : `${this._imageContainerHeightInRem[size][this.ratio]}rem`;
-
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
 
-        if (!imgIsHorizontal && !isImgBackgroundOrOverlay) {
-            widthStyle = 'width: 100%;';
-            heightStyle = `height: ${heightSize}; min-height: ${heightSize};`;
+        const size = this.imageAttributes.size || this.size;
+        if (size) {
+            let heightInPx = this.imageAttributes.height;
+            let heightInRem = this._imageContainerHeightInRem[size]
+                ? this._imageContainerHeightInRem[size][this.ratio]
+                : 0;
+            let heightSize = heightInPx
+                ? `${heightInPx}px`
+                : `${heightInRem}rem`;
+
+            if (!imgIsHorizontal && !isImgBackgroundOrOverlay) {
+                widthStyle = 'width: 100%;';
+                heightStyle = `height: ${heightSize}; min-height: ${heightSize};`;
+            }
         }
 
         return `${heightStyle} ${widthStyle} ${objectFit}`;
@@ -1130,9 +1133,11 @@ export default class VisualPicker extends LightningElement {
      * Computed NOT selected class styling.
      *
      * @param {string} imgPosition
+     * @param {string} itemValue
      * @returns {string}
      */
-    computeNotSelectedClass(imgPosition) {
+    computeNotSelectedClass(imgPosition, itemValue) {
+        const isSelected = this.value.includes(itemValue);
         return classSet(
             'avonni-visual-picker__figure-container avonni-visual-picker__height'
         )
@@ -1142,9 +1147,13 @@ export default class VisualPicker extends LightningElement {
                 'slds-grid_vertical': imgPosition === 'bottom',
                 'slds-grid_reverse': imgPosition === 'right',
                 'avonni-visual-picker__figure-image-background':
-                    imgPosition === 'background' && this.isBiggerThanXSmall,
+                    this.isBiggerThanXSmall &&
+                    (imgPosition === 'background' ||
+                        (isSelected && imgPosition === 'overlay')),
                 'avonni-visual-picker__figure-image-overlay':
-                    imgPosition === 'overlay' && this.isBiggerThanXSmall
+                    this.isBiggerThanXSmall &&
+                    imgPosition === 'overlay' &&
+                    !isSelected
             })
             .toString();
     }
