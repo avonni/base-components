@@ -128,12 +128,12 @@
                                 <!-- Figure Body -->
                                 <div
                                     style={item.layoutContainerStyle}
-                                    class="
-                                        avonni-visual-picker__figure-body-container
-                                    "
+                                    class={item.bodyContainerClass}
                                 >
-                                    <!-- Position Top -->
-                                    <div class={visualPickerItemsClassTop}>
+                                    <div
+                                        if:true={item.avatarIsHorizontal}
+                                        class={item.avatarClass}
+                                    >
                                         <c-primitive-avatar
                                             alternative-text={item.avatarAltText}
                                             fallback-icon-name={item.avatar.iconName}
@@ -143,243 +143,263 @@
                                             size={item.avatar.size}
                                             src={item.avatar.imgSrc}
                                             variant={item.avatar.variant}
-                                            data-element-id="c-primitive-avatar-top"
-                                            if:true={item.avatarIsTop}
+                                            data-element-id="c-primitive-avatar-horizontal"
                                         ></c-primitive-avatar>
-                                        <c-primitive-visual-picker-title
-                                            alternative-text={item.avatarAltText}
-                                            avatar={item.avatar}
-                                            avatar-position={item.avatarPosition}
-                                            display-avatar={item.displayAvatar}
-                                            size={size}
-                                            title={item.title}
-                                            class="
-                                                avonni-visual-picker__figure-title
-                                            "
-                                            data-element-id="c-primitive-visual-picker-title-top"
-                                            if:true={item.titleIsTop}
-                                        >
-                                        </c-primitive-visual-picker-title>
-                                        <div
-                                            if:true={item.imgIsTop}
-                                            class="
-                                                avonni-visual-picker__figure-image-container
-                                            "
-                                        >
-                                            <div
-                                                style={item.imgContainerStyle}
-                                                class="
-                                                    avonni-visual-picker__figure-image-container
-                                                "
-                                            >
-                                                <div
-                                                    style={item.imgStyle}
-                                                    class="slds-is-relative"
-                                                >
-                                                    <img
-                                                        loading="lazy"
-                                                        style={item.imgStyle}
-                                                        class={computedImageMediaClass}
-                                                        src={item.imgSrc}
-                                                        alt={item.imgAlternativeText}
-                                                        draggable="false"
-                                                        onerror={handleItemImageError}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p
-                                            if:true={item.descriptionIsTop}
-                                            class={item.computedDescriptionClass}
-                                        >
-                                            {item.description}
-                                        </p>
                                     </div>
-                                    <!-- Position Center -->
-                                    <div class={visualPickerItemsClassCenter}>
-                                        <c-primitive-visual-picker-title
-                                            alternative-text={item.avatarAltText}
-                                            avatar={item.avatar}
-                                            avatar-position={item.avatarPosition}
-                                            display-avatar={item.displayAvatar}
-                                            size={size}
-                                            title={item.title}
-                                            class="
-                                                avonni-visual-picker__figure-title
-                                            "
-                                            data-element-id="c-primitive-visual-picker-title-center"
-                                            if:true={item.titleIsCenter}
-                                        >
-                                        </c-primitive-visual-picker-title>
-                                        <div
-                                            if:true={item.imgIsCenter}
-                                            class="
-                                                avonni-visual-picker__figure-image-container
-                                            "
-                                        >
+                                    <div class={item.itemsContainerClass}>
+                                        <!-- Position Top -->
+                                        <div class={visualPickerItemsClassTop}>
+                                            <c-primitive-avatar
+                                                alternative-text={item.avatarAltText}
+                                                fallback-icon-name={item.avatar.iconName}
+                                                initials={item.avatar.initials}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                size={item.avatar.size}
+                                                src={item.avatar.imgSrc}
+                                                variant={item.avatar.variant}
+                                                data-element-id="c-primitive-avatar-top"
+                                                if:true={item.avatarIsTop}
+                                            ></c-primitive-avatar>
+                                            <c-primitive-visual-picker-title
+                                                alternative-text={item.avatarAltText}
+                                                avatar={item.avatar}
+                                                avatar-position={item.avatarPosition}
+                                                display-avatar={item.displayTitleAvatar}
+                                                size={size}
+                                                title={item.title}
+                                                class="
+                                                    avonni-visual-picker__figure-title
+                                                "
+                                                data-element-id="c-primitive-visual-picker-title-top"
+                                                if:true={item.titleIsTop}
+                                            >
+                                            </c-primitive-visual-picker-title>
                                             <div
-                                                style={item.imgContainerStyle}
+                                                if:true={item.imgIsTop}
                                                 class="
                                                     avonni-visual-picker__figure-image-container
                                                 "
                                             >
                                                 <div
-                                                    style={item.imgStyle}
-                                                    class="slds-is-relative"
+                                                    style={item.imgContainerStyle}
+                                                    class="
+                                                        avonni-visual-picker__figure-image-container
+                                                    "
                                                 >
-                                                    <img
-                                                        loading="lazy"
+                                                    <div
                                                         style={item.imgStyle}
-                                                        class={computedImageMediaClass}
-                                                        src={item.imgSrc}
-                                                        alt={item.imgAlternativeText}
-                                                        draggable="false"
-                                                        onerror={handleItemImageError}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p
-                                            if:true={item.descriptionIsCenter}
-                                            class={item.computedDescriptionClass}
-                                        >
-                                            {item.description}
-                                        </p>
-                                        <c-primitive-avatar
-                                            alternative-text={item.avatarAltText}
-                                            fallback-icon-name={item.avatar.iconName}
-                                            initials={item.avatar.initials}
-                                            presence={item.avatar.presence}
-                                            presence-position={item.avatar.presencePosition}
-                                            size={item.avatar.size}
-                                            src={item.avatar.imgSrc}
-                                            variant={item.avatar.variant}
-                                            data-element-id="c-primitive-avatar-center"
-                                            if:true={item.avatarIsCenter}
-                                        ></c-primitive-avatar>
-                                        <div
-                                            if:true={item.hasFields}
-                                            class="
-                                                slds-m-top_xx-small
-                                                avonni-visual-picker__item-fields-container
-                                            "
-                                        >
-                                            <c-layout
-                                                multiple-rows
-                                                data-element-id="fields-container"
-                                            >
-                                                <template
-                                                    for:each={item.fields}
-                                                    for:item="field"
-                                                >
-                                                    <c-layout-item
-                                                        key={field.key}
-                                                        class="
-                                                            avonni-visual-picker__item-fields
-                                                            slds-truncate
-                                                        "
-                                                        size={fieldAttributes.cols}
+                                                        class="slds-is-relative"
                                                     >
-                                                        <c-output-data
-                                                            label={field.label}
-                                                            value={field.value}
-                                                            type={field.type}
-                                                            type-attributes={field.typeAttributes}
-                                                            variant={fieldAttributes.variant}
-                                                            class="
-                                                                avonni-visual-picker__fields-label
-                                                            "
-                                                        ></c-output-data>
-                                                    </c-layout-item>
-                                                </template>
-                                            </c-layout>
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.imgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p
+                                                if:true={item.descriptionIsTop}
+                                                class={item.computedDescriptionClass}
+                                            >
+                                                {item.description}
+                                            </p>
                                         </div>
-                                    </div>
-                                    <!-- Position Bottom -->
-                                    <div class={visualPickerItemsClass}>
-                                        <c-primitive-visual-picker-title
-                                            alternative-text={item.avatarAltText}
-                                            avatar={item.avatar}
-                                            avatar-position={item.avatarPosition}
-                                            display-avatar={item.displayAvatar}
-                                            size={size}
-                                            title={item.title}
-                                            class="
-                                                avonni-visual-picker__figure-title
-                                            "
-                                            data-element-id="c-primitive-visual-picker-title-bottom"
-                                            if:true={item.titleIsBottom}
-                                        >
-                                        </c-primitive-visual-picker-title>
+                                        <!-- Position Center -->
                                         <div
-                                            if:true={item.imgIsBottom}
-                                            class="
-                                                avonni-visual-picker__figure-image-container
-                                            "
+                                            class={visualPickerItemsClassCenter}
                                         >
+                                            <c-primitive-visual-picker-title
+                                                alternative-text={item.avatarAltText}
+                                                avatar={item.avatar}
+                                                avatar-position={item.avatarPosition}
+                                                display-avatar={item.displayTitleAvatar}
+                                                size={size}
+                                                title={item.title}
+                                                class="
+                                                    avonni-visual-picker__figure-title
+                                                "
+                                                data-element-id="c-primitive-visual-picker-title-center"
+                                                if:true={item.titleIsCenter}
+                                            >
+                                            </c-primitive-visual-picker-title>
                                             <div
-                                                style={item.imgContainerStyle}
+                                                if:true={item.imgIsCenter}
                                                 class="
                                                     avonni-visual-picker__figure-image-container
                                                 "
                                             >
                                                 <div
-                                                    style={item.imgStyle}
-                                                    class="slds-is-relative"
+                                                    style={item.imgContainerStyle}
+                                                    class="
+                                                        avonni-visual-picker__figure-image-container
+                                                    "
                                                 >
-                                                    <img
-                                                        loading="lazy"
+                                                    <div
                                                         style={item.imgStyle}
-                                                        class={computedImageMediaClass}
-                                                        src={item.imgSrc}
-                                                        alt={item.imgAlternativeText}
-                                                        draggable="false"
-                                                        onerror={handleItemImageError}
-                                                    />
+                                                        class="slds-is-relative"
+                                                    >
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.imgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <p
-                                            if:true={item.descriptionIsBottom}
-                                            class={item.computedDescriptionClass}
-                                        >
-                                            {item.description}
-                                        </p>
-                                        <c-primitive-avatar
-                                            alternative-text={item.avatarAltText}
-                                            fallback-icon-name={item.avatar.iconName}
-                                            initials={item.avatar.initials}
-                                            presence={item.avatar.presence}
-                                            presence-position={item.avatar.presencePosition}
-                                            size={item.avatar.size}
-                                            src={item.avatar.imgSrc}
-                                            variant={item.avatar.variant}
-                                            data-element-id="c-primitive-avatar-bottom"
-                                            if:true={item.avatarIsBottom}
-                                        ></c-primitive-avatar>
-                                        <template if:true={isBiggerThanXSmall}>
+                                            <p
+                                                if:true={item.descriptionIsCenter}
+                                                class={item.computedDescriptionClass}
+                                            >
+                                                {item.description}
+                                            </p>
+                                            <c-primitive-avatar
+                                                alternative-text={item.avatarAltText}
+                                                fallback-icon-name={item.avatar.iconName}
+                                                initials={item.avatar.initials}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                size={item.avatar.size}
+                                                src={item.avatar.imgSrc}
+                                                variant={item.avatar.variant}
+                                                data-element-id="c-primitive-avatar-center"
+                                                if:true={item.avatarIsCenter}
+                                            ></c-primitive-avatar>
                                             <div
-                                                if:true={item.tags}
+                                                if:true={item.hasFields}
                                                 class="
-                                                    avonni-visual-picker__tags-container
+                                                    slds-m-top_xx-small
+                                                    avonni-visual-picker__item-fields-container
                                                 "
                                             >
-                                                <template
-                                                    for:each={item.tags}
-                                                    for:item="tag"
+                                                <c-layout
+                                                    multiple-rows
+                                                    data-element-id="fields-container"
                                                 >
-                                                    <avonni-chip
-                                                        if:true={tag.label}
-                                                        key={tag.label}
-                                                        label={tag.label}
-                                                        variant={tag.variant}
-                                                        class="
-                                                            avonni-visual-picker__tags
-                                                        "
-                                                    ></avonni-chip>
-                                                </template>
+                                                    <template
+                                                        for:each={item.fields}
+                                                        for:item="field"
+                                                    >
+                                                        <c-layout-item
+                                                            key={field.key}
+                                                            class="
+                                                                avonni-visual-picker__item-fields
+                                                                slds-truncate
+                                                            "
+                                                            size={fieldAttributes.cols}
+                                                        >
+                                                            <c-output-data
+                                                                label={field.label}
+                                                                value={field.value}
+                                                                type={field.type}
+                                                                type-attributes={field.typeAttributes}
+                                                                variant={fieldAttributes.variant}
+                                                                class="
+                                                                    avonni-visual-picker__fields-label
+                                                                "
+                                                            ></c-output-data>
+                                                        </c-layout-item>
+                                                    </template>
+                                                </c-layout>
                                             </div>
-                                        </template>
+                                        </div>
+                                        <!-- Position Bottom -->
+                                        <div class={visualPickerItemsClass}>
+                                            <c-primitive-visual-picker-title
+                                                alternative-text={item.avatarAltText}
+                                                avatar={item.avatar}
+                                                avatar-position={item.avatarPosition}
+                                                display-avatar={item.displayTitleAvatar}
+                                                size={size}
+                                                title={item.title}
+                                                class="
+                                                    avonni-visual-picker__figure-title
+                                                "
+                                                data-element-id="c-primitive-visual-picker-title-bottom"
+                                                if:true={item.titleIsBottom}
+                                            >
+                                            </c-primitive-visual-picker-title>
+                                            <div
+                                                if:true={item.imgIsBottom}
+                                                class="
+                                                    avonni-visual-picker__figure-image-container
+                                                "
+                                            >
+                                                <div
+                                                    style={item.imgContainerStyle}
+                                                    class="
+                                                        avonni-visual-picker__figure-image-container
+                                                    "
+                                                >
+                                                    <div
+                                                        style={item.imgStyle}
+                                                        class="slds-is-relative"
+                                                    >
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.imgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p
+                                                if:true={item.descriptionIsBottom}
+                                                class={item.computedDescriptionClass}
+                                            >
+                                                {item.description}
+                                            </p>
+                                            <c-primitive-avatar
+                                                alternative-text={item.avatarAltText}
+                                                fallback-icon-name={item.avatar.iconName}
+                                                initials={item.avatar.initials}
+                                                presence={item.avatar.presence}
+                                                presence-position={item.avatar.presencePosition}
+                                                size={item.avatar.size}
+                                                src={item.avatar.imgSrc}
+                                                variant={item.avatar.variant}
+                                                data-element-id="c-primitive-avatar-bottom"
+                                                if:true={item.avatarIsBottom}
+                                            ></c-primitive-avatar>
+                                            <template
+                                                if:true={isBiggerThanXSmall}
+                                            >
+                                                <div
+                                                    if:true={item.tags}
+                                                    class="
+                                                        avonni-visual-picker__tags-container
+                                                    "
+                                                >
+                                                    <template
+                                                        for:each={item.tags}
+                                                        for:item="tag"
+                                                    >
+                                                        <avonni-chip
+                                                            if:true={tag.label}
+                                                            key={tag.label}
+                                                            label={tag.label}
+                                                            variant={tag.variant}
+                                                            class="
+                                                                avonni-visual-picker__tags
+                                                            "
+                                                        ></avonni-chip>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

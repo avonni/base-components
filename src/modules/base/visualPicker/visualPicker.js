@@ -63,6 +63,15 @@ const VISUAL_PICKER_RATIOS = {
     default: '1-by-1'
 };
 
+const AVATAR_POSITION = {
+    valid: ['top', 'bottom', 'left', 'content-left', 'right', 'content-right'],
+    default: 'left'
+};
+const AVATAR_VERTICAL_ALIGNMENT = {
+    valid: ['top', 'bottom', 'center'],
+    default: 'center'
+};
+
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
 const DEFAULT_FIELD_COLUMNS = {
     default: 12,
@@ -530,6 +539,7 @@ export default class VisualPicker extends LightningElement {
             let {
                 avatar,
                 avatarPosition,
+                avatarVerticalAlignment,
                 description,
                 descriptionPosition,
                 disabled,
@@ -584,8 +594,16 @@ export default class VisualPicker extends LightningElement {
             const hasFields = fields && fields.length > 0;
 
             // Avatar management
-            avatarPosition = avatarPosition || 'left';
+            avatarPosition = normalizeString(avatarPosition, {
+                fallbackValue: AVATAR_POSITION.default,
+                validValues: AVATAR_POSITION.valid
+            });
             const displayAvatar = avatar && this.isBiggerThanXSmall;
+            const avatarIsHorizontal =
+                displayAvatar &&
+                (avatarPosition === 'content-left' ||
+                    avatarPosition === 'content-right');
+            const displayTitleAvatar = !avatarIsHorizontal;
             const avatarAltText = displayAvatar
                 ? avatar.alternativeText ||
                   avatar.iconName ||
@@ -596,9 +614,19 @@ export default class VisualPicker extends LightningElement {
             const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarIsCenter =
                 avatar &&
+                displayTitleAvatar &&
                 (avatarPosition === 'center' ||
                     !this.isBiggerThanXSmall ||
                     (!avatarIsBottom && !avatarIsTop && !displayTitle));
+
+            avatarVerticalAlignment = normalizeString(avatarVerticalAlignment, {
+                fallbackValue: AVATAR_VERTICAL_ALIGNMENT.default,
+                validValues: AVATAR_VERTICAL_ALIGNMENT.valid
+            });
+
+            const avatarClass = this.computeAvatarClass(
+                avatarVerticalAlignment
+            );
 
             // Image management
             let imgPosition = this.imageAttributes.position;
@@ -653,6 +681,10 @@ export default class VisualPicker extends LightningElement {
             );
 
             const notSelectedClass = this.computeNotSelectedClass(imgPosition);
+            const bodyContainerClass =
+                this.computeBodyContainerClass(avatarPosition);
+            const itemsContainerClass =
+                this.computeItemsContainerClass(displayImgBackground);
 
             return {
                 key,
@@ -663,10 +695,14 @@ export default class VisualPicker extends LightningElement {
                 value,
                 checked,
                 avatarPosition,
+                avatarClass,
+                avatarVerticalAlignment,
                 avatarIsTop,
                 avatarIsCenter,
                 avatarIsBottom,
+                avatarIsHorizontal,
                 avatarAltText,
+                bodyContainerClass,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 title,
@@ -677,7 +713,7 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsTop,
                 descriptionIsBottom,
                 descriptionIsCenter,
-                displayAvatar,
+                displayTitleAvatar,
                 tags,
                 imgAlternativeText,
                 imgIsBottom,
@@ -687,6 +723,7 @@ export default class VisualPicker extends LightningElement {
                 imgPosition,
                 imgSrc,
                 imgStyle,
+                itemsContainerClass,
                 layoutIsHorizontal,
                 computedSelectedClass,
                 computedDescriptionClass,
@@ -964,6 +1001,57 @@ export default class VisualPicker extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Compute avatar styling.
+     *
+     * @param {string} verticalAlignment
+     * @returns {string}
+     */
+    computeAvatarClass(verticalAlignment) {
+        return classSet(
+            'avonni-visual-picker__figure-avatar slds-grid slds-p-around_xx-small'
+        )
+            .add({
+                'slds-grid_vertical-align-start': verticalAlignment === 'top',
+                'slds-grid_vertical-align-center':
+                    verticalAlignment === 'center',
+                'slds-grid_vertical-align-end': verticalAlignment === 'bottom'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed body container class styling
+     *
+     * @param {string} avatarPosition
+     * @returns {string}
+     */
+    computeBodyContainerClass(avatarPosition) {
+        return classSet('avonni-visual-picker__figure-body-container')
+            .add({
+                'avonni-visual-picker__figure-body-container-horizontal':
+                    avatarPosition === 'content-left',
+                'avonni-visual-picker__figure-body-container-horizontal-reverse':
+                    avatarPosition === 'content-right'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed items container class styling
+     *
+     * @param {boolean} isImgBackgroundOrOverlay
+     * @returns {string}
+     */
+    computeItemsContainerClass(isImgBackgroundOrOverlay) {
+        return classSet('')
+            .add({
+                'avonni-visual-picker__figure-body-container':
+                    !isImgBackgroundOrOverlay
+            })
+            .toString();
+    }
 
     /**
      * Compute image container styling.

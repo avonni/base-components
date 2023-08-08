@@ -787,3 +787,13 @@
     padding: 0.75rem;
     justify-content: center;
 }
+
+.avonni-visual-picker__figure-body-container-horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.avonni-visual-picker__figure-body-container-horizontal-reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}
