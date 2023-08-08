@@ -30,30 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-visual-picker__figure-content_small {
-    width: 8rem;
-}
-
-.avonni-visual-picker__figure-content_medium {
-    width: 12rem;
-}
-
-.avonni-visual-picker__figure-content_large {
-    width: 15rem;
-}
-
-.avonni-visual-picker__figure-content_x-large {
-    width: 18rem;
-}
-
-.avonni-visual-picker__figure-content_xx-large {
-    width: 21rem;
-}
-
-.avonni-visual-picker__figure-content_xx-large {
-    width: 100%;
-}
-
 .avonni-visual-picker__figure-title {
     color: var(--avonni-visual-picker-title-text-color, #080707);
     font-style: var(--avonni-visual-picker-title-font-style, normal);

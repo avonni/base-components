@@ -94,6 +94,16 @@ export default {
                 type: { summary: 'object' }
             }
         },
+        imageAttributes: {
+            name: 'image-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item images.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -285,7 +295,14 @@ export const ItemsWithPictures = Template.bind({});
 ItemsWithPictures.args = {
     items: itemsWithPictures,
     name: 'with-pictures',
-    ratio: '3-by-4'
+    ratio: '16-by-9',
+    size: 'xx-large',
+    imageAttributes: {
+        fallbackSrc:
+            'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        cropFit: 'cover',
+        position: 'overlay'
+    }
 };
 
 export const ItemsWithFields = Template.bind({});

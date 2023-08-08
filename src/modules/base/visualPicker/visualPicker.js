@@ -74,6 +74,19 @@ const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
 };
 
+const IMAGE_CROP_FIT = {
+    valid: ['cover', 'contain', 'fill', 'none'],
+    default: 'cover'
+};
+const IMAGE_POSITION = {
+    valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
+    default: 'top'
+};
+const IMAGE_SIZE = {
+    valid: ['small', 'medium', 'large'],
+    default: 'large'
+};
+
 const DEFAULT_REQUIRED = false;
 const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
@@ -112,6 +125,12 @@ export default class VisualPicker extends LightningElement {
     _fieldAttributes = {};
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
+    _imageAttributes = {
+        fallbackSrc: null,
+        position: 'top',
+        size: 'large',
+        cropFit: 'cover'
+    };
     _items = [];
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
@@ -119,6 +138,89 @@ export default class VisualPicker extends LightningElement {
     _type = INPUT_TYPES.default;
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
+
+    _itemHeightInRem = {
+        small: {
+            '1-by-1': 8,
+            '4-by-3': 6,
+            '16-by-9': 4.5,
+            '3-by-4': 10.66,
+            '9-by-16': 14.22
+        },
+        medium: {
+            '1-by-1': 12,
+            '4-by-3': 7.5,
+            '16-by-9': 5.625,
+            '3-by-4': 16,
+            '9-by-16': 21.3
+        },
+        large: {
+            '1-by-1': 15,
+            '4-by-3': 9,
+            '16-by-9': 6.75,
+            '3-by-4': 20,
+            '9-by-16': 26.66
+        },
+        'x-large': {
+            '1-by-1': 18,
+            '4-by-3': 10.5,
+            '16-by-9': 10.125,
+            '3-by-4': 24,
+            '9-by-16': 32
+        },
+        'xx-large': {
+            '1-by-1': 21,
+            '4-by-3': 12,
+            '16-by-9': 11.8125,
+            '3-by-4': 28,
+            '9-by-16': 37.3333
+        }
+    };
+    _imageContainerHeightInRem = {
+        small: {
+            '1-by-1': 1,
+            '4-by-3': 0.5,
+            '16-by-9': 0.25,
+            '3-by-4': 3.5,
+            '9-by-16': 4.75
+        },
+        medium: {
+            '1-by-1': 3,
+            '4-by-3': 2.5,
+            '16-by-9': 2,
+            '3-by-4': 5.25,
+            '9-by-16': 7
+        },
+        large: {
+            '1-by-1': 5,
+            '4-by-3': 3,
+            '16-by-9': 2.25,
+            '3-by-4': 6.5,
+            '9-by-16': 9
+        },
+        'x-large': {
+            '1-by-1': 6,
+            '4-by-3': 3.5,
+            '16-by-9': 3.25,
+            '3-by-4': 8,
+            '9-by-16': 10.5
+        },
+        'xx-large': {
+            '1-by-1': 7,
+            '4-by-3': 4,
+            '16-by-9': 4,
+            '3-by-4': 9.25,
+            '9-by-16': 12.5
+        }
+    };
+    _imageHeightSize = {
+        small: 48,
+        medium: 96,
+        large: 192,
+        'x-large': 384,
+        'xx-large': 768
+    };
+    _isFallbackLoadedMap = {};
 
     displayImg = false;
     displayImgC = false;
@@ -135,6 +237,9 @@ export default class VisualPicker extends LightningElement {
                 }
             });
         }
+
+        // Reset loaded fallback map.
+        this._isFallbackLoadedMap = {};
     }
 
     connectedCallback() {
@@ -220,6 +325,55 @@ export default class VisualPicker extends LightningElement {
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
     }
+
+    /**
+     * Image attributes: fallbackSrc, cropFit, position, size and height.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get imageAttributes() {
+        return this._imageAttributes;
+    }
+    set imageAttributes(value) {
+        const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
+
+        this._imageAttributes.height = !isNaN(normalizedImgAttributes.height)
+            ? normalizedImgAttributes.height
+            : null;
+
+        this._imageAttributes.size = normalizeString(
+            normalizedImgAttributes.size,
+            {
+                fallbackValue: IMAGE_SIZE.default,
+                validValues: IMAGE_SIZE.valid
+            }
+        );
+
+        this._imageAttributes.cropFit = normalizeString(
+            normalizedImgAttributes.cropFit,
+            {
+                fallbackValue: IMAGE_CROP_FIT.default,
+                validValues: IMAGE_CROP_FIT.valid
+            }
+        );
+
+        this._imageAttributes.position = normalizeString(
+            normalizedImgAttributes.position,
+            {
+                fallbackValue: IMAGE_POSITION.default,
+                validValues: IMAGE_POSITION.valid
+            }
+        );
+
+        if (this._connected) {
+            this.setItemProperties();
+        }
+    }
+
     /**
      * Array of items with attributes populating the visual picker.
      *
@@ -233,6 +387,7 @@ export default class VisualPicker extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
     }
+
     /**
      * The ratio of the items. Valid values include 1-by-1, 4-by-3, 16-by-9, 3-by-4 and 9-by-16.
      *
@@ -250,6 +405,7 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_RATIOS.valid
         });
     }
+
     /**
      * If present, at least one item must be selected.
      *
@@ -264,6 +420,7 @@ export default class VisualPicker extends LightningElement {
     set required(value) {
         this._required = normalizeBoolean(value);
     }
+
     /**
      * The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive. Only avatar appears when x-small and xx-small.
      *
@@ -281,6 +438,7 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_SIZES.valid
         });
     }
+
     /**
      * It defines the type of input. Valid values include radio and checkbox.
      *
@@ -320,7 +478,6 @@ export default class VisualPicker extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value =
             typeof value === 'string' ? [value] : normalizeArray(value);
@@ -337,7 +494,6 @@ export default class VisualPicker extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: VISUAL_PICKER_VARIANTS.default,
@@ -352,7 +508,21 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Computed object fit class to images.
+     *
+     * @type {string}
+     */
+    get computedImageMediaClass() {
+        return classSet('avonni-visual-picker__figure-image')
+            .add(
+                `avonni-visual-picker__figure-image_object-fit-${this.imageAttributes.cropFit}`
+            )
+            .toString();
+    }
+
+    /**
      * Computed list items
+     *
      * @type {object[]}
      */
     get listItems() {
@@ -410,6 +580,9 @@ export default class VisualPicker extends LightningElement {
                     descriptionPosition === titlePosition && !this.truncateRatio
             });
 
+            // Fields management
+            const hasFields = fields && fields.length > 0;
+
             // Avatar management
             avatarPosition = avatarPosition || 'left';
             const displayAvatar = avatar && this.isBiggerThanXSmall;
@@ -428,19 +601,58 @@ export default class VisualPicker extends LightningElement {
                     (!avatarIsBottom && !avatarIsTop && !displayTitle));
 
             // Image management
-            const displayImgCenter =
-                imgSrc &&
-                ((this.isBiggerThanXSmall && titleIsTop) ||
-                    (!this.isBiggerThanXSmall && !avatarIsCenter));
-            const displayImgTop =
-                imgSrc &&
-                this.isBiggerThanXSmall &&
-                (titleIsCenter || titleIsBottom);
-            this.displayImgC = displayImgCenter;
-            this.displayImgT = displayImgTop;
+            let imgPosition = this.imageAttributes.position;
+            imgSrc = imgSrc || this.imageAttributes.fallbackSrc;
 
-            // Fields
-            const hasFields = fields && fields.length > 0;
+            // With image position == background or overlay,
+            // if the image is missing fallback to default list layout.
+            const layoutRequiresImage =
+                imgPosition === 'background' || imgPosition === 'overlay';
+            if (!imgSrc && layoutRequiresImage) {
+                imgPosition = 'top';
+            }
+
+            // Image positioning
+            const hasTags = tags && Array.isArray(tags) && tags.length > 0;
+            const hasImg = imgSrc && this.isBiggerThanXSmall;
+
+            const imgIsHorizontal =
+                hasImg && (imgPosition === 'left' || imgPosition === 'right');
+            const displayImgBackground =
+                hasImg &&
+                (imgPosition === 'background' || imgPosition === 'overlay');
+            const layoutIsHorizontal = imgIsHorizontal || displayImgBackground;
+
+            const imgIsTop =
+                hasImg &&
+                imgPosition === 'top' &&
+                !layoutIsHorizontal &&
+                !titleIsTop;
+            const imgIsBottom =
+                hasImg &&
+                imgPosition === 'bottom' &&
+                !layoutIsHorizontal &&
+                !titleIsBottom &&
+                !hasTags;
+            const imgIsCenter =
+                hasImg && !layoutIsHorizontal && !imgIsTop && !imgIsBottom;
+            this.displayImgC = imgIsCenter;
+            this.displayImgT = imgIsTop;
+
+            const layoutContainerStyle = this.computeItemLayoutContainerStyle(
+                imgIsHorizontal,
+                displayImgBackground
+            );
+            const imgStyle = this.computeImageStyle(
+                imgIsHorizontal,
+                displayImgBackground
+            );
+            const imgContainerStyle = this.computeImageContainerStyle(
+                imgIsHorizontal,
+                displayImgBackground
+            );
+
+            const notSelectedClass = this.computeNotSelectedClass(imgPosition);
 
             return {
                 key,
@@ -465,16 +677,23 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsTop,
                 descriptionIsBottom,
                 descriptionIsCenter,
-                displayImgCenter,
-                displayImgTop,
                 displayAvatar,
                 tags,
                 imgAlternativeText,
+                imgIsBottom,
+                imgIsCenter,
+                imgContainerStyle,
+                imgIsTop,
+                imgPosition,
                 imgSrc,
+                imgStyle,
+                layoutIsHorizontal,
                 computedSelectedClass,
                 computedDescriptionClass,
                 fields,
-                hasFields
+                hasFields,
+                layoutContainerStyle,
+                notSelectedClass
             };
         });
     }
@@ -557,19 +776,6 @@ export default class VisualPicker extends LightningElement {
                     (this.size === 'responsive' && !this.displayImgC),
                 'avonni-visual-picker__items_responsive_image':
                     this.size === 'responsive' && this.displayImgC
-            })
-            .toString();
-    }
-
-    /**
-     * Computed NOT selected class styling.
-     *
-     * @type {string}
-     */
-    get notSelectedClass() {
-        return classSet('avonni-visual-picker__height')
-            .add({
-                'slds-is-not-selected': this.isCoverable && !this._hideCheckMark
             })
             .toString();
     }
@@ -760,6 +966,102 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Compute image container styling.
+     *
+     * @param {boolean} imgIsHorizontal
+     * @param {boolean} isImgBackgroundOrOverlay
+     * @returns {string}
+     */
+    computeImageContainerStyle(imgIsHorizontal, isImgBackgroundOrOverlay) {
+        let widthStyle = 'width: 100%;';
+        let heightStyle = 'height: 100%;';
+
+        if (
+            !imgIsHorizontal &&
+            this.isBiggerThanXSmall &&
+            !this.isResponsive &&
+            !isImgBackgroundOrOverlay
+        ) {
+            const maxHeightInRem =
+                this._imageContainerHeightInRem[this.size][this.ratio];
+            let heightInPx = this.imageAttributes.height;
+            let heightSize = heightInPx
+                ? `min(${heightInPx}px, ${maxHeightInRem}rem)`
+                : `${maxHeightInRem}rem`;
+
+            heightStyle = `height: ${heightSize};`;
+        }
+        return `${heightStyle} ${widthStyle}`;
+    }
+
+    /**
+     * Compute image styling.
+     *
+     * @param {boolean} imgIsHorizontal
+     * @param {boolean} isImgBackgroundOrOverlay
+     * @returns {string}
+     */
+    computeImageStyle(imgIsHorizontal, isImgBackgroundOrOverlay) {
+        const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
+        const size = this.imageAttributes.size || this.size;
+        let heightInPx = this.imageAttributes.height;
+        let heightSize = heightInPx
+            ? `${heightInPx}px`
+            : `${this._imageContainerHeightInRem[size][this.ratio]}rem`;
+
+        let widthStyle = 'width: 100%;';
+        let heightStyle = 'height: 100%;';
+
+        if (!imgIsHorizontal && !isImgBackgroundOrOverlay) {
+            widthStyle = 'width: 100%;';
+            heightStyle = `height: ${heightSize}; min-height: ${heightSize};`;
+        }
+
+        return `${heightStyle} ${widthStyle} ${objectFit}`;
+    }
+
+    /**
+     * Compute item layout container styling.
+     *
+     * @param {boolean} imgIsHorizontal
+     * @param {boolean} isImgBackgroundOrOverlay
+     * @returns {string}
+     */
+    computeItemLayoutContainerStyle(imgIsHorizontal, isImgBackgroundOrOverlay) {
+        let heightStyle = '';
+        let widthStyle = '';
+        if (!isImgBackgroundOrOverlay) {
+            let percent = this.isBiggerThanXSmall && imgIsHorizontal ? 50 : 100;
+            widthStyle = `width: ${percent}%;`;
+            heightStyle = imgIsHorizontal ? 'height: 100%;' : '';
+        }
+        return `${heightStyle} ${widthStyle}`;
+    }
+
+    /**
+     * Computed NOT selected class styling.
+     *
+     * @param {string} imgPosition
+     * @returns {string}
+     */
+    computeNotSelectedClass(imgPosition) {
+        return classSet(
+            'avonni-visual-picker__figure-container avonni-visual-picker__height'
+        )
+            .add({
+                'slds-is-not-selected':
+                    this.isCoverable && !this._hideCheckMark,
+                'slds-grid_vertical': imgPosition === 'bottom',
+                'slds-grid_reverse': imgPosition === 'right',
+                'avonni-visual-picker__figure-image-background':
+                    imgPosition === 'background' && this.isBiggerThanXSmall,
+                'avonni-visual-picker__figure-image-overlay':
+                    imgPosition === 'overlay' && this.isBiggerThanXSmall
+            })
+            .toString();
+    }
+
+    /**
      * Only accept predetermined number of columns.
      *
      * @param {number} value
@@ -843,5 +1145,32 @@ export default class VisualPicker extends LightningElement {
     handleKeyUp(event) {
         if (event.key !== 'Enter') return;
         event.currentTarget.click();
+    }
+
+    /**
+     * Handle an item image loading error.
+     * If a fallbackSrc exists assign it to the image src attribute.
+     * @param {Event} event
+     */
+    handleItemImageError(event) {
+        const itemIndex = event.target?.dataset.itemIndex;
+        const fallbackSrc = this.imageAttributes.fallbackSrc;
+
+        // _isFallbackLoadedMap is a fix to avoid infinite image error loop.
+        // Happens when the loaded img fallbackSrc is not equal to the original fallbackSrc.
+        // It remembers wich item image has already loaded the fallbackSrc so it doesnt loop.
+        if (
+            !event.target ||
+            !fallbackSrc ||
+            event.target?.src === fallbackSrc ||
+            itemIndex < 0 ||
+            this._isFallbackLoadedMap[itemIndex]
+        ) {
+            return;
+        }
+
+        event.target.onerror = null;
+        event.target.src = fallbackSrc;
+        this._isFallbackLoadedMap[itemIndex] = true;
     }
 }
