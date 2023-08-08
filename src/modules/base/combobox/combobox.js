@@ -632,7 +632,7 @@ export default class Combobox extends LightningElement {
     set value(value) {
         this._value =
             typeof value === 'string' || typeof value === 'number'
-                ? [value]
+                ? this._computeStringValue(value)
                 : [...normalizeArray(value)];
     }
 
@@ -905,6 +905,23 @@ export default class Combobox extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Compute the value of the combobox if the value is a string.
+     *
+     * @param {string} value The value of the combobox.
+     * @returns {string[]} The value of the combobox.
+     */
+    _computeStringValue(value) {
+        const delimiters = [';', ',', ' ', '\t', ':', '|'];
+        for (const delimiter of delimiters) {
+            const parts = value.split(delimiter);
+            if (parts.length > 1) {
+                return parts;
+            }
+        }
+        return [value];
+    }
 
     /**
      * Get an option by its value.
