@@ -177,7 +177,7 @@ export const itemsWithPictures = [
         avatar: {
             iconName: 'utility:world'
         },
-        imgSrc: 'https://atlantis.nyc3.digitaloceanspaces.com/media/legacy/atlantis/Things_To_Do/Water_Park/Beaches/Hero/Experiences_Beach.jpg',
+        imgSrc: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
         imgAlternativeText: 'Beach'
     },
     {
@@ -796,51 +796,6 @@ export const xSmallAvatarStories = [
             size: 'large'
         },
         value: 'roger-reese'
-    }
-];
-
-export const testItems = [
-    {
-        itemTitle: 'Lightning Professional',
-        itemDescription: 'Complete service CRM for teams of any size',
-        value: 'lightning-professional',
-        title: '$30',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:user'
-        }
-    },
-    {
-        itemTitle: 'Lightning Enterprise',
-        itemDescription:
-            'Everything you need to take support to the next level',
-        value: 'lightning-enterprise',
-        title: '$150',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:groups'
-        }
-    },
-    {
-        itemTitle: 'Lightning Enterprise Plus',
-        itemDescription: 'Example of a disabled tile',
-        value: 'lightning-enterprise-plus',
-        disabled: true,
-        title: '$220',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:account'
-        }
-    },
-    {
-        itemTitle: 'Lightning Unlimited',
-        itemDescription: 'Complete support with enterprise-grade customization',
-        value: 'lightning-unlimited',
-        title: '$300',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'custom:custom68'
-        }
     }
 ];
 

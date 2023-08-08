@@ -49,7 +49,7 @@ describe('PrimitiveVisualPickerTitle', () => {
     });
 
     it('Visual picker title: Default attributes', () => {
-        expect(element.avatar).toBeUndefined();
+        expect(element.avatar).toMatchObject({});
         expect(element.avatarPosition).toBe('left');
         expect(element.displayAvatar).toBeFalsy();
         expect(element.size).toBe('medium');

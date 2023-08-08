@@ -298,8 +298,6 @@ ItemsWithPictures.args = {
     ratio: '16-by-9',
     size: 'xx-large',
     imageAttributes: {
-        fallbackSrc:
-            'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         cropFit: 'cover',
         position: 'overlay'
     }
