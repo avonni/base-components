@@ -60,7 +60,6 @@
 
 .avonni-visual-picker__height {
     display: flex;
-    justify-content: center;
     width: 100%;
     position: relative;
 }
@@ -68,6 +67,7 @@
 .avonni-visual-picker__height .avonni-visual-picker__items {
     padding-top: 0.25rem;
     flex: 0 1 30%;
+    position: relative;
 }
 
 .avonni-visual-picker__items {
@@ -300,6 +300,7 @@
 .avonni-visual-picker__item-fields-container {
     padding: 0 0.5rem;
     text-align: left;
+    pointer-events: none;
 }
 
 .avonni-visual-picker__item-fields {
@@ -581,6 +582,9 @@
 
 /*-- tags --*/
 .avonni-visual-picker__tags-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
     text-align: var(--avonni-visual-picker-tags-alignment, center);
     padding: var(--avonni-visual-picker-tags-padding, 0.5rem);
 }
@@ -729,7 +733,6 @@
 .avonni-visual-picker__figure-body-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     flex: 1 1 auto;
 }
 
@@ -781,13 +784,6 @@
     padding: var(--avonni-visual-picker-image-padding, 15px);
 }
 
-.avonni-visual-picker__app-screens {
-    display: flex;
-    overflow: hidden;
-    padding: 0.75rem;
-    justify-content: center;
-}
-
 .avonni-visual-picker__figure-body-container-horizontal {
     display: flex;
     flex-direction: row;
@@ -796,4 +792,8 @@
 .avonni-visual-picker__figure-body-container-horizontal-reverse {
     display: flex;
     flex-direction: row-reverse;
+}
+
+.avonni-visual-picker__tags-hidden {
+    display: none;
 }

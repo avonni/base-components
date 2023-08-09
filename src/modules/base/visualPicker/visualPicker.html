@@ -293,7 +293,7 @@
                                                         for:item="field"
                                                     >
                                                         <c-layout-item
-                                                            key={field.key}
+                                                            key={field.value}
                                                             class="
                                                                 avonni-visual-picker__item-fields
                                                                 slds-truncate
@@ -386,6 +386,7 @@
                                                     class="
                                                         avonni-visual-picker__tags-container
                                                     "
+                                                    data-element-id="avonni-visual-picker-tags-container"
                                                 >
                                                     <template
                                                         for:each={item.tags}
@@ -396,11 +397,20 @@
                                                             key={tag.label}
                                                             label={tag.label}
                                                             variant={tag.variant}
-                                                            class="
-                                                                avonni-visual-picker__tags
-                                                            "
+                                                            class={tag.tagClass}
+                                                            data-element-id="avonni-visual-picker-tag"
                                                         ></avonni-chip>
                                                     </template>
+                                                    <!-- Hidden Tags -->
+                                                    <avonni-chip
+                                                        if:true={item.hasHiddenTags}
+                                                        label="..."
+                                                        variant="base"
+                                                        class="
+                                                            avonni-visual-picker__tags
+                                                        "
+                                                        data-element-id="avonni-visual-picker-tag-overflow"
+                                                    ></avonni-chip>
                                                 </div>
                                             </template>
                                         </div>

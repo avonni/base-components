@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import {
     normalizeBoolean,
@@ -39,6 +39,7 @@ import {
     normalizeObject
 } from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const VISUAL_PICKER_VARIANTS = {
     valid: ['coverable', 'non-coverable'],
@@ -136,7 +137,7 @@ export default class VisualPicker extends LightningElement {
     _hideBorder;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _imageAttributes = {};
-    _items = [];
+    @track _items = [];
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
@@ -144,6 +145,8 @@ export default class VisualPicker extends LightningElement {
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
+    _connected = false;
+    _computedItems = [];
     _itemHeightInRem = {
         small: {
             '1-by-1': 8,
@@ -226,6 +229,7 @@ export default class VisualPicker extends LightningElement {
         'xx-large': 768
     };
     _isFallbackLoadedMap = {};
+    _resizeObserver;
 
     displayImg = false;
     displayImgC = false;
@@ -233,6 +237,10 @@ export default class VisualPicker extends LightningElement {
     helpMessage;
 
     renderedCallback() {
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+
         if (this.inputs) {
             this.inputs.forEach((input) => {
                 if (this._value.indexOf(input.value) > -1) {
@@ -248,8 +256,17 @@ export default class VisualPicker extends LightningElement {
     }
 
     connectedCallback() {
+        this._connected = true;
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this.recomputeTags();
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
     }
 
     /*
@@ -390,6 +407,11 @@ export default class VisualPicker extends LightningElement {
     }
     set items(value) {
         this._items = normalizeArray(value);
+        this._computedItems = [...this._items];
+
+        if (this._connected) {
+            this.recomputeTags();
+        }
     }
 
     /**
@@ -512,6 +534,15 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Get the wrapper DOM elements.
+     *
+     * @type {Element}
+     */
+    get wrapperElement() {
+        return this.template.querySelector('[data-element-id="fieldset"]');
+    }
+
+    /**
      * Computed object fit class to images.
      *
      * @type {string}
@@ -530,7 +561,7 @@ export default class VisualPicker extends LightningElement {
      * @type {object[]}
      */
     get listItems() {
-        return this._items.map((item, index) => {
+        return this._computedItems.map((item, index) => {
             let {
                 avatar,
                 avatarPosition,
@@ -539,6 +570,7 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition,
                 disabled,
                 fields,
+                hasHiddenTags,
                 imgAlternativeText,
                 imgSrc,
                 itemDescription,
@@ -623,6 +655,9 @@ export default class VisualPicker extends LightningElement {
                 avatarVerticalAlignment
             );
 
+            // Tag management
+            const hasTags = tags && Array.isArray(tags) && tags.length > 0;
+
             // Image management
             let imgPosition = this.imageAttributes.position;
             imgSrc = imgSrc || this.imageAttributes.fallbackSrc;
@@ -636,7 +671,6 @@ export default class VisualPicker extends LightningElement {
             }
 
             // Image positioning
-            const hasTags = tags && Array.isArray(tags) && tags.length > 0;
             const hasImg = imgSrc && this.isBiggerThanXSmall;
 
             const imgIsHorizontal =
@@ -712,6 +746,7 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsBottom,
                 descriptionIsCenter,
                 displayTitleAvatar,
+                hasHiddenTags,
                 tags,
                 imgAlternativeText,
                 imgIsBottom,
@@ -1037,21 +1072,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Computed items container class styling
-     *
-     * @param {boolean} isImgBackgroundOrOverlay
-     * @returns {string}
-     */
-    computeItemsContainerClass(isImgBackgroundOrOverlay) {
-        return classSet('')
-            .add({
-                'avonni-visual-picker__figure-body-container':
-                    !isImgBackgroundOrOverlay
-            })
-            .toString();
-    }
-
-    /**
      * Compute image container styling.
      *
      * @param {boolean} imgIsHorizontal
@@ -1130,6 +1150,21 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Computed items container class styling
+     *
+     * @param {boolean} isImgBackgroundOrOverlay
+     * @returns {string}
+     */
+    computeItemsContainerClass(isImgBackgroundOrOverlay) {
+        return classSet('')
+            .add({
+                'avonni-visual-picker__figure-body-container':
+                    !isImgBackgroundOrOverlay
+            })
+            .toString();
+    }
+
+    /**
      * Computed NOT selected class styling.
      *
      * @param {string} imgPosition
@@ -1156,6 +1191,20 @@ export default class VisualPicker extends LightningElement {
                     !isSelected
             })
             .toString();
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.wrapperElement) {
+            return null;
+        }
+        return new AvonniResizeObserver(this.wrapperElement, () => {
+            this.recomputeTags();
+        });
     }
 
     /**
@@ -1187,6 +1236,91 @@ export default class VisualPicker extends LightningElement {
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
+    }
+
+    recomputeTags() {
+        requestAnimationFrame(() => {
+            const container = Array.from(
+                this.template.querySelectorAll(
+                    '.avonni-visual-picker__tags-container'
+                )
+            );
+            const tagClass = 'avonni-visual-picker__tags';
+            const hiddenTagClass = 'avonni-visual-picker__tags-hidden';
+
+            // Resets tags visibility
+            const items = this._items.map((item, index) => {
+                if (container && container[index]) {
+                    const tagElements = Array.from(
+                        container[index].querySelectorAll(
+                            '[data-element-id="avonni-visual-picker-tag"]'
+                        )
+                    );
+                    tagElements.forEach((tagElement) => {
+                        if (tagElement.classList.contains(hiddenTagClass)) {
+                            tagElement.classList.remove(hiddenTagClass);
+                        }
+                    });
+                }
+                let tags = [];
+                if (item.tags && Array.isArray(item.tags)) {
+                    tags = item.tags.map((tag) => {
+                        return {
+                            ...tag,
+                            hidden: false
+                        };
+                    });
+                }
+                return {
+                    ...item,
+                    tags,
+                    hasHiddenTags: false
+                };
+            });
+
+            // Calculate overflow
+            this._computedItems = items.map((item, index) => {
+                if (item.tags && Array.isArray(item.tags)) {
+                    if (container && container[index]) {
+                        const overflowElement = container[index].querySelector(
+                            '[data-element-id="avonni-visual-picker-tag-overflow"]'
+                        );
+                        const tagElements = Array.from(
+                            container[index].querySelectorAll(
+                                '[data-element-id="avonni-visual-picker-tag"]'
+                            )
+                        );
+                        let totalWidth = 0;
+                        let maxWidth =
+                            container[index].getBoundingClientRect().width - 30;
+                        if (overflowElement) {
+                            maxWidth -=
+                                overflowElement.getBoundingClientRect().width;
+                        }
+                        tagElements.forEach((tagElement, tagIndex) => {
+                            const width =
+                                tagElement.getBoundingClientRect().width;
+                            const isHidden = maxWidth <= totalWidth + width;
+                            if (!tagElement.classList.contains(tagClass)) {
+                                tagElement.classList.add(tagClass);
+                            }
+                            if (
+                                isHidden &&
+                                !tagElement.classList.contains(hiddenTagClass)
+                            ) {
+                                tagElement.classList.add(hiddenTagClass);
+                            }
+                            item.tags[tagIndex].hidden = isHidden;
+                            totalWidth += width;
+                        });
+                        item.hasHiddenTags = item.tags.some(
+                            (tag) => tag.hidden
+                        );
+                    }
+                }
+                return item;
+            });
+        });
     }
 
     /**
