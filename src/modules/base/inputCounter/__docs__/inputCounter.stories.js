@@ -35,14 +35,16 @@ import { InputCounter } from '../__examples__/inputCounter';
 export default {
     title: 'Example/Input Counter',
     argTypes: {
-        label: {
+        disabled: {
             control: {
-                type: 'text'
+                type: 'boolean'
             },
-            type: { required: true },
-            description: 'Text label for the input.',
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
             }
         },
         fieldLevelHelp: {
@@ -52,6 +54,39 @@ export default {
             },
             description:
                 'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        fractionDigits: {
+            name: 'fraction-digits',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal  )',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        hideValue: {
+            name: 'hide-value',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the input value is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            type: { required: true },
+            description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
             }
@@ -67,104 +102,7 @@ export default {
                 category: 'Validation'
             }
         },
-        min: {
-            control: {
-                type: 'number'
-            },
-            description:
-                'The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min',
-            table: {
-                type: { summary: 'number' },
-                category: 'Validation'
-            }
-        },
-        step: {
-            name: 'step',
-            control: {
-                type: 'number'
-            },
-            description: 'Amount to add or substract from the value',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: 1,
-                category: 'Validation'
-            }
-        },
-        fractionDigits: {
-            name: 'fraction-digits',
-            control: {
-                type: 'number'
-            },
-            description:
-                'Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal  )',
-            table: {
-                type: { summary: 'number' },
-                category: 'Validation'
-            }
-        },
-        value: {
-            control: {
-                type: 'number'
-            },
-            description: 'Specifies the value of an input element.',
-            table: {
-                type: { summary: 'number' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'standard',
-                'label-inline',
-                'label-hidden',
-                'label-stacked'
-            ],
-            description:
-                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'standard' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the input field is disabled and users cannot interact with it.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Validation'
-            }
-        },
-        readOnly: {
-            name: 'read-only',
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the input field is read-only and cannot be edited by users.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validation'
-            }
-        },
-        required: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If present, the input field must be filled out before the form is submitted.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validation'
-            }
-        },
+
         messageWhenBadInput: {
             name: 'message-when-bad-input',
             control: {
@@ -243,6 +181,54 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        min: {
+            control: {
+                type: 'number'
+            },
+            description:
+                'The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field is read-only and cannot be edited by users.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validation'
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validation'
+            }
+        },
+        step: {
+            name: 'step',
+            control: {
+                type: 'number'
+            },
+            description: 'Amount to add or substract from the value',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: 1,
+                category: 'Validation'
+            }
+        },
         type: {
             name: 'type',
             control: {
@@ -255,10 +241,37 @@ export default {
                 default: { summary: 'number' },
                 type: { summary: 'string' }
             }
+        },
+        value: {
+            control: {
+                type: 'number'
+            },
+            description: 'Specifies the value of an input element.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
+            description:
+                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'standard' }
+            }
         }
     },
     args: {
         disabled: false,
+        hideValue: false,
         readOnly: false,
         required: false,
         step: 1,

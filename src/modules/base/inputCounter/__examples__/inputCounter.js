@@ -38,43 +38,43 @@ customElements.define(
 );
 
 export const InputCounter = ({
-    label,
-    fieldLevelHelp,
-    max,
-    min,
-    step,
-    value,
-    variant,
     disabled,
-    readOnly,
-    required,
+    fieldLevelHelp,
+    fractionDigits,
+    label,
+    max,
     messageWhenBadInput,
     messageWhenPatternMismatch,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
     messageWhenValueMissing,
+    min,
+    readOnly,
+    required,
+    step,
     type,
-    fractionDigits
+    value,
+    variant
 }) => {
     const element = document.createElement('ac-base-input-counter');
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
-    element.max = max;
-    element.min = min;
-    element.step = step;
-    element.value = value;
-    element.variant = variant;
     element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
+    element.fieldLevelHelp = fieldLevelHelp;
+    element.fractionDigits = fractionDigits;
+    element.label = label;
+    element.max = max;
     element.messageWhenBadInput = messageWhenBadInput;
     element.messageWhenPatternMismatch = messageWhenPatternMismatch;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.min = min;
+    element.readOnly = readOnly;
+    element.required = required;
+    element.step = step;
     element.type = type;
-    element.fractionDigits = fractionDigits;
+    element.value = value;
+    element.variant = variant;
     return element;
 };
