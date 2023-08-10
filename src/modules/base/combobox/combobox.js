@@ -630,10 +630,13 @@ export default class Combobox extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value =
-            typeof value === 'string' || typeof value === 'number'
-                ? this._computeStringValue(value)
-                : [...normalizeArray(value)];
+        if (typeof value === 'string') {
+            this._value = this._computeStringValue(value);
+        } else if (typeof value === 'number') {
+            this._value = [value];
+        } else {
+            this._value = [...normalizeArray(value)];
+        }
     }
 
     /**
@@ -913,14 +916,8 @@ export default class Combobox extends LightningElement {
      * @returns {string[]} The value of the combobox.
      */
     _computeStringValue(value) {
-        const delimiters = [';', ',', ' ', '\t', ':', '|'];
-        for (const delimiter of delimiters) {
-            const parts = value.split(delimiter);
-            if (parts.length > 1) {
-                return parts;
-            }
-        }
-        return [value];
+        const parts = value.split(';');
+        return parts.length > 1 ? parts : [value];
     }
 
     /**
