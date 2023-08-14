@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    classListMutation,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import {
@@ -40,12 +44,11 @@ import {
     increaseNumberByStep
 } from './numberFormat';
 
-const validVariants = {
+const INPUT_COUNTER_VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
-
-const validTypes = {
+const INPUT_COUNTER_TYPES = {
     valid: ['number', 'currency', 'percent'],
     default: 'number'
 };
@@ -165,11 +168,11 @@ export default class InputCounter extends LightningElement {
     _max;
     _min;
     _step = DEFAULT_STEP;
-    _type = validTypes.default;
+    _type = INPUT_COUNTER_TYPES.default;
     _readOnly = false;
     _required = false;
     _value = null;
-    _variant = validVariants.default;
+    _variant = INPUT_COUNTER_VARIANTS.default;
 
     _connected = false;
     _constraintApi;
@@ -327,8 +330,8 @@ export default class InputCounter extends LightningElement {
     }
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: INPUT_COUNTER_TYPES.default,
+            validValues: INPUT_COUNTER_TYPES.valid
         });
 
         if (this._connected) {
@@ -383,13 +386,15 @@ export default class InputCounter extends LightningElement {
     }
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: INPUT_COUNTER_VARIANTS.default,
+            validValues: INPUT_COUNTER_VARIANTS.valid
         });
 
-        if (this._variant === 'label-inline') {
-            this.classList.add('avonni-input-counter__flex-container');
-        }
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this._variant === 'label-stacked',
+            'avonni-input-counter__flex-container':
+                this._variant === 'label-inline'
+        });
     }
 
     /*

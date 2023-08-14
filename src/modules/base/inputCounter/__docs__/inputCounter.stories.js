@@ -297,7 +297,6 @@ HiddenLabel.args = {
     label: 'Input with hidden label',
     variant: 'label-hidden'
 };
-
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     label: 'Read only input',
@@ -305,7 +304,6 @@ ReadOnly.args = {
     value: 3,
     readOnly: true
 };
-
 export const Disabled = Template.bind({});
 Disabled.args = {
     label: 'Disabled input',
@@ -313,7 +311,6 @@ Disabled.args = {
     value: 16,
     disabled: true
 };
-
 export const Validations = Template.bind({});
 Validations.args = {
     label: 'Input with validations',
@@ -323,7 +320,6 @@ Validations.args = {
     messageWhenRangeOverflow: 'The value needs to be equal or lesser than 6',
     messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3'
 };
-
 export const FractionDigitsTypeCurrency = Template.bind({});
 FractionDigitsTypeCurrency.args = {
     label: 'Input with fraction digits, type currency and min/max',
