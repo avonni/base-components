@@ -22,6 +22,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-button-icon-popover-sizing-height
+ * @name --avonni-button-icon-popover-sizing-max-height
  * @type sizing
  */

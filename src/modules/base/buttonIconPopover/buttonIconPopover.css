@@ -103,6 +103,6 @@ div:focus {
 }
 
 .avonni-button-icon-popover__popover-body {
-    height: var(--avonni-button-icon-popover-sizing-height);
+    max-height: var(--avonni-button-icon-popover-sizing-max-height);
     overflow-x: auto;
 }
