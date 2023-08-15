@@ -999,6 +999,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * Update the cells and events of the currently loaded resources.
      */
     updateVisibleResources() {
+        if (!this.smallestHeader) {
+            return;
+        }
         this.visibleComputedResources.forEach((resource) => {
             resource.events = this.getOccurrencesFromResourceName(
                 resource.name
