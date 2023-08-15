@@ -33,7 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
-import { computeSldsClass } from 'c/iconUtils';
+import { computeSldsClass, isActionIconType } from 'c/iconUtils';
 
 const AVATAR_SIZES = {
     valid: [
@@ -436,7 +436,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     _updateClassList() {
-        const { size, variant, groupedAvatar } = this;
+        const { size, variant, fallbackIconName, groupedAvatar } = this;
         const wrapperClass = classSet(
             'slds-is-relative avonni-avatar__display_inline-block'
         )
@@ -447,10 +447,11 @@ export default class PrimitiveAvatar extends LightningElement {
             .add({
                 'avonni-avatar__border-radius_circle': variant === 'circle'
             })
-            .add(computeSldsClass(this.fallbackIconName));
+            .add(computeSldsClass(fallbackIconName));
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
-            'slds-avatar-grouped__icon': groupedAvatar
+            'slds-avatar-grouped__icon': groupedAvatar,
+            'avonni-avatar__action-icon': isActionIconType(fallbackIconName)
         });
 
         this.avatarClass = avatarClass;
