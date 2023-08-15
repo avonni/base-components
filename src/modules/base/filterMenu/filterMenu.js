@@ -34,6 +34,7 @@ import { LightningElement, api, track } from 'lwc';
 import {
     dateTimeObjectFrom,
     deepCopy,
+    equal,
     formatDateFromStyle,
     normalizeBoolean,
     normalizeObject,
@@ -796,6 +797,9 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
+        if (equal(array, this.value)) {
+            return;
+        }
         this._value = deepCopy(array);
         this.currentValue = deepCopy(array);
 

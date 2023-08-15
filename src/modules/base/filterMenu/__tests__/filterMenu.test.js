@@ -1856,7 +1856,7 @@ describe('Filter Menu', () => {
             });
         });
 
-        describe('value', () => {
+        describe('Value', () => {
             // Depends on items
             it('value', () => {
                 element.value = VALUE;
@@ -1924,9 +1924,62 @@ describe('Filter Menu', () => {
                     expect(slider.value).toEqual([0.35, 67]);
                 });
             });
+
+            it('Selected value is not erased if same value is passed', () => {
+                element.value = VALUE;
+                element.typeAttributes = { items: ITEMS, isMultiSelect: true };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve()
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('true');
+                        expect(items[2].ariaChecked).toBe('false');
+
+                        items[2].click();
+                    })
+                    .then(() => {
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('true');
+                        expect(items[2].ariaChecked).toBe('true');
+
+                        element.value = JSON.parse(JSON.stringify(VALUE));
+                    })
+                    .then(() => {
+                        // Selected items were not erased
+                        // because the new value was identical
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('true');
+                        expect(items[2].ariaChecked).toBe('true');
+
+                        element.value = [VALUE[0]];
+                    })
+                    .then(() => {
+                        // Selected items were erased
+                        // because the new value was different
+                        const items = element.shadowRoot.querySelectorAll(
+                            '[data-element-id="a-list-item"]'
+                        );
+                        expect(items[0].ariaChecked).toBe('true');
+                        expect(items[1].ariaChecked).toBe('false');
+                        expect(items[2].ariaChecked).toBe('false');
+                    });
+            });
         });
 
-        describe('variant', () => {
+        describe('Variant', () => {
             it('variant = horizontal', () => {
                 element.variant = 'horizontal';
 
