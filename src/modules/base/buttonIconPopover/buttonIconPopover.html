@@ -90,7 +90,12 @@
                     ></lightning-button-icon>
                 </template>
             </header>
-            <div class="slds-popover__body">
+            <div
+                class="
+                    slds-popover__body
+                    avonni-button-icon-popover__popover-body
+                "
+            >
                 <slot onclick={handleSlotClick}></slot>
             </div>
             <template if:true={showFooter}>
