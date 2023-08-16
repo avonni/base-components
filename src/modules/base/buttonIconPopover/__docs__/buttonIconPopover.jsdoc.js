@@ -16,3 +16,12 @@
  * @memberof slots
  * @name footer
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-icon-popover-sizing-max-height
+ * @type sizing
+ */

@@ -56,13 +56,11 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <div class="slds-truncate">
-                <lightning-formatted-rich-text
-                    value={value}
-                    style="width: 100%"
-                >
-                </lightning-formatted-rich-text>
-            </div>
+            <lightning-formatted-rich-text
+                value={value}
+                style="width: 100%"
+            >
+            </lightning-formatted-rich-text>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}

@@ -169,3 +169,7 @@ export const createSVGIcon = (
 
     return iconSVG;
 };
+
+export const isActionIconType = (iconName) => {
+    return typeof iconName === 'string' && iconName.startsWith('action');
+};

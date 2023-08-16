@@ -358,7 +358,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      */
     @api
     get visibleInterval() {
-        if (!this.smallestHeader) {
+        if (!Object.keys(this.smallestHeader).length) {
             return undefined;
         }
 
@@ -505,7 +505,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      */
     get smallestHeader() {
         if (!this.computedHeaders.length) {
-            return null;
+            return {};
         }
 
         const lastIndex = this.computedHeaders.length - 1;
@@ -675,7 +675,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     computeCellSize() {
-        if (!this.smallestHeader) {
+        if (!Object.keys(this.smallestHeader).length) {
             return;
         }
         const wrapper = this.template.querySelector(

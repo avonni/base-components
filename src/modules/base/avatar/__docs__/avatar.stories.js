@@ -31,6 +31,7 @@
  */
 
 import { Avatar } from '../__examples__/avatar';
+import AvatarSizesComponent from './sizes/sizes';
 
 export default {
     title: 'Example/Avatar',
@@ -670,3 +671,19 @@ BaseWithActions.args = {
     actions: actions,
     actionMenuIcon: 'utility:threedots'
 };
+
+/**
+ * Example with different combinations of sizes, fallback icon types.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-avatar-sizes',
+    AvatarSizesComponent.CustomElementConstructor
+);
+const AvatarSizes = ({ variant }) => {
+    const element = document.createElement('ac-base-avatar-sizes');
+    element.variant = variant;
+    return element;
+};
+const TemplateSizes = (args) => AvatarSizes(args);
+export const Sizes = TemplateSizes.bind({});
