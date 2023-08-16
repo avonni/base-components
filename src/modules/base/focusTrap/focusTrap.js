@@ -2,21 +2,8 @@ import { api, LightningElement } from 'lwc';
 import { findAllTabbableElements } from './focusUtils';
 
 export default class FocusTrap extends LightningElement {
-    _startNode;
-    _endNode;
-
     _focused = false;
-    _initialized = false;
     _pendingFocusOut = false;
-
-    renderedCallback() {
-        if (!this._initialized) {
-            this._initialized = true;
-
-            this._startNode = this.template.querySelector('[data-start]');
-            this._endNode = this.template.querySelector('[data-end]');
-        }
-    }
 
     /*
      * ------------------------------------------------------------
