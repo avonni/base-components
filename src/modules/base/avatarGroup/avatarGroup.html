@@ -227,17 +227,14 @@
                         <template for:each={hiddenItems} for:item="item">
                             <li
                                 key={generatedKey}
-                                class="
-                                    avonni-avatar-group__hidden-avatar-container
-                                    slds-p-vertical_x-small
-                                    slds-p-horizontal_small
-                                "
+                                class={avatarWrapperClass}
                                 data-index={item.index}
                                 tabindex="-1"
                                 data-element-id="li-hidden"
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
+                                    class={avatarInlineClass}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}

@@ -821,6 +821,9 @@ export default class AvatarGroup extends LightningElement {
         item.tabIndex = '0';
     }
 
+    /**
+     * Update the number of visible and collapsed items, depending on the available space.
+     */
     updateVisibleMaxCount() {
         if (
             !this.wrapperElement ||
