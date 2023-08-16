@@ -105,6 +105,11 @@
     height: 72px;
 }
 
+[class*='slds-icon-action-'] {
+    /* Remove padding from action type icons */
+    padding: 0;
+}
+
 /* Makes the icon container size grow with the avatar */
 .avonni-avatar__icon {
     display: flex;
