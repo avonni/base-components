@@ -37,3 +37,11 @@
     width: -webkit-fill-available;
     width: -moz-fill-available;
 }
+
+.slds-modal {
+    z-index: var(--avonni-dialog-modal-z-index, 9001);
+}
+
+.slds-backdrop {
+    z-index: var(--avonni-dialog-backdrop-z-index, 9000);
+}
