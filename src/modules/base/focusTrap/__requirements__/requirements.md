@@ -1,4 +1,4 @@
-Note: Component taken from lightning-base-components.
+Note: Component taken from lightning-base-components. It has the same behaviour as lightning-focus-trap component.
 
 -   The component must accept a default slot
 -   When a component within the slot has focus, the focus is trapped, in the following way:
