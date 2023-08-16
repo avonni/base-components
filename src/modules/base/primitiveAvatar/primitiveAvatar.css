@@ -36,11 +36,10 @@
 }
 
 .avonni-avatar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
     line-height: 0;
     overflow: hidden;
+    vertical-align: middle;
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
 }
 
