@@ -160,7 +160,11 @@
                 </li>
             </template>
             <!-- Show more button -->
-            <li if:true={showMoreButton} class={showMoreSectionClass}>
+            <li
+                if:true={showMoreButton}
+                class={showMoreSectionClass}
+                data-element-id="show-more-button"
+            >
                 <div
                     class="
                         slds-dropdown-trigger slds-dropdown-trigger_click
@@ -271,6 +275,7 @@
                 if:true={actionIconName}
                 class={actionButtonWrapperClass}
                 onkeydown={stopPropagation}
+                data-element-id="action-button"
             >
                 <button
                     type="button"
