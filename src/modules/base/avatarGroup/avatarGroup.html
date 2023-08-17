@@ -227,14 +227,14 @@
                         <template for:each={hiddenItems} for:item="item">
                             <li
                                 key={generatedKey}
-                                class={avatarWrapperClass}
+                                class={hiddenAvatarWrapperClass}
                                 data-index={item.index}
                                 tabindex="-1"
                                 data-element-id="li-hidden"
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
-                                    class={avatarInlineClass}
+                                    class={hiddenAvatarInlineClass}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}

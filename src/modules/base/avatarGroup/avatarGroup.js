@@ -537,6 +537,24 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Class of the hidden avatars when displayed in a line
+     * @type {string}
+     */
+    get hiddenAvatarInlineClass() {
+        return this.layout === 'list' ? this.avatarInlineClass : '';
+    }
+
+    /**
+     * Class of the hidden avatar wrapper, when there are more avatar than the max count
+     * @type {string}
+     */
+    get hiddenAvatarWrapperClass() {
+        return this.layout === 'list'
+            ? this.avatarWrapperClass
+            : 'avonni-avatar-group__hidden-avatar-container slds-p-vertical_x-small slds-p-horizontal_small';
+    }
+
+    /**
      * Array of hidden items.
      *
      * @type {object[]}

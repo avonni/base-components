@@ -129,8 +129,20 @@ button.avonni-avatar-group__avatar-in-line-button {
     display: block;
 }
 .avonni-avatar-group__avatar-container_list:hover,
-.avonni-avatar-group__avatar-container_list:focus {
+.avonni-avatar-group__avatar-container_list:focus,
+.avonni-avatar-group__hidden-avatar-container:hover,
+.avonni-avatar-group__hidden-avatar-container:focus {
     background-color: rgb(240, 240, 240);
+}
+.avonni-avatar-group__hidden-avatar-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.avonni-avatar-group__hidden-avatar-container p {
+    padding-left: 0.5rem;
+    white-space: nowrap;
+    cursor: pointer;
 }
 .slds-dropdown {
     overflow-y: auto;
@@ -149,6 +161,7 @@ button.avonni-avatar-group__avatar-in-line-button {
     outline: solid var(--lwc-brandAccessible, #0176d3);
 }
 
+.avonni-avatar-group__hidden-avatar-container:focus,
 .avonni-avatar-group__avatar-container_list:focus {
     outline: none;
 }
