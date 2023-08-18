@@ -894,7 +894,11 @@ export default class InputChoiceSet extends LightningElement {
             labelIconContainer.style = '';
         });
 
-        if (this.orientation === 'horizontal' || this.checkPosition === 'left')
+        if (
+            (this.orientation === 'horizontal' &&
+                !this.orientationAttributes?.multipleRows) ||
+            this.checkPosition === 'left'
+        )
             return;
         let maxWidth = 0;
 
