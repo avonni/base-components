@@ -127,13 +127,16 @@
                                             ></span>
                                             <c-input-toggle
                                                 if:true={toggleVariant}
+                                                class="slds-m-top_x-small"
                                                 data-element-id="input-toggle"
                                                 checked={option.isChecked}
                                                 hide-mark={computedHideCheck}
                                                 label={option.label}
-                                                message-toggle-active=""
-                                                message-toggle-inactive=""
+                                                message-toggle-active={computedTypeAttributes.messageToggleActive}
+                                                message-toggle-inactive={computedTypeAttributes.messageToggleInactive}
+                                                message-when-value-missing={computedTypeAttributes.messageWhenValueMissing}
                                                 name={option.value}
+                                                size={computedTypeAttributes.size}
                                                 variant="label-hidden"
                                                 onchange={handleToggleChange}
                                             >
@@ -143,7 +146,7 @@
                                             data-element-id="label-icon-container"
                                         >
                                             <div
-                                                if:true={option.label}
+                                                if:true={option.displayLabel}
                                                 class="
                                                     slds-form-element__label
                                                     slds-order_1

@@ -86,7 +86,13 @@ const ORIENTATION_ATTRIBUTES = {
 const TYPE_ATTRIBUTES = {
     default: [],
     button: ['checkmarkPosition', 'displayAsRow', 'showCheckmark', 'stretch'],
-    toggle: ['showCheckmark']
+    toggle: [
+        'messageToggleActive',
+        'messageToggleInactive',
+        'messageWhenValueMissing',
+        'size',
+        'showCheckmark'
+    ]
 };
 
 /**
@@ -148,9 +154,9 @@ export default class InputChoiceSet extends LightningElement {
     _value = [];
     _variant;
 
-    helpMessage;
     computedOrientationAttributes = {};
     computedTypeAttributes = {};
+    helpMessage;
     _connected = false;
     _rendered = false;
 
@@ -223,6 +229,7 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: CHECK_POSITIONS.default,
             validValues: CHECK_POSITIONS.valid
         });
+        this._setWidth();
     }
 
     /**
@@ -251,7 +258,6 @@ export default class InputChoiceSet extends LightningElement {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
     }
@@ -269,6 +275,7 @@ export default class InputChoiceSet extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
+        this._setWidth();
     }
 
     /**
@@ -287,6 +294,7 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
             validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
+        this._setWidth();
     }
 
     /**
@@ -305,6 +313,7 @@ export default class InputChoiceSet extends LightningElement {
 
         if (this._connected) {
             this._initOrientationAttributes();
+            this._setWidth();
         }
     }
 
@@ -541,6 +550,11 @@ export default class InputChoiceSet extends LightningElement {
         return classSet('')
             .add({
                 'slds-order_3': this.checkPosition === 'right',
+                'slds-p-top_xx-small':
+                    this.toggleVariant &&
+                    this.orientation === 'vertical' &&
+                    (this.computedTypeAttributes?.size === 'small' ||
+                        this.computedTypeAttributes?.size === 'x-small'),
                 'slds-p-left_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'right' &&
