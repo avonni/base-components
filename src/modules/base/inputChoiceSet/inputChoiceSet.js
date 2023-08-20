@@ -1073,8 +1073,11 @@ export default class InputChoiceSet extends LightningElement {
         });
 
         this._value = this._valueChangeHandler(checkboxes);
-
-        if (!this.isMultiSelect && this.value === value) {
+        if (
+            !this.isMultiSelect &&
+            this.value === value &&
+            checkboxes.length !== 1
+        ) {
             event.currentTarget.checked = true;
         }
         this._dispatchChangeEvent();
