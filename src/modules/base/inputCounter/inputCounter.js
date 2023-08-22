@@ -164,7 +164,6 @@ export default class InputCounter extends LightningElement {
 
     _disabled = false;
     _fractionDigits;
-    _hideValue = false;
     _max;
     _min;
     _step = DEFAULT_STEP;
