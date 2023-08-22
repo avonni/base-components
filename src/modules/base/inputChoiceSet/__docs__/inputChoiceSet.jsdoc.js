@@ -14,7 +14,6 @@
  * @property {boolean} displayAsRow If present, display buttons as row.
  * @property {string} messageToggleActive Text shown for the active state of a toggle.
  * @property {string} messageToggleInactive Text shown for the inactive state of a toggle.
- * @property {string} messageWhenValueMissing Error message to be displayed when the value is missing. The valueMissing error can be returned when you specify the required attribute for any input type.
  * @property {boolean} showCheckmark If present, show checkmark on button or toggle when selected.
  * @property {string} size The size of the input toggle. Valid values include x-small, small, medium and large.
  * @property {boolean} stretch If present, vertical or horizontal button groups stretch to full width.

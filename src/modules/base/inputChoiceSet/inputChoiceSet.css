@@ -142,13 +142,25 @@
 }
 
 .avonni-input-choice-set__vertical
-    .slds-checkbox_button:last-child
+    .slds-checkbox_button:last-child:not(:only-child)
     > .slds-checkbox_button__label {
     border-radius: 0 0 0.25rem 0.25rem;
 }
 
 .avonni-input-choice-set__vertical
-    .slds-checkbox_button:first-child
+    .slds-checkbox_button:first-child:not(:only-child)
     > .slds-checkbox_button__label {
     border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
+    border-radius: 0.25rem;
+}
+
+.avonni-input-choice-set__horizontal
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
+    border-radius: 0.25rem;
 }

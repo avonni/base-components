@@ -89,7 +89,6 @@ const TYPE_ATTRIBUTES = {
     toggle: [
         'messageToggleActive',
         'messageToggleInactive',
-        'messageWhenValueMissing',
         'size',
         'showCheckmark'
     ]
@@ -552,7 +551,6 @@ export default class InputChoiceSet extends LightningElement {
                 'slds-order_3': this.checkPosition === 'right',
                 'slds-p-top_xx-small':
                     this.toggleVariant &&
-                    this.orientation === 'vertical' &&
                     (this.computedTypeAttributes?.size === 'small' ||
                         this.computedTypeAttributes?.size === 'x-small'),
                 'slds-p-left_x-small':
@@ -560,11 +558,10 @@ export default class InputChoiceSet extends LightningElement {
                     this.checkPosition === 'right' &&
                     this.orientation === 'vertical',
                 'slds-p-right_x-small':
-                    this.toggleVariant &&
-                    this.checkPosition === 'left' &&
-                    this.orientation === 'vertical',
-                'slds-p-horizontal_x-small':
-                    this.toggleVariant && this.orientation === 'horizontal'
+                    (this.toggleVariant &&
+                        this.checkPosition === 'left' &&
+                        this.orientation === 'vertical') ||
+                    (this.toggleVariant && this.orientation === 'horizontal')
             })
             .toString();
     }
@@ -799,6 +796,41 @@ export default class InputChoiceSet extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handles the checking for the change event.
+     *
+     * @param {array} checkboxes Array of checkboxes.
+     * @param {string} value Value of the checkbox.
+     * @param {Event} event Change event.
+     *
+     */
+    _handleChecking(checkboxes, value, event) {
+        if (
+            this.isMultiSelect ||
+            (this.type === 'toggle' && checkboxes.length === 1)
+        ) {
+            this._value = this._valueChangeHandler(checkboxes);
+        } else {
+            if (this.value === value) {
+                // Prevent unselecting the current option when the type is 'button'
+                event.currentTarget.checked = true;
+                return;
+            }
+
+            const checkboxesToUncheck = Array.from(checkboxes).filter(
+                (checkbox) => checkbox.value !== value
+            );
+            checkboxesToUncheck.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+            this._value = this._valueChangeHandler(checkboxes);
+        }
+        this._dispatchChangeEvent();
+    }
+
+    /**
+     * Initialize the orientation attributes.
+     */
     _initOrientationAttributes() {
         const attributes = deepCopy(this.orientationAttributes);
         const small = this._normalizeHorizontalColumns(
@@ -994,24 +1026,7 @@ export default class InputChoiceSet extends LightningElement {
         const checkboxes = this.template.querySelectorAll(
             '[data-element-id="input"]'
         );
-        if (this.isMultiSelect) {
-            this._value = this._valueChangeHandler(checkboxes);
-        } else {
-            if (this.value === value) {
-                // Prevent unselecting the current option when the type is 'button'
-                event.currentTarget.checked = true;
-                return;
-            }
-
-            const checkboxesToUncheck = Array.from(checkboxes).filter(
-                (checkbox) => checkbox.value !== value
-            );
-            checkboxesToUncheck.forEach((checkbox) => {
-                checkbox.checked = false;
-            });
-            this._value = this._valueChangeHandler(checkboxes);
-        }
-        this._dispatchChangeEvent();
+        this._handleChecking(checkboxes, value, event);
     }
 
     /**
@@ -1063,24 +1078,9 @@ export default class InputChoiceSet extends LightningElement {
         event.stopPropagation();
         const value = event.currentTarget.name;
         let checkboxes = Array.from(
-            this.template.querySelectorAll('[data-element-id="input"]')
+            this.template.querySelectorAll('[data-element-id="input-toggle"]')
         );
-
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = this.isMultiSelect
-                ? checkbox.checked
-                : checkbox.value === value;
-        });
-
-        this._value = this._valueChangeHandler(checkboxes);
-        if (
-            !this.isMultiSelect &&
-            this.value === value &&
-            checkboxes.length !== 1
-        ) {
-            event.currentTarget.checked = true;
-        }
-        this._dispatchChangeEvent();
+        this._handleChecking(checkboxes, value, event);
     }
 
     /**
