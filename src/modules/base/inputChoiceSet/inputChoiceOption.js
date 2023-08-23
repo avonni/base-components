@@ -43,17 +43,20 @@ const POSITION_ICON = {
  * Input choice set options
  * @class
  * @param {string} label Label of the option.
- * @param {string} value Value of the option.
+ * @param {boolean} hideLabel If present, the label of the option is hidden.
  * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @param {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
+ * @param {string} value Value of the option.
  */
 export default class InputChoiceOption {
     constructor(option, value, index) {
-        this.label = option.label;
-        this.value = option.value;
         this.id = `checkbox-${index}`;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition;
+        this.hideLabel = option.hideLabel;
+        this.label = option.label;
+        this.value = option.value;
+        this.displayLabel = this.label && !this.hideLabel;
 
         if (value && Array.isArray(value)) {
             this.isChecked = value.includes(option.value);

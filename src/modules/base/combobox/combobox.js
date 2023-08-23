@@ -630,10 +630,13 @@ export default class Combobox extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value =
-            typeof value === 'string' || typeof value === 'number'
-                ? [value]
-                : [...normalizeArray(value)];
+        if (typeof value === 'string') {
+            this._value = this._computeStringValue(value);
+        } else if (typeof value === 'number') {
+            this._value = [value];
+        } else {
+            this._value = [...normalizeArray(value)];
+        }
     }
 
     /**
@@ -905,6 +908,17 @@ export default class Combobox extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Compute the value of the combobox if the value is a string.
+     *
+     * @param {string} value The value of the combobox.
+     * @returns {string[]} The value of the combobox.
+     */
+    _computeStringValue(value) {
+        const parts = value.split(';');
+        return parts.length > 1 ? parts : [value];
+    }
 
     /**
      * Get an option by its value.

@@ -820,13 +820,11 @@ export default class Kanban extends LightningElement {
             ? this._initialScrollHeight
             : this._kanbanPos.bottom;
 
-        if (
-            this._initialScrollWidth === kanbanContainer.offsetWidth &&
-            !this._hasSubGroups
-        ) {
-            kanbanContainer.style.overflowX = 'hidden';
-        } else if (!this._hasSubGroups) {
-            kanbanContainer.style.overflowX = 'scroll';
+        if (!this._hasSubGroups) {
+            kanbanContainer.style.overflowX =
+                this._initialScrollWidth === kanbanContainer.offsetWidth
+                    ? 'hidden'
+                    : 'scroll';
         }
 
         // Calculates the position of the mouse depending on the kanban boundaries
@@ -919,16 +917,18 @@ export default class Kanban extends LightningElement {
             y: 0
         };
 
-        const right = fieldContainer.offsetWidth + fieldContainer.scrollLeft;
-
+        // Pixel tolerance proportional to the dimensions of the container
+        const dx = Math.ceil(fieldContainer.clientWidth * 0.05);
+        const dy = Math.ceil(fieldContainer.clientHeight * 0.05);
         const left =
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
+        const right = fieldContainer.clientWidth + left;
 
-        const isCloseToBottom = currentY + 50 > this._kanbanPos.bottom;
-        const isCloseToTop = currentY - 100 < this._kanbanPos.top;
-        const isCloseToRight = currentX + 50 > right;
-        const isCloseToLeft = currentX - 50 < left;
+        const isCloseToBottom = currentY + dy > this._kanbanPos.bottom;
+        const isCloseToTop = currentY - 2 * dy < this._kanbanPos.top;
+        const isCloseToRight = currentX + dx > right;
+        const isCloseToLeft = currentX - dx < left;
 
         if (isCloseToBottom) {
             scrollStep.y = 10;
@@ -1159,10 +1159,15 @@ export default class Kanban extends LightningElement {
      */
     handleAutoScrollInterval(scrollStep, fieldContainer, groups) {
         // Prevents from scrolling outside of the kanban
-        const overflowY =
-            fieldContainer.scrollHeight > this._initialScrollHeight;
-
-        const overflowX = fieldContainer.scrollWidth > this._initialScrollWidth;
+        const tolerance = 5;
+        const dy = scrollStep.y < 0 ? scrollStep.y : 0;
+        const dx = scrollStep.x < 0 ? scrollStep.x : 0;
+        const scrollHeight =
+            fieldContainer.scrollTop + fieldContainer.clientHeight + dy;
+        const scrollWidth =
+            fieldContainer.scrollLeft + fieldContainer.clientWidth + dx;
+        const overflowY = scrollHeight > this._initialScrollHeight + tolerance;
+        const overflowX = scrollWidth > this._initialScrollWidth + tolerance;
 
         if (!overflowX && (!overflowY || !this._hasSubGroups)) {
             this._currentScrollTarget.scrollLeft += scrollStep.x;
@@ -1500,18 +1505,7 @@ export default class Kanban extends LightningElement {
                 ? this._groupWidth
                 : 10;
 
-        this._clickedGroupIndex = Math.min(
-            Math.floor(
-                (event.clientX - this._kanbanOffset.x) / this._groupWidth
-            ),
-            this.groupValues.length - 1
-        );
-
-        this._clickedGroupIndex += Math.floor(
-            this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollLeft / this._groupWidth
-        );
+        this._clickedGroupIndex = event.currentTarget.dataset.groupIndex;
 
         const clickedGroup = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'

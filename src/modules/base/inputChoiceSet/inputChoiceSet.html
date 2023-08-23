@@ -72,9 +72,9 @@
             >
                 <c-layout
                     if:true={hasLayoutItem}
-                    data-element-id="layout"
                     class="slds-size_full"
                     multiple-rows={computedOrientationAttributes.multipleRows}
+                    data-element-id="layout"
                 >
                     <!-- Vertical/Horizontal toggle, checkbox, radio and displayAsRow button -->
                     <template for:each={transformedOptions} for:item="option">
@@ -127,15 +127,23 @@
                                             ></span>
                                             <c-input-toggle
                                                 if:true={toggleVariant}
+                                                aria-label={option.label}
+                                                class="slds-m-top_x-small"
                                                 data-element-id="input-toggle"
                                                 checked={option.isChecked}
+                                                disabled={disabled}
                                                 hide-mark={computedHideCheck}
                                                 label={option.label}
-                                                message-toggle-active=""
-                                                message-toggle-inactive=""
+                                                message-toggle-active={computedTypeAttributes.messageToggleActive}
+                                                message-toggle-inactive={computedTypeAttributes.messageToggleInactive}
                                                 name={option.value}
+                                                readonly={readOnly}
+                                                size={computedTypeAttributes.size}
+                                                value={option.value}
                                                 variant="label-hidden"
+                                                onblur={handleBlur}
                                                 onchange={handleToggleChange}
+                                                onfocus={handleFocus}
                                             >
                                             </c-input-toggle>
                                         </div>
@@ -143,7 +151,7 @@
                                             data-element-id="label-icon-container"
                                         >
                                             <div
-                                                if:true={option.label}
+                                                if:true={option.displayLabel}
                                                 class="
                                                     slds-form-element__label
                                                     slds-order_1

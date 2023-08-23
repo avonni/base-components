@@ -465,7 +465,8 @@ InfiniteLoading.args = {
         allowSearch: true,
         isMultiSelect: true,
         enableInfiniteLoading: true
-    }
+    },
+    hideSelectedItems: true
 };
 
 export const VerticalInfiniteLoading = InfiniteLoadingTemplate.bind({});

@@ -258,19 +258,14 @@
                                                     "
                                                     data-element-id="div-item-label"
                                                 >
-                                                    <template
+                                                    <a
                                                         if:true={item.href}
+                                                        href={item.href}
+                                                        class="
+                                                            avonni-list__item-header-link
+                                                        "
+                                                        >{item.label}</a
                                                     >
-                                                        <a
-                                                            href={item.href}
-                                                            class="
-                                                                avonni-list__item-header-link
-                                                            "
-                                                            onclick={stopPropagation}
-                                                            onmousedown={stopPropagation}
-                                                            >{item.label}</a
-                                                        >
-                                                    </template>
                                                     <template
                                                         if:false={item.href}
                                                     >
@@ -356,8 +351,6 @@
                                                             class="
                                                                 avonni-list__item-info-link
                                                             "
-                                                            onclick={stopPropagation}
-                                                            onmousedown={stopPropagation}
                                                             >{info.label}</a
                                                         >
                                                     </li>

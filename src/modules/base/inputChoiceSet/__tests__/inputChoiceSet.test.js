@@ -102,7 +102,7 @@ describe('Input choice set', () => {
         /* ----- ATTRIBUTES ----- */
 
         describe('Check Position', () => {
-            it('checkPosition = left', () => {
+            it('left', () => {
                 element.options = options;
                 element.checkPosition = 'left';
 
@@ -116,7 +116,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('checkPosition = right', () => {
+            it('right', () => {
                 element.options = options;
                 element.checkPosition = 'right';
 
@@ -449,7 +449,7 @@ describe('Input choice set', () => {
         });
 
         describe('Type', () => {
-            it('type checkbox', () => {
+            it('checkbox', () => {
                 element.options = options;
                 element.orientation = 'vertical';
                 element.isMultiSelect = true;
@@ -469,7 +469,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('type button', () => {
+            it('button', () => {
                 element.options = options;
                 element.type = 'button';
                 element.orientation = 'vertical';
@@ -488,7 +488,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('type button display as row', () => {
+            it('button display as row', () => {
                 element.options = options;
                 element.type = 'button';
                 element.orientation = 'horizontal';
@@ -508,7 +508,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('type toggle', () => {
+            it('toggle', () => {
                 element.options = options;
                 element.type = 'toggle';
                 element.orientation = 'vertical';
@@ -530,7 +530,7 @@ describe('Input choice set', () => {
         });
 
         describe('Type Attributes', () => {
-            it('typeAttributes button: showCheckmark', () => {
+            it('showCheckmark', () => {
                 element.options = options;
                 element.type = 'button';
                 element.typeAttributes = {
@@ -548,7 +548,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('typeAttributes button: checkmarkPosition', () => {
+            it('button: checkmarkPosition', () => {
                 element.options = options;
                 element.type = 'button';
                 element.typeAttributes = {
@@ -567,7 +567,7 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('typeAttributes toggle: showCheckmark', () => {
+            it('toggle: showCheckmark', () => {
                 element.options = options;
                 element.type = 'toggle';
                 element.typeAttributes = {
@@ -792,23 +792,6 @@ describe('Input choice set', () => {
                 });
             });
 
-            it('change event is prevented with type button not multi select', () => {
-                const handler = jest.fn();
-                element.addEventListener('change', handler);
-                element.options = options;
-                element.type = 'button';
-                element.isMultiSelect = false;
-                element.value = options[0].value;
-
-                return Promise.resolve().then(() => {
-                    const input = element.shadowRoot.querySelector(
-                        '[data-element-id="input"]'
-                    );
-                    input.click();
-                    expect(handler).not.toHaveBeenCalled();
-                });
-            });
-
             it('multiple', () => {
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -828,6 +811,41 @@ describe('Input choice set', () => {
                     expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                     expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
                     expect(handler.mock.calls[0][0].composed).toBeTruthy();
+                });
+            });
+
+            it('toggle', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+                element.options = options;
+                element.type = 'toggle';
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input-toggle"]'
+                    );
+                    input.click();
+                    expect(handler).toHaveBeenCalled();
+                    expect(handler.mock.calls[0][0].detail.value).toBe('mon');
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                    expect(handler.mock.calls[0][0].composed).toBeTruthy();
+                });
+            });
+
+            it('button already selected and not multiselect', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+                element.options = options;
+                element.type = 'button';
+                element.value = 'mon';
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    input.click();
+                    expect(handler).not.toHaveBeenCalled();
                 });
             });
         });

@@ -134,6 +134,7 @@
                     data-element-id="avonni-kanban__field"
                     for:each={computedGroups}
                     for:item="group"
+                    for:index="groupIndex"
                     key={group.index}
                     style={group.backgroundStyle}
                     onmouseenter={clearScrollInterval}
@@ -254,6 +255,7 @@
                             key={record.index}
                             data-element-id="avonni-kanban__tile"
                             data-record-index={record.index}
+                            data-group-index={groupIndex}
                             class={computedTileClass}
                             onmousedown={handleTileMouseDown}
                             onmouseup={handleTileMouseUp}

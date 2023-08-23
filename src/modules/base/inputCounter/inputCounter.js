@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    classListMutation,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import {
@@ -40,12 +44,11 @@ import {
     increaseNumberByStep
 } from './numberFormat';
 
-const validVariants = {
+const INPUT_COUNTER_VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
-
-const validTypes = {
+const INPUT_COUNTER_TYPES = {
     valid: ['number', 'currency', 'percent'],
     default: 'number'
 };
@@ -159,16 +162,16 @@ export default class InputCounter extends LightningElement {
      */
     @api name;
 
-    _disabled;
+    _disabled = false;
     _fractionDigits;
     _max;
     _min;
     _step = DEFAULT_STEP;
-    _type = validTypes.default;
+    _type = INPUT_COUNTER_TYPES.default;
     _readOnly = false;
     _required = false;
     _value = null;
-    _variant = validVariants.default;
+    _variant = INPUT_COUNTER_VARIANTS.default;
 
     _connected = false;
     _constraintApi;
@@ -184,7 +187,7 @@ export default class InputCounter extends LightningElement {
         if (this.value || this.value === 0) {
             this.showHelpMessageIfInvalid();
         }
-        this.updateDisplayedValue();
+        this._updateDisplayedValue();
     }
 
     /*
@@ -194,43 +197,18 @@ export default class InputCounter extends LightningElement {
      */
 
     /**
-     * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified minimum. If an entered value is below the minimum, incrementing or decrementing will then set the value to the specified minimum.
+     * If present, the input field is disabled and users cannot interact with it.
      *
-     * @type {number}
+     * @type {boolean}
+     * @default false
      * @public
      */
     @api
-    get min() {
-        return this._min;
+    get disabled() {
+        return this._disabled;
     }
-
-    set min(value) {
-        this._min = !isNaN(value) && value !== null ? Number(value) : undefined;
-
-        if (this._connected) {
-            this.normalizeValue();
-            this.updateDisplayedValue();
-        }
-    }
-
-    /**
-     * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified maximum. If the entered value is above the maximum, incrementing or decrementing will then set the value to the specified maximum.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get max() {
-        return this._max;
-    }
-
-    set max(value) {
-        this._max = !isNaN(value) && value !== null ? Number(value) : undefined;
-
-        if (this._connected) {
-            this.normalizeValue();
-            this.updateDisplayedValue();
-        }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     /**
@@ -244,7 +222,6 @@ export default class InputCounter extends LightningElement {
     get fractionDigits() {
         return this._fractionDigits;
     }
-
     set fractionDigits(value) {
         const digits = Number(value);
         this._fractionDigits = !isNaN(digits)
@@ -252,24 +229,46 @@ export default class InputCounter extends LightningElement {
             : null;
 
         if (this._connected) {
-            this.updateDisplayedValue();
+            this._updateDisplayedValue();
         }
     }
 
     /**
-     * If present, the input field is disabled and users cannot interact with it.
+     * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified maximum. If the entered value is above the maximum, incrementing or decrementing will then set the value to the specified maximum.
      *
-     * @type {boolean}
-     * @default false
+     * @type {number}
      * @public
      */
     @api
-    get disabled() {
-        return this._disabled;
+    get max() {
+        return this._max;
+    }
+    set max(value) {
+        this._max = !isNaN(value) && value !== null ? Number(value) : undefined;
+
+        if (this._connected) {
+            this._normalizeValue();
+            this._updateDisplayedValue();
+        }
     }
 
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+    /**
+     * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified minimum. If an entered value is below the minimum, incrementing or decrementing will then set the value to the specified minimum.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get min() {
+        return this._min;
+    }
+    set min(value) {
+        this._min = !isNaN(value) && value !== null ? Number(value) : undefined;
+
+        if (this._connected) {
+            this._normalizeValue();
+            this._updateDisplayedValue();
+        }
     }
 
     /**
@@ -283,7 +282,6 @@ export default class InputCounter extends LightningElement {
     get readOnly() {
         return this._readOnly;
     }
-
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
@@ -299,7 +297,6 @@ export default class InputCounter extends LightningElement {
     get required() {
         return this._required;
     }
-
     set required(value) {
         this._required = normalizeBoolean(value);
     }
@@ -315,7 +312,6 @@ export default class InputCounter extends LightningElement {
     get step() {
         return this._step;
     }
-
     set step(value) {
         this._step = Number(value) || DEFAULT_STEP;
     }
@@ -331,15 +327,14 @@ export default class InputCounter extends LightningElement {
     get type() {
         return this._type;
     }
-
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: INPUT_COUNTER_TYPES.default,
+            validValues: INPUT_COUNTER_TYPES.valid
         });
 
         if (this._connected) {
-            this.updateDisplayedValue();
+            this._updateDisplayedValue();
         }
     }
 
@@ -365,7 +360,6 @@ export default class InputCounter extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(val) {
         const value = Number(val);
         this._value = !isNaN(value) ? value : null;
@@ -374,7 +368,7 @@ export default class InputCounter extends LightningElement {
             if (this._value || this._value === 0) {
                 this.showHelpMessageIfInvalid();
             }
-            this.updateDisplayedValue();
+            this._updateDisplayedValue();
         }
     }
 
@@ -389,16 +383,17 @@ export default class InputCounter extends LightningElement {
     get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: INPUT_COUNTER_VARIANTS.default,
+            validValues: INPUT_COUNTER_VARIANTS.valid
         });
 
-        if (this._variant === 'label-inline') {
-            this.classList.add('avonni-input-counter__flex-container');
-        }
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this._variant === 'label-stacked',
+            'avonni-input-counter__flex-container':
+                this._variant === 'label-inline'
+        });
     }
 
     /*
@@ -408,32 +403,26 @@ export default class InputCounter extends LightningElement {
      */
 
     /**
-     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
+     * Compute constraintApi with fieldConstraintApiWithProxyInput.
      */
-    get inputStep() {
-        return this.fractionDigits ? 1 / Math.pow(10, this.fractionDigits) : 1;
-    }
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this
+            );
 
-    /**
-     * Form Element class add error if showError.
-     *
-     * @type {string}
-     */
-    get formElementClass() {
-        return classSet('slds-form-element')
-            .add({
-                'slds-has-error': this.showError
-            })
-            .toString();
-    }
-
-    /**
-     * Check if variant is inline.
-     *
-     * @type {boolean}
-     */
-    get hasLabel() {
-        return this.label && this._variant !== 'label-hidden';
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'number',
+                    value: () => this.validationValue,
+                    max: () => this.max,
+                    min: () => this.min,
+                    step: () => this.inputStep,
+                    formatter: () => this.type,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
     }
 
     /**
@@ -464,6 +453,28 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
+     * Form Element class add error if showError.
+     *
+     * @type {string}
+     */
+    get formElementClass() {
+        return classSet('slds-form-element')
+            .add({
+                'slds-has-error': this.showError
+            })
+            .toString();
+    }
+
+    /**
+     * Check if variant is inline.
+     *
+     * @type {boolean}
+     */
+    get hasLabel() {
+        return this.label && this._variant !== 'label-hidden';
+    }
+
+    /**
      * Computed CSS classes for the input element.
      *
      * @type {string}
@@ -477,6 +488,13 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
+     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
+     */
+    get inputStep() {
+        return this.fractionDigits ? 1 / Math.pow(10, this.fractionDigits) : 1;
+    }
+
+    /**
      * Value normalized to be passed in the validation constraint. If the type is percent, the value is multiplied by 100 to reflect its end result (0.1 will be transformed into 10%).
      *
      * @type {number}
@@ -486,29 +504,6 @@ export default class InputCounter extends LightningElement {
             return this.value * 100;
         }
         return this.value;
-    }
-
-    /**
-     * Compute constraintApi with fieldConstraintApiWithProxyInput.
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this
-            );
-
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'number',
-                    value: () => this.validationValue,
-                    max: () => this.max,
-                    min: () => this.min,
-                    step: () => this.inputStep,
-                    formatter: () => this.type,
-                    disabled: () => this.disabled
-                });
-        }
-        return this._constraintApi;
     }
 
     /*
@@ -600,20 +595,20 @@ export default class InputCounter extends LightningElement {
      *
      * @param {number} increment Direction of the increment. Valid values are 1 or -1.
      */
-    incrementValue(increment) {
+    _incrementValue(increment) {
         this._value = increaseNumberByStep({
             value: this.value,
             increment,
             step: this.step
         });
-        this.normalizeValue();
+        this._normalizeValue();
         this.dispatchChange();
     }
 
     /**
      * Normalize the value so it doesn't go above the max or below the min.
      */
-    normalizeValue() {
+    _normalizeValue() {
         if ((this.min || this.min === 0) && this.value < this.min) {
             this._value = this.min;
         }
@@ -625,7 +620,7 @@ export default class InputCounter extends LightningElement {
     /**
      * Update the displayed value to reflect the number of fraction digits and the type.
      */
-    updateDisplayedValue() {
+    _updateDisplayedValue() {
         const input = this.template.querySelector('[data-element-id="input"]');
         const isSymbol =
             input.value.length === 1 && hasValidNumberSymbol(input.value);
@@ -656,7 +651,7 @@ export default class InputCounter extends LightningElement {
      *
      * @param {object} attributes
      */
-    updateProxyInputAttributes(attributes) {
+    _updateProxyInputAttributes(attributes) {
         if (this._constraintApiProxyInputUpdater) {
             this._constraintApiProxyInputUpdater(attributes);
         }
@@ -672,7 +667,14 @@ export default class InputCounter extends LightningElement {
      * Handle a blur of the input.
      */
     handleBlur() {
-        this.updateDisplayedValue();
+        this._updateDisplayedValue();
+        /**
+         * The event fired when the focus is removed from the input counter.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -692,8 +694,8 @@ export default class InputCounter extends LightningElement {
      * Handle a click on the decrement button.
      */
     handleDecrement() {
-        this.incrementValue(-1);
-        this.updateDisplayedValue();
+        this._incrementValue(-1);
+        this._updateDisplayedValue();
     }
 
     /**
@@ -701,6 +703,13 @@ export default class InputCounter extends LightningElement {
      */
     handleFocus(event) {
         event.currentTarget.value = this.value || '';
+        /**
+         * The event fired when the input counter receives focus.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
@@ -708,8 +717,8 @@ export default class InputCounter extends LightningElement {
      * Handle a click on the increment button.
      */
     handleIncrement() {
-        this.incrementValue(1);
-        this.updateDisplayedValue();
+        this._incrementValue(1);
+        this._updateDisplayedValue();
     }
 
     /**
@@ -722,12 +731,12 @@ export default class InputCounter extends LightningElement {
         switch (key) {
             case 'ArrowUp':
                 event.preventDefault();
-                this.incrementValue(1);
+                this._incrementValue(1);
                 event.currentTarget.value = this.value;
                 break;
             case 'ArrowDown':
                 event.preventDefault();
-                this.incrementValue(-1);
+                this._incrementValue(-1);
                 event.currentTarget.value = this.value;
                 break;
             default:
@@ -739,7 +748,7 @@ export default class InputCounter extends LightningElement {
      * Update the validity state and dispatch the change event.
      */
     dispatchChange() {
-        this.updateProxyInputAttributes('value');
+        this._updateProxyInputAttributes('value');
 
         /**
          * @event

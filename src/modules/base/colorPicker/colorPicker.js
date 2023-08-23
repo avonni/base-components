@@ -1286,6 +1286,14 @@ export default class ColorPicker extends LightningElement {
         ) {
             this.toggleMenuVisibility();
         }
+        /**
+         * The event fired when the focus is removed from the color picker input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -1491,22 +1499,6 @@ export default class ColorPicker extends LightningElement {
          * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    /**
-     * Blur event dispatcher.
-     *
-     */
-    handleInputBlur() {
-        this.interactingState.leave();
-        /**
-         * The event fired when the focus is removed from the color picker input.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**

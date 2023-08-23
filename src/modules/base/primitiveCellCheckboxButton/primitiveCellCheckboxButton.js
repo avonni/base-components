@@ -69,12 +69,28 @@ export default class PrimitiveCellCheckboxButton extends LightningElement {
         const detail = {
             value: event.detail.checked,
             colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
+            rowKeyValue: this.rowKeyValue,
+            callbacks: {
+                dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
+            }
         };
 
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    dispatchCellChangeEvent(state) {
+        const dirtyValues = state.inlineEdit.dirtyValues;
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    draftValues: dirtyValues
+                },
                 bubbles: true,
                 composed: true
             })
