@@ -94,28 +94,28 @@
                                 ></lightning-icon>
                             </span>
                             <!-- Figure Container -->
-                            <div class={item.notSelectedClass}>
+                            <div class={item.computedNotSelectedClass}>
                                 <!-- Figure Image (Horizontal) -->
                                 <div
                                     if:true={item.layoutIsHorizontal}
-                                    style={item.layoutContainerStyle}
+                                    style={item.computedLayoutContainerStyle}
                                     class="
                                         avonni-visual-picker__figure-image-container
                                     "
                                 >
                                     <div
-                                        style={item.imgContainerStyle}
+                                        style={item.computedImgContainerStyle}
                                         class="
                                             avonni-visual-picker__figure-image-container
                                         "
                                     >
                                         <div
-                                            style={item.imgStyle}
+                                            style={item.computedImgStyle}
                                             class="slds-is-relative"
                                         >
                                             <img
                                                 loading="lazy"
-                                                style={item.imgStyle}
+                                                style={item.computedImgStyle}
                                                 class={computedImageMediaClass}
                                                 src={item.imgSrc}
                                                 alt={item.imgAlternativeText}
@@ -128,54 +128,30 @@
                                 </div>
                                 <!-- Figure Body -->
                                 <div
-                                    style={item.layoutContainerStyle}
-                                    class={item.bodyContainerClass}
+                                    style={item.computedLayoutContainerStyle}
+                                    class={item.computedBodyContainerClass}
                                 >
                                     <div
-                                        if:true={item.avatarIsHorizontal}
-                                        class={item.avatarClass}
+                                        class={item.computedItemsContainerClass}
                                     >
-                                        <c-primitive-avatar
-                                            alternative-text={item.avatarAltText}
-                                            fallback-icon-name={item.avatar.iconName}
-                                            initials={item.avatar.initials}
-                                            presence={item.avatar.presence}
-                                            presence-position={item.avatar.presencePosition}
-                                            size={item.avatar.size}
-                                            src={item.avatar.imgSrc}
-                                            variant={item.avatar.variant}
-                                            data-element-id="c-primitive-avatar-horizontal"
-                                        ></c-primitive-avatar>
-                                    </div>
-                                    <div class={item.itemsContainerClass}>
                                         <!-- Position Top -->
                                         <div class={visualPickerItemsClassTop}>
-                                            <c-primitive-avatar
-                                                alternative-text={item.avatarAltText}
-                                                fallback-icon-name={item.avatar.iconName}
-                                                initials={item.avatar.initials}
-                                                presence={item.avatar.presence}
-                                                presence-position={item.avatar.presencePosition}
-                                                size={item.avatar.size}
-                                                src={item.avatar.imgSrc}
-                                                variant={item.avatar.variant}
-                                                data-element-id="c-primitive-avatar-top"
-                                                if:true={item.avatarIsTop}
-                                            ></c-primitive-avatar>
-                                            <c-primitive-visual-picker-title
+                                            <c-primitive-visual-picker-header
+                                                if:true={item.headerIsTop}
                                                 alternative-text={item.avatarAltText}
                                                 avatar={item.avatar}
                                                 avatar-position={item.avatarPosition}
-                                                display-avatar={item.displayTitleAvatar}
+                                                description={item.description}
+                                                description-class={item.computedDescriptionClass}
+                                                hide-avatar-top-bottom={item.avatarTopHidden}
+                                                hide-title={item.titleTopHidden}
+                                                hide-description={item.descriptionTopHidden}
                                                 size={size}
                                                 title={item.title}
                                                 class="
-                                                    avonni-visual-picker__figure-title
+                                                    avonni-visual-picker__figure-header
                                                 "
-                                                data-element-id="c-primitive-visual-picker-title-top"
-                                                if:true={item.titleIsTop}
-                                            >
-                                            </c-primitive-visual-picker-title>
+                                            ></c-primitive-visual-picker-header>
                                             <div
                                                 if:true={item.imgIsTop}
                                                 class="
@@ -183,18 +159,18 @@
                                                 "
                                             >
                                                 <div
-                                                    style={item.imgContainerStyle}
+                                                    style={item.computedImgContainerStyle}
                                                     class="
                                                         avonni-visual-picker__figure-image-container
                                                     "
                                                 >
                                                     <div
-                                                        style={item.imgStyle}
+                                                        style={item.computedImgStyle}
                                                         class="slds-is-relative"
                                                     >
                                                         <img
                                                             loading="lazy"
-                                                            style={item.imgStyle}
+                                                            style={item.computedImgStyle}
                                                             class={computedImageMediaClass}
                                                             src={item.imgSrc}
                                                             alt={item.imgAlternativeText}
@@ -205,31 +181,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p
-                                                if:true={item.descriptionIsTop}
-                                                class={item.computedDescriptionClass}
-                                            >
-                                                {item.description}
-                                            </p>
                                         </div>
                                         <!-- Position Center -->
                                         <div
                                             class={visualPickerItemsClassCenter}
                                         >
-                                            <c-primitive-visual-picker-title
+                                            <c-primitive-visual-picker-header
+                                                if:true={item.headerIsCenter}
                                                 alternative-text={item.avatarAltText}
                                                 avatar={item.avatar}
                                                 avatar-position={item.avatarPosition}
-                                                display-avatar={item.displayTitleAvatar}
+                                                description={item.description}
+                                                description-class={item.computedDescriptionClass}
+                                                hide-avatar-top-bottom={item.avatarCenterHidden}
+                                                hide-title={item.titleCenterHidden}
+                                                hide-description={item.descriptionCenterHidden}
                                                 size={size}
                                                 title={item.title}
                                                 class="
-                                                    avonni-visual-picker__figure-title
+                                                    avonni-visual-picker__figure-header
                                                 "
-                                                data-element-id="c-primitive-visual-picker-title-center"
-                                                if:true={item.titleIsCenter}
-                                            >
-                                            </c-primitive-visual-picker-title>
+                                            ></c-primitive-visual-picker-header>
                                             <div
                                                 if:true={item.imgIsCenter}
                                                 class="
@@ -237,18 +209,18 @@
                                                 "
                                             >
                                                 <div
-                                                    style={item.imgContainerStyle}
+                                                    style={item.computedImgContainerStyle}
                                                     class="
                                                         avonni-visual-picker__figure-image-container
                                                     "
                                                 >
                                                     <div
-                                                        style={item.imgStyle}
+                                                        style={item.computedImgStyle}
                                                         class="slds-is-relative"
                                                     >
                                                         <img
                                                             loading="lazy"
-                                                            style={item.imgStyle}
+                                                            style={item.computedImgStyle}
                                                             class={computedImageMediaClass}
                                                             src={item.imgSrc}
                                                             alt={item.imgAlternativeText}
@@ -259,24 +231,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p
-                                                if:true={item.descriptionIsCenter}
-                                                class={item.computedDescriptionClass}
-                                            >
-                                                {item.description}
-                                            </p>
-                                            <c-primitive-avatar
-                                                alternative-text={item.avatarAltText}
-                                                fallback-icon-name={item.avatar.iconName}
-                                                initials={item.avatar.initials}
-                                                presence={item.avatar.presence}
-                                                presence-position={item.avatar.presencePosition}
-                                                size={item.avatar.size}
-                                                src={item.avatar.imgSrc}
-                                                variant={item.avatar.variant}
-                                                data-element-id="c-primitive-avatar-center"
-                                                if:true={item.avatarIsCenter}
-                                            ></c-primitive-avatar>
                                             <div
                                                 if:true={item.hasFields}
                                                 class="
@@ -317,20 +271,22 @@
                                         </div>
                                         <!-- Position Bottom -->
                                         <div class={visualPickerItemsClass}>
-                                            <c-primitive-visual-picker-title
+                                            <c-primitive-visual-picker-header
+                                                if:true={item.headerIsBottom}
                                                 alternative-text={item.avatarAltText}
                                                 avatar={item.avatar}
                                                 avatar-position={item.avatarPosition}
-                                                display-avatar={item.displayTitleAvatar}
+                                                description={item.description}
+                                                description-class={item.computedDescriptionClass}
+                                                hide-avatar-top-bottom={item.avatarBottomHidden}
+                                                hide-title={item.titleBottomHidden}
+                                                hide-description={item.descriptionBottomHidden}
                                                 size={size}
                                                 title={item.title}
                                                 class="
-                                                    avonni-visual-picker__figure-title
+                                                    avonni-visual-picker__figure-header
                                                 "
-                                                data-element-id="c-primitive-visual-picker-title-bottom"
-                                                if:true={item.titleIsBottom}
-                                            >
-                                            </c-primitive-visual-picker-title>
+                                            ></c-primitive-visual-picker-header>
                                             <div
                                                 if:true={item.imgIsBottom}
                                                 class="
@@ -338,18 +294,18 @@
                                                 "
                                             >
                                                 <div
-                                                    style={item.imgContainerStyle}
+                                                    style={item.computedImgContainerStyle}
                                                     class="
                                                         avonni-visual-picker__figure-image-container
                                                     "
                                                 >
                                                     <div
-                                                        style={item.imgStyle}
+                                                        style={item.computedImgStyle}
                                                         class="slds-is-relative"
                                                     >
                                                         <img
                                                             loading="lazy"
-                                                            style={item.imgStyle}
+                                                            style={item.computedImgStyle}
                                                             class={computedImageMediaClass}
                                                             src={item.imgSrc}
                                                             alt={item.imgAlternativeText}
@@ -360,29 +316,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p
-                                                if:true={item.descriptionIsBottom}
-                                                class={item.computedDescriptionClass}
-                                            >
-                                                {item.description}
-                                            </p>
-                                            <c-primitive-avatar
-                                                alternative-text={item.avatarAltText}
-                                                fallback-icon-name={item.avatar.iconName}
-                                                initials={item.avatar.initials}
-                                                presence={item.avatar.presence}
-                                                presence-position={item.avatar.presencePosition}
-                                                size={item.avatar.size}
-                                                src={item.avatar.imgSrc}
-                                                variant={item.avatar.variant}
-                                                data-element-id="c-primitive-avatar-bottom"
-                                                if:true={item.avatarIsBottom}
-                                            ></c-primitive-avatar>
                                             <template
                                                 if:true={isBiggerThanXSmall}
                                             >
                                                 <div
-                                                    if:true={item.tags}
+                                                    if:true={item.hasTags}
                                                     class="
                                                         avonni-visual-picker__tags-container
                                                     "

@@ -491,6 +491,10 @@
             "path": "src/modules/base/primitiveTreeItem/primitiveTreeItem.js"
         },
         {
+            "name": "c/primitiveVisualPickerHeader",
+            "path": "src/modules/base/primitiveVisualPickerHeader/primitiveVisualPickerHeader.js"
+        },
+        {
             "name": "c/primitiveVisualPickerTitle",
             "path": "src/modules/base/primitiveVisualPickerTitle/primitiveVisualPickerTitle.js"
         },
