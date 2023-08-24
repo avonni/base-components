@@ -212,6 +212,42 @@ export default {
                 defaultValue: { summary: 'non-coverable' },
                 type: { summary: 'string' }
             }
+        },
+        cols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Default number of columns. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        smallContainerCols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for small containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        mediumContainerCols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for medium containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
+        },
+        largeContainerCols: {
+            control: { type: 'number', min: 1, max: 12 },
+            description:
+                'Number of columns for large containers. Valid values include 1, 2, 3, 4, 6 and 12.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Columns'
+            }
         }
     },
     args: {
@@ -298,6 +334,7 @@ ItemsWithPictures.args = {
     ratio: '16-by-9',
     size: 'xx-large',
     imageAttributes: {
+        height: 100,
         cropFit: 'cover',
         position: 'overlay'
     }
@@ -327,7 +364,10 @@ AnalyticItemsTop.args = {
     ratio: '3-by-4',
     size: 'xx-large',
     type: 'checkbox',
-    value: ['approval-analytics', 'commerce-analytics']
+    value: ['approval-analytics', 'commerce-analytics'],
+    imageAttributes: {
+        position: 'top'
+    }
 };
 
 export const GoalStory = Template.bind({});

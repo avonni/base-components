@@ -74,12 +74,13 @@ const AVATAR_VERTICAL_ALIGNMENT = {
 };
 
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
-const DEFAULT_FIELD_COLUMNS = {
+const DEFAULT_COLUMNS = {
     default: 12,
     small: 12,
     medium: 6,
     large: 4
 };
+
 const FIELD_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
@@ -132,6 +133,11 @@ export default class VisualPicker extends LightningElement {
      */
     @api name = generateUUID();
 
+    _cols = 1;
+    _mediumContainerCols;
+    _largeContainerCols;
+    _smallContainerCols;
+
     _disabled = DEFAULT_DISABLED;
     _fieldAttributes = {};
     _hideBorder;
@@ -147,6 +153,7 @@ export default class VisualPicker extends LightningElement {
 
     _connected = false;
     _computedItems = [];
+    _columnSizes = {};
     _itemHeightInRem = {
         small: {
             '1-by-1': 8,
@@ -276,6 +283,85 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     *
+     * @type {number}
+     * @default 1
+     * @public
+     */
+    @api
+    get cols() {
+        return this._cols;
+    }
+    set cols(value) {
+        const defaults = this.normalizeColumnAttributes(value);
+        this._columnSizes.defaults = defaults;
+        this._cols = this.isResponsive
+            ? defaults || DEFAULT_COLUMNS.default
+            : 1;
+    }
+
+    /**
+     * Number of columns on small container widths. See `cols` for accepted values.
+     * @type {number}
+     * @public
+     */
+    @api
+    get smallContainerCols() {
+        return this._smallContainerCols;
+    }
+    set smallContainerCols(value) {
+        const small = this.normalizeColumnAttributes(value);
+        this._columnSizes.small = small;
+        this._smallContainerCols = this.isResponsive
+            ? small || this._columnSizes.defaults || DEFAULT_COLUMNS.small
+            : 1;
+    }
+
+    /**
+     * Number of columns on medium container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get mediumContainerCols() {
+        return this._mediumContainerCols;
+    }
+    set mediumContainerCols(value) {
+        const medium = this.normalizeColumnAttributes(value);
+        this._columnSizes.medium = medium;
+        this._mediumContainerCols = this.isResponsive
+            ? medium ||
+              this._columnSizes.small ||
+              this._columnSizes.defaults ||
+              DEFAULT_COLUMNS.medium
+            : 1;
+    }
+
+    /**
+     * Number of columns on large container widths and above. See `cols` for accepted values.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get largeContainerCols() {
+        return this._largeContainerCols;
+    }
+    set largeContainerCols(value) {
+        const large = this.normalizeColumnAttributes(value);
+        this._columnSizes.large = large;
+        this._largeContainerCols = this.isResponsive
+            ? large ||
+              this._columnSizes.medium ||
+              this._columnSizes.small ||
+              this._columnSizes.defaults ||
+              DEFAULT_COLUMNS.large
+            : 1;
+    }
+
+    /**
      * If present, the visual picker is disabled and the user cannot interact with it.
      *
      * @type {boolean}
@@ -302,12 +388,12 @@ export default class VisualPicker extends LightningElement {
     }
     set fieldAttributes(value) {
         const normalizedFieldAttributes = normalizeObject(value);
-        const defaults = this.normalizeFieldColumns(
+        const defaults = this.normalizeColumnAttributes(
             normalizedFieldAttributes.cols
         );
 
         // Keep same logic as in layoutItem.
-        this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
+        this._fieldAttributes.cols = defaults || DEFAULT_COLUMNS.default;
 
         this._fieldAttributes.variant = normalizeString(
             normalizedFieldAttributes.variant,
@@ -793,6 +879,12 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
+    get computedVisualPickerLayoutClass() {
+        return classSet(
+            'slds-form-element__control slds-grid slds-wrap'
+        ).toString();
+    }
+
     /**
      * Compute visual picker class styling based on selected attributes. ( orientation, size, ratio)
      *
@@ -803,6 +895,7 @@ export default class VisualPicker extends LightningElement {
             .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
             .add({ 'slds-m-around_none': this.isResponsive })
+            .add({ 'slds-p-right_small': this.isResponsive })
             .toString();
     }
 
@@ -1236,7 +1329,7 @@ export default class VisualPicker extends LightningElement {
      * @param {number} value
      * @returns {number}
      */
-    normalizeFieldColumns(value) {
+    normalizeColumnAttributes(value) {
         const normalizedCols = this.normalizeColumns(value);
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
