@@ -54,7 +54,10 @@
             </template>
             {label}
         </legend>
-        <c-layout multiple-rows class={computedVisualPickerLayoutClass}>
+        <c-layout
+            multiple-rows
+            class="slds-form-element__control slds-grid slds-wrap"
+        >
             <template for:each={listItems} for:item="item">
                 <c-layout-item
                     size={cols}

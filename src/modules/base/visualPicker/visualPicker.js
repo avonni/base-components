@@ -94,6 +94,43 @@ const IMAGE_POSITION = {
     valid: ['top', 'bottom', 'left', 'right', 'background', 'overlay'],
     default: 'top'
 };
+const IMAGE_MAX_HEIGHT_REM = {
+    small: {
+        '1-by-1': 1,
+        '4-by-3': 0.5,
+        '16-by-9': 0.25,
+        '3-by-4': 3.5,
+        '9-by-16': 4.75
+    },
+    medium: {
+        '1-by-1': 3,
+        '4-by-3': 2.5,
+        '16-by-9': 2,
+        '3-by-4': 5.25,
+        '9-by-16': 7
+    },
+    large: {
+        '1-by-1': 5,
+        '4-by-3': 3,
+        '16-by-9': 2.25,
+        '3-by-4': 6.5,
+        '9-by-16': 9
+    },
+    'x-large': {
+        '1-by-1': 6,
+        '4-by-3': 3.5,
+        '16-by-9': 3.25,
+        '3-by-4': 8,
+        '9-by-16': 10.5
+    },
+    'xx-large': {
+        '1-by-1': 7,
+        '4-by-3': 4,
+        '16-by-9': 4,
+        '3-by-4': 9.25,
+        '9-by-16': 12.5
+    }
+};
 const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
@@ -137,7 +174,6 @@ export default class VisualPicker extends LightningElement {
     _mediumContainerCols;
     _largeContainerCols;
     _smallContainerCols;
-
     _disabled = DEFAULT_DISABLED;
     _fieldAttributes = {};
     _hideBorder;
@@ -154,87 +190,6 @@ export default class VisualPicker extends LightningElement {
     _connected = false;
     _computedItems = [];
     _columnSizes = {};
-    _itemHeightInRem = {
-        small: {
-            '1-by-1': 8,
-            '4-by-3': 6,
-            '16-by-9': 4.5,
-            '3-by-4': 10.66,
-            '9-by-16': 14.22
-        },
-        medium: {
-            '1-by-1': 12,
-            '4-by-3': 7.5,
-            '16-by-9': 5.625,
-            '3-by-4': 16,
-            '9-by-16': 21.3
-        },
-        large: {
-            '1-by-1': 15,
-            '4-by-3': 9,
-            '16-by-9': 6.75,
-            '3-by-4': 20,
-            '9-by-16': 26.66
-        },
-        'x-large': {
-            '1-by-1': 18,
-            '4-by-3': 10.5,
-            '16-by-9': 10.125,
-            '3-by-4': 24,
-            '9-by-16': 32
-        },
-        'xx-large': {
-            '1-by-1': 21,
-            '4-by-3': 12,
-            '16-by-9': 11.8125,
-            '3-by-4': 28,
-            '9-by-16': 37.3333
-        }
-    };
-    _imageContainerHeightInRem = {
-        small: {
-            '1-by-1': 1,
-            '4-by-3': 0.5,
-            '16-by-9': 0.25,
-            '3-by-4': 3.5,
-            '9-by-16': 4.75
-        },
-        medium: {
-            '1-by-1': 3,
-            '4-by-3': 2.5,
-            '16-by-9': 2,
-            '3-by-4': 5.25,
-            '9-by-16': 7
-        },
-        large: {
-            '1-by-1': 5,
-            '4-by-3': 3,
-            '16-by-9': 2.25,
-            '3-by-4': 6.5,
-            '9-by-16': 9
-        },
-        'x-large': {
-            '1-by-1': 6,
-            '4-by-3': 3.5,
-            '16-by-9': 3.25,
-            '3-by-4': 8,
-            '9-by-16': 10.5
-        },
-        'xx-large': {
-            '1-by-1': 7,
-            '4-by-3': 4,
-            '16-by-9': 4,
-            '3-by-4': 9.25,
-            '9-by-16': 12.5
-        }
-    };
-    _imageHeightSize = {
-        small: 48,
-        medium: 96,
-        large: 192,
-        'x-large': 384,
-        'xx-large': 768
-    };
     _isFallbackLoadedMap = {};
     _resizeObserver;
 
@@ -879,12 +834,6 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    get computedVisualPickerLayoutClass() {
-        return classSet(
-            'slds-form-element__control slds-grid slds-wrap'
-        ).toString();
-    }
-
     /**
      * Compute visual picker class styling based on selected attributes. ( orientation, size, ratio)
      *
@@ -1187,8 +1136,7 @@ export default class VisualPicker extends LightningElement {
             !this.isResponsive &&
             !imgIsBackground
         ) {
-            const maxHeightInRem =
-                this._imageContainerHeightInRem[this.size][this.ratio];
+            const maxHeightInRem = IMAGE_MAX_HEIGHT_REM[this.size][this.ratio];
             let heightInPx = this.imageAttributes.height;
             let heightSize = heightInPx
                 ? `min(${heightInPx}px, ${maxHeightInRem}rem)`
@@ -1214,8 +1162,8 @@ export default class VisualPicker extends LightningElement {
         const size = this.imageAttributes.size || this.size;
         if (size) {
             let heightInPx = this.imageAttributes.height;
-            let heightInRem = this._imageContainerHeightInRem[size]
-                ? this._imageContainerHeightInRem[size][this.ratio]
+            let heightInRem = IMAGE_MAX_HEIGHT_REM[size]
+                ? IMAGE_MAX_HEIGHT_REM[size][this.ratio]
                 : 0;
             let heightSize = heightInPx
                 ? `${heightInPx}px`
@@ -1231,7 +1179,7 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute item layout container styling.
+     * Compute item layout container styling. If the image position is left or right, the item content layout will be split into two columns of equal size.
      *
      * @param {boolean} imgIsHorizontal
      * @param {boolean} imgIsBackground

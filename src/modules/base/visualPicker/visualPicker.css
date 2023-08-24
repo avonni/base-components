@@ -107,6 +107,7 @@
         )
     );
     margin: 0 0.3rem 0.3rem 0.3rem;
+    height: 45%;
 }
 
 .avonni-visual-picker__figure-image-overlay
@@ -127,6 +128,7 @@
     margin: 0 0.3rem 0.3rem 0.3rem;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+    height: 45%;
 }
 
 .avonni-visual-picker__figure-image-overlay:hover
@@ -385,6 +387,7 @@
     height: 100%;
     min-height: 15rem;
     max-height: 21rem;
+    width: 100%;
 }
 
 .avonni-visual-picker_responsive .avonni-visual-picker__figure {

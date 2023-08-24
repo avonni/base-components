@@ -78,7 +78,6 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
-    // _displayAvatar = DEFAULT_DISPLAY_AVATAR;
     _size = VISUAL_PICKER_SIZES.default;
 
     /**
@@ -95,7 +94,7 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     }
 
     /**
-     * If present, sets the position of the avatar. Valid values include top, bottom, center, right and left. The value defaults to left.
+     * If present, sets the position of the avatar. Valid values include top, bottom, center, right, left, content-left and content-right. The value defaults to left.
      *
      * @type {string}
      */
