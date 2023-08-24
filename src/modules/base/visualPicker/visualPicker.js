@@ -131,6 +131,11 @@ const IMAGE_MAX_HEIGHT_REM = {
         '9-by-16': 12.5
     }
 };
+const IMAGE_MAX_WIDTH_PERCENT = {
+    small: 50,
+    medium: 75,
+    large: 100
+};
 const IMAGE_SIZE = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
@@ -1160,21 +1165,31 @@ export default class VisualPicker extends LightningElement {
         let heightStyle = 'height: 100%;';
 
         const size = this.imageAttributes.size || this.size;
-        if (size) {
+        if (size && this.ratio) {
+            // Size controls the width for image positions left and right. Otherwise, it controls the height.
+            // The height is only used for image positions top, bottom, background and overlay.
             let heightInPx = this.imageAttributes.height;
-            let heightInRem = IMAGE_MAX_HEIGHT_REM[size]
-                ? IMAGE_MAX_HEIGHT_REM[size][this.ratio]
+            let heightInRem = IMAGE_MAX_WIDTH_PERCENT[size]
+                ? IMAGE_MAX_WIDTH_PERCENT[size]
                 : 0;
-            let heightSize = heightInPx
-                ? `${heightInPx}px`
-                : `${heightInRem}rem`;
-
-            if (!imgIsHorizontal && !imgIsBackground) {
-                widthStyle = 'width: 100%;';
-                heightStyle = `height: ${heightSize}; min-height: ${heightSize};`;
+            let imageSize = `${heightInRem}%`;
+            if (heightInPx > 0) {
+                // If present, the height overrides the size value
+                imageSize = `${heightInPx}px`;
+                if (imgIsHorizontal) {
+                    widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
+                } else {
+                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
+                }
+            } else {
+                if (imgIsHorizontal || imgIsBackground) {
+                    widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
+                }
+                if (!imgIsHorizontal || imgIsBackground) {
+                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
+                }
             }
         }
-
         return `${heightStyle} ${widthStyle} ${objectFit}`;
     }
 
