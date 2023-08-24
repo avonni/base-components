@@ -1408,7 +1408,9 @@ export default class VisualPicker extends LightningElement {
                             ) {
                                 tagElement.classList.add(hiddenTagClass);
                             }
-                            item.tags[tagIndex].hidden = isHidden;
+                            if (item.tags[tagIndex]) {
+                                item.tags[tagIndex].hidden = isHidden;
+                            }
                             totalWidth += width;
                         });
                         item.hasHiddenTags = item.tags.some(
