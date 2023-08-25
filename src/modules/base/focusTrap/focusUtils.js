@@ -23,6 +23,7 @@ export function findAllTabbableElements(container) {
             console.warn(e);
         }
     });
+
     return result;
 }
 
@@ -41,11 +42,13 @@ const FOCUSABLE_NODES = /^input$|^select$|^textarea$|^a$|^button$/;
  */
 export function findAllFocusableNodes(container) {
     const result = [];
+
     traverseActiveTreeRecursively(container, (element) => {
         if (FOCUSABLE_NODES.test(element.tagName.toLowerCase())) {
             result.push(element);
         }
     });
+
     return result;
 }
 
@@ -56,6 +59,7 @@ export function findAllFocusableNodes(container) {
  */
 export function getElementWithFocus() {
     let currentFocusedElement = document.activeElement;
+
     while (currentFocusedElement) {
         if (currentFocusedElement.shadowRoot) {
             let nextFocusedElement =
@@ -91,6 +95,7 @@ function traverseActiveTreeRecursively(node, callback) {
     if (!node) {
         return;
     }
+
     if (node.nodeType === Node.ELEMENT_NODE) {
         // inert is only supported by Chrome for now (behind a flag)
         if (node.hasAttribute('inert')) {
@@ -130,6 +135,7 @@ function traverseActiveTreeRecursively(node, callback) {
             return;
         }
     }
+
     let child = node.firstChild;
     while (child !== null) {
         traverseActiveTreeRecursively(child, callback);
@@ -174,7 +180,7 @@ function isTabbable({ element, rootContainer }) {
         return false;
     }
 
-    const tabIndexAttribute = element.getAttribute('tabindex');
+    const tabIndexAttribute = element?.getAttribute('tabindex');
     if (tabIndexAttribute === '-1') {
         return false;
     }
@@ -205,7 +211,7 @@ function isTabbable({ element, rootContainer }) {
  * @returns {boolean} element has role='tooltip'
  */
 const elemHasRoleTooltip = (elem) => {
-    return elem.getAttribute('role') === 'tooltip';
+    return elem?.getAttribute('role') === 'tooltip';
 };
 
 /**
@@ -225,7 +231,7 @@ const elemHasIgnoreAutofocus = (elem) => {
 const elemIsHelpTextComponent = (elem) => {
     // properties of <lightning-helptext>
     const tagNameIsButton = elem.tagName.toLowerCase() === 'button';
-    const ariaDescValue = elem.getAttribute('aria-describedby');
+    const ariaDescValue = elem?.getAttribute('aria-describedby');
     // ie11 doesn't support .startsWith()
     const ariaValueMatchesPrefix = ariaDescValue
         ? String(ariaDescValue).indexOf(BUBBLE_PREFIX) === 0
@@ -279,9 +285,9 @@ function isParentCustomElementTabbable({ element, rootContainer }) {
     const parentRoot = rootContainer.getRootNode();
     const ownerDocument = element.ownerDocument;
     let root = element.getRootNode();
-    while (root !== parentRoot && root !== ownerDocument) {
+    while (root && root !== parentRoot && root !== ownerDocument) {
         const host = root.host;
-        if (host.getAttribute('tabindex') === '-1') {
+        if (host?.getAttribute('tabindex') === '-1') {
             return false;
         }
         root = host && host.getRootNode();
