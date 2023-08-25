@@ -33,269 +33,287 @@
 -->
 
 <template>
-    <fieldset aria-required={required}>
-        <div class={computedLegendClass}>
-            <legend
-                class="slds-form-element__label avonni-input-choice-set__label"
-            >
-                <template if:true={required}>
-                    <abbr
-                        class="slds-required"
-                        title={i18n.required}
-                        data-element-id="abbr"
-                        >*</abbr
-                    >
-                </template>
-                {label}
-            </legend>
-            <lightning-helptext
-                if:true={fieldLevelHelp}
-                content={fieldLevelHelp}
-                data-element-id="lightning-helptext"
-            ></lightning-helptext>
-        </div>
-        <div class="slds-form-element__control">
-            <div
-                if:true={isLoading}
-                class="slds-is-relative avonni-input-choice-set__loading"
-            >
-                <lightning-spinner
-                    alternative-text="Loading..."
-                    size="small"
-                    data-element-id="lightning-spinner-loading"
-                ></lightning-spinner>
-            </div>
-            <div
-                if:false={isLoading}
-                class={computedButtonClass}
-                data-element-id="input-group"
-            >
-                <c-layout
-                    if:true={hasLayoutItem}
-                    class="slds-size_full"
-                    multiple-rows={computedOrientationAttributes.multipleRows}
-                    data-element-id="layout"
+    <div data-element-id="container">
+        <fieldset aria-required={required}>
+            <div class={computedLegendClass}>
+                <legend
+                    class="
+                        slds-form-element__label
+                        avonni-input-choice-set__label
+                    "
                 >
-                    <!-- Vertical/Horizontal toggle, checkbox, radio and displayAsRow button -->
-                    <template for:each={transformedOptions} for:item="option">
-                        <c-layout-item
-                            data-element-id="layout-item"
-                            class="slds-grid"
-                            key={option.value}
-                            size={computedOrientationAttributes.cols}
-                            large-container-size={computedOrientationAttributes.largeContainerCols}
-                            medium-container-size={computedOrientationAttributes.mediumContainerCols}
-                            small-container-size={computedOrientationAttributes.smallContainerCols}
+                    <template if:true={required}>
+                        <abbr
+                            class="slds-required"
+                            title={i18n.required}
+                            data-element-id="abbr"
+                            >*</abbr
                         >
-                            <span
+                    </template>
+                    {label}
+                </legend>
+                <lightning-helptext
+                    if:true={fieldLevelHelp}
+                    content={fieldLevelHelp}
+                    data-element-id="lightning-helptext"
+                ></lightning-helptext>
+            </div>
+            <div class="slds-form-element__control">
+                <div
+                    if:true={isLoading}
+                    class="slds-is-relative avonni-input-choice-set__loading"
+                >
+                    <lightning-spinner
+                        alternative-text="Loading..."
+                        size="small"
+                        data-element-id="lightning-spinner-loading"
+                    ></lightning-spinner>
+                </div>
+                <div
+                    if:false={isLoading}
+                    class={computedButtonClass}
+                    data-element-id="input-group"
+                >
+                    <c-layout
+                        if:true={hasLayoutItem}
+                        class="slds-size_full"
+                        multiple-rows={computedOrientationAttributes.multipleRows}
+                        data-element-id="layout"
+                    >
+                        <!-- Vertical/Horizontal toggle, checkbox, radio and displayAsRow button -->
+                        <template
+                            for:each={transformedOptions}
+                            for:item="option"
+                        >
+                            <c-layout-item
+                                data-element-id="layout-item"
+                                class="slds-grid"
                                 key={option.value}
-                                class={computedInputContainerClass}
-                                data-element-id="span-checkbox-container"
+                                size={computedOrientationAttributes.cols}
+                                large-container-size={computedOrientationAttributes.largeContainerCols}
+                                medium-container-size={computedOrientationAttributes.mediumContainerCols}
+                                small-container-size={computedOrientationAttributes.smallContainerCols}
                             >
-                                <input
-                                    type={computedInputType}
-                                    name={name}
-                                    id={option.id}
-                                    checked={option.isChecked}
-                                    value={option.value}
-                                    disabled={disabled}
-                                    readonly={readOnly}
-                                    data-element-id="input"
-                                    onclick={handleClick}
-                                    onchange={handleChange}
-                                    onfocus={handleFocus}
-                                    onblur={handleBlur}
-                                    onkeyup={handleKeyUp}
-                                />
-
-                                <label
-                                    class={computedLabelClass}
-                                    for={option.id}
-                                    data-element-id="label"
+                                <span
+                                    key={option.value}
+                                    class={computedInputContainerClass}
+                                    data-element-id="span-checkbox-container"
                                 >
-                                    <div
-                                        if:false={buttonVariant}
-                                        class={computedCheckLabelClass}
+                                    <input
+                                        type={computedInputType}
+                                        name={name}
+                                        id={option.id}
+                                        checked={option.isChecked}
+                                        value={option.value}
+                                        disabled={disabled}
+                                        readonly={readOnly}
+                                        data-element-id="input"
+                                        onclick={handleClick}
+                                        onchange={handleChange}
+                                        onfocus={handleFocus}
+                                        onblur={handleBlur}
+                                        onkeyup={handleKeyUp}
+                                    />
+
+                                    <label
+                                        class={computedLabelClass}
+                                        for={option.id}
+                                        data-element-id="label"
                                     >
                                         <div
-                                            class={computedCheckContainerClass}
-                                            data-element-id="div-check-container"
-                                        >
-                                            <span
-                                                if:true={checkboxVariant}
-                                                class={computedCheckboxShapeClass}
-                                            ></span>
-                                            <c-input-toggle
-                                                if:true={toggleVariant}
-                                                aria-label={option.label}
-                                                class="slds-m-top_x-small"
-                                                data-element-id="input-toggle"
-                                                checked={option.isChecked}
-                                                disabled={disabled}
-                                                hide-mark={computedHideCheck}
-                                                label={option.label}
-                                                message-toggle-active={computedTypeAttributes.messageToggleActive}
-                                                message-toggle-inactive={computedTypeAttributes.messageToggleInactive}
-                                                name={option.value}
-                                                readonly={readOnly}
-                                                size={computedTypeAttributes.size}
-                                                value={option.value}
-                                                variant="label-hidden"
-                                                onblur={handleBlur}
-                                                onchange={handleToggleChange}
-                                                onfocus={handleFocus}
-                                            >
-                                            </c-input-toggle>
-                                        </div>
-                                        <div
-                                            data-element-id="label-icon-container"
+                                            if:false={buttonVariant}
+                                            class={computedCheckLabelClass}
                                         >
                                             <div
-                                                if:true={option.displayLabel}
+                                                class={computedCheckContainerClass}
+                                                data-element-id="div-check-container"
+                                            >
+                                                <span
+                                                    if:true={checkboxVariant}
+                                                    class={computedCheckboxShapeClass}
+                                                ></span>
+                                                <c-input-toggle
+                                                    if:true={toggleVariant}
+                                                    aria-label={option.label}
+                                                    class="slds-m-top_x-small"
+                                                    data-element-id="input-toggle"
+                                                    checked={option.isChecked}
+                                                    disabled={disabled}
+                                                    hide-mark={computedHideCheck}
+                                                    label={option.label}
+                                                    message-toggle-active={computedTypeAttributes.messageToggleActive}
+                                                    message-toggle-inactive={computedTypeAttributes.messageToggleInactive}
+                                                    name={option.value}
+                                                    readonly={readOnly}
+                                                    size={computedTypeAttributes.size}
+                                                    value={option.value}
+                                                    variant="label-hidden"
+                                                    onblur={handleBlur}
+                                                    onchange={handleToggleChange}
+                                                    onfocus={handleFocus}
+                                                >
+                                                </c-input-toggle>
+                                            </div>
+                                            <div
                                                 class="
-                                                    slds-form-element__label
+                                                    avonni-input-choice-set__label-icon
+                                                "
+                                                data-element-id="label-icon-container"
+                                            >
+                                                <div
+                                                    if:true={option.displayLabel}
+                                                    class="
+                                                        slds-form-element__label
+                                                        slds-order_1
+                                                    "
+                                                >
+                                                    <lightning-formatted-rich-text
+                                                        disable-linkify
+                                                        title={option.label}
+                                                        value={option.label}
+                                                    ></lightning-formatted-rich-text>
+                                                </div>
+                                                <lightning-icon
+                                                    if:true={option.iconName}
+                                                    class={option.computedIconClass}
+                                                    icon-name={option.iconName}
+                                                    size="x-small"
+                                                    data-element-id="lightning-icon-checkbox"
+                                                ></lightning-icon>
+                                            </div>
+                                        </div>
+                                        <div
+                                            if:true={buttonVariant}
+                                            class="slds-grid"
+                                        >
+                                            <div
+                                                class="
+                                                    slds-p-horizontal_small
                                                     slds-order_1
                                                 "
                                             >
-                                                <lightning-formatted-rich-text
-                                                    disable-linkify
-                                                    title={option.label}
-                                                    value={option.label}
-                                                ></lightning-formatted-rich-text>
+                                                <span
+                                                    if:true={option.isIconBottomRight}
+                                                    class={option.computedLabelButtonClass}
+                                                    >{option.label}</span
+                                                >
+                                                <lightning-icon
+                                                    if:true={option.iconName}
+                                                    data-element-id="lightning-icon-button"
+                                                    class={option.computedIconButtonClass}
+                                                    icon-name={option.iconName}
+                                                    size="x-small"
+                                                    variant={option.computedVariantButton}
+                                                ></lightning-icon>
+                                                <span
+                                                    if:true={option.isIconTopLeft}
+                                                    class={option.computedLabelButtonClass}
+                                                    >{option.label}</span
+                                                >
                                             </div>
-                                            <lightning-icon
-                                                if:true={option.iconName}
-                                                class={option.computedIconClass}
-                                                icon-name={option.iconName}
-                                                size="x-small"
-                                                data-element-id="lightning-icon-checkbox"
-                                            ></lightning-icon>
-                                        </div>
-                                    </div>
-                                    <div
-                                        if:true={buttonVariant}
-                                        class="slds-grid"
-                                    >
-                                        <div
-                                            class="
-                                                slds-p-horizontal_small
-                                                slds-order_1
-                                            "
-                                        >
-                                            <span
-                                                if:true={option.isIconBottomRight}
-                                                class={option.computedLabelButtonClass}
-                                                >{option.label}</span
+                                            <template
+                                                if:true={computedTypeAttributes.showCheckmark}
                                             >
-                                            <lightning-icon
-                                                if:true={option.iconName}
-                                                data-element-id="lightning-icon-button"
-                                                class={option.computedIconButtonClass}
-                                                icon-name={option.iconName}
-                                                size="x-small"
-                                                variant={option.computedVariantButton}
-                                            ></lightning-icon>
-                                            <span
-                                                if:true={option.isIconTopLeft}
-                                                class={option.computedLabelButtonClass}
-                                                >{option.label}</span
-                                            >
+                                                <lightning-icon
+                                                    if:true={option.isChecked}
+                                                    class={computedCheckmarkClass}
+                                                    icon-name="utility:check"
+                                                    size="x-small"
+                                                    variant="inverse"
+                                                    data-element-id="lightning-icon-check"
+                                                ></lightning-icon>
+                                            </template>
                                         </div>
-                                        <template
-                                            if:true={computedTypeAttributes.showCheckmark}
-                                        >
-                                            <lightning-icon
-                                                if:true={option.isChecked}
-                                                class={computedCheckmarkClass}
-                                                icon-name="utility:check"
-                                                size="x-small"
-                                                variant="inverse"
-                                                data-element-id="lightning-icon-check"
-                                            ></lightning-icon>
-                                        </template>
-                                    </div>
-                                </label>
-                            </span>
-                        </c-layout-item>
-                    </template>
-                </c-layout>
-                <!-- Vertical buttons -->
-                <template
-                    if:false={hasLayoutItem}
-                    for:each={transformedOptions}
-                    for:item="option"
-                >
-                    <span
-                        key={option.value}
-                        class={computedButtonContainerClass}
-                        data-element-id="span-checkbox-container"
+                                    </label>
+                                </span>
+                            </c-layout-item>
+                        </template>
+                    </c-layout>
+                    <!-- Vertical buttons -->
+                    <template
+                        if:false={hasLayoutItem}
+                        for:each={transformedOptions}
+                        for:item="option"
                     >
-                        <input
-                            type={computedInputType}
-                            name={name}
-                            id={option.id}
-                            checked={option.isChecked}
-                            value={option.value}
-                            disabled={disabled}
-                            readonly={readOnly}
-                            data-element-id="input"
-                            onclick={handleClick}
-                            onchange={handleChange}
-                            onfocus={handleFocus}
-                            onblur={handleBlur}
-                            onkeyup={handleKeyUp}
-                        />
-
-                        <label
-                            class={computedLabelClass}
-                            for={option.id}
-                            data-element-id="label"
+                        <span
+                            key={option.value}
+                            class={computedButtonContainerClass}
+                            data-element-id="span-checkbox-container"
                         >
-                            <div class="slds-grid">
-                                <div
-                                    class="slds-p-horizontal_small slds-order_1"
-                                >
-                                    <span
-                                        if:true={option.isIconBottomRight}
-                                        class={option.computedLabelButtonClass}
-                                        >{option.label}</span
+                            <input
+                                type={computedInputType}
+                                name={name}
+                                id={option.id}
+                                checked={option.isChecked}
+                                value={option.value}
+                                disabled={disabled}
+                                readonly={readOnly}
+                                data-element-id="input"
+                                onclick={handleClick}
+                                onchange={handleChange}
+                                onfocus={handleFocus}
+                                onblur={handleBlur}
+                                onkeyup={handleKeyUp}
+                            />
+
+                            <label
+                                class={computedLabelClass}
+                                for={option.id}
+                                data-element-id="label"
+                            >
+                                <div class="slds-grid">
+                                    <div
+                                        class="
+                                            slds-p-horizontal_small
+                                            slds-order_1
+                                        "
                                     >
-                                    <lightning-icon
-                                        if:true={option.iconName}
-                                        data-element-id="lightning-icon-button"
-                                        class={option.computedIconButtonClass}
-                                        icon-name={option.iconName}
-                                        size="x-small"
-                                        variant={option.computedVariantButton}
-                                    ></lightning-icon>
-                                    <span
-                                        if:true={option.isIconTopLeft}
-                                        class={option.computedLabelButtonClass}
-                                        >{option.label}</span
+                                        <span
+                                            if:true={option.isIconBottomRight}
+                                            class={option.computedLabelButtonClass}
+                                            >{option.label}</span
+                                        >
+                                        <lightning-icon
+                                            if:true={option.iconName}
+                                            data-element-id="lightning-icon-button"
+                                            class={option.computedIconButtonClass}
+                                            icon-name={option.iconName}
+                                            size="x-small"
+                                            variant={option.computedVariantButton}
+                                        ></lightning-icon>
+                                        <span
+                                            if:true={option.isIconTopLeft}
+                                            class={option.computedLabelButtonClass}
+                                            >{option.label}</span
+                                        >
+                                    </div>
+                                    <template
+                                        if:true={computedTypeAttributes.showCheckmark}
                                     >
+                                        <lightning-icon
+                                            if:true={option.isChecked}
+                                            class={computedCheckmarkClass}
+                                            icon-name="utility:check"
+                                            size="x-small"
+                                            variant="inverse"
+                                            data-element-id="lightning-icon-check"
+                                        ></lightning-icon>
+                                    </template>
                                 </div>
-                                <template
-                                    if:true={computedTypeAttributes.showCheckmark}
-                                >
-                                    <lightning-icon
-                                        if:true={option.isChecked}
-                                        class={computedCheckmarkClass}
-                                        icon-name="utility:check"
-                                        size="x-small"
-                                        variant="inverse"
-                                        data-element-id="lightning-icon-check"
-                                    ></lightning-icon>
-                                </template>
-                            </div>
-                        </label>
-                    </span>
-                </template>
+                            </label>
+                        </span>
+                    </template>
+                </div>
             </div>
-        </div>
-        <template if:true={helpMessage}>
-            <div id="helptext" data-helptext class="slds-form-element__help">
-                {helpMessage}
-            </div>
-        </template>
-    </fieldset>
+            <template if:true={helpMessage}>
+                <div
+                    id="helptext"
+                    data-helptext
+                    class="slds-form-element__help"
+                >
+                    {helpMessage}
+                </div>
+            </template>
+        </fieldset>
+    </div>
 </template>

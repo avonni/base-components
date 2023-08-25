@@ -164,3 +164,11 @@
     > .slds-checkbox_button__label {
     border-radius: 0.25rem;
 }
+
+.avonni-input-choice-set__label-icon {
+    -webkit-line-clamp: 2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 0.5rem;
+}
