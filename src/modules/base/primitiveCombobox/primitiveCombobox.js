@@ -1208,9 +1208,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 selectedOption.selected = true;
                 this.selectedOption = selectedOption;
                 this.inputValue = selectedOption.label;
-            }
-
-            if (!this.inputValue) {
+            } else {
                 // Filter the options if there is a search term
                 this.inputValue = this._searchTerm;
                 this.search({
