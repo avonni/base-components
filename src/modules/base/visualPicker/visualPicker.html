@@ -60,10 +60,10 @@
         >
             <template for:each={listItems} for:item="item">
                 <c-layout-item
-                    size={columnAttributes.cols}
-                    small-container-size={columnAttributes.smallContainerCols}
-                    medium-container-size={columnAttributes.mediumContainerCols}
-                    large-container-size={columnAttributes.largeContainerCols}
+                    size={cols}
+                    small-container-size={smallContainerCols}
+                    medium-container-size={mediumContainerCols}
+                    large-container-size={largeContainerCols}
                     key={item.key}
                 >
                     <div class={visualPickerClass}>

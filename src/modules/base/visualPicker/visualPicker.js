@@ -270,20 +270,13 @@ export default class VisualPicker extends LightningElement {
         );
 
         // Keep same logic as in layoutItem.
-        if (this.isResponsive) {
-            this._columnAttributes.cols = defaults || DEFAULT_COLUMNS.default;
-            this._columnAttributes.smallContainerCols =
-                small || defaults || DEFAULT_COLUMNS.small;
-            this._columnAttributes.mediumContainerCols =
-                medium || small || defaults || DEFAULT_COLUMNS.medium;
-            this._columnAttributes.largeContainerCols =
-                large || medium || small || defaults || DEFAULT_COLUMNS.large;
-        } else {
-            this._columnAttributes.cols = 1;
-            this._columnAttributes.smallContainerCols = 1;
-            this._columnAttributes.mediumContainerCols = 1;
-            this._columnAttributes.largeContainerCols = 1;
-        }
+        this._columnAttributes.cols = defaults || DEFAULT_COLUMNS.default;
+        this._columnAttributes.smallContainerCols =
+            small || defaults || DEFAULT_COLUMNS.small;
+        this._columnAttributes.mediumContainerCols =
+            medium || small || defaults || DEFAULT_COLUMNS.medium;
+        this._columnAttributes.largeContainerCols =
+            large || medium || small || defaults || DEFAULT_COLUMNS.large;
 
         this._columnAttributes = { ...this._columnAttributes };
     }
@@ -547,12 +540,12 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * Get the wrapper DOM elements.
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
-     * @type {Element}
+     * @type {number}
      */
-    get wrapperElement() {
-        return this.template.querySelector('[data-element-id="fieldset"]');
+    get cols() {
+        return this.isResponsive ? this._columnAttributes.cols : 1;
     }
 
     /**
@@ -930,6 +923,28 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Number of columns on large container widths and above. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get largeContainerCols() {
+        return this.isResponsive
+            ? this._columnAttributes.largeContainerCols
+            : 1;
+    }
+
+    /**
+     * Number of columns on medium container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get mediumContainerCols() {
+        return this.isResponsive
+            ? this._columnAttributes.mediumContainerCols
+            : 1;
+    }
+
+    /**
      * Add horizontal padding when size is responsive.
      *
      * @type {string}
@@ -945,6 +960,17 @@ export default class VisualPicker extends LightningElement {
      */
     get responsivePullBoundary() {
         return this.isResponsive ? 'small' : '';
+    }
+
+    /**
+     * Number of columns on small container widths. See `cols` for accepted values.
+     *
+     * @type {number}
+     */
+    get smallContainerCols() {
+        return this.isResponsive
+            ? this._columnAttributes.smallContainerCols
+            : 1;
     }
 
     /**
@@ -977,6 +1003,15 @@ export default class VisualPicker extends LightningElement {
      */
     get input() {
         return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
+     * Get the wrapper DOM elements.
+     *
+     * @type {Element}
+     */
+    get wrapperElement() {
+        return this.template.querySelector('[data-element-id="fieldset"]');
     }
 
     /**
