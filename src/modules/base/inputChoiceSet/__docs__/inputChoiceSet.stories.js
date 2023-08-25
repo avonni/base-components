@@ -255,7 +255,7 @@ const optionsWithIcon = [
     }
 ];
 const optionsWithoutIcon = [
-    { label: 'MonMonMonMonMonMonMonMonMonMonMonMonMonMonMonMon', value: 'mon' },
+    { label: 'Mon', value: 'mon' },
     { label: 'Tue', value: 'tue' },
     { label: 'Wed', value: 'wed' },
     { label: 'Thu', value: 'thu' },
