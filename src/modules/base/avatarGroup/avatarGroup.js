@@ -851,18 +851,9 @@ export default class AvatarGroup extends LightningElement {
             return;
 
         const totalWidth = this.wrapperElement.offsetWidth;
-        let availableWidth = totalWidth;
-
-        if (this.actionButtonElement) {
-            const actionButtonStyles = window.getComputedStyle(
-                this.actionButtonElement
-            );
-            const actionButtonWidth =
-                parseFloat(actionButtonStyles.width) +
-                parseFloat(actionButtonStyles.marginLeft) +
-                parseFloat(actionButtonStyles.marginRight);
-            availableWidth -= actionButtonWidth;
-        }
+        const availableWidth = this.actionButtonElement
+            ? totalWidth - this.actionButtonElement.offsetWidth
+            : totalWidth;
 
         const referenceElement =
             this.avatarItemElement || this.showMoreButtonElement;
