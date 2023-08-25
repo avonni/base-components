@@ -52,10 +52,7 @@ export const VisualPicker = ({
     name,
     imageAttributes,
     fieldAttributes,
-    cols,
-    smallContainerCols,
-    mediumContainerCols,
-    largeContainerCols
+    columnAttributes
 }) => {
     const element = document.createElement('ac-base-visual-picker');
     element.label = label;
@@ -72,9 +69,6 @@ export const VisualPicker = ({
     element.name = name;
     element.imageAttributes = imageAttributes;
     element.fieldAttributes = fieldAttributes;
-    element.cols = cols;
-    element.smallContainerCols = smallContainerCols;
-    element.mediumContainerCols = mediumContainerCols;
-    element.largeContainerCols = largeContainerCols;
+    element.columnAttributes = columnAttributes;
     return element;
 };

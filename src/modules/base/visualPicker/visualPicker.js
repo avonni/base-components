@@ -179,6 +179,7 @@ export default class VisualPicker extends LightningElement {
     _mediumContainerCols;
     _largeContainerCols;
     _smallContainerCols;
+    _columnAttributes = {};
     _disabled = DEFAULT_DISABLED;
     _fieldAttributes = {};
     _hideBorder;
@@ -243,82 +244,48 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Column attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols
+     * Number of columns depending on the width of the container. See 'cols' for accepted values.
      *
-     * @type {number}
-     * @default 1
+     * @type {object}
      * @public
      */
     @api
-    get cols() {
-        return this._cols;
+    get columnAttributes() {
+        return this._columnAttributes;
     }
-    set cols(value) {
-        const defaults = this.normalizeColumnAttributes(value);
-        this._columnSizes.defaults = defaults;
-        this._cols = this.isResponsive
-            ? defaults || DEFAULT_COLUMNS.default
-            : 1;
-    }
+    set columnAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+        const small = this.normalizeColumnAttributes(
+            normalizedFieldAttributes.smallContainerCols
+        );
+        const medium = this.normalizeColumnAttributes(
+            normalizedFieldAttributes.mediumContainerCols
+        );
+        const large = this.normalizeColumnAttributes(
+            normalizedFieldAttributes.largeContainerCols
+        );
+        const defaults = this.normalizeColumnAttributes(
+            normalizedFieldAttributes.cols
+        );
 
-    /**
-     * Number of columns on small container widths. See `cols` for accepted values.
-     * @type {number}
-     * @public
-     */
-    @api
-    get smallContainerCols() {
-        return this._smallContainerCols;
-    }
-    set smallContainerCols(value) {
-        const small = this.normalizeColumnAttributes(value);
-        this._columnSizes.small = small;
-        this._smallContainerCols = this.isResponsive
-            ? small || this._columnSizes.defaults || DEFAULT_COLUMNS.small
-            : 1;
-    }
+        // Keep same logic as in layoutItem.
+        if (this.isResponsive) {
+            this._columnAttributes.cols = defaults || DEFAULT_COLUMNS.default;
+            this._columnAttributes.smallContainerCols =
+                small || defaults || DEFAULT_COLUMNS.small;
+            this._columnAttributes.mediumContainerCols =
+                medium || small || defaults || DEFAULT_COLUMNS.medium;
+            this._columnAttributes.largeContainerCols =
+                large || medium || small || defaults || DEFAULT_COLUMNS.large;
+        } else {
+            this._columnAttributes.cols = 1;
+            this._columnAttributes.smallContainerCols = 1;
+            this._columnAttributes.mediumContainerCols = 1;
+            this._columnAttributes.largeContainerCols = 1;
+        }
 
-    /**
-     * Number of columns on medium container widths. See `cols` for accepted values.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get mediumContainerCols() {
-        return this._mediumContainerCols;
-    }
-    set mediumContainerCols(value) {
-        const medium = this.normalizeColumnAttributes(value);
-        this._columnSizes.medium = medium;
-        this._mediumContainerCols = this.isResponsive
-            ? medium ||
-              this._columnSizes.small ||
-              this._columnSizes.defaults ||
-              DEFAULT_COLUMNS.medium
-            : 1;
-    }
-
-    /**
-     * Number of columns on large container widths and above. See `cols` for accepted values.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get largeContainerCols() {
-        return this._largeContainerCols;
-    }
-    set largeContainerCols(value) {
-        const large = this.normalizeColumnAttributes(value);
-        this._columnSizes.large = large;
-        this._largeContainerCols = this.isResponsive
-            ? large ||
-              this._columnSizes.medium ||
-              this._columnSizes.small ||
-              this._columnSizes.defaults ||
-              DEFAULT_COLUMNS.large
-            : 1;
+        this._columnAttributes = { ...this._columnAttributes };
     }
 
     /**
