@@ -175,6 +175,10 @@
             "path": "src/modules/base/filterMenu/filterMenu.js"
         },
         {
+            "name": "c/focusTrap",
+            "path": "src/modules/base/focusTrap/focusTrap.js"
+        },
+        {
             "name": "c/externalLink",
             "path": "src/modules/base/externalLink/externalLink.js"
         },
