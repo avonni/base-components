@@ -1462,7 +1462,7 @@ export default class FilterMenu extends LightningElement {
             this._allowBlur = false;
             requestAnimationFrame(() => {
                 const focusTrap = this.template.querySelector(
-                    '[data-element-id="lightning-focus-trap"]'
+                    '[data-element-id="avonni-focus-trap"]'
                 );
                 if (focusTrap) {
                     this._dropdownIsFocused = true;

@@ -96,7 +96,7 @@
                     if:true={showStartDate}
                     class="slds-datepicker slds-dropdown slds-dropdown_left"
                 >
-                    <lightning-focus-trap
+                    <c-focus-trap
                         onfocusout={handleStartCalendarFocusOut}
                         onfocusin={handleStartCalendarFocusIn}
                         onkeydown={handleCalendarDialogKeyDown}
@@ -118,7 +118,7 @@
                                 data-element-id="select-start-today-button"
                             ></lightning-button>
                         </div>
-                    </lightning-focus-trap>
+                    </c-focus-trap>
                 </div>
                 <p data-element-id="start-date" if:true={readOnly}>
                     {startDateString}
@@ -195,7 +195,7 @@
                     if:true={showEndDate}
                     class="slds-datepicker slds-dropdown slds-dropdown_left"
                 >
-                    <lightning-focus-trap
+                    <c-focus-trap
                         onfocusout={handleEndCalendarFocusOut}
                         onfocusin={handleEndCalendarFocusIn}
                         onkeydown={handleCalendarDialogKeyDown}
@@ -217,7 +217,7 @@
                                 data-element-id="select-end-today-button"
                             ></lightning-button>
                         </div>
-                    </lightning-focus-trap>
+                    </c-focus-trap>
                 </div>
                 <p data-element-id="end-date" if:true={readOnly}>
                     {endDateString}

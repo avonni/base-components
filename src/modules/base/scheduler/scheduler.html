@@ -112,7 +112,7 @@
                 if:true={showToolbarCalendar}
                 class="slds-dropdown slds-dropdown_center"
             >
-                <lightning-focus-trap>
+                <c-focus-trap>
                     <c-calendar
                         disabled-dates={toolbarCalendarDisabledDates}
                         timezone={timezone}
@@ -121,7 +121,7 @@
                         onchange={handleToolbarCalendarChange}
                         onnavigate={handleToolbarCalendarNavigate}
                     ></c-calendar>
-                </lightning-focus-trap>
+                </c-focus-trap>
             </div>
         </div>
 
@@ -374,7 +374,7 @@
         onmouseenter={handleDetailPopoverMouseEnter}
         onmouseleave={handleDetailPopoverMouseLeave}
     >
-        <lightning-focus-trap>
+        <c-focus-trap>
             <lightning-button-icon
                 class="
                     slds-is-absolute
@@ -447,7 +447,7 @@
                     </lightning-button-menu>
                 </lightning-button-group>
             </div>
-        </lightning-focus-trap>
+        </c-focus-trap>
     </div>
 
     <!-- Event context menu -->

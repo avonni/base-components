@@ -54,14 +54,6 @@ const DEFAULT_LIMIT = 5;
  */
 export default class Pagination extends LightningElement {
     /**
-     * Content to place in the ellipsis placeholder.
-     *
-     * @type {string}
-     * @public
-     * @default ...
-     */
-    @api ellipsisText = DEFAULT_ELLIPSIS_TEXT;
-    /**
      * The name of an icon to display after the label of the first button.
      *
      * @type {string}
@@ -97,34 +89,21 @@ export default class Pagination extends LightningElement {
      */
     @api nextButtonLabel;
     /**
-     * Number of rows per page
-     *
-     * @type {number}
-     * @public
-     * @default 20
-     */
-    @api perPage = DEFAULT_PER_PAGE;
-    /**
      * Label for the previous button.
      *
      * @type {string}
      * @public
      */
     @api previousButtonLabel;
-    /**
-     * Total number of rows in the dataset.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api totalRows = DEFAULT_TOTAL_ROWS;
 
     _align = PAGINATION_ALIGNS.default;
     _disabled = false;
+    _ellipsisText = DEFAULT_ELLIPSIS_TEXT;
     _limit = DEFAULT_LIMIT;
     _nextButtonIconName;
+    _perPage = DEFAULT_PER_PAGE;
     _previousButtonIconName;
+    _totalRows = DEFAULT_TOTAL_ROWS;
     _value = DEFAULT_VALUE;
 
     renderedCallback() {
@@ -173,6 +152,22 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Content to place in the ellipsis placeholder.
+     *
+     * @type {string}
+     * @public
+     * @default ...
+     */
+    @api
+    get ellipsisText() {
+        return this._ellipsisText;
+    }
+    set ellipsisText(value) {
+        this._ellipsisText =
+            typeof value === 'string' ? value : DEFAULT_ELLIPSIS_TEXT;
+    }
+
+    /**
      * Maximum number of buttons to show (including ellipsis if shown, but excluding the bookend buttons). The minimum value is 3.
      *
      * @type {number}
@@ -213,6 +208,21 @@ export default class Pagination extends LightningElement {
     }
 
     /**
+     * Number of rows per page
+     *
+     * @type {number}
+     * @public
+     * @default 20
+     */
+    @api
+    get perPage() {
+        return this._perPage;
+    }
+    set perPage(value) {
+        this._perPage = !isNaN(value) ? parseInt(value, 10) : DEFAULT_PER_PAGE;
+    }
+
+    /**
      * The name of an icon to display after the label for the previous button.
      *
      * @type {string}
@@ -230,6 +240,23 @@ export default class Pagination extends LightningElement {
 
     set previousButtonIconName(value) {
         this._previousButtonIconName = value;
+    }
+
+    /**
+     * Total number of rows in the dataset.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get totalRows() {
+        return this._totalRows;
+    }
+    set totalRows(value) {
+        this._totalRows = !isNaN(value)
+            ? parseInt(value, 10)
+            : DEFAULT_TOTAL_ROWS;
     }
 
     /**
