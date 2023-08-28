@@ -55,3 +55,9 @@
  * @default 400
  * @type font
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-input-choice-set-option-label-line-clamp
+ * @default 1
+ * @type number
+ */

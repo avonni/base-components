@@ -166,9 +166,13 @@
 }
 
 .avonni-input-choice-set__label-icon {
-    -webkit-line-clamp: 2;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     overflow: hidden;
+    -webkit-line-clamp: var(
+        --avonni-input-choice-set-option-label-line-clamp,
+        1
+    );
     text-overflow: ellipsis;
     padding-right: 0.5rem;
 }
