@@ -49,6 +49,7 @@ import {
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import InputChoiceOption from './inputChoiceOption';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const i18n = {
     required: 'required'
@@ -157,7 +158,9 @@ export default class InputChoiceSet extends LightningElement {
     computedTypeAttributes = {};
     helpMessage;
     _connected = false;
+    _containerWidth;
     _rendered = false;
+    _resizeObserver;
 
     constructor() {
         super();
@@ -200,10 +203,20 @@ export default class InputChoiceSet extends LightningElement {
 
     renderedCallback() {
         this.synchronizeA11y();
+        if (!this._resizeObserver) {
+            this._initResizeObserver();
+        }
         if (!this._rendered) {
             this._setWidth();
         }
         this._rendered = true;
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        }
     }
 
     /*
@@ -513,6 +526,8 @@ export default class InputChoiceSet extends LightningElement {
     get computedButtonClass() {
         const { stretch, displayAsRow } = this.computedTypeAttributes;
         return classSet(`avonni-input-choice-set__${this.orientation}`).add({
+            'slds-size_full':
+                this.orientation === 'horizontal' && !this.buttonVariant,
             'slds-checkbox_button-group': this.buttonVariant && !displayAsRow,
             'avonni-input-choice-set__stretch': stretch
         });
@@ -870,6 +885,20 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * Initialize the resize observer, triggered when the layout is resized.
+     */
+    _initResizeObserver() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="container"]'
+        );
+        if (!wrapper) return;
+        this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
+            this._containerWidth = wrapper.getBoundingClientRect().width;
+            this._setWidth();
+        });
+    }
+
+    /**
      * Only accept predetermined number of columns.
      *
      * @param {number} value
@@ -935,24 +964,29 @@ export default class InputChoiceSet extends LightningElement {
         const labelIconContainers = this.template.querySelectorAll(
             '[data-element-id="label-icon-container"]'
         );
+        let maxWidth = 0;
+
         if (labelIconContainers.length === 0) return;
+
         labelIconContainers.forEach((labelIconContainer) => {
-            labelIconContainer.style = '';
+            labelIconContainer.style.width = '';
         });
 
         if (
-            (this.orientation === 'horizontal' &&
-                !this.orientationAttributes?.multipleRows) ||
-            this.checkPosition === 'left'
+            this.orientation === 'horizontal' &&
+            !this.orientationAttributes?.multipleRows
         )
             return;
-        let maxWidth = 0;
 
         labelIconContainers.forEach((labelIconContainer) => {
             maxWidth = Math.max(maxWidth, labelIconContainer.offsetWidth);
         });
 
         labelIconContainers.forEach((labelIconContainer) => {
+            maxWidth =
+                this._containerWidth < maxWidth
+                    ? this._containerWidth
+                    : maxWidth;
             labelIconContainer.style.width = `${maxWidth + 4}px`;
         });
     }

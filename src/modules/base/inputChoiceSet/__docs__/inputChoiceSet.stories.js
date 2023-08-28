@@ -268,6 +268,7 @@ const alignmentValue = ['center'];
 export const RadioButtons = Template.bind({});
 RadioButtons.args = {
     label: 'Please select a value',
+    checkPosition: 'right',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
