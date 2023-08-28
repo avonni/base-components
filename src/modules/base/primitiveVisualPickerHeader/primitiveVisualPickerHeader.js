@@ -170,11 +170,11 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
      * @type {string}
      */
     get computedContainerClass() {
-        return classSet('avonni-visual-picker__figure-header')
+        return classSet('avonni-visual-picker__figure-header-container')
             .add({
-                'avonni-visual-picker__figure-header-container':
-                    this.avatarIsHorizontal,
                 'avonni-visual-picker__figure-header-container-horizontal':
+                    this.avatarIsHorizontal,
+                'avonni-visual-picker__figure-header-container-horizontal-normal':
                     this.avatarPosition === 'content-left',
                 'avonni-visual-picker__figure-header-container-horizontal-reverse':
                     this.avatarPosition === 'content-right'

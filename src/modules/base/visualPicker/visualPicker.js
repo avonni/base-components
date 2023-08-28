@@ -199,9 +199,6 @@ export default class VisualPicker extends LightningElement {
     _isFallbackLoadedMap = {};
     _resizeObserver;
 
-    displayImg = false;
-    displayImgC = false;
-    displayImgT = false;
     helpMessage;
 
     renderedCallback() {
@@ -722,11 +719,10 @@ export default class VisualPicker extends LightningElement {
                 !hasTags;
             const imgIsCenter =
                 hasImg && !layoutIsHorizontal && !imgIsTop && !imgIsBottom;
-            this.displayImgC = imgIsCenter;
-            this.displayImgT = imgIsTop;
 
+            // Class and styling management
             const computedLayoutContainerStyle =
-                this.computeItemLayoutContainerStyle(
+                this.computeLayoutContainerStyle(
                     imgIsHorizontal,
                     imgIsBackground
                 );
@@ -743,10 +739,14 @@ export default class VisualPicker extends LightningElement {
                 imgPosition,
                 value
             );
-            const computedBodyContainerClass =
-                this.computeBodyContainerClass(avatarPosition);
-            const computedItemsContainerClass =
-                this.computeItemsContainerClass(imgIsBackground);
+            const computedBodyClass = this.computeBodyClass(imgIsBackground);
+
+            const visualPickerItemsClassTop =
+                this.computeVisualPickerItemsClass(imgIsTop);
+            const visualPickerItemsClassCenter =
+                this.computeVisualPickerItemsClass(imgIsCenter);
+            const visualPickerItemsClassBottom =
+                this.computeVisualPickerItemsClass(imgIsBottom);
 
             return {
                 key,
@@ -764,15 +764,6 @@ export default class VisualPicker extends LightningElement {
                 imgIsTop,
                 imgPosition,
                 imgSrc,
-                layoutIsHorizontal,
-                computedBodyContainerClass,
-                computedLayoutContainerStyle,
-                computedImgStyle,
-                computedImgContainerStyle,
-                computedItemsContainerClass,
-                computedNotSelectedClass,
-                computedSelectedClass,
-                computedDescriptionClass,
                 headerIsTop,
                 headerIsCenter,
                 headerIsBottom,
@@ -794,7 +785,18 @@ export default class VisualPicker extends LightningElement {
                 hasFields,
                 tags,
                 hasHiddenTags,
-                hasTags
+                hasTags,
+                layoutIsHorizontal,
+                computedLayoutContainerStyle,
+                computedImgStyle,
+                computedImgContainerStyle,
+                computedBodyClass,
+                computedNotSelectedClass,
+                computedSelectedClass,
+                computedDescriptionClass,
+                visualPickerItemsClassBottom,
+                visualPickerItemsClassTop,
+                visualPickerItemsClassCenter
             };
         });
     }
@@ -827,57 +829,6 @@ export default class VisualPicker extends LightningElement {
                 'slds-visual-picker__icon': this.isCoverable,
                 'avonni-hide-check-mark': this.hideCheckMark,
                 'slds-align_absolute-center': !this.isResponsive
-            })
-            .toString();
-    }
-
-    /**
-     * Compute visual picker items class styling based on size attributes and presence of image.
-     *
-     * @type {string}
-     */
-    get visualPickerItemsClass() {
-        return classSet('slds-has-flexi-truncate')
-            .add({
-                'avonni-visual-picker__items':
-                    this.size !== 'responsive' ||
-                    (this.size === 'responsive' && !this.displayImg),
-                'avonni-visual-picker__items_responsive':
-                    this.size === 'responsive' && this.displayImg
-            })
-            .toString();
-    }
-
-    /**
-     * Compute visual picker items class styling based on size attributes and presence of image.
-     *
-     * @type {string}
-     */
-    get visualPickerItemsClassTop() {
-        return classSet('slds-has-flexi-truncate')
-            .add({
-                'avonni-visual-picker__items':
-                    this.size !== 'responsive' ||
-                    (this.size === 'responsive' && !this.displayImgT),
-                'avonni-visual-picker__items_responsive_image':
-                    this.size === 'responsive' && this.displayImgT
-            })
-            .toString();
-    }
-
-    /**
-     * Compute visual picker items class styling based on size attributes and presence of image.
-     *
-     * @type {string}
-     */
-    get visualPickerItemsClassCenter() {
-        return classSet('slds-has-flexi-truncate')
-            .add({
-                'avonni-visual-picker__items':
-                    this.size !== 'responsive' ||
-                    (this.size === 'responsive' && !this.displayImgC),
-                'avonni-visual-picker__items_responsive_image':
-                    this.size === 'responsive' && this.displayImgC
             })
             .toString();
     }
@@ -1110,23 +1061,6 @@ export default class VisualPicker extends LightningElement {
      */
 
     /**
-     * Computed body container class styling
-     *
-     * @param {string} avatarPosition
-     * @returns {string}
-     */
-    computeBodyContainerClass(avatarPosition) {
-        return classSet('avonni-visual-picker__figure-body-container')
-            .add({
-                'avonni-visual-picker__figure-body-container-horizontal':
-                    avatarPosition === 'content-left',
-                'avonni-visual-picker__figure-body-container-horizontal-reverse':
-                    avatarPosition === 'content-right'
-            })
-            .toString();
-    }
-
-    /**
      * Compute image container styling.
      *
      * @param {boolean} imgIsHorizontal
@@ -1202,7 +1136,7 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    computeItemLayoutContainerStyle(imgIsHorizontal, imgIsBackground) {
+    computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground) {
         let heightStyle = '';
         let widthStyle = '';
         if (!imgIsBackground) {
@@ -1219,10 +1153,10 @@ export default class VisualPicker extends LightningElement {
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    computeItemsContainerClass(imgIsBackground) {
+    computeBodyClass(imgIsBackground) {
         return classSet('')
             .add({
-                'avonni-visual-picker__figure-body-container': !imgIsBackground
+                'avonni-visual-picker__figure-body': !imgIsBackground
             })
             .toString();
     }
@@ -1252,6 +1186,24 @@ export default class VisualPicker extends LightningElement {
                     this.isBiggerThanXSmall &&
                     imgPosition === 'overlay' &&
                     !isSelected
+            })
+            .toString();
+    }
+
+    /**
+     * Compute visual picker items class styling based on size attributes and presence of image.
+     *
+     * @param {boolean} hasImg
+     * @type {string}
+     */
+    computeVisualPickerItemsClass(hasImg) {
+        return classSet('slds-has-flexi-truncate')
+            .add({
+                'avonni-visual-picker__items':
+                    this.size !== 'responsive' ||
+                    (this.size === 'responsive' && !hasImg),
+                'avonni-visual-picker__items_responsive_image':
+                    this.size === 'responsive' && hasImg
             })
             .toString();
     }

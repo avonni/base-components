@@ -33,63 +33,65 @@
 -->
 
 <template>
-    <div class={computedContainerClass}>
-        <div
-            if:true={avatarIsHorizontal}
-            class="
-                avonni-visual-picker__figure-avatar
-                slds-grid
-                slds-p-around_xx-small
-            "
-        >
-            <c-primitive-avatar
-                alternative-text={alternativeText}
-                fallback-icon-name={avatar.iconName}
-                initials={avatar.initials}
-                presence={avatar.presence}
-                presence-position={avatar.presencePosition}
-                size={avatar.size}
-                src={avatar.imgSrc}
-                variant={avatar.variant}
-            ></c-primitive-avatar>
-        </div>
-        <div class="slds-truncate">
-            <c-primitive-avatar
-                if:true={avatarIsTop}
-                alternative-text={alternativeText}
-                fallback-icon-name={avatar.iconName}
-                initials={avatar.initials}
-                presence={avatar.presence}
-                presence-position={avatar.presencePosition}
-                size={avatar.size}
-                src={avatar.imgSrc}
-                variant={avatar.variant}
-            ></c-primitive-avatar>
-            <c-primitive-visual-picker-title
-                if:false={hideTitle}
-                class="avonni-visual-picker__figure-title"
-                alternative-text={alternativeText}
-                avatar={avatar}
-                avatar-position={avatarPosition}
-                display-avatar={displayTitleAvatar}
-                size={size}
-                title={title}
+    <div class="avonni-visual-picker__figure-header">
+        <div class={computedContainerClass}>
+            <div
+                if:true={avatarIsHorizontal}
+                class="
+                    avonni-visual-picker__figure-avatar
+                    slds-grid
+                    slds-p-around_xx-small
+                "
             >
-            </c-primitive-visual-picker-title>
-            <p if:false={hideDescription} class={computedDescriptionClass}>
-                {description}
-            </p>
-            <c-primitive-avatar
-                if:true={avatarIsBottom}
-                alternative-text={alternativeText}
-                fallback-icon-name={avatar.iconName}
-                initials={avatar.initials}
-                presence={avatar.presence}
-                presence-position={avatar.presencePosition}
-                size={avatar.size}
-                src={avatar.imgSrc}
-                variant={avatar.variant}
-            ></c-primitive-avatar>
+                <c-primitive-avatar
+                    alternative-text={alternativeText}
+                    fallback-icon-name={avatar.iconName}
+                    initials={avatar.initials}
+                    presence={avatar.presence}
+                    presence-position={avatar.presencePosition}
+                    size={avatar.size}
+                    src={avatar.imgSrc}
+                    variant={avatar.variant}
+                ></c-primitive-avatar>
+            </div>
+            <div class="slds-truncate">
+                <c-primitive-avatar
+                    if:true={avatarIsTop}
+                    alternative-text={alternativeText}
+                    fallback-icon-name={avatar.iconName}
+                    initials={avatar.initials}
+                    presence={avatar.presence}
+                    presence-position={avatar.presencePosition}
+                    size={avatar.size}
+                    src={avatar.imgSrc}
+                    variant={avatar.variant}
+                ></c-primitive-avatar>
+                <c-primitive-visual-picker-title
+                    if:false={hideTitle}
+                    class="avonni-visual-picker__figure-title"
+                    alternative-text={alternativeText}
+                    avatar={avatar}
+                    avatar-position={avatarPosition}
+                    display-avatar={displayTitleAvatar}
+                    size={size}
+                    title={title}
+                >
+                </c-primitive-visual-picker-title>
+                <p if:false={hideDescription} class={computedDescriptionClass}>
+                    {description}
+                </p>
+                <c-primitive-avatar
+                    if:true={avatarIsBottom}
+                    alternative-text={alternativeText}
+                    fallback-icon-name={avatar.iconName}
+                    initials={avatar.initials}
+                    presence={avatar.presence}
+                    presence-position={avatar.presencePosition}
+                    size={avatar.size}
+                    src={avatar.imgSrc}
+                    variant={avatar.variant}
+                ></c-primitive-avatar>
+            </div>
         </div>
     </div>
 </template>

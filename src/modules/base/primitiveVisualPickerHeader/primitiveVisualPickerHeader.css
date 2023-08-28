@@ -30,12 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-visual-picker__figure-header-container {
+.avonni-visual-picker__figure-header-container-horizontal {
     display: flex;
     align-items: center;
 }
 
-.avonni-visual-picker__figure-header-container-horizontal {
+.avonni-visual-picker__figure-header-container-horizontal-normal {
     display: flex;
     flex-direction: row;
     align-items: center;
