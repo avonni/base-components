@@ -47,6 +47,7 @@
     align-items: center;
 }
 
+/*-- Figure Avatar --*/
 .avonni-visual-picker__figure-avatar {
     height: 100%;
     align-items: var(--avonni-visual-picker-avatar-vertical-alignment, center);
@@ -56,7 +57,26 @@
     );
 }
 
-/*-- figure description --*/
+.avonni-visual-picker__figure-avatar-icon {
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+    );
+}
+
+/*-- Figure Title --*/
+.avonni-visual-picker__figure-title {
+    --avonni-visual-picker-title-avatar-fallback-icon-foreground: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground
+    );
+    --avonni-visual-picker-title-avatar-fallback-icon-foreground-default: var(
+        --avonni-visual-picker-avatar-fallback-icon-foreground-default
+    );
+}
+
+/*-- Figure Description --*/
 .avonni-visual-picker__figure-description {
     color: var(--avonni-visual-picker-description-text-color, #3e3e3c);
     font-style: var(--avonni-visual-picker-description-font-style, normal);

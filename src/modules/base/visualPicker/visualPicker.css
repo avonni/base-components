@@ -158,6 +158,8 @@
         --avonni-visual-picker-overlay-text-color,
         #ffffff
     );
+    --avonni-visual-picker-avatar-fallback-icon-foreground: #ffffff;
+    --avonni-visual-picker-avatar-fallback-icon-foreground-default: #ffffff;
 }
 
 .avonni-visual-picker__figure-image-background

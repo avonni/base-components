@@ -39,6 +39,12 @@
 }
 
 .avonni-primitive-visual-picker-title__icon {
+    --avonni-avatar-fallback-icon-color-foreground: var(
+        --avonni-visual-picker-title-avatar-fallback-icon-foreground
+    );
+    --avonni-avatar-fallback-icon-color-foreground-default: var(
+        --avonni-visual-picker-title-avatar-fallback-icon-foreground-default
+    );
     align-self: center;
 }
 
