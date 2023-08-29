@@ -143,7 +143,9 @@ export const itemsWithPictures = [
     {
         value: 'City',
         title: 'City',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool city!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:company'
         },
@@ -153,7 +155,9 @@ export const itemsWithPictures = [
     {
         value: 'Village',
         title: 'Village',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool village!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:home'
         },
@@ -163,7 +167,9 @@ export const itemsWithPictures = [
     {
         value: 'Mountain',
         title: 'Mountain',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool mountain!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:trailhead'
         },
@@ -173,7 +179,9 @@ export const itemsWithPictures = [
     {
         value: 'Beach',
         title: 'Beach',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool beach!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:world'
         },
@@ -183,7 +191,9 @@ export const itemsWithPictures = [
     {
         value: 'Forest',
         title: 'Forest',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool forest!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:trail'
         },

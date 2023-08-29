@@ -349,7 +349,13 @@ GoalStory.args = {
     items: goalStories,
     label: 'What is the goal of your story',
     name: 'goal-story',
-    size: 'responsive'
+    size: 'responsive',
+    columnAttributes: {
+        cols: 2,
+        smallContainerCols: 2,
+        mediumContainerCols: 4,
+        largeContainerCols: 4
+    }
 };
 
 export const BotStory = Template.bind({});
