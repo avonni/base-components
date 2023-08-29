@@ -41,8 +41,8 @@ const AVATAR_POSITIONS = {
         'top',
         'bottom',
         'center',
-        'content-left',
-        'content-right'
+        'left-of-content',
+        'right-of-content'
     ],
     default: 'left'
 };
@@ -94,7 +94,7 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     }
 
     /**
-     * If present, sets the position of the avatar. Valid values include top, bottom, center, right, left, content-left and content-right. The value defaults to left.
+     * If present, sets the position of the avatar. Valid values include top, bottom, center, right, left, left-of-content and right-of-content. The value defaults to left.
      *
      * @type {string}
      */
@@ -133,8 +133,8 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     get avatarIsHorizontal() {
         return (
             !this.hideTitle &&
-            (this._avatarPosition === 'content-left' ||
-                this._avatarPosition === 'content-right')
+            (this._avatarPosition === 'left-of-content' ||
+                this._avatarPosition === 'right-of-content')
         );
     }
 
@@ -175,9 +175,9 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
                 'avonni-visual-picker__figure-header-container-horizontal':
                     this.avatarIsHorizontal,
                 'avonni-visual-picker__figure-header-container-horizontal-normal':
-                    this.avatarPosition === 'content-left',
+                    this.avatarPosition === 'left-of-content',
                 'avonni-visual-picker__figure-header-container-horizontal-reverse':
-                    this.avatarPosition === 'content-right'
+                    this.avatarPosition === 'right-of-content'
             })
             .toString();
     }

@@ -65,7 +65,14 @@ const VISUAL_PICKER_RATIOS = {
 };
 
 const AVATAR_POSITION = {
-    valid: ['top', 'bottom', 'left', 'content-left', 'right', 'content-right'],
+    valid: [
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'left-of-content',
+        'right-of-content'
+    ],
     default: 'left'
 };
 const AVATAR_VERTICAL_ALIGNMENT = {
@@ -636,8 +643,8 @@ export default class VisualPicker extends LightningElement {
             const displayAvatar = avatar && this.isBiggerThanXSmall;
             const avatarIsHorizontal =
                 displayAvatar &&
-                (avatarPosition === 'content-left' ||
-                    avatarPosition === 'content-right');
+                (avatarPosition === 'left-of-content' ||
+                    avatarPosition === 'right-of-content');
             const avatarAltText = displayAvatar
                 ? avatar.alternativeText ||
                   avatar.iconName ||
