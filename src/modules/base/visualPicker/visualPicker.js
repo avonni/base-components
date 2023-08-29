@@ -679,7 +679,8 @@ export default class VisualPicker extends LightningElement {
                 (titleIsBottom && avatarIsHorizontal);
 
             // Fields management
-            const hasFields = fields && fields.length > 0;
+            const hasFields =
+                this.isBiggerThanXSmall && fields && fields.length > 0;
 
             // Tag management
             const hasTags =
