@@ -96,7 +96,7 @@
 }
 
 .avonni-vertical-visual-picker__content_container {
-    display: flex;
+    display: flex !important;
     align-items: center;
     height: -webkit-fill-available;
 }
@@ -130,6 +130,10 @@
     justify-content: center;
     height: 100%;
     align-items: center;
+}
+
+.slds-visual-picker input:checked ~ label .slds-is-not-selected {
+    display: none !important;
 }
 
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
@@ -259,22 +263,22 @@
 
 /*-- size --*/
 .avonni-vertical-visual-picker__item_size-small {
-    width: 100%;
-    max-width: 20rem;
+    width: 100% !important;
+    max-width: 20rem !important;
 }
 
 .avonni-vertical-visual-picker__item_size-medium {
-    width: 100%;
-    max-width: 25rem;
+    width: 100% !important;
+    max-width: 25rem !important;
 }
 
 .avonni-vertical-visual-picker__item_size-large {
-    width: 100%;
-    max-width: 30rem;
+    width: 100% !important;
+    max-width: 30rem !important;
 }
 
 .avonni-vertical-visual-picker__item_size-responsive {
-    width: 100%;
+    width: 100% !important;
 }
 
 /*-- image --*/
