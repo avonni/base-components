@@ -542,7 +542,7 @@ export default class VisualPicker extends LightningElement {
      * @type {number}
      */
     get cols() {
-        return this.isResponsive ? this._columnAttributes.cols : 1;
+        return this.isResponsive ? this._columnAttributes.cols : null;
     }
 
     /**
@@ -682,8 +682,11 @@ export default class VisualPicker extends LightningElement {
             const hasFields = fields && fields.length > 0;
 
             // Tag management
-            const hasTags = tags && Array.isArray(tags) && tags.length > 0;
-
+            const hasTags =
+                this.isBiggerThanXSmall &&
+                tags &&
+                Array.isArray(tags) &&
+                tags.length > 0;
             // Image management
             let imgPosition = this.imageAttributes.position;
             imgSrc = imgSrc || this.imageAttributes.fallbackSrc;
@@ -881,7 +884,7 @@ export default class VisualPicker extends LightningElement {
     get largeContainerCols() {
         return this.isResponsive
             ? this._columnAttributes.largeContainerCols
-            : 1;
+            : null;
     }
 
     /**
@@ -892,7 +895,7 @@ export default class VisualPicker extends LightningElement {
     get mediumContainerCols() {
         return this.isResponsive
             ? this._columnAttributes.mediumContainerCols
-            : 1;
+            : null;
     }
 
     /**
@@ -921,7 +924,7 @@ export default class VisualPicker extends LightningElement {
     get smallContainerCols() {
         return this.isResponsive
             ? this._columnAttributes.smallContainerCols
-            : 1;
+            : null;
     }
 
     /**

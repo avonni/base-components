@@ -410,6 +410,11 @@
     height: 100%;
 }
 
+.avonni-visual-picker_responsive .avonni-visual-picker__items {
+    width: 0;
+    min-width: 100%;
+}
+
 /*-- ratio 1-by-1 --*/
 .avonni-visual-picker_xx-small.ratio-1-by-1 .avonni-visual-picker__figure {
     height: 4rem;

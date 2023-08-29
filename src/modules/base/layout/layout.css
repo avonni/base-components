@@ -33,6 +33,7 @@
 :host,
 .avonni-layout-wrapper {
     height: 100%;
+    width: 100%;
 }
 .avonni-layout-wrapper {
     row-gap: var(--avonni-layout-items-spacing-block-between, 0);
