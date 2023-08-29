@@ -37,12 +37,6 @@
     cursor: pointer;
 }
 
-.avonni-avatar-group__avatar-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 0.3rem;
-}
-
 .avonni-avatar-group_in-line .avonni-avatar-group__avatar_color-border,
 li .avonni-avatar-group_in-line {
     --avonni-avatar-color-border: var(

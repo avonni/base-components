@@ -160,7 +160,11 @@
                 </li>
             </template>
             <!-- Show more button -->
-            <li if:true={showMoreButton} class={showMoreSectionClass}>
+            <li
+                if:true={showMoreButton}
+                class={showMoreSectionClass}
+                data-element-id="show-more-button"
+            >
                 <div
                     class="
                         slds-dropdown-trigger slds-dropdown-trigger_click
@@ -223,17 +227,14 @@
                         <template for:each={hiddenItems} for:item="item">
                             <li
                                 key={generatedKey}
-                                class="
-                                    avonni-avatar-group__hidden-avatar-container
-                                    slds-p-vertical_x-small
-                                    slds-p-horizontal_small
-                                "
+                                class={hiddenAvatarWrapperClass}
                                 data-index={item.index}
                                 tabindex="-1"
                                 data-element-id="li-hidden"
                                 onclick={handleAvatarClick}
                             >
                                 <c-avatar
+                                    class={hiddenAvatarInlineClass}
                                     role="button"
                                     action-menu-icon={item.actionMenuIcon}
                                     action-position={item.actionPosition}
@@ -271,6 +272,7 @@
                 if:true={actionIconName}
                 class={actionButtonWrapperClass}
                 onkeydown={stopPropagation}
+                data-element-id="action-button"
             >
                 <button
                     type="button"
