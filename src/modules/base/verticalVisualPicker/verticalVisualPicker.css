@@ -259,15 +259,18 @@
 
 /*-- size --*/
 .avonni-vertical-visual-picker__item_size-small {
-    width: 20rem;
+    width: 100%;
+    max-width: 20rem;
 }
 
 .avonni-vertical-visual-picker__item_size-medium {
-    width: 25rem;
+    width: 100%;
+    max-width: 25rem;
 }
 
 .avonni-vertical-visual-picker__item_size-large {
-    width: 30rem;
+    width: 100%;
+    max-width: 30rem;
 }
 
 .avonni-vertical-visual-picker__item_size-responsive {
