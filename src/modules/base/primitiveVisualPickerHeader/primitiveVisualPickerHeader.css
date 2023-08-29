@@ -49,12 +49,7 @@
 
 /*-- Figure Avatar --*/
 .avonni-visual-picker__figure-avatar {
-    height: 100%;
-    align-items: var(--avonni-visual-picker-avatar-vertical-alignment, center);
-    align-content: var(
-        --avonni-visual-picker-avatar-vertical-alignment,
-        center
-    );
+    align-self: var(--avonni-visual-picker-avatar-vertical-alignment, center);
 }
 
 .avonni-visual-picker__figure-avatar-icon {
