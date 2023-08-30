@@ -744,7 +744,7 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
-    flex: 0 0 auto;
+    flex: 0 1 auto;
 }
 
 .avonni-visual-picker__figure-image-container img {
