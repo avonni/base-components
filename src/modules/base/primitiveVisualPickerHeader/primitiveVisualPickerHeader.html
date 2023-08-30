@@ -37,10 +37,7 @@
         <div class={computedContainerClass}>
             <div
                 if:true={avatarIsHorizontal}
-                class="
-                    avonni-visual-picker__figure-avatar
-                    slds-p-around_xx-small
-                "
+                class="avonni-visual-picker__figure-avatar"
             >
                 <c-primitive-avatar
                     alternative-text={alternativeText}
@@ -54,7 +51,7 @@
                     class="avonni-visual-picker__figure-avatar-icon"
                 ></c-primitive-avatar>
             </div>
-            <div class="slds-truncate">
+            <div class="avonni-visual-picker__figure-content slds-truncate">
                 <c-primitive-avatar
                     if:true={avatarIsTop}
                     alternative-text={alternativeText}
@@ -72,13 +69,19 @@
                     class="avonni-visual-picker__figure-title"
                     alternative-text={alternativeText}
                     avatar={avatar}
-                    avatar-position={avatarPosition}
+                    avatar-position={avatarPositionToDisplay}
                     display-avatar={displayTitleAvatar}
                     size={size}
                     title={title}
                 >
                 </c-primitive-visual-picker-title>
-                <p if:false={hideDescription} class={computedDescriptionClass}>
+                <p
+                    if:false={hideDescription}
+                    class="
+                        avonni-visual-picker__figure-description
+                        slds-line-clamp
+                    "
+                >
                     {description}
                 </p>
                 <c-primitive-avatar

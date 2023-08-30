@@ -30,21 +30,35 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-visual-picker__figure-header-container-horizontal {
+.avonni-visual-picker__figure-header-container-avatar-left,
+.avonni-visual-picker__figure-header-container-avatar-right {
     display: flex;
-    align-items: center;
 }
 
-.avonni-visual-picker__figure-header-container-horizontal-normal {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.avonni-visual-picker__figure-avatar {
+    flex: 0 0 auto;
 }
 
-.avonni-visual-picker__figure-header-container-horizontal-reverse {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
+.avonni-visual-picker__figure-content {
+    flex: 1 1 auto;
+}
+
+.avonni-visual-picker__figure-header-container-avatar-left
+    .avonni-visual-picker__figure-avatar {
+    order: 0;
+}
+.avonni-visual-picker__figure-header-container-avatar-left
+    .avonni-visual-picker__figure-content {
+    order: 1;
+}
+
+.avonni-visual-picker__figure-header-container-avatar-right
+    .avonni-visual-picker__figure-avatar {
+    order: 1;
+}
+.avonni-visual-picker__figure-header-container-avatar-right
+    .avonni-visual-picker__figure-content {
+    order: 0;
 }
 
 /*-- Figure Avatar --*/
@@ -69,10 +83,12 @@
     --avonni-visual-picker-title-avatar-fallback-icon-foreground-default: var(
         --avonni-visual-picker-avatar-fallback-icon-foreground-default
     );
+    --avonni-visual-picker-title-padding: 0rem 0.75rem 0.15rem 0.75rem;
 }
 
 /*-- Figure Description --*/
 .avonni-visual-picker__figure-description {
+    padding: 0.15rem 0.75rem 0rem 0.75rem;
     color: var(--avonni-visual-picker-description-text-color, #3e3e3c);
     font-style: var(--avonni-visual-picker-description-font-style, normal);
     font-weight: var(--avonni-visual-picker-description-font-weight, 400);

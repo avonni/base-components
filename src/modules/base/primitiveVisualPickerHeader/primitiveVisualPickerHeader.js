@@ -133,8 +133,8 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     get avatarIsHorizontal() {
         return (
             !this.hideTitle &&
-            (this._avatarPosition === 'left-of-content' ||
-                this._avatarPosition === 'right-of-content')
+            (this.avatarPositionToDisplay === 'left-of-content' ||
+                this.avatarPositionToDisplay === 'right-of-content')
         );
     }
 
@@ -144,7 +144,9 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
      * @type {boolean}
      */
     get avatarIsTop() {
-        return !this.hideAvatarTopBottom && this._avatarPosition === 'top';
+        return (
+            !this.hideAvatarTopBottom && this.avatarPositionToDisplay === 'top'
+        );
     }
 
     /**
@@ -155,13 +157,29 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     get avatarIsBottom() {
         return (
             !this.hideAvatarTopBottom &&
-            (this._avatarPosition === 'bottom' ||
-                this._avatarPosition === 'center' ||
+            (this.avatarPositionToDisplay === 'bottom' ||
+                this.avatarPositionToDisplay === 'center' ||
                 !this.isBiggerThanXSmall ||
-                (this._avatarPosition !== 'bottom' &&
-                    this._avatarPosition !== 'top' &&
+                (this.avatarPositionToDisplay !== 'bottom' &&
+                    this.avatarPositionToDisplay !== 'top' &&
                     this.hideTitle))
         );
+    }
+
+    /**
+     * Returns the position of the avatar to be displayed.
+     *
+     * @type {string}
+     */
+    get avatarPositionToDisplay() {
+        if (!this.hideTitle && this.hideDescription) {
+            if (this._avatarPosition === 'left-of-content') {
+                return 'left';
+            } else if (this._avatarPosition === 'right-of-content') {
+                return 'right';
+            }
+        }
+        return this._avatarPosition;
     }
 
     /**
@@ -172,21 +190,16 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
     get computedContainerClass() {
         return classSet('avonni-visual-picker__figure-header-container')
             .add({
-                'avonni-visual-picker__figure-header-container-horizontal':
+                'slds-p-horizontal_small slds-p-vertical_xxx-small':
                     this.avatarIsHorizontal,
-                'avonni-visual-picker__figure-header-container-horizontal-normal':
-                    this.avatarPosition === 'left-of-content',
-                'avonni-visual-picker__figure-header-container-horizontal-reverse':
-                    this.avatarPosition === 'right-of-content'
+                'avonni-visual-picker__figure-header-container-avatar-left':
+                    this.avatarIsHorizontal &&
+                    this.avatarPositionToDisplay === 'left-of-content',
+                'avonni-visual-picker__figure-header-container-avatar-right':
+                    this.avatarIsHorizontal &&
+                    this.avatarPositionToDisplay === 'right-of-content'
             })
             .toString();
-    }
-
-    get computedDescriptionClass() {
-        const descriptionClass = this.descriptionClass || '';
-        return classSet(
-            `avonni-visual-picker__figure-description ${descriptionClass}`
-        ).toString();
     }
 
     /**
@@ -196,7 +209,8 @@ export default class PrimitiveVisualPickerHeader extends LightningElement {
      */
     get displayTitleAvatar() {
         return (
-            this._avatarPosition === 'right' || this._avatarPosition === 'left'
+            this.avatarPositionToDisplay === 'right' ||
+            this.avatarPositionToDisplay === 'left'
         );
     }
 
