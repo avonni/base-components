@@ -32,7 +32,7 @@
 
 import { createElement } from 'lwc';
 import VisualPicker from 'c/visualPicker';
-import { testItems } from '../__docs__/data';
+import { ITEMS } from './data';
 
 let element;
 describe('VisualPicker', () => {
@@ -51,7 +51,9 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
+        expect(element.fieldAttributes).toMatchObject({});
         expect(element.hideCheckMark).toBeFalsy();
+        expect(element.imageAttributes).toMatchObject({});
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
@@ -71,21 +73,21 @@ describe('VisualPicker', () => {
     // Depends on items
     it('Visual Picker: disabled = false', () => {
         element.disabled = false;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
                 '[data-element-id="input"]'
             );
             inputs.forEach((input, index) => {
-                expect(input.disabled).toBe(testItems[index].disabled || false);
+                expect(input.disabled).toBe(ITEMS[index].disabled || false);
             });
         });
     });
 
     it('Visual Picker: disabled = true', () => {
         element.disabled = true;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
@@ -97,11 +99,21 @@ describe('VisualPicker', () => {
         });
     });
 
+    // field attributes
+    it('Visual Picker: Field Attributes', () => {
+        element.fieldAttributes = { variant: 'label-hidden', cols: 12 };
+
+        return Promise.resolve().then(() => {
+            expect(element.fieldAttributes.variant).toBe('label-hidden');
+            expect(element.fieldAttributes.cols).toBe(1);
+        });
+    });
+
     // hide-check-mark
     // Depends on variant, value and items
     it('Visual Picker: hideCheckMark = false', () => {
         element.hideCheckMark = false;
-        element.items = testItems;
+        element.items = ITEMS;
         element.variant = 'coverable';
 
         return Promise.resolve().then(() => {
@@ -119,7 +131,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: hideCheckMark = true', () => {
         element.hideCheckMark = true;
-        element.items = testItems;
+        element.items = ITEMS;
         element.variant = 'coverable';
 
         return Promise.resolve().then(() => {
@@ -132,6 +144,66 @@ describe('VisualPicker', () => {
 
             expect(notSelected).toBeFalsy();
             expect(type.classList).toContain('avonni-hide-check-mark');
+        });
+    });
+
+    // image attributes
+    it('Visual Picker: Image Attributes', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        const cropFit = 'contain';
+        element.imageAttributes = {
+            fallbackSrc,
+            cropFit,
+            height: 200
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.imageAttributes.fallbackSrc).toBe(fallbackSrc);
+            expect(element.imageAttributes.position).toBe('top');
+            expect(element.imageAttributes.size).toBe('large');
+            expect(element.imageAttributes.height).toBe(200);
+            expect(element.imageAttributes.cropFit).toBe(cropFit);
+        });
+    });
+
+    it('Visual Picker: Image Attributes - cropFit', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        const cropFit = 'contain';
+        element.imageAttributes = {
+            fallbackSrc,
+            cropFit
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const wrappers = element.shadowRoot.querySelectorAll(
+                '.avonni-visual-picker__figure-image'
+            );
+            wrappers.forEach((wrapper) => {
+                expect(wrapper.classList).toContain(
+                    `avonni-visual-picker__figure-image_object-fit-${cropFit}`
+                );
+            });
+        });
+    });
+
+    it('Visual Picker: Image Attributes - position', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = {
+            fallbackSrc,
+            position: 'left'
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-visual-picker-img-horizontal"]'
+            );
+            expect(images.length).toBe(ITEMS.length);
         });
     });
 
@@ -168,23 +240,21 @@ describe('VisualPicker', () => {
         const pickedRatio = '1-by-1';
 
         element.ratio = pickedRatio;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
-
             wrappers.forEach((wrapper) => {
-                ratios.forEach((ratio) => {
-                    if (ratio === pickedRatio) {
-                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
-                    } else {
+                expect(wrapper.classList).toContain(`ratio-${pickedRatio}`);
+                ratios
+                    .filter((value) => value !== pickedRatio)
+                    .forEach((ratio) => {
                         expect(wrapper.classList).not.toContain(
                             `ratio-${ratio}`
                         );
-                    }
-                });
+                    });
             });
         });
     });
@@ -194,23 +264,21 @@ describe('VisualPicker', () => {
         const pickedRatio = '4-by-3';
 
         element.ratio = pickedRatio;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
-
             wrappers.forEach((wrapper) => {
-                ratios.forEach((ratio) => {
-                    if (ratio === pickedRatio) {
-                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
-                    } else {
+                expect(wrapper.classList).toContain(`ratio-${pickedRatio}`);
+                ratios
+                    .filter((value) => value !== pickedRatio)
+                    .forEach((ratio) => {
                         expect(wrapper.classList).not.toContain(
                             `ratio-${ratio}`
                         );
-                    }
-                });
+                    });
             });
         });
     });
@@ -220,23 +288,21 @@ describe('VisualPicker', () => {
         const pickedRatio = '16-by-9';
 
         element.ratio = pickedRatio;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
-
             wrappers.forEach((wrapper) => {
-                ratios.forEach((ratio) => {
-                    if (ratio === pickedRatio) {
-                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
-                    } else {
+                expect(wrapper.classList).toContain(`ratio-${pickedRatio}`);
+                ratios
+                    .filter((value) => value !== pickedRatio)
+                    .forEach((ratio) => {
                         expect(wrapper.classList).not.toContain(
                             `ratio-${ratio}`
                         );
-                    }
-                });
+                    });
             });
         });
     });
@@ -246,23 +312,21 @@ describe('VisualPicker', () => {
         const pickedRatio = '3-by-4';
 
         element.ratio = pickedRatio;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
-
             wrappers.forEach((wrapper) => {
-                ratios.forEach((ratio) => {
-                    if (ratio === pickedRatio) {
-                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
-                    } else {
+                expect(wrapper.classList).toContain(`ratio-${pickedRatio}`);
+                ratios
+                    .filter((value) => value !== pickedRatio)
+                    .forEach((ratio) => {
                         expect(wrapper.classList).not.toContain(
                             `ratio-${ratio}`
                         );
-                    }
-                });
+                    });
             });
         });
     });
@@ -272,23 +336,21 @@ describe('VisualPicker', () => {
         const pickedRatio = '9-by-16';
 
         element.ratio = pickedRatio;
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
-
             wrappers.forEach((wrapper) => {
-                ratios.forEach((ratio) => {
-                    if (ratio === pickedRatio) {
-                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
-                    } else {
+                expect(wrapper.classList).toContain(`ratio-${pickedRatio}`);
+                ratios
+                    .filter((value) => value !== pickedRatio)
+                    .forEach((ratio) => {
                         expect(wrapper.classList).not.toContain(
                             `ratio-${ratio}`
                         );
-                    }
-                });
+                    });
             });
         });
     });
@@ -330,7 +392,7 @@ describe('VisualPicker', () => {
     // Depends on items
     it('Visual Picker: size = xx-small', () => {
         element.size = 'xx-small';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -367,7 +429,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = x-small', () => {
         element.size = 'x-small';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -404,7 +466,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = small', () => {
         element.size = 'small';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -441,7 +503,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = medium', () => {
         element.size = 'medium';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -478,7 +540,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = large', () => {
         element.size = 'large';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -515,7 +577,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = x-large', () => {
         element.size = 'x-large';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -552,7 +614,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = xx-large', () => {
         element.size = 'xx-large';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -589,7 +651,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: size = responsive', () => {
         element.size = 'responsive';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -628,7 +690,7 @@ describe('VisualPicker', () => {
     // Depends on items
     it('Visual Picker: type = radio', () => {
         element.type = 'radio';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
@@ -642,7 +704,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: type = checkbox', () => {
         element.type = 'checkbox';
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
@@ -658,7 +720,7 @@ describe('VisualPicker', () => {
     // Depends on items and type
     it('Visual Picker: value, with radio type', () => {
         element.value = 'lightning-professional';
-        element.items = testItems;
+        element.items = ITEMS;
         element.type = 'radio';
 
         return Promise.resolve().then(() => {
@@ -671,7 +733,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: value, with checkbox type', () => {
         element.value = ['lightning-professional', 'lightning-enterprise-plus'];
-        element.items = testItems;
+        element.items = ITEMS;
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {
@@ -688,7 +750,7 @@ describe('VisualPicker', () => {
     // Depends on items
     it('Visual Picker: variant = non-coverable', () => {
         element.variant = 'non-coverable';
-        element.items = testItems;
+        element.items = ITEMS;
         element.value = 'lightning-professional';
 
         return Promise.resolve().then(() => {
@@ -708,7 +770,7 @@ describe('VisualPicker', () => {
 
     it('Visual Picker: variant = coverable', () => {
         element.variant = 'coverable';
-        element.items = testItems;
+        element.items = ITEMS;
         element.value = 'lightning-professional';
 
         return Promise.resolve().then(() => {
@@ -729,7 +791,7 @@ describe('VisualPicker', () => {
     /* ----- METHODS ----- */
 
     it('Visual Picker: Transfer focus and blur', () => {
-        element.items = testItems;
+        element.items = ITEMS;
 
         return Promise.resolve()
             .then(() => {
@@ -793,7 +855,7 @@ describe('VisualPicker', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
-        element.items = testItems;
+        element.items = ITEMS;
         element.type = 'radio';
 
         return Promise.resolve().then(() => {
@@ -816,7 +878,7 @@ describe('VisualPicker', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
-        element.items = testItems;
+        element.items = ITEMS;
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {

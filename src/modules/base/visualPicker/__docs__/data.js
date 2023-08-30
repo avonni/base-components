@@ -143,7 +143,9 @@ export const itemsWithPictures = [
     {
         value: 'City',
         title: 'City',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool city!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:company'
         },
@@ -153,7 +155,9 @@ export const itemsWithPictures = [
     {
         value: 'Village',
         title: 'Village',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool village!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:home'
         },
@@ -163,7 +167,9 @@ export const itemsWithPictures = [
     {
         value: 'Mountain',
         title: 'Mountain',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool mountain!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:trailhead'
         },
@@ -173,17 +179,21 @@ export const itemsWithPictures = [
     {
         value: 'Beach',
         title: 'Beach',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool beach!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:world'
         },
-        imgSrc: 'https://atlantis.nyc3.digitaloceanspaces.com/media/legacy/atlantis/Things_To_Do/Water_Park/Beaches/Hero/Experiences_Beach.jpg',
+        imgSrc: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
         imgAlternativeText: 'Beach'
     },
     {
         value: 'Forest',
         title: 'Forest',
-        titlePosition: 'bottom',
+        titlePosition: 'center',
+        description: 'This is a cool forest!',
+        descriptionPosition: 'center',
         avatar: {
             iconName: 'utility:trail'
         },
@@ -251,6 +261,136 @@ export const itemsWithTags = [
         avatar: {
             iconName: 'custom:custom68'
         }
+    }
+];
+
+export const itemsWithFields = [
+    {
+        value: 'AccountRef1',
+        title: 'Meridian Partners',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A55261860',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(720) 555-0153',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Technology',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.meridianpartners.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.meridianpartners.com'
+                }
+            }
+        ]
+    },
+    {
+        value: 'AccountRef2',
+        title: 'Inventure, Inc.',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A32009651',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(502) 555-4387',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Financial Services',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.inventure.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.inventure.com'
+                }
+            }
+        ]
+    },
+    {
+        value: 'AccountRef3',
+        title: 'Mercy Hospital Chicago',
+        titlePosition: 'top',
+        description:
+            'A customer but there are a lot of  whitespace we can sell to.',
+        descriptionPosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'MHC-0001',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '3124445566',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Healthcare & Life Sciences',
+                type: 'text'
+            }
+        ]
+    },
+    {
+        value: 'AccountRef4',
+        title: 'Acme Hospitals',
+        titlePosition: 'top',
+        avatar: {
+            iconName: 'standard:account'
+        },
+        fields: [
+            {
+                label: 'Account Number',
+                value: 'A45475905',
+                type: 'text'
+            },
+            {
+                label: 'Account Phone',
+                value: '(794) 555-0153',
+                type: 'phone'
+            },
+            {
+                label: 'Industry',
+                value: 'Healthcare & Life Sciences',
+                type: 'text'
+            },
+            {
+                label: 'Website',
+                value: 'www.acmehospitals.com',
+                type: 'url',
+                typeAttributes: {
+                    label: 'www.acmehospitals.com'
+                }
+            }
+        ]
     }
 ];
 
@@ -669,51 +809,6 @@ export const xSmallAvatarStories = [
     }
 ];
 
-export const testItems = [
-    {
-        itemTitle: 'Lightning Professional',
-        itemDescription: 'Complete service CRM for teams of any size',
-        value: 'lightning-professional',
-        title: '$30',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:user'
-        }
-    },
-    {
-        itemTitle: 'Lightning Enterprise',
-        itemDescription:
-            'Everything you need to take support to the next level',
-        value: 'lightning-enterprise',
-        title: '$150',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:groups'
-        }
-    },
-    {
-        itemTitle: 'Lightning Enterprise Plus',
-        itemDescription: 'Example of a disabled tile',
-        value: 'lightning-enterprise-plus',
-        disabled: true,
-        title: '$220',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'standard:account'
-        }
-    },
-    {
-        itemTitle: 'Lightning Unlimited',
-        itemDescription: 'Complete support with enterprise-grade customization',
-        value: 'lightning-unlimited',
-        title: '$300',
-        description: 'USD/user/month *',
-        avatar: {
-            iconName: 'custom:custom68'
-        }
-    }
-];
-
 export const templates = [
     {
         title: 'Customer Insights Analytics',
@@ -851,3 +946,8 @@ export const templates = [
         ]
     }
 ];
+
+export const fieldAttributes = {
+    variant: 'label-stacked',
+    cols: 1
+};

@@ -43,7 +43,9 @@ import {
     botStories,
     avatarStories,
     xSmallAvatarStories,
-    templates
+    templates,
+    itemsWithFields,
+    fieldAttributes
 } from './data';
 
 export default {
@@ -78,6 +80,37 @@ export default {
             },
             description:
                 'Array of items with attributes populating the visual picker.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        columnAttributes: {
+            name: 'column-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'An object of attributes for cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item fields.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        imageAttributes: {
+            name: 'image-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item images.',
             table: {
                 type: { summary: 'object' }
             }
@@ -273,26 +306,42 @@ export const ItemsWithPictures = Template.bind({});
 ItemsWithPictures.args = {
     items: itemsWithPictures,
     name: 'with-pictures',
-    ratio: '3-by-4'
+    ratio: '16-by-9',
+    size: 'xx-large',
+    imageAttributes: {
+        cropFit: 'cover',
+        position: 'overlay'
+    }
 };
 
-export const analyticItems = Template.bind({});
-analyticItems.args = {
+export const ItemsWithFields = Template.bind({});
+ItemsWithFields.args = {
+    items: itemsWithFields,
+    name: 'with-fields',
+    size: 'xx-large',
+    fieldAttributes: fieldAttributes
+};
+
+export const AnalyticItems = Template.bind({});
+AnalyticItems.args = {
     items: analyticsItems,
     label: 'All Templates',
     name: 'analytic-items',
     size: 'xx-large'
 };
 
-export const analyticItemsTop = Template.bind({});
-analyticItemsTop.args = {
+export const AnalyticItemsTop = Template.bind({});
+AnalyticItemsTop.args = {
     items: topAnalyticsItems,
     label: 'All Templates',
     name: 'analytic-items',
     ratio: '3-by-4',
     size: 'xx-large',
     type: 'checkbox',
-    value: ['approval-analytics', 'commerce-analytics']
+    value: ['approval-analytics', 'commerce-analytics'],
+    imageAttributes: {
+        position: 'top'
+    }
 };
 
 export const GoalStory = Template.bind({});
@@ -300,7 +349,13 @@ GoalStory.args = {
     items: goalStories,
     label: 'What is the goal of your story',
     name: 'goal-story',
-    size: 'responsive'
+    size: 'responsive',
+    columnAttributes: {
+        cols: 2,
+        smallContainerCols: 2,
+        mediumContainerCols: 4,
+        largeContainerCols: 4
+    }
 };
 
 export const BotStory = Template.bind({});

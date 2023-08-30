@@ -32,14 +32,18 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import {
-    normalizeBoolean,
-    normalizeObject,
-    normalizeString
-} from 'c/utilsPrivate';
+import { normalizeObject, normalizeString } from 'c/utilsPrivate';
 
 const AVATAR_POSITIONS = {
-    valid: ['left', 'right', 'top', 'bottom', 'center'],
+    valid: [
+        'left',
+        'right',
+        'top',
+        'bottom',
+        'center',
+        'left-of-content',
+        'right-of-content'
+    ],
     default: 'left'
 };
 
@@ -48,9 +52,13 @@ const VISUAL_PICKER_SIZES = {
     default: 'medium'
 };
 
-const DEFAULT_DISPLAY_AVATAR = false;
-
-export default class PrimitiveVisualPickerTitle extends LightningElement {
+export default class PrimitiveVisualPickerHeader extends LightningElement {
+    /**
+     * The alternative text used to describe the avatar, which is displayed as hover text on the image.
+     *
+     * @type {string}
+     */
+    @api alternativeText;
     /**
      * The title can include text and is displayed inside the figure.
      *
@@ -58,15 +66,18 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
      */
     @api title;
     /**
-     * The alternative text used to describe the avatar, which is displayed as hover text on the image.
+     * The description can include text and is displayed inside the figure.
      *
      * @type {string}
      */
-    @api alternativeText;
+    @api description;
+    @api descriptionClass;
+    @api hideAvatarTopBottom = false;
+    @api hideTitle = false;
+    @api hideDescription = false;
 
     _avatar = {};
     _avatarPosition = AVATAR_POSITIONS.default;
-    _displayAvatar = DEFAULT_DISPLAY_AVATAR;
     _size = VISUAL_PICKER_SIZES.default;
 
     /**
@@ -83,7 +94,7 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
     }
 
     /**
-     * If present, sets the position of the avatar. Valid values include top, bottom, center, right and left. The value defaults to left.
+     * If present, sets the position of the avatar. Valid values include top, bottom, center, right, left, left-of-content and right-of-content. The value defaults to left.
      *
      * @type {string}
      */
@@ -96,19 +107,6 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
             fallbackValue: AVATAR_POSITIONS.default,
             validValues: AVATAR_POSITIONS.valid
         });
-    }
-
-    /**
-     * Verify if should display avatar.
-     *
-     * @type {boolean}
-     */
-    @api
-    get displayAvatar() {
-        return this._displayAvatar;
-    }
-    set displayAvatar(value) {
-        this._displayAvatar = normalizeBoolean(value);
     }
 
     /**
@@ -128,21 +126,42 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
     }
 
     /**
-     * Verify if avatar position is left and should display avatar.
+     * Verify if avatar position is next to text content and should display avatar.
      *
      * @type {boolean}
      */
-    get avatarIsLeft() {
-        return this._avatarPosition === 'left' && this._displayAvatar;
+    get avatarIsHorizontal() {
+        return (
+            !this.hideTitle &&
+            (this._avatarPosition === 'left-of-content' ||
+                this._avatarPosition === 'right-of-content')
+        );
     }
 
     /**
-     * Verify if avatar position is right and should display avatar.
+     * Verify if avatar position is top and should display avatar.
      *
      * @type {boolean}
      */
-    get avatarIsRight() {
-        return this._avatarPosition === 'right' && this._displayAvatar;
+    get avatarIsTop() {
+        return !this.hideAvatarTopBottom && this._avatarPosition === 'top';
+    }
+
+    /**
+     * Verify if avatar position is bottom and should display avatar.
+     *
+     * @type {boolean}
+     */
+    get avatarIsBottom() {
+        return (
+            !this.hideAvatarTopBottom &&
+            (this._avatarPosition === 'bottom' ||
+                this._avatarPosition === 'center' ||
+                !this.isBiggerThanXSmall ||
+                (this._avatarPosition !== 'bottom' &&
+                    this._avatarPosition !== 'top' &&
+                    this.hideTitle))
+        );
     }
 
     /**
@@ -151,10 +170,42 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
      * @type {string}
      */
     get computedContainerClass() {
-        return classSet(
-            'avonni-visual-picker__figure-content_alignment slds-media slds-media_center'
-        )
-            .add(`avonni-visual-picker__figure-content_${this._size}`)
+        return classSet('avonni-visual-picker__figure-header-container')
+            .add({
+                'avonni-visual-picker__figure-header-container-horizontal':
+                    this.avatarIsHorizontal,
+                'avonni-visual-picker__figure-header-container-horizontal-normal':
+                    this.avatarPosition === 'left-of-content',
+                'avonni-visual-picker__figure-header-container-horizontal-reverse':
+                    this.avatarPosition === 'right-of-content'
+            })
             .toString();
+    }
+
+    get computedDescriptionClass() {
+        const descriptionClass = this.descriptionClass || '';
+        return classSet(
+            `avonni-visual-picker__figure-description ${descriptionClass}`
+        ).toString();
+    }
+
+    /**
+     * Verify if the title should display avatar.
+     *
+     * @type {boolean}
+     */
+    get displayTitleAvatar() {
+        return (
+            this._avatarPosition === 'right' || this._avatarPosition === 'left'
+        );
+    }
+
+    /**
+     * Verify if size is bigger than x-small.
+     *
+     * @type {boolean}
+     */
+    get isBiggerThanXSmall() {
+        return !(this.size === 'x-small' || this.size === 'xx-small');
     }
 }
