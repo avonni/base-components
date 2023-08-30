@@ -94,7 +94,15 @@
 .avonni-visual-picker__figure-image-background
     .avonni-visual-picker__figure-image-container,
 .avonni-visual-picker__figure-image-overlay
-    .avonni-visual-picker__figure-image-container {
+    .avonni-visual-picker__figure-image-container,
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-image-container-layout,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-image-container-layout {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
     height: 100%;
     width: 100%;
 }
@@ -734,7 +742,7 @@
 
 .avonni-visual-picker__figure-body-container:not(:empty),
 .avonni-visual-picker__figure-image-container {
-    padding: 0.15rem;
+    padding: 0.3rem;
     max-height: 100%;
     max-width: 100%;
 }

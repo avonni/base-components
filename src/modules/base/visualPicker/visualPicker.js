@@ -722,10 +722,7 @@ export default class VisualPicker extends LightningElement {
                     imgIsHorizontal,
                     imgIsBackground
                 );
-            const computedImgStyle = this.computeImageStyle(
-                imgIsHorizontal,
-                imgIsBackground
-            );
+            const computedImgStyle = this.computeImageStyle(imgIsHorizontal);
             const computedImgContainerStyle = this.computeImageContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground
@@ -1087,10 +1084,9 @@ export default class VisualPicker extends LightningElement {
      * Compute image styling.
      *
      * @param {boolean} imgIsHorizontal
-     * @param {boolean} imgIsBackground
      * @returns {string}
      */
-    computeImageStyle(imgIsHorizontal, imgIsBackground) {
+    computeImageStyle(imgIsHorizontal) {
         const objectFit = `object-fit: ${this.imageAttributes.cropFit};`;
         let widthStyle = 'width: 100%;';
         let heightStyle = 'height: 100%;';
@@ -1100,25 +1096,18 @@ export default class VisualPicker extends LightningElement {
             // Size controls the width for image positions left and right. Otherwise, it controls the height.
             // The height is only used for image positions top, bottom, background and overlay.
             let heightInPx = this.imageAttributes.height;
-            let heightInRem = IMAGE_MAX_WIDTH_PERCENT[size]
+            let sizeInPercent = IMAGE_MAX_WIDTH_PERCENT[size]
                 ? IMAGE_MAX_WIDTH_PERCENT[size]
                 : 0;
-            let imageSize = `${heightInRem}%`;
-            if (heightInPx > 0) {
-                // If present, the height overrides the size value
-                imageSize = `${heightInPx}px`;
-                if (imgIsHorizontal) {
-                    widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
-                } else {
-                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
+            let imageSize = `${sizeInPercent}%`;
+            if (!imgIsHorizontal) {
+                if (heightInPx > 0) {
+                    // If present, the height overrides the size value
+                    imageSize = `${heightInPx}px`;
                 }
+                heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
             } else {
-                if (imgIsHorizontal || imgIsBackground) {
-                    widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
-                }
-                if (!imgIsHorizontal || imgIsBackground) {
-                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
-                }
+                widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
             }
         }
         return `${heightStyle} ${widthStyle} ${objectFit}`;
