@@ -670,20 +670,11 @@ export default class VisualPicker extends LightningElement {
             });
 
             // Header management
-            const headerIsTop =
-                avatarIsTop ||
-                titleIsTop ||
-                descriptionIsTop ||
-                (titleIsTop && avatarIsHorizontal);
+            const headerIsTop = avatarIsTop || titleIsTop || descriptionIsTop;
             const headerIsCenter =
-                avatarIsCenter ||
-                descriptionIsCenter ||
-                (titleIsCenter && avatarIsHorizontal);
+                avatarIsCenter || titleIsCenter || descriptionIsCenter;
             const headerIsBottom =
-                avatarIsBottom ||
-                titleIsBottom ||
-                descriptionIsBottom ||
-                (titleIsBottom && avatarIsHorizontal);
+                avatarIsBottom || titleIsBottom || descriptionIsBottom;
 
             // Fields management
             const hasFields =
@@ -695,6 +686,7 @@ export default class VisualPicker extends LightningElement {
                 tags &&
                 Array.isArray(tags) &&
                 tags.length > 0;
+
             // Image management
             let imgPosition = this.imageAttributes.position;
             imgSrc = imgSrc || this.imageAttributes.fallbackSrc;
