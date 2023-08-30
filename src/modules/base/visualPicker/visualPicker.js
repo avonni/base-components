@@ -623,13 +623,6 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition === 'center' && displayDescription;
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
-            const computedDescriptionClass = classSet(
-                'avonni-visual-picker__figure-description slds-line-clamp'
-            ).add({
-                'slds-m-around_small': this.truncateRatio,
-                'slds-m-horizontal_xx-small':
-                    descriptionPosition === titlePosition && !this.truncateRatio
-            });
 
             const descriptionTopHidden = !descriptionIsTop;
             const descriptionCenterHidden = !descriptionIsCenter;
@@ -796,7 +789,6 @@ export default class VisualPicker extends LightningElement {
                 computedBodyClass,
                 computedNotSelectedClass,
                 computedSelectedClass,
-                computedDescriptionClass,
                 visualPickerItemsClassBottom,
                 visualPickerItemsClassTop,
                 visualPickerItemsClassCenter

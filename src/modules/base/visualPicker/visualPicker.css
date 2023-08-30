@@ -150,6 +150,8 @@
     .avonni-visual-picker__figure-header,
 .avonni-visual-picker__figure-image-background
     .avonni-visual-picker__figure-header {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     --avonni-visual-picker-title-text-color: var(
         --avonni-visual-picker-overlay-text-color,
         #ffffff

@@ -270,8 +270,10 @@ export const itemsWithFields = [
         title: 'Meridian Partners',
         titlePosition: 'top',
         avatar: {
-            iconName: 'standard:account'
+            iconName: 'standard:account',
+            size: 'medium'
         },
+        avatarPosition: 'left-of-content',
         fields: [
             {
                 label: 'Account Number',
@@ -303,8 +305,10 @@ export const itemsWithFields = [
         title: 'Inventure, Inc.',
         titlePosition: 'top',
         avatar: {
-            iconName: 'standard:account'
+            iconName: 'standard:account',
+            size: 'medium'
         },
+        avatarPosition: 'left-of-content',
         fields: [
             {
                 label: 'Account Number',
@@ -339,8 +343,10 @@ export const itemsWithFields = [
             'A customer but there are a lot of  whitespace we can sell to.',
         descriptionPosition: 'top',
         avatar: {
-            iconName: 'standard:account'
+            iconName: 'standard:account',
+            size: 'medium'
         },
+        avatarPosition: 'left-of-content',
         fields: [
             {
                 label: 'Account Number',
@@ -364,8 +370,10 @@ export const itemsWithFields = [
         title: 'Acme Hospitals',
         titlePosition: 'top',
         avatar: {
-            iconName: 'standard:account'
+            iconName: 'standard:account',
+            size: 'medium'
         },
+        avatarPosition: 'left-of-content',
         fields: [
             {
                 label: 'Account Number',
@@ -453,7 +461,7 @@ export const analyticsItems = [
                 label: 'Commerce'
             }
         ],
-        imgSrc: 'https://www.bigcommerce.com/blog/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
+        imgSrc: 'https://cms-wp.bigcommerce.com/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
     },
     {
         value: 'sales-analytics',
@@ -541,7 +549,7 @@ export const topAnalyticsItems = [
                 label: 'Commerce'
             }
         ],
-        imgSrc: 'https://www.bigcommerce.com/blog/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
+        imgSrc: 'https://cms-wp.bigcommerce.com/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
     },
     {
         value: 'sales-analytics',
