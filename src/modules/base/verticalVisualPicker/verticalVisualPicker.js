@@ -286,9 +286,12 @@ export default class VerticalVisualPicker extends LightningElement {
             } = item;
             mediaPosition = mediaPosition || 'left';
             const key = `vertical-visual-picker-key-${index}`;
-            const mediaIsLeft = mediaPosition === 'left' && (avatar || imgSrc);
+            const showAvatar =
+                avatar && (avatar.imgSrc || avatar.initials || avatar.iconName);
+            const mediaIsLeft =
+                mediaPosition === 'left' && (showAvatar || imgSrc);
             const mediaIsRight =
-                mediaPosition === 'right' && (avatar || imgSrc);
+                mediaPosition === 'right' && (showAvatar || imgSrc);
             const bodyClass = classSet(
                 'slds-p-around_small slds-has-flexi-truncate'
             ).add({
