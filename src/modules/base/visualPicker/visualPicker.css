@@ -58,8 +58,17 @@
     );
 }
 
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-body-container {
+    order: 0;
+}
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-image-container-horizontal {
+    order: 1;
+}
+
 .avonni-visual-picker__figure-body-container,
-.avonni-visual-picker__figure-body {
+.avonni-visual-picker__figure-body:not(.avonni-visual-picker__figure-body-image-background) {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -72,7 +81,8 @@
     position: relative;
 }
 
-.avonni-visual-picker__height .avonni-visual-picker__items {
+.avonni-visual-picker__height .avonni-visual-picker__items,
+.avonni-visual-picker__height .avonni-visual-picker__items_responsive_image {
     flex: 0 1 calc(100% / 3);
     position: relative;
 }
@@ -96,9 +106,9 @@
 .avonni-visual-picker__figure-image-overlay
     .avonni-visual-picker__figure-image-container,
 .avonni-visual-picker__figure-image-background
-    .avonni-visual-picker__figure-image-container-layout,
+    .avonni-visual-picker__figure-image-container-horizontal,
 .avonni-visual-picker__figure-image-overlay
-    .avonni-visual-picker__figure-image-container-layout {
+    .avonni-visual-picker__figure-image-container-horizontal {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -422,7 +432,8 @@
     height: 100%;
 }
 
-.avonni-visual-picker_responsive .avonni-visual-picker__items {
+.avonni-visual-picker_responsive .avonni-visual-picker__items,
+.avonni-visual-picker_responsive .avonni-visual-picker__items_responsive_image {
     width: 0;
     min-width: 100%;
 }
@@ -769,6 +780,11 @@
     padding: var(--avonni-visual-picker-image-padding, 0.75rem);
 }
 
+.avonni-visual-picker__figure-image-bottom-container {
+    display: flex;
+    align-items: flex-end;
+}
+
 .avonni-visual-picker__figure-image {
     height: 100%;
     width: 100%;
@@ -786,13 +802,6 @@
 
 .avonni-visual-picker__figure-image_object-fit-none {
     object-fit: none;
-}
-
-.avonni-visual-picker_x-small
-    .avonni-visual-picker__figure-image-center-container,
-.avonni-visual-picker_xx-small
-    .avonni-visual-picker__figure-image-center-container {
-    padding: var(--avonni-visual-picker-image-padding, 15px);
 }
 
 .avonni-visual-picker__tags-hidden {

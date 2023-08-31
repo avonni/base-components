@@ -95,9 +95,9 @@
                                         <!-- Figure Image (Horizontal) -->
                                         <div
                                             if:true={item.layoutIsHorizontal}
-                                            style={item.computedLayoutContainerStyle}
+                                            style={item.computedImageLayoutStyle}
                                             class="
-                                                avonni-visual-picker__figure-image-container-layout
+                                                avonni-visual-picker__figure-image-container-horizontal
                                             "
                                         >
                                             <div
@@ -120,7 +120,7 @@
                                         </div>
                                         <!-- Figure Body -->
                                         <div
-                                            style={item.computedLayoutContainerStyle}
+                                            style={item.computedBodyLayoutStyle}
                                             class="
                                                 avonni-visual-picker__figure-body-container
                                             "
@@ -128,7 +128,7 @@
                                             <div class={item.computedBodyClass}>
                                                 <!-- Position Top -->
                                                 <div
-                                                    class={item.visualPickerItemsClassTop}
+                                                    class={item.computedBodyContentTopClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsTop}
@@ -150,6 +150,7 @@
                                                         style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-top-container
                                                         "
                                                     >
                                                         <img
@@ -166,7 +167,7 @@
                                                 </div>
                                                 <!-- Position Center -->
                                                 <div
-                                                    class={item.visualPickerItemsClassCenter}
+                                                    class={item.computedBodyContentCenterClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsCenter}
@@ -188,6 +189,7 @@
                                                         style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-center-container
                                                         "
                                                     >
                                                         <img
@@ -241,7 +243,7 @@
                                                 </div>
                                                 <!-- Position Bottom -->
                                                 <div
-                                                    class={item.visualPickerItemsClassBottom}
+                                                    class={item.computedBodyContentBottomClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsBottom}
@@ -263,6 +265,7 @@
                                                         style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-bottom-container
                                                         "
                                                     >
                                                         <img
