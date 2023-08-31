@@ -32,7 +32,7 @@
 
 import { createElement } from 'lwc';
 import VisualPicker from 'c/visualPicker';
-import { ITEMS } from './data';
+import { ITEMS, ITEMS_WITH_TAGS } from './data';
 
 let element;
 describe('VisualPicker', () => {
@@ -40,16 +40,22 @@ describe('VisualPicker', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
         element = createElement('base-visual-picker', {
             is: VisualPicker
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
     });
 
     it('Visual Picker: Default attributes', () => {
+        expect(element.columnAttributes).toMatchObject({});
         expect(element.disabled).toBeFalsy();
         expect(element.fieldAttributes).toMatchObject({});
         expect(element.hideCheckMark).toBeFalsy();
@@ -68,6 +74,75 @@ describe('VisualPicker', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // column attributes
+    it('Visual Picker: Column Attributes - Default values', () => {
+        element.columnAttributes = {};
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.columnAttributes.cols).toBe(12);
+            expect(element.columnAttributes.smallContainerCols).toBe(12);
+            expect(element.columnAttributes.mediumContainerCols).toBe(6);
+            expect(element.columnAttributes.largeContainerCols).toBe(4);
+        });
+    });
+
+    it('Visual Picker: Column Attributes - cols', () => {
+        element.columnAttributes = {
+            cols: 1
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.columnAttributes.cols).toBe(12);
+            expect(element.columnAttributes.smallContainerCols).toBe(12);
+            expect(element.columnAttributes.mediumContainerCols).toBe(12);
+            expect(element.columnAttributes.largeContainerCols).toBe(12);
+        });
+    });
+
+    it('Visual Picker: Column Attributes - smallContainerCols', () => {
+        element.columnAttributes = {
+            smallContainerCols: 2
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.columnAttributes.cols).toBe(12);
+            expect(element.columnAttributes.smallContainerCols).toBe(6);
+            expect(element.columnAttributes.mediumContainerCols).toBe(6);
+            expect(element.columnAttributes.largeContainerCols).toBe(6);
+        });
+    });
+
+    it('Visual Picker: Column Attributes - mediumContainerCols', () => {
+        element.columnAttributes = {
+            mediumContainerCols: 3
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.columnAttributes.cols).toBe(12);
+            expect(element.columnAttributes.smallContainerCols).toBe(12);
+            expect(element.columnAttributes.mediumContainerCols).toBe(4);
+            expect(element.columnAttributes.largeContainerCols).toBe(4);
+        });
+    });
+
+    it('Visual Picker: Column Attributes - largeContainerCols', () => {
+        element.columnAttributes = {
+            largeContainerCols: 12
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            expect(element.columnAttributes.cols).toBe(12);
+            expect(element.columnAttributes.smallContainerCols).toBe(12);
+            expect(element.columnAttributes.mediumContainerCols).toBe(6);
+            expect(element.columnAttributes.largeContainerCols).toBe(1);
+        });
+    });
 
     // disabled
     // Depends on items
@@ -190,7 +265,41 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('Visual Picker: Image Attributes - position', () => {
+    it('Visual Picker: Image Attributes - position = top', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = {
+            fallbackSrc,
+            position: 'top'
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-visual-picker-img-top"]'
+            );
+            expect(images.length).toBe(ITEMS.length);
+        });
+    });
+
+    it('Visual Picker: Image Attributes - position = bottom', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = {
+            fallbackSrc,
+            position: 'bottom'
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-visual-picker-img-bottom"]'
+            );
+            expect(images.length).toBe(ITEMS.length);
+        });
+    });
+
+    it('Visual Picker: Image Attributes - position = left', () => {
         const fallbackSrc =
             'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
         element.imageAttributes = {
@@ -204,6 +313,58 @@ describe('VisualPicker', () => {
                 '[data-element-id="avonni-visual-picker-img-horizontal"]'
             );
             expect(images.length).toBe(ITEMS.length);
+        });
+    });
+
+    it('Visual Picker: Image Attributes - position = right', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = {
+            fallbackSrc,
+            position: 'right'
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const wrappers = element.shadowRoot.querySelectorAll(
+                '.avonni-visual-picker__figure-container-reverse'
+            );
+            wrappers.forEach((wrapper) => {
+                const image = wrapper.querySelector(
+                    '[data-element-id="avonni-visual-picker-img-horizontal"]'
+                );
+                expect(image).toBeTruthy();
+            });
+            expect(wrappers.length).toBe(ITEMS.length);
+        });
+    });
+
+    it('Visual Picker: Image Attributes - position = background, position = overlay', () => {
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = {
+            fallbackSrc,
+            position: 'background'
+        };
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '.avonni-visual-picker__figure-image-background'
+            );
+            expect(images.length).toBe(ITEMS.length);
+        });
+    });
+
+    it('Visual Picker: Items - tags', () => {
+        element.items = ITEMS_WITH_TAGS;
+        element.size = 'xx-large';
+
+        return Promise.resolve().then(() => {
+            const tags = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-visual-picker-tags-container"]'
+            );
+            expect(tags.length).toBe(3);
         });
     });
 

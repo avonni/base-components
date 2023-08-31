@@ -689,9 +689,10 @@ export default class VisualPicker extends LightningElement {
 
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
-            const layoutRequiresImage =
-                imgPosition === 'background' || imgPosition === 'overlay';
-            if (!imgSrc && layoutRequiresImage) {
+            if (
+                !imgSrc &&
+                (imgPosition === 'background' || imgPosition === 'overlay')
+            ) {
                 imgPosition = 'top';
             }
 
