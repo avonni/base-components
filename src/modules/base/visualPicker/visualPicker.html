@@ -63,9 +63,9 @@
                                         <!-- Figure Image (Horizontal) -->
                                         <div
                                             if:true={item.layoutIsHorizontal}
-                                            style={item.computedLayoutContainerStyle}
+                                            style={item.computedImageLayoutStyle}
                                             class="
-                                                avonni-visual-picker__figure-image-container
+                                                avonni-visual-picker__figure-image-container-horizontal
                                             "
                                         >
                                             <div
@@ -74,26 +74,21 @@
                                                     avonni-visual-picker__figure-image-container
                                                 "
                                             >
-                                                <div
+                                                <img
+                                                    loading="lazy"
                                                     style={item.computedImgStyle}
-                                                    class="slds-is-relative"
-                                                >
-                                                    <img
-                                                        loading="lazy"
-                                                        style={item.computedImgStyle}
-                                                        class={computedImageMediaClass}
-                                                        src={item.imgSrc}
-                                                        alt={item.imgAlternativeText}
-                                                        draggable="false"
-                                                        onerror={handleItemImageError}
-                                                        data-element-id="avonni-visual-picker-img-horizontal"
-                                                    />
-                                                </div>
+                                                    class={computedImageMediaClass}
+                                                    src={item.imgSrc}
+                                                    alt={item.imgAlternativeText}
+                                                    draggable="false"
+                                                    onerror={handleItemImageError}
+                                                    data-element-id="avonni-visual-picker-img-horizontal"
+                                                />
                                             </div>
                                         </div>
                                         <!-- Figure Body -->
                                         <div
-                                            style={item.computedLayoutContainerStyle}
+                                            style={item.computedBodyLayoutStyle}
                                             class="
                                                 avonni-visual-picker__figure-body-container
                                             "
@@ -101,7 +96,7 @@
                                             <div class={item.computedBodyClass}>
                                                 <!-- Position Top -->
                                                 <div
-                                                    class={item.visualPickerItemsClassTop}
+                                                    class={item.computedBodyContentTopClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsTop}
@@ -120,39 +115,27 @@
                                                     ></c-primitive-visual-picker-header>
                                                     <div
                                                         if:true={item.imgIsTop}
+                                                        style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-top-container
                                                         "
                                                     >
-                                                        <div
-                                                            style={item.computedImgContainerStyle}
-                                                            class="
-                                                                avonni-visual-picker__figure-image-container
-                                                            "
-                                                        >
-                                                            <div
-                                                                style={item.computedImgStyle}
-                                                                class="
-                                                                    slds-is-relative
-                                                                "
-                                                            >
-                                                                <img
-                                                                    loading="lazy"
-                                                                    style={item.computedImgStyle}
-                                                                    class={computedImageMediaClass}
-                                                                    src={item.imgSrc}
-                                                                    alt={item.imgAlternativeText}
-                                                                    draggable="false"
-                                                                    onerror={handleItemImageError}
-                                                                    data-element-id="avonni-visual-picker-img-top"
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.computedImgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                            data-element-id="avonni-visual-picker-img-top"
+                                                        />
                                                     </div>
                                                 </div>
                                                 <!-- Position Center -->
                                                 <div
-                                                    class={item.visualPickerItemsClassCenter}
+                                                    class={item.computedBodyContentCenterClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsCenter}
@@ -171,34 +154,22 @@
                                                     ></c-primitive-visual-picker-header>
                                                     <div
                                                         if:true={item.imgIsCenter}
+                                                        style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-center-container
                                                         "
                                                     >
-                                                        <div
-                                                            style={item.computedImgContainerStyle}
-                                                            class="
-                                                                avonni-visual-picker__figure-image-container
-                                                            "
-                                                        >
-                                                            <div
-                                                                style={item.computedImgStyle}
-                                                                class="
-                                                                    slds-is-relative
-                                                                "
-                                                            >
-                                                                <img
-                                                                    loading="lazy"
-                                                                    style={item.computedImgStyle}
-                                                                    class={computedImageMediaClass}
-                                                                    src={item.imgSrc}
-                                                                    alt={item.imgAlternativeText}
-                                                                    draggable="false"
-                                                                    onerror={handleItemImageError}
-                                                                    data-element-id="avonni-visual-picker-img-center"
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.computedImgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                            data-element-id="avonni-visual-picker-img-center"
+                                                        />
                                                     </div>
                                                     <div
                                                         if:true={item.hasFields}
@@ -240,7 +211,7 @@
                                                 </div>
                                                 <!-- Position Bottom -->
                                                 <div
-                                                    class={item.visualPickerItemsClassBottom}
+                                                    class={item.computedBodyContentBottomClass}
                                                 >
                                                     <c-primitive-visual-picker-header
                                                         if:true={item.headerIsBottom}
@@ -259,34 +230,22 @@
                                                     ></c-primitive-visual-picker-header>
                                                     <div
                                                         if:true={item.imgIsBottom}
+                                                        style={item.computedImgContainerStyle}
                                                         class="
                                                             avonni-visual-picker__figure-image-container
+                                                            avonni-visual-picker__figure-image-bottom-container
                                                         "
                                                     >
-                                                        <div
-                                                            style={item.computedImgContainerStyle}
-                                                            class="
-                                                                avonni-visual-picker__figure-image-container
-                                                            "
-                                                        >
-                                                            <div
-                                                                style={item.computedImgStyle}
-                                                                class="
-                                                                    slds-is-relative
-                                                                "
-                                                            >
-                                                                <img
-                                                                    loading="lazy"
-                                                                    style={item.computedImgStyle}
-                                                                    class={computedImageMediaClass}
-                                                                    src={item.imgSrc}
-                                                                    alt={item.imgAlternativeText}
-                                                                    draggable="false"
-                                                                    onerror={handleItemImageError}
-                                                                    data-element-id="avonni-visual-picker-img-bottom"
-                                                                />
-                                                            </div>
-                                                        </div>
+                                                        <img
+                                                            loading="lazy"
+                                                            style={item.computedImgStyle}
+                                                            class={computedImageMediaClass}
+                                                            src={item.imgSrc}
+                                                            alt={item.imgAlternativeText}
+                                                            draggable="false"
+                                                            onerror={handleItemImageError}
+                                                            data-element-id="avonni-visual-picker-img-bottom"
+                                                        />
                                                     </div>
                                                     <div
                                                         if:true={item.hasTags}

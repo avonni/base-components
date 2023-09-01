@@ -603,7 +603,10 @@ export default class VisualPicker extends LightningElement {
                 fallbackValue: AVATAR_POSITION.default,
                 validValues: AVATAR_POSITION.valid
             });
-            const displayAvatar = avatar && this.isBiggerThanXSmall;
+            const displayAvatar =
+                this.isBiggerThanXSmall &&
+                avatar &&
+                (avatar.imgSrc || avatar.initials || avatar.iconName);
             const avatarIsHorizontal =
                 displayAvatar &&
                 (avatarPosition === 'left-of-content' ||
@@ -656,9 +659,10 @@ export default class VisualPicker extends LightningElement {
 
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
-            const layoutRequiresImage =
-                imgPosition === 'background' || imgPosition === 'overlay';
-            if (!imgSrc && layoutRequiresImage) {
+            if (
+                !imgSrc &&
+                (imgPosition === 'background' || imgPosition === 'overlay')
+            ) {
                 imgPosition = 'top';
             }
 
@@ -687,16 +691,21 @@ export default class VisualPicker extends LightningElement {
                 hasImg && !layoutIsHorizontal && !imgIsTop && !imgIsBottom;
 
             // Class and styling management
-            const computedLayoutContainerStyle =
-                this.computeLayoutContainerStyle(
-                    imgIsHorizontal,
-                    imgIsBackground
-                );
-            const computedImgStyle = this.computeImageStyle(
+            const computedBodyLayoutStyle = this.computeLayoutContainerStyle(
+                imgIsHorizontal,
+                imgIsBackground,
+                false
+            );
+            const computedImageLayoutStyle = this.computeLayoutContainerStyle(
+                imgIsHorizontal,
+                imgIsBackground,
+                true
+            );
+            const computedImgContainerStyle = this.computeImageContainerStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
-            const computedImgContainerStyle = this.computeImageContainerStyle(
+            const computedImgStyle = this.computeImageStyle(
                 imgIsHorizontal,
                 imgIsBackground
             );
@@ -706,12 +715,11 @@ export default class VisualPicker extends LightningElement {
                 value
             );
             const computedBodyClass = this.computeBodyClass(imgIsBackground);
-
-            const visualPickerItemsClassTop =
+            const computedBodyContentTopClass =
                 this.computeVisualPickerItemsClass(imgIsTop);
-            const visualPickerItemsClassCenter =
+            const computedBodyContentCenterClass =
                 this.computeVisualPickerItemsClass(imgIsCenter);
-            const visualPickerItemsClassBottom =
+            const computedBodyContentBottomClass =
                 this.computeVisualPickerItemsClass(imgIsBottom);
 
             return {
@@ -753,15 +761,16 @@ export default class VisualPicker extends LightningElement {
                 hasHiddenTags,
                 hasTags,
                 layoutIsHorizontal,
-                computedLayoutContainerStyle,
-                computedImgStyle,
+                computedBodyLayoutStyle,
+                computedImageLayoutStyle,
                 computedImgContainerStyle,
-                computedBodyClass,
+                computedImgStyle,
                 computedNotSelectedClass,
                 computedSelectedClass,
-                visualPickerItemsClassBottom,
-                visualPickerItemsClassTop,
-                visualPickerItemsClassCenter
+                computedBodyClass,
+                computedBodyContentBottomClass,
+                computedBodyContentTopClass,
+                computedBodyContentCenterClass
             };
         });
     }
@@ -1070,58 +1079,65 @@ export default class VisualPicker extends LightningElement {
             // Size controls the width for image positions left and right. Otherwise, it controls the height.
             // The height is only used for image positions top, bottom, background and overlay.
             let heightInPx = this.imageAttributes.height;
-            let heightInRem = IMAGE_MAX_WIDTH_PERCENT[size]
+            let sizeInPercent = IMAGE_MAX_WIDTH_PERCENT[size]
                 ? IMAGE_MAX_WIDTH_PERCENT[size]
                 : 0;
-            let imageSize = `${heightInRem}%`;
-            if (heightInPx > 0) {
-                // If present, the height overrides the size value
-                imageSize = `${heightInPx}px`;
-                if (imgIsHorizontal) {
-                    widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
-                } else {
-                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
-                }
-            } else {
-                if (imgIsHorizontal || imgIsBackground) {
+            let imageSize = `${sizeInPercent}%`;
+            if (!imgIsHorizontal) {
+                if (heightInPx > 0) {
+                    // If present, the height overrides the size value
+                    imageSize = `${heightInPx}px`;
+                } else if (imgIsBackground) {
                     widthStyle = `width: ${imageSize}; min-width: ${imageSize};`;
                 }
-                if (!imgIsHorizontal || imgIsBackground) {
-                    heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
-                }
+                heightStyle = `height: ${imageSize}; min-height: ${imageSize};`;
             }
         }
         return `${heightStyle} ${widthStyle} ${objectFit}`;
     }
 
     /**
-     * Compute item layout container styling. If the image position is left or right, the item content layout will be split into two columns of equal size.
+     * Compute item layout container styling. If the image position is left or right, the item content layout will be split into two columns.
      *
      * @param {boolean} imgIsHorizontal
      * @param {boolean} imgIsBackground
+     * @param {boolean} hasImage
      * @returns {string}
      */
-    computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground) {
+    computeLayoutContainerStyle(imgIsHorizontal, imgIsBackground, hasImage) {
         let heightStyle = '';
         let widthStyle = '';
         if (!imgIsBackground) {
-            let percent = this.isBiggerThanXSmall && imgIsHorizontal ? 50 : 100;
-            widthStyle = `width: ${percent}%;`;
+            let percent;
+            if (!this.isBiggerThanXSmall || !imgIsHorizontal) {
+                percent = 100;
+            } else {
+                const size = this.imageAttributes.size || this.size;
+                // The image max width in the horizontal layout should be 50% of the parent container width
+                percent = size ? IMAGE_MAX_WIDTH_PERCENT[size] * 0.5 : 50;
+                if (!hasImage) {
+                    percent = 100 - percent;
+                }
+            }
+            if (percent) {
+                widthStyle = `width: ${percent}%;`;
+            }
             heightStyle = imgIsHorizontal ? 'height: 100%;' : '';
         }
         return `${heightStyle} ${widthStyle}`;
     }
 
     /**
-     * Computed items container class styling
+     * Computed items body content class styling.
      *
      * @param {boolean} imgIsBackground
      * @returns {string}
      */
     computeBodyClass(imgIsBackground) {
-        return classSet('')
+        return classSet('avonni-visual-picker__figure-body')
             .add({
-                'avonni-visual-picker__figure-body': !imgIsBackground
+                'avonni-visual-picker__figure-body-image-background':
+                    imgIsBackground
             })
             .toString();
     }
@@ -1141,8 +1157,8 @@ export default class VisualPicker extends LightningElement {
             .add({
                 'slds-is-not-selected':
                     this.isCoverable && !this._hideCheckMark,
-                'slds-grid_vertical': imgPosition === 'bottom',
-                'slds-grid_reverse': imgPosition === 'right',
+                'avonni-visual-picker__figure-container-reverse':
+                    imgPosition === 'right',
                 'avonni-visual-picker__figure-image-background':
                     this.isBiggerThanXSmall &&
                     (imgPosition === 'background' ||
