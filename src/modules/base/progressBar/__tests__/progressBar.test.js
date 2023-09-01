@@ -40,6 +40,7 @@ describe('ProgressBar', () => {
 
     it('Progress Bar: Default attributes', () => {
         expect(element.label).toBeUndefined();
+        expect(element.showPin).toBeFalsy();
         expect(element.showValue).toBeFalsy();
         expect(element.orientation).toBe('horizontal');
         expect(element.referenceLines).toMatchObject([]);
@@ -65,6 +66,42 @@ describe('ProgressBar', () => {
                 '.avonni-progress-bar__label_font'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // show-pin
+    it('Progress Bar: showPin = false', () => {
+        element.showPin = false;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeFalsy();
+        });
+    });
+
+    it('Progress Bar: showPin = true with showValue = false', () => {
+        element.showPin = true;
+        element.showValue = false;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeFalsy();
+        });
+    });
+
+    it('Progress Bar: showPin = true with showValue = true', () => {
+        element.showPin = true;
+        element.showValue = true;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeTruthy();
         });
     });
 
