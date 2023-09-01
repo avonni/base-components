@@ -1,7 +1,6 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { isEditable } from 'c/primitiveCellUtils';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
@@ -10,11 +9,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api dropdownAlignment;
     @api dropdownLength;
     @api isMultiSelect;
-    @api options;
     @api placeholder;
 
     _columnsWidth = 0;
     _index;
+    _options = [];
     _value;
 
     visible = false;
@@ -31,6 +30,14 @@ export default class PrimitiveCellCombobox extends LightningElement {
             this.toggleInlineEdit();
         });
         this.dispatchStateAndColumnsEvent();
+    }
+
+    @api
+    get options() {
+        return this._options;
+    }
+    set options(value) {
+        this._options = normalizeArray(value);
     }
 
     @api
