@@ -1,5 +1,3 @@
-
-
 <template>
     <div class={computedSizing}>
         <lightning-layout vertical-align="center" pull-to-boundary="small">
@@ -60,8 +58,28 @@
                     aria-valuenow={value}
                     role="progressbar"
                 >
-                    <span class={computedInnerClass} style={computedStyle}>
-                    </span>
+                    <div
+                        class={computedInnerClass}
+                        style={computedStyle}
+                        data-element-id="avonni-progress-bar-value"
+                    >
+                        <div
+                            if:true={showPinValue}
+                            class={computedPinClass}
+                            data-element-id="avonni-progress-bar-pin"
+                        >
+                            <span
+                                class="
+                                    avonni-progress-bar__value_font
+                                    avonni-progress-bar__pin-value
+                                    slds-truncate
+                                "
+                                aria-hidden="true"
+                            >
+                                {value}%
+                            </span>
+                        </div>
+                    </div>
                     <span class="slds-assistive-text">{assistiveText}</span>
                     <lightning-layout
                         horizontal-align="spread"

@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -80,6 +78,7 @@ export default class ProgressBar extends LightningElement {
 
     _orientation = PROGRESS_BAR_ORIENTATIONS.default;
     _referenceLines = [];
+    _showPin = false;
     _showValue = false;
     _size = PROGRESS_BAR_SIZES.default;
     _textured = false;
@@ -158,6 +157,22 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: PROGRESS_BAR_SIZES.default,
             validValues: PROGRESS_BAR_SIZES.valid
         });
+    }
+
+    /**
+     * If present, display the pin .
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showPin() {
+        return this._showPin;
+    }
+
+    set showPin(value) {
+        this._showPin = normalizeBoolean(value);
     }
 
     /**
@@ -404,7 +419,7 @@ export default class ProgressBar extends LightningElement {
      */
     get computedInnerClass() {
         // for the progressBar in vertical we need to set a height on the outer div and inner div
-        return classSet('slds-progress-bar__value')
+        return classSet('slds-progress-bar__value slds-is-relative')
             .add(`avonni-progress-bar__bar_theme-${this._theme}`)
             .add({
                 'avonni-progress-bar__vertical-bar_size-x-small':
@@ -421,6 +436,12 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
+    get computedPinClass() {
+        return classSet(
+            'avonni-progress-bar__pin avonni-progress-bar__round-pin'
+        ).add(`avonni-progress-bar__pin_theme-${this._theme}`);
+    }
+
     /**
      * Computed orientation width or height depending on vertical or horizontal display.
      *
@@ -433,12 +454,23 @@ export default class ProgressBar extends LightningElement {
     }
 
     /**
+     * Verify Show pin value.
+     *
+     * @type {boolean}
+     */
+    get showPinValue() {
+        return this._showPin && this._showValue;
+    }
+
+    /**
      * Verify Show position left.
      *
      * @type {string | boolean}
      */
     get showPositionLeft() {
-        return this._valuePosition === 'left' && this._showValue;
+        return (
+            this._valuePosition === 'left' && this._showValue && !this._showPin
+        );
     }
 
     /**
@@ -447,7 +479,9 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionRight() {
-        return this._valuePosition === 'right' && this._showValue;
+        return (
+            this._valuePosition === 'right' && this._showValue && !this._showPin
+        );
     }
 
     /**
@@ -456,7 +490,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomLeft() {
-        return this._valuePosition === 'bottom-left' && this._showValue;
+        return (
+            this._valuePosition === 'bottom-left' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -465,7 +503,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionBottomRight() {
-        return this._valuePosition === 'bottom-right' && this._showValue;
+        return (
+            this._valuePosition === 'bottom-right' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -474,7 +516,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionTopRight() {
-        return this._valuePosition === 'top-right' && this._showValue;
+        return (
+            this._valuePosition === 'top-right' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**
@@ -483,7 +529,11 @@ export default class ProgressBar extends LightningElement {
      * @type {string | boolean}
      */
     get showPositionTopLeft() {
-        return this._valuePosition === 'top-left' && this._showValue;
+        return (
+            this._valuePosition === 'top-left' &&
+            this._showValue &&
+            !this._showPin
+        );
     }
 
     /**

@@ -1,5 +1,3 @@
-
-
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {
@@ -45,6 +43,18 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, display the value.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Value'
+            }
+        },
+        showPin: {
+            name: 'show-pin',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display the pin.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -239,6 +249,15 @@ Vertical.args = {
     orientation: 'vertical',
     referenceLines: oneReferenceLine,
     size: 'large'
+};
+
+export const ShowPinValue = Template.bind({});
+ShowPinValue.args = {
+    label: 'Label',
+    value: 45,
+    referenceLines: oneReferenceLine,
+    showValue: true,
+    showPin: true
 };
 
 export const MultipleReferenceLines = Template.bind({});
