@@ -260,6 +260,17 @@ ShowPinValue.args = {
     showPin: true
 };
 
+export const VerticalShowPinValue = Template.bind({});
+VerticalShowPinValue.args = {
+    label: 'Vertical progress bar',
+    value: 45,
+    orientation: 'vertical',
+    referenceLines: oneReferenceLine,
+    size: 'large',
+    showValue: true,
+    showPin: true
+};
+
 export const MultipleReferenceLines = Template.bind({});
 MultipleReferenceLines.args = {
     label: 'Progress bar with multiple reference lines',

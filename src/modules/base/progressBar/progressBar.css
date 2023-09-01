@@ -50,26 +50,23 @@
     height: 16px; /* Height needs to be half the width */
     width: 32px;
     border-radius: 26px 26px 0 0;
-    right: calc(-32px / 2 + 2.5px);
+    right: calc(-32px / 2);
     top: calc(-32px - 7px);
     line-height: 35px;
 }
 
-.avonni-progress-bar__pin:before {
+.avonni-progress-bar__pin::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    -ms-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
     z-index: -9;
     border-radius: 50% 50% 50% 0;
-    transform: rotate(-50deg);
+    transform: rotate(-45deg);
 }
 
-.avonni-progress-bar__round-pin:before {
+.avonni-progress-bar__round-pin::before {
     height: 32px;
     width: 32px;
 }
@@ -81,7 +78,7 @@
 
 /* Theme */
 .avonni-progress-bar__pin_theme-alt-inverse,
-.avonni-progress-bar__pin_theme-alt-inverse:before,
+.avonni-progress-bar__pin_theme-alt-inverse::before,
 .avonni-progress-bar__bar_theme-alt-inverse {
     background-color: var(
         --avonni-progress-bar-bar-value-alt-inverse-color-background,
@@ -97,7 +94,7 @@
 }
 
 .avonni-progress-bar__pin_theme-base,
-.avonni-progress-bar__pin_theme-base:before,
+.avonni-progress-bar__pin_theme-base::before,
 .avonni-progress-bar__bar_theme-base {
     background-color: var(
         --avonni-progress-bar-bar-value-base-color-background,
@@ -110,7 +107,7 @@
 }
 
 .avonni-progress-bar__pin_theme-error,
-.avonni-progress-bar__pin_theme-error:before,
+.avonni-progress-bar__pin_theme-error::before,
 .avonni-progress-bar__bar_theme-error {
     background-color: var(
         --avonni-progress-bar-bar-value-error-color-background,
@@ -126,7 +123,7 @@
 }
 
 .avonni-progress-bar__pin_theme-info,
-.avonni-progress-bar__pin_theme-info:before,
+.avonni-progress-bar__pin_theme-info::before,
 .avonni-progress-bar__bar_theme-info {
     background-color: var(
         --avonni-progress-bar-bar-value-info-color-background,
@@ -139,7 +136,7 @@
 }
 
 .avonni-progress-bar__pin_theme-inverse,
-.avonni-progress-bar__pin_theme-inverse:before,
+.avonni-progress-bar__pin_theme-inverse::before,
 .avonni-progress-bar__bar_theme-inverse {
     background-color: var(
         --avonni-progress-bar-bar-value-inverse-color-background,
@@ -155,7 +152,7 @@
 }
 
 .avonni-progress-bar__pin_theme-offline,
-.avonni-progress-bar__pin_theme-offline:before,
+.avonni-progress-bar__pin_theme-offline::before,
 .avonni-progress-bar__bar_theme-offline {
     background-color: var(
         --avonni-progress-bar-bar-value-offline-color-background,
@@ -171,7 +168,7 @@
 }
 
 .avonni-progress-bar__pin_theme-success,
-.avonni-progress-bar__pin_theme-success:before,
+.avonni-progress-bar__pin_theme-success::before,
 .avonni-progress-bar__bar_theme-success {
     background-color: var(
         --avonni-progress-bar-bar-value-success-color-background,
@@ -187,7 +184,7 @@
 }
 
 .avonni-progress-bar__pin_theme-warning,
-.avonni-progress-bar__pin_theme-warning:before,
+.avonni-progress-bar__pin_theme-warning::before,
 .avonni-progress-bar__bar_theme-warning {
     background-color: var(
         --avonni-progress-bar-bar-value-warning-color-background,
