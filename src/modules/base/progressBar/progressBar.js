@@ -438,7 +438,7 @@ export default class ProgressBar extends LightningElement {
 
     get computedPinClass() {
         return classSet(
-            'avonni-progress-bar__pin avonni-progress-bar__round-pin'
+            'avonni-progress-bar__pin avonni-progress-bar__circle-pin'
         ).add(`avonni-progress-bar__pin_theme-${this._theme}`);
     }
 
