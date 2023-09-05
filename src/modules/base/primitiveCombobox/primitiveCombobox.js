@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import Option from './option';
 import Action from './action';
@@ -46,6 +44,7 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
+const MIN_DROPDOWN_HEIGHT = 60;
 
 /**
  * Primitive Combobox.
@@ -743,6 +742,26 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Maximum height of the dropdown, so it doesn't overflow the window.
+     *
+     * @type {number}
+     */
+    get maxDropdownHeight() {
+        const dropdown = this.template.querySelector(
+            '[data-element-id="div-dropdown"]'
+        );
+        if (!dropdown) {
+            return 0;
+        }
+        const maxHeightBeforeOverflow =
+            window.innerHeight - dropdown.getBoundingClientRect().top - 20;
+
+        return maxHeightBeforeOverflow < MIN_DROPDOWN_HEIGHT
+            ? MIN_DROPDOWN_HEIGHT
+            : maxHeightBeforeOverflow;
+    }
+
+    /**
      * If true, display value avatar.
      *
      * @type {boolean}
@@ -1341,11 +1360,16 @@ export default class PrimitiveCombobox extends LightningElement {
         const dropdown = this.template.querySelector(
             '[data-element-id="div-dropdown"]'
         );
-        const height =
+        let height =
             optionsHeight +
             titlesHeight +
             topActionsHeight +
             bottomActionsHeight;
+
+        const maxHeight = this.maxDropdownHeight;
+        if (height > maxHeight) {
+            height = maxHeight;
+        }
 
         // Do not set the height when there is no actions or options
         // (for example 0 search results or is loading)
