@@ -47,7 +47,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-warning-color-background
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**
@@ -197,7 +197,14 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-image-background
- * @default linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.025) 50%, rgba(0, 0, 0, 0.025) 75%, transparent 75%, transparent)
+ * @default linear-gradient(45deg,
+                rgba(24, 24, 24, 0.1) 25%,
+                transparent 25%,
+                transparent 50%,
+                rgba(24, 24, 24, 0.1) 50%,
+                rgba(24, 24, 24, 0.1) 75%,
+                transparent 75%,
+                transparent))
  * @type image
  */
 /**
