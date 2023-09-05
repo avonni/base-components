@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/mediaObject/inverseMediaObject';
 
 customElements.define(

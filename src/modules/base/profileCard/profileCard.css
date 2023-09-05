@@ -1,5 +1,3 @@
-
-
 article.avonni-profile-card {
     position: relative;
     background-color: var(--avonni-profile-card-color-background, white);
@@ -23,25 +21,17 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card_color-background {
-    background-color: var(
-        --avonni-profile-card-header-color-background,
-        #ffffff
-    );
+    background-color: var(--avonni-profile-card-header-color-background,
+            #ffffff);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border-bottom-width: var(
-        --avonni-profile-card-header-sizing-border-bottom,
-        0px
-    );
-    border-bottom-style: var(
-        --avonni-profile-card-header-styling-border-bottom,
-        solid
-    );
-    border-bottom-color: var(
-        --avonni-profile-card-header-color-border-bottom,
-        #c9c9c9
-    );
+    border-bottom-width: var(--avonni-profile-card-header-sizing-border-bottom,
+            0px);
+    border-bottom-style: var(--avonni-profile-card-header-styling-border-bottom,
+            solid);
+    border-bottom-color: var(--avonni-profile-card-header-color-border-bottom,
+            #c9c9c9);
     width: 100%;
     flex: 1 1 auto;
 }
@@ -119,12 +109,10 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__title {
-    font-family: var(
-        --avonni-profile-card-header-title-font-family,
-        'Salesforce Sans',
-        Arial,
-        sans-serif
-    );
+    font-family: var(--avonni-profile-card-header-title-font-family,
+            'Salesforce Sans',
+            Arial,
+            sans-serif);
     font-size: var(--avonni-profile-card-title-font-size, 18px);
     font-style: var(--avonni-profile-card-title-font-style, normal);
     font-weight: var(--avonni-profile-card-title-font-weight, 400);
@@ -133,12 +121,10 @@ article.avonni-profile-card {
 }
 
 .avonni-profile-card__subtitle {
-    font-family: var(
-        --avonni-profile-card-header-subtitle-font-family,
-        'Salesforce Sans',
-        Arial,
-        sans-serif
-    );
+    font-family: var(--avonni-profile-card-header-subtitle-font-family,
+            'Salesforce Sans',
+            Arial,
+            sans-serif);
     font-size: var(--avonni-profile-card-subtitle-font-size, 14px);
     font-weight: var(--avonni-profile-card-subtitle-font-weight, 400);
     font-style: var(--avonni-profile-card-subtitle-font-style, normal);
@@ -203,23 +189,19 @@ article.avonni-profile-card {
         margin-top: 0.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-small']
-        .avonni-profile-card__avatar-img {
+    [class*='-left-desktop'][class$='card_size-x-small'] .avonni-profile-card__avatar-img {
         left: 0.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-small']
-        .avonni-profile-card__avatar-img {
+    [class*='-right-desktop'][class$='card_size-x-small'] .avonni-profile-card__avatar-img {
         right: 0.75rem;
     }
 
@@ -227,23 +209,19 @@ article.avonni-profile-card {
         margin-top: 1rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-small
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-small .avonni-profile-card__avatar-img {
         top: -1rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-small
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-small .avonni-profile-card__avatar-img {
         top: 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-small']
-        .avonni-profile-card__avatar-img {
+    [class*='-left-desktop'][class$='card_size-small'] .avonni-profile-card__avatar-img {
         left: 1rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-small']
-        .avonni-profile-card__avatar-img {
+    [class*='-right-desktop'][class$='card_size-small'] .avonni-profile-card__avatar-img {
         right: 1rem;
     }
 
@@ -251,23 +229,19 @@ article.avonni-profile-card {
         margin-top: 1.25rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-medium
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-medium .avonni-profile-card__avatar-img {
         top: -1.25rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-medium
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-medium .avonni-profile-card__avatar-img {
         top: 1.25rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-medium']
-        .avonni-profile-card__avatar-img {
+    [class*='-left-desktop'][class$='card_size-medium'] .avonni-profile-card__avatar-img {
         left: 1.25rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-medium']
-        .avonni-profile-card__avatar-img {
+    [class*='-right-desktop'][class$='card_size-medium'] .avonni-profile-card__avatar-img {
         right: 1.25rem;
     }
 
@@ -275,23 +249,19 @@ article.avonni-profile-card {
         margin-top: 1.5rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-large
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-large .avonni-profile-card__avatar-img {
         top: -1.5rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-large
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-large .avonni-profile-card__avatar-img {
         top: 1.5rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-large']
-        .avonni-profile-card__avatar-img {
+    [class*='-left-desktop'][class$='card_size-large'] .avonni-profile-card__avatar-img {
         left: 1.5rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-large']
-        .avonni-profile-card__avatar-img {
+    [class*='-right-desktop'][class$='card_size-large'] .avonni-profile-card__avatar-img {
         right: 1.5rem;
     }
 
@@ -299,23 +269,19 @@ article.avonni-profile-card {
         margin-top: 1.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-large
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-x-large .avonni-profile-card__avatar-img {
         top: -1.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-large
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-x-large .avonni-profile-card__avatar-img {
         top: 1.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-large']
-        .avonni-profile-card__avatar-img {
+    [class*='-left-desktop'][class$='card_size-x-large'] .avonni-profile-card__avatar-img {
         left: 1.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-large']
-        .avonni-profile-card__avatar-img {
+    [class*='-right-desktop'][class$='card_size-x-large'] .avonni-profile-card__avatar-img {
         right: 1.75rem;
     }
 
@@ -323,28 +289,23 @@ article.avonni-profile-card {
         padding: 0 1rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-x-small
-        [data-element-id='text-container'] {
+    .bottom-center-desktop.avonni-profile-card__card_size-x-small [data-element-id='text-container'] {
         margin-top: 1.5rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-small
-        [data-element-id='text-container'] {
+    .bottom-center-desktop.avonni-profile-card__card_size-small [data-element-id='text-container'] {
         margin-top: 1.75rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-medium
-        [data-element-id='text-container'] {
+    .bottom-center-desktop.avonni-profile-card__card_size-medium [data-element-id='text-container'] {
         margin-top: 2rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-large
-        [data-element-id='text-container'] {
+    .bottom-center-desktop.avonni-profile-card__card_size-large [data-element-id='text-container'] {
         margin-top: 2.25rem;
     }
 
-    .bottom-center-desktop.avonni-profile-card__card_size-x-large
-        [data-element-id='text-container'] {
+    .bottom-center-desktop.avonni-profile-card__card_size-x-large [data-element-id='text-container'] {
         margin-top: 2.5rem;
         padding: 0 1rem;
     }
@@ -357,119 +318,102 @@ article.avonni-profile-card {
         padding: 0 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-small']
-        [data-element-id='text-container'] {
+    [class*='-left-desktop'][class$='card_size-x-small'] [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
         padding-left: 4.75rem;
         padding-right: 0.75rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-small']
-        [data-element-id='text-container'] {
+    [class*='-left-desktop'][class$='card_size-small'] [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
         padding-left: 6.5rem;
         padding-right: 1rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-medium']
-        [data-element-id='text-container'] {
+    [class*='-left-desktop'][class$='card_size-medium'] [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
         padding-left: 8.25rem;
         padding-right: 1.25rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-large']
-        [data-element-id='text-container'] {
+    [class*='-left-desktop'][class$='card_size-large'] [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
         padding-left: 12.25rem;
         padding-right: 1.5rem;
     }
 
-    [class*='-left-desktop'][class$='card_size-x-large']
-        [data-element-id='text-container'] {
+    [class*='-left-desktop'][class$='card_size-x-large'] [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
         padding-left: 14.75rem;
         padding-right: 1.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-small']
-        [data-element-id='text-container'] {
+    [class*='-right-desktop'][class$='card_size-x-small'] [data-element-id='text-container'] {
         position: absolute;
         padding: 0.5rem;
         padding-right: 4.75rem;
         padding-left: 0.75rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-small']
-        [data-element-id='text-container'] {
+    [class*='-right-desktop'][class$='card_size-small'] [data-element-id='text-container'] {
         position: absolute;
         padding: 0.8rem;
         padding-right: 6.5rem;
         padding-left: 1rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-medium']
-        [data-element-id='text-container'] {
+    [class*='-right-desktop'][class$='card_size-medium'] [data-element-id='text-container'] {
         position: absolute;
         padding: 1.5rem;
         padding-right: 8.25rem;
         padding-left: 1.25rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-large']
-        [data-element-id='text-container'] {
+    [class*='-right-desktop'][class$='card_size-large'] [data-element-id='text-container'] {
         position: absolute;
         padding: 2.8rem;
         padding-right: 12.25rem;
         padding-left: 1.5rem;
     }
 
-    [class*='-right-desktop'][class$='card_size-x-large']
-        [data-element-id='text-container'] {
+    [class*='-right-desktop'][class$='card_size-x-large'] [data-element-id='text-container'] {
         position: absolute;
         padding: 3.8rem;
         padding-right: 14.75rem;
         padding-left: 1.75rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-x-small
-        .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-x-small
-        .slds-card__body {
+    .bottom-left-desktop.avonni-profile-card__card_size-x-small .slds-card__body,
+    .bottom-right-desktop.avonni-profile-card__card_size-x-small .slds-card__body {
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
 
     .bottom-left-desktop.avonni-profile-card__card_size-small .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-small
-        .slds-card__body {
+    .bottom-right-desktop.avonni-profile-card__card_size-small .slds-card__body {
         margin-top: 1.75rem;
         margin-bottom: 1rem;
     }
 
     .bottom-left-desktop.avonni-profile-card__card_size-medium .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-medium
-        .slds-card__body {
+    .bottom-right-desktop.avonni-profile-card__card_size-medium .slds-card__body {
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
     .bottom-left-desktop.avonni-profile-card__card_size-large .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-large
-        .slds-card__body {
+    .bottom-right-desktop.avonni-profile-card__card_size-large .slds-card__body {
         margin-top: 2.25rem;
         margin-bottom: 1rem;
     }
 
-    .bottom-left-desktop.avonni-profile-card__card_size-x-large
-        .slds-card__body,
-    .bottom-right-desktop.avonni-profile-card__card_size-x-large
-        .slds-card__body {
+    .bottom-left-desktop.avonni-profile-card__card_size-x-large .slds-card__body,
+    .bottom-right-desktop.avonni-profile-card__card_size-x-large .slds-card__body {
         margin-top: 2.5rem;
         margin-bottom: 1rem;
     }
@@ -478,13 +422,11 @@ article.avonni-profile-card {
         margin-top: 0.75rem;
     }
 
-    [class^='top-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class^='top-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class^='bottom-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class^='bottom-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 }
@@ -516,13 +458,11 @@ article.avonni-profile-card {
         margin-top: 0.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 
@@ -538,13 +478,11 @@ article.avonni-profile-card {
         margin-top: 1rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-small .avonni-profile-card__avatar-img {
         top: -1rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-small .avonni-profile-card__avatar-img {
         top: 1rem;
     }
 
@@ -560,13 +498,11 @@ article.avonni-profile-card {
         margin-top: 1.25rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-medium
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-medium .avonni-profile-card__avatar-img {
         top: -1.25rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-medium
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-medium .avonni-profile-card__avatar-img {
         top: 1.25rem;
     }
 
@@ -582,13 +518,11 @@ article.avonni-profile-card {
         margin-top: 1.5rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-large
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-large .avonni-profile-card__avatar-img {
         top: -1.5rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-large
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-large .avonni-profile-card__avatar-img {
         top: 1.5rem;
     }
 
@@ -604,13 +538,11 @@ article.avonni-profile-card {
         margin-top: 1.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-large
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-x-large .avonni-profile-card__avatar-img {
         top: -1.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-large
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-large .avonni-profile-card__avatar-img {
         top: 1.75rem;
     }
 
@@ -626,28 +558,23 @@ article.avonni-profile-card {
         padding: 0 1rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-x-small
-        [data-element-id='text-container'] {
+    .mobile-bottom-center.avonni-profile-card__card_size-x-small [data-element-id='text-container'] {
         margin-top: 1.5rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-small
-        [data-element-id='text-container'] {
+    .mobile-bottom-center.avonni-profile-card__card_size-small [data-element-id='text-container'] {
         margin-top: 1.75rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-medium
-        [data-element-id='text-container'] {
+    .mobile-bottom-center.avonni-profile-card__card_size-medium [data-element-id='text-container'] {
         margin-top: 2rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-large
-        [data-element-id='text-container'] {
+    .mobile-bottom-center.avonni-profile-card__card_size-large [data-element-id='text-container'] {
         margin-top: 2.25rem;
     }
 
-    .mobile-bottom-center.avonni-profile-card__card_size-x-large
-        [data-element-id='text-container'] {
+    .mobile-bottom-center.avonni-profile-card__card_size-x-large [data-element-id='text-container'] {
         margin-top: 2.5rem;
         padding: 0 1rem;
     }
@@ -731,8 +658,7 @@ article.avonni-profile-card {
     }
 
     .mobile-bottom-left.avonni-profile-card__card_size-x-small .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-x-small
-        .slds-card__body {
+    .mobile-bottom-right.avonni-profile-card__card_size-x-small .slds-card__body {
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
@@ -744,8 +670,7 @@ article.avonni-profile-card {
     }
 
     .mobile-bottom-left.avonni-profile-card__card_size-medium .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-medium
-        .slds-card__body {
+    .mobile-bottom-right.avonni-profile-card__card_size-medium .slds-card__body {
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
@@ -757,8 +682,7 @@ article.avonni-profile-card {
     }
 
     .mobile-bottom-left.avonni-profile-card__card_size-x-large .slds-card__body,
-    .mobile-bottom-right.avonni-profile-card__card_size-x-large
-        .slds-card__body {
+    .mobile-bottom-right.avonni-profile-card__card_size-x-large .slds-card__body {
         margin-top: 2.5rem;
         margin-bottom: 1rem;
     }
@@ -767,13 +691,11 @@ article.avonni-profile-card {
         margin-top: 0.75rem;
     }
 
-    [class*='mobile-top-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-top-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: -0.75rem;
     }
 
-    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small
-        .avonni-profile-card__avatar-img {
+    [class*='mobile-bottom-'].avonni-profile-card__card_size-x-small .avonni-profile-card__avatar-img {
         top: 0.75rem;
     }
 }

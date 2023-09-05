@@ -1,5 +1,3 @@
-
-
 export { Direction } from './direction';
 import { Constraint } from './constraint';
 import {

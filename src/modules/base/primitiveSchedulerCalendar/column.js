@@ -1,5 +1,3 @@
-
-
 import { SchedulerCellGroup } from 'c/schedulerUtils';
 import { dateTimeObjectFrom, normalizeArray } from 'c/utilsPrivate';
 

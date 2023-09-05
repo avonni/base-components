@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/card/cardTopMedia';
 
 customElements.define('ac-card-top-media', Component.CustomElementConstructor);

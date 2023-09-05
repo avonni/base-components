@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Map from 'c/map';
 
@@ -162,7 +160,9 @@ describe('Map', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const footer = element.shadowRoot.querySelector('[data-element-id="avonni-external-link"]');
+            const footer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-external-link"]'
+            );
             expect(footer).toBeFalsy();
         });
     });
@@ -189,7 +189,9 @@ describe('Map', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const footer = element.shadowRoot.querySelector('[data-element-id="avonni-external-link"]');
+            const footer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-external-link"]'
+            );
             expect(footer).toBeTruthy();
         });
     });

@@ -1,5 +1,3 @@
-
-
 import { getPathPrefix, getToken } from 'lightning/configProvider';
 import isIframeInEdge from './isIframeInEdge';
 import { IconSVGCreator } from './iconSVGCreator';

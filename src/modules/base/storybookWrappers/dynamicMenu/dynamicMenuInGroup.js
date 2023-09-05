@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';

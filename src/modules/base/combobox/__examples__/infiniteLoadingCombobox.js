@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/combobox/combobox';
 
 customElements.define(

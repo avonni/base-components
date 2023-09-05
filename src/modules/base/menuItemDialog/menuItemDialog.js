@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, keyCodes } from 'c/utilsPrivate';
 

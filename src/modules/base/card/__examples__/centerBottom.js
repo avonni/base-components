@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/card/cardCenterBottom';
 
 customElements.define(

@@ -1,5 +1,3 @@
-
-
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
 import {
     baseItems,

@@ -1,5 +1,3 @@
-
-
 /**
  * Compute an item key value.
  *

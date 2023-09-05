@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import PrimitiveCombobox from '../primitiveCombobox';
 import Option from '../option';

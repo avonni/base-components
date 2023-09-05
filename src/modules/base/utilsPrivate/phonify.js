@@ -1,5 +1,3 @@
-
-
 //import locale from '@salesforce/i18n/locale';
 
 const locale = 'US';

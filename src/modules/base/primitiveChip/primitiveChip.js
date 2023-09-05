@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -7,7 +5,6 @@ import {
     normalizeObject,
     deepCopy
 } from 'c/utilsPrivate';
-
 import { classSet } from 'c/utils';
 
 const CHIP_VARIANTS = {

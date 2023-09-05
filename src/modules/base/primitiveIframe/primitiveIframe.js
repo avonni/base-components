@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { registerDomain, unregisterDomain } from 'c/messageDispatcher';
 
@@ -8,8 +6,8 @@ import { registerDomain, unregisterDomain } from 'c/messageDispatcher';
  * @extends Element
  */
 
-const DEFAULT_WIDTH = '100%'
-const DEFAULT_HEIGHT = '100%'
+const DEFAULT_WIDTH = '100%';
+const DEFAULT_HEIGHT = '100%';
 
 export default class PrimitiveIframe extends LightningElement {
     @api src;

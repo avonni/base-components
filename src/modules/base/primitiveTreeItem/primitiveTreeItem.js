@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import { keyCodes, normalizeArray, normalizeBoolean } from 'c/utilsPrivate';

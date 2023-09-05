@@ -1,5 +1,3 @@
-
-
 import { ChipContainer } from '../__examples__/chipContainer';
 import { MaxWidthChipContainer } from '../__examples__/maxWidthChipContainer';
 import { ITEMS, ITEMS_NO_MEDIA } from './data.js';

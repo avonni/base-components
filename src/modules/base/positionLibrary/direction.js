@@ -1,5 +1,3 @@
-
-
 import { normalizeString } from 'c/utilsPrivate';
 import { WindowManager } from './util';
 

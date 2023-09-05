@@ -1,5 +1,3 @@
-
-
 .avonni-media-object_alignment-end {
     align-items: flex-end;
 }
@@ -16,13 +14,11 @@
     margin-bottom: 0.75rem;
 }
 
-.avonni-media-object_display-inline.slds-media.slds-media_small
-    .slds-media__figure {
+.avonni-media-object_display-inline.slds-media.slds-media_small .slds-media__figure {
     margin-bottom: 0.25rem;
 }
 
-.avonni-media-object_display-inline.slds-media.slds-media_large
-    .slds-media__figure {
+.avonni-media-object_display-inline.slds-media.slds-media_large .slds-media__figure {
     margin-bottom: 1.5rem;
 }
 
@@ -30,12 +26,10 @@
     margin-top: 0.75rem;
 }
 
-.avonni-media-object_display-inline.slds-media.slds-media_small
-    .slds-media__figure_reverse {
+.avonni-media-object_display-inline.slds-media.slds-media_small .slds-media__figure_reverse {
     margin-top: 0.25rem;
 }
 
-.avonni-media-object_display-inline.slds-media.slds-media_large
-    .slds-media__figure_reverse {
+.avonni-media-object_display-inline.slds-media.slds-media_large .slds-media__figure_reverse {
     margin-top: 1.5rem;
 }

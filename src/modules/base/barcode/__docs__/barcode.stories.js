@@ -1,5 +1,3 @@
-
-
 import { Barcode } from '../__examples__/barcode';
 
 export default {

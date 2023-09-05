@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/expandableSection/expandableSection';
 
 customElements.define(

@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 import { generateUUID } from 'c/utils';

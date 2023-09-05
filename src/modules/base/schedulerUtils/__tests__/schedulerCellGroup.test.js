@@ -1,5 +1,3 @@
-
-
 import { SchedulerCellGroup } from '../cellGroup';
 
 const REFERENCE_CELLS = [

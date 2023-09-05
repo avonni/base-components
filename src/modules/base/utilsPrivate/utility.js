@@ -1,5 +1,3 @@
-
-
 export function deepCopy(obj) {
     if (Object(obj) !== obj) {
         return obj;

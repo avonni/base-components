@@ -1,5 +1,3 @@
-
-
 import { InputData } from '../__examples__/inputData';
 
 export default {

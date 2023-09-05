@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { isEditable } from 'c/primitiveCellUtils';
 

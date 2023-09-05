@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/pageHeader/pageHeader';
 
 customElements.define(

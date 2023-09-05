@@ -1,5 +1,3 @@
-
-
 import Component from '../barcode';
 
 customElements.define('ac-base-barcode', Component.CustomElementConstructor);

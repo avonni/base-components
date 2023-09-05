@@ -1,5 +1,3 @@
-
-
 .avonni-dual-listbox__list {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -18,18 +16,14 @@
 }
 
 .avonni-dual-listbox__option {
-    background-color: var(
-        --avonni-dual-listbox-option-color-background,
-        #ffffff
-    );
+    background-color: var(--avonni-dual-listbox-option-color-background,
+            #ffffff);
     color: var(--avonni-dual-listbox-option-text-color, #706e6b);
 }
 
 .avonni-dual-listbox__option:hover {
-    background-color: var(
-        --avonni-dual-listbox-option-color-background-hover,
-        #f3f2f2
-    );
+    background-color: var(--avonni-dual-listbox-option-color-background-hover,
+            #f3f2f2);
     color: var(--avonni-dual-listbox-option-text-color-hover, #706e6b);
 }
 
@@ -98,23 +92,17 @@
 }
 
 .avonni-dual-listbox__boxes.slds-dueling-list__options [aria-selected='true'] {
-    background: var(
-        --avonni-dual-listbox-option-color-background-selected,
-        #edeceb
-    );
+    background: var(--avonni-dual-listbox-option-color-background-selected,
+            #edeceb);
     color: var(--avonni-dual-listbox-option-text-color-selected, #706e6b);
 }
 
 .avonni-dual-listbox__option_border-bottom {
     border-bottom-width: var(--avonni-dual-listbox-option-sizing-border, 1px);
-    border-bottom-style: var(
-        --avonni-dual-listbox-option-styling-border,
-        solid
-    );
-    border-bottom-color: var(
-        --avonni-dual-listbox-option-color-border,
-        #dddbda
-    );
+    border-bottom-style: var(--avonni-dual-listbox-option-styling-border,
+            solid);
+    border-bottom-color: var(--avonni-dual-listbox-option-color-border,
+            #dddbda);
 }
 
 .avonni-dual-listbox__empty-column {

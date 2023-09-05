@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_ICON_POSITION = 'left';

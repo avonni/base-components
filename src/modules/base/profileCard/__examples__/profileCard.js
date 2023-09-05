@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/profileCard/profileCard';
 
 customElements.define(

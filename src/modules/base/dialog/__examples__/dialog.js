@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/dialog/dialog';
 
 customElements.define('ac-base-dialog', Component.CustomElementConstructor);

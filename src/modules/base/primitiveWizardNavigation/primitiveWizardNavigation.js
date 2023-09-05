@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';

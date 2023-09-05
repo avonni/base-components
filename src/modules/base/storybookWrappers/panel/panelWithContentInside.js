@@ -1,9 +1,7 @@
-
-
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_PANEL_POSITION = 'right'
-const DEFAULT_PANEL_SIZE = 'medium'
+const DEFAULT_PANEL_POSITION = 'right';
+const DEFAULT_PANEL_SIZE = 'medium';
 
 export default class PanelWithContentInside extends LightningElement {
     @api position = DEFAULT_PANEL_POSITION;
@@ -20,6 +18,8 @@ export default class PanelWithContentInside extends LightningElement {
     }
 
     toggle() {
-        this.template.querySelector('[data-element-id="avonni-panel"]').toggle();
+        this.template
+            .querySelector('[data-element-id="avonni-panel"]')
+            .toggle();
     }
 }

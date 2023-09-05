@@ -1,5 +1,3 @@
-
-
 import { FilterMenu } from '../__examples__/filterMenu';
 import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
 

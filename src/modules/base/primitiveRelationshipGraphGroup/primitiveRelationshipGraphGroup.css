@@ -1,8 +1,7 @@
-
-
- .group {
+.group {
     width: var(--lwc-sizeMedium, 20rem);
 }
+
 .group-title {
     font-size: 0.875rem;
 }
@@ -13,10 +12,12 @@
     background-color: var(--lwc-colorBackgroundInverse, #061c3f);
     border-color: var(--lwc-colorBackgroundInverse, #061c3f);
 }
+
 .avonni-theme_inverse a {
     color: #fff;
     text-decoration: underline;
 }
+
 .action-button_shade.slds-button_neutral {
     background-color: transparent;
 }
@@ -31,6 +32,7 @@
     left: calc(-2rem - 2px);
     top: calc(1.5rem - 2px);
 }
+
 .group_vertical::before {
     content: '';
     width: 2px;
@@ -40,6 +42,7 @@
     left: 10rem;
     top: calc(-1.5rem - 2px);
 }
+
 .group_vertical.group_selected::after {
     content: '';
     position: absolute;
@@ -50,12 +53,11 @@
     width: 2px;
     background-color: var(--avonni-relationship-graph-line-color, #dddbda);
 }
+
 .group_active-child::before,
 .group_vertical.group_selected.group_active-parent::after {
-    background-color: var(
-        --avonni-relationship-graph-selected-line-color,
-        #0070d2
-    );
+    background-color: var(--avonni-relationship-graph-selected-line-color,
+            #0070d2);
 }
 
 /* A focus ring will be shown around the group only if: */
@@ -64,6 +66,7 @@
 .group:focus {
     outline: none;
 }
+
 .group:focus-visible {
     outline: 1px auto Highlight;
     outline: 1px auto -webkit-focus-ring-color;

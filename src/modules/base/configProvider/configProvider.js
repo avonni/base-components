@@ -1,5 +1,3 @@
-
-
 import { getDefaultConfig } from './defaultConfig';
 
 // Closure to hold the APIs if and when available

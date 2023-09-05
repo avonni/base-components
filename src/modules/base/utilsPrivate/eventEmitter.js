@@ -1,5 +1,3 @@
-
-
 import { ArraySlice } from './utility';
 
 export class EventEmitter {

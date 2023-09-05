@@ -1,5 +1,3 @@
-
-
 import { ColorPalette } from '../__examples__/colorPalette';
 import { colors, tokens, groups } from './data';
 

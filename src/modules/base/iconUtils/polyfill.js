@@ -1,5 +1,3 @@
-
-
 import fetchSvg from './fetchSvg';
 import supportsSvg from './supportsSvg';
 

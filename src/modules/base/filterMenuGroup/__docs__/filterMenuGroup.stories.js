@@ -1,5 +1,3 @@
-
-
 import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
 import { COLLAPSIBLE_MENUS, MENUS, ICONS_MENUS } from './data';
 

@@ -1,5 +1,3 @@
-
-
 @import './shared.css';
 
 .avonni-kanban__container {
@@ -19,7 +17,7 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.avonni-kanban__footer_action > span {
+.avonni-kanban__footer_action>span {
     padding: 3px;
     margin: 3px;
 }

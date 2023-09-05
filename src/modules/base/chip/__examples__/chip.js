@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/chip/chip';
 
 customElements.define('ac-base-chip', Component.CustomElementConstructor);

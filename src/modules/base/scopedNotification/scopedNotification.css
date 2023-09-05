@@ -1,100 +1,49 @@
-
 .avonni-scoped-notification_theme-base {
-    background-color: var(
-        --avonni-scoped-notification-base-color-background,
-        #f3f2f2
-    );
+    background-color: var(--avonni-scoped-notification-base-color-background,
+            #f3f2f2);
     color: var(--avonni-scoped-notification-base-text-color, #080707);
-    --sds-c-icon-color-background: var(
-        --avonni-scoped-notification-base-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-scoped-notification-base-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-base-icon-color-foreground-default
-    );
-    --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-icon-radius-border
-    );
+    --sds-c-icon-color-background: var(--avonni-scoped-notification-base-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-scoped-notification-base-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-scoped-notification-base-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(--avonni-scoped-notification-icon-radius-border);
 }
 
 .avonni-scoped-notification_theme-dark {
-    background-color: var(
-        --avonni-scoped-notification-dark-color-background,
-        #706e6b
-    );
+    background-color: var(--avonni-scoped-notification-dark-color-background,
+            #706e6b);
     color: var(--avonni-scoped-notification-dark-text-color, #ffffff);
-    --sds-c-icon-color-background: var(
-        --avonni-scoped-notification-dark-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-scoped-notification-dark-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-dark-icon-color-foreground-default
-    );
-    --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-icon-radius-border
-    );
+    --sds-c-icon-color-background: var(--avonni-scoped-notification-dark-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-scoped-notification-dark-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-scoped-notification-dark-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(--avonni-scoped-notification-icon-radius-border);
 }
 
 .avonni-scoped-notification_theme-error {
-    background-color: var(
-        --avonni-scoped-notification-error-color-background,
-        #ea001e
-    );
+    background-color: var(--avonni-scoped-notification-error-color-background,
+            #ea001e);
     color: var(--avonni-scoped-notification-error-text-color, #ffffff);
-    --sds-c-icon-color-background: var(
-        --avonni-scoped-notification-error-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-scoped-notification-error-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-error-icon-color-foreground-default
-    );
-    --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-icon-radius-border
-    );
+    --sds-c-icon-color-background: var(--avonni-scoped-notification-error-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-scoped-notification-error-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-scoped-notification-error-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(--avonni-scoped-notification-icon-radius-border);
 }
 
 .avonni-scoped-notification_theme-success {
-    background-color: var(
-        --avonni-scoped-notification-success-color-background,
-        #2e844a
-    );
+    background-color: var(--avonni-scoped-notification-success-color-background,
+            #2e844a);
     color: var(--avonni-scoped-notification-success-text-color, #ffffff);
-    --sds-c-icon-color-background: var(
-        --avonni-scoped-notification-success-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-scoped-notification-success-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-success-icon-color-foreground-default
-    );
-    --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-icon-radius-border
-    );
+    --sds-c-icon-color-background: var(--avonni-scoped-notification-success-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-scoped-notification-success-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-scoped-notification-success-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(--avonni-scoped-notification-icon-radius-border);
 }
 
 .avonni-scoped-notification_theme-warning {
-    background-color: var(
-        --avonni-scoped-notification-warning-color-background,
-        #fe9339
-    );
+    background-color: var(--avonni-scoped-notification-warning-color-background,
+            #fe9339);
     color: var(--avonni-scoped-notification-warning-text-color, #080707);
-    --sds-c-icon-color-background: var(
-        --avonni-scoped-notification-warning-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-scoped-notification-warning-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-scoped-notification-warning-icon-color-foreground-default
-    );
-    --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-icon-radius-border
-    );
+    --sds-c-icon-color-background: var(--avonni-scoped-notification-warning-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-scoped-notification-warning-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-scoped-notification-warning-icon-color-foreground-default);
+    --sds-c-icon-radius-border: var(--avonni-scoped-notification-icon-radius-border);
 }

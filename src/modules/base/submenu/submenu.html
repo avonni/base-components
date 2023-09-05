@@ -1,5 +1,3 @@
-
-
 <template>
     <div class="slds-dropdown__item slds-has-submenu" role="presentation">
         <a
@@ -15,7 +13,11 @@
             onfocus={handleFocus}
             onblur={handleBlur}
         >
-            <span class="slds-truncate" title={label} data-element-id="span-label">
+            <span
+                class="slds-truncate"
+                title={label}
+                data-element-id="span-label"
+            >
                 <abbr
                     if:true={isDraft}
                     class="slds-indicator_unsaved"
@@ -37,13 +39,19 @@
                 <lightning-icon
                     icon-name={iconName}
                     size="x-small"
-                    class="slds-icon-text-default slds-m-left_small slds-shrink-none"
+                    class="
+                        slds-icon-text-default
+                        slds-m-left_small
+                        slds-shrink-none
+                    "
                     data-element-id="lightning-icon"
                 ></lightning-icon>
             </template>
         </a>
         <div
-            class="slds-dropdown slds-dropdown_submenu slds-dropdown_submenu-right"
+            class="
+                slds-dropdown slds-dropdown_submenu slds-dropdown_submenu-right
+            "
         >
             <div class="slds-dropdown__list" role="menu" aria-label={label}>
                 <slot></slot>

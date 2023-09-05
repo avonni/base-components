@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { MENUS, VALUE } from './data';

@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/progressIndicator';
 
 customElements.define(

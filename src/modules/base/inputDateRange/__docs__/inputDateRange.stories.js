@@ -1,5 +1,3 @@
-
-
 import { InputDateRange } from '../__examples__/inputDateRange';
 
 export default {

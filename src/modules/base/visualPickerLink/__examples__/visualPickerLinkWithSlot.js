@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/visualPickerLink/visualPickerLinkWithSlot';
 
 customElements.define(

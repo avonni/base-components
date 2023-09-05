@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/submenu/submenu';
 
 customElements.define('ac-base-submenu', Component.CustomElementConstructor);

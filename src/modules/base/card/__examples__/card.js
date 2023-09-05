@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/card/card';
 
 customElements.define('ac-card', Component.CustomElementConstructor);

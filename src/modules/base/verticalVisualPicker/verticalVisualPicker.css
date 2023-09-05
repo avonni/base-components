@@ -1,64 +1,34 @@
-
-
 .avonni-vertical-visual-picker__figure {
-    border-radius: var(
-        --avonni-vertical-visual-picker-figure-radius-border,
-        0.25rem
-    );
-    border-width: var(
-        --avonni-vertical-visual-picker-figure-sizing-border,
-        1px
-    );
-    border-style: var(
-        --avonni-vertical-visual-picker-figure-styling-border,
-        solid
-    );
-    border-color: var(
-        --avonni-vertical-visual-picker-figure-color-border,
-        #dddbda
-    );
-    box-shadow: var(
-        --avonni-vertical-visual-picker-figure-shadow-box,
-        0 2px 2px rgb(0 0 0 / 5%)
-    );
-    background-color: var(
-        --avonni-vertical-visual-picker-figure-color-background,
-        #ffffff
-    );
+    border-radius: var(--avonni-vertical-visual-picker-figure-radius-border,
+            0.25rem);
+    border-width: var(--avonni-vertical-visual-picker-figure-sizing-border,
+            1px);
+    border-style: var(--avonni-vertical-visual-picker-figure-styling-border,
+            solid);
+    border-color: var(--avonni-vertical-visual-picker-figure-color-border,
+            #dddbda);
+    box-shadow: var(--avonni-vertical-visual-picker-figure-shadow-box,
+            0 2px 2px rgb(0 0 0 / 5%));
+    background-color: var(--avonni-vertical-visual-picker-figure-color-background,
+            #ffffff);
     overflow: hidden;
 }
 
 .avonni-vertical-visual-picker__figure:hover {
-    background-color: var(
-        --avonni-vertical-visual-picker-figure-color-background-hover,
-        #ffffff
-    );
-    border-width: var(
-        --avonni-vertical-visual-picker-figure-sizing-border,
-        1px
-    );
-    border-style: var(
-        --avonni-vertical-visual-picker-figure-styling-border,
-        solid
-    );
-    border-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
-    -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
-        inset;
-    box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
-        inset;
-    border-right-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
-    border-top-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
+    background-color: var(--avonni-vertical-visual-picker-figure-color-background-hover,
+            #ffffff);
+    border-width: var(--avonni-vertical-visual-picker-figure-sizing-border,
+            1px);
+    border-style: var(--avonni-vertical-visual-picker-figure-styling-border,
+            solid);
+    border-color: var(--avonni-vertical-visual-picker-figure-color-border-hover,
+            #1b96ff);
+    -webkit-box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff) inset;
+    box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff) inset;
+    border-right-color: var(--avonni-vertical-visual-picker-figure-color-border-hover,
+            #1b96ff);
+    border-top-color: var(--avonni-vertical-visual-picker-figure-color-border-hover,
+            #1b96ff);
 }
 
 .avonni-vertical-visual-picker__figure-with-tags {
@@ -72,112 +42,72 @@
     height: -webkit-fill-available;
 }
 
-.avonni-vertical-visual-picker__content_container > span {
+.avonni-vertical-visual-picker__content_container>span {
     flex: 1;
 }
 
 /*-- Focus --*/
-.slds-visual-picker input:focus ~ label .slds-visual-picker__figure {
+.slds-visual-picker input:focus~label .slds-visual-picker__figure {
     border: 1px solid transparent;
     -webkit-box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
     box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
 }
 
 /*-- Hover --*/
-.slds-visual-picker
-    input:not(:disabled)
-    ~ label:hover
-    .slds-visual-picker__figure {
+.slds-visual-picker input:not(:disabled)~label:hover .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
-    border: 1px solid
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff);
-    -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
-        inset;
-    box-shadow: 0 0 0 1px
-        var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff)
-        inset;
+    border: 1px solid var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff);
+    -webkit-box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff) inset;
+    box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-hover, #1b96ff) inset;
 }
 
 /*-- Checked --*/
-.slds-visual-picker input:checked ~ label .slds-is-selected {
+.slds-visual-picker input:checked~label .slds-is-selected {
     display: flex;
     justify-content: center;
     height: 100%;
     align-items: center;
 }
 
-.slds-visual-picker input:checked ~ label .slds-visual-picker__text {
-    border-width: var(
-        --avonni-vertical-visual-picker-figure-sizing-border,
-        1px
-    );
-    border-style: var(
-        --avonni-vertical-visual-picker-figure-styling-border,
-        solid
-    );
-    border-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
-    );
-    -webkit-box-shadow: 0 0 0 1px
-        var(
-            --avonni-vertical-visual-picker-figure-color-border-selected,
-            #1b96ff
-        )
-        inset;
-    box-shadow: 0 0 0 1px
-        var(
-            --avonni-vertical-visual-picker-figure-color-border-selected,
-            #1b96ff
-        )
-        inset;
+.slds-visual-picker input:checked~label .slds-visual-picker__text {
+    border-width: var(--avonni-vertical-visual-picker-figure-sizing-border,
+            1px);
+    border-style: var(--avonni-vertical-visual-picker-figure-styling-border,
+            solid);
+    border-color: var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff);
+    -webkit-box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff) inset;
+    box-shadow: 0 0 0 1px var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff) inset;
 }
 
-.slds-visual-picker input:checked ~ label .slds-visual-picker__text:after {
+.slds-visual-picker input:checked~label .slds-visual-picker__text:after {
     content: '';
-    border-right-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
-    );
-    border-top-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
-    );
+    border-right-color: var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff);
+    border-top-color: var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff);
 }
 
-.slds-visual-picker
-    input:checked
-    ~ label
-    .slds-visual-picker__text:hover:after {
+.slds-visual-picker input:checked~label .slds-visual-picker__text:hover:after {
     content: '';
-    border-right-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
-    border-top-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
+    border-right-color: var(--avonni-vertical-visual-picker-figure-color-border-hover,
+            #1b96ff);
+    border-top-color: var(--avonni-vertical-visual-picker-figure-color-border-hover,
+            #1b96ff);
 }
 
-.slds-visual-picker
-    input:checked
-    ~ label
-    .avonni-vertical-visual-picker__content_container.slds-is-not-selected {
+.slds-visual-picker input:checked~label .avonni-vertical-visual-picker__content_container.slds-is-not-selected {
     display: none;
 }
 
-.slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
-    background-color: var(
-        --avonni-vertical-visual-picker-figure-color-background-selected,
-        #1b96ff
-    );
-    border-color: var(
-        --avonni-vertical-visual-picker-figure-color-border-selected,
-        #1b96ff
-    );
+.slds-visual-picker input:checked~label .slds-visual-picker__icon {
+    background-color: var(--avonni-vertical-visual-picker-figure-color-background-selected,
+            #1b96ff);
+    border-color: var(--avonni-vertical-visual-picker-figure-color-border-selected,
+            #1b96ff);
 }
 
 .avonni-hide-check-mark:after {
@@ -205,35 +135,23 @@
 /*-- description --*/
 .avonni-vertical-visual-picker__item-description {
     color: var(--avonni-vertical-visual-picker-description-text-color, #3e3e3c);
-    font-size: var(
-        --avonni-vertical-visual-picker-description-font-size,
-        0.75rem
-    );
-    font-style: var(
-        --avonni-vertical-visual-picker-description-font-style,
-        normal
-    );
-    font-weight: var(
-        --avonni-vertical-visual-picker-description-font-weight,
-        400
-    );
-    line-height: var(
-        --avonni-vertical-visual-picker-description-line-height,
-        1.25
-    );
-    text-align: var(
-        --avonni-vertical-visual-picker-description-alignment,
-        left
-    );
+    font-size: var(--avonni-vertical-visual-picker-description-font-size,
+            0.75rem);
+    font-style: var(--avonni-vertical-visual-picker-description-font-style,
+            normal);
+    font-weight: var(--avonni-vertical-visual-picker-description-font-weight,
+            400);
+    line-height: var(--avonni-vertical-visual-picker-description-line-height,
+            1.25);
+    text-align: var(--avonni-vertical-visual-picker-description-alignment,
+            left);
 }
 
 /*-- tag --*/
 .avonni-vertical-visual-picker__tags-container {
     margin-top: 0.25rem;
-    text-align: var(
-        --avonni-vertical-visual-picker-figure-tags-alignment,
-        left
-    );
+    text-align: var(--avonni-vertical-visual-picker-figure-tags-alignment,
+            left);
 }
 
 .avonni-vertical-visual-picker__tag:not(:first-child) {
@@ -242,29 +160,25 @@
 
 /*-- size --*/
 .avonni-vertical-visual-picker__item_size-small,
-.avonni-vertical-visual-picker__item_size-small
-    .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-small {
+.avonni-vertical-visual-picker__item_size-small .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-small {
     width: 100%;
     max-width: 20rem;
 }
 
 .avonni-vertical-visual-picker__item_size-medium,
-.avonni-vertical-visual-picker__item_size-medium
-    .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-medium {
+.avonni-vertical-visual-picker__item_size-medium .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-medium {
     width: 100%;
     max-width: 25rem;
 }
 
 .avonni-vertical-visual-picker__item_size-large,
-.avonni-vertical-visual-picker__item_size-large
-    .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-large {
+.avonni-vertical-visual-picker__item_size-large .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-large {
     width: 100%;
     max-width: 30rem;
 }
 
 .avonni-vertical-visual-picker__item_size-responsive,
-.avonni-vertical-visual-picker__item_size-responsive
-    .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-responsive {
+.avonni-vertical-visual-picker__item_size-responsive .slds-visual-picker__figure.avonni-vertical-visual-picker__item_size-responsive {
     width: 100%;
 }
 
@@ -276,8 +190,6 @@
 
 /*-- sub items --*/
 .avonni-vertical-visual-picker__sub-items {
-    background-color: var(
-        --avonni-vertical-visual-picker-sub-items-color-background,
-        #f7f9fb
-    );
+    background-color: var(--avonni-vertical-visual-picker-sub-items-color-background,
+            #f7f9fb);
 }

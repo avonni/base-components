@@ -1,5 +1,3 @@
-
-
 import { Kanban } from '../__examples__/kanban';
 import {
     GROUP_VALUES,

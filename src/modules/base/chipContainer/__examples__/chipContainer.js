@@ -1,5 +1,3 @@
-
-
 import Component from '../chipContainer';
 
 customElements.define('ac-chip-container', Component.CustomElementConstructor);

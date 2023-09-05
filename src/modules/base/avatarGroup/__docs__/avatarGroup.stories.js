@@ -1,5 +1,3 @@
-
-
 import { AvatarGroup } from '../__examples__/avatarGroup';
 
 export default {

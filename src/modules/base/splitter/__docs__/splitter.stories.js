@@ -1,5 +1,3 @@
-
-
 import { Splitter } from '../__examples__/splitter';
 import { DoubleOrientationSplitter } from '../__examples__/doubleOrientationSplitter';
 

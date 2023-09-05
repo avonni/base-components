@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import { generateUUID, getErrorMessage } from 'c/inputUtils';

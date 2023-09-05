@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/layout/layout';
 
 customElements.define('ac-layout', Component.CustomElementConstructor);

@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { deepCopy, normalizeObject } from 'c/utilsPrivate';
 

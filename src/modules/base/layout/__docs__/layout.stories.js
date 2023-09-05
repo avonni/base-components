@@ -1,5 +1,3 @@
-
-
 import { Layout } from '../__examples__/layout';
 
 export default {

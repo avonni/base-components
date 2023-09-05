@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Path from 'c/path';
 import { ACTIONS, STEPS, COMPLETED_OPTIONS } from '../__docs__/data';

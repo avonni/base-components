@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Combobox from '../combobox';
 import { options, actions, scopes, scopesGroups, groups } from './data';

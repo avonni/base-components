@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
 import bwipjs from 'bwip-js';

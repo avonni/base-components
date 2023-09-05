@@ -1,5 +1,3 @@
-
-
 import { Transformers, toTransformFunctions } from './transformers';
 import { Direction } from './direction';
 

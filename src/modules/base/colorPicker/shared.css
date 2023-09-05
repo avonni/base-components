@@ -1,5 +1,3 @@
-
-
 .avonni-color-picker__tab:focus {
     text-decoration: underline;
 }
@@ -51,8 +49,7 @@
     color: #181818;
 }
 
-.avonni-color-picker-tabs_default__item.slds-is-active
-    .avonni-color-picker-tabs_default__link {
+.avonni-color-picker-tabs_default__item.slds-is-active .avonni-color-picker-tabs_default__link {
     font-weight: 700;
 }
 

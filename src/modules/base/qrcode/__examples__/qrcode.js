@@ -1,5 +1,3 @@
-
-
 import { generateColors } from '../../utilsPrivate/colorUtils';
 import Component from 'avonni/qrcode';
 

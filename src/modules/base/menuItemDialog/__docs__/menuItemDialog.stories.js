@@ -1,5 +1,3 @@
-
-
 import { MenuItemDialog } from '../__examples__/menuItemDialog';
 
 export default {

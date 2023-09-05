@@ -1,5 +1,3 @@
-
-
 import { Range } from '../__examples__/range';
 
 export default {

@@ -1,5 +1,3 @@
-
-
 import { MediaObject } from '../__examples__/mediaObject';
 import { InverseMediaObject } from '../__examples__/inverseMediaObject';
 import { DoubleMediaObject } from '../__examples__/doubleMediaObject';

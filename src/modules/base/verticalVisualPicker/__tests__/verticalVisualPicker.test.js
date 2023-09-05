@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import VerticalVisualPicker from 'c/verticalVisualPicker';
 import { itemsWithIcons, itemsWithSubItems } from '../__docs__/data.js';

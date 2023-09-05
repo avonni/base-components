@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
 import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';

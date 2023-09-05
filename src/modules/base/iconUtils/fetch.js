@@ -1,5 +1,3 @@
-
-
 // Cache for promises that import icon templates
 const importPromises = {};
 const iconTemplateCache = {};

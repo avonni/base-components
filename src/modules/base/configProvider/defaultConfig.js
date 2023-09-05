@@ -1,5 +1,3 @@
-
-
 import localizationService from './defaultLocalizationConfig';
 
 function createStandAloneConfig() {

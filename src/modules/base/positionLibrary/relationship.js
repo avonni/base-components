@@ -1,5 +1,3 @@
-
-
 import { reposition } from './reposition';
 import { POSITION_ATTR_NAME } from './util';
 

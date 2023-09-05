@@ -1,5 +1,3 @@
-
-
 import { VisualPickerLink } from '../__examples__/visualPickerLink';
 import { VisualPickerLinkWithSlot } from '../__examples__/visualPickerLinkWithSlot';
 

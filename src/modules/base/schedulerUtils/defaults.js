@@ -1,5 +1,3 @@
-
-
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];

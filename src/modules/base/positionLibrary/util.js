@@ -1,5 +1,3 @@
-
-
 export const POSITION_ATTR_NAME = 'data-position-id';
 
 class BrowserWindow {

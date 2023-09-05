@@ -1,5 +1,3 @@
-
-
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,

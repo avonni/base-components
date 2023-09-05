@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/panel/panelWithDatatable';
 
 customElements.define(

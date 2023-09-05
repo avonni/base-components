@@ -1,18 +1,19 @@
-
-
 .avonni-emoji-picker-container {
     background-color: rgb(255, 255, 255);
 }
+
 .avonni-emoji-viewer {
     overflow-y: scroll;
     overflow-x: hidden;
     max-height: 7.4rem;
 }
+
 .avonni-category-emojis {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .avonni-emoji-entity {
     flex-basis: 12.5%;
     font-size: 1.25rem;
@@ -22,11 +23,13 @@
     padding-top: 0.125rem;
     text-indent: -0.25rem;
 }
+
 .avonni-emoji-entity button {
     border: none;
     background: none;
     outline: none;
 }
+
 .avonni-emoji-categories {
     display: flex;
     justify-content: space-between;

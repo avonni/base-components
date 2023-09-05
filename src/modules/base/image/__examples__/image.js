@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/image/image';
 
 customElements.define('ac-base-image', Component.CustomElementConstructor);

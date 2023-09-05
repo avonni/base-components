@@ -1,7 +1,4 @@
-
-
-.avonni-rating__active.avonni-rating__continuous:hover
-    ~ .avonni-rating__active.avonni-rating__continuous {
+.avonni-rating__active.avonni-rating__continuous:hover~.avonni-rating__active.avonni-rating__continuous {
     border: 1px solid #1b5297;
     background-color: #ffffff;
     border-color: #1b5297;
@@ -19,8 +16,7 @@
     --slds-c-button-color-border-active: transparent;
 }
 
-.avonni-rating__container:hover
-    .avonni-rating__active.avonni-rating__continuous,
+.avonni-rating__container:hover .avonni-rating__active.avonni-rating__continuous,
 .avonni-rating__active:hover {
     border: 1px solid #ffffff;
     background-color: #1b5297;
@@ -69,15 +65,13 @@
 }
 
 .avonni-rating__active-icon.avonni-rating__icon_selected:hover,
-.avonni-rating__container:hover
-    .avonni-rating__active-icon.avonni-rating__continuous-icon {
+.avonni-rating__container:hover .avonni-rating__active-icon.avonni-rating__continuous-icon {
     /* Hovered icon */
     --slds-c-icon-color-foreground: #1b5297;
     color: #1b5297;
 }
 
-.avonni-rating__active-icon.avonni-rating__continuous-icon:hover
-    ~ .avonni-rating__active-icon.avonni-rating__continuous-icon {
+.avonni-rating__active-icon.avonni-rating__continuous-icon:hover~.avonni-rating__active-icon.avonni-rating__continuous-icon {
     --slds-c-icon-color-foreground: var(--lwc-brandDisabled, #c9c7c5);
     color: #c9c7c5;
 }

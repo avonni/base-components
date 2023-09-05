@@ -1,5 +1,3 @@
-
-
 import { SummaryDetail } from '../__examples__/summaryDetail';
 import { SummaryDetailWithActionButton } from '../__examples__/summaryDetailWithActionButton';
 

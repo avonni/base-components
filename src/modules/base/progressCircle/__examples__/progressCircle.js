@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/progressCircle';
 
 customElements.define(

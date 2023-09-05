@@ -1,5 +1,3 @@
-
-
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,

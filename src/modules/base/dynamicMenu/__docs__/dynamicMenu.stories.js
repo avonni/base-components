@@ -1,5 +1,3 @@
-
-
 import { DynamicMenu } from '../__examples__/dynamicMenu';
 import { DynamicMenuInGroup } from '../__examples__/dynamicMenuInGroup';
 import { ListView } from '../__examples__/listView';

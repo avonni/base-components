@@ -3,9 +3,7 @@
  * All rights reserved.
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
- */
-
-import { DateTimeOptions } from './dateTimeOptions';
+ */ import { DateTimeOptions } from './dateTimeOptions';
 import {
     formatDateUTC,
     formatDate,

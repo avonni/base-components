@@ -1,5 +1,3 @@
-
-
 import { Chip } from '../__examples__/chip';
 
 export default {

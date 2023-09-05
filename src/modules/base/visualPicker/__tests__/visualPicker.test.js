@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import VisualPicker from 'c/visualPicker';
 import { ITEMS, ITEMS_WITH_TAGS } from './data';

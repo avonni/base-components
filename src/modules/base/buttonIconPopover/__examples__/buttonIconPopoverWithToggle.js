@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/buttonIconPopover/buttonIconPopoverWithToggle';
 
 customElements.define(

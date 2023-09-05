@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/calendar';
 
 customElements.define('ac-base-calendar', Component.CustomElementConstructor);

@@ -1,12 +1,10 @@
-
- 
- /* Vertical line */
+/* Vertical line */
 .line_vertical {
     border-right: 2px solid var(--avonni-relationship-graph-line-color, #dddbda);
 }
+
 .line_horizontal {
-    border-bottom: 2px solid
-        var(--avonni-relationship-graph-line-color, #dddbda);
+    border-bottom: 2px solid var(--avonni-relationship-graph-line-color, #dddbda);
     margin-left: 10rem;
 }
 
@@ -24,7 +22,7 @@
 }
 
 .group,
-.group + .actions {
+.group+.actions {
     width: var(--lwc-sizeMedium, 20rem);
     position: relative;
 }

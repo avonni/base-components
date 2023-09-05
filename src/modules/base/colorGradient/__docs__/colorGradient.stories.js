@@ -1,5 +1,3 @@
-
-
 import { ColorGradient } from '../__examples__/colorGradient';
 
 export default {

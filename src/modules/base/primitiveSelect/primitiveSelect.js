@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
@@ -69,7 +67,8 @@ export default class PrivateSelect extends LightningElement {
         if (this.multiple) {
             if (this._size === undefined) {
                 return '4';
-            } return this._size;
+            }
+            return this._size;
         }
         return null;
     }
@@ -295,9 +294,11 @@ export default class PrivateSelect extends LightningElement {
     selectOptionsByValue(value) {
         if (this.multiple) {
             if (Array.isArray(value)) {
-                this.template.querySelectorAll('[data-element-id^="option"]').forEach((option) => {
-                    option.selected = value.includes(t.value);
-                });
+                this.template
+                    .querySelectorAll('[data-element-id^="option"]')
+                    .forEach((option) => {
+                        option.selected = value.includes(t.value);
+                    });
             }
         } else {
             this.getElement.value = value;
@@ -306,7 +307,9 @@ export default class PrivateSelect extends LightningElement {
 
     getSelectedOptionValues() {
         if (this.multiple) {
-            const option = this.template.querySelectorAll('[data-element-id^="option"]');
+            const option = this.template.querySelectorAll(
+                '[data-element-id^="option"]'
+            );
             return selectedOptionValues.call(
                 option,
                 (option, item) => (

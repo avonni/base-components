@@ -1,5 +1,3 @@
-
-
 .avonni-kanban__disabled_column_drag .avonni-kanban__group_header {
     pointer-events: none;
     cursor: default !important;
@@ -11,21 +9,15 @@
 
 .avonni-kanban__path_item {
     min-width: var(--avonni-kanban-column-sizing-min-width, 18em);
-    max-width: calc(
-        var(--avonni-kanban-column-sizing-max-width, 22.5em) - 0.5rem
-    );
-    background-color: var(
-        --avonni-kanban-path-color-background,
-        #014486
-    ) !important;
+    max-width: calc(var(--avonni-kanban-column-sizing-max-width, 22.5em) - 0.5rem);
+    background-color: var(--avonni-kanban-path-color-background,
+            #014486) !important;
 }
 
 .avonni-kanban__path_item::before,
 .avonni-kanban__path_item::after {
-    background-color: var(
-        --avonni-kanban-path-color-background,
-        #014486
-    ) !important;
+    background-color: var(--avonni-kanban-path-color-background,
+            #014486) !important;
 }
 
 .slds-path__nav {
@@ -80,22 +72,14 @@
 
 .avonni-kanban__summarize {
     height: var(--avonni-kanban-summarize-header-sizing-height, 3rem);
-    line-height: var(
-        --avonni-kanban-summarize-header-sizing-line-height,
-        2.5rem
-    );
-    --avonni-output-data-value-text-color: var(
-        --avonni-kanban-summary-text-color,
-        #10aa52
-    );
-    --avonni-output-data-value-font-size: var(
-        --avonni-kanban-summarize-font-size,
-        1.5rem
-    );
-    --avonni-output-data-value-font-weight: var(
-        --avonni-kanban-summarize-font-weight,
-        400
-    );
+    line-height: var(--avonni-kanban-summarize-header-sizing-line-height,
+            2.5rem);
+    --avonni-output-data-value-text-color: var(--avonni-kanban-summary-text-color,
+            #10aa52);
+    --avonni-output-data-value-font-size: var(--avonni-kanban-summarize-font-size,
+            1.5rem);
+    --avonni-output-data-value-font-weight: var(--avonni-kanban-summarize-font-weight,
+            400);
 }
 
 .avonni-kanban__variant_base .avonni-kanban__group_header {
@@ -196,8 +180,7 @@
     pointer-events: none;
 }
 
-.avonni-kanban__variant_base
-    .avonni-kanban__field.avonni-kanban__dragged_group {
+.avonni-kanban__variant_base .avonni-kanban__field.avonni-kanban__dragged_group {
     position: relative;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
     z-index: 99;
@@ -211,9 +194,7 @@
     transform: translateX(calc(100% + 10px));
 }
 
-.avonni-kanban__variant_base
-    .avonni-kanban__dragged_group
-    .avonni-kanban__group_header {
+.avonni-kanban__variant_base .avonni-kanban__dragged_group .avonni-kanban__group_header {
     cursor: grabbing;
 }
 

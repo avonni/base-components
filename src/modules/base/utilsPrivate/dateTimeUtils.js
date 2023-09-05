@@ -1,5 +1,3 @@
-
-
 import { DateTime, Interval } from 'c/luxon';
 
 /**

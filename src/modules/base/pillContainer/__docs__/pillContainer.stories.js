@@ -1,5 +1,3 @@
-
-
 import { PillContainer } from '../__examples__/pillContainer';
 import { MaxWidthPillContainer } from '../__examples__/maxWidthPillContainer';
 import { ITEMS, ACTIONS, generateItems } from './data';

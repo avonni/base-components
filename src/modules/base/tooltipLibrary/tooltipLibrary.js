@@ -1,5 +1,3 @@
-
-
 import { AutoPosition, Direction } from 'c/positionLibrary';
 import { guid, normalizeAriaAttribute, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';

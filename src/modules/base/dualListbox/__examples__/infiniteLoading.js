@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/dualListbox/infiniteLoading';
 
 customElements.define(

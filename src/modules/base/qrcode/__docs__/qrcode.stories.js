@@ -1,5 +1,3 @@
-
-
 import { Qrcode } from '../__examples__/qrcode';
 
 export default {

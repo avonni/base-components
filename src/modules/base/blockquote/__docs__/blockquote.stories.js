@@ -1,5 +1,3 @@
-
-
 import { Blockquote } from '../__examples__/blockquote';
 
 export default {

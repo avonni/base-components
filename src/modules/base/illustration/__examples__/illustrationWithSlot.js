@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/illustration/illustrationWithSlot';
 
 customElements.define(

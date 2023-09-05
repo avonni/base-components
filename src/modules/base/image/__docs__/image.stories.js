@@ -1,5 +1,3 @@
-
-
 import { Image } from '../__examples__/image';
 import { ImageList } from '../__examples__/imageList';
 

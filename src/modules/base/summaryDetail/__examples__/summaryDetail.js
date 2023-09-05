@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/summaryDetail/summaryDetail';
 
 customElements.define(

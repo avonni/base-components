@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/slider/maxHeightSlider/maxHeightSlider';
 
 customElements.define('ac-max-y-slider', Component.CustomElementConstructor);

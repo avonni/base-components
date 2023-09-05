@@ -1,5 +1,3 @@
-
-
 import { isInDom, WindowManager } from './util';
 
 export class ElementProxy {

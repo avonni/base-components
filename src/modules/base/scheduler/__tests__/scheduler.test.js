@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Scheduler from '../scheduler';
 import { DateTime, Interval } from 'c/luxon';

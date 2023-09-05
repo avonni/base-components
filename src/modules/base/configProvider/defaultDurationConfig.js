@@ -1,5 +1,3 @@
-
-
 // inspired by the duration logic in moment.js (extremely simplified) https://github.com/moment/moment
 // Only using this in defaultConfig when we're outside of an aura context.
 // Reasons for this are because the Intl api currently doesn't match the existing text formats:

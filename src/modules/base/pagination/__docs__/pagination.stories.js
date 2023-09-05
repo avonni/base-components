@@ -1,5 +1,3 @@
-
-
 import { Pagination } from '../__examples__/pagination';
 
 export default {

@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
@@ -9,7 +7,6 @@ import {
     keyCodes,
     buttonGroupOrderClass
 } from 'c/utilsPrivate';
-
 import { Tooltip } from 'c/tooltipLibrary';
 
 const i18n = {

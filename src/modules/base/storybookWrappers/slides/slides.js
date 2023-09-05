@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_SLIDES_PER_VIEW = 1;
@@ -8,16 +6,15 @@ const DEFAULT_SPEED = 300;
 const DEFAULT_PREVIOUS_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_NEXT_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_FRACTION_LABEL = '/';
-const DEFAULT_INITIAL_SLIDE = 0
-const DEFAULT_SLIDES_DIRECTION = 'horizontal'
-const DEFAULT_SLIDES_EFFECT = 'slide'
-const DEFAULT_PREVIOUS_ICON_POSITION = 'left'
-const DEFAULT_BUTTONS_VARIANT = 'neutral'
-const DEFAULT_NEXT_ICON_POSITION = 'right'
-const DEFAULT_BUTTON_POSITION = 'middle'
-const DEFAULT_INDICATOR_TYPE = 'bullets'
-const DEFAULT_INDICATOR_POSITION = 'bottom-center' 
-
+const DEFAULT_INITIAL_SLIDE = 0;
+const DEFAULT_SLIDES_DIRECTION = 'horizontal';
+const DEFAULT_SLIDES_EFFECT = 'slide';
+const DEFAULT_PREVIOUS_ICON_POSITION = 'left';
+const DEFAULT_BUTTONS_VARIANT = 'neutral';
+const DEFAULT_NEXT_ICON_POSITION = 'right';
+const DEFAULT_BUTTON_POSITION = 'middle';
+const DEFAULT_INDICATOR_TYPE = 'bullets';
+const DEFAULT_INDICATOR_POSITION = 'bottom-center';
 
 export default class Slides extends LightningElement {
     @api slidesPerView = DEFAULT_SLIDES_PER_VIEW;

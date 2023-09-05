@@ -1,5 +1,3 @@
-
-
 @import './shared.css';
 
 :host {
@@ -10,12 +8,15 @@
     width: 100%;
     height: 100%;
 }
+
 .avonni-scheduler__disabled-date {
     opacity: 0.5;
 }
+
 .avonni-scheduler__disabled-date-title {
     max-width: 100%;
 }
+
 .avonni-scheduler__disabled-date-title_vertical {
     max-height: 100%;
 }

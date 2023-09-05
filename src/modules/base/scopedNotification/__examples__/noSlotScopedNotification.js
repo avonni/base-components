@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/scopedNotification/noSlotScopedNotification';
 
 customElements.define(

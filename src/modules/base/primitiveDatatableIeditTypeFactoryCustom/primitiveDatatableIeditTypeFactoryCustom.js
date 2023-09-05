@@ -1,7 +1,4 @@
-
-
 import { LightningElement, api } from 'lwc';
-
 import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';

@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';

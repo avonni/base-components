@@ -1,5 +1,3 @@
-
-
 import { InputPen } from '../__examples__/inputPen';
 
 export default {

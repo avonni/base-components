@@ -1,5 +1,3 @@
-
-
 /**
  * Apply the boundaries to the magnifier.
  */

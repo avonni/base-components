@@ -1,5 +1,3 @@
-
-
 import { Dialog } from '../__examples__/dialog';
 
 export default {

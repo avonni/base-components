@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import PrimitiveDropdownMenu from 'c/primitiveDropdownMenu';
 

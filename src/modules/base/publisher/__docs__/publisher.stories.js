@@ -1,5 +1,3 @@
-
-
 import { Publisher } from '../__examples__/publisher';
 import { PublisherWithFigureSlot } from '../__examples__/publisherWithFigureSlot';
 import { PublisherWithActionsSlot } from '../__examples__/publisherWithActionsSlot';

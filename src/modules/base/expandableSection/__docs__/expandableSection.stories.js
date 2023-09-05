@@ -1,5 +1,3 @@
-
-
 import { ExpandableSection } from '../__examples__/expandableSection';
 
 export default {

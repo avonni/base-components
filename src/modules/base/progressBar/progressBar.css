@@ -1,5 +1,3 @@
-
-
 .avonni-progress-bar__label_font {
     color: var(--avonni-progress-bar-label-text-color, #080707);
     font-size: var(--avonni-progress-bar-label-font-size, 0.8125rem);
@@ -42,24 +40,18 @@
 }
 
 .avonni-progress-bar__bar_theme-alt-inverse {
-    background-color: var(
-        --avonni-progress-bar-bar-value-alt-inverse-color-background,
-        #032d60
-    );
+    background-color: var(--avonni-progress-bar-bar-value-alt-inverse-color-background,
+            #032d60);
 }
 
 .avonni-progress-bar__bar-background_theme-alt-inverse {
-    background-color: var(
-        --avonni-progress-bar-alt-inverse-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-alt-inverse-color-background,
+            #dddbda);
 }
 
 .avonni-progress-bar__bar_theme-base {
-    background-color: var(
-        --avonni-progress-bar-bar-value-base-color-background,
-        #1ab9ff
-    );
+    background-color: var(--avonni-progress-bar-bar-value-base-color-background,
+            #1ab9ff);
 }
 
 .avonni-progress-bar__bar-background_theme-base {
@@ -67,24 +59,18 @@
 }
 
 .avonni-progress-bar__bar_theme-error {
-    background-color: var(
-        --avonni-progress-bar-bar-value-error-color-background,
-        #ea001e
-    );
+    background-color: var(--avonni-progress-bar-bar-value-error-color-background,
+            #ea001e);
 }
 
 .avonni-progress-bar__bar-background_theme-error {
-    background-color: var(
-        --avonni-progress-bar-error-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-error-color-background,
+            #dddbda);
 }
 
 .avonni-progress-bar__bar_theme-info {
-    background-color: var(
-        --avonni-progress-bar-bar-value-info-color-background,
-        #706e6b
-    );
+    background-color: var(--avonni-progress-bar-bar-value-info-color-background,
+            #706e6b);
 }
 
 .avonni-progress-bar__bar-background_theme-info {
@@ -92,57 +78,41 @@
 }
 
 .avonni-progress-bar__bar_theme-inverse {
-    background-color: var(
-        --avonni-progress-bar-bar-value-inverse-color-background,
-        #001639
-    );
+    background-color: var(--avonni-progress-bar-bar-value-inverse-color-background,
+            #001639);
 }
 
 .avonni-progress-bar__bar-background_theme-inverse {
-    background-color: var(
-        --avonni-progress-bar-inverse-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-inverse-color-background,
+            #dddbda);
 }
 
 .avonni-progress-bar__bar_theme-offline {
-    background-color: var(
-        --avonni-progress-bar-bar-value-offline-color-background,
-        #444
-    );
+    background-color: var(--avonni-progress-bar-bar-value-offline-color-background,
+            #444);
 }
 
 .avonni-progress-bar__bar-background_theme-offline {
-    background-color: var(
-        --avonni-progress-bar-offline-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-offline-color-background,
+            #dddbda);
 }
 
 .avonni-progress-bar__bar_theme-success {
-    background-color: var(
-        --avonni-progress-bar-bar-value-success-color-background,
-        #2e844a
-    );
+    background-color: var(--avonni-progress-bar-bar-value-success-color-background,
+            #2e844a);
 }
 
 .avonni-progress-bar__bar-background_theme-success {
-    background-color: var(
-        --avonni-progress-bar-success-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-success-color-background,
+            #dddbda);
 }
 
 .avonni-progress-bar__bar_theme-warning {
-    background-color: var(
-        --avonni-progress-bar-bar-value-warning-color-background,
-        #fe9339
-    );
+    background-color: var(--avonni-progress-bar-bar-value-warning-color-background,
+            #fe9339);
 }
 
 .avonni-progress-bar__bar-background_theme-warning {
-    background-color: var(
-        --avonni-progress-bar-warning-color-background,
-        #dddbda
-    );
+    background-color: var(--avonni-progress-bar-warning-color-background,
+            #dddbda);
 }

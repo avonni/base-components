@@ -1,5 +1,3 @@
-
-
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {

@@ -1,5 +1,3 @@
-
-
 @import 'c/schedulerSharedStyle';
 
 :host {
@@ -17,10 +15,7 @@
 }
 
 .avonni-scheduler__schedule-wrapper.avonni-scheduler__schedule-wrapper_vertical {
-    max-height: calc(
-        100vh - var(--avonni-scheduler-toolbar-height, 70px) -
-            var(--vertical-resources-row-height)
-    );
+    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px) - var(--vertical-resources-row-height));
     height: calc(100% - var(--vertical-resources-row-height) - 1rem - 1px);
 }
 
@@ -28,13 +23,16 @@
     background-color: #f3f3f3;
     max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
 }
+
 .avonni-scheduler__first-col_vertical {
     width: 110px;
 }
+
 .avonni-scheduler__first-col_horizontal {
     width: 300px;
     margin-right: -3px;
 }
+
 .avonni-scheduler__first-col_horizontal.avonni-scheduler__border_right {
     margin-right: 0;
 }
@@ -48,15 +46,15 @@
     padding-top: 5px;
     width: 100%;
 }
+
 .avonni-scheduler__header {
     position: sticky;
     top: 0;
     z-index: 3;
 }
+
 .avonni-scheduler__header_vertical {
-    --avonni-primitive-scheduler-header-group-label-position-top: calc(
-        var(--vertical-resources-row-height) + 12px
-    );
+    --avonni-primitive-scheduler-header-group-label-position-top: calc(var(--vertical-resources-row-height) + 12px);
 }
 
 .avonni-scheduler__vertical-header-wrapper {
@@ -75,9 +73,11 @@
     color: #514f4d;
     font-weight: 700;
 }
+
 .avonni-scheduler__vertical-resource-header-cell:last-of-type {
     border-right-width: 0;
 }
+
 .avonni-scheduler__vertical-resource-header-cell_zoom-to-fit {
     min-width: auto;
 }

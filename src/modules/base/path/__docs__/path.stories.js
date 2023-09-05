@@ -1,5 +1,3 @@
-
-
 import { Path } from '../__examples__/path';
 import {
     ACTIONS,

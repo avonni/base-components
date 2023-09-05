@@ -1,5 +1,3 @@
-
-
 const POSITION_CHANGE_THRESHOLD = 5;
 export function observePosition(
     target,

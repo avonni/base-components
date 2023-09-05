@@ -1,5 +1,3 @@
-
-
 import { ElementProxy } from './elementProxy';
 import { WindowManager, POSITION_ATTR_NAME } from './util';
 

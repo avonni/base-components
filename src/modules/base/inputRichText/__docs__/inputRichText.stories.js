@@ -1,5 +1,3 @@
-
-
 import { InputRichText } from '../__examples__/inputRichText';
 
 export default {

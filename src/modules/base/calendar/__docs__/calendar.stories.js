@@ -1,5 +1,3 @@
-
-
 import { Calendar } from '../__examples__/calendar';
 
 export default {

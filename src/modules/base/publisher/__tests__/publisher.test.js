@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Publisher from 'c/publisher';
 

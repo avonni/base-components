@@ -1,5 +1,3 @@
-
-
 import { HeroBanner } from '../__examples__/heroBanner';
 import { HeroBannerWithButton } from '../__examples__/heroBannerWithButton';
 import { HeroBannerWithSearchBarInDefault } from '../__examples__/heroBannerWithSearchBarInDefault';

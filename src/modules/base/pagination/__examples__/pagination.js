@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/pagination';
 
 customElements.define('ac-base-pagination', Component.CustomElementConstructor);

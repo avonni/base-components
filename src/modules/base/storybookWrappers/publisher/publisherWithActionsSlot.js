@@ -1,8 +1,6 @@
-
-
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_PUBLISHER_VARIANT = 'base'
+const DEFAULT_PUBLISHER_VARIANT = 'base';
 
 export default class Publisher extends LightningElement {
     @api placeholder;

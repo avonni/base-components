@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import './confettiLib';

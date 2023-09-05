@@ -1,6 +1,4 @@
-
- 
- .item {
+.item {
     cursor: pointer;
 }
 
@@ -8,6 +6,7 @@
     color: #fff;
     background-color: var(--lwc-colorBackgroundInverse, #061c3f);
 }
+
 .avonni-theme_inverse a {
     color: #fff;
     text-decoration: underline;
@@ -18,8 +17,7 @@
     content: '';
     border: 0 solid transparent;
     border-left-width: 15px;
-    border-bottom: 15px solid
-        var(--avonni-relationship-graph-children-indicator-color, #007add);
+    border-bottom: 15px solid var(--avonni-relationship-graph-children-indicator-color, #007add);
     position: absolute;
     bottom: 0;
     right: 0;
@@ -42,8 +40,6 @@
 }
 
 .item_horizontal.item_has-groups.item_is-active::before {
-    background-color: var(
-        --avonni-relationship-graph-selected-line-color,
-        #0070d2
-    );
+    background-color: var(--avonni-relationship-graph-selected-line-color,
+            #0070d2);
 }

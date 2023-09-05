@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/scheduler/scheduler';
 
 customElements.define('ac-base-scheduler', Component.CustomElementConstructor);

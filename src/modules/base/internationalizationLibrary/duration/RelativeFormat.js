@@ -3,9 +3,7 @@
  * All rights reserved.
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
- */
-
-import { duration, displayDuration } from '../localizationService';
+ */ import { duration, displayDuration } from '../localizationService';
 const MINUTE_MILLISECONDS = 1000 * 60;
 
 export function relativeFormat() {

@@ -1,5 +1,3 @@
-
-
 import { VisualPicker } from '../__examples__/visualPicker';
 import {
     items,

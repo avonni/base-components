@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import Option from './option';
 import Action from './action';

@@ -1,5 +1,3 @@
-
-
 import { Separator } from '../__examples__/separator';
 
 export default {

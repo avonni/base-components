@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/inputData';
 
 customElements.define('ac-base-input-data', Component.CustomElementConstructor);

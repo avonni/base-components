@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/kanban/kanban';
 
 customElements.define('ac-kanban', Component.CustomElementConstructor);

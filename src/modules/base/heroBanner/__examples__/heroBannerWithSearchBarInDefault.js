@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/heroBanner/heroBannerWithSearchBarInDefault';
 
 customElements.define(

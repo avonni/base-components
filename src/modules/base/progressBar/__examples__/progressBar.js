@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/progressBar';
 
 customElements.define(

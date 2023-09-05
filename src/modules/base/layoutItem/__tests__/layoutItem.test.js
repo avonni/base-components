@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import LayoutItem from '../layoutItem';
 

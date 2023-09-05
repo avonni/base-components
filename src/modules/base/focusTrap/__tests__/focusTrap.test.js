@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import FocusTrap from 'c/focusTrap';
 

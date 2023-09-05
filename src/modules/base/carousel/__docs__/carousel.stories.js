@@ -1,5 +1,3 @@
-
-
 import { Carousel } from '../__examples__/carousel';
 import { items, menuItems, imageItems } from './data';
 

@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/buttonMenu/base';
 
 customElements.define(

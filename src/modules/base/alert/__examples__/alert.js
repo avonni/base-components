@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/alert/alert';
 
 customElements.define('ac-base-alert', Component.CustomElementConstructor);

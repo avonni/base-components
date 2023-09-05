@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/list/infiniteGrid';
 
 customElements.define(

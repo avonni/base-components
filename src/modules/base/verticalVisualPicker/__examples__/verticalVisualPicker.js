@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/verticalVisualPicker';
 
 customElements.define(

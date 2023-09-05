@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/menuItemDialog/menuItemDialog';
 
 customElements.define(

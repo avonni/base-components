@@ -1,5 +1,3 @@
-
-
 import { ProgressIndicator } from '../__examples__/progressIndicator';
 
 export default {

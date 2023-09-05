@@ -1,5 +1,3 @@
-
-
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import {
@@ -13,7 +11,6 @@ import {
     isSelectedRow,
     processInlineEditFinishCustom
 } from './inlineEdit';
-
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';

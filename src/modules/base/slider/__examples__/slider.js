@@ -1,5 +1,3 @@
-
-
 import Component from '../slider';
 
 customElements.define('ac-slider', Component.CustomElementConstructor);

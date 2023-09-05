@@ -1,5 +1,3 @@
-
-
 import { api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {

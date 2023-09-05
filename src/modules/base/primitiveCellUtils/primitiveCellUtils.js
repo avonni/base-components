@@ -1,5 +1,3 @@
-
-
 export function isEditable(state, index, columns) {
     const systemCols = Object.keys(state.headerIndexes).filter(
         (colKeyValue) =>

@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/verticalProgressIndicator/verticalProgressIndicator';
 
 customElements.define(

@@ -1,5 +1,3 @@
-
-
 import { InputCounter } from '../__examples__/inputCounter';
 
 export default {

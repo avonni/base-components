@@ -1,5 +1,3 @@
-
-
 import { Rating } from '../__examples__/rating';
 
 export default {

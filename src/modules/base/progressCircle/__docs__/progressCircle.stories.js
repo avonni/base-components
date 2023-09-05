@@ -1,5 +1,3 @@
-
-
 import { ProgressCircle } from '../__examples__/progressCircle';
 
 export default {

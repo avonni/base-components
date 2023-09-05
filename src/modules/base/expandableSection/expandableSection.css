@@ -1,82 +1,56 @@
-
-
 .avonni-expandable-section__title-button_base {
     padding: 0;
-    background-color: var(
-        --avonni-expandable-section-base-header-color-background,
-        white
-    );
+    background-color: var(--avonni-expandable-section-base-header-color-background,
+            white);
 }
 
 .avonni-expandable-section__title-button_shaded {
-    background-color: var(
-        --avonni-expandable-section-shaded-header-color-background,
-        #f3f2f2
-    );
+    background-color: var(--avonni-expandable-section-shaded-header-color-background,
+            #f3f2f2);
 }
 
 .avonni-expandable-section__title-button_base:hover,
 .avonni-expandable-section__title-button_base:active,
 .avonni-expandable-section__title-button_base:focus {
-    background-color: var(
-        --avonni-expandable-section-base-header-color-background,
-        white
-    );
+    background-color: var(--avonni-expandable-section-base-header-color-background,
+            white);
 }
 
 .avonni-expandable-section__title-button_base:focus {
-    text-decoration: var(
-        --avonni-expandable-section-base-header-text-decoration-focus,
-        none
-    );
-    color: var(
-        --avonni-expandable-section-base-header-text-color-focus,
-        #080707
-    );
+    text-decoration: var(--avonni-expandable-section-base-header-text-decoration-focus,
+            none);
+    color: var(--avonni-expandable-section-base-header-text-color-focus,
+            #080707);
 }
 
 .avonni-expandable-section__title-button_base:hover {
-    color: var(
-        --avonni-expandable-section-base-header-text-color-hover,
-        #080707
-    );
+    color: var(--avonni-expandable-section-base-header-text-color-hover,
+            #080707);
 }
 
 .avonni-expandable-section__title-button_shaded:focus {
-    text-decoration: var(
-        --avonni-expandable-section-shaded-header-text-decoration-focus,
-        none
-    );
-    color: var(
-        --avonni-expandable-section-shaded-header-text-color-focus,
-        #080707
-    );
+    text-decoration: var(--avonni-expandable-section-shaded-header-text-decoration-focus,
+            none);
+    color: var(--avonni-expandable-section-shaded-header-text-color-focus,
+            #080707);
 }
 
 .avonni-expandable-section__title-button_shaded:hover {
-    color: var(
-        --avonni-expandable-section-shaded-header-text-color-hover,
-        #080707
-    );
+    color: var(--avonni-expandable-section-shaded-header-text-color-hover,
+            #080707);
 }
 
 .avonni-expandable-section__header_shaded .slds-section__title-action,
 .avonni-expandable-section__header_shaded:not(.avonni-expandable-section__header_collapsible) {
-    padding-left: var(
-        --avonni-expandable-section-shaded-header-spacing-block-start,
-        0.75rem
-    );
-    padding-right: var(
-        --avonni-expandable-section-shaded-header-spacing-block-end,
-        0.75rem
-    );
+    padding-left: var(--avonni-expandable-section-shaded-header-spacing-block-start,
+            0.75rem);
+    padding-right: var(--avonni-expandable-section-shaded-header-spacing-block-end,
+            0.75rem);
 }
 
 .avonni-expandable-section__header_base {
-    background: var(
-        --avonni-expandable-section-base-header-color-background,
-        white
-    );
+    background: var(--avonni-expandable-section-base-header-color-background,
+            white);
 }
 
 .avonni-expandable-section__header_base .avonni-expandable-section__title {
@@ -87,88 +61,55 @@
 }
 
 .avonni-expandable-section__header_shaded {
-    background: var(
-        --avonni-expandable-section-shaded-header-color-background,
-        #f3f2f2
-    );
+    background: var(--avonni-expandable-section-shaded-header-color-background,
+            #f3f2f2);
 }
 
 .avonni-expandable-section__header_shaded .avonni-expandable-section__title {
     color: var(--avonni-expandable-section-shaded-header-text-color, #080707);
     font-size: var(--avonni-expandable-section-shaded-header-font-size, 1rem);
-    font-weight: var(
-        --avonni-expandable-section-shaded-header-font-weight,
-        400
-    );
-    font-style: var(
-        --avonni-expandable-section-shaded-header-font-style,
-        normal
-    );
+    font-weight: var(--avonni-expandable-section-shaded-header-font-weight,
+            400);
+    font-style: var(--avonni-expandable-section-shaded-header-font-style,
+            normal);
 }
 
 .avonni-expandable-section__header_base .slds-section__title-action,
 .avonni-expandable-section__header_base:not(.avonni-expandable-section__header_collapsible) {
-    padding-left: var(
-        --avonni-expandable-section-base-header-spacing-block-start,
-        0
-    );
-    padding-right: var(
-        --avonni-expandable-section-base-header-spacing-block-end,
-        0
-    );
+    padding-left: var(--avonni-expandable-section-base-header-spacing-block-start,
+            0);
+    padding-right: var(--avonni-expandable-section-base-header-spacing-block-end,
+            0);
 }
 
-.avonni-expandable-section__header_shaded
-    .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__header_shaded
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-shaded-header-icon-color-foreground-default
-    );
+.avonni-expandable-section__header_shaded .avonni-expandable-section__closed-icon,
+.avonni-expandable-section__header_shaded .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-shaded-header-icon-color-foreground-default);
 }
 
-.avonni-expandable-section__header_shaded:hover
-    .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__header_shaded:hover
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-shaded-header-icon-color-foreground-default-hover
-    );
+.avonni-expandable-section__header_shaded:hover .avonni-expandable-section__closed-icon,
+.avonni-expandable-section__header_shaded:hover .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-shaded-header-icon-color-foreground-default-hover);
 }
 
-.avonni-expandable-section__title-button_shaded:focus
-    .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__title-button_shaded:focus
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-shaded-header-icon-color-foreground-default-focus
-    );
+.avonni-expandable-section__title-button_shaded:focus .avonni-expandable-section__closed-icon,
+.avonni-expandable-section__title-button_shaded:focus .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-shaded-header-icon-color-foreground-default-focus);
 }
 
 .avonni-expandable-section__header_base .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__header_base
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-base-header-icon-color-foreground-default
-    );
+.avonni-expandable-section__header_base .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-base-header-icon-color-foreground-default);
 }
 
-.avonni-expandable-section__header_base:hover
-    .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__header_base:hover
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-base-header-icon-color-foreground-default-hover
-    );
+.avonni-expandable-section__header_base:hover .avonni-expandable-section__closed-icon,
+.avonni-expandable-section__header_base:hover .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-base-header-icon-color-foreground-default-hover);
 }
 
-.avonni-expandable-section__title-button_base:focus
-    .avonni-expandable-section__closed-icon,
-.avonni-expandable-section__title-button_base:focus
-    .avonni-expandable-section__opened-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-expandable-section-base-header-icon-color-foreground-default-focus
-    );
+.avonni-expandable-section__title-button_base:focus .avonni-expandable-section__closed-icon,
+.avonni-expandable-section__title-button_base:focus .avonni-expandable-section__opened-icon {
+    --sds-c-icon-color-foreground-default: var(--avonni-expandable-section-base-header-icon-color-foreground-default-focus);
 }
 
 .avonni-expandable-section__opened-icon {

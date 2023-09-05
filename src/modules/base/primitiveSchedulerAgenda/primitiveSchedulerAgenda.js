@@ -1,5 +1,3 @@
-
-
 import { api } from 'lwc';
 import { addToDate, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { Interval } from 'c/luxon';

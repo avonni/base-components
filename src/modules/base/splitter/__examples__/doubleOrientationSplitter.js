@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/splitter/doubleOrientationSplitter';
 
 customElements.define(

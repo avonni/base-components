@@ -1,5 +1,3 @@
-
-
 import Component from '../pillContainer';
 
 customElements.define(

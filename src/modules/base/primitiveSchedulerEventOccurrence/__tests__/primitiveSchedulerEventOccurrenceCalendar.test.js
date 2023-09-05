@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';

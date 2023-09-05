@@ -1,5 +1,3 @@
-
-
 import SchedulerEvent from '../event';
 import { DateTime } from 'c/luxon';
 

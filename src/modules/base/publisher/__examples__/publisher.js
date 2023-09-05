@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/publisher/publisher';
 
 customElements.define('ac-base-publisher', Component.CustomElementConstructor);

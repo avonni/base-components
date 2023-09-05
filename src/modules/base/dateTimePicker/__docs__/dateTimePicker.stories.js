@@ -1,5 +1,3 @@
-
-
 import { DateTimePicker } from '../__examples__/dateTimePicker';
 
 export default {
