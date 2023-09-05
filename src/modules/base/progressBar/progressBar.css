@@ -55,7 +55,30 @@
     line-height: 35px;
 }
 
-.avonni-progress-bar__pin::after {
+.avonni-progress-bar__rectangle-pin {
+    height: 32px;
+    width: fit-content;
+    min-width: 32px;
+    border-radius: 0.125rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    right: 0;
+    top: calc(-32px - 7px);
+    line-height: 32px;
+}
+
+.avonni-progress-bar__rectangle-pin::after {
+    position: absolute;
+    content: '';
+    left: calc(50% - 5px);
+    bottom: -5px;
+    width: 10px;
+    transform: rotate(-45deg);
+    border: 5px solid transparent;
+    z-index: -1;
+}
+
+.avonni-progress-bar__circle-pin::after {
     position: absolute;
     content: '';
     top: 0;

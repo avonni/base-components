@@ -19,7 +19,8 @@ export const ProgressBar = ({
     theme,
     textured,
     thickness,
-    orientation
+    orientation,
+    pinAttributes
 }) => {
     const element = document.createElement('ac-base-progress-bar');
     element.label = label;
@@ -36,5 +37,6 @@ export const ProgressBar = ({
     element.textured = textured;
     element.thickness = thickness;
     element.orientation = orientation;
+    element.pinAttributes = pinAttributes;
     return element;
 };

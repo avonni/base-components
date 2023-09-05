@@ -38,6 +38,7 @@
     z-index: 10;
 }
 
+.avonni-progress-bar__circle-pin.avonni-progress-bar__pin-right,
 .avonni-progress-bar__circle-pin {
     height: 32px;
     width: 32px;
@@ -47,7 +48,32 @@
     line-height: 32px;
 }
 
-.avonni-progress-bar__pin::after {
+.avonni-progress-bar__rectangle-pin.avonni-progress-bar__pin-right,
+.avonni-progress-bar__rectangle-pin {
+    height: 32px;
+    width: fit-content;
+    min-width: 32px;
+    border-radius: 0.125rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    left: calc(100% + 7px);
+    bottom: 0;
+    line-height: 32px;
+}
+
+.avonni-progress-bar__circle-pin.avonni-progress-bar__pin-left {
+    right: unset;
+    left: calc(-32px - 7px);
+    bottom: calc(-32px / 2);
+}
+
+.avonni-progress-bar__rectangle-pin.avonni-progress-bar__pin-left {
+    right: calc(100% + 7px);
+    left: unset;
+    bottom: 0;
+}
+
+.avonni-progress-bar__circle-pin::after {
     position: absolute;
     content: '';
     top: 0;
@@ -57,6 +83,27 @@
     border-radius: 50% 50% 50% 0;
     transform: rotate(45deg);
     z-index: -1;
+}
+
+.avonni-progress-bar__rectangle-pin::after {
+    position: absolute;
+    content: '';
+    top: calc(50% - 5px);
+    left: -5px;
+    width: 10px;
+    transform: rotate(45deg);
+    border: 5px solid transparent;
+    z-index: -1;
+}
+
+.avonni-progress-bar__circle-pin.avonni-progress-bar__pin-left::after {
+    transform: rotate(225deg);
+}
+
+.avonni-progress-bar__rectangle-pin.avonni-progress-bar__pin-left::after {
+    left: unset;
+    right: -5px;
+    transform: rotate(225deg);
 }
 
 .avonni-progress-bar__pin-value {

@@ -106,6 +106,17 @@ export default {
                 category: 'Value'
             }
         },
+        pinAttributes: {
+            name: 'pin-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the pin.',
+            table: {
+                type: { summary: 'object' },
+                category: 'Value'
+            }
+        },
         referenceLines: {
             control: {
                 type: 'object'
@@ -257,7 +268,10 @@ ShowPinValue.args = {
     value: 45,
     referenceLines: oneReferenceLine,
     showValue: true,
-    showPin: true
+    showPin: true,
+    pinAttributes: {
+        type: 'circle'
+    }
 };
 
 export const VerticalShowPinValue = Template.bind({});
@@ -268,7 +282,11 @@ VerticalShowPinValue.args = {
     referenceLines: oneReferenceLine,
     size: 'large',
     showValue: true,
-    showPin: true
+    showPin: true,
+    pinAttributes: {
+        type: 'rectangle',
+        position: 'right'
+    }
 };
 
 export const MultipleReferenceLines = Template.bind({});
