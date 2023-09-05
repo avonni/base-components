@@ -1,5 +1,3 @@
-
-
 .avonni-notify_alert {
     position: relative;
     display: -webkit-inline-box;
@@ -54,7 +52,7 @@
 }
 
 .avonni-alert_base {
-    background-color: var(--avonni-alert-base-color-background, #706e6b);
+    background-color: var(--avonni-alert-base-color-background, #747474);
     color: var(--avonni-alert-base-text-color, #ffffff);
 }
 

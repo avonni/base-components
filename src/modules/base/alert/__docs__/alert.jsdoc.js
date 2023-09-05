@@ -13,7 +13,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-base-color-background
- * @default #706e6b
+ * @default #747474
  * @type color
  */
 /**

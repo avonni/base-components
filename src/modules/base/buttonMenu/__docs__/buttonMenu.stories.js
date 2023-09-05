@@ -1,5 +1,3 @@
-
-
 import { ButtonMenuIllustration } from '../__examples__/buttonMenuIllustration';
 import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
 
@@ -230,7 +228,8 @@ export default {
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         menuAlignment: 'left',
-        nubbin: false
+        nubbin: false,
+        variant: 'border'
     }
 };
 
