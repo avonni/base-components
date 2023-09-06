@@ -15,12 +15,12 @@ const BUTTON_SIZES = {
 
 const BUTTON_VARIANTS = {
     valid: [
+        'bare',
+        'bare-inverse',
         'border',
         'border-inverse',
         'border-filled',
         'brand',
-        'bare',
-        'bare-inverse',
         'container',
         'reset'
     ],
