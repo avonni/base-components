@@ -115,24 +115,24 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-scheduler-color-border-bottom
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-scheduler-color-border-left
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-scheduler-color-border-right
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-scheduler-color-border-top
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
