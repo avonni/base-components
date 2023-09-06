@@ -1,16 +1,17 @@
 /* Vertical line */
 .line_vertical {
-    border-right: 2px solid var(--avonni-relationship-graph-line-color, #dddbda);
+    border-right: 2px solid var(--avonni-relationship-graph-line-color, #747474);
 }
 
 .line_horizontal {
-    border-bottom: 2px solid var(--avonni-relationship-graph-line-color, #dddbda);
+    border-bottom: 2px solid
+        var(--avonni-relationship-graph-line-color, #747474);
     margin-left: 10rem;
 }
 
 .actions::before {
     content: '';
-    border-right: 2px solid var(--avonni-relationship-graph-line-color, #dddbda);
+    border-right: 2px solid var(--avonni-relationship-graph-line-color, #747474);
     position: absolute;
     left: var(--lwc-spacingMedium, 1rem);
     top: 0;
@@ -22,7 +23,7 @@
 }
 
 .group,
-.group+.actions {
+.group + .actions {
     width: var(--lwc-sizeMedium, 20rem);
     position: relative;
 }

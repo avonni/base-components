@@ -57,7 +57,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-relationship-graph-line-color
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
