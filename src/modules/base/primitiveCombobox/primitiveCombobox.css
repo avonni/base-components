@@ -7,7 +7,7 @@
 }
 
 input.avonni-primitive-combobox__input {
-    border-color: var(--avonni-combobox-input-color-border, #dddbda);
+    border-color: var(--avonni-combobox-input-color-border, #747474);
     border-style: var(--avonni-combobox-input-styling-border, solid);
     border-radius: var(--avonni-combobox-input-radius-border, 0.25rem);
     border-width: var(--avonni-combobox-input-sizing-border, 1px);
@@ -19,7 +19,8 @@ input.avonni-primitive-combobox__input {
     border-right-width: 0;
 }
 
-:host.avonni-combobox__main-combobox_scopes input.avonni-primitive-combobox__input {
+:host.avonni-combobox__main-combobox_scopes
+    input.avonni-primitive-combobox__input {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }

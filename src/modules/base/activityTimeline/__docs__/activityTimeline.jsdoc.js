@@ -102,7 +102,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-activity-timeline-item-fields-radius-border
- * @type color
+ * @type sizing
  * @default 0.25rem
  */
 /**

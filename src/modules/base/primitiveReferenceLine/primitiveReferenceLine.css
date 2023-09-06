@@ -11,7 +11,7 @@
     top: 0;
 }
 
-.reference-line__line>.reference-line__badge {
+.reference-line__line > .reference-line__badge {
     position: absolute;
     top: var(--avonni-reference-line-badge-position-top);
     bottom: var(--avonni-reference-line-badge-position-bottom, -10px);
@@ -27,7 +27,6 @@
 
 .reference-line__badge_lightest {
     background-color: #fff;
-    border-color: #dddbda;
     border: none;
 }
 
@@ -96,7 +95,7 @@
     left: -8px;
 }
 
-.reference-line__line-vertical>.reference-line__badge {
+.reference-line__line-vertical > .reference-line__badge {
     position: absolute;
     bottom: 0;
     left: 18px;
