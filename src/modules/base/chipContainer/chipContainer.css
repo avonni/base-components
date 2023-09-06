@@ -20,7 +20,7 @@
     padding-right: var(--avonni-chip-container-spacing-inline-end, 0.125rem);
     border-style: var(--avonni-chip-container-styling-border, solid);
     border-width: var(--avonni-chip-container-sizing-border, 1px);
-    border-color: var(--avonni-chip-container-color-border, #e5e5e5);
+    border-color: var(--avonni-chip-container-color-border, #747474);
 }
 
 .avonni-chip-container__wrapper.avonni-chip-container__no-items {

@@ -33,7 +33,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-container-color-border
- * @default #e5e5e5
+ * @default #747474
  * @type color
  */
 /**
