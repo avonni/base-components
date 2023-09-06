@@ -25,7 +25,7 @@
 .avonni-primitive-pill {
     color: var(--avonni-pill-text-color, #181818);
     background-color: var(--avonni-pill-color-background, #ffffff);
-    border-color: var(--avonni-pill-color-border, #e5e5e5);
+    border-color: var(--avonni-pill-color-border, #747474);
 }
 
 .avonni-primitive-pill_list {
@@ -42,7 +42,7 @@
     );
     --slds-c-pill-color-border: var(
         --avonni-pill-action-color-border,
-        var(--avonni-pill-color-border, #e5e5e5)
+        var(--avonni-pill-color-border, #747474)
     );
 }
 
@@ -58,12 +58,16 @@
 
 .avonni-primitive-pill:hover {
     background-color: var(--avonni-pill-color-background-hover, #f3f3f3);
-    border-color: var(--avonni-pill-color-border-hover, #e5e5e5);
+    border-color: var(--avonni-pill-color-border-hover, #747474);
     color: var(--avonni-pill-text-color-hover, #181818);
 }
 
 .avonni-primitive-pill__label-link {
-    color: var(--avonni-pill-action-text-color, #0176d3);
+    color: var(--avonni-pill-action-text-color, #0b5cab);
+}
+
+.avonni-primitive-pill__label-link:hover {
+    color: var(--avonni-pill-action-text-color-hover, #014486);
 }
 
 .avonni-primitive-pill__label-link:focus {

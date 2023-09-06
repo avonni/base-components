@@ -43,7 +43,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pill-action-text-color
- * @default #0176d3
+ * @default #0b5cab
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-action-text-color-hover
+ * @default #014486
  * @type color
  */
 /**
@@ -61,13 +67,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pill-color-border
- * @default #e5e5e5
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-pill-color-border-hover
- * @default #e5e5e5
+ * @default #747474
  * @type color
  */
 /**
@@ -85,7 +91,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pill-container-color-border
- * @default #e5e5e5
+ * @default #747474
  * @type color
  */
 /**
