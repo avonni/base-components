@@ -10,7 +10,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pagination-button-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -28,7 +28,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pagination-button-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -46,7 +46,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pagination-button-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -64,7 +64,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-pagination-button-color-border-disabled
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
