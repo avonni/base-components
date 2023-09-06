@@ -202,13 +202,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-color-border-hover
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -226,13 +226,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-shaded-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-shaded-color-border-hover
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -256,7 +256,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -286,7 +286,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -298,7 +298,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border-disabled
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -394,7 +394,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-action-neutral-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -424,7 +424,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-action-neutral-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -442,6 +442,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-action-neutral-color-border-active
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
