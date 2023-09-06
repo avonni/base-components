@@ -174,7 +174,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**

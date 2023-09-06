@@ -136,7 +136,7 @@ export default class InputDateRange extends LightningElement {
      * On mobile devices this attribute has no effect.
      *
      * @type {string}
-     * @default mediu
+     * @default medium
      * @public
      */
     @api

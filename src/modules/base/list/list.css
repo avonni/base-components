@@ -9,7 +9,9 @@
 /* VALUE ASSIGNMENTS */
 .avonni-list__item-menu {
     row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
-    margin-inline: calc(var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2);
+    margin-inline: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
+    );
 }
 
 .avonni-list__vertical-compact {
@@ -18,10 +20,16 @@
 
 .avonni-list__item {
     align-self: stretch;
-    --avonni-card-color-background: var(--avonni-list-item-color-background,
-            transparent);
-    padding-left: calc(var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2);
-    padding-right: calc(var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2);
+    --avonni-card-color-background: var(
+        --avonni-list-item-color-background,
+        transparent
+    );
+    padding-left: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+    );
+    padding-right: calc(
+        var(--avonni-list-item-spacing-inline-between, 0.5rem) / 2
+    );
     --avonni-card-header-spacing-block-start: 0px;
     --avonni-card-header-spacing-block-end: 0px;
     --avonni-card-media-sizing-border: 0px;
@@ -39,8 +47,10 @@
 
 .avonni-list__item-sortable {
     user-select: none;
-    --avonni-card-color-background: var(--avonni-list-item-color-background-sortable,
-            var(--avonni-list-item-color-background, transparent));
+    --avonni-card-color-background: var(
+        --avonni-list-item-color-background-sortable,
+        var(--avonni-list-item-color-background, transparent)
+    );
 }
 
 .avonni-list__header_font {
@@ -75,15 +85,23 @@
 @media (hover: hover) {
     .avonni-list__item:hover {
         cursor: var(--avonni-list-item-cursor, default);
-        --avonni-card-color-background: var(--avonni-list-item-color-background-hover);
+        --avonni-card-color-background: var(
+            --avonni-list-item-color-background-hover
+        );
     }
 
     .avonni-list__item-sortable:hover {
-        cursor: var(--avonni-list-item-cursor-sortable,
-                var(--avonni-list-item-cursor, grab));
-        --avonni-card-color-background: var(--avonni-list-item-color-background-sortable-hover,
-                var(--avonni-list-item-color-background-hover,
-                    rgba(207, 207, 207, 0.25)));
+        cursor: var(
+            --avonni-list-item-cursor-sortable,
+            var(--avonni-list-item-cursor, grab)
+        );
+        --avonni-card-color-background: var(
+            --avonni-list-item-color-background-sortable-hover,
+            var(
+                --avonni-list-item-color-background-hover,
+                rgba(207, 207, 207, 0.25)
+            )
+        );
     }
 }
 
@@ -99,8 +117,10 @@
     --avonni-card-shadow: 0 0 10px rgb(0 0 0 / 40%);
     opacity: 0.8;
     cursor: grabbing;
-    --avonni-card-color-background: var(--avonni-list-item-color-background,
-            transparent);
+    --avonni-card-color-background: var(
+        --avonni-list-item-color-background,
+        transparent
+    );
 }
 
 .avonni-list__image_container {
@@ -137,11 +157,19 @@
 
 .avonni-list__item-icon {
     padding-left: 0.25rem;
-    --slds-c-icon-color-background: var(--avonni-list-item-icon-color-background);
-    --slds-c-icon-color-foreground: var(--avonni-list-item-icon-color-foreground);
-    --slds-c-icon-color-foreground-default: var(--avonni-list-item-icon-color-foreground-default);
-    --slds-c-icon-radius-border: var(--avonni-list-item-icon-radius-border,
-            0.25rem);
+    --slds-c-icon-color-background: var(
+        --avonni-list-item-icon-color-background
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-list-item-icon-color-foreground
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-list-item-icon-color-foreground-default
+    );
+    --slds-c-icon-radius-border: var(
+        --avonni-list-item-icon-radius-border,
+        0.25rem
+    );
 }
 
 .avonni-list__item-fields-container {
@@ -153,8 +181,10 @@
     padding-right: var(--avonni-list-item-fields-spacing-inline);
     padding-left: var(--avonni-list-item-fields-spacing-inline);
     padding-bottom: var(--avonni-list-item-fields-spacing-block, 0.25rem);
-    --avonni-layout-item-spacing-block-start: var(--avonni-list-item-fields-spacing-block,
-            0.25rem);
+    --avonni-layout-item-spacing-block-start: var(
+        --avonni-list-item-fields-spacing-block,
+        0.25rem
+    );
 }
 
 .avonni-list-item-body__vertical-alignment {
@@ -162,27 +192,36 @@
 }
 
 .avonni-list__item-actions-container {
-    align-self: var(--avonni-list-item-actions-vertical-alignment,
-            var(--avonni-list-item-body-vertical-alignment, center));
+    align-self: var(
+        --avonni-list-item-actions-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, center)
+    );
 }
 
 /* AVATAR */
 .avonni-list-item-avatar {
-    --avonni-avatar-image-object-fit: var(--avonni-list-item-avatar-image-object-fit,
-            'cover'
-        );
-    align-self: var(--avonni-list-item-avatar-vertical-alignment,
-            var(--avonni-list-item-body-vertical-alignment, center));
+    --avonni-avatar-image-object-fit: var(
+        --avonni-list-item-avatar-image-object-fit,
+        'cover'
+    );
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, center)
+    );
 }
 
 .avonni-list-item-avatar-top {
-    align-self: var(--avonni-list-item-avatar-vertical-alignment,
-            var(--avonni-list-item-body-vertical-alignment, flex-start));
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, flex-start)
+    );
 }
 
 .avonni-list-item-avatar-bottom {
-    align-self: var(--avonni-list-item-avatar-vertical-alignment,
-            var(--avonni-list-item-body-vertical-alignment, flex-end));
+    align-self: var(
+        --avonni-list-item-avatar-vertical-alignment,
+        var(--avonni-list-item-body-vertical-alignment, flex-end)
+    );
 }
 
 /* LINK COLORS */
@@ -222,21 +261,23 @@ a.avonni-list__item-info-link:active {
 .avonni-list__item-divider_top {
     border-top-width: var(--avonni-list-item-sizing-border, 1px);
     border-top-style: var(--avonni-list-item-styling-border, solid);
-    border-top-color: var(--avonni-list-item-color-border, #dddbda);
+    border-top-color: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-divider_bottom {
     border-bottom-width: var(--avonni-list-item-sizing-border, 1px);
     border-bottom-style: var(--avonni-list-item-styling-border, solid);
-    border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
+    border-bottom-color: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-divider_around {
-    --avonni-card-radius-border: var(--avonni-list-item-around-border-radius,
-            0.25rem);
+    --avonni-card-radius-border: var(
+        --avonni-list-item-around-border-radius,
+        0.25rem
+    );
     --avonni-card-sizing-border: var(--avonni-list-item-sizing-border, 1px);
     --avonni-card-styling-border: var(--avonni-list-item-styling-border, solid);
-    --avonni-card-color-border: var(--avonni-list-item-color-border, #c9c9c9);
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-header_font {
@@ -261,13 +302,17 @@ a.avonni-list__item-info-link:active {
 
 .avonni-list__item-text-color_inverse a.avonni-list__item-header-link:hover,
 .avonni-list__item-text-color_inverse a.avonni-list__item-header-link:focus {
-    color: var(--avonni-list-item-header-link-text-color-inverse-hover,
-            var(--lwc-colorTextLinkInverseHover, rgba(255, 255, 255, 0.75)));
+    color: var(
+        --avonni-list-item-header-link-text-color-inverse-hover,
+        var(--lwc-colorTextLinkInverseHover, rgba(255, 255, 255, 0.75))
+    );
 }
 
 .avonni-list__item-text-color_inverse a.avonni-list__item-header-link:active {
-    color: var(--avonni-list-item-header-link-text-color-inverse-active,
-            var(--lwc-colorTextLinkInverseActive, rgba(255, 255, 255, 0.5)));
+    color: var(
+        --avonni-list-item-header-link-text-color-inverse-active,
+        var(--lwc-colorTextLinkInverseActive, rgba(255, 255, 255, 0.5))
+    );
 }
 
 .avonni-list__item-text-color_inverse a.avonni-list__item-info-link {
@@ -276,13 +321,17 @@ a.avonni-list__item-info-link:active {
 
 .avonni-list__item-text-color_inverse a.avonni-list__item-info-link:hover,
 .avonni-list__item-text-color_inverse a.avonni-list__item-info-link:focus {
-    color: var(--avonni-list-item-infos-link-text-color-inverse-hover,
-            var(--lwc-colorTextLinkInverseHover, rgba(255, 255, 255, 0.75)));
+    color: var(
+        --avonni-list-item-infos-link-text-color-inverse-hover,
+        var(--lwc-colorTextLinkInverseHover, rgba(255, 255, 255, 0.75))
+    );
 }
 
 .avonni-list__item-text-color_inverse a.avonni-list__item-info-link:active {
-    color: var(--avonni-list-item-infos-link-text-color-inverse-active,
-            var(--lwc-colorTextLinkInverseActive, rgba(255, 255, 255, 0.5)));
+    color: var(
+        --avonni-list-item-infos-link-text-color-inverse-active,
+        var(--lwc-colorTextLinkInverseActive, rgba(255, 255, 255, 0.5))
+    );
 }
 
 /* TEXT INVERSE COLOR */
@@ -297,10 +346,18 @@ a.avonni-list__item-info-link:active {
 /* ICON INVERSE COLOR */
 .avonni-list__item-text-color_inverse .avonni-list__item-icon,
 .avonni-list__item-action-button-icon_inverse {
-    --slds-c-icon-color-background: var(--avonni-list-item-icon-color-background-inverse);
-    --slds-c-icon-color-foreground: var(--avonni-list-item-icon-color-foreground-inverse);
-    --slds-c-icon-color-foreground-default: var(--avonni-list-item-icon-color-foreground-default-inverse,
-            white);
-    --slds-c-icon-radius-border: var(--avonni-list-item-icon-radius-border,
-            0.25rem);
+    --slds-c-icon-color-background: var(
+        --avonni-list-item-icon-color-background-inverse
+    );
+    --slds-c-icon-color-foreground: var(
+        --avonni-list-item-icon-color-foreground-inverse
+    );
+    --slds-c-icon-color-foreground-default: var(
+        --avonni-list-item-icon-color-foreground-default-inverse,
+        white
+    );
+    --slds-c-icon-radius-border: var(
+        --avonni-list-item-icon-radius-border,
+        0.25rem
+    );
 }
