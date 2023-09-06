@@ -428,28 +428,28 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
             }
-        },
-        args: {
-            addButtonIconName: 'utility:right',
-            allowSearch: false,
-            buttonSize: 'medium',
-            buttonVariant: 'border',
-            disableReordering: false,
-            disabled: false,
-            downButtonIconName: 'utility:down',
-            draggable: false,
-            enableInfiniteLoading: false,
-            hideBottomDivider: false,
-            isLoading: false,
-            loadMoreOffset: 20,
-            maxVisibleOptions: 5,
-            min: 0,
-            removeButtonIconName: 'utility:left',
-            required: false,
-            size: 'responsive',
-            upButtonIconName: 'utility:up',
-            variant: 'standard'
         }
+    },
+    args: {
+        addButtonIconName: 'utility:right',
+        allowSearch: false,
+        buttonSize: 'medium',
+        buttonVariant: 'border',
+        disableReordering: false,
+        disabled: false,
+        downButtonIconName: 'utility:down',
+        draggable: false,
+        enableInfiniteLoading: false,
+        hideBottomDivider: false,
+        isLoading: false,
+        loadMoreOffset: 20,
+        maxVisibleOptions: 5,
+        min: 0,
+        removeButtonIconName: 'utility:left',
+        required: false,
+        size: 'responsive',
+        upButtonIconName: 'utility:up',
+        variant: 'standard'
     }
 };
 
