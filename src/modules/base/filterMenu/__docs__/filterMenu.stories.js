@@ -39,6 +39,7 @@ export default {
             }
         },
         buttonVariant: {
+            name: 'button-variant',
             control: {
                 type: 'select'
             },
