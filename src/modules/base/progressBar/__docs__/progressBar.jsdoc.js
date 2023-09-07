@@ -109,11 +109,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-progress-bar-pin-color-background
- * @type color
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-progress-bar-label-text-color
  * @default #080707
  * @type color
@@ -159,4 +154,27 @@
  * @name --avonni-progress-bar-value-font-weight
  * @default 700
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-color-background
+ * @type color
  */
