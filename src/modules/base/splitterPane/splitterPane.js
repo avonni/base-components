@@ -77,7 +77,6 @@ export default class SplitterPane extends LightningElement {
     get collapsed() {
         return this._collapsed;
     }
-
     set collapsed(value) {
         this._collapsed = normalizeBoolean(value);
         this.setAttribute('collapsed', this._collapsed);
@@ -93,7 +92,6 @@ export default class SplitterPane extends LightningElement {
     get collapsedSize() {
         return this._collapsedSize;
     }
-
     set collapsedSize(value) {
         this._collapsedSize = value;
         this.setAttribute('collapsedSize', this._collapsedSize);
@@ -110,7 +108,6 @@ export default class SplitterPane extends LightningElement {
     get collapsible() {
         return this._collapsible;
     }
-
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
         this.setAttribute('collapsible', this._collapsible);
@@ -126,7 +123,6 @@ export default class SplitterPane extends LightningElement {
     get max() {
         return this._max;
     }
-
     set max(value) {
         this._max = value;
         this.setAttribute('max', this._max);
@@ -142,7 +138,6 @@ export default class SplitterPane extends LightningElement {
     get min() {
         return this._min;
     }
-
     set min(value) {
         this._min = value;
         this.setAttribute('min', this._min);
@@ -159,7 +154,6 @@ export default class SplitterPane extends LightningElement {
     get resizable() {
         return this._resizable;
     }
-
     set resizable(value) {
         this._resizable = normalizeBoolean(value);
         this.setAttribute('resizable', this._resizable);
@@ -176,7 +170,6 @@ export default class SplitterPane extends LightningElement {
     get scrollable() {
         return this._scrollable;
     }
-
     set scrollable(value) {
         this._scrollable = normalizeBoolean(value);
         this.setAttribute('scrollable', this._scrollable);
@@ -192,7 +185,6 @@ export default class SplitterPane extends LightningElement {
     get size() {
         return this._size;
     }
-
     set size(value) {
         this._size = value;
         this.setAttribute('size', this._size);

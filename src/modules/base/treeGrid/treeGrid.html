@@ -1,6 +1,5 @@
 <template>
     <avonni-datatable
-        data-element-id="avonni-datatable"
         aria-label={ariaLabel}
         columns={normalizedColumns}
         column-widths-mode={columnWidthsMode}
@@ -18,6 +17,7 @@
         selected-rows={selectedRows}
         show-row-number-column={showRowNumberColumn}
         wrap-text-max-lines={wrapTextMaxLines}
+        data-element-id="avonni-datatable"
         onrowselection={handleRowSelection}
         onheaderaction={handleHeaderAction}
         onrowaction={handleRowAction}

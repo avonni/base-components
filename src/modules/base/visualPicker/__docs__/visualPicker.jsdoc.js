@@ -451,7 +451,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-color-border
- * @default #dddbda
+ * @default #c9c9c9
  * @type color
  */
 /**

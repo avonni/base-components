@@ -5,13 +5,15 @@
 .splitter-orientation-vertical {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--avonni-splitter-vertical-color-border-around, #00000014);
+    border: 1px solid
+        var(--avonni-splitter-vertical-color-border-around, #00000014);
 }
 
 .splitter-orientation-horizontal {
     display: flex;
     flex-direction: row;
-    border: 1px solid var(--avonni-splitter-horizontal-color-border-around, #00000014);
+    border: 1px solid
+        var(--avonni-splitter-horizontal-color-border-around, #00000014);
 }
 
 div[c-splitter_splitter] .splitter-orientation-horizontal[c-splitter_splitter],
@@ -48,7 +50,8 @@ div[c-splitter_splitter] .splitter-orientation-vertical[c-splitter_splitter] {
     user-select: none;
     background: #fff;
     border-radius: 0;
-    border: 1px solid var(--avonni-splitter-vertical-color-border-separator, #00000014);
+    border: 1px solid
+        var(--avonni-splitter-vertical-color-border-separator, #747474);
     border-left: 0;
     border-right: 0;
     z-index: 1;
@@ -70,7 +73,8 @@ div[c-splitter_splitter] .splitter-orientation-vertical[c-splitter_splitter] {
     min-width: 0.75rem;
     background: #fff;
     border-radius: 0;
-    border: 1px solid var(--avonni-splitter-horizontal-color-border-separator, #00000014);
+    border: 1px solid
+        var(--avonni-splitter-horizontal-color-border-separator, #747474);
     border-top: 0;
     border-bottom: 0;
     z-index: 1;
@@ -83,7 +87,8 @@ div[c-splitter_splitter] .splitter-orientation-vertical[c-splitter_splitter] {
     content: '';
     position: absolute;
     width: 0.75rem;
-    border-top: 1px solid var(--avonni-splitter-horizontal-color-border-separator, #00000014);
+    border-top: 1px solid
+        var(--avonni-splitter-horizontal-color-border-separator, #747474);
 }
 
 .separator-horizontal::before {
@@ -99,7 +104,8 @@ div[c-splitter_splitter] .splitter-orientation-vertical[c-splitter_splitter] {
     content: '';
     position: absolute;
     height: 0.75rem;
-    border-left: 1px solid var(--avonni-splitter-vertical-color-border-separator, #00000014);
+    border-left: 1px solid
+        var(--avonni-splitter-vertical-color-border-separator, #747474);
 }
 
 .separator-vertical::before {

@@ -152,7 +152,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-vertical-visual-picker-figure-color-border
- * @default #dddbda
+ * @default #c9c9c9
  * @type color
  */
 /**

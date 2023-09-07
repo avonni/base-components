@@ -8,7 +8,7 @@
     border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
     border-width: var(--avonni-visual-picker-sizing-border, 1px);
     border-style: var(--avonni-visual-picker-styling-border, solid);
-    border-color: var(--avonni-visual-picker-color-border, #dddbda);
+    border-color: var(--avonni-visual-picker-color-border, #c9c9c9);
     box-shadow: var(--avonni-visual-picker-shadow, 0 2px 2px rgb(0 0 0 / 5%));
     background-color: var(--avonni-visual-picker-color-background, #ffffff);
     overflow: hidden;
@@ -16,17 +16,23 @@
 
 .avonni-visual-picker__figure:hover {
     border-color: var(--avonni-visual-picker-color-border-hover, #1b96ff);
-    -webkit-box-shadow: 0 0 0 1px var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
-    box-shadow: 0 0 0 1px var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
-    background-color: var(--avonni-visual-picker-color-background-hover,
-            #ffffff);
+    -webkit-box-shadow: 0 0 0 1px
+        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
+    box-shadow: 0 0 0 1px
+        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
+    background-color: var(
+        --avonni-visual-picker-color-background-hover,
+        #ffffff
+    );
 }
 
-.avonni-visual-picker__figure-container-reverse>.avonni-visual-picker__figure-body-container {
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-body-container {
     order: 0;
 }
 
-.avonni-visual-picker__figure-container-reverse>.avonni-visual-picker__figure-image-container-horizontal {
+.avonni-visual-picker__figure-container-reverse
+    > .avonni-visual-picker__figure-image-container-horizontal {
     order: 1;
 }
 
@@ -64,10 +70,14 @@
     overflow: hidden;
 }
 
-.avonni-visual-picker__figure-image-background .avonni-visual-picker__figure-image-container,
-.avonni-visual-picker__figure-image-overlay .avonni-visual-picker__figure-image-container,
-.avonni-visual-picker__figure-image-background .avonni-visual-picker__figure-image-container-horizontal,
-.avonni-visual-picker__figure-image-overlay .avonni-visual-picker__figure-image-container-horizontal {
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-image-container,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-image-container,
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-image-container-horizontal,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-image-container-horizontal {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -76,31 +86,41 @@
     width: 100%;
 }
 
-.avonni-visual-picker__figure-image-background .avonni-visual-picker__figure-body-container {
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-body-container {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: var(--avonni-visual-picker-overlay-background,
-            linear-gradient(0deg,
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.55) 75%,
-                rgba(0, 0, 0, 0) 100%));
+    background-image: var(
+        --avonni-visual-picker-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
     margin: 0 0.3rem 0.3rem 0.3rem;
     height: fit-content;
     max-height: 100%;
 }
 
-.avonni-visual-picker__figure-image-overlay .avonni-visual-picker__figure-body-container {
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-body-container {
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: var(--avonni-visual-picker-overlay-background,
-            linear-gradient(0deg,
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.55) 75%,
-                rgba(0, 0, 0, 0) 100%));
+    background-image: var(
+        --avonni-visual-picker-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
     margin: 0 0.3rem 0.3rem 0.3rem;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
@@ -108,51 +128,70 @@
     max-height: 100%;
 }
 
-.avonni-visual-picker__figure-image-overlay:hover .avonni-visual-picker__figure-body-container {
+.avonni-visual-picker__figure-image-overlay:hover
+    .avonni-visual-picker__figure-body-container {
     opacity: 1;
 }
 
-.avonni-visual-picker__figure-image-overlay .avonni-visual-picker__figure-header,
-.avonni-visual-picker__figure-image-background .avonni-visual-picker__figure-header {
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__figure-header,
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-header {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
-    --avonni-visual-picker-title-text-color: var(--avonni-visual-picker-overlay-text-color,
-            #ffffff);
-    --avonni-visual-picker-description-text-color: var(--avonni-visual-picker-overlay-text-color,
-            #ffffff);
+    --avonni-visual-picker-title-text-color: var(
+        --avonni-visual-picker-overlay-text-color,
+        #ffffff
+    );
+    --avonni-visual-picker-description-text-color: var(
+        --avonni-visual-picker-overlay-text-color,
+        #ffffff
+    );
     --avonni-visual-picker-avatar-fallback-icon-foreground: #ffffff;
     --avonni-visual-picker-avatar-fallback-icon-foreground-default: #ffffff;
 }
 
-.avonni-visual-picker__figure-image-background .avonni-visual-picker__fields-label,
-.avonni-visual-picker__figure-image-overlay .avonni-visual-picker__fields-label {
-    --avonni-output-data-label-text-color: var(--avonni-visual-picker-overlay-fields-label-text-color,
-            #ffffff);
-    --avonni-output-data-value-text-color: var(--avonni-visual-picker-overlay-fields-value-text-color,
-            #ffffff);
+.avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__fields-label,
+.avonni-visual-picker__figure-image-overlay
+    .avonni-visual-picker__fields-label {
+    --avonni-output-data-label-text-color: var(
+        --avonni-visual-picker-overlay-fields-label-text-color,
+        #ffffff
+    );
+    --avonni-output-data-value-text-color: var(
+        --avonni-visual-picker-overlay-fields-value-text-color,
+        #ffffff
+    );
 }
 
 /*-- disabled --*/
-.slds-visual-picker input[disabled]~label .avonni-visual-picker__figure {
+.slds-visual-picker input[disabled] ~ label .avonni-visual-picker__figure {
     border-color: #c9c7c5;
     background-color: #ecebea;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
 
-.slds-visual-picker input[disabled]~label .avonni-visual-picker__figure:hover {
+.slds-visual-picker
+    input[disabled]
+    ~ label
+    .avonni-visual-picker__figure:hover {
     cursor: not-allowed;
 }
 
 /*-- Focus --*/
-.slds-visual-picker input:focus~label .slds-visual-picker__figure {
+.slds-visual-picker input:focus ~ label .slds-visual-picker__figure {
     border: 1px solid transparent;
     -webkit-box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
     box-shadow: var(--slds-c-button-shadow-focus, 0 0 3px #0070d2);
 }
 
 /*-- Hover --*/
-.slds-visual-picker input:not(:disabled)~label:hover .slds-visual-picker__figure {
+.slds-visual-picker
+    input:not(:disabled)
+    ~ label:hover
+    .slds-visual-picker__figure {
     cursor: pointer;
     outline: 0;
     border: 1px solid #1b96ff;
@@ -161,29 +200,40 @@
 }
 
 /*-- Checked --*/
-.slds-visual-picker input:checked~label .slds-visual-picker__text {
+.slds-visual-picker input:checked ~ label .slds-visual-picker__text {
     border-width: 1px;
     border-style: solid;
     border-color: var(--avonni-visual-picker-color-border-selected, #1b96ff);
-    -webkit-box-shadow: 0 0 0 1px var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
-    box-shadow: 0 0 0 1px var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
+    -webkit-box-shadow: 0 0 0 1px
+        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
+    box-shadow: 0 0 0 1px
+        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
 }
 
-.slds-visual-picker input:checked~label .slds-visual-picker__text:after {
+.slds-visual-picker input:checked ~ label .slds-visual-picker__text:after {
     content: '';
-    border-right-color: var(--avonni-visual-picker-color-border-selected,
-            #1b96ff);
-    border-top-color: var(--avonni-visual-picker-color-border-selected,
-            #1b96ff);
+    border-right-color: var(
+        --avonni-visual-picker-color-border-selected,
+        #1b96ff
+    );
+    border-top-color: var(
+        --avonni-visual-picker-color-border-selected,
+        #1b96ff
+    );
 }
 
-.slds-visual-picker.avonni-visual-picker_responsive input:checked~label .slds-visual-picker__text:after {
+.slds-visual-picker.avonni-visual-picker_responsive
+    input:checked
+    ~ label
+    .slds-visual-picker__text:after {
     right: 0.75rem;
 }
 
-.slds-visual-picker input:checked~label .slds-visual-picker__icon {
-    background-color: var(--avonni-visual-picker-color-background-selected,
-            #1b96ff);
+.slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
+    background-color: var(
+        --avonni-visual-picker-color-background-selected,
+        #1b96ff
+    );
     border-color: var(--avonni-visual-picker-color-border-selected, #1b96ff);
 }
 
@@ -230,8 +280,10 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: var(--avonni-visual-picker-item-description-line-clamp,
-            2);
+    -webkit-line-clamp: var(
+        --avonni-visual-picker-item-description-line-clamp,
+        2
+    );
 }
 
 /*-- fields --*/
@@ -250,12 +302,16 @@
     width: 4rem;
 }
 
-.avonni-visual-picker_xx-small .slds-visual-picker__body .avonni-visual-picker__item-title {
+.avonni-visual-picker_xx-small
+    .slds-visual-picker__body
+    .avonni-visual-picker__item-title {
     font-size: var(--avonni-visual-picker-title-font-size, 0.8125rem);
     line-height: var(--lwc-lineHeightHeading, 1.25);
 }
 
-.avonni-visual-picker_xx-small .slds-visual-picker__body .avonni-visual-picker__item-description {
+.avonni-visual-picker_xx-small
+    .slds-visual-picker__body
+    .avonni-visual-picker__item-description {
     font-size: var(--avonni-visual-picker-description-font-size, 0.45rem);
 }
 
@@ -268,11 +324,15 @@
     width: 6rem;
 }
 
-.avonni-visual-picker_x-small .slds-visual-picker__body .avonni-visual-picker__item-title {
+.avonni-visual-picker_x-small
+    .slds-visual-picker__body
+    .avonni-visual-picker__item-title {
     font-size: var(--avonni-visual-picker-title-font-size, 1rem);
 }
 
-.avonni-visual-picker_x-small .slds-visual-picker__body .avonni-visual-picker__item-description {
+.avonni-visual-picker_x-small
+    .slds-visual-picker__body
+    .avonni-visual-picker__item-description {
     font-size: var(--avonni-visual-picker-description-font-size, 0.625rem);
 }
 
@@ -286,12 +346,16 @@
     width: 8rem;
 }
 
-.avonni-visual-picker_small .avonni-visual-picker__figure .avonni-visual-picker__figure-header {
+.avonni-visual-picker_small
+    .avonni-visual-picker__figure
+    .avonni-visual-picker__figure-header {
     font-weight: var(--avonni-visual-picker-title-font-weight, 300);
     font-size: var(--avonni-visual-picker-title-font-size, 1.125rem);
 }
 
-.avonni-visual-picker_small .avonni-visual-picker__figure .avonni-visual-picker__item-description {
+.avonni-visual-picker_small
+    .avonni-visual-picker__figure
+    .avonni-visual-picker__item-description {
     font-size: var(--avonni-visual-picker-description-font-size, 0.625rem);
 }
 
@@ -523,65 +587,133 @@
 }
 
 .avonni-visual-picker__tags {
-    --avonni-chip-sizing-border: var(--avonni-visual-picker-tag-sizing-border,
-            1px);
-    --avonni-chip-styling-border: var(--avonni-visual-picker-tag-styling-border,
-            solid);
-    --avonni-chip-radius-border: var(--avonni-visual-picker-tag-radius-border,
-            15rem);
-    --avonni-chip-label-font-size: var(--avonni-visual-picker-tag-label-font-size,
-            0.75rem);
-    --avonni-chip-label-font-style: var(--avonni-visual-picker-tag-label-font-style,
-            normal);
-    --avonni-chip-label-font-weight: var(--avonni-visual-picker-tag-label-font-weight,
-            700);
-    --avonni-chip-line-height: var(--avonni-visual-picker-tag-line-height,
-            normal);
+    --avonni-chip-sizing-border: var(
+        --avonni-visual-picker-tag-sizing-border,
+        1px
+    );
+    --avonni-chip-styling-border: var(
+        --avonni-visual-picker-tag-styling-border,
+        solid
+    );
+    --avonni-chip-radius-border: var(
+        --avonni-visual-picker-tag-radius-border,
+        15rem
+    );
+    --avonni-chip-label-font-size: var(
+        --avonni-visual-picker-tag-label-font-size,
+        0.75rem
+    );
+    --avonni-chip-label-font-style: var(
+        --avonni-visual-picker-tag-label-font-style,
+        normal
+    );
+    --avonni-chip-label-font-weight: var(
+        --avonni-visual-picker-tag-label-font-weight,
+        700
+    );
+    --avonni-chip-line-height: var(
+        --avonni-visual-picker-tag-line-height,
+        normal
+    );
 
     /* Alt inverse */
-    --avonni-chip-alt-inverse-color-background: var(--avonni-visual-picker-tag-alt-inverse-color-background);
-    --avonni-chip-alt-inverse-color-border: var(--avonni-visual-picker-tag-alt-inverse-color-border);
-    --avonni-chip-alt-inverse-text-color: var(--avonni-visual-picker-tag-alt-inverse-text-color);
+    --avonni-chip-alt-inverse-color-background: var(
+        --avonni-visual-picker-tag-alt-inverse-color-background
+    );
+    --avonni-chip-alt-inverse-color-border: var(
+        --avonni-visual-picker-tag-alt-inverse-color-border
+    );
+    --avonni-chip-alt-inverse-text-color: var(
+        --avonni-visual-picker-tag-alt-inverse-text-color
+    );
 
     /* Base */
-    --avonni-chip-base-color-background: var(--avonni-visual-picker-tag-base-color-background);
-    --avonni-chip-base-color-border: var(--avonni-visual-picker-tag-base-color-border);
-    --avonni-chip-base-text-color: var(--avonni-visual-picker-tag-base-text-color);
+    --avonni-chip-base-color-background: var(
+        --avonni-visual-picker-tag-base-color-background
+    );
+    --avonni-chip-base-color-border: var(
+        --avonni-visual-picker-tag-base-color-border
+    );
+    --avonni-chip-base-text-color: var(
+        --avonni-visual-picker-tag-base-text-color
+    );
 
     /* Brand */
-    --avonni-chip-brand-color-background: var(--avonni-visual-picker-tag-brand-color-background);
-    --avonni-chip-brand-color-border: var(--avonni-visual-picker-tag-brand-color-border);
-    --avonni-chip-brand-text-color: var(--avonni-visual-picker-tag-brand-text-color);
+    --avonni-chip-brand-color-background: var(
+        --avonni-visual-picker-tag-brand-color-background
+    );
+    --avonni-chip-brand-color-border: var(
+        --avonni-visual-picker-tag-brand-color-border
+    );
+    --avonni-chip-brand-text-color: var(
+        --avonni-visual-picker-tag-brand-text-color
+    );
 
     /* Error */
-    --avonni-chip-error-color-background: var(--avonni-visual-picker-tag-error-color-background);
-    --avonni-chip-error-color-border: var(--avonni-visual-picker-tag-error-color-border);
-    --avonni-chip-error-text-color: var(--avonni-visual-picker-tag-error-text-color);
+    --avonni-chip-error-color-background: var(
+        --avonni-visual-picker-tag-error-color-background
+    );
+    --avonni-chip-error-color-border: var(
+        --avonni-visual-picker-tag-error-color-border
+    );
+    --avonni-chip-error-text-color: var(
+        --avonni-visual-picker-tag-error-text-color
+    );
 
     /* Info */
-    --avonni-chip-info-color-background: var(--avonni-visual-picker-tag-info-color-background);
-    --avonni-chip-info-color-border: var(--avonni-visual-picker-tag-info-color-border);
-    --avonni-chip-info-text-color: var(--avonni-visual-picker-tag-info-text-color);
+    --avonni-chip-info-color-background: var(
+        --avonni-visual-picker-tag-info-color-background
+    );
+    --avonni-chip-info-color-border: var(
+        --avonni-visual-picker-tag-info-color-border
+    );
+    --avonni-chip-info-text-color: var(
+        --avonni-visual-picker-tag-info-text-color
+    );
 
     /* Inverse */
-    --avonni-chip-inverse-color-background: var(--avonni-visual-picker-tag-inverse-color-background);
-    --avonni-chip-inverse-color-border: var(--avonni-visual-picker-tag-inverse-color-border);
-    --avonni-chip-inverse-text-color: var(--avonni-visual-picker-tag-inverse-text-color);
+    --avonni-chip-inverse-color-background: var(
+        --avonni-visual-picker-tag-inverse-color-background
+    );
+    --avonni-chip-inverse-color-border: var(
+        --avonni-visual-picker-tag-inverse-color-border
+    );
+    --avonni-chip-inverse-text-color: var(
+        --avonni-visual-picker-tag-inverse-text-color
+    );
 
     /* Offline */
-    --avonni-chip-offline-color-background: var(--avonni-visual-picker-tag-offline-color-background);
-    --avonni-chip-offline-color-border: var(--avonni-visual-picker-tag-offline-color-border);
-    --avonni-chip-offline-text-color: var(--avonni-visual-picker-tag-offline-text-color);
+    --avonni-chip-offline-color-background: var(
+        --avonni-visual-picker-tag-offline-color-background
+    );
+    --avonni-chip-offline-color-border: var(
+        --avonni-visual-picker-tag-offline-color-border
+    );
+    --avonni-chip-offline-text-color: var(
+        --avonni-visual-picker-tag-offline-text-color
+    );
 
     /* Success */
-    --avonni-chip-success-color-background: var(--avonni-visual-picker-tag-success-color-background);
-    --avonni-chip-success-color-border: var(--avonni-visual-picker-tag-success-color-border);
-    --avonni-chip-success-text-color: var(--avonni-visual-picker-tag-success-text-color);
+    --avonni-chip-success-color-background: var(
+        --avonni-visual-picker-tag-success-color-background
+    );
+    --avonni-chip-success-color-border: var(
+        --avonni-visual-picker-tag-success-color-border
+    );
+    --avonni-chip-success-text-color: var(
+        --avonni-visual-picker-tag-success-text-color
+    );
 
     /* Warning */
-    --avonni-chip-warning-color-background: var(--avonni-visual-picker-tag-warning-color-background);
-    --avonni-chip-warning-color-border: var(--avonni-visual-picker-tag-warning-color-border);
-    --avonni-chip-warning-text-color: var(--avonni-visual-picker-tag-warning-text-color);
+    --avonni-chip-warning-color-background: var(
+        --avonni-visual-picker-tag-warning-color-background
+    );
+    --avonni-chip-warning-color-border: var(
+        --avonni-visual-picker-tag-warning-color-border
+    );
+    --avonni-chip-warning-text-color: var(
+        --avonni-visual-picker-tag-warning-text-color
+    );
 }
 
 .avonni-visual-picker__tags:not(:first-child) {

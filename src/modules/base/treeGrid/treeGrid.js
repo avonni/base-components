@@ -369,7 +369,7 @@ export default class TreeGrid extends LightningElement {
      */
     @api
     get wrapTextMaxLines() {
-        return this.wrapTextMaxLines;
+        return this._wrapTextMaxLines;
     }
 
     set wrapTextMaxLines(value) {
