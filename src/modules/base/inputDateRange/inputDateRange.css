@@ -24,12 +24,12 @@
     padding: 0.25rem;
 }
 
-.slds-input[readonly]+lightning-icon {
+.slds-input[readonly] + lightning-icon {
     opacity: 0.3;
 }
 
 .avonni-date-range__input_error {
-    box-shadow: #c23934 0 0 0 1px inset;
+    box-shadow: #ba0517 0 0 0 1px inset;
 }
 
 .avonni-input-date-range__labels {

@@ -25,7 +25,7 @@
 
 .slds-checkbox_button {
     border-left: none;
-    border-bottom: 1px solid #dddbda;
+    border-bottom: 1px solid #747474;
 }
 
 .avonni-input-choice-set__option-label {
@@ -37,7 +37,7 @@
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
-    border-right: 1px solid #dddbda;
+    border-right: 1px solid #747474;
 }
 
 .avonni-input-choice-set__display_flex {
@@ -83,39 +83,53 @@
     position: absolute;
 }
 
-.avonni-input-choice-set__button__row [type='checkbox']+.slds-checkbox_button__label {
-    border: 1px solid #dddbda;
+.avonni-input-choice-set__button__row
+    [type='checkbox']
+    + .slds-checkbox_button__label {
+    border: 1px solid #747474;
     border-radius: 0.25rem;
 }
 
-.avonni-input-choice-set__button__row [type='checkbox']:checked+.slds-checkbox_button__label {
+.avonni-input-choice-set__button__row
+    [type='checkbox']:checked
+    + .slds-checkbox_button__label {
     background-color: #0176d3;
     color: white;
     border: 1px solid #0176d3;
 }
 
-.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch .slds-checkbox_button:not(:last-child) {
-    border-right: 1px solid #dddbda;
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch
+    .slds-checkbox_button:not(:last-child) {
+    border-right: 1px solid #747474;
 }
 
-.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch .slds-checkbox_button,
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch
+    .slds-checkbox_button,
 .avonni-input-choice-set__vertical .slds-checkbox_button:last-child {
     border-bottom: none;
 }
 
-.avonni-input-choice-set__vertical .slds-checkbox_button:last-child:not(:only-child)>.slds-checkbox_button__label {
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:last-child:not(:only-child)
+    > .slds-checkbox_button__label {
     border-radius: 0 0 0.25rem 0.25rem;
 }
 
-.avonni-input-choice-set__vertical .slds-checkbox_button:first-child:not(:only-child)>.slds-checkbox_button__label {
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:first-child:not(:only-child)
+    > .slds-checkbox_button__label {
     border-radius: 0.25rem 0.25rem 0 0;
 }
 
-.avonni-input-choice-set__vertical .slds-checkbox_button:only-child>.slds-checkbox_button__label {
+.avonni-input-choice-set__vertical
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
     border-radius: 0.25rem;
 }
 
-.avonni-input-choice-set__horizontal .slds-checkbox_button:only-child>.slds-checkbox_button__label {
+.avonni-input-choice-set__horizontal
+    .slds-checkbox_button:only-child
+    > .slds-checkbox_button__label {
     border-radius: 0.25rem;
 }
 
@@ -123,8 +137,10 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: var(--avonni-input-choice-set-option-label-line-clamp,
-            1);
+    -webkit-line-clamp: var(
+        --avonni-input-choice-set-option-label-line-clamp,
+        1
+    );
     text-overflow: ellipsis;
     padding-right: 0.5rem;
 }

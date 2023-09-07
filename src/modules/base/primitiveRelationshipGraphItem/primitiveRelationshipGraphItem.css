@@ -28,7 +28,7 @@
 .item_horizontal.item_has-groups.item_is-selected::before {
     content: '';
     height: 2px;
-    background-color: var(--avonni-relationship-graph-line-color, #747474);
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
     position: absolute;
     width: 50px;
     right: -50px;

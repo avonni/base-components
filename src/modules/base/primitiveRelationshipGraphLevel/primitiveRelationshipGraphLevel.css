@@ -1,11 +1,11 @@
 .line_vertical {
-    border-right: 2px solid var(--avonni-relationship-graph-line-color, #747474);
+    border-right: 2px solid var(--avonni-relationship-graph-line-color, #c9c9c9);
     margin-top: var(--lwc-spacingLarge, 1.5rem);
 }
 
 .line_horizontal {
     border-bottom: 2px solid
-        var(--avonni-relationship-graph-line-color, #747474);
+        var(--avonni-relationship-graph-line-color, #c9c9c9);
     margin: var(--lwc-spacingLarge, 1.5rem) 10rem;
 }
 

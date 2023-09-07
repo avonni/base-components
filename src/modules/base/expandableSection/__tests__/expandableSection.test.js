@@ -58,6 +58,7 @@ describe('Expandable Section', () => {
     // collapsible
     // Depends on title
     it('Expandable Section: collapsible true', () => {
+        element.title = 'Some title';
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
@@ -125,6 +126,7 @@ describe('Expandable Section', () => {
     });
 
     it('Expandable Section: base variant, with collapsible', () => {
+        element.title = 'Some title';
         element.variant = 'base';
         element.collapsible = true;
 
@@ -142,6 +144,7 @@ describe('Expandable Section', () => {
     });
 
     it('Expandable Section: shaded variant, with collapsible', () => {
+        element.title = 'Some title';
         element.variant = 'shaded';
         element.collapsible = true;
 
@@ -165,6 +168,7 @@ describe('Expandable Section', () => {
     // Depends on collapsible
     it('Expandable Section: toggle event', () => {
         element.collapsible = true;
+        element.title = 'Some title';
 
         const handler = jest.fn();
         element.addEventListener('toggle', handler);

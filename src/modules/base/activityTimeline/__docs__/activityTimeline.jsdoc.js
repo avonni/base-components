@@ -109,7 +109,7 @@
  * @memberof stylingHooks
  * @name --avonni-activity-timeline-item-fields-color-border
  * @type color
- * @default #747474
+ * @default #c9c9c9
  */
 /**
  * @memberof stylingHooks

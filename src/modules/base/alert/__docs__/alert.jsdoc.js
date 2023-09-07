@@ -81,7 +81,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-error-color-background
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**

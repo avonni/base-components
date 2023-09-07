@@ -104,7 +104,7 @@
 }
 
 .avonni-alert_error {
-    background-color: var(--avonni-alert-error-color-background, #ea001e);
+    background-color: var(--avonni-alert-error-color-background, #ba0517);
     color: var(--avonni-alert-error-text-color, #ffffff);
 }
 

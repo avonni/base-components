@@ -26,7 +26,7 @@
 .group_horizontal::before {
     content: '';
     height: 2px;
-    background-color: var(--avonni-relationship-graph-line-color, #747474);
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
     width: calc(2rem + 2px);
     position: absolute;
     left: calc(-2rem - 2px);
@@ -36,7 +36,7 @@
 .group_vertical::before {
     content: '';
     width: 2px;
-    background-color: var(--avonni-relationship-graph-line-color, #747474);
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
     height: calc(1.5rem + 2px);
     position: absolute;
     left: 10rem;
@@ -51,7 +51,7 @@
     top: 2rem;
     left: 10rem;
     width: 2px;
-    background-color: var(--avonni-relationship-graph-line-color, #747474);
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
 }
 
 .group_active-child::before,

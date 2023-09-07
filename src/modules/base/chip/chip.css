@@ -45,7 +45,7 @@
 }
 
 .avonni-chip_theme-error {
-    background-color: var(--avonni-chip-error-color-background, #ea001e);
+    background-color: var(--avonni-chip-error-color-background, #ba0517);
     border-color: var(--avonni-chip-error-color-border, transparent);
     color: var(--avonni-chip-error-text-color, #ffffff);
 }
@@ -75,7 +75,7 @@
 }
 
 .avonni-chip_theme-warning {
-    background-color: var(--avonni-chip-warning-color-background, #fe9339);
+    background-color: var(--avonni-chip-warning-color-background, #dd7a01);
     border-color: var(--avonni-chip-warning-color-border, transparent);
     color: var(--avonni-chip-warning-text-color, #080707);
 }
@@ -96,8 +96,8 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-error {
-    border-color: var(--avonni-chip-error-outline-color, #ea001e);
-    color: var(--avonni-chip-error-outline-color, #ea001e);
+    border-color: var(--avonni-chip-error-outline-color, #ba0517);
+    color: var(--avonni-chip-error-outline-color, #ba0517);
 }
 
 .avonni-chip_outline.avonni-chip_theme-info {
@@ -121,6 +121,6 @@
 }
 
 .avonni-chip_outline.avonni-chip_theme-warning {
-    border-color: var(--avonni-chip-warning-outline-color, #fe9339);
-    color: var(--avonni-chip-warning-outline-color, #fe9339);
+    border-color: var(--avonni-chip-warning-outline-color, #dd7a01);
+    color: var(--avonni-chip-warning-outline-color, #dd7a01);
 }

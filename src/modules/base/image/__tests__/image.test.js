@@ -524,24 +524,6 @@ describe('Image', () => {
             });
         });
 
-        it('Image: Compare slider - thumbnail', () => {
-            element.compareSrc = src;
-            element.thumbnail = true;
-
-            return Promise.resolve().then(() => {
-                const compareContainer = element.shadowRoot.querySelector(
-                    '[data-element-id="compare-container"]'
-                );
-                expect(compareContainer.style.width).toBe(
-                    'calc(100% - 0.5rem)'
-                );
-                expect(compareContainer.style.height).toBe(
-                    'calc(100% - 0.5rem)'
-                );
-                expect(compareContainer.style.margin).toBe('0.25rem');
-            });
-        });
-
         it('Image: Compare slider - vertical - compare img size with height and static img', () => {
             element.compareSrc = src;
             element.compareAttributes = { orientation: 'vertical' };

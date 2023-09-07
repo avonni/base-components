@@ -144,7 +144,7 @@
     );
     border-color: var(
         --avonni-activity-timeline-item-fields-color-border,
-        #747474
+        #c9c9c9
     );
     padding-right: var(
         --avonni-activity-timeline-item-fields-spacing-inline,

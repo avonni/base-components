@@ -31,7 +31,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-color-border
- * @default #e5e5e5
+ * @default #c9c9c9
  * @type color
  */
 /**
