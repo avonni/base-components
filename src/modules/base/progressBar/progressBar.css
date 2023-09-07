@@ -43,6 +43,10 @@
 .avonni-progress-bar__pin {
     position: absolute;
     text-align: center;
+    background-color: var(
+        --avonni-progress-bar-pin-color-background,
+        inherit
+    ) !important;
     z-index: 1;
 }
 
@@ -65,6 +69,13 @@
     right: 0;
     top: calc(-32px - 7px);
     line-height: 32px;
+}
+
+.avonni-progress-bar__pin::after {
+    background-color: var(
+        --avonni-progress-bar-pin-color-background,
+        inherit
+    ) !important;
 }
 
 .avonni-progress-bar__rectangle-pin::after {
@@ -93,6 +104,8 @@
 .avonni-progress-bar__pin-value {
     color: var(--avonni-progress-bar-value-text-color, #ffff);
     font-size: var(--avonni-progress-bar-value-font-size, 0.725rem);
+    font-style: var(--avonni-progress-bar-value-font-style, normal);
+    font-weight: var(--avonni-progress-bar-value-font-weight, 700);
 }
 
 /* Theme */

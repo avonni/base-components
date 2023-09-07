@@ -35,6 +35,10 @@
 .avonni-progress-bar__pin {
     position: absolute;
     text-align: center;
+    background-color: var(
+        --avonni-progress-bar-pin-color-background,
+        inherit
+    ) !important;
     z-index: 10;
 }
 
@@ -71,6 +75,13 @@
     right: calc(100% + 7px);
     left: unset;
     bottom: 0;
+}
+
+.avonni-progress-bar__pin::after {
+    background-color: var(
+        --avonni-progress-bar-pin-color-background,
+        inherit
+    ) !important;
 }
 
 .avonni-progress-bar__circle-pin::after {

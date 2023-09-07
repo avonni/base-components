@@ -109,6 +109,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-progress-bar-pin-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-progress-bar-label-text-color
  * @default #080707
  * @type color
