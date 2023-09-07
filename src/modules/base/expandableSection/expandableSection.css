@@ -111,7 +111,7 @@
 
 .avonni-expandable-section__header_base .avonni-expandable-section__title {
     color: var(--avonni-expandable-section-base-header-text-color, #080707);
-    font-size: var(--avonni-expandable-section-base-header-font-size, 1rem);
+    font-size: var(--avonni-expandable-section-base-header-font-size, inherit);
     font-weight: var(--avonni-expandable-section-base-header-font-weight, 400);
     font-style: var(--avonni-expandable-section-base-header-font-style, normal);
 }
@@ -125,7 +125,10 @@
 
 .avonni-expandable-section__header_shaded .avonni-expandable-section__title {
     color: var(--avonni-expandable-section-shaded-header-text-color, #080707);
-    font-size: var(--avonni-expandable-section-shaded-header-font-size, 1rem);
+    font-size: var(
+        --avonni-expandable-section-shaded-header-font-size,
+        inherit
+    );
     font-weight: var(
         --avonni-expandable-section-shaded-header-font-weight,
         400
