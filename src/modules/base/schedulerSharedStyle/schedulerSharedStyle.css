@@ -21,25 +21,25 @@
 .avonni-scheduler__main-border_left {
     border-left-width: 1px;
     border-left-style: solid;
-    border-left-color: var(--avonni-scheduler-color-border-left, #747474);
+    border-left-color: var(--avonni-scheduler-color-border-left, #c9c9c9);
 }
 
 .avonni-scheduler__main-border_top {
     border-top-width: 1px;
     border-top-style: solid;
-    border-top-color: var(--avonni-scheduler-color-border-top, #747474);
+    border-top-color: var(--avonni-scheduler-color-border-top, #c9c9c9);
 }
 
 .avonni-scheduler__main-border_bottom {
     border-bottom-width: 1px;
     border-bottom-style: solid;
-    border-bottom-color: var(--avonni-scheduler-color-border-bottom, #747474);
+    border-bottom-color: var(--avonni-scheduler-color-border-bottom, #c9c9c9);
 }
 
 .avonni-scheduler__main-border_right {
     border-right-width: 1px;
     border-right-style: solid;
-    border-right-color: var(--avonni-scheduler-color-border-right, #747474);
+    border-right-color: var(--avonni-scheduler-color-border-right, #c9c9c9);
 }
 
 .avonni-scheduler__time-zone {
