@@ -102,10 +102,10 @@
 }
 
 .avonni-progress-bar__pin-value {
-    color: var(--avonni-progress-bar-value-text-color, #ffff);
-    font-size: var(--avonni-progress-bar-value-font-size, 0.725rem);
-    font-style: var(--avonni-progress-bar-value-font-style, normal);
-    font-weight: var(--avonni-progress-bar-value-font-weight, 700);
+    color: var(--avonni-progress-bar-pin-text-color, #ffff);
+    font-size: 0.725rem;
+    font-style: var(--avonni-progress-bar-pin-font-style, normal);
+    font-weight: var(--avonni-progress-bar-pin-font-weight, 700);
 }
 
 /* Theme */
