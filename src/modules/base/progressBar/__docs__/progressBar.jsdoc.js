@@ -158,7 +158,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-pin-text-color
- * @default #080707
+ * @default #ffff
  * @type color
  */
 /**
@@ -170,7 +170,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-pin-font-weight
- * @default 400
+ * @default 700
  * @type font
  */
 /**
