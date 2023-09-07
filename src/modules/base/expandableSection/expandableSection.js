@@ -107,7 +107,7 @@ export default class ExpandableSection extends LightningElement {
      * @default slds-section
      */
     get sectionClass() {
-        return classSet('slds-section')
+        return classSet('slds-section slds-var-m-vertical_x-small')
             .add({
                 'slds-is-open': !this.collapsible || !this.closed
             })
