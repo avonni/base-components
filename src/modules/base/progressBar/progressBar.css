@@ -12,12 +12,12 @@
     font-weight: var(--avonni-progress-bar-value-font-weight, 700);
 }
 
-.avonni-progress-bar__value_bottom-right {
+.avonni-progress-bar__value_bottom-left {
     position: absolute;
     z-index: 1;
 }
 
-.avonni-progress-bar__value_bottom-left {
+.avonni-progress-bar__value_bottom-right {
     position: absolute;
     right: 0;
     z-index: 1;
