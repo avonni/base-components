@@ -80,43 +80,41 @@
                 onfocusout={handlePopoverFocusOut}
                 onscroll={handlePopoverScroll}
             >
-                <c-focus-trap data-element-id="avonni-focus-trap">
-                    <ul
-                        aria-describedby="instructions"
-                        aria-labelledby="label"
-                        aria-orientation="vertical"
-                        onkeydown={handleKeyDown}
-                    >
-                        <template for:each={hiddenItems} for:item="chip">
-                            <li
-                                data-element-id="li-item-hidden"
+                <ul
+                    aria-describedby="instructions"
+                    aria-labelledby="label"
+                    aria-orientation="vertical"
+                    onkeydown={handleKeyDown}
+                >
+                    <template for:each={hiddenItems} for:item="chip">
+                        <li
+                            data-element-id="li-item-hidden"
+                            data-index={chip.index}
+                            data-name={chip.name}
+                            key={chip.name}
+                            class={computedHiddenListItemClass}
+                            role="presentation"
+                            onmousemove={handleChipMouseMove}
+                            onmousedown={handleChipMouseDown}
+                        >
+                            <c-primitive-chip
+                                data-element-id="avonni-primitive-chip-hidden"
                                 data-index={chip.index}
-                                data-name={chip.name}
-                                key={chip.name}
-                                class={computedHiddenListItemClass}
-                                role="presentation"
-                                onmousemove={handleChipMouseMove}
-                                onmousedown={handleChipMouseDown}
-                            >
-                                <c-primitive-chip
-                                    data-element-id="avonni-primitive-chip-hidden"
-                                    data-index={chip.index}
-                                    class={computedChipClass}
-                                    avatar={chip.avatar}
-                                    label={chip.label}
-                                    name={chip.name}
-                                    outline={chip.outline}
-                                    prefix-icon-name={chip.prefixIconName}
-                                    suffix-icon-name={chip.suffixIconName}
-                                    variant={chip.variant}
-                                    role="option"
-                                    tabindex="-1"
-                                    onclick={handleChipClick}
-                                ></c-primitive-chip>
-                            </li>
-                        </template>
-                    </ul>
-                </c-focus-trap>
+                                class={computedChipClass}
+                                avatar={chip.avatar}
+                                label={chip.label}
+                                name={chip.name}
+                                outline={chip.outline}
+                                prefix-icon-name={chip.prefixIconName}
+                                suffix-icon-name={chip.suffixIconName}
+                                variant={chip.variant}
+                                role="option"
+                                tabindex="-1"
+                                onclick={handleChipClick}
+                            ></c-primitive-chip>
+                        </li>
+                    </template>
+                </ul>
             </div>
         </div>
     </div>

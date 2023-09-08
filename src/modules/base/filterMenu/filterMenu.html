@@ -158,6 +158,7 @@
                                 type={computedTypeAttributes.type}
                                 variant="label-hidden"
                                 data-element-id="avonni-input-date-range"
+                                data-is-focusable
                                 onchange={handleDateRangeChange}
                             ></c-input-date-range>
                             <!-- Range -->
@@ -178,6 +179,7 @@
                                 value={rangeValue}
                                 variant="label-hidden"
                                 data-element-id="avonni-slider"
+                                data-is-focusable
                                 onchange={handleRangeChange}
                             ></c-slider>
                         </template>
@@ -201,6 +203,7 @@
                             label={resetButtonLabel}
                             title={resetButtonLabel}
                             data-element-id="lightning-button-reset"
+                            data-is-focusable
                             onclick={handleResetClick}
                         ></lightning-button>
                         <lightning-button
@@ -209,6 +212,7 @@
                             title={applyButtonLabel}
                             variant="brand"
                             data-element-id="lightning-button-apply"
+                            data-is-focusable
                             onclick={handleApply}
                         ></lightning-button>
                     </div>

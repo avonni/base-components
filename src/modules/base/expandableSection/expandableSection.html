@@ -35,8 +35,9 @@
                     class="avonni-expandable-section__title slds-truncate"
                     title={title}
                     data-element-id="title"
-                    >{title}</span
                 >
+                    {title}
+                </span>
                 <template if:true={showTitleSlot}>
                     <slot
                         name="title"
