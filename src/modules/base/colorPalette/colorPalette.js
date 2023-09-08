@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeArray,
@@ -352,6 +350,19 @@ export default class ColorPalette extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Set the focus on the first palette item.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const link = this.template.querySelector('[data-element-id^="a"]');
+        if (link) {
+            link.focus();
+        }
+    }
 
     /**
      * Clear the value.

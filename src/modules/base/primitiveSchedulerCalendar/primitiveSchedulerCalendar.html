@@ -1,5 +1,3 @@
-
-
 <template>
     <div
         class="slds-is-relative avonni-scheduler__wrapper slds-scrollable_x"
@@ -618,6 +616,7 @@
                         icon-name="utility:close"
                         variant="bare"
                         data-element-id="lightning-button-icon-show-more-close"
+                        data-is-focusable
                         onclick={handleShowMorePopoverClose}
                     ></lightning-button-icon>
                     <div
@@ -662,6 +661,7 @@
                             to={occurrence.to}
                             variant="calendar-month"
                             data-element-id="avonni-primitive-scheduler-event-occurrence-show-more-popover"
+                            data-is-focusable
                             data-key={occurrence.key}
                             onprivatecontextmenu={handleShowMorePopoverEventContextMenu}
                             onprivatedblclick={handleEventDoubleClick}
