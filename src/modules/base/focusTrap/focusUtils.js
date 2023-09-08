@@ -16,7 +16,10 @@ export function findAllTabbableElements(container) {
     traverseActiveTreeRecursively(container, (element) => {
         // Remove the try/catch once https://github.com/salesforce/lwc/issues/1421 is fixed
         try {
-            if (isTabbable({ element, rootContainer: container })) {
+            if (
+                isTabbable({ element, rootContainer: container }) ||
+                (element.hasAttribute('data-is-focusable') && !element.disabled)
+            ) {
                 result.push(element);
             }
         } catch (e) {

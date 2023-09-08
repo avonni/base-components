@@ -1,5 +1,3 @@
-
-
 <template>
     <!-- Toolbar -->
     <div
@@ -86,6 +84,7 @@
                         timezone={timezone}
                         value={selectedDate}
                         data-element-id="calendar-toolbar"
+                        data-is-focusable
                         onchange={handleToolbarCalendarChange}
                         onnavigate={handleToolbarCalendarNavigate}
                     ></c-calendar>
@@ -353,6 +352,7 @@
                 size="small"
                 variant="bare"
                 data-element-id="lightning-button-icon-detail-popover-close-button"
+                data-is-focusable
                 onclick={hideDetailPopover}
             ></lightning-button-icon>
 
@@ -394,6 +394,7 @@
                             label={action.label}
                             icon-name={action.iconName}
                             name={action.name}
+                            data-is-focusable
                             onclick={handleActionSelect}
                         ></lightning-button>
                     </template>
@@ -402,6 +403,7 @@
                         alternative-text="More actions"
                         menu-alignment="right"
                         variant="border-filled"
+                        data-is-focusable
                         onselect={handleActionSelect}
                     >
                         <template for:each={lastEventActions} for:item="action">

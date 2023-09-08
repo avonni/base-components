@@ -1,5 +1,3 @@
-
-
 <template>
     <div
         class={computedWrapperClass}
@@ -77,6 +75,7 @@
                             timezone={timezone}
                             onchange={handleChangeStartDate}
                             data-element-id="calendar-start-date"
+                            data-is-focusable
                         ></c-calendar>
                         <div class="slds-align_absolute-center">
                             <lightning-button
@@ -84,6 +83,7 @@
                                 variant="base"
                                 label="Today"
                                 data-element-id="select-start-today-button"
+                                data-is-focusable
                             ></lightning-button>
                         </div>
                     </c-focus-trap>
@@ -176,6 +176,7 @@
                             timezone={timezone}
                             onchange={handleChangeEndDate}
                             data-element-id="calendar-end-date"
+                            data-is-focusable
                         ></c-calendar>
                         <div class="slds-align_absolute-center">
                             <lightning-button
@@ -183,6 +184,7 @@
                                 variant="base"
                                 label="Today"
                                 data-element-id="select-end-today-button"
+                                data-is-focusable
                             ></lightning-button>
                         </div>
                     </c-focus-trap>

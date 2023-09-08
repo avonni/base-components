@@ -1,5 +1,3 @@
-
-
 <template>
     <div class={computedContainerClass} data-element-id="div-wrapper">
         <label class={computedLegendClass} data-element-id="label-main">
@@ -118,6 +116,7 @@
                                 placeholder="Type icon name to search"
                                 variant="label-hidden"
                                 data-element-id="lightning-input"
+                                data-is-focusable
                                 onchange={handleSearchInput}
                                 onclick={stopPropagation}
                             ></lightning-input>
@@ -135,6 +134,7 @@
                                         tabs-hidden={nHiddenCategories}
                                         default-tab={currentTab}
                                         data-element-id="avonni-builder-tab-bar"
+                                        data-is-focusable
                                         onclick={stopPropagation}
                                         onselect={handleTabSelect}
                                     ></c-tab-bar>
@@ -275,6 +275,7 @@
                                         label="Cancel"
                                         title="Cancel"
                                         data-element-id="lightning-button-cancel"
+                                        data-is-focusable
                                         onclick={handleCancel}
                                     ></lightning-button>
                                     <lightning-button
@@ -283,6 +284,7 @@
                                         label="Done"
                                         title="Done"
                                         data-element-id="lightning-button-done"
+                                        data-is-focusable
                                         onclick={handleDone}
                                     ></lightning-button>
                                 </div>
