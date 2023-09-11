@@ -88,7 +88,7 @@
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-border
  * @type color
- * @default rgb(229, 229, 229)
+ * @default #c9c9c9
  */
 /**
  * @memberof stylingHooks
@@ -113,6 +113,27 @@
  * @name --avonni-visual-picker-link-tile-color-border-hover
  * @type color
  * @default #1b96ff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-background-complete
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-sizing-border-complete
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-styling-border-complete
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border-complete
+ * @type color
  */
 /**
  * @memberof stylingHooks
