@@ -1,5 +1,3 @@
-
-
 import { api } from 'lwc';
 import { Interval } from 'c/luxon';
 import {
@@ -31,7 +29,6 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 const CELL_SELECTOR = '[data-element-id="div-cell"]';
 const COLUMN_SELECTOR = '[data-element-id="div-column"]';
 const DEFAULT_SELECTED_DATE = new Date();
-const MINIMUM_DAY_COLUMN_WIDTH = 48;
 const MONTH_DAY_LABEL_HEIGHT = 30;
 const MONTHS = {
     0: 'January',
@@ -1631,19 +1628,14 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
                 this.hideSidePanel
                     ? 0
                     : SPLITTER_BAR_WIDTH;
-            const width =
+
+            this.dayHeadersVisibleWidth =
                 wrapper.offsetWidth -
                 sidePanelWidth -
                 splitterBarWidth -
                 verticalHeaderWidth -
                 scrollBarWidth -
                 1;
-
-            const cellWidth = width / this.columns.length;
-            this.dayHeadersVisibleWidth =
-                this.zoomToFit || cellWidth >= MINIMUM_DAY_COLUMN_WIDTH
-                    ? width
-                    : 0;
         }
     }
 
