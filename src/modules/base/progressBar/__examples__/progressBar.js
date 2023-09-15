@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/progressBar';
 
 customElements.define(
@@ -11,6 +9,7 @@ export const ProgressBar = ({
     label,
     size,
     value,
+    showPin,
     showValue,
     valuePosition,
     valuePrefix,
@@ -20,13 +19,15 @@ export const ProgressBar = ({
     theme,
     textured,
     thickness,
-    orientation
+    orientation,
+    pinAttributes
 }) => {
     const element = document.createElement('ac-base-progress-bar');
     element.label = label;
     element.size = size;
-    element.value = value;
+    element.showPin = showPin;
     element.showValue = showValue;
+    element.value = value;
     element.valuePosition = valuePosition;
     element.valuePrefix = valuePrefix;
     element.valueSuffix = valueSuffix;
@@ -36,5 +37,6 @@ export const ProgressBar = ({
     element.textured = textured;
     element.thickness = thickness;
     element.orientation = orientation;
+    element.pinAttributes = pinAttributes;
     return element;
 };

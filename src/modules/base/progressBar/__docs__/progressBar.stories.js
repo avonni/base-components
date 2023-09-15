@@ -1,5 +1,3 @@
-
-
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {
@@ -51,6 +49,18 @@ export default {
                 category: 'Value'
             }
         },
+        showPin: {
+            name: 'show-pin',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display the pin.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Value'
+            }
+        },
         valuePosition: {
             name: 'value-position',
             control: {
@@ -93,6 +103,17 @@ export default {
                 'Text display next to the value. <br> Example: 25% Complete',
             table: {
                 type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        pinAttributes: {
+            name: 'pin-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the pin.',
+            table: {
+                type: { summary: 'object' },
                 category: 'Value'
             }
         },
@@ -239,6 +260,33 @@ Vertical.args = {
     orientation: 'vertical',
     referenceLines: oneReferenceLine,
     size: 'large'
+};
+
+export const ShowPinValue = Template.bind({});
+ShowPinValue.args = {
+    label: 'Label',
+    value: 45,
+    referenceLines: oneReferenceLine,
+    showValue: true,
+    showPin: true,
+    pinAttributes: {
+        type: 'circle'
+    }
+};
+
+export const VerticalShowPinValue = Template.bind({});
+VerticalShowPinValue.args = {
+    label: 'Vertical progress bar',
+    value: 45,
+    orientation: 'vertical',
+    referenceLines: oneReferenceLine,
+    size: 'large',
+    showValue: true,
+    showPin: true,
+    pinAttributes: {
+        type: 'rectangle',
+        position: 'right'
+    }
 };
 
 export const MultipleReferenceLines = Template.bind({});
