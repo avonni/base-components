@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
@@ -365,6 +363,16 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
+     * Prevent the default event browser behavior and stop the event propagation.
+     *
+     * @param {Event}
+     */
+    handleButtonMenuClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
+    }
+
+    /**
      * Item clicked event handler.
      *
      * @param {event}
@@ -423,14 +431,5 @@ export default class PrimitiveCarouselItem extends LightningElement {
             this.actions.length > 0 && this.isBottomPosition
                 ? isStretch
                 : 6.625;
-    }
-
-    /**
-     * Prevent the default event browser behavior
-     *
-     * @param {Event}
-     */
-    preventDefault(event) {
-        event.preventDefault();
     }
 }
