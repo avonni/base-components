@@ -26,6 +26,7 @@
 }
 
 .avonni-separator__icon {
+    margin-right: var(--lwc-spacingXSmall, 0.5rem);
     --sds-c-icon-radius-border: var(--avonni-separator-icon-radius-border);
     --sds-c-icon-color-foreground: var(
         --avonni-separator-icon-color-foreground
