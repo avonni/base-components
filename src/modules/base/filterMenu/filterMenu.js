@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api, track } from 'lwc';
 import {
     dateTimeObjectFrom,
@@ -1246,7 +1244,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Set the focus on the filter menu.
+     * Set the focus on the filter menu button (horizontal variant) or choice set (vertical variant).
      *
      * @public
      */
@@ -1266,6 +1264,21 @@ export default class FilterMenu extends LightningElement {
             if (button) {
                 button.focus();
             }
+        }
+    }
+
+    /**
+     * Set the focus on the search input.
+     *
+     * @public
+     */
+    @api
+    focusSearchInput() {
+        const search = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        if (search) {
+            search.focus();
         }
     }
 

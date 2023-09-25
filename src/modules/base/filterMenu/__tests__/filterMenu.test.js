@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import FilterMenu from '../filterMenu';
 
@@ -2004,7 +2002,7 @@ describe('Filter Menu', () => {
 
         describe('Focus', () => {
             // Depends on variant
-            it('focus method', () => {
+            it('Horizontal variant', () => {
                 const handler = jest.fn();
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -2015,7 +2013,7 @@ describe('Filter Menu', () => {
                 expect(handler).toHaveBeenCalled();
             });
 
-            it('focus method with vertical variant', () => {
+            it('Vertical variant', () => {
                 element.variant = 'vertical';
 
                 return Promise.resolve().then(() => {
@@ -2025,6 +2023,39 @@ describe('Filter Menu', () => {
                     const spy = jest.spyOn(inputChoiceSet, 'focus');
 
                     element.focus();
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('Focus search input', () => {
+            it('Horizontal variant', () => {
+                element.typeAttributes = { allowSearch: true };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const search = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    const spy = jest.spyOn(search, 'focus');
+                    element.focusSearchInput();
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+
+            it('Vertical variant', () => {
+                element.variant = 'vertical';
+                element.typeAttributes = { allowSearch: true };
+
+                return Promise.resolve().then(() => {
+                    const search = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    const spy = jest.spyOn(search, 'focus');
+                    element.focusSearchInput();
                     expect(spy).toHaveBeenCalled();
                 });
             });
