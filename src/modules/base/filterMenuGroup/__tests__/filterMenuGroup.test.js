@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { MENUS, VALUE } from './data';
@@ -347,6 +345,20 @@ describe('FilterMenuGroup', () => {
             );
             const spy = jest.spyOn(menu, 'focus');
             element.focus();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    // focus search input
+    it('Filter menu group: focusSearchInput method', () => {
+        element.menus = MENUS;
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"][data-name="price"]'
+            );
+            const spy = jest.spyOn(menu, 'focusSearchInput');
+            element.focusSearchInput('price');
             expect(spy).toHaveBeenCalled();
         });
     });
