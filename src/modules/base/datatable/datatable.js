@@ -1,5 +1,3 @@
-
-
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import {
@@ -821,6 +819,29 @@ export default class Datatable extends LightningDatatable {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Set the focus on the first cell of a given row.
+     *
+     * @param {string} rowKeyField The key field value of the row to focus.
+     * @public
+     */
+    @api
+    focusRow(rowKeyField) {
+        const row = this.template.querySelector(
+            `[data-row-key-value="${rowKeyField}"]`
+        );
+        if (row) {
+            const cell = row.querySelector(':first-child');
+
+            if (cell) {
+                const colKeyValue = cell.dataset.colKeyValue;
+                this.setActiveCell(rowKeyField, colKeyValue);
+                this.state.cellClicked = true;
+                cell.focus();
+            }
+        }
+    }
 
     /**
      * Gets a row height.
