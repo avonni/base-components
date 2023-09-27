@@ -236,6 +236,15 @@ export default class Layout extends LightningElement {
         const newWidth = this.width;
         if (this._previousWidth !== newWidth) {
             this._previousWidth = newWidth;
+
+            /**
+             * The event fired when the layout width changes.
+             *
+             * @event
+             * @name sizechange
+             * @param {string} width Current width of the layout: default, small, medium or large.
+             * @public
+             */
             this.dispatchEvent(
                 new CustomEvent('sizechange', {
                     detail: {
