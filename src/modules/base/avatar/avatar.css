@@ -1,10 +1,11 @@
-
-
 .avonni-avatar__primary-text {
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);
     font-style: var(--avonni-avatar-primary-text-font-style, normal);
     font-weight: var(--avonni-avatar-primary-text-font-weight, 700);
+    font-family: var(--avonni-avatar-primary-text-font-family);
+    line-height: var(--avonni-avatar-primary-text-line-height);
+    letter-spacing: var(--avonni-avatar-primary-text-letter-spacing);
 }
 
 .avonni-avatar__secondary-text {
@@ -12,6 +13,9 @@
     font-size: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
     font-style: var(--avonni-avatar-secondary-text-font-style, normal);
     font-weight: var(--avonni-avatar-secondary-text-font-weight, 400);
+    font-family: var(--avonni-avatar-secondary-text-font-family);
+    line-height: var(--avonni-avatar-secondary-text-line-height);
+    letter-spacing: var(--avonni-avatar-secondary-text-letter-spacing);
 }
 
 .avonni-avatar__tertiary-text {
@@ -19,6 +23,9 @@
     font-size: var(--avonni-avatar-tertiary-text-font-size, 0.8125rem);
     font-style: var(--avonni-avatar-tertiary-text-font-style, normal);
     font-weight: var(--avonni-avatar-tertiary-text-font-weight, 400);
+    font-family: var(--avonni-avatar-tertiary-text-font-family);
+    line-height: var(--avonni-avatar-tertiary-text-line-height);
+    letter-spacing: var(--avonni-avatar-tertiary-text-letter-spacing);
 }
 
 .avonni-avatar__chip:first-of-type {

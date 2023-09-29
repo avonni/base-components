@@ -1,5 +1,3 @@
-
-
 article.avonni-profile-card {
     position: relative;
     background-color: var(--avonni-profile-card-color-background, white);
@@ -130,6 +128,7 @@ article.avonni-profile-card {
     font-weight: var(--avonni-profile-card-title-font-weight, 400);
     color: var(--avonni-profile-card-title-text-color, #000000);
     line-height: 1.33333em;
+    letter-spacing: var(--avonni-profile-card-title-letter-spacing);
 }
 
 .avonni-profile-card__subtitle {
@@ -144,6 +143,7 @@ article.avonni-profile-card {
     font-style: var(--avonni-profile-card-subtitle-font-style, normal);
     color: var(--avonni-profile-card-subtitle-text-color, #000000);
     line-height: 1.71429em;
+    letter-spacing: var(--avonni-profile-card-subtitle-letter-spacing);
 }
 
 .avonni-profile-card__card_size-x-small [data-element-id='avatar-action'],
