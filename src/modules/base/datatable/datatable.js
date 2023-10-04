@@ -722,6 +722,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make scrollable y container accessible.
+     * @public
+     * @type {Element}
+     */
+    @api
+    get scrollerY() {
+        return this.template.querySelector('.slds-scrollable_y');
+    }
+
+    /**
      * Enables programmatic row selection with a list of key-field values.
      * @public
      * @type {string[]}
@@ -883,15 +893,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Scroll the inner table back to the top.
+     * Scroll the inner table to the top.
      *
      * @public
      */
     @api
-    scrollToTop() {
+    scrollToTop(y = 0) {
         const scrollable_y = this.template.querySelector('.slds-scrollable_y');
         if (scrollable_y) {
-            scrollable_y.scrollTop = 0;
+            scrollable_y.scrollTop = y;
         }
     }
 
