@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import ChipContainer from '../chipContainer';
 
@@ -69,11 +67,18 @@ describe('Chip Container', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+
+        window.requestAnimationFrame.mockRestore();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
         element = createElement('avonni-chip-container', {
             is: ChipContainer
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -105,36 +110,39 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
         element.items = ITEMS;
 
         return Promise.resolve()
             .then(() => {
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
+                );
+                allItems.forEach((it) => {
+                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
+                        () => 100
+                    );
+                });
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-item"]'
+                );
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-show-more"]'
                 );
                 expect(button).toBeFalsy();
+                expect(items).toHaveLength(ITEMS.length);
 
+                element.isCollapsible = true;
+                jest.runAllTimers();
+            })
+            .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
                     '[data-element-id="li-item"]'
                 );
-                items.forEach((it) => {
-                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
-                    );
-                });
-
-                element.isCollapsible = true;
-            })
-            .then(() => {
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-show-more"]'
                 );
                 expect(button).toBeTruthy();
-
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
-                );
                 expect(items).toHaveLength(1);
 
                 element.isExpanded = true;
@@ -151,24 +159,26 @@ describe('Chip Container', () => {
                 expect(items).toHaveLength(ITEMS.length);
             });
     });
+
     it('Chip container: expand collapsed chips on button click', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
         element.items = ITEMS;
 
         return Promise.resolve()
             .then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
@@ -180,6 +190,7 @@ describe('Chip Container', () => {
                     '[data-element-id="lightning-button-show-more"]'
                 );
                 button.click();
+                jest.runAllTimers();
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
@@ -193,21 +204,22 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
         element.items = ITEMS;
         element.singleLine = true;
 
         return Promise.resolve()
             .then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
@@ -247,21 +259,22 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
         element.items = ITEMS;
         element.singleLine = true;
 
         return Promise.resolve()
             .then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 25
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -274,8 +287,6 @@ describe('Chip Container', () => {
                     '[data-element-id="div-popover"]'
                 );
                 expect(popover).toBeTruthy();
-
-                jest.useFakeTimers();
             });
     });
 
@@ -503,7 +514,7 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -511,15 +522,16 @@ describe('Chip Container', () => {
 
         return Promise.resolve()
             .then(() => {
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -791,7 +803,7 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
 
         element.items = ITEMS;
         element.sortable = true;
@@ -803,15 +815,16 @@ describe('Chip Container', () => {
         return Promise.resolve()
             .then(() => {
                 // Collapse the items
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 // Open the popover
@@ -859,7 +872,7 @@ describe('Chip Container', () => {
         const wrapper = element.shadowRoot.querySelector(
             '[data-element-id="div-wrapper"]'
         );
-        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 150);
+        jest.spyOn(wrapper, 'offsetWidth', 'get').mockImplementation(() => 200);
 
         element.items = ITEMS;
         element.sortable = true;
@@ -871,26 +884,22 @@ describe('Chip Container', () => {
         return Promise.resolve()
             .then(() => {
                 // Collapse the items
-                const items = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-item"]'
+                const allItems = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
                 );
-                items.forEach((it) => {
+                allItems.forEach((it) => {
                     jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
+                        () => 100
                     );
                 });
                 element.isCollapsible = true;
+                jest.runAllTimers();
             })
             .then(() => {
                 // Start dragging
                 const items = element.shadowRoot.querySelectorAll(
                     '[data-element-id="li-item"]'
                 );
-                items.forEach((it) => {
-                    jest.spyOn(it, 'offsetWidth', 'get').mockImplementation(
-                        () => 50
-                    );
-                });
                 items[0].dispatchEvent(new CustomEvent('mousedown'));
                 jest.runAllTimers();
 
