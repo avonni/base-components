@@ -61,6 +61,19 @@ const getWeekday = (date) => {
     return weekday === 7 ? 0 : weekday;
 };
 
+const intervalFrom = (start, end) => {
+    const normalizedStart = DateTime.isDateTime(start)
+        ? start
+        : dateTimeObjectFrom(start);
+    const normalizedEnd = DateTime.isDateTime(end)
+        ? end
+        : dateTimeObjectFrom(end);
+    if (!normalizedStart || !normalizedEnd) {
+        return null;
+    }
+    return Interval.fromDateTimes(start, end);
+};
+
 /**
  * Add unit * span to the date.
  *
@@ -178,6 +191,7 @@ export {
     getStartOfWeek,
     getWeekday,
     getWeekNumber,
+    intervalFrom,
     numberOfUnitsBetweenDates,
     removeFromDate
 };

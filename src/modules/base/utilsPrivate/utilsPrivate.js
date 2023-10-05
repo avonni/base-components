@@ -63,6 +63,7 @@ export {
     getWeekday,
     formatDateFromStyle,
     getWeekNumber,
+    intervalFrom,
     numberOfUnitsBetweenDates,
     removeFromDate
 } from './dateTimeUtils';

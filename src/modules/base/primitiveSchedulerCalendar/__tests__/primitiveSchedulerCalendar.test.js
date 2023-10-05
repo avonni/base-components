@@ -1145,6 +1145,25 @@ describe('Primitive Scheduler Calendar', () => {
             });
     });
 
+    it('Primitive Scheduler Agenda: events are displayed in the side panel calendar', () => {
+        element.resources = RESOURCES;
+        element.selectedResources = ALL_RESOURCES;
+        element.selectedDate = SELECTED_DATE;
+        element.events = [EVENTS[0]];
+        element.timeSpan = { unit: 'week', span: 1 };
+
+        return Promise.resolve().then(() => {
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar-left-panel"]'
+            );
+            expect(calendar.markedDates).toHaveLength(2);
+            calendar.markedDates.forEach((d) => {
+                expect(d.date.includes('2022-09-20')).toBeTruthy();
+                expect(d.color).toBe('#333');
+            });
+        });
+    });
+
     // events-labels
     it('Primitive Scheduler Calendar: eventsLabels', () => {
         const labels = {

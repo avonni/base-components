@@ -139,7 +139,11 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
 
         if (this._connected) {
             this.setStartToBeginningOfUnit();
-            this.initLeftPanelCalendarDisabledDates();
+
+            if (!this.hideSidePanel) {
+                this.initLeftPanelCalendarDisabledDates();
+                this.initLeftPanelCalendarMarkedDates();
+            }
         }
     }
 
@@ -378,7 +382,8 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
                         endsInLaterCell: to.day > date.day,
                         event,
                         startsInPreviousCell: from.day < date.day,
-                        time: this.formatTime(event, from, to)
+                        time: this.formatTime(event, from, to),
+                        to
                     });
                     date = addToDate(date, 'day', 1);
                 }
@@ -421,6 +426,10 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
         this._eventData.smallestHeader = { unit: 'hour', span: 1 };
         this._eventData.isAgenda = true;
         this._eventData.initEvents();
+
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
     }
 
     /**
@@ -464,6 +473,9 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
             this.availableMonths,
             this.availableDaysOfTheWeek
         );
+        if (!this.hideSidePanel) {
+            this.initLeftPanelCalendarMarkedDates();
+        }
     }
 
     /**
