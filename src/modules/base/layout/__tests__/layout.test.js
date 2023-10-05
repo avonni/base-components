@@ -1,10 +1,9 @@
-
-
 import { createElement } from 'lwc';
 import Layout from '../layout';
 
 // NOT TESTED:
 // Resize observer
+// sizechange event (depends on the resize observer)
 
 let element;
 describe('Layout', () => {

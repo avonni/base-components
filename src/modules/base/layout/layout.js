@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
@@ -39,6 +37,7 @@ export default class Layout extends LightningElement {
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
 
     _items = {};
+    _previousWidth;
     _resizeObserver;
 
     renderedCallback() {
@@ -190,7 +189,11 @@ export default class Layout extends LightningElement {
      */
     initResizeObserver() {
         if (!this.wrapper) return;
+        this.dispatchSizeChange();
+
         this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
+            this.dispatchSizeChange();
+
             Object.values(this._items).forEach((item) => {
                 item.setContainerSize(this.width);
             });
@@ -224,5 +227,31 @@ export default class Layout extends LightningElement {
         event.stopPropagation();
         const name = event.detail.name;
         delete this._items[name];
+    }
+
+    /**
+     * Dispatch the `sizechange` event when the layout width changes.
+     */
+    dispatchSizeChange() {
+        const newWidth = this.width;
+        if (this._previousWidth !== newWidth) {
+            this._previousWidth = newWidth;
+
+            /**
+             * The event fired when the layout width changes.
+             *
+             * @event
+             * @name sizechange
+             * @param {string} width Current width of the layout: default, small, medium or large.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('sizechange', {
+                    detail: {
+                        width: newWidth
+                    }
+                })
+            );
+        }
     }
 }
