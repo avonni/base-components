@@ -1,10 +1,10 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
     dateTimeObjectFrom,
     getStartOfWeek,
     getWeekday,
+    intervalFrom,
+    isInTimeFrame,
     normalizeBoolean,
     normalizeString,
     normalizeArray
@@ -745,24 +745,6 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Returns an array of all the disabled date time.
-     *
-     * @type {array}
-     */
-    get _disabledFullDateTimes() {
-        let dateTimes = [];
-
-        this.disabledDateTimes.forEach((dateTime) => {
-            const date = this._processDate(dateTime);
-            if (date) {
-                dateTimes.push(date.ts);
-            }
-        });
-
-        return dateTimes;
-    }
-
-    /**
      * Returns an array of all the disabled weekdays.
      *
      * @type {array}
@@ -1106,7 +1088,7 @@ export default class DateTimePicker extends LightningElement {
 
         for (let i = 0; i < daysDisplayed; i++) {
             const day = this.firstWeekDay.plus({ days: i });
-            const disabled = this.disabled || this._isDisabled(day);
+            const disabled = this.disabled || this._isDisabledDay(day);
 
             // Create dayTime object
             const dayTime = {
@@ -1140,8 +1122,6 @@ export default class DateTimePicker extends LightningElement {
 
     //  /!\ Changes the dayTime object passed as argument.
     _createTimeSlots(dayTime) {
-        const disabledDates = this._disabledFullDateTimes;
-
         this._timeSlots.forEach((timeSlot) => {
             // Add time to day
             const hours = parseInt(timeSlot.slice(0, 2), 10);
@@ -1160,14 +1140,15 @@ export default class DateTimePicker extends LightningElement {
 
             if (selected) dayTime.selected = true;
 
+            const endTime = this._processDate(
+                new Date(timestamp + this.timeSlotDuration)
+            );
             const disabled =
-                dayTime.disabled || disabledDates.indexOf(timestamp) > -1;
+                dayTime.disabled || this._isDisabledTime(day, endTime);
 
             const time = {
                 startTimeISO: day.toISO(),
-                endTimeISO: this._processDate(
-                    new Date(timestamp + this.timeSlotDuration)
-                ).toISO(),
+                endTimeISO: endTime.toISO(),
                 disabled,
                 selected,
                 show: !disabled || this.showDisabledDates
@@ -1204,7 +1185,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Generates table depending on the variant.
+     * Check if the given time is selected.
      *
      * @param {object} time timestamp
      * @returns {boolean} returns false if selection === time.
@@ -1218,14 +1199,14 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Generates table depending on the variant.
+     * Check if the given day is disabled.
      *
-     * @param {object} dayObject
+     * @param {DateTime} date
      * @returns {boolean} true if disabled, false if not.
      */
-    _isDisabled(dayObject) {
+    _isDisabledDay(date) {
         // Remove time from the date object
-        const day = dayObject.startOf('day');
+        const day = date.startOf('day');
         const outsideOfAllowedDates =
             day < this.computedMin || day > this.computedMax;
         const weekDay = day.weekday === 7 ? 0 : day.weekday;
@@ -1236,6 +1217,24 @@ export default class DateTimePicker extends LightningElement {
             this._disabledWeekDays.indexOf(weekDay) > -1 ||
             this._disabledMonthDays.indexOf(monthDay) > -1
         );
+    }
+
+    _isDisabledTime(start, end) {
+        const slotInterval = intervalFrom(start, end);
+        const dateTimes = [];
+        const startTime = this.startTime.slice(0, 5);
+        const endTime = this.endTime.slice(0, 5);
+        const timeFrame = `${startTime}-${endTime}`;
+
+        this.disabledDateTimes.forEach((dateTime) => {
+            const date = this._processDate(dateTime);
+            if (date && isInTimeFrame(date, timeFrame)) {
+                dateTimes.push(date);
+            }
+        });
+        return dateTimes.find((disabledDate) => {
+            return slotInterval.contains(disabledDate);
+        });
     }
 
     /*
