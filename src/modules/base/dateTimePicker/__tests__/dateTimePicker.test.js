@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
 
@@ -152,6 +150,53 @@ describe('DateTimePicker', () => {
                 '[data-element-id="avonni-calendar"]'
             );
             expect(calendar.disabled).toBeTruthy();
+        });
+    });
+
+    it('Date time picker: disabled date times', () => {
+        element.value = new Date(2023, 9, 16, 9);
+        element.disabledDateTimes = [
+            new Date(2023, 9, 16, 10, 30),
+            'Wed',
+            new Date(2023, 9, 16, 14).toISOString()
+        ];
+        element.variant = 'weekly';
+        element.timezone = 'America/Montreal';
+        element.showDisabledDates = true;
+
+        return Promise.resolve().then(() => {
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-day"]'
+            );
+            const wedHours = days[3].querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            wedHours.forEach((slot) => {
+                expect(slot.disabled).toBeTruthy();
+            });
+            const day16Hours = days[1].querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            expect(day16Hours[4].disabled).toBeFalsy();
+            expect(day16Hours[5].disabled).toBeTruthy();
+            expect(day16Hours[6].disabled).toBeFalsy();
+            expect(day16Hours[12].disabled).toBeTruthy();
+        });
+    });
+
+    it('Date time picker: imprecise disabled date times', () => {
+        element.value = new Date(2023, 9, 16, 9);
+        element.disabledDateTimes = [new Date(2023, 9, 16, 10, 43)];
+        element.timezone = 'America/Montreal';
+        element.showDisabledDates = true;
+
+        return Promise.resolve().then(() => {
+            const hours = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            expect(hours[4].disabled).toBeFalsy();
+            expect(hours[5].disabled).toBeTruthy();
+            expect(hours[6].disabled).toBeFalsy();
         });
     });
 
