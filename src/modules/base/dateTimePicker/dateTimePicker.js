@@ -1088,14 +1088,12 @@ export default class DateTimePicker extends LightningElement {
 
         for (let i = 0; i < daysDisplayed; i++) {
             const day = this.firstWeekDay.plus({ days: i });
-            const disabled = this.disabled || this._isDisabledDay(day);
 
             // Create dayTime object
             const dayTime = {
                 key: i,
                 day,
-                disabled,
-                show: !disabled || this.showDisabledDates,
+                disabled: this.disabled || this._isDisabledDay(day),
                 isToday:
                     this._today.startOf('day').ts === day.startOf('day').ts,
                 times: []
@@ -1112,7 +1110,17 @@ export default class DateTimePicker extends LightningElement {
                 dayTime.label = `${labelWeekday} ${labelDay}`;
             }
 
+            // Create the time slots
             this._createTimeSlots(dayTime);
+
+            if (!dayTime.disabled) {
+                // Update the disable state of the day,
+                // in case all of its time slots are disabled
+                dayTime.disabled = dayTime.times.every((time) => time.disabled);
+            }
+            dayTime.show = !dayTime.disabled || this.showDisabledDates;
+
+            // Add the day to the table
             processedTable.push(dayTime);
         }
 
