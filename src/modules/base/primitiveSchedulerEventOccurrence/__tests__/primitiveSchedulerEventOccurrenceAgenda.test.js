@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';
 import { FROM, RESOURCE_KEY, RESOURCES, TO } from './defaults';
@@ -62,7 +60,7 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-grid_vertical-align-center'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_display-as-dot avonni-scheduler__event_past'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_horizontal avonni-scheduler__event_display-as-dot avonni-scheduler__event_past'
             );
             expect(eventContent.style.cssText).toBeFalsy();
         });
@@ -98,7 +96,7 @@ describe('Primitive Scheduler Event Occurrence: agenda variant', () => {
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-p-horizontal_x-small'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_past slds-text-color_inverse slds-current-color avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell avonni-scheduler__event_default'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_horizontal avonni-scheduler__event_past slds-text-color_inverse slds-current-color avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell avonni-scheduler__event_default'
             );
             expect(eventContent.style.cssText).toBe(
                 'background-color: rgb(51, 51, 51); --avonni-primitive-scheduler-event-occurrence-background-color: rgb(51, 51, 51);'
