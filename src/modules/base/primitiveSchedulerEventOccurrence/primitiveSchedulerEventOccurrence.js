@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
@@ -719,6 +717,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-p-horizontal_x-small': !this.isVerticalCalendar,
+                'avonni-scheduler__event_horizontal': !this.isVertical,
                 'slds-text-color_inverse slds-current-color':
                     !this.displayAsDot &&
                     (theme === 'default' ||
