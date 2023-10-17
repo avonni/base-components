@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
@@ -54,6 +52,8 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     // primitive cell textarea
     @api maxLength;
     @api minLength;
+
+    _allowBlur = true;
 
     connectedCallback() {
         this.interactingState = new InteractingState({
