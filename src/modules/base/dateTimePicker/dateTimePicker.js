@@ -1221,19 +1221,36 @@ export default class DateTimePicker extends LightningElement {
 
     _isDisabledTime(start, end) {
         const slotInterval = intervalFrom(start, end);
-        const dateTimes = [];
+        const disabledDates = [];
         const startTime = this.startTime.slice(0, 5);
         const endTime = this.endTime.slice(0, 5);
         const timeFrame = `${startTime}-${endTime}`;
 
         this.disabledDateTimes.forEach((dateTime) => {
             const date = this._processDate(dateTime);
-            if (date && isInTimeFrame(date, timeFrame)) {
-                dateTimes.push(date);
+            const isDateWithoutTime =
+                typeof dateTime === 'string' &&
+                dateTime.match(/^\d{4}-\d{2}-\d{2}$/);
+
+            if (isDateWithoutTime) {
+                const dateParts = dateTime.split('-');
+                const year = Number(dateParts[0]);
+                const month = Number(dateParts[1]);
+                const day = Number(dateParts[2]);
+                const normalizedDate = this._processDate(new Date())
+                    .set({ year, month, day })
+                    .startOf('day');
+                disabledDates.push({ allDay: true, date: normalizedDate });
+            } else if (date && isInTimeFrame(date, timeFrame)) {
+                disabledDates.push({ allDay: false, date });
             }
         });
-        return dateTimes.find((disabledDate) => {
-            return slotInterval.contains(disabledDate);
+        return disabledDates.find(({ allDay, date }) => {
+            return (
+                slotInterval.contains(date) ||
+                (allDay &&
+                    (date.hasSame(start, 'day') || date.hasSame(end, 'day')))
+            );
         });
     }
 
