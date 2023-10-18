@@ -557,7 +557,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set loadMoreOffset(value) {
-        if (value === undefined) return;
         super.loadMoreOffset = value;
     }
 
@@ -573,7 +572,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxColumnWidth(value) {
-        if (value === undefined) return;
         super.maxColumnWidth = value;
     }
 
@@ -589,7 +587,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxRowSelection(value) {
-        if (value === undefined) return;
+        if (
+            this.maxRowSelection === 1 &&
+            (value === undefined || value === null)
+        ) {
+            // Patch for a bug in the Lightning Datatable:
+            // If the maxRowSelection was 1 and it is removed,
+            // the radio buttons are not changed into checkboxes.
+            super.maxRowSelection = 2;
+        }
         super.maxRowSelection = value;
     }
 
