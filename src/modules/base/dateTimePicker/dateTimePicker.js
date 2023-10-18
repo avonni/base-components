@@ -813,6 +813,22 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
+     * Array of ISO dates that should be disabled.
+     *
+     * @type {string[]}
+     */
+    get disabledFullDays() {
+        const valid = [];
+        this.disabledDateTimes.forEach((date) => {
+            const dateTime = this._createDateTimeFromDateString(date);
+            if (dateTime) {
+                valid.push(dateTime.toISO());
+            }
+        });
+        return valid;
+    }
+
+    /**
      * Returns first weekday in an ISO8601 string format.
      *
      * @type {string}
@@ -971,6 +987,27 @@ export default class DateTimePicker extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Create a luxon DateTime object from an ISO date that has no time.
+     *
+     * @param {string} date Date string to transform.
+     * @returns {DateTime|boolean} Returns a DateTime object or false if the string is not an ISO date with no time.
+     */
+    _createDateTimeFromDateString(date) {
+        const isDateWithoutTime =
+            typeof date === 'string' && date.match(/^\d{4}-\d{2}-\d{2}$/);
+        if (!isDateWithoutTime) {
+            return false;
+        }
+        const dateParts = date.split('-');
+        const year = Number(dateParts[0]);
+        const month = Number(dateParts[1]);
+        const day = Number(dateParts[2]);
+        return this._processDate(new Date())
+            .set({ year, month, day })
+            .startOf('day');
+    }
 
     /**
      * Transform the given value into a Date object, or return null.
@@ -1241,13 +1278,8 @@ export default class DateTimePicker extends LightningElement {
                 dateTime.match(/^\d{4}-\d{2}-\d{2}$/);
 
             if (isDateWithoutTime) {
-                const dateParts = dateTime.split('-');
-                const year = Number(dateParts[0]);
-                const month = Number(dateParts[1]);
-                const day = Number(dateParts[2]);
-                const normalizedDate = this._processDate(new Date())
-                    .set({ year, month, day })
-                    .startOf('day');
+                const normalizedDate =
+                    this._createDateTimeFromDateString(dateTime);
                 disabledDates.push({ allDay: true, date: normalizedDate });
             } else if (date && isInTimeFrame(date, timeFrame)) {
                 disabledDates.push({ allDay: false, date });
