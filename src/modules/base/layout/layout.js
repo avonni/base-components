@@ -169,6 +169,7 @@ export default class Layout extends LightningElement {
                 'slds-grid_align-space': this.horizontalAlign === 'space',
                 'slds-grid_align-spread': this.horizontalAlign === 'spread',
                 'slds-wrap': this.multipleRows,
+                'slds-grid_vertical-stretch': this.verticalAlign === 'stretch',
                 'slds-grid_vertical-align-start':
                     this.verticalAlign === 'start',
                 'slds-grid_vertical-align-center':
