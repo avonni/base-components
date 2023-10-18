@@ -41,7 +41,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
+            expect(wrapper.className).toBe(
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+            );
         });
     });
 
@@ -53,7 +55,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_vertical'
             );
         });
     });
@@ -66,7 +68,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_reverse'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_reverse'
             );
         });
     });
@@ -79,7 +81,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_vertical-reverse'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_vertical-reverse'
             );
         });
     });
@@ -92,7 +94,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
+            expect(wrapper.className).toBe(
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+            );
         });
     });
 
@@ -104,7 +108,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-center'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-center'
             );
         });
     });
@@ -117,7 +121,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-end'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-end'
             );
         });
     });
@@ -130,7 +134,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-space'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-space'
             );
         });
     });
@@ -143,7 +147,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-grid_align-spread'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-grid_align-spread'
             );
         });
     });
@@ -156,7 +160,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
+            expect(wrapper.className).toBe(
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+            );
         });
     });
 
@@ -168,7 +174,7 @@ describe('Layout', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'slds-grid avonni-layout-wrapper slds-wrap'
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch slds-wrap'
             );
         });
     });
@@ -181,7 +187,9 @@ describe('Layout', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('slds-grid avonni-layout-wrapper');
+            expect(wrapper.className).toBe(
+                'slds-grid avonni-layout-wrapper slds-grid_vertical-stretch'
+            );
         });
     });
 
