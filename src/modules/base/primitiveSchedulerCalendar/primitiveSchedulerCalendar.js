@@ -908,13 +908,13 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const grid = this.template.querySelector(
-            '[data-element-id="div-cells-grid"]'
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
         );
-        if (!grid) {
+        if (!wrapper) {
             return null;
         }
-        const resizeObserver = new AvonniResizeObserver(grid, () => {
+        const resizeObserver = new AvonniResizeObserver(wrapper, () => {
             if (this.isMonth) {
                 this.updateCellHeight();
             }
