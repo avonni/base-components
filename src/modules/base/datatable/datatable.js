@@ -41,8 +41,8 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'color-picker',
     'combobox',
     'counter',
-    'date-range',
     'dynamic-icon',
+    'date-range',
     'image',
     'toggle',
     'progress-bar',
@@ -824,6 +824,16 @@ export default class Datatable extends LightningDatatable {
     set wrapTextMaxLines(value) {
         if (value === undefined) return;
         super.wrapTextMaxLines = value;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get wrapText() {
+        return this.state.wrapText;
     }
 
     /*
