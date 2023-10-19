@@ -1,7 +1,5 @@
-
-
 import { LightningElement, api } from 'lwc';
-import { isEditable } from 'c/primitiveCellUtils';
+import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellDateRange extends LightningElement {
     @api colKeyValue;
@@ -39,12 +37,6 @@ export default class PrimitiveCellDateRange extends LightningElement {
         this._value = value;
     }
 
-    get computedPanelStyle() {
-        return this._columnsWidth < 310
-            ? 'position: absolute; top: 0; right: 0'
-            : 'position: absolute; top: 0; left: 0';
-    }
-
     get endDate() {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
     }
@@ -80,15 +72,12 @@ export default class PrimitiveCellDateRange extends LightningElement {
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns, width) {
+    getStateAndColumns(dt) {
+        this.dt = dt;
+        const { state, columns } = dt;
         this.state = state;
-        this.columns = columns;
-        this._index = this.state.headerIndexes[this.colKeyValue];
-        this._columnsWidth = width
-            ? width.slice(this._index).reduce((a, b) => a + b, 0)
-            : 0;
-
-        this.editable = isEditable(this.state, this._index, this.columns);
+        const index = state.headerIndexes[this.colKeyValue];
+        this.editable = isEditable(this.state, index, columns);
     }
 
     // Handles the edit button click and dispatches the event.
@@ -107,6 +96,14 @@ export default class PrimitiveCellDateRange extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
+        if (this.visible) {
+            startPanelPositioning(
+                this.dt,
+                this.template,
+                this.rowKeyValue,
+                this.colKeyValue
+            );
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
