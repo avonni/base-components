@@ -6,11 +6,12 @@ export default class PrimitiveCellRichText extends LightningElement {
     @api rowKeyValue;
     @api disabled;
     @api formats;
-    @api variant;
     @api placeholder;
+    @api variant;
 
     _index;
     _value;
+    _wrapText;
 
     visible = false;
     editable = false;
@@ -27,9 +28,20 @@ export default class PrimitiveCellRichText extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
+    }
+
+    @api
+    get wrapText() {
+        return this._wrapText;
+    }
+    set wrapText(value) {
+        this._wrapText = value;
+    }
+
+    get computedWrapTextClass() {
+        return this.wrapText ? 'slds-line-clamp' : 'slds-truncate';
     }
 
     /**
@@ -60,6 +72,7 @@ export default class PrimitiveCellRichText extends LightningElement {
     getStateAndColumns(dt) {
         this.dt = dt;
         const { state, columns } = dt;
+        this.wrapTextMaxLines = state.wrapTextMaxLines;
         this.state = state;
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);

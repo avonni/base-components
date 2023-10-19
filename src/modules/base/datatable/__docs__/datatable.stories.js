@@ -1,5 +1,3 @@
-
-
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
@@ -306,6 +304,9 @@ export default {
         },
         wrapTextMaxLines: {
             name: 'wrap-text-max-lines',
+            control: {
+                type: 'number'
+            },
             description:
                 'This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more. The text in the last line is truncated and shown with an ellipsis.',
             table: {

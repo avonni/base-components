@@ -21,8 +21,13 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <lightning-formatted-rich-text value={value} style="width: 100%">
-            </lightning-formatted-rich-text>
+            <span class={computedWrapTextClass}>
+                <lightning-formatted-rich-text
+                    value={value}
+                    style="width: 100%"
+                >
+                </lightning-formatted-rich-text>
+            </span>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}

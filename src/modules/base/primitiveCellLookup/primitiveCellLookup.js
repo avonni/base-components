@@ -9,6 +9,7 @@ export default class PrimitiveCellLookup extends LightningElement {
 
     _index;
     _value;
+    _wrapText;
 
     visible = false;
     editable = false;
@@ -25,9 +26,20 @@ export default class PrimitiveCellLookup extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
+    }
+
+    @api
+    get wrapText() {
+        return this._wrapText;
+    }
+    set wrapText(value) {
+        this._wrapText = value;
+    }
+
+    get computedWrapTextClass() {
+        return this.wrapText ? 'slds-line-clamp' : 'slds-truncate';
     }
 
     get editedValue() {
