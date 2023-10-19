@@ -302,11 +302,7 @@ export default class Datatable extends LightningDatatable {
         this.template.addEventListener(
             'getdatatablestateandcolumns',
             (event) => {
-                event.detail.callbacks.getStateAndColumns(
-                    this.state,
-                    this.columns,
-                    this.primitiveWidthsData.columnWidths
-                );
+                event.detail.callbacks.getStateAndColumns(this);
             }
         );
         this.template.addEventListener('getcomboboxoptions', (event) => {

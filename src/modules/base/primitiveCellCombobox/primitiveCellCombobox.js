@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { isEditable } from 'c/primitiveCellUtils';
+import {
+    isEditable,
+    getResolvedCellChanges,
+    startPanelPositioning
+} from 'c/primitiveCellUtils';
 import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveCellCombobox extends LightningElement {
@@ -47,12 +51,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     set value(value) {
         this._value = value;
-    }
-
-    get computedPanelStyle() {
-        return this._columnsWidth < 310
-            ? 'position: absolute; top: 0; right: 0'
-            : 'position: absolute; top: 0; left: 0';
     }
 
     get displayedValue() {
@@ -103,7 +101,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('cellchangecustom', {
                 detail: {
-                    draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                    draftValues: getResolvedCellChanges(state, dirtyValues)
                 },
                 bubbles: true,
                 composed: true
@@ -125,44 +123,13 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
-    getCellChangesByColumn(state, changes) {
-        return Object.keys(changes).reduce((result, colKey) => {
-            const columns = state.columns;
-            const columnIndex = state.headerIndexes[colKey];
-            const columnDef = columns[columnIndex];
-            result[columnDef.columnKey || columnDef.fieldName] =
-                changes[colKey];
-            return result;
-        }, {});
-    }
-
-    getResolvedCellChanges(state, dirtyValues) {
-        const keyField = state.keyField;
-        return Object.keys(dirtyValues).reduce((result, rowKey) => {
-            // Get the changes made by column
-            const cellChanges = this.getCellChangesByColumn(
-                state,
-                dirtyValues[rowKey]
-            );
-            if (Object.keys(cellChanges).length > 0) {
-                // Add identifier for which row has change
-                cellChanges[keyField] = rowKey;
-                result.push(cellChanges);
-            }
-            return result;
-        }, []);
-    }
-
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns, width) {
+    getStateAndColumns(dt) {
+        this.dt = dt;
+        const { state, columns } = dt;
         this.state = state;
-        this.columns = columns;
-        this._index = this.state.headerIndexes[this.colKeyValue];
-        this._columnsWidth = width
-            ? width.slice(this._index).reduce((a, b) => a + b, 0)
-            : 0;
-
-        this.editable = isEditable(this.state, this._index, this.columns);
+        const index = state.headerIndexes[this.colKeyValue];
+        this.editable = isEditable(this.state, index, columns);
     }
 
     handleChange(event) {
@@ -199,7 +166,16 @@ export default class PrimitiveCellCombobox extends LightningElement {
             })
         );
         this.dispatchStateAndColumnsEvent();
+
         this.toggleInlineEdit();
+        if (this.visible) {
+            startPanelPositioning(
+                this.dt,
+                this.template,
+                this.rowKeyValue,
+                this.colKeyValue
+            );
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.

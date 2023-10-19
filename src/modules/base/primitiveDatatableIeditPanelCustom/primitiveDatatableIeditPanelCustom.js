@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
+import { getResolvedCellChanges } from 'c/primitiveCellUtils';
 
 export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api colKeyValue;
@@ -299,7 +300,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         this.dispatchEvent(
             new CustomEvent('cellchangecustom', {
                 detail: {
-                    draftValues: this.getResolvedCellChanges(state, dirtyValues)
+                    draftValues: getResolvedCellChanges(state, dirtyValues)
                 },
                 bubbles: true,
                 composed: true
@@ -309,39 +310,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     focusLastElement() {
         this.template.querySelector('[data-form-last-element="true"]').focus();
-    }
-
-    getCellChangesByColumn(state, changes) {
-        return Object.keys(changes).reduce((result, colKey) => {
-            const columns = state.columns;
-            const columnIndex = state.headerIndexes[colKey];
-            const columnDef = columns[columnIndex];
-
-            result[columnDef.columnKey || columnDef.fieldName] =
-                changes[colKey];
-
-            return result;
-        }, {});
-    }
-
-    getResolvedCellChanges(state, dirtyValues) {
-        const keyField = state.keyField;
-
-        return Object.keys(dirtyValues).reduce((result, rowKey) => {
-            // Get the changes made by column
-            const cellChanges = this.getCellChangesByColumn(
-                state,
-                dirtyValues[rowKey]
-            );
-
-            if (Object.keys(cellChanges).length > 0) {
-                // Add identifier for which row has change
-                cellChanges[keyField] = rowKey;
-                result.push(cellChanges);
-            }
-
-            return result;
-        }, []);
     }
 
     handleCellKeydown(event) {

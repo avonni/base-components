@@ -1,5 +1,3 @@
-
-
 <template>
     <template if:true={visible}>
         <c-primitive-datatable-iedit-panel-custom
@@ -12,7 +10,6 @@
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
             row-key-value={state.inlineEdit.rowKeyValue}
             visible={state.inlineEdit.panelVisible}
-            style={computedPanelStyle}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
