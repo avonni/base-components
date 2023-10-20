@@ -391,7 +391,7 @@ export default class InputDateRange extends LightningElement {
      * @type {string}
      */
     get computedEndInputClasses() {
-        return classSet('slds-form-element')
+        return classSet('slds-form-element slds-scrollable_none')
             .add({ 'slds-p-right_none': !this.showTime })
             .toString();
     }
