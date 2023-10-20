@@ -25,6 +25,11 @@ export default class InputDateRange extends LightningElement {
     }
 
     @api
+    get value() {
+        return {};
+    }
+
+    @api
     focus() {
         return undefined;
     }
