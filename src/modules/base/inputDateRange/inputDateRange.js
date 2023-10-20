@@ -1,13 +1,18 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
+    animationFrame,
     dateTimeObjectFrom,
     normalizeBoolean,
     normalizeString,
-    keyCodes
+    keyCodes,
+    timeout
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 const DATE_TYPES = {
@@ -112,6 +117,7 @@ export default class InputDateRange extends LightningElement {
     startTime;
     selectionModeEndDate = 'interval';
     selectionModeStartDate = 'interval';
+    _autoPosition;
     _cancelBlurStartDate = false;
     _cancelBlurEndDate = false;
     _connected = false;
@@ -561,6 +567,7 @@ export default class InputDateRange extends LightningElement {
         this.endDateInput.blur();
         this.showStartDate = false;
         this.showEndDate = false;
+        this.stopPositioning();
         this.handleFocusOut();
     }
 
@@ -737,6 +744,63 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
+    startPositioning(type) {
+        const align = {
+            horizontal: Direction.Left,
+            vertical: Direction.Top
+        };
+
+        const targetAlign = {
+            horizontal: Direction.Left,
+            vertical: Direction.Bottom
+        };
+
+        let autoFlip = true;
+        let autoFlipVertical;
+
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                const element = this.template.querySelector(
+                    `[data-element-id="div-${type}-date-dropdown"]`
+                );
+                const target = this.template.querySelector(
+                    `[data-element-id="input-${type}-date"]`
+                );
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () => target,
+                        element: () => element,
+                        align,
+                        targetAlign,
+                        autoFlip,
+                        autoFlipVertical,
+                        padTop: 4,
+                        scrollableParentBound: false
+                    },
+                    true
+                );
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            });
+    }
+
+    /**
+     * Stop menu positioning and animation.
+     */
+    stopPositioning() {
+        if (this._autoPosition) {
+            stopPositioning(this._autoPosition);
+            this._autoPosition = null;
+        }
+    }
+
     /**
      * Change the time format depending on time style.
      *
@@ -863,6 +927,7 @@ export default class InputDateRange extends LightningElement {
                     this._focusStartDate = this._endDate;
                 }
                 this.showStartDate = true;
+                this.startPositioning('start');
                 this.dispatchChange();
                 return;
 
@@ -874,14 +939,16 @@ export default class InputDateRange extends LightningElement {
         }
 
         this.dispatchChange();
+        this.stopPositioning();
+        this.showStartDate = false;
 
         requestAnimationFrame(() => {
-            this.showStartDate = false;
             if (this.calendarKeyEvent === 'keyboard') {
                 this.startDateIcon.focus();
             } else if (!this.endDate) {
                 this.setFocusDate(this._startDate, 'end');
                 this.showEndDate = true;
+                this.startPositioning('end');
             }
             this.calendarKeyEvent = null;
         });
@@ -955,6 +1022,7 @@ export default class InputDateRange extends LightningElement {
                     this._focusEndDate = this._startDate;
                 }
                 this.showEndDate = true;
+                this.startPositioning('end');
                 this.dispatchChange();
                 return;
 
@@ -969,6 +1037,7 @@ export default class InputDateRange extends LightningElement {
 
         requestAnimationFrame(() => {
             this.showEndDate = false;
+            this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') {
                 this.endDateIcon.focus();
             } else if (!this.startDate) {
@@ -1004,6 +1073,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (!this.enteredEndCalendar) {
                 this.showEndDate = false;
+                this.stopPositioning();
             }
             this.enteredEndCalendar = false;
         });
@@ -1028,6 +1098,7 @@ export default class InputDateRange extends LightningElement {
             if (!this.enteredEndCalendar && !activeButton) {
                 // Don't hide the calendar if the focus was moved to the icon
                 this.showEndDate = false;
+                this.stopPositioning();
             }
             this.enteredEndCalendar = false;
         });
@@ -1040,6 +1111,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (!this.enteredStartCalendar) {
                 this.showStartDate = false;
+                this.stopPositioning();
             }
             this.enteredStartCalendar = false;
         });
@@ -1064,6 +1136,7 @@ export default class InputDateRange extends LightningElement {
             if (!this.enteredStartCalendar && !activeButton) {
                 // Don't hide the calendar if the focus was moved to the icon
                 this.showStartDate = false;
+                this.stopPositioning();
             }
             this.enteredStartCalendar = false;
         });
@@ -1103,6 +1176,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (this.keepFocus) {
                 this.showStartDate = false;
+                this.stopPositioning();
 
                 if (this.template.activeElement !== this.startDateIcon) {
                     this.startDateInput.focus();
@@ -1121,6 +1195,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (this.keepFocus) {
                 this.showEndDate = false;
+                this.stopPositioning();
 
                 if (this.template.activeElement !== this.endDateIcon) {
                     this.endDateInput.focus();
@@ -1141,11 +1216,13 @@ export default class InputDateRange extends LightningElement {
 
         requestAnimationFrame(() => {
             this.showStartDate = false;
+            this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') {
                 this.startDateIcon.focus();
             } else if (!this.endDate) {
                 this.setFocusDate(this._startDate, 'end');
                 this.showEndDate = true;
+                this.startPositioning('end');
             }
             this.calendarKeyEvent = null;
         });
@@ -1165,6 +1242,7 @@ export default class InputDateRange extends LightningElement {
 
         requestAnimationFrame(() => {
             this.showEndDate = false;
+            this.stopPositioning();
             if (this.calendarKeyEvent === 'keyboard') this.endDateIcon.focus();
             else if (!this.startDate) {
                 this.setFocusDate(this._endDate, 'start');
@@ -1189,9 +1267,11 @@ export default class InputDateRange extends LightningElement {
             case keyCodes.escape:
                 if (elementId.includes('start-date')) {
                     this.showStartDate = false;
+                    this.stopPositioning();
                     this.startDateIcon.focus();
                 } else if (elementId.includes('end-date')) {
                     this.showEndDate = false;
+                    this.stopPositioning();
                     this.endDateIcon.focus();
                 }
                 break;
@@ -1225,6 +1305,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showStartDate = true;
                 this.showEndDate = false;
+                this.startPositioning('start');
                 break;
             case 'lightning-icon-start-date':
                 this.selectionModeStartDate = !this._endDate
@@ -1232,6 +1313,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showStartDate = true;
                 this.showEndDate = false;
+                this.startPositioning('start');
                 this.setFocusDate(
                     this.startDate || this.endDate || today,
                     'start'
@@ -1243,6 +1325,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showEndDate = true;
                 this.showStartDate = false;
+                this.startPositioning('end');
                 break;
             case 'lightning-icon-end-date':
                 this.selectionModeEndDate = !this._startDate
@@ -1250,6 +1333,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showEndDate = true;
                 this.showStartDate = false;
+                this.startPositioning('end');
                 this.setFocusDate(
                     this.endDate || this.startDate || today,
                     'end'
@@ -1273,12 +1357,14 @@ export default class InputDateRange extends LightningElement {
                 event.currentTarget === this.startDateIcon
             ) {
                 this.showStartDate = false;
+                this.stopPositioning();
             }
             if (
                 event.currentTarget === this.endDateInput ||
                 event.currentTarget === this.endDateIcon
             ) {
                 this.showEndDate = false;
+                this.stopPositioning();
             }
         }
     }
