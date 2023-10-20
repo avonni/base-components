@@ -1,7 +1,8 @@
-
-
 import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
+
+// Not tested:
+// Popover positioning
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
