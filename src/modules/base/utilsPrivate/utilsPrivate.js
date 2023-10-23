@@ -1,5 +1,3 @@
-
-
 export { EventEmitter } from './eventEmitter';
 export { toNorthAmericanPhoneNumber } from './phonify';
 export * from './linkUtils';
@@ -64,7 +62,9 @@ export {
     formatDateFromStyle,
     getWeekNumber,
     intervalFrom,
+    isInTimeFrame,
     numberOfUnitsBetweenDates,
+    parseTimeFrame,
     removeFromDate
 } from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';

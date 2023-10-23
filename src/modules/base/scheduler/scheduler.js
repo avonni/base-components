@@ -7,11 +7,11 @@ import {
     dateTimeObjectFrom,
     addToDate,
     deepCopy,
+    parseTimeFrame,
     removeFromDate
 } from 'c/utilsPrivate';
 import {
     getDisabledWeekdaysLabels,
-    parseTimeFrame,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,

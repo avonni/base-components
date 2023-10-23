@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
 
@@ -153,6 +151,83 @@ describe('DateTimePicker', () => {
             );
             expect(calendar.disabled).toBeTruthy();
         });
+    });
+
+    it('Date time picker: disabled date times', () => {
+        element.value = new Date(2023, 9, 16, 9);
+        element.disabledDateTimes = [
+            new Date(2023, 9, 16, 10, 30),
+            'Wed',
+            new Date(2023, 9, 16, 14).toISOString()
+        ];
+        element.variant = 'weekly';
+        element.timezone = 'America/Montreal';
+        element.showDisabledDates = true;
+
+        return Promise.resolve().then(() => {
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-day"]'
+            );
+            const wedHours = days[3].querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            wedHours.forEach((timeSlot) => {
+                if (!timeSlot.disabled) {
+                    console.log(timeSlot.dataset.time);
+                }
+                expect(timeSlot.disabled).toBeTruthy();
+            });
+            const day16Hours = days[1].querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            expect(day16Hours[4].disabled).toBeFalsy();
+            expect(day16Hours[5].disabled).toBeTruthy();
+            expect(day16Hours[6].disabled).toBeFalsy();
+            expect(day16Hours[12].disabled).toBeTruthy();
+        });
+    });
+
+    it('Date time picker: imprecise disabled date times', () => {
+        element.value = new Date(2023, 9, 16, 9);
+        element.disabledDateTimes = [new Date(2023, 9, 16, 10, 43)];
+        element.timezone = 'America/Montreal';
+        element.showDisabledDates = true;
+
+        return Promise.resolve().then(() => {
+            const hours = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
+            expect(hours[4].disabled).toBeFalsy();
+            expect(hours[5].disabled).toBeTruthy();
+            expect(hours[6].disabled).toBeFalsy();
+        });
+    });
+
+    it('Date time picker: full day disabled', () => {
+        element.goToDate(new Date(2023, 8, 16));
+
+        return Promise.resolve()
+            .then(() => {
+                const hours = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button-default"]'
+                );
+                const emptyMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="p-empty-message"]'
+                );
+                expect(emptyMessage).toBeFalsy();
+                expect(hours.length).toBeTruthy();
+                element.disabledDateTimes = ['2023-09-16'];
+            })
+            .then(() => {
+                const hours = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="button-default"]'
+                );
+                const emptyMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="p-empty-message"]'
+                );
+                expect(emptyMessage).toBeTruthy();
+                expect(hours.length).toBeFalsy();
+            });
     });
 
     // field level help
@@ -536,77 +611,27 @@ describe('DateTimePicker', () => {
     });
 
     // show disabled dates
-    it('Date time picker: show disabled dates daily', () => {
+    it('Date time picker: show disabled dates = false', () => {
         element.disabled = true;
-        element.showDisabledDates = true;
+        element.showDisabledDates = false;
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll(
                 '[data-element-id="button-default"]'
             );
-            times.forEach((time) => {
-                expect(time.disabled).toBeTruthy();
-            });
+            expect(times.length).toBeFalsy();
         });
     });
 
-    it('Date time picker: show disabled dates weekly', () => {
+    it('Date time picker: show disabled dates = true', () => {
         element.disabled = true;
         element.showDisabledDates = true;
-        element.variant = 'weekly';
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll(
                 '[data-element-id="button-default"]'
             );
-            times.forEach((time) => {
-                expect(time.disabled).toBeTruthy();
-            });
-        });
-    });
-
-    it('Date time picker: show disabled dates inline', () => {
-        element.disabled = true;
-        element.showDisabledDates = true;
-        element.variant = 'inline';
-
-        return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button-default"]'
-            );
-            times.forEach((time) => {
-                expect(time.disabled).toBeTruthy();
-            });
-        });
-    });
-
-    it('Date time picker: show disabled dates timeline', () => {
-        element.disabled = true;
-        element.showDisabledDates = true;
-        element.variant = 'timeline';
-
-        return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button-default"]'
-            );
-            times.forEach((time) => {
-                expect(time.disabled).toBeTruthy();
-            });
-        });
-    });
-
-    it('Date time picker: show disabled dates monthly', () => {
-        element.disabled = true;
-        element.showDisabledDates = true;
-        element.variant = 'monthly';
-
-        return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll(
-                '[data-element-id="button-default"]'
-            );
-            times.forEach((time) => {
-                expect(time.disabled).toBeTruthy();
-            });
+            expect(times.length).toBeTruthy();
         });
     });
 
