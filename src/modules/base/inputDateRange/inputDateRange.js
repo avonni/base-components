@@ -767,6 +767,9 @@ export default class InputDateRange extends LightningElement {
                 const target = this.template.querySelector(
                     `[data-element-id="input-${type}-date"]`
                 );
+                if (!element || !target) {
+                    return Promise.resolve();
+                }
                 this._autoPosition = startPositioning(
                     this,
                     {
@@ -1084,7 +1087,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleBlurEndInput(event) {
         const value = event.currentTarget.value;
-        if (!value) {
+        if (!value && this.endDate) {
             this._endDate = null;
             this.dispatchChange();
         }
@@ -1122,7 +1125,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleBlurStartInput(event) {
         const value = event.currentTarget.value;
-        if (!value) {
+        if (!value && this.startDate) {
             this._startDate = null;
             this.dispatchChange();
         }
