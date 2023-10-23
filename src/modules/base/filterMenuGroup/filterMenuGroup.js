@@ -390,7 +390,7 @@ export default class FilterMenuGroup extends LightningElement {
         const menuName = event.target.dataset.name;
 
         /**
-         * The event fired when a horizontal menu popover is closed.
+         * The event fired when a dropdown is closed (horizontal variant) or a section is closed (vertical variant).
          *
          * @event
          * @name close
@@ -438,7 +438,7 @@ export default class FilterMenuGroup extends LightningElement {
         const menuName = event.target.dataset.name;
 
         /**
-         * The event fired when a horizontal menu popover is opened.
+         * The event fired when a dropdown is opened (horizontal variant) or a section is opened (vertical variant).
          *
          * @event
          * @name open
