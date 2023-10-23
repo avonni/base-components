@@ -2533,6 +2533,47 @@ describe('Filter Menu', () => {
                     });
             });
 
+            it('close and open event, vertical variant', () => {
+                const closeHandler = jest.fn();
+                const openHandler = jest.fn();
+                element.addEventListener('close', closeHandler);
+                element.addEventListener('open', openHandler);
+                element.variant = 'vertical';
+                element.collapsible = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-toggle"]'
+                        );
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeTruthy();
+
+                        button.click();
+                        expect(closeHandler).toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-toggle"]'
+                        );
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeFalsy();
+
+                        button.click();
+                        expect(openHandler).toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeTruthy();
+                    });
+            });
+
             it('dropdown closes on blur', () => {
                 const handler = jest.fn();
                 element.addEventListener('close', handler);
