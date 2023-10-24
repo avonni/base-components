@@ -1,5 +1,3 @@
-
-
 export { Direction } from './direction';
 import { Constraint } from './constraint';
 import {
@@ -411,20 +409,30 @@ export function startPositioning(root, config, disableReposition) {
     //     callback(event.composedPath());
     //     event.stopPropagation();
     // });
-    root.dispatchEvent(
-        new CustomEvent('privatescrollablecontainer', {
-            composed: true,
-            bubbles: true,
-            detail: {
-                callback: (eventComposedPath) =>
-                    createRelationship(
-                        config,
-                        disableReposition,
-                        eventComposedPath
-                    )
-            }
-        })
-    );
+    try {
+        root.dispatchEvent(
+            new CustomEvent('privatescrollablecontainer', {
+                composed: true,
+                bubbles: true,
+                detail: {
+                    callback: (eventComposedPath) =>
+                        createRelationship(
+                            config,
+                            disableReposition,
+                            eventComposedPath
+                        )
+                }
+            })
+        );
+    } catch (error) {
+        // Ignore the error thrown by the data table
+        // when a custom cell editor is opened in Lightning Locker
+        if (
+            Object.getPrototypeOf(root)?.constructor?.name !== 'AvonniDatatable'
+        ) {
+            console.error(error);
+        }
+    }
 
     return relationship;
 }

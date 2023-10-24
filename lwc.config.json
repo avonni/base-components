@@ -355,6 +355,10 @@
             "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
         },
         {
+            "name": "c/primitiveCellPercentFormatted",
+            "path": "src/modules/base/primitiveCellPercentFormatted/primitiveCellPercentFormatted.js"
+        },
+        {
             "name": "c/primitiveCellProgressBar",
             "path": "src/modules/base/primitiveCellProgressBar/primitiveCellProgressBar.js"
         },

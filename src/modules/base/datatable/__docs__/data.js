@@ -1,5 +1,3 @@
-
-
 const avatarGroupItems = [
     {
         fallbackIconName: 'standard:person_account',
@@ -330,6 +328,12 @@ const columnsPR = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
+        editable: true
+    },
+    {
+        label: 'Percent Formatted',
+        fieldName: 'percentFormatted',
+        type: 'percent-formatted',
         editable: true
     },
     {
@@ -699,6 +703,7 @@ const recordsPR = [
     {
         id: 1,
         percent: 0.34,
+        percentFormatted: 34,
         phone: '5142223333',
         progress: 0.34,
         progressBarReferenceLines: [
@@ -721,6 +726,7 @@ const recordsPR = [
     {
         id: 2,
         percent: 0.45,
+        percentFormatted: 45,
         phone: '5144546767',
         progress: 1,
         progressBarTheme: 'success',
@@ -733,7 +739,8 @@ const recordsPR = [
     },
     {
         id: 3,
-        percent: 0.67,
+        percent: 0.6754638,
+        percentFormatted: 67.54638,
         phone: '6785643214',
         progress: 0.43,
         qrcode: 'https://www.avonni.app/',
@@ -745,6 +752,7 @@ const recordsPR = [
     {
         id: 4,
         percent: 4,
+        percentFormatted: 400,
         phone: '3547789900',
         progress: 0.05,
         progressBarTheme: 'info',
@@ -757,6 +765,7 @@ const recordsPR = [
     {
         id: 5,
         percent: 0.05,
+        percentFormatted: 5,
         phone: '5143245564',
         progress: 0.66,
         progressBarTheme: 'alt-inverse',

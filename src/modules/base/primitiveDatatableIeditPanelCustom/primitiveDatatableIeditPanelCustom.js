@@ -35,6 +35,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     // Primitive cell counter
     @api max;
     @api min;
+    // ...also shared with percent-formatted:
     @api step;
 
     // Primitive cell date-range

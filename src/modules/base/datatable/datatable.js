@@ -23,6 +23,7 @@ import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import lookup from './lookup.html';
+import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -45,6 +46,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'date-range',
     'image',
     'toggle',
+    'percent-formatted',
     'progress-bar',
     'qrcode',
     'rating',
@@ -59,6 +61,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'counter',
     'date-range',
     'lookup',
+    'percent-formatted',
     'rating',
     'rich-text',
     'slider',
@@ -180,6 +183,17 @@ export default class Datatable extends LightningDatatable {
         lookup: {
             template: lookup,
             typeAttributes: ['path', 'target']
+        },
+        'percent-formatted': {
+            template: percentFormatted,
+            typeAttributes: [
+                'maximumFractionDigits',
+                'maximumSignificantDigits',
+                'minimumFractionDigits',
+                'minimumIntegerDigits',
+                'minimumSignificantDigits',
+                'step'
+            ]
         },
         'progress-bar': {
             template: progressBar,
