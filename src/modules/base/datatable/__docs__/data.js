@@ -1,5 +1,3 @@
-
-
 const avatarGroupItems = [
     {
         fallbackIconName: 'standard:person_account',
@@ -333,76 +331,90 @@ const columnsPR = [
         editable: true
     },
     {
-        label: 'Phone',
-        fieldName: 'phone',
-        type: 'phone',
-        editable: true
-    },
-    {
-        label: 'Progress Bar',
-        fieldName: 'progress',
-        type: 'progress-bar',
-        typeAttributes: {
-            referenceLines: { fieldName: 'progressBarReferenceLines' },
-            theme: { fieldName: 'progressBarTheme' },
-            variant: 'circular',
-            thickness: 'large',
-            label: { fieldName: 'percent' }
-        },
-        initialWidth: 150
-    },
-    {
-        label: 'Progress Circle',
-        fieldName: 'progress',
-        type: 'progress-circle',
-        typeAttributes: {
-            thickness: 'large',
-            size: 'small'
-        },
-        initialWidth: 100
-    },
-    {
-        label: 'Progress Ring',
-        fieldName: 'progress',
-        type: 'progress-ring',
-        typeAttributes: {
-            variant: { fieldName: 'progressRingVariant' },
-            size: 'large'
-        }
-    },
-    {
-        label: 'QR Code',
-        fieldName: 'qrcode',
-        type: 'qrcode',
-        typeAttributes: {
-            borderColor: { fieldName: 'qrcodeBorderColor' },
-            borderWidth: { fieldName: 'qrcodeBorderWidth' },
-            size: 50
-        }
-    },
-    {
-        label: 'Rating',
-        fieldName: 'rating',
-        type: 'rating',
-        typeAttributes: {
-            iconName: 'utility:favorite',
-            label: 'Rating on 5',
-            disabled: { fieldName: 'ratingDisabled' }
-        },
+        label: 'Percent Formatted',
+        fieldName: 'percentFormatted',
+        type: 'percent-formatted',
         editable: true,
-        initialWidth: 200
-    },
-    {
-        label: 'Rich Text',
-        fieldName: 'richText',
-        type: 'rich-text',
         typeAttributes: {
-            disabled: { fieldName: 'richTextDisabled' },
-            formats: { fieldName: 'richTextFormats' }
-        },
-        editable: true,
-        initialWidth: 275
+            minimumIntegerDigits: 2,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 4,
+            minimumSignificantDigits: 3,
+            maximumSignificantDigits: 5,
+            step: 0.01
+        }
     }
+    // {
+    //     label: 'Phone',
+    //     fieldName: 'phone',
+    //     type: 'phone',
+    //     editable: true
+    // },
+    // {
+    //     label: 'Progress Bar',
+    //     fieldName: 'progress',
+    //     type: 'progress-bar',
+    //     typeAttributes: {
+    //         referenceLines: { fieldName: 'progressBarReferenceLines' },
+    //         theme: { fieldName: 'progressBarTheme' },
+    //         variant: 'circular',
+    //         thickness: 'large',
+    //         label: { fieldName: 'percent' }
+    //     },
+    //     initialWidth: 150
+    // },
+    // {
+    //     label: 'Progress Circle',
+    //     fieldName: 'progress',
+    //     type: 'progress-circle',
+    //     typeAttributes: {
+    //         thickness: 'large',
+    //         size: 'small'
+    //     },
+    //     initialWidth: 100
+    // },
+    // {
+    //     label: 'Progress Ring',
+    //     fieldName: 'progress',
+    //     type: 'progress-ring',
+    //     typeAttributes: {
+    //         variant: { fieldName: 'progressRingVariant' },
+    //         size: 'large'
+    //     }
+    // },
+    // {
+    //     label: 'QR Code',
+    //     fieldName: 'qrcode',
+    //     type: 'qrcode',
+    //     typeAttributes: {
+    //         borderColor: { fieldName: 'qrcodeBorderColor' },
+    //         borderWidth: { fieldName: 'qrcodeBorderWidth' },
+    //         size: 50
+    //     }
+    // },
+    // {
+    //     label: 'Rating',
+    //     fieldName: 'rating',
+    //     type: 'rating',
+    //     typeAttributes: {
+    //         iconName: 'utility:favorite',
+    //         label: 'Rating on 5',
+    //         disabled: { fieldName: 'ratingDisabled' }
+    //     },
+    //     editable: true,
+    //     initialWidth: 200
+    // },
+    // {
+    //     label: 'Rich Text',
+    //     fieldName: 'richText',
+    //     type: 'rich-text',
+    //     typeAttributes: {
+    //         disabled: { fieldName: 'richTextDisabled' },
+    //         formats: { fieldName: 'richTextFormats' }
+    //     },
+    //     editable: true,
+    //     initialWidth: 275
+    // }
 ];
 
 const columnsSZ = [
@@ -699,6 +711,7 @@ const recordsPR = [
     {
         id: 1,
         percent: 0.34,
+        percentFormatted: 34,
         phone: '5142223333',
         progress: 0.34,
         progressBarReferenceLines: [
@@ -721,6 +734,7 @@ const recordsPR = [
     {
         id: 2,
         percent: 0.45,
+        percentFormatted: 45,
         phone: '5144546767',
         progress: 1,
         progressBarTheme: 'success',
@@ -733,7 +747,8 @@ const recordsPR = [
     },
     {
         id: 3,
-        percent: 0.67,
+        percent: 0.6754638,
+        percentFormatted: 67.54638,
         phone: '6785643214',
         progress: 0.43,
         qrcode: 'https://www.avonni.app/',
@@ -745,6 +760,7 @@ const recordsPR = [
     {
         id: 4,
         percent: 4,
+        percentFormatted: 400,
         phone: '3547789900',
         progress: 0.05,
         progressBarTheme: 'info',
@@ -757,6 +773,7 @@ const recordsPR = [
     {
         id: 5,
         percent: 0.05,
+        percentFormatted: 5,
         phone: '5143245564',
         progress: 0.66,
         progressBarTheme: 'alt-inverse',

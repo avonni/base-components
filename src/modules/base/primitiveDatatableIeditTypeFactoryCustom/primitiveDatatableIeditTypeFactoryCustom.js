@@ -1,11 +1,10 @@
-
-
 import { LightningElement, api } from 'lwc';
 
 import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import counterTpl from './counter.html';
 import dateRangeTpl from './dateRange.html';
+import percentFormatted from './percentFormatted.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
@@ -17,6 +16,7 @@ const CUSTOM_TYPES_TPL = {
     counter: counterTpl,
     'date-range': dateRangeTpl,
     lookup: lookupTpl,
+    'percent-formatted': percentFormatted,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -53,6 +53,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     // counter attributes
     @api max;
     @api min;
+    // ...also shared with percent-formatted:
     @api step;
 
     // date-range attributes
