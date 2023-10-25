@@ -194,6 +194,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     /**
+     * Returns true if column type is percent-formatted.
+     *
+     * @type {boolean}
+     */
+    get isTypePercentFormatted() {
+        return this.columnDef.type === 'percent-formatted';
+    }
+
+    /**
      * Returns true if column type is textarea.
      *
      * @type {boolean}
@@ -367,7 +376,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     handlePanelLoosedFocus() {
-        if (this.isTypeLookup && this.visible) {
+        if (
+            (this.isTypeLookup || this.isTypePercentFormatted) &&
+            this.visible
+        ) {
             this.processSubmission();
         } else if (this.visible) {
             this.triggerEditFinished({
