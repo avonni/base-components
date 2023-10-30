@@ -7,11 +7,11 @@ import {
     dateTimeObjectFrom,
     addToDate,
     deepCopy,
+    parseTimeFrame,
     removeFromDate
 } from 'c/utilsPrivate';
 import {
     getDisabledWeekdaysLabels,
-    parseTimeFrame,
     positionPopover,
     previousAllowedDay,
     previousAllowedMonth,
@@ -2229,9 +2229,22 @@ export default class Scheduler extends LightningElement {
                     occurrenceData[field.value] || eventData[field.value];
 
                 const isDate = type === 'date' && this.createDate(value);
+                const isResources =
+                    field.value === 'resourceNames' && Array.isArray(value);
                 if (isDate) {
                     value = this.createDate(value);
                     value = value.toFormat(this.dateFormat);
+                } else if (isResources) {
+                    value = value
+                        .map((res) => {
+                            const resource = this.computedResources.find(
+                                (r) => {
+                                    return r.name === res;
+                                }
+                            );
+                            return resource.label;
+                        })
+                        .join(', ');
                 }
 
                 return {

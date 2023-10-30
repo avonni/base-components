@@ -1,6 +1,9 @@
 :host,
-.avonni-layout-wrapper {
+.avonni-layout-wrapper,
+.avonni-layout__slot {
     height: 100%;
+    max-height: inherit;
+    min-height: inherit;
 }
 
 .avonni-layout-wrapper {

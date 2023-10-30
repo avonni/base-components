@@ -116,6 +116,27 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-background-complete
+ * @type color
+ * @default transparent
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-sizing-border-complete
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-styling-border-complete
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-link-tile-color-border-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-link-title-text-color
  * @type color
  * @default #080707

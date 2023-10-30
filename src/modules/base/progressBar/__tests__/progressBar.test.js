@@ -38,8 +38,10 @@ describe('ProgressBar', () => {
 
     it('Progress Bar: Default attributes', () => {
         expect(element.label).toBeUndefined();
+        expect(element.showPin).toBeFalsy();
         expect(element.showValue).toBeFalsy();
         expect(element.orientation).toBe('horizontal');
+        expect(element.pinAttributes).toMatchObject({});
         expect(element.referenceLines).toMatchObject([]);
         expect(element.size).toBe('full');
         expect(element.textured).toBeFalsy();
@@ -63,6 +65,42 @@ describe('ProgressBar', () => {
                 '.avonni-progress-bar__label_font'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // show-pin
+    it('Progress Bar: showPin = false', () => {
+        element.showPin = false;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeFalsy();
+        });
+    });
+
+    it('Progress Bar: showPin = true with showValue = false', () => {
+        element.showPin = true;
+        element.showValue = false;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeFalsy();
+        });
+    });
+
+    it('Progress Bar: showPin = true with showValue = true', () => {
+        element.showPin = true;
+        element.showValue = true;
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+            expect(pin).toBeTruthy();
         });
     });
 
@@ -138,6 +176,44 @@ describe('ProgressBar', () => {
             primitives.forEach((primitive) => {
                 expect(primitive.orientation).toBe('vertical');
             });
+        });
+    });
+
+    // pin-attributes
+    it('Progress Bar: pinAttributes, type = circle', () => {
+        element.showValue = true;
+        element.showPin = true;
+        element.pinAttributes = {
+            type: 'circle'
+        };
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+
+            expect(pin).toBeTruthy();
+            expect(pin.classList).toContain('avonni-progress-bar__circle-pin')
+        });
+    });
+    
+    it('Progress Bar: pinAttributes, type = rectangle, position = left, with vertical orientation', () => {
+        element.showValue = true;
+        element.showPin = true;
+        element.pinAttributes = {
+            type: 'rectangle',
+            position: 'left'
+        };
+        element.orientation = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const pin = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-progress-bar-pin"]'
+            );
+
+            expect(pin).toBeTruthy();
+            expect(pin.classList).toContain('avonni-progress-bar__rectangle-pin')
+            expect(pin.classList).toContain('avonni-progress-bar__pin-left')
         });
     });
 

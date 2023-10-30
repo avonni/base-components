@@ -349,6 +349,20 @@ describe('FilterMenuGroup', () => {
         });
     });
 
+    // focus search input
+    it('Filter menu group: focusSearchInput method', () => {
+        element.menus = MENUS;
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"][data-name="price"]'
+            );
+            const spy = jest.spyOn(menu, 'focusSearchInput');
+            element.focusSearchInput('price');
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
     // reset
     it('Filter menu group: reset method', () => {
         element.menus = MENUS;

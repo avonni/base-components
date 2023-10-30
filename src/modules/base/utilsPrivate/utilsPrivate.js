@@ -61,7 +61,10 @@ export {
     getWeekday,
     formatDateFromStyle,
     getWeekNumber,
+    intervalFrom,
+    isInTimeFrame,
     numberOfUnitsBetweenDates,
+    parseTimeFrame,
     removeFromDate
 } from './dateTimeUtils';
 import { smartSetAttribute } from './smartSetAttribute';

@@ -59,6 +59,72 @@ const getWeekday = (date) => {
     return weekday === 7 ? 0 : weekday;
 };
 
+const intervalFrom = (start, end) => {
+    const normalizedStart = DateTime.isDateTime(start)
+        ? start
+        : dateTimeObjectFrom(start);
+    const normalizedEnd = DateTime.isDateTime(end)
+        ? end
+        : dateTimeObjectFrom(end);
+    if (!normalizedStart || !normalizedEnd) {
+        return null;
+    }
+    return Interval.fromDateTimes(start, end);
+};
+
+/**
+ * Check if the given time frame is valid, and parse it into a start and an end date.
+ *
+ * @param {string} timeFrame Time frame to validate and parse.
+ * @returns {object} Object with three possible keys: valid, start and end.
+ */
+const parseTimeFrame = (timeFrame, options) => {
+    const startMatch = timeFrame.match(/^([0-9:]+)-/);
+    const endMatch = timeFrame.match(/-([0-9:]+)$/);
+
+    if (!startMatch || !endMatch) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The time frame needs to follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.`
+        );
+        return { valid: false };
+    }
+    const start = DateTime.fromISO(startMatch[1], options);
+    const end = DateTime.fromISO(endMatch[1], options);
+
+    if (end < start) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The end time is smaller than the start time.`
+        );
+        return { valid: false };
+    }
+
+    return { start, end, valid: true };
+};
+
+/**
+ * Check if a time is included in a time frame.
+ *
+ * @param {DateTime} date DateTime object.
+ * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'.
+ * @returns {boolean} true or false.
+ */
+const isInTimeFrame = (date, timeFrame) => {
+    const { start, end, valid } = parseTimeFrame(timeFrame, {
+        zone: date.zoneName
+    });
+    if (!valid) {
+        return true;
+    }
+
+    const time = date.set({
+        year: start.year,
+        month: start.month,
+        day: start.day
+    });
+
+    return time < end && time >= start;
+};
+
 /**
  * Add unit * span to the date.
  *
@@ -176,6 +242,9 @@ export {
     getStartOfWeek,
     getWeekday,
     getWeekNumber,
+    intervalFrom,
+    isInTimeFrame,
     numberOfUnitsBetweenDates,
+    parseTimeFrame,
     removeFromDate
 };

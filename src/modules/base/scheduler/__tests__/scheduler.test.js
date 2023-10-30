@@ -822,7 +822,7 @@ describe('Scheduler', () => {
             {
                 title: 'Event 2',
                 name: 'event-2',
-                resourceNames: [RESOURCES[0].name],
+                resourceNames: [RESOURCES[0].name, RESOURCES[1].name],
                 from: new Date(2023, 1, 21, 15),
                 allDay: true
             }
@@ -841,6 +841,10 @@ describe('Scheduler', () => {
             {
                 value: 'allDay',
                 type: 'boolean'
+            },
+            {
+                value: 'resourceNames',
+                label: 'Resources'
             }
         ];
 
@@ -855,7 +859,10 @@ describe('Scheduler', () => {
                             data: {
                                 title: 'Event 2',
                                 name: 'event-2',
-                                resourceNames: [RESOURCES[0].name],
+                                resourceNames: [
+                                    RESOURCES[0].name,
+                                    RESOURCES[1].name
+                                ],
                                 from: new Date(2023, 1, 21, 15),
                                 allDay: true
                             }
@@ -891,7 +898,7 @@ describe('Scheduler', () => {
                 const fields = element.shadowRoot.querySelectorAll(
                     '[data-element-id="avonni-output-data-detail-popover-field"]'
                 );
-                expect(fields).toHaveLength(3);
+                expect(fields).toHaveLength(4);
                 expect(fields[0].label).toBe('Title');
                 expect(fields[0].value).toBe('Event 2');
                 expect(fields[0].variant).toBe('label-hidden');
@@ -902,6 +909,11 @@ describe('Scheduler', () => {
                 expect(fields[2].value).toBeTruthy();
                 expect(fields[2].label).toBeUndefined();
                 expect(fields[2].type).toBe('boolean');
+                expect(fields[3].value).toBe(
+                    `${RESOURCES[0].label}, ${RESOURCES[1].label}`
+                );
+                expect(fields[3].label).toBe('Resources');
+                expect(fields[3].type).toBeUndefined();
             });
     });
 

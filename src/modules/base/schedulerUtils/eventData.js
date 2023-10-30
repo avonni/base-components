@@ -70,29 +70,7 @@ export default class SchedulerEventData {
             return;
         }
 
-        const eventsInTimeFrame = this.events.filter((event) => {
-            const from = this.createDate(event.from);
-            const to = this.createDate(event.to);
-            return (
-                this.belongsToSelectedResources(event) &&
-                (interval.contains(from) ||
-                    interval.contains(to) ||
-                    (interval.isAfter(from) && interval.isBefore(to)) ||
-                    event.recurrence)
-            );
-        });
-
-        this.events = eventsInTimeFrame.reduce((computedEvents, evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            const computedEvent = new SchedulerEvent(event);
-
-            if (computedEvent.occurrences.length) {
-                computedEvents.push(computedEvent);
-            }
-            return computedEvents;
-        }, []);
-
+        this.events = this.getEventsInInterval();
         this.refreshEvents();
     }
 
@@ -264,6 +242,34 @@ export default class SchedulerEventData {
             '[data-element-id="div-schedule-body"]'
         );
         return body.getBoundingClientRect();
+    }
+
+    getEventsInInterval(events = this.events, interval = this.visibleInterval) {
+        if (!interval) {
+            return [];
+        }
+        const eventsInTimeFrame = events.filter((event) => {
+            const from = this.createDate(event.from);
+            const to = this.createDate(event.to);
+            return (
+                this.belongsToSelectedResources(event) &&
+                (interval.contains(from) ||
+                    interval.contains(to) ||
+                    (interval.isAfter(from) && interval.isBefore(to)) ||
+                    event.recurrence)
+            );
+        });
+
+        return eventsInTimeFrame.reduce((computedEvents, evt) => {
+            const event = { ...evt };
+            this.updateEventDefaults(event, true, interval);
+            const computedEvent = new SchedulerEvent(event);
+
+            if (computedEvent.occurrences.length) {
+                computedEvents.push(computedEvent);
+            }
+            return computedEvents;
+        }, []);
     }
 
     /**
@@ -603,11 +609,15 @@ export default class SchedulerEventData {
      *
      * @param {object} event The event object.
      */
-    updateEventDefaults(event, newEvent = true) {
+    updateEventDefaults(
+        event,
+        newEvent = true,
+        interval = this.visibleInterval
+    ) {
         // If the event is a calendar multi-day event,
         // do not cut it at the currently visible schedule start/end
-        const visibleEnd = this.visibleInterval.e;
-        const visibleStart = this.visibleInterval.s;
+        const visibleEnd = interval.e;
+        const visibleStart = interval.s;
         const from = this.createDate(event.from);
         const to = this.normalizedEventTo(event);
         const isMultiDay = spansOnMoreThanOneDay(event, from, to);

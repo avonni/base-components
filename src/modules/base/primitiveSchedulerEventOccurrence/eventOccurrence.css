@@ -13,6 +13,10 @@
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
 }
 
+.avonni-scheduler__event_horizontal {
+    min-height: 1.1rem;
+}
+
 .avonni-scheduler__event_past {
     opacity: 0.6;
 }

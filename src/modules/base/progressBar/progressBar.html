@@ -9,7 +9,7 @@
                     class="avonni-progress-bar__value_font"
                     aria-hidden="true"
                 >
-                    {valuePrefix} {value}% {valueSuffix}
+                    {valueToDisplay}
                 </span>
             </lightning-layout-item>
             <lightning-layout-item
@@ -36,7 +36,7 @@
                                 avonni-progress-bar__value_font
                             "
                         >
-                            {valuePrefix} {value}% {valueSuffix}
+                            {valueToDisplay}
                         </span>
                     </lightning-layout-item>
                     <lightning-layout-item
@@ -47,7 +47,7 @@
                             class="avonni-progress-bar__value_font"
                             aria-hidden="true"
                         >
-                            {valuePrefix} {value}% {valueSuffix}
+                            {valueToDisplay}
                         </span>
                     </lightning-layout-item>
                 </lightning-layout>
@@ -58,8 +58,27 @@
                     aria-valuenow={value}
                     role="progressbar"
                 >
-                    <span class={computedInnerClass} style={computedStyle}>
-                    </span>
+                    <div
+                        class={computedInnerClass}
+                        style={computedStyle}
+                        data-element-id="avonni-progress-bar-value"
+                    >
+                        <div
+                            if:true={showPinValue}
+                            class={computedPinClass}
+                            data-element-id="avonni-progress-bar-pin"
+                        >
+                            <span
+                                class="
+                                    avonni-progress-bar__pin-value
+                                    slds-truncate
+                                "
+                                aria-hidden="true"
+                            >
+                                {valueToDisplay}
+                            </span>
+                        </div>
+                    </div>
                     <span class="slds-assistive-text">{assistiveText}</span>
                     <lightning-layout
                         horizontal-align="spread"
@@ -77,7 +96,7 @@
                                     avonni-progress-bar__value_font
                                 "
                             >
-                                {valuePrefix} {value}% {valueSuffix}
+                                {valueToDisplay}
                             </span>
                         </lightning-layout-item>
                         <lightning-layout-item
@@ -91,7 +110,7 @@
                                     avonni-progress-bar__value_font
                                 "
                             >
-                                {valuePrefix} {value}% {valueSuffix}
+                                {valueToDisplay}
                             </span>
                         </lightning-layout-item>
                     </lightning-layout>
@@ -120,7 +139,7 @@
                     class="avonni-progress-bar__value_font"
                     aria-hidden="true"
                 >
-                    {valuePrefix} {value}% {valueSuffix}
+                    {valueToDisplay}
                 </span>
             </lightning-layout-item>
         </lightning-layout>

@@ -13,7 +13,7 @@ const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 const AUTO_SCROLL_INCREMENT = 5;
 const AUTO_SCROLL_THRESHOLD = 50;
 const DEFAULT_NUMBER_OF_VISIBLE_ITEMS = 20;
-const SHOW_MORE_BUTTON_WIDTH = 80;
+const SHOW_MORE_BUTTON_WIDTH = 60;
 const LOADING_THRESHOLD = 60;
 const MAX_LOADED_ITEMS = 30;
 
@@ -53,6 +53,8 @@ export default class ChipContainer extends LightningElement {
     connectedCallback() {
         window.addEventListener('mouseup', this.handleMouseUp);
         this.initVisibleItemsCount();
+        this.saveItemsWidths();
+        this.updateVisibleItems();
         this._connected = true;
     }
 
@@ -62,11 +64,6 @@ export default class ChipContainer extends LightningElement {
             this._resizeObserver = undefined;
         } else if (!this._resizeObserver && this.isCollapsible) {
             this._resizeObserver = this.initResizeObserver();
-        }
-
-        if (this.isCollapsible) {
-            this.saveItemsWidths();
-            this.updateVisibleItems();
         }
 
         if (this._focusOnRender) {
@@ -514,10 +511,13 @@ export default class ChipContainer extends LightningElement {
         if (!this.wrapperElement) {
             return null;
         }
-        return new AvonniResizeObserver(
-            this.wrapperElement,
-            this.updateVisibleItems.bind(this)
-        );
+        return new AvonniResizeObserver(this.wrapperElement, () => {
+            if (!this._connected) {
+                return;
+            }
+            this.saveItemsWidths();
+            this.updateVisibleItems();
+        });
     }
 
     /**
@@ -640,14 +640,14 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * Save the visible items widths, to compute their visibility later.
+     * Save all items widths, to compute their visibility later.
      */
     saveItemsWidths() {
         const items = this.template.querySelectorAll(
-            '[data-element-id^="li-item"]'
+            '[data-element-id="avonni-primitive-chip"], [data-element-id="avonni-primitive-chip-hidden"]'
         );
         items.forEach((item, i) => {
-            this._itemsWidths[i] = item.offsetWidth;
+            this._itemsWidths[i] = item.offsetWidth + 2;
         });
     }
 
@@ -741,44 +741,74 @@ export default class ChipContainer extends LightningElement {
      * Update the number of visible and collapsed items, depending on the available space.
      */
     updateVisibleItems() {
-        const maxCount = this.items.length;
-        if (this.computedIsExpanded) {
-            this._visibleItemsCount = maxCount;
-            return;
-        }
-
-        if (!this.wrapperElement) {
-            return;
-        }
-
-        const totalWidth =
-            this.wrapperElement.offsetWidth - SHOW_MORE_BUTTON_WIDTH;
-
-        let fittingCount = 0;
-        let width = 0;
-        const visibleItems = this.template.querySelectorAll(
-            '[data-element-id="li-item"]'
-        );
-        while (fittingCount < visibleItems.length) {
-            // Count the number of visible items that fit
-            width += this._itemsWidths[fittingCount];
-            if (width > totalWidth) {
-                break;
+        requestAnimationFrame(() => {
+            if (!this.items) {
+                return;
             }
-            fittingCount += 1;
-        }
 
-        if (fittingCount === visibleItems.length && width < totalWidth) {
+            const maxCount = this.items.length;
+            if (this.computedIsExpanded) {
+                this._visibleItemsCount = maxCount;
+                return;
+            }
+
+            if (!this.wrapperElement) {
+                return;
+            }
+
+            let fittingCount = 0;
+            let width = 0;
+            let totalWidth = this.wrapperElement.offsetWidth - 10;
+            const visibleItems = this.template.querySelectorAll(
+                '[data-element-id="li-item"]'
+            );
+
+            while (fittingCount < visibleItems.length) {
+                // Count the number of visible items that fit
+                const itemWidth = !isNaN(this._itemsWidths[fittingCount])
+                    ? this._itemsWidths[fittingCount]
+                    : 0;
+                if (width + itemWidth > totalWidth) {
+                    break;
+                }
+                width += itemWidth;
+                fittingCount += 1;
+            }
+
             // Add more visible items if needed
-            const nextItemWidth = this._itemsWidths[fittingCount];
-            const availableSpace = totalWidth - width;
-            const nextItemFits =
-                !nextItemWidth || availableSpace > nextItemWidth;
-            if (nextItemFits) {
-                fittingCount += MAX_LOADED_ITEMS;
+            if (fittingCount === visibleItems.length) {
+                while (width < totalWidth) {
+                    const nextItemWidth = this._itemsWidths[fittingCount];
+                    if (
+                        !isNaN(nextItemWidth) &&
+                        nextItemWidth >= 0 &&
+                        totalWidth > nextItemWidth + width
+                    ) {
+                        width += nextItemWidth;
+                        fittingCount += 1;
+                    } else {
+                        break;
+                    }
+                }
             }
-        }
-        this._visibleItemsCount = fittingCount;
+
+            // Remove some items to allocate some space for the "Show More" button
+            if (width >= totalWidth || fittingCount < this.items.length) {
+                totalWidth -= SHOW_MORE_BUTTON_WIDTH;
+                while (width >= totalWidth) {
+                    const lastItemWidth =
+                        fittingCount > 0
+                            ? this._itemsWidths[fittingCount - 1]
+                            : null;
+                    if (isNaN(lastItemWidth) || lastItemWidth <= 0) {
+                        break;
+                    }
+                    width -= lastItemWidth;
+                    fittingCount -= 1;
+                }
+            }
+            this._visibleItemsCount = fittingCount;
+        });
     }
 
     /*

@@ -2002,7 +2002,7 @@ describe('Filter Menu', () => {
 
         describe('Focus', () => {
             // Depends on variant
-            it('focus method', () => {
+            it('Horizontal variant', () => {
                 const handler = jest.fn();
                 const button = element.shadowRoot.querySelector(
                     '[data-element-id="button"]'
@@ -2013,7 +2013,7 @@ describe('Filter Menu', () => {
                 expect(handler).toHaveBeenCalled();
             });
 
-            it('focus method with vertical variant', () => {
+            it('Vertical variant', () => {
                 element.variant = 'vertical';
 
                 return Promise.resolve().then(() => {
@@ -2023,6 +2023,39 @@ describe('Filter Menu', () => {
                     const spy = jest.spyOn(inputChoiceSet, 'focus');
 
                     element.focus();
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('Focus search input', () => {
+            it('Horizontal variant', () => {
+                element.typeAttributes = { allowSearch: true };
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+
+                return Promise.resolve().then(() => {
+                    const search = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    const spy = jest.spyOn(search, 'focus');
+                    element.focusSearchInput();
+                    expect(spy).toHaveBeenCalled();
+                });
+            });
+
+            it('Vertical variant', () => {
+                element.variant = 'vertical';
+                element.typeAttributes = { allowSearch: true };
+
+                return Promise.resolve().then(() => {
+                    const search = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    const spy = jest.spyOn(search, 'focus');
+                    element.focusSearchInput();
                     expect(spy).toHaveBeenCalled();
                 });
             });
@@ -2497,6 +2530,47 @@ describe('Filter Menu', () => {
                             '[data-element-id="div-dropdown"]'
                         );
                         expect(dropdown).toBeFalsy();
+                    });
+            });
+
+            it('close and open event, vertical variant', () => {
+                const closeHandler = jest.fn();
+                const openHandler = jest.fn();
+                element.addEventListener('close', closeHandler);
+                element.addEventListener('open', openHandler);
+                element.variant = 'vertical';
+                element.collapsible = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-toggle"]'
+                        );
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeTruthy();
+
+                        button.click();
+                        expect(closeHandler).toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const button = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-icon-toggle"]'
+                        );
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeFalsy();
+
+                        button.click();
+                        expect(openHandler).toHaveBeenCalled();
+                    })
+                    .then(() => {
+                        const div = element.shadowRoot.querySelector(
+                            '[data-element-id="div-vertical-list"]'
+                        );
+                        expect(div).toBeTruthy();
                     });
             });
 

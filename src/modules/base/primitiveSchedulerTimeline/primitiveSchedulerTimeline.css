@@ -5,23 +5,23 @@
 }
 
 .avonni-scheduler__wrapper {
-    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
+    max-height: 100%;
 }
 
 .avonni-scheduler__schedule-wrapper {
     min-height: 5rem;
-    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
+    max-height: 100%;
     overflow: auto;
 }
 
 .avonni-scheduler__schedule-wrapper.avonni-scheduler__schedule-wrapper_vertical {
-    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px) - var(--vertical-resources-row-height));
+    max-height: 100%;
     height: calc(100% - var(--vertical-resources-row-height) - 1rem - 1px);
 }
 
 .avonni-scheduler__first-col {
     background-color: #f3f3f3;
-    max-height: calc(100vh - var(--avonni-scheduler-toolbar-height, 70px));
+    max-height: 100%;
 }
 
 .avonni-scheduler__first-col_vertical {

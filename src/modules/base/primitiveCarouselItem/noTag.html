@@ -60,6 +60,7 @@
                             variant="border-filled"
                             data-element-id="lightning-button-menu"
                             onselect={handleMenuSelect}
+                            onclick={handleButtonMenuClick}
                         >
                             <template for:each={actions} for:item="action">
                                 <lightning-menu-item
@@ -158,6 +159,7 @@
                             variant="border-filled"
                             data-element-id="lightning-button-menu"
                             onselect={handleMenuSelect}
+                            onclick={handleButtonMenuClick}
                         >
                             <template for:each={actions} for:item="action">
                                 <lightning-menu-item

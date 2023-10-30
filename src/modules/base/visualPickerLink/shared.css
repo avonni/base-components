@@ -39,6 +39,23 @@
     );
 }
 
+.avonni-visual-picker-link__tile_complete:not(.avonni-visual-picker-link__tile_info-only):not(.avonni-visual-picker-link_disabled) {
+    border-radius: var(--avonni-visual-picker-link-tile-radius-border, 0.25rem);
+    background-color: var(
+        --avonni-visual-picker-link-tile-color-background-complete,
+        transparent
+    );
+    --avonni-visual-picker-link-tile-sizing-border: var(
+        --avonni-visual-picker-link-tile-sizing-border-complete
+    );
+    --avonni-visual-picker-link-tile-styling-border: var(
+        --avonni-visual-picker-link-tile-styling-border-complete
+    );
+    --avonni-visual-picker-link-tile-color-border: var(
+        --avonni-visual-picker-link-tile-color-border-complete
+    );
+}
+
 .avonni-visual-picker-link__tile_complete .avonni-visual-picker-link__icon {
     --sds-c-icon-color-background: var(
         --avonni-visual-picker-icon-color-background-complete

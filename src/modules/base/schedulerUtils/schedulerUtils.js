@@ -8,7 +8,6 @@ export {
     nextAllowedDay,
     nextAllowedMonth,
     nextAllowedTime,
-    parseTimeFrame,
     previousAllowedDay,
     previousAllowedMonth,
     previousAllowedTime,

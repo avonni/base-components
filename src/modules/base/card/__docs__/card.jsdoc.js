@@ -98,9 +98,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-header-font-style
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-header-font-family
  * @default 'Salesforce Sans', Arial, sans-serif
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-letter-spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

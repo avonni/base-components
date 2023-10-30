@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { isEditable } from 'c/primitiveCellUtils';
+import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
 export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
@@ -8,9 +8,9 @@ export default class PrimitiveCellTextarea extends LightningElement {
     @api minLength;
     @api placeholder;
 
-    _columnsWidth = 0;
     _index;
     _value;
+    _wrapText;
 
     visible = false;
     editable = false;
@@ -32,10 +32,16 @@ export default class PrimitiveCellTextarea extends LightningElement {
         this._value = value;
     }
 
-    get computedPanelStyle() {
-        return this._columnsWidth < 310
-            ? 'position: absolute; top: 0; right: 0'
-            : 'position: absolute; top: 0; left: 0';
+    @api
+    get wrapText() {
+        return this._wrapText;
+    }
+    set wrapText(value) {
+        this._wrapText = value;
+    }
+
+    get computedWrapTextClass() {
+        return this.wrapText ? 'slds-line-clamp' : 'slds-truncate';
     }
 
     /**
@@ -63,15 +69,12 @@ export default class PrimitiveCellTextarea extends LightningElement {
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
-    getStateAndColumns(state, columns, width) {
+    getStateAndColumns(dt) {
+        this.dt = dt;
+        const { state, columns } = dt;
         this.state = state;
-        this.columns = columns;
-        this._index = this.state.headerIndexes[this.colKeyValue];
-        this._columnsWidth = width
-            ? width.slice(this._index).reduce((a, b) => a + b, 0)
-            : 0;
-
-        this.editable = isEditable(this.state, this._index, this.columns);
+        const index = state.headerIndexes[this.colKeyValue];
+        this.editable = isEditable(this.state, index, columns);
     }
 
     // Handles the edit button click and dispatches the event.
@@ -90,6 +93,14 @@ export default class PrimitiveCellTextarea extends LightningElement {
         );
         this.dispatchStateAndColumnsEvent();
         this.toggleInlineEdit();
+        if (this.visible) {
+            startPanelPositioning(
+                this.dt,
+                this.template,
+                this.rowKeyValue,
+                this.colKeyValue
+            );
+        }
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.

@@ -1243,7 +1243,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Set the focus on the filter menu.
+     * Set the focus on the filter menu button (horizontal variant) or choice set (vertical variant).
      *
      * @public
      */
@@ -1263,6 +1263,21 @@ export default class FilterMenu extends LightningElement {
             if (button) {
                 button.focus();
             }
+        }
+    }
+
+    /**
+     * Set the focus on the search input.
+     *
+     * @public
+     */
+    @api
+    focusSearchInput() {
+        const search = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        if (search) {
+            search.focus();
         }
     }
 
@@ -1650,16 +1665,7 @@ export default class FilterMenu extends LightningElement {
             this.dropdownVisible = !this.dropdownVisible;
             if (this.dropdownVisible) {
                 this.startPositioning();
-
-                /**
-                 * The event fired when the dropdown is opened.
-                 *
-                 * @event
-                 * @name open
-                 * @public
-                 * @bubbles
-                 */
-                this.dispatchEvent(new CustomEvent('open', { bubbles: true }));
+                this.dispatchOpen();
 
                 // update the bounding rect when the menu is toggled
                 this._boundingRect = this.getBoundingClientRect();
@@ -1670,16 +1676,7 @@ export default class FilterMenu extends LightningElement {
                 this.focusDropdown();
             } else {
                 this.stopPositioning();
-
-                /**
-                 * The event fired when the dropdown is closed.
-                 *
-                 * @event
-                 * @name close
-                 * @public
-                 * @bubbles
-                 */
-                this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+                this.dispatchClose();
                 this._previousScroll = undefined;
             }
         }
@@ -1995,6 +1992,21 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the close event.
+     */
+    dispatchClose() {
+        /**
+         * The event fired when the dropdown is closed (horizontal variant) or the section is closed (vertical variant).
+         *
+         * @event
+         * @name close
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('close', { bubbles: true }));
+    }
+
     dispatchLoadMore() {
         /**
          * The event fired when the end of a list is reached. It is only fired if the `enableInfiniteLoading` type attribute is present. In the horizontal variant, the `loadmore` event is triggered by a scroll to the end of the list. In the vertical variant, the `loadmore` event is triggered by a button clicked by the user.
@@ -2005,6 +2017,21 @@ export default class FilterMenu extends LightningElement {
          * @bubbles
          */
         this.dispatchEvent(new CustomEvent('loadmore', { bubbles: true }));
+    }
+
+    /**
+     * Dispatch the open event.
+     */
+    dispatchOpen() {
+        /**
+         * The event fired when the dropdown is opened (horizontal variant) or the section is opened (vertical variant).
+         *
+         * @event
+         * @name open
+         * @public
+         * @bubbles
+         */
+        this.dispatchEvent(new CustomEvent('open', { bubbles: true }));
     }
 
     /**
@@ -2046,5 +2073,11 @@ export default class FilterMenu extends LightningElement {
      */
     toggleSection() {
         this._closed = !this._closed;
+
+        if (this._closed) {
+            this.dispatchClose();
+        } else {
+            this.dispatchOpen();
+        }
     }
 }

@@ -16,7 +16,7 @@
             ></lightning-helptext>
         </div>
         <div class="avonni-date-range__container">
-            <div class="slds-form-element">
+            <div class="slds-form-element slds-scrollable_none">
                 <label
                     if:true={labelStartDate}
                     class="
@@ -59,7 +59,8 @@
                 </div>
                 <div
                     if:true={showStartDate}
-                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                    class="slds-datepicker slds-dropdown slds-is-fixed"
+                    data-element-id="div-start-date-dropdown"
                 >
                     <c-focus-trap
                         data-element-id="calendar-start-date-dialog"
@@ -159,7 +160,8 @@
                 </div>
                 <div
                     if:true={showEndDate}
-                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                    class="slds-datepicker slds-dropdown slds-is-fixed"
+                    data-element-id="div-end-date-dropdown"
                 >
                     <c-focus-trap
                         data-element-id="calendar-end-date-dialog"

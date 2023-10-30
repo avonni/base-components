@@ -33,6 +33,9 @@ export default class Datatable extends LightningElement {
     @api wrapTextMaxLines;
 
     @api
+    focusRow() {}
+
+    @api
     getRowHeight() {
         return 0;
     }

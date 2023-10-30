@@ -1,3 +1,5 @@
+import { generateUUID } from 'c/utils';
+
 export const POSITION_ATTR_NAME = 'data-position-id';
 
 class BrowserWindow {
@@ -30,7 +32,7 @@ class BrowserWindow {
     }
 
     isWindow(element) {
-        return element && element.toString() === '[object Window]';
+        return element && element.toString().includes('[object Window]');
     }
 }
 
@@ -187,13 +189,8 @@ export function getPositionTarget(element) {
         : element;
 }
 
-let lastId = 1000000;
-export function generateUniqueSelector() {
-    return `lgcp-${lastId++}`;
-}
-
 export function normalizeElement(element) {
-    const selector = generateUniqueSelector();
+    const selector = generateUUID();
     element.setAttribute(POSITION_ATTR_NAME, selector);
     element =
         // eslint-disable-next-line @lwc/lwc/no-document-query

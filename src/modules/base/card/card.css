@@ -165,7 +165,12 @@ article.avonni-card {
             sans-serif);
     font-weight: var(--avonni-card-header-font-weight, 700);
     font-size: var(--avonni-card-header-font-size, 1rem);
-    line-height: var(--lwc-lineHeightHeading, 1.25);
+    font-style: var(--avonni-card-header-font-style);
+    line-height: var(
+        --avonni-card-header-line-height,
+        var(--lwc-lineHeightHeading, 1.25)
+    );
+    letter-spacing: var(--avonni-card-header-letter-spacing);
 }
 
 /* card body */

@@ -26,7 +26,8 @@ export const Datatable = ({
     showRowNumberColumn,
     sortedBy,
     sortedDirection,
-    suppressBottomBar
+    suppressBottomBar,
+    wrapTextMaxLines
 }) => {
     const element = document.createElement('ac-base-datatable');
     element.columnWidthsMode = columnWidthsMode;
@@ -53,5 +54,6 @@ export const Datatable = ({
     element.sortedBy = sortedBy;
     element.sortedDirection = sortedDirection;
     element.suppressBottomBar = suppressBottomBar;
+    element.wrapTextMaxLines = wrapTextMaxLines;
     return element;
 };

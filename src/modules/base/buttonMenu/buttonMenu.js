@@ -48,6 +48,7 @@ const ICON_SIZES = {
 };
 
 const DEFAULT_ICON_NAME = 'utility:down';
+const MENU_ITEM_TAG = 'lightning-menu-item';
 
 /**
  * @class
@@ -592,9 +593,7 @@ export default class ButtonMenu extends LightningElement {
      * @return {object[]}
      */
     getMenuItems() {
-        return Array.from(
-            this.querySelectorAll('.slds-dropdown__list .slds-dropdown__item')
-        );
+        return Array.from(this.querySelectorAll(MENU_ITEM_TAG));
     }
 
     /**
@@ -628,10 +627,7 @@ export default class ButtonMenu extends LightningElement {
         const stopAtElement = this.template.querySelector("[role='menu']");
 
         while (currentNode !== stopAtElement) {
-            if (
-                currentNode.classList &&
-                currentNode.classList.contains('slds-dropdown__item')
-            ) {
+            if (currentNode.tagName === MENU_ITEM_TAG.toUpperCase()) {
                 return currentNode;
             }
             if (currentNode.parentNode) {

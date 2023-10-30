@@ -40,7 +40,7 @@
 }
 
 .avonni-primitive-scheduler-calendar__inherit-height {
-    height: inherit;
+    height: 100%;
     min-height: inherit;
     max-height: inherit;
 }

@@ -10,7 +10,6 @@
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
             row-key-value={state.inlineEdit.rowKeyValue}
             visible={state.inlineEdit.panelVisible}
-            style={computedPanelStyle}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -20,13 +19,13 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <div class="slds-truncate">
+            <span class={computedWrapTextClass}>
                 <lightning-formatted-url
                     value={path}
                     label={value}
                     target={target}
                 ></lightning-formatted-url>
-            </div>
+            </span>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}

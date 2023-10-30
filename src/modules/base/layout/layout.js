@@ -37,6 +37,7 @@ export default class Layout extends LightningElement {
     _verticalAlign = VERTICAL_ALIGNMENTS.default;
 
     _items = {};
+    _previousWidth;
     _resizeObserver;
 
     renderedCallback() {
@@ -168,6 +169,7 @@ export default class Layout extends LightningElement {
                 'slds-grid_align-space': this.horizontalAlign === 'space',
                 'slds-grid_align-spread': this.horizontalAlign === 'spread',
                 'slds-wrap': this.multipleRows,
+                'slds-grid_vertical-stretch': this.verticalAlign === 'stretch',
                 'slds-grid_vertical-align-start':
                     this.verticalAlign === 'start',
                 'slds-grid_vertical-align-center':
@@ -188,7 +190,11 @@ export default class Layout extends LightningElement {
      */
     initResizeObserver() {
         if (!this.wrapper) return;
+        this.dispatchSizeChange();
+
         this._resizeObserver = new AvonniResizeObserver(this.wrapper, () => {
+            this.dispatchSizeChange();
+
             Object.values(this._items).forEach((item) => {
                 item.setContainerSize(this.width);
             });
@@ -222,5 +228,31 @@ export default class Layout extends LightningElement {
         event.stopPropagation();
         const name = event.detail.name;
         delete this._items[name];
+    }
+
+    /**
+     * Dispatch the `sizechange` event when the layout width changes.
+     */
+    dispatchSizeChange() {
+        const newWidth = this.width;
+        if (this._previousWidth !== newWidth) {
+            this._previousWidth = newWidth;
+
+            /**
+             * The event fired when the layout width changes.
+             *
+             * @event
+             * @name sizechange
+             * @param {string} width Current width of the layout: default, small, medium or large.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('sizechange', {
+                    detail: {
+                        width: newWidth
+                    }
+                })
+            );
+        }
     }
 }

@@ -404,10 +404,11 @@ export const Weekly = Template.bind({});
 Weekly.args = {
     label: 'Date picker',
     fieldLevelHelp: 'Pick one or several time slots',
+    value: '2021-03-16T12:30:00.00Z',
     disabledDateTimes: [
         'Wed',
-        new Date('2021-03-16T12:00:00.00Z'),
-        new Date('2021-03-16T13:00:00.00Z')
+        '2021-03-15',
+        new Date('2021-03-16T13:50:00.00Z')
     ],
     showTimeZone: true,
     required: true,

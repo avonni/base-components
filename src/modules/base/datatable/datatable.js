@@ -22,6 +22,7 @@ import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import lookup from './lookup.html';
+import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -40,10 +41,11 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'color-picker',
     'combobox',
     'counter',
-    'date-range',
     'dynamic-icon',
+    'date-range',
     'image',
     'toggle',
+    'percent-formatted',
     'progress-bar',
     'qrcode',
     'rating',
@@ -58,6 +60,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'counter',
     'date-range',
     'lookup',
+    'percent-formatted',
     'rating',
     'rich-text',
     'slider',
@@ -180,6 +183,17 @@ export default class Datatable extends LightningDatatable {
             template: lookup,
             typeAttributes: ['path', 'target']
         },
+        'percent-formatted': {
+            template: percentFormatted,
+            typeAttributes: [
+                'maximumFractionDigits',
+                'maximumSignificantDigits',
+                'minimumFractionDigits',
+                'minimumIntegerDigits',
+                'minimumSignificantDigits',
+                'step'
+            ]
+        },
         'progress-bar': {
             template: progressBar,
             typeAttributes: [
@@ -301,11 +315,7 @@ export default class Datatable extends LightningDatatable {
         this.template.addEventListener(
             'getdatatablestateandcolumns',
             (event) => {
-                event.detail.callbacks.getStateAndColumns(
-                    this.state,
-                    this.columns,
-                    this.primitiveWidthsData.columnWidths
-                );
+                event.detail.callbacks.getStateAndColumns(this);
             }
         );
         this.template.addEventListener('getcomboboxoptions', (event) => {
@@ -556,7 +566,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set loadMoreOffset(value) {
-        if (value === undefined) return;
         super.loadMoreOffset = value;
     }
 
@@ -572,7 +581,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxColumnWidth(value) {
-        if (value === undefined) return;
         super.maxColumnWidth = value;
     }
 
@@ -588,7 +596,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxRowSelection(value) {
-        if (value === undefined) return;
+        if (
+            this.maxRowSelection === 1 &&
+            (value === undefined || value === null)
+        ) {
+            // Patch for a bug in the Lightning Datatable:
+            // If the maxRowSelection was 1 and it is removed,
+            // the radio buttons are not changed into checkboxes.
+            super.maxRowSelection = 2;
+        }
         super.maxRowSelection = value;
     }
 
@@ -721,6 +737,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make scrollable y container accessible.
+     * @public
+     * @type {Element}
+     */
+    @api
+    get scrollerY() {
+        return this.template.querySelector('.slds-scrollable_y');
+    }
+
+    /**
      * Enables programmatic row selection with a list of key-field values.
      * @public
      * @type {string[]}
@@ -815,9 +841,42 @@ export default class Datatable extends LightningDatatable {
 
     /*
      * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get wrapText() {
+        return this.state.wrapText;
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Set the focus on the first cell of a given row.
+     *
+     * @param {string} rowKeyField The key field value of the row to focus.
+     * @public
+     */
+    @api
+    focusRow(rowKeyField) {
+        const row = this.template.querySelector(
+            `[data-row-key-value="${rowKeyField}"]`
+        );
+        if (row) {
+            const cell = row.querySelector(':first-child');
+
+            if (cell) {
+                const colKeyValue = cell.dataset.colKeyValue;
+                this.setActiveCell(rowKeyField, colKeyValue);
+                this.state.cellClicked = true;
+                cell.focus();
+            }
+        }
+    }
 
     /**
      * Gets a row height.
@@ -841,6 +900,17 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Calls the resize column method of lightning-datatable.
+     *
+     * @param {event} event
+     * @public
+     */
+    @api
+    resizeColumn(event) {
+        super.handleResizeColumn(event);
+    }
+
+    /**
      * Sets the height of a row.
      *
      * @param {string} rowKeyField The key field value of the row.
@@ -859,15 +929,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Scroll the inner table back to the top.
+     * Scroll the inner table to the top.
      *
      * @public
      */
     @api
-    scrollToTop() {
+    scrollToTop(y = 0) {
         const scrollable_y = this.template.querySelector('.slds-scrollable_y');
         if (scrollable_y) {
-            scrollable_y.scrollTop = 0;
+            scrollable_y.scrollTop = y;
         }
     }
 

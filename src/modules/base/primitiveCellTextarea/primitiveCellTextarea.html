@@ -12,7 +12,6 @@
             max-length={maxLength}
             min-length={minLength}
             placeholder={placeholder}
-            style={computedPanelStyle}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -22,7 +21,7 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <div class="slds-truncate">
+            <div class={computedWrapTextClass}>
                 <lightning-formatted-text
                     value={value}
                 ></lightning-formatted-text>
