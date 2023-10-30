@@ -901,6 +901,17 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Calls the resize column method of lightning-datatable.
+     *
+     * @param {event} event
+     * @public
+     */
+    @api
+    resizeColumn(event) {
+        super.handleResizeColumn(event);
+    }
+
+    /**
      * Sets the height of a row.
      *
      * @param {string} rowKeyField The key field value of the row.
