@@ -20,7 +20,6 @@ import {
     startPositioning,
     stopPositioning
 } from 'c/positionLibrary';
-
 import filterMenuVertical from './filterMenuVertical.html';
 import filterMenu from './filterMenu.html';
 import Item from './item';

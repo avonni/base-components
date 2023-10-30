@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -672,10 +670,10 @@ export default class Image extends LightningElement {
                 'avonni-image_fluid-grow': this.fluidGrow,
                 'avonni-image_thumbnail': this.thumbnail,
                 'slds-float_left':
-                    this._position === 'left' && this._lazyLoading === 'auto',
-                'slds-float_right': this._position === 'right',
-                'slds-align_absolute-center': this._position === 'center',
-                'slds-show': this._position === 'center',
+                    this.position === 'left' && this._lazyLoading === 'auto',
+                'slds-float_right': this.position === 'right',
+                'slds-align_absolute-center': this.position === 'center',
+                'slds-show': this.position === 'center',
                 'avonni-image__container_compare-labels-on-hover':
                     this.compareAttributes.showLabelsOnHover,
                 'avonni-image__container_user-select_none': this.compareSrc

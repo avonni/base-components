@@ -1,5 +1,3 @@
-
-
 :host {
     display: block;
 }
@@ -27,7 +25,7 @@
 
 .slds-checkbox_button {
     border-left: none;
-    border-bottom: 1px solid #dddbda;
+    border-bottom: 1px solid #747474;
 }
 
 .avonni-input-choice-set__option-label {
@@ -39,7 +37,7 @@
 }
 
 .slds-checkbox_button.avonni-input-choice-set__horizontal:not(:last-child) {
-    border-right: 1px solid #dddbda;
+    border-right: 1px solid #747474;
 }
 
 .avonni-input-choice-set__display_flex {
@@ -88,7 +86,7 @@
 .avonni-input-choice-set__button__row
     [type='checkbox']
     + .slds-checkbox_button__label {
-    border: 1px solid #dddbda;
+    border: 1px solid #747474;
     border-radius: 0.25rem;
 }
 
@@ -102,7 +100,7 @@
 
 .avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch
     .slds-checkbox_button:not(:last-child) {
-    border-right: 1px solid #dddbda;
+    border-right: 1px solid #747474;
 }
 
 .avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch

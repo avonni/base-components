@@ -1,5 +1,3 @@
-
-
 .avonni-list__full-height {
     max-height: 100%;
 }
@@ -263,13 +261,13 @@ a.avonni-list__item-info-link:active {
 .avonni-list__item-divider_top {
     border-top-width: var(--avonni-list-item-sizing-border, 1px);
     border-top-style: var(--avonni-list-item-styling-border, solid);
-    border-top-color: var(--avonni-list-item-color-border, #dddbda);
+    border-top-color: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-divider_bottom {
     border-bottom-width: var(--avonni-list-item-sizing-border, 1px);
     border-bottom-style: var(--avonni-list-item-styling-border, solid);
-    border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
+    border-bottom-color: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-divider_around {
@@ -279,7 +277,7 @@ a.avonni-list__item-info-link:active {
     );
     --avonni-card-sizing-border: var(--avonni-list-item-sizing-border, 1px);
     --avonni-card-styling-border: var(--avonni-list-item-styling-border, solid);
-    --avonni-card-color-border: var(--avonni-list-item-color-border, #c9c9c9);
+    --avonni-card-color-border: var(--avonni-list-item-color-border, #747474);
 }
 
 .avonni-list__item-header_font {

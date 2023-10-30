@@ -1,20 +1,18 @@
-
-
 <template>
     <div class="slds-grid slds-grid_vertical avonni-list__full-height">
         <div class="slds-grid slds-grid_vertical avonni-list__full-height">
             <p
                 if:true={label}
-                data-element-id="label"
                 class="slds-m-bottom_x-small avonni-list__header_font"
+                data-element-id="label"
             >
                 {label}
             </p>
             <span
-                id="instructions"
-                class="slds-assistive-text"
-                aria-live="assertive"
                 lwc:dom="manual"
+                class="slds-assistive-text"
+                id="instructions"
+                aria-live="assertive"
             ></span>
 
             <span
@@ -30,27 +28,27 @@
             onscroll={handleScroll}
         >
             <div
+                if:true={showPaginationButtons}
                 class="
                     avonni-list__flex-col
                     avonni-list__page-change-button-container
                 "
-                if:true={showPaginationButtons}
             >
                 <lightning-button-icon
+                    class="avonni-list__page-change-button"
                     alternative-text="Previous Items"
                     disabled={previousPageDisabled}
-                    class="avonni-list__page-change-button"
-                    data-element-id="previous-page-button"
                     icon-name="utility:chevronleft"
                     size="large"
                     variant="bare"
+                    data-element-id="previous-page-button"
                     onclick={previousPage}
                 ></lightning-button-icon>
             </div>
             <ul
                 class={computedListClass}
-                data-element-id="list-element"
                 role={menuRole}
+                data-element-id="list-element"
                 onclick={handleListClick}
             >
                 <template
@@ -59,9 +57,16 @@
                     for:index="index"
                 >
                     <li
-                        role={itemRole}
                         class={computedItemWrapperClass}
+                        aria-describedby="instructions"
+                        aria-label={item.label}
                         key={generateKey}
+                        role={itemRole}
+                        tabindex="0"
+                        data-name={item.name}
+                        data-element-id="li-item"
+                        data-index={item.index}
+                        data-element-temp-index={item.index}
                         onmousedown={dragStart}
                         onmousemove={drag}
                         onmouseup={handleItemMouseUp}
@@ -70,13 +75,6 @@
                         ontouchmove={drag}
                         onkeydown={handleKeyDown}
                         onclick={handleItemClick}
-                        data-index={item.index}
-                        data-element-temp-index={item.index}
-                        tabindex="0"
-                        aria-label={item.label}
-                        data-name={item.name}
-                        aria-describedby="instructions"
-                        data-element-id="li-item"
                     >
                         <div
                             class={computedItemClass}
@@ -145,8 +143,8 @@
                                                 loading="lazy"
                                                 style={computedImageStyle}
                                                 class={computedImageMediaClass}
-                                                src={item.imageSrc}
                                                 draggable="false"
+                                                src={item.imageSrc}
                                                 data-element-id="list-img-media"
                                                 data-item-index={item.index}
                                                 onerror={handleItemImageError}
@@ -183,19 +181,19 @@
                                             if:true={item.isAvatarLeft}
                                             class={item.computedAvatarClass}
                                             fallback-icon-name={item.avatar.fallbackIconName}
-                                            src={item.avatar.src}
-                                            size={item.avatar.size}
+                                            hide-avatar-details="true"
                                             initials={item.avatar.initials}
-                                            onmousedown={handleAvatarDragStart}
-                                            variant={item.avatar.variant}
                                             presence={item.avatar.presence}
                                             presence-position={item.avatar.presencePosition}
-                                            hide-avatar-details="true"
+                                            size={item.avatar.size}
+                                            src={item.avatar.src}
+                                            variant={item.avatar.variant}
                                             data-element-id="avonni-avatar"
+                                            onmousedown={handleAvatarDragStart}
                                         ></c-avatar>
                                         <div
-                                            data-element-id="avonni-list-item-body-text-color"
                                             class={item.computedTextColor}
+                                            data-element-id="avonni-list-item-body-text-color"
                                         >
                                             <!-- Item label and icons -->
                                             <div
@@ -209,15 +207,15 @@
                                                     if:true={item.isAvatarLeftOfTitle}
                                                     class={item.computedAvatarClass}
                                                     fallback-icon-name={item.avatar.fallbackIconName}
-                                                    src={item.avatar.src}
-                                                    size={item.avatar.size}
+                                                    hide-avatar-details="true"
                                                     initials={item.avatar.initials}
-                                                    onmousedown={handleAvatarDragStart}
-                                                    variant={item.avatar.variant}
                                                     presence={item.avatar.presence}
                                                     presence-position={item.avatar.presencePosition}
-                                                    hide-avatar-details="true"
+                                                    size={item.avatar.size}
+                                                    src={item.avatar.src}
+                                                    variant={item.avatar.variant}
                                                     data-element-id="avonni-avatar"
+                                                    onmousedown={handleAvatarDragStart}
                                                 ></c-avatar>
                                                 <div
                                                     class="
@@ -228,10 +226,10 @@
                                                 >
                                                     <a
                                                         if:true={item.href}
-                                                        href={item.href}
                                                         class="
                                                             avonni-list__item-header-link
                                                         "
+                                                        href={item.href}
                                                         >{item.label}</a
                                                     >
                                                     <template
@@ -258,11 +256,11 @@
                                                             "
                                                         >
                                                             <lightning-icon
-                                                                icon-name={icon}
-                                                                size="xx-small"
                                                                 class="
                                                                     slds-p-around_xxx-small
                                                                 "
+                                                                icon-name={icon}
+                                                                size="xx-small"
                                                             ></lightning-icon>
                                                         </span>
                                                     </template>
@@ -271,15 +269,15 @@
                                                     if:true={item.isAvatarRightOfTitle}
                                                     class={item.computedAvatarClass}
                                                     fallback-icon-name={item.avatar.fallbackIconName}
-                                                    src={item.avatar.src}
-                                                    size={item.avatar.size}
+                                                    hide-avatar-details="true"
                                                     initials={item.avatar.initials}
-                                                    onmousedown={handleAvatarDragStart}
-                                                    variant={item.avatar.variant}
                                                     presence={item.avatar.presence}
                                                     presence-position={item.avatar.presencePosition}
-                                                    hide-avatar-details="true"
+                                                    size={item.avatar.size}
+                                                    src={item.avatar.src}
+                                                    variant={item.avatar.variant}
                                                     data-element-id="avonni-avatar"
+                                                    onmousedown={handleAvatarDragStart}
                                                 ></c-avatar>
                                             </div>
 
@@ -315,10 +313,10 @@
                                                         class="slds-item"
                                                     >
                                                         <a
-                                                            href={info.href}
                                                             class="
                                                                 avonni-list__item-info-link
                                                             "
+                                                            href={info.href}
                                                             >{info.label}</a
                                                         >
                                                     </li>
@@ -328,15 +326,15 @@
                                             <!-- Fields -->
                                             <div
                                                 if:true={item.fields}
-                                                aria-hidden="false"
                                                 class="
                                                     slds-m-top_xx-small
                                                     avonni-list__item-fields-container
                                                 "
+                                                aria-hidden="false"
                                             >
                                                 <c-layout
-                                                    data-element-id="fields-container"
                                                     multiple-rows
+                                                    data-element-id="fields-container"
                                                 >
                                                     <template
                                                         for:each={item.fields}
@@ -348,16 +346,16 @@
                                                             class="
                                                                 slds-truncate
                                                             "
-                                                            size={fieldAttributes.cols}
                                                             large-container-size={fieldAttributes.largeContainerCols}
                                                             medium-container-size={fieldAttributes.mediumContainerCols}
+                                                            size={fieldAttributes.cols}
                                                             small-container-size={fieldAttributes.smallContainerCols}
                                                         >
                                                             <c-output-data
                                                                 label={field.label}
-                                                                value={field.value}
                                                                 type={field.type}
                                                                 type-attributes={field.typeAttributes}
+                                                                value={field.value}
                                                                 variant={fieldAttributes.variant}
                                                             ></c-output-data>
                                                         </c-layout-item>
@@ -369,15 +367,15 @@
                                             if:true={item.isAvatarRight}
                                             class={item.computedAvatarClass}
                                             fallback-icon-name={item.avatar.fallbackIconName}
-                                            src={item.avatar.src}
-                                            size={item.avatar.size}
+                                            hide-avatar-details="true"
                                             initials={item.avatar.initials}
-                                            onmousedown={handleAvatarDragStart}
-                                            variant={item.avatar.variant}
                                             presence={item.avatar.presence}
                                             presence-position={item.avatar.presencePosition}
-                                            hide-avatar-details="true"
+                                            size={item.avatar.size}
+                                            src={item.avatar.src}
+                                            variant={item.avatar.variant}
                                             data-element-id="avonni-avatar"
+                                            onmousedown={handleAvatarDragStart}
                                         ></c-avatar>
                                     </div>
 
@@ -409,8 +407,8 @@
                                             button-icon-size={actionButtonIconSize}
                                             button-icon-variant={actionButtonIconVariant}
                                             visible-actions={computedVisibleActions}
-                                            data-item-index={item.index}
                                             data-element-id="primitive-actions"
+                                            data-item-index={item.index}
                                             onclick={stopPropagation}
                                             onmousedown={stopPropagation}
                                             ontouchstart={stopPropagation}
@@ -423,7 +421,6 @@
                     </li>
                 </template>
                 <li
-                    data-element-id="loading-spinner-container"
                     class="
                         avonni-list__flex-col
                         slds-size_12-of-12
@@ -431,38 +428,39 @@
                         avonni-list__lower-spinner
                         slds-hide
                     "
+                    data-element-id="loading-spinner-container"
                 >
                     <lightning-spinner
-                        data-element-id="loading-spinner-below"
-                        size="small"
                         class="slds-spinner_container"
                         alternative-text="Loading..."
+                        size="small"
+                        data-element-id="loading-spinner-below"
                     ></lightning-spinner>
                 </li>
             </ul>
             <div
+                if:true={showPaginationButtons}
                 class="
                     avonni-list__flex-col
                     slds-is-relative
                     avonni-list__page-change-button-container
                 "
-                if:true={showPaginationButtons}
             >
                 <lightning-button-icon
-                    alternative-text="Next Items"
                     class="avonni-list__page-change-button"
+                    alternative-text="Next Items"
                     disabled={nextPageDisabled}
-                    data-element-id="next-page-button"
                     icon-name="utility:chevronright"
                     size="large"
                     variant="bare"
+                    data-element-id="next-page-button"
                     onclick={nextPage}
                 ></lightning-button-icon>
                 <lightning-spinner
                     if:true={isLoading}
-                    size="small"
                     class="slds-spinner_container"
                     alternative-text="Loading..."
+                    size="small"
                 ></lightning-spinner>
             </div>
         </div>

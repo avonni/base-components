@@ -1,5 +1,3 @@
-
-
 import { ScopedNotification } from '../__examples__/scopedNotification';
 import { NoSlotScopedNotification } from '../__examples__/noSlotScopedNotification';
 

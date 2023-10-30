@@ -44,7 +44,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-error-color-background
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
@@ -104,7 +104,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-warning-color-background
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**

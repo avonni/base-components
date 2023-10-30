@@ -1,5 +1,3 @@
-
-
 import Component from '../inputChoiceSet';
 
 customElements.define(

@@ -11,7 +11,6 @@ import {
     isSelectedRow,
     processInlineEditFinishCustom
 } from './inlineEdit';
-
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';

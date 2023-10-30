@@ -1,5 +1,3 @@
-
-
 import { Panel } from '../__examples__/panel';
 import { PanelWithButtons } from '../__examples__/panelWithButtons';
 import { PanelWithDatatable } from '../__examples__/panelWithDatatable';

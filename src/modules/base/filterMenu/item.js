@@ -1,5 +1,3 @@
-
-
 import { classSet } from 'c/utils';
 
 export default class FilterMenuItem {

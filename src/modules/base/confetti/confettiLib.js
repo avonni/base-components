@@ -1,5 +1,3 @@
-
-
 /* eslint-disable no-shadow */
 /* eslint-disable vars-on-top */
 /* eslint-disable no-unused-expressions */

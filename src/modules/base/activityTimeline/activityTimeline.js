@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api, track } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';

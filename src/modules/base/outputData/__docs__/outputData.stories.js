@@ -1,5 +1,3 @@
-
-
 import { OutputData } from '../__examples__/outputData';
 
 export default {

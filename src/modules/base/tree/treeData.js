@@ -1,5 +1,3 @@
-
-
 import { getTreeNode } from './treeNode';
 
 /**

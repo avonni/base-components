@@ -1,5 +1,3 @@
-
-
 // Closure to hold the APIs if and when available
 let DispatcherCount = 1;
 const Dispatchers = {};

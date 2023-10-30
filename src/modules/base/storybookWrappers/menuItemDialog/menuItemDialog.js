@@ -1,8 +1,6 @@
-
-
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_TAB_INDEX = '0'
+const DEFAULT_TAB_INDEX = '0';
 
 export default class MenuItemDialog extends LightningElement {
     @api value;

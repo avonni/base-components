@@ -1,5 +1,3 @@
-
-
 import Component from '../tabBar';
 
 customElements.define(

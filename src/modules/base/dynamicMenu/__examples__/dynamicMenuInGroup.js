@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/dynamicMenu/dynamicMenuInGroup';
 
 customElements.define(

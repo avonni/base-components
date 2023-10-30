@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/slider/customLabelSlider/customLabelSlider';
 
 customElements.define(

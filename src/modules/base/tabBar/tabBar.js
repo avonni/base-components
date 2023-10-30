@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api, track } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';

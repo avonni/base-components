@@ -1,7 +1,4 @@
-
-
-.avonni-primitive-combobox__option
-    .avonni-primitive-combobox__option.avonni-primitive-combobox__option_disabled {
+.avonni-primitive-combobox__option .avonni-primitive-combobox__option.avonni-primitive-combobox__option_disabled {
     background: var(--avonni-combobox-option-color-background, transparent);
 }
 
@@ -19,8 +16,6 @@
     color: #dddbda;
 }
 
-.avonni-primitive-combobox__option_disabled
-    .slds-media__body
-    .slds-listbox__option-icon {
+.avonni-primitive-combobox__option_disabled .slds-media__body .slds-listbox__option-icon {
     --avonni-avatar-fallback-icon-color-background: #dddbda;
 }

@@ -1,5 +1,3 @@
-
-
 import { Tree } from '../__examples__/tree';
 import {
     ACTIONS,

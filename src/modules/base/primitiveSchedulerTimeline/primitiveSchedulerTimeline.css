@@ -54,9 +54,7 @@
 }
 
 .avonni-scheduler__header_vertical {
-    --avonni-primitive-scheduler-header-group-label-position-top: calc(
-        var(--vertical-resources-row-height) + 12px
-    );
+    --avonni-primitive-scheduler-header-group-label-position-top: calc(var(--vertical-resources-row-height) + 12px);
 }
 
 .avonni-scheduler__vertical-header-wrapper {

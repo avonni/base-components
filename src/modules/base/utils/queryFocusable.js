@@ -1,5 +1,3 @@
-
-
 const inputableNode = /input|select|textarea|button|object/;
 
 function visible(element) {

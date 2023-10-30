@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/confetti/base';
 
 customElements.define('ac-base-confetti', Component.CustomElementConstructor);

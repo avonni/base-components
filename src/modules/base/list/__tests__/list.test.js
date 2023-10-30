@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
 import List from 'c/list';

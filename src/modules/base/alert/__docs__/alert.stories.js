@@ -1,5 +1,3 @@
-
-
 import { Alert } from '../__examples__/alert';
 
 export default {

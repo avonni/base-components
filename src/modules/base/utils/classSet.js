@@ -1,5 +1,3 @@
-
-
 const proto = {
     add(className) {
         if (typeof className === 'string') {

@@ -1,5 +1,3 @@
-
-
 import { fetchIconLibrary, getIconLibrary } from './fetch';
 
 const DEFAULT_ICON_NAME = 'empty';

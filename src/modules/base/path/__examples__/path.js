@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/path';
 
 customElements.define('ac-path', Component.CustomElementConstructor);

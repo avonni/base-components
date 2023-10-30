@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/wizard/beforeChange';
 
 customElements.define(

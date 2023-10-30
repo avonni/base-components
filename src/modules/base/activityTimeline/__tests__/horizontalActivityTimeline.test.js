@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
 import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
@@ -76,19 +74,29 @@ describe('Horizontal Activity Timeline', () => {
     // minDate and maxDate : first and last elements of sortedItems
     it('Horizontal Activity Timeline: minDate and maxDate', () => {
         const defaultFormat = 'dd/MM/yyyy';
-        expect(element.convertDateToFormat(element.minDate, defaultFormat)).toBe('01/01/2022');
-        expect(element.convertDateToFormat(element.maxDate, defaultFormat)).toBe('14/03/2022');
+        expect(
+            element.convertDateToFormat(element.minDate, defaultFormat)
+        ).toBe('01/01/2022');
+        expect(
+            element.convertDateToFormat(element.maxDate, defaultFormat)
+        ).toBe('14/03/2022');
     });
 
     // scrollAxisMaxDate (15 days after maxDate) and scrollAxisMinDate (15 days before minDate)
     it('Horizontal Activity Timeline: scrollAxisMaxDate and scrollAxisMinDate', () => {
         const defaultFormat = 'dd/MM/yyyy';
-        expect(element.convertDateToFormat(element.scrollAxisMinDate, defaultFormat)).toBe(
-            '17/12/2021'
-        );
-        expect(element.convertDateToFormat(element.scrollAxisMaxDate, defaultFormat)).toBe(
-            '29/03/2022'
-        );
+        expect(
+            element.convertDateToFormat(
+                element.scrollAxisMinDate,
+                defaultFormat
+            )
+        ).toBe('17/12/2021');
+        expect(
+            element.convertDateToFormat(
+                element.scrollAxisMaxDate,
+                defaultFormat
+            )
+        ).toBe('29/03/2022');
     });
 
     /* ----- METHODS ----- */
@@ -187,39 +195,39 @@ describe('Horizontal Activity Timeline', () => {
         const invalidDateItems = [
             {
                 name: 'item1',
-                datetimeValue: '13/01/2022 11:30',  // invalid month
+                datetimeValue: '13/01/2022 11:30' // invalid month
             },
             {
                 name: 'item2',
-                datetimeValue: 'Not a date',        // no date
+                datetimeValue: 'Not a date' // no date
             },
             {
                 name: 'item3',
-                datetimeValue: '',                  // empty input
+                datetimeValue: '' // empty input
             },
             {
                 name: 'item4',
-                datetimeValue: '01/32/2022 11:30',  // invalid day
+                datetimeValue: '01/32/2022 11:30' // invalid day
             },
             {
                 name: 'item5',
-                datetimeValue: '01/01/-122',        // invalid  year
+                datetimeValue: '01/01/-122' // invalid  year
             },
             {
                 name: 'item6',
-                datetimeValue: '01/01/2000 40:02',  // invalid time
+                datetimeValue: '01/01/2000 40:02' // invalid time
             },
             {
                 name: 'item7',
-                datetimeValue: null,                // null
+                datetimeValue: null // null
             },
             {
-                name: 'item8',                      // no date
+                name: 'item8' // no date
             },
             {
                 name: 'item9',
-                datetimeValue: undefined,           // undefined
-            },
+                datetimeValue: undefined // undefined
+            }
         ];
         element.addValidItemsToData(invalidDateItems);
         expect(element._sortedItems.length).toBe(0);

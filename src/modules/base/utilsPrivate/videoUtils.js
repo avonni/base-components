@@ -1,5 +1,3 @@
-
-
 const ALLOWED_DOMAINS = new Set([
     'www.youtube.com',
     'player.vimeo.com',

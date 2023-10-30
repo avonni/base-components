@@ -62,7 +62,7 @@
 }
 
 .avonni-scheduler__calendar-day-header-wrapper:not(.avonni-scheduler__calendar-day-header-wrapper_month) {
-    border-bottom: 2px solid #c9c9c9;
+    border-bottom: 2px solid #747474;
 }
 
 .avonni-scheduler__calendar-show-more-popover {
@@ -81,7 +81,7 @@
 
 .avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell {
     border-right-color: var(--lwc-colorBorder, #e5e5e5);
-    border-bottom-color: #c9c9c9;
+    border-bottom-color: #747474;
 }
 
 .avonni-scheduler__calendar-month-grid .avonni-scheduler__calendar-cell_today {

@@ -1,5 +1,3 @@
-
-
 import { deepCopy } from './utility';
 
 export function normalizeString(value, config = {}) {

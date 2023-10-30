@@ -1,5 +1,3 @@
-
-
 import { VerticalProgressIndicator } from '../__examples__/verticalProgressIndicator';
 
 export default {

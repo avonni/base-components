@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 import { handleKeyDownOnMenuItem } from './keyboard';

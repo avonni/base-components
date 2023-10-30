@@ -79,12 +79,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-input-color-border
- * @default #dddbda
- * @type color
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-combobox-label-text-color
  * @default #3e3e3c
  * @type color
@@ -124,4 +118,10 @@
  * @name --avonni-combobox-input-sizing-border
  * @default 1px
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-input-color-border
+ * @default #747474
+ * @type color
  */

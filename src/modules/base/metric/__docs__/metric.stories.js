@@ -1,5 +1,3 @@
-
-
 import { Metric } from '../__examples__/metric';
 
 export default {

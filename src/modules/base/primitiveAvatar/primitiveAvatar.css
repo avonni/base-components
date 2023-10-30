@@ -1,5 +1,3 @@
-
-
 .avonni-avatar__display_inline-block {
     display: inline-block;
     border-radius: var(--avonni-avatar-radius-border, 0.25rem);
@@ -204,32 +202,24 @@
 }
 
 .avonni-avatar__status_approved {
-    background-color: var(
-        --avonni-avatar-status-approved-color-background,
-        #04844b
-    );
+    background-color: var(--avonni-avatar-status-approved-color-background,
+            #04844b);
 }
 
 .avonni-avatar__status_locked {
     color: #514f4d;
-    background-color: var(
-        --avonni-avatar-status-locked-color-background,
-        #ecebea
-    );
+    background-color: var(--avonni-avatar-status-locked-color-background,
+            #ecebea);
 }
 
 .avonni-avatar__status_declined {
-    background-color: var(
-        --avonni-avatar-status-declined-color-background,
-        #c23934
-    );
+    background-color: var(--avonni-avatar-status-declined-color-background,
+            #c23934);
 }
 
 .avonni-avatar__status_unknown {
-    background-color: var(
-        --avonni-avatar-status-unknown-color-background,
-        #706e6b
-    );
+    background-color: var(--avonni-avatar-status-unknown-color-background,
+            #706e6b);
 }
 
 .avonni-avatar_xx-small .avonni-avatar__status {
@@ -283,31 +273,23 @@
 */
 .avonni-avatar__actions {
     position: absolute;
-    --sds-c-button-radius-border: var(
-        --avonni-avatar-action-button-radius-border,
-        30px
-    );
-    --sds-c-button-spacing-block-end: var(
-        --avonni-avatar-action-button-spacing-block-end,
-        2px
-    );
+    --sds-c-button-radius-border: var(--avonni-avatar-action-button-radius-border,
+            30px);
+    --sds-c-button-spacing-block-end: var(--avonni-avatar-action-button-spacing-block-end,
+            2px);
 }
 
 .avonni-avatar-action-button {
-    background-color: var(
-        --avonni-avatar-action-button-color-background,
-        #ffffff
-    );
+    background-color: var(--avonni-avatar-action-button-color-background,
+            #ffffff);
     border-color: white;
     border-width: 2px;
     border-style: solid;
 }
 
 .avonni-avatar-action-button-icon {
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-avatar-action-button-color-foreground,
-        #706e6b
-    );
+    --sds-c-icon-color-foreground-default: var(--avonni-avatar-action-button-color-foreground,
+            #706e6b);
     width: inherit;
     display: flex;
 }
@@ -390,45 +372,33 @@
 }
 
 .avonni-avatar__presence_online {
-    background-color: var(
-        --avonni-avatar-presence-online-color-background,
-        #04844b
-    );
+    background-color: var(--avonni-avatar-presence-online-color-background,
+            #04844b);
 }
 
 .avonni-avatar__presence_busy {
-    background-color: var(
-        --avonni-avatar-presence-busy-color-background,
-        #bf0201
-    );
+    background-color: var(--avonni-avatar-presence-busy-color-background,
+            #bf0201);
 }
 
 .avonni-avatar__presence_focus {
-    background-color: var(
-        --avonni-avatar-presence-focus-color-background,
-        #1589ee
-    );
+    background-color: var(--avonni-avatar-presence-focus-color-background,
+            #1589ee);
 }
 
 .avonni-avatar__presence_offline {
-    background-color: var(
-        --avonni-avatar-presence-offline-color-background,
-        #3e3e3c
-    );
+    background-color: var(--avonni-avatar-presence-offline-color-background,
+            #3e3e3c);
 }
 
 .avonni-avatar__presence_blocked {
-    background-color: var(
-        --avonni-avatar-presence-blocked-color-background,
-        #ecebea
-    );
+    background-color: var(--avonni-avatar-presence-blocked-color-background,
+            #ecebea);
 }
 
 .avonni-avatar__presence_away {
-    background-color: var(
-        --avonni-avatar-presence-away-color-background,
-        #ff9a3c
-    );
+    background-color: var(--avonni-avatar-presence-away-color-background,
+            #ff9a3c);
 }
 
 /**
@@ -519,13 +489,7 @@
 * fallback icon
 */
 .avonni-avatar__icon {
-    --sds-c-icon-color-background: var(
-        --avonni-avatar-fallback-icon-color-background
-    );
-    --sds-c-icon-color-foreground: var(
-        --avonni-avatar-fallback-icon-color-foreground
-    );
-    --sds-c-icon-color-foreground-default: var(
-        --avonni-avatar-fallback-icon-color-foreground-default
-    );
+    --sds-c-icon-color-background: var(--avonni-avatar-fallback-icon-color-background);
+    --sds-c-icon-color-foreground: var(--avonni-avatar-fallback-icon-color-foreground);
+    --sds-c-icon-color-foreground-default: var(--avonni-avatar-fallback-icon-color-foreground-default);
 }

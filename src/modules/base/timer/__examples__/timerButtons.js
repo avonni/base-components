@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/timer/timerButtons';
 
 customElements.define(

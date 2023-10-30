@@ -102,14 +102,14 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-activity-timeline-item-fields-radius-border
- * @type color
+ * @type sizing
  * @default 0.25rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-activity-timeline-item-fields-color-border
  * @type color
- * @default #e5e5e5
+ * @default #c9c9c9
  */
 /**
  * @memberof stylingHooks

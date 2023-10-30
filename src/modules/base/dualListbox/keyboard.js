@@ -1,5 +1,3 @@
-
-
 import { keyCodes } from 'c/utilsPrivate';
 
 function preventDefaultAndStopPropagation(event) {

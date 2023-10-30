@@ -166,7 +166,7 @@
 .avonni-progress-bar__bar_theme-error {
     background-color: var(
         --avonni-progress-bar-bar-value-error-color-background,
-        #ea001e
+        #ba0517
     );
 }
 
@@ -243,7 +243,7 @@
 .avonni-progress-bar__bar_theme-warning {
     background-color: var(
         --avonni-progress-bar-bar-value-warning-color-background,
-        #fe9339
+        #dd7a01
     );
 }
 

@@ -1,5 +1,3 @@
-
-
 export function fullHexValue(hex) {
     if (Array.isArray(hex) && hex.length > 0) {
         hex = hex[0];

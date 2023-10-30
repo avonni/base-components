@@ -1,5 +1,3 @@
-
-
 import { numberFormat } from 'c/internationalizationLibrary';
 
 const NUMBER_SYMBOLS = ['+', '-'];

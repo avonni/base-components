@@ -1,5 +1,3 @@
-
-
 import { ColorPicker } from '../__examples__/colorPicker';
 import { colors, groups, tokens, tokenGroups } from './data';
 

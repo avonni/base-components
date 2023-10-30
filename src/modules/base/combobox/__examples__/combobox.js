@@ -1,5 +1,3 @@
-
-
 import Component from '../combobox';
 
 customElements.define('ac-base-combobox', Component.CustomElementConstructor);

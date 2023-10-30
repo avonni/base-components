@@ -1,5 +1,3 @@
-
-
 :host {
     outline: none;
 }
@@ -23,17 +21,11 @@
     background-color: transparent;
 }
 
-:host[aria-selected='true']
-    > .avonni-primitive-tree-item__single-selection
-    > .avonni-primitive-tree-item__item {
-    background: var(
-        --avonni-tree-item-color-background-selected,
-        rgba(21, 137, 238, 0.1)
-    );
-    -webkit-box-shadow: var(
-        --avonni-tree-item-shadow-selected,
-        #1b96ff 4px 0 0 inset
-    );
+:host[aria-selected='true']>.avonni-primitive-tree-item__single-selection>.avonni-primitive-tree-item__item {
+    background: var(--avonni-tree-item-color-background-selected,
+            rgba(21, 137, 238, 0.1));
+    -webkit-box-shadow: var(--avonni-tree-item-shadow-selected,
+            #1b96ff 4px 0 0 inset);
     box-shadow: var(--avonni-tree-item-shadow-selected, #1b96ff 4px 0 0 inset);
 }
 
@@ -81,15 +73,15 @@
     height: 2px;
     background-color: #747474;
     position: absolute;
-    left: var(
-        --avonni-tree-item-spacing-inline-start-border,
-        var(--avonni-tree-item-spacing-inline-left, 0)
-    );
+    left: var(--avonni-tree-item-spacing-inline-start-border,
+            var(--avonni-tree-item-spacing-inline-left, 0));
     right: 0;
 }
+
 .avonni-primitive-tree-item__item_border-bottom::after {
     bottom: 0;
 }
+
 .avonni-primitive-tree-item__item_border-top::before {
     top: 0;
 }
@@ -120,6 +112,7 @@
     -ms-flex-item-align: start;
     align-self: flex-start;
 }
+
 .avonni-primitive-tree-item__chevron_expanded {
     transform: rotate(90deg);
 }

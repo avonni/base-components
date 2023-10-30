@@ -1,5 +1,3 @@
-
-
 import { InputToggle } from '../__examples__/inputToggle';
 
 export default {

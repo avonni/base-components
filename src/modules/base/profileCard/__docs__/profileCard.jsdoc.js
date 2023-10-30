@@ -66,7 +66,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-profile-card-header-color-border-bottom
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -152,4 +152,28 @@
  * @name --avonni-profile-card-spacing-inline-end
  * @default 0px
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-radius-border
+ * @default 0.25rem
+ * @type radius
  */

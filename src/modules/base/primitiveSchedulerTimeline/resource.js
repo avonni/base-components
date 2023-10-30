@@ -1,5 +1,3 @@
-
-
 import { SchedulerCellGroup } from 'c/schedulerUtils';
 
 export default class SchedulerResource extends SchedulerCellGroup {

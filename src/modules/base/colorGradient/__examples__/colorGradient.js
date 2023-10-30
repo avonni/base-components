@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/colorGradient';
 
 customElements.define(

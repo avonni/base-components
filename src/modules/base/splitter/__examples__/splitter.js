@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/splitter/splitter';
 
 customElements.define('ac-base-splitter', Component.CustomElementConstructor);

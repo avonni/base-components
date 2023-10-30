@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/buttonDialog/buttonDialog';
 
 customElements.define(

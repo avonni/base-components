@@ -1,5 +1,3 @@
-
-
 import isIframeInEdge from './isIframeInEdge';
 
 const newerIEUA = /\bTrident\/[567]\b|\bMSIE (?:9|10)\.0\b/;

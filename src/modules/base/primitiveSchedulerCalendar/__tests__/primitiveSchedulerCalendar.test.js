@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import PrimitiveSchedulerCalendar from '../primitiveSchedulerCalendar';
 import { DateTime } from 'c/luxon';

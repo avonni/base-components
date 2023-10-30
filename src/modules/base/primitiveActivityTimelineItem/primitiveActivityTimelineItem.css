@@ -1,5 +1,3 @@
-
-
 .slds-timeline__icon.avonni-timeline-item__bullet {
     display: inline-block;
     position: relative;
@@ -146,7 +144,7 @@
     );
     border-color: var(
         --avonni-activity-timeline-item-fields-color-border,
-        #e5e5e5
+        #c9c9c9
     );
     padding-right: var(
         --avonni-activity-timeline-item-fields-spacing-inline,

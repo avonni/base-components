@@ -1,5 +1,3 @@
-
-
 import { Submenu } from '../__examples__/submenu';
 
 export default {

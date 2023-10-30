@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/wizard/base';
 
 customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);

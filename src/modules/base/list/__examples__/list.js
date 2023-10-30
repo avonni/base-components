@@ -1,5 +1,3 @@
-
-
 import Component from 'c/list';
 
 customElements.define('ac-base-list', Component.CustomElementConstructor);

@@ -1,5 +1,3 @@
-
-
 import { Wizard } from '../__examples__/wizard';
 import { ModalWizard } from '../__examples__/modal';
 import { BeforeChangeWizard } from '../__examples__/beforeChange';

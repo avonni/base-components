@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/panel/panelWithButtons';
 
 customElements.define(

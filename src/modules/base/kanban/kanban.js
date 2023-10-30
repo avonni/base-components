@@ -1,10 +1,7 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import kanban from './kanban.html';
 import kanbanSubGroups from './kanbanSubGroups.html';
-
 import { classSet } from 'c/utils';
 import {
     normalizeArray,

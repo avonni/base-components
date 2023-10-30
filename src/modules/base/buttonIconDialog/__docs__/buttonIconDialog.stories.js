@@ -1,5 +1,3 @@
-
-
 import { ButtonIconDialog } from '../__examples__/buttonIconDialog';
 
 export default {

@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/mediaObject/doubleMediaObject';
 
 customElements.define(

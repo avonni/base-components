@@ -1,5 +1,3 @@
-
-
 import { PageHeader } from '../__examples__/pageHeader';
 
 export default {

@@ -1,5 +1,3 @@
-
-
 import { VerticalSlider } from '../__examples__/verticalSlider';
 import { CustomLabelSlider } from '../__examples__/customLabelSlider';
 import { MaxHeightSlider } from '../__examples__/maxHeightSlider';

@@ -1,9 +1,4 @@
-
-
-.slds-checkbox
-    [type='checkbox'][disabled]
-    + .slds-checkbox__label
-    .slds-checkbox_faux {
+.slds-checkbox [type='checkbox'][disabled]+.slds-checkbox__label .slds-checkbox_faux {
     background-color: #ffffff;
     margin-right: 0;
 }

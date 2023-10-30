@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/separator/separator';
 
 customElements.define('ac-base-separator', Component.CustomElementConstructor);

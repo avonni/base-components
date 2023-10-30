@@ -35,27 +35,26 @@
                     if:false={readOnly}
                 >
                     <input
-                        type="text"
-                        id="start-date"
-                        class="slds-input start-date"
-                        value={startDateString}
+                        class="slds-input"
+                        autocomplete="off"
                         disabled={disabled}
                         required={required}
+                        type="text"
+                        value={startDateString}
+                        data-element-id="input-start-date"
                         onblur={handleBlurStartInput}
                         onclick={handleClickDateInput}
-                        data-element-id="input-start-date"
                         onkeydown={handleInputKeyDown}
-                        autocomplete="off"
                     />
                     <lightning-button-icon
-                        icon-name="utility:event"
-                        variant="bare"
-                        size="medium"
                         class="slds-input__icon slds-input__icon_right"
+                        icon-name="utility:event"
+                        size="medium"
+                        variant="bare"
+                        data-element-id="lightning-icon-start-date"
                         onclick={handleClickDateInput}
                         onblur={handleBlurStartButtonIcon}
                         onkeydown={handleInputKeyDown}
-                        data-element-id="lightning-icon-start-date"
                     ></lightning-button-icon>
                 </div>
                 <div
@@ -64,36 +63,36 @@
                     data-element-id="div-start-date-dropdown"
                 >
                     <c-focus-trap
+                        data-element-id="calendar-start-date-dialog"
                         onfocusout={handleStartCalendarFocusOut}
                         onfocusin={handleStartCalendarFocusIn}
                         onkeydown={handleCalendarDialogKeyDown}
-                        data-element-id="calendar-start-date-dialog"
                     >
                         <c-calendar
                             aria-label="Start date input calendar"
-                            value={calendarValue}
                             selection-mode={selectionModeStartDate}
                             timezone={timezone}
-                            onchange={handleChangeStartDate}
+                            value={calendarValue}
                             data-element-id="calendar-start-date"
+                            onchange={handleChangeStartDate}
                             data-is-focusable
                         ></c-calendar>
                         <div class="slds-align_absolute-center">
                             <lightning-button
-                                onclick={handleSelectStartToday}
-                                variant="base"
                                 label="Today"
+                                variant="base"
                                 data-element-id="select-start-today-button"
+                                onclick={handleSelectStartToday}
                                 data-is-focusable
                             ></lightning-button>
                         </div>
                     </c-focus-trap>
                 </div>
-                <p data-element-id="start-date" if:true={readOnly}>
+                <p if:true={readOnly} data-element-id="start-date">
                     {startDateString}
                 </p>
             </div>
-            <div class="slds-form-element" if:true={showTime}>
+            <div if:true={showTime} class="slds-form-element">
                 <label
                     if:true={labelStartTime}
                     class="
@@ -106,17 +105,17 @@
                 <lightning-input
                     if:false={readOnly}
                     class="start-time"
-                    type="time"
                     disabled={disabled}
-                    name="start-time"
                     label="Start time"
-                    variant="label-hidden"
-                    value={startTime}
+                    name="start-time"
+                    type="time"
                     time-style={timeStyle}
-                    onchange={handleChangeStartTime}
+                    value={startTime}
+                    variant="label-hidden"
                     data-element-id="lightning-input-start-time"
+                    onchange={handleChangeStartTime}
                 ></lightning-input>
-                <p data-element-id="start-time" if:true={readOnly}>
+                <p if:true={readOnly} data-element-id="start-time">
                     {startTimeString}
                 </p>
             </div>
@@ -131,33 +130,32 @@
                     >{labelEndDate}</label
                 >
                 <div
+                    if:false={readOnly}
                     class="
                         slds-form-element__control
                         slds-input-has-icon slds-input-has-icon_right
                     "
-                    if:false={readOnly}
                 >
                     <input
-                        type="text"
-                        id="end-date"
-                        class="slds-input end-date"
-                        value={endDateString}
+                        class="slds-input"
+                        autocomplete="off"
                         disabled={disabled}
+                        type="text"
+                        value={endDateString}
+                        data-element-id="input-end-date"
                         onblur={handleBlurEndInput}
                         onclick={handleClickDateInput}
-                        data-element-id="input-end-date"
                         onkeydown={handleInputKeyDown}
-                        autocomplete="off"
                     />
                     <lightning-button-icon
-                        icon-name="utility:event"
-                        variant="bare"
-                        size="medium"
                         class="slds-input__icon slds-input__icon_right"
+                        icon-name="utility:event"
+                        size="medium"
+                        variant="bare"
+                        data-element-id="lightning-icon-end-date"
                         onclick={handleClickDateInput}
                         onblur={handleBlurEndButtonIcon}
                         onkeydown={handleInputKeyDown}
-                        data-element-id="lightning-icon-end-date"
                     ></lightning-button-icon>
                 </div>
                 <div
@@ -166,36 +164,36 @@
                     data-element-id="div-end-date-dropdown"
                 >
                     <c-focus-trap
+                        data-element-id="calendar-end-date-dialog"
                         onfocusout={handleEndCalendarFocusOut}
                         onfocusin={handleEndCalendarFocusIn}
                         onkeydown={handleCalendarDialogKeyDown}
-                        data-element-id="calendar-end-date-dialog"
                     >
                         <c-calendar
                             aria-label="End date input calendar"
-                            value={calendarValue}
                             selection-mode={selectionModeEndDate}
                             timezone={timezone}
-                            onchange={handleChangeEndDate}
+                            value={calendarValue}
                             data-element-id="calendar-end-date"
+                            onchange={handleChangeEndDate}
                             data-is-focusable
                         ></c-calendar>
                         <div class="slds-align_absolute-center">
                             <lightning-button
-                                onclick={handleSelectEndToday}
-                                variant="base"
                                 label="Today"
+                                variant="base"
                                 data-element-id="select-end-today-button"
+                                onclick={handleSelectEndToday}
                                 data-is-focusable
                             ></lightning-button>
                         </div>
                     </c-focus-trap>
                 </div>
-                <p data-element-id="end-date" if:true={readOnly}>
+                <p if:true={readOnly} data-element-id="end-date">
                     {endDateString}
                 </p>
             </div>
-            <div class="slds-form-element" if:true={showTime}>
+            <div if:true={showTime} class="slds-form-element">
                 <label
                     if:true={labelEndTime}
                     class="
@@ -206,25 +204,24 @@
                     >{labelEndTime}</label
                 >
                 <lightning-input
-                    type="time"
                     if:false={readOnly}
-                    name="end-time"
                     label="end time"
-                    variant="label-hidden"
-                    value={endTime}
+                    name="end-time"
                     time-style={timeStyle}
+                    type="time"
+                    value={endTime}
+                    variant="label-hidden"
                     disabled={disabled}
-                    class="end-time"
                     data-element-id="lightning-input-end-time"
                     onchange={handleChangeEndTime}
                 ></lightning-input>
-                <p data-element-id="end-time" if:true={readOnly}>
+                <p if:true={readOnly} data-element-id="end-time">
                     {endTimeString}
                 </p>
             </div>
         </div>
     </div>
-    <div class="slds-has-error" if:true={helpMessage}>
+    <div if:true={helpMessage} class="slds-has-error">
         <div
             id="help-message"
             class="slds-form-element__help"

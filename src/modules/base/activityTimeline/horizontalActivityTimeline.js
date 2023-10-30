@@ -1,5 +1,3 @@
-
-
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import { createSVGIcon } from 'c/iconUtils';

@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/blockquote/blockquote';
 
 customElements.define('ac-base-blockquote', Component.CustomElementConstructor);

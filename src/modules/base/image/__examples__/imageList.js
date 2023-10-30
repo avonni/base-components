@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/image/imageList';
 
 customElements.define('ac-image-list', Component.CustomElementConstructor);

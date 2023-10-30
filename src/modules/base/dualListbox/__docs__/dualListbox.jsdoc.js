@@ -31,7 +31,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-option-text-color
- * @default #706e6b
+ * @default #181818
  * @type color
  */
 /**
@@ -43,7 +43,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-option-text-color-hover
- * @default #706e6b
+ * @default #181818
  * @type color
  */
 /**
@@ -55,13 +55,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-option-text-color-selected
- * @default #706e6b
+ * @default #181818
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-option-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -79,7 +79,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-dual-listbox-boxes-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**

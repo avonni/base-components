@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/slider/verticalSlider/verticalSlider';
 
 customElements.define('ac-vertical-slider', Component.CustomElementConstructor);

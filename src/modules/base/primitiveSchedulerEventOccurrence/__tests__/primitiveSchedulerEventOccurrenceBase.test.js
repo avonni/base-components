@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';
 import {

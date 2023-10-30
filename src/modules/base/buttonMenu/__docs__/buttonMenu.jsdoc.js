@@ -172,7 +172,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -190,7 +190,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-color-border-active
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -208,7 +208,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-color-border-hover
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -227,7 +227,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -245,7 +245,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-border-active
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -263,7 +263,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-border-hover
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -282,7 +282,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -557,13 +557,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-text-color
  * @type color
- * @default #ea001e
+ * @default #ba0517
  */
 /**
  * @memberof stylingHooks
@@ -575,7 +575,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-color-border-active
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -593,7 +593,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-color-border-hover
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -612,7 +612,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -630,7 +630,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border-active
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -648,7 +648,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border-hover
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -667,7 +667,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-neutral-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -685,7 +685,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-neutral-color-border-active
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -703,7 +703,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-neutral-color-border-hover
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks

@@ -1,5 +1,3 @@
-
-
 export function classListMutation(classList, config) {
     Object.keys(config).forEach((key) => {
         if (typeof key === 'string' && key.length) {

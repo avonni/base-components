@@ -1,21 +1,20 @@
-
-
 .faux_x-small {
     height: 0.75rem !important;
     width: 1.5rem !important;
 }
+
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_x-small {
     margin-top: 0.45rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_x-small::before,
+.label input:checked+.slds-checkbox_faux_container .faux_x-small::before,
 .label .slds-checkbox_faux_container .faux_x-small::after {
     height: 0.5rem;
     width: 0.5rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_x-small::after {
+.label input:checked+.slds-checkbox_faux_container .faux_x-small::after {
     height: 0.45rem;
     width: 0.3rem;
     left: 0.2rem;
@@ -26,18 +25,19 @@ label.slds-grid .faux_x-small {
     height: 1rem !important;
     width: 2rem !important;
 }
+
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_small {
     margin-top: 0.3rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_small::before,
+.label input:checked+.slds-checkbox_faux_container .faux_small::before,
 .label .slds-checkbox_faux_container .faux_small::after {
     height: 0.75rem;
     width: 0.75rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_small::after {
+.label input:checked+.slds-checkbox_faux_container .faux_small::after {
     height: 0.55rem;
     width: 0.4rem;
     left: 0.3rem;
@@ -49,20 +49,20 @@ label.slds-grid .faux_small {
     width: 3.5rem !important;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_large::before,
+.label input:checked+.slds-checkbox_faux_container .faux_large::before,
 .label .slds-checkbox_faux_container .faux_large::after {
     height: 1.5rem;
     width: 1.5rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_large::after {
+.label input:checked+.slds-checkbox_faux_container .faux_large::after {
     height: 1rem;
     width: 0.6rem;
     left: 0.6rem;
     top: 0.1rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_hide-mark::after {
+.label input:checked+.slds-checkbox_faux_container .faux_hide-mark::after {
     display: none;
 }
 

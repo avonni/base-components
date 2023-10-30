@@ -97,9 +97,13 @@ describe('Input Date Range', () => {
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date');
+            const startInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-start-date"]'
+            );
             expect(startInput.value).toBe(sDate);
-            const endInput = element.shadowRoot.querySelector('.end-date');
+            const endInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-end-date"]'
+            );
             expect(endInput.value).toBe(eDate);
         });
     });
@@ -121,9 +125,13 @@ describe('Input Date Range', () => {
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date');
+            const startInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-start-date"]'
+            );
             expect(startInput.value).toBe(start);
-            const endInput = element.shadowRoot.querySelector('.end-date');
+            const endInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-end-date"]'
+            );
             expect(endInput.value).toBe(end);
         });
     });
@@ -146,9 +154,13 @@ describe('Input Date Range', () => {
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date');
+            const startInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-start-date"]'
+            );
             expect(startInput.value).toBe(start);
-            const endInput = element.shadowRoot.querySelector('.end-date');
+            const endInput = element.shadowRoot.querySelector(
+                '[data-element-id="input-end-date"]'
+            );
             expect(endInput.value).toBe(end);
         });
     });
@@ -943,7 +955,9 @@ describe('Input Date Range', () => {
     // Input date range method focus
     it('Input date Range: method: focus', () => {
         let focusEvent = false;
-        const startInput = element.shadowRoot.querySelector('.start-date');
+        const startInput = element.shadowRoot.querySelector(
+            '[data-element-id="input-start-date"]'
+        );
         startInput.addEventListener('focus', () => {
             focusEvent = true;
         });
@@ -957,7 +971,9 @@ describe('Input Date Range', () => {
     // Input date range method blur
     it('Input date Range: method: blur', () => {
         let blurEvent = false;
-        const startInput = element.shadowRoot.querySelector('.start-date');
+        const startInput = element.shadowRoot.querySelector(
+            '[data-element-id="input-start-date"]'
+        );
 
         startInput.focus();
 

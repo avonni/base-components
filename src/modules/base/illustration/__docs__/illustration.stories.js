@@ -1,5 +1,3 @@
-
-
 import { Illustration } from '../__examples__/illustration';
 import { IllustrationWithSlot } from '../__examples__/illustrationWithSlot';
 

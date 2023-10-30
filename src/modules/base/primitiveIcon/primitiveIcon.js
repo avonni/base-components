@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString as normalize } from 'c/utilsPrivate';

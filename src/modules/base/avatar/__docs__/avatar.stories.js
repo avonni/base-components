@@ -1,5 +1,3 @@
-
-
 import { Avatar } from '../__examples__/avatar';
 import AvatarSizesComponent from './sizes/sizes';
 

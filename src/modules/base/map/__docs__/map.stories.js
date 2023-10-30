@@ -1,5 +1,3 @@
-
-
 import { Map } from '../__examples__/map';
 
 export default {

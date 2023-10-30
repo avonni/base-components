@@ -53,7 +53,7 @@
  * @memberof stylingHooks
  * @name --avonni-visual-picker-link-tile-color-background
  * @type color
- * @default rgb(255, 255, 255)
+ * @default #ffffff
  */
 /**
  * @memberof stylingHooks

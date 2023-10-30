@@ -1,5 +1,3 @@
-
-
 const PALETTE = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
     nightfall: [

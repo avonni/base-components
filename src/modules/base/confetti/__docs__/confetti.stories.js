@@ -1,5 +1,3 @@
-
-
 import { Confetti } from '../__examples__/confetti';
 
 export default {

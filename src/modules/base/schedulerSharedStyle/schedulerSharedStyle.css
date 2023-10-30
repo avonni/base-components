@@ -1,23 +1,21 @@
-
-
 .avonni-scheduler__flex-col {
     flex: 1 1 auto;
 }
 
 .avonni-scheduler__border_bottom {
-    border-bottom: 1px solid #c9c9c9;
+    border-bottom: 1px solid #747474;
 }
 
 .avonni-scheduler__border_right {
-    border-right: 1px solid #c9c9c9;
+    border-right: 1px solid #747474;
 }
 
 .avonni-scheduler__border_left {
-    border-left: 1px solid #c9c9c9;
+    border-left: 1px solid #747474;
 }
 
 .avonni-scheduler__border_top {
-    border-top: 1px solid #c9c9c9;
+    border-top: 1px solid #747474;
 }
 
 .avonni-scheduler__main-border_left {

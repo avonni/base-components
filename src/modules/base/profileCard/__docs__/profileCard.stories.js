@@ -1,5 +1,3 @@
-
-
 import { ProfileCard } from '../__examples__/profileCard';
 import { NoActionsProfileCard } from '../__examples__/noActions';
 

@@ -1,5 +1,3 @@
-
-
 import { TransformBuilder } from './transformBuilder';
 
 export class Constraint {

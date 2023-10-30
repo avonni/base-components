@@ -1,5 +1,3 @@
-
-
 .avonni-pill-container__wrapper {
     --slds-c-pill-container-color-background: var(
         --avonni-pill-container-color-background,
@@ -25,7 +23,7 @@
 }
 
 .avonni-pill-container__wrapper.slds-pill_container {
-    border-color: var(--avonni-pill-container-color-border, #e5e5e5);
+    border-color: var(--avonni-pill-container-color-border, #747474);
 }
 
 .avonni-pill-container__wrapper.avonni-pill-container__no-items {

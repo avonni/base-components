@@ -1,5 +1,3 @@
-
-
 // default implementation of localization service for en-US locale. This covers the current usage of the localizationService in the code base.
 // This should be removed when the framework team moves auraLocalizationService to a separate module
 import {

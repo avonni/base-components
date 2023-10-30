@@ -1,5 +1,3 @@
-
-
 import { ProgressRing } from '../__examples__/progressRing';
 
 export default {

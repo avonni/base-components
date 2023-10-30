@@ -1,8 +1,5 @@
-
-
 import { createElement } from 'lwc';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
-
 import Range from 'c/range';
 
 // Not tested because not used:

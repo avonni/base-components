@@ -1,5 +1,3 @@
-
-
 import { getElementOnXAxis, getElementOnYAxis } from './positions';
 
 /**

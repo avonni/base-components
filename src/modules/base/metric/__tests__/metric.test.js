@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import Metric from '../metric';
 import { Tooltip } from 'c/tooltipLibrary';

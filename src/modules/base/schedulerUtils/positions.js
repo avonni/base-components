@@ -1,5 +1,3 @@
-
-
 import {
     CELL_SELECTOR,
     MONTH_DAY_LABEL_HEIGHT,

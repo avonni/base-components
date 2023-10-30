@@ -1,5 +1,3 @@
-
-
 export default function fetchSvg(url) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();

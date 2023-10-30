@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
 import { baseItems, listViewItems } from '../__docs__/data';

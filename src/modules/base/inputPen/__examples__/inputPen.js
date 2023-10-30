@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/inputPen';
 
 customElements.define('ac-base-input-pen', Component.CustomElementConstructor);

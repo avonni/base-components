@@ -1,5 +1,3 @@
-
-
 class Transformer {
     constructor(pad, boxDirections, transformX, transformY) {
         this.pad = pad || 0;

@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import ProgressBar from 'c/progressBar';
 
@@ -136,9 +134,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const innerWrapper = element.shadowRoot.querySelector(
                 '.slds-progress-bar__value'
             );
@@ -162,9 +159,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const innerWrapper = element.shadowRoot.querySelector(
                 '.slds-progress-bar__value'
             );
@@ -570,14 +566,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -591,14 +597,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -612,14 +628,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -633,12 +659,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-alt-inverse');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-alt-inverse'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -652,14 +690,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -673,14 +721,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -694,14 +752,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -715,14 +783,24 @@ describe('ProgressBar', () => {
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-inverse'
+            );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
-            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
-            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-offline');
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-warning'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-info'
+            );
+            expect(innerWrapper.classList).not.toContain(
+                'avonni-progress-bar__bar_theme-error'
+            );
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-offline'
+            );
         });
     });
 
@@ -733,9 +811,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const primitives = element.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]-line'
             );
@@ -760,9 +837,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const primitives = element.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]-line'
             );
@@ -787,9 +863,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const primitives = element.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]-line'
             );
@@ -812,9 +887,8 @@ describe('ProgressBar', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             const primitives = element.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]-line'
             );
@@ -1117,9 +1191,8 @@ describe('ProgressBar', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             expect(outerWrapper.classList).not.toContain(
                 'slds-progress-bar_circular'
             );
@@ -1130,9 +1203,8 @@ describe('ProgressBar', () => {
         element.variant = 'circular';
 
         return Promise.resolve().then(() => {
-            const outerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar'
-            );
+            const outerWrapper =
+                element.shadowRoot.querySelector('.slds-progress-bar');
             expect(outerWrapper.classList).toContain(
                 'slds-progress-bar_circular'
             );

@@ -1,5 +1,3 @@
-
-
 .avonni-date-range__container {
     display: flex;
     align-items: flex-end;
@@ -31,7 +29,7 @@
 }
 
 .avonni-date-range__input_error {
-    box-shadow: #c23934 0 0 0 1px inset;
+    box-shadow: #ba0517 0 0 0 1px inset;
 }
 
 .avonni-input-date-range__labels {

@@ -1,5 +1,3 @@
-
-
 .avonni-pagination__container_fill {
     width: 100%;
 }
@@ -19,7 +17,7 @@
     );
     border-color: var(
         --avonni-pagination-button-color-border-disabled,
-        #c9c9c9
+        #747474
     );
     color: var(--avonni-pagination-button-text-color-disabled, #c9c9c9);
 }
@@ -31,7 +29,7 @@
     );
     border-color: var(
         --avonni-pagination-button-color-border,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-pagination-button-text-color,
@@ -47,7 +45,7 @@
     );
     border-color: var(
         --avonni-pagination-button-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-pagination-button-text-color-active,
@@ -62,7 +60,7 @@
     );
     border-color: var(
         --avonni-pagination-button-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-pagination-button-text-color-hover,

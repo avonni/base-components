@@ -1,5 +1,3 @@
-
-
 import { guid } from './guid';
 import { smartSetAttribute } from './smartSetAttribute';
 
@@ -196,9 +194,8 @@ export class ContentMutation {
             );
 
             if (content !== newContent) {
-                this.state[
-                    attrName
-                ].content = placeholder.textContent = newContent;
+                this.state[attrName].content = placeholder.textContent =
+                    newContent;
             }
             if (!placeholder.parentNode) {
                 const container = this.template.querySelector(

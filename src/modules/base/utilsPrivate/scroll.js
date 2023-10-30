@@ -1,5 +1,3 @@
-
-
 export function raf(fn) {
     let ticking = false;
     return function (event) {

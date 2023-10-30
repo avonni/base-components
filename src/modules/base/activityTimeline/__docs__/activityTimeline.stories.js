@@ -1,5 +1,3 @@
-
-
 import { ActivityTimeline } from '../__examples__/activityTimeline';
 import {
     actions,

@@ -1,5 +1,3 @@
-
-
 import { Timer } from '../__examples__/timer';
 import { TimerButtons } from '../__examples__/timerButtons';
 

@@ -1,5 +1,3 @@
-
-
 import Component from 'avonni/treeGrid';
 
 customElements.define('ac-base-tree-grid', Component.CustomElementConstructor);

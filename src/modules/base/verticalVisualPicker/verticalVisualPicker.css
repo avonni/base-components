@@ -1,5 +1,3 @@
-
-
 .avonni-vertical-visual-picker__figure {
     border-radius: var(
         --avonni-vertical-visual-picker-figure-radius-border,
@@ -15,7 +13,7 @@
     );
     border-color: var(
         --avonni-vertical-visual-picker-figure-color-border,
-        #dddbda
+        #c9c9c9
     );
     box-shadow: var(
         --avonni-vertical-visual-picker-figure-shadow-box,

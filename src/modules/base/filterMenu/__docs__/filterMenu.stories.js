@@ -1,5 +1,3 @@
-
-
 import { FilterMenu } from '../__examples__/filterMenu';
 import { FilterMenuInfiniteLoading } from '../__examples__/infiniteLoading';
 
@@ -41,6 +39,7 @@ export default {
             }
         },
         buttonVariant: {
+            name: 'button-variant',
             control: {
                 type: 'select'
             },

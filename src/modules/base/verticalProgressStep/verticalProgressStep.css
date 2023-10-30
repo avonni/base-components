@@ -1,5 +1,3 @@
-
-
 .slds-progress__item {
     width: 100%;
 }
@@ -46,12 +44,8 @@
 }
 
 .avonni-vertical-progress-step__content-in-line_border-bottom {
-    border-bottom-color: var(
-        --avonni-vertical-progress-step-item-content-color-border,
-        #dddbda
-    ) !important;
-    border-bottom-width: var(
-        --avonni-vertical-progress-step-item-content-sizing-border,
-        1px
-    ) !important;
+    border-bottom-color: var(--avonni-vertical-progress-step-item-content-color-border,
+            #dddbda) !important;
+    border-bottom-width: var(--avonni-vertical-progress-step-item-content-sizing-border,
+            1px) !important;
 }

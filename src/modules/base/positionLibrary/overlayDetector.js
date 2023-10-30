@@ -1,5 +1,3 @@
-
-
 import { isShadowRoot } from './util';
 
 export const OVERLAY_TYPE = {

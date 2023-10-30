@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/pillContainer/maxWidthPillContainer';
 
 customElements.define(

@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/publisher/publisherWithFigureSlot';
 
 customElements.define(

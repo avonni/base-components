@@ -1,5 +1,3 @@
-
-
 import { nextAllowedDay } from './dateComputations';
 
 /**

@@ -1,5 +1,3 @@
-
-
 import Component from '../metric';
 
 customElements.define('ac-metric', Component.CustomElementConstructor);

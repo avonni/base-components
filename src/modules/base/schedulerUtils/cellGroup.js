@@ -1,5 +1,3 @@
-
-
 import { normalizeArray } from 'c/utilsPrivate';
 import Cell from './cell';
 

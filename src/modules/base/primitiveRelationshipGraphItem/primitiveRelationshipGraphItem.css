@@ -1,6 +1,4 @@
-
- 
- .item {
+.item {
     cursor: pointer;
 }
 
@@ -8,6 +6,7 @@
     color: #fff;
     background-color: var(--lwc-colorBackgroundInverse, #061c3f);
 }
+
 .avonni-theme_inverse a {
     color: #fff;
     text-decoration: underline;
@@ -29,7 +28,7 @@
 .item_horizontal.item_has-groups.item_is-selected::before {
     content: '';
     height: 2px;
-    background-color: var(--avonni-relationship-graph-line-color, #dddbda);
+    background-color: var(--avonni-relationship-graph-line-color, #c9c9c9);
     position: absolute;
     width: 50px;
     right: -50px;

@@ -1,15 +1,13 @@
 article.avonni-profile-card {
     position: relative;
     background-color: var(--avonni-profile-card-color-background, white);
-
     padding-top: var(--avonni-profile-card-spacing-block-start, 0px);
     padding-left: var(--avonni-profile-card-spacing-inline-start, 0px);
     padding-right: var(--avonni-profile-card-spacing-inline-end, 0px);
     padding-bottom: var(--avonni-profile-card-spacing-block-end, 0px);
-
     border-width: var(--avonni-profile-card-sizing-border, 1px);
-    border-style: solid;
-    border-color: var(--avonni-profile-card-color-border, #c9c9c9);
+    border-style: var(--avonni-profile-card-styling-border, solid);
+    border-color: var(--avonni-profile-card-color-border, #747474);
     border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
 
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
@@ -38,7 +36,7 @@ article.avonni-profile-card {
     );
     border-bottom-color: var(
         --avonni-profile-card-header-color-border-bottom,
-        #c9c9c9
+        #747474
     );
     width: 100%;
     flex: 1 1 auto;

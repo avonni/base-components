@@ -1,5 +1,3 @@
-
-
 import Component from '../../storybookWrappers/tree/tree';
 
 customElements.define('avonni-tree', Component.CustomElementConstructor);

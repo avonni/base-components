@@ -1,5 +1,3 @@
-
-
 export const isIE11 = isIE11Test(navigator);
 export const isChrome = isChromeTest(navigator);
 export const isSafari = isSafariTest(window.safari);

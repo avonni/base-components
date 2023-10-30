@@ -1,5 +1,3 @@
-
-
 import { isChrome, isIE11 } from 'c/utilsPrivate';
 
 const EMPTY_STRING = '​';

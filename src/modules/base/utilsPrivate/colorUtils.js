@@ -1,5 +1,3 @@
-
-
 const HEX = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 const HEXA = /^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/;
 const RGB =

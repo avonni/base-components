@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import eraser from './eraser.html';

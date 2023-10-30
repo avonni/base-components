@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import { Options, OptionsWithGroups } from '../__docs__/data';
 import DualListbox from 'c/dualListbox';

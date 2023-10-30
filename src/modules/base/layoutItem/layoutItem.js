@@ -1,5 +1,3 @@
-
-
 import { LightningElement, api } from 'lwc';
 import { classListMutation, normalizeString } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';

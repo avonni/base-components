@@ -1,5 +1,3 @@
-
-
 import { createElement } from 'lwc';
 import MenuItemDialog from 'c/menuItemDialog';
 
