@@ -281,7 +281,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-border
  * @type color
- * @default #c9c9c9
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
