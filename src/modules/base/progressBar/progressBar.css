@@ -130,7 +130,7 @@
 .avonni-progress-bar__bar_theme-base {
     background-color: var(
         --avonni-progress-bar-bar-value-base-color-background,
-        #1ab9ff
+        #0176d3
     );
 }
 

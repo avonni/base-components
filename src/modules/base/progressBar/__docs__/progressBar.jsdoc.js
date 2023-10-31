@@ -32,7 +32,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-bar-bar-value-base-color-background
- * @default #1ab9ff
+ * @default #0176d3
  * @type color
  */
 /**

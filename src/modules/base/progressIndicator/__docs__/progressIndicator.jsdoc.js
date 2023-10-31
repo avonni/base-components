@@ -37,7 +37,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-indicator-bar-completed-color-background
- * @default #60b4ff
+ * @default #0176d3
  * @type color
  */
 /**
@@ -55,7 +55,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-indicator-step-popover-completed-color-background
- * @default #006dcc
+ * @default #0176d3
  * @type color
  */
 /**
@@ -85,7 +85,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-progress-indicator-step-popover-button-completed-color-background
- * @default #006dcc
+ * @default #0176d3
  * @type color
  */
 /**

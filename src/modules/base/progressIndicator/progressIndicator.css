@@ -17,8 +17,10 @@
     left: 10px;
     right: 0;
     top: 33px;
-    background-color: var(--avonni-progress-indicator-bar-color-background,
-            #dddbda);
+    background-color: var(
+        --avonni-progress-indicator-bar-color-background,
+        #dddbda
+    );
 }
 
 .slds-progress__item::after {
@@ -30,8 +32,10 @@
     left: 95px;
     right: 0;
     top: 33px;
-    background-color: var(--avonni-progress-indicator-bar-color-background,
-            #dddbda);
+    background-color: var(
+        --avonni-progress-indicator-bar-color-background,
+        #dddbda
+    );
     z-index: -1;
 }
 
@@ -69,8 +73,10 @@
     left: 10px;
     right: 0;
     top: 33px;
-    background-color: var(--avonni-progress-indicator-bar-completed-color-background,
-            #60b4ff);
+    background-color: var(
+        --avonni-progress-indicator-bar-completed-color-background,
+        #0176d3
+    );
 }
 
 .slds-is-completed::after {
@@ -82,8 +88,10 @@
     left: 95px;
     right: 0;
     top: 33px;
-    background-color: var(--avonni-progress-indicator-bar-completed-color-background,
-            #60b4ff);
+    background-color: var(
+        --avonni-progress-indicator-bar-completed-color-background,
+        #0176d3
+    );
     z-index: -1;
 }
 
@@ -96,6 +104,8 @@
     left: 10px;
     right: 0;
     top: 33px;
-    background-color: var(--avonni-progress-indicator-bar-completed-color-background,
-            #60b4ff);
+    background-color: var(
+        --avonni-progress-indicator-bar-completed-color-background,
+        #0176d3
+    );
 }

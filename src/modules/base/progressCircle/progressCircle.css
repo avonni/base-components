@@ -9,7 +9,7 @@
 }
 
 .avonni-progress-circle__bar {
-    fill: var(--avonni-progress-circle-bar-color, #1589ee);
+    fill: var(--avonni-progress-circle-bar-color, #0176d3);
 }
 
 .avonni-progress-circle__title {
@@ -24,7 +24,7 @@
 }
 
 .avonni-progress-circle__value {
-    color: var(--avonni-progress-circle-value-text-color, #1589ee);
+    color: var(--avonni-progress-circle-value-text-color, #0176d3);
     font-style: var(--avonni-progress-circle-value-font-style, normal);
     font-weight: var(--avonni-progress-circle-value-font-weight, 400);
 }
