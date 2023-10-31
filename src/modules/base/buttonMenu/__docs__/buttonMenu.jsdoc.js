@@ -68,7 +68,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-text-color
  * @type color
- * @default #706e6b
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -80,13 +80,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-color-border-active
  * @type color
- * @default transparent
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-text-color-active
  * @type color
- * @default #005fb2
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
@@ -104,7 +104,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-text-color-hover
  * @type color
- * @default #005fb2
+ * @default #014486
  */
 
 /**
@@ -135,7 +135,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-bare-inverse-color-border-active
  * @type color
- * @default transparent
+ * @default rgba(255, 255, 255, 0.75)
  */
 /**
  * @memberof stylingHooks
@@ -178,7 +178,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-text-color
  * @type color
- * @default #706e6b
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -190,13 +190,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-color-border-active
  * @type color
- * @default #747474
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-text-color-active
  * @type color
- * @default #005fb2
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
@@ -214,7 +214,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-text-color-hover
  * @type color
- * @default #005fb2
+ * @default #014486
  */
 
 /**
@@ -233,7 +233,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-text-color
  * @type color
- * @default #706e6b
+ * @default #747474
  */
 /**
  * @memberof stylingHooks
@@ -245,13 +245,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-border-active
  * @type color
- * @default #747474
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-text-color-active
  * @type color
- * @default #005fb2
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
@@ -269,9 +269,8 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-text-color-hover
  * @type color
- * @default #005fb2
+ * @default #014486
  */
-
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-background
@@ -282,7 +281,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-border
  * @type color
- * @default #747474
+ * @default #c9c9c9
  */
 /**
  * @memberof stylingHooks
@@ -300,13 +299,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-border-active
  * @type color
- * @default #dddbda
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-text-color-active
  * @type color
- * @default rgba(255, 255, 255, .75)
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 /**
  * @memberof stylingHooks
@@ -318,13 +317,13 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-color-border-hover
  * @type color
- * @default #dddbda
+ * @default #c9c9c9
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-inverse-text-color-hover
  * @type color
- * @default rgba(255, 255, 255, .75)
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 
 /**
@@ -410,7 +409,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-container-color-border-active
  * @type color
- * @default transparent
+ * @default #014486
  */
 /**
  * @memberof stylingHooks
@@ -459,7 +458,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-outline-brand-color-background-active
  * @type color
- * @default #f4f6f9
+ * @default #f3f3f3
  */
 /**
  * @memberof stylingHooks
@@ -477,7 +476,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-outline-brand-color-background-hover
  * @type color
- * @default #f4f6f9
+ * @default #f3f3f3
  */
 /**
  * @memberof stylingHooks
@@ -563,7 +562,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-text-color
  * @type color
- * @default #ba0517
+ * @default #8e030f
  */
 /**
  * @memberof stylingHooks
@@ -581,7 +580,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-text-color-active
  * @type color
- * @default	#ba0517
+ * @default	#8e030f
  */
 /**
  * @memberof stylingHooks
@@ -599,7 +598,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-text-destructive-text-color-hover
  * @type color
- * @default #ba0517
+ * @default #8e030f
  */
 
 /**
@@ -612,49 +611,49 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border
  * @type color
- * @default #747474
+ * @default transparent
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-text-color
  * @type color
- * @default #f3f3f3
+ * @default #fff
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-background-active
  * @type color
- * @default #f3f3f3
+ * @default transparent
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border-active
  * @type color
- * @default #747474
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-text-color-active
  * @type color
- * @default #0176d3
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-background-hover
  * @type color
- * @default #f3f3f3
+ * @default transparent
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-color-border-hover
  * @type color
- * @default #747474
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-inverse-text-color-hover
  * @type color
- * @default #0176d3
+ * @default hsla(0, 0%, 100%, 0.5)
  */
 
 /**
