@@ -12,18 +12,14 @@ const upperCamelName =
 const spacedName = upperCamelName.replace(/([A-Z])/g, ' $1').trim();
 const kebabName = componentName.replace(/([A-Z])/g, '-$1').toLowerCase();
 
-const javascript = `
-
-import { LightningElement, api } from 'lwc';
+const javascript = `import { LightningElement, api } from 'lwc';
 
 export default class ${upperCamelName} extends LightningElement {
 
 }
 `;
 
-const html = `
-
-<template>
+const html = `<template>
 
 </template>
 `;
@@ -37,10 +33,7 @@ const xml = `
 </LightningComponentBundle>
 `;
 
-const example = `
-
-
-import Component from '../${componentName}';
+const example = `import Component from '../${componentName}';
 
 customElements.define(
     'ac-${kebabName}',
@@ -56,9 +49,7 @@ export const ${upperCamelName} = ({
 };
 `;
 
-const docs = `
-
-import { ${upperCamelName} } from '../__examples__/${componentName}';
+const docs = `import { ${upperCamelName} } from '../__examples__/${componentName}';
 
 export default {
     title: 'Example/${spacedName}',
@@ -84,9 +75,7 @@ Base.args = {
 };
 `;
 
-const test = `
-
-import { createElement } from 'lwc';
+const test = `import { createElement } from 'lwc';
 import ${upperCamelName} from '../${componentName}';
 
 let element;
