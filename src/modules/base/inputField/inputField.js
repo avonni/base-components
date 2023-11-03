@@ -1,3 +1,9 @@
+/*
+ * -------------------------------------------------------------
+ *  Mock component for the Lightning Input Field.
+ * -------------------------------------------------------------
+ */
+
 import { LightningElement, api } from 'lwc';
 
 export default class InputField extends LightningElement {

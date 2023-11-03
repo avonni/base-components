@@ -1,3 +1,9 @@
+/*
+ * -------------------------------------------------------------
+ *  Mock component for the Lightning Record Edit Form.
+ * -------------------------------------------------------------
+ */
+
 import { LightningElement, api } from 'lwc';
 
 export default class RecordEditForm extends LightningElement {
