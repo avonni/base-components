@@ -215,6 +215,10 @@
             "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
         {
+            "name": "c/inputField",
+            "path": "src/modules/base/inputField/inputField.js"
+        },
+        {
             "name": "c/inputPen",
             "path": "src/modules/base/inputPen/inputPen.js"
         },
@@ -277,6 +281,10 @@
         {
             "name": "c/outputData",
             "path": "src/modules/base/outputData/outputData.js"
+        },
+        {
+            "name": "c/outputField",
+            "path": "src/modules/base/outputField/outputField.js"
         },
         {
             "name": "c/pageHeader",
@@ -541,6 +549,14 @@
         {
             "name": "c/range",
             "path": "src/modules/base/range/range.js"
+        },
+        {
+            "name": "c/recordViewForm",
+            "path": "src/modules/base/recordViewForm/recordViewForm.js"
+        },
+        {
+            "name": "c/recordEditForm",
+            "path": "src/modules/base/recordEditForm/recordEditForm.js"
         },
         {
             "name": "c/slider",
