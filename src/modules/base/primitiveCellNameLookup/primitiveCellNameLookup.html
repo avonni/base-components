@@ -5,11 +5,9 @@
             col-key-value={state.inlineEdit.colKeyValue}
             column-def={state.inlineEdit.columnDef}
             disabled={disabled}
-            field-name={fieldName}
             edited-value={editedValue}
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            object-api-name={objectApiName}
             row-key-value={state.inlineEdit.rowKeyValue}
             visible={state.inlineEdit.panelVisible}
         ></c-primitive-datatable-iedit-panel-custom>
@@ -21,22 +19,17 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <c-record-view-form
-                record-id={computedRecordId}
-                object-api-name={computedObjectApiName}
-            >
-                <span class={computedWrapTextClass}>
-                    <c-output-field
-                        field-name={computedFieldName}
-                        variant="label-hidden"
-                    >
-                    </c-output-field>
-                </span>
-            </c-record-view-form>
+            <span class={computedWrapTextClass}>
+                <lightning-formatted-url
+                    value={path}
+                    label={value}
+                    target={target}
+                ></lightning-formatted-url>
+            </span>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}
-                column-label="Lookup"
+                column-label="Name Lookup"
             ></c-primitive-cell-editable-button>
         </span>
     </template>

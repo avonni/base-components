@@ -1,11 +1,11 @@
 <template>
-    <lightning-input
-        required={required}
-        data-inputable="true"
-        label={columnLabel}
-        name="dt-inline-edit-text"
-        variant="label-hidden"
-        value={editedValue}
-    >
-    </lightning-input>
+    <c-record-edit-form object-api-name={objectApiName} record-id={rowKeyValue}>
+        <c-input-field
+            field-name={fieldName}
+            required={required}
+            value={editedValue}
+            variant="label-hidden"
+            data-inputable="true"
+        ></c-input-field>
+    </c-record-edit-form>
 </template>

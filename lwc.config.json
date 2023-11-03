@@ -363,6 +363,10 @@
             "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
         },
         {
+            "name": "c/primitiveCellNameLookup",
+            "path": "src/modules/base/primitiveCellNameLookup/primitiveCellNameLookup.js"
+        },
+        {
             "name": "c/primitiveCellPercentFormatted",
             "path": "src/modules/base/primitiveCellPercentFormatted/primitiveCellPercentFormatted.js"
         },
