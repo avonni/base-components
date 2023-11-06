@@ -47,6 +47,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     @api labelStartDate;
     @api labelEndDate;
 
+    // Primitive cell lookup
+    @api fieldName;
+    @api objectApiName;
+
     // primitive cell rich-text
     @api formats;
     @api variant;
@@ -191,6 +195,15 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     get isTypeLookup() {
         return this.columnDef.type === 'lookup';
+    }
+
+    /**
+     * Returns true if column type is name-lookup.
+     *
+     * @type {boolean}
+     */
+    get isTypeNameLookup() {
+        return this.columnDef.type === 'name-lookup';
     }
 
     /**
@@ -377,7 +390,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     handlePanelLoosedFocus() {
         if (
-            (this.isTypeLookup || this.isTypePercentFormatted) &&
+            (this.isTypeLookup ||
+                this.isTypeNameLookup ||
+                this.isTypePercentFormatted) &&
             this.visible
         ) {
             this.processSubmission();
@@ -408,7 +423,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
 
     processSubmission() {
         const validity =
-            this.isTypeRichText || this.inputableElement.validity.valid;
+            this.isTypeRichText ||
+            this.isTypeLookup ||
+            this.inputableElement.validity.valid;
         this.triggerEditFinished({ reason: 'submit-action', validity });
         const value = this.isTypeCombobox
             ? this.comboboxFormattedValue(this.value)
@@ -425,7 +442,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
             }
         };
 
-        if (this.isTypeRichText || validity) {
+        if (validity) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
                     detail,
@@ -453,7 +470,10 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         const details = {
             rowKeyValue: detail.rowKeyValue || this.rowKeyValue,
             colKeyValue: detail.colKeyValue || this.colKeyValue,
-            valid: this.isTypeRichText ? true : detail.validity,
+            valid:
+                this.isTypeRichText || this.isTypeLookup
+                    ? true
+                    : detail.validity,
             isMassEditChecked: this.isMassEditChecked
         };
 

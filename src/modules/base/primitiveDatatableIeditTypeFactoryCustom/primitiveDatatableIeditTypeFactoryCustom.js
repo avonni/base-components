@@ -8,6 +8,7 @@ import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
 import lookupTpl from './lookup.html';
+import nameLookupTpl from './nameLookup.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
@@ -15,6 +16,7 @@ const CUSTOM_TYPES_TPL = {
     counter: counterTpl,
     'date-range': dateRangeTpl,
     lookup: lookupTpl,
+    'name-lookup': nameLookupTpl,
     'percent-formatted': percentFormatted,
     'rich-text': richTextTpl,
     textarea: textareaTpl
@@ -64,6 +66,11 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     _startDate;
     _endDate;
 
+    // lookup attributes
+    @api fieldName;
+    @api objectApiName;
+    @api rowKeyValue;
+
     // rich-text attributes
     @api variant;
     _formats;
@@ -85,10 +92,32 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     }
 
     renderedCallback() {
-        this.concreteComponent.addEventListener('blur', this._blurHandler);
-        this.concreteComponent.addEventListener('focus', this._focusHandler);
+        if (!this.concreteComponent) {
+            return;
+        }
         this.concreteComponent.addEventListener('change', this._changeHandler);
-        if (this.concreteComponent) {
+
+        if (this.columnDef.type === 'lookup') {
+            // The lightning input field does not dispatch focus and blur events
+            this.concreteComponent.addEventListener(
+                'focusout',
+                this._blurHandler
+            );
+            this.concreteComponent.addEventListener(
+                'focusin',
+                this._focusHandler
+            );
+            requestAnimationFrame(() => {
+                if (this.concreteComponent) {
+                    this.concreteComponent.focus();
+                }
+            });
+        } else {
+            this.concreteComponent.addEventListener('blur', this._blurHandler);
+            this.concreteComponent.addEventListener(
+                'focus',
+                this._focusHandler
+            );
             this.concreteComponent.focus();
         }
     }
@@ -177,7 +206,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     @api
     showHelpMessageIfInvalid() {
-        if (this.columnDef.type !== 'rich-text') {
+        if (
+            this.columnDef.type !== 'rich-text' &&
+            this.columnDef.type !== 'lookup'
+        ) {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
     }

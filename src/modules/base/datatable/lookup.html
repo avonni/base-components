@@ -2,11 +2,12 @@
     <div class="slds-p-around_x-small">
         <c-primitive-cell-lookup
             col-key-value={colKeyValue}
+            linkify={typeAttributes.linkify}
+            object-api-name={typeAttributes.objectApiName}
+            related-object-api-name={typeAttributes.relatedObjectApiName}
             row-key-value={rowKeyValue}
             value={value}
             wrap-text={wrapText}
-            path={typeAttributes.path}
-            target={typeAttributes.target}
         ></c-primitive-cell-lookup>
     </div>
 </template>

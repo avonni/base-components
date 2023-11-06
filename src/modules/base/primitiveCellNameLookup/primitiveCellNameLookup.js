@@ -1,12 +1,11 @@
 import { LightningElement, api } from 'lwc';
 import { isEditable, startPanelPositioning } from 'c/primitiveCellUtils';
 
-export default class PrimitiveCellLookup extends LightningElement {
+export default class PrimitiveCellNameLookup extends LightningElement {
     @api colKeyValue;
-    @api linkify;
-    @api objectApiName;
-    @api relatedObjectApiName;
     @api rowKeyValue;
+    @api path;
+    @api target;
 
     _index;
     _value;
@@ -39,54 +38,12 @@ export default class PrimitiveCellLookup extends LightningElement {
         this._wrapText = value;
     }
 
-    get computedFieldName() {
-        return this.hasDirtyValue || this.linkify ? 'Name' : this.fieldName;
-    }
-
-    get computedObjectApiName() {
-        return this.hasDirtyValue || this.linkify
-            ? this.relatedObjectApiName
-            : this.objectApiName;
-    }
-
-    get computedRecordId() {
-        if (this.hasDirtyValue) {
-            const recordDirtyValues =
-                this.state.inlineEdit.dirtyValues[this.rowKeyValue];
-            return recordDirtyValues[this.colKeyValue];
-        }
-        if (this.linkify) {
-            return this.value;
-        }
-        return this.rowKeyValue;
-    }
-
     get computedWrapTextClass() {
         return this.wrapText ? 'slds-line-clamp' : 'slds-truncate';
     }
 
     get editedValue() {
         return this.state.inlineEdit.editedValue;
-    }
-
-    get fieldName() {
-        const column = this.state.columns.find(
-            (c) => c.colKeyValue === this.colKeyValue
-        );
-        if (column) {
-            return column.fieldName;
-        }
-        return null;
-    }
-
-    get hasDirtyValue() {
-        const recordDirtyValues =
-            this.state.inlineEdit.dirtyValues[this.rowKeyValue];
-        return (
-            recordDirtyValues &&
-            typeof recordDirtyValues === 'object' &&
-            Object.keys(recordDirtyValues).includes(this.colKeyValue)
-        );
     }
 
     /**
