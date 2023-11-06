@@ -40,11 +40,11 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     get computedFieldName() {
-        return this.hasDirtyValue || this.linkify ? 'Name' : this.fieldName;
+        return this.hasDirtyValue || !this.linkify ? 'Name' : this.fieldName;
     }
 
     get computedObjectApiName() {
-        return this.hasDirtyValue || this.linkify
+        return this.hasDirtyValue || !this.linkify
             ? this.relatedObjectApiName
             : this.objectApiName;
     }
@@ -56,9 +56,9 @@ export default class PrimitiveCellLookup extends LightningElement {
             return recordDirtyValues[this.colKeyValue];
         }
         if (this.linkify) {
-            return this.value;
+            return this.rowKeyValue;
         }
-        return this.rowKeyValue;
+        return this.value;
     }
 
     get computedWrapTextClass() {
