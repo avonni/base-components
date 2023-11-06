@@ -22,6 +22,7 @@
             "
         >
             <c-record-view-form
+                if:true={computedRecordId}
                 record-id={computedRecordId}
                 object-api-name={computedObjectApiName}
             >
@@ -33,6 +34,7 @@
                     </c-output-field>
                 </span>
             </c-record-view-form>
+            <div if:false={computedRecordId}></div>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}
