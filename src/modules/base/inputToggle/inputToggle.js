@@ -212,7 +212,7 @@ export default class InputToggle extends LightningElement {
     set checked(value) {
         this._checked = normalizeBoolean(value);
 
-        if (this._rendered) {
+        if (this._rendered && this._inputElement) {
             this._inputElement.checked = this._checked;
         }
         this._updateProxyInputAttributes('checked');
