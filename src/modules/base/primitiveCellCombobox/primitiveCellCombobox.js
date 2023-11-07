@@ -133,15 +133,16 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     handleChange(event) {
+        const value = event.detail.value || null;
         const detail = {
-            value: event.detail.value,
+            value,
             colKeyValue: this.colKeyValue,
             rowKeyValue: this.rowKeyValue,
             callbacks: {
                 dispatchCellChangeEvent: this.dispatchCellChangeEvent.bind(this)
             }
         };
-        this._value = event.detail.value;
+        this._value = value;
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
