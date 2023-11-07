@@ -195,6 +195,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this._connected) {
             this.initHeaders();
+            this._dayHeadersLoading = false;
         }
     }
 
@@ -216,6 +217,7 @@ export default class PrimitiveSchedulerCalendar extends ScheduleBase {
 
         if (this._connected) {
             this.initHeaders();
+            this._dayHeadersLoading = false;
         }
     }
 
