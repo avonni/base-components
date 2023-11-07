@@ -572,6 +572,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     set loadMoreOffset(value) {
+        if (value === undefined) return;
         super.loadMoreOffset = value;
     }
 
@@ -587,6 +588,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxColumnWidth(value) {
+        if (value === undefined) return;
         super.maxColumnWidth = value;
     }
 

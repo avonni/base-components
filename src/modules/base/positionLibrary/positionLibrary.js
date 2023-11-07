@@ -430,7 +430,7 @@ export function startPositioning(root, config, disableReposition) {
         if (
             Object.getPrototypeOf(root)?.constructor?.name !== 'AvonniDatatable'
         ) {
-            console.error(error);
+            console.warn(error);
         }
     }
 
