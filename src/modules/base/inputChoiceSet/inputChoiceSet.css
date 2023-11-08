@@ -133,7 +133,7 @@
     border-radius: 0.25rem;
 }
 
-.avonni-input-choice-set__label-icon {
+.avonni-input-choice-set__option-label_line-clamp {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
@@ -142,5 +142,8 @@
         1
     );
     text-overflow: ellipsis;
+}
+
+.avonni-input-choice-set__option-label-icon-container {
     padding-right: 0.5rem;
 }

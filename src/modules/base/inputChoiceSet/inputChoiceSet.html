@@ -122,23 +122,21 @@
                                             </div>
                                             <div
                                                 class="
-                                                    avonni-input-choice-set__label-icon
+                                                    avonni-input-choice-set__option-label-icon-container
+                                                    slds-form-element__label
                                                 "
                                                 data-element-id="label-icon-container"
                                             >
-                                                <div
+                                                <lightning-formatted-rich-text
                                                     if:true={option.displayLabel}
                                                     class="
-                                                        slds-form-element__label
                                                         slds-order_1
+                                                        avonni-input-choice-set__option-label_line-clamp
                                                     "
-                                                >
-                                                    <lightning-formatted-rich-text
-                                                        disable-linkify
-                                                        title={option.label}
-                                                        value={option.label}
-                                                    ></lightning-formatted-rich-text>
-                                                </div>
+                                                    disable-linkify
+                                                    title={option.label}
+                                                    value={option.label}
+                                                ></lightning-formatted-rich-text>
                                                 <lightning-icon
                                                     if:true={option.iconName}
                                                     class={option.computedIconClass}
