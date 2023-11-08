@@ -1,0 +1,90 @@
+<template>
+    <template if:true={hasActions}>
+        <template if:false={singleAction}>
+            <lightning-button-group if:false={hasZeroActionButtons}>
+                <template for:each={actionButtons} for:item="action">
+                    <lightning-button
+                        key={action.name}
+                        if:true={action.label}
+                        data-name={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        variant="border-filled"
+                        onclick={handleActionButtonClick}
+                    ></lightning-button>
+                    <lightning-button-icon
+                        key={action.name}
+                        if:false={action.label}
+                        data-name={action.name}
+                        class="slds-m-right_none"
+                        value={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        size="medium"
+                        variant="border-filled"
+                        onclick={handleActionButtonClick}
+                    ></lightning-button-icon>
+                </template>
+                <lightning-button-menu
+                    if:true={hasActionsButtonMenu}
+                    menu-alignment="right"
+                    variant="border-filled"
+                    onselect={handleActionButtonMenuClick}
+                >
+                    <template for:each={actionsButtonMenu} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            disabled={action.disabled}
+                            icon-name={action.iconName}
+                            label={action.label}
+                            value={action.name}
+                        ></lightning-menu-item>
+                    </template>
+                </lightning-button-menu>
+            </lightning-button-group>
+            <lightning-button-menu
+                if:true={hasZeroActionButtons}
+                data-value={value}
+                icon-size="x-small"
+                menu-alignment="right"
+                variant="border-filled"
+                onselect={handleActionButtonMenuClick}
+            >
+                <template for:each={actionsButtonMenu} for:item="action">
+                    <lightning-menu-item
+                        key={action.name}
+                        disabled={action.disabled}
+                        icon-name={action.iconName}
+                        label={action.label}
+                        value={action.name}
+                    ></lightning-menu-item>
+                </template>
+            </lightning-button-menu>
+        </template>
+        <template if:true={singleAction}>
+            <lightning-button
+                key={singleAction.name}
+                if:true={singleAction.label}
+                data-name={singleAction.name}
+                disabled={singleAction.disabled}
+                icon-name={singleAction.iconName}
+                label={singleAction.label}
+                variant="border-filled"
+                onclick={handleActionButtonClick}
+            ></lightning-button>
+            <lightning-button-icon
+                key={singleAction.name}
+                if:false={singleAction.label}
+                data-name={singleAction.name}
+                class="slds-m-right_none"
+                value={singleAction.name}
+                disabled={singleAction.disabled}
+                icon-name={singleAction.iconName}
+                size={buttonIconSize}
+                variant={buttonIconVariant}
+                onclick={handleActionButtonClick}
+            ></lightning-button-icon>
+        </template>
+    </template>
+</template>

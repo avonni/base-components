@@ -43,6 +43,4 @@ export default class DualListboxBase extends LightningElement {
             label: 'Option 10'
         }
     ];
-
-    values = ['3', '2', '4', '5', '6'];
 }

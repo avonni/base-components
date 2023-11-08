@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import {
@@ -43,7 +11,6 @@ import {
     isSelectedRow,
     processInlineEditFinishCustom
 } from './inlineEdit';
-
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';
@@ -55,6 +22,8 @@ import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import lookup from './lookup.html';
+import nameLookup from './nameLookup.html';
+import percentFormatted from './percentFormatted.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
@@ -68,24 +37,20 @@ import urls from './urls.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
-    'badge',
     'avatar-group',
     'checkbox-button',
     'color-picker',
     'combobox',
     'counter',
-    'date-range',
     'dynamic-icon',
+    'date-range',
     'image',
     'toggle',
+    'percent-formatted',
     'progress-bar',
-    'progress-circle',
-    'progress-ring',
     'qrcode',
     'rating',
-    'rich-text',
     'slider',
-    'textarea',
     'urls'
 ];
 
@@ -96,6 +61,8 @@ const CUSTOM_TYPES_EDITABLE = [
     'counter',
     'date-range',
     'lookup',
+    'name-lookup',
+    'percent-formatted',
     'rating',
     'rich-text',
     'slider',
@@ -216,7 +183,22 @@ export default class Datatable extends LightningDatatable {
         },
         lookup: {
             template: lookup,
+            typeAttributes: ['name', 'objectApiName', 'path']
+        },
+        'name-lookup': {
+            template: nameLookup,
             typeAttributes: ['path', 'target']
+        },
+        'percent-formatted': {
+            template: percentFormatted,
+            typeAttributes: [
+                'maximumFractionDigits',
+                'maximumSignificantDigits',
+                'minimumFractionDigits',
+                'minimumIntegerDigits',
+                'minimumSignificantDigits',
+                'step'
+            ]
         },
         'progress-bar': {
             template: progressBar,
@@ -228,6 +210,8 @@ export default class Datatable extends LightningDatatable {
                 'theme',
                 'thickness',
                 'valueLabel',
+                'valuePrefix',
+                'valueSuffix',
                 'valuePostion',
                 'variant'
             ]
@@ -277,7 +261,7 @@ export default class Datatable extends LightningDatatable {
         },
         'rich-text': {
             template: richText,
-            typeAttributes: ['disabled', 'placeholder', 'variant']
+            typeAttributes: ['disabled', 'formats', 'placeholder', 'variant']
         },
         slider: {
             template: slider,
@@ -285,14 +269,7 @@ export default class Datatable extends LightningDatatable {
         },
         textarea: {
             template: textarea,
-            typeAttributes: [
-                'disabled',
-                'label',
-                'minLength',
-                'maxLength',
-                'name',
-                'placeholder'
-            ]
+            typeAttributes: ['minLength', 'maxLength', 'placeholder']
         },
         toggle: {
             template: toggle,
@@ -315,13 +292,10 @@ export default class Datatable extends LightningDatatable {
     connectedCallback() {
         super.connectedCallback();
 
-        this.template.addEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
-
         this.addEventListener('privateeditcustomcell', (event) => {
-            event.detail.callbacks.dispatchCellChangeEvent(this.state);
+            this.handleEditCell(event);
+            if (event.detail.callbacks)
+                event.detail.callbacks.dispatchCellChangeEvent(this.state);
         });
 
         this.template.addEventListener(
@@ -347,10 +321,7 @@ export default class Datatable extends LightningDatatable {
         this.template.addEventListener(
             'getdatatablestateandcolumns',
             (event) => {
-                event.detail.callbacks.getStateAndColumns(
-                    this.state,
-                    this.columns
-                );
+                event.detail.callbacks.getStateAndColumns(this);
             }
         );
         this.template.addEventListener('getcomboboxoptions', (event) => {
@@ -366,6 +337,15 @@ export default class Datatable extends LightningDatatable {
             } else {
                 event.detail.callbacks.getComboboxOptions(options);
             }
+        });
+
+        this.template.addEventListener('getrichtextformats', (event) => {
+            const fieldName = event.detail.name;
+            const column = this.columns.find((c) => c.fieldName === fieldName);
+            if (!column) return;
+
+            const formats = column.typeAttributes.formats;
+            event.detail.callbacks.getRichTextFormats(formats);
         });
     }
 
@@ -592,7 +572,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set loadMoreOffset(value) {
-        if (value === undefined) return;
         super.loadMoreOffset = value;
     }
 
@@ -608,7 +587,6 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxColumnWidth(value) {
-        if (value === undefined) return;
         super.maxColumnWidth = value;
     }
 
@@ -624,7 +602,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     set maxRowSelection(value) {
-        if (value === undefined) return;
+        if (
+            this.maxRowSelection === 1 &&
+            (value === undefined || value === null)
+        ) {
+            // Patch for a bug in the Lightning Datatable:
+            // If the maxRowSelection was 1 and it is removed,
+            // the radio buttons are not changed into checkboxes.
+            super.maxRowSelection = 2;
+        }
         super.maxRowSelection = value;
     }
 
@@ -757,6 +743,16 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Make scrollable y container accessible.
+     * @public
+     * @type {Element}
+     */
+    @api
+    get scrollerY() {
+        return this.template.querySelector('.slds-scrollable_y');
+    }
+
+    /**
      * Enables programmatic row selection with a list of key-field values.
      * @public
      * @type {string[]}
@@ -851,9 +847,42 @@ export default class Datatable extends LightningDatatable {
 
     /*
      * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get wrapText() {
+        return this.state.wrapText;
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Set the focus on the first cell of a given row.
+     *
+     * @param {string} rowKeyField The key field value of the row to focus.
+     * @public
+     */
+    @api
+    focusRow(rowKeyField) {
+        const row = this.template.querySelector(
+            `[data-row-key-value="${rowKeyField}"]`
+        );
+        if (row) {
+            const cell = row.querySelector(':first-child');
+
+            if (cell) {
+                const colKeyValue = cell.dataset.colKeyValue;
+                this.setActiveCell(rowKeyField, colKeyValue);
+                this.state.cellClicked = true;
+                cell.focus();
+            }
+        }
+    }
 
     /**
      * Gets a row height.
@@ -869,13 +898,22 @@ export default class Datatable extends LightningDatatable {
         );
 
         if (row) {
-            if (rowKeyField === this.data[0][this.keyField]) {
-                // The first row has one pixel more because of the border
-                return row.offsetHeight + 1;
-            }
-            return row.offsetHeight;
+            return rowKeyField === this.data[0][this.keyField]
+                ? row.offsetHeight + 1
+                : row.offsetHeight;
         }
         return null;
+    }
+
+    /**
+     * Calls the resize column method of lightning-datatable.
+     *
+     * @param {event} event
+     * @public
+     */
+    @api
+    resizeColumn(event) {
+        super.handleResizeColumn(event);
     }
 
     /**
@@ -897,15 +935,15 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Scroll the inner table back to the top.
+     * Scroll the inner table to the top.
      *
      * @public
      */
     @api
-    scrollToTop() {
+    scrollToTop(y = 0) {
         const scrollable_y = this.template.querySelector('.slds-scrollable_y');
         if (scrollable_y) {
-            scrollable_y.scrollTop = 0;
+            scrollable_y.scrollTop = y;
         }
     }
 

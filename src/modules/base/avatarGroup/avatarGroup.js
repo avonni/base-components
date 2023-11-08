@@ -1,38 +1,7 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import { keyCodes, normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
@@ -129,6 +98,8 @@ export default class AvatarGroup extends LightningElement {
 
     _items = [];
     _maxCount;
+    _maxVisibleCount;
+    _resizeObserver;
     _size = AVATAR_GROUP_SIZES.default;
     _layout = AVATAR_GROUP_LAYOUTS.default;
     _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
@@ -152,6 +123,17 @@ export default class AvatarGroup extends LightningElement {
     }
 
     renderedCallback() {
+        if (this._resizeObserver && this._layout === 'list') {
+            this._resizeObserver.disconnect();
+            this._resizeObserver = undefined;
+        } else if (!this._resizeObserver && this._layout !== 'list') {
+            this._resizeObserver = this.initResizeObserver();
+        }
+
+        if (this.layout !== 'list') {
+            this.updateVisibleMaxCount();
+        }
+
         const avatars = this.template.querySelectorAll(
             '[data-group-name="avatar"]'
         );
@@ -159,6 +141,12 @@ export default class AvatarGroup extends LightningElement {
         avatars.forEach((avatar, index) => {
             avatar.style.zIndex = avatars.length - index;
         });
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
     }
 
     /*
@@ -315,6 +303,15 @@ export default class AvatarGroup extends LightningElement {
      */
 
     /**
+     * Action Button HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get actionButtonElement() {
+        return this.template.querySelector('[data-element-id="action-button"]');
+    }
+
+    /**
      * Class of the action button
      * @type {string}
      */
@@ -385,7 +382,7 @@ export default class AvatarGroup extends LightningElement {
      */
     get avatarFlexWrapperClass() {
         return classSet({
-            'avonni-avatar-group__avatar-wrapper': this.layout !== 'list'
+            'slds-grid': this.layout !== 'list'
         }).toString();
     }
 
@@ -425,6 +422,15 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Avatar Item HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get avatarItemElement() {
+        return this.template.querySelector('[data-element-id="li-visible"]');
+    }
+
+    /**
      * Class of the avatar wrapper, when there are more than two avatars
      * @type {string}
      */
@@ -448,8 +454,14 @@ export default class AvatarGroup extends LightningElement {
      * @type {number}
      */
     get computedMaxCount() {
-        if (this.maxCount) {
+        if (this.maxCount >= 0 && this._maxVisibleCount >= 0) {
+            return Math.min(this.maxCount, this._maxVisibleCount);
+        } else if (this.maxCount >= 0) {
             return this.maxCount;
+        } else if (this._maxVisibleCount >= 0) {
+            return this.layout === 'stack'
+                ? Math.min(this._maxVisibleCount, 5)
+                : Math.min(this._maxVisibleCount, 11);
         }
         return this.layout === 'stack' ? 5 : 11;
     }
@@ -490,6 +502,24 @@ export default class AvatarGroup extends LightningElement {
      */
     get generatedKey() {
         return generateUUID();
+    }
+
+    /**
+     * Class of the hidden avatars when displayed in a line
+     * @type {string}
+     */
+    get hiddenAvatarInlineClass() {
+        return this.layout === 'list' ? this.avatarInlineClass : '';
+    }
+
+    /**
+     * Class of the hidden avatar wrapper, when there are more avatar than the max count
+     * @type {string}
+     */
+    get hiddenAvatarWrapperClass() {
+        return this.layout === 'list'
+            ? this.avatarWrapperClass
+            : 'avonni-avatar-group__hidden-avatar-container slds-p-vertical_x-small slds-p-horizontal_small';
     }
 
     /**
@@ -601,6 +631,17 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Show more button HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get showMoreButtonElement() {
+        return this.template.querySelector(
+            '[data-element-id="show-more-button"]'
+        );
+    }
+
+    /**
      * Label of the "Show More" button.
      *
      * @type {string}
@@ -629,6 +670,15 @@ export default class AvatarGroup extends LightningElement {
         return this.items.length > this.computedMaxCount
             ? this.items.slice(0, this.computedMaxCount)
             : this.items;
+    }
+
+    /**
+     * Wrapper HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get wrapperElement() {
+        return this.template.querySelector('[data-element-id="ul"]');
     }
 
     /*
@@ -672,6 +722,21 @@ export default class AvatarGroup extends LightningElement {
             }
         }
         return null;
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.wrapperElement) {
+            return null;
+        }
+        return new AvonniResizeObserver(
+            this.wrapperElement,
+            this.updateVisibleMaxCount.bind(this)
+        );
     }
 
     /**
@@ -740,6 +805,38 @@ export default class AvatarGroup extends LightningElement {
             `[data-element-id^="li"][data-index="${normalizedIndex}"]`
         );
         item.tabIndex = '0';
+    }
+
+    /**
+     * Update the number of visible and collapsed items, depending on the available space.
+     */
+    updateVisibleMaxCount() {
+        if (
+            !this.wrapperElement ||
+            (!this.avatarItemElement && !this.showMoreButtonElement) ||
+            this.items.length <= 1
+        )
+            return;
+
+        const totalWidth = this.wrapperElement.offsetWidth;
+        const availableWidth = this.actionButtonElement
+            ? totalWidth - this.actionButtonElement.offsetWidth
+            : totalWidth;
+
+        const referenceElement =
+            this.avatarItemElement || this.showMoreButtonElement;
+
+        const referenceElementStyles =
+            window.getComputedStyle(referenceElement);
+        const referenceElementWidth =
+            parseFloat(referenceElementStyles.width) +
+            parseFloat(referenceElementStyles.marginLeft) +
+            parseFloat(referenceElementStyles.marginRight);
+
+        this._maxVisibleCount = Math.max(
+            0,
+            Math.floor(availableWidth / referenceElementWidth)
+        );
     }
 
     /*

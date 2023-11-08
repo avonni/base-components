@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { TreeGrid } from '../__examples__/treeGrid';
 import {
     EXAMPLES_COLUMNS_DEFINITION_BASIC,
@@ -46,7 +14,22 @@ export default {
             },
             description: 'Pass through for aria-label on lightning-datatable.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Display'
+            }
+        },
+        columnWidthsMode: {
+            name: 'column-widths-mode',
+            control: {
+                type: 'radio'
+            },
+            options: ['fixed', 'auto'],
+            description:
+                "Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'fixed' },
+                category: 'Display'
             }
         },
         columns: {
@@ -56,7 +39,8 @@ export default {
             description:
                 "Array of the columns object that's used to define the data types. Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'. See the table below for more information.",
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         expandedRows: {
@@ -67,7 +51,8 @@ export default {
             description:
                 'The array of unique row IDs for rows that are expanded.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         hideCheckboxColumn: {
@@ -79,7 +64,20 @@ export default {
                 'If present, the checkbox column for row selection is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
+            }
+        },
+        hideTableHeader: {
+            name: 'hide-table-header',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the table header is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         isLoading: {
@@ -91,7 +89,8 @@ export default {
                 'If present, a spinner is displayed to indicate that more data is being loaded.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         keyField: {
@@ -102,7 +101,8 @@ export default {
             description:
                 'Required for better performance. Associates each row with a unique ID.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         maxColumnWidth: {
@@ -114,7 +114,20 @@ export default {
                 'The maximum width for all columns. The default is 1000px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '1000' }
+                defaultValue: { summary: '1000' },
+                category: 'Display'
+            }
+        },
+        maxRowSelection: {
+            name: 'max-row-selection',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when max-row-selection is 1.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Data'
             }
         },
         minColumnWidth: {
@@ -126,7 +139,8 @@ export default {
                 'The minimum width for all columns. The default is 50px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '50' }
+                defaultValue: { summary: '50' },
+                category: 'Display'
             }
         },
         records: {
@@ -135,7 +149,8 @@ export default {
             },
             description: 'The array of data to be displayed.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         resizeColumnDisabled: {
@@ -146,7 +161,21 @@ export default {
             description: 'If present, column resizing is disabled.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
+            }
+        },
+        resizeStep: {
+            name: 'resize-step',
+            control: {
+                type: 'number'
+            },
+            description:
+                'The width to resize the column when a user presses left or right arrow. The default is 10px.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '10px' },
+                category: 'Display'
             }
         },
         rowNumberOffset: {
@@ -158,7 +187,8 @@ export default {
                 'Determines where to start counting the row number. The default is 0.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                category: 'Display'
             }
         },
         selectedRows: {
@@ -169,7 +199,8 @@ export default {
             description:
                 'Enables programmatic row selection with a list of key-field values.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string[]' },
+                category: 'Data'
             }
         },
         showRowNumberColumn: {
@@ -180,16 +211,30 @@ export default {
             description:
                 'If present, the row numbers are shown in the first column.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string[]' },
+                category: 'Display'
+            }
+        },
+        wrapTextMaxLines: {
+            name: 'wrap-text-max-lines',
+            description:
+                'This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more. The text in the last line is truncated and shown with an ellipsis.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Display'
             }
         }
     },
     args: {
+        columnWidthsMode: 'fixed',
         hideCheckboxColumn: false,
+        hideTableHeader: false,
         isLoading: false,
+        loadMoreOffset: 20,
         maxColumnWidth: 1000,
         minColumnWidth: 50,
         resizeColumnDisabled: false,
+        resizeStep: 10,
         rowNumberOffset: 0,
         selectedRows: [],
         showRowNumberColumn: false

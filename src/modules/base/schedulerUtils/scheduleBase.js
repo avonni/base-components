@@ -1,40 +1,10 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
+    addToDate,
     dateTimeObjectFrom,
     deepCopy,
     getStartOfWeek,
+    intervalFrom,
     normalizeArray,
     normalizeBoolean,
     normalizeString
@@ -54,7 +24,8 @@ import {
 import EventData from './eventData';
 import {
     getDisabledWeekdaysLabels,
-    getFirstAvailableWeek
+    getFirstAvailableWeek,
+    isAllowedDay
 } from './dateComputations';
 
 /**
@@ -96,6 +67,7 @@ export class ScheduleBase extends LightningElement {
     _resizeObserver;
     navCalendarDisabledWeekdays = [];
     navCalendarDisabledDates = [];
+    navCalendarMarkedDates = [];
 
     connectedCallback() {
         this.initResources();
@@ -437,6 +409,15 @@ export class ScheduleBase extends LightningElement {
     }
     set timeSpan(value) {
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
+
+        if (this._connected) {
+            const calendar = this.template.querySelector(
+                '[data-element-id="avonni-calendar-left-panel"]'
+            );
+            if (calendar) {
+                calendar.goToDate(this.selectedDate);
+            }
+        }
     }
 
     /**
@@ -778,12 +759,103 @@ export class ScheduleBase extends LightningElement {
     }
 
     /**
+     * Get the marked dates in the calendar of a specific month. Used by the year view or the side panel calendar.
+     *
+     * @param {number} month Month of which the marked dates should be returned.
+     * @returns {object[]} Array of valid calendar marked dates.
+     */
+    getMonthMarkedDates(month, events = this._eventData.events) {
+        let date = this.start;
+        if (month < this.start.month) {
+            // Make sure the month is in the future
+            date = addToDate(this.start, 'year', 1);
+        }
+        date = date.set({ month });
+        const monthStart = date.startOf('month');
+        const monthEnd = date.endOf('month');
+        const monthInterval = intervalFrom(monthStart, monthEnd);
+        const dayMap = {};
+
+        return events.reduce((markedDates, event) => {
+            event.occurrences.forEach((occ) => {
+                const { from, to, resourceName } = occ;
+                const normalizedTo = event.referenceLine ? from : to;
+                const occInterval = intervalFrom(from, normalizedTo);
+                const intersection = monthInterval.intersection(occInterval);
+
+                if (intersection) {
+                    const days = intersection.count('days');
+                    const color =
+                        event.color || this.getResourceColor(resourceName);
+                    let currentDate = intersection.s;
+
+                    for (let i = 0; i < days; i++) {
+                        // Only add one marker per resource per day
+                        const alreadyMarked =
+                            dayMap[currentDate.day] &&
+                            dayMap[currentDate.day].includes(resourceName);
+                        const isAllowed = isAllowedDay(
+                            currentDate,
+                            this.availableDaysOfTheWeek
+                        );
+
+                        if (!alreadyMarked && isAllowed) {
+                            markedDates.push({
+                                color,
+                                date: currentDate.toUTC().toISO()
+                            });
+
+                            if (!dayMap[currentDate.day]) {
+                                dayMap[currentDate.day] = [];
+                            }
+                            dayMap[currentDate.day].push(resourceName);
+                        }
+                        currentDate = addToDate(currentDate, 'day', 1);
+                    }
+                }
+            });
+            return markedDates;
+        }, []);
+    }
+
+    /**
+     * Get the color associated with a resource.
+     *
+     * @param {string} resourceName Unique name of the resource.
+     * @returns {string} Color of the resource, or undefined if not found.
+     */
+    getResourceColor(resourceName) {
+        const resource = this.resources.find(
+            (res) => res.name === resourceName
+        );
+        return resource && resource.color;
+    }
+
+    /**
      * Initialize the disabled dates of the left panel calendar.
      */
     initLeftPanelCalendarDisabledDates() {
         const disabled = getDisabledWeekdaysLabels(this.availableDaysOfTheWeek);
         this.navCalendarDisabledWeekdays = disabled;
         this.navCalendarDisabledDates = [...disabled];
+    }
+
+    initLeftPanelCalendarMarkedDates(selectedDate = this.computedSelectedDate) {
+        if (!this._eventData) {
+            this.navCalendarMarkedDates = [];
+            return;
+        }
+        const start = selectedDate.startOf('month');
+        const end = selectedDate.endOf('month');
+        const interval = intervalFrom(start, end);
+        const events = this._eventData.getEventsInInterval(
+            this.events,
+            interval
+        );
+        this.navCalendarMarkedDates = this.getMonthMarkedDates(
+            selectedDate.month,
+            events
+        );
     }
 
     /**
@@ -871,6 +943,7 @@ export class ScheduleBase extends LightningElement {
         }
 
         this._selectedDate = this.createDate(value).ts;
+        this.initLeftPanelCalendarMarkedDates();
 
         /**
          * The event fired when the selected date changes.
@@ -1090,6 +1163,7 @@ export class ScheduleBase extends LightningElement {
                 this.navCalendarDisabledDates.push(day);
             }
         }
+        this.initLeftPanelCalendarMarkedDates(date);
     }
 
     /**

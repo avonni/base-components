@@ -69,9 +69,20 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-sizing-border
  * @default 1px
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-color-background
+ * @type color
  */
 /**
  * @memberof stylingHooks
@@ -84,6 +95,51 @@
  * @name --avonni-card-header-font-size
  * @default 1rem
  * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-font-style
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-font-family
+ * @default 'Salesforce Sans', Arial, sans-serif
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-letter-spacing
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-sizing-border-bottom
+ * @default 0px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-styling-border-bottom
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-color-border-bottom
+ * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-header-text-color
+ * @default #181818
+ * @type color
  */
 /**
  * @memberof stylingHooks
@@ -173,7 +229,7 @@
  * @memberof stylingHooks
  * @name --avonni-card-footer-text-align
  * @default center
- * @type string
+ * @type alignment
  */
 /**
  * @memberof stylingHooks

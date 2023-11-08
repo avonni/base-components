@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { VisualPicker } from '../__examples__/visualPicker';
 import {
     items,
@@ -43,7 +11,9 @@ import {
     botStories,
     avatarStories,
     xSmallAvatarStories,
-    templates
+    templates,
+    itemsWithFields,
+    fieldAttributes
 } from './data';
 
 export default {
@@ -78,6 +48,37 @@ export default {
             },
             description:
                 'Array of items with attributes populating the visual picker.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        columnAttributes: {
+            name: 'column-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'An object of attributes for cols, smallContainerCols, mediumContainerCols and largeContainerCols.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        fieldAttributes: {
+            name: 'field-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item fields.',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
+        imageAttributes: {
+            name: 'image-attributes',
+            control: {
+                type: 'object'
+            },
+            description: 'Object of attributes for the item images.',
             table: {
                 type: { summary: 'object' }
             }
@@ -273,26 +274,42 @@ export const ItemsWithPictures = Template.bind({});
 ItemsWithPictures.args = {
     items: itemsWithPictures,
     name: 'with-pictures',
-    ratio: '3-by-4'
+    ratio: '16-by-9',
+    size: 'xx-large',
+    imageAttributes: {
+        cropFit: 'cover',
+        position: 'overlay'
+    }
 };
 
-export const analyticItems = Template.bind({});
-analyticItems.args = {
+export const ItemsWithFields = Template.bind({});
+ItemsWithFields.args = {
+    items: itemsWithFields,
+    name: 'with-fields',
+    size: 'xx-large',
+    fieldAttributes: fieldAttributes
+};
+
+export const AnalyticItems = Template.bind({});
+AnalyticItems.args = {
     items: analyticsItems,
     label: 'All Templates',
     name: 'analytic-items',
     size: 'xx-large'
 };
 
-export const analyticItemsTop = Template.bind({});
-analyticItemsTop.args = {
+export const AnalyticItemsTop = Template.bind({});
+AnalyticItemsTop.args = {
     items: topAnalyticsItems,
     label: 'All Templates',
     name: 'analytic-items',
     ratio: '3-by-4',
     size: 'xx-large',
     type: 'checkbox',
-    value: ['approval-analytics', 'commerce-analytics']
+    value: ['approval-analytics', 'commerce-analytics'],
+    imageAttributes: {
+        position: 'top'
+    }
 };
 
 export const GoalStory = Template.bind({});
@@ -300,7 +317,13 @@ GoalStory.args = {
     items: goalStories,
     label: 'What is the goal of your story',
     name: 'goal-story',
-    size: 'responsive'
+    size: 'responsive',
+    columnAttributes: {
+        cols: 2,
+        smallContainerCols: 2,
+        mediumContainerCols: 4,
+        largeContainerCols: 4
+    }
 };
 
 export const BotStory = Template.bind({});

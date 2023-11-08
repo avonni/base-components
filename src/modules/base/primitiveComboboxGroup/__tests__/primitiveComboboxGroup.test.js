@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import { groups, options } from './data';
 import PrimitiveComboboxGroup from 'c/primitiveComboboxGroup';
@@ -103,51 +71,42 @@ describe('PrimitiveComboboxGroup', () => {
             expect(optionElements).toHaveLength(options.length);
 
             optionElements.forEach((option, index) => {
-                expect(option.className).toBe(options[index].computedClass);
-                expect(option.dataset.value).toBe(options[index].value);
+                const optionObject = options[index];
+                expect(option.ariaDisabled).toBe(
+                    optionObject.disabled ? 'true' : 'false'
+                );
+                expect(option.className).toBe(optionObject.computedClass);
+                expect(option.dataset.value).toBe(optionObject.value);
 
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!optionObject.showCheckmark);
 
                 const avatar = option.querySelector(
                     '[data-element-id="avonni-avatar"]'
                 );
-                if (options[index].hasAvatar) {
-                    expect(avatar).toBeTruthy();
-                } else {
-                    expect(avatar).toBeFalsy();
-                }
+                expect(!!avatar).toBe(!!optionObject.hasAvatar);
 
                 const label = option.querySelector(
                     '.slds-listbox__option-text'
                 );
-                expect(label.textContent).toBe(options[index].label);
+                expect(label.textContent).toBe(optionObject.label);
 
                 const secondaryText = option.querySelector(
                     '.slds-listbox__option-meta'
                 );
-                if (options[index].secondaryText) {
-                    expect(secondaryText.textContent).toBe(
-                        options[index].secondaryText
-                    );
-                } else {
-                    expect(secondaryText).toBeFalsy();
-                }
+                expect(
+                    optionObject.secondaryText
+                        ? secondaryText.textContent ===
+                              optionObject.secondaryText
+                        : !secondaryText
+                ).toBeTruthy();
 
                 const childrenChevron = option.querySelector(
                     '.slds-media__figure_reverse lightning-icon'
                 );
-                if (options[index].options.length) {
-                    expect(childrenChevron).toBeTruthy();
-                } else {
-                    expect(childrenChevron).toBeFalsy();
-                }
+                expect(!!childrenChevron).toBe(!!optionObject.options.length);
             });
         });
     });
@@ -173,11 +132,7 @@ describe('PrimitiveComboboxGroup', () => {
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
                 );
-                if (options[index].showCheckmark) {
-                    expect(checkmark).toBeTruthy();
-                } else {
-                    expect(checkmark).toBeFalsy();
-                }
+                expect(!!checkmark).toBe(!!options[index].showCheckmark);
             });
         });
     });
@@ -244,6 +199,21 @@ describe('PrimitiveComboboxGroup', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Primitive combobox group: privateoptionclick event, disabled', () => {
+        element.options = options;
+        element.name = 'string-name';
+        const handler = jest.fn();
+        element.addEventListener('privateoptionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const option =
+                element.shadowRoot.querySelectorAll('li[role="option"]')[2];
+            option.click();
+
+            expect(handler).toHaveBeenCalledTimes(0);
         });
     });
 

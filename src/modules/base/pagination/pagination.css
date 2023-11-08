@@ -1,39 +1,114 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 .avonni-pagination__container_fill {
     width: 100%;
 }
 
-.avonni-pagination__navigation-button-icon {
-    --slds-c-icon-color-foreground: var(--lwc-colorBrandDark, #0176d3);
+.avonni-pagination__navigation-button {
+    border-width: var(--avonni-pagination-button-sizing-border, 1px);
+    border-style: var(--avonni-pagination-button-styling-border, solid);
+}
+
+.avonni-pagination__button_neutral:hover:disabled,
+.slds-button.avonni-pagination__button_neutral:active:disabled,
+.slds-button.avonni-pagination__button_active:disabled,
+.avonni-pagination__button_neutral:disabled {
+    background-color: var(
+        --avonni-pagination-button-color-background-disabled,
+        #fff
+    );
+    border-color: var(
+        --avonni-pagination-button-color-border-disabled,
+        #747474
+    );
+    color: var(--avonni-pagination-button-text-color-disabled, #c9c9c9);
+}
+
+.avonni-pagination__button_neutral {
+    background-color: var(
+        --avonni-pagination-button-color-background,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
+    border-color: var(
+        --avonni-pagination-button-color-border,
+        var(--slds-g-color-border-base-4, #747474)
+    );
+    color: var(
+        --avonni-pagination-button-text-color,
+        var(--sds-c-button-text-color, #0176d3)
+    );
+}
+
+.slds-button_icon.avonni-pagination__button_neutral:active,
+.slds-button.avonni-pagination__button_neutral:active {
+    background-color: var(
+        --avonni-pagination-button-color-background-active,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    );
+    border-color: var(
+        --avonni-pagination-button-color-border-active,
+        var(--slds-g-color-border-base-4, #747474)
+    );
+    color: var(
+        --avonni-pagination-button-text-color-active,
+        var(--sds-c-button-text-color-active, #014486)
+    );
+}
+
+.avonni-pagination__button_neutral:hover {
+    background-color: var(
+        --avonni-pagination-button-color-background-hover,
+        var(--slds-g-color-neutral-base-95, #f3f3f3)
+    );
+    border-color: var(
+        --avonni-pagination-button-color-border-hover,
+        var(--slds-g-color-border-base-4, #747474)
+    );
+    color: var(
+        --avonni-pagination-button-text-color-hover,
+        var(--sds-c-button-text-color-active, #014486)
+    );
+}
+
+.avonni-pagination__button_active {
+    background-color: var(
+        --avonni-pagination-active-button-color-background,
+        var(--sds-c-button-brand-color-background, #0176d3)
+    );
+    border-color: var(
+        --avonni-pagination-active-button-color-border,
+        var(--sds-c-button-brand-color-border, #0176d3)
+    );
+    color: var(
+        --avonni-pagination-active-button-text-color,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
+}
+
+.slds-button.avonni-pagination__button_active:active {
+    background-color: var(
+        --avonni-pagination-active-button-color-background-active,
+        var(--sds-c-button-brand-color-background-active, #014486)
+    );
+    border-color: var(
+        --avonni-pagination-active-button-color-border-active,
+        var(--sds-c-button-brand-color-border-active, #014486)
+    );
+    color: var(
+        --avonni-pagination-active-button-text-color-active,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
+}
+
+.avonni-pagination__button_active:hover {
+    background-color: var(
+        --avonni-pagination-active-button-color-background-hover,
+        var(--sds-c-button-brand-color-background-active, #014486)
+    );
+    border-color: var(
+        --avonni-pagination-active-button-color-border-hover,
+        var(--sds-c-button-brand-color-border-active, #014486)
+    );
+    color: var(
+        --avonni-pagination-active-button-text-color-hover,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
 }

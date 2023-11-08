@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     deepCopy,
@@ -214,6 +182,29 @@ export default class FilterMenuGroup extends LightningElement {
      */
 
     /**
+     * Filter Wrapper class styling
+     *
+     * @type {string}
+     */
+    get filtersWrapperClass() {
+        return classSet({
+            'slds-grid': !this.isVertical
+        });
+    }
+
+    /**
+     * Filters class styling
+     *
+     * @type {string}
+     */
+    get filtersClass() {
+        return classSet({
+            'slds-m-right_xx-small': !this.isVertical,
+            'slds-m-bottom_small': this.isVertical
+        });
+    }
+
+    /**
      * True if the apply and reset buttons should be hidden for each menu.
      *
      * @type {boolean}
@@ -241,28 +232,10 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
-     * Filter Wrapper class styling
+     * Returns the pill actions.
      *
-     * @type {string}
+     * @type {object[]}
      */
-    get filtersWrapperClass() {
-        return classSet({
-            'slds-grid': !this.isVertical
-        });
-    }
-
-    /**
-     * Filters class styling
-     *
-     * @type {string}
-     */
-    get filtersClass() {
-        return classSet({
-            'slds-m-right_xx-small': !this.isVertical,
-            'slds-m-bottom_medium': this.isVertical
-        });
-    }
-
     get pillActions() {
         return [
             {
@@ -326,6 +299,20 @@ export default class FilterMenuGroup extends LightningElement {
         );
         if (element) {
             element.focus();
+        }
+    }
+
+    /**
+     * Set the focus on the search input of the given menu.
+     *
+     * @param {string} name Name of the menu that should receive the focus.
+     * @public
+     */
+    @api
+    focusSearchInput(name) {
+        const element = this.template.querySelector(`[data-name="${name}"]`);
+        if (element) {
+            element.focusSearchInput();
         }
     }
 
@@ -394,6 +381,32 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     /**
+     * Handle the closing of a menu popover.
+     *
+     * @param {Event} event close event fired by the menu.
+     */
+    handleClose(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when a dropdown is closed (horizontal variant) or a section is closed (vertical variant).
+         *
+         * @event
+         * @name close
+         * @param {string} name Name of the closed menu.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('close', {
+                detail: {
+                    name: menuName
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the load more event.
      *
      * @param {Event} event `loadmore` event fired by the menu.
@@ -412,6 +425,32 @@ export default class FilterMenuGroup extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('loadmore', { detail: { name: menuName } })
+        );
+    }
+
+    /**
+     * Handle the opening of a menu popover.
+     *
+     * @param {Event} event open event fired by the menu.
+     */
+    handleOpen(event) {
+        event.stopPropagation();
+        const menuName = event.target.dataset.name;
+
+        /**
+         * The event fired when a dropdown is opened (horizontal variant) or a section is opened (vertical variant).
+         *
+         * @event
+         * @name open
+         * @param {string} name Name of the opened menu.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('open', {
+                detail: {
+                    name: menuName
+                }
+            })
         );
     }
 

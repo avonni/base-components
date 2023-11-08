@@ -7,14 +7,17 @@ export default class Combobox extends LightningElement {
     @api disabled;
     @api dropdownAlignment;
     @api dropdownLength;
+    @api enableInfiniteLoading;
     @api fieldLevelHelp;
     @api groups;
     @api hideClearIcon;
+    @api hideOptionsUntilSearch;
     @api hideSelectedOptions;
     @api isLoading;
     @api isMultiSelect;
     @api label;
     @api loadingStateAlternativeText;
+    @api loadMoreOffset;
     @api messageWhenBadInput;
     @api messageWhenValueMissing;
     @api multiLevelGroups;

@@ -1,43 +1,5 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
-import {
-    ITEMS,
-    ITEMS_WITHOUT_ICONS,
-    ACTIONS,
-    ACTION,
-    ACTION_NO_LABEL
-} from './data';
+import { ITEMS, ITEMS_WITHOUT_ICONS, ACTIONS, ACTION } from './data';
 import List from 'c/list';
 
 // Not tested:
@@ -76,7 +38,21 @@ describe('List', () => {
         expect(element.largeContainerCols).toBeUndefined();
         expect(element.enableInfiniteLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
-        expect(element.imageAttributes).toMatchObject({});
+        expect(element.fieldAttributes).toEqual({
+            cols: 12,
+            largeContainerCols: 4,
+            mediumContainerCols: 6,
+            smallContainerCols: 12,
+            variant: 'standard'
+        });
+        expect(element.imageAttributes).toEqual({
+            fallbackSrc: null,
+            position: 'left',
+            size: 'large',
+            cropPositionX: 50,
+            cropPositionY: 50,
+            cropFit: 'cover'
+        });
         expect(element.label).toBeUndefined();
         expect(element.loadMoreOffset).toBe(20);
         expect(element.mediaActions).toMatchObject([]);
@@ -88,134 +64,40 @@ describe('List', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('List: Actions button-menu', () => {
+    // actions
+    it('List: Actions', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
-        return Promise.resolve()
-            .then(() => {
-                const actions = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-menu"]'
-                );
-                actions.click();
-            })
-            .then(() => {
-                const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="lightning-menu-item"]'
-                );
-                expect(menuItem[0].label).toBe('Completed');
-                expect(menuItem[0].value).toBe('completed-action');
-                expect(menuItem[0].iconName).toBe('utility:check');
-                expect(menuItem[0].disabled).toBeFalsy();
-                expect(menuItem[1].label).toBe('Pending');
-                expect(menuItem[1].value).toBe('pending-action');
-                expect(menuItem[1].iconName).toBe('utility:spinner');
-                expect(menuItem[1].disabled).toBeFalsy();
-                expect(menuItem[2].label).toBe('Delete');
-                expect(menuItem[2].value).toBe('delete-action');
-                expect(menuItem[2].iconName).toBe('utility:delete');
-                expect(menuItem[2].disabled).toBeTruthy();
-            });
-    });
-    it('List: Action lightning-button', () => {
-        element.items = ITEMS;
-        element.actions = ACTION;
-
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-actions"]'
             );
-
-            expect(button.label).toBe('Completed');
-            expect(button.iconName).toBe('utility:check');
-            expect(button.disabled).toBeFalsy();
-            expect(button.value).toBe('completed-action');
+            expect(primitiveActions).not.toBeNull();
         });
     });
-    it('List: Action lightning-button-icon', () => {
-        element.items = ITEMS;
-        element.actions = ACTION_NO_LABEL;
 
-        return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-
-            expect(buttonIcon.iconName).toBe('utility:event');
-            expect(buttonIcon.disabled).toBeFalsy();
-            expect(buttonIcon.value).toBe('event-action');
-        });
-    });
-    // MEDIA-ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('List: Media-Actions button-menu', () => {
+    // mediaActions
+    it('List: Media Actions', () => {
         element.items = ITEMS;
         element.mediaActions = ACTIONS;
 
-        return Promise.resolve()
-            .then(() => {
-                const actions = element.shadowRoot.querySelector(
-                    '[data-element-id="media-action-menu"]'
-                );
-                actions.click();
-            })
-            .then(() => {
-                const menuItem = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="media-action-menu-item"]'
-                );
-                expect(menuItem[0].label).toBe('Completed');
-                expect(menuItem[0].value).toBe('completed-action');
-                expect(menuItem[0].iconName).toBe('utility:check');
-                expect(menuItem[0].disabled).toBeFalsy();
-                expect(menuItem[1].label).toBe('Pending');
-                expect(menuItem[1].value).toBe('pending-action');
-                expect(menuItem[1].iconName).toBe('utility:spinner');
-                expect(menuItem[1].disabled).toBeFalsy();
-                expect(menuItem[2].label).toBe('Delete');
-                expect(menuItem[2].value).toBe('delete-action');
-                expect(menuItem[2].iconName).toBe('utility:delete');
-                expect(menuItem[2].disabled).toBeTruthy();
-            });
-    });
-    it('List: Media-Actions media-action-button', () => {
-        element.items = ITEMS;
-        element.mediaActions = ACTION;
-
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
+            const primitiveMediaActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-
-            expect(button.label).toBe('Completed');
-            expect(button.iconName).toBe('utility:check');
-            expect(button.disabled).toBeFalsy();
-            expect(button.value).toBe('completed-action');
+            expect(primitiveMediaActions).not.toBeNull();
         });
     });
-    it('List: Media-Actions media-action-button-icon', () => {
-        element.items = ITEMS;
-        element.mediaActions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button-icon"]'
-            );
-
-            expect(buttonIcon.iconName).toBe('utility:event');
-            expect(buttonIcon.disabled).toBeFalsy();
-            expect(buttonIcon.value).toBe('event-action');
-        });
-    });
-    it('List: No Media-Actions without images', () => {
+    it('List: Media Actions, without images', () => {
         element.items = ITEMS_WITHOUT_ICONS;
         element.mediaActions = ACTION;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
+            const primitiveMediaActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-
-            expect(button).toBeFalsy();
+            expect(primitiveMediaActions).toBeNull();
         });
     });
 
@@ -249,34 +131,92 @@ describe('List', () => {
     });
 
     // divider
+    it('List: Divider = none', () => {
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
+                '[data-element-id="list-element"]'
+            );
+            expect(listElem.classList).toContain(
+                'avonni-list__vertical-compact'
+            );
+            expect(divItem.className).toEqual(
+                'slds-template__container avonni-list__item-divider_none'
+            );
+        });
+    });
     it('List: Divider = around', () => {
+        element.items = ITEMS;
         element.divider = 'around';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
-            expect(menu.classList).toContain('avonni-list__has-card-style');
+            expect(divItem.classList).toContain(
+                'avonni-list__item-divider_around'
+            );
+            expect(listElem.classList).not.toContain(
+                'avonni-list__vertical-compact'
+            );
         });
     });
     it('List: Divider = top', () => {
+        element.items = ITEMS;
         element.divider = 'top';
+        element.smallContainerCols = 6;
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
-            expect(menu.classList).toContain('slds-has-dividers_top-space');
+            expect(listElem.classList).not.toContain(
+                'avonni-list__vertical-compact'
+            );
+            expect(divItem.classList).toContain(
+                'avonni-list__item-divider_top'
+            );
         });
     });
     it('List: Divider = bottom', () => {
+        element.items = ITEMS;
         element.divider = 'bottom';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector(
+            const divItem = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
+            );
+            const listElem = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
             );
-            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
+            expect(listElem.classList).toContain(
+                'avonni-list__vertical-compact'
+            );
+            expect(divItem.classList).toContain(
+                'avonni-list__item-divider_bottom'
+            );
+        });
+    });
+
+    /* field attributes */
+    it('List: Field Attributes, cols', () => {
+        element.fieldAttributes = { cols: 12, largeContainerCols: 4 };
+
+        return Promise.resolve().then(() => {
+            expect(element.fieldAttributes.cols).toBe(1);
+            expect(element.fieldAttributes.largeContainerCols).toBe(3);
+            expect(element.fieldAttributes.mediumContainerCols).toBe(1);
+            expect(element.fieldAttributes.smallContainerCols).toBe(1);
         });
     });
 
@@ -329,6 +269,26 @@ describe('List', () => {
             expect(images[1].style['min-width']).toBe('128px');
             expect(images[2].style['min-width']).toBe('128px');
         });
+    });
+    it('List: Images fallback src', () => {
+        element.items = ITEMS;
+        const fallbackSrc =
+            'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300';
+        element.imageAttributes = { fallbackSrc };
+
+        return Promise.resolve()
+            .then(() => {
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="list-img-media"]'
+                );
+                image.dispatchEvent(new CustomEvent('error'));
+            })
+            .then(() => {
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="list-img-media"]'
+                );
+                expect(image.src).toBe(fallbackSrc);
+            });
     });
 
     // items
@@ -648,75 +608,20 @@ describe('List', () => {
     /* ----- EVENT ----- */
 
     // actionclick
-    // Depends on items and actions
-    it('List: Actionclick event, one action', () => {
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Actionclick event, one icon action', () => {
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(
-                ACTION_NO_LABEL[0].name
-            );
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Actionclick event, multiple action', () => {
+    it('List: Action, Actionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-actions"]'
             );
-            button.dispatchEvent(
-                new CustomEvent('select', {
+            primitiveActions.dispatchEvent(
+                new CustomEvent('actionclick', {
                     detail: {
-                        value: ACTIONS[0].name
+                        name: ACTIONS[0].name
                     }
                 })
             );
@@ -735,81 +640,29 @@ describe('List', () => {
         });
     });
 
-    it('List: Media-Action, Actionclick event, multiple actions', () => {
+    it('List: Media-Action, Actionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('mediaactionclick', handler);
         element.items = ITEMS;
         element.mediaActions = ACTIONS;
 
         return Promise.resolve().then(() => {
-            const actionMenu = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-menu"]'
+            const primitiveActions = element.shadowRoot.querySelector(
+                '[data-element-id="primitive-media-actions"]'
             );
-            actionMenu.dispatchEvent(
-                new CustomEvent('select', {
+            primitiveActions.dispatchEvent(
+                new CustomEvent('actionclick', {
                     detail: {
-                        value: ACTIONS[0].name
+                        name: ACTIONS[0].name
                     }
                 })
             );
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-    it('List: Media-Action Actionclick event, one action', () => {
-        const handler = jest.fn();
-        element.addEventListener('mediaactionclick', handler);
-        element.items = ITEMS;
-        element.mediaActions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button"]'
-            );
-            button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.item).toMatchObject(
                 ITEMS[0]
             );
             expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Media-Action, Actionclick event, one icon action', () => {
-        const handler = jest.fn();
-        element.addEventListener('mediaactionclick', handler);
-        element.items = ITEMS;
-        element.mediaActions = ACTION_NO_LABEL;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="media-action-button-icon"]'
-            );
-            button.click();
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(
-                ACTION_NO_LABEL[0].name
-            );
             expect(handler.mock.calls[0][0].detail.targetName).toBe(
                 ITEMS[0].name
             );
@@ -866,23 +719,6 @@ describe('List', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        });
-    });
-
-    it('List: Itemclick event, keyboard actionclick do not dispatch itemclick', () => {
-        const handler = jest.fn();
-        element.addEventListener('itemclick', handler);
-        element.items = ITEMS;
-        element.actions = ACTION;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button"]'
-            );
-            const keydown = new CustomEvent('keydown', { bubbles: true });
-            keydown.key = 'Enter';
-            button.dispatchEvent(keydown);
-            expect(handler).not.toHaveBeenCalled();
         });
     });
 

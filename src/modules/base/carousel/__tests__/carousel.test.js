@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import Carousel from 'c/carousel';
 
@@ -147,548 +115,576 @@ describe('Carousel', () => {
         document.body.appendChild(element);
     });
 
-    it('Carousel: Default attributes', () => {
-        expect(element.assistiveText).toMatchObject({
-            autoplayButton: 'Play / Stop auto-play',
-            nextPanel: 'Next Panel',
-            previousPanel: 'Previous Panel'
-        });
-        expect(element.items).toMatchObject([]);
-        expect(element.disableAutoRefresh).toBeFalsy();
-        expect(element.disableAutoScroll).toBeFalsy();
-        expect(element.scrollDuration).toBe(5);
-        expect(element.indicatorVariant).toBe('base');
-        expect(element.isInfinite).toBeFalsy();
-        expect(element.currentPanel).toBeUndefined();
-        expect(element.hideIndicator).toBeFalsy();
-        expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
-        expect(element.itemsPerPanel).toBe(1);
-        expect(element.smallItemsPerPanel).toBeUndefined();
-        expect(element.mediumItemsPerPanel).toBeUndefined();
-        expect(element.largeItemsPerPanel).toBeUndefined();
-        expect(element.actionsVariant).toBe('border');
-        expect(element.actionsPosition).toBe('bottom-center');
-    });
-
-    /* ----- ATTRIBUTES ----- */
-
-    // actions variant
-    it('Carousel: actions variant bare without label', () => {
-        element.items = items;
-        element.actionsVariant = 'bare';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                'c-primitive-carousel-item'
-            );
-            expect(action.actionsVariant).toBe('bare');
-        });
-    });
-
-    // actions position
-    it('Carousel: actions position top-center', () => {
-        element.items = items;
-        element.actionsPosition = 'top-left';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                'c-primitive-carousel-item'
-            );
-            expect(action.actionsPosition).toBe('top-left');
-        });
-    });
-
-    // assistive-text
-    it('Carousel: assistive-text with indicator', () => {
-        element.items = items;
-        element.assistiveText = {
-            nextPanel: 'Next Panel Assistive Text',
-            previousPanel: 'Previous Panel Assistive Text',
-            autoplayButton: 'Start / Stop auto-play Panel Assistive Text'
-        };
-        element.hideIndicator = false;
-
-        return Promise.resolve().then(() => {
-            const panelButtons = element.shadowRoot.querySelectorAll(
-                '.avonni-carousel__nav-button'
-            );
-            expect(panelButtons[0].title).toBe('Previous Panel Assistive Text');
-            expect(panelButtons[1].title).toBe('Next Panel Assistive Text');
-            const autoPlayButton = element.shadowRoot.querySelector(
-                '.avonni-carousel__autoscroll-button-with-indicator'
-            );
-            expect(autoPlayButton.title).toBe(
-                'Start / Stop auto-play Panel Assistive Text'
-            );
-        });
-    });
-
-    it('Carousel: assistive-text without indicator', () => {
-        element.items = items;
-        element.assistiveText = {
-            nextPanel: 'Next Panel Assistive Text',
-            previousPanel: 'Previous Panel Assistive Text',
-            autoplayButton: 'Start / Stop auto-play Panel Assistive Text'
-        };
-        element.hideIndicator = true;
-
-        return Promise.resolve().then(() => {
-            const panelButtons = element.shadowRoot.querySelectorAll(
-                '.avonni-carousel__nav-button'
-            );
-            expect(panelButtons[0].title).toBe('Previous Panel Assistive Text');
-            expect(panelButtons[1].title).toBe('Next Panel Assistive Text');
-            const autoPlayButton = element.shadowRoot.querySelector(
-                '.avonni-carousel__autoscroll-button-without-indicator'
-            );
-            expect(autoPlayButton.title).toBe(
-                'Start / Stop auto-play Panel Assistive Text'
-            );
-        });
-    });
-
-    // disable auto refresh
-    it('Carousel: disable auto refresh', () => {
-        element.items = items;
-        element.disableAutoRefresh = true;
-
-        return Promise.resolve()
-            .then(() => {
-                const panelButtons = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__nav-button'
-                );
-                const nextButton = panelButtons[1];
-                nextButton.click();
-            })
-            .then(() => {
-                const autoPlayButton = element.shadowRoot.querySelector(
-                    '.avonni-carousel__autoscroll-button-with-indicator'
-                );
-                expect(autoPlayButton.iconName).toBe('utility:play');
+    describe('Attributes', () => {
+        it('Default attributes', () => {
+            expect(element.assistiveText).toMatchObject({
+                autoplayButton: 'Play / Stop auto-play',
+                nextPanel: 'Next Panel',
+                previousPanel: 'Previous Panel'
             });
-    });
-
-    // disable auto scrollable
-    it('Carousel: disable auto scrollable with indicator', () => {
-        element.items = items;
-        element.disableAutoScroll = true;
-        element.hideIndicator = false;
-
-        return Promise.resolve().then(() => {
-            const autoPlayButton = element.shadowRoot.querySelector(
-                '.avonni-carousel__autoscroll-button-with-indicator'
-            );
-            expect(autoPlayButton).toBeFalsy();
-        });
-    });
-
-    it('Carousel: disable auto scrollable without indicator', () => {
-        element.items = items;
-        element.disableAutoScroll = true;
-        element.hideIndicator = true;
-
-        return Promise.resolve().then(() => {
-            const autoPlayButton = element.shadowRoot.querySelector(
-                '.avonni-carousel__autoscroll-button-without-indicator'
-            );
-            expect(autoPlayButton).toBeFalsy();
-        });
-    });
-
-    // indicator variant
-    it('Carousel: indicator variant base', () => {
-        element.items = items;
-        element.hideIndicator = false;
-
-        return Promise.resolve().then(() => {
-            const activeIndicator =
-                element.shadowRoot.querySelector('.slds-is-active');
-            expect(activeIndicator.className).not.toContain(
-                'avonni-carousel__progress-indicator_shaded-active'
-            );
-            const indicators = element.shadowRoot.querySelectorAll(
-                '.slds-carousel__indicator-action'
-            );
-            indicators.forEach((indicator) => {
-                expect(indicator.className).not.toContain(
-                    'avonni-carousel__progress-indicator_shaded-inactive'
-                );
-            });
-        });
-    });
-
-    it('Carousel: indicator variant shaded', () => {
-        element.indicatorVariant = 'shaded';
-        element.items = items;
-
-        return Promise.resolve().then(() => {
-            const activeIndicator = element.shadowRoot.querySelector(
-                '.avonni-carousel__progress-indicator_shaded-active'
-            );
-            expect(activeIndicator.className).toBeTruthy();
-            const indicators = element.shadowRoot.querySelectorAll(
-                '.slds-carousel__indicator-action'
-            );
-            indicators.forEach((indicator) => {
-                expect(indicator.className).toContain(
-                    'avonni-carousel__progress-indicator_shaded-inactive'
-                );
-            });
-        });
-    });
-
-    // current panel
-    it('Carousel: current panel', () => {
-        element.currentPanel = '3';
-        element.items = items;
-
-        return Promise.resolve().then(() => {
-            const panels = element.shadowRoot.querySelectorAll(
-                '.avonni-carousel__panel'
-            );
-            const thirdPanel = panels[2];
-            expect(thirdPanel.ariaHidden).toBe('false');
-        });
-    });
-
-    // hide indicator
-    it('Carousel: hide indicator', () => {
-        element.items = items;
-        element.hideIndicator = true;
-
-        return Promise.resolve().then(() => {
-            const indicators = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="li-pagination"]'
-            );
-            expect(indicators).toHaveLength(0);
-        });
-    });
-
-    // hide previous next panel navigation
-    it('Carousel: hide previous next panel navigation', () => {
-        element.items = [
-            {
-                name: '1',
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com'
-            }
-        ];
-        element.hidePreviousNextPanelNavigation = true;
-
-        return Promise.resolve().then(() => {
-            // only the autoplay button is present
-            const buttons = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="lightning-button-icon"]'
-            );
-            expect(buttons).toHaveLength(1);
-        });
-    });
-
-    // items per panel
-    it('Carousel: items per panel not a number', () => {
-        element.items = items;
-        element.itemsPerPanel = 'hello';
-
-        return Promise.resolve().then(() => {
-            const panels = element.shadowRoot.querySelectorAll(
-                '.avonni-carousel__panel'
-            );
+            expect(element.items).toMatchObject([]);
+            expect(element.disableAutoRefresh).toBeFalsy();
+            expect(element.disableAutoScroll).toBeFalsy();
+            expect(element.scrollDuration).toBe(5);
+            expect(element.indicatorVariant).toBe('base');
+            expect(element.isInfinite).toBeFalsy();
+            expect(element.currentPanel).toBeUndefined();
+            expect(element.hideIndicator).toBeFalsy();
+            expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
             expect(element.itemsPerPanel).toBe(1);
-            expect(panels).toHaveLength(7);
+            expect(element.smallItemsPerPanel).toBeUndefined();
+            expect(element.mediumItemsPerPanel).toBeUndefined();
+            expect(element.largeItemsPerPanel).toBeUndefined();
+            expect(element.actionsVariant).toBe('border');
+            expect(element.actionsPosition).toBe('bottom-center');
         });
-    });
 
-    it('Carousel: items per panel', () => {
-        element.itemsPerPanel = 2;
-        element.items = items;
+        describe('Action Variant', () => {
+            it('Bare without label', () => {
+                element.items = items;
+                element.actionsVariant = 'bare';
 
-        return Promise.resolve().then(() => {
-            const panels = element.shadowRoot.querySelectorAll(
-                '.avonni-carousel__panel'
-            );
-            expect(panels).toHaveLength(4);
+                return Promise.resolve().then(() => {
+                    const action = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(action.actionsVariant).toBe('bare');
+                });
+            });
         });
-    });
 
-    // carousel infinite last goes back to first
-    it('Carousel: infinite last goes back to first', () => {
-        element.items = items;
-        element.hideIndicator = false;
-        element.isInfinite = true;
-        const lastItem = items.length - 1;
+        describe('Action positions', () => {
+            it('Actions position top-center', () => {
+                element.items = items;
+                element.actionsPosition = 'top-left';
 
-        return Promise.resolve()
-            .then(() => {
-                element.last();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[lastItem].className).toContain(
-                    'slds-is-active'
-                );
-                element.next();
-                expect(indicators[0].className).toContain('slds-is-active');
+                return Promise.resolve().then(() => {
+                    const action = element.shadowRoot.querySelector(
+                        'c-primitive-carousel-item'
+                    );
+                    expect(action.actionsPosition).toBe('top-left');
+                });
             });
-    });
+        });
 
-    // carousel infinite first goes back to last
-    it('Carousel: infinite first goes back to last', () => {
-        element.items = items;
-        element.hideIndicator = false;
-        element.isInfinite = true;
-        const lastItem = items.length - 1;
+        describe('Assistive Text', () => {
+            it('Assistive-text with indicator', () => {
+                element.items = items;
+                element.assistiveText = {
+                    nextPanel: 'Next Panel Assistive Text',
+                    previousPanel: 'Previous Panel Assistive Text',
+                    autoplayButton:
+                        'Start / Stop auto-play Panel Assistive Text'
+                };
+                element.hideIndicator = false;
 
-        return Promise.resolve()
-            .then(() => {
-                element.first();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[0].className).toContain('slds-is-active');
-                element.previous();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[lastItem].className).toContain(
-                    'slds-is-active'
-                );
+                return Promise.resolve().then(() => {
+                    const panelButtons = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__nav-button'
+                    );
+                    expect(panelButtons[0].title).toBe(
+                        'Previous Panel Assistive Text'
+                    );
+                    expect(panelButtons[1].title).toBe(
+                        'Next Panel Assistive Text'
+                    );
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-with-indicator'
+                    );
+                    expect(autoPlayButton.title).toBe(
+                        'Start / Stop auto-play Panel Assistive Text'
+                    );
+                });
             });
-    });
 
-    /* ----- METHODS ----- */
+            it('Assistive-text without indicator', () => {
+                element.items = items;
+                element.assistiveText = {
+                    nextPanel: 'Next Panel Assistive Text',
+                    previousPanel: 'Previous Panel Assistive Text',
+                    autoplayButton:
+                        'Start / Stop auto-play Panel Assistive Text'
+                };
+                element.hideIndicator = true;
 
-    // carousel next & previous
-    it('Carousel: next & previous methods', () => {
-        element.items = items;
-        element.hideIndicator = false;
-        return Promise.resolve()
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[0].className).toContain('slds-is-active');
-                expect(indicators[1].className).not.toContain('slds-is-active');
-                element.next();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[0].className).not.toContain('slds-is-active');
-                expect(indicators[1].className).toContain('slds-is-active');
-                element.previous();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[0].className).toContain('slds-is-active');
-                expect(indicators[1].className).not.toContain('slds-is-active');
+                return Promise.resolve().then(() => {
+                    const panelButtons = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__nav-button'
+                    );
+                    expect(panelButtons[0].title).toBe(
+                        'Previous Panel Assistive Text'
+                    );
+                    expect(panelButtons[1].title).toBe(
+                        'Next Panel Assistive Text'
+                    );
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-without-indicator'
+                    );
+                    expect(autoPlayButton.title).toBe(
+                        'Start / Stop auto-play Panel Assistive Text'
+                    );
+                });
             });
-    });
+        });
 
-    // carousel first & last
-    it('Carousel: first & last methods', () => {
-        element.items = items;
-        element.hideIndicator = false;
-        const lastItem = items.length - 1;
-        return Promise.resolve()
-            .then(() => {
-                element.last();
-            })
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="a-pagination"]'
-                );
-                expect(indicators[lastItem].className).toContain(
-                    'slds-is-active'
-                );
-                element.first();
-                expect(indicators[0].className).toContain('slds-is-active');
+        describe('Disable Auto Refresh', () => {
+            it('Disable auto refresh', () => {
+                element.items = items;
+                element.disableAutoRefresh = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const panelButtons =
+                            element.shadowRoot.querySelectorAll(
+                                '.avonni-carousel__nav-button'
+                            );
+                        const nextButton = panelButtons[1];
+                        nextButton.click();
+                    })
+                    .then(() => {
+                        const autoPlayButton = element.shadowRoot.querySelector(
+                            '.avonni-carousel__autoscroll-button-with-indicator'
+                        );
+                        expect(autoPlayButton.iconName).toBe('utility:play');
+                    });
             });
-    });
 
-    // carousel play & pause
-    it('Carousel: play & pause methods', () => {
-        element.items = items;
-        element.hideIndicator = false;
-        element.pause();
-        return Promise.resolve()
-            .then(() => {
-                const autoPlayButton = element.shadowRoot.querySelector(
-                    '.avonni-carousel__autoscroll-button-with-indicator'
-                );
-                expect(autoPlayButton.iconName).toBe('utility:play');
-                element.play();
-            })
-            .then(() => {
-                const autoPlayButton = element.shadowRoot.querySelector(
-                    '.avonni-carousel__autoscroll-button-with-indicator'
-                );
-                expect(autoPlayButton.iconName).toBe('utility:pause');
+            // disable auto scrollable
+            it('Disable auto scrollable with indicator', () => {
+                element.items = items;
+                element.disableAutoScroll = true;
+                element.hideIndicator = false;
+
+                return Promise.resolve().then(() => {
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-with-indicator'
+                    );
+                    expect(autoPlayButton).toBeFalsy();
+                });
             });
-    });
 
-    /* ----- JS ----- */
+            it('Disable auto scrollable without indicator', () => {
+                element.items = items;
+                element.disableAutoScroll = true;
+                element.hideIndicator = true;
 
-    // handle indicator click
-    it('Carousel: handle indicator click base', () => {
-        element.items = items;
-
-        return Promise.resolve()
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="li-pagination"]'
-                );
-                const secondIndicator = indicators[1];
-                secondIndicator.click();
-            })
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const secondPanel = panels[1];
-                expect(secondPanel.getAttribute('aria-hidden')).toBe('false');
+                return Promise.resolve().then(() => {
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-without-indicator'
+                    );
+                    expect(autoPlayButton).toBeFalsy();
+                });
             });
-    });
+        });
 
-    it('Carousel: handle indicator click shaded', () => {
-        element.items = items;
-        element.indicatorVariant = 'shaded';
+        describe('Indicator variant', () => {
+            it('Indicator variant base', () => {
+                element.items = items;
+                element.hideIndicator = false;
 
-        return Promise.resolve()
-            .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll(
-                    '.slds-carousel__indicator-action'
-                );
-                const secondIndicator = indicators[1];
-                secondIndicator.click();
-            })
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const secondPanel = panels[1];
-                expect(secondPanel.getAttribute('aria-hidden')).toBe('false');
+                return Promise.resolve().then(() => {
+                    const activeIndicator =
+                        element.shadowRoot.querySelector('.slds-is-active');
+                    expect(activeIndicator.className).not.toContain(
+                        'avonni-carousel__progress-indicator_shaded-active'
+                    );
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '.slds-carousel__indicator-action'
+                    );
+                    indicators.forEach((indicator) => {
+                        expect(indicator.className).not.toContain(
+                            'avonni-carousel__progress-indicator_shaded-inactive'
+                        );
+                    });
+                });
             });
-    });
 
-    // Scroll right
-    it('Carousel: handle scroll right', () => {
-        element.items = items;
-        const nextButton = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon-next"]'
-        );
+            it('Indicator variant shaded', () => {
+                element.indicatorVariant = 'shaded';
+                element.items = items;
 
-        return Promise.resolve()
-            .then(() => {
-                nextButton.click();
-            })
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const secondPanel = panels[1];
-                expect(secondPanel.ariaHidden).toBe('false');
+                return Promise.resolve().then(() => {
+                    const activeIndicator = element.shadowRoot.querySelector(
+                        '.avonni-carousel__progress-indicator_shaded-active'
+                    );
+                    expect(activeIndicator.className).toBeTruthy();
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '.slds-carousel__indicator-action'
+                    );
+                    indicators.forEach((indicator) => {
+                        expect(indicator.className).toContain(
+                            'avonni-carousel__progress-indicator_shaded-inactive'
+                        );
+                    });
+                });
             });
-    });
+        });
 
-    // Scroll left
-    it('Carousel: handle scroll left', () => {
-        element.items = items;
-        const nextButton = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon-next"]'
-        );
-        const previousButton = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon-previous"]'
-        );
+        describe('Current Panel', () => {
+            it('Current panel', () => {
+                element.currentPanel = '3';
+                element.items = items;
 
-        return Promise.resolve()
-            .then(() => {
-                nextButton.click();
-            })
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const secondPanel = panels[1];
-                expect(secondPanel.ariaHidden).toBe('false');
-            })
-            .then(() => {
-                previousButton.click();
-            })
-            .then(() => {
-                const panels = element.shadowRoot.querySelectorAll(
-                    '.avonni-carousel__panel'
-                );
-                const secondPanel = panels[1];
-                const firstPanel = panels[0];
-                expect(secondPanel.ariaHidden).toBe('true');
-                expect(firstPanel.ariaHidden).toBe('false');
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const thirdPanel = panels[2];
+                    expect(thirdPanel.ariaHidden).toBe('false');
+                });
             });
-    });
+        });
 
-    /* ----- EVENTS ----- */
+        describe('Hide Indicator', () => {
+            it('hide indicator', () => {
+                element.items = items;
+                element.hideIndicator = true;
 
-    // carousel itemclick
-    it('Carousel: item click', () => {
-        const handler = jest.fn();
-        element.addEventListener('itemclick', handler);
-        element.items = items;
+                return Promise.resolve().then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="li-pagination"]'
+                    );
+                    expect(indicators).toHaveLength(0);
+                });
+            });
+        });
 
-        return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                'c-primitive-carousel-item'
-            );
-            item.dispatchEvent(
-                new CustomEvent('itemclick', {
-                    detail: {
-                        item: ex
+        describe('hide previous next panel navigation', () => {
+            it('hide previous next panel navigation', () => {
+                element.items = [
+                    {
+                        name: '1',
+                        title: 'Visit App Exchange',
+                        description:
+                            'Extend Salesforce with the #1 business marketplace.',
+                        imageAssistiveText: 'Appy',
+                        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                        href: 'https://www.salesforce.com'
                     }
-                })
-            );
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                ];
+                element.hidePreviousNextPanelNavigation = true;
+
+                return Promise.resolve().then(() => {
+                    // only the autoplay button is present
+                    const buttons = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="lightning-button-icon"]'
+                    );
+                    expect(buttons).toHaveLength(1);
+                });
+            });
+        });
+
+        describe('Items per panel', () => {
+            it('items per panel not a number', () => {
+                element.items = items;
+                element.itemsPerPanel = 'hello';
+
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    expect(element.itemsPerPanel).toBe(1);
+                    expect(panels).toHaveLength(7);
+                });
+            });
+
+            it('items per panel', () => {
+                element.itemsPerPanel = 2;
+                element.items = items;
+
+                return Promise.resolve().then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    expect(panels).toHaveLength(4);
+                });
+            });
+        });
+
+        describe('Infinite', () => {
+            it('Infinite last goes back to first', () => {
+                element.items = items;
+                element.hideIndicator = false;
+                element.isInfinite = true;
+                const lastItem = items.length - 1;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.last();
+                    })
+                    .then(() => {
+                        const indicators = element.shadowRoot.querySelectorAll(
+                            '[data-element-id^="a-pagination"]'
+                        );
+                        expect(indicators[lastItem].className).toContain(
+                            'slds-is-active'
+                        );
+                        element.next();
+                        expect(indicators[0].className).toContain(
+                            'slds-is-active'
+                        );
+                    });
+            });
+
+            it('Infinite first goes back to last', () => {
+                element.items = items;
+                element.hideIndicator = false;
+                element.isInfinite = true;
+                const lastItem = items.length - 1;
+
+                return Promise.resolve()
+                    .then(() => {
+                        element.first();
+                    })
+                    .then(() => {
+                        const indicators = element.shadowRoot.querySelectorAll(
+                            '[data-element-id^="a-pagination"]'
+                        );
+                        expect(indicators[0].className).toContain(
+                            'slds-is-active'
+                        );
+                        element.previous();
+                    })
+                    .then(() => {
+                        const indicators = element.shadowRoot.querySelectorAll(
+                            '[data-element-id^="a-pagination"]'
+                        );
+                        expect(indicators[lastItem].className).toContain(
+                            'slds-is-active'
+                        );
+                    });
+            });
         });
     });
 
-    // carousel actionclick
-    it('Carousel: actionclick', () => {
-        element.items = items;
-
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-
-        return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                'c-primitive-carousel-item'
-            );
-            item.dispatchEvent(
-                new CustomEvent('actionclick', {
-                    detail: {
-                        name: 'action-name',
-                        item: ex
-                    }
+    describe('Methods', () => {
+        it('next & previous', () => {
+            element.items = items;
+            element.hideIndicator = false;
+            return Promise.resolve()
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="a-pagination"]'
+                    );
+                    expect(indicators[0].className).toContain('slds-is-active');
+                    expect(indicators[1].className).not.toContain(
+                        'slds-is-active'
+                    );
+                    element.next();
                 })
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="a-pagination"]'
+                    );
+                    expect(indicators[0].className).not.toContain(
+                        'slds-is-active'
+                    );
+                    expect(indicators[1].className).toContain('slds-is-active');
+                    element.previous();
+                })
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="a-pagination"]'
+                    );
+                    expect(indicators[0].className).toContain('slds-is-active');
+                    expect(indicators[1].className).not.toContain(
+                        'slds-is-active'
+                    );
+                });
+        });
+
+        it('first & last methods', () => {
+            element.items = items;
+            element.hideIndicator = false;
+            const lastItem = items.length - 1;
+            return Promise.resolve()
+                .then(() => {
+                    element.last();
+                })
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id^="a-pagination"]'
+                    );
+                    expect(indicators[lastItem].className).toContain(
+                        'slds-is-active'
+                    );
+                    element.first();
+                    expect(indicators[0].className).toContain('slds-is-active');
+                });
+        });
+
+        it('play & pause methods', () => {
+            element.items = items;
+            element.hideIndicator = false;
+            element.pause();
+            return Promise.resolve()
+                .then(() => {
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-with-indicator'
+                    );
+                    expect(autoPlayButton.iconName).toBe('utility:play');
+                    element.play();
+                })
+                .then(() => {
+                    const autoPlayButton = element.shadowRoot.querySelector(
+                        '.avonni-carousel__autoscroll-button-with-indicator'
+                    );
+                    expect(autoPlayButton.iconName).toBe('utility:pause');
+                });
+        });
+    });
+
+    describe('Javascript', () => {
+        it('handle indicator click base', () => {
+            element.items = items;
+
+            return Promise.resolve()
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '[data-element-id="li-pagination"]'
+                    );
+                    const secondIndicator = indicators[1];
+                    secondIndicator.click();
+                })
+                .then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.getAttribute('aria-hidden')).toBe(
+                        'false'
+                    );
+                });
+        });
+
+        it('handle indicator click shaded', () => {
+            element.items = items;
+            element.indicatorVariant = 'shaded';
+
+            return Promise.resolve()
+                .then(() => {
+                    const indicators = element.shadowRoot.querySelectorAll(
+                        '.slds-carousel__indicator-action'
+                    );
+                    const secondIndicator = indicators[1];
+                    secondIndicator.click();
+                })
+                .then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.getAttribute('aria-hidden')).toBe(
+                        'false'
+                    );
+                });
+        });
+
+        it('handle scroll right', () => {
+            element.items = items;
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-next"]'
             );
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+
+            return Promise.resolve()
+                .then(() => {
+                    nextButton.click();
+                })
+                .then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.ariaHidden).toBe('false');
+                });
+        });
+
+        it('handle scroll left', () => {
+            element.items = items;
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-next"]'
+            );
+            const previousButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-previous"]'
+            );
+
+            return Promise.resolve()
+                .then(() => {
+                    nextButton.click();
+                })
+                .then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const secondPanel = panels[1];
+                    expect(secondPanel.ariaHidden).toBe('false');
+                })
+                .then(() => {
+                    previousButton.click();
+                })
+                .then(() => {
+                    const panels = element.shadowRoot.querySelectorAll(
+                        '.avonni-carousel__panel'
+                    );
+                    const secondPanel = panels[1];
+                    const firstPanel = panels[0];
+                    expect(secondPanel.ariaHidden).toBe('true');
+                    expect(firstPanel.ariaHidden).toBe('false');
+                });
+        });
+    });
+
+    describe('Events', () => {
+        it('item click', () => {
+            const handler = jest.fn();
+            element.addEventListener('itemclick', handler);
+            element.items = items;
+
+            return Promise.resolve().then(() => {
+                const item = element.shadowRoot.querySelector(
+                    'c-primitive-carousel-item'
+                );
+                item.dispatchEvent(
+                    new CustomEvent('itemclick', {
+                        detail: {
+                            item: ex
+                        }
+                    })
+                );
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+        });
+
+        it('actionclick', () => {
+            element.items = items;
+
+            const handler = jest.fn();
+            element.addEventListener('actionclick', handler);
+
+            return Promise.resolve().then(() => {
+                const item = element.shadowRoot.querySelector(
+                    'c-primitive-carousel-item'
+                );
+                item.dispatchEvent(
+                    new CustomEvent('actionclick', {
+                        detail: {
+                            name: 'action-name',
+                            item: ex
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.name).toBe(
+                    'action-name'
+                );
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
         });
     });
 });

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 import PrimitiveSchedulerEventOccurrence from '../primitiveSchedulerEventOccurrence';
@@ -185,7 +153,7 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 'slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_horizontal slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default'
             );
         });
     });
@@ -266,7 +234,7 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 'slds-grid avonni-scheduler__event-wrapper'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_past avonni-scheduler__event_display-as-dot'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_horizontal avonni-scheduler__event_past avonni-scheduler__event_display-as-dot'
             );
         });
     });
@@ -372,7 +340,7 @@ describe('Primitive Scheduler Event Occurrence: calendar variants', () => {
                 'slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper'
             );
             expect(eventContent.className).toBe(
-                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell'
+                'avonni-scheduler__event slds-grid slds-has-flexi-truncate avonni-primitive-scheduler-event-occurrence__flex-col slds-p-horizontal_x-small avonni-scheduler__event_horizontal slds-text-color_inverse slds-current-color avonni-scheduler__event_past avonni-scheduler__event_default avonni-scheduler__event_standalone-multi-day-starts-in-previous-cell avonni-scheduler__event_standalone-multi-day-ends-in-later-cell'
             );
             expect(centerLabel.className).toBe(
                 'slds-truncate slds-grid avonni-scheduler__event-label_center slds-p-horizontal_x-small'

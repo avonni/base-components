@@ -1,0 +1,12 @@
+:host,
+.avonni-layout-wrapper,
+.avonni-layout__slot {
+    height: 100%;
+    max-height: inherit;
+    min-height: inherit;
+}
+
+.avonni-layout-wrapper {
+    row-gap: var(--avonni-layout-items-spacing-block-between, 0);
+    column-gap: var(--avonni-layout-items-spacing-inline-between, 0);
+}

@@ -1,37 +1,3 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
     <div
         class={activityTimelineItemOuterClass}
@@ -132,7 +98,7 @@
                     >
                         <div
                             if:true={dateFormat}
-                            class="slds-timeline__date"
+                            class="slds-timeline__date slds-truncate"
                             data-element-id="avonni-formatted-date-time"
                         >
                             {formattedDate}
@@ -188,7 +154,9 @@
                                 size="x-small"
                                 class="slds-m-right_x-small"
                             ></lightning-icon>
-                            <p>There was an error loading the details</p>
+                            <p class="slds-truncate">
+                                There was an error loading the details
+                            </p>
                         </div>
                     </template>
                     <template if:false={hasError}>
@@ -200,33 +168,34 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                <lightning-layout
+                                <c-layout
                                     data-element-id="fields-container"
-                                    multiple-rows="true"
+                                    multiple-rows
                                 >
                                     <template
                                         for:each={fields}
                                         for:item="field"
                                         for:index="index"
                                     >
-                                        <lightning-layout-item
+                                        <c-layout-item
                                             key={field.value}
-                                            class="
-                                                slds-truncate
-                                                slds-p-top_medium
-                                            "
-                                            size={fieldSize}
+                                            class="slds-truncate"
+                                            size={fieldAttributes.cols}
+                                            large-container-size={fieldAttributes.largeContainerCols}
+                                            medium-container-size={fieldAttributes.mediumContainerCols}
+                                            small-container-size={fieldAttributes.smallContainerCols}
                                         >
                                             <c-output-data
                                                 label={field.label}
                                                 value={field.value}
                                                 type={field.type}
                                                 type-attributes={field.typeAttributes}
+                                                variant={fieldAttributes.variant}
                                                 data-element-id="avonni-output-data"
                                             ></c-output-data>
-                                        </lightning-layout-item>
+                                        </c-layout-item>
                                     </template>
-                                </lightning-layout>
+                                </c-layout>
                                 <template if:true={buttonLabel}>
                                     <lightning-button
                                         label={buttonLabel}

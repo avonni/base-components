@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 button {
     padding-bottom: var(--avonni-button-menu-spacing-block-end);
     border-radius: var(--avonni-button-menu-radius-border, 0.25rem);
@@ -76,7 +44,10 @@ button {
         --avonni-button-menu-button-bare-color-border,
         transparent
     );
-    color: var(--avonni-button-menu-button-bare-text-color, #706e6b);
+    color: var(
+        --avonni-button-menu-button-bare-text-color,
+        var(--slds-g-color-neutral-base-50, #747474)
+    );
 }
 
 .slds-button.avonni-button-menu__button_bare:active {
@@ -86,11 +57,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-bare-color-border-active,
-        transparent
+        #014486
     );
     color: var(
         --avonni-button-menu-button-bare-text-color-active,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -105,7 +76,7 @@ button {
     );
     color: var(
         --avonni-button-menu-button-bare-text-color-hover,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -118,7 +89,10 @@ button {
         --avonni-button-menu-button-bare-inverse-color-border,
         transparent
     );
-    color: var(--avonni-button-menu-button-bare-inverse-text-color, #fff);
+    color: var(
+        --avonni-button-menu-button-bare-inverse-text-color,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
 }
 
 .slds-button.avonni-button-menu__button_bare-inverse:active {
@@ -128,7 +102,7 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-bare-inverse-color-border-active,
-        transparent
+        rgba(255, 255, 255, 0.75)
     );
     color: var(
         --avonni-button-menu-button-bare-inverse-text-color-active,
@@ -156,8 +130,11 @@ button {
         --avonni-button-menu-button-border-color-background,
         transparent
     );
-    border-color: var(--avonni-button-menu-button-border-color-border, #c9c9c9);
-    color: var(--avonni-button-menu-button-border-text-color, #706e6b);
+    border-color: var(
+        --avonni-button-menu-button-border-color-border,
+        var(--slds-g-color-border-base-4, #747474)
+    );
+    color: var(--avonni-button-menu-button-border-text-color, #747474);
 }
 
 .slds-button.avonni-button-menu__button_border:active {
@@ -167,11 +144,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-border-color-border-active,
-        #c9c9c9
+        var(--sds-c-button-border-color-border-active, #014486)
     );
     color: var(
         --avonni-button-menu-button-border-text-color-active,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -182,53 +159,56 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-border-color-border-hover,
-        #c9c9c9
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-border-text-color-hover,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
 .avonni-button-menu__button_border-filled {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background,
-        #fff
+        var(--slds-g-color-neutral-base-100, #fff)
     );
     border-color: var(
         --avonni-button-menu-button-border-filled-color-border,
-        #c9c9c9
+        var(--slds-g-color-border-base-4, #747474)
     );
-    color: var(--avonni-button-menu-button-border-filled-text-color, #706e6b);
+    color: var(
+        --avonni-button-menu-button-border-filled-text-color,
+        var(--slds-g-color-neutral-base-50, #747474)
+    );
 }
 
 .slds-button.avonni-button-menu__button_border-filled:active {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background-active,
-        #fff
+        var(--slds-g-color-neutral-base-100, #fff)
     );
     border-color: var(
         --avonni-button-menu-button-border-filled-color-border-active,
-        #c9c9c9
+        var(--sds-c-button-border-color-border-active, #014486)
     );
     color: var(
         --avonni-button-menu-button-border-filled-text-color-active,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
 .avonni-button-menu__button_border-filled:hover {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background-hover,
-        #fff
+        var(--slds-g-color-neutral-base-100, #fff)
     );
     border-color: var(
         --avonni-button-menu-button-border-filled-color-border-hover,
-        #c9c9c9
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-border-filled-text-color-hover,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -239,9 +219,12 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-border-inverse-color-border,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-1, #c9c9c9)
     );
-    color: var(--avonni-button-menu-button-border-inverse-text-color, #fff);
+    color: var(
+        --avonni-button-menu-button-border-inverse-text-color,
+        var(--slds-g-color-neutral-base-100, #fff)
+    );
 }
 
 .slds-button.avonni-button-menu__button_border-inverse:active {
@@ -251,11 +234,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-border-inverse-color-border-active,
-        var(--sds-c-button-border-color-border-active, #dddbda)
+        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
     );
     color: var(
         --avonni-button-menu-button-border-inverse-text-color-active,
-        rgba(255, 255, 255, 0.75)
+        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
     );
 }
 
@@ -266,11 +249,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-border-inverse-color-border-hover,
-        var(--sds-c-button-border-color-border-active, #dddbda)
+        var(--slds-g-color-border-base-1, #c9c9c9)
     );
     color: var(
         --avonni-button-menu-button-border-inverse-text-color-hover,
-        rgba(255, 255, 255, 0.75)
+        var(--slds-g-color-neutral-100-opacity-50, hsla(0, 0%, 100%, 0.5))
     );
 }
 
@@ -337,7 +320,7 @@ button {
 .slds-button.avonni-button-menu__button_brand-outline:active {
     background-color: var(
         --avonni-button-menu-button-outline-brand-color-background-active,
-        var(--slds-g-color-neutral-base-100, #f4f6f9)
+        var(--slds-g-color-neutral-base-100, #f3f3f3)
     );
     border-color: var(
         --avonni-button-menu-button-outline-brand-color-border-active,
@@ -352,7 +335,7 @@ button {
 .avonni-button-menu__button_brand-outline:hover {
     background-color: var(
         --avonni-button-menu-button-outline-brand-color-background-hover,
-        var(--slds-g-color-neutral-base-100, #f4f6f9)
+        var(--slds-g-color-neutral-base-100, #f3f3f3)
     );
     border-color: var(
         --avonni-button-menu-button-outline-brand-color-border-hover,
@@ -371,9 +354,12 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-container-color-border,
-        var(--sds-c-button-color-background, transparent)
+        var(--sds-c-button-color-border, transparent)
     );
-    color: var(--avonni-button-menu-button-container-text-color, #706e6b);
+    color: var(
+        --avonni-button-menu-button-container-text-color,
+        var(--slds-g-color-neutral-base-50, #747474)
+    );
 }
 
 .slds-button.avonni-button-menu__button_container:active {
@@ -383,11 +369,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-container-color-border-active,
-        var(--sds-c-button-color-background, transparent)
+        var(--sds-c-button-color-background, #014486)
     );
     color: var(
         --avonni-button-menu-button-container-text-color-active,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -402,7 +388,7 @@ button {
     );
     color: var(
         --avonni-button-menu-button-container-text-color-hover,
-        var(--sds-c-button-text-color-hover, #005fb2)
+        var(--sds-c-button-text-color-hover, #014486)
     );
 }
 
@@ -458,11 +444,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-text-destructive-color-border,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-text-destructive-text-color,
-        var(--slds-g-color-error-base-30, #ea001e)
+        var(--slds-g-color-error-base-30, #8e030f)
     );
 }
 
@@ -473,11 +459,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-text-destructive-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-text-destructive-text-color-active,
-        var(--slds-g-color-error-base-30, #ba0517)
+        var(--slds-g-color-error-base-30, #8e030f)
     );
 }
 
@@ -488,11 +474,11 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-text-destructive-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-text-destructive-text-color-hover,
-        var(--slds-g-color-error-base-30, #ba0517)
+        var(--slds-g-color-error-base-30, #8e030f)
     );
 }
 
@@ -503,41 +489,41 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-inverse-color-border,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        transparent
     );
     color: var(
         --avonni-button-menu-button-inverse-text-color,
-        var(--slds-g-color-neutral-base-100, #f3f3f3)
+        var(--slds-g-color-neutral-base-100, #fff)
     );
 }
 
 .slds-button.avonni-button-menu__button_inverse:active {
     background-color: var(
         --avonni-button-menu-button-inverse-color-background-active,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+        var(--sds-c-button-inverse-color-background, transparent)
     );
     border-color: var(
         --avonni-button-menu-button-inverse-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
     );
     color: var(
         --avonni-button-menu-button-inverse-text-color-active,
-        var(--slds-g-link-color, #0176d3)
+        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
     );
 }
 
 .avonni-button-menu__button_inverse:hover {
     background-color: var(
         --avonni-button-menu-button-inverse-color-background-hover,
-        var(--slds-g-color-neutral-base-95, #f3f3f3)
+        var(--sds-c-button-inverse-color-background, transparent)
     );
     border-color: var(
         --avonni-button-menu-button-inverse-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        transparent
     );
     color: var(
         --avonni-button-menu-button-inverse-text-color-hover,
-        var(--slds-g-link-color, #0176d3)
+        var(--slds-g-color-neutral-100-opacity-5, hsla(0, 0%, 100%, 0.5))
     );
 }
 
@@ -548,7 +534,7 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-neutral-color-border,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-neutral-text-color,
@@ -563,7 +549,7 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-neutral-color-border-active,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-neutral-text-color-active,
@@ -578,7 +564,7 @@ button {
     );
     border-color: var(
         --avonni-button-menu-button-neutral-color-border-hover,
-        var(--slds-g-color-border-base-4, #c9c9c9)
+        var(--slds-g-color-border-base-4, #747474)
     );
     color: var(
         --avonni-button-menu-button-neutral-text-color-hover,

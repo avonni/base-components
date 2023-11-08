@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -45,9 +13,12 @@ import { handleKeyDownOnOption } from './keyboard';
 const DEFAULT_MIN = 0;
 const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
+const BASE_OPTION_HEIGHT = 40;
+const SEARCH_BOX_HEIGHT = 48;
 
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
@@ -188,8 +159,10 @@ export default class DualListbox extends LightningElement {
     _disabled = false;
     _downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     _draggable = false;
+    _enableInfiniteLoading = false;
     _hideBottomDivider = false;
     _isLoading = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _max;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
@@ -199,29 +172,29 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _size = BOXES_SIZES.default;
     _upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
+    _value = [];
     _variant = LABEL_VARIANTS.default;
 
-    _connected = false;
-    _rendered = false;
-
-    _selectedValues = [];
-    _groupedValues = [];
     highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
     focusableInSelected;
     isFocusOnList = false;
-    _searchTerm;
-    _upButtonDisabled = false;
+    _connected = false;
     _downButtonDisabled = false;
-    _oldIndex;
-    _newIndex;
-
-    _sourceBoxHeight;
-    _selectedBoxHeight;
-
     _dropItSelected = false;
     _dropItSource = false;
+    _newIndex;
+    _oldIndex;
+    _previousScroll;
+    _searchTerm;
+    _upButtonDisabled = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -244,11 +217,16 @@ export default class DualListbox extends LightningElement {
             this.optionToFocus = null;
         });
 
+        this.initValue();
         this._connected = true;
     }
 
     renderedCallback() {
-        if (!this.options.length) {
+        if (
+            !this.options.length &&
+            !this.enableInfiniteLoading &&
+            !this.isLoading
+        ) {
             console.warn(
                 '<avonni-dual-listbox> Missing required "options" attribute.'
             );
@@ -274,10 +252,15 @@ export default class DualListbox extends LightningElement {
         this.updateBoxesHeight();
         this.disabledButtons();
         this.setOptionIndexes();
-        if (!this._rendered) {
-            this.getGroupValues();
+
+        if (this.enableInfiniteLoading) {
+            const sourceBox = this.template.querySelector(
+                '[data-element-id="div-source-list"]'
+            );
+            if (sourceBox && sourceBox.scrollTop === 0) {
+                this.handleScroll();
+            }
         }
-        this._rendered = true;
     }
 
     /*
@@ -356,22 +339,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * If present, the Up and Down buttons used for reordering are hidden.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get disableReordering() {
-        return this._disableReordering;
-    }
-
-    set disableReordering(value) {
-        this._disableReordering = normalizeBoolean(value);
-    }
-
-    /**
      * If present, the listbox is disabled and users cannot interact with it.
      *
      * @type {boolean}
@@ -385,6 +352,22 @@ export default class DualListbox extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the Up and Down buttons used for reordering are hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disableReordering() {
+        return this._disableReordering;
+    }
+
+    set disableReordering(value) {
+        this._disableReordering = normalizeBoolean(value);
     }
 
     /**
@@ -425,6 +408,25 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * If present, you can load a subset of options and then display more when users scroll to the end of the source listbox. Use with the `loadmore` event handler to retrieve more data.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
+    }
+
+    /**
      * If present, hides the bottom divider.
      *
      * @type {boolean}
@@ -454,6 +456,27 @@ export default class DualListbox extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Number of pixels from the bottom of the source listbox. If `enable-infinite-loading` is `true` and the source listbox is scrolled passed this limit, the `loadmore` event will be fired.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = isNaN(value)
+            ? DEFAULT_LOAD_MORE_OFFSET
+            : parseInt(value, 10);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
@@ -562,6 +585,10 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
+
+        if (this._connected) {
+            this.initValue();
+        }
     }
 
     /**
@@ -615,6 +642,7 @@ export default class DualListbox extends LightningElement {
             : [];
         if (this._connected) {
             this.addRequiredOptionsToValue();
+            this.initValue();
         }
     }
 
@@ -661,17 +689,19 @@ export default class DualListbox extends LightningElement {
      */
     @api
     get value() {
-        return this._selectedValues;
+        return this._value;
     }
 
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
-        this._selectedValues =
+        this._value =
             typeof newValue === 'string'
                 ? [newValue]
                 : [...normalizeArray(newValue)];
+
         if (this._connected) {
             this.addRequiredOptionsToValue();
+            this.initValue();
         }
     }
 
@@ -701,28 +731,6 @@ export default class DualListbox extends LightningElement {
      */
 
     /**
-     * Computed real DOM Id for Source List.
-     *
-     * @type {string}
-     */
-    get computedSourceListId() {
-        return getRealDOMId(
-            this.template.querySelector('[data-element-id="ul-source-list"]')
-        );
-    }
-
-    /**
-     * Computed real DOM Id for Selected List.
-     *
-     * @type {string}
-     */
-    get computedSelectedListId() {
-        return getRealDOMId(
-            this.template.querySelector('[data-element-id="ul-selected-list"]')
-        );
-    }
-
-    /**
      * Get Aria Disabled.
      *
      * @type {string}
@@ -732,41 +740,116 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Generated unique ID key.
+     * Computed Group Label Class styling.
+     *
+     * @type {string}
      */
-    get generateKey() {
-        return generateUUID();
+    get computedGroupLabelClass() {
+        return classSet(
+            'slds-form-element__label slds-form-element__legend avonni-dual-listbox__header'
+        )
+            .add({ 'slds-assistive-text': this.isLabelHidden })
+            .toString();
     }
 
     /**
-     * Get Computed Source List.
+     * Computed Listbox Columns Class styling.
+     *
+     * @type {string}
+     */
+    get computedListboxColumnsClass() {
+        return classSet('avonni-dual-listbox__list-column')
+            .add({
+                'avonni-dual-listbox__list-column_responsive_small ':
+                    this._size === 'small',
+                'avonni-dual-listbox__list-column_responsive_medium ':
+                    this._size === 'medium',
+                'avonni-dual-listbox__list-column_responsive_large ':
+                    this._size === 'large',
+                'slds-dueling-list__column_responsive':
+                    this._size === 'responsive'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Listbox Selected Container Class styling.
+     *
+     * @type {string}
+     */
+    get computedListboxSelectedContainerClass() {
+        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
+            .add({ 'slds-is-disabled': this._disabled })
+            .add({
+                'avonni-dual-listbox__selected-list-with-search':
+                    this._allowSearch
+            })
+            .add({
+                'avonni-dual-listbox__empty-column': this.isSelectedBoxEmpty
+            })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
+            .toString();
+    }
+
+    /**
+     * Computed Listbox Source Container Class styling.
+     *
+     * @type {string}
+     */
+    get computedListboxSourceContainerClass() {
+        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
+            .add({ 'slds-is-disabled': this._disabled })
+            .add({ 'slds-is-relative': this._isLoading })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
+            .toString();
+    }
+
+    /**
+     * Computed List Item Class styling.
+     *
+     * @type {string}
+     */
+    get computedListItemClass() {
+        return classSet('slds-listbox__item')
+            .add({
+                'avonni-dual-listbox__option_border-bottom':
+                    !this.hideBottomDivider
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Lock Assistive Text.
+     *
+     * @type {string}
+     */
+    get computedLockAssistiveText() {
+        return formatLabel(
+            this.i18n.optionLockAssistiveText,
+            this.selectedLabel
+        );
+    }
+
+    /**
+     * Computed Outer Class styling.
+     *
+     * @type {string}
+     */
+    get computedOuterClass() {
+        return classSet('')
+            .add({
+                'slds-form-element_stacked': this._variant === 'label-stacked'
+            })
+            .toString();
+    }
+
+    /**
+     * Get Computed Selected List With Groups.
      *
      * @type {object}
      */
-    get computedSourceList() {
-        let sourceListOptions = [];
-        if (this.options) {
-            const required = this.requiredOptions;
-            const values = this.value;
-            sourceListOptions = this.options.filter(
-                (option) =>
-                    values.indexOf(option.value) === -1 &&
-                    required.indexOf(option.value) === -1
-            );
-        }
-
-        if (this._searchTerm) {
-            sourceListOptions = sourceListOptions.filter((option) => {
-                return option.label
-                    .toLowerCase()
-                    .includes(this._searchTerm.toLowerCase());
-            });
-        }
-
-        return this.computeListOptions(
-            sourceListOptions,
-            this.focusableInSource
-        );
+    get computedSelectedGroups() {
+        return this.groupByName(this.computedSelectedList, 'groupName');
     }
 
     /**
@@ -810,6 +893,17 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * Computed real DOM Id for Selected List.
+     *
+     * @type {string}
+     */
+    get computedSelectedListId() {
+        return getRealDOMId(
+            this.template.querySelector('[data-element-id="ul-selected-list"]')
+        );
+    }
+
+    /**
      * Get Computed Source List With Groups.
      *
      * @type {object}
@@ -819,48 +913,81 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Get Computed Selected List With Groups.
+     * Get Computed Source List.
      *
      * @type {object}
      */
-    get computedSelectedGroups() {
-        return this.groupByName(this.computedSelectedList, 'groupName');
+    get computedSourceList() {
+        let sourceListOptions = [];
+        if (this.options) {
+            const required = this.requiredOptions;
+            const values = this.value;
+            sourceListOptions = this.options.filter(
+                (option) =>
+                    values.indexOf(option.value) === -1 &&
+                    required.indexOf(option.value) === -1
+            );
+        }
+
+        if (this._searchTerm) {
+            sourceListOptions = sourceListOptions.filter((option) => {
+                return option.label
+                    .toLowerCase()
+                    .includes(this._searchTerm.toLowerCase());
+            });
+        }
+
+        return this.computeListOptions(
+            sourceListOptions,
+            this.focusableInSource
+        );
     }
 
     /**
-     * Get Source List Height.
+     * Computed real DOM Id for Source List.
      *
      * @type {string}
      */
-    get sourceHeight() {
-        if (this.allowSearch) {
-            return this._selectedBoxHeight > this._sourceBoxHeight
-                ? `height: ${this._selectedBoxHeight - 48}px`
-                : `height: ${this._sourceBoxHeight}px`;
-        }
-        {
-            return this._selectedBoxHeight > this._sourceBoxHeight
-                ? `height: ${this._selectedBoxHeight}px`
-                : `height: ${this._sourceBoxHeight}px`;
-        }
+    get computedSourceListId() {
+        return getRealDOMId(
+            this.template.querySelector('[data-element-id="ul-source-list"]')
+        );
     }
 
     /**
-     * Get Selected Box Height.
+     * Validation with constraint Api.
      *
-     * @type {string}
+     * @type {object}
      */
-    get selectedHeight() {
-        if (this.allowSearch) {
-            return this._selectedBoxHeight <= this._sourceBoxHeight
-                ? `height: ${this._sourceBoxHeight + 48}px`
-                : `height: ${this._selectedBoxHeight}px`;
+    get constraint() {
+        if (!this.constraintApi) {
+            this.constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    this.computedSelectedList.length < 1,
+                rangeUnderflow: () =>
+                    this.computedSelectedList.length < this.min,
+                rangeOverflow: () => this.computedSelectedList.length > this.max
+            });
         }
-        {
-            return this._selectedBoxHeight > this._sourceBoxHeight
-                ? `height: ${this._selectedBoxHeight}px`
-                : `height: ${this._sourceBoxHeight}px`;
-        }
+        return this.constraintApi;
+    }
+
+    /**
+     * Generated unique ID key.
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    /**
+     * Localization.
+     *
+     * @type {i18n}
+     */
+    get i18n() {
+        return i18n;
     }
 
     /**
@@ -878,28 +1005,19 @@ export default class DualListbox extends LightningElement {
      * @type {boolean}
      */
     get isSelectedBoxEmpty() {
-        return this._selectedValues.length === 0;
+        return this._value.length === 0;
     }
 
     /**
-     * Computed Lock Assistive Text.
+     * Computed class for the loading spinner wrapper.
      *
      * @type {string}
      */
-    get computedLockAssistiveText() {
-        return formatLabel(
-            this.i18n.optionLockAssistiveText,
-            this.selectedLabel
-        );
-    }
-
-    /**
-     * Localization.
-     *
-     * @type {i18n}
-     */
-    get i18n() {
-        return i18n;
+    get loadingSpinnerClass() {
+        return classSet({
+            'slds-is-relative avonni-dual-listbox__loading-spinner':
+                this.computedSourceGroups.length
+        }).toString();
     }
 
     /**
@@ -912,95 +1030,75 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed Outer Class styling.
+     * True if the source list is scrolled to the end.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedOuterClass() {
-        return classSet('')
-            .add({
-                'slds-form-element_stacked': this._variant === 'label-stacked'
-            })
-            .toString();
+    get scrolledToEnd() {
+        const sourceBox = this.template.querySelector(
+            '[data-element-id="div-source-list"]'
+        );
+        const fullHeight = sourceBox.scrollHeight;
+        const scrolledDistance = sourceBox.scrollTop;
+        const visibleHeight = sourceBox.offsetHeight;
+        return (
+            visibleHeight + scrolledDistance + this.loadMoreOffset >= fullHeight
+        );
     }
 
-    /**
-     * Computed Group Label Class styling.
-     *
-     * @type {string}
-     */
-    get computedGroupLabelClass() {
-        return classSet(
-            'slds-form-element__label slds-form-element__legend avonni-dual-listbox__header'
-        )
-            .add({ 'slds-assistive-text': this.isLabelHidden })
-            .toString();
+    get selectedBoxHeight() {
+        const selectedOptions = this.template.querySelectorAll(
+            '[data-element-id="li-selected"]'
+        );
+
+        let selectedHeight = getListHeight(
+            selectedOptions,
+            this._maxVisibleOptions
+        );
+        const selectedBoxNotFull =
+            this.computedSelectedList.length < this._maxVisibleOptions;
+
+        if (selectedBoxNotFull) {
+            const firstOption = selectedOptions[0];
+            const baseOptionHeight = firstOption
+                ? firstOption.offsetHeight
+                : BASE_OPTION_HEIGHT;
+            const numberOfMissingOptions =
+                this._maxVisibleOptions - this.computedSelectedList.length;
+
+            selectedHeight += baseOptionHeight * numberOfMissingOptions;
+        }
+        return selectedHeight;
     }
 
-    /**
-     * Computed Listbox Columns Class styling.
-     *
-     * @type {string}
-     */
-    get computedListboxColumnsClass() {
-        return classSet('avonni-dual-listbox__list-column')
-            .add({
-                'avonni-dual-listbox__list-column_responsive_small ':
-                    this._size === 'small',
-                'avonni-dual-listbox__list-column_responsive_medium ':
-                    this._size === 'medium',
-                'avonni-dual-listbox__list-column_responsive_large ':
-                    this._size === 'large',
-                'slds-dueling-list__column_responsive':
-                    this._size === 'responsive'
-            })
-            .toString();
-    }
+    get sourceBoxHeight() {
+        const sourceOptions = this.template.querySelectorAll(
+            '[data-element-id="li-source"]'
+        );
 
-    /**
-     * Computed Listbox Source Container Class styling.
-     *
-     * @type {string}
-     */
-    get computedListboxSourceContainerClass() {
-        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
-            .add({ 'slds-is-disabled': this._disabled })
-            .add({ 'slds-is-relative': this._isLoading })
-            .add(`avonni-dual-listbox__box_size-${this._size}`)
-            .toString();
-    }
+        let sourceHeight = 0;
+        if (this.allowSearch && this.computedSourceList.length === 0) {
+            sourceHeight = this._maxVisibleOptions * 41;
+        } else {
+            sourceHeight = getListHeight(
+                sourceOptions,
+                this._maxVisibleOptions
+            );
+            const sourceBoxNotFull =
+                this.computedSourceList.length < this._maxVisibleOptions;
 
-    /**
-     * Computed Listbox Selected Container Class styling.
-     *
-     * @type {string}
-     */
-    get computedListboxSelectedContainerClass() {
-        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
-            .add({ 'slds-is-disabled': this._disabled })
-            .add({
-                'avonni-dual-listbox__selected-list-with-search':
-                    this._allowSearch
-            })
-            .add({
-                'avonni-dual-listbox__empty-column': this.isSelectedBoxEmpty
-            })
-            .add(`avonni-dual-listbox__box_size-${this._size}`)
-            .toString();
-    }
+            if (sourceBoxNotFull) {
+                const firstOption = sourceOptions[0];
+                const baseOptionHeight = firstOption
+                    ? firstOption.offsetHeight
+                    : BASE_OPTION_HEIGHT;
+                const numberOfMissingOptions =
+                    this._maxVisibleOptions - this.computedSourceList.length;
+                sourceHeight += baseOptionHeight * numberOfMissingOptions;
+            }
+        }
 
-    /**
-     * Computed List Item Class styling.
-     *
-     * @type {string}
-     */
-    get computedListItemClass() {
-        return classSet('slds-listbox__item')
-            .add({
-                'avonni-dual-listbox__option_border-bottom':
-                    !this.hideBottomDivider
-            })
-            .toString();
+        return sourceHeight;
     }
 
     /**
@@ -1009,27 +1107,7 @@ export default class DualListbox extends LightningElement {
      * @type {boolean}
      */
     get validity() {
-        return this._constraint.validity;
-    }
-
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled &&
-                    this.required &&
-                    this.computedSelectedList.length < 1,
-                rangeUnderflow: () =>
-                    this.computedSelectedList.length < this.min,
-                rangeOverflow: () => this.computedSelectedList.length > this.max
-            });
-        }
-        return this._constraintApi;
+        return this.constraint.validity;
     }
 
     /*
@@ -1037,6 +1115,17 @@ export default class DualListbox extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} True if the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this.constraint.checkValidity();
+    }
 
     /**
      * Sets focus on the first option from either list. If the source list doesn't contain any options, the first option on the selected list is focused on.
@@ -1053,17 +1142,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Checks if the input is valid.
-     *
-     * @returns {boolean} True if the element meets all constraint validations.
-     * @public
-     */
-    @api
-    checkValidity() {
-        return this._constraint.checkValidity();
-    }
-
-    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -1071,7 +1149,7 @@ export default class DualListbox extends LightningElement {
      */
     @api
     reportValidity() {
-        return this._constraint.reportValidity((message) => {
+        return this.constraint.reportValidity((message) => {
             this.errorMessage = message;
         });
     }
@@ -1084,7 +1162,7 @@ export default class DualListbox extends LightningElement {
      */
     @api
     setCustomValidity(message) {
-        this._constraint.setCustomValidity(message);
+        this.constraint.setCustomValidity(message);
     }
 
     /**
@@ -1100,6 +1178,114 @@ export default class DualListbox extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    initValue() {
+        const values = [];
+        this.computedSelectedGroups.forEach((group) => {
+            group.options.forEach((option) => {
+                values.push(option.value);
+            });
+        });
+        this._value = values;
+    }
+
+    /**
+     * Add Required Options to value.
+     */
+    addRequiredOptionsToValue() {
+        if (
+            !this.options ||
+            !this.options.length ||
+            !this._requiredOptions ||
+            !this._requiredOptions.length
+        ) {
+            // no options/requiredOptions, just ignore
+            return;
+        }
+
+        const numOfSelectedValues = this._value.length;
+        const allValues = this.options.map((option) => option.value);
+
+        const requiredValues = this._requiredOptions.filter((option) =>
+            allValues.includes(option)
+        );
+
+        // add required options to the selected values as they are already displayed in the selected list
+        this._value = [...new Set([...requiredValues, ...this._value])];
+
+        if (numOfSelectedValues !== this._value.length) {
+            // value was changed
+            this.dispatchChangeEvent(this._value);
+        }
+    }
+
+    /**
+     * Change Order of options in List.
+     *
+     * @param {boolean} moveUp
+     */
+    changeOrderOfOptionsInList(moveUp) {
+        const elementList = this.getElementsOfList(this.selectedList);
+        const values = this.computedSelectedList.map((option) => option.value);
+        const toMove = values.filter(
+            (option) => this.highlightedOptions.indexOf(option) > -1
+        );
+        const validSelection =
+            toMove.length === 0 ||
+            this.selectedList !== this.computedSelectedListId;
+        if (validSelection) {
+            return;
+        }
+        let start = moveUp ? 0 : toMove.length - 1;
+        let index = values.indexOf(toMove[start]);
+        const validMove =
+            (moveUp && index === 0) || (!moveUp && index === values.length - 1);
+        if (validMove) {
+            return;
+        }
+
+        if (moveUp) {
+            while (start < toMove.length) {
+                index = values.indexOf(toMove[start]);
+                this.swapOptions(index, index - 1, values, elementList);
+                start++;
+            }
+        } else {
+            while (start > -1) {
+                index = values.indexOf(toMove[start]);
+                this.swapOptions(index, index + 1, values, elementList);
+                start--;
+            }
+        }
+
+        this._value = values;
+        this.updateFocusableOption(this.selectedList, toMove[0]);
+        this.optionToFocus = null;
+        this.dispatchChangeEvent(values);
+        this.updateBoxesHeight();
+    }
+
+    /**
+     * Compute the height of the source and selected boxes.
+     *
+     * @returns {object} Object with two keys: `sourceHeight` and `selectedHeight`.
+     */
+    computeBoxesHeight() {
+        let sourceHeight = this.sourceBoxHeight;
+        let selectedHeight = this.selectedBoxHeight;
+
+        if (selectedHeight > sourceHeight) {
+            sourceHeight = this.allowSearch
+                ? selectedHeight - SEARCH_BOX_HEIGHT
+                : selectedHeight;
+        } else {
+            selectedHeight = this.allowSearch
+                ? sourceHeight + SEARCH_BOX_HEIGHT
+                : sourceHeight;
+        }
+
+        return { sourceHeight, selectedHeight };
+    }
 
     /**
      * Compute List options from Selected and Source Lists.
@@ -1162,183 +1348,108 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Update box heights based on content.
-     *
-     * @returns {number} Box heights
+     * Disabled buttons method for up and down buttons.
      */
-    updateBoxesHeight() {
-        let overSelectedHeight;
-        let overSourceHeight;
-        const sourceOptions = this.template.querySelectorAll(
-            '[data-element-id="li-source"]'
-        );
-        const sourceOption = this.template.querySelector(
-            '[data-element-id="li-source"]'
-        );
-        const selectedOptions = this.template.querySelectorAll(
-            '[data-element-id="li-selected"]'
-        );
-        const selectedOption = this.template.querySelector(
-            '[data-element-id="li-selected"]'
-        );
+    disabledButtons() {
+        const indexesArray = [];
+        // First we need to verify if the highlighted options are in the selected list.
+        if (this._value.some((r) => this.highlightedOptions.includes(r))) {
+            this.highlightedOptions.forEach((option) => {
+                indexesArray.push(this.getOptionGroupIndexes(option));
+            });
+            // Then we need to verify if one of the highlighted options is the first one of its group.
+            const first = indexesArray.map((array) => {
+                return this.computedSelectedGroups[array[0]].options[
+                    Number(array[1]) - 1
+                ]
+                    ? false
+                    : true;
+            });
+            // And we need to verify if one of the highlighted options is the last one of its group.
+            const last = indexesArray.map((array) => {
+                return this.computedSelectedGroups[array[0]].options[
+                    Number(array[1]) + 1
+                ]
+                    ? false
+                    : true;
+            });
 
-        const sourceOptionsHeight = getListHeight(
-            sourceOptions,
-            this._maxVisibleOptions
-        );
-
-        overSourceHeight =
-            this.computedSourceList.length < this._maxVisibleOptions &&
-            sourceOptions.length > 0
-                ? sourceOption.offsetHeight *
-                  (this._maxVisibleOptions - this.computedSourceList.length)
-                : 0;
-
-        overSelectedHeight =
-            this.computedSelectedList.length < this._maxVisibleOptions &&
-            selectedOptions.length > 0
-                ? selectedOption.offsetHeight *
-                  (this._maxVisibleOptions - this.computedSelectedList.length)
-                : 0;
-
-        this._selectedBoxHeight =
-            getListHeight(selectedOptions, this._maxVisibleOptions) +
-            overSelectedHeight;
-
-        if (this.allowSearch) {
-            if (this.computedSourceList.length > 0) {
-                this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
-            } else if (this.computedSourceList.length === 0) {
-                this._sourceBoxHeight = this._maxVisibleOptions * 41;
-            }
-        } else this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
-    }
-
-    /**
-     * Option Click event handler.
-     *
-     * @param {Event} event
-     */
-    handleOptionClick(event) {
-        this.interactingState.interacting();
-        if (this.disabled) {
-            return;
-        }
-        const selectMultiple = event.metaKey || event.ctrlKey || event.shiftKey;
-        const option = event.currentTarget;
-        if (event.shiftKey) {
-            this.selectAllFromLastSelectedToOption(option, false);
-            return;
-        }
-        const selected =
-            selectMultiple && option.getAttribute('aria-selected') === 'true';
-        this.updateSelectedOptions(option, !selected, selectMultiple);
-        this.shiftIndex = -1;
-    }
-
-    /**
-     * Focus event handler.
-     *
-     * @param {Event} event
-     */
-    handleFocus(event) {
-        this.interactingState.enter();
-
-        // select the focused option if entering a listbox
-        const element = event.target;
-        if (element.dataset.role === 'option') {
-            if (!this.isFocusOnList) {
-                this.isFocusOnList = true;
-                this.updateSelectedOptions(element, true, false);
-            }
+            this._upButtonDisabled = first.includes(true);
+            this._downButtonDisabled = last.includes(true);
+        } else {
+            // if the highlighted options are not in the selected list the up and down button are not disabled.
+            this._upButtonDisabled = false;
+            this._downButtonDisabled = false;
         }
     }
 
     /**
-     * Blur event handler.
+     * Get List of Elements by Id.
      *
-     * @param {Event} event
+     * @param {string} listId
+     * @return {object[]|NodeListOf<Element>} elements
      */
-    handleBlur(event) {
-        this.interactingState.leave();
-
-        const element = event.target;
-        if (element.dataset.role !== 'option') {
-            this.isFocusOnList = false;
-        }
+    getElementsOfList(listId) {
+        const elements = this.template.querySelectorAll(
+            `div[data-type='${listId}']`
+        );
+        return elements ? elements : [];
     }
 
     /**
-     * Right Button Click handler.
-     */
-    handleRightButtonClick() {
-        this.interactingState.interacting();
-        this.moveOptionsBetweenLists(true, true);
-    }
-
-    /**
-     * Drag Right handler.
-     */
-    handleDragRight() {
-        this.interactingState.interacting();
-        this.moveOptionsBetweenLists(true, false);
-        this._dropItSelected = false;
-    }
-
-    /**
-     * Left Button Click handler.
-     */
-    handleLeftButtonClick() {
-        this.interactingState.interacting();
-        this.moveOptionsBetweenLists(false, true);
-    }
-
-    /**
-     * Drag Right handler.
-     */
-    handleDragLeft() {
-        this.interactingState.interacting();
-        this.moveOptionsBetweenLists(false, false);
-        this._dropItSource = false;
-    }
-
-    /**
-     * Up Button Click handler.
-     */
-    handleUpButtonClick() {
-        this.interactingState.interacting();
-        this.changeOrderOfOptionsInList(true);
-    }
-
-    /**
-     * Down Button Click handler.
-     */
-    handleDownButtonClick() {
-        this.interactingState.interacting();
-        this.changeOrderOfOptionsInList(false);
-    }
-
-    /**
-     * Option Keydown event handler.
+     * Get DOM Id for the List element.
      *
-     * @param {Event} event
+     * @param {Element} optionElement
+     * @returns {string} DOM id
      */
-    handleOptionKeyDown(event) {
-        this.interactingState.interacting();
-        if (this.disabled) {
-            return;
-        }
-        handleKeyDownOnOption(event, this.keyboardInterface);
+    getListId(optionElement) {
+        return getRealDOMId(optionElement.parentElement.parentElement);
     }
 
     /**
-     * Search event handler.
+     * Get the index of the group and the index of the option inside the group.
      *
-     * @param {Event} event
+     * @param {number} value
+     * @return {object[]} array containing the two indexes
      */
-    handleSearch(event) {
-        event.stopPropagation();
-        this._searchTerm = event.detail.value;
+    getOptionGroupIndexes(value) {
+        const option = this.template.querySelector(
+            `div[data-value="${value}"]`
+        );
+        return [option.dataset.groupIndex, option.dataset.insideGroupIndex];
+    }
+
+    /**
+     * Compute Option Index number.
+     *
+     * @param {Element} optionElement
+     * @returns {number} Option Index
+     */
+    getOptionIndex(optionElement) {
+        return parseInt(optionElement.getAttribute('data-index'), 10);
+    }
+
+    /**
+     * Method to create the groups of options.
+     *
+     * @param {array} array Array of options.
+     * @param {string} groupName groupName.
+     * @returns {array} Array of formatted list for the markup.
+     */
+    groupByName(array, groupName) {
+        return this.sortGroups(
+            Object.values(
+                array.reduce((obj, current) => {
+                    if (!obj[current[groupName]])
+                        obj[current[groupName]] = {
+                            label: current[groupName],
+                            options: []
+                        };
+                    obj[current[groupName]].options.push(current);
+                    return obj;
+                }, {})
+            )
+        );
     }
 
     /**
@@ -1367,8 +1478,8 @@ export default class DualListbox extends LightningElement {
             );
         }
 
-        const oldSelectedValues = this._selectedValues;
-        this._selectedValues = newValues;
+        const oldSelectedValues = this._value;
+        this._value = newValues;
         const invalidMove =
             this.validity.valueMissing ||
             (this.validity.rangeOverflow &&
@@ -1378,7 +1489,7 @@ export default class DualListbox extends LightningElement {
 
         if (invalidMove || toMove.length === 0) {
             this.showHelpMessageIfInvalid();
-            this._selectedValues = oldSelectedValues;
+            this._value = oldSelectedValues;
             return;
         }
 
@@ -1410,7 +1521,7 @@ export default class DualListbox extends LightningElement {
 
         this.dispatchChangeEvent(newValues);
         this.highlightedOptions.find((option) => {
-            return this._selectedValues.indexOf(option);
+            return this._value.indexOf(option);
         });
         this.updateBoxesHeight();
     }
@@ -1429,92 +1540,6 @@ export default class DualListbox extends LightningElement {
             if (index === '0') {
                 this._oldIndex = 0;
             } else this._oldIndex = index - 1;
-        }
-    }
-
-    /**
-     * Change Order of options in List.
-     *
-     * @param {boolean} moveUp
-     */
-    changeOrderOfOptionsInList(moveUp) {
-        const elementList = this.getElementsOfList(this.selectedList);
-        const values = this.computedSelectedList.map((option) => option.value);
-        const toMove = values.filter(
-            (option) => this.highlightedOptions.indexOf(option) > -1
-        );
-        const validSelection =
-            toMove.length === 0 ||
-            this.selectedList !== this.computedSelectedListId;
-        if (validSelection) {
-            return;
-        }
-        let start = moveUp ? 0 : toMove.length - 1;
-        let index = values.indexOf(toMove[start]);
-        const validMove =
-            (moveUp && index === 0) || (!moveUp && index === values.length - 1);
-        if (validMove) {
-            return;
-        }
-
-        if (moveUp) {
-            while (start < toMove.length) {
-                index = values.indexOf(toMove[start]);
-                this.swapOptions(index, index - 1, values, elementList);
-                start++;
-            }
-        } else {
-            while (start > -1) {
-                index = values.indexOf(toMove[start]);
-                this.swapOptions(index, index + 1, values, elementList);
-                start--;
-            }
-        }
-
-        this._selectedValues = values;
-        this.updateFocusableOption(this.selectedList, toMove[0]);
-        this.optionToFocus = null;
-        this.dispatchChangeEvent(values);
-        this.updateBoxesHeight();
-    }
-
-    /**
-     * Disabled buttons method for up and down buttons.
-     */
-    disabledButtons() {
-        const indexesArray = [];
-        // First we need to verify if the highlighted options are in the selected list.
-        if (
-            this._selectedValues.some((r) =>
-                this.highlightedOptions.includes(r)
-            )
-        ) {
-            this.highlightedOptions.forEach((option) => {
-                indexesArray.push(this.getOptionGroupIndexes(option));
-            });
-            // Then we need to verify if one of the highlighted options is the first one of its group.
-            const first = indexesArray.map((array) => {
-                return this.computedSelectedGroups[array[0]].options[
-                    Number(array[1]) - 1
-                ]
-                    ? false
-                    : true;
-            });
-            // And we need to verify if one of the highlighted options is the last one of its group.
-            const last = indexesArray.map((array) => {
-                return this.computedSelectedGroups[array[0]].options[
-                    Number(array[1]) + 1
-                ]
-                    ? false
-                    : true;
-            });
-
-            this._upButtonDisabled = first.includes(true);
-            this._downButtonDisabled = last.includes(true);
-        } else {
-            // if the highlighted options are not in the selected list the up and down button are not disabled.
-            this._upButtonDisabled = false;
-            this._downButtonDisabled = false;
         }
     }
 
@@ -1540,134 +1565,6 @@ export default class DualListbox extends LightningElement {
                 this.highlightedOptions.push(val);
             }
         }
-    }
-
-    /**
-     * Update Selected Options.
-     *
-     * @param {object} option
-     * @param {boolean} select
-     * @param {boolean} isMultiple
-     */
-    updateSelectedOptions(option, select, isMultiple) {
-        const value = option.getAttribute('data-value');
-        const listId = this.getListId(option);
-        const optionIndex = this.getOptionIndex(option);
-        this.updateCurrentSelectedList(listId, isMultiple);
-        if (select) {
-            if (this.highlightedOptions.indexOf(value) === -1) {
-                this.highlightedOptions.push(value);
-            }
-        } else {
-            this.highlightedOptions.splice(
-                this.highlightedOptions.indexOf(value),
-                1
-            );
-        }
-
-        this.updateFocusableOption(listId, value);
-
-        this.lastSelected = optionIndex;
-        this.oldIndexValue(this.highlightedOptions);
-    }
-
-    /**
-     * Add Required Options to value.
-     */
-    addRequiredOptionsToValue() {
-        if (
-            !this.options ||
-            !this.options.length ||
-            !this._requiredOptions ||
-            !this._requiredOptions.length
-        ) {
-            // no options/requiredOptions, just ignore
-            return;
-        }
-
-        const numOfSelectedValues = this._selectedValues.length;
-        const allValues = this.options.map((option) => option.value);
-
-        const requiredValues = this._requiredOptions.filter((option) =>
-            allValues.includes(option)
-        );
-
-        // add required options to the selected values as they are already displayed in the selected list
-        this._selectedValues = [
-            ...new Set([...requiredValues, ...this._selectedValues])
-        ];
-
-        if (numOfSelectedValues !== this._selectedValues.length) {
-            // value was changed
-            this.dispatchChangeEvent(this._selectedValues);
-        }
-    }
-
-    /**
-     * Update Selected List with current selection.
-     *
-     * @param {string} currentList
-     * @param {boolean} isMultiple
-     */
-    updateCurrentSelectedList(currentList, isMultiple) {
-        if (this.selectedList !== currentList || !isMultiple) {
-            if (this.selectedList) {
-                this.highlightedOptions = [];
-                this.lastSelected = -1;
-            }
-            this.selectedList = currentList;
-        }
-    }
-
-    /**
-     * Change event dispatcher.
-     *
-     * @param {object} values A comma-separated list of selected items.
-     */
-    dispatchChangeEvent(values) {
-        /**
-         * The event fired when one or several options are moved from one box to the other.
-         *
-         * @event
-         * @name change
-         * @param {string[]} value Array of selected option values.
-         * @public
-         * @bubbles
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                composed: true,
-                bubbles: true,
-                detail: { value: values }
-            })
-        );
-    }
-
-    /**
-     * Swap Options.
-     *
-     * @param {number} i
-     * @param {number} j
-     * @param {object[]} array
-     */
-    swapOptions(i, j, array) {
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-
-    /**
-     * Get List of Elements by Id.
-     *
-     * @param {string} listId
-     * @return {object[]|NodeListOf<Element>} elements
-     */
-    getElementsOfList(listId) {
-        const elements = this.template.querySelectorAll(
-            `div[data-type='${listId}']`
-        );
-        return elements ? elements : [];
     }
 
     /**
@@ -1711,36 +1608,88 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Compute Option Index number.
-     *
-     * @param {Element} optionElement
-     * @returns {number} Option Index
+     * Sets the data-index attribute of each option.
      */
-    getOptionIndex(optionElement) {
-        return parseInt(optionElement.getAttribute('data-index'), 10);
-    }
-
-    /**
-     * Get the index of the group and the index of the option inside the group.
-     *
-     * @param {number} value
-     * @return {object[]} array containing the two indexes
-     */
-    getOptionGroupIndexes(value) {
-        const option = this.template.querySelector(
-            `div[data-value="${value}"]`
+    setOptionIndexes() {
+        const sourceBox = this.template.querySelector(
+            '[data-element-id="ul-source-list"]'
         );
-        return [option.dataset.groupIndex, option.dataset.insideGroupIndex];
+        sourceBox
+            .querySelectorAll('.slds-listbox__option')
+            .forEach((option, index) => {
+                option.setAttribute('data-index', index);
+            });
+        const selectedBox = this.template.querySelector(
+            '[data-element-id="ul-selected-list"]'
+        );
+        selectedBox
+            .querySelectorAll('.slds-listbox__option')
+            .forEach((option, index) => {
+                option.setAttribute('data-index', index);
+            });
     }
 
     /**
-     * Get DOM Id for the List element.
-     *
-     * @param {Element} optionElement
-     * @returns {string} DOM id
+     * Move the default group at the top.
      */
-    getListId(optionElement) {
-        return getRealDOMId(optionElement.parentElement.parentElement);
+    sortGroups(groups) {
+        const defaultGroupIndex = groups.findIndex(
+            (group) => group.label === undefined
+        );
+        if (defaultGroupIndex > -1) {
+            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
+            groups.unshift(defaultGroup);
+        }
+        return groups;
+    }
+
+    /**
+     * Swap Options.
+     *
+     * @param {number} i
+     * @param {number} j
+     * @param {object[]} array
+     */
+    swapOptions(i, j, array) {
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    /**
+     * Update box heights based on content.
+     *
+     * @returns {number} Box heights
+     */
+    updateBoxesHeight() {
+        const sourceContainer = this.template.querySelector(
+            '[data-element-id="div-source-list"]'
+        );
+        const selectedContainer = this.template.querySelector(
+            '[data-element-id="div-selected-list"]'
+        );
+        if (!sourceContainer || !selectedContainer) {
+            return;
+        }
+        const { sourceHeight, selectedHeight } = this.computeBoxesHeight();
+        sourceContainer.style.height = `${sourceHeight}px`;
+        selectedContainer.style.height = `${selectedHeight}px`;
+    }
+
+    /**
+     * Update Selected List with current selection.
+     *
+     * @param {string} currentList
+     * @param {boolean} isMultiple
+     */
+    updateCurrentSelectedList(currentList, isMultiple) {
+        if (this.selectedList !== currentList || !isMultiple) {
+            if (this.selectedList) {
+                this.highlightedOptions = [];
+                this.lastSelected = -1;
+            }
+            this.selectedList = currentList;
+        }
     }
 
     /**
@@ -1765,17 +1714,10 @@ export default class DualListbox extends LightningElement {
      */
     updateHighlightedOptions(newValue) {
         let isSame = false;
-        if (
-            newValue &&
-            newValue.length &&
-            this._selectedValues &&
-            this._selectedValues.length
-        ) {
+        if (newValue && newValue.length && this._value && this._value.length) {
             isSame =
-                newValue.length === this._selectedValues.length &&
-                newValue.every((option) =>
-                    this._selectedValues.includes(option)
-                );
+                newValue.length === this._value.length &&
+                newValue.every((option) => this._value.includes(option));
         }
         if (!isSame) {
             this.highlightedOptions = [];
@@ -1783,38 +1725,60 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Drag end event SourceList element handler ( remove "avonni-dual-listbox__option_dragging" ).
+     * Update Selected Options.
+     *
+     * @param {object} option
+     * @param {boolean} select
+     * @param {boolean} isMultiple
+     */
+    updateSelectedOptions(option, select, isMultiple) {
+        const value = option.getAttribute('data-value');
+        const listId = this.getListId(option);
+        const optionIndex = this.getOptionIndex(option);
+        this.updateCurrentSelectedList(listId, isMultiple);
+        if (select) {
+            if (this.highlightedOptions.indexOf(value) === -1) {
+                this.highlightedOptions.push(value);
+            }
+        } else {
+            this.highlightedOptions.splice(
+                this.highlightedOptions.indexOf(value),
+                1
+            );
+        }
+
+        this.updateFocusableOption(listId, value);
+
+        this.lastSelected = optionIndex;
+        this.oldIndexValue(this.highlightedOptions);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Blur event handler.
      *
      * @param {Event} event
      */
-    handleDragEndSource(event) {
-        event.preventDefault();
-        event.currentTarget.classList.remove(
-            'avonni-dual-listbox__option_dragging'
-        );
-        if (this._dropItSelected) {
-            if (
-                this.highlightedOptions.includes(
-                    event.currentTarget.getAttribute('data-value')
-                )
-            ) {
-                this.handleDragRight();
-            }
+    handleBlur(event) {
+        this.interactingState.leave();
+
+        const element = event.target;
+        if (element.dataset.role !== 'option') {
+            this.isFocusOnList = false;
         }
     }
 
     /**
-     * Drag Start add "avonni-dual-listbox__option_dragging" class to current SelectedList element.
-     *
-     * @param {Event} event
+     * Down Button Click handler.
      */
-    handleDragStart(event) {
-        if (this.highlightedOptions.length <= 1) {
-            this.handleOptionClick(event);
-        }
-        event.currentTarget.classList.add(
-            'avonni-dual-listbox__option_dragging'
-        );
+    handleDownButtonClick() {
+        this.interactingState.interacting();
+        this.changeOrderOfOptionsInList(false);
     }
 
     /**
@@ -1852,19 +1816,39 @@ export default class DualListbox extends LightningElement {
                     values,
                     elementList
                 );
-                this._selectedValues = values;
+                this._value = values;
             }
         }
     }
 
     /**
-     * Drag and Drop Element Over SourceList.
+     * Drag end event SourceList element handler ( remove "avonni-dual-listbox__option_dragging" ).
      *
      * @param {Event} event
      */
-    handleDragOverSource(event) {
+    handleDragEndSource(event) {
         event.preventDefault();
-        this._dropItSource = true;
+        event.currentTarget.classList.remove(
+            'avonni-dual-listbox__option_dragging'
+        );
+        if (this._dropItSelected) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragRight();
+            }
+        }
+    }
+
+    /**
+     * Drag Element and leave SelectedList event.
+     *
+     * @param {Event} event
+     */
+    handleDragLeaveSelected() {
+        this._dropItSelected = false;
     }
 
     /**
@@ -1877,22 +1861,12 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Drag and Drop Element Over SelectedList.
-     *
-     * @param {Event} event
+     * Drag Right handler.
      */
-    handleDragOverSelected(event) {
-        event.preventDefault();
-        this._dropItSelected = true;
-    }
-
-    /**
-     * Drag Element and leave SelectedList event.
-     *
-     * @param {Event} event
-     */
-    handleDragLeaveSelected() {
-        this._dropItSelected = false;
+    handleDragLeft() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, false);
+        this._dropItSource = false;
     }
 
     /**
@@ -1906,74 +1880,195 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Move the default group at the top.
-     */
-    sortGroups(groups) {
-        const defaultGroupIndex = groups.findIndex(
-            (group) => group.label === undefined
-        );
-        if (defaultGroupIndex > -1) {
-            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
-            groups.unshift(defaultGroup);
-        }
-        return groups;
-    }
-
-    /**
-     * Method to create the groups of options.
+     * Drag and Drop Element Over SelectedList.
      *
-     * @param {array} array Array of options.
-     * @param {string} groupName groupName.
-     * @returns {array} Array of formatted list for the markup.
+     * @param {Event} event
      */
-    groupByName(array, groupName) {
-        return this.sortGroups(
-            Object.values(
-                array.reduce((obj, current) => {
-                    if (!obj[current[groupName]])
-                        obj[current[groupName]] = {
-                            label: current[groupName],
-                            options: []
-                        };
-                    obj[current[groupName]].options.push(current);
-                    return obj;
-                }, {})
-            )
+    handleDragOverSelected(event) {
+        event.preventDefault();
+        this._dropItSelected = true;
+    }
+
+    /**
+     * Drag and Drop Element Over SourceList.
+     *
+     * @param {Event} event
+     */
+    handleDragOverSource(event) {
+        event.preventDefault();
+        this._dropItSource = true;
+    }
+
+    /**
+     * Drag Right handler.
+     */
+    handleDragRight() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, false);
+        this._dropItSelected = false;
+    }
+
+    /**
+     * Drag Start add "avonni-dual-listbox__option_dragging" class to current SelectedList element.
+     *
+     * @param {Event} event
+     */
+    handleDragStart(event) {
+        if (this.highlightedOptions.length <= 1) {
+            this.handleOptionClick(event);
+        }
+        event.currentTarget.classList.add(
+            'avonni-dual-listbox__option_dragging'
         );
     }
 
     /**
-     * Gets the new order of values after the group by.
+     * Focus event handler.
+     *
+     * @param {Event} event
      */
-    getGroupValues() {
-        this.computedSelectedGroups.forEach((group) => {
-            group.options.forEach((option) => {
-                this._groupedValues.push(option.value);
-            });
-        });
-        this._selectedValues = this._groupedValues;
+    handleFocus(event) {
+        this.interactingState.enter();
+
+        // select the focused option if entering a listbox
+        const element = event.target;
+        if (element.dataset.role === 'option') {
+            if (!this.isFocusOnList) {
+                this.isFocusOnList = true;
+                this.updateSelectedOptions(element, true, false);
+            }
+        }
     }
 
     /**
-     * Sets the data-index attribute of each option.
+     * Left Button Click handler.
      */
-    setOptionIndexes() {
+    handleLeftButtonClick() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, true);
+    }
+
+    /**
+     * Option Click event handler.
+     *
+     * @param {Event} event
+     */
+    handleOptionClick(event) {
+        this.interactingState.interacting();
+        if (this.disabled) {
+            return;
+        }
+        const selectMultiple = event.metaKey || event.ctrlKey || event.shiftKey;
+        const option = event.currentTarget;
+        if (event.shiftKey) {
+            this.selectAllFromLastSelectedToOption(option, false);
+            return;
+        }
+        const selected =
+            selectMultiple && option.getAttribute('aria-selected') === 'true';
+        this.updateSelectedOptions(option, !selected, selectMultiple);
+        this.shiftIndex = -1;
+    }
+
+    /**
+     * Option Keydown event handler.
+     *
+     * @param {Event} event
+     */
+    handleOptionKeyDown(event) {
+        this.interactingState.interacting();
+        if (this.disabled) {
+            return;
+        }
+        handleKeyDownOnOption(event, this.keyboardInterface);
+    }
+
+    handleScroll() {
+        if (!this.enableInfiniteLoading || this.isLoading) {
+            return;
+        }
+
         const sourceBox = this.template.querySelector(
-            '[data-element-id="ul-source-list"]'
+            '[data-element-id="div-source-list"]'
         );
-        sourceBox
-            .querySelectorAll('.slds-listbox__option')
-            .forEach((option, index) => {
-                option.setAttribute('data-index', index);
-            });
-        const selectedBox = this.template.querySelector(
-            '[data-element-id="ul-selected-list"]'
+        const loadLimit =
+            sourceBox.scrollHeight -
+            sourceBox.offsetHeight -
+            this.loadMoreOffset;
+        const firstTimeReachingTheEnd = this._previousScroll < loadLimit;
+
+        if (
+            this.scrolledToEnd &&
+            (!this._previousScroll || firstTimeReachingTheEnd)
+        ) {
+            /**
+             * The event fired when the users scroll to the bottom of the source listbox to load more options.
+             *
+             * @event
+             * @name loadmore
+             * @property {string} searchTerm Value of the search input, if any.
+             * @public
+             */
+            this.dispatchEvent(
+                new CustomEvent('loadmore', {
+                    detail: {
+                        searchTerm: this._searchTerm
+                    }
+                })
+            );
+        }
+        this._previousScroll = sourceBox.scrollTop;
+    }
+
+    /**
+     * Search event handler.
+     *
+     * @param {Event} event
+     */
+    handleSearch(event) {
+        event.stopPropagation();
+        this._searchTerm = event.detail.value;
+    }
+
+    /**
+     * Right Button Click handler.
+     */
+    handleRightButtonClick() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, true);
+    }
+
+    /**
+     * Up Button Click handler.
+     */
+    handleUpButtonClick() {
+        this.interactingState.interacting();
+        this.changeOrderOfOptionsInList(true);
+    }
+
+    /**
+     * Change event dispatcher.
+     *
+     * @param {object} values A comma-separated list of selected items.
+     */
+    dispatchChangeEvent(values) {
+        /**
+         * The event fired when one or several options are moved from one box to the other.
+         *
+         * @event
+         * @name change
+         * @param {string[]} value Array of selected option values.
+         * @public
+         * @bubbles
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                composed: true,
+                bubbles: true,
+                detail: { value: values }
+            })
         );
-        selectedBox
-            .querySelectorAll('.slds-listbox__option')
-            .forEach((option, index) => {
-                option.setAttribute('data-index', index);
-            });
     }
 
     /**

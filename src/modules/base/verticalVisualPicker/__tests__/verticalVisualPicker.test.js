@@ -1,38 +1,6 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import VerticalVisualPicker from 'c/verticalVisualPicker';
-import { itemsWithIcons } from '../__docs__/data.js';
+import { itemsWithIcons, itemsWithSubItems } from '../__docs__/data.js';
 
 let element;
 describe('VerticalVisualPicker', () => {
@@ -630,6 +598,121 @@ describe('VerticalVisualPicker', () => {
             expect(handler.mock.calls[1][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[1][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[1][0].composed).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with radio type and sub items, when selecting item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'radio';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[1].click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                'item-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with radio type and sub items, when selecting sub item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'radio';
+
+        return Promise.resolve().then(() => {
+            const inputChoiceSets = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input-choice-set"]'
+            );
+            inputChoiceSets[0].dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        value: 'sub-item-1-1'
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'sub-item-1-1'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with checkbox type and sub items, when selecting item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'checkbox';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[1].click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'item-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Vertical visual picker: change event, with checkbox type and sub items, when selecting sub item', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const initialSelectedValues = ['item-1', 'sub-item-1-1'];
+        element.value = initialSelectedValues;
+        element.items = itemsWithSubItems;
+        element.type = 'checkbox';
+
+        return Promise.resolve().then(() => {
+            const inputChoiceSets = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input-choice-set"]'
+            );
+            inputChoiceSets[0].dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        value: ['sub-item-1-1', 'sub-item-1-2']
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                ...initialSelectedValues,
+                'sub-item-1-2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

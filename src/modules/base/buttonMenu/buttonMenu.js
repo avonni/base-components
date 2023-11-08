@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
@@ -39,7 +7,6 @@ import {
     keyCodes,
     buttonGroupOrderClass
 } from 'c/utilsPrivate';
-
 import { Tooltip } from 'c/tooltipLibrary';
 
 const i18n = {
@@ -81,6 +48,7 @@ const ICON_SIZES = {
 };
 
 const DEFAULT_ICON_NAME = 'utility:down';
+const MENU_ITEM_TAG = 'lightning-menu-item';
 
 /**
  * @class
@@ -625,9 +593,7 @@ export default class ButtonMenu extends LightningElement {
      * @return {object[]}
      */
     getMenuItems() {
-        return Array.from(
-            this.querySelectorAll('.slds-dropdown__list .slds-dropdown__item')
-        );
+        return Array.from(this.querySelectorAll(MENU_ITEM_TAG));
     }
 
     /**
@@ -661,10 +627,7 @@ export default class ButtonMenu extends LightningElement {
         const stopAtElement = this.template.querySelector("[role='menu']");
 
         while (currentNode !== stopAtElement) {
-            if (
-                currentNode.classList &&
-                currentNode.classList.contains('slds-dropdown__item')
-            ) {
+            if (currentNode.tagName === MENU_ITEM_TAG.toUpperCase()) {
                 return currentNode;
             }
             if (currentNode.parentNode) {

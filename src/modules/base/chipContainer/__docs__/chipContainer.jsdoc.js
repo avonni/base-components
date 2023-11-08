@@ -33,7 +33,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-container-color-border
- * @default #e5e5e5
+ * @default #747474
  * @type color
  */
 /**
@@ -141,7 +141,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-error-color-background
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
@@ -159,7 +159,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-error-outline-color
- * @default #ea001e
+ * @default #ba0517
  * @type color
  */
 /**
@@ -261,7 +261,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-warning-color-background
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**
@@ -279,7 +279,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-chip-warning-outline-color
- * @default #fe9339
+ * @default #dd7a01
  * @type color
  */
 /**

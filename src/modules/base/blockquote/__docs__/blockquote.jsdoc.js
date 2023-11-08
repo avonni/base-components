@@ -57,13 +57,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-brand-color-border-left
- * @default #0070d2
+ * @default #0176d3
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-brand-title-text-color
- * @default #0070d2
+ * @default #0176d3
  * @type color
  */
 /**
@@ -140,13 +140,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-error-color-border-left
- * @default #c23934
+ * @default #ba0517
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-error-title-text-color
- * @default #c23934
+ * @default #ba0517
  * @type color
  */
 /**
@@ -179,13 +179,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-success-color-border-left
- * @default #027e46
+ * @default #2e844a
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-success-title-text-color
- * @default #027e46
+ * @default #2e844a
  * @type color
  */
 /**
@@ -212,13 +212,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-warning-color-border-left
- * @default #d47500
+ * @default #dd7a01
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-blockquote-warning-title-text-color
- * @default #d47500
+ * @default #dd7a01
  * @type color
  */
 /**

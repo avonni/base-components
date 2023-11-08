@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { MENUS, VALUE } from './data';
@@ -208,6 +176,8 @@ describe('FilterMenuGroup', () => {
             menus.forEach((menu, i) => {
                 expect(menu.accessKey).toBe(MENUS[i].accessKey);
                 expect(menu.alternativeText).toBe(MENUS[i].alternativeText);
+                expect(menu.closed).toBe(MENUS[i].closed);
+                expect(menu.collapsible).toBe(MENUS[i].collapsible);
                 expect(menu.disabled).toBe(MENUS[i].disabled);
                 expect(menu.iconName).toBe(MENUS[i].iconName);
                 expect(menu.iconSize).toBe(MENUS[i].iconSize);
@@ -375,6 +345,20 @@ describe('FilterMenuGroup', () => {
             );
             const spy = jest.spyOn(menu, 'focus');
             element.focus();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    // focus search input
+    it('Filter menu group: focusSearchInput method', () => {
+        element.menus = MENUS;
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"][data-name="price"]'
+            );
+            const spy = jest.spyOn(menu, 'focusSearchInput');
+            element.focusSearchInput('price');
             expect(spy).toHaveBeenCalled();
         });
     });
@@ -639,6 +623,35 @@ describe('FilterMenuGroup', () => {
             });
     });
 
+    // close
+    it('Filter menu group: close event', () => {
+        element.menus = MENUS;
+
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menu.dispatchEvent(
+                new CustomEvent('close', {
+                    detail: {
+                        name: MENUS[0].name
+                    },
+                    bubbles: true
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(MENUS[0].name);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
     // loadmore
     it('Filter menu group: loadmore event', () => {
         element.menus = MENUS;
@@ -658,6 +671,35 @@ describe('FilterMenuGroup', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
+    // open
+    it('Filter menu group: open event', () => {
+        element.menus = MENUS;
+
+        const handler = jest.fn();
+        element.addEventListener('open', handler);
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-filter-menu"]'
+            );
+            menu.dispatchEvent(
+                new CustomEvent('open', {
+                    detail: {
+                        name: MENUS[0].name
+                    },
+                    bubbles: true
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(MENUS[0].name);
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api, track } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
@@ -38,9 +6,10 @@ import verticalTimeline from './verticalActivityTimeline.html';
 import { classSet } from 'c/utils';
 import {
     deepCopy,
+    normalizeArray,
     normalizeBoolean,
-    normalizeString,
-    normalizeArray
+    normalizeObject,
+    normalizeString
 } from 'c/utilsPrivate';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
@@ -59,12 +28,26 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const DEFAULT_FIELD_COLUMNS = {
+    default: 12,
+    small: 12,
+    medium: 6,
+    large: 4
+};
+const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
+
+const FIELD_VARIANTS = {
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
+
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
@@ -154,6 +137,13 @@ export default class ActivityTimeline extends LightningElement {
     _closed = false;
     _collapsible = false;
     _enableInfiniteLoading = false;
+    _fieldAttributes = {
+        cols: DEFAULT_FIELD_COLUMNS.default,
+        largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
+        mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
+        smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
+        variant: null
+    };
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
@@ -365,7 +355,50 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is only supported for the vertical orientation.
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+
+        const small = this.normalizeFieldColumns(
+            normalizedFieldAttributes.smallContainerCols
+        );
+        const medium = this.normalizeFieldColumns(
+            normalizedFieldAttributes.mediumContainerCols
+        );
+        const large = this.normalizeFieldColumns(
+            normalizedFieldAttributes.largeContainerCols
+        );
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
+
+        // Keep same logic as in layoutItem.
+        this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
+        this._fieldAttributes.smallContainerCols =
+            small || defaults || DEFAULT_FIELD_COLUMNS.small;
+        this._fieldAttributes.mediumContainerCols =
+            medium || small || defaults || DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.largeContainerCols =
+            large || medium || small || defaults || DEFAULT_FIELD_COLUMNS.large;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            { validValues: FIELD_VARIANTS.valid }
+        );
+
+        this._fieldAttributes = { ...this._fieldAttributes };
+    }
+
+    /**
+     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is supported only for the vertical orientation.
      *
      * @public
      * @type {string}
@@ -564,9 +597,11 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the value will define how the items will be grouped. Valid values include week, month or year. This attribute is only supported for the vertical orientation.
+     * Specifies the sorting direction. Valid values include asc and desc.
+     * This attribute is only supported for the vertical orientation.
      *
      * @public
+     * @default desc
      * @type {string}
      */
     @api
@@ -661,6 +696,15 @@ export default class ActivityTimeline extends LightningElement {
      */
     get hasHeader() {
         return this.title || this.iconName;
+    }
+
+    /**
+     * Compute the field's variant for the horizontal timeline.
+     *
+     * @type {string}
+     */
+    get horizontalFieldsVariant() {
+        return this.fieldAttributes.variant || DEFAULT_HORIZONTAL_FIELD_VARIANT;
     }
 
     /*
@@ -844,6 +888,37 @@ export default class ActivityTimeline extends LightningElement {
             this.requestRedrawTimeline();
             this.renderedCallback();
         });
+    }
+
+    /**
+     * Only accept predetermined number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeColumns(value) {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) {
+            return null;
+        }
+
+        if (COLUMNS.valid.includes(numValue)) {
+            return numValue;
+        }
+        return null;
+    }
+
+    /**
+     * Inverse logic of number of columns.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
     }
 
     /**

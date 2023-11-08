@@ -3,7 +3,7 @@
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
- * @property {string} name Name to identify the item in the list.
+ * @property {object[]} fields Array of output data objects. See <a href="/components/output-data">Output Data</a> for valid keys. The fields are displayed in the details section.
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName displayed next to the label.
  * @property {string} imageSrc Image URL for the list item image. If present, the image is displayed to the left of the item.
@@ -11,6 +11,7 @@
  * - label: string
  * - href: string
  * @property {string} label Required. Label of the item.
+ * @property {string} name Name to identify the item in the list.
  */
 /**
  * @typedef {Object} ListAction
@@ -28,12 +29,14 @@
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} src Image URL.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
+ * @property {string} position The position changes the location of the avatar in the list item. Valid values include left, top-left, bottom-left, right, top-right, bottom-right, left-of-title and right-of-title.
  * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
 /**
  * @typedef {Object} ImageAttributes
  * @name imageAttributes
+ * @property {string} fallbackSrc The source URL to use if item.imageSrc is invalid or is not specified.
  * @property {string} position The position of the image relative to the content. The supported positions are left, right, top, bottom, background and overlay.
  * @property {string} size The size of the item image. The size controls the width for image positions left and right. Otherwise size controls the image height. Valid values are small, medium, large. The size defaults to large.
  * @property {number} height The image height in pixels. The height is only used for image positions top, bottom, background and overlay. The height overrides the size value.
@@ -41,6 +44,15 @@
  * @property {string} cropFit The object-fit css property. Supported values are cover, contain, fill and none. The value defaults to cover.
  * @property {number} cropPositionX The image object-position horizontal percentage property. The value defaults to 50.
  * @property {number} cropPositionY The image object-position vertical percentage property. The value defaults to 50.
+ */
+/**
+ * @typedef {Object} FieldAttributes
+ * @name fieldAttributes
+ * @property {string|number} cols Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+ * @property {string|number} largeContainerCols Number of columns on small container widths. Width is greater or equal to 1024px. See `cols` for accepted values.
+ * @property {string|number} mediumContainerCols Number of columns on small container widths. Width is greater or equal to 768px. See `cols` for accepted values.
+ * @property {string|number} smallContainerCols Number of columns on small container widths. Width is greater or equal to 480px. See `cols` for accepted values.
+ * @property {string} variant The variant changes the appearance of the field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
  */
 
 /**
@@ -138,6 +150,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-description-line-clamp
+ * @default 2
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-color-background
  * @default transparent
  * @type color
@@ -156,7 +174,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -187,49 +205,19 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
  * @type dimension
- * @default 0
+ * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-between
  * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-list-item-divider-top-spacing-block-between
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-list-item-divider-top-spacing-inline-between
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-list-item-divider-bottom-spacing-block-between
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-list-item-divider-bottom-spacing-inline-between
- * @type dimension
- * @default 0
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-list-item-divider-around-spacing-block-between
- * @type dimension
  * @default 0.5rem
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-divider-around-spacing-inline-between
- * @type dimension
- * @default 0.5rem
+ * @name --avonni-list-item-shadow
+ * @default none
+ * @type string
  */
 /**
  * @memberof stylingHooks
@@ -270,6 +258,45 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-avatar-image-object-fit
  * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-radius-border
+ * @type color
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-styling-border
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-spacing-block
+ * @type dimension
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-fields-spacing-inline
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -389,5 +416,17 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-body-vertical-alignment
  * @default center
- * @type dimension
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-actions-vertical-alignment
+ * @default --avonni-list-item-body-vertical-alignment, center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-avatar-vertical-alignment
+ * @default --avonni-list-item-body-vertical-alignment, center
+ * @type alignment
  */

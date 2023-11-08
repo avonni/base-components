@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -38,8 +6,6 @@ import {
     deepCopy,
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
-
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
 
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
@@ -63,11 +29,6 @@ const ICON_SIZES = {
     default: 'small'
 };
 
-const MEDIA_QUERY_BREAKPOINTS = {
-    small: 480,
-    medium: 768
-};
-
 /**
  * @class
  * @descriptor c-primitive-activity-timeline-item
@@ -87,7 +48,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api buttonLabel;
-
     /**
      * The description can include text, and is displayed under the title.
      *
@@ -95,6 +55,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api description;
+    /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @public
+     * @type {object}
+     */
+    @api fieldAttributes = {};
     /**
      * URL for the title link.
      *
@@ -165,9 +132,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _timezone;
 
     formattedDate = '';
-    resizeObserver;
     _connected = false;
-    _fieldSize = 6;
 
     connectedCallback() {
         this.formatDate();
@@ -176,19 +141,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     renderedCallback() {
         this.setLineColor();
-
-        if (!this.resizeObserver && !this._closed) {
-            this.initFieldsContainerObserver();
-        }
-
-        this.computeFieldsPerColumn();
-    }
-
-    disconnectedCallback() {
-        if (this.resizeObserver) {
-            this.resizeObserver.disconnect();
-            this.resizeObserver = undefined;
-        }
     }
 
     /*
@@ -487,26 +439,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Returns the container for the fields.
-     *
-     * @type {HTMLElement}
-     */
-    get fieldsContainer() {
-        return this.template.querySelector(
-            '[data-element-id="fields-container"]'
-        );
-    }
-
-    /**
-     * Returns the field size for the lightning layout item.
-     *
-     * @type {string}
-     */
-    get fieldSize() {
-        return this._fieldSize;
-    }
-
-    /**
      * Check if fields is populated.
      *
      * @type {boolean}
@@ -584,27 +516,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
 
     /**
-     * Compute the number of fields per column based on the container width.
-     */
-    computeFieldsPerColumn() {
-        if (!this.fieldsContainer || this._closed) {
-            return;
-        }
-        const containerWidth = this.fieldsContainer.offsetWidth;
-
-        if (containerWidth < MEDIA_QUERY_BREAKPOINTS.small) {
-            this._fieldSize = 12;
-        } else if (
-            containerWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
-            containerWidth < MEDIA_QUERY_BREAKPOINTS.medium
-        ) {
-            this._fieldSize = 6;
-        } else if (containerWidth >= MEDIA_QUERY_BREAKPOINTS.medium) {
-            this._fieldSize = 4;
-        }
-    }
-
-    /**
      * Set the formatted date.
      */
     formatDate() {
@@ -616,21 +527,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
             return;
         }
         this.formattedDate = date.toFormat(this.dateFormat);
-    }
-
-    /**
-     * Setup the activity timeline item resize observer. Used to update the number of fields per column when the activity timeline is resized.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initFieldsContainerObserver() {
-        if (!this.fieldsContainer) {
-            return;
-        }
-        this.resizeObserver = new AvonniResizeObserver(
-            this.fieldsContainer,
-            this.computeFieldsPerColumn.bind(this)
-        );
     }
 
     /**

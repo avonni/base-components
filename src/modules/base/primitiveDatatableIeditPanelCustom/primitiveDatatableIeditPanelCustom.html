@@ -1,37 +1,3 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
     <section
         if:true={visible}
@@ -56,40 +22,44 @@
                     class="slds-grid slds-p-left_xx-small"
                 >
                     <c-primitive-datatable-iedit-type-factory-custom
-                        required={required}
+                        data-element-id="dt-type-edit-factory-custom"
                         class="avonni-datatable-iedit-panel-custom__flex-col"
-                        column-def={columnDef}
-                        edited-value={editedValue}
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                        key={inputKey}
-                        disabled={disabled}
-                        label={label}
-                        type={type}
                         colors={colors}
+                        column-def={columnDef}
+                        date-style={dateStyle}
+                        disabled={disabled}
+                        dropdown-length={dropdownLength}
+                        edited-value={editedValue}
+                        end-date={endDate}
+                        field-name={fieldName}
+                        formats={formats}
                         hide-color-input={hideColorInput}
+                        is-mass-edit-enabled={isMassEditEnabled}
+                        is-multi-select={isMultiSelect}
+                        label={label}
+                        label-start-date={labelStartDate}
+                        label-end-date={labelEndDate}
+                        max={max}
+                        max-length={maxLength}
                         menu-alignment={menuAlignment}
                         menu-icon-name={menuIconName}
                         menu-icon-size={menuIconSize}
                         menu-variant={menuVariant}
-                        name={name}
-                        opacity={opacity}
-                        dropdown-length={dropdownLength}
-                        is-multi-select={isMultiSelect}
-                        placeholder={placeholder}
-                        max={max}
-                        max-length={maxLength}
                         min={min}
                         min-length={minLength}
-                        step={step}
+                        name={name}
+                        object-api-name={objectApiName}
+                        opacity={opacity}
+                        placeholder={placeholder}
+                        required={required}
+                        row-key-value={rowKeyValue}
                         start-date={startDate}
-                        end-date={endDate}
-                        date-style={dateStyle}
+                        step={step}
+                        type={type}
                         time-style={timeStyle}
                         timezone={timezone}
-                        label-start-date={labelStartDate}
-                        label-end-date={labelEndDate}
-                        data-element-id="dt-type-edit-factory-custom"
+                        onblur={handleTypeElemBlur}
+                        onfocus={handleTypeElemFocus}
                     ></c-primitive-datatable-iedit-type-factory-custom>
                 </c-primitive-datatable-iedit-input-wrapper-custom>
                 <template if:true={isMassEditEnabled}>

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 const avatarGroupItems = [
     {
         fallbackIconName: 'standard:person_account',
@@ -338,10 +306,11 @@ const columnsDO = [
     {
         label: 'Lookup',
         type: 'lookup',
-        fieldName: 'lookup',
+        fieldName: 'email',
         editable: true,
         typeAttributes: {
-            path: { fieldName: 'email' }
+            name: { fieldName: 'lookup' },
+            path: 'https://www.avonni.app/'
         }
     },
     {
@@ -360,6 +329,12 @@ const columnsPR = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
+        editable: true
+    },
+    {
+        label: 'Percent Formatted',
+        fieldName: 'percentFormatted',
+        type: 'percent-formatted',
         editable: true
     },
     {
@@ -427,7 +402,8 @@ const columnsPR = [
         fieldName: 'richText',
         type: 'rich-text',
         typeAttributes: {
-            disabled: { fieldName: 'richTextDisabled' }
+            disabled: { fieldName: 'richTextDisabled' },
+            formats: { fieldName: 'richTextFormats' }
         },
         editable: true,
         initialWidth: 275
@@ -456,10 +432,6 @@ const columnsSZ = [
         label: 'Text Area',
         fieldName: 'textarea',
         type: 'textarea',
-        typeAttributes: {
-            disabled: { fieldName: 'textareaDisabled' },
-            label: 'Text area'
-        },
         editable: true
     },
     {
@@ -732,6 +704,7 @@ const recordsPR = [
     {
         id: 1,
         percent: 0.34,
+        percentFormatted: 34,
         phone: '5142223333',
         progress: 0.34,
         progressBarReferenceLines: [
@@ -754,6 +727,7 @@ const recordsPR = [
     {
         id: 2,
         percent: 0.45,
+        percentFormatted: 45,
         phone: '5144546767',
         progress: 1,
         progressBarTheme: 'success',
@@ -766,7 +740,8 @@ const recordsPR = [
     },
     {
         id: 3,
-        percent: 0.67,
+        percent: 0.6754638,
+        percentFormatted: 67.54638,
         phone: '6785643214',
         progress: 0.43,
         qrcode: 'https://www.avonni.app/',
@@ -778,17 +753,20 @@ const recordsPR = [
     {
         id: 4,
         percent: 4,
+        percentFormatted: 400,
         phone: '3547789900',
         progress: 0.05,
         progressBarTheme: 'info',
         progressRingVariant: 'expired',
         qrcode: 'https://www.avonni.app/',
         rating: '5',
-        richText: '<h4 style="text-align: center">With Value Centered</h4>'
+        richText: '<h4 style="text-align: center">With Value Centered</h4>',
+        richTextFormats: ['font']
     },
     {
         id: 5,
         percent: 0.05,
+        percentFormatted: 5,
         phone: '5143245564',
         progress: 0.66,
         progressBarTheme: 'alt-inverse',
@@ -851,7 +829,6 @@ const recordsSZ = [
         id: 3,
         sliderDisabled: true,
         text: 'Jung Phung',
-        textareaDisabled: true,
         toggleDisabled: true,
         url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',

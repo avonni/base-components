@@ -8,12 +8,16 @@ export const options = [
         secondaryText: 'Account - Burlington, NC',
         value: 'burlington',
         hasAvatar: true,
+        disabled: false,
+        computedAriaDisabled: 'false',
         computedClass: 'combobox__option',
         options: []
     },
     {
         label: 'Dickenson plc',
         value: 'dickenson',
+        disabled: false,
+        computedAriaDisabled: 'false',
         computedClass: 'combobox__option',
         hasChildren: true,
         options: [
@@ -53,6 +57,8 @@ export const options = [
         value: 'edge',
         hasAvatar: true,
         showCheckmark: true,
+        disabled: true,
+        computedAriaDisabled: 'true',
         computedClass: 'combobox__option',
         options: []
     }

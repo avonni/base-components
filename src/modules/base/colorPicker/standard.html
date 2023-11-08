@@ -1,37 +1,3 @@
-<!--
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
--->
-
 <template>
     <div class={computedContainerClass} data-element-id="div-container">
         <label class={computedLabelClass} data-element-id="label">
@@ -89,7 +55,7 @@
                     </template>
                 </button>
                 <template if:true={dropdownOpened}>
-                    <lightning-focus-trap>
+                    <c-focus-trap>
                         <div
                             class={computedDropdownClass}
                             data-element-id="div-dropdown"
@@ -97,7 +63,7 @@
                             onmouseenter={handleMenuMouseEnter}
                             onmouseleave={handleMenuMouseLeave}
                             onkeydown={handleMenuKeydown}
-                            onkeyup={handleMenuKeyup}
+                            onkeyup={handleMenuKeyUp}
                             onblur={handleMenuBlur}
                         >
                             <!-- Loading spinner -->
@@ -225,6 +191,7 @@
                                             value={value}
                                             variant={colorPaletteVariant}
                                             data-element-id="avonni-color-palette"
+                                            data-is-focusable
                                             onblur={handleMenuBlur}
                                             onchange={handleColorPaletteChange}
                                         ></c-color-palette>
@@ -237,6 +204,7 @@
                                             value={computedGradientValue}
                                             read-only={readOnly}
                                             data-element-id="avonni-color-gradient"
+                                            data-is-focusable
                                             onblur={handleMenuBlur}
                                             onchange={handleColorGradientChange}
                                         ></c-color-gradient>
@@ -259,6 +227,7 @@
                                             label="Cancel"
                                             title="Cancel"
                                             data-element-id="lightning-button-cancel"
+                                            data-is-focusable
                                             onclick={handleCancel}
                                         ></lightning-button>
                                         <lightning-button
@@ -270,13 +239,14 @@
                                             label="Done"
                                             title="Done"
                                             data-element-id="lightning-button-done"
+                                            data-is-focusable
                                             onclick={handleDone}
                                         ></lightning-button>
                                     </div>
                                 </footer>
                             </template>
                         </div>
-                    </lightning-focus-trap>
+                    </c-focus-trap>
                 </template>
             </div>
 
@@ -294,15 +264,16 @@
                     <template if:false={readOnly}>
                         <input
                             class="slds-input"
-                            type="text"
-                            label="color"
-                            value={inputValue}
-                            name={name}
-                            onchange={handleInputColor}
-                            onblur={handleMenuBlur}
                             disabled={disabled}
-                            data-element-id="input"
+                            label="color"
+                            name={name}
                             required={required}
+                            type="text"
+                            value={inputValue}
+                            data-element-id="input"
+                            onblur={handleMenuBlur}
+                            onchange={handleInputColor}
+                            onfocus={handleInputFocus}
                         />
                         <button
                             if:true={showClearIcon}

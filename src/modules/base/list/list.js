@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import {
     normalizeArray,
@@ -48,7 +16,8 @@ const ICON_POSITIONS = {
 };
 
 const DIVIDER = {
-    valid: ['top', 'bottom', 'around']
+    valid: ['none', 'top', 'bottom', 'around'],
+    default: 'none'
 };
 
 const DEFAULT_LOAD_MORE_OFFSET = 20;
@@ -79,6 +48,18 @@ const MEDIA_QUERY_BREAKPOINTS = {
 };
 
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
+
+const DEFAULT_FIELD_COLUMNS = {
+    default: 12,
+    small: 12,
+    medium: 6,
+    large: 4
+};
+
+const FIELD_VARIANTS = {
+    default: 'standard',
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+};
 
 /**
  * @class
@@ -119,9 +100,17 @@ export default class List extends LightningElement {
     _smallContainerCols;
     _mediumContainerCols;
     _largeContainerCols;
-    _divider;
+    _divider = DIVIDER.default;
     _enableInfiniteLoading = false;
+    _fieldAttributes = {
+        cols: DEFAULT_FIELD_COLUMNS.default,
+        largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
+        mediumContainerCols: DEFAULT_FIELD_COLUMNS.medium,
+        smallContainerCols: DEFAULT_FIELD_COLUMNS.small,
+        variant: 'standard'
+    };
     _imageAttributes = {
+        fallbackSrc: null,
         position: 'left',
         size: 'large',
         cropPositionX: 50,
@@ -134,6 +123,8 @@ export default class List extends LightningElement {
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
     _variant = VARIANTS.default;
+    _visibleActions;
+    _visibleMediaActions;
 
     _columnsSizes = {
         default: 1
@@ -150,8 +141,10 @@ export default class List extends LightningElement {
             large: 128
         }
     };
+    _cardRendersBeforeScrollUpdate = 0;
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
+    _isFallbackLoadedMap = {};
     _initialY;
     _itemElements;
     _menuTop;
@@ -180,7 +173,7 @@ export default class List extends LightningElement {
             this.initWrapObserver();
         }
 
-        this.restoreScrollPosition();
+        this.updateSpinnerVisibility();
         this.listResize();
 
         if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
@@ -191,10 +184,18 @@ export default class List extends LightningElement {
             this.template.querySelectorAll('[data-element-id="li-item"]')
         );
 
-        // Wait for the card to render before checking if the bottom is reached.
-        window.requestAnimationFrame(() => {
+        // Wait for all the cards to render before checking if the bottom is reached.
+        const cards = this.template.querySelectorAll(
+            '[data-element-id="avonni-card"]'
+        );
+        if (!cards.length) {
             this.handleScroll();
-        });
+        } else {
+            this._cardRendersBeforeScrollUpdate = cards.length;
+        }
+
+        // Reset loaded fallback map.
+        this._isFallbackLoadedMap = {};
     }
 
     connectedCallback() {
@@ -251,7 +252,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Position of the item divider. Valid values include top, bottom and around.
+     * Position of the item divider. Valid values include none, top, bottom and around.
      *
      * @type {string}
      * @public
@@ -262,6 +263,7 @@ export default class List extends LightningElement {
     }
     set divider(value) {
         this._divider = normalizeString(value, {
+            fallbackValue: DIVIDER.default,
             validValues: DIVIDER.valid
         });
     }
@@ -287,6 +289,52 @@ export default class List extends LightningElement {
     }
 
     /**
+     * Field attributes: cols, smallContainerCols, mediumContainerCols, largeContainerCols and variant.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get fieldAttributes() {
+        return this._fieldAttributes;
+    }
+    set fieldAttributes(value) {
+        const normalizedFieldAttributes = normalizeObject(value);
+
+        const small = this.normalizeFieldColumns(
+            normalizedFieldAttributes.smallContainerCols
+        );
+        const medium = this.normalizeFieldColumns(
+            normalizedFieldAttributes.mediumContainerCols
+        );
+        const large = this.normalizeFieldColumns(
+            normalizedFieldAttributes.largeContainerCols
+        );
+        const defaults = this.normalizeFieldColumns(
+            normalizedFieldAttributes.cols
+        );
+
+        // Keep same logic as in layoutItem.
+        this._fieldAttributes.cols = defaults || DEFAULT_FIELD_COLUMNS.default;
+        this._fieldAttributes.smallContainerCols =
+            small || defaults || DEFAULT_FIELD_COLUMNS.small;
+        this._fieldAttributes.mediumContainerCols =
+            medium || small || defaults || DEFAULT_FIELD_COLUMNS.medium;
+        this._fieldAttributes.largeContainerCols =
+            large || medium || small || defaults || DEFAULT_FIELD_COLUMNS.large;
+
+        this._fieldAttributes.variant = normalizeString(
+            normalizedFieldAttributes.variant,
+            {
+                fallbackValue: FIELD_VARIANTS.default,
+                validValues: FIELD_VARIANTS.valid
+            }
+        );
+
+        this._fieldAttributes = { ...this._fieldAttributes };
+    }
+
+    /**
      * If true a loading animation is shown.
      *
      * @type {boolean}
@@ -299,13 +347,7 @@ export default class List extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-
-        if (this._isLoading) {
-            // Wait for the list to render because the showLoading method needs to measure the list's scroll position.
-            window.requestAnimationFrame(() => {
-                this.showLoading();
-            });
-        }
+        this.updateSpinnerVisibility();
     }
 
     /**
@@ -331,7 +373,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Image attributes: cropFit, position, size, width, height and cropPosition.
+     * Image attributes: fallbackSrc, cropFit, position, size, width, height and cropPosition.
      *
      * @type {object}
      * @public
@@ -342,6 +384,8 @@ export default class List extends LightningElement {
     }
     set imageAttributes(value) {
         const normalizedImgAttributes = normalizeObject(value);
+
+        this._imageAttributes.fallbackSrc = normalizedImgAttributes.fallbackSrc;
 
         this._imageAttributes.width = !isNaN(normalizedImgAttributes.width)
             ? normalizedImgAttributes.width
@@ -392,7 +436,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Default number of columns on smaller container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Default number of columns on smallest container widths. Valid values include 1, 2, 3, 4, 6 and 12.
      *
      * @type {number}
      * @default 1
@@ -409,7 +453,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on small container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on small container widths. See `cols` for accepted values.
      * @type {number}
      * @public
      */
@@ -424,7 +468,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on medium container widths. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on medium container widths. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -440,7 +484,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Number of columns on large container widths and above. Valid values include 1, 2, 3, 4, 6 and 12.
+     * Number of columns on large container widths and above. See `cols` for accepted values.
      *
      * @type {number}
      * @public
@@ -547,7 +591,44 @@ export default class List extends LightningElement {
 
         if (this._connected) {
             this.setItemProperties();
+            this.updateSpinnerVisibility();
         }
+    }
+
+    /**
+     * The number of actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleActions() {
+        return this._visibleActions;
+    }
+
+    set visibleActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
+    }
+
+    /**
+     * The number of media actions that appear as regular buttons.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get visibleMediaActions() {
+        return this._visibleMediaActions;
+    }
+
+    set visibleMediaActions(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._visibleMediaActions = Number.isNaN(normalizedValue)
+            ? null
+            : normalizedValue;
     }
 
     /*
@@ -582,9 +663,14 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return this.divider === 'around'
-            ? 'avonni-list__item-card-style'
-            : 'avonni-list__item-borderless';
+        return classSet('slds-template__container')
+            .add({
+                'avonni-list__item-divider_none': this.divider === 'none',
+                'avonni-list__item-divider_top': this.divider === 'top',
+                'avonni-list__item-divider_bottom': this.divider === 'bottom',
+                'avonni-list__item-divider_around': this.divider === 'around'
+            })
+            .toString();
     }
 
     /**
@@ -646,15 +732,9 @@ export default class List extends LightningElement {
                 'avonni-list__item-sortable':
                     this.sortable &&
                     this._currentColumnCount === 1 &&
-                    this.variant === 'base',
-                'avonni-list__item-divider_top': this.divider === 'top',
-                'avonni-list__item-divider_bottom': this.divider === 'bottom'
+                    this.variant === 'base'
             })
-            .add(
-                `avonni-list__flex-col slds-size_${
-                    12 / this._currentColumnCount
-                }-of-12`
-            )
+            .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
     }
 
@@ -671,12 +751,9 @@ export default class List extends LightningElement {
                 'slds-grid_vertical': this._currentColumnCount === 1,
                 'slds-wrap':
                     this._currentColumnCount > 1 && this.variant === 'base',
-                'avonni-list__items-without-divider': this.divider === '',
-                'avonni-list__has-card-style': this.divider === 'around',
-                'slds-has-dividers_top-space avonni-list__items-have-top-divider':
-                    this.divider === 'top',
-                'slds-has-dividers_bottom-space avonni-list__items-have-bottom-divider':
-                    this.divider === 'bottom'
+                'avonni-list__vertical-compact':
+                    ['none', 'top', 'bottom'].includes(this.divider) &&
+                    this.isRegularList
             })
             .toString();
     }
@@ -718,6 +795,26 @@ export default class List extends LightningElement {
         }
         this._singleLinePageFirstIndex = pageStart;
         return pageItems;
+    }
+
+    /**
+     * Compute the number of visible actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleActions() {
+        if (this.visibleActions) return this.visibleActions;
+        return this.hasMultipleActions ? 0 : 1;
+    }
+
+    /**
+     * Compute the number of visible media actions.
+     *
+     * @type {number}
+     */
+    get computedVisibleMediaActions() {
+        if (this.visibleMediaActions) return this.visibleMediaActions;
+        return this.hasMultipleMediaActions ? 0 : 1;
     }
 
     /**
@@ -794,10 +891,12 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Show the loading spinner at the end of the list.
+     * Check if the list is vertical with one column and not a 'grid'.
      */
-    get isLoadingBelow() {
-        return this.isLoading && this.variant !== 'single-line';
+    get isRegularList() {
+        return Object.values(this._columnsSizes).every(
+            (size) => !size || size === 1
+        );
     }
 
     /**
@@ -1182,6 +1281,7 @@ export default class List extends LightningElement {
         delete itemCopy.listHasImages;
         delete itemCopy.infos;
         delete itemCopy.icons;
+        delete itemCopy.avatarPosition;
         return itemCopy;
     }
 
@@ -1407,14 +1507,21 @@ export default class List extends LightningElement {
      */
     normalizeColumns(value) {
         const numValue = parseInt(value, 10);
-        if (isNaN(numValue)) {
-            return null;
-        }
+        return COLUMNS.valid.includes(numValue) ? numValue : null;
+    }
 
-        if (COLUMNS.valid.includes(numValue)) {
-            return numValue;
-        }
-        return null;
+    /**
+     * Inverse logic of number of columns.
+     * Matches the logic of cols, smallContainerCols, mediumContainerCols and largeContainerCols attributes.
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    normalizeFieldColumns(value) {
+        const normalizedCols = this.normalizeColumns(value);
+        return normalizedCols
+            ? 12 / Math.pow(2, Math.log2(normalizedCols))
+            : null;
     }
 
     /**
@@ -1430,15 +1537,18 @@ export default class List extends LightningElement {
      * Make sure all used properties are set before they are used in items.
      */
     setItemProperties() {
-        this.listHasImages = this.items.some((item) => item.imageSrc);
+        this.listHasImages = this.items.some(
+            (item) => item.imageSrc || this.imageAttributes.fallbackSrc
+        );
         this.computedItems = this.items.map((item, index) => {
+            const imageSrc = item.imageSrc || this.imageAttributes.fallbackSrc;
             // With image position == background or overlay,
             // if the image is missing fallback to default list layout.
             let usedImagePosition = this.imageAttributes.position;
             const layoutRequiresImage =
                 usedImagePosition === 'background' ||
                 usedImagePosition === 'overlay';
-            if (!item.imageSrc && layoutRequiresImage) {
+            if (!imageSrc && layoutRequiresImage) {
                 usedImagePosition = 'top';
             }
             const newItem = new Item(item);
@@ -1446,6 +1556,7 @@ export default class List extends LightningElement {
             newItem.imagePosition = usedImagePosition;
             newItem.listHasImages = this.listHasImages;
             newItem.variant = this.variant;
+            newItem.imageSrc = imageSrc;
             return newItem;
         });
     }
@@ -1500,21 +1611,6 @@ export default class List extends LightningElement {
         });
     }
 
-    /**
-     * Restore the scroll position when the list is rerendered. Needed when loading more items.
-     */
-    restoreScrollPosition() {
-        const scrollTop = this.listContainer
-            ? this.listContainer.scrollTop
-            : null;
-
-        if (scrollTop != null) {
-            window.requestAnimationFrame(() => {
-                this.listContainer.scrollTop = scrollTop;
-            });
-        }
-    }
-
     restoreItemsTransform(draggedIndex, targetIndex) {
         setTimeout(() => {
             const draggedItem = this._itemElements.find(
@@ -1537,34 +1633,6 @@ export default class List extends LightningElement {
             });
             draggedItem.style.transform = `translateY(${draggedItemTransform}px)`;
         }, 0);
-    }
-
-    /**
-     * When the user has reached the bottom of the list, and the load-more spinner appears,
-     * scroll to view the spinner.
-     */
-    showLoading() {
-        if (!this.listContainer) {
-            return;
-        }
-        const offsetFromBottom =
-            this.listContainer.scrollHeight -
-            (this.listContainer.scrollTop + this.listContainer.clientHeight);
-
-        // Show the spinner if close to bottom, and not scrolled to the top
-        const closeToBottom =
-            offsetFromBottom < 100 && this.listContainer.scrollTop > 0;
-        if (closeToBottom) {
-            setTimeout(() => {
-                const spinner = this.template.querySelector(
-                    '[data-element-id="loading-spinner-below"]'
-                );
-                if (spinner) {
-                    this.listContainer.scrollTop =
-                        this.listContainer.scrollHeight;
-                }
-            }, 20);
-        }
     }
 
     /**
@@ -1608,6 +1676,23 @@ export default class List extends LightningElement {
         );
         // We don't use a variable to avoid rerendering
         element.textContent = `${label}. ${position} / ${total}`;
+    }
+
+    /**
+     * Update the loading spinner visibility.
+     */
+    updateSpinnerVisibility() {
+        const spinner = this.template.querySelector(
+            '[data-element-id="loading-spinner-container"]'
+        );
+        if (!spinner) {
+            return;
+        }
+        if (this.isLoading) {
+            spinner.classList.remove('slds-hide');
+        } else {
+            spinner.classList.add('slds-hide');
+        }
     }
 
     /*
@@ -1808,9 +1893,7 @@ export default class List extends LightningElement {
      */
     handleActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
         /**
          * The event fired when a user clicks on an action.
@@ -1840,11 +1923,8 @@ export default class List extends LightningElement {
      */
     handleMediaActionClick(event) {
         event.stopPropagation();
-        const actionName = this.hasMultipleMediaActions
-            ? event.detail.value
-            : event.currentTarget.value;
+        const actionName = event.detail.name;
         const itemIndex = event.currentTarget.dataset.itemIndex;
-
         /**
          * The event fired when a user clicks on a media action.
          *
@@ -1873,6 +1953,19 @@ export default class List extends LightningElement {
      */
     handleAvatarDragStart(event) {
         event.preventDefault();
+    }
+
+    /**
+     * Handle a card render. If the list was just rendered, triggers the `handleScroll()` method after the last card has been rendered.
+     */
+    handleCardRendered() {
+        if (this._cardRendersBeforeScrollUpdate === 1) {
+            this.handleScroll();
+        }
+
+        if (this._cardRendersBeforeScrollUpdate) {
+            this._cardRendersBeforeScrollUpdate -= 1;
+        }
     }
 
     /**
@@ -1975,6 +2068,33 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Handle an item image loading error.
+     * If a fallbackSrc exists assign it to the image src attribute.
+     * @param {Event} event
+     */
+    handleItemImageError(event) {
+        const itemIndex = event.target?.dataset.itemIndex;
+        const fallbackSrc = this.imageAttributes.fallbackSrc;
+
+        // _isFallbackLoadedMap is a fix to avoid infinite image error loop.
+        // Happens when the loaded img fallbackSrc is not equal to the original fallbackSrc.
+        // It remembers wich item image has already loaded the fallbackSrc so it doesnt loop.
+        if (
+            !event.target ||
+            !fallbackSrc ||
+            event.target?.src === fallbackSrc ||
+            itemIndex < 0 ||
+            this._isFallbackLoadedMap[itemIndex]
+        ) {
+            return;
+        }
+
+        event.target.onerror = null;
+        event.target.src = fallbackSrc;
+        this._isFallbackLoadedMap[itemIndex] = true;
+    }
+
     handleItemMouseUp(event) {
         if (event.button !== 0) {
             return;
@@ -2027,7 +2147,7 @@ export default class List extends LightningElement {
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
     handleScroll() {
-        if (this.variant === 'single-line') {
+        if (this.variant === 'single-line' || !this.listContainer) {
             return;
         }
 

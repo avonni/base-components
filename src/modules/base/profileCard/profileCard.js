@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -74,13 +42,6 @@ export default class ProfileCard extends LightningElement {
      */
     @api avatarFallbackIconName;
     /**
-     * URL for the avatar image.
-     *
-     * @type {string}
-     * @public
-     */
-    @api avatarSrc;
-    /**
      * Value to set the image attribute 'alt'.
      *
      * @type {string}
@@ -112,9 +73,9 @@ export default class ProfileCard extends LightningElement {
     _avatarMobilePosition = AVATAR_POSITIONS.default;
     _avatarPosition = AVATAR_POSITIONS.default;
     _avatarSize = AVATAR_SIZES.default;
+    _avatarSrc;
     _avatarVariant = AVATAR_VARIANTS.default;
 
-    isError = false;
     showActions = true;
     showFooter = true;
     showAvatarActions = true;
@@ -175,6 +136,15 @@ export default class ProfileCard extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
+    }
+
+    @api
+    get avatarSrc() {
+        return this._avatarSrc;
+    }
+
+    set avatarSrc(value) {
+        this._avatarSrc = (typeof value === 'string' && value.trim()) || '';
     }
 
     /**
@@ -310,6 +280,24 @@ export default class ProfileCard extends LightningElement {
      */
 
     /**
+     * Convert profile card avatar size to primitive avatar size
+     *
+     * @type {boolean}
+     */
+    get primitiveAvatarSize() {
+        switch (this.avatarSize) {
+            case 'x-small':
+                return 'medium';
+            case 'small':
+                return 'large';
+            case 'medium':
+                return 'x-large';
+            default:
+                return 'xx-large';
+        }
+    }
+
+    /**
      * Computed container class styling based on selected attributes.
      *
      * @type {string}
@@ -372,9 +360,18 @@ export default class ProfileCard extends LightningElement {
             .add({
                 'avonni-profile-card__avatar-img-circle':
                     this._avatarVariant === 'circle',
-                'slds-align_absolute-center': this.isError
+                'slds-align_absolute-center': this.showAvatarFallbackIcon
             })
             .toString();
+    }
+
+    /**
+     * Show avatar fallback icon.
+     *
+     * @type {boolean}
+     */
+    get showAvatarFallbackIcon() {
+        return !this.avatarSrc && !this.initials;
     }
 
     /**
@@ -403,18 +400,11 @@ export default class ProfileCard extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    /**
-     * Set the fallback Icon for the avatar.
-     *
-     * @type {string}
-     */
-    setFallbackIcon() {
-        if (
-            this.avatarFallbackIconName &&
-            (this.avatarFallbackIconName.indexOf('standard') > -1 ||
-                this.avatarFallbackIconName.indexOf('custom') > -1)
-        ) {
-            this.isError = true;
-        }
+    handleImageError(event) {
+        // eslint-disable-next-line no-console
+        console.warn(
+            `Avatar component Image with src="${event.target.src}" failed to load.`
+        );
+        this._avatarSrc = '';
     }
 }

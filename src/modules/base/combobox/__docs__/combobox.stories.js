@@ -1,36 +1,5 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { Combobox } from '../__examples__/combobox';
+import { InfiniteLoadingCombobox } from '../__examples__/infiniteLoadingCombobox';
 import {
     options,
     optionsWithAvatars,
@@ -133,6 +102,18 @@ export default {
                 category: 'Appearance'
             }
         },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of options and then display more when users scroll to the end of the drop-down. Use with the loadmore event handler to retrieve more data.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -167,6 +148,19 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Appearance'
+            }
+        },
+        hideOptionsUntilSearch: {
+            name: 'hide-options-until-search',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the combobox options are hidden until a search value is entered.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Parameters'
             }
         },
         hideSelectedOptions: {
@@ -228,6 +222,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Loading' },
                 category: 'Parameters'
+            }
+        },
+        loadMoreOffset: {
+            name: 'load-more-offset',
+            control: {
+                type: 'number'
+            },
+            description:
+                "Determines when to trigger infinite loading based on how many pixels the drop-down's scroll position is from the bottom of the drop-down.",
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: '20' }
             }
         },
         messageWhenBadInput: {
@@ -460,11 +466,14 @@ export default {
         disabled: false,
         dropdownAlignment: 'left',
         dropdownLength: '7-items',
+        enableInfiniteLoading: false,
         hideClearIcon: false,
+        hideOptionsUntilSearch: false,
         hideSelectedOptions: false,
         isLoading: false,
         isMultiSelect: false,
         loadingStateAlternativeText: 'Loading',
+        loadMoreOffset: 20,
         multiLevelGroups: false,
         readOnly: false,
         removeSelectedOptions: false,
@@ -487,6 +496,7 @@ const search = (props) => {
 };
 
 const Template = (args) => Combobox(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingCombobox(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -508,7 +518,7 @@ ReadOnlyMultiSelect.args = {
     options: options,
     isMultiSelect: true,
     readOnly: true,
-    value: ['no-avatar-dickenson', 'no-avatar-oil-sla']
+    value: ['no-avatar-edge', 'no-avatar-oil-sla']
 };
 
 export const VerticalSelectedOptions = Template.bind({});
@@ -524,11 +534,11 @@ VerticalSelectedOptions.args = {
     value: ['tyrell', 'oil-sla', 'dickenson']
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-    label: 'Loading combobox',
-    options: options,
-    isLoading: true
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    allowSearch: true,
+    label: 'Combobox with infinite loading enabled',
+    enableInfiniteLoading: true
 };
 
 export const MultiSelect = Template.bind({});

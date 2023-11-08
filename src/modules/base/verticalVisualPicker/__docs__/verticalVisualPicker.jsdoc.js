@@ -7,9 +7,17 @@
  * @property {string} imgAlternativeText The assistive text for the image.
  * @property {string} imgSrc The URL of the image. If avatar is present and imgSrc are present, the image is prioritize.
  * @property {string} mediaPosition Sets the position of the avatar or the image if present. Valid values include right and left. The value defaults to left.
+ * @property {object[]} subItems Array of input choice set options.
+ * @property {boolean} subItemsMultiSelect Defines the input choice set is-multi-select attribute.
  * @property {string[]} tags Array of tags.
  * @property {string} title Title of the item.
  * @property {string} value Required. A unique value for the item.
+ */
+/**
+ * @typedef {Object} VerticalVisualPickerSubItem
+ * @name itemsSubItem
+ * @property {string} label Label of the sub item.
+ * @property {string} value Required. A unique value for the sub item.
  */
 /**
  * @typedef {Object} VerticalVisualPickerAvatar
@@ -25,7 +33,7 @@
  */
 /**
  * @typedef {Object} VerticalVisualPickerTag
- * @name itemsTags
+ * @name itemsTag
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */
@@ -144,7 +152,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-vertical-visual-picker-figure-color-border
- * @default #dddbda
+ * @default #c9c9c9
  * @type color
  */
 /**
@@ -188,4 +196,10 @@
  * @name --avonni-vertical-visual-picker-figure-tags-alignment
  * @default left
  * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-sub-items-color-background
+ * @default #f7f9fb
+ * @type color
  */

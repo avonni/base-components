@@ -3,9 +3,7 @@
  * All rights reserved.
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
- */
-
-import { getLocalizationService } from 'c/configProvider';
+ */ import { getLocalizationService } from 'c/configProvider';
 import { isValidISOTimeString } from 'c/iso8601Utils';
 
 export function isBefore(date1, date2, unit) {

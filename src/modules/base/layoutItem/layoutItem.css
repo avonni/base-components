@@ -1,0 +1,8 @@
+:host {
+    padding-left: var(--avonni-layout-item-spacing-inline-start, 0);
+    padding-right: var(--avonni-layout-item-spacing-inline-end, 0);
+    padding-top: var(--avonni-layout-item-spacing-block-start, 0);
+    padding-bottom: var(--avonni-layout-item-spacing-block-end, 0);
+    flex-grow: var(--avonni-layout-item-layout-flex-grow, 0);
+    flex-shrink: var(--avonni-layout-item-layout-flex-shrink, 1);
+}

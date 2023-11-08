@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { api, track } from 'lwc';
 import {
     addToDate,
@@ -124,6 +92,17 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 const cells = lastResource.querySelectorAll(CELL_SELECTOR);
                 cells.forEach((cell) => {
                     cell.classList.remove('avonni-scheduler__border_bottom');
+                });
+            }
+
+            if (this.datatable && this.datatable.scrollerY) {
+                this.datatable.scrollerY.addEventListener('scroll', (event) => {
+                    // When the datatable is scrolled vertically,
+                    // scroll the timeline too
+                    if (this.scheduleWrapper) {
+                        this.scheduleWrapper.scrollTop =
+                            event.currentTarget.scrollTop;
+                    }
                 });
             }
         }
@@ -444,12 +423,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @type {number}
      */
     get scheduleColWidth() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-
-        if (wrapper) {
-            return wrapper.getBoundingClientRect().width;
+        if (this.scheduleWrapper) {
+            return this.scheduleWrapper.getBoundingClientRect().width;
         }
         return 0;
     }
@@ -465,6 +440,12 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();
+    }
+
+    get scheduleWrapper() {
+        return this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
     }
 
     /**
@@ -715,13 +696,10 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        const wrapper = this.template.querySelector(
-            '[data-element-id="div-schedule-wrapper"]'
-        );
-        if (!wrapper) {
+        if (!this.scheduleWrapper) {
             return null;
         }
-        return new AvonniResizeObserver(wrapper, () => {
+        return new AvonniResizeObserver(this.scheduleWrapper, () => {
             this.updateCellWidth();
         });
     }
@@ -937,11 +915,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
             const resourceHeaders = this.template.querySelector(
                 '[data-element-id="div-vertical-resource-headers"]'
             );
-            const scheduleWrapper = this.template.querySelector(
-                '[data-element-id="div-schedule-wrapper"]'
-            );
             const scrollBarWidth =
-                scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
+                this.scheduleWrapper.offsetWidth -
+                this.scheduleWrapper.clientWidth;
             resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
         } else {
             const resourceElements = this.template.querySelectorAll(
@@ -999,6 +975,9 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
      * Update the cells and events of the currently loaded resources.
      */
     updateVisibleResources() {
+        if (!this.smallestHeader) {
+            return;
+        }
         this.visibleComputedResources.forEach((resource) => {
             resource.events = this.getOccurrencesFromResourceName(
                 resource.name
@@ -1214,9 +1193,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
         }
         this.dispatchHidePopovers(['context']);
 
+        const { scrollLeft, scrollTop } = event.currentTarget;
         if (this.isVertical) {
-            const { scrollLeft, scrollTop } = event.currentTarget;
-
             // Create an artificial scroll for the vertical headers
             const verticalHeaders = this.template.querySelector(
                 '[data-element-id="div-vertical-header-wrapper"]'
@@ -1228,6 +1206,8 @@ export default class PrimitiveSchedulerTimeline extends ScheduleBase {
                 '[data-element-id="div-resource-header-cells"]'
             );
             resourceHeaders.scrollLeft = scrollLeft;
+        } else if (this.datatable) {
+            this.datatable.scrollToTop(scrollTop);
         }
     }
 }

@@ -31,7 +31,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-item-color-border
- * @default #e5e5e5
+ * @default #c9c9c9
  * @type color
  */
 /**
@@ -202,13 +202,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-color-border-hover
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -226,13 +226,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-shaded-color-border
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-inactive-indicator-shaded-color-border-hover
- * @default #dddbda
+ * @default #747474
  * @type color
  */
 /**
@@ -256,7 +256,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -286,7 +286,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border-hover
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -298,7 +298,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-button-color-border-disabled
- * @default #c9c9c9
+ * @default #747474
  * @type color
  */
 /**
@@ -311,5 +311,137 @@
  * @memberof stylingHooks
  * @name --avonni-carousel-navigation-icon-color-disabled
  * @default #c9c9c9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-background
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-background-hover
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-border-hover
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-background-active
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-text-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-bare-color-border-active
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-background
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-border
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-background-hover
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-border-hover
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-background-active
+ * @default #f3f3f3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-text-color-active
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-action-neutral-color-border-active
+ * @default #747474
  * @type color
  */

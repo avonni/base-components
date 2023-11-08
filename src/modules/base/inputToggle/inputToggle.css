@@ -1,51 +1,20 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 .faux_x-small {
-    height: 0.75rem;
-    width: 1.5rem;
+    height: 0.75rem !important;
+    width: 1.5rem !important;
 }
+
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_x-small {
     margin-top: 0.45rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_x-small::before,
+.label input:checked+.slds-checkbox_faux_container .faux_x-small::before,
 .label .slds-checkbox_faux_container .faux_x-small::after {
     height: 0.5rem;
     width: 0.5rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_x-small::after {
+.label input:checked+.slds-checkbox_faux_container .faux_x-small::after {
     height: 0.45rem;
     width: 0.3rem;
     left: 0.2rem;
@@ -53,21 +22,22 @@ label.slds-grid .faux_x-small {
 }
 
 .faux_small {
-    height: 1rem;
-    width: 2rem;
+    height: 1rem !important;
+    width: 2rem !important;
 }
+
 /* Align vertically toggle when label is inline */
 label.slds-grid .faux_small {
     margin-top: 0.3rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_small::before,
+.label input:checked+.slds-checkbox_faux_container .faux_small::before,
 .label .slds-checkbox_faux_container .faux_small::after {
     height: 0.75rem;
     width: 0.75rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_small::after {
+.label input:checked+.slds-checkbox_faux_container .faux_small::after {
     height: 0.55rem;
     width: 0.4rem;
     left: 0.3rem;
@@ -75,24 +45,24 @@ label.slds-grid .faux_small {
 }
 
 .faux_large {
-    height: 1.75rem;
-    width: 3.5rem;
+    height: 1.75rem !important;
+    width: 3.5rem !important;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_large::before,
+.label input:checked+.slds-checkbox_faux_container .faux_large::before,
 .label .slds-checkbox_faux_container .faux_large::after {
     height: 1.5rem;
     width: 1.5rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_large::after {
+.label input:checked+.slds-checkbox_faux_container .faux_large::after {
     height: 1rem;
     width: 0.6rem;
     left: 0.6rem;
     top: 0.1rem;
 }
 
-.label input:checked + .slds-checkbox_faux_container .faux_hide-mark::after {
+.label input:checked+.slds-checkbox_faux_container .faux_hide-mark::after {
     display: none;
 }
 

@@ -1,35 +1,3 @@
-/**
- * BSD 3-Clause License
- *
- * Copyright (c) 2021, Avonni Labs, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * - Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * - Neither the name of the copyright holder nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
 import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
@@ -106,19 +74,29 @@ describe('Horizontal Activity Timeline', () => {
     // minDate and maxDate : first and last elements of sortedItems
     it('Horizontal Activity Timeline: minDate and maxDate', () => {
         const defaultFormat = 'dd/MM/yyyy';
-        expect(element.convertDateToFormat(element.minDate, defaultFormat)).toBe('01/01/2022');
-        expect(element.convertDateToFormat(element.maxDate, defaultFormat)).toBe('14/03/2022');
+        expect(
+            element.convertDateToFormat(element.minDate, defaultFormat)
+        ).toBe('01/01/2022');
+        expect(
+            element.convertDateToFormat(element.maxDate, defaultFormat)
+        ).toBe('14/03/2022');
     });
 
     // scrollAxisMaxDate (15 days after maxDate) and scrollAxisMinDate (15 days before minDate)
     it('Horizontal Activity Timeline: scrollAxisMaxDate and scrollAxisMinDate', () => {
         const defaultFormat = 'dd/MM/yyyy';
-        expect(element.convertDateToFormat(element.scrollAxisMinDate, defaultFormat)).toBe(
-            '17/12/2021'
-        );
-        expect(element.convertDateToFormat(element.scrollAxisMaxDate, defaultFormat)).toBe(
-            '29/03/2022'
-        );
+        expect(
+            element.convertDateToFormat(
+                element.scrollAxisMinDate,
+                defaultFormat
+            )
+        ).toBe('17/12/2021');
+        expect(
+            element.convertDateToFormat(
+                element.scrollAxisMaxDate,
+                defaultFormat
+            )
+        ).toBe('29/03/2022');
     });
 
     /* ----- METHODS ----- */
@@ -217,39 +195,39 @@ describe('Horizontal Activity Timeline', () => {
         const invalidDateItems = [
             {
                 name: 'item1',
-                datetimeValue: '13/01/2022 11:30',  // invalid month
+                datetimeValue: '13/01/2022 11:30' // invalid month
             },
             {
                 name: 'item2',
-                datetimeValue: 'Not a date',        // no date
+                datetimeValue: 'Not a date' // no date
             },
             {
                 name: 'item3',
-                datetimeValue: '',                  // empty input
+                datetimeValue: '' // empty input
             },
             {
                 name: 'item4',
-                datetimeValue: '01/32/2022 11:30',  // invalid day
+                datetimeValue: '01/32/2022 11:30' // invalid day
             },
             {
                 name: 'item5',
-                datetimeValue: '01/01/-122',        // invalid  year
+                datetimeValue: '01/01/-122' // invalid  year
             },
             {
                 name: 'item6',
-                datetimeValue: '01/01/2000 40:02',  // invalid time
+                datetimeValue: '01/01/2000 40:02' // invalid time
             },
             {
                 name: 'item7',
-                datetimeValue: null,                // null
+                datetimeValue: null // null
             },
             {
-                name: 'item8',                      // no date
+                name: 'item8' // no date
             },
             {
                 name: 'item9',
-                datetimeValue: undefined,           // undefined
-            },
+                datetimeValue: undefined // undefined
+            }
         ];
         element.addValidItemsToData(invalidDateItems);
         expect(element._sortedItems.length).toBe(0);

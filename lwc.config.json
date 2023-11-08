@@ -43,6 +43,10 @@
             "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
+            "name": "c/primitiveActions",
+            "path": "src/modules/base/primitiveActions/primitiveActions.js"
+        },
+        {
             "name": "c/primitiveActivityTimelineItem",
             "path": "src/modules/base/primitiveActivityTimelineItem/primitiveActivityTimelineItem.js"
         },
@@ -171,6 +175,10 @@
             "path": "src/modules/base/filterMenu/filterMenu.js"
         },
         {
+            "name": "c/focusTrap",
+            "path": "src/modules/base/focusTrap/focusTrap.js"
+        },
+        {
             "name": "c/externalLink",
             "path": "src/modules/base/externalLink/externalLink.js"
         },
@@ -207,6 +215,10 @@
             "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
         {
+            "name": "c/inputField",
+            "path": "src/modules/base/inputField/inputField.js"
+        },
+        {
             "name": "c/inputPen",
             "path": "src/modules/base/inputPen/inputPen.js"
         },
@@ -217,6 +229,18 @@
         {
             "name": "c/inputToggle",
             "path": "src/modules/base/inputToggle/inputToggle.js"
+        },
+        {
+            "name": "c/kanban",
+            "path": "src/modules/base/kanban/kanban.js"
+        },
+        {
+            "name": "c/layout",
+            "path": "src/modules/base/layout/layout.js"
+        },
+        {
+            "name": "c/layoutItem",
+            "path": "src/modules/base/layoutItem/layoutItem.js"
         },
         {
             "name": "c/link",
@@ -335,6 +359,14 @@
             "path": "src/modules/base/primitiveCellLookup/primitiveCellLookup.js"
         },
         {
+            "name": "c/primitiveCellNameLookup",
+            "path": "src/modules/base/primitiveCellNameLookup/primitiveCellNameLookup.js"
+        },
+        {
+            "name": "c/primitiveCellPercentFormatted",
+            "path": "src/modules/base/primitiveCellPercentFormatted/primitiveCellPercentFormatted.js"
+        },
+        {
             "name": "c/primitiveCellProgressBar",
             "path": "src/modules/base/primitiveCellProgressBar/primitiveCellProgressBar.js"
         },
@@ -343,16 +375,12 @@
             "path": "src/modules/base/primitiveCellProgressCircle/primitiveCellProgressCircle.js"
         },
         {
-            "name": "c/primitiveCellRichText",
-            "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
-        },
-        {
-            "name": "c/primitiveCellToggle",
-            "path": "src/modules/base/primitiveCellToggle/primitiveCellToggle.js"
-        },
-        {
             "name": "c/primitiveCellRating",
             "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
+        },
+        {
+            "name": "c/primitiveCellRichText",
+            "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
         },
         {
             "name": "c/primitiveCellSlider",
@@ -361,6 +389,14 @@
         {
             "name": "c/primitiveCellTextarea",
             "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
+        },
+        {
+            "name": "c/primitiveCellToggle",
+            "path": "src/modules/base/primitiveCellToggle/primitiveCellToggle.js"
+        },
+        {
+            "name": "c/primitiveCellUtils",
+            "path": "src/modules/base/primitiveCellUtils/primitiveCellUtils.js"
         },
         {
             "name": "c/primitiveChip",
@@ -471,6 +507,10 @@
             "path": "src/modules/base/primitiveTreeItem/primitiveTreeItem.js"
         },
         {
+            "name": "c/primitiveVisualPickerHeader",
+            "path": "src/modules/base/primitiveVisualPickerHeader/primitiveVisualPickerHeader.js"
+        },
+        {
             "name": "c/primitiveVisualPickerTitle",
             "path": "src/modules/base/primitiveVisualPickerTitle/primitiveVisualPickerTitle.js"
         },
@@ -509,6 +549,10 @@
         {
             "name": "c/range",
             "path": "src/modules/base/range/range.js"
+        },
+        {
+            "name": "c/recordEditForm",
+            "path": "src/modules/base/recordEditForm/recordEditForm.js"
         },
         {
             "name": "c/slider",
@@ -779,6 +823,10 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "avonni/kanban",
+            "path": "src/modules/base/kanban/kanban.js"
+        },
+        {
             "name": "avonni/list",
             "path": "src/modules/base/list/list.js"
         },
@@ -989,6 +1037,9 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
+        "avonni/kanban",
+        "avonni/layout",
+        "avonni/layoutItem",
         "avonni/list",
         "avonni/map",
         "avonni/mediaObject",

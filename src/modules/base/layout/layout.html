@@ -1,0 +1,10 @@
+<template>
+    <div
+        class={wrapperClass}
+        data-element-id="div-wrapper"
+        onprivatelayoutitemconnected={handleItemConnected}
+        onprivatelayoutitemdisconnected={handleItemDisconnected}
+    >
+        <slot class="avonni-layout__slot"></slot>
+    </div>
+</template>

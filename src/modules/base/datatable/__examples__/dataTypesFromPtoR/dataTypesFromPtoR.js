@@ -9,6 +9,12 @@ export default class DataTypesFromPtoR extends LightningElement {
             editable: true
         },
         {
+            label: 'Percent Formatted',
+            fieldName: 'percentFormatted',
+            type: 'percent-formatted',
+            editable: true
+        },
+        {
             label: 'Phone',
             fieldName: 'phone',
             type: 'phone',
@@ -72,7 +78,8 @@ export default class DataTypesFromPtoR extends LightningElement {
             fieldName: 'richText',
             type: 'rich-text',
             typeAttributes: {
-                disabled: { fieldName: 'richTextDisabled' }
+                disabled: { fieldName: 'richTextDisabled' },
+                formats: { fieldName: 'richTextFormats' }
             },
             editable: true,
             initialWidth: 275
@@ -83,6 +90,7 @@ export default class DataTypesFromPtoR extends LightningElement {
         {
             id: 1,
             percent: 0.34,
+            percentFormatted: 34,
             phone: '5142223333',
             progress: 0.34,
             progressBarReferenceLines: [
@@ -105,6 +113,7 @@ export default class DataTypesFromPtoR extends LightningElement {
         {
             id: 2,
             percent: 0.45,
+            percentFormatted: 45,
             phone: '5144546767',
             progress: 1,
             progressBarTheme: 'success',
@@ -117,7 +126,8 @@ export default class DataTypesFromPtoR extends LightningElement {
         },
         {
             id: 3,
-            percent: 0.67,
+            percent: 0.6754638,
+            percentFormatted: 67.54638,
             phone: '6785643214',
             progress: 0.43,
             qrcode: 'https://www.avonni.app/',
@@ -129,17 +139,20 @@ export default class DataTypesFromPtoR extends LightningElement {
         {
             id: 4,
             percent: 4,
+            percentFormatted: 400,
             phone: '3547789900',
             progress: 0.05,
             progressBarTheme: 'info',
             progressRingVariant: 'expired',
             qrcode: 'https://www.avonni.app/',
             rating: '5',
-            richText: '<h4 style="text-align: center">With Value Centered</h4>'
+            richText: '<h4 style="text-align: center">With Value Centered</h4>',
+            richTextFormats: ['font']
         },
         {
             id: 5,
             percent: 0.05,
+            percentFormatted: 5,
             phone: '5143245564',
             progress: 0.66,
             progressBarTheme: 'alt-inverse',
