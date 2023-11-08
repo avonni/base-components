@@ -183,7 +183,7 @@ export default class Datatable extends LightningDatatable {
         },
         lookup: {
             template: lookup,
-            typeAttributes: ['linkify', 'objectApiName', 'relatedObjectApiName']
+            typeAttributes: ['name', 'objectApiName', 'path']
         },
         'name-lookup': {
             template: nameLookup,

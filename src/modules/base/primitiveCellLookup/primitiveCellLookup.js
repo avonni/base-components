@@ -5,10 +5,11 @@ export default class PrimitiveCellLookup extends LightningElement {
     @api colKeyValue;
     @api linkify;
     @api objectApiName;
-    @api relatedObjectApiName;
+    @api path;
     @api rowKeyValue;
 
     _index;
+    _name;
     _value;
     _wrapText;
 
@@ -21,6 +22,14 @@ export default class PrimitiveCellLookup extends LightningElement {
             this.toggleInlineEdit();
         });
         this.dispatchStateAndColumnsEvent();
+    }
+
+    @api
+    get name() {
+        return this._name;
+    }
+    set name(value) {
+        this._name = value;
     }
 
     @api
@@ -37,28 +46,6 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
     set wrapText(value) {
         this._wrapText = value;
-    }
-
-    get computedFieldName() {
-        return this.hasDirtyValue || !this.linkify ? 'Name' : this.fieldName;
-    }
-
-    get computedObjectApiName() {
-        return this.hasDirtyValue || !this.linkify
-            ? this.relatedObjectApiName
-            : this.objectApiName;
-    }
-
-    get computedRecordId() {
-        if (this.hasDirtyValue) {
-            const recordDirtyValues =
-                this.state.inlineEdit.dirtyValues[this.rowKeyValue];
-            return recordDirtyValues[this.colKeyValue];
-        }
-        if (this.linkify) {
-            return this.rowKeyValue;
-        }
-        return this.value;
     }
 
     get computedWrapTextClass() {
@@ -80,13 +67,15 @@ export default class PrimitiveCellLookup extends LightningElement {
     }
 
     get hasDirtyValue() {
-        const recordDirtyValues =
-            this.state.inlineEdit.dirtyValues[this.rowKeyValue];
         return (
-            recordDirtyValues &&
-            typeof recordDirtyValues === 'object' &&
-            Object.keys(recordDirtyValues).includes(this.colKeyValue)
+            this.recordDirtyValues &&
+            typeof this.recordDirtyValues === 'object' &&
+            Object.keys(this.recordDirtyValues).includes(this.colKeyValue)
         );
+    }
+
+    get recordDirtyValues() {
+        return this.state.inlineEdit.dirtyValues[this.rowKeyValue];
     }
 
     /**
@@ -96,6 +85,10 @@ export default class PrimitiveCellLookup extends LightningElement {
      */
     get showEditButton() {
         return this.editable;
+    }
+
+    get showLink() {
+        return this.path && this.name && !this.hasDirtyValue;
     }
 
     /*----------- Inline Editing Functions -------------*/
@@ -120,6 +113,31 @@ export default class PrimitiveCellLookup extends LightningElement {
         this.state = state;
         const index = state.headerIndexes[this.colKeyValue];
         this.editable = isEditable(this.state, index, columns);
+    }
+
+    setName(name) {
+        this._name = name;
+    }
+
+    handleChange(event) {
+        if (!this.hasDirtyValue) {
+            return;
+        }
+        event.stopPropagation();
+
+        this.dispatchEvent(
+            new CustomEvent('cellchangecustom', {
+                detail: {
+                    dirtyValue: this.recordDirtyValues[this.colKeyValue],
+                    draftValues: event.detail.draftValues,
+                    callbacks: {
+                        setLookupName: this.setName.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     // Handles the edit button click and dispatches the event.

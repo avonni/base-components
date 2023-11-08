@@ -306,10 +306,11 @@ const columnsDO = [
     {
         label: 'Lookup',
         type: 'lookup',
-        fieldName: 'lookup',
+        fieldName: 'email',
         editable: true,
         typeAttributes: {
-            path: { fieldName: 'email' }
+            name: { fieldName: 'lookup' },
+            path: 'https://www.avonni.app/'
         }
     },
     {

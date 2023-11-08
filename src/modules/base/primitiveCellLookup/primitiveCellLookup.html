@@ -12,6 +12,7 @@
             object-api-name={objectApiName}
             row-key-value={state.inlineEdit.rowKeyValue}
             visible={state.inlineEdit.panelVisible}
+            oncellchangecustom={handleChange}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -21,20 +22,14 @@
                 slds-grid_align-spread slds-grid_vertical-align-center
             "
         >
-            <c-record-view-form
-                if:true={computedRecordId}
-                record-id={computedRecordId}
-                object-api-name={computedObjectApiName}
-            >
-                <span class={computedWrapTextClass}>
-                    <c-output-field
-                        field-name={computedFieldName}
-                        variant="label-hidden"
-                    >
-                    </c-output-field>
-                </span>
-            </c-record-view-form>
-            <div if:false={computedRecordId}></div>
+            <span class={computedWrapTextClass}>
+                <lightning-formatted-url
+                    if:true={showLink}
+                    value={path}
+                    label={name}
+                ></lightning-formatted-url>
+                <span if:false={showLink}>{name}</span>
+            </span>
             <c-primitive-cell-editable-button
                 if:true={showEditButton}
                 onclick={handleEditButtonClick}

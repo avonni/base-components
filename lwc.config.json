@@ -283,10 +283,6 @@
             "path": "src/modules/base/outputData/outputData.js"
         },
         {
-            "name": "c/outputField",
-            "path": "src/modules/base/outputField/outputField.js"
-        },
-        {
             "name": "c/pageHeader",
             "path": "src/modules/base/pageHeader/pageHeader.js"
         },
@@ -553,10 +549,6 @@
         {
             "name": "c/range",
             "path": "src/modules/base/range/range.js"
-        },
-        {
-            "name": "c/recordViewForm",
-            "path": "src/modules/base/recordViewForm/recordViewForm.js"
         },
         {
             "name": "c/recordEditForm",
