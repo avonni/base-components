@@ -1338,6 +1338,7 @@ export default class DateTimePicker extends LightningElement {
      * Handles the onchange event of the lightning-input to change the date.
      */
     handleDateChange(event) {
+        event.stopPropagation();
         const value = event.detail.value;
         if (!value || typeof value !== 'string') {
             // Prevent unselection of a date
