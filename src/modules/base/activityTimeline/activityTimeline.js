@@ -3,6 +3,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
 import horizontalTimeline from './horizontalActivityTimeline.html';
 import verticalTimeline from './verticalActivityTimeline.html';
+import { classSet } from 'c/utils';
 import {
     deepCopy,
     normalizeArray,
@@ -40,6 +41,7 @@ const DEFAULT_FIELD_COLUMNS = {
 const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
 
 const FIELD_VARIANTS = {
@@ -91,14 +93,14 @@ export default class ActivityTimeline extends LightningElement {
     @api title;
 
     /**
-     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.
+     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @public
      */
     @api buttonShowLessIconName;
 
     /**
-     * Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is supported only for the vertical orientation.
+     * Label of the button that appears when all items are displayed and max-visible-items value is set. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default Show less
      * @public
@@ -106,14 +108,14 @@ export default class ActivityTimeline extends LightningElement {
     @api buttonShowLessLabel = DEFAULT_BUTTON_SHOW_LESS_LABEL;
 
     /**
-     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is supported only for the vertical orientation.
+     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @public
      */
     @api buttonShowMoreIconName;
 
     /**
-     * Label of the button that appears when the number of item exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.
+     * Label of the button that appears when the number of item exceeds the max-visible-items number. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default Show more
      * @public
@@ -134,6 +136,7 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _enableInfiniteLoading = false;
     _fieldAttributes = {
         cols: DEFAULT_FIELD_COLUMNS.default,
         largeContainerCols: DEFAULT_FIELD_COLUMNS.large,
@@ -144,9 +147,11 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _hideItemDate = false;
     _iconSize = ICON_SIZES.default;
+    _isLoading = false;
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _items = [];
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
@@ -185,6 +190,9 @@ export default class ActivityTimeline extends LightningElement {
         if (this.isTimelineHorizontal) {
             this.renderedCallbackHorizontalTimeline();
         }
+
+        // Check if the end of the timeline has been reached
+        this.handleScroll();
     }
 
     renderedCallbackHorizontalTimeline() {
@@ -229,7 +237,7 @@ export default class ActivityTimeline extends LightningElement {
      */
 
     /**
-     * Array of action objects. The actions are displayed at the top right of each item. This attribute is supported only for the vertical orientation.
+     * Array of action objects. The actions are displayed at the top right of each item. This attribute is only supported for the vertical orientation.
      *
      * @public
      * @type {object[]}
@@ -244,7 +252,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show less button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.
+     * Position of the show less button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -262,7 +270,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show more button’s icon. Valid values include left and right. This attribute is supported only for the vertical orientation.
+     * Position of the show more button’s icon. Valid values include left and right. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default left
      * @public
@@ -280,7 +288,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Variant of the button that appears when the number of items exceeds the max-visible-items number. This attribute is supported only for the vertical orientation.
+     * Variant of the button that appears when the number of items exceeds the `max-visible-items` number. This attribute is only supported for the vertical orientation.
      * @type {string}
      * @default neutral
      * @public
@@ -298,7 +306,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the group sections are closed by default. This attribute is supported only for the vertical orientation.
+     * If present, the group sections are closed by default. This attribute is only supported for the vertical orientation.
      *
      * @public
      * @type {boolean}
@@ -314,7 +322,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the section is collapsible and the collapse icon is visible. This attribute is supported only for the vertical orientation.
+     * If present, the section is collapsible and the collapse icon is visible. This attribute is only supported for the vertical orientation with grouped items.
      *
      * @public
      * @type {boolean}
@@ -327,6 +335,23 @@ export default class ActivityTimeline extends LightningElement {
 
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, you can load a subset of items and then display more when users scroll to the end of the timeline. Use with the `loadmore` event to retrieve more items.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+        this.handleScroll();
     }
 
     /**
@@ -428,6 +453,22 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, a spinner is shown to indicate that more items are loading.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = value;
+    }
+
+    /**
      * The date format to use for each item. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format.
      * If you want to insert text in the label, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
@@ -448,7 +489,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large. This attribute is supported only for the vertical orientation.
+     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large. This attribute is only supported for the vertical orientation.
      *
      * @public
      * @type {string}
@@ -490,7 +531,24 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Determines when to trigger infinite loading based on how many pixels the timeline's scroll position is from the bottom of the timeline.
+     *
+     * @type {number}
+     * @default 20
+     * @public
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+
+    set loadMoreOffset(value) {
+        this._loadMoreOffset = parseInt(value, 10);
+    }
+
+    /**
      * The maximum number of visible items to display
+     *
      * @type {number}
      * @public
      */
@@ -539,7 +597,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Specifies the sorting direction.  Valid values include asc and desc.
+     * Specifies the sorting direction. Valid values include asc and desc.
      * This attribute is only supported for the vertical orientation.
      *
      * @public
@@ -632,15 +690,6 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Verify if dates exist.
-     *
-     * @type {boolean}
-     */
-    get hasDates() {
-        return this.orderedDates.length > 0;
-    }
-
-    /**
      * Assign header by title or icon-name.
      *
      * @type {boolean}
@@ -676,6 +725,18 @@ export default class ActivityTimeline extends LightningElement {
      */
     get isTimelineHorizontal() {
         return this.orientation === 'horizontal';
+    }
+
+    /**
+     * Computed CSS classes of the loading spinner.
+     *
+     * @type {string}
+     */
+    get loadingSpinnerClass() {
+        return classSet({
+            'slds-is-relative avonni-activity-timeline__spinner':
+                this.items.length
+        }).toString();
     }
 
     /**
@@ -980,6 +1041,33 @@ export default class ActivityTimeline extends LightningElement {
                 detail: { name }
             })
         );
+    }
+
+    /**
+     * Handle a scroll of the vertical timeline.
+     */
+    handleScroll() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-timeline-wrapper"]'
+        );
+        if (!this.enableInfiniteLoading || this.isLoading || !wrapper) {
+            return;
+        }
+
+        const { scrollTop, scrollHeight, clientHeight } = wrapper;
+        const offsetFromBottom = scrollHeight - scrollTop - clientHeight;
+        const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
+
+        if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
+            /**
+             * The event fired when you scroll to the end of the timeline. This event is fired only if `enable-infinite-loading` is true.
+             *
+             * @event
+             * @name loadmore
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('loadmore'));
+        }
     }
 
     /**

@@ -16,12 +16,15 @@ export const ActivityTimeline = ({
     buttonShowLessLabel,
     closed,
     collapsible,
+    enableInfiniteLoading,
     fieldAttributes,
     itemDateFormat,
     iconName,
     iconSize,
+    isLoading,
     itemIconSize,
     items,
+    loadMoreOffset,
     hideItemDate,
     groupBy,
     orientation,
@@ -41,13 +44,16 @@ export const ActivityTimeline = ({
     element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
+    element.enableInfiniteLoading = enableInfiniteLoading;
     element.fieldAttributes = fieldAttributes;
     element.itemDateFormat = itemDateFormat;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.iconSize = iconSize;
+    element.isLoading = isLoading;
     element.itemIconSize = itemIconSize;
     element.items = items;
+    element.loadMoreOffset = loadMoreOffset;
     element.orientation = orientation;
     element.hideItemDate = hideItemDate;
     element.maxVisibleItems = maxVisibleItems;
