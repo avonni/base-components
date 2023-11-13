@@ -35,6 +35,7 @@
     border-width: var(--avonni-alert-sizing-border, 1px);
     border-style: var(--avonni-alert-styling-border, solid);
     border-color: var(--avonni-alert-color-border, transparent);
+    border-radius: var(--avonni-alert-radius-border, 0);
 }
 
 .avonni-alert__content-container {

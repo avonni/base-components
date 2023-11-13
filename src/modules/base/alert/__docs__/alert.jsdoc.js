@@ -231,3 +231,9 @@
  * @default solid
  * @type styling
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-radius-border
+ * @default 0
+ * @type styling
+ */
