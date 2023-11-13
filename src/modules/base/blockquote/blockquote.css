@@ -61,23 +61,46 @@
 }
 
 blockquote.avonni-blockquote__container {
-    font-size: 1rem;
-    font-weight: 300;
+    font-size: var(--avonni-blockquote-container-font-size, 1rem);
+    font-weight: var(--avonni-blockquote-container-font-weight, 300);
+    font-family: var(
+        --avonni-blockquote-container-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
+    font-style: var(--avonni-blockquote-container-font-style, normal);
     padding: 1rem;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 0 0;
     border: 1px solid var(--avonni-blockquote-color-border, #f2f2f2);
     border-left-width: 0.125rem;
     height: var(--avonni-blockquote-sizing-height);
     width: var(--avonni-blockquote-sizing-width);
     overflow: var(--avonni-blockquote-sizing-overflow);
     border-radius: var(--avonni-blockquote-radius-border);
+    line-height: var(
+        --avonni-blockquote-container-line-height,
+        var(--lwc-lineHeightHeading, 1.25)
+    );
+    letter-spacing: var(--avonni-blockquote-container-letter-spacing);
 }
 
 blockquote.avonni-blockquote__container .avonni-blockquote__title {
     margin-bottom: 0;
     font-weight: var(--avonni-blockquote-title-font-weight, 600);
+    font-family: var(
+        --avonni-blockquote-title-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-size: var(--avonni-blockquote-title-font-size, 1rem);
     font-style: var(--avonni-blockquote-title-font-style, normal);
+    line-height: var(
+        --avonni-blockquote-title-line-height,
+        var(--lwc-lineHeightHeading, 1.25)
+    );
+    letter-spacing: var(--avonni-blockquote-title-letter-spacing);
 }
 
 .avonni-blockquote__theme-default.avonni-blockquote__container

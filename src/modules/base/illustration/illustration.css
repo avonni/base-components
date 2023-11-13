@@ -1,6 +1,35 @@
 .avonni-illustration__title {
     color: var(--avonni-illustration-title-text-color, #181818);
     font-size: var(--avonni-illustration-title-font-size, 1.25rem);
+    font-family: var(
+        --avonni-illustration-title-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-weight: var(--avonni-illustration-title-font-weight, 400);
     font-style: var(--avonni-illustration-title-font-style, normal);
+    line-height: var(
+        --avonni-illustration-title-line-height,
+        var(--lwc-lineHeightHeading, 1.25)
+    );
+    letter-spacing: var(--avonni-illustration-title-letter-spacing);
+}
+
+.avonni-illustration__content {
+    color: var(--avonni-illustration-content-text-color, #181818);
+    font-size: var(--avonni-illustration-content-font-size, 1.25rem);
+    font-family: var(
+        --avonni-illustration-content-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
+    font-weight: var(--avonni-illustration-content-font-weight, 400);
+    font-style: var(--avonni-illustration-content-font-style, normal);
+    line-height: var(
+        --avonni-illustration-content-line-height,
+        var(--lwc-lineHeightHeading, 1.25)
+    );
+    letter-spacing: var(--avonni-illustration-content-letter-spacing);
 }

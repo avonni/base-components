@@ -244,6 +244,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-blockquote-title-font-family
+ * @default SalesforceSans
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-blockquote-title-font-weight
  * @default 600
  * @type font
@@ -259,4 +265,50 @@
  * @name --avonni-blockquote-title-font-style
  * @default normal
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-title-line-height
+ * @default 1.25rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-title-letter-spacing
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-font-family
+ * @default SalesforceSans
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-font-weight
+ * @default 600
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-font-size
+ * @default 1rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-line-height
+ * @default 1.25rem
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-blockquote-container-letter-spacing
+ * @type sizing
  */
