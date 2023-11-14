@@ -714,11 +714,11 @@ export default class VisualPicker extends LightningElement {
             );
             const computedBodyClass = this.computeBodyClass(imgIsBackground);
             const computedBodyContentTopClass =
-                this.computeVisualPickerItemsClass(imgIsTop);
+                this.computeVisualPickerItemsClass(imgIsTop, false);
             const computedBodyContentCenterClass =
-                this.computeVisualPickerItemsClass(imgIsCenter);
+                this.computeVisualPickerItemsClass(imgIsCenter, hasFields);
             const computedBodyContentBottomClass =
-                this.computeVisualPickerItemsClass(imgIsBottom);
+                this.computeVisualPickerItemsClass(imgIsBottom, false);
 
             const hasBodyContent =
                 displayTitle ||
@@ -1178,19 +1178,22 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute visual picker items class styling based on size attributes and presence of image.
+     * Compute visual picker items class styling based on size attributes and presence of image and fields.
      *
      * @param {boolean} hasImg
+     * @param {boolean} hasFields
      * @type {string}
      */
-    computeVisualPickerItemsClass(hasImg) {
+    computeVisualPickerItemsClass(hasImg, hasFields) {
         return classSet('slds-has-flexi-truncate')
             .add({
                 'avonni-visual-picker__items':
                     this.size !== 'responsive' ||
                     (this.size === 'responsive' && !hasImg),
                 'avonni-visual-picker__items_responsive_image':
-                    this.size === 'responsive' && hasImg
+                    this.size === 'responsive' && hasImg,
+                'avonni-visual-picker__items_responsive_image-fields':
+                    this.size === 'responsive' && hasImg && hasFields
             })
             .toString();
     }
