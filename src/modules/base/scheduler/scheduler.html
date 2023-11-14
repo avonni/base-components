@@ -367,6 +367,7 @@
                 <div class="slds-grid slds-wrap slds-gutters_x-small">
                     <template for:each={detailPopoverFields} for:item="field">
                         <div
+                            if:false={field.isHidden}
                             key={field.key}
                             class="
                                 slds-col

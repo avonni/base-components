@@ -2223,8 +2223,10 @@ export default class Scheduler extends LightningElement {
 
             this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
                 const { type, label, variant } = field;
+                const { allDay } = this.selection.event;
                 const eventData = this.selection.event.data;
                 const occurrenceData = this.selection.occurrence;
+                let isHidden = false;
                 let value =
                     occurrenceData[field.value] || eventData[field.value];
 
@@ -2233,7 +2235,13 @@ export default class Scheduler extends LightningElement {
                     field.value === 'resourceNames' && Array.isArray(value);
                 if (isDate) {
                     value = this.createDate(value);
-                    value = value.toFormat(this.dateFormat);
+                    const format = allDay ? 'DD' : this.dateFormat;
+                    value = value.toFormat(format);
+                    isHidden =
+                        field.value === 'to' &&
+                        allDay &&
+                        occurrenceData.endOfTo.ts ===
+                            occurrenceData.from.endOf('day').ts;
                 } else if (isResources) {
                     value = value
                         .map((res) => {
@@ -2249,6 +2257,7 @@ export default class Scheduler extends LightningElement {
 
                 return {
                     key: generateUUID(),
+                    isHidden,
                     label,
                     type: isDate ? 'text' : type,
                     value,
