@@ -66,7 +66,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-profile-card-header-color-border-bottom
- * @default #747474
+ * @default #c9c9c9
  * @type color
  */
 /**
@@ -168,7 +168,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-profile-card-color-border
- * @default #747474
+ * @default #c9c9c9
  * @type color
  */
 /**

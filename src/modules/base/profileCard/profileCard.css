@@ -7,9 +7,11 @@ article.avonni-profile-card {
     padding-bottom: var(--avonni-profile-card-spacing-block-end, 0px);
     border-width: var(--avonni-profile-card-sizing-border, 1px);
     border-style: var(--avonni-profile-card-styling-border, solid);
-    border-color: var(--avonni-profile-card-color-border, #747474);
+    border-color: var(
+        --avonni-profile-card-color-border,
+        var(--slds-g-color-border-base-1, #c9c9c9)
+    );
     border-radius: var(--avonni-profile-card-radius-border, 0.25rem);
-
     box-shadow: var(--avonni-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
@@ -36,7 +38,7 @@ article.avonni-profile-card {
     );
     border-bottom-color: var(
         --avonni-profile-card-header-color-border-bottom,
-        #747474
+        var(--slds-g-color-border-base-1, #c9c9c9)
     );
     width: 100%;
     flex: 1 1 auto;
