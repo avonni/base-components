@@ -720,6 +720,13 @@ export default class VisualPicker extends LightningElement {
             const computedBodyContentBottomClass =
                 this.computeVisualPickerItemsClass(imgIsBottom);
 
+            const hasBodyContent =
+                displayTitle ||
+                displayDescription ||
+                displayAvatar ||
+                hasTags ||
+                hasFields;
+
             return {
                 key,
                 itemTitle,
@@ -758,6 +765,7 @@ export default class VisualPicker extends LightningElement {
                 tags,
                 hasHiddenTags,
                 hasTags,
+                hasBodyContent,
                 layoutIsHorizontal,
                 computedBodyLayoutStyle,
                 computedImageLayoutStyle,

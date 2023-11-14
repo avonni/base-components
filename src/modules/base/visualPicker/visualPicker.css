@@ -87,6 +87,8 @@
 }
 
 .avonni-visual-picker__figure-image-background
+    .avonni-visual-picker__figure-body-container,
+.avonni-visual-picker__figure-image-overlay
     .avonni-visual-picker__figure-body-container {
     position: absolute;
     left: 0;
@@ -108,24 +110,8 @@
 
 .avonni-visual-picker__figure-image-overlay
     .avonni-visual-picker__figure-body-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: var(
-        --avonni-visual-picker-overlay-background,
-        linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.7) 0%,
-            rgba(0, 0, 0, 0.55) 75%,
-            rgba(0, 0, 0, 0) 100%
-        )
-    );
-    margin: 0 0.3rem 0.3rem 0.3rem;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-    height: fit-content;
-    max-height: 100%;
 }
 
 .avonni-visual-picker__figure-image-overlay:hover
