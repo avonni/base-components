@@ -808,7 +808,7 @@ describe('Scheduler', () => {
 
     // events-display-fields
     it('Scheduler: eventsDisplayFields', () => {
-        element.dateFormat = 'dd/LL/yyyy';
+        element.dateFormat = 'dd, LL yyyy, TT';
         element.resources = RESOURCES;
         element.selectedResources = [RESOURCES[0].name];
         element.events = [
@@ -818,13 +818,6 @@ describe('Scheduler', () => {
                 resourceNames: [RESOURCES[0].name],
                 from: new Date(2023, 1, 20, 12),
                 to: new Date(2023, 1, 20, 14, 30)
-            },
-            {
-                title: 'Event 2',
-                name: 'event-2',
-                resourceNames: [RESOURCES[0].name, RESOURCES[1].name],
-                from: new Date(2023, 1, 21, 15),
-                allDay: true
             }
         ];
         element.eventsDisplayFields = [
@@ -836,6 +829,11 @@ describe('Scheduler', () => {
             {
                 value: 'from',
                 label: 'Starting date',
+                type: 'date'
+            },
+            {
+                value: 'to',
+                label: 'Ending date',
                 type: 'date'
             },
             {
@@ -856,6 +854,122 @@ describe('Scheduler', () => {
                 jest.spyOn(timeline, 'selectEvent').mockImplementation(() => {
                     return {
                         event: {
+                            allDay: false,
+                            data: {
+                                title: 'Event 1',
+                                name: 'event-1',
+                                resourceNames: [RESOURCES[0].name],
+                                from: new Date(2023, 1, 20, 12),
+                                to: new Date(2023, 1, 20, 14, 30)
+                            }
+                        },
+                        occurrence: {
+                            from: DateTime.fromJSDate(
+                                new Date(2023, 1, 20, 12)
+                            ),
+                            to: DateTime.fromJSDate(
+                                new Date(2023, 1, 20, 14, 30)
+                            ),
+                            key: `event-1-${RESOURCES[0].name}-${new Date(
+                                2023,
+                                1,
+                                20,
+                                12
+                            ).getTime()}`
+                        }
+                    };
+                });
+                timeline.dispatchEvent(
+                    new CustomEvent('eventmouseenter', {
+                        detail: {
+                            key: `event-1-${RESOURCES[0].name}-${new Date(
+                                2023,
+                                1,
+                                20,
+                                12
+                            ).getTime()}`,
+                            eventName: 'event-1',
+                            x: 0,
+                            y: 0
+                        }
+                    })
+                );
+                jest.runAllTimers();
+            })
+            .then(() => {
+                const fields = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="avonni-output-data-detail-popover-field"]'
+                );
+                expect(fields).toHaveLength(5);
+                expect(fields[0].label).toBe('Title');
+                expect(fields[0].value).toBe('Event 1');
+                expect(fields[0].variant).toBe('label-hidden');
+                expect(fields[0].type).toBeUndefined();
+                expect(fields[1].value).toBe('20, 02 2023, 12:00:00');
+                expect(fields[1].label).toBe('Starting date');
+                expect(fields[1].type).toBe('text');
+                expect(fields[2].value).toBe('20, 02 2023, 14:30:00');
+                expect(fields[2].label).toBe('Ending date');
+                expect(fields[2].type).toBe('text');
+                expect(fields[3].value).toBeFalsy();
+                expect(fields[3].label).toBeUndefined();
+                expect(fields[3].type).toBe('boolean');
+                expect(fields[4].value).toBe(RESOURCES[0].label);
+                expect(fields[4].label).toBe('Resources');
+                expect(fields[4].type).toBeUndefined();
+            });
+    });
+
+    it('Scheduler: eventsDisplayFields auto format of the all day event dates', () => {
+        const from = DateTime.fromJSDate(new Date(2023, 1, 21));
+        const to = DateTime.fromMillis(new Date(2023, 1, 22) - 1);
+        element.dateFormat = 'dd, LL yyyy, TT';
+        element.resources = RESOURCES;
+        element.selectedResources = [RESOURCES[0].name];
+        element.events = [
+            {
+                title: 'Event 2',
+                name: 'event-2',
+                resourceNames: [RESOURCES[0].name, RESOURCES[1].name],
+                from: new Date(2023, 1, 21, 15),
+                allDay: true
+            }
+        ];
+        element.eventsDisplayFields = [
+            {
+                value: 'title',
+                variant: 'label-hidden',
+                label: 'Title'
+            },
+            {
+                value: 'from',
+                label: 'Starting date',
+                type: 'date'
+            },
+            {
+                value: 'to',
+                label: 'Ending date',
+                type: 'date'
+            },
+            {
+                value: 'allDay',
+                type: 'boolean'
+            },
+            {
+                value: 'resourceNames',
+                label: 'Resources'
+            }
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const timeline = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-scheduler-timeline"]'
+                );
+                jest.spyOn(timeline, 'selectEvent').mockImplementation(() => {
+                    return {
+                        event: {
+                            allDay: true,
                             data: {
                                 title: 'Event 2',
                                 name: 'event-2',
@@ -868,8 +982,9 @@ describe('Scheduler', () => {
                             }
                         },
                         occurrence: {
-                            from: DateTime.fromJSDate(new Date(2023, 1, 21)),
-                            to: DateTime.fromJSDate(new Date(2023, 1, 22) - 1),
+                            from,
+                            to,
+                            endOfTo: to.endOf('day'),
                             key: `event-2-${RESOURCES[0].name}-${new Date(
                                 2023,
                                 1,
@@ -899,11 +1014,7 @@ describe('Scheduler', () => {
                     '[data-element-id="avonni-output-data-detail-popover-field"]'
                 );
                 expect(fields).toHaveLength(4);
-                expect(fields[0].label).toBe('Title');
-                expect(fields[0].value).toBe('Event 2');
-                expect(fields[0].variant).toBe('label-hidden');
-                expect(fields[0].type).toBeUndefined();
-                expect(fields[1].value).toBe('21/02/2023');
+                expect(fields[1].value).toBe(from.toFormat('DD'));
                 expect(fields[1].label).toBe('Starting date');
                 expect(fields[1].type).toBe('text');
                 expect(fields[2].value).toBeTruthy();
