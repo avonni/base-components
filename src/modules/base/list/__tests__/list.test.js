@@ -385,8 +385,9 @@ describe('List', () => {
     });
 
     it('List: Sortable = true', () => {
-        element.sortable = true;
+        element.divider = 'around';
         element.items = ITEMS;
+        element.sortable = true;
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
@@ -394,6 +395,9 @@ describe('List', () => {
             );
             const menu = element.shadowRoot.querySelector(
                 '[data-element-id="list-element"]'
+            );
+            const divider = element.shadowRoot.querySelector(
+                '[data-element-id="div-item"]'
             );
 
             expect(menu.role).toBe('listbox');
@@ -414,6 +418,10 @@ describe('List', () => {
             items[1].dispatchEvent(new CustomEvent('mouseup'));
             expect(items[1].classList).not.toContain(
                 'avonni-list__item-sortable_dragged'
+            );
+
+            expect(divider.classList).toContain(
+                'avonni-list__item-divider_sortable'
             );
         });
     });
