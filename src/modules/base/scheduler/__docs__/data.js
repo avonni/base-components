@@ -1,5 +1,3 @@
-
-
 const start = new Date(2021, 11, 13, 8);
 
 const columns = [
@@ -296,6 +294,7 @@ const events = [
         resourceNames: ['Jung'],
         name: 'research',
         title: 'Research',
+        dateFormat: 'DD',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 14, 12)
     },
@@ -410,6 +409,7 @@ const eventsWithExtraKeys = [
         resourceNames: ['Jung'],
         name: 'research',
         title: 'Research',
+        dateFormat: 'DD',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 14, 12),
         office: 'Montreal, QC',
@@ -543,6 +543,7 @@ const eventsWithLabels = [
         resourceNames: ['Jung'],
         name: 'research',
         title: 'Research',
+        dateFormat: 'DD',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 14, 12),
         labels: {

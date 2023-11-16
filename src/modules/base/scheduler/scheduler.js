@@ -2235,7 +2235,7 @@ export default class Scheduler extends LightningElement {
                     field.value === 'resourceNames' && Array.isArray(value);
                 if (isDate) {
                     value = this.createDate(value);
-                    const format = allDay ? 'DD' : this.dateFormat;
+                    const format = eventData.dateFormat || this.dateFormat;
                     value = value.toFormat(format);
                     isHidden =
                         field.value === 'to' &&
