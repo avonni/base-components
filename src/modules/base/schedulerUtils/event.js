@@ -274,7 +274,7 @@ export default class SchedulerEvent {
         } else if (this.from && this.allDay) {
             to = this.from.endOf('day');
         } else if (this.from && to < this.from) {
-            to = dateTimeObjectFrom(this.from.ts);
+            to = this.createDate(this.from.ts);
         }
 
         return !this.schedulerEnd || this.recurrence || to < this.schedulerEnd
