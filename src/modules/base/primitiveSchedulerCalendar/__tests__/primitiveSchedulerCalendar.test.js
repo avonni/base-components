@@ -779,7 +779,7 @@ describe('Primitive Scheduler Calendar', () => {
                     const from = DateTime.fromJSDate(original.from);
                     const to = original.to
                         ? DateTime.fromJSDate(original.to)
-                        : from.endOf('day');
+                        : from;
                     const resourceName = original.resourceNames
                         ? original.resourceNames[0]
                         : undefined;
@@ -933,9 +933,10 @@ describe('Primitive Scheduler Calendar', () => {
                     const from = original.allDay
                         ? fromDateTime.startOf('day')
                         : fromDateTime;
-                    const to = original.to
+                    let to = original.to
                         ? DateTime.fromJSDate(original.to)
-                        : from.endOf('day');
+                        : fromDateTime;
+                    to = original.allDay ? to.endOf('day') : to;
                     const resourceName = original.resourceNames
                         ? original.resourceNames[0]
                         : undefined;

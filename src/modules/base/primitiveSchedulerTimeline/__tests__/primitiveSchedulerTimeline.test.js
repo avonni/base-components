@@ -458,7 +458,7 @@ describe('Primitive Scheduler Timeline', () => {
                         : original.resourceNames[0];
                     const from = DateTime.fromJSDate(original.from);
                     const to = original.referenceLine
-                        ? from.endOf('day').ts
+                        ? from.ts
                         : original.to.getTime();
                     expect(event.color).toBe(original.color);
                     expect(event.disabled).toBe(original.disabled || false);
