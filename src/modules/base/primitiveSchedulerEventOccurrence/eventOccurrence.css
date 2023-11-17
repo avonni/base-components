@@ -11,10 +11,8 @@
     position: relative;
     z-index: 2;
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
-}
-
-.avonni-scheduler__event_horizontal {
     min-height: 1.1rem;
+    min-width: 2px;
 }
 
 .avonni-scheduler__event_past {
@@ -64,7 +62,8 @@
     padding: 0 1px 1px 0;
 }
 
-.avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event-label_center {
+.avonni-scheduler__event-wrapper_vertical
+    .avonni-scheduler__event-label_center {
     height: 1.3rem;
 }
 
@@ -126,7 +125,8 @@
     left: 0;
 }
 
-.avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event_line::before {
+.avonni-scheduler__event-wrapper_vertical
+    .avonni-scheduler__event_line::before {
     top: 0;
 }
 
@@ -144,7 +144,8 @@
     visibility: visible;
 }
 
-.avonni-scheduler__event_vertical-animated:hover .avonni-scheduler__event-label_center {
+.avonni-scheduler__event_vertical-animated:hover
+    .avonni-scheduler__event-label_center {
     transform: translateY(0.75rem);
 }
 
@@ -166,7 +167,8 @@
     left: 0;
 }
 
-.avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event-resize-icon_start {
+.avonni-scheduler__event-wrapper_vertical
+    .avonni-scheduler__event-resize-icon_start {
     height: initial;
     top: 0;
     left: 50%;
@@ -177,7 +179,8 @@
     right: 0;
 }
 
-.avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event-resize-icon_end {
+.avonni-scheduler__event-wrapper_vertical
+    .avonni-scheduler__event-resize-icon_end {
     height: initial;
     right: 50%;
     bottom: 0;
