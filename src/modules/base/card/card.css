@@ -50,11 +50,15 @@ article.avonni-card {
     left: 0;
     right: 0;
     color: var(--avonni-card-background-media-text-color, white);
-    background-image: var(--avonni-card-background-media-overlay-background,
-            linear-gradient(0deg,
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.55) 75%,
-                rgba(0, 0, 0, 0) 100%));
+    background-image: var(
+        --avonni-card-background-media-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
 }
 
 .avonni-card__media-overlay .avonni-card__content-container {
@@ -65,11 +69,15 @@ article.avonni-card {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     color: var(--avonni-card-overlay-media-text-color, white);
-    background-image: var(--avonni-card-overlay-media-overlay-background,
-            linear-gradient(0deg,
-                rgba(0, 0, 0, 0.7) 0%,
-                rgba(0, 0, 0, 0.55) 75%,
-                rgba(0, 0, 0, 0) 100%));
+    background-image: var(
+        --avonni-card-overlay-media-overlay-background,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.55) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
 }
 
 .avonni-card__media-overlay:hover .avonni-card__content-container,
@@ -80,19 +88,31 @@ article.avonni-card {
 /* In chrome, the image corner radius is not applied to the image properly when there is a border.
     The overflow: hidden lets the image pass over the border in certain conditions.  */
 .avonni-card__media-top-left-radius {
-    border-top-left-radius: calc(var(--avonni-card-radius-border, 0.25rem) - var(--avonni-card-sizing-border, 1px));
+    border-top-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
 }
 
 .avonni-card__media-top-right-radius {
-    border-top-right-radius: calc(var(--avonni-card-radius-border, 0.25rem) - var(--avonni-card-sizing-border, 1px));
+    border-top-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
 }
 
 .avonni-card__media-bottom-right-radius {
-    border-bottom-right-radius: calc(var(--avonni-card-radius-border, 0.25rem) - var(--avonni-card-sizing-border, 1px));
+    border-bottom-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
 }
 
 .avonni-card__media-bottom-left-radius {
-    border-bottom-left-radius: calc(var(--avonni-card-radius-border, 0.25rem) - var(--avonni-card-sizing-border, 1px));
+    border-bottom-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
+    );
 }
 
 .avonni-card__media-border-top {
@@ -129,14 +149,15 @@ article.avonni-card {
     max-width: var(--avonni-card-right-media-width);
 }
 
-.avonni-card__body-container:not(.avonni-card__media-left, .avonni-card__media-right) .avonni-card__media-container {
+.avonni-card__body-container:not(.avonni-card__media-left, .avonni-card__media-right)
+    .avonni-card__media-container {
     width: 100%;
 }
 
 .avonni-card__media {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+    height: var(--avonni-card-media-sizing-height, 100%);
+    width: var(--avonni-card-media-sizing-width, 100%);
+    object-fit: var(--avonni-card-media-object-fit, 'cover');
 }
 
 .avonni-card__media-action {
@@ -159,10 +180,12 @@ article.avonni-card {
 
 .avonni-card__title-text {
     color: var(--avonni-card-header-text-color, #181818);
-    font-family: var(--avonni-card-header-font-family,
-            'Salesforce Sans',
-            Arial,
-            sans-serif);
+    font-family: var(
+        --avonni-card-header-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
     font-weight: var(--avonni-card-header-font-weight, 700);
     font-size: var(--avonni-card-header-font-size, 1rem);
     font-style: var(--avonni-card-header-font-style);
