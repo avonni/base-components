@@ -124,6 +124,7 @@ export default class PrimitiveCellLookup extends LightningElement {
             return;
         }
         event.stopPropagation();
+        this.visible = false;
 
         this.dispatchEvent(
             new CustomEvent('cellchangecustom', {
