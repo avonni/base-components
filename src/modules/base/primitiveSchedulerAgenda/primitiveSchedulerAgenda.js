@@ -448,7 +448,7 @@ export default class PrimitiveSchedulerAgenda extends ScheduleBase {
      * @returns {string} Formatted time describing the event duration.
      */
     formatTime(event, from, to) {
-        if (event.referenceLine) {
+        if (event.referenceLine || from.ts === to.ts) {
             return from.toFormat('t');
         } else if (isAllDay(event, from, to)) {
             return 'All Day';

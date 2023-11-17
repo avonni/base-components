@@ -28,6 +28,7 @@
  * @property {boolean} allDay If true, the event will be applied to the whole day(s). Defaults to false.
  * @property {string} color Custom color for the event. If present, it will overwrite the default color.
  * It has to be a Hexadecimal or an RGB color. For example `#3A7D44` or `rgb(58, 125, 68)`.
+ * @property {string} dateFormat Custom date format for the event. If present, it will overwrite the default `date-format`.
  * @property {(Date|number|string)} from Required. Start of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
  * @property {object} labels Custom labels for the event. If present, it will overwrite the default `event-labels`.
  * @property {string} name Required. Unique name for the event.

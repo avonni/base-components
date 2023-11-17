@@ -920,7 +920,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('Scheduler: eventsDisplayFields auto format of the all day event dates', () => {
+    it('Scheduler: eventsDisplayFields, use the custom event date format', () => {
         const from = DateTime.fromJSDate(new Date(2023, 1, 21));
         const to = DateTime.fromMillis(new Date(2023, 1, 22) - 1);
         element.dateFormat = 'dd, LL yyyy, TT';
@@ -932,6 +932,7 @@ describe('Scheduler', () => {
                 name: 'event-2',
                 resourceNames: [RESOURCES[0].name, RESOURCES[1].name],
                 from: new Date(2023, 1, 21, 15),
+                dateFormat: 'DD',
                 allDay: true
             }
         ];
@@ -977,6 +978,7 @@ describe('Scheduler', () => {
                                     RESOURCES[0].name,
                                     RESOURCES[1].name
                                 ],
+                                dateFormat: 'DD',
                                 from: new Date(2023, 1, 21, 15),
                                 allDay: true
                             }

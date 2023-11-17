@@ -1221,7 +1221,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             length += this.getOffsetStart(cellEnd, cellSize);
             if (this.referenceLine) return;
 
-            if (cellEnd > to) {
+            if (cellEnd > to && from.ts !== to.ts) {
                 // If the event ends before the end of the first column
                 // remove the appropriate length of the first column
                 length -= this.getOffsetEnd(cellEnd, cellSize, to);

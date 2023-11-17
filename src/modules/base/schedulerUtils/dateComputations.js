@@ -299,7 +299,7 @@ const containsAllowedDateTimes = (
             computedUnit,
             span
         );
-        return firstAllowedTime < end;
+        return firstAllowedTime <= end;
     }
 
     return true;

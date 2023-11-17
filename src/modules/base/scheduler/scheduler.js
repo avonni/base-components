@@ -1834,6 +1834,18 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
+    isFieldHiddenFromDetailPopover(fieldName) {
+        if (fieldName !== 'to') {
+            return false;
+        }
+        const allDay = this.selection.event.allDay;
+        const occurrence = this.selection.occurrence;
+        const spansOnWholeDay =
+            allDay && occurrence.endOfTo.ts === occurrence.from.endOf('day').ts;
+        const hasNoDuration = occurrence.from.ts === occurrence.to.ts;
+        return spansOnWholeDay || hasNoDuration;
+    }
+
     /**
      * Normalize the given date to be on the first day of the month.
      *
@@ -2223,7 +2235,6 @@ export default class Scheduler extends LightningElement {
 
             this.detailPopoverFields = this.eventsDisplayFields.map((field) => {
                 const { type, label, variant } = field;
-                const { allDay } = this.selection.event;
                 const eventData = this.selection.event.data;
                 const occurrenceData = this.selection.occurrence;
                 let isHidden = false;
@@ -2235,13 +2246,9 @@ export default class Scheduler extends LightningElement {
                     field.value === 'resourceNames' && Array.isArray(value);
                 if (isDate) {
                     value = this.createDate(value);
-                    const format = allDay ? 'DD' : this.dateFormat;
+                    const format = eventData.dateFormat || this.dateFormat;
                     value = value.toFormat(format);
-                    isHidden =
-                        field.value === 'to' &&
-                        allDay &&
-                        occurrenceData.endOfTo.ts ===
-                            occurrenceData.from.endOf('day').ts;
+                    isHidden = this.isFieldHiddenFromDetailPopover(field.value);
                 } else if (isResources) {
                     value = value
                         .map((res) => {
