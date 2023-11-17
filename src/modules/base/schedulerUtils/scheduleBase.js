@@ -434,7 +434,7 @@ export class ScheduleBase extends LightningElement {
         this._timezone = value;
 
         if (this._connected) {
-            this._eventData.updateAllEventsDefaults();
+            this.initEvents();
         }
     }
 

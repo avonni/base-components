@@ -143,7 +143,7 @@ export default class SchedulerEventData {
      * @returns {DateTime|boolean} Luxon DateTime object or false if the date is invalid.
      */
     createDate(date) {
-        return dateTimeObjectFrom(date, { zone: this.timezone });
+        return dateTimeObjectFrom(date, { zone: this.schedule.timezone });
     }
 
     /**
