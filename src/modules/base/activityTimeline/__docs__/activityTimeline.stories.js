@@ -246,6 +246,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        locale: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Locale of the current user. The locale is used to format the axis dates in the horizontal orientation.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'en-GB' }
+            }
+        },
         loadMoreOffset: {
             name: 'load-more-offset',
             control: {
@@ -343,6 +354,7 @@ export default {
         isLoading: false,
         itemIconSize: 'small',
         loadMoreOffset: 20,
+        locale: 'en-GB',
         orientation: 'vertical',
         itemDateFormat: 'LLLL dd, yyyy, t',
         hideItemDate: false
