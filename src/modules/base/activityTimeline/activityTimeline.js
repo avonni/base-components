@@ -42,6 +42,7 @@ const DEFAULT_HORIZONTAL_FIELD_VARIANT = 'label-inline';
 const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_LOCALE = 'en-GB';
 const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
 
 const FIELD_VARIANTS = {
@@ -152,6 +153,7 @@ export default class ActivityTimeline extends LightningElement {
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _items = [];
     _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _locale = DEFAULT_LOCALE;
     _maxVisibleItems;
     _orientation = ORIENTATIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
@@ -544,6 +546,26 @@ export default class ActivityTimeline extends LightningElement {
 
     set loadMoreOffset(value) {
         this._loadMoreOffset = parseInt(value, 10);
+    }
+
+    /**
+     * Locale of the current user. The locale is used to format the axis dates in the horizontal orientation.
+     *
+     * @type {string}
+     * @default en-GB
+     * @public
+     */
+    @api
+    get locale() {
+        return this._locale;
+    }
+    set locale(value) {
+        this._locale = value || DEFAULT_LOCALE;
+
+        if (this.isTimelineHorizontal) {
+            this.requestRedrawTimeline();
+            this.renderedCallback();
+        }
     }
 
     /**

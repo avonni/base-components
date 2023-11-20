@@ -182,6 +182,7 @@ export default class InfiniteLoadingActivityTimeline extends LightningElement {
     @api itemDateFormat;
     @api itemIconSize;
     @api loadMoreOffset;
+    @api locale;
     @api maxVisibleItems;
     @api orientation;
     @api sortedDirection;

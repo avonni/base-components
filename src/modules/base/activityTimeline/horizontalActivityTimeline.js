@@ -110,6 +110,37 @@ export class HorizontalActivityTimeline {
      * -------------------------------------------------------------
      */
 
+    get axisDateFormat() {
+        try {
+            const date = new Date(2000, 10, 22);
+            const formattedDate = new Intl.DateTimeFormat(
+                this._activityTimeline.locale
+            ).format(date);
+
+            const year = {
+                index: formattedDate.indexOf('2000'),
+                format: '%Y'
+            };
+            const month = {
+                index: formattedDate.indexOf('11'),
+                format: '%m'
+            };
+            const day = {
+                index: formattedDate.indexOf('22'),
+                format: '%d'
+            };
+            const sortedDateParts = [year, month, day].sort(
+                (a, b) => a.index - b.index
+            );
+
+            return sortedDateParts.reduce((acc, datePart) => {
+                return acc ? `${acc}/${datePart.format}` : datePart.format;
+            }, '');
+        } catch (e) {
+            return '%d/%m/%Y';
+        }
+    }
+
     /**
      * Select only items in min-max interval for horizontal view of the timeline
      *
@@ -782,7 +813,7 @@ export class HorizontalActivityTimeline {
         // Create dashed lines aligned to axis ticks
         const axis = d3
             .axisBottom(this.viewTimeScale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .tickFormat(d3.timeFormat(this.axisDateFormat))
             .ticks(this._numberOfTimelineAxisTicks)
             .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
             .tickSizeOuter(0);
@@ -891,7 +922,7 @@ export class HorizontalActivityTimeline {
 
         const timeAxis = d3
             .axisBottom(scale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .tickFormat(d3.timeFormat(this.axisDateFormat))
             .ticks(numberOfTicks)
             .tickSizeOuter(0);
 

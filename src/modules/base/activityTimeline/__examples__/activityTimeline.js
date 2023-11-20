@@ -25,6 +25,7 @@ export const ActivityTimeline = ({
     itemIconSize,
     items,
     loadMoreOffset,
+    locale,
     hideItemDate,
     groupBy,
     orientation,
@@ -47,6 +48,7 @@ export const ActivityTimeline = ({
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.fieldAttributes = fieldAttributes;
     element.itemDateFormat = itemDateFormat;
+    element.locale = locale;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.iconSize = iconSize;

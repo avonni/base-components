@@ -56,6 +56,7 @@ export const InfiniteLoadingActivityTimeline = ({
     itemIconSize,
     items,
     loadMoreOffset,
+    locale,
     hideItemDate,
     groupBy,
     orientation,
@@ -79,6 +80,7 @@ export const InfiniteLoadingActivityTimeline = ({
     element.collapsible = collapsible;
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.itemDateFormat = itemDateFormat;
+    element.locale = locale;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.iconSize = iconSize;
