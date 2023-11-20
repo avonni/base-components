@@ -79,8 +79,8 @@ const intervalFrom = (start, end) => {
  * @returns {object} Object with three possible keys: valid, start and end.
  */
 const parseTimeFrame = (timeFrame, options) => {
-    const startMatch = timeFrame.match(/^([0-9:]+)-/);
-    const endMatch = timeFrame.match(/-([0-9:]+)$/);
+    const startMatch = timeFrame.match(/^([0-9:]+(\.\d+)?)-/);
+    const endMatch = timeFrame.match(/-([0-9:]+(\.\d+)?)$/);
 
     if (!startMatch || !endMatch) {
         console.error(
