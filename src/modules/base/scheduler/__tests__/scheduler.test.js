@@ -252,14 +252,14 @@ describe('Scheduler', () => {
     // available-time-frames
     it('Scheduler: availableTimeFrames, agenda display', () => {
         element.selectedDisplay = 'agenda';
-        element.availableTimeFrames = ['12:50-16:00', '08:09-10:04'];
+        element.availableTimeFrames = ['12:50-16:00:00.000', '08:09-10:04'];
 
         return Promise.resolve().then(() => {
             const agenda = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-scheduler-agenda"]'
             );
             expect(agenda.availableTimeFrames).toEqual([
-                '12:50-16:00',
+                '12:50-16:00:00.000',
                 '08:09-10:04'
             ]);
         });
