@@ -1872,8 +1872,14 @@ export default class PrimitiveCombobox extends LightningElement {
                 case 'Spacebar':
                 case 'Enter':
                     this.handleHighlightedOptionClick(event);
-                    // Prevent the browser scrollbar from scrolling down
-                    event.preventDefault();
+
+                    if (
+                        !this.allowSearch &&
+                        (event.key === ' ' || event.key === 'Spacebar')
+                    ) {
+                        // Prevent the browser scrollbar from scrolling down
+                        event.preventDefault();
+                    }
                     break;
                 case 'Escape':
                     this.close();
