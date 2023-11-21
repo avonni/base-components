@@ -58,8 +58,9 @@ const TYPE_ATTRIBUTES = {
     toggle: [
         'messageToggleActive',
         'messageToggleInactive',
+        'showCheckmark',
         'size',
-        'showCheckmark'
+        'stretch'
     ]
 };
 
@@ -497,7 +498,7 @@ export default class InputChoiceSet extends LightningElement {
             'slds-size_full':
                 this.orientation === 'horizontal' && !this.buttonVariant,
             'slds-checkbox_button-group': this.buttonVariant && !displayAsRow,
-            'avonni-input-choice-set__stretch': stretch
+            'avonni-input-choice-set__button_stretch': stretch
         });
     }
 
@@ -529,13 +530,13 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedCheckContainerClass() {
+        const { size } = this.computedTypeAttributes;
         return classSet('')
             .add({
                 'slds-order_3': this.checkPosition === 'right',
                 'slds-p-top_xx-small':
                     this.toggleVariant &&
-                    (this.computedTypeAttributes?.size === 'small' ||
-                        this.computedTypeAttributes?.size === 'x-small'),
+                    (size === 'small' || size === 'x-small'),
                 'slds-p-left_x-small':
                     this.toggleVariant &&
                     this.checkPosition === 'right' &&
@@ -557,7 +558,11 @@ export default class InputChoiceSet extends LightningElement {
     get computedCheckLabelClass() {
         return classSet('slds-grid')
             .add({
-                'slds-grid_vertical-align-center': !this.toggleVariant
+                'slds-grid_vertical-align-center': !this.toggleVariant,
+                'avonni-input-choice-set__toggle_stretch':
+                    this.toggleVariant &&
+                    this.computedTypeAttributes.stretch &&
+                    this.orientation === 'vertical'
             })
             .toString();
     }
@@ -1103,7 +1108,7 @@ export default class InputChoiceSet extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this._value
+                    value: this.value
                 },
                 composed: true,
                 bubbles: true,

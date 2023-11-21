@@ -70,7 +70,7 @@ export default class InputChoiceOption {
      * @type {string}
      */
     get computedLabelButtonClass() {
-        return classSet('slds-checkbox_faux')
+        return classSet('slds-checkbox_faux slds-truncate')
             .add({
                 'slds-align_absolute-center':
                     this.iconPosition === POSITION_ICON.TOP ||

@@ -89,6 +89,7 @@
                                         <div
                                             if:false={buttonVariant}
                                             class={computedCheckLabelClass}
+                                            data-element-id="div-check-label"
                                         >
                                             <div
                                                 class={computedCheckContainerClass}
@@ -102,7 +103,6 @@
                                                     if:true={toggleVariant}
                                                     aria-label={option.label}
                                                     class="slds-m-top_x-small"
-                                                    data-element-id="input-toggle"
                                                     checked={option.isChecked}
                                                     disabled={disabled}
                                                     hide-mark={computedHideCheck}
@@ -115,6 +115,7 @@
                                                     value={option.value}
                                                     variant="label-hidden"
                                                     onblur={handleBlur}
+                                                    data-element-id="input-toggle"
                                                     onchange={handleToggleChange}
                                                     onfocus={handleFocus}
                                                 >

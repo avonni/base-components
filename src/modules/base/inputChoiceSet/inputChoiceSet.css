@@ -51,20 +51,29 @@
     font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
 }
 
-.avonni-input-choice-set__stretch {
+.avonni-input-choice-set__horizontal,
+.avonni-input-choice-set__vertical {
+    border-color: var(--slds-g-color-border-base-4, #747474);
+}
+
+.avonni-input-choice-set__button_stretch {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
 }
 
-.avonni-input-choice-set__stretch.avonni-input-choice-set__vertical {
+.avonni-input-choice-set__toggle_stretch {
+    justify-content: space-between;
+}
+
+.avonni-input-choice-set__button_stretch.avonni-input-choice-set__vertical {
     flex-direction: column;
 }
 
-.avonni-input-choice-set__stretch .slds-checkbox_button,
-.avonni-input-choice-set__stretch .slds-checkbox_button__label,
-.avonni-input-choice-set__stretch .slds-checkbox,
-.avonni-input-choice-set__stretch .slds-radio {
+.avonni-input-choice-set__button_stretch .slds-checkbox_button,
+.avonni-input-choice-set__button_stretch .slds-checkbox_button__label,
+.avonni-input-choice-set__button_stretch .slds-checkbox,
+.avonni-input-choice-set__button_stretch .slds-radio {
     flex-grow: 1;
 }
 
@@ -98,12 +107,12 @@
     border: 1px solid #0176d3;
 }
 
-.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
     .slds-checkbox_button:not(:last-child) {
     border-right: 1px solid #747474;
 }
 
-.avonni-input-choice-set__horizontal.avonni-input-choice-set__stretch
+.avonni-input-choice-set__horizontal.avonni-input-choice-set__button_stretch
     .slds-checkbox_button,
 .avonni-input-choice-set__vertical .slds-checkbox_button:last-child {
     border-bottom: none;

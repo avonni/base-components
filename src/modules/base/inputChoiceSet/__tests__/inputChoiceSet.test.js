@@ -535,6 +535,23 @@ describe('Input choice set', () => {
                 });
             });
 
+            it('button: stretch', () => {
+                element.options = options;
+                element.type = 'button';
+                element.typeAttributes = {
+                    stretch: true
+                };
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input-group"]'
+                    );
+                    expect(input.className).toContain(
+                        'avonni-input-choice-set__button_stretch'
+                    );
+                });
+            });
+
             it('toggle: showCheckmark', () => {
                 element.options = options;
                 element.type = 'toggle';
@@ -549,6 +566,23 @@ describe('Input choice set', () => {
                     inputs.forEach((input) => {
                         expect(input.hideMark).toBeTruthy();
                     });
+                });
+            });
+
+            it('toggle: stretch', () => {
+                element.options = options;
+                element.type = 'toggle';
+                element.typeAttributes = {
+                    stretch: true
+                };
+
+                return Promise.resolve().then(() => {
+                    const container = element.shadowRoot.querySelector(
+                        '[data-element-id="div-check-label"]'
+                    );
+                    expect(container.className).toContain(
+                        'avonni-input-choice-set__toggle_stretch'
+                    );
                 });
             });
         });
@@ -742,6 +776,23 @@ describe('Input choice set', () => {
                 });
             });
 
+            it('keyup not enter', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+                element.options = options;
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input"]'
+                    );
+                    input.dispatchEvent(
+                        new KeyboardEvent('keyup', { key: 'f' })
+                    );
+
+                    expect(handler).not.toHaveBeenCalled();
+                });
+            });
+
             it('single', () => {
                 const handler = jest.fn();
                 element.addEventListener('change', handler);
@@ -795,6 +846,30 @@ describe('Input choice set', () => {
                     input.click();
                     expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].detail.value).toBe('mon');
+                    expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                    expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+                    expect(handler.mock.calls[0][0].composed).toBeTruthy();
+                });
+            });
+
+            it('toggle change', () => {
+                const handler = jest.fn();
+                element.addEventListener('change', handler);
+                element.options = options;
+                element.type = 'toggle';
+
+                return Promise.resolve().then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="input-toggle"]'
+                    );
+                    input.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                checked: true
+                            }
+                        })
+                    );
+                    expect(handler).toHaveBeenCalled();
                     expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                     expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
                     expect(handler.mock.calls[0][0].composed).toBeTruthy();
