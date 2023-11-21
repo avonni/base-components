@@ -432,6 +432,17 @@ Toggle.args = {
     value: dayValue
 };
 
+export const ToggleStretch = Template.bind({});
+ToggleStretch.args = {
+    label: 'Please select a value',
+    type: 'toggle',
+    options: optionsWithoutIcon,
+    value: dayValue,
+    typeAttributes: {
+        stretch: true
+    }
+};
+
 export const ToggleHorizontal = Template.bind({});
 ToggleHorizontal.args = {
     label: 'Please select a value',
