@@ -174,6 +174,7 @@ export default class DualListbox extends LightningElement {
     _removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     _required = false;
     _requiredOptions = [];
+    _search = this.computeSearch;
     _size = BOXES_SIZES.default;
     _upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
     _value = [];
@@ -662,6 +663,22 @@ export default class DualListbox extends LightningElement {
             this.initSourceGroups();
             this.initSelectedGroups();
         }
+    }
+
+    /**
+     * Custom search function to execute instead of the default search. It has to:
+     * * Take an object with two keys as an argument: options and searchTerm
+     * * Return the new options.
+     *
+     * @type {function}
+     * @public
+     */
+    @api
+    get search() {
+        return this._search;
+    }
+    set search(value) {
+        this._search = typeof value === 'function' ? value : this.computeSearch;
     }
 
     /**
@@ -1963,6 +1980,22 @@ export default class DualListbox extends LightningElement {
         event.stopPropagation();
         this._searchTerm = event.detail.value;
         this.initSourceGroups();
+
+        /**
+         * The event fired when the user types in the search input.
+         *
+         * @event
+         * @name search
+         * @param {string} value Value of the search input.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value: this._searchTerm
+                }
+            })
+        );
     }
 
     /**

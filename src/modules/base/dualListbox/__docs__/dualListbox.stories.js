@@ -331,6 +331,13 @@ export default {
                 type: { summary: 'string []' }
             }
         },
+        search: {
+            description:
+                'Custom search function to execute instead of the default search. It has to take an object with two keys as an argument (options and searchTerm) and return the new options.',
+            table: {
+                type: { summary: 'function' }
+            }
+        },
         selectedLabel: {
             name: 'selected-label',
             type: { name: 'string' },

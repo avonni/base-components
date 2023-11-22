@@ -670,9 +670,9 @@ describe('DualListbox', () => {
             });
         });
 
-        // allow search
-        describe('Allow search', () => {
-            it('True', () => {
+        // search
+        describe('Search', () => {
+            it('Allow search', () => {
                 element.allowSearch = true;
 
                 return Promise.resolve().then(() => {
@@ -682,6 +682,50 @@ describe('DualListbox', () => {
                     expect(searchBox).toBeTruthy();
                     expect(searchBox.type).toBe('search');
                 });
+            });
+
+            it('Custom search function', () => {
+                const options = [
+                    { label: 'Adam Mangrove', value: 'AM' },
+                    { label: 'Adam Mantium', value: 'AMa' },
+                    { label: 'Laurie Mantle', value: 'LM' }
+                ];
+                element.search = (params) => {
+                    return params.options.filter((option) => {
+                        return option.value
+                            .toLowerCase()
+                            .includes(params.searchTerm.toLowerCase());
+                    });
+                };
+                element.options = options;
+                element.allowSearch = true;
+
+                return Promise.resolve()
+                    .then(() => {
+                        const input = element.shadowRoot.querySelector(
+                            '[data-element-id="lightning-input"]'
+                        );
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(options.length);
+
+                        input.dispatchEvent(
+                            new CustomEvent('change', {
+                                detail: { value: 'a' }
+                            })
+                        );
+                    })
+                    .then(() => {
+                        const sourceOptions =
+                            element.shadowRoot.querySelectorAll(
+                                '[data-type="ul-source-list"]'
+                            );
+                        expect(sourceOptions).toHaveLength(2);
+                        expect(sourceOptions[0].dataset.value).toBe('AM');
+                        expect(sourceOptions[1].dataset.value).toBe('AMa');
+                    });
             });
         });
 
@@ -1275,6 +1319,52 @@ describe('DualListbox', () => {
                     expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
                 });
             });
+        });
+
+        // search
+        it('search', () => {
+            const options = [
+                { label: 'Adam Mangrove', value: 'AM' },
+                { label: 'Adam Mantium', value: 'AMa' },
+                { label: 'Laurie Mantle', value: 'LM' }
+            ];
+            element.options = options;
+            element.allowSearch = true;
+
+            const handler = jest.fn();
+            element.addEventListener('search', handler);
+
+            return Promise.resolve()
+                .then(() => {
+                    const input = element.shadowRoot.querySelector(
+                        '[data-element-id="lightning-input"]'
+                    );
+                    const sourceOptions = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    expect(sourceOptions).toHaveLength(options.length);
+
+                    input.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: { value: 'dam' }
+                        })
+                    );
+
+                    expect(handler).toHaveBeenCalled();
+                    const call = handler.mock.calls[0][0];
+                    expect(call.detail.value).toBe('dam');
+                    expect(call.bubbles).toBeFalsy();
+                    expect(call.composed).toBeFalsy();
+                    expect(call.cancelable).toBeFalsy();
+                })
+                .then(() => {
+                    const sourceOptions = element.shadowRoot.querySelectorAll(
+                        '[data-type="ul-source-list"]'
+                    );
+                    expect(sourceOptions).toHaveLength(2);
+                    expect(sourceOptions[0].dataset.value).toBe('AM');
+                    expect(sourceOptions[1].dataset.value).toBe('AMa');
+                });
         });
     });
 });
