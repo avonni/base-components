@@ -37,6 +37,7 @@
                             type="search"
                             data-element-id="lightning-input"
                             onchange={handleSearch}
+                            onfocus={handleSearchFocus}
                         ></lightning-input>
                     </div>
                     <div
@@ -57,7 +58,7 @@
                             "
                             role="listbox"
                             aria-disabled={ariaDisabled}
-                            data-element-id="ul-source-list"
+                            data-element-id={sourceListId}
                         >
                             <template
                                 for:each={computedSourceGroups}
@@ -108,7 +109,7 @@
                                             data-element-id="div-source"
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={computedSourceListId}
+                                            data-type={sourceListId}
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -116,22 +117,27 @@
                                             ondragstart={handleDragStart}
                                             ondragend={handleDragEndSource}
                                         >
-                                            <div class="slds-media__figure">
+                                            <div
+                                                class="
+                                                    slds-media__figure
+                                                    slds-truncate
+                                                "
+                                            >
                                                 <c-avatar
-                                                    if:true={option.avatar}
+                                                    if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
                                                     src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.size}
+                                                    size={option.avatar.size}
                                                     variant={option.avatar.variant}
-                                                    primary-text={option.primaryText}
-                                                    secondary-text={option.secondaryText}
+                                                    primary-text={option.avatar.primaryText}
+                                                    secondary-text={option.avatar.secondaryText}
                                                     presence={option.avatar.presence}
                                                     presence-position={option.avatar.presencePosition}
                                                 ></c-avatar>
                                             </div>
                                             <template
-                                                if:false={option.description}
+                                                if:false={option.avatar.primaryText}
                                             >
                                                 <span class="slds-media__body">
                                                     <span
@@ -209,7 +215,7 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                             aria-disabled={ariaDisabled}
-                            data-element-id="ul-selected-list"
+                            data-element-id={selectedListId}
                         >
                             <template
                                 for:each={computedSelectedGroups}
@@ -262,7 +268,7 @@
                                             data-inside-group-index={insideGroupIndex}
                                             data-role="option"
                                             data-value={option.value}
-                                            data-type={computedSelectedListId}
+                                            data-type={selectedListId}
                                             onclick={handleOptionClick}
                                             onkeydown={handleOptionKeyDown}
                                             onmouseup={dispatchOptionClick}
@@ -271,20 +277,25 @@
                                             ondragend={handleDragEndSelected}
                                             ondragover={handleDragOver}
                                         >
-                                            <div class="slds-media__figure">
+                                            <div
+                                                class="
+                                                    slds-media__figure
+                                                    slds-truncate
+                                                "
+                                            >
                                                 <c-avatar
-                                                    if:true={option.avatar}
+                                                    if:true={option.showAvatar}
                                                     fallback-icon-name={option.avatar.fallbackIconName}
                                                     src={option.avatar.src}
                                                     initials={option.avatar.initials}
-                                                    size={option.size}
+                                                    size={option.avatar.size}
                                                     variant={option.avatar.variant}
-                                                    primary-text={option.primaryText}
-                                                    secondary-text={option.secondaryText}
+                                                    primary-text={option.avatar.primaryText}
+                                                    secondary-text={option.avatar.secondaryText}
                                                 ></c-avatar>
                                             </div>
                                             <template
-                                                if:false={option.description}
+                                                if:false={option.avatar.primaryText}
                                             >
                                                 <span class="slds-media__body">
                                                     <span
