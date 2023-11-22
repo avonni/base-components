@@ -249,7 +249,11 @@ export default class DualListbox extends LightningElement {
             return;
         }
 
-        if (this.optionToFocus) {
+        const searchIsFocused =
+            this.template.activeElement &&
+            this.template.activeElement.dataset &&
+            this.template.activeElement.dataset.elementId === 'lightning-input';
+        if (this.optionToFocus && !searchIsFocused) {
             // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
             const option = this.template.querySelector(
                 `div[data-value='${this.optionToFocus}']`
@@ -1477,11 +1481,7 @@ export default class DualListbox extends LightningElement {
             }
         } else {
             this.interactingState.leave();
-            this.isFocusOnList = false;
-            this.highlightedOptions = [];
-            this.optionToFocus = null;
-            this.initSourceGroups();
-            this.initSelectedGroups();
+            this.resetFocus();
         }
 
         this.dispatchChangeEvent();
@@ -1506,6 +1506,14 @@ export default class DualListbox extends LightningElement {
                 this._oldIndex = 0;
             } else this._oldIndex = index - 1;
         }
+    }
+
+    resetFocus() {
+        this.isFocusOnList = false;
+        this.highlightedOptions = [];
+        this.optionToFocus = null;
+        this.initSourceGroups();
+        this.initSelectedGroups();
     }
 
     /**
@@ -1996,6 +2004,10 @@ export default class DualListbox extends LightningElement {
                 }
             })
         );
+    }
+
+    handleSearchFocus() {
+        this.resetFocus();
     }
 
     /**
