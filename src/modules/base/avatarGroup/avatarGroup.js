@@ -1089,6 +1089,26 @@ export default class AvatarGroup extends LightningElement {
      * Toggle the hidden extra avatars popover
      */
     handleToggleShowHiddenItems() {
+        /**
+         * The event fired when you click on the show more/less button that appears at the end of the list `layout`, if a `max-count` value is present and `enable-infinite-loading` is not present.
+         *
+         * @event
+         * @name showmoretoggle
+         * @param {boolean} show True if avatars are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible avatars.
+         * @public
+         * @cancelable
+         */
+        const event = new CustomEvent('showmoretoggle', {
+            detail: {
+                show: !this.showHiddenItems
+            },
+            cancelable: true
+        });
+        this.dispatchEvent(event);
+        if (event.defaultPrevented) {
+            return;
+        }
+
         this.showHiddenItems = !this.showHiddenItems;
 
         if (this.showHiddenItems) {
