@@ -5,24 +5,27 @@ import {
     isIE11,
     isCSR
 } from 'c/utilsPrivate';
-import AriaObserver from 'lightning/ariaObserver';
+import { classSet } from 'c/utils';
+import AriaObserver from 'c/ariaObserver';
 
 const BUTTON = 'button';
+const ROLE = 'role';
 
 const BUTTON_VARIANTS = {
     valid: [
-        'neutral',
-        'brand',
-        'brand-outline',
         'bare',
         'bare-inverse',
-        'container',
+        'base',
         'border',
         'border-filled',
         'border-inverse',
+        'brand',
+        'brand-outline',
+        'container',
         'destructive',
         'destructive-text',
         'inverse',
+        'neutral',
         'success'
     ],
     default: 'neutral'
@@ -146,11 +149,9 @@ export default class PrimitiveButton extends LightningElement {
     _ariaOwns;
     _ariaPressed;
     _ariaRelevant;
-    _disableAnimation = false;
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
-    _stretch = false;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -470,20 +471,7 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * Reserved for internal use. If present, disables button animation.
-     *
-     * @default false
-     */
-    @api
-    get disableAnimation() {
-        return this._disableAnimation;
-    }
-    set disableAnimation(value) {
-        this._disableAnimation = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the menu can't be clicked by users.
+     * If present, the button can't be clicked by users.
      *
      * @type {boolean}
      * @default false
@@ -522,21 +510,6 @@ export default class PrimitiveButton extends LightningElement {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
-    }
-
-    /**
-     * Setting it to true allows the button to take up the entire available width.
-     * This value defaults to false.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get stretch() {
-        return this._stretch;
-    }
-    set stretch(value) {
-        this._stretch = normalizeBoolean(value);
     }
 
     /**
@@ -611,5 +584,55 @@ export default class PrimitiveButton extends LightningElement {
 
     get computedAriaRelevant() {
         return this.state.ariaRelevant;
+    }
+
+    get computedIconClass() {
+        return classSet('slds-button__icon')
+            .add(`slds-button__icon_${this.iconPosition}`)
+            .toString();
+    }
+
+    /**
+     * Computed variant.
+     *
+     * @type {string}
+     */
+    get computedVariant() {
+        return this.variant && BUTTON_VARIANTS.valid.includes(this.variant)
+            ? this.variant
+            : this.label
+            ? 'neutral'
+            : 'border';
+    }
+
+    get showIconLeft() {
+        return this.iconName && this.iconPosition === 'left';
+    }
+
+    get showIconRight() {
+        return this.iconName && this.iconPosition === 'right';
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Utility function to set aria roles on the host element.
+     * This is used mainly for native-shadow use cases for aria attributes that
+     * depenend on ID references.
+     *
+     * If the role attribute is present we will respect that, otherwise it will be set to
+     * an specific role, in this case button.
+     *
+     * @type {string}
+     * @default undefined
+     */
+    setHostRoleAttribute(value) {
+        let ariaRoleValue = this.getAttribute(ROLE) || value;
+
+        this.setAttribute(ROLE, ariaRoleValue);
     }
 }
