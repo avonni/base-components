@@ -528,7 +528,7 @@ ListDoubleExtraLarge.args = {
 
 export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
 InfiniteLoading.args = {
-    layout: 'list'
+    size: 'large'
 };
 
 export const InfiniteLoadingUsingShowMore =

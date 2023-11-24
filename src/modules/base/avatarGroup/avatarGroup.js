@@ -1,11 +1,19 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import {
+    animationFrame,
     keyCodes,
     normalizeArray,
     normalizeBoolean,
-    normalizeString
+    normalizeString,
+    observePosition,
+    timeout
 } from 'c/utilsPrivate';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const AVATAR_GROUP_SIZES = {
@@ -116,12 +124,15 @@ export default class AvatarGroup extends LightningElement {
     _imageWidth;
 
     showHiddenItems = false;
+    _autoPosition;
+    _boundingRect;
     _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
     _lastHiddenItemIndex;
     _popoverFocusoutAnimationFrame;
     _popoverIsFocused = false;
+    _positioning = false;
     _preventPopoverClosing = false;
 
     connectedCallback() {
@@ -635,8 +646,7 @@ export default class AvatarGroup extends LightningElement {
      */
     get hiddenListClass() {
         return classSet({
-            'slds-dropdown slds-dropdown_left slds-p-around_none':
-                this.isNotList
+            'slds-dropdown slds-p-around_none': this.isNotList
         }).toString();
     }
 
@@ -928,6 +938,22 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    pollBoundingRect() {
+        setTimeout(
+            () => {
+                if (this._connected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                    });
+
+                    // continue polling
+                    this.pollBoundingRect();
+                }
+            },
+            250 // check every 0.25 second
+        );
+    }
+
     /**
      * Update the focused index.
      *
@@ -961,6 +987,57 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    startPositioning() {
+        this._positioning = true;
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () =>
+                            this.template.querySelector(
+                                '[data-element-id="div-show-more-button-wrapper"]'
+                            ),
+                        element: () =>
+                            this.template.querySelector(
+                                '[data-element-id="div-hidden-items-popover"]'
+                            ),
+                        align: {
+                            horizontal: Direction.Left,
+                            vertical: Direction.Top
+                        },
+                        targetAlign: {
+                            horizontal: Direction.Left,
+                            vertical: Direction.Bottom
+                        },
+                        autoFlip: true
+                    },
+                    true
+                );
+                // Edge case: W-7460656
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            })
+            .then(() => {
+                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                this._positioning = false;
+            });
+    }
+
+    stopPositioning() {
+        if (this._autoPosition) {
+            stopPositioning(this._autoPosition);
+            this._autoPosition = null;
+        }
+        this._positioning = false;
+    }
+
     /**
      * Toggle the visibility of the hidden items popover.
      */
@@ -968,6 +1045,12 @@ export default class AvatarGroup extends LightningElement {
         this.showHiddenItems = !this.showHiddenItems;
 
         if (this.showHiddenItems) {
+            if (this.isNotList) {
+                this.startPositioning();
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
+            }
+
             this._hiddenItemsStartIndex = this.computedMaxCount;
             this._focusedIndex = this.computedMaxCount;
 
@@ -977,6 +1060,7 @@ export default class AvatarGroup extends LightningElement {
                 this.dispatchLoadMore();
             }
         } else {
+            this.stopPositioning();
             this._focusedIndex = this.computedMaxCount - 1;
         }
 
