@@ -10,6 +10,7 @@ export const Button = ({
     iconSize,
     label,
     name,
+    src,
     stretch,
     type,
     variant
@@ -22,6 +23,7 @@ export const Button = ({
     element.iconSize = iconSize;
     element.label = label;
     element.name = name;
+    element.src = src;
     element.stretch = stretch;
     element.type = type;
     element.variant = variant;

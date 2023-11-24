@@ -81,6 +81,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        src: {
+            control: {
+                type: 'text'
+            },
+            description: "URL to set for the 'src' attribute.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         stretch: {
             control: {
                 type: 'boolean'
@@ -100,6 +109,16 @@ export default {
                 'The type of button. Options include button, reset, and submit.',
             table: {
                 defaultValue: { summary: 'button' },
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The value for the button element. This value is optional and can be used when submitting a form.',
+            table: {
                 type: { summary: 'string' }
             }
         },
@@ -146,8 +165,8 @@ const Template = (args) => Button(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
-    variant: 'base'
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    variant: 'success'
 };
 
 export const NeutralWithIconRight = Template.bind({});

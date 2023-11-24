@@ -1,38 +1,41 @@
 <template>
     <button
         class={computedButtonClass}
-        disabled={disabled}
+        aria-atomic={computedAriaAtomic}
+        aria-busy={computedAriaBusy}
         aria-disabled={disabled}
+        aria-expanded={computedAriaExpanded}
+        aria-haspopup={computedAriaHasPopup}
+        aria-label={ariaLabel}
+        aria-live={computedAriaLive}
+        aria-pressed={computedAriaPressed}
+        aria-relevant={computedAriaRelevant}
+        disabled={disabled}
         name={name}
         accesskey={accessKey}
         title={title}
         type={normalizedType}
         value={value}
+        tabindex={tabIndex}
+        data-element-id="button"
         onfocus={handleButtonFocus}
         onblur={handleButtonBlur}
         onclick={handleButtonClick}
-        aria-atomic={computedAriaAtomic}
-        aria-busy={computedAriaBusy}
-        aria-label={ariaLabel}
-        aria-expanded={computedAriaExpanded}
-        aria-haspopup={computedAriaHasPopup}
-        aria-live={computedAriaLive}
-        aria-pressed={computedAriaPressed}
-        aria-relevant={computedAriaRelevant}
-        tabindex={tabIndex}
     >
-        <c-primitive-icon
-            if:true={showIconLeft}
-            icon-name={iconName}
-            svg-class={computedIconClass}
-            variant="bare"
-        ></c-primitive-icon>
-        {label}
-        <c-primitive-icon
-            if:true={showIconRight}
-            icon-name={iconName}
-            svg-class={computedIconClass}
-            variant="bare"
-        ></c-primitive-icon>
+        <span class="slds-order_1 avonni-button_label">{label}</span>
+        <div if:true={displayMedia} class={computedMediaClass}>
+            <c-avatar
+                if:true={src}
+                hide-avatar-details
+                size={iconSize}
+                src={src}
+            ></c-avatar>
+            <c-primitive-icon
+                if:true={displayIcon}
+                icon-name={iconName}
+                svg-class={computedIconClass}
+                variant="bare"
+            ></c-primitive-icon>
+        </div>
     </button>
 </template>

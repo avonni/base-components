@@ -152,6 +152,7 @@ export default class PrimitiveButton extends LightningElement {
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
+    _src;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -342,7 +343,6 @@ export default class PrimitiveButton extends LightningElement {
     /**
      * Indicates that the button has an interactive popup element.
      * Valid values are 'true', 'dialog', 'menu', 'listbox', 'tree', and 'grid' based on ARIA 1.1 specifications.
-     * The default value is undefined.
      *
      * @type {string}
      * @default undefined
@@ -513,6 +513,20 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
+     * URL to set for the 'src' attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get src() {
+        return this._src;
+    }
+    set src(value) {
+        this._src = value;
+    }
+
+    /**
      * Specifies the type of button.
      * Valid values are button, reset, and submit.
      * This value defaults to button.
@@ -532,7 +546,7 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.
      *
      * @type {string}
      * @default neutral
@@ -603,14 +617,6 @@ export default class PrimitiveButton extends LightningElement {
             : this.label
             ? 'neutral'
             : 'border';
-    }
-
-    get showIconLeft() {
-        return this.iconName && this.iconPosition === 'left';
-    }
-
-    get showIconRight() {
-        return this.iconName && this.iconPosition === 'right';
     }
 
     /*
