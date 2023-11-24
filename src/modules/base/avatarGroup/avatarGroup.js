@@ -6,7 +6,6 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    observePosition,
     timeout
 } from 'c/utilsPrivate';
 import {
@@ -125,7 +124,7 @@ export default class AvatarGroup extends LightningElement {
 
     showHiddenItems = false;
     _autoPosition;
-    _boundingRect;
+    _connected = false;
     _focusAnimationFrame;
     _focusedIndex = 0;
     _hiddenItemsStartIndex = 0;
@@ -140,6 +139,7 @@ export default class AvatarGroup extends LightningElement {
             'actionclick',
             this.handleAvatarActionClick
         );
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -152,8 +152,9 @@ export default class AvatarGroup extends LightningElement {
 
         if (this.isNotList) {
             this.updateVisibleMaxCount();
+        } else {
+            this.handleListScroll();
         }
-        this.handleListScroll();
 
         const avatars = this.template.querySelectorAll(
             '[data-group-name="avatar"]'
@@ -190,6 +191,12 @@ export default class AvatarGroup extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected && this.isNotList) {
+            this.updateVisibleMaxCount();
+        } else if (this._connected) {
+            this.handleListScroll();
+        }
     }
 
     /**
@@ -724,7 +731,11 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get showLoadingSpinner() {
-        return this.isNotList && this.isLoading && !this.showMoreButton;
+        return (
+            this.isLoading &&
+            !this.showMoreButton &&
+            (this.isNotList || !this.showMoreButton)
+        );
     }
 
     /**
@@ -938,22 +949,6 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    pollBoundingRect() {
-        setTimeout(
-            () => {
-                if (this._connected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    // continue polling
-                    this.pollBoundingRect();
-                }
-            },
-            250 // check every 0.25 second
-        );
-    }
-
     /**
      * Update the focused index.
      *
@@ -1047,8 +1042,6 @@ export default class AvatarGroup extends LightningElement {
         if (this.showHiddenItems) {
             if (this.isNotList) {
                 this.startPositioning();
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
             }
 
             this._hiddenItemsStartIndex = this.computedMaxCount;
@@ -1385,6 +1378,7 @@ export default class AvatarGroup extends LightningElement {
          * @event
          * @name itemsvisibilitytoggle
          * @param {boolean} show True if avatars are currently hidden and the click was meant to show more of them. False if the click was meant to hide the visible avatars.
+         * @param {number} visibleItemsLength Length of the currently visible items.
          * @public
          * @cancelable
          */
