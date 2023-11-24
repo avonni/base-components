@@ -14,10 +14,12 @@ import PrimitiveButton from 'c/primitiveButton';
 export default class Button extends PrimitiveButton {
     _stretch = false;
 
-    /**
-     * Once we are connected, we fire a register event so the button-group (or other) component can register
-     * the buttons.
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
      */
+
     connectedCallback() {
         super.connectedCallback();
         this._connected = true;
@@ -40,6 +42,95 @@ export default class Button extends PrimitiveButton {
      */
 
     /**
+     * If present, the button can't be clicked by users.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disabled() {
+        return super.disabled;
+    }
+    set disabled(value) {
+        super.disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The Lightning Design System name of the icon.
+     * Names are written in the format 'utility:down' where 'utility' is the category,
+     * and 'down' is the specific icon to be displayed.
+     *
+     * @type {string}
+     */
+    @api
+    get iconName() {
+        return super.iconName;
+    }
+    set iconName(value) {
+        super.iconName = value;
+    }
+
+    /**
+     * Describes the position of the icon with respect to the button label. Options include left and right.
+     *
+     * @public
+     * @type {string}
+     * @default left
+     */
+    @api
+    get iconPosition() {
+        return super.iconPosition;
+    }
+    set iconPosition(value) {
+        super.iconPosition = value;
+    }
+
+    /**
+     * The size of the icon. Options include xx-small, x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default medium
+     */
+    @api
+    get iconSize() {
+        return super.iconSize;
+    }
+    set iconSize(value) {
+        super.iconSize = value;
+    }
+
+    /**
+     * The text to be displayed inside the button.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get label() {
+        return super.label;
+    }
+    set label(value) {
+        super.label = value;
+    }
+
+    /**
+     * The name for the button element.
+     * This value is optional and can be used to identify the button in a callback.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get name() {
+        return super.name;
+    }
+    set name(value) {
+        super.name = value;
+    }
+
+    /**
      * Setting it to true allows the button to take up the entire available width.
      * This value defaults to false.
      *
@@ -55,12 +146,64 @@ export default class Button extends PrimitiveButton {
         this._stretch = normalizeBoolean(value);
     }
 
+    /**
+     * Specifies the type of button.
+     * Valid values are button, reset, and submit.
+     * This value defaults to button.
+     *
+     * @public
+     * @type {string}
+     * @default button
+     */
+    @api
+    get type() {
+        return super.type;
+    }
+    set type(value) {
+        super.type = value;
+    }
+
+    /**
+     * The value for the button element.
+     * This value is optional and can be used when submitting a form.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get value() {
+        return super.value;
+    }
+    set value(value) {
+        super.value = value;
+    }
+
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.
+     *
+     * @public
+     * @type {string}
+     * @default neutral
+     */
+    @api
+    get variant() {
+        return super.variant;
+    }
+    set variant(value) {
+        super.variant = value;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
 
+    /**
+     * Returns the button element.
+     *
+     * @type {Element}
+     */
     get button() {
         return isCSR
             ? this.template.querySelector('[data-element-id="button"]')
@@ -96,6 +239,11 @@ export default class Button extends PrimitiveButton {
             });
     }
 
+    /**
+     * Computed media class styling.
+     *
+     * @type {string}
+     */
     get computedMediaClass() {
         return classSet('').add({
             'slds-order_0': this.iconPosition === 'left',
@@ -105,11 +253,21 @@ export default class Button extends PrimitiveButton {
         });
     }
 
-    get displayIcon() {
+    /**
+     * Display icon only if iconName is set and src is not set.
+     *
+     * @type {boolean}
+     */
+    get showIcon() {
         return this.iconName && !this.src;
     }
 
-    get displayMedia() {
+    /**
+     * Display avatar or icon if they are set.
+     *
+     * @type {boolean}
+     */
+    get showMedia() {
         return this.iconName || this.src;
     }
 
@@ -120,7 +278,9 @@ export default class Button extends PrimitiveButton {
      */
 
     /**
-     * Simulates a mouse click on the button.
+     * Simulate a click on the button.
+     *
+     * @public
      */
     @api
     click() {
@@ -130,7 +290,9 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
-     * Sets focus on the button.
+     * Set focus on the button.
+     *
+     * @public
      */
     @api
     focus() {
@@ -145,10 +307,16 @@ export default class Button extends PrimitiveButton {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Blur handler.
+     */
     handleButtonBlur() {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
+    /**
+     * Click handler.
+     */
     handleButtonClick() {
         // In native shadow mode, parent form can't be submitted from within the
         // shadow boundary, so we need to manually find the parent form and submit.
@@ -161,6 +329,9 @@ export default class Button extends PrimitiveButton {
         }
     }
 
+    /**
+     * Focus handler.
+     */
     handleButtonFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }

@@ -484,6 +484,12 @@ export default class PrimitiveButton extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * Describes the position of the icon with respect to the button label. Options include left and right.
+     *
+     * @type {string}
+     * @default left
+     */
     @api
     get iconPosition() {
         return this._iconPosition;

@@ -23,7 +23,7 @@
         onclick={handleButtonClick}
     >
         <span class="slds-order_1 avonni-button_label">{label}</span>
-        <div if:true={displayMedia} class={computedMediaClass}>
+        <div if:true={showMedia} class={computedMediaClass}>
             <c-avatar
                 if:true={src}
                 hide-avatar-details
@@ -31,7 +31,7 @@
                 src={src}
             ></c-avatar>
             <c-primitive-icon
-                if:true={displayIcon}
+                if:true={showIcon}
                 icon-name={iconName}
                 svg-class={computedIconClass}
                 variant="bare"
