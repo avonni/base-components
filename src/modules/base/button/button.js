@@ -1,5 +1,5 @@
 import { api } from 'lwc';
-import { normalizeBoolean, isCSR } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString, isCSR } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import PrimitiveButton from 'c/primitiveButton';
 
@@ -11,7 +11,14 @@ import PrimitiveButton from 'c/primitiveButton';
  * @storyId example-button--base
  * @public
  */
+
+const ICON_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+
 export default class Button extends PrimitiveButton {
+    _iconSize = ICON_SIZES.default;
     _stretch = false;
 
     /*
@@ -87,18 +94,21 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
-     * The size of the icon. Options include xx-small, x-small, small, medium or large.
+     * The size of the icon. Options include x-small, small, medium or large.
      *
      * @public
      * @type {string}
-     * @default xx-small
+     * @default x-small
      */
     @api
     get iconSize() {
-        return super.iconSize;
+        return this._iconSize;
     }
     set iconSize(value) {
-        super.iconSize = value;
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
     }
 
     /**
@@ -112,7 +122,6 @@ export default class Button extends PrimitiveButton {
         return super.iconSrc;
     }
     set iconSrc(value) {
-        console.log('iconSrc', value);
         super.iconSrc = value;
     }
 
@@ -245,12 +254,7 @@ export default class Button extends PrimitiveButton {
                     this.computedVariant === 'destructive-text',
                 'slds-button_success': this.computedVariant === 'success',
                 'slds-button_stretch': this.stretch,
-                'avonni-button__container_small':
-                    this.iconSize === 'small' && this.iconSrc,
-                'avonni-button__container_medium':
-                    this.iconSize === 'medium' && this.iconSrc,
-                'avonni-button__container_large':
-                    this.iconSize === 'large' && this.iconSrc
+                'avonni-button__container_large': this.iconSize === 'large'
             });
     }
 
@@ -275,6 +279,24 @@ export default class Button extends PrimitiveButton {
                 this.iconPosition === 'right' && this.iconSrc,
             'slds-grid': this.iconSrc
         });
+    }
+
+    /**
+     * Computed size for the icon.
+     *
+     * @type {string}
+     */
+    get computedIconSize() {
+        switch (this.iconSize) {
+            case 'x-small':
+                return 'xx-small';
+            case 'small':
+                return 'x-small';
+            case 'medium':
+                return 'small';
+            default:
+                return this.iconSize;
+        }
     }
 
     /**

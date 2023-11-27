@@ -17,24 +17,19 @@
     border-color: var(--avonni-button-image-color-border);
 }
 
-.avonni-button__image_xx-small {
+.avonni-button__image_x-small {
     width: 0.875rem;
     height: 0.875rem;
 }
 
-.avonni-button__image_x-small {
+.avonni-button__image_small {
     width: 1rem;
     height: 1rem;
 }
 
-.avonni-button__image_small {
+.avonni-button__image_medium {
     width: 1.5rem;
     height: 1.5rem;
-}
-
-.avonni-button__image_medium {
-    width: 2rem;
-    height: 2rem;
 }
 
 .avonni-button__image_large {
@@ -748,14 +743,6 @@
     );
 }
 
-.avonni-button__container_small {
-    height: 2.25rem;
-}
-
-.avonni-button__container_medium {
-    height: 3rem;
-}
-
 .avonni-button__container_large {
-    height: 3.75rem;
+    height: 3.5rem;
 }

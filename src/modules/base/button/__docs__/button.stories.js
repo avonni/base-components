@@ -54,9 +54,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: ['x-small', 'small', 'medium', 'large'],
             description:
-                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
+                'The size of the icon. Options include x-small, small, medium, or large.',
             table: {
                 type: { summary: 'string' },
                 category: 'icon'
@@ -155,7 +155,7 @@ export default {
     args: {
         disabled: false,
         iconPosition: 'left',
-        iconSize: 'xx-small',
+        iconSize: 'x-small',
         stretch: false,
         type: 'button',
         variant: 'neutral'

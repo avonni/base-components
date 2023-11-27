@@ -1082,3 +1082,24 @@
  * @type color
  * @default #fff
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-radius-border
+ * @type radius
+ * @default 0.25rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-sizing-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-styling-border
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-button-image-color-border
+ * @type color
+ */
