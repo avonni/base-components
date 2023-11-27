@@ -31,6 +31,11 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const IMAGE_VARIANTS = {
+    valid: ['circle', 'square'],
+    default: 'square'
+};
+
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
@@ -152,7 +157,8 @@ export default class PrimitiveButton extends LightningElement {
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
-    _src;
+    _imageSrc;
+    _imageVariant = IMAGE_VARIANTS.default;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -519,17 +525,35 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * URL to set for the 'src' attribute.
+     * URL to set for the image attribute.
      *
      * @public
      * @type {string}
      */
     @api
-    get src() {
-        return this._src;
+    get imageSrc() {
+        return this._imageSrc;
     }
-    set src(value) {
-        this._src = value;
+    set imageSrc(value) {
+        this._imageSrc = value;
+    }
+
+    /**
+     * The variant changes the shape of the image. Valid values includes circle and square.
+     *
+     * @public
+     * @type {string}
+     * @default square
+     */
+    @api
+    get imageVariant() {
+        return this._imageVariant;
+    }
+    set imageVariant(value) {
+        this._imageVariant = normalizeString(value, {
+            fallbackValue: IMAGE_VARIANTS.default,
+            validValues: IMAGE_VARIANTS.valid
+        });
     }
 
     /**

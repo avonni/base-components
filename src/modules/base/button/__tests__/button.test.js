@@ -18,7 +18,18 @@ describe('Button', () => {
 
     describe('Attributes', () => {
         it('Default attributes', () => {
+            expect(element.disabled).toBeFalsy();
+            expect(element.iconName).toBeUndefined();
+            expect(element.iconPosition).toBe('left');
+            expect(element.iconSize).toBe('medium');
+            expect(element.imageSrc).toBeUndefined();
+            expect(element.imageVariant).toBe('square');
+            expect(element.label).toBeUndefined();
+            expect(element.name).toBeUndefined();
             expect(element.stretch).toBeFalsy();
+            expect(element.type).toBe('button');
+            expect(element.value).toBeUndefined();
+            expect(element.variant).toBe('neutral');
         });
 
         it('stretch', () => {

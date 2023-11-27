@@ -102,6 +102,35 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get imageSrc() {
+        return super.imageSrc;
+    }
+    set imageSrc(value) {
+        super.imageSrc = value;
+    }
+
+    /**
+     * The variant changes the shape of the image. Valid values includes circle and square.
+     *
+     * @public
+     * @type {string}
+     * @default square
+     */
+    @api
+    get imageVariant() {
+        return super.imageVariant;
+    }
+    set imageVariant(value) {
+        super.imageVariant = value;
+    }
+
+    /**
      * The text to be displayed inside the button.
      *
      * @public

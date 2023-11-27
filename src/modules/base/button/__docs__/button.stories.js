@@ -62,6 +62,28 @@ export default {
                 category: 'icon'
             }
         },
+        imageSrc: {
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        imageVariant: {
+            name: 'image-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['circle', 'square'],
+            description:
+                'The variant changes the look of the image. Accepted variants include circle and square.',
+            table: {
+                defaultValue: { summary: 'square' },
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -77,15 +99,6 @@ export default {
             },
             description:
                 'Specifies the name of an input element when a form is submitted.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        src: {
-            control: {
-                type: 'text'
-            },
-            description: "URL to set for the 'src' attribute.",
             table: {
                 type: { summary: 'string' }
             }

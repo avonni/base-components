@@ -8,9 +8,10 @@ export const Button = ({
     iconName,
     iconPosition,
     iconSize,
+    imageSrc,
+    imageVariant,
     label,
     name,
-    src,
     stretch,
     type,
     variant
@@ -21,9 +22,10 @@ export const Button = ({
     element.iconName = iconName;
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;
+    element.imageSrc = imageSrc;
+    element.imageVariant = imageVariant;
     element.label = label;
     element.name = name;
-    element.src = src;
     element.stretch = stretch;
     element.type = type;
     element.variant = variant;
