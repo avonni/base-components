@@ -1,11 +1,11 @@
-import Component from 'avonni/verticalVisualPicker';
+import Component from '../../storybookWrappers/verticalVisualPicker/infiniteLoadingUsingShowMore';
 
 customElements.define(
-    'ac-base-vertical-visual-picker',
+    'ac-base-vertical-visual-picker-infinite-loading-using-show-more',
     Component.CustomElementConstructor
 );
 
-export const VerticalVisualPicker = ({
+export const InfiniteLoadingUsingShowMoreVerticalVisualPicker = ({
     disabled,
     enableInfiniteLoading,
     hideCheckMark,
@@ -22,7 +22,9 @@ export const VerticalVisualPicker = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-base-vertical-visual-picker');
+    const element = document.createElement(
+        'ac-base-vertical-visual-picker-infinite-loading-using-show-more'
+    );
     element.disabled = disabled;
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.hideCheckMark = hideCheckMark;

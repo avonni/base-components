@@ -272,6 +272,27 @@
     width: 10%;
 }
 
+/*-- infinite loading --*/
+.avonni-vertical-visual-picker__loading-spinner {
+    height: 3rem;
+}
+
+.avonni-vertical-visual-picker__wrapper_full-height {
+    height: 100%;
+}
+
+.avonni-vertical-visual-picker__item-wrapper_full-height {
+    height: calc(
+        100% - var(--avonni-vertical-visual-picker-legend-height, 0px)
+    );
+}
+
+.avonni-vertical-visual-picker__fieldset_full-height {
+    height: calc(
+        100% - var(--avonni-vertical-visual-picker-help-message-height, 0px)
+    );
+}
+
 /*-- sub items --*/
 .avonni-vertical-visual-picker__sub-items {
     background-color: var(
