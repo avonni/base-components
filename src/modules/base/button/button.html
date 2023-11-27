@@ -1,6 +1,8 @@
 <template>
     <button
+        if:true={showButton}
         class={computedButtonClass}
+        accesskey={accessKey}
         aria-atomic={computedAriaAtomic}
         aria-busy={computedAriaBusy}
         aria-disabled={disabled}
@@ -12,9 +14,7 @@
         aria-relevant={computedAriaRelevant}
         disabled={disabled}
         name={name}
-        accesskey={accessKey}
-        title={title}
-        type={normalizedType}
+        type={type}
         value={value}
         tabindex={tabIndex}
         data-element-id="button"
@@ -22,15 +22,27 @@
         onblur={handleButtonBlur}
         onclick={handleButtonClick}
     >
-        <span class="slds-order_1 avonni-button_label">{label}</span>
-        <div if:true={showMedia} class={computedMediaClass}>
-            <img class={computedImageClass} if:true={iconSrc} src={iconSrc} />
+        <span class="slds-order_1 avonni-button_label" data-element-id="label">
+            {label}
+        </span>
+        <div
+            if:true={showMedia}
+            class={computedIconContainerClass}
+            data-element-id="icon-container"
+        >
+            <img
+                if:true={iconSrc}
+                class={computedImageClass}
+                src={iconSrc}
+                data-element-id="image"
+            />
             <c-primitive-icon
                 if:true={showIcon}
                 icon-name={iconName}
                 size={computedIconSize}
                 svg-class={computedIconClass}
                 variant="bare"
+                data-element-id="primitive-icon"
             ></c-primitive-icon>
         </div>
     </button>

@@ -59,6 +59,7 @@ export default {
             description:
                 'The size of the icon. Options include x-small, small, medium, or large.',
             table: {
+                defaultValue: { summary: 'x-small' },
                 type: { summary: 'string' },
                 category: 'icon'
             }
@@ -146,7 +147,7 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, inverse, neutral and success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' }
@@ -251,11 +252,12 @@ DestructiveText.args = {
     variant: 'destructive-text'
 };
 
-export const Inverse = Template.bind({});
-Inverse.parameters = darkBackground;
-Inverse.args = {
+export const InverseStretch = Template.bind({});
+InverseStretch.parameters = darkBackground;
+InverseStretch.args = {
     iconName: 'utility:animal_and_nature',
     label: 'Button',
+    stretch: true,
     variant: 'inverse'
 };
 
@@ -263,8 +265,7 @@ export const NeutralIconRight = Template.bind({});
 NeutralIconRight.args = {
     iconName: 'utility:animal_and_nature',
     iconPosition: 'right',
-    label: 'Button',
-    variant: 'neutral'
+    label: 'Button'
 };
 
 export const Success = Template.bind({});

@@ -172,8 +172,7 @@ export default class Button extends PrimitiveButton {
 
     /**
      * Specifies the type of button.
-     * Valid values are button, reset, and submit.
-     * This value defaults to button.
+     * Options include button, reset, and submit.
      *
      * @public
      * @type {string}
@@ -259,18 +258,12 @@ export default class Button extends PrimitiveButton {
             });
     }
 
-    get computedImageClass() {
-        return classSet('avonni-button__image')
-            .add(`avonni-button__image_${this.iconSize}`)
-            .toString();
-    }
-
     /**
-     * Computed media class styling.
+     * Computed icon container class styling.
      *
      * @type {string}
      */
-    get computedMediaClass() {
+    get computedIconContainerClass() {
         return classSet('').add({
             'slds-order_0': this.iconPosition === 'left',
             'slds-order_2': this.iconPosition === 'right',
@@ -280,6 +273,17 @@ export default class Button extends PrimitiveButton {
                 this.iconPosition === 'right' && this.iconSrc,
             'slds-grid': this.iconSrc
         });
+    }
+
+    /**
+     * Computed image class styling.
+     *
+     * @type {string}
+     */
+    get computedImageClass() {
+        return classSet('avonni-button__image')
+            .add(`avonni-button__image_${this.iconSize}`)
+            .toString();
     }
 
     /**
@@ -298,6 +302,15 @@ export default class Button extends PrimitiveButton {
             default:
                 return this.iconSize;
         }
+    }
+
+    /**
+     * Display button only if label is set or showIcon is true.
+     *
+     * @type {boolean}
+     */
+    get showButton() {
+        return this.label || this.showMedia;
     }
 
     /**
@@ -374,6 +387,8 @@ export default class Button extends PrimitiveButton {
                 form.requestSubmit();
             }
         }
+
+        this.dispatchEvent(new CustomEvent('click'));
     }
 
     /**

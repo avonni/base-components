@@ -534,8 +534,7 @@ export default class PrimitiveButton extends LightningElement {
 
     /**
      * Specifies the type of button.
-     * Valid values are button, reset, and submit.
-     * This value defaults to button.
+     * Options include button, reset, and submit.
      *
      * @type {string}
      * @default button
