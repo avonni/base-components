@@ -62,26 +62,15 @@ export default {
                 category: 'icon'
             }
         },
-        imageSrc: {
+        iconSrc: {
+            name: 'icon-src',
             control: {
                 type: 'text'
             },
             description: 'URL to set for the image attribute.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        imageVariant: {
-            name: 'image-variant',
-            control: {
-                type: 'select'
-            },
-            options: ['circle', 'square'],
-            description:
-                'The variant changes the look of the image. Accepted variants include circle and square.',
-            table: {
-                defaultValue: { summary: 'square' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         label: {
@@ -166,7 +155,7 @@ export default {
     args: {
         disabled: false,
         iconPosition: 'left',
-        iconSize: 'medium',
+        iconSize: 'xx-small',
         stretch: false,
         type: 'button',
         variant: 'neutral'
@@ -178,7 +167,7 @@ const Template = (args) => Button(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Show modal',
-    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     variant: 'success'
 };
 

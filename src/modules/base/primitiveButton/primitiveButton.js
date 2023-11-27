@@ -31,11 +31,6 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
-const IMAGE_VARIANTS = {
-    valid: ['circle', 'square'],
-    default: 'square'
-};
-
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
@@ -43,7 +38,7 @@ const ICON_POSITIONS = {
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
+    default: 'xx-small'
 };
 
 const TYPES = {
@@ -157,8 +152,7 @@ export default class PrimitiveButton extends LightningElement {
     _disabled = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
-    _imageSrc;
-    _imageVariant = IMAGE_VARIANTS.default;
+    _iconSrc;
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
@@ -511,7 +505,7 @@ export default class PrimitiveButton extends LightningElement {
      * The size of the icon. Options include xx-small, x-small, small, medium or large.
      *
      * @type {string}
-     * @default medium
+     * @default xx-small
      */
     @api
     get iconSize() {
@@ -531,29 +525,11 @@ export default class PrimitiveButton extends LightningElement {
      * @type {string}
      */
     @api
-    get imageSrc() {
-        return this._imageSrc;
+    get iconSrc() {
+        return this._iconSrc;
     }
-    set imageSrc(value) {
-        this._imageSrc = value;
-    }
-
-    /**
-     * The variant changes the shape of the image. Valid values includes circle and square.
-     *
-     * @public
-     * @type {string}
-     * @default square
-     */
-    @api
-    get imageVariant() {
-        return this._imageVariant;
-    }
-    set imageVariant(value) {
-        this._imageVariant = normalizeString(value, {
-            fallbackValue: IMAGE_VARIANTS.default,
-            validValues: IMAGE_VARIANTS.valid
-        });
+    set iconSrc(value) {
+        this._iconSrc = value;
     }
 
     /**
@@ -637,7 +613,7 @@ export default class PrimitiveButton extends LightningElement {
     }
 
     /**
-     * Computed variant.
+     * Computed variant returns the default variant depending on label.
      *
      * @type {string}
      */

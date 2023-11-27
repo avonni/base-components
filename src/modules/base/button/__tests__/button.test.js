@@ -22,8 +22,7 @@ describe('Button', () => {
             expect(element.iconName).toBeUndefined();
             expect(element.iconPosition).toBe('left');
             expect(element.iconSize).toBe('medium');
-            expect(element.imageSrc).toBeUndefined();
-            expect(element.imageVariant).toBe('square');
+            expect(element.iconSrc).toBeUndefined();
             expect(element.label).toBeUndefined();
             expect(element.name).toBeUndefined();
             expect(element.stretch).toBeFalsy();

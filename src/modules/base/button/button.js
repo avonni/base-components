@@ -91,7 +91,7 @@ export default class Button extends PrimitiveButton {
      *
      * @public
      * @type {string}
-     * @default medium
+     * @default xx-small
      */
     @api
     get iconSize() {
@@ -108,26 +108,12 @@ export default class Button extends PrimitiveButton {
      * @type {string}
      */
     @api
-    get imageSrc() {
-        return super.imageSrc;
+    get iconSrc() {
+        return super.iconSrc;
     }
-    set imageSrc(value) {
-        super.imageSrc = value;
-    }
-
-    /**
-     * The variant changes the shape of the image. Valid values includes circle and square.
-     *
-     * @public
-     * @type {string}
-     * @default square
-     */
-    @api
-    get imageVariant() {
-        return super.imageVariant;
-    }
-    set imageVariant(value) {
-        super.imageVariant = value;
+    set iconSrc(value) {
+        console.log('iconSrc', value);
+        super.iconSrc = value;
     }
 
     /**
@@ -259,13 +245,19 @@ export default class Button extends PrimitiveButton {
                     this.computedVariant === 'destructive-text',
                 'slds-button_success': this.computedVariant === 'success',
                 'slds-button_stretch': this.stretch,
-                'avonni-button__avatar_small':
-                    this.iconSize === 'small' && this.src,
-                'avonni-button__avatar_medium':
-                    this.iconSize === 'medium' && this.src,
-                'avonni-button__avatar_large':
-                    this.iconSize === 'large' && this.src
+                'avonni-button__container_small':
+                    this.iconSize === 'small' && this.iconSrc,
+                'avonni-button__container_medium':
+                    this.iconSize === 'medium' && this.iconSrc,
+                'avonni-button__container_large':
+                    this.iconSize === 'large' && this.iconSrc
             });
+    }
+
+    get computedImageClass() {
+        return classSet('avonni-button__image')
+            .add(`avonni-button__image_${this.iconSize}`)
+            .toString();
     }
 
     /**
@@ -277,8 +269,11 @@ export default class Button extends PrimitiveButton {
         return classSet('').add({
             'slds-order_0': this.iconPosition === 'left',
             'slds-order_2': this.iconPosition === 'right',
-            'slds-m-right_x-small': this.iconPosition === 'left' && this.src,
-            'slds-m-left_x-small': this.iconPosition === 'right' && this.src
+            'slds-m-right_x-small':
+                this.iconPosition === 'left' && this.iconSrc,
+            'slds-m-left_x-small':
+                this.iconPosition === 'right' && this.iconSrc,
+            'slds-grid': this.iconSrc
         });
     }
 
@@ -288,7 +283,7 @@ export default class Button extends PrimitiveButton {
      * @type {boolean}
      */
     get showIcon() {
-        return this.iconName && !this.src;
+        return this.iconName && !this.iconSrc;
     }
 
     /**
@@ -297,7 +292,7 @@ export default class Button extends PrimitiveButton {
      * @type {boolean}
      */
     get showMedia() {
-        return this.iconName || this.src;
+        return this.iconName || this.iconSrc;
     }
 
     /*

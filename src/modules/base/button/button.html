@@ -24,16 +24,11 @@
     >
         <span class="slds-order_1 avonni-button_label">{label}</span>
         <div if:true={showMedia} class={computedMediaClass}>
-            <c-avatar
-                if:true={src}
-                hide-avatar-details
-                size={iconSize}
-                src={imageSrc}
-                variant={imageVariant}
-            ></c-avatar>
+            <img class={computedImageClass} if:true={iconSrc} src={iconSrc} />
             <c-primitive-icon
                 if:true={showIcon}
                 icon-name={iconName}
+                size={iconSize}
                 svg-class={computedIconClass}
                 variant="bare"
             ></c-primitive-icon>
