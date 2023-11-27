@@ -235,7 +235,11 @@ export default {
 
 const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
-
+const darkBackground = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
 export const Border = Template.bind({});
 
 export const BorderWithLabel = Template.bind({});
@@ -255,42 +259,26 @@ BareWithLabel.args = {
 };
 
 export const BareInverse = Template.bind({});
-BareInverse.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BareInverse.parameters = darkBackground;
 BareInverse.args = {
     variant: 'bare-inverse'
 };
 
 export const BareInverseWithLabel = Template.bind({});
-BareInverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BareInverseWithLabel.parameters = darkBackground;
 BareInverseWithLabel.args = {
     variant: 'bare-inverse',
     label: 'Menu'
 };
 
 export const BorderInverse = Template.bind({});
-BorderInverse.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BorderInverse.parameters = darkBackground;
 BorderInverse.args = {
     variant: 'border-inverse'
 };
 
 export const BorderInverseWithLabel = Template.bind({});
-BorderInverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+BorderInverseWithLabel.parameters = darkBackground;
 BorderInverseWithLabel.args = {
     variant: 'border-inverse',
     label: 'Menu'
@@ -352,21 +340,13 @@ DestructiveTextWithLabel.args = {
 };
 
 export const InverseXxSmall = Template.bind({});
-InverseXxSmall.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+InverseXxSmall.parameters = darkBackground;
 InverseXxSmall.args = {
     variant: 'inverse'
 };
 
 export const InverseWithLabel = Template.bind({});
-InverseWithLabel.parameters = {
-    backgrounds: {
-        default: 'dark'
-    }
-};
+InverseWithLabel.parameters = darkBackground;
 InverseWithLabel.args = {
     variant: 'inverse',
     label: 'Menu'

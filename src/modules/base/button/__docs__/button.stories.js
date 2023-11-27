@@ -1,4 +1,5 @@
 import { Button } from '../__examples__/button';
+import ButtonVariantsComponent from './variants/variants';
 
 export default {
     title: 'Example/Button',
@@ -163,69 +164,136 @@ export default {
 };
 
 const Template = (args) => Button(args);
+const darkBackground = {
+    backgrounds: {
+        default: 'dark'
+    }
+};
+
+export const Bare = Template.bind({});
+Bare.args = {
+    label: 'Button',
+    variant: 'bare'
+};
+
+export const BareInverseImage = Template.bind({});
+BareInverseImage.parameters = darkBackground;
+BareInverseImage.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    label: 'Button',
+    variant: 'bare-inverse'
+};
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Show modal',
-    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-    variant: 'success'
+    label: 'Button'
 };
 
-export const NeutralWithIconRight = Template.bind({});
-NeutralWithIconRight.args = {
-    label: 'Show modal',
+export const Border = Template.bind({});
+Border.args = {
+    iconName: 'utility:animal_and_nature',
+    label: 'Button',
+    variant: 'border'
+};
+
+export const BorderFilled = Template.bind({});
+BorderFilled.parameters = darkBackground;
+BorderFilled.args = {
+    iconName: 'utility:animal_and_nature',
+    label: 'Button',
+    variant: 'border-filled'
+};
+
+export const BorderInverseIconRight = Template.bind({});
+BorderInverseIconRight.parameters = darkBackground;
+BorderInverseIconRight.args = {
     iconName: 'utility:animal_and_nature',
     iconPosition: 'right',
-    variant: 'neutral'
+    label: 'Button',
+    variant: 'border-inverse'
 };
 
-export const Brand = Template.bind({});
-Brand.args = {
-    label: 'Show modal',
+export const BrandSmallIcon = Template.bind({});
+BrandSmallIcon.args = {
     iconName: 'utility:einstein',
+    iconSize: 'small',
+    label: 'Button',
     variant: 'brand'
 };
 
-export const BrandOutline = Template.bind({});
-BrandOutline.args = {
-    label: 'Show modal',
+export const BrandOutlineMediumIcon = Template.bind({});
+BrandOutlineMediumIcon.args = {
     iconName: 'utility:einstein',
+    iconSize: 'medium',
+    label: 'Button',
     variant: 'brand-outline'
+};
+
+export const ContainerLargeIcon = Template.bind({});
+ContainerLargeIcon.args = {
+    iconName: 'utility:animal_and_nature',
+    iconSize: 'large',
+    label: 'Button',
+    variant: 'container'
 };
 
 export const Destructive = Template.bind({});
 Destructive.args = {
-    label: 'Show modal',
     iconName: 'utility:error',
+    label: 'Button',
     variant: 'destructive'
 };
 
 export const DestructiveText = Template.bind({});
 DestructiveText.args = {
-    label: 'Show modal',
     iconName: 'utility:error',
+    label: 'Button',
     variant: 'destructive-text'
 };
 
 export const Inverse = Template.bind({});
+Inverse.parameters = darkBackground;
 Inverse.args = {
-    label: 'Show modal',
     iconName: 'utility:animal_and_nature',
+    label: 'Button',
     variant: 'inverse'
+};
+
+export const NeutralIconRight = Template.bind({});
+NeutralIconRight.args = {
+    iconName: 'utility:animal_and_nature',
+    iconPosition: 'right',
+    label: 'Button',
+    variant: 'neutral'
 };
 
 export const Success = Template.bind({});
 Success.args = {
-    label: 'Show modal',
     iconName: 'utility:success',
-    variant: 'success',
-    alternativeText: 'This is a success button dialog'
+    label: 'Button',
+    variant: 'success'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    label: 'Show modal',
+    disabled: true,
     iconName: 'utility:animal_and_nature',
-    variant: 'success',
-    disabled: true
+    label: 'Button',
+    variant: 'success'
 };
+
+/**
+ * Example with different combinations of sizes, fallback icon types.
+ * Allows to quickly scan if there is any problems.
+ */
+customElements.define(
+    'ac-base-button-variants',
+    ButtonVariantsComponent.CustomElementConstructor
+);
+const ButtonVariants = ({ variant }) => {
+    const element = document.createElement('ac-base-button-variants');
+    element.variant = variant;
+    return element;
+};
+const TemplateVariants = (args) => ButtonVariants(args);
+export const Variants = TemplateVariants.bind({});

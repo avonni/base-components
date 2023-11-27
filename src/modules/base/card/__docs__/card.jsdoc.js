@@ -281,16 +281,18 @@
  * @memberof stylingHooks
  * @name --avonni-card-media-sizing-width
  * @type dimension
+ * @default 100%
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-media-sizing-height
  * @type dimension
+ * @default 100%
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-media-object-fit
- * @type keyword
+ * @type string
  */
 /**
  * @memberof stylingHooks

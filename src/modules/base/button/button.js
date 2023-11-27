@@ -254,7 +254,8 @@ export default class Button extends PrimitiveButton {
                     this.computedVariant === 'destructive-text',
                 'slds-button_success': this.computedVariant === 'success',
                 'slds-button_stretch': this.stretch,
-                'avonni-button__container_large': this.iconSize === 'large'
+                'avonni-button__container_large': this.iconSize === 'large',
+                'avonni-button__container_medium': this.iconSize === 'medium'
             });
     }
 

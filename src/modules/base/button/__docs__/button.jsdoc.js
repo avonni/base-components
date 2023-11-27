@@ -1082,6 +1082,7 @@
  * @type color
  * @default #fff
  */
+
 /**
  * @memberof stylingHooks
  * @name --avonni-button-image-radius-border
