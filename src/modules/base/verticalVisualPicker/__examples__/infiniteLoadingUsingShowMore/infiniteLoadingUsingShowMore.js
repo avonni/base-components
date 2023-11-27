@@ -1,6 +1,6 @@
 import { api, LightningElement } from 'lwc';
 
-export default class InfiniteLoadingUsingShowMoreVerticalVisualPicker extends LightningElement {
+export default class VerticalVisualPickerInfiniteLoadingUsingShowMore extends LightningElement {
     @api disabled;
     @api hideCheckMark;
     @api label;

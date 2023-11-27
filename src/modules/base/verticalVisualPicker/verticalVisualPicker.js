@@ -329,14 +329,29 @@ export default class VerticalVisualPicker extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Icon name of the show more/less button.
+     *
+     * @type {string}
+     */
     get currentShowButtonIconName() {
         return this._isCollapsed ? 'utility:down' : 'utility:up';
     }
 
+    /**
+     * Label of the show more/less button.
+     *
+     * @type {string}
+     */
     get currentShowButtonLabel() {
         return this._isCollapsed ? 'Show more' : 'Show less';
     }
 
+    /**
+     * Computed CSS classes for the fieldset.
+     *
+     * @type {string}
+     */
     get fieldsetClass() {
         return classSet('slds-form-element')
             .add({
@@ -355,6 +370,11 @@ export default class VerticalVisualPicker extends LightningElement {
         return this._variant === 'coverable';
     }
 
+    /**
+     * Computed CSS classes for the items wrapper.
+     *
+     * @type {string}
+     */
     get itemsWrapperClass() {
         return classSet('slds-form-element__control')
             .add({
@@ -403,6 +423,11 @@ export default class VerticalVisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Array of visible items.
+     *
+     * @type {object[]}
+     */
     get visibleItems() {
         return this.showMoreButton && this._isCollapsed
             ? this._computedItems.slice(0, this.maxCount)
@@ -445,6 +470,11 @@ export default class VerticalVisualPicker extends LightningElement {
         return this.template.querySelector('[data-element-id="input"]');
     }
 
+    /**
+     * True if the show more/less button should be visible.
+     *
+     * @type {boolean}
+     */
     get showMoreButton() {
         return (
             !this.enableInfiniteLoading &&
@@ -468,6 +498,11 @@ export default class VerticalVisualPicker extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * Computed CSS classes for the wrapper.
+     *
+     * @type {string}
+     */
     get wrapperClass() {
         return classSet({
             'avonni-vertical-visual-picker__wrapper_full-height':
@@ -579,6 +614,9 @@ export default class VerticalVisualPicker extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the `loadmore` event.
+     */
     _dispatchLoadMore() {
         /**
          * The event fired when you scroll to the end of the visual picker. This event is fired only if `enable-infinite-loading` is true.
@@ -590,6 +628,9 @@ export default class VerticalVisualPicker extends LightningElement {
         this.dispatchEvent(new CustomEvent('loadmore'));
     }
 
+    /**
+     * Initialize the items.
+     */
     _initItems() {
         this._computedItems = this.items.map((item) => {
             return new Item({
@@ -632,6 +673,9 @@ export default class VerticalVisualPicker extends LightningElement {
         }
     }
 
+    /**
+     * Set the CSS variables used to compute the height of the items wrapper in the infinite loading mode.
+     */
     _setCssVariables() {
         const wrapper = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
@@ -725,6 +769,9 @@ export default class VerticalVisualPicker extends LightningElement {
         event.currentTarget.click();
     }
 
+    /**
+     * Handle the scroll of the items wrapper.
+     */
     handleScroll() {
         if (!this.enableInfiniteLoading || this.isLoading) {
             return;
@@ -771,6 +818,9 @@ export default class VerticalVisualPicker extends LightningElement {
         this._refreshCheckedAttributes();
     }
 
+    /**
+     * Handle a click on the show more/less button.
+     */
     handleToggleShowMoreButton() {
         /**
          * The event fired when the show more/less button is clicked.
