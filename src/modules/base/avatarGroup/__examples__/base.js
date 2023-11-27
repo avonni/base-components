@@ -1,4 +1,4 @@
-import Component from 'avonni/avatarGroup';
+import Component from '../avatarGroup';
 
 customElements.define(
     'ac-base-avatar-group',
@@ -6,7 +6,9 @@ customElements.define(
 );
 
 export const AvatarGroup = ({
+    enableInfiniteLoading,
     variant,
+    isLoading,
     items,
     size,
     layout,
@@ -18,10 +20,13 @@ export const AvatarGroup = ({
     listButtonShowLessIconPosition,
     listButtonShowLessIconName,
     listButtonShowLessLabel,
+    loadMoreOffset,
     actionIconName,
     name
 }) => {
     const element = document.createElement('ac-base-avatar-group');
+    element.enableInfiniteLoading = enableInfiniteLoading;
+    element.isLoading = isLoading;
     element.items = items;
     element.variant = variant;
     element.layout = layout;
@@ -34,6 +39,7 @@ export const AvatarGroup = ({
     element.listButtonShowLessIconPosition = listButtonShowLessIconPosition;
     element.listButtonShowLessIconName = listButtonShowLessIconName;
     element.listButtonShowLessLabel = listButtonShowLessLabel;
+    element.loadMoreOffset = loadMoreOffset;
     element.actionIconName = actionIconName;
     element.name = name;
     return element;

@@ -7,18 +7,27 @@
 
 .avonni-avatar-group_in-line .avonni-avatar-group__avatar_color-border,
 li .avonni-avatar-group_in-line {
-    --avonni-avatar-color-border: var(--avonni-avatar-group-avatar-stack-color-border,
-            #ffffff);
-    --avonni-avatar-sizing-border: var(--avonni-avatar-group-avatar-stack-sizing-border,
-            1px);
-    --avonni-avatar-styling-border: var(--avonni-avatar-group-avatar-stack-styling-border,
-            solid);
-    background-color: var(--avonni-avatar-group-avatar-stack-color-border,
-            #ffffff);
+    --avonni-avatar-color-border: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
+    );
+    --avonni-avatar-sizing-border: var(
+        --avonni-avatar-group-avatar-stack-sizing-border,
+        1px
+    );
+    --avonni-avatar-styling-border: var(
+        --avonni-avatar-group-avatar-stack-styling-border,
+        solid
+    );
+    background-color: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
+    );
 }
 
 button.avonni-avatar-group__avatar-in-line-button {
-    border: var(--avonni-avatar-group-avatar-stack-sizing-border, 1px) solid var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
+    border: var(--avonni-avatar-group-avatar-stack-sizing-border, 1px) solid
+        var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
 }
 
 .avonni-avatar-group_x-large {
@@ -114,7 +123,7 @@ button.avonni-avatar-group__avatar-in-line-button {
     max-height: 200px;
 }
 
-.avonni-avatar-group__list-button+.slds-dropdown {
+.avonni-avatar-group__list-button + .slds-dropdown {
     margin-left: 0.75rem;
 }
 
@@ -204,10 +213,30 @@ button.avonni-avatar-group__avatar-in-line-button {
 
 .avonni-avatar-group__avatar_color-border {
     border: none;
-    background-color: var(--avonni-avatar-group-avatar-stack-color-border,
-            #ffffff);
+    background-color: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
+    );
 }
 
 .avonni-avatar-group__avatar_radius-border-square {
     border-radius: 4px;
+}
+
+.avonni-avatar-group__loading-spinner_x-large {
+    width: 3.4rem;
+    height: 3.4rem;
+}
+
+.avonni-avatar-group__loading-spinner_xx-large {
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+.avonni-avatar-group__loading-spinner {
+    height: 3rem;
+}
+
+.avonni-avatar-group__avatar-list_infinite-loading {
+    height: 100%;
 }
