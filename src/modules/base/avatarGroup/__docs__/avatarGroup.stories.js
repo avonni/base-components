@@ -1,8 +1,47 @@
-import { AvatarGroup } from '../__examples__/avatarGroup';
+import { AvatarGroup } from '../__examples__/base';
+import { InfiniteLoadingAvatarGroup } from '../__examples__/infiniteLoading';
+import { InfiniteLoadingUsingShowMoreAvatarGroup } from '../__examples__/infiniteLoadingUsingShowMore';
 
 export default {
     title: 'Example/Avatar Group',
     argTypes: {
+        actionIconName: {
+            name: 'action-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons',
+                subcategory: 'Action'
+            }
+        },
+        enableInfiniteLoading: {
+            name: 'enable-infinite-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, you can load a subset of items and then display more when users scroll to the end of the list. Use with the loadmore event to retrieve more items. If present, max-count is ignored.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a spinner is shown to indicate that more items are loading.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -11,37 +50,6 @@ export default {
                 'Fields: <ul><li>alternativeText</li> <li>fallbackIconName</li> <li>initials</li> <li>src</li> <li>status</li> <li>status-title</li> <li>status-position</li> <li>presence</li> <li>presence-title</li> <li>presence-position</li> <li>entity-icon-name</li> <li>entity-initials</li> <li>entity-variant</li> <li>entity-src</li> <li>entity-position</li> <li>primary-text</li> <li>secondary-text</li> <li>tertiary-text</li></ul>',
             table: {
                 type: { summary: 'object[]' }
-            }
-        },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'x-small',
-                'small',
-                'medium',
-                'large',
-                'x-large',
-                'xx-large'
-            ],
-            description:
-                'The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: ['empty', 'circle', 'square'],
-            description:
-                'Shape of the avatars. Valid values include empty, circle or square.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'square' }
             }
         },
         layout: {
@@ -56,17 +64,74 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        maxCount: {
-            name: 'max-count',
+        listButtonShowLessIconName: {
+            name: 'list-button-show-less-icon-name',
             control: {
-                type: 'number',
-                min: 0
+                type: 'text'
             },
             description:
-                'The maximum number of avatars allowed in the visible list.',
+                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed.",
             table: {
-                defaultValue: { summary: '5 for stack, 11 for grid and list' },
-                type: { summary: 'number' }
+                type: { summary: 'string' },
+                category: 'Buttons',
+                subcategory: 'List'
+            }
+        },
+        listButtonShowLessIconPosition: {
+            name: 'list-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the list button’s icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons',
+                subcategory: 'List'
+            }
+        },
+        listButtonShowLessLabel: {
+            name: 'list-button-show-less-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the button that appears in the list layout, when the list is expanded.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show less' },
+                category: 'Buttons',
+                subcategory: 'List'
+            }
+        },
+        listButtonShowMoreIconName: {
+            name: 'list-button-show-more-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons',
+                subcategory: 'List'
+            }
+        },
+        listButtonShowMoreIconPosition: {
+            name: 'list-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the list button’s icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowMoreLabel: {
@@ -107,88 +172,29 @@ export default {
                 subcategory: 'List'
             }
         },
-        listButtonShowMoreIconName: {
-            name: 'list-button-show-more-icon-name',
+        loadMoreOffset: {
+            name: 'load-more-offset',
             control: {
-                type: 'text'
+                type: 'number'
             },
             description:
-                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+                'Determines when to trigger infinite loading based on how many pixels the scroll position is from the end of the avatar group.',
             table: {
-                type: { summary: 'string' },
-                category: 'Buttons',
-                subcategory: 'List'
+                type: { summary: 'number' },
+                defaultValue: { summary: '20' }
             }
         },
-        listButtonShowMoreIconPosition: {
-            name: 'list-button-icon-position',
+        maxCount: {
+            name: 'max-count',
             control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description:
-                'Position of the list button’s icon. Valid values include left and right.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Buttons',
-                subcategory: 'List'
-            }
-        },
-        listButtonShowLessLabel: {
-            name: 'list-button-show-less-label',
-            control: {
-                type: 'text'
+                type: 'number',
+                min: 0
             },
             description:
-                'Label of the button that appears in the list layout, when the list is expanded.',
+                'The maximum number of avatars allowed in the visible list.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Show less' },
-                category: 'Buttons',
-                subcategory: 'List'
-            }
-        },
-        listButtonShowLessIconName: {
-            name: 'list-button-show-less-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Buttons',
-                subcategory: 'List'
-            }
-        },
-        listButtonShowLessIconPosition: {
-            name: 'list-button-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description:
-                'Position of the list button’s icon. Valid values include left and right.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Buttons',
-                subcategory: 'List'
-            }
-        },
-
-        actionIconName: {
-            name: 'action-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Buttons',
-                subcategory: 'Action'
+                defaultValue: { summary: '5 for stack, 11 for grid and list' },
+                type: { summary: 'number' }
             }
         },
         name: {
@@ -200,21 +206,58 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
+            description:
+                'The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['empty', 'circle', 'square'],
+            description:
+                'Shape of the avatars. Valid values include empty, circle or square.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'square' }
+            }
         }
     },
     args: {
+        enableInfiniteLoading: false,
+        isLoading: false,
         layout: 'stack',
         listButtonShowLessLabel: 'Show less',
         listButtonShowLessIconPosition: 'left',
         listButtonShowMoreIconPosition: 'left',
         listButtonShowMoreLabel: 'Show more',
         listButtonVariant: 'base',
+        loadMoreOffset: 20,
         size: 'medium',
         variant: 'square'
     }
 };
 
 const Template = (args) => AvatarGroup(args);
+const InfiniteLoadingTemplate = (args) => InfiniteLoadingAvatarGroup(args);
+const InfiniteLoadingUsingShowMoreTemplate = (args) =>
+    InfiniteLoadingUsingShowMoreAvatarGroup(args);
 
 const items = [
     {
@@ -481,4 +524,15 @@ ListDoubleExtraLarge.args = {
     listButtonShowMoreIconName: 'utility:down',
     listButtonShowLessIconName: 'utility:up',
     name: 'avatar-group'
+};
+
+export const InfiniteLoading = InfiniteLoadingTemplate.bind({});
+InfiniteLoading.args = {
+    size: 'large'
+};
+
+export const InfiniteLoadingUsingShowMore =
+    InfiniteLoadingUsingShowMoreTemplate.bind({});
+InfiniteLoadingUsingShowMore.args = {
+    maxCount: 4
 };
