@@ -77,11 +77,12 @@
             data-element-id="ul"
             onfocus={focusItem}
             onkeydown={handleItemsKeyDown}
+            onscroll={handleListScroll}
         >
             <template for:each={visibleItems} for:item="item" for:index="index">
                 <!-- Avatar item -->
                 <li
-                    key={generatedKey}
+                    key={item.name}
                     class={avatarWrapperClass}
                     tabindex="-1"
                     data-element-id="li-visible"
@@ -125,13 +126,20 @@
                     </c-avatar>
                 </li>
             </template>
-            <!-- Show more button -->
-            <li
-                if:true={showMoreButton}
-                class={showMoreSectionClass}
-                data-element-id="show-more-button"
-            >
+
+            <!-- Loading spinner when not a list and there is room for more items on the line -->
+            <li if:true={showLoadingSpinner} class={loadingSpinnerClass}>
+                <lightning-spinner
+                    alternative-text="Loading..."
+                    size={loadingSpinnerSize}
+                    data-element-id="lightning-spinner-line"
+                ></lightning-spinner>
+            </li>
+
+            <li class={showMoreSectionClass} data-element-id="show-more-button">
+                <!-- Show more button -->
                 <div
+                    if:true={showMoreButton}
                     class="
                         slds-dropdown-trigger slds-dropdown-trigger_click
                         slds-is-open
@@ -156,25 +164,39 @@
                             onkeydown={handleShowHiddenItemsButtonKeyDown}
                         ></c-primitive-avatar>
                     </div>
-                    <lightning-button
+                    <div
                         if:false={isNotList}
-                        class="
-                            slds-m-top_small
-                            slds-m-bottom_small
-                            slds-m-left_small
-                            slds-show
-                            avonni-avatar-group__list-button
-                        "
-                        icon-name={currentListButtonIcon}
-                        icon-position={currentListButtonPosition}
-                        label={currentlistButtonLabel}
-                        tabindex="0"
-                        variant={listButtonVariant}
-                        data-element-id="lightning-button"
-                        data-show-more-button
-                        onclick={handleToggleShowHiddenItems}
-                    ></lightning-button>
+                        class={showMoreButtonWrapperClass}
+                    >
+                        <!-- Loading spinner in list -->
+                        <lightning-spinner
+                            if:true={isLoading}
+                            class="slds-m-left_small"
+                            alternative-text="Loading..."
+                            size="small"
+                            data-element-id="lightning-spinner-list"
+                        ></lightning-spinner>
+                        <lightning-button
+                            if:false={enableInfiniteLoading}
+                            class="
+                                slds-m-left_small
+                                slds-m-top_small
+                                slds-m-bottom_small
+                                avonni-avatar-group__list-button
+                            "
+                            disabled={isLoading}
+                            icon-name={currentListButtonIcon}
+                            icon-position={currentListButtonPosition}
+                            label={currentlistButtonLabel}
+                            tabindex="0"
+                            variant={listButtonVariant}
+                            data-element-id="lightning-button"
+                            data-show-more-button
+                            onclick={handleToggleShowHiddenItems}
+                        ></lightning-button>
+                    </div>
                 </div>
+
                 <!-- Hidden items -->
                 <div
                     if:true={showHiddenItems}
@@ -192,7 +214,7 @@
                     <ul aria-orientation="vertical">
                         <template for:each={hiddenItems} for:item="item">
                             <li
-                                key={generatedKey}
+                                key={item.name}
                                 class={hiddenAvatarWrapperClass}
                                 data-index={item.index}
                                 tabindex="-1"
@@ -230,9 +252,24 @@
                                 ></c-avatar>
                             </li>
                         </template>
+                        <!-- Loading spinner in hidden items popover-->
+                        <li
+                            if:true={isLoading}
+                            class="
+                                slds-is-relative
+                                avonni-avatar-group__loading-spinner
+                            "
+                        >
+                            <lightning-spinner
+                                alternative-text="Loading..."
+                                size="small"
+                                data-element-id="lightning-spinner-popover"
+                            ></lightning-spinner>
+                        </li>
                     </ul>
                 </div>
             </li>
+
             <!-- Action button -->
             <li
                 if:true={actionIconName}

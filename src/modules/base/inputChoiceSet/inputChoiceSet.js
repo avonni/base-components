@@ -866,12 +866,8 @@ export default class InputChoiceSet extends LightningElement {
         );
         if (!wrapper) return;
 
-        const initialHorizontalOrientation = this.orientation === 'horizontal';
-
         this._resizeObserver = new AvonniResizeObserver(wrapper, () => {
-            const width = wrapper.getBoundingClientRect().width;
-            this._containerWidth = width;
-            this._toggleOrientation(initialHorizontalOrientation);
+            this._containerWidth = wrapper.getBoundingClientRect().width;
             this._setWidth();
         });
     }
@@ -977,31 +973,6 @@ export default class InputChoiceSet extends LightningElement {
 
         if (stretch === undefined) {
             this.computedTypeAttributes.stretch = this.stretch;
-        }
-    }
-
-    /**
-     * Toggle the orientation when the input is a button, horizontal, stretch and the container width is less than 480px.
-     * To make sure the border is at the bottom of the button, the orientation is set to vertical.
-     */
-    _toggleOrientation(initialHorizontalOrientation) {
-        if (
-            this.type === 'button' &&
-            this.computedTypeAttributes.stretch &&
-            !this.computedTypeAttributes.displayAsRow &&
-            initialHorizontalOrientation
-        ) {
-            if (
-                this.orientation === 'horizontal' &&
-                this._containerWidth < 480
-            ) {
-                this._orientation = 'vertical';
-            } else if (
-                this.orientation === 'vertical' &&
-                this._containerWidth >= 480
-            ) {
-                this._orientation = 'horizontal';
-            }
         }
     }
 
