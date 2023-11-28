@@ -67,7 +67,8 @@ export default {
                 "The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'utility:down' }
+                defaultValue: { summary: 'utility:down' },
+                category: 'icon'
             }
         },
         iconSize: {
@@ -80,7 +81,19 @@ export default {
                 'The size of the icon. Options include xx-small, x-small, small, medium or large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                category: 'icon'
+            }
+        },
+        iconSrc: {
+            name: 'icon-src',
+            control: {
+                type: 'text'
+            },
+            description: 'URL to set for the image attribute.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         isDraft: {
@@ -199,6 +212,7 @@ export default {
             options: [
                 'bare',
                 'bare-inverse',
+                'base',
                 'border',
                 'border-filled',
                 'border-inverse',
@@ -212,7 +226,7 @@ export default {
                 'success'
             ],
             description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
+                'The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.',
             table: {
                 type: { summary: 'string' }
             }
@@ -241,6 +255,9 @@ const darkBackground = {
     }
 };
 export const Border = Template.bind({});
+Border.args = {
+    iconSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+};
 
 export const BorderWithLabel = Template.bind({});
 BorderWithLabel.args = {

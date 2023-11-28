@@ -8,6 +8,7 @@ export default class ButtonMenuBase extends LightningElement {
     @api hideDownArrow;
     @api iconName;
     @api iconSize;
+    @api iconSrc;
     @api isDraft;
     @api isLoading;
     @api label;

@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
@@ -8,6 +8,7 @@ import {
     buttonGroupOrderClass
 } from 'c/utilsPrivate';
 import { Tooltip } from 'c/tooltipLibrary';
+import PrimitiveButton from 'c/primitiveButton';
 
 const i18n = {
     loading: 'Loading',
@@ -56,7 +57,7 @@ const MENU_ITEM_TAG = 'lightning-menu-item';
  * @storyId example-button-menu--base
  * @public
  */
-export default class ButtonMenu extends LightningElement {
+export default class ButtonMenu extends PrimitiveButton {
     static delegatesFocus = true;
     /**
      * The assistive text for the button menu.
@@ -109,10 +110,8 @@ export default class ButtonMenu extends LightningElement {
      * @public
      * @type {string}
      */
-    @api value = '';
+    @api value;
 
-    _accessKey;
-    _disabled = false;
     _hideDownArrow = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
@@ -125,14 +124,14 @@ export default class ButtonMenu extends LightningElement {
 
     _boundingRect = {};
     _dropdownVisible = false;
-    _dropdownOpened = false;
     _focusOnIndexDuringRenderedCallback = null;
     _needsFocusAfterRender = false;
     _rerenderFocus = false;
-    _connected = false;
-    _rendered = false;
+
+    dropdownOpened = false;
 
     connectedCallback() {
+        super.connectedCallback();
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
@@ -141,16 +140,19 @@ export default class ButtonMenu extends LightningElement {
         if (this.isDraft) {
             this.classList.add('slds-is-unsaved');
         }
-
-        this._connected = true;
     }
 
     renderedCallback() {
+        super.renderedCallback();
         this.initTooltip();
 
         if (this._dropdownVisible && this._rerenderFocus) {
             this.focusOnMenuItemAfterRender();
         }
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
     }
 
     /*
@@ -167,11 +169,11 @@ export default class ButtonMenu extends LightningElement {
      */
     @api
     get accessKey() {
-        return this._accessKey;
+        return super.accessKey;
     }
 
-    set accessKey(accessKey) {
-        this._accessKey = accessKey;
+    set accessKey(value) {
+        super.accessKey = value;
     }
 
     /**
@@ -183,11 +185,11 @@ export default class ButtonMenu extends LightningElement {
      */
     @api
     get disabled() {
-        return this._disabled;
+        return super.disabled;
     }
 
     set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+        super.disabled = normalizeBoolean(value);
     }
 
     /**
@@ -218,8 +220,8 @@ export default class ButtonMenu extends LightningElement {
         return this._iconName;
     }
 
-    set iconName(icon) {
-        this._iconName = normalizeString(icon);
+    set iconName(value) {
+        this._iconName = normalizeString(value);
     }
 
     /**
@@ -239,6 +241,20 @@ export default class ButtonMenu extends LightningElement {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
+    }
+
+    /**
+     * URL to set for the image attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get iconSrc() {
+        return super.iconSrc;
+    }
+    set iconSrc(value) {
+        super.iconSrc = value;
     }
 
     /**
@@ -271,7 +287,7 @@ export default class ButtonMenu extends LightningElement {
 
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
-        if (this.isAutoAlignment()) {
+        if (this.isAutoAlignment) {
             this.stopPositioning();
         }
 
@@ -341,19 +357,20 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, border-inverse, brand, brand-outline, destructive, destructive-text, success, neutral, inverse and success. The variant defaults to border when there is no label and to neutral when there is one.
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant defaults
+     * to border when there is no label and to neutral when there is one.
      *
      * @public
      * @type {string}
-     * @default border
+     * @default neutral
      */
     @api
     get variant() {
-        return this._variant;
+        return super.variant;
     }
-
-    set variant(variant) {
-        this._variant = variant;
+    set variant(value) {
+        super.variant = value;
     }
 
     /*
@@ -361,8 +378,28 @@ export default class ButtonMenu extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Return a true string if the popover is visible and a false string if not.
+     *
+     * @type {string}
+     */
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
+    }
+
+    /**
+     * Computed image class styling.
+     *
+     * @type {string}
+     */
+    get computedImageClass() {
+        return classSet('')
+            .add({
+                'slds-m-left_xx-small': this.label
+            })
+            .add(`avonni-button-menu__image_${this.iconSize}`)
+            .toString();
     }
 
     /**
@@ -407,7 +444,11 @@ export default class ButtonMenu extends LightningElement {
                     this.computedVariant === 'destructive',
                 'slds-button_text-destructive':
                     this.computedVariant === 'destructive-text',
-                'slds-button_success': this.computedVariant === 'success'
+                'slds-button_success': this.computedVariant === 'success',
+                'avonni-button-menu__container_large':
+                    this.iconSize === 'large',
+                'avonni-button-menu__container_medium':
+                    this.iconSize === 'medium'
             });
         } else {
             const useMoreContainer =
@@ -434,18 +475,25 @@ export default class ButtonMenu extends LightningElement {
                     this.computedVariant === 'border-inverse',
                 'slds-button_icon-inverse':
                     this.computedVariant === 'bare-inverse',
-                'slds-button_icon-xx-small':
-                    this.iconSize === 'xx-small' && !isBare,
-                'slds-button_icon-x-small':
-                    this.iconSize === 'x-small' && !isBare,
-                'slds-button_icon-small': this.iconSize === 'small' && !isBare,
-                'slds-button_icon-large': this.iconSize === 'large' && !isBare,
-                'avonni-button-menu__button-icon_medium':
-                    this.iconSize === 'medium' && isAddedVariant,
                 'avonni-button-menu__button-icon': isAddedVariant
             });
+            if (this.iconSrc) {
+                classes.add(`avonni-button-menu__src_${this.iconSize}`);
+            } else {
+                classes.add({
+                    'slds-button_icon-xx-small':
+                        this.iconSize === 'xx-small' && !isBare,
+                    'slds-button_icon-x-small':
+                        this.iconSize === 'x-small' && !isBare,
+                    'slds-button_icon-small':
+                        this.iconSize === 'small' && !isBare,
+                    'slds-button_icon-large':
+                        this.iconSize === 'large' && !isBare,
+                    'avonni-button-menu__button-icon_medium':
+                        this.iconSize === 'medium' && isAddedVariant
+                });
+            }
         }
-
         return classes;
     }
 
@@ -458,7 +506,7 @@ export default class ButtonMenu extends LightningElement {
         return classSet('slds-dropdown')
             .add({
                 'slds-dropdown_left':
-                    this.menuAlignment === 'left' || this.isAutoAlignment(),
+                    this.menuAlignment === 'left' || this.isAutoAlignment,
                 'slds-dropdown_center': this.menuAlignment === 'center',
                 'slds-dropdown_right': this.menuAlignment === 'right',
                 'slds-dropdown_bottom': this.isBottomAlignment,
@@ -491,8 +539,9 @@ export default class ButtonMenu extends LightningElement {
     get computedHideDownIcon() {
         return (
             this.hideDownArrow ||
-            this.iconName === 'utility:down' ||
-            this.iconName === 'utility:chevrondown'
+            ((this.iconName === 'utility:down' ||
+                this.iconName === 'utility:chevrondown') &&
+                !this.iconSrc)
         );
     }
 
@@ -519,12 +568,12 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Returns true if menu alignment is bottom.
+     * Returns true if menu alignment is auto.
      *
      * @type {boolean}
      */
-    get isBottomAlignment() {
-        return this.menuAlignment.includes('bottom');
+    get isAutoAlignment() {
+        return this.menuAlignment.startsWith('auto');
     }
 
     /*
@@ -856,15 +905,6 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Auto alignment handler.
-     *
-     * @return {boolean}
-     */
-    isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
-    }
-
-    /**
      * Menu visibility toggle handler.
      */
     toggleMenuVisibility() {
@@ -878,8 +918,8 @@ export default class ButtonMenu extends LightningElement {
                 });
             }
 
-            if (!this._dropdownOpened && this._dropdownVisible) {
-                this._dropdownOpened = true;
+            if (!this.dropdownOpened && this._dropdownVisible) {
+                this.dropdownOpened = true;
             }
 
             if (this._dropdownVisible) {
@@ -1029,7 +1069,7 @@ export default class ButtonMenu extends LightningElement {
      * Poll bounding rect position for button menu.
      */
     pollBoundingRect() {
-        if (this.isAutoAlignment() && this._dropdownVisible) {
+        if (this.isAutoAlignment && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
                 if (this._connected) {

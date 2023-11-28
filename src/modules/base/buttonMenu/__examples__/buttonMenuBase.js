@@ -13,6 +13,7 @@ export const ButtonMenuBase = ({
     hideDownArrow,
     iconName,
     iconSize,
+    iconSrc,
     isDraft,
     isLoading,
     label,
@@ -32,6 +33,7 @@ export const ButtonMenuBase = ({
     element.hideDownArrow = hideDownArrow;
     element.iconName = iconName;
     element.iconSize = iconSize;
+    element.iconSrc = iconSrc;
     element.isDraft = isDraft;
     element.isLoading = isLoading;
     element.label = label;

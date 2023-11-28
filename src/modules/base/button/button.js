@@ -29,17 +29,14 @@ export default class Button extends PrimitiveButton {
 
     connectedCallback() {
         super.connectedCallback();
-        this._connected = true;
     }
 
     renderedCallback() {
-        // initialize aria attributes in primitiveButton
         super.renderedCallback();
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
-        this._connected = false;
     }
 
     /*

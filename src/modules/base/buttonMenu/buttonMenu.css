@@ -5,6 +5,43 @@ button {
     border-style: var(--avonni-button-menu-styling-border, solid);
 }
 
+.avonni-button-menu_label {
+    font-size: var(--avonni-button-menu-label-font-size, 0.8175rem);
+    font-weight: var(--avonni-button-menu-label-font-weight, 400);
+    font-style: var(--avonni-button-menu-label-font-style, normal);
+}
+
+.avonni-button-menu__button_bare:disabled,
+.avonni-button-menu__button_bare-inverse:disabled,
+.avonni-button-menu__button_border-inverse:disabled,
+.avonni-button-menu__button_container:disabled,
+.avonni-button-menu__button_inverse:disabled {
+    color: #dddbda;
+    background-color: transparent;
+    border-color: transparent;
+    pointer-events: none;
+}
+
+.avonni-button-menu__button_brand:disabled,
+.avonni-button-menu__button_destructive:disabled,
+.avonni-button-menu__button_success:disabled {
+    color: #fff;
+    background-color: #c9c7c5;
+    border-color: #c9c7c5;
+    pointer-events: none;
+}
+
+.avonni-button-menu__button_brand-outline:disabled,
+.avonni-button-menu__button_border:disabled,
+.avonni-button-menu__button_border-filled:disabled,
+.avonni-button-menu__button_destructive-text:disabled,
+.avonni-button-menu__button_neutral:disabled {
+    color: #dddbda;
+    background-color: #fff;
+    border-color: #c9c7c5;
+    pointer-events: none;
+}
+
 .avonni-button-menu__button-icon-more {
     width: auto !important;
     line-height: 1.875rem;
@@ -615,4 +652,81 @@ button {
         --avonni-button-menu-button-success-text-color-hover,
         var(--slds-g-color-neutral-base-100, #fff)
     );
+}
+
+/**
+* Size
+*/
+.avonni-button-menu__src_xx-small {
+    height: 1rem;
+    width: 1rem;
+    line-height: 0;
+}
+.avonni-button-menu__src_x-small {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+.avonni-button-menu__src_small {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+.avonni-button-menu__src_medium {
+    height: 2rem;
+    width: 2rem;
+}
+.avonni-button-menu__src_large {
+    height: 3rem;
+    width: 3rem;
+    line-height: 1.25;
+}
+
+.avonni-button-menu__image {
+    border-radius: var(--avonni-button-image-radius-border, 0.25rem);
+    border-style: var(--avonni-button-image-styling-border);
+    border-width: var(--avonni-button-image-sizing-border);
+    border-color: var(--avonni-button-image-color-border);
+    object-fit: var(--avonni-button-image-object-fit, cover);
+}
+
+.avonni-button-menu__image_xx-small {
+    width: 0.5rem;
+    height: 0.5rem;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
+}
+
+.avonni-button-menu__image_x-small {
+    width: 0.75rem;
+    height: 0.75rem;
+    min-width: 0.75rem;
+    min-height: 0.75rem;
+}
+
+.avonni-button-menu__image_small {
+    width: 0.875rem;
+    height: 0.875rem;
+    min-width: 0.875rem;
+    min-height: 0.875rem;
+}
+
+.avonni-button-menu__image_medium {
+    width: 1rem;
+    height: 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
+}
+
+.avonni-button-menu__image_large {
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+}
+
+.avonni-button-menu__container_medium {
+    height: 2.5rem;
+}
+
+.avonni-button-menu__container_large {
+    height: 3.5rem;
 }

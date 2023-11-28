@@ -156,6 +156,7 @@ export default class PrimitiveButton extends LightningElement {
     _type = TYPES.default;
     _variant = BUTTON_VARIANTS.default;
 
+    _connected = false;
     @track
     state = {
         ariaAtomic: null,
@@ -200,10 +201,12 @@ export default class PrimitiveButton extends LightningElement {
         if (!this.ariaObserver) {
             this.ariaObserver = new AriaObserver(this);
         }
+
+        this._connected = true;
     }
 
     renderedCallback() {
-        if (this.isConnected) {
+        if (this._connected) {
             this.ariaObserver.sync();
         }
     }
@@ -213,6 +216,8 @@ export default class PrimitiveButton extends LightningElement {
             this.ariaObserver.disconnect();
             this.ariaObserver = undefined;
         }
+
+        this._connected = false;
     }
 
     /*
