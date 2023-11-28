@@ -28,9 +28,9 @@ export default class InfiniteLoadingVerticalVisualPicker extends LightningElemen
     }
 
     generateItems() {
-        const items = [];
+        const items = [...this.items];
         for (let i = 1; i <= 10; i++) {
-            const id = this.items.length + 1;
+            const id = items.length + 1;
             const item = {
                 avatar: {
                     iconName: `custom:custom${this.getRandomNumber()}`
@@ -41,7 +41,7 @@ export default class InfiniteLoadingVerticalVisualPicker extends LightningElemen
             };
             items.push(item);
         }
-        this.items = this.items.concat(items);
+        this.items = items;
     }
 
     getRandomNumber() {

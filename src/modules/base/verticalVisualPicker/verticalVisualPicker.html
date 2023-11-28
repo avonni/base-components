@@ -1,7 +1,13 @@
 <template>
-    <div class={wrapperClass} data-element-id="div-wrapper">
+    <div
+        class="avonni-vertical-visual-picker__wrapper_full-height"
+        data-element-id="div-wrapper"
+    >
         <fieldset
-            class={fieldsetClass}
+            class="
+                slds-form-element
+                avonni-vertical-visual-picker__fieldset_full-height
+            "
             aria-required={required}
             data-element-id="fieldset"
         >
@@ -22,15 +28,26 @@
                 {label}
             </legend>
             <div
-                class={itemsWrapperClass}
+                class="
+                    slds-form-element__control
+                    slds-scrollable_y
+                    avonni-vertical-visual-picker__item-wrapper_full-height
+                "
                 data-element-id="div-items-wrapper"
                 onscroll={handleScroll}
             >
                 <template for:each={visibleItems} for:item="item">
-                    <div class={verticalVisualPickerClass} key={item.key}>
+                    <div
+                        class={verticalVisualPickerClass}
+                        key={item.key}
+                        data-element-id="div-item-wrapper"
+                        data-value={item.computedValue}
+                    >
                         <input
+                            class="avonni-vertical-visual-picker__input"
                             type={type}
                             id={item.computedValue}
+                            checked={item.isChecked}
                             value={item.computedValue}
                             name={name}
                             disabled={item.disabled}
@@ -101,7 +118,7 @@
                                                 for:each={item.tags}
                                                 for:item="tag"
                                             >
-                                                <avonni-chip
+                                                <c-chip
                                                     if:true={tag.label}
                                                     key={tag.label}
                                                     label={tag.label}
@@ -109,7 +126,7 @@
                                                     class="
                                                         avonni-vertical-visual-picker__tag
                                                     "
-                                                ></avonni-chip>
+                                                ></c-chip>
                                             </template>
                                         </div>
                                     </span>
@@ -128,31 +145,31 @@
                                     </template>
                                 </span>
                             </span>
-                            <template if:true={item.isChecked}>
-                                <span
-                                    if:false={isCoverable}
-                                    class="
-                                        slds-icon_container
-                                        slds-visual-picker__text-check
-                                    "
-                                >
-                                    <lightning-icon
-                                        icon-name="utility:check"
-                                        size="x-small"
-                                        class="slds-icon-text-check"
-                                        variant="inverse"
-                                    ></lightning-icon>
-                                </span>
-                            </template>
+                            <span
+                                if:false={isCoverable}
+                                class="
+                                    slds-icon_container
+                                    slds-visual-picker__text-check
+                                    avonni-vertical-visual-picker__text-check
+                                "
+                            >
+                                <lightning-icon
+                                    icon-name="utility:check"
+                                    size="x-small"
+                                    class="slds-icon-text-check"
+                                    variant="inverse"
+                                ></lightning-icon>
+                            </span>
                         </label>
                         <div
-                            if:true={item.showSubItems}
+                            if:true={item.subItems}
                             class="
                                 slds-box slds-box_small
                                 slds-m-top_xx-small
                                 slds-text-align_left
                                 avonni-vertical-visual-picker__sub-items
                             "
+                            data-element-id="div-sub-items"
                         >
                             <c-input-choice-set
                                 data-element-id="input-choice-set"

@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import {
+    equal,
     normalizeBoolean,
     normalizeString,
     normalizeArray
@@ -83,12 +84,8 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     renderedCallback() {
-        this._refreshCheckedAttributes();
-
-        if (this.enableInfiniteLoading) {
-            this._setCssVariables();
-            this.handleScroll();
-        }
+        this._setCssVariables();
+        this.handleScroll();
     }
 
     /*
@@ -304,8 +301,12 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     set value(value) {
-        this._value =
+        const normalizedValue =
             typeof value === 'string' ? [value] : normalizeArray(value);
+        if (equal(normalizedValue, this._value)) {
+            return;
+        }
+        this._value = normalizedValue;
 
         if (this._connected) {
             this._initItems();
@@ -376,40 +377,12 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Computed CSS classes for the fieldset.
-     *
-     * @type {string}
-     */
-    get fieldsetClass() {
-        return classSet('slds-form-element')
-            .add({
-                'avonni-vertical-visual-picker__fieldset_full-height':
-                    this.enableInfiniteLoading
-            })
-            .toString();
-    }
-
-    /**
      * Verify if variant is coverable.
      *
      * @type {boolean}
      */
     get isCoverable() {
         return this._variant === 'coverable';
-    }
-
-    /**
-     * Computed CSS classes for the items wrapper.
-     *
-     * @type {string}
-     */
-    get itemsWrapperClass() {
-        return classSet('slds-form-element__control')
-            .add({
-                'slds-scrollable_y avonni-vertical-visual-picker__item-wrapper_full-height':
-                    this.enableInfiniteLoading
-            })
-            .toString();
     }
 
     /**
@@ -534,18 +507,6 @@ export default class VerticalVisualPicker extends LightningElement {
             });
         }
         return this._constraintApi;
-    }
-
-    /**
-     * Computed CSS classes for the wrapper.
-     *
-     * @type {string}
-     */
-    get wrapperClass() {
-        return classSet({
-            'avonni-vertical-visual-picker__wrapper_full-height':
-                this.enableInfiniteLoading
-        }).toString();
     }
 
     /*
@@ -685,20 +646,29 @@ export default class VerticalVisualPicker extends LightningElement {
      * Goes through every visual picker and sets the "checked" attribute.
      */
     _refreshCheckedAttributes() {
-        if (this.inputs) {
-            this.inputs.forEach((input) => {
-                const item = this._computedItems.find(
-                    ({ computedValue }) => computedValue === input.value
+        const wrappers = this.template.querySelectorAll(
+            '[data-element-id="div-item-wrapper"]'
+        );
+        wrappers.forEach((wrapper) => {
+            const value = wrapper.dataset.value;
+            const item = this._computedItems.find(
+                (i) => i.computedValue === value
+            );
+            if (item) {
+                item.isChecked = this._isItemChecked(
+                    item.computedValue,
+                    item.subItems
                 );
-                input.checked =
-                    item &&
-                    this._isItemChecked(item.computedValue, item.subItems);
-            });
-        }
+                const input = wrapper.querySelector(
+                    '[data-element-id="input"]'
+                );
+                input.checked = item.isChecked;
+            }
+        });
     }
 
     /**
-     * Set the CSS variables used to compute the height of the items wrapper in the infinite loading mode.
+     * Set the CSS variables used to compute the height of the items wrapper.
      */
     _setCssVariables() {
         const wrapper = this.template.querySelector(
@@ -781,6 +751,7 @@ export default class VerticalVisualPicker extends LightningElement {
 
         this._value = newValue;
         this._dispatchChange();
+        this._refreshCheckedAttributes();
     }
 
     /**

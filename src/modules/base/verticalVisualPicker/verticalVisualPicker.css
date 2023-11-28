@@ -182,6 +182,15 @@
     display: none;
 }
 
+.avonni-vertical-visual-picker__text-check {
+    display: none;
+}
+.avonni-vertical-visual-picker__input:checked
+    + label
+    .avonni-vertical-visual-picker__text-check {
+    display: block;
+}
+
 /*-- Label --*/
 .avonni-vertical-visual-picker__label {
     color: var(--avonni-vertical-visual-picker-header-text-color, #3e3e3c);
@@ -299,4 +308,9 @@
         --avonni-vertical-visual-picker-sub-items-color-background,
         #f7f9fb
     );
+    display: none;
+}
+.avonni-vertical-visual-picker__input:checked
+    ~ .avonni-vertical-visual-picker__sub-items {
+    display: block;
 }

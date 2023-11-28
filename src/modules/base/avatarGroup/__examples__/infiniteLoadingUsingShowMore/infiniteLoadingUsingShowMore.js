@@ -36,7 +36,7 @@ export default class InfiniteLoadingUsingShowMore extends LightningElement {
     generateItems() {
         const max = this.maxCount + 1;
         for (let i = 1; i <= max; i++) {
-            const id = this.items.length + i;
+            const id = this.items.length + 1;
             const item = {
                 fallbackIconName: `custom:custom${this.getRandomNumber()}`,
                 name: `item-${id}`,

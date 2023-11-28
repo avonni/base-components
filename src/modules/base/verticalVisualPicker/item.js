@@ -56,8 +56,4 @@ export default class VerticalVisualPickerItem {
             this.mediaPosition === 'right' && (this.hasAvatar || this.imgSrc)
         );
     }
-
-    get showSubItems() {
-        return this.isChecked && this.subItems;
-    }
 }
