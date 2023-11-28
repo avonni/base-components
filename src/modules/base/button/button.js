@@ -18,6 +18,79 @@ const ICON_SIZES = {
 };
 
 export default class Button extends PrimitiveButton {
+    /**
+     * If present, the button can't be clicked by users.
+     *
+     * @name disabled
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    /**
+     * The Lightning Design System name of the icon.
+     * Names are written in the format 'utility:down' where 'utility' is the category,
+     * and 'down' is the specific icon to be displayed.
+     *
+     * @name iconName
+     * @public
+     * @type {string}
+     */
+    /**
+     * Describes the position of the icon with respect to the button label. Options include left and right.
+     *
+     * @name iconPosition
+     * @public
+     * @type {string}
+     * @default left
+     */
+    /**
+     * URL to set for the image attribute.
+     *
+     * @name iconSrc
+     * @public
+     * @type {string}
+     */
+    /**
+     * The text to be displayed inside the button.
+     *
+     * @name label
+     * @public
+     * @type {string}
+     */
+    /**
+     * The name for the button element.
+     * This value is optional and can be used to identify the button in a callback.
+     *
+     * @name name
+     * @public
+     * @type {string}
+     */
+    /**
+     * Specifies the type of button.
+     * Options include button, reset, and submit.
+     *
+     * @name type
+     * @public
+     * @type {string}
+     * @default button
+     */
+    /**
+     * The value for the button element.
+     * This value is optional and can be used when submitting a form.
+     *
+     * @name value
+     * @public
+     * @type {string}
+     */
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.
+     *
+     * @name variant
+     * @public
+     * @type {string}
+     * @default neutral
+     */
+
     _iconSize = ICON_SIZES.default;
     _stretch = false;
 
@@ -46,51 +119,6 @@ export default class Button extends PrimitiveButton {
      */
 
     /**
-     * If present, the button can't be clicked by users.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get disabled() {
-        return super.disabled;
-    }
-    set disabled(value) {
-        super.disabled = normalizeBoolean(value);
-    }
-
-    /**
-     * The Lightning Design System name of the icon.
-     * Names are written in the format 'utility:down' where 'utility' is the category,
-     * and 'down' is the specific icon to be displayed.
-     *
-     * @type {string}
-     */
-    @api
-    get iconName() {
-        return super.iconName;
-    }
-    set iconName(value) {
-        super.iconName = value;
-    }
-
-    /**
-     * Describes the position of the icon with respect to the button label. Options include left and right.
-     *
-     * @public
-     * @type {string}
-     * @default left
-     */
-    @api
-    get iconPosition() {
-        return super.iconPosition;
-    }
-    set iconPosition(value) {
-        super.iconPosition = value;
-    }
-
-    /**
      * The size of the icon. Options include x-small, small, medium or large.
      *
      * @public
@@ -109,49 +137,6 @@ export default class Button extends PrimitiveButton {
     }
 
     /**
-     * URL to set for the image attribute.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get iconSrc() {
-        return super.iconSrc;
-    }
-    set iconSrc(value) {
-        super.iconSrc = value;
-    }
-
-    /**
-     * The text to be displayed inside the button.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get label() {
-        return super.label;
-    }
-    set label(value) {
-        super.label = value;
-    }
-
-    /**
-     * The name for the button element.
-     * This value is optional and can be used to identify the button in a callback.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get name() {
-        return super.name;
-    }
-    set name(value) {
-        super.name = value;
-    }
-
-    /**
      * Setting it to true allows the button to take up the entire available width.
      * This value defaults to false.
      *
@@ -165,52 +150,6 @@ export default class Button extends PrimitiveButton {
     }
     set stretch(value) {
         this._stretch = normalizeBoolean(value);
-    }
-
-    /**
-     * Specifies the type of button.
-     * Options include button, reset, and submit.
-     *
-     * @public
-     * @type {string}
-     * @default button
-     */
-    @api
-    get type() {
-        return super.type;
-    }
-    set type(value) {
-        super.type = value;
-    }
-
-    /**
-     * The value for the button element.
-     * This value is optional and can be used when submitting a form.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get value() {
-        return super.value;
-    }
-    set value(value) {
-        super.value = value;
-    }
-
-    /**
-     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled, border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success.
-     *
-     * @public
-     * @type {string}
-     * @default neutral
-     */
-    @api
-    get variant() {
-        return super.variant;
-    }
-    set variant(value) {
-        super.variant = value;
     }
 
     /*
