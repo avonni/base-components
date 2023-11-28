@@ -1,6 +1,18 @@
 import { api, LightningElement } from 'lwc';
 
-export default class InfiniteLoadingUsingShowMore extends LightningElement {
+export default class VerticalVisualPickerInfiniteLoadingUsingShowMore extends LightningElement {
+    @api disabled;
+    @api hideCheckMark;
+    @api label;
+    @api loadMoreOffset;
+    @api messageWhenValueMissing;
+    @api name;
+    @api required;
+    @api size;
+    @api type;
+    @api value;
+    @api variant;
+
     _isLoading = false;
     _maxCount;
 
@@ -38,10 +50,12 @@ export default class InfiniteLoadingUsingShowMore extends LightningElement {
         for (let i = 1; i <= max; i++) {
             const id = this.items.length + 1;
             const item = {
-                fallbackIconName: `custom:custom${this.getRandomNumber()}`,
-                name: `item-${id}`,
-                primaryText: `Item #${id}`,
-                secondaryText: `Description of the item #${id}.`
+                avatar: {
+                    iconName: `custom:custom${this.getRandomNumber()}`
+                },
+                value: `item-${id}`,
+                title: `Item #${id}`,
+                description: `Description of the item #${id}.`
             };
             this.items.push(item);
         }
