@@ -60,6 +60,13 @@ const MENU_ITEM_TAG = 'lightning-menu-item';
 export default class ButtonMenu extends PrimitiveButton {
     static delegatesFocus = true;
     /**
+     * The keyboard shortcut for the button menu.
+     *
+     * @name accessKey
+     * @public
+     * @type {string}
+     */
+    /**
      * The assistive text for the button menu.
      *
      * @public
@@ -67,6 +74,14 @@ export default class ButtonMenu extends PrimitiveButton {
      * @default Show Menu
      */
     @api alternativeText = i18n.showMenu;
+    /**
+     * If present, the menu can't be opened by users.
+     *
+     * @name disabled
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     /**
      * Describes the reason for showing the draft indicator. This is required when is-draft is true.
      *
@@ -82,6 +97,13 @@ export default class ButtonMenu extends PrimitiveButton {
      * @public
      */
     @api groupOrder;
+    /**
+     * URL to set for the image attribute.
+     *
+     * @name iconSrc
+     * @public
+     * @type {string}
+     */
     /**
      * Optional text to be shown on the button.
      *
@@ -100,17 +122,27 @@ export default class ButtonMenu extends PrimitiveButton {
     /**
      * Displays title text when the mouse moves over the button menu.
      *
+     * @name title
      * @public
      * @type {string}
      */
-    @api title;
     /**
      * The value for the button element. This value is optional and can be used when submitting a form.
      *
+     * @name value
      * @public
      * @type {string}
      */
-    @api value;
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
+     * border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant
+     * defaults to border when there is no label and to neutral when there is one.
+     *
+     * @name variant
+     * @public
+     * @type {string}
+     * @default neutral
+     */
 
     _hideDownArrow = false;
     _iconName = DEFAULT_ICON_NAME;
@@ -120,7 +152,6 @@ export default class ButtonMenu extends PrimitiveButton {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _nubbin = false;
     _tooltip;
-    _variant;
 
     _boundingRect = {};
     _dropdownVisible = false;
@@ -129,6 +160,12 @@ export default class ButtonMenu extends PrimitiveButton {
     _rerenderFocus = false;
 
     dropdownOpened = false;
+
+    /*
+     * ------------------------------------------------------------
+     *  LIFECYCLE HOOKS
+     * -------------------------------------------------------------
+     */
 
     connectedCallback() {
         super.connectedCallback();
@@ -162,37 +199,6 @@ export default class ButtonMenu extends PrimitiveButton {
      */
 
     /**
-     * The keyboard shortcut for the button menu.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get accessKey() {
-        return super.accessKey;
-    }
-
-    set accessKey(value) {
-        super.accessKey = value;
-    }
-
-    /**
-     * If present, the menu can't be opened by users.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get disabled() {
-        return super.disabled;
-    }
-
-    set disabled(value) {
-        super.disabled = normalizeBoolean(value);
-    }
-
-    /**
      * If present, the small down arrow normaly displayed to the right of a custom icon is hidden. Without a custom icon-name this does nothing.
      *
      * @public
@@ -203,7 +209,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get hideDownArrow() {
         return this._hideDownArrow;
     }
-
     set hideDownArrow(value) {
         this._hideDownArrow = normalizeBoolean(value);
     }
@@ -219,7 +224,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get iconName() {
         return this._iconName;
     }
-
     set iconName(value) {
         this._iconName = normalizeString(value);
     }
@@ -235,26 +239,11 @@ export default class ButtonMenu extends PrimitiveButton {
     get iconSize() {
         return this._iconSize;
     }
-
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
             fallbackValue: ICON_SIZES.default,
             validValues: ICON_SIZES.valid
         });
-    }
-
-    /**
-     * URL to set for the image attribute.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get iconSrc() {
-        return super.iconSrc;
-    }
-    set iconSrc(value) {
-        super.iconSrc = value;
     }
 
     /**
@@ -268,7 +257,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get isDraft() {
         return this._isDraft;
     }
-
     set isDraft(value) {
         this._isDraft = normalizeBoolean(value);
     }
@@ -284,13 +272,11 @@ export default class ButtonMenu extends PrimitiveButton {
     get isLoading() {
         return this._isLoading;
     }
-
     set isLoading(value) {
         const normalizedValue = normalizeBoolean(value);
         if (this.isAutoAlignment) {
             this.stopPositioning();
         }
-
         this._isLoading = normalizedValue;
     }
 
@@ -305,7 +291,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get menuAlignment() {
         return this._menuAlignment;
     }
-
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
@@ -324,7 +309,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get nubbin() {
         return this._nubbin;
     }
-
     set nubbin(value) {
         this._nubbin = normalizeBoolean(value);
     }
@@ -339,7 +323,6 @@ export default class ButtonMenu extends PrimitiveButton {
     get tooltip() {
         return this._tooltip ? this._tooltip.value : undefined;
     }
-
     // remove-next-line-for-c-namespace
     set tooltip(value) {
         if (this._tooltip) {
@@ -354,23 +337,6 @@ export default class ButtonMenu extends PrimitiveButton {
             });
             this._tooltip.initialize();
         }
-    }
-
-    /**
-     * The variant changes the look of the button. Accepted variants include bare, bare-inverse, base, border, border-filled,
-     * border-inverse, brand, brand-outline, container, destructive, destructive-text, neutral, inverse and success. The variant defaults
-     * to border when there is no label and to neutral when there is one.
-     *
-     * @public
-     * @type {string}
-     * @default neutral
-     */
-    @api
-    get variant() {
-        return super.variant;
-    }
-    set variant(value) {
-        super.variant = value;
     }
 
     /*
