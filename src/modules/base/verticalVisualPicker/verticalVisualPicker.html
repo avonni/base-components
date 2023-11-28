@@ -167,27 +167,31 @@
                     </div>
                 </template>
                 <div
-                    if:true={isLoading}
-                    class="
-                        slds-is-relative
-                        avonni-vertical-visual-picker__loading-spinner
-                    "
+                    if:true={showButtonOrSpinner}
+                    class={buttonSpinnerWrapperClass}
+                    data-element-id="div-button-spinner-wrapper"
                 >
+                    <!-- Loading spinner -->
                     <lightning-spinner
+                        if:true={isLoading}
                         alternative-text="Loading..."
                         size="small"
+                        data-element-id="lightning-spinner"
                     ></lightning-spinner>
+
+                    <!-- Show more button -->
+                    <lightning-button
+                        if:true={showMoreButton}
+                        class="slds-m-top_small slds-m-bottom_small slds-show"
+                        disabled={isLoading}
+                        icon-name={currentShowButtonIconName}
+                        label={currentShowButtonLabel}
+                        data-element-id="lightning-button"
+                        onclick={handleToggleShowMoreButton}
+                    ></lightning-button>
                 </div>
             </div>
         </fieldset>
-        <!-- Show more button -->
-        <lightning-button
-            if:true={showMoreButton}
-            class="slds-m-top_small slds-m-bottom_small slds-show"
-            icon-name={currentShowButtonIconName}
-            label={currentShowButtonLabel}
-            onclick={handleToggleShowMoreButton}
-        ></lightning-button>
         <div
             if:false={valid}
             id="help-message"

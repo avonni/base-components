@@ -51,7 +51,7 @@ export default class InfiniteLoadingUsingShowMoreVerticalVisualPicker extends Li
             const id = this.items.length + 1;
             const item = {
                 avatar: {
-                    fallbackIconName: `custom:custom${this.getRandomNumber()}`
+                    iconName: `custom:custom${this.getRandomNumber()}`
                 },
                 value: `item-${id}`,
                 title: `Item #${id}`,

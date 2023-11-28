@@ -131,6 +131,10 @@ export default class VerticalVisualPicker extends LightningElement {
     }
     set enableInfiniteLoading(value) {
         this._enableInfiniteLoading = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
@@ -198,6 +202,10 @@ export default class VerticalVisualPicker extends LightningElement {
         this._loadMoreOffset = isNaN(value)
             ? DEFAULT_LOAD_MORE_OFFSET
             : parseInt(value, 10);
+
+        if (this._connected) {
+            this.handleScroll();
+        }
     }
 
     /**
@@ -330,6 +338,26 @@ export default class VerticalVisualPicker extends LightningElement {
      */
 
     /**
+     * Computed CSS classes for the div wrapping the loading spinner and the show more/less button.
+     *
+     * @type {string}
+     */
+    get buttonSpinnerWrapperClass() {
+        const classes = classSet('slds-is-relative').add({
+            'avonni-vertical-visual-picker__loading-spinner':
+                this.isLoading && !this.showMoreButton,
+            'slds-show_inline-block': this.isLoading && this.showMoreButton
+        });
+
+        if (this.isLoading && !this.showMoreButton) {
+            classes.add(
+                `avonni-vertical-visual-picker__item_size-${this.size}`
+            );
+        }
+        return classes.toString();
+    }
+
+    /**
      * Icon name of the show more/less button.
      *
      * @type {string}
@@ -391,6 +419,16 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     get hasTags() {
         return this.items.some((item) => item.tags);
+    }
+
+    /**
+     * True of the max count show more/less button is visible, or if the component is loading.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showButtonOrSpinner() {
+        return this.isLoading || this.showMoreButton;
     }
 
     /**
@@ -615,20 +653,6 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Dispatch the `loadmore` event.
-     */
-    _dispatchLoadMore() {
-        /**
-         * The event fired when you scroll to the end of the visual picker. This event is fired only if `enable-infinite-loading` is true.
-         *
-         * @event
-         * @name loadmore
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('loadmore'));
-    }
-
-    /**
      * Initialize the items.
      */
     _initItems() {
@@ -663,7 +687,7 @@ export default class VerticalVisualPicker extends LightningElement {
     _refreshCheckedAttributes() {
         if (this.inputs) {
             this.inputs.forEach((input) => {
-                const item = this.computedItems.find(
+                const item = this._computedItems.find(
                     ({ computedValue }) => computedValue === input.value
                 );
                 input.checked =
@@ -786,7 +810,14 @@ export default class VerticalVisualPicker extends LightningElement {
         const noScrollBar = scrollTop === 0 && scrollHeight === clientHeight;
 
         if (offsetFromBottom <= this.loadMoreOffset || noScrollBar) {
-            this._dispatchLoadMore();
+            /**
+             * The event fired when you scroll to the end of the visual picker. This event is fired only if `enable-infinite-loading` is true.
+             *
+             * @event
+             * @name loadmore
+             * @public
+             */
+            this.dispatchEvent(new CustomEvent('loadmore'));
         }
     }
 
@@ -834,7 +865,7 @@ export default class VerticalVisualPicker extends LightningElement {
          */
         const event = new CustomEvent('itemsvisibilitytoggle', {
             detail: {
-                show: !this._isCollapsed,
+                show: this._isCollapsed,
                 visibleItemsLength: this.visibleItems.length
             },
             cancelable: true
