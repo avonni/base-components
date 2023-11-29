@@ -8,18 +8,24 @@
 
 /* VALUE ASSIGNMENTS */
 .avonni-list__item-menu {
-    row-gap: var(--avonni-list-item-spacing-block-between, 0.5rem);
+    width: 100%;
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0.5rem
+    );
     margin-inline: calc(
         var(--avonni-list-item-spacing-inline-between, 0.5rem) / -2
     );
 }
 
 .avonni-list__vertical-compact {
-    row-gap: var(--avonni-list-item-spacing-block-between, 0);
+    --avonni-layout-items-spacing-block-between: var(
+        --avonni-list-item-spacing-block-between,
+        0
+    );
 }
 
 .avonni-list__item {
-    align-self: stretch;
     --avonni-card-color-background: var(
         --avonni-list-item-color-background,
         transparent
@@ -66,7 +72,7 @@
 }
 
 .avonni-list__lower-spinner {
-    height: 30px;
+    min-height: 3rem;
 }
 
 .avonni-list__page-change-button-container {

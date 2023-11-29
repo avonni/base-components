@@ -7,7 +7,6 @@ import {
     deepCopy
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
-import { AvonniResizeObserver } from 'c/resizeObserver';
 import Item from './item';
 
 const ICON_POSITIONS = {
@@ -39,12 +38,6 @@ const IMAGE_POSITION = {
 const VARIANTS = {
     valid: ['base', 'single-line'],
     default: 'base'
-};
-
-const MEDIA_QUERY_BREAKPOINTS = {
-    small: 480,
-    medium: 768,
-    large: 1024
 };
 
 const COLUMNS = { valid: [1, 2, 3, 4, 6, 12], default: 1 };
@@ -129,6 +122,7 @@ export default class List extends LightningElement {
     _cardRendersBeforeScrollUpdate = 0;
     _currentItemDraggedHeight;
     _currentColumnCount = 1;
+    _displayWidth = 'default';
     _draggedElement;
     _draggedIndex;
     _dragging = false;
@@ -155,12 +149,10 @@ export default class List extends LightningElement {
     _previousScrollTop;
     _savedComputedItems;
     _keyboardMoveIndex;
-    _resizeObserver;
     _restrictMotion = false;
     _scrollingInterval;
     _scrollTop = 0;
-    _singleLinePage = 0;
-    _singleLinePageFirstIndex;
+    _singleLinePageFirstIndex = 0;
 
     computedActions = [];
     computedItems = [];
@@ -169,13 +161,6 @@ export default class List extends LightningElement {
     _connected = false;
 
     renderedCallback() {
-        if (!this._resizeObserver) {
-            this.initWrapObserver();
-        }
-
-        this.updateSpinnerVisibility();
-        this.listResize();
-
         if ((this._dragging || this._keyboardDragged) && this._draggedElement) {
             this.recoverDraggedElement();
         }
@@ -204,11 +189,6 @@ export default class List extends LightningElement {
     }
 
     disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-            this._resizeObserver = undefined;
-        }
-
         window.removeEventListener('mouseup', this._dragEndMethod);
         window.removeEventListener('touchend', this._dragEndMethod);
     }
@@ -248,7 +228,7 @@ export default class List extends LightningElement {
     set cols(value) {
         this._cols = this.normalizeColumns(value) || COLUMNS.default;
         this._columnsSizes.default = this._cols;
-        this.listResize();
+        this.updateColumnCount();
     }
 
     /**
@@ -285,6 +265,10 @@ export default class List extends LightningElement {
 
         if (this._enableInfiniteLoading) {
             this._hasUsedInfiniteLoading = true;
+
+            if (this._connected && this.isSingleLine) {
+                this.checkSingleLineLoading();
+            }
         }
     }
 
@@ -431,7 +415,6 @@ export default class List extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
-        this.updateSpinnerVisibility();
     }
 
     /**
@@ -449,6 +432,10 @@ export default class List extends LightningElement {
 
         if (this._connected) {
             this.setItemProperties();
+
+            if (this.isSingleLine && this.enableInfiniteLoading) {
+                this.checkSingleLineLoading();
+            }
         }
     }
 
@@ -465,7 +452,7 @@ export default class List extends LightningElement {
     set largeContainerCols(value) {
         this._largeContainerCols = this.normalizeColumns(value);
         this._columnsSizes.large = this._largeContainerCols;
-        this.listResize();
+        this.updateColumnCount();
     }
 
     /**
@@ -516,7 +503,7 @@ export default class List extends LightningElement {
     set mediumContainerCols(value) {
         this._mediumContainerCols = this.normalizeColumns(value);
         this._columnsSizes.medium = this._mediumContainerCols;
-        this.listResize();
+        this.updateColumnCount();
     }
 
     /**
@@ -531,7 +518,7 @@ export default class List extends LightningElement {
     set smallContainerCols(value) {
         this._smallContainerCols = this.normalizeColumns(value);
         this._columnsSizes.small = this._smallContainerCols;
-        this.listResize();
+        this.updateColumnCount();
     }
 
     /**
@@ -589,7 +576,10 @@ export default class List extends LightningElement {
 
         if (this._connected) {
             this.setItemProperties();
-            this.updateSpinnerVisibility();
+
+            if (this.isSingleLine && this.enableInfiniteLoading) {
+                this.checkSingleLineLoading();
+            }
         }
     }
 
@@ -651,6 +641,10 @@ export default class List extends LightningElement {
         return this.imageAttributes.position === 'overlay'
             ? 'border-filled'
             : 'bare';
+    }
+
+    get colSize() {
+        return 12 / this.cols;
     }
 
     /**
@@ -729,9 +723,8 @@ export default class List extends LightningElement {
                 'avonni-list__item-sortable':
                     this.sortable &&
                     this._currentColumnCount === 1 &&
-                    this.variant === 'base'
+                    this.isNotSingleLine
             })
-            .add(`slds-size_${12 / this._currentColumnCount}-of-12`)
             .toString();
     }
 
@@ -741,16 +734,11 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedListClass() {
-        return classSet(
-            'avonni-list__item-menu slds-grid slds-is-relative avonni-list__flex-col'
-        )
+        return classSet('avonni-list__item-menu slds-is-relative slds-show')
             .add({
-                'slds-grid_vertical': this._currentColumnCount === 1,
-                'slds-wrap':
-                    this._currentColumnCount > 1 && this.variant === 'base',
                 'avonni-list__vertical-compact':
                     ['none', 'top', 'bottom'].includes(this.divider) &&
-                    this.isRegularList
+                    this._currentColumnCount === 1
             })
             .toString();
     }
@@ -760,38 +748,10 @@ export default class List extends LightningElement {
      */
     get computedListContainerClass() {
         return classSet({
-            'slds-grid avonni-list__flex-col': this.variant === 'single-line',
+            'slds-grid avonni-list__flex-col': this.isSingleLine,
             'slds-scrollable_y':
-                this._hasUsedInfiniteLoading && this.variant === 'base'
+                this._hasUsedInfiniteLoading && this.isNotSingleLine
         }).toString();
-    }
-
-    /**
-     * Computed single line items.
-     */
-    get computedSingleLineItems() {
-        // the first index is the first item to display
-        const pageStart = this._currentColumnCount * this._singleLinePage;
-        let pageItems = this.computedItems.slice(
-            pageStart,
-            this._currentColumnCount + pageStart
-        );
-        let nextPageItems = this.computedItems.slice(
-            this._currentColumnCount + pageStart,
-            this._currentColumnCount * 2 + pageStart
-        );
-        if (
-            nextPageItems.length === 0 &&
-            !this.isLoading &&
-            this.enableInfiniteLoading
-        ) {
-            // window.requestAnimationFrame required because handleLoadMore() cannot be called while updating template
-            window.requestAnimationFrame(() => {
-                this.handleLoadMore();
-            });
-        }
-        this._singleLinePageFirstIndex = pageStart;
-        return pageItems;
     }
 
     /**
@@ -821,9 +781,20 @@ export default class List extends LightningElement {
      * @type {array}
      */
     get displayedItems() {
-        return this.variant === 'single-line'
-            ? this.computedSingleLineItems
-            : this.computedItems;
+        if (this.isSingleLine) {
+            const startIndex = this._singleLinePageFirstIndex;
+            const endIndex = startIndex + this._currentColumnCount;
+            const items = this.computedItems.slice(startIndex, endIndex);
+            if (!this.enableInfiniteLoading || items.length) {
+                return items;
+            }
+            const previousPageStart =
+                this._singleLinePageFirstIndex - this._currentColumnCount;
+            return previousPageStart >= 0
+                ? this.computedItems.slice(previousPageStart, startIndex)
+                : [];
+        }
+        return this.computedItems;
     }
 
     /**
@@ -887,22 +858,22 @@ export default class List extends LightningElement {
         return this.computedMediaActions.length > 1;
     }
 
-    /**
-     * Check if the list is vertical with one column and not a 'grid'.
-     */
-    get isRegularList() {
-        return Object.values(this._columnsSizes).every(
-            (size) => !size || size === 1
-        );
+    get isNotSingleLine() {
+        return !this.isSingleLine;
     }
 
-    /**
-     * ARIA role of the items, if the list is sortable.
-     *
-     * @type {string|undefined}
-     */
-    get itemRole() {
-        return this.sortable ? 'option' : undefined;
+    get isSingleLine() {
+        return this.variant === 'single-line';
+    }
+
+    get largeContainerColSize() {
+        return this.largeContainerCols
+            ? 12 / this.largeContainerCols
+            : undefined;
+    }
+
+    get layoutDirection() {
+        return this.isSingleLine ? 'horizontal' : 'vertical';
     }
 
     /**
@@ -912,6 +883,12 @@ export default class List extends LightningElement {
         return this.template.querySelector(
             '[data-element-id="list-container"]'
         );
+    }
+
+    get mediumContainerColSize() {
+        return this.mediumContainerCols
+            ? 12 / this.mediumContainerCols
+            : undefined;
     }
 
     /**
@@ -929,7 +906,12 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get nextPageDisabled() {
-        return this._singleLinePage >= this.totalPages - 1;
+        return (
+            this.isLoading ||
+            (!this.enableInfiniteLoading &&
+                this._singleLinePageFirstIndex + this._currentColumnCount >=
+                    this.computedItems.length)
+        );
     }
 
     /**
@@ -938,7 +920,11 @@ export default class List extends LightningElement {
      * @type {boolean}
      */
     get previousPageDisabled() {
-        return this._singleLinePage <= 0;
+        return this._singleLinePageFirstIndex < this._currentColumnCount;
+    }
+
+    get showLoadingColumn() {
+        return this.isLoading && !this.isSingleLine;
     }
 
     /**
@@ -949,7 +935,7 @@ export default class List extends LightningElement {
     get showSortIconRight() {
         return (
             this._currentColumnCount === 1 &&
-            this.variant === 'base' &&
+            this.isNotSingleLine &&
             this.sortable &&
             this.sortableIconName &&
             this.sortableIconPosition === 'right'
@@ -964,7 +950,7 @@ export default class List extends LightningElement {
     get showSortIconInLeftImage() {
         return (
             this._currentColumnCount === 1 &&
-            this.variant === 'base' &&
+            this.isNotSingleLine &&
             this.sortable &&
             !!this.sortableIconName &&
             this.listHasImages &&
@@ -982,31 +968,17 @@ export default class List extends LightningElement {
         return (
             this._currentColumnCount === 1 &&
             !this.showSortIconInLeftImage &&
-            this.variant === 'base' &&
+            this.isNotSingleLine &&
             this.sortable &&
             !!this.sortableIconName &&
             this.sortableIconPosition === 'left'
         );
     }
 
-    /**
-     * On single-line variant, show pagination arrows.
-     *
-     * @type {boolean}
-     */
-    get showPaginationButtons() {
-        return this.variant === 'single-line';
-    }
-
-    /**
-     * On single-line variant, get the total number of pages.
-     *
-     * @type {number}
-     */
-    get totalPages() {
-        return (
-            Math.ceil(this.computedItems.length / this._currentColumnCount) || 1
-        );
+    get smallContainerColSize() {
+        return this.smallContainerCols
+            ? 12 / this.smallContainerCols
+            : undefined;
     }
 
     /*
@@ -1234,6 +1206,14 @@ export default class List extends LightningElement {
         }
     }
 
+    checkSingleLineLoading() {
+        const isAllLoaded =
+            this.displayedItems.length < this._currentColumnCount;
+        if (isAllLoaded) {
+            this.dispatchLoadMore();
+        }
+    }
+
     /**
      * Erase the list styles and dataset - clear tracked variables.
      */
@@ -1406,97 +1386,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Setup the screen resize observer. That counts the number of wrapped chips.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initWrapObserver() {
-        if (!this.listContainer) {
-            return;
-        }
-        this._resizeObserver = new AvonniResizeObserver(
-            this.listContainer,
-            this.listResize.bind(this)
-        );
-    }
-
-    /**
-     * Calculate the number of columns depending on the width of the list.
-     */
-    listResize() {
-        const previousColumnCount = this._currentColumnCount;
-        if (!this.listContainer) {
-            return;
-        }
-        const listWidth = this.listContainer.offsetWidth;
-
-        let setSize = 'default';
-        if (
-            listWidth >= MEDIA_QUERY_BREAKPOINTS.large &&
-            this.largeContainerCols > 0
-        ) {
-            setSize = 'large';
-        } else if (
-            listWidth >= MEDIA_QUERY_BREAKPOINTS.medium &&
-            this.mediumContainerCols
-        ) {
-            setSize = 'medium';
-        } else if (
-            listWidth >= MEDIA_QUERY_BREAKPOINTS.small &&
-            this.smallContainerCols
-        ) {
-            setSize = 'small';
-        }
-
-        // If this._currentColumnCount is set at each resize, it causes unnecessary rerenders.
-        const calculatedColumns = this._columnsSizes[setSize];
-        if (calculatedColumns !== this._currentColumnCount) {
-            this._currentColumnCount = calculatedColumns;
-        }
-
-        // Go to page on which the page's first item appears.
-        if (
-            this.variant === 'single-line' &&
-            previousColumnCount !== this._currentColumnCount
-        ) {
-            const firstItem = this.template.querySelector(
-                '[data-element-id="li-item"]'
-            );
-
-            let firstIndex;
-            if (firstItem) {
-                firstIndex = parseInt(firstItem.dataset.index, 10);
-            }
-            if (!isNaN(firstIndex)) {
-                this._singleLinePage = this.findNewPageOfItem(
-                    firstIndex,
-                    this._currentColumnCount
-                );
-            }
-        }
-    }
-
-    /**
-     * On single-line variant, go to the next page of elements. On next page load, check
-     */
-    nextPage() {
-        window.requestAnimationFrame(() => {
-            const pageStart = this._currentColumnCount * this._singleLinePage;
-            let nextPageItems = this.computedItems.slice(
-                this._currentColumnCount + pageStart,
-                this._currentColumnCount * 2 + pageStart
-            );
-            if (nextPageItems.length === 0 && !this.isLoading) {
-                this.handleLoadMore();
-            }
-        });
-
-        if (this._singleLinePage < this.totalPages - 1) {
-            this._singleLinePage++;
-        }
-    }
-
-    /**
      * Only accept predetermined number of columns.
      *
      * @param {number} value
@@ -1519,15 +1408,6 @@ export default class List extends LightningElement {
         return normalizedCols
             ? 12 / Math.pow(2, Math.log2(normalizedCols))
             : null;
-    }
-
-    /**
-     * On single-line variant, go to the previous page of elements.
-     */
-    previousPage() {
-        if (this._singleLinePage > 0) {
-            this._singleLinePage--;
-        }
     }
 
     /**
@@ -1675,16 +1555,28 @@ export default class List extends LightningElement {
         element.textContent = `${label}. ${position} / ${total}`;
     }
 
-    /**
-     * Update the loading spinner visibility.
-     */
-    updateSpinnerVisibility() {
-        const spinner = this.template.querySelector(
-            '[data-element-id="loading-spinner-container"]'
-        );
+    updateColumnCount() {
+        const {
+            large,
+            medium,
+            small,
+            default: defaultSize
+        } = this._columnsSizes;
 
-        if (spinner) {
-            spinner.classList.toggle('slds-hide', !this.isLoading);
+        switch (this._displayWidth) {
+            case 'large':
+                this._currentColumnCount =
+                    large || medium || small || defaultSize;
+                break;
+            case 'medium':
+                this._currentColumnCount = medium || small || defaultSize;
+                break;
+            case 'small':
+                this._currentColumnCount = small || defaultSize;
+                break;
+            default:
+                this._currentColumnCount = defaultSize;
+                break;
         }
     }
 
@@ -1909,6 +1801,15 @@ export default class List extends LightningElement {
         );
     }
 
+    handleLayoutSizeChange(event) {
+        this._displayWidth = event.detail.width;
+        this.updateColumnCount();
+
+        if (this.isSingleLine && this.enableInfiniteLoading) {
+            this.checkSingleLineLoading();
+        }
+    }
+
     /**
      * Handles a click on an item's media action.
      *
@@ -1993,14 +1894,14 @@ export default class List extends LightningElement {
 
             if (
                 this._currentColumnCount === 1 &&
-                this.variant === 'base' &&
+                this.isNotSingleLine &&
                 event.key === 'ArrowDown' &&
                 index + 1 < this.computedItems.length
             ) {
                 targetIndex = index + 1;
             } else if (
                 this._currentColumnCount === 1 &&
-                this.variant === 'base' &&
+                this.isNotSingleLine &&
                 event.key === 'ArrowUp'
             ) {
                 targetIndex = index - 1;
@@ -2121,26 +2022,36 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Dispatch loadmore event.
+     * Handle a click on the next page button, visible in the single-line variant.
      */
-    handleLoadMore() {
+    handleNextPage() {
+        const newIndex =
+            this._singleLinePageFirstIndex + this._currentColumnCount;
+
         if (this.enableInfiniteLoading) {
-            /**
-             * The event fired when the end of the list is reached.
-             *
-             * @event
-             * @name loadmore
-             * @public
-             */
-            this.dispatchEvent(new CustomEvent('loadmore'));
+            const newItems = this.computedItems.slice(
+                newIndex,
+                newIndex + this._currentColumnCount
+            );
+            if (newItems.length < this._currentColumnCount) {
+                this.dispatchLoadMore();
+            }
         }
+        this._singleLinePageFirstIndex = newIndex;
+    }
+
+    /**
+     * Handle a click on the previous page button, visible in the single-line variant.
+     */
+    handlePreviousPage() {
+        this._singleLinePageFirstIndex -= this._currentColumnCount;
     }
 
     /**
      * Determine scroll position to trigger loadmore and adjust dragged item position.
      */
     handleScroll() {
-        if (this.variant === 'single-line' || !this.listContainer) {
+        if (this.isSingleLine || !this.listContainer) {
             return;
         }
 
@@ -2164,7 +2075,7 @@ export default class List extends LightningElement {
                     this.listContainer.clientHeight &&
                 !this.isLoading)
         ) {
-            this.handleLoadMore();
+            this.dispatchLoadMore();
         }
     }
 
@@ -2181,5 +2092,22 @@ export default class List extends LightningElement {
         ) {
             event.stopPropagation();
         }
+    }
+
+    /*
+     * -------------------------------------------------------------
+     *  EVENT DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    dispatchLoadMore() {
+        /**
+         * The event fired when the end of the list is reached.
+         *
+         * @event
+         * @name loadmore
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('loadmore'));
     }
 }
