@@ -356,15 +356,48 @@ export default class ButtonMenu extends PrimitiveButton {
     }
 
     /**
+     * Computed size for the icon.
+     *
+     * @type {string}
+     */
+    get computedIconSize() {
+        if (!this.label) {
+            return '';
+        }
+        switch (this.iconSize) {
+            case 'x-small':
+                return 'xx-small';
+            case 'small':
+                return 'x-small';
+            case 'medium':
+                return 'small';
+            default:
+                return this.iconSize;
+        }
+    }
+
+    get computedIconSvgClass() {
+        const isBare =
+            this.computedVariant === 'bare' ||
+            this.computedVariant === 'bare-inverse' ||
+            this.computedVariant === 'base';
+        return classSet('slds-button__icon')
+            .add({
+                'slds-button__icon_x-small':
+                    this.iconSize === 'x-small' && isBare,
+                'slds-button__icon_small': this.iconSize === 'small' && isBare,
+                'slds-button__icon_large': this.iconSize === 'large' && isBare
+            })
+            .toString();
+    }
+
+    /**
      * Computed image class styling.
      *
      * @type {string}
      */
     get computedImageClass() {
-        return classSet('')
-            .add({
-                'slds-m-left_xx-small': this.label
-            })
+        return classSet('slds-m-horizontal_xx-small')
             .add(`avonni-button-menu__image_${this.iconSize}`)
             .toString();
     }
@@ -379,7 +412,8 @@ export default class ButtonMenu extends PrimitiveButton {
         const isBase = this.computedVariant === 'base';
         const isBare =
             this.computedVariant === 'bare' ||
-            this.computedVariant === 'bare-inverse';
+            this.computedVariant === 'bare-inverse' ||
+            this.computedVariant === 'base';
         const isAddedVariant =
             this.computedVariant === 'brand' ||
             this.computedVariant === 'brand-outline' ||
@@ -444,17 +478,22 @@ export default class ButtonMenu extends PrimitiveButton {
                 'avonni-button-menu__button-icon': isAddedVariant
             });
             if (this.iconSrc) {
-                classes.add(`avonni-button-menu__src_${this.iconSize}`);
+                classes.add(`avonni-button-menu__src_${this.iconSize}`).add({
+                    'avonni-button-menu__button-icon': this.iconSrc
+                });
             } else {
                 classes.add({
                     'slds-button_icon-xx-small':
                         this.iconSize === 'xx-small' && !isBare,
                     'slds-button_icon-x-small':
                         this.iconSize === 'x-small' && !isBare,
+
                     'slds-button_icon-small':
                         this.iconSize === 'small' && !isBare,
+
                     'slds-button_icon-large':
                         this.iconSize === 'large' && !isBare,
+
                     'avonni-button-menu__button-icon_medium':
                         this.iconSize === 'medium' && isAddedVariant
                 });
