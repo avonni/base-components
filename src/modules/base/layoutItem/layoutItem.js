@@ -64,6 +64,10 @@ export default class LayoutItem extends LightningElement {
         );
     }
 
+    renderedCallback() {
+        this.updateClassAndStyle();
+    }
+
     disconnectedCallback() {
         /**
          * The event fired when the layout item is removed from the DOM.
